@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!-- Log4j configuration for fennec integration tests. -->
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+    <!-- Appender that writes all log messages in the html test report, when 
+        they are logged while a test runs. -->
+    <appender name="TestReportAppender"
+        class="eu.tsystems.mms.tic.testframework.report.TestReportAppender">
+    </appender>
+    <appender name="file" class="org.apache.log4j.RollingFileAppender">
+        <param name="file" value="target/log4j.log" />
+        <param name="MaxFileSize" value="100KB" />
+        <!-- Keep one backup file -->
+        <param name="MaxBackupIndex" value="1" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p %c{1} - %m%n" />
+        </layout>
+    </appender>
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p %c{1} - %m%n" />
+        </layout>
+    </appender>
+    <!-- Set name to whatever package or Class you want to have logged into 
+        the HTML Report. Have a look at TestNg verbosity, which may conflict with 
+        Level-definition. -->
+    <logger name="eu.tsystems.mms.tic.testframework.test">
+        <level value="ALL" />
+    </logger>
+    <!-- TestReportAppender should be added to your test-packages to get 
+        their logs (incl. Screenshots) in html reports. -->
+    <logger name="eu.tsystems.mms.tic.testframework">
+        <level value="INFO" />
+        <appender-ref ref="file" />
+        <appender-ref ref="TestReportAppender" />
+    </logger>
+    <logger name="eu.tsystems.mms.tic.testframework.restriction">
+        <level value="ERROR" />
+    </logger>
+    <root>
+        <level value="INFO" />
+        <appender-ref ref="console" />
+    </root>
+</log4j:configuration>

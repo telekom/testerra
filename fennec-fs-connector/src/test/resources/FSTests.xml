@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="fennec FS Connector Test Suite" verbose="10" configfailurepolicy="continue">
+
+    <listeners>
+        <listener class-name="eu.tsystems.mms.tic.testframework.report.fennecListener"/>
+    </listeners>
+
+    <test name="Tests" parallel="methods">
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.fsconnector.test"/>
+        </packages>
+    </test>
+</suite>

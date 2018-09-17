@@ -1,0 +1,209 @@
+plugins {
+    id "com.github.jk1.dependency-license-report" version "0.5.1" apply true
+}
+
+group 'eu.tsystems.mms.tic.testframework'
+version '10-SNAPSHOT'
+
+if (hasProperty("free")) {
+    ext {
+        publishUrl = "https://artifacts.mms-at-work.de/artifactory/shared-ticautom-release"
+    }
+    if (project.version.contains("SNAPSHOT")) {
+        ext {
+            publishUrl = "https://artifacts.mms-at-work.de/artifactory/shared-ticautom-snapshot"
+        }
+    }
+}
+else {
+    ext {
+        publishUrl = "https://artifacts.mms-at-work.de/artifactory/prj-ticautom-release"
+    }
+    if (project.version.contains("SNAPSHOT")) {
+        ext {
+            publishUrl = "https://artifacts.mms-at-work.de/artifactory/prj-ticautom-snapshot"
+        }
+    }
+}
+
+ext {
+    /*
+    fennec stuff
+     */
+    core_interop = project(':fennec-core-interop')
+    driver_ui_interop = project(':fennec-driver-ui-interop')
+    driver_ui = project(':fennec-driver-ui')
+    driver_ui_native = project(':fennec-driver-ui-native')
+    driver_ui_desktop = project(':fennec-driver-ui-desktop')
+    core = project(':fennec-core')
+    test_commons = project(':fennec-test-commons')
+    platform_modules = [
+            project(':fennec-platform-connector')
+    ]
+
+    /*
+    external stuff
+     */
+    testng = 'org.testng:testng:6.12'
+    slf4j = [
+            'org.slf4j:slf4j-api:1.8.0-beta2',
+            'org.slf4j:slf4j-log4j12:1.8.0-beta2'
+    ]
+    gson = 'com.google.code.gson:gson:2.6.2'
+    jaxwsrs = 'javax.ws.rs:javax.ws.rs-api:2.0.1'
+
+    jersey = [
+            'com.sun.jersey:jersey-core:1.19.3',
+            'com.sun.jersey:jersey-grizzly2:1.19.3',
+            'com.sun.jersey:jersey-client:1.19.3',
+            'com.sun.jersey.contribs:jersey-multipart:1.19.3'
+    ]
+
+    apache_commons = [
+            'commons-io:commons-io:2.4',
+            'commons-net:commons-net:3.2',
+            'commons-lang:commons-lang:2.6',
+            'org.apache.commons:commons-lang3:3.5'
+    ]
+
+    velocity = 'org.apache.velocity:velocity:1.7'
+
+    zip4j = [
+            'net.lingala.zip4j:zip4j:1.3.2',
+            'de.idyl:winzipaes:1.0.1'
+    ]
+
+    apache_http = [
+            'org.apache.httpcomponents:httpcore:4.4.1',
+            'org.apache.httpcomponents:httpclient:4.5',
+            'org.apache.httpcomponents:httpmime:4.5'
+    ]
+
+    jfreechart = 'org.jfree:jfreechart:1.0.19'
+
+    seleniumVersion = '3.13.0'
+    selenium = [
+            'org.seleniumhq.selenium:selenium-remote-driver:' + seleniumVersion,
+            'org.seleniumhq.selenium:selenium-java:' + seleniumVersion,
+            'org.seleniumhq.selenium:selenium-server:' + seleniumVersion
+    ]
+
+    sikuli = 'org.sikuli:sikuli-api:1.2.0'
+    opencv = [
+            'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9',
+            'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:windows-x86',
+            'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:windows-x86_64',
+            'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86',
+            'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86_64',
+            'nu.pattern:opencv:2.4.9-7'
+            ]
+
+    phantomjs = [
+            'net.anthavio:phanbedder-2.1.1:1.0.0',
+            'com.codeborne:phantomjsdriver:1.3.0'
+            ]
+
+    javassist = 'org.javassist:javassist:3.20.0-GA'
+
+    datatypes = [
+            'org.apache.pdfbox:pdfbox:1.8.10',
+            'org.apache.poi:poi-ooxml:3.17',
+            'org.jdom:jdom2:2.0.6',
+            'org.json:json:20140107',
+            'org.jsoup:jsoup:1.7.2',
+            'com.opencsv:opencsv:3.9'
+        ]
+
+    plexus = 'org.codehaus.plexus:plexus-utils:2.1'
+
+    reflections = [
+        'org.reflections:reflections:0.9.11',
+        'com.google.guava:guava:25.1-jre'
+    ]
+
+    userAgentPparser = 'nl.basjes.parse.useragent:yauaa:4.1'
+
+    colt = 'colt:colt:1.2.0'
+
+    protobuf = [
+            'com.google.protobuf:protobuf-java:3.5.1',
+            'com.google.protobuf:protobuf-java-util:3.5.1',
+            'com.hubspot.jackson:jackson-datatype-protobuf:0.9.9-jackson2.9-proto3'
+        ]
+
+    mongo = 'org.mongodb:mongodb-driver:3.7.1'
+
+    /*
+    Flags
+     */
+    doNotPublish = this.&dnp
+}
+
+def dnp(prj) {
+    prj.jar.enabled = true
+    prj.install.enabled = true
+    prj.publish.enabled = false
+    prj.publishToMavenLocal.enabled = true
+
+    println("Do not publish stuff from " + prj)
+}
+
+allprojects {
+    group 'eu.tsystems.mms.tic.testframework'
+    version '10-SNAPSHOT'
+
+    apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
+    apply plugin: 'com.github.jk1.dependency-license-report' // run: gradle generateLicenseReport
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+
+//                artifact sourceJar {
+//                    classifier "sources"
+//                }
+            }
+        }
+
+        repositories {
+            mavenLocal()
+            maven {
+                name 'prj-ticautom'
+                url publishUrl
+                credentials {
+                    username mmsArtifactoryUsername
+                    password mmsArtifactoryPassword
+                }
+            }
+        }
+    }
+
+    tasks.whenTaskAdded { t ->
+        if (t.name.startsWith("publishDeploy")) {
+            boolean e = t.project.jar.enabled
+            if (!e) {
+                println "Not running publish for " + t.project.name
+                t.enabled = false
+            }
+        }
+    }
+
+
+    test.enabled = false
+    test {
+        testLogging {
+            outputs.upToDateWhen { false }
+            showStandardStreams = true
+        }
+    }
+}
+
+dependencies {
+    compile apache_commons
+}
+
+task displayLicenses(dependsOn: ['classes', 'generateLicenseReport'], type: JavaExec) {
+    main = 'eu.tsystems.mms.tic.testframework.build.LicenseCollector'
+    classpath = sourceSets.main.runtimeClasspath
+}

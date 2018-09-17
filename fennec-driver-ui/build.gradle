@@ -1,0 +1,9 @@
+dependencies {
+    compile core // to be removed
+    compile driver_ui_interop
+
+    compile selenium
+    compile sikuli
+    compile opencv
+    compile datatypes
+}

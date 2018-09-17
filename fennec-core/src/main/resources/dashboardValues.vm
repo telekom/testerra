@@ -1,0 +1,11 @@
+#if (${counts.containsKey($s)} && ${counts.get($s)} > 0)
+<div>
+    #set ($class = "")
+    #set ($title = "$s.title")
+    #if (! $s.relevant)
+        #set ($class = "notrelevant")
+    #end
+    <a title="$title" id="numberOf$s" class="fcSmaller $class" style="color:white; background:$s.color; cursor: pointer;" onclick="enableBarChartState('$s.title')">
+        &nbsp;${counts.get($s)} $s.title&nbsp;</a>
+</div>
+#end

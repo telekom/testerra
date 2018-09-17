@@ -1,0 +1,6 @@
+dependencies {
+    compile 'javax.mail:mail:1.4'
+    compile 'org.bouncycastle:bcmail-jdk15on:1.52'
+    compile 'net.iharder:base64:2.3.8'
+    compile core
+}

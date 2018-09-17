@@ -1,0 +1,2 @@
+This is a simple dummy text file, that is used by tests that need to upload something.
+Tests for FTP and WebDav of the FSConnector are using this.

@@ -1,0 +1,29 @@
+#set($cols = 2)
+#set($velocityCount1 = 1)
+
+<link rel="stylesheet" href="style/fotorama.css"/>
+<script type="text/javascript" src="js/fotorama.js"></script>
+
+<table class="textleft resultsTable">
+<tr class="header">
+    <td colspan="3" class="group">
+        <a href="classes/${testClass.uuid}.html">${testClass.name}</a>
+    </td>
+</tr>
+#set ($methodStats = ${testClass.getMethodStats(true, true)})
+#foreach ($s in ${runContext.getAvailableStatuses()})
+    #foreach( $testMethod in $testClass.getTestMethodsWithStatus($s) )
+        #set($index = ${velocityCount} - 1)
+        #if ($index < 10)
+            #set ($index = "0$index")
+        #end
+        <tr id="row-$index" class="test testbar${s.name()} filterMethods filter${s.name()}">
+            <td style="background-color: ${s.color}">
+                &nbsp;
+            </td>
+            <!-- methodBody -->
+            #parse("methodBodyDashboard.vm")
+        </tr>
+    #end
+#end
+</table>

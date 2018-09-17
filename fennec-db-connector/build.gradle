@@ -1,0 +1,5 @@
+dependencies {
+    compile core_interop
+
+    testCompile test_commons
+}

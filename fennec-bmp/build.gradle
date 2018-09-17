@@ -1,0 +1,8 @@
+dependencies {
+    compile core
+
+    compile 'net.lightbody.bmp:browsermob-proxy:2.1.1'
+    compile 'net.lightbody.bmp:browsermob-legacy:2.1.1'
+
+    testCompile driver_ui_desktop
+}

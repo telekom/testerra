@@ -1,0 +1,35 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.internal.jvm.Jvm
+
+dependencies {
+    compile core_interop
+
+    compile testng
+    compile slf4j
+    compile gson
+    compile jaxwsrs
+    compile jersey
+    compile velocity
+    compile apache_http
+    compile jfreechart
+    compile javassist
+    compile datatypes
+    compile plexus
+    compile apache_commons
+    compile userAgentPparser
+
+}
+
+processResources {
+    filesMatching('**/fennec-build.properties') {
+        filter ReplaceTokens, tokens: [
+                'build.java.version': Jvm.current().javaVersion.toString(),
+                'build.os.name'     : System.getProperty("os.name"),
+                'build.os.arch'     : System.getProperty("os.arch"),
+                'build.os.version'  : System.getProperty("os.version"),
+                'build.user.name'   : System.getProperty("user.name"),
+                'fennec.version'      : project.version.toString(),
+                'build.timestamp'   : new Date().toString()
+        ]
+    }
+}

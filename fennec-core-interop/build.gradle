@@ -1,0 +1,9 @@
+dependencies {
+    compile apache_commons
+    compile slf4j
+    compile zip4j
+    compile testng
+    compile colt
+    compile reflections
+
+}

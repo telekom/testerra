@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
+    <head>
+        <title>Test Results Report - Overview</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+        <meta name="description" content="TestNG unit test results."/>
+
+        #parse("styleincludes.vm")
+        #parse("scriptincludes.vm")
+
+        <!--<script type="text/javascript" src="js/pace.min.js"></script>-->
+        <!--<script type="text/javascript" src="js/cytoscape.min.js"></script>-->
+        <!--<script type="text/javascript" src="js/dagre.js"></script>-->
+
+        <script type="text/javascript" src="js/inject/highlightElement.js"></script>
+
+        <script type="text/javascript">
+        var lastRunBarsVisible = false;
+        </script>
+
+        <!-- http://www.1001fonts.com/pwfreearrows-font.html#character-map -->
+        <style type="text/css">
+            @font-face {
+                font-family: 'DancingScript';
+                src: url('style/font/DancingScript.ttf');
+            }
+           @font-face {
+                font-family: 'PWFreeArrows';
+                src: url('style/font/PWFreeArrows.ttf');
+            }
+        </style>
+
+    </head>
+    <body>
+        #set($tabcontext = "d")
+        #set($pagetitle = "Dashboard")
+        #parse("header.vm")
+
+        #set ($counts = ${runContext.getMethodStats(true, false)})
+        #set ($numberOfRepresentationalTests = ${runContext.getNumberOfRepresentationalTests()})
+        #set ($methodStatsPerClass = ${runContext.getMethodStatsPerClass(true, false)})
+
+        <table class="standardTable" style="width:100%;">
+            <tr>
+                <th colspan="12" class="header suite">
+                    <div class="suiteLinks"></div>
+                    <h5>Test Statistics</h5>
+                </th>
+            </tr>
+
+            <tr>
+                <td>
+                    <div style="height:20px;"></div> <!-- horizontal spacer -->
+                </td>
+            </tr>
+
+            <tr>
+                <td align="center">
+                    <div class="dashboardHeader">
+                        Previous Run
+                    </div>
+                </td>
+                <td></td> <!-- percent -->
+                <td></td> <!-- spacer -->
+                <td align="center">
+                    <div class="dashboardHeader">
+                        This Run
+                    </div>
+                </td>
+                <td></td> <!-- percent -->
+                <td></td> <!-- spacer -->
+                <td align="center">
+                    <div class="dashboardHeader">
+                        Tests Total
+                    </div>
+                </td>
+                <td></td> <!-- spacer -->
+                <td align="center">
+                    <div class="dashboardHeader">
+                        Results
+                    </div>
+                </td>
+                <td></td> <!-- spacer -->
+                <td align="center">
+                    <div class="dashboardHeader">
+                        Duration
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <!-- previous run -->
+                    <td class="cellCenter" style="opacity:0.7;">
+                        <div class="dashboardTextVerySmall">No history data</div>
+                        <div class="hidden">
+                            <input type="checkbox" id="lastRunBarsVisibleCheckbox"/>
+                        </div>
+                    </td>
+                    <td class="cellCenter" style="opacity:0.7;">
+                        <div class="responsive">
+                            <div class="dashboardTextVerySmall" id="lastRunPassRate">No history data</div>
+                        </div>
+                    </td>
+
+
+                <td class="cellCenter"><div class="dashboardVerticalSpacer"></div></td> <!-- spacer -->
+
+                <!-- this run -->
+                <td class="cellCenter">
+                    <canvas id="methodsPie" class="chart"></canvas>
+                </td>
+                <td class="cellCenter">
+                    <div class="responsive">
+                        <div id="actualRunPassRate" class="dashboardTextBig">$!{runContext.passRate($counts, $numberOfRepresentationalTests)}%</div>
+                    </div>
+                </td>
+
+                <td class="cellCenter"><div class="dashboardVerticalSpacer"></div></td> <!-- spacer -->
+
+                <!-- total -->
+                <td class="cellCenter">
+                    <div class="cellCenter">
+                        <div class="dashboardTextBig">
+                            <div id="totalNumberOfTestMethods" style="cursor: pointer;" onclick="showChartsState('all')">$numberOfRepresentationalTests</div>
+                        </div>
+
+                        <!-- expected failed -->
+                        #if (${counts.get($status_FAILED_EXPECTED)} > 0)
+                            <div class="dashboardTextSmall">
+                                <div id="numberOfExpectedToFail">+ ${counts.get($status_FAILED_EXPECTED)} expected failed</div>
+                            </div>
+                        #end
+
+                    </div>
+                </td>
+
+                <td class="cellCenter"><div class="dashboardVerticalSpacer"></div></td> <!-- spacer -->
+
+                <!-- stats -->
+                <td id="cellTests" class="cellCenter">
+                    #set ($allstatus = $runContext.getAvailableStatus())
+
+                    #set($nrOfFailureAspects = $failureAspectMap.size())
+                    #set($nrOfExitPoints = $exitPointMap.size())
+                    #if ( $exitPointMap.get("others") )
+                    #set($nrOfExitPoints = $nrOfExitPoints - 1 + $exitPointMap.get("others").size())
+                    #end
+
+                    <!-- passed -->
+                    <table class="dashboardBorder">
+                        <tr class="dashboardTextSmall" style="color:green; margin:5px;">
+                            <td class="cellCenter" style="width:50%;">
+                                <div id="totalNumberOfSuccessfulMethods">${runContext.nrOfPassed($counts)} successful</div>
+                            </td>
+                            <td class="cellCenter" style="width:50%;">
+
+                                #foreach ($s in $allstatus)
+                                    #if ($s.isPassed())
+                                        #parse("dashboardValues.vm")
+                                    #end
+                                #end
+
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- skipped -->
+                    <table class="dashboardBorder">
+                        <tr class="dashboardTextSmall" style="color:orange; margin:5px;">
+                            <td class="cellCenter" style="width:50%;">
+                                <div id="totalNumberOfSkippedMethods">${runContext.nrOfSkipped($counts)} skipped</div>
+                            </td>
+                            <td class="cellCenter" style="width:50%;">
+
+                                #foreach ($s in $allstatus)
+                                    #if ($s.isSkipped())
+                                        #parse("dashboardValues.vm")
+                                    #end
+                                #end
+
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- failed -->
+                    <table class="dashboardBorder">
+                        <tr class="dashboardTextSmall" style="color:red; margin:5px;">
+                            <td class="cellCenter" style="width:50%;">
+                                <div id="totalNumberOfFailedMethods">${runContext.nrOfFailed($counts)} broken</div>
+                            </td>
+                            <td class="cellCenter" style="width:50%;">
+
+                                #foreach ($s in $allstatus)
+                                    #if ($s.isFailed(false, true, true))
+                                        #parse("dashboardValues.vm")
+                                    #end
+                                #end
+
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- exit points and failure aspects -->
+                    <table class="dashboardBorder">
+                        <tr class="dashboardTextSmall" style="color:red; margin:10px;">
+                            <td class="cellCenter" style="width:50%;">
+                                <div>
+                                    <font class="dashboardTextVerySmall" style="padding:20px;">Failures could be mapped in</font>
+                                </div>
+
+                                <div>
+                                    <font id="exitPointsLink" class="pointer" style="padding-top:14px;">
+                                        <a style="font-size:18px;opacity:0.8; color:red;" href="classes/exitPoints.html">${runContext.exitPoints.size()} Exit
+                                            #if (${runContext.exitPoints.size()} == 1)
+                                            Point
+                                            #else
+                                            Points
+                                            #end
+                                        </a>
+                                    </font>
+                                    <font class="dashboardTextVerySmall" style="padding:20px;">and</font>
+                                    <font id="failureAspectsLink" class="pointer" style="padding-top:14px;">
+                                        <a style="font-size:18px;opacity:0.8; color:red;" href="classes/failureAspects.html">
+                                            ${runContext.failureAspects.size()}
+
+                                            Failure
+                                            #if (${runContext.failureAspects.size()} == 1)
+                                            Aspect
+                                            #else
+                                            Aspects
+                                            #end
+                                        </a>
+                                    </font>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+
+                <td class="cellCenter"><div class="dashboardVerticalSpacer"></div></td> <!-- spacer -->
+
+                <!-- duration -->
+                <td class="cellCenter" colspan="2">
+                    <div id="actualRunDuration" class="dashboardTextBig">${runContext.getDuration(${runContext.startTime}, ${runContext.endTime})}</div>
+                    <br/>
+                    <div id="actualRunStartTime" class="dashboardTextSmall">Start ${runContext.startTime}</div>
+                    <br/>
+                    <div id="actualRunEndTime" class="dashboardTextSmall">End ${runContext.endTime}</div>
+                </td>
+            </tr>
+        </table>
+
+        #if ($fcActive)
+            <br/>
+            <br/>
+            <div id="FailureCorridor" style="width:100%; padding:15px;">
+                #if ($fcMatched)
+                    <font style="font-size: 16px; color: green;">Failure Corridor matched</font>
+                #else
+                    <font style="font-size: 16px; color: red;">Failure Corridor NOT matched</font>
+                #end
+                <font style="color: grey; font-size: 15px;">
+
+                &nbsp;&nbsp;&nbsp;&nbsp;HIGH:
+                    #if ($fcH > $fcHAllowed)
+                        <a title="Failed HIGH level tests" id="failedHighLevelTests" class="fcNotMatched">
+                    #else
+                        <a title="Failed HIGH level tests" id="failedHighLevelTests" class="fcMatched">
+                    #end
+                    &nbsp;$fcH&nbsp;</a> of
+                    <a title="Failure Corridor definition: HIGH level" id="failureCorridorHighTotalSum" class="fcGrey fcSmaller">&nbsp;$fcHAllowed&nbsp;</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;MID:
+                    #if ($fcM > $fcMAllowed)
+                        <a title="Failed MID level tests" id="failedMidLevelTests" class="fcNotMatched">
+                    #else
+                        <a title="Failed MID level tests" id="failedMidLevelTests" class="fcMatched">
+                    #end
+                    &nbsp;$fcM&nbsp;</a> of
+                    <a title="Failure Corridor definition: MID level" id="failureCorridorMidTotalSum" class="fcGrey fcSmaller">&nbsp;$fcMAllowed&nbsp;</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;LOW:
+                    #if ($fcL > $fcLAllowed)
+                        <a title="Failed LOW level tests" id="failedLowLevelTests" class="fcNotMatched">
+                    #else
+                        <a title="Failed LOW level tests" id="failedLowLevelTests" class="fcMatched">
+                    #end
+                    &nbsp;$fcL&nbsp;</a> of
+                    <a title="Failure Corridor definition: LOW level" id="failureCorridorLowTotalSum" class="fcGrey fcSmaller">&nbsp;$fcLAllowed&nbsp;</a>
+
+                </font>
+            </div>
+        #else
+            <br/>
+            <br/>
+        #end
+
+        <!-- dashboard warnings -->
+        <div style="width:100%; padding:5px;" id="dashboardWarning">
+            #foreach($w in $dashboardWarnings.keySet())
+                #if ($dashboardWarnings.get($w).getLinkTo())
+                    <a href="$dashboardWarnings.get($w).getLinkTo()">
+                #end
+                <div class="dashboardWarning">$dashboardWarnings.get($w)</div>
+                #if ($dashboardWarnings.get($w).getLinkTo())
+                    </a>
+                #end
+            #end
+        </div>
+        <div style="width:100%; padding:5px;" id="dashboardInfos">
+            #foreach($i in $dashboardInfos.keySet())
+                #if ($dashboardInfos.get($i).getLinkTo())
+                    <a href="$dashboardInfos.get($i).getLinkTo()">
+                #end
+                <div class="dashboardInfo">$dashboardInfos.get($i)</div>
+                #if ($dashboardInfos.get($i).getLinkTo())
+                    </a>
+                #end
+            #end
+        </div>
+
+        <table class="standardTable" style="table-layout:fixed; width:100%;">
+
+            <tr>
+                <td class="cellTop" style="width: 50%">
+                    <div id="classesBars" style="padding:20px;"></div>
+                    <canvas id="classesBars0" style="padding:20px;"></canvas>
+                </td>
+
+                <td class="cellTop" style="width: 50%">
+                    <div id="detailsView" style="display: table; width: 100%; height: 40vh; text-align: center;">
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+
+    </body>
+
+#set ($statuses = ${runContext.getAvailableStatuses()})
+<!-- fill the pie charts -->
+<script type="text/javascript">
+
+var pieChart1;
+
+function drawTestsPie1() {
+
+    var categories = [
+        #foreach ($s in $statuses)
+            '$s.name()',
+        #end
+    ];
+
+    var data = {
+        labels: categories,
+        datasets: [
+            {
+                data: [
+                    #foreach ($s in $statuses)
+                        ${counts.get($s)},
+                    #end
+                ],
+                backgroundColor: [
+                    #foreach ($s in $statuses)
+                        '$s.color',
+                    #end
+                ]
+            },
+        ]
+    };
+
+    var options = {
+        legend: {
+            display: false
+        },
+        onClick: function(event, elements) {
+            var activePoint = pieChart1.getElementAtEvent(event)[0];
+
+            if (elements.length > 0) {
+                // click on a datapoint
+
+                var data = activePoint._chart.data;
+                var datasetIndex = activePoint._datasetIndex;
+                var catIndex = elements[datasetIndex]['_index'];
+
+                var category = categories[catIndex];
+                var value = data.datasets[datasetIndex].data[activePoint._index];
+
+                pieClickEventCallBack("methodsPie", category, true);
+            }
+        },
+        cutoutPercentage: 0
+    };
+
+    var canvas1 = $("#methodsPie");
+
+    if (pieChart1 == null) {
+        pieChart1 = new Chart(canvas1, {
+            type: 'pie',
+            data: data,
+            options: options
+        });
+    }
+    else {
+        pieChart1.data = data;
+        pieChart1.update();
+    }
+
+}
+
+drawTestsPie1();
+
+function pieClickEventCallBack(elementId, category, activated) {
+    if (elementId == "methodsPie") {
+        if (!activated) {
+            showChartsState('all');
+        }
+        else {
+            showChartsState(category);
+        }
+    }
+}
+</script>
+
+<script type="text/javascript">
+function defaultMethodsDetailsView() {
+    var e = "#detailsView";
+    $(e).empty();
+    $(e).append('<div style="display: table-cell; vertical-align: middle;"><a href="" style="font-size: 3;"><img src="logo.png" alt="fennec" width="300"></a><div><div style="text-align: center;">fennec Test Automation Framework<br>(c) Copyright T-Systems Multimedia Solutions GmbH 2018...</div>');
+}
+
+defaultMethodsDetailsView();
+</script>
+
+<script type="text/javascript">
+function toggleBarChartVisibility() {
+    if (lastRunBarsVisible) {
+        lastRunBarsVisible = false;
+    }
+    else {
+        lastRunBarsVisible = true;
+    }
+
+    document.getElementById("lastRunBarsVisibleCheckbox").checked = lastRunBarsVisible;
+
+    drawClassesBars();
+}
+</script>
+
+<script type="text/javascript">
+
+var chart0;
+
+function drawClassesBars() {
+    // always show the history graph
+    defaultMethodsDetailsView();
+
+    var categories = [
+        #foreach($class in $methodStatsPerClass.keySet())
+            '${class.name}',
+        #end
+    ];
+
+    $(function () {
+        var data = {
+            labels: categories,
+            datasets: [
+                #foreach ($s in ${runContext.getAvailableStatuses()})
+                {
+                    label: '${s.name()}',
+                    backgroundColor: '${s.color}',
+                    hidden: !isStateShown('${s.name()}'),
+                    data: [
+                        #foreach($class in $methodStatsPerClass.keySet())
+                            ${methodStatsPerClass.get($class).get($s)},
+                        #end
+                    ]
+                },
+                #end
+            ]
+        };
+
+        var options = {
+	        showLines: true,
+	        scales: {
+                xAxes: [{
+                    stacked: true
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            },
+            tooltips: {
+                enabled: true,
+                mode: 'point',
+                intersect: true
+            },
+            onClick: function(event, elements) {
+                var activePoint = chart0.getElementAtEvent(event)[0];
+
+                if (elements.length > 0) {
+                    // click on a bar
+
+                    var data = activePoint._chart.data;
+                    var datasetIndex = activePoint._datasetIndex;
+                    var catIndex = elements[datasetIndex]['_index'];
+
+                    var category = categories[catIndex];
+                    var label = data.datasets[datasetIndex].label;
+                    var value = data.datasets[datasetIndex].data[activePoint._index];
+
+                    showMethodsViewOnDashboard(category, label);
+                }
+                else {
+                    // clicked on a category not implemented
+                }
+            }
+        };
+
+        if (chart0 == null) {
+            var canvas0 = document.getElementById("classesBars0");
+            #set ($height = $methodStatsPerClass.size() * 20 + 30)
+            canvas0.height = $height;
+
+            chart0 = new Chart(canvas0, {
+                type: 'horizontalBar',
+                data: data,
+                options: options
+            });
+        }
+        else {
+            chart0.data = data;
+            chart0.update();
+        }
+    });
+}
+
+// show bars
+drawClassesBars();
+
+var enabledState='';
+function isStateShown(state) {
+    if (enabledState == '') {
+        return true;
+    }
+    if (enabledState == state) {
+        return true;
+    }
+    return false;
+}
+function showChartsState(state) {
+    if (state == 'all') {
+        enabledState='';
+    }
+    else {
+        enabledState=state;
+    }
+    drawClassesBars();
+    drawTestsPie1();
+}
+</script>
+
+
+<script type="text/javascript">
+function showFotorama(number) {
+    $('.fotoramaContainer').hide();
+    $('.fotoramaSwitchOff').hide();
+    $('.fotoramaSwitchOn').show();
+
+    $('.fotoramaSwitchOn' + number).hide();
+    $('.fotoramaSwitchOff' + number).show();
+
+    var e = $("#fotorama" + number);
+    e.show();
+    e.fotorama().data('fotorama');
+}
+
+function hideFotorama(number) {
+    $('.fotoramaSwitchOn' + number).show();
+    $('.fotoramaSwitchOff' + number).hide();
+
+    var e = $("#fotorama" + number);
+    e.hide();
+}
+</script>
+</html>

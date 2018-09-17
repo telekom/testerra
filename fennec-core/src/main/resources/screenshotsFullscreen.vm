@@ -1,0 +1,70 @@
+#if (${methodInfo.screenshots.size()} > 0)
+    <div style="padding:20px;">
+        <div id="infobox" class="selectable screenshotmessagebox"></div>
+    </div>
+    <div class="spacy big" style="padding: 10px;">
+        <div class="fotorama"
+             data-navposition="top"
+             data-allowfullscreen="native"
+             data-nav="thumbs"
+             data-arrows="false"
+             data-click="false"
+             data-swipe="true"
+             data-fit="scaledown"
+             data-thumbwidth="64"
+             data-thumbheight="64"
+             data-height="90%"
+             data-width="90%">
+            #foreach( $screenshot in $methodInfo.screenshots )
+                #set ($path = "../../screenshots/${screenshot.filename}")
+
+                #set ($infoText = "")
+                #if (${screenshot.infos.size()} > 0)
+                    #foreach ($line in ${screenshot.infos})
+                        #set ($infoText = $infoText + $line + "<br/>")
+                    #end
+                #else
+                    #set ($infoText = "No further information")
+                #end
+
+                <div data-img="$path">
+                    <!-- Fullscreen -->
+                    <div style="margin: 0 45%;">
+                        <a class="gallerybutton" href="#" title="Fullscreen"
+                           onclick="if ($('.fotorama.fotorama--fullscreen').length == 0) { $('.fotorama').fotorama().data('fotorama').requestFullScreen(); } else { $('.fotorama').fotorama().data('fotorama').cancelFullScreen(); }"
+                            style="margin-right:25px;">
+                            <i class="bgwhite fa fa-arrows-alt"></i>
+                        </a>
+                        <!-- pic download link -->
+                        <a class="gallerybutton" target="_blank" title="Download" href="$path">
+                            <i class="bgwhite fa fa-cloud-download"></i>
+                        </a>
+                        <!-- page source -->
+                        #if (${screenshot.sourceFilename})
+                        <a class="gallerybutton" title="PageSource" target="_blank"
+                           href="../../screenshots/${screenshot.sourceFilename}">
+                            <i class="bgwhite fa fa-file-code-o"></i>
+                        </a>
+                        #end
+                        <!-- Info -->
+                        <a class="gallerybutton" title="Info" href="#"
+                           onclick="$('#infobox').html('<br/>$infoText<br/><br/>')">
+                            <i class="bgwhite fa fa-info"></i>
+                        </a>
+                    </div>
+                </div>
+            #end
+        </div>
+    </div>
+    <script>
+        $('.fotorama').on('fotorama:show',
+            function() {
+                $('#infobox').empty();
+            });
+        $('.fotorama').on('fotorama:load',
+            function() {
+                $('.fotorama').fotorama().resize();
+            });
+
+    </script>
+#end

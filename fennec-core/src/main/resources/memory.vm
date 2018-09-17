@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
+    <head>
+        <title>Memory Consumption</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+        <meta name="description" content="Results of Page Measurements."/>
+
+        #parse("styleincludes.vm")
+        #parse("scriptincludes.vm")
+    </head>
+    <body>
+
+    #set($tabcontext = "mem")
+    #set($pagetitle = "Memory")
+    #parse("header.vm")
+
+    <table class="standardTable" width="100%">
+            <tr>
+                <th colspan="9" class="header suite">
+                    <div class="suiteLinks"></div>
+                    <h5>Memory</h5>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <div id="memoryView" style="padding:20px; height: 500px;">
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </body>
+
+    <script>
+         function drawMemoryView() {
+            $(function () {
+                $('#memoryView').highcharts({
+                    chart: {
+                        type: 'line',
+                        backgroundColor: '#F6F5F5',
+                        height: 700,
+                    },
+                    title: {
+                        text: 'Memory Consumption'
+                    },
+                    subtitle: {
+                        text: '(same values are combined to one point)'
+                    },
+                    xAxis: {
+                        categories: [
+
+                            #foreach ($timestamp in $memory.keySet())
+                                timestampToString(${timestamp}),
+                            #end
+
+                        ],
+                        plotLines: [
+
+                            #foreach ($pos in $labels.keySet())
+                                {
+                                label: {
+                                    text: '$labels.get($pos)'
+                                    },
+                                color: '#FF0000',
+                                width: 2,
+                                value: $pos
+                                },
+                            #end
+
+                       ]
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Mem'
+                        },
+                        labels: {
+                            format: '{value} MB'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    exporting: {
+                        enabled: false
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    plotOptions: {
+
+                    },
+                    colors: ['#7cb3ec', '#32CD32', 'red'],
+
+                    series: [
+                        {
+                            name: 'Used',
+                            data: [
+                                    #foreach ($timestamp in $memory.keySet())
+                                         ${memory.get($timestamp)},
+                                    #end
+                                  ]
+                        },
+                        {
+                            name: 'Total',
+                            data: [
+                                    #foreach ($timestamp in $memoryTotal.keySet())
+                                         ${memoryTotal.get($timestamp)},
+                                    #end
+                                  ]
+                        },
+                        {
+                            name: 'Max',
+                            data: [
+                                    #foreach ($timestamp in $memory.keySet())
+                                         ${memoryMax},
+                                    #end
+                                  ]
+                        },
+
+                    ]
+                });
+            });
+        }
+        drawMemoryView();
+    </script>
+</html>

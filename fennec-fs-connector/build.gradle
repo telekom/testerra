@@ -1,0 +1,15 @@
+ext {
+    camelVersion = '2.16.0'
+}
+
+dependencies {
+    compile 'org.apache.camel:camel:' + camelVersion
+    compile 'org.apache.camel:camel-ftp:' + camelVersion
+    compile 'org.apache.camel:camel-jetty:' + camelVersion
+    compile 'com.googlecode.sardine:sardine:314'
+    compile core_interop
+
+    testCompile 'org.apache.ftpserver:ftpserver-core:1.0.6'
+    testCompile 'org.apache.ftpserver:ftplet-api:1.0.6'
+    testCompile test_commons
+}

@@ -45,7 +45,7 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * Xeta WebDriver is a ScreenshotWebdriver enhanced by the possibilty to find elements by coordinates and images.
+ * Fennec WebDriver is a ScreenshotWebdriver enhanced by the possibilty to find elements by coordinates and images.
  */
 public class SikuliWebDriver extends RemoteWebDriver implements SikuliDriver {
 

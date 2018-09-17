@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite" verbose="10" parallel="methods" configfailurepolicy="continue">
+    <listeners>
+        <listener class-name="eu.tsystems.mms.tic.testframework.report.FennecListener"/>
+    </listeners>
+
+	<test name="14 Perf">
+		<classes>
+			<class name="eu.tsystems.mms.tic.testframework.core.test.performance.MeasurePagePerformanceTest"/>
+			<class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.page.AssertTextPageTest"/>
+		</classes>
+	</test>
+
+</suite>

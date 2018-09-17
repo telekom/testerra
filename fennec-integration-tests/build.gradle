@@ -1,0 +1,17 @@
+doNotPublish(this)
+
+dependencies {
+    compile driver_ui_desktop
+    compile test_utils
+    compile 'org.xmlunit:xmlunit-core:2.5.0'
+}
+
+test.enabled = true
+test {
+    useTestNG() {
+        useDefaultListeners = true
+
+//        suites 'src/test/resources/Playground.xml'
+        suites 'src/test/resources/CoreTestSuite.xml'
+    }
+}

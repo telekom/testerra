@@ -1,0 +1,22 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite" verbose="10" parallel="methods" thread-count="10">
+    <listeners>
+        <listener class-name="eu.tsystems.mms.tic.testframework.report.FennecListener"/>
+    </listeners>
+
+	<test name="Test">
+		<classes>
+			<class name="eu.tsystems.mms.tic.testframework.core.playground.retry.RetrySpecificTest">
+			<!--<class name="eu.tsystems.mms.tic.testframework.core.playground.retry.RetryTest">-->
+				<methods>
+					<!--<include name="testT04_AimedExceptionInASubcause_Repair"/>-->
+					<include name="testT03_AimedExceptionInASubcause"/>
+					<!--<include name="testT06_RetryByHistory"/>-->
+
+					<!--<include name="testDataProvidedTest"/>-->
+					<!--<include name="testDataProvidedTestResetMethodName"/>-->
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>

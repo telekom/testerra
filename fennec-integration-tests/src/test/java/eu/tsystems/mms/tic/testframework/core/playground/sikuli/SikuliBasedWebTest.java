@@ -1,0 +1,75 @@
+/*
+ * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contributors:
+ *     Peter Lehmann <p.lehmann@t-systems.com>
+ *     pele <p.lehmann@t-systems.com>
+ */
+package eu.tsystems.mms.tic.testframework.core.playground.sikuli;
+
+import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.FennecNativeBy;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.Test;
+
+import java.net.URL;
+
+/**
+ * Created by pele on 27.08.2015.
+ */
+public class SikuliBasedWebTest extends AbstractTest {
+
+    @Test
+    public void testImagedGuiElement() throws Exception {
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        URL resourceURL = FileUtils.getResourceURL("sikuli/iiswelcome.png");
+        GuiElement guiElement = new GuiElement(driver, FennecNativeBy.image(driver, resourceURL));
+
+        guiElement.click();
+    }
+
+    @Test
+    public void testImagedGuiElement2() throws Exception {
+        WebDriver driver = WebDriverManager.getWebDriver();
+        driver.get("http://cm7-redaktion-int.wab.bek/blueprint/servlet/page/barmer-gek-de/leistungen-beratung/persoenliche-beratung/telefonservice?isStudioPreview=true");
+
+        GuiElement checkList = new GuiElement(driver, By.className("checklist"));
+        checkList.scrollToElement();
+
+        URL resourceURL = FileUtils.getResourceURL("sikuli/haekchen.png");
+        GuiElement guiElement = new GuiElement(driver, FennecNativeBy.image(driver, resourceURL));
+
+        guiElement.assertIsDisplayed();
+    }
+
+    @Test
+    public void testImagedGuiElement_inFrames() throws Exception {
+        WebDriver driver = WebDriverManager.getWebDriver();
+        String url = TestPage.FRAME_TEST_PAGE.getUrl();
+        driver.get(url);
+
+        URL resourceURL = FileUtils.getResourceURL("sikuli/iiswelcome.png");
+        GuiElement guiElement = new GuiElement(driver, FennecNativeBy.image(driver, resourceURL));
+
+        guiElement.assertIsDisplayed();
+    }
+
+}

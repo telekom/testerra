@@ -19,9 +19,9 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.annotations.fennecClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -158,13 +158,13 @@ public class RunContext extends Context implements SynchronizableContext {
 
         map.keySet().stream().filter(id -> map.get(id).size() > 1)
                 .forEach(id -> map.get(id).forEach(classContext -> {
-                    if (classContext.fennecClassContext != null && classContext.fennecClassContext.mode() == fennecClassContext.Mode.ONE_FOR_ALL) {
+                    if (classContext.FennecClassContext != null && classContext.FennecClassContext.mode() == FennecClassContext.Mode.ONE_FOR_ALL) {
                         if (!mergeMap.containsKey(id)) {
                             ClassContext mergedClassContext = new ClassContext(null, this);
                             mergedClassContext.name = classContext.name;
 
-                            if (!StringUtils.isStringEmpty(classContext.fennecClassContext.value())) {
-                                mergedClassContext.name = classContext.fennecClassContext.value();
+                            if (!StringUtils.isStringEmpty(classContext.FennecClassContext.value())) {
+                                mergedClassContext.name = classContext.FennecClassContext.value();
                             }
 
                             mergeMap.put(id, mergedClassContext);

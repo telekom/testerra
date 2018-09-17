@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -112,7 +112,7 @@ public final class WebElementUtils {
                 scrollX = (Long) xOffset;
             }
         } catch (Exception e) {
-            throw new fennecSystemException("Error: " + e);
+            throw new FennecSystemException("Error: " + e);
         }
 
         Locatable item = (Locatable) element;

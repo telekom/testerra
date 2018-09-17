@@ -30,8 +30,8 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TestOS;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
@@ -86,7 +86,7 @@ public class UITestUtils extends TestUtils {
 
     private static final String BROWSER_DOWNLOAD_PATH_UUID = UUID.randomUUID().toString();
 
-    private static final boolean STITCH = PropertyManager.getBooleanProperty(fennecProperties.fennec_STITCH_CHROME_SCREENSHOTS, true);
+    private static final boolean STITCH = PropertyManager.getBooleanProperty(FennecProperties.Fennec_STITCH_CHROME_SCREENSHOTS, true);
 
     public static Screenshot takeScreenshot(final WebDriver driver, boolean intoReport) {
         Screenshot screenshot = takeScreenshot(driver, driver.getWindowHandle(), WebDriverManager.getSessionKeyFrom(driver));
@@ -281,7 +281,7 @@ public class UITestUtils extends TestUtils {
             }
         }
         catch (Throwable t) {
-            throw new fennecSystemException("Error taking screenshot", t);
+            throw new FennecSystemException("Error taking screenshot", t);
         }
     }
 
@@ -407,12 +407,12 @@ public class UITestUtils extends TestUtils {
     private static GuiElementType guiElementType = null;
 
     public static void loadGuiElementType() {
-        String guiElementTypeProperty = PropertyManager.getProperty(fennecProperties.fennec_GUIELEMENT_TYPE, "sequence");
+        String guiElementTypeProperty = PropertyManager.getProperty(FennecProperties.Fennec_GUIELEMENT_TYPE, "sequence");
         try {
             guiElementType = GuiElementType.valueOf(guiElementTypeProperty);
         } catch (IllegalArgumentException e) {
             String errorMessage = "GuiElementType not supported: " + guiElementTypeProperty;
-            throw new fennecSystemException(errorMessage);
+            throw new FennecSystemException(errorMessage);
         }
     }
 
@@ -504,32 +504,32 @@ public class UITestUtils extends TestUtils {
     }
 
     /**
-     * initialize properties for a Perf test with default values if fennec_PERF_TEST is true.
+     * initialize properties for a Perf test with default values if Fennec_PERF_TEST is true.
      * all properties can be overwritten with the values in test.properties
      */
     public static void initializePerfTest() {
-        boolean perfTest = PropertyManager.getBooleanProperty(fennecProperties.fennec_PERF_TEST, false);
+        boolean perfTest = PropertyManager.getBooleanProperty(FennecProperties.Fennec_PERF_TEST, false);
         if (perfTest) {
             Properties fileProperties = PropertyManager.getFileProperties();
-            String value = fileProperties.getProperty(fennecProperties.fennec_PERF_GENERATE_STATISTICS, "true");
-            fileProperties.setProperty(fennecProperties.fennec_PERF_GENERATE_STATISTICS, value);
+            String value = fileProperties.getProperty(FennecProperties.Fennec_PERF_GENERATE_STATISTICS, "true");
+            fileProperties.setProperty(FennecProperties.Fennec_PERF_GENERATE_STATISTICS, value);
 
             /* Override initial value of flag */
-            boolean isPropertyActive = PropertyManager.getBooleanProperty(fennecProperties.fennec_PERF_GENERATE_STATISTICS);
+            boolean isPropertyActive = PropertyManager.getBooleanProperty(FennecProperties.Fennec_PERF_GENERATE_STATISTICS);
             Flags.GENERATE_PERF_STATISTICS = isPropertyActive;
 
-            value = fileProperties.getProperty(fennecProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
-            fileProperties.setProperty(fennecProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, value);
+            value = fileProperties.getProperty(FennecProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
+            fileProperties.setProperty(FennecProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, value);
 
-            value = fileProperties.getProperty(fennecProperties.fennec_GUIELEMENT_TYPE, "perf");
-            fileProperties.setProperty(fennecProperties.fennec_GUIELEMENT_TYPE, value);
+            value = fileProperties.getProperty(FennecProperties.Fennec_GUIELEMENT_TYPE, "perf");
+            fileProperties.setProperty(FennecProperties.Fennec_GUIELEMENT_TYPE, value);
 
             // in case of perfTest reuse driver instances for dataprovider threads
-            value = fileProperties.getProperty(fennecProperties.fennec_REUSE_DATAPROVIDER_DRIVER_BY_THREAD, "true");
-            fileProperties.setProperty(fennecProperties.fennec_REUSE_DATAPROVIDER_DRIVER_BY_THREAD, value);
+            value = fileProperties.getProperty(FennecProperties.Fennec_REUSE_DATAPROVIDER_DRIVER_BY_THREAD, "true");
+            fileProperties.setProperty(FennecProperties.Fennec_REUSE_DATAPROVIDER_DRIVER_BY_THREAD, value);
 
             /* Override initial value of flag */
-            isPropertyActive = PropertyManager.getBooleanProperty(fennecProperties.fennec_REUSE_DATAPROVIDER_DRIVER_BY_THREAD);
+            isPropertyActive = PropertyManager.getBooleanProperty(FennecProperties.Fennec_REUSE_DATAPROVIDER_DRIVER_BY_THREAD);
             Flags.REUSE_DATAPROVIDER_DRIVER_BY_THREAD = isPropertyActive;
         }
     }

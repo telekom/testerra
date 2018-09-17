@@ -10,7 +10,6 @@ dependencyManagement {
         dependency 'eu.tsystems.mms.tic.testframework:fennec-console-connector:' + project.version
         dependency 'eu.tsystems.mms.tic.testframework:fennec-mail-connector:' + project.version
         dependency 'eu.tsystems.mms.tic.testframework:fennec-fs-connector:' + project.version
-        dependency 'eu.tsystems.mms.tic.testframework:fennec-sip:' + project.version
     }
 }
 

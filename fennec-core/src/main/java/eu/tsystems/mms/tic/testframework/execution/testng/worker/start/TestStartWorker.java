@@ -19,12 +19,12 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
-import eu.tsystems.mms.tic.testframework.events.fennecEvent;
-import eu.tsystems.mms.tic.testframework.events.fennecEventDataType;
-import eu.tsystems.mms.tic.testframework.events.fennecEventService;
-import eu.tsystems.mms.tic.testframework.events.fennecEventType;
+import eu.tsystems.mms.tic.testframework.events.FennecEvent;
+import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
+import eu.tsystems.mms.tic.testframework.events.FennecEventService;
+import eu.tsystems.mms.tic.testframework.events.FennecEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
-import eu.tsystems.mms.tic.testframework.report.fennecListener;
+import eu.tsystems.mms.tic.testframework.report.FennecListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
 /**
@@ -35,14 +35,14 @@ public class TestStartWorker extends MethodWorker {
     @Override
     public void run() {
         // set StartTime at very first test invocation.
-        synchronized (fennecListener.class) {
+        synchronized (FennecListener.class) {
             if (wasMethodInvoked()) {
                 // fire event for test start
-                fennecEventService.getInstance().fireEvent(new fennecEvent(fennecEventType.TEST_START)
+                FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.TEST_START)
                         .addUserData()
-                        .addData(fennecEventDataType.TIMESTAMP, ExecutionContextController.RUN_CONTEXT.startTime.getTime())
-                        .addData(fennecEventDataType.ITestResult, testResult)
-                        .addData(fennecEventDataType.IInvokedMethod, method)
+                        .addData(FennecEventDataType.TIMESTAMP, ExecutionContextController.RUN_CONTEXT.startTime.getTime())
+                        .addData(FennecEventDataType.ITestResult, testResult)
+                        .addData(FennecEventDataType.IInvokedMethod, method)
                 );
             }
         }
@@ -51,7 +51,7 @@ public class TestStartWorker extends MethodWorker {
         methodContext.setThreadName();
 
         // Thread visualizer and method timer start.
-        fennecListener.startMethodTimer();
+        FennecListener.startMethodTimer();
 
     }
 }

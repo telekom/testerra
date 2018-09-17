@@ -31,12 +31,12 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Destination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Protocol;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Source;
 
@@ -189,14 +189,14 @@ public abstract class AbstractFileSystemLocation<T> {
          */
         case FILE:
             if (path == null) {
-                throw new fennecSystemException("Path must not be empty. Please set a local file system path.");
+                throw new FennecSystemException("Path must not be empty. Please set a local file system path.");
             }
             if (this instanceof Source) {
                 if (filename == null) {
-                    throw new fennecSystemException("Filename must not be empty. Please set a local filename.");
+                    throw new FennecSystemException("Filename must not be empty. Please set a local filename.");
                 }
                 if (!(new File(getPath(), filename).exists())) {
-                    throw new fennecRuntimeException(String.format("The file to upload doesn't extist: %s/%s",
+                    throw new FennecRuntimeException(String.format("The file to upload doesn't extist: %s/%s",
                             getPath(), filename));
                 }
                 logger.info(getProtocol().name() + " : FileFilter = " + filename);
@@ -216,7 +216,7 @@ public abstract class AbstractFileSystemLocation<T> {
          */
         case HTTP:
             if (options == null) {
-                throw new fennecSystemException("Options must not be empty");
+                throw new FennecSystemException("Options must not be empty");
             }
             builder.append(options);
 
@@ -243,12 +243,12 @@ public abstract class AbstractFileSystemLocation<T> {
 
     private String getUrlPart() {
         if (protocol == null) {
-            throw new fennecSystemException("No protocol set.");
+            throw new FennecSystemException("No protocol set.");
         }
 
         if (protocol != Protocol.FILE) {
             if (host == null) {
-                throw new fennecSystemException("No host set. Please set a host!");
+                throw new FennecSystemException("No host set. Please set a host!");
             }
         }
 
@@ -556,7 +556,7 @@ public abstract class AbstractFileSystemLocation<T> {
      * @return FTP camel url.
      */
     private String getFTPGetParameters() {
-        String out = "?" + "throwExceptionOnConnectFailed=true&pollStrategy=#fennecFSSinglePoller&disconnect=true";
+        String out = "?" + "throwExceptionOnConnectFailed=true&pollStrategy=#FennecFSSinglePoller&disconnect=true";
         if (filename != null) {
             out += "&fileName=" + filename;
         }

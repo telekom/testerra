@@ -28,8 +28,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
@@ -85,7 +85,7 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);
 
-    private static boolean DEFAULT_ASSERT_IS_COLLECTOR = PropertyManager.getBooleanProperty(fennecProperties.fennec_GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false);
+    private static boolean DEFAULT_ASSERT_IS_COLLECTOR = PropertyManager.getBooleanProperty(FennecProperties.Fennec_GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false);
 
     private boolean forcedStandardAsserts = false;
 
@@ -172,7 +172,7 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
             GuiElementCoreFactory guiElementCoreFactory = coreFactories.get(currentBrowser);
             guiElementCore = guiElementCoreFactory.create(by, driver, this.guiElementData);
         } else {
-            throw new fennecSystemException("No GuiElementCoreFactory registered for " + currentBrowser);
+            throw new FennecSystemException("No GuiElementCoreFactory registered for " + currentBrowser);
         }
         GuiElementStatusCheck guiElementStatusCheck = guiElementCore;
 
@@ -249,7 +249,7 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
                 dtldecorator = contextClassLoader.loadClass(
                         eu.tsystems.mms.tic.testframework.internal.Constants.DYNATRACE_LOGGER_DECORATOR_CLASS);
             } catch (ClassNotFoundException e) {
-                throw new fennecSystemException(
+                throw new FennecSystemException(
                         "Dynatrace Logging is activated but the fennec-browsermob-proxy module is not loaded.");
             }
 
@@ -258,14 +258,14 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
                 final Constructor<?> constructor = dtldecorator.getConstructor(GuiElementFacade.class, GuiElementData.class);
                 this.guiElementFacade = (GuiElementFacade) constructor.newInstance(this.guiElementFacade, this.guiElementData);
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                throw new fennecSystemException(errorMessage, e);
+                throw new FennecSystemException(errorMessage, e);
             }
         }
 
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
 
-        int delayAfterAction = PropertyManager.getIntProperty(fennecProperties.DELAY_AFTER_GUIELEMENT_ACTION_MILLIS);
-        int delayBeforeAction = PropertyManager.getIntProperty(fennecProperties.DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS);
+        int delayAfterAction = PropertyManager.getIntProperty(FennecProperties.DELAY_AFTER_GUIELEMENT_ACTION_MILLIS);
+        int delayBeforeAction = PropertyManager.getIntProperty(FennecProperties.DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS);
         if (delayAfterAction > 0 || delayBeforeAction > 0) {
             guiElementFacade = new DelayActionsGuiElementFacade(guiElementFacade, delayBeforeAction, delayAfterAction, guiElementData);
         }

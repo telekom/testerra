@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Destination;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Protocol;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Source;
@@ -119,10 +119,10 @@ public final class WebDavConnection {
             inputStream.close();
         } catch (final FileNotFoundException e) {
             LOGGER.error(e.getMessage());
-            throw new fennecRuntimeException("Error saving to file: " + destFile.getName() + ". " + e.getMessage(), e);
+            throw new FennecRuntimeException("Error saving to file: " + destFile.getName() + ". " + e.getMessage(), e);
         } catch (final IOException e) {
             LOGGER.error(e.getMessage());
-            throw new fennecRuntimeException("Error getting file: " + source.getFilename() + ". " + e.getMessage(), e);
+            throw new FennecRuntimeException("Error getting file: " + source.getFilename() + ". " + e.getMessage(), e);
         }
     }
 
@@ -148,7 +148,7 @@ public final class WebDavConnection {
 
         final File sourceFile = new File(source.getPath(), source.getFilename());
         if (!sourceFile.exists()) {
-            throw new fennecRuntimeException("File to upload could not be found: " + sourceFile.getAbsolutePath());
+            throw new FennecRuntimeException("File to upload could not be found: " + sourceFile.getAbsolutePath());
         }
 
         initConnection(destination.getUsername(), destination.getPassword());
@@ -166,7 +166,7 @@ public final class WebDavConnection {
             sardine.put(destUrl + source.getFilename(), fis);
         } catch (final IOException e) {
             LOGGER.trace(e.toString());
-            throw new fennecRuntimeException("Error uploading File " + source.getFilename()
+            throw new FennecRuntimeException("Error uploading File " + source.getFilename()
                     + " to webdav location " + destUrl + ". "
                     + e.getMessage(), e);
         }
@@ -201,7 +201,7 @@ public final class WebDavConnection {
     }
 
     /**
-     * Build the webdav url out of host and path of fennecFSLocation.
+     * Build the webdav url out of host and path of FennecFSLocation.
      * 
      * @param location FSLocation holding path and host.
      * @return WebDav Url.

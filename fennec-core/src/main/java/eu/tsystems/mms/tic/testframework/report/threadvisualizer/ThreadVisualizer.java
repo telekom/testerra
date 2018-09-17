@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import org.apache.velocity.VelocityContext;
@@ -110,13 +110,13 @@ public class ThreadVisualizer {
         final String css = filesPath + "timeline.css";
         final InputStream cssIS = Thread.currentThread().getContextClassLoader().getResourceAsStream(css);
         if (cssIS == null) {
-            throw new fennecRuntimeException(css + " not found");
+            throw new FennecRuntimeException(css + " not found");
         }
 
         final String js = filesPath + "timeline.js";
         final InputStream jsIS = Thread.currentThread().getContextClassLoader().getResourceAsStream(js);
         if (jsIS == null) {
-            throw new fennecRuntimeException(js + " not found");
+            throw new FennecRuntimeException(js + " not found");
         }
 
         // copy

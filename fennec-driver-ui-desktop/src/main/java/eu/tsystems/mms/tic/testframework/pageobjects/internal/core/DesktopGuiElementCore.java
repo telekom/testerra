@@ -22,9 +22,9 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -61,7 +61,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);
 
-    private static final int delayAfterFindInMilliSeconds = PropertyManager.getIntProperty(fennecProperties.DELAY_AFTER_GUIELEMENT_FIND_MILLIS);
+    private static final int delayAfterFindInMilliSeconds = PropertyManager.getIntProperty(FennecProperties.DELAY_AFTER_GUIELEMENT_FIND_MILLIS);
 
     private final WebDriver webDriver;
 
@@ -525,7 +525,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         // in isPresent(), find() was executed which should set "webElement" or throw an exception
         WebElement webElement = guiElementData.webElement;
         if (webElement == null) {
-            throw new fennecSystemException("Internal error. This state should not be reached.");
+            throw new FennecSystemException("Internal error. This state should not be reached.");
         }
 
         if (webElement.isDisplayed()) {

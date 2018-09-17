@@ -20,10 +20,10 @@
 package eu.tsystems.mms.tic.testframework.boot;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.fennecCommons;
+import eu.tsystems.mms.tic.testframework.common.FennecCommons;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.utils.fennecUtils;
+import eu.tsystems.mms.tic.testframework.utils.FennecUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
@@ -43,11 +43,11 @@ public class Booter {
     private static final List<ModuleHook> MODULE_HOOKS = new LinkedList<>();
 
     static {
-        fennecCommons.init();
+        FennecCommons.init();
         LOGGER = LoggerFactory.getLogger(Booter.class);
-        fennecUtils.prepareAsserts();
+        FennecUtils.prepareAsserts();
         // when logger is configured:
-        printfennecBanner();
+        printFennecBanner();
         initHooks();
     }
 
@@ -56,9 +56,9 @@ public class Booter {
     /**
      * Prints fennec build informations.
      */
-    private static void printfennecBanner() {
+    private static void printFennecBanner() {
         List<String> bannerfennec = new LinkedList<>();
-        String fennecVersion = "";
+        String FennecVersion = "";
         List<String> bannerVersions = new LinkedList<>();
 
         /*
@@ -90,7 +90,7 @@ public class Booter {
             System.setProperty(key, value);
             bannerVersions.add(key + ": " + value);
         }
-        fennecVersion = PropertyManager.getProperty("fennec.version");
+        FennecVersion = PropertyManager.getProperty("fennec.version");
 
         /*
         beautify
@@ -100,7 +100,7 @@ public class Booter {
         bannerfennec = bannerfennec.stream().map(s -> s + StringUtils.repeat(" ", widthLogo - s.length())).collect(Collectors.toList());
         final int width = bannerVersions.stream().mapToInt(String::length).max().getAsInt();
         bannerfennec = bannerfennec.stream().map(s -> wall + StringUtils.center(s, width) + wall).collect(Collectors.toList());
-        fennecVersion = wall + StringUtils.center(fennecVersion, width) + wall;
+        FennecVersion = wall + StringUtils.center(FennecVersion, width) + wall;
         bannerVersions = bannerVersions.stream().map(s -> wall + s + StringUtils.repeat(" ", width - s.length()) + wall).collect(Collectors.toList());
 
         /*
@@ -109,7 +109,7 @@ public class Booter {
         String ruler = StringUtils.repeat(wall, width / wall.length() + 2);
         LOGGER.info(ruler);
         bannerfennec.forEach(LOGGER::info);
-        LOGGER.info(fennecVersion);
+        LOGGER.info(FennecVersion);
         LOGGER.info(ruler);
         bannerVersions.forEach(LOGGER::info);
         LOGGER.info(ruler);

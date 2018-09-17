@@ -30,7 +30,7 @@ import java.sql.Time;
 import java.util.Date;
 
 /**
- * Java object to hold entries of fennecTestTable.
+ * Java object to hold entries of TestTable.
  * 
  * @author sepr
  * 

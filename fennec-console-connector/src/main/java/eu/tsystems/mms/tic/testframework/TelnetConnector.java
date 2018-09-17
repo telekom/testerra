@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import org.apache.commons.net.telnet.TelnetClient;
 
 import java.io.InputStream;
@@ -106,7 +106,7 @@ public class TelnetConnector {
             setPrompt(generatePrompt());
 
         } catch (Exception e) {
-            throw new fennecSystemException("Error while connecting to telnet", e);
+            throw new FennecSystemException("Error while connecting to telnet", e);
         }
     }
 
@@ -135,7 +135,7 @@ public class TelnetConnector {
                 ch = (char) in.read();
             }
         } catch (Exception e) {
-            throw new fennecSystemException("Error while waiting for prompt", e);
+            throw new FennecSystemException("Error while waiting for prompt", e);
         }
     }
 
@@ -158,7 +158,7 @@ public class TelnetConnector {
             test = escapeLineSeperatorsAdvanced(output);
             test = getFormattedString(test, command);
         } catch (Exception e) {
-            throw new fennecSystemException("Error while waiting for answer", e);
+            throw new FennecSystemException("Error while waiting for answer", e);
         }
         return test;
     }
@@ -191,7 +191,7 @@ public class TelnetConnector {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            throw new fennecSystemException("Error while waiting to execute command !");
+            throw new FennecSystemException("Error while waiting to execute command !");
         }
         String prompt = getAnswer("echo Test");
         while (prompt.contains("\n")) {
@@ -279,7 +279,7 @@ public class TelnetConnector {
             out.println(command);
             out.flush();
         } catch (Exception e) {
-            throw new fennecSystemException("Error while sending command to telnet" + e.getStackTrace());
+            throw new FennecSystemException("Error while sending command to telnet" + e.getStackTrace());
         }
     }
 
@@ -313,7 +313,7 @@ public class TelnetConnector {
             answer = answer.replace("Test", "");
             answer = answer.trim();
         } catch (Exception e) {
-            throw new fennecSystemException("Error while connecting to telnet", e);
+            throw new FennecSystemException("Error while connecting to telnet", e);
         }
         return answer;
     }
@@ -325,7 +325,7 @@ public class TelnetConnector {
         try {
             telnetClient.disconnect();
         } catch (Exception e) {
-            throw new fennecSystemException("Error while closing the connection", e);
+            throw new FennecSystemException("Error while closing the connection", e);
         }
     }
 

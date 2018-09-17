@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -60,7 +60,7 @@ public final class Timings {
             File file = GraphGenerator.saveGraphAsJPEG(chart, "graph/" + filename + ".jpg", 800, 400);
             return file;
         } catch (IOException e) {
-            throw new fennecSystemException("Could not save graph", e);
+            throw new FennecSystemException("Could not save graph", e);
         }
     }
 

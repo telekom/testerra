@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.*;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
@@ -280,13 +280,13 @@ public final class ReportUtils {
     public static void copyFile(final String relativeFile, final File reportDir) {
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativeFile);
         if (is == null) {
-            throw new fennecSystemException("Could not find " + relativeFile);
+            throw new FennecSystemException("Could not find " + relativeFile);
         }
         try {
             File destFile = new File(reportDir, relativeFile);
             FileUtils.copyInputStreamToFile(is, destFile);
         } catch (Exception e) {
-            throw new fennecSystemException("Could not copy resource " + relativeFile, e);
+            throw new FennecSystemException("Could not copy resource " + relativeFile, e);
         }
     }
 
@@ -533,7 +533,7 @@ public final class ReportUtils {
         try {
             executorService.awaitTermination(1, TimeUnit.HOURS);
         } catch (InterruptedException e) {
-            throw new fennecSystemException("Report generation took too long", e);
+            throw new FennecSystemException("Report generation took too long", e);
         }
 
         LOGGER.info("Report written to " + reportDirectory);
@@ -590,7 +590,7 @@ public final class ReportUtils {
     }
 
     public static void generateReportEssentials() {
-        PerfTestContainer.prepareMeasurementsForfennecReport();
+        PerfTestContainer.prepareMeasurementsForFennecReport();
         GenerateReport.generateReport();
     }
 

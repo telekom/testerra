@@ -20,9 +20,9 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.model.fennecBuildInformation;
+import eu.tsystems.mms.tic.testframework.report.model.FennecBuildInformation;
 
 import java.io.File;
 import java.util.Arrays;
@@ -35,8 +35,8 @@ import java.util.List;
  */
 public final class RunConfig {
 
-    public final String RUNCFG = PropertyManager.getProperty(fennecProperties.fennec_RUNCFG, "DEFAULT");
-    public final fennecBuildInformation fennecBuildInformation = new fennecBuildInformation();
+    public final String RUNCFG = PropertyManager.getProperty(FennecProperties.Fennec_RUNCFG, "DEFAULT");
+    public final FennecBuildInformation FennecBuildInformation = new FennecBuildInformation();
 
     public static String getModuleFolderName() {
         return new File(".").getAbsoluteFile().getParentFile().getName();
@@ -51,7 +51,7 @@ public final class RunConfig {
         } catch (Exception e) {
             // nothing
         }
-        reportName = PropertyManager.getProperty(fennecProperties.REPORTNAME, defaultName);
+        reportName = PropertyManager.getProperty(FennecProperties.REPORTNAME, defaultName);
     }
 
     public String getReportName() {

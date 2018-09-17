@@ -3,43 +3,17 @@ plugins {
 }
 
 group 'eu.tsystems.mms.tic.testframework'
-version '10-SNAPSHOT'
-
-if (hasProperty("free")) {
-    ext {
-        publishUrl = "https://artifacts.mms-at-work.de/artifactory/shared-ticautom-release"
-    }
-    if (project.version.contains("SNAPSHOT")) {
-        ext {
-            publishUrl = "https://artifacts.mms-at-work.de/artifactory/shared-ticautom-snapshot"
-        }
-    }
-}
-else {
-    ext {
-        publishUrl = "https://artifacts.mms-at-work.de/artifactory/prj-ticautom-release"
-    }
-    if (project.version.contains("SNAPSHOT")) {
-        ext {
-            publishUrl = "https://artifacts.mms-at-work.de/artifactory/prj-ticautom-snapshot"
-        }
-    }
-}
+version '1-SNAPSHOT'
 
 ext {
     /*
     fennec stuff
      */
     core_interop = project(':fennec-core-interop')
-    driver_ui_interop = project(':fennec-driver-ui-interop')
     driver_ui = project(':fennec-driver-ui')
-    driver_ui_native = project(':fennec-driver-ui-native')
     driver_ui_desktop = project(':fennec-driver-ui-desktop')
     core = project(':fennec-core')
-    test_commons = project(':fennec-test-commons')
-    platform_modules = [
-            project(':fennec-platform-connector')
-    ]
+    test_utils = project(':fennec-test-utils')
 
     /*
     external stuff
@@ -159,21 +133,17 @@ allprojects {
         publications {
             mavenJava(MavenPublication) {
                 from components.java
-
-//                artifact sourceJar {
-//                    classifier "sources"
-//                }
             }
         }
 
         repositories {
             mavenLocal()
             maven {
-                name 'prj-ticautom'
-                url publishUrl
+                name 'jfennec-github'
+                url 'github'
                 credentials {
-                    username mmsArtifactoryUsername
-                    password mmsArtifactoryPassword
+                    username githubUsername
+                    password githubPassword
                 }
             }
         }

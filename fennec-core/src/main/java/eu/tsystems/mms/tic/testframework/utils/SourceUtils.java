@@ -27,8 +27,8 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.fennecCommons;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
+import eu.tsystems.mms.tic.testframework.common.FennecCommons;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,12 +54,12 @@ public final class SourceUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SourceUtils.class);
 
-    private static String sourceRoot = System.getProperty(fennecProperties.MODULE_SOURCE_ROOT, "src");
-    private static int linePrefetch = PropertyManager.getIntProperty(fennecProperties.SOURCE_LINES_PREFETCH, 5);
-    private static final boolean FIND_SOURCES = PropertyManager.getBooleanProperty(fennecProperties.REPORT_ACTIVATE_SOURCES, true);
+    private static String sourceRoot = System.getProperty(FennecProperties.MODULE_SOURCE_ROOT, "src");
+    private static int linePrefetch = PropertyManager.getIntProperty(FennecProperties.SOURCE_LINES_PREFETCH, 5);
+    private static final boolean FIND_SOURCES = PropertyManager.getBooleanProperty(FennecProperties.REPORT_ACTIVATE_SOURCES, true);
     private static HashMap<Class, List<String>> cachedClassNames = new HashMap<Class, List<String>>();
-    private static final String PACKAGE_SCOPE = PropertyManager.getProperty(fennecProperties.fennec_PROJECT_PACKAGE,
-            fennecCommons.DEFAULT_PACKAGE_NAME);
+    private static final String PACKAGE_SCOPE = PropertyManager.getProperty(FennecProperties.Fennec_PROJECT_PACKAGE,
+            FennecCommons.DEFAULT_PACKAGE_NAME);
 
     public static String findScriptSourceForThrowable(Throwable throwable) {
         if (!FIND_SOURCES) {
@@ -73,7 +73,7 @@ public final class SourceUtils {
         int lineNumber = 0;
         boolean inDefaultPackageSection = false;
         for (StackTraceElement stackTraceElement : stackTrace) {
-            if (stackTraceElement.getClassName().startsWith(fennecCommons.DEFAULT_PACKAGE_NAME)) {
+            if (stackTraceElement.getClassName().startsWith(FennecCommons.DEFAULT_PACKAGE_NAME)) {
                 className = stackTraceElement.getClassName();
                 fileName = stackTraceElement.getFileName();
                 lineNumber = stackTraceElement.getLineNumber();

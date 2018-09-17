@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="UnitTestSuite" verbose="1" parallel="methods">
     <listeners>
-        <listener class-name="eu.tsystems.mms.tic.testframework.report.fennecListener"/>
+        <listener class-name="eu.tsystems.mms.tic.testframework.report.FennecListener"/>
     </listeners>
     <test name="UnitTests">
         <classes>

@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -333,7 +333,7 @@ public class DBMethods extends AbstractConnection {
             try {
                 this.open();
             } catch (ClassNotFoundException e) {
-                throw new fennecSystemException("Error opening db connection", e);
+                throw new FennecSystemException("Error opening db connection", e);
             }
         }
         final Statement stmt = getConnection().createStatement();

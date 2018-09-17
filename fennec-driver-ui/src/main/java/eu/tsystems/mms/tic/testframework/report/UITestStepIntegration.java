@@ -53,7 +53,7 @@ public class UITestStepIntegration implements TestStepEventListener {
     }
 
     public static String takeLoggingScreenshot(final TestStepController.OnExec onExec, final WebDriver driver) {
-        if (!Flags.fennec_WEB_TAKE_ACTION_SCREENSHOTS) {
+        if (!Flags.Fennec_WEB_TAKE_ACTION_SCREENSHOTS) {
             return null;
         }
 

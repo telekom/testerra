@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.fsconnector;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Destination;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Protocol;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Source;
@@ -73,7 +73,7 @@ public final class FSConnector {
         // WebDav --> File
         if (source.getProtocol() == Protocol.WEBDAV) {
             if (destination.getProtocol() != Protocol.FILE) {
-                throw new fennecRuntimeException(
+                throw new FennecRuntimeException(
                         "WebDav can only be used together with the File protocol at the moment. " +
                                 "Set a file as Destination.");
             }
@@ -81,16 +81,16 @@ public final class FSConnector {
             // File --> WebDav
         } else if (destination.getProtocol() == Protocol.WEBDAV) {
             if (source.getProtocol() != Protocol.FILE) {
-                throw new fennecRuntimeException(
+                throw new FennecRuntimeException(
                         "WebDav can only be used together with the File protocol at the moment. Set a file as Source.");
             }
             WebDavConnection.upload(source, destination);
             // Others
         } else {
             final SimpleRegistry reg = new SimpleRegistry();
-            reg.put("fennecFSSinglePoller", new EndpointSinglePollStrategy());
+            reg.put("FennecFSSinglePoller", new EndpointSinglePollStrategy());
 
-            final fennecFSCamelContext context = new fennecFSCamelContext(reg);
+            final FennecFSCamelContext context = new FennecFSCamelContext(reg);
             try {
                 context.addRoutes(new FSRouteBuilder(source, destination));
             } catch (final Exception e) {
@@ -118,7 +118,7 @@ public final class FSConnector {
      * 
      * @param context Camel steps.
      */
-    private static void start(final fennecFSCamelContext context) {
+    private static void start(final FennecFSCamelContext context) {
         try {
             context.start();
         } catch (final Exception e) {
@@ -131,7 +131,7 @@ public final class FSConnector {
      * 
      * @param context Camel steps.
      */
-    private static void stop(final fennecFSCamelContext context) {
+    private static void stop(final FennecFSCamelContext context) {
         if (!context.isStopped()) {
             try {
                 context.stop();
@@ -158,7 +158,7 @@ public final class FSConnector {
      * 
      * @param context Camel steps.
      */
-    private static void execute(final fennecFSCamelContext context) throws Exception {
+    private static void execute(final FennecFSCamelContext context) throws Exception {
         start(context);
 
         // Warten auf Completion

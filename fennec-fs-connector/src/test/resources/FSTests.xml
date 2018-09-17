@@ -2,7 +2,7 @@
 <suite name="fennec FS Connector Test Suite" verbose="10" configfailurepolicy="continue">
 
     <listeners>
-        <listener class-name="eu.tsystems.mms.tic.testframework.report.fennecListener"/>
+        <listener class-name="eu.tsystems.mms.tic.testframework.report.FennecListener"/>
     </listeners>
 
     <test name="Tests" parallel="methods">

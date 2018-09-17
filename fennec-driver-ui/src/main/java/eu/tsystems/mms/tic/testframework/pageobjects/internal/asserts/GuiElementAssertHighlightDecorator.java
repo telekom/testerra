@@ -53,7 +53,7 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
     }
 
     private void highlight(boolean successful) {
-        if (!Flags.fennec_GUIELEMENT_HIGHLIGHTS) {
+        if (!Flags.Fennec_GUIELEMENT_HIGHLIGHTS) {
             return;
         }
 

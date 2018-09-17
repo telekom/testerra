@@ -19,10 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.monitor;
 
-import eu.tsystems.mms.tic.testframework.events.IfennecEventListener;
-import eu.tsystems.mms.tic.testframework.events.IfennecEventType;
-import eu.tsystems.mms.tic.testframework.events.fennecEvent;
-import eu.tsystems.mms.tic.testframework.events.fennecEventType;
+import eu.tsystems.mms.tic.testframework.events.IFennecEventListener;
+import eu.tsystems.mms.tic.testframework.events.IFennecEventType;
+import eu.tsystems.mms.tic.testframework.events.FennecEvent;
+import eu.tsystems.mms.tic.testframework.events.FennecEventType;
 import eu.tsystems.mms.tic.testframework.internal.ConsumptionMeasurementsCollector;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.JVMUtils;
@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * Created by pele on 10.03.2015.
  */
-public class JVMMonitor implements IfennecEventListener {
+public class JVMMonitor implements IFennecEventListener {
 
     private static final int GC_THRESHOLD = 500;
     private static final long MB = 1024 * 1024;
@@ -137,11 +137,11 @@ public class JVMMonitor implements IfennecEventListener {
     }
 
     @Override
-    public void fireEvent(fennecEvent fennecEvent) {
-        IfennecEventType ifennecEventType = fennecEvent.getfennecEventType();
-        if (ifennecEventType instanceof fennecEventType) {
-            fennecEventType fennecEventType = (fennecEventType) ifennecEventType;
-            switch (fennecEventType) {
+    public void fireEvent(FennecEvent FennecEvent) {
+        IFennecEventType iFennecEventType = FennecEvent.getFennecEventType();
+        if (iFennecEventType instanceof FennecEventType) {
+            FennecEventType FennecEventType = (FennecEventType) iFennecEventType;
+            switch (FennecEventType) {
                 case TEST_METHOD_START:
 //                    logJVMUsageInfo();
                     break;

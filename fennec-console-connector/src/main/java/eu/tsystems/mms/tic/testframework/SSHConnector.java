@@ -32,7 +32,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 
 import java.io.File;
 import java.io.IOException;
@@ -136,7 +136,7 @@ public class SSHConnector {
                 break;
             case KEY_FILE:
                 if (keyFile == null) {
-                    throw new fennecSystemException("No keyfile specified. keyfile must be absolute file path to private key.");
+                    throw new FennecSystemException("No keyfile specified. keyfile must be absolute file path to private key.");
                 }
                 jSch.addIdentity(keyFile.getAbsolutePath(), password);
 
@@ -144,7 +144,7 @@ public class SSHConnector {
                 session.setPassword(password);
                 break;
             default:
-                throw new fennecSystemException("No valid auth method: " + authMethod);
+                throw new FennecSystemException("No valid auth method: " + authMethod);
         }
 
         session.setConfig("StrictHostKeyChecking", "no");

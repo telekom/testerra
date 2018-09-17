@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
@@ -68,13 +68,13 @@ public class TestStatusController {
         statusMap.put("TestsSkipped", testsSkipped);
         statusMap.put("TestsFailed", testsFailed);
 
-        statusMap.put("FailureCorridorActive", Flags.fennec_FAILURE_CORRIDOR_ACTIVE);
+        statusMap.put("FailureCorridorActive", Flags.Fennec_FAILURE_CORRIDOR_ACTIVE);
 
         // set status
         String status;
         String statusMessage;
         boolean statusBool;
-        if (Flags.fennec_FAILURE_CORRIDOR_ACTIVE) {
+        if (Flags.Fennec_FAILURE_CORRIDOR_ACTIVE) {
             if (FailureCorridor.isCorridorMatched()) {
                 status = PASSED;
                 statusBool = true;
@@ -109,7 +109,7 @@ public class TestStatusController {
          */
 
         if (methodContext == null) {
-            throw new fennecSystemException("Test method object is null");
+            throw new FennecSystemException("Test method object is null");
         }
 
         /*
@@ -157,7 +157,7 @@ public class TestStatusController {
                 testsSuccessful++;
 
                 // set xml status
-                fennecListener.XML_REPORTER.testSucceeded(reportEntry);
+                FennecListener.XML_REPORTER.testSucceeded(reportEntry);
 
                 break;
 
@@ -170,7 +170,7 @@ public class TestStatusController {
                 testsFailed++;
 
                 // set xml status
-                fennecListener.XML_REPORTER.testFailed(reportEntry, "", "");
+                FennecListener.XML_REPORTER.testFailed(reportEntry, "", "");
 
                 FailureCorridor.Value failureCorridorValue = methodContext.failureCorridorValue;
 
@@ -186,7 +186,7 @@ public class TestStatusController {
                             testsFailedLOW++;
                             break;
                         default:
-                            throw new fennecSystemException("Could not set explicit Failure Corridor value. Missing state: " + failureCorridorValue);
+                            throw new FennecSystemException("Could not set explicit Failure Corridor value. Missing state: " + failureCorridorValue);
                     }
                     LOGGER.debug("FC: " + testsFailedHIGH + "/" + testsFailedMID + "/" + testsFailedLOW);
                 }
@@ -199,7 +199,7 @@ public class TestStatusController {
                 testsFailedRetried++;
                 break;
 
-            default: throw new fennecSystemException("Not implemented: " + status);
+            default: throw new FennecSystemException("Not implemented: " + status);
         }
 
         // update team city progress
@@ -328,7 +328,7 @@ public class TestStatusController {
                 case FAILED_RETRIED:
                     return false;
 
-                default: throw new fennecSystemException("Unhandled state: " + this);
+                default: throw new FennecSystemException("Unhandled state: " + this);
             }
         }
 
@@ -358,7 +358,7 @@ public class TestStatusController {
                     return true;
 
 
-                default: throw new fennecSystemException("Unhandled state: " + this);
+                default: throw new FennecSystemException("Unhandled state: " + this);
             }
         }
 
@@ -378,7 +378,7 @@ public class TestStatusController {
                 case NO_RUN:
                     return true;
 
-                default: throw new fennecSystemException("Unhandled state: " + this);
+                default: throw new FennecSystemException("Unhandled state: " + this);
             }
         }
 

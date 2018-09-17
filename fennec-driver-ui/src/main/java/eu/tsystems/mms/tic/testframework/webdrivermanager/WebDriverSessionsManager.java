@@ -19,8 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
@@ -59,7 +59,7 @@ final class WebDriverSessionsManager {
             modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
             field.setInt(null, TimingConstants.WEBDRIVER_COMMAND_TIMEOUT_SECONDS * 1000);
         } catch (Exception e) {
-            throw new fennecRuntimeException("Unable to apply WebDriver Timings", e);
+            throw new FennecRuntimeException("Unable to apply WebDriver Timings", e);
         }
     }
 
@@ -232,7 +232,7 @@ final class WebDriverSessionsManager {
 
     static synchronized String makeSessionExclusive(final WebDriver eventFiringWebDriver) {
         if (!(eventFiringWebDriver instanceof EventFiringWebDriver)) {
-            throw new fennecRuntimeException("Nah, your WebDriver is not an EventFiringWebDriver.");
+            throw new FennecRuntimeException("Nah, your WebDriver is not an EventFiringWebDriver.");
         }
 
         if (ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.containsValue(eventFiringWebDriver)) {
@@ -332,7 +332,7 @@ final class WebDriverSessionsManager {
             if (ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.containsKey(sessionKey)) {
                 return  ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.get(sessionKey);
             } else {
-                throw new fennecSystemException("Session not useable anymore: " + sessionKey);
+                throw new FennecSystemException("Session not useable anymore: " + sessionKey);
             }
         }
 
@@ -379,7 +379,7 @@ final class WebDriverSessionsManager {
             return eventFiringWebDriver;
         }
         else {
-            throw new fennecSystemException("No webdriver factory registered for browser " + browser);
+            throw new FennecSystemException("No webdriver factory registered for browser " + browser);
         }
     }
 

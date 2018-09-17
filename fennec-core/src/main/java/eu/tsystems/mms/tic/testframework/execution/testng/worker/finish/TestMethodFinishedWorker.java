@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.events.fennecEventUserDataManager;
+import eu.tsystems.mms.tic.testframework.events.FennecEventUserDataManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
@@ -45,7 +45,7 @@ public class TestMethodFinishedWorker extends MethodWorker {
             }
 
             // clean thread local event user data
-            fennecEventUserDataManager.cleanupThreadLocalData();
+            FennecEventUserDataManager.cleanupThreadLocalData();
 
             // cleanup counters
             Counters.cleanupThreadLocals();

@@ -34,8 +34,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 public final class DBConnection {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DBConnection.class);
-    private static final int TIMEOUT_IN_MS = PropertyManager.getIntProperty(fennecProperties.fennec_DB_TIMEOUT, 10000);
+    private static final int TIMEOUT_IN_MS = PropertyManager.getIntProperty(FennecProperties.Fennec_DB_TIMEOUT, 10000);
     private static final int EXECUTOR_SERVICE_THREADCOUNT = 5;
 
     /**
@@ -143,7 +143,7 @@ public final class DBConnection {
                 break;
 
             default:
-                throw new fennecSystemException("Unknown JDBC Driver was used. Connection could not be established: " +
+                throw new FennecSystemException("Unknown JDBC Driver was used. Connection could not be established: " +
                         driver.name());
         }
 

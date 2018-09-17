@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -36,7 +36,7 @@ public class Attribute extends WebElementFilter {
 
     private Attribute(String attributeName, String expectedAttributeValue, StringChecker stringChecker) {
         if (attributeName == null) {
-            throw new fennecSystemException("Attribute name can not be null.");
+            throw new FennecSystemException("Attribute name can not be null.");
         }
         this.attributeName = attributeName;
         this.expectedAttributeValue = expectedAttributeValue;

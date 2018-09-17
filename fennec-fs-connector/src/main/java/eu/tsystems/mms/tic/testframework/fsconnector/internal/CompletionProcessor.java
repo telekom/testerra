@@ -58,12 +58,12 @@ public class CompletionProcessor implements Processor {
         final Synchronization sync = new Synchronization() {
             @Override
             public void onComplete(final Exchange exchange) {
-                ((fennecFSCamelContext) exchange.getContext()).setComplete(true);
+                ((FennecFSCamelContext) exchange.getContext()).setComplete(true);
             }
 
             @Override
             public void onFailure(final Exchange exchange) {
-                ((fennecFSCamelContext) exchange.getContext()).setException(exchange.getException());
+                ((FennecFSCamelContext) exchange.getContext()).setException(exchange.getException());
             }
         };
         exchange.addOnCompletion(sync);

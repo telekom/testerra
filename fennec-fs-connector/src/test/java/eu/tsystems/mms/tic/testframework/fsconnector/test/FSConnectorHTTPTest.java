@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.fsconnector.test;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.fsconnector.AbstractTest;
 import eu.tsystems.mms.tic.testframework.fsconnector.FSConnector;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Destination;
@@ -138,7 +138,7 @@ public class FSConnectorHTTPTest extends AbstractTest {
 
         try {
             FSConnector.copy(source, destination);
-        } catch (final fennecRuntimeException xre) {
+        } catch (final FennecRuntimeException xre) {
             Assert.assertTrue(xre.getMessage().contains(
                     "WebDav can only be used together with the File protocol at the moment."));
         }

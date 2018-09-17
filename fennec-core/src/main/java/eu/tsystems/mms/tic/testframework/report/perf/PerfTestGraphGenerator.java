@@ -19,8 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.report.perf;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.internal.GraphGenerator;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import org.jfree.chart.*;
@@ -631,7 +631,7 @@ public class PerfTestGraphGenerator {
             case LAYERED_RESPONSETIMES_PER_REPETITION:
             case TRANSACTION_STATUS:
             default:
-                throw new fennecRuntimeException("Metric Type \"" + nameOfMetricType +
+                throw new FennecRuntimeException("Metric Type \"" + nameOfMetricType +
                         "\" is not supported for a Line Chart Data Set");
         }
         if (series.getItemCount() == 0 && dataSetIsEmpty) {
@@ -794,7 +794,7 @@ public class PerfTestGraphGenerator {
             case TRANSACTIONS_PER_HOUR:
             default:
 
-                throw new fennecRuntimeException("Metric Type \"" + nameOfMetricType +
+                throw new FennecRuntimeException("Metric Type \"" + nameOfMetricType +
                         "\" is not supported for a Bar Chart Data Set");
 
         }
@@ -867,7 +867,7 @@ public class PerfTestGraphGenerator {
             case TRANSACTIONS_PER_HOUR:
 
             default:
-                throw new fennecRuntimeException("Metric Type \"" + metricType.name() + "\" is not supported for Fontsetting and TickRate of BarCharts");
+                throw new FennecRuntimeException("Metric Type \"" + metricType.name() + "\" is not supported for Fontsetting and TickRate of BarCharts");
         }
     }
 
@@ -932,7 +932,7 @@ public class PerfTestGraphGenerator {
             case TRANSACTIONS_PER_HOUR:
 
             default:
-                throw new fennecRuntimeException("Metric Type \"" + metricType.name() + "\" is not supported for Fontsetting and TickRate of Charts based on Testexecutions");
+                throw new FennecRuntimeException("Metric Type \"" + metricType.name() + "\" is not supported for Fontsetting and TickRate of Charts based on Testexecutions");
         }
     }
 
@@ -998,7 +998,7 @@ public class PerfTestGraphGenerator {
             case MIN_RESPONSETIME_PER_REPETITION:
 
             default:
-                throw new fennecRuntimeException("Metric Type \"" + metricType.name() + "\" is not supported for Fontsetting and TickRate of Charts based on Testrepetition");
+                throw new FennecRuntimeException("Metric Type \"" + metricType.name() + "\" is not supported for Fontsetting and TickRate of Charts based on Testrepetition");
         }
 
     }
@@ -1145,7 +1145,7 @@ public class PerfTestGraphGenerator {
      */
     private long getMaxValueOfMap(Map<Integer, Long> responseTimeMap) {
         if (responseTimeMap == null) {
-            throw new fennecSystemException("Map is null");
+            throw new FennecSystemException("Map is null");
         }
 
         int size = responseTimeMap.size();
@@ -1172,7 +1172,7 @@ public class PerfTestGraphGenerator {
      */
     private long getMinValueOfMap(Map<Integer, Long> responseTimeMap) {
         if (responseTimeMap == null) {
-            throw new fennecSystemException("Map is null");
+            throw new FennecSystemException("Map is null");
         }
 
         int size = responseTimeMap.size();

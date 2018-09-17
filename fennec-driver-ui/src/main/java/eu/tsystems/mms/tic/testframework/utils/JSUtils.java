@@ -28,7 +28,7 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -85,7 +85,7 @@ public final class JSUtils {
         }
 
         if (inputStream == null) {
-            throw new fennecSystemException("Could not load: " + resourceFile);
+            throw new FennecSystemException("Could not load: " + resourceFile);
         }
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         /*
@@ -101,7 +101,7 @@ public final class JSUtils {
             bufferedReader.close();
 
         } catch (IOException e) {
-            throw new fennecSystemException(e);
+            throw new FennecSystemException(e);
         }
 
         implementJavascriptOnPage(id, driver, inline);
@@ -190,7 +190,7 @@ public final class JSUtils {
      */
     public static void highlightWebElement(final WebDriver driver, final WebElement webElement, final int r,
             final int g, final int b) {
-        if (!Flags.fennec_GUIELEMENT_HIGHLIGHTS) {
+        if (!Flags.Fennec_GUIELEMENT_HIGHLIGHTS) {
             return;
         }
 
@@ -204,7 +204,7 @@ public final class JSUtils {
     }
 
     public static void highlightWebElementClick(final WebDriver driver, final WebElement webElement) {
-        if (!Flags.fennec_GUIELEMENT_HIGHLIGHTS) {
+        if (!Flags.Fennec_GUIELEMENT_HIGHLIGHTS) {
             return;
         }
 
@@ -213,7 +213,7 @@ public final class JSUtils {
          */
         turnOnDemoModeForCurrentPage(driver);
 
-        executeScript(driver, "fennecClickElement(arguments[0])",webElement);
+        executeScript(driver, "FennecClickElement(arguments[0])",webElement);
     }
 
     /**
@@ -227,7 +227,7 @@ public final class JSUtils {
      */
     public static void highlightWebElementStatic(final WebDriver driver, final WebElement webElement, final int r,
             final int g, final int b) {
-        if (!Flags.fennec_GUIELEMENT_HIGHLIGHTS) {
+        if (!Flags.Fennec_GUIELEMENT_HIGHLIGHTS) {
             return;
         }
 
@@ -365,7 +365,7 @@ public final class JSUtils {
 
         final String jsByXpath = documentSelector + ".evaluate(\"###\", " + documentSelector
                 + ", null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue";
-        // TODO [erku] that is xpath ..maybe we can create some fennecJS-methods
+        // TODO [erku] that is xpath ..maybe we can create some FennecJS-methods
         final String jsByLinkText = documentSelector + ".evaluate(\".//a[text()='###']\", " + documentSelector
                 + ", null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue";
         final String jsByPartialLinkText = documentSelector + ".evaluate(\".//a[contains(text(), '###')]\", "
@@ -589,7 +589,7 @@ public final class JSUtils {
         Object o = executeScript(guiElement.getDriver(), "return arguments[0].getBoundingClientRect();", webElement);
 
         if (o == null) {
-            throw new fennecSystemException("Could not get information about web element, please see the logs");
+            throw new FennecSystemException("Could not get information about web element, please see the logs");
         }
 
         Map m = (Map) o;

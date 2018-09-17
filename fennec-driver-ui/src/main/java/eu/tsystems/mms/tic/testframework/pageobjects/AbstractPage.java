@@ -20,9 +20,9 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -69,7 +69,7 @@ public abstract class AbstractPage {
      * Screenshot on page load flag.
      */
     private static final boolean SCREENSHOT_ON_PAGELOAD = PropertyManager.getBooleanProperty(
-            fennecProperties.fennec_SCREENSHOT_ON_PAGELOAD, false);
+            FennecProperties.Fennec_SCREENSHOT_ON_PAGELOAD, false);
 
     private boolean forcedGuiElementStandardAsserts = false;
 
@@ -90,14 +90,14 @@ public abstract class AbstractPage {
         AbstractPage page = STORED_PAGES.get();
 
         if (page == null) {
-            throw new fennecRuntimeException("There is no page object stored. Call store() before!");
+            throw new FennecRuntimeException("There is no page object stored. Call store() before!");
         }
 
         if (c.isInstance(page)) {
             page.handleDemoMode(WebDriverManager.getWebDriver());
             return (T) page;
         } else {
-            throw new fennecRuntimeException("The page object is not of expected type.");
+            throw new FennecRuntimeException("The page object is not of expected type.");
         }
     }
 

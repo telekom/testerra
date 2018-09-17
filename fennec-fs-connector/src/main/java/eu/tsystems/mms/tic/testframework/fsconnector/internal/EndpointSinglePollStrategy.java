@@ -32,8 +32,8 @@ import org.apache.camel.spi.PollingConsumerPollStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 
 /**
  * Class implementing the camel {@link PollingConsumerPollStrategy}.
@@ -63,7 +63,7 @@ public class EndpointSinglePollStrategy implements PollingConsumerPollStrategy {
         LOGGER.info("Begin poll");
         if (tryCount > maxTrys) {
             tryCount = 1;
-            throw new fennecRuntimeException("Tried getting the file " + maxTrys 
+            throw new FennecRuntimeException("Tried getting the file " + maxTrys
                     + " times without success. Cancelled transfer.");
         }
         tryCount++;
@@ -93,27 +93,27 @@ public class EndpointSinglePollStrategy implements PollingConsumerPollStrategy {
 
     @Override
     public boolean rollback(final Consumer consumer, final Endpoint endpoint, final int retryCounter, 
-            final Exception exception) throws fennecSystemException {
+            final Exception exception) throws FennecSystemException {
         return this.pRollback(consumer, endpoint, retryCounter, exception);
     }
     
     private boolean pRollback(final Consumer consumer, final Endpoint endpoint, final int retryCounter, 
-            final Exception exception) throws fennecSystemException {
+            final Exception exception) throws FennecSystemException {
         try {
             LOGGER.info("Rollback");
             tryCount = 1;
-            final fennecFSCamelContext context = (fennecFSCamelContext) endpoint.getCamelContext();
+            final FennecFSCamelContext context = (FennecFSCamelContext) endpoint.getCamelContext();
             if (exception != null) {
                 context.setException(exception);
             }
             context.stop();
         } catch (final Exception e) {
             //if exception is thrown
-            throw new fennecSystemException(e);
+            throw new FennecSystemException(e);
         }
         if (exception != null) {
             //if parameter 'exception' is not null
-            throw new fennecSystemException(exception);
+            throw new FennecSystemException(exception);
         } else {
             return true;
         }

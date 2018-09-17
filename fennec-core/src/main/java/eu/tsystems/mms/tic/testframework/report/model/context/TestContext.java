@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.annotations.fennecClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import org.testng.IClass;
@@ -49,8 +49,8 @@ public class TestContext extends Context implements SynchronizableContext {
 
         ClassContext classContext = getContext(ClassContext.class, classContexts, name, true, () -> new ClassContext(this, runContext));
 
-        if (realClass.isAnnotationPresent(fennecClassContext.class)) {
-            classContext.fennecClassContext = realClass.getAnnotation(fennecClassContext.class);
+        if (realClass.isAnnotationPresent(FennecClassContext.class)) {
+            classContext.FennecClassContext = realClass.getAnnotation(FennecClassContext.class);
         }
 
         classContext.fullClassName = realClass.getName();

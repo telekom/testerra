@@ -27,8 +27,8 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionsAfterMethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
@@ -60,7 +60,7 @@ public final class WebDriverManager {
         UITestUtils.initializePerfTest();
 
         // start WatchDog for hanging sessions
-        boolean watchdogEnabled = PropertyManager.getBooleanProperty(fennecProperties.fennec_WATCHDOG_ENABLE, true);
+        boolean watchdogEnabled = PropertyManager.getBooleanProperty(FennecProperties.Fennec_WATCHDOG_ENABLE, true);
         if (watchdogEnabled) {
             WebDriverWatchDog.start();
         }
@@ -354,7 +354,7 @@ public final class WebDriverManager {
             rawDriver = (RemoteWebDriver) ((EventFiringWebDriver) driver).getWrappedDriver();
         }
         else {
-            throw new fennecSystemException("WebDriver object is not a RemoteWebDriver");
+            throw new FennecSystemException("WebDriver object is not a RemoteWebDriver");
         }
 
         try {

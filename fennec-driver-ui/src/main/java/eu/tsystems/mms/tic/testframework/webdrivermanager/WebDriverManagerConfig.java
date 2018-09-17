@@ -28,7 +28,7 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,27 +60,27 @@ public class WebDriverManagerConfig {
     /**
      * Take SCreenshots.
      */
-    public boolean takeScreenShotsActive = PropertyManager.getBooleanProperty(fennecProperties.AUTOSCREENSHOTS, true);
+    public boolean takeScreenShotsActive = PropertyManager.getBooleanProperty(FennecProperties.AUTOSCREENSHOTS, true);
     /**
      * Close windows after Test Methods.
      */
     public boolean closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(
-            fennecProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS,
+            FennecProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS,
             true);
     /**
      * Close windows on failure.
      */
     public boolean closeWindowsOnFailure = PropertyManager.getBooleanProperty(
-            fennecProperties.CLOSE_WINDOWS_ON_FAILURE,
+            FennecProperties.CLOSE_WINDOWS_ON_FAILURE,
             true);
 
-    public boolean maximize = PropertyManager.getBooleanProperty(fennecProperties.fennec_BROWSER_MAXIMIZE, false);
+    public boolean maximize = PropertyManager.getBooleanProperty(FennecProperties.Fennec_BROWSER_MAXIMIZE, false);
 
     /**
      * Browser global setting.
      */
-    public String browser = PropertyManager.getProperty(fennecProperties.BROWSER, null);
-    public String browserVersion = PropertyManager.getProperty(fennecProperties.BROWSER_VERSION, null);
+    public String browser = PropertyManager.getProperty(FennecProperties.BROWSER, null);
+    public String browserVersion = PropertyManager.getProperty(FennecProperties.BROWSER_VERSION, null);
 
     /**
      * Default constructor.
@@ -109,7 +109,7 @@ public class WebDriverManagerConfig {
      * @return the webDriverMode
      */
     private WebDriverMode initWebDriverMode() {
-        String modeString = PropertyManager.getProperty(fennecProperties.WEBDRIVERMODE, webDriverMode.name()).trim();
+        String modeString = PropertyManager.getProperty(FennecProperties.WEBDRIVERMODE, webDriverMode.name()).trim();
         webDriverMode = WebDriverMode.valueOf(modeString);
         return webDriverMode;
     }

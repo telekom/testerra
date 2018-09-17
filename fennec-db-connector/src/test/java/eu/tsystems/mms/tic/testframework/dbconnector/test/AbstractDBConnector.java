@@ -33,6 +33,7 @@ import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
 
+import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TestTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
@@ -42,9 +43,8 @@ import eu.tsystems.mms.tic.testframework.dbconnector.DBConnector;
 import eu.tsystems.mms.tic.testframework.dbconnector.query.InsertQuery;
 import eu.tsystems.mms.tic.testframework.dbconnector.query.TruncateQuery;
 import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.DBEntry;
-import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.fennecTableDefinitions;
-import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.fennecTestDBConnections;
-import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.fennecTestTable;
+import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TableDefinitions;
+import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TestDBConnections;
 
 /**
  * Abstract class for DBConnector Tests that provides a DBConnector object and fills the test db with some data, which
@@ -81,26 +81,26 @@ public abstract class AbstractDBConnector {
     public void setup(Method method) throws SQLException {
         final DBConnector<?> conn = getDBConnector();
 
-        final fennecTableDefinitions table = fennecTableDefinitions.TESTTABLE;
-        conn.query(new InsertQuery<fennecTableDefinitions>(
-                table, new String[] { fennecTestTable.getUser(), fennecTestTable.getFirstname(),
-                        fennecTestTable.getLastname(), fennecTestTable.getAge(),
-                        fennecTestTable.getDate(),
-                        fennecTestTable.getCreationTime() },
+        final TableDefinitions table = TableDefinitions.TESTTABLE;
+        conn.query(new InsertQuery<TableDefinitions>(
+                table, new String[] { TestTable.getUser(), TestTable.getFirstname(),
+                        TestTable.getLastname(), TestTable.getAge(),
+                        TestTable.getDate(),
+                        TestTable.getCreationTime() },
                 new String[] { USER1.getUser(), USER1.getFirstname(), USER1.getLastname(),
                         USER1.getAge() + "", USER1.getDate().toString(), USER1.getCreationTime().toString() }));
-        conn.query(new InsertQuery<fennecTableDefinitions>(
-                table, new String[] { fennecTestTable.getUser(), fennecTestTable.getFirstname(),
-                        fennecTestTable.getLastname(), fennecTestTable.getAge(),
-                        fennecTestTable.getDate(),
-                        fennecTestTable.getCreationTime() },
+        conn.query(new InsertQuery<TableDefinitions>(
+                table, new String[] { TestTable.getUser(), TestTable.getFirstname(),
+                        TestTable.getLastname(), TestTable.getAge(),
+                        TestTable.getDate(),
+                        TestTable.getCreationTime() },
                 new String[] { USER2.getUser(), USER2.getFirstname(), USER2.getLastname(),
                         USER2.getAge() + "", USER2.getDate().toString(), USER2.getCreationTime().toString() }));
-        conn.query(new InsertQuery<fennecTableDefinitions>(
-                table, new String[] { fennecTestTable.getUser(), fennecTestTable.getFirstname(),
-                        fennecTestTable.getLastname(), fennecTestTable.getAge(),
-                        fennecTestTable.getDate(),
-                        fennecTestTable.getCreationTime() },
+        conn.query(new InsertQuery<TableDefinitions>(
+                table, new String[] { TestTable.getUser(), TestTable.getFirstname(),
+                        TestTable.getLastname(), TestTable.getAge(),
+                        TestTable.getDate(),
+                        TestTable.getCreationTime() },
                 new String[] { USER3.getUser(), USER3.getFirstname(), USER3.getLastname(),
                         USER3.getAge() + "", USER3.getDate().toString(), USER3.getCreationTime().toString() }));
     }
@@ -112,7 +112,7 @@ public abstract class AbstractDBConnector {
      */
     protected DBConnector<?> getDBConnector() {
         if (dbConnector.get() == null) {
-            dbConnector.set(fennecTestDBConnections.DB1.getDbConnection());
+            dbConnector.set(TestDBConnections.DB1.getDbConnection());
         }
         return dbConnector.get();
     }
@@ -125,8 +125,8 @@ public abstract class AbstractDBConnector {
     @AfterMethod
     public void tearDown(Method method) throws SQLException {
         final DBConnector<?> conn = getDBConnector();
-        final fennecTableDefinitions table = fennecTableDefinitions.TESTTABLE;
-        conn.query(new TruncateQuery<fennecTableDefinitions>(table));
+        final TableDefinitions table = TableDefinitions.TESTTABLE;
+        conn.query(new TruncateQuery<TableDefinitions>(table));
         dbConnector.remove();
     }
 

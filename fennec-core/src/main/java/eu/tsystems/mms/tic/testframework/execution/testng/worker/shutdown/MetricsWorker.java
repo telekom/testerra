@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 
@@ -52,7 +52,7 @@ public class MetricsWorker extends GenerateReportsWorker {
                 Method analyze = aClass.getDeclaredMethod("analyze", String.class);
                 analyze.invoke(object, "src"); // call it on the source path
             } catch (Exception e) {
-                throw new fennecSystemException("Internal Error", e);
+                throw new FennecSystemException("Internal Error", e);
             }
         }
 

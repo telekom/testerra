@@ -23,17 +23,17 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.Constants;
 import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSetupException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSetupException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.internal.*;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickpathEventListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.sikuli.fennecWebDriver;
+import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
@@ -80,7 +80,7 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
             desktopWebDriverRequest.copyFrom(webDriverRequest);
         }
         else {
-            throw new fennecSystemException(webDriverRequest.getClass().getSimpleName() +  " is not allowed here");
+            throw new FennecSystemException(webDriverRequest.getClass().getSimpleName() +  " is not allowed here");
         }
 
         /*
@@ -98,7 +98,7 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
             driver.get(baseUrl);
         } catch (Exception e) {
             if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                throw new fennecRuntimeException("Could not start driver session, because of unreachable url: " + desktopWebDriverRequest.baseUrl, e);
+                throw new FennecRuntimeException("Could not start driver session, because of unreachable url: " + desktopWebDriverRequest.baseUrl, e);
             }
             throw e;
         }
@@ -156,7 +156,7 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
             return newWebDriver(desktopWebDriverRequest);
         }
 
-        throw new fennecSystemException("WebDriverManager is in a bad state. Please report this to the fennec developers.");
+        throw new FennecSystemException("WebDriverManager is in a bad state. Please report this to the fennec developers.");
     }
 
     @Override
@@ -200,7 +200,7 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
           */
         if (!Browsers.safari.equalsIgnoreCase(browser)) {
             int pageLoadTimeout = Constants.PAGE_LOAD_TIMEOUT_SECONDS;
-            int scriptTimeout = PropertyManager.getIntProperty(fennecProperties.WEBDRIVER_TIMEOUT_SECONDS_SCRIPT, 120);
+            int scriptTimeout = PropertyManager.getIntProperty(FennecProperties.WEBDRIVER_TIMEOUT_SECONDS_SCRIPT, 120);
             try {
                 eventFiringWebDriver.manage().timeouts().pageLoadTimeout(pageLoadTimeout, TimeUnit.SECONDS);
             } catch (Exception e) {
@@ -240,7 +240,7 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
             try {
                 remoteAddress = new URL(url);
             } catch (final MalformedURLException e) {
-                throw new fennecRuntimeException("MalformedUrlException while building Remoteserver URL: " + url, e);
+                throw new FennecRuntimeException("MalformedUrlException while building Remoteserver URL: " + url, e);
             }
 
             /*
@@ -276,9 +276,9 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
                     default:
                         newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
                 }
-            } catch (final fennecSetupException e) {
+            } catch (final FennecSetupException e) {
                 int ms = Constants.WEBDRIVER_START_RETRY_TIME_IN_MS;
-                LOGGER.error("Error starting fennecWebDriver. Trying again in "
+                LOGGER.error("Error starting SikuliWebDriver. Trying again in "
                         + (ms / 1000) + " seconds.", e);
                 TestUtils.sleep(ms);
                 newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
@@ -312,9 +312,9 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
     }
 
     public static String getRemoteServerUrl(DesktopWebDriverRequest desktopWebDriverRequest) {
-        String host = StringUtils.getFirstValidString(desktopWebDriverRequest.seleniumServerHost, PropertyManager.getProperty(fennecProperties.SELENIUM_SERVER_HOST), "localhost");
-        String port = StringUtils.getFirstValidString(desktopWebDriverRequest.seleniumServerPort, PropertyManager.getProperty(fennecProperties.SELENIUM_SERVER_PORT), "4444");
-        String url = StringUtils.getFirstValidString(desktopWebDriverRequest.seleniumServerURL, PropertyManager.getProperty(fennecProperties.SELENIUM_SERVER_URL), "http://" + host + ":" + port + "/wd/hub");
+        String host = StringUtils.getFirstValidString(desktopWebDriverRequest.seleniumServerHost, PropertyManager.getProperty(FennecProperties.SELENIUM_SERVER_HOST), "localhost");
+        String port = StringUtils.getFirstValidString(desktopWebDriverRequest.seleniumServerPort, PropertyManager.getProperty(FennecProperties.SELENIUM_SERVER_PORT), "4444");
+        String url = StringUtils.getFirstValidString(desktopWebDriverRequest.seleniumServerURL, PropertyManager.getProperty(FennecProperties.SELENIUM_SERVER_URL), "http://" + host + ":" + port + "/wd/hub");
 
         // set backwards
         try {
@@ -363,7 +363,7 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
         }
 
         WebDriver driver;
-        LOGGER.info("Starting fennecWebDriver (" + sessionKey + ") " + msg, new NewSessionMarker());
+        LOGGER.info("Starting SikuliWebDriver (" + sessionKey + ") " + msg, new NewSessionMarker());
         org.apache.commons.lang3.time.StopWatch sw = new org.apache.commons.lang3.time.StopWatch();
         sw.start();
 
@@ -373,9 +373,9 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
             remote mode
              */
             try {
-                driver = new fennecWebDriver(remoteAddress, capabilities);
+                driver = new SikuliWebDriver(remoteAddress, capabilities);
             } catch (Exception e) {
-                throw new fennecSetupException(errorMessage, e);
+                throw new FennecSetupException(errorMessage, e);
             }
 
             // set local file detector
@@ -412,10 +412,10 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
                     driver = new EdgeDriver(capabilities);
                     break;
                 default:
-                    throw new fennecSystemException(ErrorMessages.browserNotSupportedHere(browser));
+                    throw new FennecSystemException(ErrorMessages.browserNotSupportedHere(browser));
             }
         } else {
-            throw new fennecSystemException("Internal Error when starting webdriver.");
+            throw new FennecSystemException("Internal Error when starting webdriver.");
         }
 
         sw.stop();

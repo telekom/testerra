@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.common.fennecCommons;
+import eu.tsystems.mms.tic.testframework.common.FennecCommons;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
 import java.util.LinkedList;
@@ -232,8 +232,8 @@ public abstract class ErrorContext extends Context {
          */
         if (stackTrace != null) {
             for (String line : stackTrace.stackTrace) {
-                final String testframeworkPackage = fennecCommons.DEFAULT_PACKAGE_NAME + ".testframework";
-                if (line != null && line.contains(fennecCommons.DEFAULT_PACKAGE_NAME) &&
+                final String testframeworkPackage = FennecCommons.DEFAULT_PACKAGE_NAME + ".testframework";
+                if (line != null && line.contains(FennecCommons.DEFAULT_PACKAGE_NAME) &&
                         ((!line.contains(testframeworkPackage))
                                         ||
                         (line.contains(testframeworkPackage) && line.contains("playground")))

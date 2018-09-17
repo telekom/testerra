@@ -19,8 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.bmp;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.proxy.http.BrowserMobHttpClient;
 import org.apache.http.HttpHost;
@@ -101,7 +101,7 @@ public class ProxyServer {
                 fw2.write("");
                 fw2.close();
             } catch (IOException e) {
-                throw new fennecSystemException("Error creating browsermob proxy setup files", e);
+                throw new FennecSystemException("Error creating browsermob proxy setup files", e);
             }
         }
     }
@@ -142,7 +142,7 @@ public class ProxyServer {
             bmpProxyServer.start();
 //            httpClient = getHttpClient(bmpProxyServer);
         } catch (Exception e) {
-            throw new fennecRuntimeException(e);
+            throw new FennecRuntimeException(e);
         }
 
         bmpProxyServer.setOptions(options);
@@ -194,12 +194,12 @@ public class ProxyServer {
             bmpProxyServer.stop();
             LOGGER.info("BMP server on port " + bmpProxyServer.getPort() + " stopped");
         } catch (Exception e) {
-            throw new fennecRuntimeException(e);
+            throw new FennecRuntimeException(e);
         }
     }
 
     public static void main(String[] args) throws Exception {
-//        fennecUtils.initializeLogging();
+//        FennecUtils.initializeLogging();
 //        ProxyServer proxyServer = new ProxyServer(9999, new HttpHost("proxy.mms-dresden.de", 8080), null);
 //
 //        proxyServer.startCapture();

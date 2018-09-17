@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.clickpath;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
@@ -115,7 +115,7 @@ public class ClickPathNode {
                     type = Type.ERROR;
                     break;
                 default:
-                    throw new fennecSystemException("Not yet implemented: " + type);
+                    throw new FennecSystemException("Not yet implemented: " + type);
             }
         }
     }

@@ -27,12 +27,12 @@
 package eu.tsystems.mms.tic.testframework.dbconnector.test.connectors;
 
 /**
- * Class containing structure of largeobjects table in db fennecdbconnector.
+ * Class containing structure of largeobjects table in db Fennecdbconnector.
  * 
  * @author sepr
  * 
  */
-public class LobTable extends fennecTableDefinitions {
+public class LobTable extends TableDefinitions {
 
     /** table column blob. */
     private static String blob;

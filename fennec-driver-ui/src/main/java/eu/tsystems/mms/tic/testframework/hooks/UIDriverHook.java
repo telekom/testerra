@@ -39,25 +39,25 @@ public class UIDriverHook implements ModuleHook {
         UITestStepIntegration.init();
 
         /*
-        init fennecListener Workers
+        init FennecListener Workers
          */
         //start
-        fennecListener.registerBeforeMethodWorker(PerformanceStartWorker.class);
-        fennecListener.registerBeforeMethodWorker(WebDriverLoggingStartWorker.class);
+        FennecListener.registerBeforeMethodWorker(PerformanceStartWorker.class);
+        FennecListener.registerBeforeMethodWorker(WebDriverLoggingStartWorker.class);
 
         //finish
-        fennecListener.registerAfterMethodWorker(ConditionalBehaviourWorker.class);
-        fennecListener.registerAfterMethodWorker(LogWDSessionsWorker.class);
-        fennecListener.registerAfterMethodWorker(TakeScreenshotsWorker.class);
-        fennecListener.registerAfterMethodWorker(StoreClickPathWorker.class);
+        FennecListener.registerAfterMethodWorker(ConditionalBehaviourWorker.class);
+        FennecListener.registerAfterMethodWorker(LogWDSessionsWorker.class);
+        FennecListener.registerAfterMethodWorker(TakeScreenshotsWorker.class);
+        FennecListener.registerAfterMethodWorker(StoreClickPathWorker.class);
 
-        fennecListener.registerAfterMethodWorker(WebDriverSessionsAfterMethodWorker.class); // the utilizable one
+        FennecListener.registerAfterMethodWorker(WebDriverSessionsAfterMethodWorker.class); // the utilizable one
 
-        fennecListener.registerAfterMethodWorker(WebDriverShutDownWorker.class);
-        fennecListener.registerAfterMethodWorker(TestMethodFinishWorker.class);
+        FennecListener.registerAfterMethodWorker(WebDriverShutDownWorker.class);
+        FennecListener.registerAfterMethodWorker(TestMethodFinishWorker.class);
 
         //shutdown
-        fennecListener.registerGenerateReportsWorker(WebDriverShutDownAfterTestsWorker.class);
+        FennecListener.registerGenerateReportsWorker(WebDriverShutDownAfterTestsWorker.class);
 
         /*
         register services

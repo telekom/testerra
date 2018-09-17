@@ -32,6 +32,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TestTable;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -42,8 +43,7 @@ import eu.tsystems.mms.tic.testframework.dbconnector.query.SelectQuery;
 import eu.tsystems.mms.tic.testframework.dbconnector.query.TruncateQuery;
 import eu.tsystems.mms.tic.testframework.dbconnector.query.UpdateQuery;
 import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.LobTable;
-import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.fennecTableDefinitions;
-import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.fennecTestTable;
+import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TableDefinitions;
 
 /**
  * Negative tests for fennec DBConnector.
@@ -64,49 +64,49 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
         boolean allAssertsThrown = false;
         // stress column selection
         try {
-            result = conn.select(new SelectQuery<fennecTableDefinitions>(
-                    "unknown", fennecTableDefinitions.TESTTABLE, ""));
+            result = conn.select(new SelectQuery<TableDefinitions>(
+                    "unknown", TableDefinitions.TESTTABLE, ""));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
             Assert.assertTrue(e.getMessage().contains("Unknown column"));
             allAssertsThrown = true;
         }
-        result = conn.select(new SelectQuery<fennecTableDefinitions>(
-                "", fennecTableDefinitions.TESTTABLE, ""));
+        result = conn.select(new SelectQuery<TableDefinitions>(
+                "", TableDefinitions.TESTTABLE, ""));
         printTableToLog(result);
-        result = conn.select(new SelectQuery<fennecTableDefinitions>(
-                "blob", fennecTableDefinitions.LOBTABLE, ""));
+        result = conn.select(new SelectQuery<TableDefinitions>(
+                "blob", TableDefinitions.LOBTABLE, ""));
         Assert.assertTrue(!result.isEmpty());
         // stress where clause
-        result = conn.select(new SelectQuery<fennecTableDefinitions>(
-                "*", fennecTableDefinitions.TESTTABLE, null));
+        result = conn.select(new SelectQuery<TableDefinitions>(
+                "*", TableDefinitions.TESTTABLE, null));
         printTableToLog(result);
-        result = conn.select(new SelectQuery<fennecTableDefinitions>(
-                "*", fennecTableDefinitions.TESTTABLE, fennecTestTable.getDate() + "='hallo'"));
+        result = conn.select(new SelectQuery<TableDefinitions>(
+                "*", TableDefinitions.TESTTABLE, TestTable.getDate() + "='hallo'"));
         printTableToLog(result);
         try {
-            result = conn.select(new SelectQuery<fennecTableDefinitions>(
-                    "*", fennecTableDefinitions.LOBTABLE, "blob IS NOT NULL"));
+            result = conn.select(new SelectQuery<TableDefinitions>(
+                    "*", TableDefinitions.LOBTABLE, "blob IS NOT NULL"));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
             Assert.assertTrue(e.getMessage().contains("You have an error in your SQL syntax"));
             // sql keywords should be escaped with tablename.
             // this should work:
-            Assert.assertNotNull(conn.select(new SelectQuery<fennecTableDefinitions>("*", fennecTableDefinitions.LOBTABLE,
-                    fennecTableDefinitions.LOBTABLE.getTableName() + ".blob IS NOT NULL")));
+            Assert.assertNotNull(conn.select(new SelectQuery<TableDefinitions>("*", TableDefinitions.LOBTABLE,
+                    TableDefinitions.LOBTABLE.getTableName() + ".blob IS NOT NULL")));
             allAssertsThrown = allAssertsThrown & true;
         }
         // stress from table
         try {
-            result = conn.select(new SelectQuery<fennecTableDefinitions>(
-                    "*", new fennecTableDefinitions("unknown"), ""));
+            result = conn.select(new SelectQuery<TableDefinitions>(
+                    "*", new TableDefinitions("unknown"), ""));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
-            Assert.assertTrue(e.getMessage().contains("Table 'fennecdbconnector.unknown' doesn't exist"));
+            Assert.assertTrue(e.getMessage().contains("Table 'Fennecdbconnector.unknown' doesn't exist"));
             allAssertsThrown = allAssertsThrown & true;
         }
         try {
-            result = conn.select(new SelectQuery<fennecTableDefinitions>(
+            result = conn.select(new SelectQuery<TableDefinitions>(
                     "*", null, ""));
         } catch (final NullPointerException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
@@ -126,13 +126,13 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
 
         boolean allAssertsThrown = false;
         // stress where clause
-        conn.query(new DeleteQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE, null));
+        conn.query(new DeleteQuery<TableDefinitions>(TableDefinitions.TESTTABLE, null));
 
-        conn.query(new DeleteQuery<fennecTableDefinitions>(
-                fennecTableDefinitions.TESTTABLE, fennecTestTable.getDate() + "='hallo'"));
+        conn.query(new DeleteQuery<TableDefinitions>(
+                TableDefinitions.TESTTABLE, TestTable.getDate() + "='hallo'"));
 
         try {
-            conn.query(new DeleteQuery<fennecTableDefinitions>(fennecTableDefinitions.LOBTABLE, "blob IS NOT NULL"));
+            conn.query(new DeleteQuery<TableDefinitions>(TableDefinitions.LOBTABLE, "blob IS NOT NULL"));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown:" + e.toString());
             Assert.assertTrue(e.getMessage().contains("You have an error in your SQL syntax"));
@@ -140,15 +140,15 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
         }
         // stress from table
         try {
-            conn.query(new DeleteQuery<fennecTableDefinitions>(new fennecTableDefinitions("unknown"), ""));
+            conn.query(new DeleteQuery<TableDefinitions>(new TableDefinitions("unknown"), ""));
             allAssertsThrown = allAssertsThrown & false;
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown:" + e.toString());
-            Assert.assertTrue(e.getMessage().contains("Table 'fennecdbconnector.unknown' doesn't exist"));
+            Assert.assertTrue(e.getMessage().contains("Table 'Fennecdbconnector.unknown' doesn't exist"));
             allAssertsThrown = allAssertsThrown & true;
         }
         try {
-            conn.query(new DeleteQuery<fennecTableDefinitions>(null, ""));
+            conn.query(new DeleteQuery<TableDefinitions>(null, ""));
             allAssertsThrown = allAssertsThrown & false;
         } catch (final NullPointerException e) {
             LOG.debug("Expected Exception thrown:" + e.toString());
@@ -165,12 +165,12 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
     @Test
     public void testT03_GetBlobNegative() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
-        final fennecTableDefinitions table = fennecTableDefinitions.LOBTABLE;
+        final TableDefinitions table = TableDefinitions.LOBTABLE;
         Blob result;
         boolean allAssertsThrown = false;
         // stress from column
         try {
-            conn.selectBlob(new SelectQuery<fennecTableDefinitions>("", table, null));
+            conn.selectBlob(new SelectQuery<TableDefinitions>("", table, null));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
             allAssertsThrown = true;
@@ -178,7 +178,7 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
 
         // stress from table
         try {
-            conn.selectBlob(new SelectQuery<fennecTableDefinitions>(LobTable.getBlob(), fennecTableDefinitions.TESTTABLE,
+            conn.selectBlob(new SelectQuery<TableDefinitions>(LobTable.getBlob(), TableDefinitions.TESTTABLE,
                     null));
             allAssertsThrown = allAssertsThrown & false;
         } catch (final SQLException e) {
@@ -188,7 +188,7 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
 
         // stress where clause
         try {
-            conn.selectBlob(new SelectQuery<fennecTableDefinitions>("*", table,
+            conn.selectBlob(new SelectQuery<TableDefinitions>("*", table,
                     LobTable.getBlobType() + "IS NOT NULL"));
             allAssertsThrown = allAssertsThrown & false;
         } catch (final SQLException e) {
@@ -196,7 +196,7 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
             allAssertsThrown = allAssertsThrown & true;
         }
 
-        result = conn.selectBlob(new SelectQuery<fennecTableDefinitions>(LobTable.getBlob(), table, null));
+        result = conn.selectBlob(new SelectQuery<TableDefinitions>(LobTable.getBlob(), table, null));
         Assert.assertNotNull(result);
 
         Assert.assertTrue(allAssertsThrown);
@@ -210,12 +210,12 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
     @Test
     public void testT04_GetClobNegative() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
-        final fennecTableDefinitions table = fennecTableDefinitions.LOBTABLE;
+        final TableDefinitions table = TableDefinitions.LOBTABLE;
         Clob result;
         boolean allAssertsThrown = false;
         // stress from column
         try {
-            conn.selectClob(new SelectQuery<fennecTableDefinitions>("", table, null));
+            conn.selectClob(new SelectQuery<TableDefinitions>("", table, null));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
             allAssertsThrown = true;
@@ -223,7 +223,7 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
 
         // stress from table
         try {
-            conn.selectClob(new SelectQuery<fennecTableDefinitions>(LobTable.getBlob(), fennecTableDefinitions.TESTTABLE,
+            conn.selectClob(new SelectQuery<TableDefinitions>(LobTable.getBlob(), TableDefinitions.TESTTABLE,
                     null));
             allAssertsThrown = allAssertsThrown & false;
         } catch (final SQLException e) {
@@ -233,7 +233,7 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
 
         // stress where clause
         try {
-            conn.selectClob(new SelectQuery<fennecTableDefinitions>("*", table,
+            conn.selectClob(new SelectQuery<TableDefinitions>("*", table,
                     LobTable.getBlobType() + "IS NOT NULL"));
             allAssertsThrown = allAssertsThrown & false;
         } catch (final SQLException e) {
@@ -241,7 +241,7 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
             allAssertsThrown = allAssertsThrown & true;
         }
 
-        result = conn.selectClob(new SelectQuery<fennecTableDefinitions>(LobTable.getClob(), table, null));
+        result = conn.selectClob(new SelectQuery<TableDefinitions>(LobTable.getClob(), table, null));
         Assert.assertNotNull(result);
 
         Assert.assertTrue(allAssertsThrown);
@@ -259,14 +259,14 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
 
         // stress tablename
         try {
-            conn.query(new InsertQuery<fennecTableDefinitions>(new fennecTestTable("nicht_vorhanden"), null,
+            conn.query(new InsertQuery<TableDefinitions>(new TestTable("nicht_vorhanden"), null,
                     new String[] {
                             "4", "user04", "Max", "Mustermann", "25", USER1.getDate().toString(),
                             USER1.getCreationTime().toString()
                     }));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
-            if (e.toString().contains("Table 'fennecdbconnector.nicht_vorhanden' doesn't exist")) {
+            if (e.toString().contains("Table 'Fennecdbconnector.nicht_vorhanden' doesn't exist")) {
                 exception = true;
             }
         }
@@ -275,7 +275,7 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
         exception = false;
         // stress columnnames
         try {
-            conn.query(new InsertQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE,
+            conn.query(new InsertQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
                     new String[] { "nicht_vorhanden" },
                     new String[] { "40" }));
         } catch (final SQLException e) {
@@ -289,8 +289,8 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
         exception = false;
         // stress values
         try {
-            conn.query(new InsertQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE,
-                    new String[] { fennecTestTable.getIdField() },
+            conn.query(new InsertQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
+                    new String[] { TestTable.getIdField() },
                     new String[] { "text" }));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
@@ -303,7 +303,7 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
         exception = false;
         // different value than column number
         try {
-            conn.query(new InsertQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE, null,
+            conn.query(new InsertQuery<TableDefinitions>(TableDefinitions.TESTTABLE, null,
                     new String[] { "", "" }));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
@@ -312,8 +312,8 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
             }
         }
         try {
-            conn.query(new InsertQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE,
-                    new String[] { fennecTestTable.getAge(), fennecTestTable.getFirstname() },
+            conn.query(new InsertQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
+                    new String[] { TestTable.getAge(), TestTable.getFirstname() },
                     new String[] { "50", "Horst", "fehler" }));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
@@ -334,10 +334,10 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
         final DBConnector<?> conn = getDBConnector();
         boolean exceptionThrown = false;
         try {
-            conn.query(new TruncateQuery<fennecTableDefinitions>(new fennecTestTable("nicht_vorhanden")));
+            conn.query(new TruncateQuery<TableDefinitions>(new TestTable("nicht_vorhanden")));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
-            if (e.toString().contains("Table 'fennecdbconnector.nicht_vorhanden' doesn't exist")) {
+            if (e.toString().contains("Table 'Fennecdbconnector.nicht_vorhanden' doesn't exist")) {
                 exceptionThrown = true;
             }
         }
@@ -356,12 +356,12 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
 
         // stress tablename
         try {
-            conn.query(new UpdateQuery<fennecTableDefinitions>(new fennecTestTable("nicht_vorhanden"),
-                    new String[] { fennecTestTable.getFirstname() }, new String[] { "ursel" },
-                    fennecTestTable.getUser() + "='" + USER1.getUser() + "'"));
+            conn.query(new UpdateQuery<TableDefinitions>(new TestTable("nicht_vorhanden"),
+                    new String[] { TestTable.getFirstname() }, new String[] { "ursel" },
+                    TestTable.getUser() + "='" + USER1.getUser() + "'"));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
-            if (e.toString().contains("Table 'fennecdbconnector.nicht_vorhanden' doesn't exist")) {
+            if (e.toString().contains("Table 'Fennecdbconnector.nicht_vorhanden' doesn't exist")) {
                 exceptionThrown = true;
             }
         }
@@ -369,9 +369,9 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
 
         // stress columnname
         try {
-            conn.query(new UpdateQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE,
+            conn.query(new UpdateQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
                     new String[] { "nicht_vorhanden" }, new String[] { "ursel" },
-                    fennecTestTable.getUser() + "='" + USER1.getUser() + "'"));
+                    TestTable.getUser() + "='" + USER1.getUser() + "'"));
             exceptionThrown = false;
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
@@ -383,8 +383,8 @@ public class TestDBConnectorNeg extends AbstractDBConnector {
 
         // stress where clause
         try {
-            conn.query(new UpdateQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE,
-                    new String[] { fennecTestTable.getFirstname() }, new String[] { "ursel" },
+            conn.query(new UpdateQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
+                    new String[] { TestTable.getFirstname() }, new String[] { "ursel" },
                     "nicht_vorhanden" + "='" + USER1.getUser() + "'"));
             exceptionThrown = false;
         } catch (final SQLException e) {

@@ -29,7 +29,7 @@ package eu.tsystems.mms.tic.testframework.fsconnector.internal;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Destination;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Protocol;
 import eu.tsystems.mms.tic.testframework.fsconnector.endpoint.Source;
@@ -75,7 +75,7 @@ public class FSRouteBuilder extends RouteBuilder {
      */
     private void pConfigure() {
         if (destination.getProtocol() == Protocol.HTTP) {
-            throw new fennecRuntimeException("HTTP not allowed as destination");
+            throw new FennecRuntimeException("HTTP not allowed as destination");
         }
         if (source.getProtocol() == Protocol.HTTP) {
             from("timer://foo?fixedRate=true&delay=200&period=5000&repeatCount=1")

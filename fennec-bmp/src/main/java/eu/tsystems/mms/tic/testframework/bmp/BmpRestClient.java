@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.bmp;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -98,7 +98,7 @@ public class BmpRestClient {
             proxyPort = jsonElement.getAsJsonObject().get("port").getAsInt();
 
             if (proxyPort == null) {
-                throw new fennecRuntimeException("Error executing http request");
+                throw new FennecRuntimeException("Error executing http request");
             }
             url = url + "proxy/" + proxyPort + "/";
             return proxyPort;
@@ -177,7 +177,7 @@ public class BmpRestClient {
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode != 200) {
             String reasonPhrase = response.getStatusLine().getReasonPhrase();
-            throw new fennecRuntimeException("Error posting to BMPServer: " + statusCode + " > " + reasonPhrase + " R: " + response);
+            throw new FennecRuntimeException("Error posting to BMPServer: " + statusCode + " > " + reasonPhrase + " R: " + response);
         }
         HttpEntity entity = response.getEntity();
 

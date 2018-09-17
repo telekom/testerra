@@ -172,7 +172,7 @@ public final class PerfTestContainer {
 //        PerfTestReportUtils.saveTestConfigs();
 //    }
 
-    public static void prepareMeasurementsForfennecReport() {
+    public static void prepareMeasurementsForFennecReport() {
 
         Map<String, Map<Long, List<TimingInfo>>> pageLoadInfosPerTestMethod = PerfTestContainer
                 .getPageLoadInfosPerTestMethod();

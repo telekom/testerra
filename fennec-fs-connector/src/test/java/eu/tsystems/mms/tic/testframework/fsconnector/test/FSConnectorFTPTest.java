@@ -427,7 +427,7 @@ public class FSConnectorFTPTest extends AbstractTest {
 
         // try {
         // FSConnector.copy(source, destination);
-        // } catch (fennecRuntimeException e) {
+        // } catch (FennecRuntimeException e) {
         // excThrown = true;
         // }
         // Assert.assertTrue(excThrown);

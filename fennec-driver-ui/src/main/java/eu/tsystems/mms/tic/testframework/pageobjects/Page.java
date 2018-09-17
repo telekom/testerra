@@ -29,7 +29,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickPath;
@@ -110,7 +110,7 @@ public abstract class Page extends AbstractPage {
      */
     private void executeThinkTime() {
         // Thinktime in Properties
-        int thinkTime = PropertyManager.getIntProperty(fennecProperties.fennec_PERF_PAGE_THINKTIME_MS, 0);
+        int thinkTime = PropertyManager.getIntProperty(FennecProperties.Fennec_PERF_PAGE_THINKTIME_MS, 0);
         // timeOut for Threadsleep
         int timeToWait = 0;
         /*

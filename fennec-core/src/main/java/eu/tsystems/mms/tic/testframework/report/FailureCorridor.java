@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
@@ -68,13 +68,13 @@ public final class FailureCorridor {
         }
     }
 
-    private static int allowedTestFailures = PropertyManager.getIntProperty(fennecProperties.fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS, -1);
-    private static int allowedTestFailuresHIGH = PropertyManager.getIntProperty(fennecProperties.fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH, -1);
-    private static int allowedTestFailuresMID = PropertyManager.getIntProperty(fennecProperties.fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID, -1);
-    private static int allowedTestFailuresLOW = PropertyManager.getIntProperty(fennecProperties.fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW, -1);
+    private static int allowedTestFailures = PropertyManager.getIntProperty(FennecProperties.Fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS, -1);
+    private static int allowedTestFailuresHIGH = PropertyManager.getIntProperty(FennecProperties.Fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH, -1);
+    private static int allowedTestFailuresMID = PropertyManager.getIntProperty(FennecProperties.Fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID, -1);
+    private static int allowedTestFailuresLOW = PropertyManager.getIntProperty(FennecProperties.Fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW, -1);
 
     public static void setFailureCorridorActive(boolean active) {
-        Flags.fennec_FAILURE_CORRIDOR_ACTIVE = active;
+        Flags.Fennec_FAILURE_CORRIDOR_ACTIVE = active;
     }
 
     public static void setAllowedTestFailures(int allowedTestFailures) {

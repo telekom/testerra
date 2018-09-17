@@ -34,7 +34,7 @@ import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
-import eu.tsystems.mms.tic.testframework.report.model.fennecBuildInformation;
+import eu.tsystems.mms.tic.testframework.report.model.FennecBuildInformation;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.velocity.PublicFieldUberspect;
@@ -361,14 +361,14 @@ public class ReportFormatter {
     private static VelocityContext getVelocityContext() {
         VelocityContext context = new VelocityContext();
         context.put("runContext", ExecutionContextController.RUN_CONTEXT);
-        context.put("fennecBuildInformation", fennecBuildInformation.getInstance());
+        context.put("FennecBuildInformation", FennecBuildInformation.getInstance());
         context.put("reportScreenshotsPreview", Flags.REPORT_SCREENSHOTS_PREVIEW);
-        context.put("fennecDBPathSuffix", Flags.fennec_DB_PATH_SUFFIX);
+        context.put("FennecDBPathSuffix", Flags.Fennec_DB_PATH_SUFFIX);
         context.put("reportName", ReportUtils.getReportName());
         context.put("dryrun", Flags.DRY_RUN);
 
         context.put("filter", FilterUtils.getInstance());
-        context.put("fcActive", Flags.fennec_FAILURE_CORRIDOR_ACTIVE);
+        context.put("fcActive", Flags.Fennec_FAILURE_CORRIDOR_ACTIVE);
         context.put("fcMatched", FailureCorridor.isCorridorMatched());
         context.put("fcH", TestStatusController.getTestsFailedHIGH());
         context.put("fcM", TestStatusController.getTestsFailedMID());

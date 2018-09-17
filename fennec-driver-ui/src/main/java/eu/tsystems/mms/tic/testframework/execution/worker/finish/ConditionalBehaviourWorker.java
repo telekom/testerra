@@ -20,10 +20,10 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.fennecListener;
+import eu.tsystems.mms.tic.testframework.report.FennecListener;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
 /**
@@ -37,7 +37,7 @@ public class ConditionalBehaviourWorker extends MethodWorker {
 
             // check state condition: shutdown
             boolean skipShutdown = PropertyManager.getBooleanProperty(
-                    fennecProperties.ON_STATE_TESTFAILED_SKIP_SHUTDOWN, false);
+                    FennecProperties.ON_STATE_TESTFAILED_SKIP_SHUTDOWN, false);
             if (skipShutdown) {
                 LOGGER.debug("ON_STATE_TESTFAILED_SKIP_SHUTDOWN: true");
                 // leave all windows open when this condition is true (except you call forceShutdown)
@@ -46,10 +46,10 @@ public class ConditionalBehaviourWorker extends MethodWorker {
 
             // check state condition: skip test methods
             boolean skipFollowingTests = PropertyManager.getBooleanProperty(
-                    fennecProperties.ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS, false);
+                    FennecProperties.ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS, false);
             if (skipFollowingTests) {
                 LOGGER.debug("ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS: true");
-                fennecListener.skipAllTests();
+                FennecListener.skipAllTests();
             }
         }
 

@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.mailconnector.imap;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractMailConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +96,7 @@ public class ImapMailConnector extends AbstractMailConnector {
             mailprops.put("mail.imaps.protocol", "imaps");
             mailprops.put("mail.imaps.socketFactory.port", getPort());
             mailprops.put("mail.imaps.socketFactory.class",
-                    "eu.tsystems.mms.tic.testframework.mailconnector.fennecSSLSocketFactory");
+                    "eu.tsystems.mms.tic.testframework.mailconnector.FennecSSLSocketFactory");
             mailprops.put("mail.store.protocol", "imaps");
         } else {
             mailprops.put("mail.imap.host", getServer());
@@ -122,18 +122,18 @@ public class ImapMailConnector extends AbstractMailConnector {
     /**
      * Marks all messages in inbox as seen.
      * 
-     * @throws fennecSystemException Error connecting with Server.
+     * @throws FennecSystemException Error connecting with Server.
      */
-    public void markAllMailsAsSeen() throws fennecSystemException {
+    public void markAllMailsAsSeen() throws FennecSystemException {
         this.pMarkAllMailsAsSeen();
     }
 
     /**
      * Marks all messages in inbox as seen.
      * 
-     * @throws fennecSystemException Error connecting with Server.
+     * @throws FennecSystemException Error connecting with Server.
      */
-    private void pMarkAllMailsAsSeen() throws fennecSystemException {
+    private void pMarkAllMailsAsSeen() throws FennecSystemException {
         Store store;
         try {
             store = getSession().getStore();
@@ -148,10 +148,10 @@ public class ImapMailConnector extends AbstractMailConnector {
             store.close();
         } catch (final NoSuchProviderException e) {
             LOGGER.error(e.getMessage());
-            throw new fennecSystemException(e);
+            throw new FennecSystemException(e);
         } catch (final MessagingException e) {
             LOGGER.error(e.getMessage());
-            throw new fennecSystemException(e);
+            throw new FennecSystemException(e);
         }
     }
 }

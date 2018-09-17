@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.report.hooks;
 
 import eu.tsystems.mms.tic.testframework.internal.Flags;
-import eu.tsystems.mms.tic.testframework.report.fennecListener;
+import eu.tsystems.mms.tic.testframework.report.FennecListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.*;
@@ -34,7 +34,7 @@ public final class TestMethodHook extends Hook {
 
     public static void runHook(IHookCallBack callBack, ITestResult testResult) {
 
-        if (fennecListener.isSkipAllMethods()) {
+        if (FennecListener.isSkipAllMethods()) {
             throw new SkipException("Conditional skipping test method (fennec run runHook)");
         }
 

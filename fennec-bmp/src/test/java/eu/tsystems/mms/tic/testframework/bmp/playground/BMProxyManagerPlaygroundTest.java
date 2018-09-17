@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.bmp.AbstractTest;
 import eu.tsystems.mms.tic.testframework.bmp.BMProxyManager;
 import eu.tsystems.mms.tic.testframework.bmp.NoFreePortException;
 import eu.tsystems.mms.tic.testframework.bmp.ProxyServer;
-import eu.tsystems.mms.tic.testframework.common.fennecCommons;
+import eu.tsystems.mms.tic.testframework.common.FennecCommons;
 import eu.tsystems.mms.tic.testframework.utils.TestUtils;
 import org.testng.annotations.Test;
 

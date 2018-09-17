@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.fsconnector;
 
-import eu.tsystems.mms.tic.testframework.testing.fennecTest;
+import eu.tsystems.mms.tic.testframework.testing.FennecTest;
 
-public abstract class AbstractTest extends fennecTest {
+public abstract class AbstractTest extends FennecTest {
 }

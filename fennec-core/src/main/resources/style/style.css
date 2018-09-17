@@ -130,9 +130,9 @@ img[src*=svg]            {width: 1.3em; vertical-align: middle;}
 #suites                  {line-height: 1.7em; border-spacing: 0.1em;}
 #suites tr:nth-child(odd)  td { background-color: #fefefe; }
 #suites tr:nth-child(even) td { background-color:#efefef; }
-#fennecinfo                 {line-height: 1.7em; border-spacing: 0.1em;}
-#fennecinfo tr:nth-child(odd)  td { background-color: #fefefe; }
-#fennecinfo tr:nth-child(even) td { background-color:#efefef; }
+#Fennecinfo                 {line-height: 1.7em; border-spacing: 0.1em;}
+#Fennecinfo tr:nth-child(odd)  td { background-color: #fefefe; }
+#Fennecinfo tr:nth-child(even) td { background-color:#efefef; }
 .tests                   {display: table-row-group;}
 .header.suite            {cursor: pointer; clear: right; height: 1.214em; margin-top: 1px;}
 div.test                 {margin-top: 0.1em; clear: right; font-size: 1.3em;}
@@ -385,7 +385,7 @@ button.dt-button, div.dt-button, a.dt-button {
     white-space: nowrap;
 	line-height: 12px;
 }
-.fennecbutton {
+.Fennecbutton {
     color: #ffffff;
     float: right;
     font-family: "opensans-light",sans-serif;
@@ -395,7 +395,7 @@ button.dt-button, div.dt-button, a.dt-button {
     width: auto;
 }
 
-.fennecbutton:hover {
+.Fennecbutton:hover {
     color: #FFFFFF !important;
 }
 

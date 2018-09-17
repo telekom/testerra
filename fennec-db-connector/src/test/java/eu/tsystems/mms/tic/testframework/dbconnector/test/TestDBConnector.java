@@ -33,8 +33,8 @@ import eu.tsystems.mms.tic.testframework.dbconnector.query.SelectQuery;
 import eu.tsystems.mms.tic.testframework.dbconnector.query.TruncateQuery;
 import eu.tsystems.mms.tic.testframework.dbconnector.query.UpdateQuery;
 import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.LobTable;
-import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.fennecTableDefinitions;
-import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.fennecTestTable;
+import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TableDefinitions;
+import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TestTable;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Integration Tests for fennecDBConnector.
+ * Integration Tests for FennecDBConnector.
  * 
  * @author sepr
  */
@@ -61,15 +61,15 @@ public class TestDBConnector extends AbstractDBConnector {
         final DBConnector<?> conn = getDBConnector();
 
         final List<HashMap<String, String>> res =
-                conn.select(new SelectQuery<fennecTableDefinitions>("*", fennecTableDefinitions.TESTTABLE, null));
+                conn.select(new SelectQuery<TableDefinitions>("*", TableDefinitions.TESTTABLE, null));
 
         Assert.assertEquals(3, res.size());
         printTableToLog(res);
-        final int result = conn.query(new DeleteQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE,
-                fennecTestTable.getUser() + "='" + USER1.getUser() + "'"));
+        final int result = conn.query(new DeleteQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
+                TestTable.getUser() + "='" + USER1.getUser() + "'"));
         Assert.assertEquals(1, result);
         final List<HashMap<String, String>> resAfter =
-                conn.select(new SelectQuery<fennecTableDefinitions>("*", fennecTableDefinitions.TESTTABLE, null));
+                conn.select(new SelectQuery<TableDefinitions>("*", TableDefinitions.TESTTABLE, null));
         Assert.assertEquals(2, resAfter.size());
         printTableToLog(resAfter);
     }
@@ -85,11 +85,11 @@ public class TestDBConnector extends AbstractDBConnector {
         final long fileSize = 1007;
         final DBConnector<?> conn = getDBConnector();
         final Blob blob = conn.selectBlob(
-                new SelectQuery<fennecTableDefinitions>(LobTable.getBlob(), fennecTableDefinitions.LOBTABLE, null));
+                new SelectQuery<TableDefinitions>(LobTable.getBlob(), TableDefinitions.LOBTABLE, null));
         Assert.assertEquals(fileSize, blob.length());
 
         final Blob blob2 = conn.selectBlob(
-                new SelectQuery<fennecTableDefinitions>(LobTable.getBlob(), fennecTableDefinitions.LOBTABLE, LobTable
+                new SelectQuery<TableDefinitions>(LobTable.getBlob(), TableDefinitions.LOBTABLE, LobTable
                         .getIdField() + "=1"));
         Assert.assertEquals(fileSize, blob2.length());
     }
@@ -105,11 +105,11 @@ public class TestDBConnector extends AbstractDBConnector {
         final DBConnector<?> conn = getDBConnector();
 
         final Clob clob = conn.selectClob(
-                new SelectQuery<fennecTableDefinitions>(LobTable.getClob(), fennecTableDefinitions.LOBTABLE, null));
+                new SelectQuery<TableDefinitions>(LobTable.getClob(), TableDefinitions.LOBTABLE, null));
         Assert.assertEquals(clobSize, clob.length());
 
         final Clob clob2 = conn.selectClob(
-                new SelectQuery<fennecTableDefinitions>(LobTable.getClob(), fennecTableDefinitions.LOBTABLE, LobTable
+                new SelectQuery<TableDefinitions>(LobTable.getClob(), TableDefinitions.LOBTABLE, LobTable
                         .getIdField() + "=1"));
         Assert.assertEquals(clobSize, clob2.length());
     }
@@ -122,19 +122,19 @@ public class TestDBConnector extends AbstractDBConnector {
     @Test
     public void testT04_Insert() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
-        int result = conn.query(new InsertQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE, null,
+        int result = conn.query(new InsertQuery<TableDefinitions>(TableDefinitions.TESTTABLE, null,
                 new String[] {
                         "4", "user04", "Max", "Mustermann", "25", USER1.getDate().toString(),
                         USER1.getCreationTime().toString()
                 }));
         Assert.assertEquals(1, result);
-        result = conn.query(new InsertQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE,
-                new String[] { fennecTestTable.getAge(), fennecTestTable.getLastname() },
+        result = conn.query(new InsertQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
+                new String[] { TestTable.getAge(), TestTable.getLastname() },
                 new String[] { "40", "Hans" }));
         Assert.assertEquals(1, result);
 
         final List<HashMap<String, String>> out = conn.select(
-                new SelectQuery<fennecTableDefinitions>("*", fennecTableDefinitions.TESTTABLE, ""));
+                new SelectQuery<TableDefinitions>("*", TableDefinitions.TESTTABLE, ""));
         Assert.assertEquals(5, out.size());
     }
 
@@ -150,7 +150,7 @@ public class TestDBConnector extends AbstractDBConnector {
 
         // tablename = 'into'
         try {
-            conn.query(new InsertQuery<fennecTableDefinitions>(new fennecTestTable("into"), null,
+            conn.query(new InsertQuery<TableDefinitions>(new TestTable("into"), null,
                     new String[] { "", "", "", "", "", "", "" }));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
@@ -171,13 +171,13 @@ public class TestDBConnector extends AbstractDBConnector {
         final DBConnector<?> conn = getDBConnector();
 
         final List<HashMap<String, String>> res =
-                conn.select(new SelectQuery<fennecTableDefinitions>("*", fennecTableDefinitions.TESTTABLE, null));
+                conn.select(new SelectQuery<TableDefinitions>("*", TableDefinitions.TESTTABLE, null));
         Assert.assertEquals(3, res.size());
         printTableToLog(res);
 
         final List<HashMap<String, String>> res2 =
-                conn.select(new SelectQuery<fennecTableDefinitions>("*", fennecTableDefinitions.TESTTABLE,
-                        fennecTestTable.getAge() + "< 100"));
+                conn.select(new SelectQuery<TableDefinitions>("*", TableDefinitions.TESTTABLE,
+                        TestTable.getAge() + "< 100"));
         Assert.assertEquals(2, res2.size());
         printTableToLog(res2);
     }
@@ -192,17 +192,17 @@ public class TestDBConnector extends AbstractDBConnector {
         final DBConnector<?> conn = getDBConnector();
 
         final List<HashMap<String, String>> result = conn
-                .select(new SelectQuery<fennecTableDefinitions>(
-                        new String[] { fennecTestTable.getAge(), fennecTestTable.getDate() },
-                        fennecTableDefinitions.TESTTABLE, null));
+                .select(new SelectQuery<TableDefinitions>(
+                        new String[] { TestTable.getAge(), TestTable.getDate() },
+                        TableDefinitions.TESTTABLE, null));
         Assert.assertNotNull(result);
         Assert.assertEquals(3, result.size());
         Assert.assertEquals(2, result.get(0).size());
         this.printTableToLog(result);
 
-        final List<HashMap<String, String>> result2 = conn.select(new SelectQuery<fennecTableDefinitions>(
-                new String[] { fennecTestTable.getAge(), fennecTestTable.getDate() }, fennecTableDefinitions.TESTTABLE,
-                fennecTestTable.getFirstname() + "='" + USER3.getFirstname() + "'"));
+        final List<HashMap<String, String>> result2 = conn.select(new SelectQuery<TableDefinitions>(
+                new String[] { TestTable.getAge(), TestTable.getDate() }, TableDefinitions.TESTTABLE,
+                TestTable.getFirstname() + "='" + USER3.getFirstname() + "'"));
         Assert.assertNotNull(result2);
         this.printTableToLog(result);
         Assert.assertEquals(1, result2.size());
@@ -218,13 +218,13 @@ public class TestDBConnector extends AbstractDBConnector {
     public void testT08_SelectObject() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
 
-        final Object age = conn.selectSingleObject(new SelectQuery<fennecTableDefinitions>(
-                fennecTestTable.getAge(), fennecTableDefinitions.TESTTABLE, null));
+        final Object age = conn.selectSingleObject(new SelectQuery<TableDefinitions>(
+                TestTable.getAge(), TableDefinitions.TESTTABLE, null));
         Assert.assertNotNull(age);
         LOG.debug(age.toString());
 
-        final Object age2 = conn.selectSingleObject(new SelectQuery<fennecTableDefinitions>(
-                fennecTestTable.getAge(), fennecTableDefinitions.TESTTABLE, fennecTestTable.getFirstname() +
+        final Object age2 = conn.selectSingleObject(new SelectQuery<TableDefinitions>(
+                TestTable.getAge(), TableDefinitions.TESTTABLE, TestTable.getFirstname() +
                         "='" + USER3.getFirstname() + "'"));
         Assert.assertNotNull(age2);
         LOG.debug(age2.toString());
@@ -239,19 +239,19 @@ public class TestDBConnector extends AbstractDBConnector {
     public void testT09_SelectRow() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
 
-        List<String> userNames = conn.selectSingleColumn(new SelectQuery<fennecTableDefinitions>(
-                new String[] { fennecTestTable.getUser(), fennecTestTable.getFirstname() },
-                fennecTableDefinitions.TESTTABLE, null));
+        List<String> userNames = conn.selectSingleColumn(new SelectQuery<TableDefinitions>(
+                new String[] { TestTable.getUser(), TestTable.getFirstname() },
+                TableDefinitions.TESTTABLE, null));
         Assert.assertTrue(userNames.contains(USER1.getUser()));
         Assert.assertTrue(userNames.contains(USER2.getUser()));
         Assert.assertTrue(userNames.contains(USER3.getUser()));
         Assert.assertFalse(userNames.contains(USER1.getFirstname()));
         LOG.debug("UserNames: " + userNames.toString());
 
-        userNames = conn.selectSingleColumn(new SelectQuery<fennecTableDefinitions>(
-                new String[] { fennecTestTable.getUser(), fennecTestTable.getFirstname() },
-                fennecTableDefinitions.TESTTABLE,
-                fennecTestTable.getIdField() + "=1"));
+        userNames = conn.selectSingleColumn(new SelectQuery<TableDefinitions>(
+                new String[] { TestTable.getUser(), TestTable.getFirstname() },
+                TableDefinitions.TESTTABLE,
+                TestTable.getIdField() + "=1"));
         Assert.assertTrue(userNames.contains(USER1.getUser()));
         Assert.assertFalse(userNames.contains(USER2.getUser()));
         Assert.assertFalse(userNames.contains(USER3.getUser()));
@@ -267,10 +267,10 @@ public class TestDBConnector extends AbstractDBConnector {
     @Test
     public void testT10_Truncate() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
-        final int result = conn.query(new TruncateQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE));
+        final int result = conn.query(new TruncateQuery<TableDefinitions>(TableDefinitions.TESTTABLE));
         Assert.assertEquals(3, result);
         final List<HashMap<String, String>> out = conn.select(
-                new SelectQuery<fennecTableDefinitions>("*", fennecTableDefinitions.TESTTABLE, ""));
+                new SelectQuery<TableDefinitions>("*", TableDefinitions.TESTTABLE, ""));
         Assert.assertTrue(out.isEmpty());
     }
 
@@ -284,7 +284,7 @@ public class TestDBConnector extends AbstractDBConnector {
         final DBConnector<?> conn = getDBConnector();
         boolean exception = false;
         try {
-            conn.query(new TruncateQuery<fennecTableDefinitions>(new fennecTestTable("table")));
+            conn.query(new TruncateQuery<TableDefinitions>(new TestTable("table")));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
             if (e.toString().contains("You have an error in your SQL syntax")) {
@@ -302,13 +302,13 @@ public class TestDBConnector extends AbstractDBConnector {
     @Test
     public void testT12_Update() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
-        final int result = conn.query(new UpdateQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE,
-                new String[] { fennecTestTable.getFirstname() }, new String[] { "ursel" },
-                fennecTestTable.getUser() + "='" + USER1.getUser() + "'"));
+        final int result = conn.query(new UpdateQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
+                new String[] { TestTable.getFirstname() }, new String[] { "ursel" },
+                TestTable.getUser() + "='" + USER1.getUser() + "'"));
         Assert.assertEquals(1, result);
-        final List<String> out = conn.selectSingleColumn(new SelectQuery<fennecTableDefinitions>(
-                new String[] { fennecTestTable.getFirstname() },
-                fennecTableDefinitions.TESTTABLE, ""));
+        final List<String> out = conn.selectSingleColumn(new SelectQuery<TableDefinitions>(
+                new String[] { TestTable.getFirstname() },
+                TableDefinitions.TESTTABLE, ""));
         Assert.assertTrue(out.contains("ursel"));
     }
 
@@ -325,9 +325,9 @@ public class TestDBConnector extends AbstractDBConnector {
 
         // tablename = 'update'
         try {
-            conn.query(new UpdateQuery<fennecTableDefinitions>(new fennecTestTable("update"),
+            conn.query(new UpdateQuery<TableDefinitions>(new TestTable("update"),
                     new String[] { "firstname" },
-                    new String[] { "horst" }, fennecTestTable.getUser() + "='" + USER1.getUser() + "'"));
+                    new String[] { "horst" }, TestTable.getUser() + "='" + USER1.getUser() + "'"));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
             if (e.toString().contains("You have an error in your SQL syntax")) {
@@ -337,8 +337,8 @@ public class TestDBConnector extends AbstractDBConnector {
 
         // columnname = 'set'
         try {
-            conn.query(new UpdateQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE, new String[] { "set" },
-                    new String[] { "horst" }, fennecTestTable.getUser() + "='" + USER1.getUser() + "'"));
+            conn.query(new UpdateQuery<TableDefinitions>(TableDefinitions.TESTTABLE, new String[] { "set" },
+                    new String[] { "horst" }, TestTable.getUser() + "='" + USER1.getUser() + "'"));
         } catch (final SQLException e) {
             LOG.debug("Expected Exception thrown: " + e.toString());
             if (e.toString().contains("You have an error in your SQL syntax")) {
@@ -348,7 +348,7 @@ public class TestDBConnector extends AbstractDBConnector {
 
         // where clause = 'where'
         try {
-            conn.query(new UpdateQuery<fennecTableDefinitions>(fennecTableDefinitions.TESTTABLE,
+            conn.query(new UpdateQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
                     new String[] { "firstname" },
                     new String[] { "horst" }, "where ='" + USER1.getUser() + "'"));
         } catch (final SQLException e) {

@@ -1,4 +1,4 @@
-function fennecCreateDragEvent(eventName, options)
+function FennecCreateDragEvent(eventName, options)
 {
   var event = document.createEvent("DragEvent");
   var screenX = window.screenX + options.clientX;
@@ -56,7 +56,7 @@ function fennecCreateDragEvent(eventName, options)
 };
 /* Creates a mouse event */
 
-function fennecCreateMouseEvent(eventName, options)
+function FennecCreateMouseEvent(eventName, options)
 {
   var event = document.createEvent("MouseEvent");
   var screenX = window.screenX + options.clientX;
@@ -85,7 +85,7 @@ function fennecCreateMouseEvent(eventName, options)
 };
 /* Runs the events */
 
-function fennecDispatchEvent(webElement, eventName, event)
+function FennecDispatchEvent(webElement, eventName, event)
 {
   if (webElement.dispatchEvent) {
     webElement.dispatchEvent(event);
@@ -95,70 +95,70 @@ function fennecDispatchEvent(webElement, eventName, event)
 };
 /* Simulates an individual event */
 
-function fennecSimulateEventCall(element, eventName, dragStartEvent, options) {
+function FennecSimulateEventCall(element, eventName, dragStartEvent, options) {
   var event = null;
   if (eventName.indexOf("mouse") > - 1) {
-    event = fennecCreateMouseEvent(eventName, options);
+    event = FennecCreateMouseEvent(eventName, options);
   } else {
-    event = fennecCreateDragEvent(eventName, options);
+    event = FennecCreateDragEvent(eventName, options);
   };
   if (dragStartEvent != null) {
     event.dataTransfer = dragStartEvent.dataTransfer;
   }
-  fennecDispatchEvent(element, eventName, event);
+  FennecDispatchEvent(element, eventName, event);
   return event;
 };
 
-function fennecDND(drag, drop, dragFromX, dragFromY, dragToX, dragToY) {
+function FennecDND(drag, drop, dragFromX, dragFromY, dragToX, dragToY) {
   /*
     Execute dnd
     */
 
-  var mouseDownEvent = fennecSimulateEventCall(drag, "mousedown", null, {
+  var mouseDownEvent = FennecSimulateEventCall(drag, "mousedown", null, {
     clientX: dragFromX,
     clientY: dragFromY
   });
-  var dragStartEvent = fennecSimulateEventCall(drag, "dragstart", null, {
+  var dragStartEvent = FennecSimulateEventCall(drag, "dragstart", null, {
     clientX: dragFromX,
     clientY: dragFromY
   });
-  var dragEnterEvent = fennecSimulateEventCall(drop, "dragenter", dragStartEvent, {
+  var dragEnterEvent = FennecSimulateEventCall(drop, "dragenter", dragStartEvent, {
     clientX: dragToX,
     clientY: dragToY
   });
-  var dragOverEvent = fennecSimulateEventCall(drop, "dragover", dragStartEvent, {
+  var dragOverEvent = FennecSimulateEventCall(drop, "dragover", dragStartEvent, {
     clientX: dragToX,
     clientY: dragToY
   });
-  var dropEvent = fennecSimulateEventCall(drop, "drop", dragStartEvent, {
+  var dropEvent = FennecSimulateEventCall(drop, "drop", dragStartEvent, {
     clientX: dragToX,
     clientY: dragToY
   });
-  var dragEndEvent = fennecSimulateEventCall(drag, "dragend", dragStartEvent, {
+  var dragEndEvent = FennecSimulateEventCall(drag, "dragend", dragStartEvent, {
     clientX: dragToX,
     clientY: dragToY
   });
 };
 
-function fennecDNDFrame(dragJsLocator, dropJsLocator, fromX, fromY, toX, toY) {
+function FennecDNDFrame(dragJsLocator, dropJsLocator, fromX, fromY, toX, toY) {
 
     var drag = eval(dragJsLocator);
     var drop = eval(dropJsLocator);
 
-    fennecDND(drag, drop, fromX, fromY, toX, toY);
+    FennecDND(drag, drop, fromX, fromY, toX, toY);
 };
 
-function fennecSwipe(element, fromX, fromY, toX, toY) {
+function FennecSwipe(element, fromX, fromY, toX, toY) {
 
-  var mouseDownEvent = fennecSimulateEventCall(element, "mousedown", null, {
+  var mouseDownEvent = FennecSimulateEventCall(element, "mousedown", null, {
     clientX: fromX,
     clientY: fromY
   });
-  var mouseMoveEvent = fennecSimulateEventCall(element, "mousemove", null, {
+  var mouseMoveEvent = FennecSimulateEventCall(element, "mousemove", null, {
     clientX: toX,
     clientY: toY
   });
-  var mouseUpEvent = fennecSimulateEventCall(element, "mouseup", null, {
+  var mouseUpEvent = FennecSimulateEventCall(element, "mouseup", null, {
     clientX: toX,
     clientY: toY
   });

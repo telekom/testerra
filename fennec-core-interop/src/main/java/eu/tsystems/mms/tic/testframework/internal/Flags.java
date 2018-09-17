@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 
 /**
  * <Beschreibung der Klasse>
@@ -44,30 +44,30 @@ public final class Flags {
     @Deprecated
     public static boolean TRACKING_ACTIVE = false;
 
-    public static boolean REPORT_SCREENSHOTS_PREVIEW = PropertyManager.getBooleanProperty(fennecProperties.REPORT_SCREENSHOTS_PREVIEW, true);
-    public static String fennec_DB_PATH_SUFFIX = "not_set";
-    public static boolean GENERATE_PERF_STATISTICS = PropertyManager.getBooleanProperty(fennecProperties.fennec_PERF_GENERATE_STATISTICS, false);
+    public static boolean REPORT_SCREENSHOTS_PREVIEW = PropertyManager.getBooleanProperty(FennecProperties.REPORT_SCREENSHOTS_PREVIEW, true);
+    public static String Fennec_DB_PATH_SUFFIX = "not_set";
+    public static boolean GENERATE_PERF_STATISTICS = PropertyManager.getBooleanProperty(FennecProperties.Fennec_PERF_GENERATE_STATISTICS, false);
     public static boolean PERF_STOP_WATCH_ACTIVE = false;
-    public static boolean REUSE_DATAPROVIDER_DRIVER_BY_THREAD = PropertyManager.getBooleanProperty(fennecProperties.fennec_REUSE_DATAPROVIDER_DRIVER_BY_THREAD, false);
-    public static boolean MONITOR_MEMORY = PropertyManager.getBooleanProperty(fennecProperties.fennec_MONITOR_MEMORY, true);
-    public static boolean DRY_RUN = PropertyManager.getBooleanProperty(fennecProperties.fennec_DRY_RUN, false);
-    public static boolean DYNATRACE_LOGGING = PropertyManager.getBooleanProperty(fennecProperties.DYNATRACE_LOGGING, false);
+    public static boolean REUSE_DATAPROVIDER_DRIVER_BY_THREAD = PropertyManager.getBooleanProperty(FennecProperties.Fennec_REUSE_DATAPROVIDER_DRIVER_BY_THREAD, false);
+    public static boolean MONITOR_MEMORY = PropertyManager.getBooleanProperty(FennecProperties.Fennec_MONITOR_MEMORY, true);
+    public static boolean DRY_RUN = PropertyManager.getBooleanProperty(FennecProperties.Fennec_DRY_RUN, false);
+    public static boolean DYNATRACE_LOGGING = PropertyManager.getBooleanProperty(FennecProperties.DYNATRACE_LOGGING, false);
 
-    public static boolean fennec_REUSE_REPORTDIR = PropertyManager.getBooleanProperty(fennecProperties.fennec_REUSE_REPORTDIR, true);
+    public static boolean Fennec_REUSE_REPORTDIR = PropertyManager.getBooleanProperty(FennecProperties.Fennec_REUSE_REPORTDIR, true);
 
-    public static boolean fennec_REPORT_DATAPROVIDER_INFOS = PropertyManager.getBooleanProperty(fennecProperties.fennec_REPORT_DATAPROVIDER_INFOS, true);
+    public static boolean Fennec_REPORT_DATAPROVIDER_INFOS = PropertyManager.getBooleanProperty(FennecProperties.Fennec_REPORT_DATAPROVIDER_INFOS, true);
 
-    public static boolean LIST_TESTS = PropertyManager.getBooleanProperty(fennecProperties.fennec_LIST_TESTS, false);
+    public static boolean LIST_TESTS = PropertyManager.getBooleanProperty(FennecProperties.Fennec_LIST_TESTS, false);
 
-    public static boolean fennec_WEB_TAKE_ACTION_SCREENSHOTS = PropertyManager.getBooleanProperty(fennecProperties.fennec_WEB_TAKE_ACTION_SCREENSHOTS, false);
+    public static boolean Fennec_WEB_TAKE_ACTION_SCREENSHOTS = PropertyManager.getBooleanProperty(FennecProperties.Fennec_WEB_TAKE_ACTION_SCREENSHOTS, false);
 
-    public static boolean FAILED_TESTS_RETRY_FLAPPING = PropertyManager.getBooleanProperty(fennecProperties.FAILED_TESTS_RETRY_FLAPPING, true);
+    public static boolean FAILED_TESTS_RETRY_FLAPPING = PropertyManager.getBooleanProperty(FennecProperties.FAILED_TESTS_RETRY_FLAPPING, true);
 
-    public static boolean fennec_FAILURE_CORRIDOR_ACTIVE = PropertyManager.getBooleanProperty(fennecProperties.fennec_FAILURE_CORRIDOR_ACTIVE, false);
+    public static boolean Fennec_FAILURE_CORRIDOR_ACTIVE = PropertyManager.getBooleanProperty(FennecProperties.Fennec_FAILURE_CORRIDOR_ACTIVE, false);
 
-    public static boolean fennec_KAFKA_ACTIVE = PropertyManager.getBooleanProperty(fennecProperties.fennec_KAFKA_ACTIVE, false);
+    public static boolean Fennec_KAFKA_ACTIVE = PropertyManager.getBooleanProperty(FennecProperties.Fennec_KAFKA_ACTIVE, false);
 
-    public static boolean fennec_EXECUTION_OMIT_IN_DEVELOPMENT = PropertyManager.getBooleanProperty(fennecProperties.fennec_EXECUTION_OMIT_IN_DEVELOPMENT, false);
+    public static boolean Fennec_EXECUTION_OMIT_IN_DEVELOPMENT = PropertyManager.getBooleanProperty(FennecProperties.Fennec_EXECUTION_OMIT_IN_DEVELOPMENT, false);
 
-    public static boolean fennec_GUIELEMENT_HIGHLIGHTS = PropertyManager.getBooleanProperty(fennecProperties.fennec_GUIELEMENT_HIGHLIGHTS_ACTIVE, true);
+    public static boolean Fennec_GUIELEMENT_HIGHLIGHTS = PropertyManager.getBooleanProperty(FennecProperties.Fennec_GUIELEMENT_HIGHLIGHTS_ACTIVE, true);
 }

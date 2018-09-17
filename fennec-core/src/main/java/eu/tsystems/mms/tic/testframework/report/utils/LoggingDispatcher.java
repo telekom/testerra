@@ -62,7 +62,7 @@ public final class LoggingDispatcher {
     static final List<LogMessage> UNRELATED_LOGS = Collections.synchronizedList(new LinkedList<LogMessage>());
 
     /**
-     * Adds a logMessage message to MethodContext. Called in fennecListener.class
+     * Adds a logMessage message to MethodContext. Called in FennecListener.class
      *
      * @param logMessage The logMessage message.
      */
@@ -71,7 +71,7 @@ public final class LoggingDispatcher {
     }
 
     /**
-     * Adds a logMessage message to MethodContext. Called in fennecListener.class
+     * Adds a logMessage message to MethodContext. Called in FennecListener.class
      *
      * @param logMessage The logMessage message.
      */

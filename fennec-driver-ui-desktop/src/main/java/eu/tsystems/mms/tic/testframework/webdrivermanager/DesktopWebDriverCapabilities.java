@@ -22,9 +22,9 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -102,7 +102,7 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
     static DesiredCapabilities createCapabilities(final WebDriverManagerConfig config, DesktopWebDriverRequest desktopWebDriverRequest) {
         String browser = desktopWebDriverRequest.browser;
         if (browser == null) {
-            throw new fennecRuntimeException(
+            throw new FennecRuntimeException(
                     "Browser is not set correctly");
         }
         final DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
@@ -141,9 +141,9 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 
                 if (config.webDriverMode != WebDriverMode.remote) {
                     LOGGER.info("Creating capabilities for FirefoxDriver");
-                    String firefoxBinary = PropertyManager.getProperty(fennecProperties.FIREFOXBIN);
+                    String firefoxBinary = PropertyManager.getProperty(FennecProperties.FIREFOXBIN);
                     if (firefoxBinary != null) {
-                        System.setProperty(fennecProperties.FIREFOXBIN, firefoxBinary);
+                        System.setProperty(FennecProperties.FIREFOXBIN, firefoxBinary);
                     }
                 }
 
@@ -164,9 +164,9 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 //                desiredCapabilities.setCapability(EdgeOptions.CAPABILITY, edgeOptions);
 
                 if (config.webDriverMode != WebDriverMode.remote) {
-                    final String edgeDriverPath = PropertyManager.getProperty(fennecProperties.EDGEDRIVER, null);
+                    final String edgeDriverPath = PropertyManager.getProperty(FennecProperties.EDGEDRIVER, null);
                     if (edgeDriverPath != null) {
-                        System.setProperty(fennecProperties.EDGEDRIVER, edgeDriverPath);
+                        System.setProperty(FennecProperties.EDGEDRIVER, edgeDriverPath);
                     }
                 }
 
@@ -175,9 +175,9 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
             case Browsers.chromeHeadless:
                 LOGGER.info("Creating capabilities for ChromeDriver");
                 if (config.webDriverMode != WebDriverMode.remote) {
-                    final String chromeDriver = PropertyManager.getProperty(fennecProperties.CHROMEDRIVER, null);
+                    final String chromeDriver = PropertyManager.getProperty(FennecProperties.CHROMEDRIVER, null);
                     if (chromeDriver != null) {
-                        System.setProperty(fennecProperties.CHROMEDRIVER, chromeDriver);
+                        System.setProperty(FennecProperties.CHROMEDRIVER, chromeDriver);
                     }
                 }
                 desiredCapabilities.setBrowserName(BrowserType.CHROME);
@@ -189,12 +189,12 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
             case Browsers.ie:
                 LOGGER.info("Creating capabilities for InternetExplorerDriver");
                 if (config.webDriverMode != WebDriverMode.remote) {
-                    final String ieDriver = PropertyManager.getProperty(fennecProperties.IEDRIVER, null);
+                    final String ieDriver = PropertyManager.getProperty(FennecProperties.IEDRIVER, null);
                     if (ieDriver == null) {
-                        throw new fennecRuntimeException("No iedriver set. "
+                        throw new FennecRuntimeException("No iedriver set. "
                                 + "Set System Property webdriver.ie.driver or add path to test.properties.");
                     }
-                    System.setProperty(fennecProperties.IEDRIVER, ieDriver);
+                    System.setProperty(FennecProperties.IEDRIVER, ieDriver);
                 }
                 desiredCapabilities.setBrowserName(BrowserType.IEXPLORE);
 
@@ -204,7 +204,7 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 desiredCapabilities.setCapability("se:ieOptions", options);
                 break;
             default:
-                throw new fennecSystemException(ErrorMessages.browserNotSupportedHere(browser));
+                throw new FennecSystemException(ErrorMessages.browserNotSupportedHere(browser));
         }
 
         /*

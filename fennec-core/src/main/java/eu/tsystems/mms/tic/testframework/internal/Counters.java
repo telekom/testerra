@@ -65,7 +65,7 @@ public final class Counters {
     /**
      * This method increases the counter for TestNG Assert WITH description.
      * It is called from injected code in Testng Asserts class.
-     * Injection happens via fennecUtils triggered from fennecListener.
+     * Injection happens via FennecUtils triggered from FennecListener.
      */
     public static void increaseDescriptedAsserts() {
         // check if the assert method was forwarded
@@ -99,7 +99,7 @@ public final class Counters {
     /**
      * This method increases the counter for TestNG Assert WITHOUT description.
      * It is called from injected code in Testng Asserts class.
-     * Injection happens via fennecUtils triggered from fennecListener.
+     * Injection happens via FennecUtils triggered from FennecListener.
      */
     public static void increaseUndescriptedAsserts() {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();

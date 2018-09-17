@@ -27,8 +27,8 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.annotations.fennecClassContext;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
@@ -53,7 +53,7 @@ public class ClassContext extends Context implements SynchronizableContext {
     public final String uuid = UUID.randomUUID().toString();
     public final TestContext testContext;
     public final RunContext runContext;
-    public fennecClassContext fennecClassContext = null;
+    public FennecClassContext FennecClassContext = null;
     public boolean merged = false;
 
     public ClassContext(TestContext testContext, RunContext runContext) {
@@ -89,7 +89,7 @@ public class ClassContext extends Context implements SynchronizableContext {
                     isTest = invokedMethod.isTestMethod();
                 }
                 else {
-                    throw new fennecSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{testResult, iTestContext},"\n"));
+                    throw new FennecSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{testResult, iTestContext},"\n"));
                 }
 
                 if (isTest) {

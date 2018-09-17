@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.exceptions;
 /**
  * Created by piet on 30.08.17.
  */
-public class InvalidOperationException extends fennecSystemException {
+public class InvalidOperationException extends FennecSystemException {
 
     public InvalidOperationException(String message) {
         super(message);

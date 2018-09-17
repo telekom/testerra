@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.creation;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -69,7 +69,7 @@ public class PageInstantiator<T extends Page> {
         try {
             return (T) constructor.newInstance(args);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
-            throw new fennecRuntimeException(String.format("Error instantiating target class <%s>: %s. Expected parameter types are: %s. Used args are: %s",
+            throw new FennecRuntimeException(String.format("Error instantiating target class <%s>: %s. Expected parameter types are: %s. Used args are: %s",
                     constructor.getDeclaringClass().getSimpleName(), e.getMessage(), Arrays.toString(constructor.getParameterTypes()), Arrays.toString(args)), e);
         }
     }

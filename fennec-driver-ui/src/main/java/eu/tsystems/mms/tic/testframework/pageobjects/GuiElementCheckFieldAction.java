@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.CheckFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
@@ -53,7 +53,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
 
         switch (checkRule) {
             case DEFAULT:
-                throw new fennecSystemException("Internal Error. Please provide stacktrace to fennec developers.");
+                throw new FennecSystemException("Internal Error. Please provide stacktrace to fennec developers.");
             case IS_PRESENT:
                 if (findNot) {
                     if (fast) {
@@ -131,7 +131,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             }
             break;
             default:
-                throw new fennecSystemException("CheckRule not implemented: " + checkRule);
+                throw new FennecSystemException("CheckRule not implemented: " + checkRule);
         }
     }
 
@@ -143,7 +143,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
         try {
             guiElement = (GuiElement) checkableInstance;
         } catch (ClassCastException e) {
-            throw new fennecSystemException("Internal Error. FieldAction was used by a Page, for which it was not implemented." +
+            throw new FennecSystemException("Internal Error. FieldAction was used by a Page, for which it was not implemented." +
                     " " + declaringPage + " from " + declaringClass, e);
         }
 

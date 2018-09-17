@@ -1,0 +1,9 @@
+fennec-report
+.gradle
+*.iml
+.idea
+target
+licenses
+*.zip
+out
+build

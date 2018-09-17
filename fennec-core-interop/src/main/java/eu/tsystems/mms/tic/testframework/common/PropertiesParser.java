@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.common;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.transfer.BooleanPackedResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +73,7 @@ public final class PropertiesParser {
             Check for loop
              */
             if (searchedStrings.contains(key)) {
-                throw new fennecSystemException("Loop detected while replacing a property: " + match);
+                throw new FennecSystemException("Loop detected while replacing a property: " + match);
             } else {
                 /*
                 ask

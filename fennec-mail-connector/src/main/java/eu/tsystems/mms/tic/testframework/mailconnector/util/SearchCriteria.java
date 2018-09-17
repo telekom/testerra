@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 
 /**
  * Created by pele on 15.10.2015.
@@ -54,7 +54,7 @@ public class SearchCriteria {
      */
     public String getStringValue() {
         if(!(value instanceof String)) {
-            throw new fennecRuntimeException("Expect String value for SearchCriteria of type " + searchCriteriaType.name());
+            throw new FennecRuntimeException("Expect String value for SearchCriteria of type " + searchCriteriaType.name());
         }
         return (String) value;
     }

@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.remote;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -84,7 +84,7 @@ public final class SupervisorRestClient {
 
         NodeInfo info = WebDriverManagerUtils.getExecutingRemoteWebDriverNode(driver);
         if (info == null) {
-            throw new fennecSystemException("Could not get host info from webdriver session");
+            throw new FennecSystemException("Could not get host info from webdriver session");
         }
         if (info.isLocalMode()) {
             LOGGER.warn("Using a local driver session, supervisor rest client won't work here");

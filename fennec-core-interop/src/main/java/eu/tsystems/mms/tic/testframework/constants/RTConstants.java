@@ -27,9 +27,9 @@ public final class RTConstants {
     /**
      * The properties file.
      */
-    private static final String PROPERTY_FILE = System.getProperty(fennecProperties.TEST_PROPERTIES_FILE, "test.properties");
+    private static final String PROPERTY_FILE = System.getProperty(FennecProperties.TEST_PROPERTIES_FILE, "test.properties");
 
-    public static String getfennecTestPropertiesFile() {
+    public static String getFennecTestPropertiesFile() {
         return PROPERTY_FILE;
     }
 
@@ -41,11 +41,11 @@ public final class RTConstants {
      */
     public static String getDownloadPathByOS(TestOS platform) {
         if (platform == TestOS.WINDOWS) {
-            return Constants.fennec_DOWNLOAD_DIRECTORY_WIN;
+            return Constants.Fennec_DOWNLOAD_DIRECTORY_WIN;
         }
 
         if (platform == TestOS.LINUX) {
-            return Constants.fennec_DOWNLOAD_DIRECTORY_LINUX;
+            return Constants.Fennec_DOWNLOAD_DIRECTORY_LINUX;
         }
         throw new UnsupportedOperationException("OS not supported by Supervisor Downloader. No path for OS set in Constants");
     }

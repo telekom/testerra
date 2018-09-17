@@ -20,8 +20,8 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +34,7 @@ public final class TimingConstants {
 
     public static final int WATCHDOG_THREAD_POLL_INTERVAL_SECONDS = 10;
 
-    public static final int WEBDRIVER_COMMAND_TIMEOUT_SECONDS = PropertyManager.getIntProperty(fennecProperties.fennec_WATCHDOG_TIMEOUT_SECONDS, 600);
+    public static final int WEBDRIVER_COMMAND_TIMEOUT_SECONDS = PropertyManager.getIntProperty(FennecProperties.Fennec_WATCHDOG_TIMEOUT_SECONDS, 600);
     public static final int WATCHDOG_FIRST_ANNOUNCEMENT_SECONDS;
     public static final int WATCHDOG_THREAD_HANGING_TIMEOUT_SECONDS;
     public static final int WATCHDOG_FORCE_QUIT_TIMEOUT_SECONDS;
@@ -43,7 +43,7 @@ public final class TimingConstants {
         if (WEBDRIVER_COMMAND_TIMEOUT_SECONDS < 2 * 60) {
             String msg = "\n\nWatchDog timeout to low: " + WEBDRIVER_COMMAND_TIMEOUT_SECONDS + " Set at least to 2 minutes.\n\n";
             System.err.println(msg);
-            throw new fennecRuntimeException(msg);
+            throw new FennecRuntimeException(msg);
         }
         WATCHDOG_FIRST_ANNOUNCEMENT_SECONDS = WEBDRIVER_COMMAND_TIMEOUT_SECONDS / 2;
         WATCHDOG_THREAD_HANGING_TIMEOUT_SECONDS = WEBDRIVER_COMMAND_TIMEOUT_SECONDS - 20;

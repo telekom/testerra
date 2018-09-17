@@ -19,10 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
-import eu.tsystems.mms.tic.testframework.events.fennecEvent;
-import eu.tsystems.mms.tic.testframework.events.fennecEventDataType;
-import eu.tsystems.mms.tic.testframework.events.fennecEventService;
-import eu.tsystems.mms.tic.testframework.events.fennecEventType;
+import eu.tsystems.mms.tic.testframework.events.FennecEvent;
+import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
+import eu.tsystems.mms.tic.testframework.events.FennecEventService;
+import eu.tsystems.mms.tic.testframework.events.FennecEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -101,7 +101,7 @@ public class MethodContextUpdateWorker extends MethodWorker {
         /*
         fire CONTEXT_SYNC event
          */
-        fennecEventService.getInstance().fireEvent(new fennecEvent(fennecEventType.CONTEXT_SYNC)
-                .addData(fennecEventDataType.CONTEXT, methodContext));
+        FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_SYNC)
+                .addData(FennecEventDataType.CONTEXT, methodContext));
     }
 }

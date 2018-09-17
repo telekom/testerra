@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.dynamicproxy;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -46,7 +46,7 @@ class DefaultWrappingProxy extends Proxy {
             wrapper.before(proxy, method, args);
             result = method.invoke(unProxiedObject, args);
         } catch (InvocationTargetException e) {
-            throw new fennecSystemException("should never happen, design flaw! ", e);
+            throw new FennecSystemException("should never happen, design flaw! ", e);
         } catch (Exception specificException) {
             wrapper.handleExceptions(proxy, method, args, specificException);
         } finally {

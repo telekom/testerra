@@ -20,9 +20,9 @@
 package eu.tsystems.mms.tic.testframework.report.model.context.report;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.fennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
@@ -122,7 +122,7 @@ public class ReportPublish {
 
     private static void initializeReportDir() {
         String userDirectory = System.getProperty(USER_DIR);
-        String relativeReportDir = PropertyManager.getProperty(fennecProperties.REPORTDIR, DEFAULT_REPORTDIR);
+        String relativeReportDir = PropertyManager.getProperty(FennecProperties.REPORTDIR, DEFAULT_REPORTDIR);
 
         Pattern pattern = Pattern.compile("\\d+");
         if (!(relativeReportDir.startsWith("/") || relativeReportDir.startsWith("\\"))) {
@@ -133,7 +133,7 @@ public class ReportPublish {
         }
         reportDirectory = new File(userDirectory + relativeReportDir + File.separator);
 
-        if (Flags.fennec_REUSE_REPORTDIR) {
+        if (Flags.Fennec_REUSE_REPORTDIR) {
             /*
              * ReportDir Reuse mode.
              */
@@ -142,10 +142,10 @@ public class ReportPublish {
             try {
                 FileUtils.deleteDirectory(reportDirectory);
             } catch (IOException e) {
-                throw new fennecRuntimeException("Could not clean report dir.", e);
+                throw new FennecRuntimeException("Could not clean report dir.", e);
             }
             if (!reportDirectory.mkdirs()) {
-                throw new fennecSystemException(
+                throw new FennecSystemException(
                         "Error cleaning report dir: " + reportDirectory +
                                 "\nCheck consoles or other directory and file accesses for locks.");
             }
@@ -175,7 +175,7 @@ public class ReportPublish {
                 reportDirectory = new File(userDirectory + relativeReportDir + File.separator);
             }
             if (!reportDirectory.mkdirs()) {
-                throw new fennecSystemException("Error creating report dir.");
+                throw new FennecSystemException("Error creating report dir.");
             }
         }
     }

@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
@@ -61,7 +61,7 @@ public abstract class Context {
 
                     return context;
                 } catch (Exception e) {
-                    throw new fennecSystemException("Error creating Context Class", e);
+                    throw new FennecSystemException("Error creating Context Class", e);
                 }
 
             } else {

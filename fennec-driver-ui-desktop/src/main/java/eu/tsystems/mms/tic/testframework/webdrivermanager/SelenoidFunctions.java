@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
@@ -98,11 +98,11 @@ public final class SelenoidFunctions {
                 return host + ":" + port;
             }
             else {
-                throw new fennecRuntimeException("Not a fennec managed driver");
+                throw new FennecRuntimeException("Not a fennec managed driver");
             }
         }
         else {
-            throw new fennecRuntimeException("Selenoid actions are not available with non-desktop drivers");
+            throw new FennecRuntimeException("Selenoid actions are not available with non-desktop drivers");
         }
     }
 

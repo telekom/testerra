@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +39,7 @@ public final class NumberUtils {
      */
     public static Long getAverageValue(List<Long> numberList) {
         if (numberList == null) {
-            throw new fennecSystemException("List is null");
+            throw new FennecSystemException("List is null");
         }
 
         int size = numberList.size();
@@ -62,7 +62,7 @@ public final class NumberUtils {
      */
     public static <T extends Object & Comparable<? super T>> T getMaxValue(List<T> numberList) {
         if (numberList == null) {
-            throw new fennecSystemException("List is null");
+            throw new FennecSystemException("List is null");
         }
 
         int size = numberList.size();
@@ -81,7 +81,7 @@ public final class NumberUtils {
      */
     public static <T extends Object & Comparable<? super T>> T getMinValue(List<T> numberList) {
         if (numberList == null) {
-            throw new fennecSystemException("List is null");
+            throw new FennecSystemException("List is null");
         }
 
         int size = numberList.size();

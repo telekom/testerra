@@ -22,23 +22,23 @@ package eu.tsystems.mms.tic.testframework.report.utils;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateOtherOutputsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GeneratefennecReportWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateFennecReportWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.MetricsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.fennecEventsWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.FennecEventsWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.interop.CollectAssertionInfoArtefacts;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.fennecListener;
+import eu.tsystems.mms.tic.testframework.report.FennecListener;
 import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.utils.fennecUtils;
+import eu.tsystems.mms.tic.testframework.utils.FennecUtils;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,12 +88,12 @@ public class GenerateReport {
              */
             GenerateReportsWorkerExecutor workerExecutor = new GenerateReportsWorkerExecutor();
 
-            workerExecutor.add(new fennecEventsWorker());
+            workerExecutor.add(new FennecEventsWorker());
 
-            fennecUtils.addWorkersToExecutor(fennecListener.GENERATE_REPORTS_WORKERS, workerExecutor);
+            FennecUtils.addWorkersToExecutor(FennecListener.GENERATE_REPORTS_WORKERS, workerExecutor);
 
             workerExecutor.add(new MetricsWorker());
-            workerExecutor.add(new GeneratefennecReportWorker());
+            workerExecutor.add(new GenerateFennecReportWorker());
             workerExecutor.add(new GenerateOtherOutputsWorker());
 
             // run workers
@@ -108,14 +108,14 @@ public class GenerateReport {
             /*
              * Check failure corridor and set exit code and state
              */
-            if (Flags.fennec_FAILURE_CORRIDOR_ACTIVE) {
+            if (Flags.Fennec_FAILURE_CORRIDOR_ACTIVE) {
                 FailureCorridor.printStatusAndJumpOut();
             }
         }
     }
 
     /**
-     * Stops logging of fennecCommands. Statistics are filled and reports are generated.
+     * Stops logging of FennecCommands. Statistics are filled and reports are generated.
      */
     public static void generateReport() {
         ExecutionContextController.RUN_CONTEXT.endTime = new Date();
@@ -127,7 +127,7 @@ public class GenerateReport {
     private static void pGenerateReport() {
 
         /*
-         * Re-scan for fennecClassContexts
+         * Re-scan for FennecClassContexts
          */
         ExecutionContextController.RUN_CONTEXT.rescanForClassContextNames();
 

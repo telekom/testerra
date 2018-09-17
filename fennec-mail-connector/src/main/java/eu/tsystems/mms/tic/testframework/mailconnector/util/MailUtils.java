@@ -82,7 +82,7 @@ import org.slf4j.LoggerFactory;
 
 import com.sun.mail.util.BASE64DecoderStream;
 
-import eu.tsystems.mms.tic.testframework.exceptions.fennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 
 /** Helper class, contains some utility methods. */
 public final class MailUtils {
@@ -124,10 +124,10 @@ public final class MailUtils {
      * @param received The received message.
      * 
      * @return FALSE if the Content is not equal, the Content Types differs or the Content cannot be read.
-     * @throws fennecSystemException thrown if exception during comparing is thrown.
+     * @throws FennecSystemException thrown if exception during comparing is thrown.
      */
-    public static boolean compareSentAndReceivedEmailContents(final MimeMessage sent, final fennecMail received)
-            throws fennecSystemException {
+    public static boolean compareSentAndReceivedEmailContents(final MimeMessage sent, final FennecMail received)
+            throws FennecSystemException {
         return pCompareSentAndReceivedEmailContents(sent, received);
     }
 
@@ -139,10 +139,10 @@ public final class MailUtils {
      * @param received The received message.
      * 
      * @return FALSE if the Content is not equal, the Content Types differs or the Content cannot be read.
-     * @throws fennecSystemException thrown if exception during comparing is thrown.
+     * @throws FennecSystemException thrown if exception during comparing is thrown.
      */
     public static boolean compareSentAndReceivedEmailContents(final MimeMessage sent, final Message received)
-            throws fennecSystemException {
+            throws FennecSystemException {
         return pCompareSentAndReceivedEmailContents(sent, received);
     }
 
@@ -154,10 +154,10 @@ public final class MailUtils {
      * @param received The received message.
      * 
      * @return FALSE if the Content is not equal, the Content Types differs or the Content cannot be read.
-     * @throws fennecSystemException thrown if exception during comparing is thrown.
+     * @throws FennecSystemException thrown if exception during comparing is thrown.
      */
-    private static boolean pCompareSentAndReceivedEmailContents(final MimeMessage sent, final fennecMail received)
-            throws fennecSystemException {
+    private static boolean pCompareSentAndReceivedEmailContents(final MimeMessage sent, final FennecMail received)
+            throws FennecSystemException {
 
         try {
             // Checks if Content Type are equal.
@@ -220,7 +220,7 @@ public final class MailUtils {
             // The Content is unknown.
             LOGGER.error("Content type is unknown: " + sent.getContent());
         } catch (final Exception e) {
-            throw new fennecSystemException("Error comparing messages.", e);
+            throw new FennecSystemException("Error comparing messages.", e);
         }
         return false;
     }
@@ -233,10 +233,10 @@ public final class MailUtils {
      * @param received The received message.
      * 
      * @return FALSE if the Content is not equal, the Content Types differs or the Content cannot be read.
-     * @throws fennecSystemException thrown if exception during comparing is thrown.
+     * @throws FennecSystemException thrown if exception during comparing is thrown.
      */
     private static boolean pCompareSentAndReceivedEmailContents(final MimeMessage sent, final Message received)
-            throws fennecSystemException {
+            throws FennecSystemException {
         try {
             // Checks if Content Type are equal.
             if (!sent.getContentType().equals(received.getContentType())) {
@@ -296,7 +296,7 @@ public final class MailUtils {
             // The Content is unknown.
             LOGGER.error("Content type is unknown: " + sent.getContent());
         } catch (final Exception e) {
-            throw new fennecSystemException("Error comparing messages.", e);
+            throw new FennecSystemException("Error comparing messages.", e);
         }
         return false;
     }
@@ -307,10 +307,10 @@ public final class MailUtils {
      * @param sent The sent message.
      * @param received The received message.
      * @return True if Headers match, else false.
-     * @throws fennecSystemException thrown if exception during comparing is thrown.
+     * @throws FennecSystemException thrown if exception during comparing is thrown.
      */
     public static boolean compareSentAndReceivedEmailHeaders(final Message sent, final Message received)
-            throws fennecSystemException {
+            throws FennecSystemException {
         return pCompareSentAndReceivedEmailHeaders(sent, received);
     }
 
@@ -320,10 +320,10 @@ public final class MailUtils {
      * @param sent The sent message.
      * @param received The received message.
      * @return True if Headers match, else false.
-     * @throws fennecSystemException thrown if exception during comparing is thrown.
+     * @throws FennecSystemException thrown if exception during comparing is thrown.
      */
     private static boolean pCompareSentAndReceivedEmailHeaders(final Message sent, final Message received)
-            throws fennecSystemException {
+            throws FennecSystemException {
         try {
             final MimeMessage sendedMessage = (MimeMessage) sent;
             final MimeMessage receivedMessage = (MimeMessage) received;
@@ -349,7 +349,7 @@ public final class MailUtils {
                 }
             }
         } catch (final Exception e) {
-            throw new fennecSystemException("Error comparing message headers.", e);
+            throw new FennecSystemException("Error comparing message headers.", e);
         }
         return true;
     }
@@ -358,10 +358,10 @@ public final class MailUtils {
      * Load an email file.
      * 
      * @param filename The path to the file to load.
-     * @throws fennecSystemException thrown if mail can't load.
+     * @throws FennecSystemException thrown if mail can't load.
      * @return The loaded MimeMessage.
      */
-    public static MimeMessage loadEmailFile(final String filename) throws fennecSystemException {
+    public static MimeMessage loadEmailFile(final String filename) throws FennecSystemException {
         return pLoadEmailFile(filename);
     }
 
@@ -369,17 +369,17 @@ public final class MailUtils {
      * Load an email file.
      * 
      * @param filename The path to the file to load.
-     * @throws fennecSystemException thrown if mail can't load.
+     * @throws FennecSystemException thrown if mail can't load.
      * @return The loaded MimeMessage.
      */
-    private static MimeMessage pLoadEmailFile(final String filename) throws fennecSystemException {
+    private static MimeMessage pLoadEmailFile(final String filename) throws FennecSystemException {
         MimeMessage message = null;
         try {
             final Session mailSession = Session.getInstance(new Properties());
             message = new MimeMessage(mailSession, new FileInputStream(filename));
             MessageUtils.multiPartBugfix(message);
         } catch (final Exception e) {
-            throw new fennecSystemException("Error loading email.", e);
+            throw new FennecSystemException("Error loading email.", e);
         }
         return message;
     }
@@ -389,9 +389,9 @@ public final class MailUtils {
      * 
      * @param message The message to save.
      * @param filename The path to write the message.
-     * @throws fennecSystemException thrown if message can't be saved.
+     * @throws FennecSystemException thrown if message can't be saved.
      */
-    public static void saveEmail(final Message message, final String filename) throws fennecSystemException {
+    public static void saveEmail(final Message message, final String filename) throws FennecSystemException {
         pSaveEmail(message, filename);
     }
 
@@ -400,9 +400,9 @@ public final class MailUtils {
      * 
      * @param message The message to save.
      * @param filename The path to write the message.
-     * @throws fennecSystemException thrown if message can't be saved.
+     * @throws FennecSystemException thrown if message can't be saved.
      */
-    private static void pSaveEmail(final Message message, final String filename) throws fennecSystemException {
+    private static void pSaveEmail(final Message message, final String filename) throws FennecSystemException {
         if (new File(filename).exists()) {
             new File(filename).delete();
         }
@@ -413,29 +413,29 @@ public final class MailUtils {
             message.writeTo(fos);
             fos.close();
         } catch (final Exception e) {
-            throw new fennecSystemException("Can't save Email.", e);
+            throw new FennecSystemException("Can't save Email.", e);
         }
     }
 
     /**
      * Saves an email to file.
      * 
-     * @param message fennecMail The message to save.
+     * @param message FennecMail The message to save.
      * @param filename The path to write the message.
-     * @throws fennecSystemException thrown if message can't be saved.
+     * @throws FennecSystemException thrown if message can't be saved.
      */
-    public static void saveEmail(final fennecMail message, final String filename) throws fennecSystemException {
+    public static void saveEmail(final FennecMail message, final String filename) throws FennecSystemException {
         pSaveEmailX(message, filename);
     }
 
     /**
      * Saves an email to file.
      * 
-     * @param message fennecMail The message to save.
+     * @param message FennecMail The message to save.
      * @param filename The path to write the message.
-     * @throws fennecSystemException thrown if message can't be saved.
+     * @throws FennecSystemException thrown if message can't be saved.
      */
-    private static void pSaveEmailX(final fennecMail message, final String filename) throws fennecSystemException {
+    private static void pSaveEmailX(final FennecMail message, final String filename) throws FennecSystemException {
         if (new File(filename).exists()) {
             new File(filename).delete();
         }
@@ -446,7 +446,7 @@ public final class MailUtils {
             message.getMessage().writeTo(fos);
             fos.close();
         } catch (final Exception e) {
-            throw new fennecSystemException("Can't save Email.", e);
+            throw new FennecSystemException("Can't save Email.", e);
         }
     }
 
@@ -455,9 +455,9 @@ public final class MailUtils {
      * 
      * @param inputStream The InputStream to load the email.
      * @return The loaded message.
-     * @throws fennecSystemException thrown if mail can't load.
+     * @throws FennecSystemException thrown if mail can't load.
      */
-    public static MimeMessage loadEmail(final InputStream inputStream) throws fennecSystemException {
+    public static MimeMessage loadEmail(final InputStream inputStream) throws FennecSystemException {
         return pLoadEmail(inputStream);
     }
 
@@ -466,16 +466,16 @@ public final class MailUtils {
      * 
      * @param inputStream The InputStream to load the email.
      * @return The loaded message.
-     * @throws fennecSystemException thrown if mail can't load.
+     * @throws FennecSystemException thrown if mail can't load.
      */
-    private static MimeMessage pLoadEmail(final InputStream inputStream) throws fennecSystemException {
+    private static MimeMessage pLoadEmail(final InputStream inputStream) throws FennecSystemException {
         MimeMessage message = null;
         try {
             final Session mailSession = Session.getInstance(new Properties());
             message = new MimeMessage(mailSession, inputStream);
             MessageUtils.multiPartBugfix(message);
         } catch (final Exception e) {
-            throw new fennecSystemException("Error loading email.", e);
+            throw new FennecSystemException("Error loading email.", e);
         }
         return message;
     }
@@ -484,9 +484,9 @@ public final class MailUtils {
      * Displays the message.
      * 
      * @param message The message to display.
-     * @throws fennecSystemException thrown if content of message can't read.
+     * @throws FennecSystemException thrown if content of message can't read.
      */
-    public static void displayMail(final Message message) throws fennecSystemException {
+    public static void displayMail(final Message message) throws FennecSystemException {
         pDisplayMail(message);
     }
 
@@ -494,9 +494,9 @@ public final class MailUtils {
      * Displays the message from file.
      * 
      * @param filename The path to message.
-     * @throws fennecSystemException thrown if content of message can't read.
+     * @throws FennecSystemException thrown if content of message can't read.
      */
-    public static void displayMail(final String filename) throws fennecSystemException {
+    public static void displayMail(final String filename) throws FennecSystemException {
         pDisplayMail(loadEmailFile(filename));
     }
 
@@ -504,9 +504,9 @@ public final class MailUtils {
      * Displays the message.
      * 
      * @param message The message to display.
-     * @throws fennecSystemException thrown if content of message can't read.
+     * @throws FennecSystemException thrown if content of message can't read.
      */
-    private static void pDisplayMail(final Message message) throws fennecSystemException {
+    private static void pDisplayMail(final Message message) throws FennecSystemException {
         final MimeMessage mimeMessage = (MimeMessage) message;
         MessageUtils.multiPartBugfix(mimeMessage);
         try {
@@ -516,7 +516,7 @@ public final class MailUtils {
             }
             LOGGER.info("Content: " + mimeMessage.getContent().toString());
         } catch (final Exception e) {
-            throw new fennecSystemException("Error get headers and content from message.", e);
+            throw new FennecSystemException("Error get headers and content from message.", e);
         }
     }
 
@@ -528,10 +528,10 @@ public final class MailUtils {
      * @param certFile The path to certification file.
      * 
      * @return The encrypted MimeMessage.
-     * @throws fennecSystemException thrown if message can't encrypted
+     * @throws FennecSystemException thrown if message can't encrypted
      */
     public static MimeMessage encryptMessageWithCert(final MimeMessage message, final Session mailSession,
-            final String certFile) throws fennecSystemException {
+            final String certFile) throws FennecSystemException {
         return pEncryptMessageWithCert(message, mailSession, certFile);
     }
 
@@ -543,10 +543,10 @@ public final class MailUtils {
      * @param certFile The path to certification file.
      * 
      * @return The encrypted MimeMessage.
-     * @throws fennecSystemException thrown if message can't encrypted
+     * @throws FennecSystemException thrown if message can't encrypted
      */
     private static MimeMessage pEncryptMessageWithCert(final MimeMessage message, final Session mailSession,
-            final String certFile) throws fennecSystemException {
+            final String certFile) throws FennecSystemException {
         MessageUtils.multiPartBugfix(message);
         // load old mail headers
         Enumeration<?> headerEnum;
@@ -605,7 +605,7 @@ public final class MailUtils {
             }
             newMessage.saveChanges();
         } catch (final Exception e) {
-            throw new fennecSystemException("Can't encrypt message.", e);
+            throw new FennecSystemException("Can't encrypt message.", e);
         }
         return newMessage;
     }
@@ -616,10 +616,10 @@ public final class MailUtils {
      * @param message The message to encrypt and save.
      * @param filename The path to file, where message should be stored.
      * @param certfile The path to certfile to encrypt the message.
-     * @throws fennecSystemException thrown if message can't encrypted, or some other error.
+     * @throws FennecSystemException thrown if message can't encrypted, or some other error.
      */
     public static void encryptAndSaveEmail(final MimeMessage message, final String filename, final String certfile)
-            throws fennecSystemException {
+            throws FennecSystemException {
         pEncryptAndSaveEmail(message, filename, certfile);
     }
 
@@ -629,10 +629,10 @@ public final class MailUtils {
      * @param message The message to encrypt and save.
      * @param filename The path to file, where message should be stored.
      * @param certfile The path to certfile to encrypt the message.
-     * @throws fennecSystemException thrown if message can't encrypted, or some other error.
+     * @throws FennecSystemException thrown if message can't encrypted, or some other error.
      */
     private static void pEncryptAndSaveEmail(final MimeMessage message, final String filename, final String certfile)
-            throws fennecSystemException {
+            throws FennecSystemException {
         final MimeMessage encM = encryptMessageWithCert(message, Session.getDefaultInstance(
                 new Properties()), certfile);
         saveEmail(encM, filename);
@@ -648,10 +648,10 @@ public final class MailUtils {
      * 
      * @return The encrypted MimeMessage.
      * 
-     * @throws fennecSystemException thrown if message can't encrypted.
+     * @throws FennecSystemException thrown if message can't encrypted.
      */
     public static MimeMessage encryptMessageWithKeystore(final MimeMessage message, final Session mailSession,
-            final String keyfile, final String password) throws fennecSystemException {
+            final String keyfile, final String password) throws FennecSystemException {
         return pEncryptMessageWithKeystore(message, mailSession, keyfile, password);
     }
 
@@ -665,10 +665,10 @@ public final class MailUtils {
      * 
      * @return The encrypted MimeMessage.
      * 
-     * @throws fennecSystemException thrown if message can't encrypted.
+     * @throws FennecSystemException thrown if message can't encrypted.
      */
     private static MimeMessage pEncryptMessageWithKeystore(final MimeMessage message, final Session mailSession,
-            final String keyfile, final String password) throws fennecSystemException {
+            final String keyfile, final String password) throws FennecSystemException {
         MessageUtils.multiPartBugfix(message);
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         MimeMessage smimeEncryptedMsg = null;
@@ -692,7 +692,7 @@ public final class MailUtils {
             smimeEncryptedMsg.setContent(mbp.getContent(), mbp.getContentType());
             smimeEncryptedMsg.saveChanges();
         } catch (final Exception e) {
-            throw new fennecSystemException("Can't encrypt message.", e);
+            throw new FennecSystemException("Can't encrypt message.", e);
         }
         return smimeEncryptedMsg;
     }
@@ -706,10 +706,10 @@ public final class MailUtils {
      * @param password The keystore file password.
      * 
      * @return The signed message.
-     * @throws fennecSystemException thrown if message can't sign.
+     * @throws FennecSystemException thrown if message can't sign.
      */
     public static MimeMessage signMessageWithKeystore(final MimeMessage message,
-            final Session mailSession, final String keyfile, final String password) throws fennecSystemException {
+            final Session mailSession, final String keyfile, final String password) throws FennecSystemException {
         return pSignMessageWithKeystore(message, mailSession, keyfile, password);
     }
 
@@ -722,10 +722,10 @@ public final class MailUtils {
      * @param password The keystore file password.
      * 
      * @return The signed message.
-     * @throws fennecSystemException thrown if message can't sign.
+     * @throws FennecSystemException thrown if message can't sign.
      */
     private static MimeMessage pSignMessageWithKeystore(final MimeMessage message,
-            final Session mailSession, final String keyfile, final String password) throws fennecSystemException {
+            final Session mailSession, final String keyfile, final String password) throws FennecSystemException {
         MessageUtils.multiPartBugfix(message);
 
         MimeMessage signedMessage = null;
@@ -768,7 +768,7 @@ public final class MailUtils {
             signedMessage.setContent(mimeMultiPart);
             signedMessage.saveChanges();
         } catch (final Exception e) {
-            throw new fennecSystemException("Can't sign message.", e);
+            throw new FennecSystemException("Can't sign message.", e);
         }
         return signedMessage;
     }
@@ -782,10 +782,10 @@ public final class MailUtils {
      * @param password The password of the keystore file.
      * 
      * @return The decrypted message.
-     * @throws fennecSystemException thrown if message can't decrypt.
+     * @throws FennecSystemException thrown if message can't decrypt.
      */
     public static MimeMessage decryptMessageWithKeystore(final MimeMessage message,
-            final Session mailSession, final String keyfile, final String password) throws fennecSystemException {
+            final Session mailSession, final String keyfile, final String password) throws FennecSystemException {
         return pDecryptMessageWithKeystore(message, mailSession, keyfile, password);
     }
 
@@ -798,10 +798,10 @@ public final class MailUtils {
      * @param password The password of the keystore file.
      * 
      * @return The decrypted message.
-     * @throws fennecSystemException thrown if message can't decrypt.
+     * @throws FennecSystemException thrown if message can't decrypt.
      */
     private static MimeMessage pDecryptMessageWithKeystore(final MimeMessage message,
-            final Session mailSession, final String keyfile, final String password) throws fennecSystemException {
+            final Session mailSession, final String keyfile, final String password) throws FennecSystemException {
         try {
             MessageUtils.multiPartBugfix(message);
             Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
@@ -842,7 +842,7 @@ public final class MailUtils {
             return decryptedMessage;
 
         } catch (final Exception e) {
-            throw new fennecSystemException("Can't decrypt message", e);
+            throw new FennecSystemException("Can't decrypt message", e);
         }
     }
 
@@ -854,10 +854,10 @@ public final class MailUtils {
      * @param keyfile The path to keystore file.
      * @param password The password for the keyfile.
      * @param filename The filename/path to save the message.
-     * @throws fennecSystemException thrown if message can't encrypt or save.
+     * @throws FennecSystemException thrown if message can't encrypt or save.
      */
     public static void encryptAndSaveEmail(final MimeMessage message, final Session mailsession, final String keyfile,
-            final String password, final String filename) throws fennecSystemException {
+            final String password, final String filename) throws FennecSystemException {
         pEncryptAndSaveEmail(message, mailsession, keyfile, password, filename);
     }
 
@@ -869,11 +869,11 @@ public final class MailUtils {
      * @param keyfile The path to keystore file.
      * @param password The password for the keyfile.
      * @param filename The filename/path to save the message.
-     * @throws fennecSystemException thrown if message can't encrypt or save.
+     * @throws FennecSystemException thrown if message can't encrypt or save.
      */
     private static void pEncryptAndSaveEmail(final MimeMessage message, final Session mailsession,
             final String keyfile,
-            final String password, final String filename) throws fennecSystemException {
+            final String password, final String filename) throws FennecSystemException {
         final MimeMessage mimeMessage = pEncryptMessageWithKeystore(message, mailsession, keyfile, password);
         pSaveEmail(mimeMessage, filename);
     }

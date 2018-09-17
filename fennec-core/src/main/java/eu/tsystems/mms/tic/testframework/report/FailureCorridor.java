@@ -68,13 +68,13 @@ public final class FailureCorridor {
         }
     }
 
-    private static int allowedTestFailures = PropertyManager.getIntProperty(FennecProperties.Fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS, -1);
-    private static int allowedTestFailuresHIGH = PropertyManager.getIntProperty(FennecProperties.Fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH, -1);
-    private static int allowedTestFailuresMID = PropertyManager.getIntProperty(FennecProperties.Fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID, -1);
-    private static int allowedTestFailuresLOW = PropertyManager.getIntProperty(FennecProperties.Fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW, -1);
+    private static int allowedTestFailures = PropertyManager.getIntProperty(FennecProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS, -1);
+    private static int allowedTestFailuresHIGH = PropertyManager.getIntProperty(FennecProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH, -1);
+    private static int allowedTestFailuresMID = PropertyManager.getIntProperty(FennecProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID, -1);
+    private static int allowedTestFailuresLOW = PropertyManager.getIntProperty(FennecProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW, -1);
 
     public static void setFailureCorridorActive(boolean active) {
-        Flags.Fennec_FAILURE_CORRIDOR_ACTIVE = active;
+        Flags.FAILURE_CORRIDOR_ACTIVE = active;
     }
 
     public static void setAllowedTestFailures(int allowedTestFailures) {

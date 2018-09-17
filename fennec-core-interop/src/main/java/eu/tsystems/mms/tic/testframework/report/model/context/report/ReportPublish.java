@@ -133,7 +133,7 @@ public class ReportPublish {
         }
         reportDirectory = new File(userDirectory + relativeReportDir + File.separator);
 
-        if (Flags.Fennec_REUSE_REPORTDIR) {
+        if (Flags.REUSE_REPORTDIR) {
             /*
              * ReportDir Reuse mode.
              */

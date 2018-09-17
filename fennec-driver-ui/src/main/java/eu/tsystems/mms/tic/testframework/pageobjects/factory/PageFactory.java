@@ -54,7 +54,7 @@ public final class PageFactory {
     private static ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
 
     private static final ThreadLocal<CircularFifoBuffer> LOOP_DETECTION_LOGGER = new ThreadLocal<>();
-    private static final int NR_OF_LOOPS = PropertyManager.getIntProperty(FennecProperties.Fennec_PAGE_FACTORY_LOOPS, 20);
+    private static final int NR_OF_LOOPS = PropertyManager.getIntProperty(FennecProperties.PAGE_FACTORY_LOOPS, 20);
 
     public static abstract class ErrorHandler {
 

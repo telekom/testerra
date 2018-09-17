@@ -642,7 +642,7 @@ public final class PerfTestReportUtils {
 //        String browser = WebDriverManager.config().getBrowser().name();
 //        String wedDriverMode = WebDriverManager.config().getWebDriverMode();
 //        String reuse = "" + Flags.REUSE_DATAPROVIDER_DRIVER_BY_THREAD;
-//        String thinkTime = "" + PropertyManager.getIntProperty(FennecProperties.Fennec_PERF_PAGE_THINKTIME_MS, 0);
+//        String thinkTime = "" + PropertyManager.getIntProperty(FennecProperties.PERF_PAGE_THINKTIME_MS, 0);
 //        String server = PropertyManager.getProperty(FennecProperties.SELENIUMHOST);
 //
 //        ITestNGMethod[] executedTestmethods = PerfTestContainer.getTestContext().getAllTestMethods();

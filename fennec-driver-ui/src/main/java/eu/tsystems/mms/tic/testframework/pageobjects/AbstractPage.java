@@ -69,7 +69,7 @@ public abstract class AbstractPage {
      * Screenshot on page load flag.
      */
     private static final boolean SCREENSHOT_ON_PAGELOAD = PropertyManager.getBooleanProperty(
-            FennecProperties.Fennec_SCREENSHOT_ON_PAGELOAD, false);
+            FennecProperties.SCREENSHOT_ON_PAGELOAD, false);
 
     private boolean forcedGuiElementStandardAsserts = false;
 

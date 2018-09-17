@@ -123,13 +123,13 @@ public class FennecCommons {
      * Loads proxy settings from a file.
      */
     private static void initializeProxySettings() {
-        final boolean loadProxySettings = PropertyManager.getBooleanProperty(FennecProperties.Fennec_PROXY_SETTINGS_LOAD, true);
+        final boolean loadProxySettings = PropertyManager.getBooleanProperty(FennecProperties.PROXY_SETTINGS_LOAD, true);
         if (!loadProxySettings) {
             LOGGER.info("Skipping loading of fennec Proxy Settings.");
             return;
         }
 
-        final String filename = PropertyManager.getProperty(FennecProperties.Fennec_PROXY_SETTINGS_FILE, "proxysettings.properties");
+        final String filename = PropertyManager.getProperty(FennecProperties.PROXY_SETTINGS_FILE, "proxysettings.properties");
 
         final InputStream inputStream = FileUtils.getLocalOrResourceFileAsStream(filename);
 

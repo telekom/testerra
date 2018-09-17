@@ -35,7 +35,7 @@ import java.util.List;
  */
 public final class RunConfig {
 
-    public final String RUNCFG = PropertyManager.getProperty(FennecProperties.Fennec_RUNCFG, "DEFAULT");
+    public final String RUNCFG = PropertyManager.getProperty(FennecProperties.RUNCFG, "DEFAULT");
     public final FennecBuildInformation FennecBuildInformation = new FennecBuildInformation();
 
     public static String getModuleFolderName() {

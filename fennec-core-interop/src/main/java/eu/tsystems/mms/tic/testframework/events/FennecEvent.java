@@ -34,7 +34,7 @@ public final class FennecEvent {
     /**
      * Event type constant.
      */
-    public static final String Fennec_EVENT_TYPE = "Fennec_EVENT_TYPE";
+    public static final String EVENT_TYPE = "EVENT_TYPE";
 
     /**
      * Event type.

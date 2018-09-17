@@ -58,7 +58,7 @@ public final class SourceUtils {
     private static int linePrefetch = PropertyManager.getIntProperty(FennecProperties.SOURCE_LINES_PREFETCH, 5);
     private static final boolean FIND_SOURCES = PropertyManager.getBooleanProperty(FennecProperties.REPORT_ACTIVATE_SOURCES, true);
     private static HashMap<Class, List<String>> cachedClassNames = new HashMap<Class, List<String>>();
-    private static final String PACKAGE_SCOPE = PropertyManager.getProperty(FennecProperties.Fennec_PROJECT_PACKAGE,
+    private static final String PACKAGE_SCOPE = PropertyManager.getProperty(FennecProperties.PROJECT_PACKAGE,
             FennecCommons.DEFAULT_PACKAGE_NAME);
 
     public static String findScriptSourceForThrowable(Throwable throwable) {

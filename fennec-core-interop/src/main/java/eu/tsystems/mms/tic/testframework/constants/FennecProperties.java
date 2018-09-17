@@ -177,38 +177,38 @@ public final class FennecProperties {
     /**
      * Guielement easy mode.
      */
-    public static final String Fennec_GUIELEMENT_TYPE = "fennec.guielement.type";
-    public static final String Fennec_GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = "fennec.guielement.default.assertcollector";
+    public static final String GUIELEMENT_TYPE = "fennec.guielement.type";
+    public static final String GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = "fennec.guielement.default.assertcollector";
     /*
      * Package the project is located in.
      */
-    public static final String Fennec_PROJECT_PACKAGE = "fennec.project.package";
+    public static final String PROJECT_PACKAGE = "fennec.project.package";
 
     /**
      * Flag for Perf Test Statistics generation.
      */
-    public static final String Fennec_PERF_GENERATE_STATISTICS = "fennec.perf.generate.statistics";
+    public static final String PERF_GENERATE_STATISTICS = "fennec.perf.generate.statistics";
     /**
      * Perf test thinktime.
      */
-    public static final String Fennec_PERF_PAGE_THINKTIME_MS = "fennec.perf.page.thinktime.ms";
+    public static final String PERF_PAGE_THINKTIME_MS = "fennec.perf.page.thinktime.ms";
     /** reuse existing driver for a thread of dataprovider */
-    public static final String Fennec_REUSE_DATAPROVIDER_DRIVER_BY_THREAD = "fennec.reuse.dataprovider.driver.by.thread";
+    public static final String REUSE_DATAPROVIDER_DRIVER_BY_THREAD = "fennec.reuse.dataprovider.driver.by.thread";
     /** Perf test Property, used to set default values of a Load test */
-    public static final String Fennec_PERF_TEST = "fennec.perf.test";
+    public static final String PERF_TEST = "fennec.perf.test";
 
     /**
      * If true, screenshot after page is loaded will be taken.
      */
-    public static final String Fennec_SCREENSHOT_ON_PAGELOAD = "fennec.screenshot.on.pageload";
+    public static final String SCREENSHOT_ON_PAGELOAD = "fennec.screenshot.on.pageload";
 
-    public static final String Fennec_DB_TIMEOUT = "fennec.db.timeout";
+    public static final String DB_TIMEOUT = "fennec.db.timeout";
 
     public static final String BROWSER_VERSION = "browser.version";
 
-    public static final String Fennec_MONITOR_MEMORY = "fennec.monitor.memory";
+    public static final String MONITOR_MEMORY = "fennec.monitor.memory";
 
-    public static final String Fennec_DRY_RUN = "fennec.dryrun";
+    public static final String DRY_RUN = "fennec.dryrun";
 
     /** Execution mode remote or local */
     public static final String SIKULI_MODE = "sikuli.mode";
@@ -230,50 +230,48 @@ public final class FennecProperties {
 
     public static final String GUIELEMENT_CHECK_RULE = "guielement.checkrule";
 
-    public static final String Fennec_REUSE_REPORTDIR = "fennec.reuse.reportdir";
+    public static final String REUSE_REPORTDIR = "fennec.reuse.reportdir";
 
     public static final String SKIP_EXECUTION_WHEN_PREVIOUSLY_PASSED = "skip.execution.when.previously.passed";
 
-    public static final String Fennec_BROWSER_MAXIMIZE = "fennec.browser.maximize";
+    public static final String BROWSER_MAXIMIZE = "fennec.browser.maximize";
 
     public static final String WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD = "webdriver.timeouts.seconds.pageload";
     public static final String WEBDRIVER_TIMEOUT_SECONDS_SCRIPT = "webdriver.timeouts.seconds.script";
 
-    public static final String Fennec_PROXY_SETTINGS_LOAD = "fennec.proxy.settings.load";
-    public static final String Fennec_PROXY_SETTINGS_FILE = "fennec.proxy.settings.file";
+    public static final String PROXY_SETTINGS_LOAD = "fennec.proxy.settings.load";
+    public static final String PROXY_SETTINGS_FILE = "fennec.proxy.settings.file";
 
-    public static final String Fennec_REPORT_DATAPROVIDER_INFOS = "fennec.report.dataprovider.infos";
+    public static final String REPORT_DATAPROVIDER_INFOS = "fennec.report.dataprovider.infos";
 
-    public static final String Fennec_LIST_TESTS = "fennec.list.tests";
+    public static final String LIST_TESTS = "fennec.list.tests";
 
     public static final String DELAY_AFTER_GUIELEMENT_FIND_MILLIS = "fennec.delay.after.guielement.find.millis";
     public static final String DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS = "fennec.delay.before.guielement.action.millis";
     public static final String DELAY_AFTER_GUIELEMENT_ACTION_MILLIS = "fennec.delay.after.guielement.action.millis";
 
-    public static final String Fennec_WEB_TAKE_ACTION_SCREENSHOTS = "fennec.web.take.action.screenshots";
+    public static final String WEB_TAKE_ACTION_SCREENSHOTS = "fennec.web.take.action.screenshots";
 
-    public static final String Fennec_RUNCFG = "fennec.runcfg";
+    public static final String RUNCFG = "fennec.runcfg";
 
-    public static final String Fennec_WATCHDOG_ENABLE = "fennec.watchdog.enable";
-    public static final String Fennec_WATCHDOG_TIMEOUT_SECONDS = "fennec.watchdog.timeout.seconds";
+    public static final String WATCHDOG_ENABLE = "fennec.watchdog.enable";
+    public static final String WATCHDOG_TIMEOUT_SECONDS = "fennec.watchdog.timeout.seconds";
 
     /*
     Fehlerkorridor
      */
-    public static final String Fennec_FAILURE_CORRIDOR_ACTIVE = "fennec.failure.corridor.active";
-    public static final String Fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS = "fennec.failure.corridor.allowed.failed.tests";
-    public static final String Fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH = "fennec.failure.corridor.allowed.failed.tests.high";
-    public static final String Fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID = "fennec.failure.corridor.allowed.failed.tests.mid";
-    public static final String Fennec_FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW = "fennec.failure.corridor.allowed.failed.tests.low";
+    public static final String FAILURE_CORRIDOR_ACTIVE = "fennec.failure.corridor.active";
+    public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS = "fennec.failure.corridor.allowed.failed.tests";
+    public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH = "fennec.failure.corridor.allowed.failed.tests.high";
+    public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID = "fennec.failure.corridor.allowed.failed.tests.mid";
+    public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW = "fennec.failure.corridor.allowed.failed.tests.low";
 
-    public static final String Fennec_STITCH_CHROME_SCREENSHOTS = "fennec.stitch.chrome.screenshots";
+    public static final String STITCH_CHROME_SCREENSHOTS = "fennec.stitch.chrome.screenshots";
 
-    public static final String Fennec_KAFKA_ACTIVE = "fennec.kafka.active";
+    public static final String DISPLAY_RESOLUTION = "fennec.display.resolution";
 
-    public static final String Fennec_DISPLAY_RESOLUTION = "fennec.display.resolution";
+    public static final String PAGE_FACTORY_LOOPS = "fennec.page.factory.loops";
+    public static final String EXECUTION_OMIT_IN_DEVELOPMENT = "fennec.execution.omit.indevelopment";
 
-    public static final String Fennec_PAGE_FACTORY_LOOPS = "fennec.page.factory.loops";
-    public static final String Fennec_EXECUTION_OMIT_IN_DEVELOPMENT = "fennec.execution.omit.indevelopment";
-
-    public static final String Fennec_GUIELEMENT_HIGHLIGHTS_ACTIVE = "fennec.guielement.highlights.active";
+    public static final String GUIELEMENT_HIGHLIGHTS_ACTIVE = "fennec.guielement.highlights.active";
 }

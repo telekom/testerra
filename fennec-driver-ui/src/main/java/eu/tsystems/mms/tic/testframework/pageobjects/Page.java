@@ -110,7 +110,7 @@ public abstract class Page extends AbstractPage {
      */
     private void executeThinkTime() {
         // Thinktime in Properties
-        int thinkTime = PropertyManager.getIntProperty(FennecProperties.Fennec_PERF_PAGE_THINKTIME_MS, 0);
+        int thinkTime = PropertyManager.getIntProperty(FennecProperties.PERF_PAGE_THINKTIME_MS, 0);
         // timeOut for Threadsleep
         int timeToWait = 0;
         /*

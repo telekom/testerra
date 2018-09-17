@@ -60,7 +60,7 @@ public final class WebDriverManager {
         UITestUtils.initializePerfTest();
 
         // start WatchDog for hanging sessions
-        boolean watchdogEnabled = PropertyManager.getBooleanProperty(FennecProperties.Fennec_WATCHDOG_ENABLE, true);
+        boolean watchdogEnabled = PropertyManager.getBooleanProperty(FennecProperties.WATCHDOG_ENABLE, true);
         if (watchdogEnabled) {
             WebDriverWatchDog.start();
         }

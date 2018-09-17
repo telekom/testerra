@@ -190,7 +190,7 @@ public final class JSUtils {
      */
     public static void highlightWebElement(final WebDriver driver, final WebElement webElement, final int r,
             final int g, final int b) {
-        if (!Flags.Fennec_GUIELEMENT_HIGHLIGHTS) {
+        if (!Flags.GUIELEMENT_HIGHLIGHTS) {
             return;
         }
 
@@ -204,7 +204,7 @@ public final class JSUtils {
     }
 
     public static void highlightWebElementClick(final WebDriver driver, final WebElement webElement) {
-        if (!Flags.Fennec_GUIELEMENT_HIGHLIGHTS) {
+        if (!Flags.GUIELEMENT_HIGHLIGHTS) {
             return;
         }
 
@@ -227,7 +227,7 @@ public final class JSUtils {
      */
     public static void highlightWebElementStatic(final WebDriver driver, final WebElement webElement, final int r,
             final int g, final int b) {
-        if (!Flags.Fennec_GUIELEMENT_HIGHLIGHTS) {
+        if (!Flags.GUIELEMENT_HIGHLIGHTS) {
             return;
         }
 

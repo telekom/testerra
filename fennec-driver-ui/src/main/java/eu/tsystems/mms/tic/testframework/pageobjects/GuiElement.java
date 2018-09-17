@@ -85,7 +85,7 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);
 
-    private static boolean DEFAULT_ASSERT_IS_COLLECTOR = PropertyManager.getBooleanProperty(FennecProperties.Fennec_GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false);
+    private static boolean DEFAULT_ASSERT_IS_COLLECTOR = PropertyManager.getBooleanProperty(FennecProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false);
 
     private boolean forcedStandardAsserts = false;
 

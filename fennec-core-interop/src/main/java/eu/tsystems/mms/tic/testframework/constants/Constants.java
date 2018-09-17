@@ -37,21 +37,21 @@ public final class Constants {
 
     public static final String EXECUTING_SELENIUM_HOST_LOCAL_MODE = "local";
     public static final int WEBDRIVER_START_RETRY_TIME_IN_MS = 10000;
-    public static final SimpleDateFormat Fennec_SIMPLE_DATE_FORMAT_DATE;
-    public static final SimpleDateFormat Fennec_SIMPLE_DATE_FORMAT_DELTA;
+    public static final SimpleDateFormat SIMPLE_DATE_FORMAT_DATE;
+    public static final SimpleDateFormat SIMPLE_DATE_FORMAT_DELTA;
     public static final int PAGE_LOAD_TIMEOUT_SECONDS = PropertyManager.getIntProperty(FennecProperties.WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD, 120);
 
     /*
     Download paths
      */
-    static final String Fennec_DOWNLOAD_DIRECTORY_WIN = "C:\\FennecDownloads\\";
-    static final String Fennec_DOWNLOAD_DIRECTORY_LINUX = "/tmp/FennecDownloads/";
+    static final String DOWNLOAD_DIRECTORY_WIN = "C:\\FennecDownloads\\";
+    static final String DOWNLOAD_DIRECTORY_LINUX = "/tmp/FennecDownloads/";
 
 
     static {
         try {
-            Fennec_SIMPLE_DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-            Fennec_SIMPLE_DATE_FORMAT_DELTA = new SimpleDateFormat("H 'h' m 'min' s 'sec' S 'ms'");
+            SIMPLE_DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+            SIMPLE_DATE_FORMAT_DELTA = new SimpleDateFormat("H 'h' m 'min' s 'sec' S 'ms'");
         } catch (Exception e) {
             throw new FennecSystemException("Internal Error", e);
         }

@@ -34,7 +34,7 @@ public final class TimingConstants {
 
     public static final int WATCHDOG_THREAD_POLL_INTERVAL_SECONDS = 10;
 
-    public static final int WEBDRIVER_COMMAND_TIMEOUT_SECONDS = PropertyManager.getIntProperty(FennecProperties.Fennec_WATCHDOG_TIMEOUT_SECONDS, 600);
+    public static final int WEBDRIVER_COMMAND_TIMEOUT_SECONDS = PropertyManager.getIntProperty(FennecProperties.WATCHDOG_TIMEOUT_SECONDS, 600);
     public static final int WATCHDOG_FIRST_ANNOUNCEMENT_SECONDS;
     public static final int WATCHDOG_THREAD_HANGING_TIMEOUT_SECONDS;
     public static final int WATCHDOG_FORCE_QUIT_TIMEOUT_SECONDS;

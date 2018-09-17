@@ -38,6 +38,6 @@ public final class Defaults {
         return value;
     }
 
-    public static String DISPLAY_RESOLUTION = load(FennecProperties.Fennec_DISPLAY_RESOLUTION, "1920x1200", "\\d+x\\d+");
+    public static String DISPLAY_RESOLUTION = load(FennecProperties.DISPLAY_RESOLUTION, "1920x1200", "\\d+x\\d+");
 
 }

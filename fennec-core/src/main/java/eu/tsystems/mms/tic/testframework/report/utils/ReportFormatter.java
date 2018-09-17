@@ -363,12 +363,12 @@ public class ReportFormatter {
         context.put("runContext", ExecutionContextController.RUN_CONTEXT);
         context.put("FennecBuildInformation", FennecBuildInformation.getInstance());
         context.put("reportScreenshotsPreview", Flags.REPORT_SCREENSHOTS_PREVIEW);
-        context.put("FennecDBPathSuffix", Flags.Fennec_DB_PATH_SUFFIX);
+        context.put("FennecDBPathSuffix", Flags.DB_PATH_SUFFIX);
         context.put("reportName", ReportUtils.getReportName());
         context.put("dryrun", Flags.DRY_RUN);
 
         context.put("filter", FilterUtils.getInstance());
-        context.put("fcActive", Flags.Fennec_FAILURE_CORRIDOR_ACTIVE);
+        context.put("fcActive", Flags.FAILURE_CORRIDOR_ACTIVE);
         context.put("fcMatched", FailureCorridor.isCorridorMatched());
         context.put("fcH", TestStatusController.getTestsFailedHIGH());
         context.put("fcM", TestStatusController.getTestsFailedMID());

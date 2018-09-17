@@ -55,7 +55,7 @@ final class ClassFinder {
     private static final String PATTERN_HI = SCHEMA_DIV + RESOLUTION_REGEX + SCHEMA_DIV + KEYWORD_MAX;
     private static final String PATTERN_RES = "TODO"; // TODO
 
-    private static final String PROJECT_PACKAGE = PropertyManager.getProperty(FennecProperties.Fennec_PROJECT_PACKAGE,
+    private static final String PROJECT_PACKAGE = PropertyManager.getProperty(FennecProperties.PROJECT_PACKAGE,
             FennecCommons.DEFAULT_PACKAGE_NAME);
 
     private static class Caches {

@@ -41,11 +41,11 @@ public final class RTConstants {
      */
     public static String getDownloadPathByOS(TestOS platform) {
         if (platform == TestOS.WINDOWS) {
-            return Constants.Fennec_DOWNLOAD_DIRECTORY_WIN;
+            return Constants.DOWNLOAD_DIRECTORY_WIN;
         }
 
         if (platform == TestOS.LINUX) {
-            return Constants.Fennec_DOWNLOAD_DIRECTORY_LINUX;
+            return Constants.DOWNLOAD_DIRECTORY_LINUX;
         }
         throw new UnsupportedOperationException("OS not supported by Supervisor Downloader. No path for OS set in Constants");
     }

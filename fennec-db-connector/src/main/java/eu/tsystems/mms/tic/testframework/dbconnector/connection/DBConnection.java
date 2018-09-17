@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 public final class DBConnection {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DBConnection.class);
-    private static final int TIMEOUT_IN_MS = PropertyManager.getIntProperty(FennecProperties.Fennec_DB_TIMEOUT, 10000);
+    private static final int TIMEOUT_IN_MS = PropertyManager.getIntProperty(FennecProperties.DB_TIMEOUT, 10000);
     private static final int EXECUTOR_SERVICE_THREADCOUNT = 5;
 
     /**

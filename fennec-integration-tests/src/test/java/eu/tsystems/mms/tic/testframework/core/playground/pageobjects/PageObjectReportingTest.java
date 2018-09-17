@@ -48,7 +48,6 @@ public class PageObjectReportingTest extends AbstractTest {
         WebDriverManager.config().browserVersion = "57";
 //        WebDriverManager.config().browserVersion = "63";
 //        WebDriverManager.config().browserVersion = "15";
-//        System.setProperty("fennec.report.hist.source", "http://fnu-fennec:fennec@192.168.61.181/exportchart.html?type=text&buildTypeId=Fennec_DevelopmentAutoBuild&%40f_range=MONTH&%40filter.status=ERROR&showBranches=true&allBranches=true&_graphKey=g&valueType=TestCount&id=TestCount");
         DesiredCapabilities caps = new DesiredCapabilities();
 
         FirefoxOptions firefoxOptions = new FirefoxOptions();

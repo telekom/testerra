@@ -68,13 +68,13 @@ public class TestStatusController {
         statusMap.put("TestsSkipped", testsSkipped);
         statusMap.put("TestsFailed", testsFailed);
 
-        statusMap.put("FailureCorridorActive", Flags.Fennec_FAILURE_CORRIDOR_ACTIVE);
+        statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
 
         // set status
         String status;
         String statusMessage;
         boolean statusBool;
-        if (Flags.Fennec_FAILURE_CORRIDOR_ACTIVE) {
+        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
             if (FailureCorridor.isCorridorMatched()) {
                 status = PASSED;
                 statusBool = true;

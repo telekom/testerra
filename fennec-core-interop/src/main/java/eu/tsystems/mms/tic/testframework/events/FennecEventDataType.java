@@ -34,7 +34,7 @@ public enum FennecEventDataType implements IFennecEventDataType {
     TIMESTAMP(Long.class),
     DURATION(Long.class),
     TEST_START_TIMESTAMP(Long.class),
-    Fennec_VERSION(String.class),
+    VERSION(String.class),
     EXECUTING_SELENIUM_HOST(String.class),
     METHOD_NAME(String.class),
     CONFIGURATION_METHOD_ANNOTATION(String.class),

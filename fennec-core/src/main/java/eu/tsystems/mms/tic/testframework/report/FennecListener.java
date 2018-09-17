@@ -185,7 +185,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter, IAnno
      */
     @Override
     public List<IMethodInstance> intercept(final List<IMethodInstance> list, final ITestContext iTestContext) {
-        if (Flags.Fennec_EXECUTION_OMIT_IN_DEVELOPMENT) {
+        if (Flags.EXECUTION_OMIT_IN_DEVELOPMENT) {
             ExecutionUtils.removeInDevelopmentMethods(list, iTestContext);
         }
 

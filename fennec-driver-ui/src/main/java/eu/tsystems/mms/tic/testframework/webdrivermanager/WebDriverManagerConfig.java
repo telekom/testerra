@@ -74,7 +74,7 @@ public class WebDriverManagerConfig {
             FennecProperties.CLOSE_WINDOWS_ON_FAILURE,
             true);
 
-    public boolean maximize = PropertyManager.getBooleanProperty(FennecProperties.Fennec_BROWSER_MAXIMIZE, false);
+    public boolean maximize = PropertyManager.getBooleanProperty(FennecProperties.BROWSER_MAXIMIZE, false);
 
     /**
      * Browser global setting.

@@ -178,15 +178,20 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
          */
         if (WebDriverManager.config().maximize) {
             try {
-                String res = Defaults.DISPLAY_RESOLUTION;
-                LOGGER.error("maximize workaround -> Trying to set resolution to " + res);
-                String[] split = res.split("x");
-                int width = Integer.valueOf(split[0]);
-                int height = Integer.valueOf(split[1]);
-                eventFiringWebDriver.manage().window().setSize(new Dimension(width, height));
-//                eventFiringWebDriver.manage().window().maximize();
-            } catch (Exception e) {
-                LOGGER.error("Could not maximize window", e);
+                eventFiringWebDriver.manage().window().maximize();
+            }
+            catch (Throwable t) {
+                LOGGER.error("driver.manage().window().maximize() did not work", t);
+                try {
+                    String res = Defaults.DISPLAY_RESOLUTION;
+                    LOGGER.error("maximize workaround -> Trying to set resolution to " + res);
+                    String[] split = res.split("x");
+                    int width = Integer.valueOf(split[0]);
+                    int height = Integer.valueOf(split[1]);
+                    eventFiringWebDriver.manage().window().setSize(new Dimension(width, height));
+                } catch (Exception e) {
+                    LOGGER.error("Could not maximize window", e);
+                }
             }
         }
 
@@ -398,6 +403,11 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
                 case Browsers.phantomjs:
                     File phantomjsFile = getPhantomJSBinary();
                     capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjsFile.getAbsolutePath());
+
+                    String[] args = {
+                        "--ssl-protocol=any"
+                    };
+                    capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, args);
                     driver = new PhantomJSDriver(capabilities);
                     break;
                 case Browsers.safari:

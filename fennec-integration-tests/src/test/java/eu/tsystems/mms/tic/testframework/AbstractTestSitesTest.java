@@ -17,18 +17,25 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.sikuli.support;
+package eu.tsystems.mms.tic.testframework;
 
-import eu.tsystems.mms.tic.testframework.sikuli.ImageElement;
-import org.openqa.selenium.By;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.Server;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 
-import java.util.List;
+public abstract class AbstractTestSitesTest extends AbstractTest {
 
-/**
- * steps for searching images
- */
-interface ImageSearchContext {
-    List<ImageElement> findImageElements(By by);
+    @BeforeTest(alwaysRun = true)
+    public void setUp() throws Exception {
+        Server.start();
 
-    ImageElement findImageElement(By by);
+        WebDriverManager.setBaseURL(TestPage.INPUT_TEST_PAGE.getUrl());
+    }
+
+    @AfterTest(alwaysRun = true)
+    public void tearDown() throws Exception {
+        Server.stop();
+    }
 }

@@ -23,15 +23,15 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects;
  * Created by rnhb on 02.06.2015.
  */
 public enum TestPage {
-    INPUT_TEST_PAGE("http://192.168.60.239/WebsitesForTests/Input/input.html",
+    INPUT_TEST_PAGE("http://localhost:80/testsites/Input/input.html",
             "Open again",
             new String[]{"Ope", "en agai", "ain"},
             "Button2",
             "value"),
-    FRAME_TEST_PAGE("http://192.168.60.239/WebsitesForTests/FrameSimple/frame.html", INPUT_TEST_PAGE),
-    DRAG_AND_DROP("http://192.168.60.239/WebsitesForTests/DragAndDrop/index.html", INPUT_TEST_PAGE),
-    DRAG_AND_DROP_OVER_FRAMES("http://192.168.60.239/WebsitesForTests/DragAndDropFrame/index.html", INPUT_TEST_PAGE),
-    MULTISELECT("http://192.168.60.239/WebsitesForTests/Multiselect/index.html", INPUT_TEST_PAGE)
+    FRAME_TEST_PAGE("http://localhost:80/testsites/FrameSimple/frame.html", INPUT_TEST_PAGE),
+    DRAG_AND_DROP("http://localhost:80/testsites/DragAndDrop/index.html", INPUT_TEST_PAGE),
+    DRAG_AND_DROP_OVER_FRAMES("http://localhost:80/testsites/DragAndDropFrame/index.html", INPUT_TEST_PAGE),
+    MULTISELECT("http://localhost:80/testsites/Multiselect/index.html", INPUT_TEST_PAGE)
     ;
 
     private String url;

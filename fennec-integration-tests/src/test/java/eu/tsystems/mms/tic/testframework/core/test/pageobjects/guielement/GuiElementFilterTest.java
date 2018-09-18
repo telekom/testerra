@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 /**
  * Created by rnhb on 29.07.2015.
  */
-public class GuiElementFilterTest extends AbstractTest {
+public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     public void goToTestPage() {
         TestPage testPage = TestPage.INPUT_TEST_PAGE;
@@ -51,7 +51,7 @@ public class GuiElementFilterTest extends AbstractTest {
     }
 
     @Test
-    public void testT01_Text_Is() {
+    public void testT01_Telxt_Is() {
         goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id]"))

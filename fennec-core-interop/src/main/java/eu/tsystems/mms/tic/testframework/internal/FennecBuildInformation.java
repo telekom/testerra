@@ -24,9 +24,11 @@
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
  */
-package eu.tsystems.mms.tic.testframework.report.model;
+package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
@@ -36,6 +38,8 @@ import java.io.Serializable;
  * @author mibu
  */
 public class FennecBuildInformation implements Serializable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FennecBuildInformation.class);
 
     /**
      * UID needed for serialization.
@@ -89,14 +93,19 @@ public class FennecBuildInformation implements Serializable {
         synchronized (FennecBuildInformation.class) {
             if (instance == null) {
                 instance = new FennecBuildInformation();
-                PropertyManager.loadProperties("fennec-build.properties");
-                instance.setBuildJavaVersion(PropertyManager.getProperty("build.java.version"));
-                instance.setBuildOsName(PropertyManager.getProperty("build.os.name"));
-                instance.setBuildOsArch(PropertyManager.getProperty("build.os.arch"));
-                instance.setBuildOsVersion(PropertyManager.getProperty("build.os.version"));
-                instance.setBuildUserName(PropertyManager.getProperty("build.user.name"));
-                instance.setFennecVersion(PropertyManager.getProperty("fennec.version"));
-                instance.setBuildTimestamp(PropertyManager.getProperty("build.timestamp"));
+                try {
+                    PropertyManager.loadProperties("fennec-build.properties");
+                } catch (Exception e) {
+                    LOGGER.info("Could not load build information");
+                }
+                final String localBuild = "local build";
+                instance.setBuildJavaVersion(PropertyManager.getProperty("build.java.version", localBuild));
+                instance.setBuildOsName(PropertyManager.getProperty("build.os.name", localBuild));
+                instance.setBuildOsArch(PropertyManager.getProperty("build.os.arch", localBuild));
+                instance.setBuildOsVersion(PropertyManager.getProperty("build.os.version", localBuild));
+                instance.setBuildUserName(PropertyManager.getProperty("build.user.name", localBuild));
+                instance.setFennecVersion(PropertyManager.getProperty("fennec.version", localBuild));
+                instance.setBuildTimestamp(PropertyManager.getProperty("build.timestamp", localBuild));
             }
         }
 

@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.boot;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.FennecCommons;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
+import eu.tsystems.mms.tic.testframework.internal.FennecBuildInformation;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.FennecUtils;
 import org.reflections.Reflections;
@@ -58,7 +59,7 @@ public class Booter {
      */
     private static void printFennecBanner() {
         List<String> bannerfennec = new LinkedList<>();
-        String FennecVersion = "";
+        String fennecVersion = "";
         List<String> bannerVersions = new LinkedList<>();
 
         /*
@@ -76,21 +77,15 @@ public class Booter {
         /*
         get versions info
          */
-        PropertyManager.loadProperties("fennec-build.properties");
-        String[] infos = {
-                "build.java.version",
-                "build.os.name",
-                "build.os.arch",
-                "build.os.version",
-                "build.user.name",
-                "build.timestamp"
-        };
-        for (String key : infos) {
-            String value = PropertyManager.getProperty(key);
-            System.setProperty(key, value);
-            bannerVersions.add(key + ": " + value);
-        }
-        FennecVersion = PropertyManager.getProperty("fennec.version");
+        FennecBuildInformation buildInformation = FennecBuildInformation.getInstance();
+        bannerVersions.add("build.java.version: " + buildInformation.getBuildJavaVersion());
+        bannerVersions.add("build.os.name:      " + buildInformation.getBuildOsName());
+        bannerVersions.add("build.os.arch:      " + buildInformation.getBuildOsArch());
+        bannerVersions.add("build.os.version:   " + buildInformation.getBuildOsVersion());
+        bannerVersions.add("build.user.name:    " + buildInformation.getBuildUserName());
+        bannerVersions.add("build.timestamp:    " + buildInformation.getBuildTimestamp());
+
+        fennecVersion = buildInformation.getFennecVersion();
 
         /*
         beautify
@@ -100,7 +95,7 @@ public class Booter {
         bannerfennec = bannerfennec.stream().map(s -> s + StringUtils.repeat(" ", widthLogo - s.length())).collect(Collectors.toList());
         final int width = bannerVersions.stream().mapToInt(String::length).max().getAsInt();
         bannerfennec = bannerfennec.stream().map(s -> wall + StringUtils.center(s, width) + wall).collect(Collectors.toList());
-        FennecVersion = wall + StringUtils.center(FennecVersion, width) + wall;
+        fennecVersion = wall + StringUtils.center(fennecVersion, width) + wall;
         bannerVersions = bannerVersions.stream().map(s -> wall + s + StringUtils.repeat(" ", width - s.length()) + wall).collect(Collectors.toList());
 
         /*
@@ -109,7 +104,7 @@ public class Booter {
         String ruler = StringUtils.repeat(wall, width / wall.length() + 2);
         LOGGER.info(ruler);
         bannerfennec.forEach(LOGGER::info);
-        LOGGER.info(FennecVersion);
+        LOGGER.info(fennecVersion);
         LOGGER.info(ruler);
         bannerVersions.forEach(LOGGER::info);
         LOGGER.info(ruler);

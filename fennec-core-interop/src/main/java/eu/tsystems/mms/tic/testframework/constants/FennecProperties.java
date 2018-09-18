@@ -182,7 +182,7 @@ public final class FennecProperties {
 
     public static final String REUSE_REPORTDIR = "fennec.reuse.reportdir";
 
-    public static final String SKIP_EXECUTION_WHEN_PREVIOUSLY_PASSED = "skip.execution.when.previously.passed";
+    public static final String SKIP_EXECUTION_WHEN_PREVIOUSLY_PASSED = "fennec.skip.execution.when.previously.passed";
 
     public static final String BROWSER_MAXIMIZE = "fennec.browser.maximize";
 

@@ -34,7 +34,7 @@ import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
-import eu.tsystems.mms.tic.testframework.report.model.FennecBuildInformation;
+import eu.tsystems.mms.tic.testframework.internal.FennecBuildInformation;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.velocity.PublicFieldUberspect;

@@ -39,14 +39,14 @@ public class MethodContextTest extends AbstractTest {
     RuntimeException level1 = new RuntimeException("level 1", level2);
     RuntimeException level0 = new RuntimeException(level0String, level1);
 
-    private RuntimeException getStackedSThrowable() {
+    private RuntimeException getStackedThrowable() {
         return level0;
     }
 
     @Test
     public void testT01_SetThrowable() throws Exception {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        methodContext.setThrowable(null, getStackedSThrowable());
+        methodContext.setThrowable(null, getStackedThrowable());
 
         List<String> stackTrace = methodContext.getStackTrace().stackTrace;
 

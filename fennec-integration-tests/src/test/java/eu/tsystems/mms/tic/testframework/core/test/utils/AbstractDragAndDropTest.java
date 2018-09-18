@@ -19,11 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
-import eu.tsystems.mms.tic.testframework.constants.Browsers;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.SkipException;
@@ -32,7 +31,7 @@ import org.testng.annotations.Test;
 /**
  * Created by pele on 21.12.2015.
  */
-public abstract class AbstractDragAndDropTest {
+public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
 
     final By sourceLocatorSimple = By.id("dragLogo");
     final By sourceLocatorFrames = By.xpath(".//img[@alt='Ringo Starr']");
@@ -42,9 +41,6 @@ public abstract class AbstractDragAndDropTest {
     }
 
     private GuiElement[] beforeDragAndDropSimple() {
-        WebDriverManager.config().browser = Browsers.firefox;
-        WebDriverManager.config().webDriverMode = WebDriverMode.remote;
-
         final WebDriver driver = getDriver();
 
         String url = TestPage.DRAG_AND_DROP.getUrl();
@@ -57,9 +53,6 @@ public abstract class AbstractDragAndDropTest {
     }
 
     private GuiElement[] beforeDragAndDropFrames() {
-        WebDriverManager.config().browser = Browsers.firefox;
-        WebDriverManager.config().webDriverMode = WebDriverMode.remote;
-
         final WebDriver driver = getDriver();
 
         String url = TestPage.DRAG_AND_DROP_OVER_FRAMES.getUrl();

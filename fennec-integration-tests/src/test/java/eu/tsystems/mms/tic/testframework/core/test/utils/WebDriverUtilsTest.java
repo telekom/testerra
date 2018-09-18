@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 /**
  * Created by nigr on 07.09.2015.
  */
-public class WebDriverUtilsTest extends AbstractTest {
+public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     private final String msgSwitchSuccessfully = "Find and switch to window successfully";
 

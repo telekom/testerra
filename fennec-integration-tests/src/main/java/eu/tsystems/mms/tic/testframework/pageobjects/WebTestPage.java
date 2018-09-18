@@ -35,14 +35,6 @@ import org.openqa.selenium.WebDriver;
  */
 public class WebTestPage extends AbstractWebTestPage {
 
-    /**
-     * URL for the input-testpage
-     * 
-     */
-    public static final String URL = "http://192.168.60.239/WebsitesForTests/Input/input.html";
-
-    /** First text field on page. */
-
     private final GuiElement input1 = new GuiElement(driver, By.id("1"));
     /** A button on the page. */
     @Check(nonFunctional = true)

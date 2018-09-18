@@ -55,7 +55,6 @@ import java.lang.reflect.Method;
 public class FileDownloaderTest extends AbstractTest {
 
     private WebDriver createWebDriver(boolean extraSession) {
-
         WebDriverRequest r = new DesktopWebDriverRequest();
         WebDriver driver;
 
@@ -88,7 +87,7 @@ public class FileDownloaderTest extends AbstractTest {
 
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true);
 
-        String download = downloader.download(driver, "http://192.168.60.239/WebsitesForTests/Input/input.html#",
+        String download = downloader.download(driver, TestPage.INPUT_TEST_PAGE.getUrl() + "#",
                 "testT01_downloadFile.htm");
         File file = FileUtils.getFile(download);
 
@@ -129,19 +128,11 @@ public class FileDownloaderTest extends AbstractTest {
         final WebDriver driver = createWebDriver(false);
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath() + "/foo/bar\\test", true, true);
 
-        String download = downloader.download(driver, "http://192.168.60.239/WebsitesForTests/Input/input.html#",
+        String download = downloader.download(driver, TestPage.INPUT_TEST_PAGE.getUrl() + "#",
                 "test03_downloadFileToLongLocation.htm");
         File file = FileUtils.getFile(download);
 
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
     }
 
-//    @Test
-    public void test04_debug_withProxy() throws IOException {
-        FileDownloader fileDownloader = new FileDownloader(".");
-        WebDriver driver = WebDriverManager.getWebDriver();
-        fileDownloader.setImitateCookies(true);
-        fileDownloader.setTrustAllCertificates(true);
-        fileDownloader.download(driver, "https://cms-dev2.shell.com/content/royaldutchshell/test-content/titan/it_it/promos/campaign-promo-promo-pages/campaign-promo-page-with-redirect-to-dam-pdf/jcr:content.stream/1480763653942/4e24fa4d79f46a00e6ec097004160d3993eb30163466277125f9cbe0ab93f42b/national-oil-bargaining-archives.pdf", "download.dat");
-    }
 }

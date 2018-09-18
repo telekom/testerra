@@ -46,11 +46,8 @@ public abstract class AbstractGuiElementTest {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     static {
-        System.setProperty(FennecProperties.XETA_GUIELEMENT_TYPE, GuiElementType.sequence.name());
         POConfig.setUiElementTimeoutInSeconds(3);
-
         PropertyManager.getGlobalProperties().setProperty(FennecProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
-
     }
 
     @AfterTest(alwaysRun = true)

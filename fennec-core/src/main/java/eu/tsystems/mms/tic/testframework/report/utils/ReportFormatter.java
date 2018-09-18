@@ -363,7 +363,6 @@ public class ReportFormatter {
         context.put("runContext", ExecutionContextController.RUN_CONTEXT);
         context.put("FennecBuildInformation", FennecBuildInformation.getInstance());
         context.put("reportScreenshotsPreview", Flags.REPORT_SCREENSHOTS_PREVIEW);
-        context.put("FennecDBPathSuffix", Flags.DB_PATH_SUFFIX);
         context.put("reportName", ReportUtils.getReportName());
         context.put("dryrun", Flags.DRY_RUN);
 

@@ -22,15 +22,13 @@ package eu.tsystems.mms.tic.testframework.core.test.sikuli;
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.FennecBy;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.FennecNativeBy;
 import eu.tsystems.mms.tic.testframework.sikuli.ImageElement;
-import eu.tsystems.mms.tic.testframework.sikuli.FennecWebDriver;
+import eu.tsystems.mms.tic.testframework.sikuli.SikuliBy;
+import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.annotations.Test;
 
@@ -46,7 +44,7 @@ public class SikuliBasedWebTest extends AbstractTest {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/iiswelcome.png");
-        GuiElement guiElement = new GuiElement(driver, FennecNativeBy.image(driver, resourceURL));
+        GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
 
         guiElement.click();
     }
@@ -57,8 +55,8 @@ public class SikuliBasedWebTest extends AbstractTest {
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/iiswelcome.png");
 
-        FennecWebDriver fennecWebDriver = (FennecWebDriver) ((EventFiringWebDriver) driver).getWrappedDriver();
-        ImageElement imageElement = fennecWebDriver.findImageElement(resourceURL);
+        SikuliWebDriver sikuliWebDriver = (SikuliWebDriver) ((EventFiringWebDriver) driver).getWrappedDriver();
+        ImageElement imageElement = sikuliWebDriver.findImageElement(resourceURL);
         imageElement.click();
     }
 
@@ -69,7 +67,7 @@ public class SikuliBasedWebTest extends AbstractTest {
         driver.get(url);
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
-        GuiElement guiElement = new GuiElement(driver, FennecNativeBy.image(driver, resourceURL));
+        GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
 
         guiElement.assertIsDisplayed();
         guiElement.assertAttributeContains("src", "ringo");
@@ -84,7 +82,7 @@ public class SikuliBasedWebTest extends AbstractTest {
         GuiElement frame = new GuiElement(driver, By.id("draggableNodes"));
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
-        GuiElement guiElement = new GuiElement(driver, FennecNativeBy.image(driver, resourceURL), frame);
+        GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL), frame);
 
         guiElement.assertIsDisplayed();
         guiElement.assertAttributeContains("src", "ringo");

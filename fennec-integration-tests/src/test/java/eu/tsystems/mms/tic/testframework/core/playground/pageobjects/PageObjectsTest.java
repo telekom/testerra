@@ -45,7 +45,7 @@ public class PageObjectsTest extends AbstractTest {
 
     static {
         Flags.REPORT_SCREENSHOTS_PREVIEW = false;
-        Flags.XETA_WEB_TAKE_ACTION_SCREENSHOTS = true;
+        Flags.WEB_TAKE_ACTION_SCREENSHOTS = true;
     }
 
     WebTestPage.MyVariables pageVariables = new WebTestPage.MyVariables(99);

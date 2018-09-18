@@ -164,11 +164,6 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
         // activate clickpath event listener
         eventFiringWebDriver.register(new ClickpathEventListener());
 
-        // activate dynatrace event listener
-        if (Flags.DYNATRACE_LOGGING) {
-            eventFiringWebDriver.register(new DynatraceEventListener());
-        }
-
         // add event listeners
         eventFiringWebDriver.register(new VisualEventDriverListener());
         eventFiringWebDriver.register(new EventLoggingEventDriverListener());

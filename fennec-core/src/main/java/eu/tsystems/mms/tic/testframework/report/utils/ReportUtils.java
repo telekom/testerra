@@ -395,9 +395,6 @@ public final class ReportUtils {
         TOP_LEVEL_TABS.add(index++, new TabInfo("FailureAspects", "Failure Aspects", "classes/failureAspects.html", false));
         TOP_LEVEL_TABS.add(index++, new TabInfo("Logs", "Logs", "logs.html", true));
         TOP_LEVEL_TABS.add(index++, new TabInfo("Timings", "Timings", "measurements.html", true));
-        if (Flags.METRICS_ACTIVE) {
-            TOP_LEVEL_TABS.add(index++, new TabInfo("Metrics", "Metrics", "metrics.html", true));
-        }
 
         /*
         execute threads
@@ -503,14 +500,6 @@ public final class ReportUtils {
          */
         final File reportFileFailureAspects = new File(classesLogDir, "failureAspects.html");
         ReportFormatter.createMultiMethodsHtml(reportingData, reportFileFailureAspects, "failureAspects.vm");
-
-        /*
-        Metrics
-         */
-        if (Flags.METRICS_ACTIVE && ObjectStorage.getMetrics() != null) {
-            final File reportFileMetrics = new File(framesDir, "metrics.html");
-            ReportFormatter.createMetricsHtml(reportFileMetrics, ObjectStorage.getMetrics(), "metrics.vm");
-        }
 
         /*
         Logs

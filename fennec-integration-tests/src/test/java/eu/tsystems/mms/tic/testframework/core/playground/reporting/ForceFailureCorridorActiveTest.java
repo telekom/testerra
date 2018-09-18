@@ -39,7 +39,7 @@ public class ForceFailureCorridorActiveTest extends AbstractReportingTest {
 
     @BeforeSuite
     public void activateFC() {
-        Flags.XETA_FAILURE_CORRIDOR_ACTIVE = true;
+        Flags.FAILURE_CORRIDOR_ACTIVE = true;
     }
 
 }

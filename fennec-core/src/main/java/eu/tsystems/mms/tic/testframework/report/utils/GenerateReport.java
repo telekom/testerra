@@ -23,7 +23,6 @@ import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateOtherOutputsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateFennecReportWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.MetricsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.FennecEventsWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
@@ -92,7 +91,6 @@ public class GenerateReport {
 
             FennecUtils.addWorkersToExecutor(FennecListener.GENERATE_REPORTS_WORKERS, workerExecutor);
 
-            workerExecutor.add(new MetricsWorker());
             workerExecutor.add(new GenerateFennecReportWorker());
             workerExecutor.add(new GenerateOtherOutputsWorker());
 

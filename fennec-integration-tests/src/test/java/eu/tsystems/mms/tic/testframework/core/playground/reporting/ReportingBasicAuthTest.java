@@ -48,7 +48,7 @@ import org.testng.annotations.Test;
 public class ReportingBasicAuthTest extends AbstractTest {
 
     static {
-        System.setProperty(FennecProperties.XETA_WATCHDOG_TIMEOUT_SECONDS, "120");
+        System.setProperty(FennecProperties.WATCHDOG_TIMEOUT_SECONDS, "120");
     }
 
     Logger logger = LoggerFactory.getLogger(this.getClass());

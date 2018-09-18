@@ -240,28 +240,6 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
 
     private GuiElementFacade getFacade(GuiElementCore guiElementCore, GuiElementWait guiElementWait, GuiElementAssert guiElementAssert) {
         GuiElementFacade guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
-
-        if (Flags.DYNATRACE_LOGGING) {
-            // when the option is set to true AND the class is in te classpath (the module is loaded), activate the decorator
-            final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-            final Class<?> dtldecorator;
-            try {
-                dtldecorator = contextClassLoader.loadClass(
-                        eu.tsystems.mms.tic.testframework.internal.Constants.DYNATRACE_LOGGER_DECORATOR_CLASS);
-            } catch (ClassNotFoundException e) {
-                throw new FennecSystemException(
-                        "Dynatrace Logging is activated but the fennec-browsermob-proxy module is not loaded.");
-            }
-
-            final String errorMessage = "Error initializing the DynaTrace GuiElement Decorator";
-            try {
-                final Constructor<?> constructor = dtldecorator.getConstructor(GuiElementFacade.class, GuiElementData.class);
-                this.guiElementFacade = (GuiElementFacade) constructor.newInstance(this.guiElementFacade, this.guiElementData);
-            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                throw new FennecSystemException(errorMessage, e);
-            }
-        }
-
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
 
         int delayAfterAction = PropertyManager.getIntProperty(FennecProperties.DELAY_AFTER_GUIELEMENT_ACTION_MILLIS);

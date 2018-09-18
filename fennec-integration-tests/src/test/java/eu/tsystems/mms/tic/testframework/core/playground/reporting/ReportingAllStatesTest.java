@@ -52,7 +52,7 @@ public class ReportingAllStatesTest extends AbstractReportingTest {
     static {
         System.setProperty(FennecProperties.FAILED_TESTS_MAX_RETRIES, "2");
         System.setProperty("test.foobar.fails.annotation.test.property.one", "one");
-        Flags.XETA_FAILURE_CORRIDOR_ACTIVE = true;
+        Flags.FAILURE_CORRIDOR_ACTIVE = true;
     }
 
     @BeforeSuite(alwaysRun = true)

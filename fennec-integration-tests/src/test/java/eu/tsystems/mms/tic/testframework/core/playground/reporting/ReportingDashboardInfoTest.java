@@ -41,7 +41,7 @@ import org.testng.annotations.Listeners;
 public class ReportingDashboardInfoTest extends ReportingTest {
 
     static {
-        Flags.XETA_FAILURE_CORRIDOR_ACTIVE = true;
+        Flags.FAILURE_CORRIDOR_ACTIVE = true;
     }
 
     @AfterClass

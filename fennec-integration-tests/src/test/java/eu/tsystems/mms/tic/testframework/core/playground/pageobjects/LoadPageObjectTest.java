@@ -116,33 +116,6 @@ public class LoadPageObjectTest extends AbstractTest {
         System.out.println("Title: " + driver.getTitle());
 
         System.out.println("Duration: " + (System.currentTimeMillis() - start) + " ms");
-        /*
-         * WebTestPage fennecWebTestPage = new WebTestPage(); // fennecWebTestPage = fennecWebTestPage.search("bla");
-         * // fennecWebTestPage = fennecWebTestPage.click();
-         * 
-         * fennecWebTestPage.assertFunctionalityOfButton1(); fennecWebTestPage = fennecWebTestPage.reloadPage(); /* WebClient
-         * webClient = new WebClient(BrowserVersion.FIREFOX_24,"proxy.mms.dresden.de",8080);
-         * 
-         * webClient.getOptions().setJavaScriptEnabled(true);
-         * webClient.getOptions().setThrowExceptionOnScriptError(false);
-         * 
-         * HtmlPage google = webClient.getPage("http://www.google.de"); HtmlInput searchBar =
-         * google.getHtmlElementById("gbqfq"); searchBar.setValueAttribute("Pause");
-         */
-
-        /**
-         * Google
-         * 
-         * // Find the text input element by its name WebElement element = driver.findElement(By.id("gbqfq"));
-         * 
-         * // Enter something to search for element.sendKeys("Cheese!");
-         * 
-         * // Now submit the form. WebDriver will find the form for us from the element element.submit();
-         * 
-         * // Check the title of the page System.out.println("Page title is: " + driver.getTitle());
-         * 
-         * driver.quit();
-         */
     }
 
     @Test(dataProvider = "test1", threadPoolSize = 1, invocationCount = 2)

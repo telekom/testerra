@@ -19,8 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
 
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -41,7 +41,7 @@ import java.lang.reflect.Method;
  *
  * @author rnhb
  */
-public abstract class AbstractGuiElementTest {
+public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 

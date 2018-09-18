@@ -199,17 +199,6 @@ public class ProxyServer {
     }
 
     public static void main(String[] args) throws Exception {
-//        FennecUtils.initializeLogging();
-//        ProxyServer proxyServer = new ProxyServer(9999, new HttpHost("proxy.mms-dresden.de", 8080), null);
-//
-//        proxyServer.startCapture();
-//
-//        System.out.println("Press ENTER to continue");
-//        System.in.read();
-//
-//        Har har = proxyServer.stopCapture();
-//        har.writeTo(new File("capture.har"));
-//        proxyServer.stopProxy();
         checkTmpFiles();
     }
 

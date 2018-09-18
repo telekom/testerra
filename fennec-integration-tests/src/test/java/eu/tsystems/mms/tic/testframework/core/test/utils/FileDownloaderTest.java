@@ -57,9 +57,6 @@ public class FileDownloaderTest extends AbstractTest {
     private WebDriver createWebDriver(boolean extraSession) {
 
         WebDriverRequest r = new DesktopWebDriverRequest();
-        DesiredCapabilities caps = new DesiredCapabilities();
-        WebDriverManagerUtils.addProxyToCapabilities(caps, "proxy.mms-dresden.de:8080");
-        ((DesktopWebDriverRequest) r).desiredCapabilities = caps;
         WebDriver driver;
 
         if (extraSession) {

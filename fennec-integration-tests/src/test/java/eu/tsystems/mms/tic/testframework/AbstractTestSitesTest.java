@@ -22,10 +22,14 @@ package eu.tsystems.mms.tic.testframework;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.Server;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
 public abstract class AbstractTestSitesTest extends AbstractTest {
+
+    protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractTestSitesTest.class);
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {

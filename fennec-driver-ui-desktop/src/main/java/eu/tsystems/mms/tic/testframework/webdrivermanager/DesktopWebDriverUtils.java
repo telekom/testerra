@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,10 @@ public final class DesktopWebDriverUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverUtils.class);
 
     public static NodeInfo getNodeInfo(DesktopWebDriverRequest desktopWebDriverRequest) {
+        if (desktopWebDriverRequest.webDriverMode == WebDriverMode.local) {
+            return new NodeInfo("local", 0);
+        }
+
         final String host = desktopWebDriverRequest.seleniumServerHost;
         final String port = desktopWebDriverRequest.seleniumServerPort;
         String url = desktopWebDriverRequest.seleniumServerURL;

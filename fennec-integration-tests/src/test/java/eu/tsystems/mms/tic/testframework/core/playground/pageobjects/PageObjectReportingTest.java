@@ -53,7 +53,6 @@ public class PageObjectReportingTest extends AbstractTest {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         firefoxOptions.setLegacy(true);
         caps.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
-        WebDriverManagerUtils.addProxyToCapabilities(caps, "proxy.mms-dresden.de:8080");
         WebDriverManager.setGlobalExtraCapabilities(caps);
     }
 

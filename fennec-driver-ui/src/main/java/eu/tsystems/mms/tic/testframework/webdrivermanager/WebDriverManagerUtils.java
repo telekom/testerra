@@ -367,7 +367,7 @@ public final class WebDriverManagerUtils {
     }
 
     /**
-     * Add proxy settings to capabilities. proxyString may be "proxy.mms-dresden.de:8080".
+     * Add proxy settings to capabilities. proxyString may be "proxyhost:8080".
      *
      * @param capabilities  .
      * @param proxyString   .

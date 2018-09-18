@@ -19,10 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.pageobjects.SubPageWithoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.SuperPageWithCheck;
-import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  *
  * Test that checkpage is not executed when called in the constructor of a super page
  */
-public class CheckPageCallTest extends AbstractTest {
+public class CheckPageCallTest extends AbstractTestSitesTest {
 
     /**
      * This tests that checkpage() called from the actual class of the instance is executed.

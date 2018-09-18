@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithGuiElementGroups;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroup;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 /**
  * Created by rnhb on 24.02.2016.
  */
-public class GuiElementGroupTest extends AbstractTest {
+public class GuiElementGroupTest extends AbstractTestSitesTest {
 
     /**
      * Test basic behaviour of GuiElement Groups. No WebDriver necessary.

@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.*;
@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
 /**
  * Tests the responsive page factory for correct instantiated classes.
  */
-public class PageFactoryPrefixedTest extends AbstractTest {
+public class PageFactoryPrefixedTest extends AbstractTestSitesTest {
 
     /**
      * Set the browser size by adjusting it to the given viewport size.
@@ -58,7 +58,17 @@ public class PageFactoryPrefixedTest extends AbstractTest {
             int diffX = outerWidth - innerWidth;
             int diffY = outerHeight - innerHeight;
 
-            driver.manage().window().setSize(new Dimension(width + diffX, height + diffY));
+
+            int w = width + diffX;
+            int h = height + diffY;
+
+            if (w < 0 || h < 0) {
+                w = width;
+                h = height;
+            }
+
+            LOGGER.info("Setting browser size to " + w + "x" + h);
+            driver.manage().window().setSize(new Dimension(w, h));
         } catch (Exception e) {
             throw new FennecRuntimeException("Unable to set viewport size", e);
         }
@@ -70,21 +80,17 @@ public class PageFactoryPrefixedTest extends AbstractTest {
 
     String baseURL = "unset";
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void before() {
         PageFactory.clearCache();
         PageFactory.setGlobalPagesPrefix("Prefix");
         baseURL = WebDriverManager.getBaseURL();
         WebDriverManager.setBaseURL("http://www.google.com");
 
-        DesiredCapabilities caps = new DesiredCapabilities();
-        WebDriverManagerUtils.addProxyToCapabilities(caps, "proxy.mms-dresden.de:8080");
-        WebDriverManager.setGlobalExtraCapabilities(caps);
-
         WebDriverManager.config().closeWindowsAfterTestMethod = false;
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void after() {
         PageFactory.setGlobalPagesPrefix(null);
         WebDriverManager.setBaseURL(baseURL);

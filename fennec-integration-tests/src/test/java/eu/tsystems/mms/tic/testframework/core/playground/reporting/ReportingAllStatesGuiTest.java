@@ -76,15 +76,6 @@ public class ReportingAllStatesGuiTest extends AbstractReportingGuiTest {
         WebDriverManager.config().browserVersion = "64";
 //        WebDriverManager.config().webDriverMode = WebDriverMode.local;
 
-        // add proxy
-        String proxyString = "proxy.mms-dresden.de:8080";
-        DesiredCapabilities caps = new DesiredCapabilities();
-        WebDriverManagerUtils.addProxyToCapabilities(caps, proxyString);
-
-//        caps.setCapability("enableVNC", true);
-
-        WebDriverManager.setGlobalExtraCapabilities(caps);
-
         // some other stuff
         WebDriverManager.registerWebDriverStartUpHandler(driver ->
                 driver.manage().addCookie(new Cookie("fennec", "true")));

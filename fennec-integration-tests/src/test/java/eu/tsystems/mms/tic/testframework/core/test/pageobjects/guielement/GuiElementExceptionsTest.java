@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 /**
  * Created by rnhb on 11.02.2016.
  */
-public class GuiElementExceptionsTest extends AbstractTest {
+public class GuiElementExceptionsTest extends AbstractTestSitesTest {
 
     /**
      * created because isPresent threw an exception when the GuiElement had a not existing frame

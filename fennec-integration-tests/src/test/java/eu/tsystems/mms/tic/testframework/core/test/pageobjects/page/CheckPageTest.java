@@ -19,18 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingStaticElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNonCheckableCheck;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNotExistingElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNullElement;
-import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
+import eu.tsystems.mms.tic.testframework.pageobjects.*;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -43,7 +36,7 @@ import java.lang.reflect.Method;
 /**
  * Created by rnhb on 29.12.2015.
  */
-public class CheckPageTest extends AbstractTest {
+public class CheckPageTest extends AbstractTestSitesTest {
 
     @BeforeMethod
     public void before(Method method) {

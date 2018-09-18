@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.*;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
@@ -37,27 +37,7 @@ import org.testng.annotations.Test;
 /**
  * Tests the responsive page factory for correct instantiated classes.
  */
-public class PageFactoryTest extends AbstractTest {
-
-    /**
-     * Set the browser size by adjusting it to the given viewport size.
-     *
-     * @param driver The web driver
-     * @param width The target width
-     * @param height The target height
-     */
-    public static void setViewportSize(final WebDriver driver, final int width, final int height) {
-        int innerWidth = (int) (long) (Long) JSUtils.executeScript(driver, "return window.innerWidth");
-        int innerHeight = (int) (long) (Long) JSUtils.executeScript(driver, "return window.innerHeight");
-
-        int outerWidth = (int) (long) (Long) JSUtils.executeScript(driver, "return window.outerWidth");
-        int outerHeight = (int) (long) (Long) JSUtils.executeScript(driver, "return window.outerHeight");
-
-        int diffX = outerWidth - innerWidth;
-        int diffY = outerHeight - innerHeight;
-
-        driver.manage().window().setSize(new Dimension(width + diffX, height + diffY));
-    }
+public class PageFactoryTest extends AbstractTestSitesTest {
 
     private ResponsiveWebTestPage getPage() {
         return PageFactory.create(ResponsiveWebTestPage.class, WebDriverManager.getWebDriver());
@@ -71,9 +51,9 @@ public class PageFactoryTest extends AbstractTest {
         WebDriverManager.setBaseURL("http://www.google.com");
         WebDriverManager.config().closeWindowsAfterTestMethod = false;
 
-        DesiredCapabilities caps = new DesiredCapabilities();
-        WebDriverManagerUtils.addProxyToCapabilities(caps, "proxy.mms-dresden.de:8080");
-        WebDriverManager.setGlobalExtraCapabilities(caps);
+//        DesiredCapabilities caps = new DesiredCapabilities();
+//        WebDriverManagerUtils.addProxyToCapabilities(caps, "proxy.mms-dresden.de:8080");
+//        WebDriverManager.setGlobalExtraCapabilities(caps);
     }
 
     @AfterClass
@@ -84,7 +64,7 @@ public class PageFactoryTest extends AbstractTest {
 
     @Test
     public void testT01_InRange_1() {
-        setViewportSize(WebDriverManager.getWebDriver(), 799, 1000);
+        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 799, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
@@ -92,7 +72,7 @@ public class PageFactoryTest extends AbstractTest {
 
     @Test
     public void testT02_InRange_2() {
-        setViewportSize(WebDriverManager.getWebDriver(), 1024, 1000);
+        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 1024, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_801px_1234px.class.getSimpleName(), "Instantiated correct page.");
@@ -100,7 +80,7 @@ public class PageFactoryTest extends AbstractTest {
 
     @Test
     public void testT03_ClassPerfectMatch_LowerValue() {
-        setViewportSize(WebDriverManager.getWebDriver(), 601, 1000);
+        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 601, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
@@ -108,7 +88,7 @@ public class PageFactoryTest extends AbstractTest {
 
     @Test
     public void testT04_ClassPerfectMatch_UpperValue() {
-        setViewportSize(WebDriverManager.getWebDriver(), 800, 1000);
+        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 800, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
@@ -116,7 +96,7 @@ public class PageFactoryTest extends AbstractTest {
 
     @Test
     public void testT05_Match_Min() {
-        setViewportSize(WebDriverManager.getWebDriver(), 599, 1000);
+        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 599, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_Min_600px.class.getSimpleName(), "Instantiated correct page.");
@@ -124,7 +104,7 @@ public class PageFactoryTest extends AbstractTest {
 
     @Test
     public void testT06_Match_Max() {
-        setViewportSize(WebDriverManager.getWebDriver(), 1600, 1000);
+        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 1600, 1000);
         ResponsiveWebTestPage blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_1235px_Max.class.getSimpleName(), "Instantiated correct page.");

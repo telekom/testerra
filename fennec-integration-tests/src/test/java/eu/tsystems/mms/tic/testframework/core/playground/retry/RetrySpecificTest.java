@@ -44,7 +44,7 @@ public class RetrySpecificTest extends AbstractTest {
     private static int counter = 0;
 
     static {
-        System.setProperty("failed.tests.max.retries", "0");
+        System.setProperty("fennec.failed.tests.max.retries", "0");
     }
 
     /**

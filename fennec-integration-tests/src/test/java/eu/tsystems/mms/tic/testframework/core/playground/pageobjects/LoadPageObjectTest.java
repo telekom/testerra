@@ -51,7 +51,7 @@ public class LoadPageObjectTest extends AbstractTest {
     public void test_XETA() {
         Long start = System.currentTimeMillis();
         WebDriver driver = WebDriverManager.getWebDriver();
-        driver.get(PropertyManager.getProperty("baseURL"));
+        driver.get(PropertyManager.getProperty("fennec.baseurl"));
         WebElement wishList = driver.findElement(By.id("wishlist-total"));
         System.out.println("List: " + wishList.getText());
         WebElement loginLink = driver.findElement(By.xpath("//a[text()='login']"));

@@ -35,7 +35,7 @@ public class AWSWebDriverTest extends AbstractTest {
 
     static {
         WebDriverManager.config().webDriverMode = WebDriverMode.remote;
-        System.setProperty("selenium.server.url", "http://test:test@localhost:4001/wd/hub");
+        System.setProperty("fennec.selenium.server.url", "http://test:test@localhost:4001/wd/hub");
         WebDriverManager.config().browser = Browsers.chrome;
         WebDriverManager.config().browserVersion = "64";
     }

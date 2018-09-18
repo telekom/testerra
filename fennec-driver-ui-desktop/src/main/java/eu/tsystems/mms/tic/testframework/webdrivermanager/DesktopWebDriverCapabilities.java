@@ -115,16 +115,6 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 // need to enable Javascript
                 desiredCapabilities.setBrowserName(BrowserType.HTMLUNIT);
                 desiredCapabilities.setJavascriptEnabled(false);
-
-                final Proxy proxy = new Proxy();
-                if (!PropertyManager.getProperty("htmlUnitProxy").trim().isEmpty()
-                        && !PropertyManager.getProperty("htmlUnitProxyPort").trim().isEmpty()) {
-                    proxy.setHttpProxy(PropertyManager.getProperty("htmlUnitProxy")
-                            + ":" + Integer.parseInt(PropertyManager.getProperty("htmlUnitProxyPort")));
-                    desiredCapabilities.setCapability(CapabilityType.PROXY, proxy);
-                } else {
-                    LOGGER.debug("Found no htmlunit proxysettings in test.properties.");
-                }
                 break;
             case Browsers.phantomjs:
                 LOGGER.info("Creating capabilities for PhantomJS");
@@ -136,17 +126,7 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 desiredCapabilities.setBrowserName(BrowserType.FIREFOX);
 
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
-
                 desiredCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
-
-                if (config.webDriverMode != WebDriverMode.remote) {
-                    LOGGER.info("Creating capabilities for FirefoxDriver");
-                    String firefoxBinary = PropertyManager.getProperty(FennecProperties.FIREFOXBIN);
-                    if (firefoxBinary != null) {
-                        System.setProperty(FennecProperties.FIREFOXBIN, firefoxBinary);
-                    }
-                }
-
                 break;
             case Browsers.safari:
                 LOGGER.info("Creating capabilities for SafariDriver");
@@ -162,24 +142,10 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 
                 desiredCapabilities.setCapability("edgeOptions", edgeOptions);
 //                desiredCapabilities.setCapability(EdgeOptions.CAPABILITY, edgeOptions);
-
-                if (config.webDriverMode != WebDriverMode.remote) {
-                    final String edgeDriverPath = PropertyManager.getProperty(FennecProperties.EDGEDRIVER, null);
-                    if (edgeDriverPath != null) {
-                        System.setProperty(FennecProperties.EDGEDRIVER, edgeDriverPath);
-                    }
-                }
-
                 break;
             case Browsers.chrome:
             case Browsers.chromeHeadless:
                 LOGGER.info("Creating capabilities for ChromeDriver");
-                if (config.webDriverMode != WebDriverMode.remote) {
-                    final String chromeDriver = PropertyManager.getProperty(FennecProperties.CHROMEDRIVER, null);
-                    if (chromeDriver != null) {
-                        System.setProperty(FennecProperties.CHROMEDRIVER, chromeDriver);
-                    }
-                }
                 desiredCapabilities.setBrowserName(BrowserType.CHROME);
                 {
                     ChromeOptions chromeOptions = new ChromeOptions();
@@ -188,14 +154,6 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 break;
             case Browsers.ie:
                 LOGGER.info("Creating capabilities for InternetExplorerDriver");
-                if (config.webDriverMode != WebDriverMode.remote) {
-                    final String ieDriver = PropertyManager.getProperty(FennecProperties.IEDRIVER, null);
-                    if (ieDriver == null) {
-                        throw new FennecRuntimeException("No iedriver set. "
-                                + "Set System Property webdriver.ie.driver or add path to test.properties.");
-                    }
-                    System.setProperty(FennecProperties.IEDRIVER, ieDriver);
-                }
                 desiredCapabilities.setBrowserName(BrowserType.IEXPLORE);
 
                 InternetExplorerOptions options = new InternetExplorerOptions();

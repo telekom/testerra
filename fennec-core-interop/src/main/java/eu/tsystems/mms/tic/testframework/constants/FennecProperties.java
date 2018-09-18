@@ -43,48 +43,28 @@ public final class FennecProperties {
     /**
      * Property to set the browser used by Selenium/ Webdriver.
      */
-    public static final String BROWSER = "browser";
+    public static final String BROWSER = "fennec.browser";
 
     /**
      * Property to set the host of the remote selenium server.
      */
-    public static final String SELENIUM_SERVER_URL = "selenium.server.url";
-    public static final String SELENIUM_SERVER_HOST = "selenium.server.host";
+    public static final String SELENIUM_SERVER_URL = "fennec.selenium.server.url";
+    public static final String SELENIUM_SERVER_HOST = "fennec.selenium.server.host";
 
     /**
      * Property to set the port of the remote selenium server.
      */
-    public static final String SELENIUM_SERVER_PORT = "selenium.server.port";
-
-    /**
-     * Property to set the location of the chrome driver.
-     */
-    public static final String CHROMEDRIVER = "webdriver.chrome.driver";
-
-    /**
-     * Property to set the location of the edge driver.
-     */
-    public static final String EDGEDRIVER = "webdriver.edge.driver";
-
-    /**
-     * Property to set the location of the ie driver.
-     */
-    public static final String IEDRIVER = "webdriver.ie.driver";
-
-    /**
-     * Property to set the location of the firefox installation.
-     */
-    public static final String FIREFOXBIN = "webdriver.firefox.bin";
+    public static final String SELENIUM_SERVER_PORT = "fennec.selenium.server.port";
 
     /**
      * Property Key for package where qcconnector looks for tests.
      */
-    public static final String WEBDRIVERMODE = "webdriver.mode";
+    public static final String WEBDRIVERMODE = "fennec.webdriver.mode";
 
     /**
      * Property key of baseUrl used by Selenium.
      */
-    public static final String BASEURL = "baseURL";
+    public static final String BASEURL = "fennec.baseurl";
 
     /**
      * Property key stating to take automatic screenshots or not.
@@ -94,85 +74,73 @@ public final class FennecProperties {
     /**
      * Key of reportDir Property.
      */
-    public static final String REPORTDIR = "reportDir";
-    public static final String REPORTNAME = "reportName";
+    public static final String REPORTDIR = "fennec.reportdir";
+    public static final String REPORTNAME = "fennec.reportname";
 
     /**
      * fennec test property file.
      */
-    public static final String TEST_PROPERTIES_FILE = "test.properties.file";
+    public static final String TEST_PROPERTIES_FILE = "fennec.test.properties.file";
 
     /**
      * Failed tests maximum number of retries.
      */
-    public static final String FAILED_TESTS_MAX_RETRIES = "failed.tests.max.retries";
-    public static final String FAILED_TESTS_RETRY_FLAPPING = "failed.tests.retry.flapping";
+    public static final String FAILED_TESTS_MAX_RETRIES = "fennec.failed.tests.max.retries";
+    public static final String FAILED_TESTS_RETRY_FLAPPING = "fennec.failed.tests.retry.flapping";
 
     /**
      * Failed tests condition: Throwable Class(~es, devided by ','.
      */
-    public static final String FAILED_TESTS_IF_THROWABLE_CLASSES = "failed.tests.if.throwable.classes";
+    public static final String FAILED_TESTS_IF_THROWABLE_CLASSES = "fennec.failed.tests.if.throwable.classes";
 
     /**
      * Failed tests condition. Throwable Message(~s, devided by ',').
      */
-    public static final String FAILED_TESTS_IF_THROWABLE_MESSAGES = "failed.tests.if.throwable.messages";
+    public static final String FAILED_TESTS_IF_THROWABLE_MESSAGES = "fennec.failed.tests.if.throwable.messages";
 
     /**
      * WDM close windows rule.
      */
-    public static final String CLOSE_WINDOWS_AFTER_TEST_METHODS = "wdm.closeWindows.afterTestMethods";
+    public static final String CLOSE_WINDOWS_AFTER_TEST_METHODS = "fennec.wdm.closewindows.aftertestmethods";
 
     /**
      * WDM close windows rule.
      */
-    public static final String CLOSE_WINDOWS_ON_FAILURE = "wdm.closeWindows.onFailure";
+    public static final String CLOSE_WINDOWS_ON_FAILURE = "fennec.wdm.closewindows.onfailure";
 
     /**
      * Visually marks every GuiElement that is being processed. Might break a LayoutTest.
      */
-    public static final String DEMO_MODE = "demomode";
+    public static final String DEMO_MODE = "fennec.demomode";
 
     /**
      * Element timeout seconds.
      */
-    public static final String ELEMENT_TIMEOUT_SECONDS = "element.timeout.seconds";
+    public static final String ELEMENT_TIMEOUT_SECONDS = "fennec.element.timeout.seconds";
 
     /**
      * State condition.
      */
-    public static final String ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS = "on.state.testfailed.skip.following.tests";
+    public static final String ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS = "fennec.on.state.testfailed.skip.following.tests";
     /**
      * State condition.
      */
-    public static final String ON_STATE_TESTFAILED_SKIP_SHUTDOWN = "on.state.testfailed.skip.shutdown";
+    public static final String ON_STATE_TESTFAILED_SKIP_SHUTDOWN = "fennec.on.state.testfailed.skip.shutdown";
 
-    /**
-     * Dimension of screen
-     */
-    public static final String SCREEN_SIZE_X = "screen.size.x";
-    /**
-     * Dimension of screen
-     */
-    public static final String SCREEN_SIZE_Y = "screen.size.y";
-
-    /**
-     * "report.screenshots.preview"
-     */
-    public static final String REPORT_SCREENSHOTS_PREVIEW = "report.screenshots.preview";
+    public static final String REPORT_SCREENSHOTS_PREVIEW = "fennec.report.screenshots.preview";
 
     /**
      * Module source root
      */
-    public static final String MODULE_SOURCE_ROOT = "module.source.root";
+    public static final String MODULE_SOURCE_ROOT = "fennec.module.source.root";
     /**
-     * source.lines.prefetch
+     * fennec.source.lines.prefetch
      */
-    public static final String SOURCE_LINES_PREFETCH = "source.lines.prefetch";
+    public static final String SOURCE_LINES_PREFETCH = "fennec.source.lines.prefetch";
     /**
-     * report.activate.sources
+     * fennec.report.activate.sources
      */
-    public static final String REPORT_ACTIVATE_SOURCES = "report.activate.sources";
+    public static final String REPORT_ACTIVATE_SOURCES = "fennec.report.activate.sources";
 
     /**
      * Guielement easy mode.
@@ -204,31 +172,13 @@ public final class FennecProperties {
 
     public static final String DB_TIMEOUT = "fennec.db.timeout";
 
-    public static final String BROWSER_VERSION = "browser.version";
+    public static final String BROWSER_VERSION = "fennec.browser.version";
 
     public static final String MONITOR_MEMORY = "fennec.monitor.memory";
 
     public static final String DRY_RUN = "fennec.dryrun";
 
-    /** Execution mode remote or local */
-    public static final String SIKULI_MODE = "sikuli.mode";
-
-    /** Port the server and client shall use */
-    public static final String SIKULI_SERVER_PORT = "sikuli.server.port";
-
-    /** Address of the server or "localhost" */
-    public static final String SIKULI_SERVER_ADDRESS = "sikuli.server.address";
-
-    /** Maximum number of server sessions for nodes */
-    public static final String SIKULI_SERVER_NODE_SESSIONS_MAX = "sikuli.server.node.sessions.max";
-
-    public static final String DYNATRACE_LOGGING = "fennec.dynatrace.logging";
-
-    public static final String DASHBOARD_SYNC_ENABLED = "dashboard.sync.enabled";
-    public static final String DASHBOARD_URL = "dashboard.url";
-    public static final String DASHBOARD_PROJECT_NAME = "dashboard.project.name";
-
-    public static final String GUIELEMENT_CHECK_RULE = "guielement.checkrule";
+    public static final String GUIELEMENT_CHECK_RULE = "fennec.guielement.checkrule";
 
     public static final String REUSE_REPORTDIR = "fennec.reuse.reportdir";
 

@@ -52,7 +52,7 @@ public final class ErrorMessages {
      * @return error message
      */
     public static String seleniumServerHostMissing() {
-        return "selenium.server.host missing! Using localhost.";
+        return "fennec.selenium.server.host missing! Using localhost.";
     }
 
     /**
@@ -61,7 +61,7 @@ public final class ErrorMessages {
      * @return error message
      */
     public static String seleniumServerPortMissing() {
-        return "selenium.server.port missing! Using 4444.";
+        return "fennec.selenium.server.port missing! Using 4444.";
     }
 
     /**

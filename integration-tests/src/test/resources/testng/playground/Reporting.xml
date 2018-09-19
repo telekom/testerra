@@ -1,0 +1,49 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite" verbose="10" parallel="methods" configfailurepolicy="continue">
+    <!--<listeners>-->
+        <!--<listener class-name="eu.tsystems.mms.tic.testframework.report.FennecListener"/>-->
+    <!--</listeners>-->
+<!---->
+	<test name="Test1">
+		<classes>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ForceFailureCorridorActiveTest"/>
+
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingDetailsTest2"/>
+
+            <!--<class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingAllStatesTest"/>-->
+            <!--<class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingDetailsTest"/>-->
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.sub.ReportingDetailsTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.sub.sub.ReportingDetailsTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingConfigMethodsFail1Test"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingConfigMethodsFail2Test"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingConfigMethodsFail3Test"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingConfigMethodsFail4Test"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingExpectedFailedTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingMethodsFailTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingGroupFailTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportFailingTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportFilterTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingConfigMethodsPassTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingPassedTest"/>
+			<class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingNonFunctionalTest"/>
+			<class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingWithRetryErrorAndExceptionTest"/>
+
+            <!--<class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ThreadVisualizerTest">-->
+                <!--<methods>-->
+                    <!--<include name="testT01Fail" />-->
+                <!--</methods>-->
+            <!--</class>-->
+
+			<!-- with webdriver: -->
+			<!--<class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingCompleteTestMethodResultsTest"/>-->
+			<!--<class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingScreenshotsTests"/>-->
+		</classes>
+	</test>
+
+	<test name="Test2">
+		<classes>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingDetailsTest2"/>
+		</classes>
+	</test>
+
+</suite>

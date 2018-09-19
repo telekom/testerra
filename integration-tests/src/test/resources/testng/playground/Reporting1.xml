@@ -1,0 +1,19 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite" verbose="10">
+    <listeners>
+        <listener class-name="eu.tsystems.mms.tic.testframework.report.FennecListener"/>
+    </listeners>
+
+	<test name="Test1">
+		<classes>
+			<class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportFailingTests"/>
+			<class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingPassedTest"/>
+		</classes>
+	</test>
+	<test name="Test2">
+		<classes>
+			<class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportFailingTests"/>
+			<class name="eu.tsystems.mms.tic.testframework.core.playground.reporting.ReportingPassedTest"/>
+		</classes>
+	</test>
+</suite>

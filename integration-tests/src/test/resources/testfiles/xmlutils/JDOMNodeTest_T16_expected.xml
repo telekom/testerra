@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<test>
+    <child1 attr1="default">
+        <subchild1 attr1="default"/>
+        <subchild2 attr2="foobar"/>
+        <subchild3>Value was changed.</subchild3>
+    </child1>
+    <child2>
+        <subchild3>Value was changed.</subchild3>
+        <subchild4>Lorem ipsum</subchild4>
+    </child2>
+    <child3>
+        <subchild5 attr3="lorem1"/>
+        <subchild5 attr3="lorem2"/>
+    </child3>
+</test>

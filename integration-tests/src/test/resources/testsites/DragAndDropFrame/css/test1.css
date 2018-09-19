@@ -1,0 +1,74 @@
+body {
+	font-family: "Arial", "Helvetica", sans-serif;
+	font-size: 0.8em;
+}
+
+a#toDrag, div#toDrag, #dropTarget {
+	font-size: 20px;
+	border: solid 1px blue;
+	background: white;
+	width: 100px;
+	padding: 1em;
+	display: block;
+    color: #000099;
+    position: relative;
+    font-family: "Times New Roman", serif;
+    
+}
+
+code {
+	font-size: 1.3em;
+}
+
+img#toDrag {
+	border: none;
+}
+
+a#toDrag, div#toDrag {
+	background-color: red;
+	
+	
+}
+
+#dropTarget {
+	font-size: .9em;
+	font-family: "MS Sans Serif", sans;
+	height: 170px;
+	margin-top: 2em;
+	
+	/* 
+	 * Must be relative or absolute in order for 
+	 * DragDropHelpers.getEventCoords() to work correctly in Firefox. 
+	 */
+	position: relative;
+}
+
+.caption {
+	text-align: center;
+	margin-top: 0.3em;
+}
+
+#toDrag, #dropTarget, fieldset {
+	
+}
+
+#eventLog {
+	top: 13em;
+	left: 18em;
+	position: absolute;
+}
+
+#eventNotice {
+	display: block;
+	overflow: scroll;
+	width: 41em;
+	height: 15em;
+	border: solid 1px black;
+	margin-bottom: 2em;
+}
+
+
+iframe {
+	height: 20em;
+}
+

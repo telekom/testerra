@@ -9,9 +9,6 @@ dependencies {
 test.enabled = true
 test {
     useTestNG() {
-        useDefaultListeners = true
-
-//        suites 'src/test/resources/Playground.xml'
         suites 'src/test/resources/CoreTestSuite.xml'
     }
 }

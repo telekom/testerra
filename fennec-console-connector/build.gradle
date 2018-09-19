@@ -3,3 +3,7 @@ dependencies {
     compile apache_commons
     compile 'com.jcraft:jsch:0.1.54'
 }
+
+test {
+    exclude '**'
+}

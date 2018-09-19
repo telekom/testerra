@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TestTable;
+import eu.tsystems.mms.tic.testframework.testing.FennecTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
@@ -53,10 +54,10 @@ import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TestDBConne
  * @author sepr
  * 
  */
-public abstract class AbstractDBConnector {
+public abstract class AbstractDBConnectorTest extends FennecTest {
 
     /** Logger for all DBConnector Tests. */
-    public static final Logger LOG = LoggerFactory.getLogger(AbstractDBConnector.class);
+    public static final Logger LOG = LoggerFactory.getLogger(AbstractDBConnectorTest.class);
 
     /** DB Entry Oject to be used by any testmethod. */
     public static final DBEntry USER1 = new DBEntry(

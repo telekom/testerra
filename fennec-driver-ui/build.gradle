@@ -6,3 +6,7 @@ dependencies {
     compile opencv
     compile datatypes
 }
+
+test {
+    exclude '**'
+}

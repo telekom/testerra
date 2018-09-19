@@ -49,7 +49,7 @@ import java.util.List;
  * 
  * @author sepr
  */
-public class TestDBConnector extends AbstractDBConnector {
+public class TestDBConnector extends AbstractDBConnectorTest {
 
     /**
      * Test implementation of "DELETE FROM table [WHERE x=y]" of fennec DBConnector.

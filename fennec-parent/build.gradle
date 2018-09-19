@@ -17,3 +17,6 @@ dependencies {
     compile core
 }
 
+test {
+    exclude '**'
+}

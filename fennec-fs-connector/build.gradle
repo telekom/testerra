@@ -13,3 +13,9 @@ dependencies {
     testCompile 'org.apache.ftpserver:ftplet-api:1.0.6'
     testCompile test_utils
 }
+
+test {
+    useTestNG() {
+        suites 'src/test/resources/FSTests.xml'
+    }
+}

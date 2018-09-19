@@ -137,10 +137,11 @@ allprojects {
         }
 
         repositories {
-            mavenLocal()
+            mavenCentral()
+            jcenter()
             maven {
-                name 'jfennec-github'
-                url 'github'
+                name 'jfennec-bintray-or-whatever'
+                url 'the-correct-url'
                 credentials {
                     username githubUsername
                     password githubPassword
@@ -159,9 +160,8 @@ allprojects {
         }
     }
 
-
-    test.enabled = false
     test {
+        useTestNG()
         testLogging {
             outputs.upToDateWhen { false }
             showStandardStreams = true

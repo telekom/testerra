@@ -4,3 +4,7 @@ dependencies {
     compile 'net.iharder:base64:2.3.8'
     compile core
 }
+
+test {
+    exclude '**'
+}

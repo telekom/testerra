@@ -1,3 +1,10 @@
 dependencies {
     compile core_interop
+    testCompile core
+}
+
+test {
+    useTestNG() {
+        suites 'src/test/resources/testSuite.xml'
+    }
 }

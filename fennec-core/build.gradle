@@ -33,3 +33,7 @@ processResources {
         ]
     }
 }
+
+test {
+    exclude '**'
+}

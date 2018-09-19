@@ -50,7 +50,7 @@ import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TableDefini
  * 
  * @author sepr, mrgi
  */
-public class TestDBConnectorNeg extends AbstractDBConnector {
+public class TestDBConnectorNeg extends AbstractDBConnectorTest {
 
     /**
      * Test DBConnector behaviour of various wrong select queries.

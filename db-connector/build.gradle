@@ -1,6 +1,7 @@
 dependencies {
     compile core_interop
     testCompile core
+    testCompile 'mysql:mysql-connector-java:8.0.12'
 }
 
 test {

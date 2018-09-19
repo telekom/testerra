@@ -9,11 +9,11 @@ ext {
     /*
     fennec stuff
      */
-    core_interop = project(':fennec-core-interop')
-    driver_ui = project(':fennec-driver-ui')
-    driver_ui_desktop = project(':fennec-driver-ui-desktop')
-    core = project(':fennec-core')
-    test_utils = project(':fennec-test-utils')
+    core_interop = project(':core-interop')
+    driver_ui = project(':driver-ui')
+    driver_ui_desktop = project(':driver-ui-desktop')
+    core = project(':core')
+    test_utils = project(':test-utils')
 
     /*
     external stuff

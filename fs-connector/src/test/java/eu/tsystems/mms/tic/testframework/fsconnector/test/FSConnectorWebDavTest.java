@@ -61,7 +61,7 @@ public class FSConnectorWebDavTest extends AbstractTest {
     /** FTP User name. */
     private static final String WEBDAVUSER = "WUM60239\\ta";
     /** FTP Password. */
-    private static final String WEBDAVPASSWD = "mas4test#";
+    private static final String WEBDAVPASSWD = "your_passwd";
     /** HOST of webdav server. */
     private static final String WEBDAVHOST = "http://" + Constants.TESTSERVERIP;
 

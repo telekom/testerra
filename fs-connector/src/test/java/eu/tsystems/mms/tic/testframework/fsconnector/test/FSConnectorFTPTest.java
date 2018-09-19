@@ -290,7 +290,7 @@ public class FSConnectorFTPTest extends AbstractTest {
 
         final Source source = new Source(Protocol.SFTP).setHost(Constants.TESTSERVERIP).setPort("222").setPath("/")
                 .setFilename(DOWNLOADFILE);
-        source.setUsername("ta").setPassword("").setKeyPassword("mas4test#")
+        source.setUsername("ta").setPassword("").setKeyPassword("your_passwd")
                 .setKeyStoreFile(privateKey.getAbsolutePath());
 
         final Destination destination = new Destination(Protocol.FILE).setPath(FILEDIR);

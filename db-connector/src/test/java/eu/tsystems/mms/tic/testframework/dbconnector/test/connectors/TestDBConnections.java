@@ -43,7 +43,7 @@ public class TestDBConnections extends ProjectConnections {
     public static final TestDBConnections DB1 =
             new TestDBConnections(
                     new DBConnector<TestDBConnections>("localhost", "3306", Driver.MYSQL,
-                            "Fennecdbconnector", "fennec", "mas4test"));
+                            "Fennecdbconnector", "fennec", "your_passwd"));
 
     /**
      * Connection to H2 DB that stores fennec Results.

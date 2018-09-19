@@ -12,3 +12,9 @@ test {
         suites 'src/test/resources/CoreTestSuite.xml'
     }
 }
+
+task prepareTests() {
+    doLast {
+        println "Preparing tests..."
+    }
+}

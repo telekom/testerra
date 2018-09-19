@@ -28,6 +28,11 @@ package eu.tsystems.mms.tic.testframework.dbconnector.test.connectors;
 
 import eu.tsystems.mms.tic.testframework.dbconnector.Table;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 /**
  * Class containing TableDefinitions for fennec DBConnector test.
  * 
@@ -48,5 +53,10 @@ public class TableDefinitions extends Table {
      */
     public TableDefinitions(final String table) {
         super(table);
+    }
+
+    public String[] getIdentifiers() {
+        Field[] declaredFields = this.getClass().getDeclaredFields();
+        return Arrays.stream(declaredFields).map(Field::getName).toArray(String[]::new);
     }
 }

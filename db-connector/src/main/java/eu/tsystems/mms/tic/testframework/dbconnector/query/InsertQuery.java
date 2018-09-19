@@ -28,6 +28,9 @@ package eu.tsystems.mms.tic.testframework.dbconnector.query;
 
 import eu.tsystems.mms.tic.testframework.dbconnector.Table;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
  * Class representing insert queries.
  * 
@@ -50,15 +53,9 @@ public class InsertQuery<T extends Table> extends Query<T> implements INonSelect
      */
     public InsertQuery(final T intoTable, final String[] cols, final String[] values) {
         this.setFromTable(intoTable);
-
-        final String commaSepValues = getCommaSeparatedString(values, true, false);
-
-        if (cols == null || cols.length == 0) {
-            setQueryString(String.format("INSERT INTO %s VALUES (%s)", intoTable.getTableName(), commaSepValues));
-        } else {
-            final String commaSepCols = getCommaSeparatedString(cols, false, true);
-            setQueryString(String.format("INSERT INTO %s (%s) VALUES (%s)", intoTable.getTableName(),
-                    commaSepCols, commaSepValues));
-        }
+        String c = String.join(",", cols);
+        String v = Arrays.stream(values).map(s -> "'" + s + "'").collect(Collectors.joining(","));
+        String query = String.format("INSERT INTO %s (%s) VALUES (%s)", intoTable.getTableName(), c, v);
+        setQueryString(query);
     }
 }

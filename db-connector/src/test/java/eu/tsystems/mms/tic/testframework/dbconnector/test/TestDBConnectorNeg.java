@@ -67,7 +67,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
             result = conn.select(new SelectQuery<TableDefinitions>(
                     "unknown", TableDefinitions.TESTTABLE, ""));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             Assert.assertTrue(e.getMessage().contains("Unknown column"));
             allAssertsThrown = true;
         }
@@ -88,7 +88,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
             result = conn.select(new SelectQuery<TableDefinitions>(
                     "*", TableDefinitions.LOBTABLE, "blob IS NOT NULL"));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             Assert.assertTrue(e.getMessage().contains("You have an error in your SQL syntax"));
             // sql keywords should be escaped with tablename.
             // this should work:
@@ -101,7 +101,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
             result = conn.select(new SelectQuery<TableDefinitions>(
                     "*", new TableDefinitions("unknown"), ""));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             Assert.assertTrue(e.getMessage().contains("Table 'Fennecdbconnector.unknown' doesn't exist"));
             allAssertsThrown = allAssertsThrown & true;
         }
@@ -109,7 +109,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
             result = conn.select(new SelectQuery<TableDefinitions>(
                     "*", null, ""));
         } catch (final NullPointerException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             allAssertsThrown = allAssertsThrown & true;
         }
         Assert.assertTrue(allAssertsThrown);
@@ -134,7 +134,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
         try {
             conn.query(new DeleteQuery<TableDefinitions>(TableDefinitions.LOBTABLE, "blob IS NOT NULL"));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown:" + e.toString());
+            LOGGER.debug("Expected Exception thrown:" + e.toString());
             Assert.assertTrue(e.getMessage().contains("You have an error in your SQL syntax"));
             allAssertsThrown = true;
         }
@@ -143,7 +143,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
             conn.query(new DeleteQuery<TableDefinitions>(new TableDefinitions("unknown"), ""));
             allAssertsThrown = allAssertsThrown & false;
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown:" + e.toString());
+            LOGGER.debug("Expected Exception thrown:" + e.toString());
             Assert.assertTrue(e.getMessage().contains("Table 'Fennecdbconnector.unknown' doesn't exist"));
             allAssertsThrown = allAssertsThrown & true;
         }
@@ -151,7 +151,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
             conn.query(new DeleteQuery<TableDefinitions>(null, ""));
             allAssertsThrown = allAssertsThrown & false;
         } catch (final NullPointerException e) {
-            LOG.debug("Expected Exception thrown:" + e.toString());
+            LOGGER.debug("Expected Exception thrown:" + e.toString());
             allAssertsThrown = allAssertsThrown & true;
         }
         Assert.assertTrue(allAssertsThrown);
@@ -172,7 +172,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
         try {
             conn.selectBlob(new SelectQuery<TableDefinitions>("", table, null));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             allAssertsThrown = true;
         }
 
@@ -182,7 +182,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
                     null));
             allAssertsThrown = allAssertsThrown & false;
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             allAssertsThrown = allAssertsThrown & true;
         }
 
@@ -192,7 +192,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
                     LobTable.getBlobType() + "IS NOT NULL"));
             allAssertsThrown = allAssertsThrown & false;
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             allAssertsThrown = allAssertsThrown & true;
         }
 
@@ -217,7 +217,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
         try {
             conn.selectClob(new SelectQuery<TableDefinitions>("", table, null));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             allAssertsThrown = true;
         }
 
@@ -227,7 +227,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
                     null));
             allAssertsThrown = allAssertsThrown & false;
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             allAssertsThrown = allAssertsThrown & true;
         }
 
@@ -237,7 +237,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
                     LobTable.getBlobType() + "IS NOT NULL"));
             allAssertsThrown = allAssertsThrown & false;
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             allAssertsThrown = allAssertsThrown & true;
         }
 
@@ -265,7 +265,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
                             USER1.getCreationTime().toString()
                     }));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             if (e.toString().contains("Table 'Fennecdbconnector.nicht_vorhanden' doesn't exist")) {
                 exception = true;
             }
@@ -279,7 +279,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
                     new String[] { "nicht_vorhanden" },
                     new String[] { "40" }));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             if (e.toString().contains("Unknown column 'testtable.nicht_vorhanden' in 'field list'")) {
                 exception = true;
             }
@@ -290,10 +290,10 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
         // stress values
         try {
             conn.query(new InsertQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
-                    new String[] { TestTable.getIdField() },
+                    new String[] { TestTable.getId() },
                     new String[] { "text" }));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             if (e.toString().contains("Incorrect integer value")) {
                 exception = true;
             }
@@ -306,7 +306,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
             conn.query(new InsertQuery<TableDefinitions>(TableDefinitions.TESTTABLE, null,
                     new String[] { "", "" }));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             if (e.toString().contains("Column count doesn't match value count")) {
                 exception = true;
             }
@@ -316,7 +316,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
                     new String[] { TestTable.getAge(), TestTable.getFirstname() },
                     new String[] { "50", "Horst", "fehler" }));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             if (e.toString().contains("Column count doesn't match value count")) {
                 exception = true;
             }
@@ -336,7 +336,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
         try {
             conn.query(new TruncateQuery<TableDefinitions>(new TestTable("nicht_vorhanden")));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             if (e.toString().contains("Table 'Fennecdbconnector.nicht_vorhanden' doesn't exist")) {
                 exceptionThrown = true;
             }
@@ -360,7 +360,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
                     new String[] { TestTable.getFirstname() }, new String[] { "ursel" },
                     TestTable.getUser() + "='" + USER1.getUser() + "'"));
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             if (e.toString().contains("Table 'Fennecdbconnector.nicht_vorhanden' doesn't exist")) {
                 exceptionThrown = true;
             }
@@ -374,7 +374,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
                     TestTable.getUser() + "='" + USER1.getUser() + "'"));
             exceptionThrown = false;
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             if (e.toString().contains("Unknown column 'nicht_vorhanden' in 'field list'")) {
                 exceptionThrown = true;
             }
@@ -388,7 +388,7 @@ public class TestDBConnectorNeg extends AbstractDBConnectorTest {
                     "nicht_vorhanden" + "='" + USER1.getUser() + "'"));
             exceptionThrown = false;
         } catch (final SQLException e) {
-            LOG.debug("Expected Exception thrown: " + e.toString());
+            LOGGER.debug("Expected Exception thrown: " + e.toString());
             if (e.toString().contains("Unknown column 'nicht_vorhanden' in 'field list'")) {
                 exceptionThrown = true;
             }

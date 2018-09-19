@@ -1,7 +1,7 @@
 dependencies {
     compile core_interop
     testCompile core
-    testCompile 'mysql:mysql-connector-java:8.0.12'
+    testCompile 'com.h2database:h2:1.4.197'
 }
 
 test {

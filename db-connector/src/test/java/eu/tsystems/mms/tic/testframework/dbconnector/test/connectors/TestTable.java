@@ -35,13 +35,13 @@ package eu.tsystems.mms.tic.testframework.dbconnector.test.connectors;
 public class TestTable extends TableDefinitions {
 
     /** Column id. */
-    private static String idField = "id";
+    private static String id = "id";
     /** Column user. */
-    private static String user = "userName";
+    private static String user = "user";
     /** Column firstname. */
     private static String firstname = "firstname";
     /** Column lastname. */
-    private static String lastname = "where";
+    private static String lastname = "lastname";
     /** Column age. */
     private static String age = "age";
     /** Column date. */
@@ -61,10 +61,10 @@ public class TestTable extends TableDefinitions {
     /**
      * sets the id field from test table
      *
-     * @param idField the idField to set
+     * @param id the id to set
      */
-    public static void setIdField(final String idField) {
-        TestTable.idField = idField;
+    public static void setId(final String id) {
+        TestTable.id = id;
     }
 
     /**
@@ -124,10 +124,10 @@ public class TestTable extends TableDefinitions {
     /**
      * gets the id field
      *
-     * @return the idField
+     * @return the id
      */
-    public static String getIdField() {
-        return idField;
+    public static String getId() {
+        return id;
     }
 
     /**

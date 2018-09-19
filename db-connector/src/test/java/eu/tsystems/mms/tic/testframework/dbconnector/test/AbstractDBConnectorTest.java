@@ -26,19 +26,17 @@
  */
 package eu.tsystems.mms.tic.testframework.dbconnector.test;
 
-import java.lang.reflect.Method;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TestTable;
 import eu.tsystems.mms.tic.testframework.testing.FennecTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.AfterSuite;
 
 import eu.tsystems.mms.tic.testframework.dbconnector.DBConnector;
 import eu.tsystems.mms.tic.testframework.dbconnector.query.InsertQuery;
@@ -46,6 +44,7 @@ import eu.tsystems.mms.tic.testframework.dbconnector.query.TruncateQuery;
 import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.DBEntry;
 import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TableDefinitions;
 import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TestDBConnections;
+import org.testng.annotations.BeforeSuite;
 
 /**
  * Abstract class for DBConnector Tests that provides a DBConnector object and fills the test db with some data, which
@@ -57,7 +56,7 @@ import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TestDBConne
 public abstract class AbstractDBConnectorTest extends FennecTest {
 
     /** Logger for all DBConnector Tests. */
-    public static final Logger LOG = LoggerFactory.getLogger(AbstractDBConnectorTest.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(AbstractDBConnectorTest.class);
 
     /** DB Entry Oject to be used by any testmethod. */
     public static final DBEntry USER1 = new DBEntry(
@@ -78,26 +77,36 @@ public abstract class AbstractDBConnectorTest extends FennecTest {
      * 
      * @throws SQLException Error while querying the db.
      */
-    @BeforeMethod
-    public void setup(Method method) throws SQLException {
-        final DBConnector<?> conn = getDBConnector();
-
+    @BeforeSuite(alwaysRun = true)
+    public void setup() throws SQLException {
         final TableDefinitions table = TableDefinitions.TESTTABLE;
-        conn.query(new InsertQuery<TableDefinitions>(
+
+        final DBConnector<?> con = getDBConnector();
+
+        String type = "varchar(255)";
+        String values = Arrays.stream(table.getClass().getDeclaredFields()).map(field -> field.getName() + " " + type).collect(Collectors.joining(","));
+
+        try {
+            con.query("CREATE TABLE " + table.getTableName() + " (" + values + ");");
+        } catch (SQLException e) {
+            LOGGER.info("Table not created", e);
+        }
+
+        con.query(new InsertQuery<TableDefinitions>(
                 table, new String[] { TestTable.getUser(), TestTable.getFirstname(),
                         TestTable.getLastname(), TestTable.getAge(),
                         TestTable.getDate(),
                         TestTable.getCreationTime() },
                 new String[] { USER1.getUser(), USER1.getFirstname(), USER1.getLastname(),
                         USER1.getAge() + "", USER1.getDate().toString(), USER1.getCreationTime().toString() }));
-        conn.query(new InsertQuery<TableDefinitions>(
+        con.query(new InsertQuery<TableDefinitions>(
                 table, new String[] { TestTable.getUser(), TestTable.getFirstname(),
                         TestTable.getLastname(), TestTable.getAge(),
                         TestTable.getDate(),
                         TestTable.getCreationTime() },
                 new String[] { USER2.getUser(), USER2.getFirstname(), USER2.getLastname(),
                         USER2.getAge() + "", USER2.getDate().toString(), USER2.getCreationTime().toString() }));
-        conn.query(new InsertQuery<TableDefinitions>(
+        con.query(new InsertQuery<TableDefinitions>(
                 table, new String[] { TestTable.getUser(), TestTable.getFirstname(),
                         TestTable.getLastname(), TestTable.getAge(),
                         TestTable.getDate(),
@@ -113,7 +122,7 @@ public abstract class AbstractDBConnectorTest extends FennecTest {
      */
     protected DBConnector<?> getDBConnector() {
         if (dbConnector.get() == null) {
-            dbConnector.set(TestDBConnections.DB1.getDbConnection());
+            dbConnector.set(TestDBConnections.H2RESULTS.getDbConnection());
         }
         return dbConnector.get();
     }
@@ -123,8 +132,8 @@ public abstract class AbstractDBConnectorTest extends FennecTest {
      * 
      * @throws SQLException Error while querying the db.
      */
-    @AfterMethod
-    public void tearDown(Method method) throws SQLException {
+    @AfterSuite(alwaysRun = true)
+    public void tearDown() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
         final TableDefinitions table = TableDefinitions.TESTTABLE;
         conn.query(new TruncateQuery<TableDefinitions>(table));
@@ -140,9 +149,9 @@ public abstract class AbstractDBConnectorTest extends FennecTest {
         int i = 0;
         for (final HashMap<String, String> map : resAfter) {
             if (i == 0) {
-                LOG.debug(map.keySet().toString().toUpperCase());
+                LOGGER.debug(map.keySet().toString().toUpperCase());
             }
-            LOG.debug(map.values().toString());
+            LOGGER.debug(map.values().toString());
             i = 1;
         }
     }

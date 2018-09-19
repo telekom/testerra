@@ -40,6 +40,9 @@ import eu.tsystems.mms.tic.testframework.dbconnector.Table;
  */
 public class Query<T extends Table> {
 
+    public static boolean explicitTableName = false;
+    public static boolean quote = true;
+
     /**
      * Logger for this class.
      */
@@ -67,36 +70,6 @@ public class Query<T extends Table> {
             whereClause = "WHERE " + where;
         }
         return whereClause;
-    }
-
-    /**
-     * Convert String array in comma separated String.
-     *
-     * @param stringArray     Arry to convert.
-     * @param quote           Indicates if Strings should be quoted (e.g. for values at insertions).
-     * @param appendTablename Indicates if tablename should be appended in front of String (e.g. for columns to escape
-     *                        SQL Keywords)
-     * @return comma separated String.
-     */
-    protected String getCommaSeparatedString(final String[] stringArray,
-                                             final boolean quote, final boolean appendTablename) {
-        final String table = getFromTable().getTableName();
-        if (stringArray.length < 1) {
-            return "";
-        }
-        final StringBuffer commaSepValues = new StringBuffer();
-        for (String v : stringArray) {
-            if (appendTablename) {
-                v = table + "." + v;
-            }
-            //Quote´s werden nur gesetzt wenn v nicht NULL
-            if (quote && !((v == null) || ("NULL".equals(v)))) {
-                commaSepValues.append("'" + v + "', ");
-            } else {
-                commaSepValues.append(v).append(", ");
-            }
-        }
-        return commaSepValues.substring(0, commaSepValues.length() - 2);
     }
 
     /**

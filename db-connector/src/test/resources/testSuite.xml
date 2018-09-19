@@ -4,7 +4,6 @@
     <test name="UnitTests">
         <classes>
             <class name="eu.tsystems.mms.tic.testframework.dbconnector.test.TestDBConnector"/>
-            <class name="eu.tsystems.mms.tic.testframework.dbconnector.test.TestDBConnectorNeg"/>
         </classes>
     </test>
 </suite>

@@ -139,14 +139,14 @@ allprojects {
         repositories {
             mavenCentral()
             jcenter()
-            maven {
-                name 'jfennec-bintray-or-whatever'
-                url 'the-correct-url'
-                credentials {
-                    username githubUsername
-                    password githubPassword
-                }
-            }
+//            maven {
+//                name 'jfennec-bintray-or-whatever'
+//                url 'the-correct-url'
+//                credentials {
+//                    username githubUsername
+//                    password githubPassword
+//                }
+//            }
         }
     }
 

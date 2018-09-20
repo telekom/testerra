@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -77,7 +78,8 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
     }
 
     @Test
-    public void testT01_DragAndDrop() throws Exception {
+    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
+    public void testT01_DragAndDrop() {
         if (this instanceof DragAndDropWDActionsTest) {
             throw new SkipException("Skipped. Would end up in a watchdog bite while mouseMove");
         }
@@ -95,6 +97,7 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
     }
 
     @Test
+    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT2_DragAndDropOverFrames() throws Exception {
         if (this instanceof DragAndDropWDActionsTest) {
             throw new SkipException("Skipped. Would end up in a watchdog bite while mouseMove");

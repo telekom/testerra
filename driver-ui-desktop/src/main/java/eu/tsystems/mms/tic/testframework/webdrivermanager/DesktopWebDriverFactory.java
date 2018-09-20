@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickpathEventListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
@@ -437,7 +438,17 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
     private static File getPhantomJSBinary() {
         if (phantomjsFile == null) {
             LOGGER.info("Unpacking phantomJS...");
-            phantomjsFile = Phanbedder.unpack(); //Phanbedder to the rescue!
+            try {
+                phantomjsFile = Phanbedder.unpack(); //Phanbedder to the rescue!
+            } catch (Exception e) {
+                if (e.getMessage() != null && e.getMessage().toLowerCase().contains("failed to make target directory")) {
+                    File tmp = new File(FileUtils.getTempDirectory(), "phantomjs" + System.currentTimeMillis());
+                    phantomjsFile = Phanbedder.unpack(tmp);
+                }
+                else {
+                    throw e;
+                }
+            }
             LOGGER.info("Unpacked phantomJS to: " + phantomjsFile);
         }
         return phantomjsFile;

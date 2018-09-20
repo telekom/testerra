@@ -43,7 +43,7 @@ public class SikuliBasedWebTest extends AbstractTest {
     public void testT01_ByImage() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
 
-        URL resourceURL = FileUtils.getResourceURL("sikuli/iiswelcome.png");
+        URL resourceURL = FileUtils.getResourceURL("sikuli/testimage.png");
         GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
 
         guiElement.click();

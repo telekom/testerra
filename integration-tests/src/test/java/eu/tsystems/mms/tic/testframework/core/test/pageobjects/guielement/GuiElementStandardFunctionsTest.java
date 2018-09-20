@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -147,6 +148,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
      * Test if GuiElement.assertIsNotSelectable works for an unselectable element
      */
     @Test
+    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT13_GuiElement_assertIsNotSelectable() {
         getNotSelectableElement().assertIsNotSelectable();
     }
@@ -282,6 +284,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
      * Test if mouseOver() works with FennecProperties "false"
      */
     @Test
+    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT29N_GuiElement_mouseOverNotSupportedMouseActions() {
         getTextBoxElement().mouseOver();
         getLoggerTableElement().assertContainsText("Mouse over");
@@ -291,6 +294,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
      * Test if mouseOver() works with FennecProperties "true"
      */
     @Test
+    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT30_GuiElement_mouseOverWithSupportedMouseActions() {
         getTextBoxElement().mouseOver();
         getLoggerTableElement().assertContainsText("Mouse over");
@@ -464,6 +468,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
      * Test if clickAbsolute on GuiElement was performed
      */
     @Test
+    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT47_GuiElement_clickAbsolute_WithPriorMouseOverActions() {
         GuiElement element = getClickableElement();
         GuiElement out = getLoggerTableElement();

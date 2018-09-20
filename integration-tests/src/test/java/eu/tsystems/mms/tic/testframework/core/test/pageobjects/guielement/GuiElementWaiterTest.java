@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -496,7 +497,8 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
     //assertion tests
     @Test
-    public void testt41_GuiElement_assertIsNotSelectable() {
+    @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
+    public void testT41_GuiElement_assertIsNotSelectable() {
         testT13_GuiElement_assertIsNotSelectable();
     }
 }

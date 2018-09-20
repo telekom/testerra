@@ -62,7 +62,7 @@ public class PageFactoryPrefixedTest extends AbstractTestSitesTest {
             int w = width + diffX;
             int h = height + diffY;
 
-            if (w < 0 || h < 0) {
+            if (w <= 0 || h <= 0) {
                 w = width;
                 h = height;
             }

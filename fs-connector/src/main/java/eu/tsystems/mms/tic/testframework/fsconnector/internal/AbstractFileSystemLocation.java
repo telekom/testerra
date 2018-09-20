@@ -215,11 +215,9 @@ public abstract class AbstractFileSystemLocation<T> {
          * Get HTTP source
          */
         case HTTP:
-            if (options == null) {
-                throw new FennecSystemException("Options must not be empty");
+            if (options != null) {
+                builder.append(options);
             }
-            builder.append(options);
-
             break;
 
         default:

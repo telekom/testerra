@@ -6,10 +6,12 @@ dependencies {
     compile 'org.xmlunit:xmlunit-core:2.5.0'
 }
 
-test.enabled = true
 test {
     useTestNG() {
-        suites 'src/test/resources/CoreTestSuite.xml'
+        suites (
+            'src/test/resources/CoreTestSuite.xml',
+            'src/test/resources/ReportingTestSuite.xml'
+        )
     }
 }
 
@@ -20,12 +22,8 @@ task prepareTests(type: Test) {
         throw new RuntimeException("Please use -P nr=NR as parameter")
     }
 
-    def path = "."
-    def modulename = "integration-tests"
-    if (!projectDir.toString().contains(modulename)) {
-        path = modulename
-    }
-    System.setProperty("fennec.reportdir", path + "/report-testsundertest-0" + nr)
+    setReportDir("report-testsundertest-0" + nr)
+
     useTestNG() {
         suites 'src/test/resources/testng/ReportTestsUnderTest' + nr + '.xml'
     }
@@ -36,4 +34,13 @@ task prepareTests(type: Test) {
     options {
         systemProperties(System.getProperties())
     }
+}
+
+def setReportDir(reportdir) {
+    def path = "."
+    def modulename = "integration-tests"
+    if (!projectDir.toString().contains(modulename)) {
+        path = modulename
+    }
+    System.setProperty("fennec.reportdir", path + "/" + reportdir)
 }

@@ -6,12 +6,19 @@ dependencies {
     compile 'org.xmlunit:xmlunit-core:2.5.0'
 }
 
-test {
+task executeTests(type: Test) {
     useTestNG() {
         suites (
             'src/test/resources/CoreTestSuite.xml',
             'src/test/resources/ReportingTestSuite.xml'
         )
+    }
+    testLogging {
+        outputs.upToDateWhen { false }
+        showStandardStreams = true
+    }
+    options {
+        systemProperties(System.getProperties())
     }
 }
 

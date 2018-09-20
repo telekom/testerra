@@ -13,8 +13,27 @@ test {
     }
 }
 
-task prepareTests() {
-    doLast {
-        println "Preparing tests..."
+task prepareTests(type: Test) {
+    println "Preparing tests..."
+    def nr = findProperty("nr")
+    if (!nr) {
+        throw new RuntimeException("Please use -P nr=NR as parameter")
+    }
+
+    def path = "."
+    def modulename = "integration-tests"
+    if (!projectDir.toString().contains(modulename)) {
+        path = modulename
+    }
+    System.setProperty("fennec.reportdir", path + "/report-testsundertest-0" + nr)
+    useTestNG() {
+        suites 'src/test/resources/testng/ReportTestsUnderTest' + nr + '.xml'
+    }
+    testLogging {
+        outputs.upToDateWhen { false }
+        showStandardStreams = true
+    }
+    options {
+        systemProperties(System.getProperties())
     }
 }

@@ -24,7 +24,7 @@
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
  */
-package eu.tsystems.mms.tic.testframework.report.utils;
+package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.report.ReportPublish;
 

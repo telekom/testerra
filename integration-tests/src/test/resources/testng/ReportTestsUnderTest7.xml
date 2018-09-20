@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="WebDriver Setup" verbose="1" parallel="methods" configfailurepolicy="continue" thread-count="10" data-provider-thread-count="10">
+
+    <test name="Passed Creator">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestPassed"/>
+        </classes>
+    </test>
+
+    <test name="Browser From Config Creator">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.WebDriverSetupTest"/>
+        </classes>
+    </test>
+
+
+</suite>

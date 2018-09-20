@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Report- TestsUnderTest" verbose="1" parallel="methods" configfailurepolicy="continue" thread-count="10" data-provider-thread-count="10">
+
+    <test name="Passed Creator">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestPassed"/>
+        </classes>
+    </test>
+
+    <test name="Failed Creator">
+        <groups>
+            <run>
+                <include name="TESTSUNDERTESTFILTER"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorLow"/>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestFailed"/>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExpectedtoFail"/>
+        </classes>
+    </test>
+
+    <test name="Skipped Creator">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestSkipped"/>
+        </classes>
+    </test>
+
+    <test name="High-Corridor Creator">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorHigh"/>
+        </classes>
+    </test>
+
+
+    <test name="Mid-Corridor Creator">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorMid"/>
+        </classes>
+    </test>
+
+    <test name="Low-Corridor Creator">
+        <groups>
+            <run>
+                <exclude name="TESTSUNDERTESTFILTER"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorLow"/>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestFailed"/>
+        </classes>
+    </test>
+
+    <test name="High-Corridor-Exceed Creator">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorHighExceed"/>
+        </classes>
+    </test>
+
+    <test name="Retry History Creator">
+        <parameter name="reportNumber" value="2"/>
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestRetryHistory"/>
+        </classes>
+    </test>
+
+    <test name="Execution Filter Creator">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter"/>
+        </classes>
+    </test>
+
+</suite>

@@ -19,7 +19,7 @@ test {
     }
 
     useTestNG() {
-        suites s
+        suites s.toArray()
     }
     options {
         systemProperties(System.getProperties())

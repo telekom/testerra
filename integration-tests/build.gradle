@@ -38,11 +38,11 @@ task prepareTests(type: Test) {
     }
 }
 
-def setReportDir(reportdir) {
-    def path = "."
+def setReportDir(reportname) {
+    def reportdir = "reportname"
     def modulename = "integration-tests"
     if (!projectDir.toString().contains(modulename)) {
-        path = modulename
+        reportdir = modulename + "/" + reportname
     }
-    System.setProperty("fennec.reportdir", path + "/" + reportdir)
+    System.setProperty("fennec.reportdir", reportdir)
 }

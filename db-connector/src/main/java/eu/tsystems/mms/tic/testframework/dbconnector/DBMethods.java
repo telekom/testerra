@@ -328,7 +328,7 @@ public class DBMethods extends AbstractConnection {
      * @return JDBC ResultSet or int representing update Count.
      * @throws SQLException .
      */
-    private Object pQueryResultSet(final String query) throws SQLException {
+    private synchronized Object pQueryResultSet(final String query) throws SQLException {
         if (getConnection() == null || getConnection().isClosed()) {
             try {
                 this.open();

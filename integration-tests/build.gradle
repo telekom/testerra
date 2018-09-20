@@ -14,16 +14,12 @@ test {
 
     def nr = findProperty("nr")
     if (nr) {
-        println "Preparing Tests Nr " + nr + "..."
         setReportDir("report-testsundertest-0" + nr)
         s = ['src/test/resources/testng/ReportTestsUnderTest' + nr + '.xml']
     }
-    else {
-        println "Executing main tests..."
-    }
 
     useTestNG() {
-        suites (s)
+        suites s
     }
     options {
         systemProperties(System.getProperties())

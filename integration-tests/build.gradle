@@ -7,31 +7,23 @@ dependencies {
 }
 
 test {
-    useTestNG() {
-        suites (
+    def s = [
             'src/test/resources/CoreTestSuite.xml',
             'src/test/resources/ReportingTestSuite.xml'
-        )
-    }
-}
+    ]
 
-task prepareTests(type: Test) {
     def nr = findProperty("nr")
-    if (!nr) {
-        println "Please use -P nr=NR as parameter"
-        println "Skipping prepare tests task."
-        return
+    if (nr) {
+        println "Preparing Tests Nr " + nr + "..."
+        setReportDir("report-testsundertest-0" + nr)
+        s = ['src/test/resources/testng/ReportTestsUnderTest' + nr + '.xml']
     }
-    println "Preparing Tests Nr " + nr + "..."
-
-    setReportDir("report-testsundertest-0" + nr)
+    else {
+        println "Executing main tests..."
+    }
 
     useTestNG() {
-        suites 'src/test/resources/testng/ReportTestsUnderTest' + nr + '.xml'
-    }
-    testLogging {
-        outputs.upToDateWhen { false }
-        showStandardStreams = true
+        suites (s)
     }
     options {
         systemProperties(System.getProperties())

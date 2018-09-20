@@ -7,7 +7,7 @@ dependencies {
 }
 
 test {
-    def s = [
+    String[] s = [
             'src/test/resources/CoreTestSuite.xml',
             'src/test/resources/ReportingTestSuite.xml'
     ]
@@ -19,7 +19,7 @@ test {
     }
 
     useTestNG() {
-        suites s.toArray()
+        suites s
     }
     options {
         systemProperties(System.getProperties())

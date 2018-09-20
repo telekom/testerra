@@ -19,7 +19,22 @@
  */
 package eu.tsystems.mms.tic.testframework;
 
+import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.testing.FennecTest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
 public abstract class AbstractTest extends FennecTest {
+
+    /**
+     * Sets the unsupportedBrowser=true flag for the @Fails annotation
+     */
+    protected static void setUnsupportedBrowserFlag() {
+        if (Browsers.phantomjs.equals(WebDriverManager.config().browser)) {
+            System.setProperty("unsupportedBrowser", "true");
+        }
+    }
+
+    static {
+        setUnsupportedBrowserFlag();
+    }
 }

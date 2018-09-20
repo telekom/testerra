@@ -20,6 +20,8 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.common.FennecCommons;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
 import java.util.LinkedList;
@@ -30,8 +32,8 @@ import java.util.List;
  */
 public abstract class ErrorContext extends Context {
 
-    private String readableErrorMessage;
-    private String additionalErrorMessage;
+    public String readableErrorMessage;
+    public String additionalErrorMessage;
     private transient Throwable throwable = null;
     private transient StackTrace stacktraceForReadableMessage = null;
     public StackTrace stackTrace;
@@ -94,13 +96,16 @@ public abstract class ErrorContext extends Context {
             stacktrace first line, set error message
             set stacktrace
              */
-            String message = throwable.getMessage();
-            StackTrace stacktrace = throwableToStacktrace(throwable, true);
-            stackTrace = stacktrace;
-            String throwableFirstLine = stacktrace.throwableFirstLine;
-            additionalErrorMessage = stacktrace.additionalErrorMessage.replaceAll("java\\.lang\\.", "");
+            stackTrace = throwableToStacktrace(throwable, true);
 
-            message = buildMessage(throwableFirstLine, message);
+            // set message
+            String message;
+            if (throwable instanceof TimeoutException && throwable.getCause() != null) {
+                message = throwableToMessage(throwable.getCause());
+            }
+            else {
+                message = throwableToMessage(throwable);
+            }
 
             /*
             set readable message
@@ -109,29 +114,42 @@ public abstract class ErrorContext extends Context {
                 setReadableMessageForThrowable(message, throwable, false, forceUpdateReadableMessage);
             }
             else {
-                setReadableMessageForThrowable(throwableFirstLine, throwable, true, forceUpdateReadableMessage);
+                setReadableMessageForThrowable(stackTrace.throwableFirstLine, throwable, true, forceUpdateReadableMessage);
             }
         }
     }
 
     public abstract String getName();
 
-    private String buildMessage(String throwableFirstLine, String message) {
+    private String throwableToMessage(Throwable throwable) {
+        String line = throwable.toString();
+
         /*
         modify the message if needed
          */
         String msgDependsOn = "depends on";
-        if (throwableFirstLine.contains(msgDependsOn)) {
-            String[] split = throwableFirstLine.split(msgDependsOn);
-            message = getName() + " " + msgDependsOn + split[1];
+        if (line.contains(msgDependsOn)) {
+            String[] split = line.split(msgDependsOn);
+            return getName() + " " + msgDependsOn + split[1];
         }
-        else if (throwableFirstLine.startsWith(AssertionError.class.getName())) {
-            message = "Assert: " + message;
+        else if (line.startsWith(AssertionError.class.getName())) {
+            return "Assert: " + line.split(AssertionError.class.getName())[1];
         }
-        else if (throwableFirstLine.startsWith("java.lang.")) {
-            message = throwableFirstLine.replace("java.lang.", "");
+        else if (line.startsWith("java.lang.")) {
+            return line.replace("java.lang.", "");
         }
-        return message;
+        else if (line.startsWith("org.openqa.selenium.")) {
+            String out = line.replace("org.openqa.selenium.", "");
+            if (out.length() > 50) {
+                out = out.split(" ")[0];
+                out = out.replace(':', ' ').trim();
+            }
+            return "Selenium: " + out;
+        }
+        else if (line.startsWith(FennecRuntimeException.class.getPackage().getName())) {
+            return line.replace(TimeoutException.class.getPackage().getName() + ".", "");
+        }
+        return line;
     }
 
     private void setReadableMessageForThrowable(String readableErrorMessage, final Throwable forThrowable, boolean withFilter, boolean force) {

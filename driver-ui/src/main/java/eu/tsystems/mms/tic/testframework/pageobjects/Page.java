@@ -26,6 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
@@ -199,6 +200,7 @@ public abstract class Page extends AbstractPage {
     private static final String TEXT_FINDER_PLACEHOLDER = "###TEXT###";
     private static final String TEXT_FINDER_XPATH = "//text()[contains(., '" + TEXT_FINDER_PLACEHOLDER + "')]/..";
 
+    @Fails(validFor = "unsupportedBrowser=true")
     private boolean pIsTextPresentRecursive(final boolean isDisplayed, final String text) {
         // check for text in current frame
         GuiElement textElement;
@@ -224,14 +226,14 @@ public abstract class Page extends AbstractPage {
 
         // exit when safari
         WebDriverRequest request = WebDriverManager.getRelatedWebDriverRequest(driver);
-        if (Browsers.safari.equalsIgnoreCase(request.browser)) {
-            String msg = "Recursive Page Scan does not work on Safari";
+        if (Browsers.safari.equalsIgnoreCase(request.browser) || Browsers.phantomjs.equalsIgnoreCase(request.browser)) {
+            String msg = "Recursive Page Scan does not work. Unsupported Browser.";
             logger.error(msg);
             MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
             if (methodContext != null) {
                 methodContext.addPriorityMessage(msg);
             }
-            return false;
+            // don't return here, let it run into failure...
         }
 
         List<WebElement> iframes = driver.findElements(By.tagName("iframe"));

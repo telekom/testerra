@@ -62,7 +62,11 @@ public class MethodAnnotationCheckerWorker extends MethodWorker {
 
                 // may be there is a deeper @Fails annotataion present
                 if (fails == null && testResult != null && throwable != null) {
-                    fails = ExecutionUtils.getFailsAnnotationInStackTrace(throwable.getStackTrace());
+                    Throwable scanThrowable = throwable;
+                    while (fails == null && scanThrowable.getCause() != null) {
+                        scanThrowable = scanThrowable.getCause();
+                        fails = ExecutionUtils.getFailsAnnotationInStackTrace(scanThrowable.getStackTrace());
+                    }
                 }
 
                 // override throwable with found annotation

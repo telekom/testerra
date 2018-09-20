@@ -238,8 +238,10 @@
                                         #if ($testMethod.readableErrorMessage)
                                             $testMethod.readableErrorMessage
                                         #end
-                                        #if ($testMethod.additionalErrorMessage)
-                                            $testMethod.additionalErrorMessage
+                                        #if ($testMethod.priorityMessage)
+                                            <div class="skipped">
+                                                $testMethod.priorityMessage
+                                            </div>
                                         #end
 
                                                 </div>

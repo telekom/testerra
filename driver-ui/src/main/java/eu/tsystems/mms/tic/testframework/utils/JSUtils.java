@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
@@ -484,7 +485,7 @@ public final class JSUtils {
                 frameLogic.switchToDefaultFrame();
             }
         }
-        return null;
+        throw new FennecRuntimeException("Could not get element border via JS call");
     }
 
     public static Viewport getViewport(WebDriver driver) {

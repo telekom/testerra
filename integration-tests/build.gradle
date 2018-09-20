@@ -16,11 +16,13 @@ test {
 }
 
 task prepareTests(type: Test) {
-    println "Preparing tests..."
     def nr = findProperty("nr")
     if (!nr) {
-        throw new RuntimeException("Please use -P nr=NR as parameter")
+        println "Please use -P nr=NR as parameter"
+        println "Skipping prepare tests task."
+        return
     }
+    println "Preparing Tests Nr " + nr + "..."
 
     setReportDir("report-testsundertest-0" + nr)
 

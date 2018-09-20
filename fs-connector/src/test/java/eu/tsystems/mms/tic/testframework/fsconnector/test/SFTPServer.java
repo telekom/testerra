@@ -35,8 +35,8 @@ import org.apache.ftpserver.usermanager.impl.WritePermission;
 
 public class SFTPServer {
 
-    private final int FTP_PORT = 2221;
-    private final String DEFAULT_LISTENER = "default";
+    private static final int FTP_PORT = 2221;
+    private static final String DEFAULT_LISTENER = "default";
     private static final List<Authority> ADMIN_AUTHORITIES;
 
     private static final String DEFAULT_USER_DIR = System.getProperty("user.dir") + "/target/ftpserver/";
@@ -47,7 +47,7 @@ public class SFTPServer {
     private static FtpServer ftpServer;
     private static UserManager userManager;
     private static FtpServerFactory ftpServerFactory;
-    private ListenerFactory listenerFactory;
+    private static ListenerFactory listenerFactory;
 
     static {
         // Admin Authorities
@@ -57,7 +57,7 @@ public class SFTPServer {
         ADMIN_AUTHORITIES.add(new TransferRatePermission(Integer.MAX_VALUE, Integer.MAX_VALUE));
     }
 
-    public void init() throws FtpException {
+    public static void init() throws FtpException {
         ftpServerFactory = new FtpServerFactory();
         listenerFactory = new ListenerFactory();
         listenerFactory.setPort(FTP_PORT);
@@ -86,7 +86,7 @@ public class SFTPServer {
         ftpServer.start();
     }
 
-    private UserManager createAdminUser() throws FtpException {
+    private static UserManager createAdminUser() throws FtpException {
         UserManager userManager = ftpServerFactory.getUserManager();
         String adminName = userManager.getAdminName();
 
@@ -146,11 +146,8 @@ public class SFTPServer {
         }
     }
 
-    public static void main(String... are) throws Exception {
-        try {
-            new SFTPServer().init();
-        } catch (FtpException e) {
-            e.printStackTrace();
-        }
+    public static void start() throws FtpException {
+        init();
     }
+
 }

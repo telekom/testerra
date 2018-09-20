@@ -60,7 +60,7 @@ public class FSConnectorFTPTest extends AbstractTest {
     private static final int FTPSERVERPORT = 2221;
 
     /** root directory of the local ftp server */
-    private static final String FTPROOTDIR = "target\\ftpserver";
+    private static final String FTPROOTDIR = "target/ftpserver";
 
     /** File to download from ftp. */
     public static final String DOWNLOADFILE = "testFileToDownload.txt";
@@ -71,7 +71,7 @@ public class FSConnectorFTPTest extends AbstractTest {
     /** Path to directory where files are placed locally. */
     private static final String FILEDIR = System.getProperty("user.dir") + "/target/test-classes";
     /** Path to directory where temporary files are placed locally (e.g. for size comparations). */
-    private static final String TEMPDIR = FILEDIR + "\\tmp";
+    private static final String TEMPDIR = FILEDIR + "/tmp";
     /** FTP User name. */
     public static final String FTPUSER = "ftp-user";
     /** FTP Password. */
@@ -114,7 +114,7 @@ public class FSConnectorFTPTest extends AbstractTest {
 
     @BeforeClass
     public void setUpFTPServer() throws Exception {
-        File downLoadFile = new File("src\\test\\resources\\" + DOWNLOADFILE);
+        File downLoadFile = FileUtils.getResourceFile(DOWNLOADFILE);
         File rootFolder = new File(FTPROOTDIR);
 
         // delete ftpserver rootFolder if already existing
@@ -123,7 +123,7 @@ public class FSConnectorFTPTest extends AbstractTest {
         FileUtils.copyFileToDirectory(downLoadFile,rootFolder);
 
         // start the server
-        SFTPServer.main();
+        SFTPServer.start();
 
         logger.info("FTP Server Setup done.");
     }

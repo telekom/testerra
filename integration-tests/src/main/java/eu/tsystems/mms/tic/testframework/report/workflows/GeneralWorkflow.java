@@ -38,7 +38,7 @@ public class GeneralWorkflow {
     /**
      * Opens the DashboardPage of the  Report for the defined Report.
      *
-     * @param reportDirectory defines the reportDirectory for the page to open
+     * @param reportDirectory defines the REPORT_DIRECTORY for the page to open
      * @return Dashboard Page
      */
     public static DashboardPage doOpenBrowserAndReportDashboardPage(WebDriver webDriver, String reportDirectory) {
@@ -52,7 +52,7 @@ public class GeneralWorkflow {
     /**
      * Opens the ReportClassesPage of the  Report for the defined Report.
      *
-     * @param reportDirectory defines the reportDirectory for the page to open
+     * @param reportDirectory defines the REPORT_DIRECTORY for the page to open
      * @return ReportClassesPage
      */
     public static ClassesPage doOpenBrowserAndReportClassesPage(WebDriver webDriver, String reportDirectory) {
@@ -65,7 +65,7 @@ public class GeneralWorkflow {
     /**
      * Opens the ReportClassesPage of the  Report for the defined Report.
      *
-     * @param reportDirectory        defines the reportDirectory for the page to open
+     * @param reportDirectory        defines the REPORT_DIRECTORY for the page to open
      * @param testUnderTestClassName defines the class which details shall be shown
      * @return ReportClassesPage
      */
@@ -80,7 +80,7 @@ public class GeneralWorkflow {
     /**
      * Opens the StateChangesPage of the  Report for the defined Report.
      *
-     * @param reportDirectory defines the reportDirectory for the page to open
+     * @param reportDirectory defines the REPORT_DIRECTORY for the page to open
      * @return StateChangesPage
      */
     public static StateChangesPage doOpenBrowserAndReportStateChangesPage(WebDriver webDriver, String reportDirectory) {
@@ -93,7 +93,7 @@ public class GeneralWorkflow {
     /**
      * Opens the ExitPointsPage of the  Report for the defined Report.
      *
-     * @param reportDirectory defines the reportDirectory for the page to open
+     * @param reportDirectory defines the REPORT_DIRECTORY for the page to open
      * @return ExitPointsPage
      */
     public static ExitPointsPage doOpenBrowserAndReportExitPointsPage(WebDriver webDriver, String reportDirectory) {

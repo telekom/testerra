@@ -38,7 +38,7 @@ public abstract class Hook {
         final DismissDryRun dismissDryRun = constructorOrMethod.getMethod().getAnnotation(DismissDryRun.class);
         if (dismissDryRun == null) {
             LOGGER.info("Dry run: " + testNGMethod.getMethodName());
-            TestUtils.sleep(500);
+            TestUtils.sleep(50);
             return true;
         }
         return false;

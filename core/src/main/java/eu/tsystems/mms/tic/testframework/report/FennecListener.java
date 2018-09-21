@@ -49,12 +49,11 @@ import eu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook;
 import eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.ReportPublish;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.FennecUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +61,6 @@ import org.testng.*;
 import org.testng.annotations.ITestAnnotation;
 import org.testng.xml.XmlSuite;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -89,7 +87,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter, IAnno
      */
     private static boolean skipAllMethods = false;
 
-    static final JUnitXMLReporter XML_REPORTER = new JUnitXMLReporter(true, new File(ReportPublish.getReporterXMLDir()));
+    static final JUnitXMLReporter XML_REPORTER = new JUnitXMLReporter(true, Report.XML_DIRECTORY);
 
     private static final List<Class<? extends Worker>> BEFORE_INVOCATION_WORKERS = new LinkedList<>();
     private static final List<Class<? extends Worker>> AFTER_INVOCATION_WORKERS = new LinkedList<>();

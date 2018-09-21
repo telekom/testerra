@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.FileDownloader;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
 import org.json.JSONObject;
@@ -44,8 +44,7 @@ public final class SelenoidFunctions {
     public static void downloadAndLinkVideo(NodeInfo executingNode, final String videoName, final MethodContext methodContext) throws IOException {
         final String remoteFile = getRemoteVideoFile(executingNode, videoName);
         // download
-        String videosPath = ReportUtils.getVideosPath();
-        File targetFile = new File(videosPath, videoName);
+        File targetFile = new File(Report.VIDEO_DIRECTORY, videoName);
         FileDownloader.download(remoteFile, targetFile, null, 15000, false, null, null, true);
 
         if (methodContext != null) {

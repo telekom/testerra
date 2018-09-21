@@ -24,10 +24,10 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.ExceptionUtils;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepEventListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import org.openqa.selenium.WebDriver;
 
@@ -59,14 +59,11 @@ public class UITestStepIntegration implements TestStepEventListener {
 
         final MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null && onExec != null) {
-            final String screenshotsPath = ReportUtils.getScreenshotsPath();
-
-            new File(screenshotsPath).mkdirs();
             final String imageName = UUID.randomUUID() + "_" + onExec.name() + ".png";
-            final String screenShotFileInFS = screenshotsPath + imageName;
+            final File screenShotTargetFile = new File(Report.SCREENSHOTS_DIRECTORY, imageName);
             final String reportScreenshotPath = "../../" + Constants.SCREENSHOTS_PATH + imageName;
 
-            UITestUtils.takeWebDriverScreenshotToFile(driver, screenShotFileInFS);
+            UITestUtils.takeWebDriverScreenshotToFile(driver, screenShotTargetFile);
             return reportScreenshotPath;
         }
         return null;

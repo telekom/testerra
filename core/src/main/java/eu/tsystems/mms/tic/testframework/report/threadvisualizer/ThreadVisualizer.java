@@ -27,15 +27,13 @@
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
 import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -59,69 +57,31 @@ public class ThreadVisualizer {
 
     /**
      * generate the html file.
-     * 
-     * @param logDir Directory to safe to.
      */
-    public static void generateReport(final String logDir) {
-        pGenerateReport(logDir);
-    }
-
-    /**
-     * pGenerateReport.
-     * 
-     * @param logDir .
-     */
-    private static void pGenerateReport(final String logDir) {
+    public static void generateReport() {
         LOGGER.trace("Generate Report with " + DataStorage.getList().size() + " datasets");
-        final String outputPath = logDir + "/";
 
-        /**
-         * Resource Ordner UND output Ordner unter surefire-reports.
-         */
-        final String filesPath = "threadvisualizer/";
-        final String framePath = "frames/";
+        final String tvFolderName = "threadvisualizer";
+        final File tvDir = new File(Report.REPORT_DIRECTORY, tvFolderName);
 
-        File logDirFile = new File(logDir);
-
-        // create dir if not exists
-        File outputPathFile = new File(outputPath + filesPath);
-        if (!outputPathFile.exists()) {
-            outputPathFile.mkdirs();
-        }
-        outputPathFile = new File(outputPath + framePath);
-        if (!outputPathFile.exists()) {
-            outputPathFile.mkdirs();
-        }
-
-        /**
-         * Template In-File.
-         */
         final String threadVisualizerInputFile = "threads.vm";
-
-        /**
-         * Output File.
-         */
         final String threadVisualizerOutputFile = "threads.html";
 
-        /*
-         * Set libs
-         */
-
-        final String css = filesPath + "timeline.css";
+        final String css = tvFolderName + "/timeline.css";
         final InputStream cssIS = Thread.currentThread().getContextClassLoader().getResourceAsStream(css);
         if (cssIS == null) {
             throw new FennecRuntimeException(css + " not found");
         }
 
-        final String js = filesPath + "timeline.js";
+        final String js = tvFolderName + "/timeline.js";
         final InputStream jsIS = Thread.currentThread().getContextClassLoader().getResourceAsStream(js);
         if (jsIS == null) {
             throw new FennecRuntimeException(js + " not found");
         }
 
         // copy
-        ReportUtils.copyFile(css, logDirFile);
-        ReportUtils.copyFile(js, logDirFile);
+        ReportUtils.copyFile(css, tvDir);
+        ReportUtils.copyFile(js, tvDir);
 
         /*
          #### Velocity merge

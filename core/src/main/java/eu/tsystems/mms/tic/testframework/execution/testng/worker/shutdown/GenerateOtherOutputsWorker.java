@@ -22,8 +22,7 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.ReportPublish;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import org.json.JSONObject;
 
 /**
@@ -46,6 +45,6 @@ public class GenerateOtherOutputsWorker extends GenerateReportsWorker {
         jUnitXMLReporter.testSetCompleted(new SimpleReportEntry("", "Results"));
         // generate testng-results.xml
         org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();
-        testNgXmlReporter.generateReport(xmlSuites, suites, ReportPublish.getReporterXMLDir());
+        testNgXmlReporter.generateReport(xmlSuites, suites, Report.XML_DIRECTORY.getAbsolutePath());
     }
 }

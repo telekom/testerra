@@ -45,7 +45,6 @@ public final class Flags {
     public static boolean REUSE_DATAPROVIDER_DRIVER_BY_THREAD = PropertyManager.getBooleanProperty(FennecProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, false);
     public static boolean MONITOR_MEMORY = PropertyManager.getBooleanProperty(FennecProperties.MONITOR_MEMORY, true);
     public static boolean DRY_RUN = PropertyManager.getBooleanProperty(FennecProperties.DRY_RUN, false);
-    public static boolean REUSE_REPORTDIR = PropertyManager.getBooleanProperty(FennecProperties.REUSE_REPORTDIR, true);
     public static boolean LIST_TESTS = PropertyManager.getBooleanProperty(FennecProperties.LIST_TESTS, false);
     public static boolean WEB_TAKE_ACTION_SCREENSHOTS = PropertyManager.getBooleanProperty(FennecProperties.WEB_TAKE_ACTION_SCREENSHOTS, false);
     public static boolean FAILURE_CORRIDOR_ACTIVE = PropertyManager.getBooleanProperty(FennecProperties.FAILURE_CORRIDOR_ACTIVE, false);

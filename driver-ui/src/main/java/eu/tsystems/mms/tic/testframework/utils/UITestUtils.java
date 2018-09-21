@@ -43,8 +43,8 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.apache.commons.codec.binary.Base64;
@@ -116,30 +116,21 @@ public class UITestUtils extends TestUtils {
             return null;
         }
 
-        String screenshotsPath = ReportUtils.getScreenshotsPath();
-        final String screenShotFileInFS = screenshotsPath + screenshotFileName;
-        final String pageSOurceFileInFS = screenshotsPath + pageSourceFileName;
-
-        /*
-         * Check dirs
-         */
-        final File pathObject = new File(screenshotsPath);
-        if (!pathObject.exists()) {
-            pathObject.mkdirs();
-        }
+        File screenShotTargetFile = new File(Report.SCREENSHOTS_DIRECTORY, screenshotFileName);
+        File sourceTargetFile = new File(Report.SCREENSHOTS_DIRECTORY, pageSourceFileName);
 
         /*
          * Take the screenshot
          */
         if (eventFiringWebDriver != null) {
             try {
-                takeWebDriverScreenshotToFile(eventFiringWebDriver, screenShotFileInFS);
+                takeWebDriverScreenshotToFile(eventFiringWebDriver, screenShotTargetFile);
 
                 // get page source (webdriver)
                 String pageSource = eventFiringWebDriver.getPageSource();
 
                 // save page source to file
-                savePageSource(pageSource, pageSOurceFileInFS);
+                savePageSource(pageSource, sourceTargetFile);
 
                 /*
                 get infos
@@ -238,7 +229,7 @@ public class UITestUtils extends TestUtils {
         return null;
     }
 
-    public static void takeWebDriverScreenshotToFile(WebDriver eventFiringWebDriver, String screenShotFileInFS) {
+    public static void takeWebDriverScreenshotToFile(WebDriver eventFiringWebDriver, File screenShotTargetFile) {
         WebDriver driver;
         if (eventFiringWebDriver instanceof EventFiringWebDriver) {
             driver = ((EventFiringWebDriver) eventFiringWebDriver).getWrappedDriver();
@@ -255,7 +246,7 @@ public class UITestUtils extends TestUtils {
         WebDriverRequest relatedWebDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
         String browser = relatedWebDriverRequest.browser;
         if (Browsers.chrome.equalsIgnoreCase(browser) && STITCH) {
-            makeStitchedChromeScreenshot(driver, screenShotFileInFS);
+            makeStitchedChromeScreenshot(driver, screenShotTargetFile);
             return;
         } else if (Browsers.ie.equalsIgnoreCase(browser)) {
             Viewport viewport = JSUtils.getViewport(driver);
@@ -267,15 +258,14 @@ public class UITestUtils extends TestUtils {
         }
 
         // take screenshot
-        makeSimpleScreenshot(driver, screenShotFileInFS);
+        makeSimpleScreenshot(driver, screenShotTargetFile);
     }
 
-    private static void makeSimpleScreenshot(WebDriver driver, String screenShotFileInFS) {
+    private static void makeSimpleScreenshot(WebDriver driver, File screenShotTargetFile) {
         try {
             File file = Shot.takeScreenshot(driver);
-            File targetFile = new File(screenShotFileInFS);
             try {
-                FileUtils.moveFile(file, targetFile);
+                FileUtils.moveFile(file, screenShotTargetFile);
             } catch (IOException e) {
                 LOGGER.error("Error storing screenshot", e);
             }
@@ -285,12 +275,12 @@ public class UITestUtils extends TestUtils {
         }
     }
 
-    private static void makeStitchedChromeScreenshot(WebDriver driver, String fullPath) {
+    private static void makeStitchedChromeScreenshot(WebDriver driver, File screenShotTargetFile) {
         /*
         deactivated since it is not working correctly - pele 05.12.2017
          */
 
-        makeSimpleScreenshot(driver, fullPath);
+        makeSimpleScreenshot(driver, screenShotTargetFile);
     }
 
     /**
@@ -318,12 +308,11 @@ public class UITestUtils extends TestUtils {
      * Utility to store a Screenshot at the specified location.
      *
      * @param image    BufferedImage
-     * @param filePath filePath with fileName
+     * @param targetFile filePath with fileName
      */
-    private static void saveBufferedImage(BufferedImage image, String filePath) {
-        File outFile = new File(filePath);
+    private static void saveBufferedImage(BufferedImage image, File targetFile) {
         try {
-            ImageIO.write(image, "png", outFile);
+            ImageIO.write(image, "png", targetFile);
         } catch (final FileNotFoundException ex) {
             LoggerFactory.getLogger(UITestUtils.class).warn(
                     ("Screenshot file could not be written to file system: " + ex.toString()));
@@ -336,11 +325,11 @@ public class UITestUtils extends TestUtils {
      * Save page source to file.
      *
      * @param pageSource page source.
-     * @param filename   target file.
+     * @param sourceTargetFile   target file.
      */
-    private static void savePageSource(final String pageSource, final String filename) {
+    private static void savePageSource(final String pageSource, final File sourceTargetFile) {
         try {
-            final FileOutputStream fos = new FileOutputStream(filename);
+            final FileOutputStream fos = new FileOutputStream(sourceTargetFile);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos, "UTF-8");
             outputStreamWriter.write(pageSource);
             outputStreamWriter.close();
@@ -359,13 +348,9 @@ public class UITestUtils extends TestUtils {
             final ScreenLocation lowerRightCorner = screenRegion.getLowerRightCorner();
             final BufferedImage screenshot = screenRegion.getScreen().getScreenshot(upperLeftCorner.getX(), upperLeftCorner.getY(), lowerRightCorner.getX(), lowerRightCorner.getY());
 
-            final String screenshotsPath = ReportUtils.getScreenshotsPath();
-
-            new File(screenshotsPath).mkdirs();
-
             final String filename = "Desktop_" + FILES_DATE_FORMAT.format(new Date()) + ".png";
-            final String outFile = screenshotsPath + "/" + filename;
-            saveBufferedImage(screenshot, outFile);
+            final File targetFile = new File(Report.SCREENSHOTS_DIRECTORY, filename);
+            saveBufferedImage(screenshot, targetFile);
 
             final MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
             if (methodContext != null) {

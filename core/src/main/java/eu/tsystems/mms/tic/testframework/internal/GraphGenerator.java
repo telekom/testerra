@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -122,7 +122,7 @@ public final class GraphGenerator {
      * @throws IOException
      */
     public static File saveGraphAsJPEG(JFreeChart chart, String relativeFileName, int width, int height) throws IOException {
-        File graphFile = new File(ReportUtils.getReportDir() + relativeFileName);
+        File graphFile = new File(Report.REPORT_DIRECTORY, relativeFileName);
         File dir = graphFile.getParentFile();
         if (!dir.exists()) {
             dir.mkdirs();

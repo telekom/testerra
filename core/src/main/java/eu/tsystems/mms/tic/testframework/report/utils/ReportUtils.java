@@ -35,7 +35,7 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.ReportPublish;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestContainer;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.ThreadVisualizer;
@@ -74,23 +74,12 @@ public final class ReportUtils {
     }
 
     /**
-     * Gets the absolute directory for the reports with "/" ending.
-     *
-     * @return the default directory to save the reports.
-     */
-    public static String getReportDir() {
-        return ReportPublish.getReportDir();
-    }
-
-    /**
      * Copy the reosurce files needed for report in the target directory. Files included are style.css, report.js,
      * sorttable.js and icons.
-     *
-     * @param reportDir Directory to copy files to.
      */
-    public static void copyReportResources(final File reportDir) {
+    public static void copyReportResources() {
 
-        final File targetDir = new File(reportDir.toString() + ReportPublish.FRAMES_DIR);
+        final File targetDir = new File(Report.REPORT_DIRECTORY, Report.FRAMES_FOLDER_NAME);
 
         String[] resources = new String[]{
                 "js/kis/main.js",
@@ -275,15 +264,21 @@ public final class ReportUtils {
      * Copies a File to destination destination.
      *
      * @param relativeFile File path.
-     * @param reportDir    .
+     * @param targetDir    .
      */
-    public static void copyFile(final String relativeFile, final File reportDir) {
+    public static void copyFile(final String relativeFile, final File targetDir) {
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativeFile);
         if (is == null) {
             throw new FennecSystemException("Could not find " + relativeFile);
         }
         try {
-            File destFile = new File(reportDir, relativeFile);
+            File destFile = new File(targetDir, relativeFile);
+
+            File dirs = destFile.getParentFile();
+            if (!dirs.exists()) {
+                dirs.mkdirs();
+            }
+
             FileUtils.copyInputStreamToFile(is, destFile);
         } catch (Exception e) {
             throw new FennecSystemException("Could not copy resource " + relativeFile, e);
@@ -309,48 +304,32 @@ public final class ReportUtils {
      * @return frames dir.
      */
     public static File createDirs(final File reportDirectory) {
-        final File framesDir = new File(reportDirectory + ReportPublish.FRAMES_DIR);
+        final File framesDir = new File(reportDirectory + Report.FRAMES_FOLDER_NAME);
         if (!framesDir.exists()) {
             framesDir.mkdirs();
         }
 
-        final File jsDir = new File(reportDirectory, ReportPublish.FRAMES_DIR + "/js");
+        final File jsDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/js");
         if (!jsDir.exists()) {
             jsDir.mkdirs();
         }
 
-        final File jsHighLightStylesDir = new File(reportDirectory, ReportPublish.FRAMES_DIR + "/js/highlight-styles");
+        final File jsHighLightStylesDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/js/highlight-styles");
         if (!jsHighLightStylesDir.exists()) {
             jsHighLightStylesDir.mkdirs();
         }
 
-        final File styleDir = new File(reportDirectory, ReportPublish.FRAMES_DIR + "/style");
+        final File styleDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/style");
         if (!styleDir.exists()) {
             styleDir.mkdirs();
         }
 
-        final File swfDir = new File(reportDirectory, ReportPublish.FRAMES_DIR + "/swf");
+        final File swfDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/swf");
         if (!swfDir.exists()) {
             swfDir.mkdirs();
         }
 
         return framesDir;
-    }
-
-    public static String getScreenshotsPath() {
-        File folder = new File(ReportPublish.getScreenshotsFolderName());
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-        return ReportPublish.SCREENSHOTS_PATH;
-    }
-
-    public static String getVideosPath() {
-        File folder = new File(ReportPublish.VIDEO_PATH);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-        return ReportPublish.VIDEO_PATH;
     }
 
     /**
@@ -360,8 +339,7 @@ public final class ReportUtils {
         /*
         Copy resources
          */
-        File reportDirectory = ReportPublish.getReportDirectory();
-        copyReportResources(reportDirectory);
+        copyReportResources();
 
         /*
         Create guielement timing graphs
@@ -377,7 +355,7 @@ public final class ReportUtils {
          * add additional report tabs
          */
         if (ThreadVisualizer.hasData()) {
-            ThreadVisualizer.generateReport(reportDirectory.getAbsolutePath());
+            ThreadVisualizer.generateReport();
         }
         if (reportingData.methodsWithAcknowledgements != null && reportingData.methodsWithAcknowledgements.size() > 0) {
             createAcknowledgements(reportingData.methodsWithAcknowledgements);
@@ -404,7 +382,7 @@ public final class ReportUtils {
         /*
          * main report index.html
          */
-        final File reportFileIndex = new File(reportDirectory, "index.html");
+        final File reportFileIndex = new File(Report.REPORT_DIRECTORY, "index.html");
         ReportFormatter.createTestClassesView(reportFileIndex, reportingData.classContexts, "index.vm", null, null);
 
         /*
@@ -424,7 +402,7 @@ public final class ReportUtils {
         /*
         create frames dir
          */
-        final File framesDir = getFramesDir();
+        final File framesDir = Report.FRAMES_DIRECTORY;
 
         /*
         Dashboard
@@ -432,7 +410,7 @@ public final class ReportUtils {
         final File reportFileDashboard = new File(framesDir, "dashboard.html");
         ReportFormatter.createDashboardHtml(reportingData, reportFileDashboard, "dashboard.vm");
 
-        final File reportFileEmailable = new File(reportDirectory, "emailable-report.html");
+        final File reportFileEmailable = new File(Report.REPORT_DIRECTORY, "emailable-report.html");
         ReportFormatter.createEmailableReportHtml(reportingData, reportFileEmailable, "emailable-report.vm");
 
         /*
@@ -525,7 +503,7 @@ public final class ReportUtils {
             throw new FennecSystemException("Report generation took too long", e);
         }
 
-        LOGGER.info("Report written to " + reportDirectory);
+        LOGGER.info("Report written to " + Report.REPORT_DIRECTORY.getAbsolutePath());
     }
 
     private static void createAcknowledgements(List<MethodContext> methodsWithAcknowledgements) {
@@ -536,22 +514,9 @@ public final class ReportUtils {
         ReportUtils.addExtraTopLevelTab("stateChanges.vm", "classes/acknowledgements.html", "Acknowledgements", "Acknowledgements", context, false);
     }
 
-    private static File getFramesDir() {
-        final File framesDir = createDirs(ReportPublish.getReportDirectory());
-        if (!framesDir.exists()) {
-            framesDir.mkdir();
-        }
-        return framesDir;
-    }
-
     public static void createMethodDetailsStepsView(MethodContext methodContext) {
         try {
-            final File framesDir = getFramesDir();
-            final File methodDetailsDir = new File(framesDir, "methods/");
-            if (!methodDetailsDir.exists()) {
-                methodDetailsDir.mkdirs();
-            }
-            File reportFile2 = new File(methodDetailsDir, "steps" + methodContext.methodRunIndex + ".html");
+            File reportFile2 = new File(Report.METHODS_DIRECTORY, "steps" + methodContext.methodRunIndex + ".html");
             ReportFormatter.createMethodsFrame(reportFile2, methodContext, "methodDetailsSteps.vm");
             LOGGER.info("Created method details steps view for " + methodContext);
         } catch (Exception e) {
@@ -561,12 +526,7 @@ public final class ReportUtils {
 
     public static void createMethodDetailsView(MethodContext methodContext) {
         try {
-            final File framesDir = getFramesDir();
-            final File methodDetailsDir = new File(framesDir, "methods/");
-            if (!methodDetailsDir.exists()) {
-                methodDetailsDir.mkdirs();
-            }
-            File reportFile2 = new File(methodDetailsDir, methodContext.methodRunIndex + ".html");
+            File reportFile2 = new File(Report.METHODS_DIRECTORY, methodContext.methodRunIndex + ".html");
             ReportFormatter.createMethodsFrame(reportFile2, methodContext, "methodDetails.vm");
             LOGGER.debug("Created method details view for " + methodContext);
         } catch (Exception e) {
@@ -635,10 +595,7 @@ public final class ReportUtils {
     static final List<TabInfo> TOP_LEVEL_TABS = new LinkedList<>();
 
     private static void createExtraTopLevelTab(String vmTemplateFileInResources, String htmlOutputFileName, String tabName, VelocityContext velocityContext) {
-        File framesDir = getFramesDir();
-
-        File htmlOutputFile = new File(framesDir.getAbsolutePath()+ "/" + htmlOutputFileName);
-        htmlOutputFile.getParentFile().mkdirs();
+        File htmlOutputFile = new File(Report.FRAMES_DIRECTORY, htmlOutputFileName);
         try {
             ReportFormatter.createHtml(vmTemplateFileInResources, htmlOutputFile, velocityContext);
             LOGGER.info("Created " + tabName + " tab view: " + htmlOutputFile);

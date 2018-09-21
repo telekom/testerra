@@ -35,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.FennecUtils;
@@ -57,7 +58,8 @@ public class GenerateReport {
         // flush run contexts
         MethodRelations.flushAll();
 
-        LOGGER.info("Generating Report...");
+        LOGGER.info("*** Generating Report ***");
+        LOGGER.info("Preparing report in " + Report.REPORT_DIRECTORY.getAbsolutePath());
         JVMMonitor.label("Tests Finished");
 
         JVMMonitor.stop();
@@ -118,7 +120,6 @@ public class GenerateReport {
     public static void generateReport() {
         ExecutionContextController.RUN_CONTEXT.endTime = new Date();
         JVMMonitor.label("Report");
-        LOGGER.info("Generating Report...");
         pGenerateReport();
     }
 

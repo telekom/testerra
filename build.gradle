@@ -126,6 +126,7 @@ allprojects {
     group 'eu.tsystems.mms.tic.testframework'
     version '10-SNAPSHOT'
 
+    apply plugin: 'java'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
     apply plugin: 'com.github.jk1.dependency-license-report' // run: gradle generateLicenseReport
 

@@ -390,7 +390,6 @@ public final class WebDriverManager {
     }
 
     public static boolean hasSessionsActiveInThisThread() {
-        // TODO: remove checkMaps and WDMSesleniumSessions call
         checkMaps();
         return WebDriverSessionsManager.hasSessionActiveInThisThread();
     }

@@ -154,7 +154,6 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
     @Deprecated
     public GuiElement(WebDriver driver, By by, String name, GuiElement... frames) {
         FrameLogic frameLogic = null;
-        // TODO check if instanceof by check is required. Automatic frame detection maybe? If so, check for cleaner solution!
         if (frames != null && frames.length > 0) {
             frameLogic = new FrameLogic(driver, frames);
         }

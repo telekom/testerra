@@ -23,7 +23,6 @@ public abstract class AbstractMethodStatePage extends AbstractReportPage impleme
 
     private final GuiElement methodTable = new GuiElement(this.driver, By.xpath("//table[@class='resultsTable']/tbody"), mainFrame);
 
-    // TODO: add IDs or find better Locators
     private static String LOCATOR_PREVIOUS = ".//a[text()[contains(.,'%s')]]/../..//td[1]/div"; // method name
     private static String LOCATOR_ACTUAL = ".//a[text()[contains(.,'%s')]]/../..//td[2]/div"; // method name
     private static String LOCATOR_METHOD = ".//a[text()[contains(.,'%s')]]"; // method name

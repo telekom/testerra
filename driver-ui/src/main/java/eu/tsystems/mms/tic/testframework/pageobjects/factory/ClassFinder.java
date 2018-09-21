@@ -31,6 +31,7 @@ import org.openqa.selenium.WebDriver;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -355,7 +356,7 @@ final class ClassFinder {
             String leftValue = split[1];
             String rightValue = split[2];
             if (KEYWORD_RES.equals(leftValue)) {
-                // TODO
+                throw new NotImplementedException(); // TODO
             }
             else {
                 if (!KEYWORD_MIN.equals(leftValue)) {

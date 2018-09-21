@@ -392,7 +392,6 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
      */
     @Test
     public void testT33_GuiElement_waitForIsPresent() {
-        // TODO test does not check if a wait is executed. An element that gets present only after x seconds would be necessary - rnhb 15.5.2015, see XETA-229
         boolean found = getDisplayedElement().waitForIsPresent();
         Assert.assertTrue(found, "The Element is found.");
 

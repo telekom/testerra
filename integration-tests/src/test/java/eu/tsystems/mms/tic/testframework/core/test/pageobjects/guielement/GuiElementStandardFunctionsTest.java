@@ -743,7 +743,6 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     @Test
-    // TODO find selectable element!
     public void testT86_GuiElement_isSelectable() {
         GuiElement element = getSelectableElement();
         boolean found = element.isSelectable();
@@ -751,7 +750,6 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     @Test
-    // TODO find selectable element!
     public void testT87N_GuiElement_isSelectable() {
         GuiElement element = getNotSelectableElement();
         boolean found = element.isSelectable();
@@ -826,14 +824,12 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     public void testT96_GuiElement_rightClick() {
         GuiElement element = getClickableElement();
         element.rightClick();
-        // TODO: nee a right clickable js element to check
     }
 
     @Test
     public void testT97_GuiElement_rightClickJS() {
         GuiElement element = getClickableElement();
         element.rightClickJS();
-        // TODO: nee a right clickable js element to check
     }
 
 }

@@ -111,7 +111,6 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
         return getGuiElementBy(By.id("11"));
     }
 
-    // TODO this is actually a not existing element. A not displayed element is not available on the test page.
     public GuiElement getNotDisplayedElement() {
         return getGuiElementBy(By.id("notDisplayedElement"));
     }

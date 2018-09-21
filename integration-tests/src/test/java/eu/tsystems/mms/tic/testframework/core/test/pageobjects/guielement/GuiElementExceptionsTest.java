@@ -42,8 +42,6 @@ public class GuiElementExceptionsTest extends AbstractTestSitesTest {
         GuiElement notExistingFrame = new GuiElement(driver, By.xpath("meNoExist"));
         GuiElement elementToSearch = new GuiElement(driver, By.xpath("thisDoesNotMatter"), notExistingFrame);
 
-        // TODO create tests for all status checks and think about required variations!
-
         try {
             elementToSearch.isPresent();
         } catch (Exception e) {

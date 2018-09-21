@@ -87,15 +87,6 @@ public final class FennecEventService implements IFennecEventListener {
                 // not thread at test end
                 listener.fireEvent(FennecEvent);
             } else {
-
-                // TODO: does it have perf effects when not running as a thread?
-//                Thread thread = new Thread(new Runnable() {
-//                    public void run() {
-//                        listener.fireEvent(FennecEvent);
-//                    }
-//                });
-//                thread.start();
-
                 listener.fireEvent(FennecEvent);
             }
         }

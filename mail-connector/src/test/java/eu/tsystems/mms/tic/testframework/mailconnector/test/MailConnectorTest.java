@@ -67,11 +67,6 @@ import java.util.List;
  */
 public class MailConnectorTest extends FennecTest {
 
-    /*
-    TODO: komplett überarbeiten mit lokalem Mail Server!!! pele - 21.12.2016
-    Tests deaktiviert.
-     */
-
     // CONSTANTS
     /** Constant PATH_HOME */
     private static final String PATH_HOME = System.getProperty("user.dir");

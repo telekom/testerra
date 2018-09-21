@@ -50,7 +50,7 @@ public class SubElementGuiElementTest extends GuiElementTestCollector {
     public void testT03N_GuiElement_getSubElement_notExistingParentElement() {
         GuiElement parent = getNotExistingElement();
         GuiElement subElement = parent.getSubElement(By.linkText("Open again"));
-        subElement.assertIsNotPresent();
+        subElement.asserts().assertIsNotPresent();
     }
 
     /**
@@ -64,11 +64,11 @@ public class SubElementGuiElementTest extends GuiElementTestCollector {
         GuiElement innerElement = getGuiElementBy(locatorForSubElement);
         GuiElement otherElement = getParent1();
 
-        innerElement.assertIsPresent();
-        otherElement.assertIsPresent();
+        innerElement.asserts().assertIsPresent();
+        otherElement.asserts().assertIsPresent();
 
         GuiElement subElement = otherElement.getSubElement(locatorForSubElement);
-        subElement.assertIsNotPresent();
+        subElement.asserts().assertIsNotPresent();
     }
 
     /**

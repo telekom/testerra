@@ -39,7 +39,7 @@ public class FrameAwareGuiElementTest extends GuiElementTestCollector {
         GuiElement frame123 = new GuiElement(driver, By.name("frame123"), frame1, frame12);
         GuiElement frame1234 = new GuiElement(driver, By.name("InputFrame1234"), frame1, frame12, frame123);
         GuiElement element = new GuiElement(driver, By.id("16"), frame1, frame12, frame123, frame1234);
-        element.assertIsPresent();
+        element.asserts().assertIsPresent();
     }
 
     @Override

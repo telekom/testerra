@@ -44,7 +44,7 @@ public class ProxyServerTest extends AbstractTest {
         WebDriverManager.config().webDriverMode = WebDriverMode.remote;
 
         DesiredCapabilities desiredCapabilities = WebDriverManagerUtils.generateNewDesiredCapabilities();
-        WebDriverManagerUtils.addProxyToCapabilities(desiredCapabilities, "localhost:9999", null);
+        WebDriverManagerUtils.addProxyToCapabilities(desiredCapabilities, "localhost:9999");
         WebDriverManager.setGlobalExtraCapabilities(desiredCapabilities);
 
         WebDriverManager.setBaseURL("https://www.google.de");

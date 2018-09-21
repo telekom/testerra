@@ -52,7 +52,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         pre_hideText(true);
 
         GuiElement g = getDynamicTextElement();
-        g.assertIsNotDisplayed();
+        g.asserts().assertIsNotDisplayed();
 
 
         getTimeOutInput().type("4000");
@@ -82,7 +82,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
         //test if after 3s text is displayed
         GuiElement g = getDynamicTextElement();
-        g.assertIsDisplayed();
+        g.asserts().assertIsDisplayed();
 
         //hide message after one second
         getTimeOutInput().type("4000");
@@ -101,7 +101,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         //test if after 3s text is displayed
         GuiElement g = getDynamicTextElement();
         g.setTimeoutInSeconds(3);
-        g.assertIsDisplayed();
+        g.asserts().assertIsDisplayed();
         boolean result = g.waitForIsNotDisplayedFromWebElement();
         Assert.assertFalse(result, "Text was not found after TimeOut");
     }
@@ -439,7 +439,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         pre_setDisableAttributeOnRadioButton(true);
 
         GuiElement g = getRadio();
-        g.assertIsDisabled();
+        g.asserts().assertIsDisabled();
 
         getTimeOutInput().type("3000");
         getEnableRDButton().click();
@@ -466,7 +466,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         getDeselectRadioButtonMitVerzoegerungButton().click();
 
         GuiElement radio = getRadio();
-        radio.assertIsNotSelected();
+        radio.asserts().assertIsNotSelected();
 
         getTimeOutInput().type("4000");
         getSelectRadioButtonMitVerzoegerungButton().click();
@@ -484,7 +484,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         getSelectRadioButtonMitVerzoegerungButton().click();
 
         GuiElement g = getRadio();
-        g.assertIsSelected();
+        g.asserts().assertIsSelected();
 
         getTimeOutInput().type("4000");
         getDeselectRadioButtonMitVerzoegerungButton().click();

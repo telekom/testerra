@@ -69,12 +69,12 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
 
     private void checkResultSimple(GuiElement destinationGuiElement) {
         final GuiElement subElement = destinationGuiElement.getSubElement(sourceLocatorSimple);
-        subElement.assertIsDisplayed();
+        subElement.asserts().assertIsDisplayed();
     }
 
     private void checkResultFrames(GuiElement destinationGuiElement) {
         final GuiElement subElement = destinationGuiElement.getSubElement(sourceLocatorFrames);
-        subElement.assertIsDisplayed();
+        subElement.asserts().assertIsDisplayed();
     }
 
     @Test

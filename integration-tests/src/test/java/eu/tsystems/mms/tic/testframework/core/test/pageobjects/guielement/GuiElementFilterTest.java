@@ -56,7 +56,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.TEXT.is("Open again"));
-        openAgainLink.assertIsPresent();
+        openAgainLink.asserts().assertIsPresent();
         openAgainLink.click();
         assertLogFieldContains("Open again clicked");
     }
@@ -68,7 +68,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id='11']"))
                 .withWebElementFilter(WebElementFilter.TEXT.isNot("Open again"));
         openAgainLink.setTimeoutInSeconds(1);
-        openAgainLink.assertIsNotPresent();
+        openAgainLink.asserts().assertIsNotPresent();
     }
 
     @Test
@@ -77,7 +77,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.TEXT.contains("Open a"));
-        openAgainLink.assertIsPresent();
+        openAgainLink.asserts().assertIsPresent();
         openAgainLink.click();
         assertLogFieldContains("Open again clicked");
     }
@@ -89,7 +89,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id='11']"))
                 .withWebElementFilter(WebElementFilter.TEXT.containsNot("Open a"));
         openAgainLink.setTimeoutInSeconds(1);
-        openAgainLink.assertIsNotPresent();
+        openAgainLink.asserts().assertIsNotPresent();
     }
 
     @Test
@@ -98,7 +98,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement nonVisibleTable = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.DISPLAYED.is(false));
-        nonVisibleTable.assertIsNotDisplayed();
+        nonVisibleTable.asserts().assertIsNotDisplayed();
     }
 
     @Test
@@ -113,7 +113,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
                         dimSubmitButton.getHeight() - 2,
                         dimSubmitButton.getWidth() + 2,
                         dimSubmitButton.getHeight() + 2));
-        submitButtonCheck.assertAttributeContains("value", "Submit");
+        submitButtonCheck.asserts().assertAttributeContains("value", "Submit");
     }
 
     @Test
@@ -136,7 +136,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath(".//*[@id='6']"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.containsNot("value", "Button2"));
         elementsWithAttributes.setTimeoutInSeconds(1);
-        elementsWithAttributes.assertIsNotPresent();
+        elementsWithAttributes.asserts().assertIsNotPresent();
     }
 
     @Test
@@ -145,7 +145,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath("//div[@class='className']/input"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.exists("disabled"));
-        elementsWithAttributes.assertAttributeContains("id", "7");
+        elementsWithAttributes.asserts().assertAttributeContains("id", "7");
 
     }
 
@@ -156,7 +156,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath("//input[@type='radio']"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.existsNot("disabled"));
         elementsWithAttributes.setTimeoutInSeconds(1);
-        elementsWithAttributes.assertAttributeContains("id", "10");
+        elementsWithAttributes.asserts().assertAttributeContains("id", "10");
     }
 
     @Test
@@ -165,7 +165,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath(".//*"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.is("type", "submit"));
-        elementsWithAttributes.assertAttributeContains("value", "Submit");
+        elementsWithAttributes.asserts().assertAttributeContains("value", "Submit");
     }
 
     @Test
@@ -174,7 +174,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath(".//input[@value]"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.isNot("type", "button"));
-        elementsWithAttributes.assertAttributeContains("value", "Submit");
+        elementsWithAttributes.asserts().assertAttributeContains("value", "Submit");
     }
 
     @Test
@@ -183,7 +183,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.contains("visibility", "hid"));
-        elementsWithCSS.assertAttributeContains("id", "100");
+        elementsWithCSS.asserts().assertAttributeContains("id", "100");
     }
 
     @Test
@@ -193,7 +193,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id='100']"))
                 .withWebElementFilter(WebElementFilter.CSS.containsNot("visibility", "den"));
         elementsWithCSS.setTimeoutInSeconds(1);
-        elementsWithCSS.assertIsNotPresent();
+        elementsWithCSS.asserts().assertIsNotPresent();
     }
 
     @Test
@@ -202,7 +202,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.exists("visibility"));
-        elementsWithCSS.assertAttributeContains("id", "1");
+        elementsWithCSS.asserts().assertAttributeContains("id", "1");
     }
 
     @Test
@@ -211,7 +211,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath("//*"))
                 .withWebElementFilter(WebElementFilter.CSS.exists("wabilibuu"));
-        elementsWithCSS.assertIsNotPresent();
+        elementsWithCSS.asserts().assertIsNotPresent();
     }
 
     @Test
@@ -221,7 +221,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*"))
                 .withWebElementFilter(WebElementFilter.CSS.existsNot("visibility"));
         elementsWithCSS.setTimeoutInSeconds(1);
-        elementsWithCSS.assertIsNotPresent();
+        elementsWithCSS.asserts().assertIsNotPresent();
     }
 
     @Test
@@ -231,7 +231,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.is("visibility", "hidden"));
         elementsWithCSS.setTimeoutInSeconds(1);
-        elementsWithCSS.assertAttributeContains("id", "100");
+        elementsWithCSS.asserts().assertAttributeContains("id", "100");
     }
 
     @Test
@@ -241,7 +241,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         GuiElement elementWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.is("background-color", "black"));
         elementWithCSS.setTimeoutInSeconds(1);
-        elementWithCSS.assertIsNotPresent();
+        elementWithCSS.asserts().assertIsNotPresent();
     }
 
     @Test
@@ -251,7 +251,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         GuiElement elementWithCSS = new GuiElement(driver, By.xpath(".//*[@id='100']"))
                 .withWebElementFilter(WebElementFilter.CSS.isNot("visibility", "hidden"));
         elementWithCSS.setTimeoutInSeconds(1);
-        elementWithCSS.assertIsNotPresent();
+        elementWithCSS.asserts().assertIsNotPresent();
     }
 
     @Test
@@ -260,7 +260,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithTag = new GuiElement(driver, By.xpath("//*[@onclick]"))
                 .withWebElementFilter(WebElementFilter.TAG.contains("inp"));
-        elementsWithTag.assertAttributeContains("value", "Button1");
+        elementsWithTag.asserts().assertAttributeContains("value", "Button1");
     }
 
     @Test
@@ -270,7 +270,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         GuiElement elementsWithTag = new GuiElement(driver, By.xpath("//input"))
                 .withWebElementFilter(WebElementFilter.TAG.containsNot("inp"));
         elementsWithTag.setTimeoutInSeconds(1);
-        elementsWithTag.assertIsNotPresent();
+        elementsWithTag.asserts().assertIsNotPresent();
     }
 
     @Test
@@ -279,7 +279,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithTag = new GuiElement(driver, By.xpath(".//*"))
                 .withWebElementFilter(WebElementFilter.TAG.is("select"));
-        elementsWithTag.assertAttributeContains("size", "3");
+        elementsWithTag.asserts().assertAttributeContains("size", "3");
     }
 
     @Test
@@ -289,7 +289,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         GuiElement elementWithTag = new GuiElement(driver, By.xpath(".//*[@id='6']"))
                 .withWebElementFilter(WebElementFilter.TAG.isNot("input"));
         elementWithTag.setTimeoutInSeconds(1);
-        elementWithTag.assertIsNotPresent();
+        elementWithTag.asserts().assertIsNotPresent();
     }
 
     @Test
@@ -302,7 +302,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
                 .withWebElementFilter(WebElementFilter.POSITION.is(
                         pointSubmitButton.getX(),
                         pointSubmitButton.getY()));
-        elementsWithTag.assertAttributeContains("type", "submit");
+        elementsWithTag.asserts().assertAttributeContains("type", "submit");
     }
 
     @Test
@@ -317,7 +317,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
                         pointSubmitButton.getY() - 5,
                         pointSubmitButton.getX() + 5,
                         pointSubmitButton.getY() + 5));
-        elementsWithTag.assertAttributeContains("value", "Submit");
+        elementsWithTag.asserts().assertAttributeContains("value", "Submit");
     }
 
 
@@ -332,6 +332,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
                         dimensionOPenAgainLink.getWidth(),
                         dimensionOPenAgainLink.getHeight()));
 
-        openAgainLinkCheck.assertContainsText("Open again");
+        openAgainLinkCheck.asserts().assertContainsText("Open again");
     }
 }

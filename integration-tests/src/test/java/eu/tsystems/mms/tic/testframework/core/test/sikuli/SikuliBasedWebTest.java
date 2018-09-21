@@ -68,8 +68,8 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
         GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
 
-        guiElement.assertIsDisplayed();
-        guiElement.assertAttributeContains("src", "ringo");
+        guiElement.asserts().assertIsDisplayed();
+        guiElement.asserts().assertAttributeContains("src", "ringo");
     }
 
 //    @Test
@@ -83,8 +83,8 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
         GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL), frame);
 
-        guiElement.assertIsDisplayed();
-        guiElement.assertAttributeContains("src", "ringo");
+        guiElement.asserts().assertIsDisplayed();
+        guiElement.asserts().assertAttributeContains("src", "ringo");
     }
 
 }

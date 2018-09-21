@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.utils;
 import eu.tsystems.mms.tic.testframework.enums.DragAndDropOption;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
-import eu.tsystems.mms.tic.testframework.utils.reference.RefInt;
+import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -180,8 +180,8 @@ public final class MouseActions {
             sourcePoint.y = elementLocationInViewPort.y;
         }
 
-        final RefInt x = new RefInt();
-        final RefInt y = new RefInt();
+        final IntRef x = new IntRef();
+        final IntRef y = new IntRef();
         if (relative) {
             /*
             get relative x,y
@@ -204,7 +204,7 @@ public final class MouseActions {
         final WebElement destinationWebElement = target.getWebElement();
         final FrameLogic destinationFrameLogic = target.getFrameLogic();
 
-        final RefInt sleepMS = new RefInt();
+        final IntRef sleepMS = new IntRef();
         sleepMS.setI(0);
 
         if (dndOptionsContain(DragAndDropOption.EXTRA_SLEEPS, dragAndDropOptions)) {
@@ -356,7 +356,7 @@ public final class MouseActions {
         return false;
     }
 
-    private static void sleep(RefInt sleepMS) {
+    private static void sleep(IntRef sleepMS) {
         if (sleepMS.getI() > 0) {
             TestUtils.sleep(sleepMS.getI());
         }

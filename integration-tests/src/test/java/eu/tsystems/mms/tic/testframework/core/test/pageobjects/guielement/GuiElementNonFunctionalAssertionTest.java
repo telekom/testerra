@@ -36,7 +36,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
         GuiElement e2 = getGuiElementBy(By.id("11"));
         boolean exceptionWasThrown = false;
         try {
-            e1.nonFunctionalAssert.assertLayout(Layout.inner().sameRight(e2, 0));
+            e1.nonFunctionalAsserts().assertLayout(Layout.inner().sameRight(e2, 0));
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -48,7 +48,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT2_GuiElement_nonFunctionalAssertIsPresent() {
         boolean exceptionWasThrown = false;
         try {
-            getDisplayedElement().nonFunctionalAssert.assertIsPresent();
+            getDisplayedElement().nonFunctionalAsserts().assertIsPresent();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -60,7 +60,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT3N_GuiElement_nonFunctionalAssertIsNotPresent() {
         boolean exceptionWasThrown = false;
         try {
-            getDisplayedElement().nonFunctionalAssert.assertIsNotPresent();
+            getDisplayedElement().nonFunctionalAsserts().assertIsNotPresent();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -72,7 +72,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT4_GuiElement_nonFunctionalAssertIsPresentFast() {
         boolean exceptionWasThrown = false;
         try {
-            getDisplayedElement().nonFunctionalAssert.assertIsPresentFast();
+            getDisplayedElement().nonFunctionalAsserts().assertIsPresentFast();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -84,7 +84,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT5N_GuiElement_nonFunctionalAssertIsNotPresentFast() {
         boolean exceptionWasThrown = false;
         try {
-            getDisplayedElement().nonFunctionalAssert.assertIsNotPresentFast();
+            getDisplayedElement().nonFunctionalAsserts().assertIsNotPresentFast();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -96,7 +96,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT6_GuiElement_nonFunctionalAssertIsDisplayed() {
         boolean exceptionWasThrown = false;
         try {
-            getDisplayedElement().nonFunctionalAssert.assertIsDisplayed();
+            getDisplayedElement().nonFunctionalAsserts().assertIsDisplayed();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -108,7 +108,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT7N_GuiElement_nonFunctionalAssertIsNotDisplayed() {
         boolean exceptionWasThrown = false;
         try {
-            getDisplayedElement().nonFunctionalAssert.assertIsNotDisplayed();
+            getDisplayedElement().nonFunctionalAsserts().assertIsNotDisplayed();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -120,7 +120,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT8_GuiElement_nonFunctionalAssertIsDisplayedFromWebElement() {
         boolean exceptionWasThrown = false;
         try {
-           getDisplayedElement().nonFunctionalAssert.assertIsDisplayedFromWebElement();
+           getDisplayedElement().nonFunctionalAsserts().assertIsDisplayedFromWebElement();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -132,7 +132,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT9N_GuiElement_nonFunctionalAssertIsNotDisplayedFromWebElement() {
         boolean exceptionWasThrown = false;
         try {
-            getDisplayedElement().nonFunctionalAssert.assertIsNotDisplayedFromWebElement();
+            getDisplayedElement().nonFunctionalAsserts().assertIsNotDisplayedFromWebElement();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -144,7 +144,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT10_GuiElement_nonFunctionalAssertIsSelectable() {
         boolean exceptionWasThrown = false;
         try {
-            getSelectableElement().nonFunctionalAssert.assertIsSelectable();
+            getSelectableElement().nonFunctionalAsserts().assertIsSelectable();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -156,7 +156,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT11N_GuiElement_nonFunctionalAssertIsNotSelectable() {
         boolean exceptionWasThrown = false;
         try {
-            getSelectableElement().nonFunctionalAssert.assertIsNotSelectable();
+            getSelectableElement().nonFunctionalAsserts().assertIsNotSelectable();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -170,7 +170,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
         try {
             GuiElement g = getSelectableElement();
             g.select(true);
-            g.nonFunctionalAssert.assertIsSelected();
+            g.nonFunctionalAsserts().assertIsSelected();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -184,7 +184,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
         try {
             GuiElement g = getSelectableElement();
             g.select(true);
-            g.nonFunctionalAssert.assertIsNotSelected();
+            g.nonFunctionalAsserts().assertIsNotSelected();
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -196,7 +196,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT14_GuiElement_nonFunctionalAssertText() {
         boolean exceptionWasThrown = false;
         try {
-             getElementWithText().nonFunctionalAssert.assertText("Open again");
+             getElementWithText().nonFunctionalAsserts().assertText("Open again");
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -208,7 +208,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT15N_GuiElement_nonFunctionalAssertText() {
         boolean exceptionWasThrown = false;
         try {
-            getElementWithText().nonFunctionalAssert.assertText("Peter");
+            getElementWithText().nonFunctionalAsserts().assertText("Peter");
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -220,7 +220,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT16_GuiElement_nonFunctionalContainsText() {
         boolean exceptionWasThrown = false;
         try {
-            getElementWithText().nonFunctionalAssert.assertContainsText("Open");
+            getElementWithText().nonFunctionalAsserts().assertContainsText("Open");
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -232,7 +232,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT17N_GuiElement_nonFunctionalContainsText() {
         boolean exceptionWasThrown = false;
         try {
-            getElementWithText().nonFunctionalAssert.assertContainsText("Pete");
+            getElementWithText().nonFunctionalAsserts().assertContainsText("Pete");
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);
@@ -244,7 +244,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT18_GuiElement_nonFunctionalAssertAttributeIsPresent() {
         boolean exceptionWasThrown = false;
         try {
-            getElementWithAttribute().nonFunctionalAssert.assertContainsText("Open");
+            getElementWithAttribute().nonFunctionalAsserts().assertContainsText("Open");
         } catch (AssertionError e) {
             exceptionWasThrown = true;
             logger.error("Thrown Error", e);

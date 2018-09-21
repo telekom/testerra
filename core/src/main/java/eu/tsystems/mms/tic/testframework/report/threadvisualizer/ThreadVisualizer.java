@@ -62,7 +62,6 @@ public class ThreadVisualizer {
         LOGGER.trace("Generate Report with " + DataStorage.getList().size() + " datasets");
 
         final String tvFolderName = "threadvisualizer";
-        final File tvDir = new File(Report.REPORT_DIRECTORY, tvFolderName);
 
         final String threadVisualizerInputFile = "threads.vm";
         final String threadVisualizerOutputFile = "threads.html";
@@ -80,8 +79,8 @@ public class ThreadVisualizer {
         }
 
         // copy
-        ReportUtils.copyFile(css, tvDir);
-        ReportUtils.copyFile(js, tvDir);
+        ReportUtils.copyFile(css, Report.REPORT_DIRECTORY);
+        ReportUtils.copyFile(js, Report.REPORT_DIRECTORY);
 
         /*
          #### Velocity merge

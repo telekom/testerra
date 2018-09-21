@@ -476,6 +476,11 @@ public final class JSUtils {
                     }
                 }
 
+                out.keySet().forEach(key -> LOGGER.info(key + "=" + out.get(key)));
+                if (out.keySet().size() != 4) {
+                    throw new FennecRuntimeException("Could not get element border via JS call");
+                }
+
                 return out;
             }
         } catch (Exception e) {

@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.layout;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -106,6 +107,7 @@ public abstract class Layout {
         return layout;
     }
 
+    @Fails(validFor = "unsupportedBrowser", description = "Unsupported Browser")
     public LayoutBorders getElementLayoutBorders(GuiElement guiElement) {
         if (innerBorders) {
             Map<String, Long> borders = JSUtils.getElementInnerBorders(guiElement);

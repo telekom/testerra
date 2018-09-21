@@ -97,9 +97,6 @@ public final class ReportUtils {
 
                 "js/datatables.min.js",
 
-                // git graph - test method detail
-                "js/gitgraph/gitgraph-1.2.3/gitgraph.min.js",
-
                 // jira
                 "js/jira.js",
 
@@ -216,9 +213,6 @@ public final class ReportUtils {
                 "style/ui-icons_454545_256x240.png",
                 "style/ui-icons_888888_256x240.png",
                 "style/ui-icons_cd0a0a_256x240.png",
-
-                // gtit graph
-                "style/gitgraph/gitgraph-1.2.3/gitgraph.css",
 
                 // Other
                 "swf/copy_csv_xls.swf",

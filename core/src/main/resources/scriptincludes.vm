@@ -12,4 +12,3 @@
         <!-- jira -->
         <!--<script type="text/javascript" src="js/jira.js"></script>-->
         <script type="text/javascript" src="js/piechart.js"></script>
-        <script type="text/javascript" src="js/gitgraph/gitgraph-1.2.3/gitgraph.min.js"></script>

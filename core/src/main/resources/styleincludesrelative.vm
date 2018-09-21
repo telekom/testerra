@@ -8,5 +8,4 @@
         <link rel="stylesheet" href="../js/highlight-styles/zenburn.css"/>
         <link rel="stylesheet" href="../style/font-awesome/css/font-awesome.min.css"/>
         <!--<link rel="stylesheet" href="../style/jquery-ui.css" type="text/css"/>-->
-        <link rel="stylesheet" href="../style/gitgraph/gitgraph-1.2.3/gitgraph.css"/>
 

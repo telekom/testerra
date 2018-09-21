@@ -11,6 +11,5 @@
         <script type="text/javascript" src="../js/report.js"></script>
         <!-- jira -->
         <!--<script type="text/javascript" src="../js/jira.js"></script>-->
-        <script type="text/javascript" src="../js/gitgraph/gitgraph-1.2.3/gitgraph.min.js"></script>
         <script type="text/javascript" src="../js/cytoscape.min.js"></script>
         <script type="text/javascript" src="../js/dependencies-tree-view.js"></script>

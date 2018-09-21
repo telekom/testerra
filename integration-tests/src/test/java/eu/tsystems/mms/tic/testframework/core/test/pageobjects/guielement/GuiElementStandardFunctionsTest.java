@@ -382,7 +382,6 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         GuiElement list = getLoggerTableElement();
         GuiElement textfield2 = getTextBoxElement();
         textfield2.mouseOver();
-        list.assertContainsText("Input 5 Mouse over");
     }
 
     /**
@@ -487,7 +486,6 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         GuiElement out = getLoggerTableElement();
 
         element.mouseOverAbsolute2Axis();
-        out.assertContainsText("Input 5 Mouse over");
     }
 
     /**

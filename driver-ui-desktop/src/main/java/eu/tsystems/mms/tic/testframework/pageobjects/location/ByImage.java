@@ -166,23 +166,6 @@ public class ByImage extends FennecBy {
 
     @Override
     public String toString() {
-        try {
-            if (url == null) {
-                throw new FennecSystemException("url is null, ensure to have an URL set!");
-            }
-            URI uri = url.toURI();
-            if (uri == null) {
-                throw new FennecSystemException("Cannot build uri from url: " + url);
-            }
-            File file = new File(uri);
-            if (file == null) {
-                throw new FennecSystemException("Cannot find file: " + uri);
-            }
-            return "ByImage{" +
-                    "url=" + file.getName() +
-                    '}';
-        } catch (URISyntaxException e) {
-            return "Unknown Image";
-        }
+        return "ByImage{" + url + '}';
     }
 }

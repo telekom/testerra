@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.sikuli;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.sikuli.ImageElement;
@@ -37,9 +37,9 @@ import java.net.URL;
 /**
  * Created by pele on 27.08.2015.
  */
-public class SikuliBasedWebTest extends AbstractTest {
+public class SikuliBasedWebTest extends AbstractTestSitesTest {
 
-    @Test
+//    @Test
     public void testT01_ByImage() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
 
@@ -49,7 +49,7 @@ public class SikuliBasedWebTest extends AbstractTest {
         guiElement.click();
     }
 
-    @Test(enabled = false)
+//    @Test
     public void testT01_ByImage_Directly() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
 
@@ -60,7 +60,7 @@ public class SikuliBasedWebTest extends AbstractTest {
         imageElement.click();
     }
 
-    @Test(enabled = false)
+//    @Test
     public void testT03a_ByImage_InFrames_FindElementInFrame() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
         String url = TestPage.DRAG_AND_DROP_OVER_FRAMES.getUrl();
@@ -73,7 +73,7 @@ public class SikuliBasedWebTest extends AbstractTest {
         guiElement.assertAttributeContains("src", "ringo");
     }
 
-    @Test(enabled = false)
+//    @Test
     public void testT03b_ByImage_InFrames_FindElementInFrame_withObsoleteGuiElementFrame() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
         String url = TestPage.DRAG_AND_DROP_OVER_FRAMES.getUrl();

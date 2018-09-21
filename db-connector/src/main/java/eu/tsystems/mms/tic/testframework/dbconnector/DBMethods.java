@@ -26,23 +26,16 @@
  */
 package eu.tsystems.mms.tic.testframework.dbconnector;
 
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.tsystems.mms.tic.testframework.dbconnector.query.INonSelectQuery;
 import eu.tsystems.mms.tic.testframework.dbconnector.query.Query;
 import eu.tsystems.mms.tic.testframework.dbconnector.query.SelectQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Class holding methods to send queries to the DB.

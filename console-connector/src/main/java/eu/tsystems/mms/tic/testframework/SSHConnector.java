@@ -26,13 +26,9 @@
  */
 package eu.tsystems.mms.tic.testframework;
 
-import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
-import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
+import com.jcraft.jsch.*;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 
 import java.io.File;
 import java.io.IOException;

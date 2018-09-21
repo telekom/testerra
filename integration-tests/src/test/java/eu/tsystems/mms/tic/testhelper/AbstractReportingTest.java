@@ -19,9 +19,9 @@
  */
 package eu.tsystems.mms.tic.testhelper;
 
-import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.testing.FennecTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

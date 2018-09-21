@@ -26,23 +26,18 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.IllegalCharsetNameException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.mail.Address;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeMessage;
-
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.IllegalCharsetNameException;
+import java.util.*;
 
 /**
  * E-Mail Objekt, das alle Inhalte eines javax.mail.Message-Objekts ausliest.

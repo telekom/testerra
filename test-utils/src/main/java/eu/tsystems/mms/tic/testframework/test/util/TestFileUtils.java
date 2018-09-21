@@ -26,18 +26,13 @@
  */
 package eu.tsystems.mms.tic.testframework.test.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import eu.tsystems.mms.tic.testframework.test.constants.FileUtilMessages;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 
-import eu.tsystems.mms.tic.testframework.test.constants.FileUtilMessages;
+import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class contains utility methods for handling all kind of files.

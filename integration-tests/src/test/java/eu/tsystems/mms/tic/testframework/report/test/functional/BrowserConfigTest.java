@@ -6,11 +6,11 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.general.BrowserDataProvider;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
-import eu.tsystems.mms.tic.testframework.report.testundertest.WebDriverSetupTest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.report.model.TestReportSevenWebDriverSetupConfig;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodStepsPage;
+import eu.tsystems.mms.tic.testframework.report.testundertest.WebDriverSetupTest;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
 import java.text.ParseException;

@@ -22,7 +22,6 @@ package eu.tsystems.mms.tic.testframework.bmp.playground;
 import eu.tsystems.mms.tic.testframework.bmp.AbstractTest;
 import eu.tsystems.mms.tic.testframework.bmp.BMProxyManager;
 import eu.tsystems.mms.tic.testframework.bmp.ProxyServer;
-import eu.tsystems.mms.tic.testframework.common.FennecCommons;
 import eu.tsystems.mms.tic.testframework.utils.TestUtils;
 import net.lightbody.bmp.core.har.Har;
 import org.apache.http.HttpHost;

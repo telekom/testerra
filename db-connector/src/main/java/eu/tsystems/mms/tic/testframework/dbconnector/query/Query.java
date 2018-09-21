@@ -26,10 +26,9 @@
  */
 package eu.tsystems.mms.tic.testframework.dbconnector.query;
 
+import eu.tsystems.mms.tic.testframework.dbconnector.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import eu.tsystems.mms.tic.testframework.dbconnector.Table;
 
 /**
  * Objects of this class represent SQL queries. Instances can be parametrized with a Table class to restrict queries to

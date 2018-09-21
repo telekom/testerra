@@ -49,7 +49,6 @@ public class UIDriverHook implements ModuleHook {
         FennecListener.registerAfterMethodWorker(ConditionalBehaviourWorker.class);
         FennecListener.registerAfterMethodWorker(LogWDSessionsWorker.class);
         FennecListener.registerAfterMethodWorker(TakeScreenshotsWorker.class);
-        FennecListener.registerAfterMethodWorker(StoreClickPathWorker.class);
 
         FennecListener.registerAfterMethodWorker(WebDriverSessionsAfterMethodWorker.class); // the utilizable one
 

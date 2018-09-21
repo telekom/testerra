@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
-import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestContainer;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;

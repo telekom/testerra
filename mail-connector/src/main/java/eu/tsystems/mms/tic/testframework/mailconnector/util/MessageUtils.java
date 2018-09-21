@@ -26,21 +26,19 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.Map;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeMessage;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.Map;
 
 /**
  * Class containing utility functions for MimeMessage handling.

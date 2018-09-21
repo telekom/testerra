@@ -19,9 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

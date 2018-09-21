@@ -19,10 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.monitor;
 
-import eu.tsystems.mms.tic.testframework.events.IFennecEventListener;
-import eu.tsystems.mms.tic.testframework.events.IFennecEventType;
 import eu.tsystems.mms.tic.testframework.events.FennecEvent;
 import eu.tsystems.mms.tic.testframework.events.FennecEventType;
+import eu.tsystems.mms.tic.testframework.events.IFennecEventListener;
+import eu.tsystems.mms.tic.testframework.events.IFennecEventType;
 import eu.tsystems.mms.tic.testframework.internal.ConsumptionMeasurementsCollector;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.JVMUtils;

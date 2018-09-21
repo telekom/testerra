@@ -29,8 +29,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.location;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import java.net.URL;
-
 /**
  * <Beschreibung der Klasse>
  *

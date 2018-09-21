@@ -26,12 +26,12 @@
  */
 package eu.tsystems.mms.tic.testframework.test.util;
 
+import org.slf4j.LoggerFactory;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
-
-import org.slf4j.LoggerFactory;
 
 /**
  * Utility class to save properties to a file.

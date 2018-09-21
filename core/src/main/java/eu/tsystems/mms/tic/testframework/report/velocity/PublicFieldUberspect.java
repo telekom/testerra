@@ -35,13 +35,13 @@
 
 package eu.tsystems.mms.tic.testframework.report.velocity;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-
 import org.apache.velocity.util.introspection.Info;
 import org.apache.velocity.util.introspection.UberspectImpl;
 import org.apache.velocity.util.introspection.VelPropertyGet;
 import org.apache.velocity.util.introspection.VelPropertySet;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 
 /**
  * Uberspect implementation that exposes public fields.

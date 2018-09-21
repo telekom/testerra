@@ -6,8 +6,8 @@ import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractReportPage;
+import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

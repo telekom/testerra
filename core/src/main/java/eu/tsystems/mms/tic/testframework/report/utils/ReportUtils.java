@@ -28,7 +28,9 @@ package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
-import eu.tsystems.mms.tic.testframework.internal.*;
+import eu.tsystems.mms.tic.testframework.internal.ConsumptionMeasurementsCollector;
+import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
+import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;

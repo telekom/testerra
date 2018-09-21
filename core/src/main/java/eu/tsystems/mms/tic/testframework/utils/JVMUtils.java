@@ -20,7 +20,6 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import com.sun.management.OperatingSystemMXBean;
-import org.omg.PortableInterceptor.LOCATION_FORWARD;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

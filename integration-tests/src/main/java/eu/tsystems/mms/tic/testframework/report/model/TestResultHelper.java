@@ -3,7 +3,7 @@ package eu.tsystems.mms.tic.testframework.report.model;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import org.testng.annotations.DataProvider;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;

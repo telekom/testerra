@@ -20,12 +20,10 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.start;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import org.openqa.selenium.WebDriver;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 
 /**

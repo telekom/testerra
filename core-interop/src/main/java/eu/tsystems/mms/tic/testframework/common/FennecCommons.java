@@ -19,9 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.common;
 
-import eu.tsystems.mms.tic.testframework.constants.RTConstants;
 import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
+import eu.tsystems.mms.tic.testframework.constants.RTConstants;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -31,7 +30,6 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;

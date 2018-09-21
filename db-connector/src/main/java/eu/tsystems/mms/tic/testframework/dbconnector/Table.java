@@ -26,9 +26,9 @@
  */
 package eu.tsystems.mms.tic.testframework.dbconnector;
 
-import java.lang.reflect.Field;
-
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
 
 /**
  * Class representing a DB table. Tables its and subclasses are used in Query objects to build queries.

@@ -19,9 +19,9 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
+import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -19,10 +19,9 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
+import eu.tsystems.mms.tic.testframework.utils.timespans.TimeSpan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import eu.tsystems.mms.tic.testframework.utils.timespans.TimeSpan;
 
 /**
  * Created by pele on 05.02.2015.

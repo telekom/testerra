@@ -1,9 +1,9 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFailurePointsPage;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFailureEntry;
+import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;

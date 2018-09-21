@@ -4,12 +4,7 @@ package eu.tsystems.mms.tic.testframework.report.abstracts;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.BurgerMenu;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.ExitPointsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.FailureAspectsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.StateChangesPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

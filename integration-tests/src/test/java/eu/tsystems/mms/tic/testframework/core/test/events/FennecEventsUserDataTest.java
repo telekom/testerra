@@ -27,14 +27,9 @@
 package eu.tsystems.mms.tic.testframework.core.test.events;
 
 import eu.tsystems.mms.tic.testframework.AbstractTest;
-import eu.tsystems.mms.tic.testframework.common.FennecCommons;
-import eu.tsystems.mms.tic.testframework.events.FennecEvent;
-import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
-import eu.tsystems.mms.tic.testframework.events.FennecEventService;
-import eu.tsystems.mms.tic.testframework.events.FennecEventType;
-import eu.tsystems.mms.tic.testframework.events.FennecEventUserDataManager;
-import eu.tsystems.mms.tic.testframework.events.test.UserDataTypes;
+import eu.tsystems.mms.tic.testframework.events.*;
 import eu.tsystems.mms.tic.testframework.events.test.FennecEventUserDataTestListener;
+import eu.tsystems.mms.tic.testframework.events.test.UserDataTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;

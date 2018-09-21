@@ -1,9 +1,9 @@
 package eu.tsystems.mms.tic.testframework.report.general;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
 public class AbstractTestDashboard extends AbstractAnnotationMarkerTest {
 

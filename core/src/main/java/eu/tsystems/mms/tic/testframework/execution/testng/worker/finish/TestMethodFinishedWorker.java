@@ -24,8 +24,6 @@ import eu.tsystems.mms.tic.testframework.events.FennecEventUserDataManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
-import org.testng.annotations.Test;
 
 /**
  * Created by pele on 19.01.2017.

@@ -23,7 +23,10 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FennecListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.*;
+import org.testng.IHookCallBack;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
+import org.testng.SkipException;
 
 /**
  * Created by pele on 30.01.2017.

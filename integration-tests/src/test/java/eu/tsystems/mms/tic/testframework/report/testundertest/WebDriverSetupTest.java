@@ -2,10 +2,10 @@ package eu.tsystems.mms.tic.testframework.report.testundertest;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.general.BrowserDataProvider;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportSevenWebDriverSetupConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
-import eu.tsystems.mms.tic.testframework.report.model.TestReportSevenWebDriverSetupConfig;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.CapabilityType;

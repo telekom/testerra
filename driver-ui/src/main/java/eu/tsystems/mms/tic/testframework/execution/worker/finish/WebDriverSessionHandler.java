@@ -20,8 +20,6 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Created by pele on 28.07.2017.

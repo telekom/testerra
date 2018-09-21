@@ -63,9 +63,9 @@ public class MethodAnnotationCheckerWorker extends MethodWorker {
                 // may be there is a deeper @Fails annotataion present
                 if (fails == null && testResult != null && throwable != null) {
                     Throwable scanThrowable = throwable;
-                    while (fails == null && scanThrowable.getCause() != null) {
-                        scanThrowable = scanThrowable.getCause();
+                    while (fails == null && scanThrowable != null) {
                         fails = ExecutionUtils.getFailsAnnotationInStackTrace(scanThrowable.getStackTrace());
+                        scanThrowable = scanThrowable.getCause();
                     }
                 }
 

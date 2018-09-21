@@ -52,7 +52,7 @@ import eu.tsystems.mms.tic.testframework.dbconnector.query.SelectQuery;
 public class DBMethods extends AbstractConnection {
 
     /** Logger for this class. */
-    private static final Logger LOG = LoggerFactory.getLogger(DBMethods.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DBMethods.class);
 
     /**
      * Returns a list of query results containing a mapping of column names and their respective values.
@@ -101,7 +101,7 @@ public class DBMethods extends AbstractConnection {
                 return (Integer) result;
             }
         } else {
-            LOG.error("ConfigurationException: Can't use query Method without Query Object.");
+            LOGGER.error("ConfigurationException: Can't use query Method without Query Object.");
         }
         return -1;
     }
@@ -330,24 +330,27 @@ public class DBMethods extends AbstractConnection {
      */
     private synchronized Object pQueryResultSet(final String query) throws SQLException {
         if (getConnection() == null || getConnection().isClosed()) {
-            try {
-                this.open();
-            } catch (ClassNotFoundException e) {
-                throw new FennecSystemException("Error opening db connection", e);
-            }
+            this.open();
         }
         final Statement stmt = getConnection().createStatement();
 
-        LOG.info("Execute Query: " + query);
+        LOGGER.info("Execute Query: " + query);
         // Execute the query
-        final boolean hasResult = stmt.execute(query);
+        boolean hasResult;
+        try {
+            hasResult = stmt.execute(query);
+        } catch (SQLException e) {
+            LOGGER.info("Reopening session and trying again...");
+            open();
+            hasResult = stmt.execute(query);
+        }
 
         if (hasResult) {
-            LOG.info("Returning ResultSet");
+            LOGGER.info("Returning ResultSet");
             return stmt.getResultSet();
 
         } else {
-            LOG.info("Returning updateCount");
+            LOGGER.info("Returning updateCount");
             int cnt = stmt.getUpdateCount();
             stmt.close();
             if (isAutomaticConnectionHandling()) {

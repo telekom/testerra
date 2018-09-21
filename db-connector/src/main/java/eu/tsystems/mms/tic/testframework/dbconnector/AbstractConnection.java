@@ -28,6 +28,7 @@ package eu.tsystems.mms.tic.testframework.dbconnector;
 
 import eu.tsystems.mms.tic.testframework.dbconnector.connection.DBConnection;
 import eu.tsystems.mms.tic.testframework.dbconnector.connection.Driver;
+import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -65,8 +66,12 @@ public abstract class AbstractConnection {
      * @throws SQLException .
      * @throws ClassNotFoundException .
      */
-    public DBConnector<?> open() throws SQLException, ClassNotFoundException {
-        return this.pOpen();
+    public DBConnector<?> open() throws SQLException {
+        try {
+            return this.pOpen();
+        } catch (ClassNotFoundException e) {
+            throw new FennecRuntimeException(e);
+        }
     }
 
     /**

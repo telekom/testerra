@@ -31,9 +31,11 @@ public class MethodParametersWorker extends MethodWorker {
 
     @Override
     public void run() {
-        Object[] parameters = testResult.getParameters();
-        if (parameters != null && parameters.length > 0) {
-            methodContext.parameters = Arrays.stream(parameters).collect(Collectors.toList());
+        if (testMethod.isTest()) {
+            Object[] parameters = testResult.getParameters();
+            if (parameters != null && parameters.length > 0) {
+                methodContext.parameters = Arrays.stream(parameters).collect(Collectors.toList());
+            }
         }
     }
 }

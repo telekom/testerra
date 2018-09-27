@@ -65,7 +65,7 @@ public class ExecutionContextUtils {
         }
 
         if (!foundMethodObject) {
-            final String msg = "Please use @BeforeMethod p v before(Method method) and @AfterMethod p v after(Method method)!" +
+            final String msg = "Please use @BeforeMethod before(Method method) and @AfterMethod after(Method method)!" +
                     "\nThis will be mandatory in a future release.";
 
             LOGGER.info(msg);

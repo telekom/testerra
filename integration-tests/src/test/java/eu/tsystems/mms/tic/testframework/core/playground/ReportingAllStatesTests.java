@@ -13,6 +13,8 @@ import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.*;
 
+import java.lang.reflect.Method;
+
 public class ReportingAllStatesTests extends AbstractTest {
 
     static {
@@ -312,4 +314,7 @@ public class ReportingAllStatesTests extends AbstractTest {
         AssertCollector.fail("failed3");
     }
 
+    @BeforeMethod
+    public void beforeMethod(Method method) {
+    }
 }

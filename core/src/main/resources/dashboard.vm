@@ -497,23 +497,15 @@ function drawClassesBars() {
                 intersect: true
             },
             onClick: function(event, elements) {
-                var activePoint = chart0.getElementAtEvent(event)[0];
+                var e = chart0.getElementAtEvent(event)[0];
 
-                if (elements.length > 0) {
-                    // click on a bar
-
-                    var data = activePoint._chart.data;
-                    var datasetIndex = activePoint._datasetIndex;
-                    var catIndex = elements[datasetIndex]['_index'];
-
-                    var category = categories[catIndex];
-                    var label = data.datasets[datasetIndex].label;
-                    var value = data.datasets[datasetIndex].data[activePoint._index];
-
-                    showMethodsViewOnDashboard(category, label);
+                if (e) {
+                    var status = e._model.datasetLabel;
+                    var classname = e._model.label;
+                    showMethodsViewOnDashboard(classname, status);
                 }
                 else {
-                    // clicked on a category not implemented
+                    // click on a category: not possible to retrieve information
                 }
             }
         };

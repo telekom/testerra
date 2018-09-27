@@ -62,13 +62,13 @@ public class TestDBConnector extends AbstractDBConnectorTest {
         final DBConnector<?> conn = getDBConnector();
 
         final List<HashMap<String, String>> res =
-                conn.select(new SelectQuery<TableDefinitions>("*", TableDefinitions.TESTTABLE, null));
+                conn.select(new SelectQuery<>("*", TableDefinitions.TESTTABLE, null));
 
         printTableToLog(res);
-        final int result = conn.query(new DeleteQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
+        final int result = conn.query(new DeleteQuery<>(TableDefinitions.TESTTABLE,
                 TestTable.getUser() + "='" + USER1.getUser() + "'"));
         final List<HashMap<String, String>> resAfter =
-                conn.select(new SelectQuery<TableDefinitions>("*", TableDefinitions.TESTTABLE, null));
+                conn.select(new SelectQuery<>("*", TableDefinitions.TESTTABLE, null));
         printTableToLog(resAfter);
     }
 
@@ -83,11 +83,11 @@ public class TestDBConnector extends AbstractDBConnectorTest {
         final long fileSize = 1007;
         final DBConnector<?> conn = getDBConnector();
         final Blob blob = conn.selectBlob(
-                new SelectQuery<TableDefinitions>(LobTable.getBlob(), TableDefinitions.LOBTABLE, null));
+                new SelectQuery<>(LobTable.getBlob(), TableDefinitions.LOBTABLE, null));
         Assert.assertEquals(fileSize, blob.length());
 
         final Blob blob2 = conn.selectBlob(
-                new SelectQuery<TableDefinitions>(LobTable.getBlob(), TableDefinitions.LOBTABLE, LobTable
+                new SelectQuery<>(LobTable.getBlob(), TableDefinitions.LOBTABLE, LobTable
                         .getIdField() + "=1"));
         Assert.assertEquals(fileSize, blob2.length());
     }
@@ -103,11 +103,11 @@ public class TestDBConnector extends AbstractDBConnectorTest {
         final DBConnector<?> conn = getDBConnector();
 
         final Clob clob = conn.selectClob(
-                new SelectQuery<TableDefinitions>(LobTable.getClob(), TableDefinitions.LOBTABLE, null));
+                new SelectQuery<>(LobTable.getClob(), TableDefinitions.LOBTABLE, null));
         Assert.assertEquals(clobSize, clob.length());
 
         final Clob clob2 = conn.selectClob(
-                new SelectQuery<TableDefinitions>(LobTable.getClob(), TableDefinitions.LOBTABLE, LobTable
+                new SelectQuery<>(LobTable.getClob(), TableDefinitions.LOBTABLE, LobTable
                         .getIdField() + "=1"));
         Assert.assertEquals(clobSize, clob2.length());
     }
@@ -120,12 +120,12 @@ public class TestDBConnector extends AbstractDBConnectorTest {
     @Test
     public void testT04_Insert() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
-        int result = conn.query(new InsertQuery<TableDefinitions>(TableDefinitions.TESTTABLE, TableDefinitions.TESTTABLE.getIdentifiers(),
+        int result = conn.query(new InsertQuery<>(TableDefinitions.TESTTABLE, TableDefinitions.TESTTABLE.getIdentifiers(),
                 new String[] {
                         "4", "user04", "Max", "Mustermann", "25", USER1.getDate().toString(),
                         USER1.getCreationTime().toString()
                 }));
-        result = conn.query(new InsertQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
+        result = conn.query(new InsertQuery<>(TableDefinitions.TESTTABLE,
                 new String[] { TestTable.getAge(), TestTable.getLastname() },
                 new String[] { "40", "Hans" }));
     }
@@ -140,11 +140,11 @@ public class TestDBConnector extends AbstractDBConnectorTest {
         final DBConnector<?> conn = getDBConnector();
 
         final List<HashMap<String, String>> res =
-                conn.select(new SelectQuery<TableDefinitions>("*", TableDefinitions.TESTTABLE, null));
+                conn.select(new SelectQuery<>("*", TableDefinitions.TESTTABLE, null));
         printTableToLog(res);
 
         final List<HashMap<String, String>> res2 =
-                conn.select(new SelectQuery<TableDefinitions>("*", TableDefinitions.TESTTABLE,
+                conn.select(new SelectQuery<>("*", TableDefinitions.TESTTABLE,
                         TestTable.getAge() + "< 100"));
         printTableToLog(res2);
     }
@@ -159,12 +159,12 @@ public class TestDBConnector extends AbstractDBConnectorTest {
         final DBConnector<?> conn = getDBConnector();
 
         final List<HashMap<String, String>> result = conn
-                .select(new SelectQuery<TableDefinitions>(
+                .select(new SelectQuery<>(
                         new String[] { TestTable.getAge(), TestTable.getDate() },
                         TableDefinitions.TESTTABLE, null));
         this.printTableToLog(result);
 
-        final List<HashMap<String, String>> result2 = conn.select(new SelectQuery<TableDefinitions>(
+        final List<HashMap<String, String>> result2 = conn.select(new SelectQuery<>(
                 new String[] { TestTable.getAge(), TestTable.getDate() }, TableDefinitions.TESTTABLE,
                 TestTable.getFirstname() + "='" + USER3.getFirstname() + "'"));
         this.printTableToLog(result);
@@ -179,10 +179,10 @@ public class TestDBConnector extends AbstractDBConnectorTest {
     public void testT08_SelectObject() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
 
-        final Object age = conn.selectSingleObject(new SelectQuery<TableDefinitions>(
+        final Object age = conn.selectSingleObject(new SelectQuery<>(
                 TestTable.getAge(), TableDefinitions.TESTTABLE, null));
 
-        final Object age2 = conn.selectSingleObject(new SelectQuery<TableDefinitions>(
+        final Object age2 = conn.selectSingleObject(new SelectQuery<>(
                 TestTable.getAge(), TableDefinitions.TESTTABLE, TestTable.getFirstname() +
                         "='" + USER3.getFirstname() + "'"));
     }
@@ -196,10 +196,10 @@ public class TestDBConnector extends AbstractDBConnectorTest {
     public void testT09_SelectRow() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
 
-        List<String> userNames = conn.selectSingleColumn(new SelectQuery<TableDefinitions>(
+        List<String> userNames = conn.selectSingleColumn(new SelectQuery<>(
                 new String[] { TestTable.getUser(), TestTable.getFirstname() },
                 TableDefinitions.TESTTABLE, null));
-        userNames = conn.selectSingleColumn(new SelectQuery<TableDefinitions>(
+        userNames = conn.selectSingleColumn(new SelectQuery<>(
                 new String[] { TestTable.getUser(), TestTable.getFirstname() },
                 TableDefinitions.TESTTABLE,
                 TestTable.getId() + "=1"));
@@ -213,9 +213,9 @@ public class TestDBConnector extends AbstractDBConnectorTest {
     @Test
     public void testT10_Truncate() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
-        final int result = conn.query(new TruncateQuery<TableDefinitions>(TableDefinitions.TESTTABLE));
+        final int result = conn.query(new TruncateQuery<>(TableDefinitions.TESTTABLE));
         final List<HashMap<String, String>> out = conn.select(
-                new SelectQuery<TableDefinitions>("*", TableDefinitions.TESTTABLE, ""));
+                new SelectQuery<>("*", TableDefinitions.TESTTABLE, ""));
     }
 
     /**
@@ -226,10 +226,10 @@ public class TestDBConnector extends AbstractDBConnectorTest {
     @Test
     public void testT12_Update() throws SQLException {
         final DBConnector<?> conn = getDBConnector();
-        final int result = conn.query(new UpdateQuery<TableDefinitions>(TableDefinitions.TESTTABLE,
+        final int result = conn.query(new UpdateQuery<>(TableDefinitions.TESTTABLE,
                 new String[] { TestTable.getFirstname() }, new String[] { "ursel" },
                 TestTable.getUser() + "='" + USER1.getUser() + "'"));
-        final List<String> out = conn.selectSingleColumn(new SelectQuery<TableDefinitions>(
+        final List<String> out = conn.selectSingleColumn(new SelectQuery<>(
                 new String[] { TestTable.getFirstname() },
                 TableDefinitions.TESTTABLE, ""));
     }

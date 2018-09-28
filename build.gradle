@@ -2,7 +2,7 @@ plugins {
     id "com.github.jk1.dependency-license-report" version "0.5.1" apply true
 }
 
-group 'eu.tsystems.mms.tic.testframework'
+group 'eu.tsystems.mms.tic.jfennec'
 version '1-SNAPSHOT'
 
 ext {

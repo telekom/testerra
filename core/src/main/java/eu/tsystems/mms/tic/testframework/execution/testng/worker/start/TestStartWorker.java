@@ -19,13 +19,19 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
+import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
 import eu.tsystems.mms.tic.testframework.events.FennecEvent;
 import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
 import eu.tsystems.mms.tic.testframework.events.FennecEventService;
 import eu.tsystems.mms.tic.testframework.events.FennecEventType;
+import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.report.FennecListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import org.testng.IRetryAnalyzer;
+import org.testng.ITestNGMethod;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by pele on 19.01.2017.
@@ -52,6 +58,32 @@ public class TestStartWorker extends MethodWorker {
 
         // Thread visualizer and method timer start.
         FennecListener.startMethodTimer();
+
+        // add retry analyzer
+        if (isTest()) {
+            addRetryAnalyzer(testMethod, method);
+        }
+    }
+
+    private void addRetryAnalyzer(ITestNGMethod testNGMethod, Method method) {
+        /*
+         * Checks the test testNGMethod annotation for a retry analyzer. If no one is specified, it uses the fennec retry
+         * analyzer.
+         */
+        if (testNGMethod != null) {
+            final IRetryAnalyzer retryAnalyzer = testNGMethod.getRetryAnalyzer();
+            if (retryAnalyzer == null) {
+
+                if (method.isAnnotationPresent(NoRetry.class)) {
+                    LOGGER.debug("Not adding fennec RetryAnalyzer for @NoRetry " + method.getName());
+                } else {
+                    testNGMethod.setRetryAnalyzer(new RetryAnalyzer());
+                    LOGGER.info("Adding fennec RetryAnalyzer for " + method.getName());
+                }
+            } else {
+                LOGGER.info("Using a non-fennec retry analyzer: " + retryAnalyzer + " on " + method.getName());
+            }
+        }
 
     }
 }

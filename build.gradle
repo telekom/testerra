@@ -131,8 +131,6 @@ allprojects {
         }
 
         repositories {
-            mavenCentral()
-            jcenter()
 //            maven {
 //                name 'jfennec-bintray-or-whatever'
 //                url 'the-correct-url'

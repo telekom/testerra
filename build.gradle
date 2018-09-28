@@ -1,5 +1,6 @@
 plugins {
     id "com.github.jk1.dependency-license-report" version "0.5.1" apply true
+    id "io.spring.dependency-management" version "1.0.6.RELEASE" apply true
 }
 
 group 'eu.tsystems.mms.tic.jfennec'
@@ -98,14 +99,6 @@ ext {
     userAgentPparser = 'nl.basjes.parse.useragent:yauaa:4.1'
 
     colt = 'colt:colt:1.2.0'
-
-    protobuf = [
-            'com.google.protobuf:protobuf-java:3.5.1',
-            'com.google.protobuf:protobuf-java-util:3.5.1',
-            'com.hubspot.jackson:jackson-datatype-protobuf:0.9.9-jackson2.9-proto3'
-        ]
-
-    mongo = 'org.mongodb:mongodb-driver:3.7.1'
 
     /*
     Flags

@@ -1,8 +1,9 @@
 plugins {
     id "com.github.jk1.dependency-license-report" version "0.5.1" apply true
+    id "io.spring.dependency-management" version "1.0.6.RELEASE" apply true
 }
 
-group 'eu.tsystems.mms.tic.testframework'
+group 'eu.tsystems.mms.tic.jfennec'
 version '1-SNAPSHOT'
 
 ext {
@@ -70,7 +71,7 @@ ext {
             'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86',
             'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86_64',
             'nu.pattern:opencv:2.4.9-7'
-            ]
+    ]
 
     phantomjs = [
             'net.anthavio:phanbedder-2.1.1:1.0.0',
@@ -99,14 +100,6 @@ ext {
 
     colt = 'colt:colt:1.2.0'
 
-    protobuf = [
-            'com.google.protobuf:protobuf-java:3.5.1',
-            'com.google.protobuf:protobuf-java-util:3.5.1',
-            'com.hubspot.jackson:jackson-datatype-protobuf:0.9.9-jackson2.9-proto3'
-        ]
-
-    mongo = 'org.mongodb:mongodb-driver:3.7.1'
-
     /*
     Flags
      */
@@ -123,8 +116,8 @@ def dnp(prj) {
 }
 
 allprojects {
-    group 'eu.tsystems.mms.tic.testframework'
-    version '10-SNAPSHOT'
+    group 'eu.tsystems.mms.tic.jfennec'
+    version '1-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
@@ -138,8 +131,6 @@ allprojects {
         }
 
         repositories {
-            mavenCentral()
-            jcenter()
 //            maven {
 //                name 'jfennec-bintray-or-whatever'
 //                url 'the-correct-url'
@@ -148,12 +139,22 @@ allprojects {
 //                    password githubPassword
 //                }
 //            }
+
+            maven {
+                name 'prj-ticautom'
+                url 'https://artifacts.mms-at-work.de/artifactory/shared-ticautom-snapshot'
+                credentials {
+                    username mmsArtifactoryUsername
+                    password mmsArtifactoryPassword
+                }
+            }
+
         }
     }
 
     tasks.whenTaskAdded { t ->
-        if (t.name.startsWith("publishDeploy")) {
-            boolean e = t.project.jar.enabled
+        if (t.name.startsWith("publish")) {
+            boolean e = t.project.publish.enabled
             if (!e) {
                 println "Not running publish for " + t.project.name
                 t.enabled = false

@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.bmp.playground;
 import eu.tsystems.mms.tic.testframework.bmp.AbstractTest;
 import eu.tsystems.mms.tic.testframework.bmp.BMProxyManager;
 import eu.tsystems.mms.tic.testframework.bmp.ProxyServer;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.utils.TestUtils;
 import net.lightbody.bmp.core.har.Har;
 import org.apache.http.HttpHost;
@@ -33,9 +34,12 @@ import org.testng.annotations.Test;
  */
 public class ProxyServerPlaygroundTest extends AbstractTest {
 
+    static final String PROXY_HOST = PropertyManager.getProperty("http.proxyHost");
+    static final int PROXY_PORT = PropertyManager.getIntProperty("http.proxyPort");
+
     @Test
     public void testProxyServer() {
-        HttpHost proxyHost = new HttpHost("proxy.mms-dresden.de", 8080);
+        HttpHost proxyHost = new HttpHost(PROXY_HOST, PROXY_PORT);
         UsernamePasswordCredentials credentials = null;
         ProxyServer proxyServer = new ProxyServer(9999, proxyHost, credentials);
 
@@ -47,7 +51,7 @@ public class ProxyServerPlaygroundTest extends AbstractTest {
     @Test
     public void testMultipleInstances() throws Exception {
 
-        HttpHost proxyHost = new HttpHost("proxy.mms-dresden.de", 8080);
+        HttpHost proxyHost = new HttpHost(PROXY_HOST, PROXY_PORT);
         UsernamePasswordCredentials credentials = null;
         ProxyServer proxyServer1 = new ProxyServer(9991, proxyHost, credentials);
         ProxyServer proxyServer2 = new ProxyServer(9992, proxyHost, credentials);

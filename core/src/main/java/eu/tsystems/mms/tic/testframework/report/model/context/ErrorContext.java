@@ -133,7 +133,7 @@ public abstract class ErrorContext extends Context {
             return getName() + " " + msgDependsOn + split[1];
         }
         else if (line.startsWith(AssertionError.class.getName())) {
-            return "Assert: " + line.split(AssertionError.class.getName())[1];
+            return "Assert" + line.split(AssertionError.class.getName())[1];
         }
         else if (line.startsWith("java.lang.")) {
             return line.replace("java.lang.", "");

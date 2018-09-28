@@ -1,4 +1,4 @@
-package eu.tsystems.mms.tic.testframework.core.test.reporting;
+package eu.tsystems.mms.tic.testframework.core.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.annotations.*;
@@ -12,6 +12,8 @@ import org.openqa.selenium.WebDriverException;
 import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.*;
+
+import java.lang.reflect.Method;
 
 public class ReportingAllStatesTests extends AbstractTest {
 
@@ -312,4 +314,7 @@ public class ReportingAllStatesTests extends AbstractTest {
         AssertCollector.fail("failed3");
     }
 
+    @BeforeMethod
+    public void beforeMethod(Method method) {
+    }
 }

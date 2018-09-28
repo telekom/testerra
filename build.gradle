@@ -123,8 +123,8 @@ def dnp(prj) {
 }
 
 allprojects {
-    group 'eu.tsystems.mms.tic.testframework'
-    version '10-SNAPSHOT'
+    group 'eu.tsystems.mms.tic.jfennec'
+    version '1-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal

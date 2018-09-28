@@ -71,7 +71,7 @@ ext {
             'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86',
             'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86_64',
             'nu.pattern:opencv:2.4.9-7'
-            ]
+    ]
 
     phantomjs = [
             'net.anthavio:phanbedder-2.1.1:1.0.0',
@@ -141,6 +141,16 @@ allprojects {
 //                    password githubPassword
 //                }
 //            }
+
+            maven {
+                name 'prj-ticautom'
+                url 'https://artifacts.mms-at-work.de/artifactory/shared-ticautom-snapshot'
+                credentials {
+                    username mmsArtifactoryUsername
+                    password mmsArtifactoryPassword
+                }
+            }
+
         }
     }
 

@@ -3,6 +3,16 @@ plugins {
     id "io.spring.dependency-management" version "1.0.6.RELEASE" apply true
 }
 
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
+
 group 'eu.tsystems.mms.tic.jfennec'
 version '1-SNAPSHOT'
 
@@ -108,9 +118,8 @@ ext {
 
 def dnp(prj) {
     prj.jar.enabled = true
-    prj.install.enabled = true
     prj.publish.enabled = false
-    prj.publishToMavenLocal.enabled = true
+    prj.publishToMavenLocal.enabled = false
 
     println("Do not publish stuff from " + prj)
 }
@@ -120,6 +129,7 @@ allprojects {
     version '1-SNAPSHOT'
 
     apply plugin: 'java'
+    apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
     apply plugin: 'com.github.jk1.dependency-license-report' // run: gradle generateLicenseReport
 
@@ -128,6 +138,8 @@ allprojects {
         mavenCentral()
         jcenter()
     }
+
+    sourceCompatibility = 1.8
 
     publishing {
         publications {

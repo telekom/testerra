@@ -26,12 +26,10 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.events.FennecEventService;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
-import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorkerExecutor;
@@ -58,11 +56,8 @@ import eu.tsystems.mms.tic.testframework.utils.FennecUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.*;
-import org.testng.annotations.ITestAnnotation;
 import org.testng.xml.XmlSuite;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,7 +67,7 @@ import java.util.List;
  *
  * @author mrgi, mibu, pele, sepr
  */
-public class FennecListener implements IInvokedMethodListener2, IReporter, IAnnotationTransformer,
+public class FennecListener implements IInvokedMethodListener2, IReporter,
         IHookable, IConfigurable, IMethodInterceptor, ITestListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FennecListener.class);
@@ -403,30 +398,6 @@ public class FennecListener implements IInvokedMethodListener2, IReporter, IAnno
     public void generateReport(final List<XmlSuite> xmlSuites, final List<ISuite> suites,
                                final String outputDirectory) {
         GenerateReport.runOnce(xmlSuites, suites, outputDirectory, XML_REPORTER);
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public void transform(ITestAnnotation iTestAnnotation, Class aClass, Constructor constructor, Method method) {
-        /*
-         * Checks the test method annotation for a retry analyzer. If no one is specified, it uses the fennec retry
-         * analyzer.
-         */
-        if (method != null) {
-            final IRetryAnalyzer retryAnalyzer = iTestAnnotation.getRetryAnalyzer();
-            if (retryAnalyzer == null) {
-
-                if (method.isAnnotationPresent(NoRetry.class)) {
-                    LOGGER.debug("Not adding fennec RetryAnalyzer for @NoRetry " + method.getName());
-                } else {
-                    iTestAnnotation.setRetryAnalyzer(RetryAnalyzer.class);
-                    LOGGER.info("Adding fennec RetryAnalyzer for " + method.getName());
-                }
-            } else {
-                LOGGER.info("Using a non-fennec retry analyzer: " + retryAnalyzer + " on " + aClass.getName() + "."
-                        + method.getName());
-            }
-        }
     }
 
     @Override

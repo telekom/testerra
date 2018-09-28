@@ -153,8 +153,8 @@ allprojects {
     }
 
     tasks.whenTaskAdded { t ->
-        if (t.name.startsWith("publishDeploy")) {
-            boolean e = t.project.jar.enabled
+        if (t.name.startsWith("publish")) {
+            boolean e = t.project.publish.enabled
             if (!e) {
                 println "Not running publish for " + t.project.name
                 t.enabled = false

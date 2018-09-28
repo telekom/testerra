@@ -68,5 +68,5 @@ def setFailureCorridor(nr) {
 }
 
 def setCloseWindows(){
-    System.setProperty("wdm.closeWindows.afterTestMethods", "false")
+    System.setProperty("fennec.wdm.closeWindows.afterTestMethods", "false")
 }

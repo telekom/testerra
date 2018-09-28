@@ -109,9 +109,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
     }
 
     /**
-     * Tests whether the 'View Details' Button is displayed in the first report. It does this in the first report
-     * because it is the only one that does not have a history chart.
-     * It runs once in the 1st report.
+     * Tests if the fennec logo is displayed.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT05_checksIfFennecLogoIsDisplayed() throws Exception {

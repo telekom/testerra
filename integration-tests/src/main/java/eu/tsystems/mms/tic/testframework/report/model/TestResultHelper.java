@@ -25,9 +25,6 @@ public class TestResultHelper {
         PASSEDMINOR("SkyBlue", "PASSEDMINOR", "header nf", "Minor", "test nf"),
         FAILEDMINOR("DeepPink","FAILEDMINOR", "header brokennf", "Failed with Minor", "test brokennf"),
         SKIPPED("orange","SKIPPED", "header skipped", "Skipped", "test skipped"),
-        PASSEDINHERITED("YellowGreen","PASSEDINHERITED", "header passed-inherited", "header passed-inherited", "test passed-inherited"),
-        FAILEDINHERITED("#FF8888","FAILEDINHERITED", "header broken-inherited", "header broken-inherited", "test broken-inherited"),
-        SKIPPEDINHERITED("#ffd971","SKIPPEDINHERITED", "header skipped-inherited", "header skipped-inherited", "test skipped-inherited"),
         FAILEDEXPECTED("grey","FAILEDEXPECTED", "header expectedFailed", "Expected Failed", "test expectedFailed");
 
         private final String color;
@@ -138,42 +135,24 @@ public class TestResultHelper {
      */
     @DataProvider(parallel = true)
     public Object[][] getTestResultsExceptSkipped() {
-        return excludeTestResults(TestResult.SKIPPEDINHERITED, TestResult.SKIPPED);
+        return excludeTestResults(TestResult.SKIPPED);
     }
 
-    /**
-     * Delievers a Dataprovider for all possible test results except the results FAILED_INHERITED, PASSED_INHERITED and SKIPPED_INHERITED.
-     *
-     * @return
-     */
-    @DataProvider(parallel = true)
-    public Object[][] getTestResultsExceptInherited() {
-        return excludeTestResults(TestResult.FAILEDINHERITED, TestResult.PASSEDINHERITED, TestResult.SKIPPEDINHERITED);
-    }
-
-    /**
-     * Delievers a Dataprovider for all possible test results except the results FAILED_INHERITED, PASSED_INHERITED, SKIPPED_INHERITED and SKIPPED.
-     *
-     * @return
-     */
-    @DataProvider(parallel = true)
-    public Object[][] getTestResultsExceptInheritedAndSkipped() {
-        return excludeTestResults(TestResult.FAILEDINHERITED, TestResult.PASSEDINHERITED, TestResult.SKIPPEDINHERITED, TestResult.SKIPPED);
-    }
 
     @DataProvider(parallel = true)
     public Object[][] getTestResultsMinor() {
-        return excludeTestResults(TestResult.FAILED, TestResult.PASSED, TestResult.FAILEDINHERITED, TestResult.PASSEDINHERITED, TestResult.SKIPPEDINHERITED, TestResult.SKIPPED);
+        return excludeTestResults(TestResult.FAILED, TestResult.PASSED, TestResult.SKIPPED);
     }
 
     @DataProvider(parallel = true)
     public Object[][] getTestResultsFailed() {
-        return excludeTestResults(TestResult.PASSED, TestResult.PASSEDINHERITED, TestResult.PASSEDMINOR, TestResult.SKIPPEDINHERITED, TestResult.SKIPPED);
+        //TODO
+        return excludeTestResults(TestResult.PASSED,TestResult.PASSEDMINOR, TestResult.SKIPPED);
     }
 
     @DataProvider(parallel = true)
     public Object[][] getTestResultsPassedAndFailedWithMinor() {
-        return excludeTestResults(TestResult.FAILED, TestResult.PASSEDMINOR, TestResult.FAILEDINHERITED, TestResult.PASSEDINHERITED, TestResult.SKIPPEDINHERITED, TestResult.SKIPPED);
+        return excludeTestResults(TestResult.FAILED, TestResult.PASSEDMINOR, TestResult.SKIPPED);
     }
 
     private Object[][] excludeTestResults(TestResult... excludedTestResults) {
@@ -204,14 +183,10 @@ public class TestResultHelper {
                 return new Color(255, 20, 147);
             case SKIPPED:
                 return new Color(255, 165, 0);
-            case PASSEDINHERITED:
-                return new Color(154, 205, 50);
-            case FAILEDINHERITED:
-                return new Color(255, 136, 136);
-            case SKIPPEDINHERITED:
-                return new Color(255, 217, 113);
-            //case FAILEDEXPECTED:
-            //    return new Color(0,0,0);
+            case FAILEDEXPECTED:
+                return new Color(0,0,0);
+            //case RETRIED:
+                //TODO
             default:
                 throw new FennecRuntimeException("Color not implemented: " + testResult.getColor() + " for TestResult: " + testResult.toString());
         }

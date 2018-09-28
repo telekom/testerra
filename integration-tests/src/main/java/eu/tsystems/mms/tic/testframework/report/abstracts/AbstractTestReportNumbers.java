@@ -7,47 +7,38 @@ import eu.tsystems.mms.tic.testframework.report.model.TestNumberHelper;
  */
 public abstract class AbstractTestReportNumbers implements TestNumberHelper {
 
-    protected int highCorridorActual;
-    protected int highCorridorLimit;
-    protected int midCorridorActual;
-    protected int midCorridorLimit;
-    protected int lowCorridorActual;
-    protected int lowCorridorLimit;
-    protected String highMatched;
-    protected String midMatched;
-    protected String lowMatched;
+    protected int highCorridorActual = 0;
+    protected int midCorridorActual = 0;
+    protected int lowCorridorActual = 0;
 
-    protected int all;
-    protected int allPassed;
-    protected int passed;
-    protected int passedMinor;
-    protected int passedInherited;
-    protected int allFailed;
-    protected int failed;
-    protected int failedMinor;
-    protected int failedInherited;
-    protected int allSkipped;
-    protected int skipped;
-    protected int skippedInherited;
+    protected int highCorridorLimit = 24;
+    protected int midCorridorLimit = 3;
+    protected int lowCorridorLimit = 5;
 
-    protected int overallDelta;
-    protected int passedDelta;
-    protected int failedDelta;
-    protected int skippedDelta;
+    private final String fcMatched = "fcMatched";
+    private final String fcNotMatched = "fcNotMatched";
 
-    protected int failureAspects;
-    protected int exitPoints;
-    protected int expectedFailed;
+    protected int all = 0;
+    protected int allSuccessful = 0;
+    protected int passed = 0;
+    protected int passedMinor = 0;
+    protected int allSkipped = 0;
+    protected int skipped = 0;
+    protected int allBroken = 0;
+    protected int failed = 0;
+    protected int failedMinor = 0;
+    protected int failedRetried = 0;
+    protected int failedExpected = 0;
 
-    protected String percentage;
-    protected String percentageDelta;
+    protected int failureAspects = 0;
+    protected int exitPoints = 0;
 
-    protected int numberOfAcknowledgmentMethods;
-    protected int numberOfStateChanges;
-    protected String failureCorridorMatchingColor;
+    //TODO add percentage sign in test
+    protected int percentage = 0;
 
-    protected boolean isDelta;
-    protected boolean isInherited;
+    //protected String failureCorridorMatchingColor = red;
+    //protected String failureCorridorMatchingColor = "green";
+
     protected boolean isSkipped;
     protected boolean isExpectedToFail;
 
@@ -75,18 +66,32 @@ public abstract class AbstractTestReportNumbers implements TestNumberHelper {
         return lowCorridorLimit;
     }
 
-    public String getHighMatched() { return highMatched; }
+    public String getHighMatched() {
+        return getMatchedValue(highCorridorActual, highCorridorLimit);
+    }
 
-    public String getMidMatched() { return midMatched; }
 
-    public String getLowMatched() { return lowMatched; }
+    public String getMidMatched() {
+        return getMatchedValue(midCorridorActual, midCorridorLimit);
+    }
+
+    public String getLowMatched() {
+        return getMatchedValue(lowCorridorActual, lowCorridorLimit);
+    }
+
+    private String getMatchedValue(int actual, int limit){
+        if (actual < limit)
+            return fcMatched;
+        else
+            return fcNotMatched;
+    }
 
     public int getAll() {
         return all;
     }
 
-    public int getAllPassed() {
-        return allPassed;
+    public int getAllSuccessful() {
+        return allSuccessful;
     }
 
     public int getPassed() {
@@ -97,10 +102,18 @@ public abstract class AbstractTestReportNumbers implements TestNumberHelper {
         return passedMinor;
     }
 
-    public int getPassedInherited() { return passedInherited; }
 
-    public int getAllFailed() {
-        return allFailed;
+    public int getAllSkipped() {
+        return allSkipped;
+    }
+
+    public int getSkipped() {
+        return skipped;
+    }
+
+
+    public int getAllBroken() {
+        return allBroken;
     }
 
     public int getFailed() {
@@ -111,33 +124,7 @@ public abstract class AbstractTestReportNumbers implements TestNumberHelper {
         return failedMinor;
     }
 
-    public int getFailedInherited() { return failedInherited; }
-
-    public int getAllSkipped() {
-        return allSkipped;
-    }
-
-    public int getSkipped() {
-        return skipped;
-    }
-
-    public int getSkippedInherited() { return skippedInherited; }
-
-    public int getOverallDelta() {
-        return overallDelta;
-    }
-
-    public int getPassedDelta() {
-        return passedDelta;
-    }
-
-    public int getFailedDelta() {
-        return failedDelta;
-    }
-
-    public int getSkippedDelta() {
-        return skippedDelta;
-    }
+    public int getFailedRetried() {return  failedRetried;}
 
     public int getFailureAspects() {
         return failureAspects;
@@ -147,25 +134,11 @@ public abstract class AbstractTestReportNumbers implements TestNumberHelper {
         return exitPoints;
     }
 
-    public int getExpectedFailed() {
-        return expectedFailed;
+    public int getFailedExpected() {
+        return failedExpected;
     }
 
-    public String getPercentage() { return percentage; }
-
-    public String getPercentageDelta() { return percentageDelta; }
-
-    public int getNumberOfAcknowledgementMethods() {
-        return numberOfAcknowledgmentMethods;
-    }
-
-    public int getNumberOfStateChanges() { return numberOfStateChanges; }
-
-    public String getFailureCorridorMatchingColor() { return failureCorridorMatchingColor; }
-
-    public boolean isDelta() { return isDelta; }
-
-    public boolean isInherited() { return isInherited; }
+    public String getPercentage() { return String.valueOf(this.percentage + "%"); }
 
     public boolean isSkipped() { return isSkipped; }
 

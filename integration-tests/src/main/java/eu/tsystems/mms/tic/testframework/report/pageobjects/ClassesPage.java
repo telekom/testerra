@@ -35,7 +35,6 @@ public class ClassesPage extends AbstractReportPage {
 
     private GuiElement testsFailedLegendIndicator = new GuiElement(this.driver, By.xpath("//span[@title='Failed']"), mainFrame);
 
-    private GuiElement syncFailedLegendIndicator = new GuiElement(this.driver, By.xpath("//img[@title='" + SYNC_FAILED_WARNING_INDICATOR_TITLE + "']"), mainFrame);
     private GuiElement configMethodsIndicator = new GuiElement(this.driver, By.xpath("//font[@class='configMethods']"), mainFrame);
 
     //additional functions on class page
@@ -230,23 +229,12 @@ public class ClassesPage extends AbstractReportPage {
     }
 
     /**
-     * Asserts the the exclamation mark (!) - indicating a sync failed warning - is displayed in footer legend
-     */
-    public void assertSyncFailedLegendSymbolIsDisplayed() {
-        syncFailedLegendIndicator.asserts().assertIsDisplayed();
-    }
-
-    /**
      * Asserts all the footer legend labels displayed in footer legend
      */
     public void assertAllLegendSymbolsAreDisplayed() {
         assertPassedLegendSymbolIsDisplayed();
         assertRetryPassedLegendSymbolIsDisplayed();
         assertFailedLegendSymbolIsDisplayed();
-
-        if (PropertyManager.getBooleanProperty("isPlatform")) {
-            assertSyncFailedLegendSymbolIsDisplayed();
-        }
     }
 
     /**

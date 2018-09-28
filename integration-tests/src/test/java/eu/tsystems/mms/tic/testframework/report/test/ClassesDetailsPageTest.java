@@ -36,58 +36,29 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
                 WebDriverManager.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()),
                 "My_Context");
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDMINOR);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedInheritedMinor1", TestResultHelper.TestResult.FAILEDMINOR);
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDMINOR);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedMinor1", TestResultHelper.TestResult.FAILEDMINOR);
 
+        classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestCorridorMid.class.getSimpleName());
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILED);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_testMidCorridorFailed1", TestResultHelper.TestResult.FAILED);
 
-        if (PropertyManager.getBooleanProperty("isPlatform")) {
+        classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestPassed.class.getSimpleName());
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSED);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStatePassed1", TestResultHelper.TestResult.PASSED);
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDMINOR);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_PassedInheritedMinor1", TestResultHelper.TestResult.PASSEDMINOR);
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDMINOR);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_PassedMinor1", TestResultHelper.TestResult.PASSEDMINOR);
 
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDINHERITED);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedInheritedMinor1", TestResultHelper.TestResult.FAILEDINHERITED);
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDMINOR);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedMinor1", TestResultHelper.TestResult.FAILEDMINOR);
+        classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestSkipped.class.getSimpleName());
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.SKIPPED);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStateSkipped1", TestResultHelper.TestResult.SKIPPED);
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.SKIPPED);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStateSkippedInherited1", TestResultHelper.TestResult.SKIPPED);
 
-            classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestCorridorMid.class.getSimpleName());
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILED);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_testMidCorridorFailed1", TestResultHelper.TestResult.FAILED);
-
-            classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestPassed.class.getSimpleName());
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSED);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStatePassed1", TestResultHelper.TestResult.PASSED);
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDINHERITED);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_PassedInheritedMinor1", TestResultHelper.TestResult.PASSEDINHERITED);
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDMINOR);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_PassedMinor1", TestResultHelper.TestResult.PASSEDMINOR);
-
-            classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestSkipped.class.getSimpleName());
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.SKIPPED);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStateSkipped1", TestResultHelper.TestResult.SKIPPED);
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.SKIPPEDINHERITED);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStateSkippedInherited1", TestResultHelper.TestResult.SKIPPEDINHERITED);
-
-        } else {
-
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDMINOR);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedInheritedMinor1", TestResultHelper.TestResult.FAILEDMINOR);
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDMINOR);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedMinor1", TestResultHelper.TestResult.FAILEDMINOR);
-
-            classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestCorridorMid.class.getSimpleName());
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILED);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_testMidCorridorFailed1", TestResultHelper.TestResult.FAILED);
-
-            classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestPassed.class.getSimpleName());
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSED);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStatePassed1", TestResultHelper.TestResult.PASSED);
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDMINOR);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_PassedInheritedMinor1", TestResultHelper.TestResult.PASSEDMINOR);
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDMINOR);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_PassedMinor1", TestResultHelper.TestResult.PASSEDMINOR);
-
-            classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestSkipped.class.getSimpleName());
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.SKIPPED);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStateSkipped1", TestResultHelper.TestResult.SKIPPED);
-            classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.SKIPPED);
-            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStateSkippedInherited1", TestResultHelper.TestResult.SKIPPED);
-        }
     }
 
     /**
@@ -95,7 +66,6 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the method information are displayed. Concerns method name, starttime, endtime, duration and thread information
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    @Fails(description = "sagu: There are no method information for starttime, endtime, etc. (currently) available in the free edition")
     public void testT02_checkTestMethodInformationInMethodInfoBody() {
 
         final String testundertestMethodName = "test_FailedInheritedMinor1";
@@ -132,7 +102,6 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the SCREENSHOT symbol is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(description="sagu: Screenshot symbol is missing")
     public void testT04_checkScreenShotSymbol() {
 
         final String testundertestMethodName = "test_FailedInheritedMinor2";
@@ -166,8 +135,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * checkConfigMethodShowingAndHiding
      * Checks whether its possible to show/hide config methods
      */
-    @Fails(description = "sagu: Show config methods - button not available in XETA 10 free")
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
+    @Test(enabled = false, groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
     public void testT06_checkConfigMethodShowingAndHiding() {
 
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
@@ -180,8 +148,8 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
     /**
      * Checks whether the annotation marks are displayed correctly on Classes Details Page
      */
-    @Fails(description = "sagu: Annotations not anymore on the classesDetailPage, rather on the MethodDetailsPage")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @Fails(ticketString = "XETA-682")
     public void testT07_checkAnnotationAreDisplayed() {
         HashMap<String,List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
         methodsTestObjects.put("testAllMarkers", Arrays.asList(ReportAnnotationType.NEW, ReportAnnotationType.READY_FOR_APPROVAL, ReportAnnotationType.SUPPORT_METHOD));
@@ -199,7 +167,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         checkRetryAnnotationIsDisplayed(classesDetailsPage, "test_FailedToPassedHistoryWithRetry");
     }
 
-
+//TODO add test for total column
 
 
 

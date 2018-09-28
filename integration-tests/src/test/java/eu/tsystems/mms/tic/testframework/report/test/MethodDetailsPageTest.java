@@ -37,9 +37,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks the method details page for the correct method name, status of the test and the step it failed in.
      * It runs once for every test status in report 4. 8 times in total.
      */
-    @Fails(ticketString = "XETA-677")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
     public void testT01_checkMethodNameStatusAndStep(TestResult testResult) throws Exception {
+        //TODO use other way - open classes page
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.toString()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
@@ -48,26 +48,17 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
             case PASSED:
                 testMethSpec(dashboardPage, testResult, "test_TestStatePassed2", "Passed");
                 break;
-            case PASSEDINHERITED:
-                testMethSpec(dashboardPage, testResult, "test_PassedInheritedMinor3", "Inherited Passed");
-                break;
             case PASSEDMINOR:
                 testMethSpec(dashboardPage, testResult, "test_PassedMinor1", "Passed with Minor");
                 break;
             case FAILED:
                 testMethSpec(dashboardPage, testResult, "test_testLowCorridorFailed1", "Failed");
                 break;
-            case FAILEDINHERITED:
-                testMethSpec(dashboardPage, testResult, "test_FailedInheritedMinor1", "Inherited Failed");
-                break;
             case FAILEDMINOR:
                 testMethSpec(dashboardPage, testResult, "test_FailedMinor1", "Failed with Minor");
                 break;
             case SKIPPED:
                 testMethSpec(dashboardPage, testResult, "test_TestStateSkipped1", "Skipped");
-                break;
-            case SKIPPEDINHERITED:
-                testMethSpec(dashboardPage, testResult, "test_TestStateSkippedInherited1", "Inherited Skipped");
                 break;
             default:
                 break;
@@ -80,9 +71,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * there actually is a screenshot provided, the 'info' button works and test infos are provided.
      * It runs once for a test that failed with a minor in the 1st report.
      */
-    @Fails(ticketString = "XETA-677")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT02_checkExistenceOfMethodDetailsScreenshot() throws Exception {
+        //TODO use other way - open classes page
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResult.FAILEDMINOR);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(1));
@@ -108,9 +99,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * the provided stackstrace is correct.
      * It runs once for a failed test in the 6th report.
      */
-    @Fails(ticketString = "XETA-677")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
     public void testT03_checkStackTraceTabForCorrectness() throws Exception {
+        //TODO use other way - open classes page
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResult.FAILED);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(1));
@@ -138,9 +129,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * the programmatically built in steps are displayed.
      * It runs once for every test status that is not inherited in report 3. 5 times in total.
      */
-    @Fails(ticketString = "XETA-677")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getTestResultsExceptInherited", groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
     public void testT04_checkForManuallyBuiltInSteps(TestResult testResult) throws Exception {
+        //TODO use other way - open classes page
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_3.toString()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
@@ -237,9 +228,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      * @param testResult
      */
-    @Fails(ticketString = "XETA-677")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
     public void testT05_checkMenuBarForExistenceOfCorrectTabs(TestResult testResult) throws Exception {
+        //TODO use other way - open classes page
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_3.toString()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
@@ -247,12 +238,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         String message = "The %s tab is displayed in a %s method detail page.";
         String passed = "passed";
         String passedMinor = "passed with minor";
-        String passedInherited = "inherited passed";
         String failed = "failed";
         String failedMinor = "failed with minor";
-        String failedInherited = "inherited failed";
         String skipped = "skipped";
-        String skippedInherited = "inhertied skipped";
         String back = "'back'";
         String details = "'details'";
         String steps = "'steps'";
@@ -317,34 +305,6 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
                 AssertCollector.assertTrue(methodDetailsPage.getMinorErrorTab().isDisplayed(), String.format(message, minorErrors, failedMinor));
                 AssertCollector.assertTrue(methodDetailsPage.getEvolutionTab().isDisplayed(), String.format(message, evolution, failedMinor));
                 break;
-            case PASSEDINHERITED:
-                for (GuiElement methodPassedInheritedMinor : dashboardModuleMethodChart.getCurrentMethods()) {
-                    if (methodPassedInheritedMinor.getText().equals("test_PassedInheritedMinor1")) {
-                        methodDetailsPage = GeneralWorkflow.doOpenReportMethodDetailsPage(dashboardPage, methodPassedInheritedMinor);
-                        AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed(), String.format(message, back, passedInherited));
-                        AssertCollector.assertTrue(methodDetailsPage.getDetailsTab().isDisplayed(), String.format(message, details, passedInherited));
-                        AssertCollector.assertTrue(methodDetailsPage.getStepsTab().isDisplayed(), String.format(message, steps, passedInherited));
-                        break;
-                    }
-                }
-                break;
-            case FAILEDINHERITED:
-                GuiElement methodFailedInheritedMinor = dashboardModuleMethodChart.getCurrentMethods().get(0);
-                methodDetailsPage = GeneralWorkflow.doOpenReportMethodDetailsPage(dashboardPage, methodFailedInheritedMinor);
-                AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed(), String.format(message, back, failedInherited));
-                AssertCollector.assertTrue(methodDetailsPage.getDetailsTab().isDisplayed(), String.format(message, details, failedInherited));
-                AssertCollector.assertTrue(methodDetailsPage.getStackTab().isDisplayed(), String.format(message, stack, failedInherited));
-                break;
-            case SKIPPEDINHERITED:
-                for (GuiElement methodSkipped : dashboardModuleMethodChart.getCurrentMethods()) {
-                    if (methodSkipped.getText().equals("test_TestStateSkippedInherited1")) {
-                        methodDetailsPage = GeneralWorkflow.doOpenReportMethodDetailsPage(dashboardPage, methodSkipped);
-                        AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed(), String.format(message, back, skippedInherited));
-                        AssertCollector.assertTrue(methodDetailsPage.getDetailsTab().isDisplayed(), String.format(message, details, skippedInherited));
-                        break;
-                    }
-                }
-                break;
             default:
                 throw new FennecRuntimeException("TestResult not supported: " + testResult);
         }
@@ -355,8 +315,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      * @param testResult
      */
-    @Fails(ticketString = "XETA-677")
-    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getTestResultsExceptInherited", groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, enabled=false)
+    @Test(enabled = false, dataProviderClass = TestResultHelper.class, dataProvider = "getTestResultsExceptInherited", groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT06_checkHistoryViewForNumberOfEntries(TestResult testResult) throws Exception {
         testHistoryViewForNumberOfEntries(testResult, PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()), 1);
     }
@@ -366,8 +325,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      * @param testResult
      */
-    @Fails(ticketString = "XETA-677")
-    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER2}, enabled=false)
+    @Test(enabled = false, dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
     public void testT07_checkHistoryViewForNumberOfEntries(TestResult testResult) throws Exception {
         testHistoryViewForNumberOfEntries(testResult, PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()), 2);
     }
@@ -377,8 +335,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      * @param testResult
      */
-    @Fails(ticketString = "XETA-677")
-    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER3}, enabled=false)
+    @Test(enabled = false, dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
     public void testT08_checkHistoryViewForNumberOfEntries(TestResult testResult) throws Exception {
         testHistoryViewForNumberOfEntries(testResult, PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_3.toString()), 3);
     }
@@ -388,8 +345,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      * @param testResult
      */
-    @Fails(ticketString = "XETA-677")
-    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER4}, enabled=false)
+    @Test(enabled = false, dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
     public void testT09_checkHistoryViewForNumberOfEntries(TestResult testResult) throws Exception {
         testHistoryViewForNumberOfEntries(testResult, PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.toString()), 4);
     }
@@ -399,8 +355,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      * @param testResult
      */
-    @Fails(ticketString = "XETA-677")
-    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER5}, enabled=false)
+    @Test(enabled = false, dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER5})
     public void testT10_checkHistoryViewForNumberOfEntries(TestResult testResult) throws Exception {
         testHistoryViewForNumberOfEntries(testResult, PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_5.toString()), 5);
     }
@@ -410,8 +365,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      * @param testResult
      */
-    @Fails(ticketString = "XETA-677")
-    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getTestResultsExceptInheritedAndSkipped", groups = {SystemTestsGroup.SYSTEMTESTSFILTER6}, enabled=false)
+    @Test(enabled = false, dataProviderClass = TestResultHelper.class, dataProvider = "getTestResultsExceptSkipped", groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
     public void testT11_checkHistoryViewForNumberOfEntries(TestResult testResult) throws Exception {
         testHistoryViewForNumberOfEntries(testResult, PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()), 6);
     }
@@ -421,9 +375,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      * @param testResult
      */
-    @Fails(ticketString = "XETA-677")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getTestResultsPassedAndFailedWithMinor", groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
     public void testT12_checkContextViewInfos(TestResult testResult) throws Exception {
+        //TODO use other way - open classes page
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
@@ -450,9 +404,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     /**
      * Check the infos shown in the duration view in report 5
      */
-    @Fails(ticketString = "XETA-677")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER5})
     public void testT13_checkDurationViewInfos() throws Exception {
+        //TODO use other way - open classes page
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_5.toString()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResult.PASSED);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
@@ -498,8 +452,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      * @param testResult
      */
-    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getTestResultsExceptSkipped", groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
-    @Fails(description = "sagu: Evolution tab does (currently) not exist in free edition")
+    @Test(enabled = false, dataProviderClass = TestResultHelper.class, dataProvider = "getTestResultsExceptSkipped", groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
     public void testT14_checkEvolutionTab(TestResult testResult) throws Exception {
 
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_3.toString()));
@@ -511,19 +464,12 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
             case PASSED:
                 AssertCollector.assertTrue(methodDetailsPage.getEvolutionEntry1().isDisplayed() && methodDetailsPage.getEvolutionEntry2().isDisplayed(), "The evolution chart is displayed in a " + testResult + " method details page.");
                 break;
-            case PASSEDINHERITED:
-                AssertCollector.assertTrue(methodDetailsPage.getEvolutionEntry1().isDisplayed(), "The evolution chart is displayed in a " + testResult + " method details page.");
-                break;
             case PASSEDMINOR:
                 methodDetailsPage.clickEvolutionTab();
                 AssertCollector.assertTrue(methodDetailsPage.getEvolutionEntry1().isDisplayed() && methodDetailsPage.getEvolutionEntry2().isDisplayed(), "The evolution chart is displayed in a " + testResult + " method details page.");
                 break;
             case FAILED:
             case FAILEDMINOR:
-            case FAILEDINHERITED:
-                MethodEvolutionPage evolutionPage = methodDetailsPage.clickEvolutionTab();
-                AssertCollector.assertEquals(evolutionPage.getNoEvolutionIndicator().getText(), "(PASSED ONLY)", "The " + testResult + " detail page indicates that no evolution is displayed.");
-                break;
             default:
                 throw new FennecRuntimeException("TestResult not supported: " + testResult);
         }
@@ -535,10 +481,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      * @param testResult
      */
-    @Fails(ticketString = "XETA-677")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getTestResultsMinor", groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT15_checkMinorErrorsPage(TestResult testResult) throws Exception {
-
+        //TODO use other way - open classes page
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
@@ -562,10 +507,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      * @param testResult
      */
-    @Fails(ticketString = "XETA-677")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getTestResultsFailed", groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
     public void testT16_checkMethodDetailsErrorMessage(TestResult testResult) throws Exception {
-
+        //TODO use other way - open classes page
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
@@ -601,28 +545,15 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
                     }
                 }
                 break;
-            case FAILEDINHERITED:
-                for (GuiElement indexMethod : dashboardModuleMethodChart.getCurrentMethods()) {
-                    if (indexMethod.getText().equals("test_FailedInheritedMinor (1/1)")) {
-                        methodDetailsPage = GeneralWorkflow.doOpenReportMethodDetailsPage(dashboardPage, indexMethod);
-                        AssertCollector.assertFalse(methodDetailsPage.getFingerprintString().isDisplayed(), "The fingerprint is not displayed when " + testResult + " details page is first opened.");
-                        AssertCollector.assertEquals("Fail method because of last run result and xeta.execution.filter.active=true", methodDetailsPage.getErrorMessageString().getText(), errorMessageMessage);
-                        methodDetailsPage = methodDetailsPage.toggleFingerprint();
-                        AssertCollector.assertEquals("", methodDetailsPage.getFingerprintString().getText(), fingerprintMessage);
-                        AssertCollector.assertFalse(methodDetailsPage.getFingerprintString().isDisplayed(), "The fingerprint is displayed in " + testResult + " details page after clicking the fingerprint button.");
-                        break;
-                    }
-                }
-                break;
         }
     }
 
     /**
      * Checks whether a test that is passed but still annotated with @Fails is indicated as so in report 4
      */
-    @Fails(ticketString = "XETA-677")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
     public void testT17_checkMethodDetailsIndicationThatPassedTestIsAnnotatedWithFails() throws Exception {
+        //TODO use other way - open classes page
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.toString()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResult.PASSED);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
@@ -699,9 +630,6 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
                 case FAILED:
                     AssertCollector.assertEquals(methodDetailsPage.getStepString(), "in\nTest-Step-3", "The step in which test_testLowCorridorFailed1 failed is displayed correctly.");
                     break;
-                case FAILEDINHERITED:
-                    AssertCollector.assertEquals(methodDetailsPage.getStepString(), "in\nStep 2", "The step in which test_FailedInheritedMinor1 failed is displayed correctly.");//TODO Step 2 zu einem eigenen Step umwandeln
-                    break;
                 default:
                     break;
             }
@@ -747,19 +675,6 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
                 }
                 //TODO must we insert here an Assert.fail
                 break;
-            case PASSEDINHERITED:
-                for (GuiElement method : dashboardModuleMethodChart.getCurrentMethods()) {
-                    if (method.getText().equals("test_PassedInheritedMinor1")) {
-                        MethodDetailsPage detailsPage = GeneralWorkflow.doOpenReportMethodDetailsPage(dashboardPage, method);
-                        if (numberOfDirectory == 2)
-                            AssertCollector.assertEquals(detailsPage.getNumberOfAllEntries(), 2, String.format(message, testResult));
-                        else
-                            AssertCollector.assertEquals(detailsPage.getNumberOfAllEntries(), 2, String.format(message, testResult));
-                        break;
-                    }
-                    //TODO must we insert here an Assert.fail
-                }
-                break;
             case FAILED:
                 for (GuiElement method : dashboardModuleMethodChart.getCurrentMethods()) {
                     if (method.getText().equals("test_testLowCorridorFailed1 (1/1)")) {
@@ -780,19 +695,6 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
                 }
                 //TODO must we insert here an Assert.fail
                 break;
-            case FAILEDINHERITED:
-                for (GuiElement method : dashboardModuleMethodChart.getCurrentMethods()) {
-                    if (method.getText().equals("test_FailedInheritedMinor1 (1/1)")) {
-                        MethodDetailsPage detailsPage = GeneralWorkflow.doOpenReportMethodDetailsPage(dashboardPage, method);
-                        if (numberOfDirectory == 2)
-                            AssertCollector.assertEquals(detailsPage.getNumberOfAllEntries(), 1, String.format(message, testResult));
-                        else
-                            AssertCollector.assertEquals(detailsPage.getNumberOfAllEntries(), 1, String.format(message, testResult));
-                        break;
-                    }
-                    //TODO must we insert here an Assert.fail
-                }
-                break;
             case SKIPPED:
                 for (GuiElement method : dashboardModuleMethodChart.getCurrentMethods()) {
                     if (method.getText().equals("test_TestStateSkipped1")) {
@@ -805,19 +707,6 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
                     }
                     //TODO must we insert here an Assert.fail
                 }
-                break;
-            case SKIPPEDINHERITED:
-                for (GuiElement method : dashboardModuleMethodChart.getCurrentMethods()) {
-                    if (method.getText().equals("test_TestStateSkippedInherited1")) {
-                        MethodDetailsPage detailsPage = GeneralWorkflow.doOpenReportMethodDetailsPage(dashboardPage, method);
-                        if (numberOfDirectory == 2)
-                            AssertCollector.assertEquals(detailsPage.getNumberOfAllEntries(), 2, String.format(message, testResult));
-                        else
-                            AssertCollector.assertEquals(detailsPage.getNumberOfAllEntries(), 2, String.format(message, testResult));
-                        break;
-                    }
-                }
-                //TODO must we insert here an Assert.fail
                 break;
             default:
                 throw new FennecRuntimeException("Unsupported TestResult: " + testResult);

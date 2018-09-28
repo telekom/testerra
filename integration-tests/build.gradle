@@ -14,6 +14,8 @@ test {
 
     def nr = findProperty("nr")
     if (nr) {
+        setFailureCorridor(nr)
+        setCloseWindows()
         setReportDir("report-testsundertest-0" + nr)
         s = ['src/test/resources/testng/ReportTestsUnderTest' + nr + '.xml']
     }
@@ -33,4 +35,38 @@ def setReportDir(reportname) {
         reportdir = modulename + "/" + reportname
     }
     System.setProperty("fennec.reportdir", reportdir)
+}
+
+def setFailureCorridor(nr) {
+    System.setProperty("fennec.failure.corridor.active", "true")
+    System.setProperty("fennec.failure.corridor.allowed.failed.tests.mid", "3")
+    System.setProperty("fennec.failure.corridor.allowed.failed.tests.low", "5")
+    //abhängig von nr
+    switch (nr){
+        case "1":
+            System.setProperty("fennec.failure.corridor.allowed.failed.tests.high", "34")
+            break
+        case "2":
+        case "4":
+        case "5":
+            System.setProperty("fennec.failure.corridor.allowed.failed.tests.high", "19")
+            break
+        case "3":
+            System.setProperty("fennec.failure.corridor.allowed.failed.tests.high", "24")
+            break
+        case "6":
+            System.setProperty("fennec.failure.corridor.allowed.failed.tests.high", "26")
+            break
+        case "7":
+        case "8":
+        case "9":
+            System.setProperty("fennec.failure.corridor.allowed.failed.tests.high", "0")
+            System.setProperty("fennec.failure.corridor.allowed.failed.tests.mid", "0")
+            System.setProperty("fennec.failure.corridor.allowed.failed.tests.low", "0")
+            break
+    }
+}
+
+def setCloseWindows(){
+    System.setProperty("wdm.closeWindows.afterTestMethods", "false")
 }

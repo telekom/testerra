@@ -14,7 +14,6 @@
         <classes>
             <class name="eu.tsystems.mms.tic.testframework.report.test.DashboardPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.MethodDetailsPageTest"/>
-            <class name="eu.tsystems.mms.tic.testframework.report.test.StateChangesPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.ClassesPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.ClassesDetailsPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.functional.DependsOnTest"/>
@@ -44,7 +43,6 @@
             <class name="eu.tsystems.mms.tic.testframework.report.test.ClassesDetailsPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.ExitPointsPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.FailureAspectsPageTest"/>
-            <class name="eu.tsystems.mms.tic.testframework.report.test.StateChangesPageTest"/>
         </classes>
     </test>
 
@@ -60,7 +58,6 @@
         <classes>
             <class name="eu.tsystems.mms.tic.testframework.report.test.DashboardPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.MethodDetailsPageTest"/>
-            <class name="eu.tsystems.mms.tic.testframework.report.test.StateChangesPageTest"/>
         </classes>
     </test>
 
@@ -76,7 +73,6 @@
         <classes>
             <class name="eu.tsystems.mms.tic.testframework.report.test.DashboardPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.MethodDetailsPageTest"/>
-            <class name="eu.tsystems.mms.tic.testframework.report.test.StateChangesPageTest"/>
         </classes>
     </test>
 
@@ -92,7 +88,6 @@
         <classes>
             <class name="eu.tsystems.mms.tic.testframework.report.test.DashboardPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.MethodDetailsPageTest"/>
-            <class name="eu.tsystems.mms.tic.testframework.report.test.StateChangesPageTest"/>
         </classes>
     </test>
 
@@ -110,7 +105,6 @@
             <class name="eu.tsystems.mms.tic.testframework.report.test.MethodDetailsPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.ClassesDetailsPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.functional.RetryTest"/>
-            <class name="eu.tsystems.mms.tic.testframework.report.test.StateChangesPageTest"/>
         </classes>
     </test>
 

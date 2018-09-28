@@ -41,11 +41,6 @@ public abstract class AbstractReportPage extends AbstractFramePage {
         return PageFactory.create(ClassesPage.class, this.driver);
     }
 
-    public StateChangesPage goToStateChanges() {
-        this.stateChangesLink.click();
-        return PageFactory.create(StateChangesPage.class, this.driver);
-    }
-
     public ExitPointsPage goToExitPoints() {
         return this.openBurgerMenu().openExitPointsPage();
     }

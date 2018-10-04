@@ -1,6 +1,3 @@
-group 'eu.tsystems.mms.tic.testframework'
-version '10-SNAPSHOT'
-
 dependencies {
     compile core_interop
     compile driver_ui

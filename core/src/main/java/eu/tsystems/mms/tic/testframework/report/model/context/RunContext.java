@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class RunContext extends Context implements SynchronizableContext {
 
     public final List<SuiteContext> suiteContexts = new LinkedList<>();
-    private final List<ClassContext> combinedClassContexts = new LinkedList<>();
+    public final List<ClassContext> combinedClassContexts = new LinkedList<>();
     public Map<String, List<MethodContext>> failureAspects = new LinkedHashMap<>();
     public Map<String, List<MethodContext>> exitPoints = new LinkedHashMap<>();
     public final RunConfig runConfig = new RunConfig();
@@ -155,13 +155,13 @@ public class RunContext extends Context implements SynchronizableContext {
 
         map.keySet().stream().filter(id -> map.get(id).size() > 1)
                 .forEach(id -> map.get(id).forEach(classContext -> {
-                    if (classContext.FennecClassContext != null && classContext.FennecClassContext.mode() == FennecClassContext.Mode.ONE_FOR_ALL) {
+                    if (classContext.fennecClassContext != null && classContext.fennecClassContext.mode() == FennecClassContext.Mode.ONE_FOR_ALL) {
                         if (!mergeMap.containsKey(id)) {
                             ClassContext mergedClassContext = new ClassContext(null, this);
                             mergedClassContext.name = classContext.name;
 
-                            if (!StringUtils.isStringEmpty(classContext.FennecClassContext.value())) {
-                                mergedClassContext.name = classContext.FennecClassContext.value();
+                            if (!StringUtils.isStringEmpty(classContext.fennecClassContext.value())) {
+                                mergedClassContext.name = classContext.fennecClassContext.value();
                             }
 
                             mergeMap.put(id, mergedClassContext);

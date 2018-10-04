@@ -50,7 +50,7 @@ public class TestContext extends Context implements SynchronizableContext {
         ClassContext classContext = getContext(ClassContext.class, classContexts, name, true, () -> new ClassContext(this, runContext));
 
         if (realClass.isAnnotationPresent(FennecClassContext.class)) {
-            classContext.FennecClassContext = realClass.getAnnotation(FennecClassContext.class);
+            classContext.fennecClassContext = realClass.getAnnotation(FennecClassContext.class);
         }
 
         classContext.fullClassName = realClass.getName();

@@ -108,18 +108,6 @@ public class TestResultHelper {
 
     }
 
-    public enum TestResultChangedMethodState {
-        NO_RUN,
-        PASSED,
-        FAILED,
-        FAILED_EXPECTED,
-        SKIPPED,
-        INHERITED_PASSED,
-        INHERITED_FAILED,
-        INHERITED_SKIPPED,
-        FAILED_RETRY;
-    }
-
     /**
      * Delievers a Dataprovider for all possible test results.
      *
@@ -128,33 +116,6 @@ public class TestResultHelper {
     @DataProvider(parallel = true)
     public Object[][] getAllTestResults() {
         return excludeTestResults();
-    }
-
-    /**
-     * Delievers a Dataprovider for all possible test results except the results SKIPPED and SKIPPED_INHERITED.
-     *
-     * @return
-     */
-    @DataProvider(parallel = true)
-    public Object[][] getTestResultsExceptSkipped() {
-        return excludeTestResults(TestResult.SKIPPED);
-    }
-
-
-    @DataProvider(parallel = true)
-    public Object[][] getTestResultsMinor() {
-        return excludeTestResults(TestResult.FAILED, TestResult.PASSED, TestResult.SKIPPED);
-    }
-
-    @DataProvider(parallel = true)
-    public Object[][] getTestResultsFailed() {
-        //TODO
-        return excludeTestResults(TestResult.PASSED,TestResult.PASSEDMINOR, TestResult.SKIPPED);
-    }
-
-    @DataProvider(parallel = true)
-    public Object[][] getTestResultsPassedAndFailedWithMinor() {
-        return excludeTestResults(TestResult.FAILED, TestResult.PASSEDMINOR, TestResult.SKIPPED);
     }
 
     private Object[][] excludeTestResults(TestResult... excludedTestResults) {

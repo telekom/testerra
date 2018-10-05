@@ -44,7 +44,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
         //Method Details
         AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), TestResult.PASSED, "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Passed", "The method status is displayed correctly for " + methodName);
 
         //shown tabs: Back, Steps and dependencies
         AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
@@ -62,8 +62,8 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         String methodName = "test_FilterPassedMinor";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
         //Method Details
-        AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), TestResult.PASSEDMINOR, "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
+        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Minor", "The method status is displayed correctly for " + methodName);
 
         //Annotation
         HashMap<String,List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
@@ -89,12 +89,12 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT03_checkMethodDetailsForFailedTest() throws Exception {
-        String methodName = "test_FilterFailedNoMinor";
+        String methodName = "test_FailedInheritedFilter";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         ///Method Details
         AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), TestResult.FAILED, "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Failed", "The method status is displayed correctly for " + methodName);
 
         //shown tabs: Back, Steps, stack and dependencies
         AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
@@ -110,12 +110,12 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT04_checkMethodDetailsForFailedMinorTest() throws Exception {
-        String methodName = "test_FilterFailedMinor";
+        String methodName = "test_FilterFailedMinorWithFailedRetry (2/2)";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details
-        AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), TestResult.FAILEDMINOR, "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
+        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Failed with Minor", "The method status is displayed correctly for " + methodName);
 
         //Annotation
         HashMap<String,List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
@@ -142,7 +142,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
         //General Details
         AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), TestResult.SKIPPED, "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Skipped", "The method status is displayed correctly for " + methodName);
 
         //shown tabs: Back, Steps and dependencies
         AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
@@ -162,8 +162,8 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details
-        AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), TestResult.SKIPPED, "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
+        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Retried", "The method status is displayed correctly for " + methodName);
 
         //Annotation
         HashMap<String,List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
@@ -190,8 +190,8 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details
-        AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), TestResult.FAILEDEXPECTED, "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
+        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Expected Failed", "The method status is displayed correctly for " + methodName);
 
         //shown tabs: Back, Steps, Stack and dependencies
         AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
@@ -207,14 +207,15 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     /**
      * Checks the information provided for tests that are marked with @Fails but passed.
      */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @Fails(description = "The information for repaired test is missing.")
     public void testT08_checkRepairedFailsIndication(){
         String methodName = "test_TestStatePassed2";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.toString()),ReportTestUnderTestPassed.class.getSimpleName(), methodName);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestPassed.class.getSimpleName(), methodName);
 
-        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().isDisplayed(), "The method details page of test_TestStatePassed2 indicates that it is annotated with @Fails.");
-        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("ticketId=1"), "The indicator that test_TestStatePassed2 is falsely annotated with @Fails does contain the correct ticketId.");
-        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("description=Does not actually fail."), "The indicator that test_TestStatePassed2 is falsely annotated with @Fails does contain the correct description.");
+        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().isDisplayed(), "The method details page indicates that the shown method is repaired.");
+        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("ticketId=1"), "The indicator for the repaired fails annotation contains the correct ticketId.");
+        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("description=Does not actually fail."), "The indicator for the repaired fails annotation contains the correct description.");
     }
 
     /**
@@ -222,7 +223,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT09_checkScreenshotTab() throws Exception {
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestFailed.class.getSimpleName(), "test_FailedInheritedMinor2");
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),"My_Context", "test_FailedInheritedMinor2");
         MethodScreenshotPage screenshotPage = GeneralWorkflow.doOpenReportMethodScreenshotPage(methodDetailsPage);
         AssertCollector.assertTrue(screenshotPage.getScreenShot().isDisplayed(), "There is no screenshot in the methodDetailsPage of the first report.");
     }
@@ -232,12 +233,12 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT10_checkStackTraceTab() throws Exception {
-        String methodName = "test_FilterFailedNoMinor";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestFailed.class.getSimpleName(), methodName);
+        String methodName = "test_FailedInheritedFilter";
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         MethodStackPage stackPage = GeneralWorkflow.doOpenReportStracktracePage(methodDetailsPage);
         AssertCollector.assertTrue(stackPage.getStackTrace().contains("java.lang.AssertionError: expected [true] but found [false]"));
-        AssertCollector.assertTrue(stackPage.getStackTrace().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FilterFailedNoMinor(ReportTestUnderTestExecutionFilter.java:36)"));
+        AssertCollector.assertTrue(stackPage.getStackTrace().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FailedInheritedFilter(ReportTestUnderTestExecutionFilter.java:95"));
     }
 
     /**
@@ -298,31 +299,31 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     public void testT14_checkDuration() throws Exception {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(),PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestPassed.class.getSimpleName(),"test_PassedMinor1");
 
-        DateFormat durationFormat = new SimpleDateFormat("H'h' m'm' s's'");
-        DateFormat dateFormat = new SimpleDateFormat("E MMM d hh:mm:ss z YYYY", Locale.GERMAN);
+        DateFormat durationFormat = new SimpleDateFormat("S 'ms'");
+        DateFormat dateFormat = new SimpleDateFormat("E MMM d hh:mm:ss z yyyy", Locale.ENGLISH);
 
         //check duratution
-        checkDateStringToCorrectFormat(dateFormat,methodDetailsPage.getDuration(),null);
+        checkDateStringToCorrectFormat(durationFormat, methodDetailsPage.getDuration(),null);
 
         //check the format of end
-        checkDateStringToCorrectFormat(dateFormat, methodDetailsPage.getStartTime(), "Start");
+        checkDateStringToCorrectFormat(dateFormat, methodDetailsPage.getStartTime(), "Start ");
 
         //check the format of end
-        checkDateStringToCorrectFormat(dateFormat, methodDetailsPage.getFinishTime(), "Finish");
+        checkDateStringToCorrectFormat(dateFormat, methodDetailsPage.getFinishTime(), "End ");
 
 
     }
 
     private void checkDateStringToCorrectFormat(DateFormat expectedDateFormat, String dateString, String contentToExclude){
-        String startDateString = dateString;
+        String pureDateString = dateString;
         try {
             if(contentToExclude != null)
-                startDateString = startDateString.split(contentToExclude)[1];
+                pureDateString = pureDateString.split(contentToExclude)[1];
         } catch (Exception e) {
-            Assert.fail(String.format("The %s does not display the correct content to indicate the type.", dateString));
+            Assert.fail(String.format("The %s does not display the correct content.", dateString));
         }
         try {
-            expectedDateFormat.parse(startDateString);
+            expectedDateFormat.parse(pureDateString);
         } catch (ParseException e) {
             Assert.fail(String.format("Could not parse the string %s for %s time", dateString, contentToExclude));
         }
@@ -360,7 +361,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT16_checkStepsTab() throws Exception {
         String testmethod = "test_TestStatePassed1";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(),PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestCorridorLow.class.getSimpleName(),testmethod);
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(),PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestPassed.class.getSimpleName(),testmethod);
         MethodStepsPage stepsPage = GeneralWorkflow.doOpenReportStepsPage(methodDetailsPage);
         AssertCollector.assertEquals(stepsPage.getTestStep1Button().getText(), "2) Test-Step-1", "Test-Step-1-Button is displayed (correctly) in steps tab for " + testmethod);
         AssertCollector.assertEquals(stepsPage.getTestStep2Button().getText(), "3) Test-Step-2", "Test-Step-2-Button is displayed (correctly) in steps tab for " + testmethod);

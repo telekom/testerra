@@ -6,8 +6,8 @@ package eu.tsystems.mms.tic.testframework.report.model;
 public interface IReportAnnotationVerifier {
 
 
-    String LOCATOR_FONT_ANNOTATION = ".//font[contains(text(),'%s')]";
-    String RETRIED_NAME = "Retried";
+    String LOCATOR_FONT_ANNOTATION = "//font[contains(text(),'%s')]";
+    //String RETRIED_NAME = "Retried";
 
     /**
      * Asserts that an expected annotation mark is displayed for a given method
@@ -29,5 +29,5 @@ public interface IReportAnnotationVerifier {
      *
      * @param methodName
      */
-    void assertRetryMarkerIsDisplayed(String methodName);
+    //void assertRetryMarkerIsDisplayed(String methodName);
 }

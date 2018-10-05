@@ -26,10 +26,6 @@ public class DashboardModuleClassBarChartTest extends AbstractTestDashboard {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_3.toString()));
         GuiElement testundertestExecutionFilterElement = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName(ReportTestUnderTestExecutionFilter.class.getSimpleName());
         testundertestExecutionFilterElement.click();
-        dashboardPage.getResultTableHeaderForTestResult(TestResultHelper.TestResult.PASSEDINHERITED).asserts().assertIsDisplayed();
-        dashboardPage.getResultTableHeaderForTestResult(TestResultHelper.TestResult.FAILEDINHERITED).asserts().assertIsDisplayed();
-        dashboardPage.getResultTableHeaderForTestResult(TestResultHelper.TestResult.SKIPPEDINHERITED).asserts().assertIsDisplayed();
-
         dashboardPage.getResultTableHeaderForTestResult(TestResultHelper.TestResult.PASSED).asserts().assertIsNotDisplayed();
         dashboardPage.getResultTableHeaderForTestResult(TestResultHelper.TestResult.FAILED).asserts().assertIsNotDisplayed();
         dashboardPage.getResultTableHeaderForTestResult(TestResultHelper.TestResult.SKIPPED).asserts().assertIsNotDisplayed();

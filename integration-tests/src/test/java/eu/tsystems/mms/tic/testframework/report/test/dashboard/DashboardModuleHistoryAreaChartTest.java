@@ -58,46 +58,34 @@ public class DashboardModuleHistoryAreaChartTest {
                 case 0:
                     TestReportFiveNumbers testReportFiveNumbers = new TestReportFiveNumbers();
                     AssertCollector.assertEquals(passed, testReportFiveNumbers.getPassed(), String.format(StrOutPassed, "fifth"));
-                    AssertCollector.assertEquals(passedInherited, testReportFiveNumbers.getPassedInherited(), String.format(StrOutPassedInherited, "fifth"));
                     AssertCollector.assertEquals(passedMinor, testReportFiveNumbers.getPassedMinor(), String.format(StrOutPassedMinor, "fifth"));
                     AssertCollector.assertEquals(failed, testReportFiveNumbers.getFailed(), String.format(StrOutFailed, "fifth"));
-                    AssertCollector.assertEquals(failedInherited, testReportFiveNumbers.getFailedInherited(), String.format(StrOutFailedInherited, "first"));
                     AssertCollector.assertEquals(failedMinor, testReportFiveNumbers.getFailedMinor(), String.format(StrOutFailedMinor, "fifth"));
                     AssertCollector.assertEquals(skipped, testReportFiveNumbers.getSkipped(), String.format(StrOutSkipped, "fifth"));
-                    AssertCollector.assertEquals(skippedInherited, testReportFiveNumbers.getSkippedInherited(), String.format(StrOutSkippedInherited, "fifth"));
                     break;
                 case 1:
                     TestReportFourNumbers testReportFourNumbers = new TestReportFourNumbers();
                     AssertCollector.assertEquals(passed, testReportFourNumbers.getPassed(), String.format(StrOutPassed, "fourth"));
-                    AssertCollector.assertEquals(passedInherited, testReportFourNumbers.getPassedInherited(), String.format(StrOutPassedInherited, "fourth"));
                     AssertCollector.assertEquals(passedMinor, testReportFourNumbers.getPassedMinor(), String.format(StrOutPassedMinor, "fourth"));
                     AssertCollector.assertEquals(failed, testReportFourNumbers.getFailed(), String.format(StrOutFailed, "fourth"));
-                    AssertCollector.assertEquals(failedInherited, testReportFourNumbers.getFailedInherited(), String.format(StrOutFailedInherited, "fourth"));
                     AssertCollector.assertEquals(failedMinor, testReportFourNumbers.getFailedMinor(), String.format(StrOutFailedMinor, "fourth"));
                     AssertCollector.assertEquals(skipped, testReportFourNumbers.getSkipped(), String.format(StrOutSkipped, "fourth"));
-                    AssertCollector.assertEquals(skippedInherited, testReportFourNumbers.getSkippedInherited(), String.format(StrOutSkippedInherited, "fourth"));
                     break;
                 case 2:
                     TestReportThreeNumbers testReportThreeNumbers = new TestReportThreeNumbers();
                     AssertCollector.assertEquals(passed, testReportThreeNumbers.getPassed(), String.format(StrOutPassed, "third"));
-                    AssertCollector.assertEquals(passedInherited, testReportThreeNumbers.getPassedInherited(), String.format(StrOutPassedInherited, "third"));
                     AssertCollector.assertEquals(passedMinor, testReportThreeNumbers.getPassedMinor(), String.format(StrOutPassedMinor, "third"));
                     AssertCollector.assertEquals(failed, testReportThreeNumbers.getFailed(), String.format(StrOutFailed, "third"));
-                    AssertCollector.assertEquals(failedInherited, testReportThreeNumbers.getFailedInherited(), String.format(StrOutFailedInherited, "third"));
                     AssertCollector.assertEquals(failedMinor, testReportThreeNumbers.getFailedMinor(), String.format(StrOutFailedMinor, "third"));
                     AssertCollector.assertEquals(skipped, testReportThreeNumbers.getSkipped(), String.format(StrOutSkipped, "third"));
-                    AssertCollector.assertEquals(skippedInherited, testReportThreeNumbers.getSkippedInherited(), String.format(StrOutSkippedInherited, "third"));
                     break;
                 case 3:
                     TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
                     AssertCollector.assertEquals(passed, testReportTwoNumbers.getPassed(), String.format(StrOutPassed, "second"));
-                    AssertCollector.assertEquals(passedInherited, testReportTwoNumbers.getPassedInherited(), String.format(StrOutPassedInherited, "second"));
                     AssertCollector.assertEquals(passedMinor, testReportTwoNumbers.getPassedMinor(), String.format(StrOutPassedMinor, "second"));
                     AssertCollector.assertEquals(failed, testReportTwoNumbers.getFailed(), String.format(StrOutFailed, "second"));
-                    AssertCollector.assertEquals(failedInherited, testReportTwoNumbers.getFailedInherited(), String.format(StrOutFailedInherited, "fourth"));
                     AssertCollector.assertEquals(failedMinor, testReportTwoNumbers.getFailedMinor(), String.format(StrOutFailedMinor, "second"));
                     AssertCollector.assertEquals(skipped, testReportTwoNumbers.getSkipped(), String.format(StrOutSkipped, "second"));
-                    AssertCollector.assertEquals(skippedInherited, testReportTwoNumbers.getSkippedInherited(), String.format(StrOutSkippedInherited, "fourth"));
                     break;
                 case 4:
                     TestReportOneNumbers testReportOneNumbers = new TestReportOneNumbers();

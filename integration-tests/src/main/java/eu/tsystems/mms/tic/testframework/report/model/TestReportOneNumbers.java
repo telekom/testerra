@@ -8,42 +8,27 @@ import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractTestReportNumb
 public class TestReportOneNumbers extends AbstractTestReportNumbers {
 
     public TestReportOneNumbers() {
-        highCorridorActual = 34;
         highCorridorLimit = 34;
+        highCorridorActual = 34;
         midCorridorActual = 3;
-        midCorridorLimit = 3;
         lowCorridorActual = 5;
-        lowCorridorLimit = 5;
-        highMatched = "fcMatched";
-        midMatched = "fcMatched";
-        lowMatched = "fcMatched";
         all = 100;
-        allPassed = 36;
+        allSuccessful = 36;
         passed = 23;
         passedMinor = 13;
-        passedInherited = 0;
-        allFailed = 42;
-        failed = 23;
-        failedMinor = 19;
-        failedInherited = 0;
         allSkipped = 22;
         skipped = 22;
-        skippedInherited = 0;
-        overallDelta = 0;
-        passedDelta = 0;
-        failedDelta = 0;
-        skippedDelta = 0;
+        allBroken = 42;
+        failed = 23;
+        failedMinor = 19;
+        failedRetried = 5;
+        failedExpected = 3;
         failureAspects = 8;
         exitPoints = 41;
-        expectedFailed = 3;
-        percentage = "36%";
-        percentageDelta = "%";
-        numberOfAcknowledgmentMethods = 4;
-        numberOfStateChanges = 115;
-        failureCorridorMatchingColor = "red";
-        isDelta = false;
-        isInherited = false;
+        percentage = 36;
+        //TODO what does this value is for
         isSkipped = true;
+        //TODO what does this value is for
         isExpectedToFail = false;
     }
 

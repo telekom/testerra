@@ -9,12 +9,12 @@ public class TestReportEightNumbers extends AbstractTestReportNumbers {
 
     public TestReportEightNumbers() {
         all = 2;
-        allPassed = 0;
-        passed = 0;
-        allFailed = 0;
-        failed = 0;
         allSkipped = 2;
         skipped = 2;
+
+        highCorridorLimit = 0;
+        midCorridorLimit = 0;
+        lowCorridorLimit = 0;
     }
 
 }

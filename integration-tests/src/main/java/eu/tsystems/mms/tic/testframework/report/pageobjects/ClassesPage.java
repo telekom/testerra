@@ -1,7 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -35,18 +34,17 @@ public class ClassesPage extends AbstractReportPage {
 
     private GuiElement testsFailedLegendIndicator = new GuiElement(this.driver, By.xpath("//span[@title='Failed']"), mainFrame);
 
-    private GuiElement syncFailedLegendIndicator = new GuiElement(this.driver, By.xpath("//img[@title='" + SYNC_FAILED_WARNING_INDICATOR_TITLE + "']"), mainFrame);
     private GuiElement configMethodsIndicator = new GuiElement(this.driver, By.xpath("//font[@class='configMethods']"), mainFrame);
 
     //additional functions on class page
     private GuiElement hidePassedTestsCheckbox = new GuiElement(this.driver, By.id("hidePassed"), mainFrame);
 
 
-    // XETA INFORMATION
+    // FENNEC INFORMATION
 
     private GuiElement buildUserString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[1]/td[2]"), mainFrame);
 
-    private GuiElement xetaVersionString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[2]/td[2]"), mainFrame);
+    private GuiElement fennecVerionString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[2]/td[2]"), mainFrame);
 
     private GuiElement buildTimeStampString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[3]/td[2]"), mainFrame);
 
@@ -71,10 +69,10 @@ public class ClassesPage extends AbstractReportPage {
      * @return map which contains the given test result and the corresponding number as single entry
      * or all possible test results and corresponding numbers
      */
-    public Map<TestResultHelper.TestResultClassesColumn, Integer> getActualTestNumbers(String className, TestResultHelper.TestResultClassesColumn testResult) {
+    public Map<TestResultHelper.TestResultClassesColumn, String> getActualTestNumbers(String className, TestResultHelper.TestResultClassesColumn testResult) {
 
 
-        Map<TestResultHelper.TestResultClassesColumn, Integer> actual = new HashMap<>();
+        Map<TestResultHelper.TestResultClassesColumn, String> actual = new HashMap<>();
         GuiElement classTableRow = getClassTableRowForClass(className);
         classTableRow.asserts().assertIsDisplayed();
         GuiElement classTestNumber;
@@ -83,7 +81,7 @@ public class ClassesPage extends AbstractReportPage {
             classTestNumber.setName("classTestNumber");
             classTestNumber.asserts().assertIsDisplayed();
             String actualValue = classTestNumber.getText();
-            actual.put(testResult, Integer.parseInt(actualValue));
+            actual.put(testResult, actualValue);
         } else {
             actual.putAll(getActualTestNumbers(className, TestResultHelper.TestResultClassesColumn.PASSED));
             actual.putAll(getActualTestNumbers(className, TestResultHelper.TestResultClassesColumn.PASSEDMINOR));
@@ -189,8 +187,8 @@ public class ClassesPage extends AbstractReportPage {
      * @param expectedNumbers
      * @param className
      */
-    public void assertNumbersForTestResultsOfOneTestClass(Map<TestResultHelper.TestResultClassesColumn, Integer> expectedNumbers, String className) {
-        Map<TestResultHelper.TestResultClassesColumn, Integer> actualClassesTableRowNumbers = new HashMap<>();
+    public void assertNumbersForTestResultsOfOneTestClass(Map<TestResultHelper.TestResultClassesColumn, String> expectedNumbers, String className) {
+        Map<TestResultHelper.TestResultClassesColumn, String> actualClassesTableRowNumbers = new HashMap<>();
         actualClassesTableRowNumbers.putAll(getActualTestNumbers(className, TestResultHelper.TestResultClassesColumn.ALL));
         AssertCollector.assertEquals(actualClassesTableRowNumbers, expectedNumbers, "Numbers of test result are correct for Class: " + className);
     }
@@ -203,7 +201,7 @@ public class ClassesPage extends AbstractReportPage {
         final DateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy", Locale.ENGLISH);
 
         buildUserString.asserts().assertIsDisplayed();
-        xetaVersionString.asserts().assertIsDisplayed();
+        fennecVerionString.asserts().assertIsDisplayed();
         buildTimeStampString.asserts().assertIsDisplayed();
         dateFormat.parse(buildTimeStampString.getText());
     }
@@ -230,23 +228,12 @@ public class ClassesPage extends AbstractReportPage {
     }
 
     /**
-     * Asserts the the exclamation mark (!) - indicating a sync failed warning - is displayed in footer legend
-     */
-    public void assertSyncFailedLegendSymbolIsDisplayed() {
-        syncFailedLegendIndicator.asserts().assertIsDisplayed();
-    }
-
-    /**
      * Asserts all the footer legend labels displayed in footer legend
      */
     public void assertAllLegendSymbolsAreDisplayed() {
         assertPassedLegendSymbolIsDisplayed();
         assertRetryPassedLegendSymbolIsDisplayed();
         assertFailedLegendSymbolIsDisplayed();
-
-        if (PropertyManager.getBooleanProperty("isPlatform")) {
-            assertSyncFailedLegendSymbolIsDisplayed();
-        }
     }
 
     /**

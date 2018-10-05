@@ -71,8 +71,7 @@ public class ReportTestUnderTestFailed extends AbstractTest {
     }
     @Test
     public void test_FailedInheritedMinor1() throws Exception {
-        //TODO add step
-        //TestStep.begin("Test-Step-4");
+        TestStep.begin("Test-Step-4");
         NonFunctionalAssert.assertTrue(2>3);
         throw new Exception();
     }

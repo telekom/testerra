@@ -59,6 +59,7 @@ public class ClassContext extends Context implements SynchronizableContext {
     public ClassContext(TestContext testContext, RunContext runContext) {
         this.testContext = testContext;
         this.runContext = runContext;
+
     }
 
     public MethodContext findTestMethodContainer(String methodName) {

@@ -63,6 +63,10 @@ public class TestStartWorker extends MethodWorker {
         if (isTest()) {
             addRetryAnalyzer(testMethod, method);
         }
+
+        // fire sync event
+        FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_SYNC)
+                .addData(FennecEventDataType.CONTEXT, methodContext));
     }
 
     private void addRetryAnalyzer(ITestNGMethod testNGMethod, Method method) {

@@ -512,7 +512,7 @@ function drawClassesBars() {
 
         if (chart0 == null) {
             var canvas0 = document.getElementById("classesBars0");
-            #set ($height = $methodStatsPerClass.size() * 15 + 15)
+            #set ($height = $methodStatsPerClass.size() * 15 + 30)
             canvas0.height = $height;
 
             chart0 = new Chart(canvas0, {

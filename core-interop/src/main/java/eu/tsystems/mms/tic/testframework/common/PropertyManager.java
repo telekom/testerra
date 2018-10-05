@@ -263,7 +263,7 @@ public final class PropertyManager {
      * @param defaultValue default value
      * @return property value
      */
-    public static double getLongProperty(String key, long defaultValue) {
+    public static long getLongProperty(String key, long defaultValue) {
         final String prop = getProperty(key);
         if (prop == null) {
             return defaultValue;
@@ -281,7 +281,7 @@ public final class PropertyManager {
      * @param key key of the property
      * @return property value or -1 if value cannot be parsed or is not set.
      */
-    public static double getLongProperty(final String key) {
+    public static long getLongProperty(final String key) {
         final String prop = getProperty(key);
         if (prop == null) {
             return -1;

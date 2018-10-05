@@ -1,6 +1,5 @@
 package eu.tsystems.mms.tic.testframework.report.general;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFailurePointsPage;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFailureEntry;
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
@@ -52,7 +51,7 @@ public abstract class AbstractReportFailuresTest extends AbstractTest {
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
     public void testT03_checkNumberOfFailedTests() {
         TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
-        int expectedNumberOfFailedTests = testReportTwoNumbers.getAllFailed() - testReportTwoNumbers.getFailedInherited() + testReportTwoNumbers.getExpectedFailed();
+        int expectedNumberOfFailedTests = testReportTwoNumbers.getAllBroken() + testReportTwoNumbers.getFailedExpected();
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
         failurePointsPage.assertNumberOfTestsForAllFailurePoints(expectedNumberOfFailedTests, failurePointEntryTestObjects);
     }
@@ -68,7 +67,6 @@ public abstract class AbstractReportFailuresTest extends AbstractTest {
     /**
      * This test checks the DESCRIPTION for each single failure point entry in the listed order
      */
-    @Fails(description = "sagu: Exitpoint-Page: Code fragments vs code line. Which one should be displayed?")
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
     public void testT05_DescriptionForSingleFailure() {
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
@@ -78,7 +76,6 @@ public abstract class AbstractReportFailuresTest extends AbstractTest {
     /**
      * This test checks the listed METHOD for a single failure point entry in the list
      */
-    @Fails(description = "sagu: Exitpoint-Page: Code fragments vs code line. Which one should be displayed?")
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
     public void testT06_ListedTestsForSingleFailure() {
         final int failurePointPositionToCheck = 2;
@@ -91,7 +88,6 @@ public abstract class AbstractReportFailuresTest extends AbstractTest {
      * This test checks whether test with an @Fails annotation are displayed correctly
      * It considers the cases 'intoReport = false' and 'intoReport = true'
      */
-    @Fails(description = "sagu: Exitpoint-Page: Code fragments vs code line. Which one should be displayed?")
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
     public void testT07_checkMarkExpectedFailedTests() {
         final boolean intoReport = true;

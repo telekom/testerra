@@ -309,11 +309,11 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
         }
     }
 
-    @Override
-    public void assertRetryMarkerIsDisplayed(String methodName) {
+    //@Override
+    /*public void assertRetryMarkerIsDisplayed(String methodName) {
         GuiElement methodNameElement = getMethodNameElement();
         GuiElement annotationElement = methodNameElement.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, RETRIED_NAME)));
         annotationElement.setName("annotationElementFor" + RETRIED_NAME);
         annotationElement.asserts().assertIsDisplayed();
-    }
+    }*/
 }

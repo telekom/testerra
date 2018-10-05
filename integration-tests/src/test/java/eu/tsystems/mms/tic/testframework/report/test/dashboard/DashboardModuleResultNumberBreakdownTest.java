@@ -26,19 +26,6 @@ import java.util.TimeZone;
 public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashboard {
 
     /**
-     * This test tests whether the label 'No history data' is displayed, if no inherited methods are there. It does this
-     * in the first report because it is the only one that does not provide inherited tests.
-     * It runs once in the 1st report.
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT01_checksNoHistoryLabelIfHistoryNonExistant() throws Exception {
-        final String expectedHistoryDataText = "No history data";
-        DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_1);
-        GuiElement noHistoryData = dashboardPage.dashboardModuleTestResultNumberBreakdown.lastRunTestPercentageString;
-        NonFunctionalAssert.assertEquals(noHistoryData.getText(), expectedHistoryDataText, "'" + expectedHistoryDataText + "' label is displayed, because there is no history in the first reportFilter.");
-    }
-
-    /**
      * This test tests the duration of the test report for the correct format.
      * It runs once in the 1st report.
      */
@@ -189,7 +176,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT12_checkTestNumbers() {
         TestReportOneNumbers testReportOneNumbers = new TestReportOneNumbers();
-        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()), false, false, true, false, testReportOneNumbers);
+        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),   true, false, testReportOneNumbers);
     }
 
     /**
@@ -198,7 +185,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
     public void testT13_checkTestNumbers() {
         TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
-        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()), false, false, true, true, testReportTwoNumbers);
+        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()),   true, true, testReportTwoNumbers);
     }
 
     /**
@@ -207,7 +194,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
     public void testT14_checkTestNumbers() {
         TestReportThreeNumbers testReportThreeNumbers = new TestReportThreeNumbers();
-        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_3.toString()), false, false, true, true, testReportThreeNumbers);
+        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_3.toString()),   true, true, testReportThreeNumbers);
     }
 
     /**
@@ -216,7 +203,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
     public void testT15_checkTestNumbers() {
         TestReportFourNumbers testReportFourNumbers = new TestReportFourNumbers();
-        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.toString()), false, false, true, false, testReportFourNumbers);
+        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.toString()),  true, false, testReportFourNumbers);
     }
 
     /**
@@ -225,7 +212,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER5})
     public void testT16_checkTestNumbers() {
         TestReportFiveNumbers testReportFiveNumbers = new TestReportFiveNumbers();
-        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_5.toString()), false, false, true, false, testReportFiveNumbers);
+        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_5.toString()), true, false, testReportFiveNumbers);
     }
 
     /**
@@ -234,7 +221,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
     public void testT17_checkTestNumbers() {
         TestReportSixNumbers testReportSixNumbers = new TestReportSixNumbers();
-        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()), false, false, false, false, testReportSixNumbers);
+        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()), false, false, testReportSixNumbers);
     }
 
 
@@ -243,19 +230,11 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
         final String expectedPercentage = testNumberHelper.getPercentage();
         final String actualPercentage = dashboardPage.dashboardModuleTestResultNumberBreakdown.testPercentageString.getText();
         NonFunctionalAssert.assertTrue(actualPercentage.contains(expectedPercentage), "reportFilter percentage is correct. expected: " + expectedPercentage + " but found " + actualPercentage);
-
-        if (PropertyManager.getBooleanProperty("isPlatform")) {
-
-            final String expectedPercentageDelta = testNumberHelper.getPercentageDelta();
-            final String actualPercentageDelta = dashboardPage.dashboardModuleTestResultNumberBreakdown.testPercentageDeltaString.getText();
-            NonFunctionalAssert.assertTrue(actualPercentageDelta.contains(expectedPercentageDelta), "reportFilter percentage delta is correct. expected: " + expectedPercentageDelta + " but found " + actualPercentageDelta);
-        }
-
     }
 
-    private void assertTestNumbers(String report, boolean isDelta, boolean isInherited, boolean isSkipped, boolean isExpectedToFail, TestNumberHelper testNumberHelper) {
+    private void assertTestNumbers(String report, boolean isSkipped, boolean isExpectedToFail, TestNumberHelper testNumberHelper) {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), report);
-        dashboardPage.dashboardModuleTestResultNumberBreakdown.assertTestNumbers(isDelta, isInherited, isSkipped, isExpectedToFail, testNumberHelper);
+        dashboardPage.dashboardModuleTestResultNumberBreakdown.assertTestNumbers(isSkipped, isExpectedToFail, testNumberHelper);
     }
 
 }

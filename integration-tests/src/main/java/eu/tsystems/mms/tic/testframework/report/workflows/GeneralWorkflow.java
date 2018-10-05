@@ -22,7 +22,7 @@ public class GeneralWorkflow {
     public static URI getURIForReport(String reportDirectory) {
         LOGGER.debug("Calling getURIForReport method for report directory " + reportDirectory);
 
-        Path path = Paths.get(System.getProperty("user.dir"), PropertyManager.getProperty("targetDirectory"), reportDirectory, PropertyManager.getProperty("fileName"));
+        Path path = Paths.get(System.getProperty("user.dir"), reportDirectory, PropertyManager.getProperty("fileName"));
         return path.toUri();
     }
 
@@ -69,19 +69,6 @@ public class GeneralWorkflow {
     }
 
     /**
-     * Opens the StateChangesPage of the  Report for the defined Report.
-     *
-     * @param reportDirectory defines the REPORT_DIRECTORY for the page to open
-     * @return StateChangesPage
-     */
-    public static StateChangesPage doOpenBrowserAndReportStateChangesPage(WebDriver webDriver, String reportDirectory) {
-        LOGGER.debug("Open the state changes page for the report directory " + reportDirectory);
-        DashboardPage dashboardPage = doOpenBrowserAndReportDashboardPage(webDriver, reportDirectory);
-        StateChangesPage stateChangesPage = dashboardPage.goToStateChanges();
-        return stateChangesPage;
-    }
-
-    /**
      * Opens the ExitPointsPage of the  Report for the defined Report.
      *
      * @param reportDirectory defines the REPORT_DIRECTORY for the page to open
@@ -116,9 +103,9 @@ public class GeneralWorkflow {
         return dashboardPage.goToFailureAspects();
     }
 
-    public static MethodDetailsPage doOpenBrowserAndReportMethodDetailsPage(WebDriver webDriver, String reportDirectory, Class reportClass, String methodName) {
+    public static MethodDetailsPage doOpenBrowserAndReportMethodDetailsPage(WebDriver webDriver, String reportDirectory, String className, String methodName) {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(webDriver, reportDirectory);
-        dashboardPage.goToClasses().gotoClassesDetailsPageForClass(reportClass.getSimpleName()).getDetailsLinkByMethodName(methodName).click();
+        dashboardPage.goToClasses().gotoClassesDetailsPageForClass(className).getDetailsLinkByMethodName(methodName).click();
         return PageFactory.create(MethodDetailsPage.class, webDriver);
     }
 

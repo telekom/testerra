@@ -29,7 +29,7 @@ public class BrowserConfigTest {
      * @throws ParseException
      */
     @Test(dataProvider = "configDP", dataProviderClass = BrowserDataProvider.class, groups = {SystemTestsGroup.SYSTEMTESTSFILTER7})
-    @Fails(description="sagu: BrowserName/Version not anymore in the test name of ClassesDetailsPage")
+    @Fails(ticketString = "XETA-682")
     public void testT01_checkBrowserOnMethodDetails(TestReportSevenWebDriverSetupConfig wdsConfig) throws ParseException {
 
         final String testMethodTagName = "(1) " + wdsConfig.name();

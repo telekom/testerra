@@ -19,8 +19,6 @@ public abstract class AbstractMethodDetailsPage extends AbstractReportPage {
     protected GuiElement detailsButton = new GuiElement(this.driver, By.id("buttondetails"), mainFrame);
     protected GuiElement stepsButton = new GuiElement(this.driver, By.id("buttondlogs"), mainFrame);
     protected GuiElement stackButton = new GuiElement(this.driver, By.id("buttondstack"), mainFrame);
-    protected GuiElement evolutionButton = new GuiElement(this.driver, By.id("buttonhistory"), mainFrame);
-
     protected GuiElement minorErrorButton = new GuiElement(this.driver, By.id("buttonminor"), mainFrame);
 
     /**
@@ -57,10 +55,5 @@ public abstract class AbstractMethodDetailsPage extends AbstractReportPage {
     public MethodStackPage gotoMethodStackPage() {
         stackButton.click();
         return PageFactory.create(MethodStackPage.class, driver);
-    }
-
-    public MethodEvolutionPage gotoMethodEvolutionPage() {
-        evolutionButton.click();
-        return PageFactory.create(MethodEvolutionPage.class, driver);
     }
 }

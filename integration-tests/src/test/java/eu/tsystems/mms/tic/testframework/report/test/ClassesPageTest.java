@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
@@ -32,16 +33,16 @@ public class ClassesPageTest extends AbstractTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT01_checkAllNumbersOfOneTest() {
-
+        //TODO sagu check all rows
         final String className = ReportTestUnderTestDependsOn.class.getSimpleName();
 
-        final Map<TestResultHelper.TestResultClassesColumn, Integer> expectedClassesTableRowNumbers = new HashMap<>();
-        expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.PASSED, 3);
-        expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.PASSEDMINOR, 0);
-        expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.FAILED, 4);
-        expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.FAILEDMINOR, 0);
-        expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.FAILEDEXPECTED, 0);
-        expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.SKIPPED, 3);
+        final Map<TestResultHelper.TestResultClassesColumn, String> expectedClassesTableRowNumbers = new HashMap<>();
+        expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.PASSED, "3 (7)");
+        expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.PASSEDMINOR, "0");
+        expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.FAILED, "4");
+        expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.FAILEDMINOR, "0");
+        expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.FAILEDEXPECTED, "0");
+        expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.SKIPPED, "3");
 
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
 
@@ -108,6 +109,7 @@ public class ClassesPageTest extends AbstractTest {
      * Checks whether the "XETA INFORMATION" is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @Fails(description = "local Build is shown. Is this correct?", intoReport = true)
     public void testT06_checkFennecInformationIsDisplayed() throws ParseException {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
         classesPage.assertFennecInformationIsDisplayed();

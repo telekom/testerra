@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractReportPage;
@@ -15,13 +16,13 @@ import org.testng.Assert;
  * Created by riwa on 25.10.2016.
  */
 public class DashboardPage extends AbstractReportPage implements IReportAnnotationVerifier {
-
+    @Check
+    public final GuiElement fennecLogo = new GuiElement(this.driver, By.cssSelector("img[alt='fennec']"), mainFrame);
     public final DashboardModuleTestResultPieChart dashboardModuleTestResultPieChart = PageFactory.create(DashboardModuleTestResultPieChart.class, driver);
     public final DashboardModuleTestResultNumberBreakdown dashboardModuleTestResultNumberBreakdown = PageFactory.create(DashboardModuleTestResultNumberBreakdown.class, driver);
     public final DashboardModuleFailureCorridor dashboardModuleFailureCorridor = PageFactory.create(DashboardModuleFailureCorridor.class, driver);
     public final DashboardModuleInformationCorridor dashboardModuleInformationCorridor = PageFactory.create(DashboardModuleInformationCorridor.class, driver);
     public final DashboardModuleClassBarChart dashboardModuleClassBarChart = PageFactory.create(DashboardModuleClassBarChart.class, driver);
-    public final GuiElement viewDetailsButton = new GuiElement(this.driver, By.xpath("//div[@id='detailsView']//a"), mainFrame);
     public final GuiElement screenShotInfoButton = new GuiElement(this.driver, By.xpath("//*[contains(text(),'test_testMidCorridorFailed1')]"), mainFrame);
 
     public DashboardPage(WebDriver driver) {
@@ -114,12 +115,12 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
         }
     }
 
-    @Override
-    public void assertRetryMarkerIsDisplayed(String methodName) {
+    //@Override
+    /*public void assertRetryMarkerIsDisplayed(String methodName) {
         GuiElement annotationRow = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
         annotationRow.asserts().assertIsDisplayed();
         annotationRow.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, RETRIED_NAME))).asserts().assertIsDisplayed();
-    }
+    }*/
 
     public MethodDetailsPage goToMethodDetailsPageUsingPieChartFilter(TestResultHelper.TestResult testResult, String className, String methodName) throws Exception {
         dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);

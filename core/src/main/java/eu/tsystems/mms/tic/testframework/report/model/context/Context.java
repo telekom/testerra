@@ -19,6 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.events.FennecEvent;
+import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
+import eu.tsystems.mms.tic.testframework.events.FennecEventService;
+import eu.tsystems.mms.tic.testframework.events.FennecEventType;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
@@ -55,9 +59,18 @@ public abstract class Context implements SynchronizableContext {
                     return null;
                 }
                 try {
+                    /*
+                    CREATE a new context
+                     */
+
                     T context = createDownStreamContext.create();
                     fillBasicContextValues(context, name);
                     contexts.add(context);
+
+                    // fire context update event: create context
+                    FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
+                            .addData(FennecEventDataType.CONTEXT, context)
+                            .addData(FennecEventDataType.WITH_PARENT, true));
 
                     return context;
                 } catch (Exception e) {

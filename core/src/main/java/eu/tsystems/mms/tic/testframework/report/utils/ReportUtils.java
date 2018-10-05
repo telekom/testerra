@@ -437,7 +437,7 @@ public final class ReportUtils {
          */
         Runnable createMethodsRunnable = () -> {
             for (ClassContext classContext : reportingData.classContexts) {
-                File reportFile0 = new File(classesLogDir, classContext.uuid + ".html");
+                File reportFile0 = new File(classesLogDir, classContext.id + ".html");
                 ReportFormatter.createMethodsView(reportFile0, classContext, "methods.vm");
                 // short view for dashboard
                 reportFile0 = new File(classesLogDir, classContext.name + "_dashboard.html");

@@ -99,9 +99,9 @@ public class MethodContextUpdateWorker extends MethodWorker {
         }
 
         /*
-        fire CONTEXT_SYNC event
+        fire CONTEXT_UPDATE event
          */
-        FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_SYNC)
+        FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
                 .addData(FennecEventDataType.CONTEXT, methodContext));
     }
 }

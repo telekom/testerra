@@ -28,6 +28,10 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
+import eu.tsystems.mms.tic.testframework.events.FennecEvent;
+import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
+import eu.tsystems.mms.tic.testframework.events.FennecEventService;
+import eu.tsystems.mms.tic.testframework.events.FennecEventType;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
@@ -50,7 +54,6 @@ public class ClassContext extends Context implements SynchronizableContext {
     final List<MethodContext> methodContexts = new LinkedList<>();
     public String fullClassName;
     public String simpleClassName;
-    public final String uuid = UUID.randomUUID().toString();
     public final TestContext testContext;
     public final RunContext runContext;
     public FennecClassContext fennecClassContext = null;
@@ -117,6 +120,11 @@ public class ClassContext extends Context implements SynchronizableContext {
                 add to method contexts
                  */
                 methodContexts.add(methodContext);
+
+                // fire context update event: create method context
+                FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
+                        .addData(FennecEventDataType.CONTEXT, methodContext)
+                        .addData(FennecEventDataType.WITH_PARENT, true));
             }
             else {
                 if (collect.size() > 1) {

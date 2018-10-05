@@ -46,6 +46,6 @@ public enum FennecEventType implements IFennecEventType {
 
     TAKE_SCREENSHOTS,
 
-    CONTEXT_SYNC
+    CONTEXT_UPDATE
 
 }

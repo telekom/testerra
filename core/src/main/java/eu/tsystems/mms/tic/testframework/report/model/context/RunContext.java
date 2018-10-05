@@ -20,6 +20,10 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
+import eu.tsystems.mms.tic.testframework.events.FennecEvent;
+import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
+import eu.tsystems.mms.tic.testframework.events.FennecEventService;
+import eu.tsystems.mms.tic.testframework.events.FennecEventType;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -42,6 +46,9 @@ public class RunContext extends Context implements SynchronizableContext {
     public RunContext() {
         name = runConfig.RUNCFG;
         swi = name;
+
+        // fire context update event: create context
+        FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE).addData(FennecEventDataType.CONTEXT, this));
     }
 
     public SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {

@@ -55,7 +55,7 @@ public enum FennecEventDataType implements IFennecEventDataType {
 
     CONTEXT(SynchronizableContext.class),
 
-    ;
+    RECURSIVE(Boolean.class);
 
     private Class typeClass;
 

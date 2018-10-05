@@ -53,7 +53,7 @@ public class ClassContext extends Context implements SynchronizableContext {
     public final String uuid = UUID.randomUUID().toString();
     public final TestContext testContext;
     public final RunContext runContext;
-    public FennecClassContext FennecClassContext = null;
+    public FennecClassContext fennecClassContext = null;
     public boolean merged = false;
 
     public ClassContext(TestContext testContext, RunContext runContext) {

@@ -31,7 +31,7 @@ import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class Context {
+public abstract class Context implements SynchronizableContext {
 
     @FunctionalInterface
     public interface CreateDownStreamContext<T extends Context> {
@@ -177,5 +177,10 @@ public abstract class Context {
 
             context = context.parentContext;
         }
+    }
+
+    @Override
+    public SynchronizableContext getParent() {
+        return parentContext;
     }
 }

@@ -257,6 +257,43 @@ public final class PropertyManager {
     }
 
     /**
+     * Gets the value of the property or the default identified by its key.
+     *
+     * @param key          key of the property
+     * @param defaultValue default value
+     * @return property value
+     */
+    public static double getLongProperty(String key, long defaultValue) {
+        final String prop = getProperty(key);
+        if (prop == null) {
+            return defaultValue;
+        }
+        try {
+            return Long.parseLong(prop);
+        } catch (final NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Gets the value of the property identified by its key.
+     *
+     * @param key key of the property
+     * @return property value or -1 if value cannot be parsed or is not set.
+     */
+    public static double getLongProperty(final String key) {
+        final String prop = getProperty(key);
+        if (prop == null) {
+            return -1;
+        }
+        try {
+            return Long.parseLong(prop);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    /**
      * Get boolean property.
      *
      * @param key true or false.

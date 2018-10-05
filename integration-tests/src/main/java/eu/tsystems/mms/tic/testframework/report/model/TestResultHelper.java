@@ -20,12 +20,14 @@ public class TestResultHelper {
      * TODO: unify xPath-Header -> Jira-Ticket: XETA-572
      */
     public enum TestResult {
+        //TODO sagu rework
         PASSED("green", "PASSED", "header passed", "Passed", "test passed"),
         FAILED("red", "FAILED", "header broken", "Failed", "test broken"),
         PASSEDMINOR("SkyBlue", "PASSEDMINOR", "header nf", "Minor", "test nf"),
         FAILEDMINOR("DeepPink","FAILEDMINOR", "header brokennf", "Failed with Minor", "test brokennf"),
         SKIPPED("orange","SKIPPED", "header skipped", "Skipped", "test skipped"),
-        FAILEDEXPECTED("grey","FAILEDEXPECTED", "header expectedFailed", "Expected Failed", "test expectedFailed");
+        FAILEDEXPECTED("grey","FAILEDEXPECTED", "header expectedFailed", "Expected Failed", "test expectedFailed"),
+        RETRIED("pink","RETRIED", "header retried", "Retried", "test retried");
 
         private final String color;
         private final String testState;

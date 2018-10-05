@@ -7,7 +7,9 @@ public enum ReportAnnotationType {
 
     SUPPORT_METHOD("Support Method", "SupportMethod"),
     NEW("New", "New"),
-    READY_FOR_APPROVAL("Ready For Approval", "ReadyForApproval");
+    READY_FOR_APPROVAL("Ready For Approval", "ReadyForApproval"),
+    RETRIED("Retried", "Retried"),
+    MINOR("Minor Errors", "Minor Errors");
 
     private String annotationName;
 

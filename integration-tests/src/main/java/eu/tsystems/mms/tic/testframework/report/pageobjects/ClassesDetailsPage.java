@@ -38,10 +38,6 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
 
     private GuiElement successfulConfigMethodsHeader = new GuiElement(this.driver, By.id("successfulConfigMethods"), mainFrame);
 
-    // TODO not used -> remove?, does anybody find a better locator?
-    private GuiElement firstTestUnderTestRow = new GuiElement(this.driver, By.xpath("html/body/table[1]//tr[3]"), mainFrame);
-
-
     public ClassesDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -55,21 +51,6 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     public ClassesDetailsPage changeTestUnderTestClass(String testUnderTestClassName) {
         ClassesPage classesPage = this.goToClasses();
         return classesPage.gotoClassesDetailsPageForClass(testUnderTestClassName);
-    }
-
-    // TODO not used -> remove?
-    private String getNameFromMethodInfoBody(GuiElement methodInfoBody) {
-        GuiElement testMethodNameLink = methodInfoBody.getSubElement(By.className("tooltip"));
-        testMethodNameLink.setName("testMethodNameLink");
-        return testMethodNameLink.getText().trim();
-    }
-
-    // TODO not used -> remove?
-    private GuiElement getInformationMethodBodyForRow(GuiElement testUnderTestRow) {
-        GuiElement leftMethodBody = testUnderTestRow.getSubElement(By.xpath(".//td[@class='method autosize']"));
-        leftMethodBody.setName("leftMethodBody");
-        return leftMethodBody;
-
     }
 
     private GuiElement getTestResultTableHeaderForTestResult(TestResultHelper.TestResult testResult) {
@@ -87,11 +68,15 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         Assert.assertEquals(actualColor, expectedColor, "The actual color for TestResult " + testResult.toString() + " is correct");
     }
 
-    public void assertMethodNameIsDisplayedForTestMethod(String expectedMethodName) {
+    public void assertMethodNameIsDisplayedForTestMethod(String expectedMethodName, String... expectedSuiteNames) {
         GuiElement actualMethodNameElement = getInformationMethodBodyForTestMethodName(expectedMethodName);
         actualMethodNameElement.asserts().assertIsDisplayed();
         String actualMethodName = actualMethodNameElement.getText();
-        AssertCollector.assertEquals(actualMethodName, expectedMethodName, "The displayed method name is equal to the expected method name");
+        AssertCollector.assertTrue(actualMethodName.contains(expectedMethodName), "The displayed method name is equal to the expected method name");
+        if(expectedSuiteNames != null){
+            for(String expectedSuiteName : expectedSuiteNames)
+                AssertCollector.assertTrue(actualMethodName.contains(expectedSuiteName), "The displayed suite name is equal to the expected one.");
+        }
     }
 
     public void assertMethodIsDisplayedInTheCorrectTestResultCategory(String testundertestMethodName, TestResultHelper.TestResult expectedTestResultCategory) {
@@ -132,7 +117,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * @return the left test method info column as GuiElement
      */
     private GuiElement getInformationMethodBodyForTestMethodName(String testMethodName) {
-        GuiElement informationMethodBody = new GuiElement(driver, By.xpath("(//*[contains(text(), '"+testMethodName+"')])[1]"), mainFrame);
+        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[contains(text(),'%s')]",testMethodName)), mainFrame);
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;
     }
@@ -150,31 +135,6 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         return informationMethodBody;
     }
 
-
-
-    public void assertTimeAndThreadInformationAreDisplayedForTestMethod(String testMethodName) {
-
-        GuiElement informationMethodBody = getInformationMethodBodyForTestMethodName(testMethodName);
-        GuiElement methodStartTimeElement = informationMethodBody.getSubElement(By.xpath("./..//font/div[1]"));
-        methodStartTimeElement.setName("methodStartTimeElement");
-        AssertCollector.assertTrue(isElementTextDisplayedAndParsableToDate(methodStartTimeElement), methodStartTimeElement.getName() + " has a valid date format");
-        GuiElement methodEndTimeElement = informationMethodBody.getSubElement(By.xpath("./..//font/div[2]"));
-        methodEndTimeElement.setName("methodEndTime");
-        AssertCollector.assertTrue(isElementTextDisplayedAndParsableToDate(methodEndTimeElement), methodEndTimeElement.getName() + " has a valid date format");
-        GuiElement methodDurationElement = informationMethodBody.getSubElement(By.xpath("./..//font/div[3]"));
-        methodDurationElement.setName("methodDuration");
-        AssertCollector.assertTrue(isElementTextDisplayedAndParsableToDate(methodDurationElement), methodDurationElement.getName() + " has a valid format");
-        GuiElement methodThreadElement = informationMethodBody.getSubElement(By.xpath("./..//font/div[4]"));
-        methodThreadElement.setName("methodThread");
-        methodThreadElement.asserts().assertIsDisplayed();
-        String methodThreadElementText = methodThreadElement.getText();
-        final String testCreatorPattern = ".*Creator";
-        final String threadRegexString = "Thread: TestNG-test=" + testCreatorPattern + "-\\d+";
-        final Pattern threadInfoFormat = Pattern.compile(threadRegexString);
-        Matcher threadInfoFormatMatcher = threadInfoFormat.matcher(methodThreadElementText);
-        AssertCollector.assertTrue(threadInfoFormatMatcher.matches(), "The Thread information has a valid format. Text: " + methodThreadElementText + " Expected format: " + threadRegexString);
-
-    }
 
     public void assertRetrySymbolIsDisplayedForMethod(String testundertestMethodName) {
         GuiElement methodInfoBody = getInformationMethodBodyForTestMethodName(testundertestMethodName);
@@ -349,7 +309,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     @Override
     public void assertAnnotationMarkIsDisplayed(ReportAnnotationType annotationType, String methodName) {
         GuiElement methodBody = getInformationMethodBodyForTestMethodName(methodName);
-        GuiElement annotationElement = methodBody.getSubElement(By.xpath("./." + String.format(LOCATOR_FONT_ANNOTATION, annotationType.getAnnotationDisplayedName())));
+        GuiElement annotationElement = methodBody.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, annotationType.getAnnotationDisplayedName())));
         annotationElement.setName("annotationElementFor_" + annotationType.getAnnotationDisplayedName());
         annotationElement.asserts().assertIsDisplayed();
     }
@@ -361,13 +321,13 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         }
     }
 
-    @Override
-    public void assertRetryMarkerIsDisplayed(String methodName) {
+    //@Override
+    /*public void assertRetryMarkerIsDisplayed(String methodName) {
         GuiElement methodBody = getInformationMethodBodyForTestMethodName(methodName);
         GuiElement annotationElement = methodBody.getSubElement(By.xpath("./." + String.format(LOCATOR_FONT_ANNOTATION, RETRIED_NAME)));
         annotationElement.setName("annotationElementFor_" + RETRIED_NAME);
         annotationElement.asserts().assertIsDisplayed();
-    }
+    }*/
 
 
     public void assertMethodExecutionOrder() {

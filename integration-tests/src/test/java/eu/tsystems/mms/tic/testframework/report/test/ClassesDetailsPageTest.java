@@ -8,6 +8,7 @@ import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.ReportAnnotationType;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.testundertest.*;
@@ -62,39 +63,40 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
     }
 
     /**
-     * checkTestMethodInformationInMethodInfoBody
-     * Checks whether the method information are displayed. Concerns method name, starttime, endtime, duration and thread information
+     * Checks the displayed method information for passed tests. Concerns method name and Details Button.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    public void testT02_checkTestMethodInformationInMethodInfoBody() {
+    public void testT02_checkTestMethodInformationForPassedTests() {
 
-        final String testundertestMethodName = "test_FailedInheritedMinor1";
-
+        Class<ReportTestUnderTestPassed> classWithPassedMethods = ReportTestUnderTestPassed.class;
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()),
-                "My_Context");
-        classesDetailsPage.assertMethodNameIsDisplayedForTestMethod(testundertestMethodName);
-        classesDetailsPage.assertTimeAndThreadInformationAreDisplayedForTestMethod(testundertestMethodName);
+                classWithPassedMethods.getSimpleName());
 
+        String testmethodName = classWithPassedMethods.getMethods()[0].getName();
+        classesDetailsPage.assertMethodNameIsDisplayedForTestMethod(testmethodName);
+        classesDetailsPage.assertDetailsLinkIsDisplayedAndWorks(testmethodName);
     }
 
     /**
-     * checkTestMethodInformationInMethodResultBody
-     * Checks whether error message, tacktrace link and details link are displayed in method test results
+     * Checks the displayed method information for failed tests. Concerns method name, stack trace and Details Button.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    public void testT03_checkTestMethodInformationInMethodResultBody() {
+    public void testT03_checkTestMethodInformationForFailedTests() {
 
-        final String testundertestMethodName = "test_FailedInheritedMinor1";
-
+        Class<ReportTestUnderTestFailed> classWithFailedMethods = ReportTestUnderTestFailed.class;
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()),
-                "My_Context");
-        classesDetailsPage.assertErrorMessageIsDisplayedForTestMethod(testundertestMethodName);
-        classesDetailsPage.assertStackTraceLinkIsDisplayedForTestMethod(testundertestMethodName);
-        classesDetailsPage.assertDetailsLinkIsDisplayedAndWorks(testundertestMethodName);
+                classWithFailedMethods.getAnnotation(FennecClassContext.class).value());
+
+        final String testmethodName = classWithFailedMethods.getMethods()[0].getName();
+        classesDetailsPage.assertMethodNameIsDisplayedForTestMethod(testmethodName,
+                "Report- TestsUnderTest", "Failed Creator");
+        classesDetailsPage.assertErrorMessageIsDisplayedForTestMethod(testmethodName);
+        classesDetailsPage.assertStackTraceLinkIsDisplayedForTestMethod(testmethodName);
+        classesDetailsPage.assertDetailsLinkIsDisplayedAndWorks(testmethodName);
     }
 
     /**
@@ -102,6 +104,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the SCREENSHOT symbol is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
+    @Fails(description = "Soll das Screenshotsymbol raus oder nicht auf der Detailsseite", intoReport = true)
     public void testT04_checkScreenShotSymbol() {
 
         final String testundertestMethodName = "test_FailedInheritedMinor2";
@@ -114,43 +117,11 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
     }
 
     /**
-     * checkTestMethodRetrySymbol
-     * Checks whether the RETRY symbol is displayed
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    public void testT05_checkTestMethodRetrySymbol() {
-
-        final String testundertestMethodName = "test_TestRetryExceptionTrigger (1/2)";
-
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(
-                WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()),
-                ReportTestUnderTestRetry.class,
-                testundertestMethodName);
-
-        checkRetryAnnotationIsDisplayed(methodDetailsPage, testundertestMethodName);
-    }
-
-    /**
-     * checkConfigMethodShowingAndHiding
-     * Checks whether its possible to show/hide config methods
-     */
-    @Test(enabled = false, groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    public void testT06_checkConfigMethodShowingAndHiding() {
-
-        ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
-                WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()),
-                "ReportTestUnderTestRetry");
-        classesDetailsPage.assertHidingAndShowingOfConfigMethodSection();
-    }
-
-    /**
      * Checks whether the annotation marks are displayed correctly on Classes Details Page
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(ticketString = "XETA-682")
-    public void testT07_checkAnnotationAreDisplayed() {
+    public void testT05_checkAnnotationsAreDisplayed() {
+        //TODO use DataProvider for this, enhanced to Minor Errors
         HashMap<String,List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
         methodsTestObjects.put("testAllMarkers", Arrays.asList(ReportAnnotationType.NEW, ReportAnnotationType.READY_FOR_APPROVAL, ReportAnnotationType.SUPPORT_METHOD));
         methodsTestObjects.put("testNewMarkerFailure", Collections.singletonList(ReportAnnotationType.NEW));
@@ -163,12 +134,23 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
             PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),
             ReportTestUnderTestAnnotations.class.getSimpleName());
         checkAnnotationsAreDisplayed(classesDetailsPage, methodsTestObjects);
-        classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestRetryHistory.class.getSimpleName());
-        checkRetryAnnotationIsDisplayed(classesDetailsPage, "test_FailedToPassedHistoryWithRetry");
     }
 
-//TODO add test for total column
+    /**
+     * checkTestMethodRetrySymbol
+     * Checks whether the RETRY symbol is displayed
+     */
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
+    public void testT06_checkAnnotationsForRetry() {
+        TestStep.begin("Check Retried Annotation");
+        ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
+                WebDriverManager.getWebDriver(),
+                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()),
+                ReportTestUnderTestRetry.class.getSimpleName());
 
-
+        HashMap<String,List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
+        methodsTestObjects.put("test_TestRetryExceptionTrigger (1/2)", Collections.singletonList(ReportAnnotationType.RETRIED));
+        checkAnnotationsAreDisplayed(classesDetailsPage, methodsTestObjects);
+    }
 
 }

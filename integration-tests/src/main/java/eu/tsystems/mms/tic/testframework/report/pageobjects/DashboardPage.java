@@ -115,12 +115,12 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
         }
     }
 
-    @Override
-    public void assertRetryMarkerIsDisplayed(String methodName) {
+    //@Override
+    /*public void assertRetryMarkerIsDisplayed(String methodName) {
         GuiElement annotationRow = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
         annotationRow.asserts().assertIsDisplayed();
         annotationRow.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, RETRIED_NAME))).asserts().assertIsDisplayed();
-    }
+    }*/
 
     public MethodDetailsPage goToMethodDetailsPageUsingPieChartFilter(TestResultHelper.TestResult testResult, String className, String methodName) throws Exception {
         dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);

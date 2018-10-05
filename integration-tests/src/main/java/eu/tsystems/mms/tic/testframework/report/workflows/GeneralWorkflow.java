@@ -103,9 +103,9 @@ public class GeneralWorkflow {
         return dashboardPage.goToFailureAspects();
     }
 
-    public static MethodDetailsPage doOpenBrowserAndReportMethodDetailsPage(WebDriver webDriver, String reportDirectory, Class reportClass, String methodName) {
+    public static MethodDetailsPage doOpenBrowserAndReportMethodDetailsPage(WebDriver webDriver, String reportDirectory, String className, String methodName) {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(webDriver, reportDirectory);
-        dashboardPage.goToClasses().gotoClassesDetailsPageForClass(reportClass.getSimpleName()).getDetailsLinkByMethodName(methodName).click();
+        dashboardPage.goToClasses().gotoClassesDetailsPageForClass(className).getDetailsLinkByMethodName(methodName).click();
         return PageFactory.create(MethodDetailsPage.class, webDriver);
     }
 

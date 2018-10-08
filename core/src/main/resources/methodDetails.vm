@@ -193,6 +193,9 @@
 
                                 <div id="context" class="dashboardTextVerySmall hidden" style="line-height: 22px; color:#888;">
                                     Class: <a href="../classes/${testMethod.classContext.name}.html" title="Jump to class">${testMethod.classContext.name}</a><br/>
+                                    Test: ${testMethod.classContext.testContext.name}<br/>
+                                    Suite: ${testMethod.classContext.testContext.suiteContext.name}<br/>
+                                    <br/>
                                     Thread: $testMethod.threadName<br/>
                                     RunIdx: ($testMethod.methodRunIndex)<br/>
 

@@ -2,6 +2,7 @@ package eu.tsystems.mms.tic.testframework.report.test.functional;
 
 import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.BeforeConfiguration;
@@ -20,7 +21,7 @@ import org.testng.annotations.Test;
  * Created by fakr on 07.11.2017
  */
 @FennecClassContext("Functional-TestNGBefore")
-public class BeforeScenarioTest {
+public class BeforeScenarioTest extends AbstractTest {
 
     private final String passedControlMethod = "controlMethodAfterBeforeScenarioPassed";
     private final String failedControlMethod = "controlMethodAfterBeforeScenarioFailed";
@@ -31,8 +32,8 @@ public class BeforeScenarioTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER8})
     public void testT01_checkTestNumbersBeforeSuite() {
         TestReportEightNumbers testReportEightNumbers = new TestReportEightNumbers();
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_8.toString()));
-        dashboardPage.dashboardModuleTestResultNumberBreakdown.assertCoreTestNumbers(testReportEightNumbers, false, false, true, false);
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_8.getReportDirectory()));
+        dashboardPage.dashboardModuleTestResultNumberBreakdown.assertCoreTestNumbers(testReportEightNumbers);
     }
 
     /**
@@ -41,8 +42,8 @@ public class BeforeScenarioTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9})
     public void testT02_checkTestNumbersBefore() {
         TestReportNineNumbers testReportNineNumbers = new TestReportNineNumbers();
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.toString()));
-        dashboardPage.dashboardModuleTestResultNumberBreakdown.assertCoreTestNumbers(testReportNineNumbers, true, true, true, false);
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.getReportDirectory()));
+        dashboardPage.dashboardModuleTestResultNumberBreakdown.assertCoreTestNumbers(testReportNineNumbers);
     }
 
     /**
@@ -50,7 +51,7 @@ public class BeforeScenarioTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER8})
     public void testT03_checkControlMethodsAreSkippedIfBeforeSuiteMethodsFailed() {
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_8.toString()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_8.getReportDirectory()));
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(BeforeConfiguration.BEFORE_SUITE.getReportClassName());
         /* Check SKIP-causing method */
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory(BeforeConfiguration.BEFORE_SUITE.getReportMethodName(), TestResultHelper.TestResult.FAILED);
@@ -64,7 +65,7 @@ public class BeforeScenarioTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9}, dataProvider = "beforeDP")
     public void testT04_checkControlMethodsAreSkippedIfBeforeMethodsFailed(BeforeConfiguration beforeConfig) {
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.toString()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.getReportDirectory()));
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(beforeConfig.getReportClassName());
         /* Check SKIP-causing method */
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory(beforeConfig.getReportMethodName(), TestResultHelper.TestResult.FAILED);
@@ -77,7 +78,7 @@ public class BeforeScenarioTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9})
     public void testT05_checkControlMethodsRunIfBeforeMethodsPassed() {
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.toString()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.getReportDirectory()));
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(BeforeConfiguration.ALL.getReportClassName());
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory(passedControlMethod, TestResultHelper.TestResult.PASSED);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory(failedControlMethod, TestResultHelper.TestResult.FAILED);

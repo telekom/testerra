@@ -8,10 +8,7 @@ import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFai
 import eu.tsystems.mms.tic.testframework.report.general.AbstractReportFailuresTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
-import eu.tsystems.mms.tic.testframework.report.model.ExitPointEntry;
-import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
-import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoExitPoints;
-import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
+import eu.tsystems.mms.tic.testframework.report.model.*;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.BeforeMethod;
@@ -23,6 +20,7 @@ import java.util.List;
  */
 @FennecClassContext("View-ExitPoints")
 public class ExitPointsPageTest extends AbstractReportFailuresTest {
+    //TODO restructure tests: find exit points with the help of method names and not with index
 
     @BeforeMethod(alwaysRun = true)
     @Override
@@ -36,7 +34,7 @@ public class ExitPointsPageTest extends AbstractReportFailuresTest {
     protected int getNumberOfExpectedFailurePointsForReport() {
         switch (reportFilter) {
             case SystemTestsGroup.SYSTEMTESTSFILTER2:
-                return TestReportTwoExitPoints.NUMBER_OF_EXIT_POINTS;
+                return new TestReportTwoNumbers().getExitPoints();
             default:
                 throw new FennecRuntimeException("Not implemented for Report: " + reportFilter);
         }
@@ -70,7 +68,9 @@ public class ExitPointsPageTest extends AbstractReportFailuresTest {
 
     @Override
     protected void checkExpectedFailedMarkWorkflow(boolean intoReport) {
-        final int position = 2;
+        int position = 38;
+        if(intoReport)
+            position = 37;
         final AbstractResultTableFailureEntry failedEntry = failurePointEntryTestObjects.get(position - 1);
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
         failurePointsPage.assertExpectedFailsReportMark(failedEntry, intoReport);
@@ -78,7 +78,7 @@ public class ExitPointsPageTest extends AbstractReportFailuresTest {
 
     @Override
     protected AbstractFailurePointsPage openFailuresPointsPage(ReportDirectory reportDirectory) {
-        return GeneralWorkflow.doOpenBrowserAndReportExitPointsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(reportDirectory.toString()));
+        return GeneralWorkflow.doOpenBrowserAndReportExitPointsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(reportDirectory.getReportDirectory()));
     }
 
 }

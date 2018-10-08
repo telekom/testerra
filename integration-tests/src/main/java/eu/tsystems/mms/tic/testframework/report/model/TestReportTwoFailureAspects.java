@@ -8,8 +8,6 @@ import java.util.List;
  */
 public class TestReportTwoFailureAspects implements IFailurePointEntryHelper {
 
-    public static final int NUMBER_OF_FAILURE_ASPECTS = 6;
-
     public static final FailureAspectEntry FA1 = new FailureAspectEntry(
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
             1,

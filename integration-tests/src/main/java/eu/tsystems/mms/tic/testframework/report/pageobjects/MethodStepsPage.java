@@ -2,7 +2,6 @@ package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.report.model.TestReportSevenWebDriverSetupConfig;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -62,34 +61,6 @@ public class MethodStepsPage extends MethodDetailsPage {
     public List<GuiElement> getLoggingRowsByActionStep(int majorStep, int minorStep) {
         List<GuiElement> rows = new GuiElement(driver, By.xpath("//tr[contains(@class,'viewclass_" + majorStep + "_" + minorStep + "')]"), mainFrame).getList();
         return rows;
-    }
-
-    public void assertBrowserInLogsIsConfiguredBrowser(TestReportSevenWebDriverSetupConfig browserConfig) {
-        List<GuiElement> browserEntries = new GuiElement(driver, By.xpath("//td[text()[contains(.,'" + BROWSER_LOG_INDICATOR + "')]]"), mainFrame).getList();
-        int browserCount = 0;
-        for (GuiElement browserEntry: browserEntries) {
-            browserCount++;
-            browserEntry.setName("BrowserEntryOnStepPage_#" + browserCount);
-        }
-        assertBrowserLogContent(browserEntries.size() > 1 ? browserEntries.get(browserEntries.size() - 1) : browserEntries.get(0), browserConfig);
-    }
-
-    public void assertBrowserInLogsIsConfiguredBrowser(TestReportSevenWebDriverSetupConfig browserConfig, int majorStep, int minorStep) {
-        List<GuiElement> rows = getLoggingRowsByActionStep(majorStep, minorStep);
-        for (GuiElement row : rows) {
-            GuiElement messageColumn = row.getSubElement(By.xpath(".//td[6]"));
-            if (messageColumn.getText().contains(BROWSER_LOG_INDICATOR)) {
-                assertBrowserLogContent(messageColumn, browserConfig);
-                return;
-            }
-        }
-        Assert.fail("No Browser Entry found in logs in Method Details");
-    }
-
-    public void assertBrowserLogContent(GuiElement logDataCell, TestReportSevenWebDriverSetupConfig wdsConfig) {
-        String messageText = logDataCell.getText().toLowerCase();
-        AssertCollector.assertTrue(messageText.contains(wdsConfig.getBrowser()), "Method Details Step logs should contain browser: " + wdsConfig.getBrowser() + ". Message is " + messageText);
-        AssertCollector.assertTrue(messageText.contains(wdsConfig.getVersion()), "Method Details Step logs should contain browser version: " + wdsConfig.getVersion() + ". Message is " + messageText);
     }
 
 }

@@ -14,6 +14,6 @@ public class AbstractTestDashboard extends AbstractAnnotationMarkerTest {
      * @return
      */
     public DashboardPage getDashboardPage(ReportDirectory reportDirectory) {
-        return GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(reportDirectory.toString()));
+        return GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(reportDirectory.getReportDirectory()));
     }
 }

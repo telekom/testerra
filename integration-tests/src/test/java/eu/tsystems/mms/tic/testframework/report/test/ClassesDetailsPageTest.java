@@ -33,7 +33,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
     public void testT01_checkTestResultsColorsAreDisplayedAndTestResultCategoryIsCorrect() {
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()),
+                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
                 "My_Context");
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDMINOR);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedInheritedMinor1", TestResultHelper.TestResult.FAILEDMINOR);
@@ -69,7 +69,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         Class<ReportTestUnderTestPassed> classWithPassedMethods = ReportTestUnderTestPassed.class;
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()),
+                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
                 classWithPassedMethods.getSimpleName());
 
         String testmethodName = classWithPassedMethods.getMethods()[0].getName();
@@ -86,7 +86,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         Class<ReportTestUnderTestFailed> classWithFailedMethods = ReportTestUnderTestFailed.class;
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()),
+                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
                 classWithFailedMethods.getAnnotation(FennecClassContext.class).value());
 
         final String testmethodName = "test_FailedMinor1";
@@ -106,7 +106,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         final String testundertestMethodName = "test_FailedInheritedMinor2";
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()),
+                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()),
                 "My_Context");
         classesDetailsPage.assertScreenshotIsNotDisplayedForMethod(testundertestMethodName);
     }
@@ -126,7 +126,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
 
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
             WebDriverManager.getWebDriver(),
-            PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),
+            PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),
             ReportTestUnderTestAnnotations.class.getSimpleName());
         checkAnnotationsAreDisplayed(classesDetailsPage, methodsTestObjects);
     }
@@ -140,7 +140,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         TestStep.begin("Check Retried Annotation");
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()),
+                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()),
                 ReportTestUnderTestRetry.class.getSimpleName());
 
         HashMap<String,List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();

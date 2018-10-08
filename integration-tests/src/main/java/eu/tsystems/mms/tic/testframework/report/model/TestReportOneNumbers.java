@@ -24,12 +24,8 @@ public class TestReportOneNumbers extends AbstractTestReportNumbers {
         failedRetried = 5;
         failedExpected = 3;
         failureAspects = 8;
-        exitPoints = 41;
+        exitPoints = 40;
         percentage = 36;
-        //TODO what does this value is for
-        isSkipped = true;
-        //TODO what does this value is for
-        isExpectedToFail = false;
     }
 
 }

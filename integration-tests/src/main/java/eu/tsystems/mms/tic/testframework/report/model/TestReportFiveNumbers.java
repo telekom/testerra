@@ -22,10 +22,7 @@ public class TestReportFiveNumbers extends AbstractTestReportNumbers {
         failed = 10;
         failedMinor = 20;
         failureAspects = 3;
-        exitPoints = 28;
+        exitPoints = 30;
         percentage = 30;
-        isSkipped = false;
-        isExpectedToFail = false;
     }
-
 }

@@ -36,12 +36,6 @@ public abstract class AbstractTestReportNumbers implements TestNumberHelper {
     //TODO add percentage sign in test
     protected int percentage = 0;
 
-    //protected String failureCorridorMatchingColor = red;
-    //protected String failureCorridorMatchingColor = "green";
-
-    protected boolean isSkipped;
-    protected boolean isExpectedToFail;
-
     public int getHighCorridorActual() {
         return highCorridorActual;
     }
@@ -80,7 +74,7 @@ public abstract class AbstractTestReportNumbers implements TestNumberHelper {
     }
 
     private String getMatchedValue(int actual, int limit){
-        if (actual < limit)
+        if (actual <= limit)
             return fcMatched;
         else
             return fcNotMatched;
@@ -140,7 +134,27 @@ public abstract class AbstractTestReportNumbers implements TestNumberHelper {
 
     public String getPercentage() { return String.valueOf(this.percentage + "%"); }
 
-    public boolean isSkipped() { return isSkipped; }
 
-    public boolean isExpectedToFail() { return isExpectedToFail; }
+    @Override
+    public String getFailureCorridorMatched() {
+        String result = "green";
+
+        //skipped tests end in failure corridore not matched
+        if(getAllSkipped() > 0)
+            return "red";
+
+        //check failure corridor values for high
+        if(getHighCorridorActual() > getHighCorridorLimit())
+            return "red";
+
+        //check failure corridor values for mid
+        if(getMidCorridorActual() > getMidCorridorLimit())
+            return "red";
+
+        //check failure corridor values for low
+        if(getLowCorridorActual() > getLowCorridorLimit())
+            return "red";
+
+        return result;
+    }
 }

@@ -11,6 +11,7 @@ public interface TestNumberHelper {
     int getMidCorridorLimit();
     int getLowCorridorActual();
     int getLowCorridorLimit();
+    String getFailureCorridorMatched();
     String getHighMatched();
     String getMidMatched();
     String getLowMatched();
@@ -29,6 +30,5 @@ public interface TestNumberHelper {
     int getFailureAspects();
     int getExitPoints();
     String getPercentage();
-    boolean isSkipped();
-    boolean isExpectedToFail();
+
 }

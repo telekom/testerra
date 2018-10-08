@@ -8,10 +8,7 @@ import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFai
 import eu.tsystems.mms.tic.testframework.report.general.AbstractReportFailuresTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
-import eu.tsystems.mms.tic.testframework.report.model.FailureAspectEntry;
-import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
-import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoFailureAspects;
-import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
+import eu.tsystems.mms.tic.testframework.report.model.*;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.BeforeMethod;
@@ -36,7 +33,7 @@ public class FailureAspectsPageTest extends AbstractReportFailuresTest {
     protected int getNumberOfExpectedFailurePointsForReport() {
         switch (reportFilter) {
             case SystemTestsGroup.SYSTEMTESTSFILTER2:
-                return TestReportTwoFailureAspects.NUMBER_OF_FAILURE_ASPECTS;
+                return new TestReportTwoNumbers().getFailureAspects();
             default:
                 throw new FennecRuntimeException("Not implemented for Report: " + reportFilter);
         }
@@ -84,7 +81,7 @@ public class FailureAspectsPageTest extends AbstractReportFailuresTest {
 
     @Override
     protected AbstractFailurePointsPage openFailuresPointsPage(ReportDirectory reportDirectory) {
-        return GeneralWorkflow.doOpenBrowserAndReportFailureAspectsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(reportDirectory.toString()));
+        return GeneralWorkflow.doOpenBrowserAndReportFailureAspectsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(reportDirectory.getReportDirectory()));
     }
 
 }

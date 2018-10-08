@@ -49,7 +49,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
     private GuiElement contextButton = new GuiElement(this.driver, By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('context');\"]"), mainFrame);
     private GuiElement context = new GuiElement(this.driver, By.id("context"), mainFrame);
 
-    private GuiElement repairedFailsIndication = new GuiElement(this.driver, By.xpath("//div[@class='detailsWarning']"), mainFrame);
+    private GuiElement repairedFailsIndication = new GuiElement(this.driver, By.xpath("//div[@class='skipped']"), mainFrame);
 
     //TODO  IDs einfügen -> Jira-Ticket: XETA-524
     public String durationLocator = "//*[@class='cellTop']//*[contains(text(), 'Duration')]/..";

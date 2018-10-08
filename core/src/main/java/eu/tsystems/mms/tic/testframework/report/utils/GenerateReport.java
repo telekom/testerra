@@ -136,34 +136,6 @@ public class GenerateReport {
         final List<ClassContext> allClassContexts = new ArrayList<>(ExecutionContextController.RUN_CONTEXT.getMethodStatsPerClass(true, false).keySet());
 
         /*
-         * get sources for errors in pages
-         */
-        LOGGER.info("Catching script sources...");
-        for (ClassContext classContext : allClassContexts) {
-            List<MethodContext> methodContexts = classContext.copyOfMethodContexts();
-            for (MethodContext methodContext : methodContexts) {
-                if (methodContext.isFailed()) {
-                    Throwable throwable = methodContext.getThrowable();
-                    if (throwable != null) {
-                        /*
-                        find script source
-                         */
-                        // look for script source
-                        String scriptSourceForThrowable = SourceUtils.findScriptSourceForThrowable(throwable);
-                        if (scriptSourceForThrowable != null) {
-                            methodContext.scriptSource = scriptSourceForThrowable;
-                        }
-
-                        /*
-                        find execution object source
-                         */
-                        methodContext.executionObjectSource = CollectAssertionInfoArtefacts.getSourceFor(throwable);
-                    }
-                }
-            }
-        }
-
-        /*
          * Build maps for exit points and failure aspects
          */
         LOGGER.info("Build maps for exit points and failure aspects...");

@@ -23,15 +23,10 @@
         </pre>
 
         <!-- priority extra message -->
-        #foreach ($message in $testMethod.priorityMessages)
-            <div>
-                <font class="message smallline failed">
-                    <b>
-                         $message
-                    </b>
-                </font>
-                <br/>
-            </div>
+        #if ($testMethod.priorityMessage)
+        <div class="skipped">
+            $testMethod.priorityMessage
+        </div>
         #end
 
         <!-- readable message -->

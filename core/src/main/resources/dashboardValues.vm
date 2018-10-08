@@ -5,7 +5,7 @@
     #if (! $s.relevant)
         #set ($class = "notrelevant")
     #end
-    <a title="$title" id="numberOf$s" class="fcSmaller $class" style="color:white; background:$s.color; cursor: pointer;" onclick="enableBarChartState('$s.title')">
+    <a title="$title" id="numberOf$s" class="fcSmaller $class" style="color:white; background:$s.color; cursor: pointer;" onclick="showChartsState('$s.name()')">
         &nbsp;${counts.get($s)} $s.title&nbsp;</a>
 </div>
 #end

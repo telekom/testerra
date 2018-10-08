@@ -21,8 +21,10 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
+import eu.tsystems.mms.tic.testframework.interop.CollectAssertionInfoArtefacts;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
+import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 
 import java.util.Map;
 
@@ -48,6 +50,15 @@ public class MethodFinishedWorker extends MethodWorker {
 
         // calculate fingerprint
         if (isFailed()) {
+            Throwable throwable = methodContext.getThrowable();
+            if (throwable != null) {
+                // look for script source
+                String scriptSourceForThrowable = SourceUtils.findScriptSourceForThrowable(throwable);
+                if (scriptSourceForThrowable != null) {
+                    methodContext.scriptSource = scriptSourceForThrowable;
+                }
+                methodContext.executionObjectSource = CollectAssertionInfoArtefacts.getSourceFor(throwable);
+            }
             methodContext.buildExitFingerprint();
         }
 

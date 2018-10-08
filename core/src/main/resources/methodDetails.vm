@@ -211,10 +211,10 @@
                             </div>
 
                             <!-- priority extra message -->
-                            #foreach ($message in $testMethod.priorityMessages)
-                                <div class="detailsWarning" style="margin:30px;">
-                                    $message
-                                </div>
+                            #if ($testMethod.priorityMessage)
+                            <div class="skipped">
+                                $testMethod.priorityMessage
+                            </div>
                             #end
 
                             <div style="font-size: 30px;">

@@ -109,7 +109,7 @@ public class ClassesPageTest extends AbstractTest {
      * Checks whether the "XETA INFORMATION" is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(description = "local Build is shown. Is this correct?", intoReport = true)
+    @Fails(ticketString = "XETA-684")
     public void testT06_checkFennecInformationIsDisplayed() throws ParseException {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
         classesPage.assertFennecInformationIsDisplayed();

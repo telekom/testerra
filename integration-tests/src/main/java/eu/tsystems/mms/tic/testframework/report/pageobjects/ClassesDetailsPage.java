@@ -170,9 +170,9 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         gotoMethodDetailsPage(detailsLink);
     }
 
-    public void assertScreenshotIsDisplayedForMethod(String testundertestMethod) {
+    public void assertScreenshotIsNotDisplayedForMethod(String testundertestMethod) {
         GuiElement screenshotElement = getScreenShotOfMethod(testundertestMethod, 1);
-        screenshotElement.asserts().assertIsDisplayed();
+        screenshotElement.asserts().assertIsNotDisplayed();
     }
 
     @Override

@@ -208,7 +208,6 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks the information provided for tests that are marked with @Fails but passed.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(description = "The information for repaired test is missing.")
     public void testT08_checkRepairedFailsIndication(){
         String methodName = "test_TestStatePassed2";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestPassed.class.getSimpleName(), methodName);
@@ -275,7 +274,6 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(description = "no suite information is shown", intoReport = true)
     public void testT13_checkContext() throws Exception {
         TestStep.begin("Checks Context for classes without using FennecClassContext");
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(),PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestPassed.class.getSimpleName(),"test_PassedMinor1");
@@ -335,7 +333,6 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks the error message in the method details for correctnes.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(description = "no Fingerprint is shown", intoReport = true)
     public void testT15_checkErrorMessage() throws Exception {
         TestStep.begin("Checks error Message from a failed test");
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(),PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),ReportTestUnderTestCorridorLow.class.getSimpleName(),"test_testLowCorridorFailed3");

@@ -67,7 +67,6 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * It runs once for every test status in report 4. 8 times in total.
      */
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
-    @Fails(ticketString = "XETA-676")
     public void testT03_clickTestNumberAndCheckBarColors(TestResult testResults) throws Exception {
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_4);
         if (dashboardPage.dashboardModuleTestResultNumberBreakdown.isNumberDisplayed(testResults)) {

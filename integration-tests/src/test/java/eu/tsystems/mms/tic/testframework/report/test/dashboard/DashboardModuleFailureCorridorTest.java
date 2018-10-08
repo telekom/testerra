@@ -153,13 +153,16 @@ public class DashboardModuleFailureCorridorTest extends AbstractTestDashboard {
         String low = "low";
 
         AssertCollector.assertEquals(highActual, testNumberHelper.getHighCorridorActual(), String.format(actualMessage, high));
-        AssertCollector.assertEquals(midActual, testNumberHelper.getMidCorridorActual(), String.format(actualMessage, mid));
-        AssertCollector.assertEquals(lowActual, testNumberHelper.getLowCorridorActual(), String.format(actualMessage, low));
         AssertCollector.assertEquals(highActualClass, testNumberHelper.getHighMatched(), String.format(colorMessage, high));
-        AssertCollector.assertEquals(midActualClass, testNumberHelper.getMidMatched(), String.format(colorMessage, mid));
-        AssertCollector.assertEquals(lowActualClass, testNumberHelper.getLowMatched(), String.format(colorMessage, low));
         AssertCollector.assertEquals(highLimitActual, testNumberHelper.getHighCorridorLimit(), String.format(limitMessage, high));
+
+        AssertCollector.assertEquals(midActual, testNumberHelper.getMidCorridorActual(), String.format(actualMessage, mid));
+        AssertCollector.assertEquals(midActualClass, testNumberHelper.getMidMatched(), String.format(colorMessage, mid));
         AssertCollector.assertEquals(midLimitActual, testNumberHelper.getMidCorridorLimit(), String.format(limitMessage, mid));
+
+
+        AssertCollector.assertEquals(lowActual, testNumberHelper.getLowCorridorActual(), String.format(actualMessage, low));
+        AssertCollector.assertEquals(lowActualClass, testNumberHelper.getLowMatched(), String.format(colorMessage, low));
         AssertCollector.assertEquals(lowLimitActual, testNumberHelper.getLowCorridorLimit(), String.format(limitMessage, low));
     }
 

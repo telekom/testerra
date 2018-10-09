@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.jk1.dependency-license-report" version "0.5.1" apply true
+//    id "com.github.jk1.dependency-license-report" version "0.5.1" apply true
     id "io.spring.dependency-management" version "1.0.6.RELEASE" apply true
 }
 
@@ -131,7 +131,7 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
-    apply plugin: 'com.github.jk1.dependency-license-report' // run: gradle generateLicenseReport
+//    apply plugin: 'com.github.jk1.dependency-license-report' // run: gradle generateLicenseReport
 
     repositories {
         mavenLocal()
@@ -199,7 +199,7 @@ dependencies {
     compile apache_commons
 }
 
-task displayLicenses(dependsOn: ['classes', 'generateLicenseReport'], type: JavaExec) {
-    main = 'eu.tsystems.mms.tic.testframework.build.LicenseCollector'
-    classpath = sourceSets.main.runtimeClasspath
-}
+//task displayLicenses(dependsOn: ['classes', 'generateLicenseReport'], type: JavaExec) {
+//    main = 'eu.tsystems.mms.tic.testframework.build.LicenseCollector'
+//    classpath = sourceSets.main.runtimeClasspath
+//}

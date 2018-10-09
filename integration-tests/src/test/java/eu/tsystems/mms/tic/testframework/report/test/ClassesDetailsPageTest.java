@@ -1,6 +1,5 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractAnnotationMarkerTest;
@@ -10,7 +9,6 @@ import eu.tsystems.mms.tic.testframework.report.model.ReportAnnotationType;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.testundertest.*;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -35,7 +33,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
     public void testT01_checkTestResultsColorsAreDisplayedAndTestResultCategoryIsCorrect() {
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()),
+                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
                 "My_Context");
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDMINOR);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedInheritedMinor1", TestResultHelper.TestResult.FAILEDMINOR);
@@ -71,7 +69,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         Class<ReportTestUnderTestPassed> classWithPassedMethods = ReportTestUnderTestPassed.class;
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()),
+                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
                 classWithPassedMethods.getSimpleName());
 
         String testmethodName = classWithPassedMethods.getMethods()[0].getName();
@@ -88,10 +86,10 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         Class<ReportTestUnderTestFailed> classWithFailedMethods = ReportTestUnderTestFailed.class;
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()),
+                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
                 classWithFailedMethods.getAnnotation(FennecClassContext.class).value());
 
-        final String testmethodName = classWithFailedMethods.getMethods()[0].getName();
+        final String testmethodName = "test_FailedMinor1";
         classesDetailsPage.assertMethodNameIsDisplayedForTestMethod(testmethodName,
                 "Report- TestsUnderTest", "Failed Creator");
         classesDetailsPage.assertErrorMessageIsDisplayedForTestMethod(testmethodName);
@@ -104,16 +102,13 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the SCREENSHOT symbol is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(description = "Soll das Screenshotsymbol raus oder nicht auf der Detailsseite", intoReport = true)
     public void testT04_checkScreenShotSymbol() {
-
         final String testundertestMethodName = "test_FailedInheritedMinor2";
-
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()),
+                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()),
                 "My_Context");
-        classesDetailsPage.assertScreenshotIsDisplayedForMethod(testundertestMethodName);
+        classesDetailsPage.assertScreenshotIsNotDisplayedForMethod(testundertestMethodName);
     }
 
     /**
@@ -131,7 +126,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
 
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
             WebDriverManager.getWebDriver(),
-            PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),
+            PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),
             ReportTestUnderTestAnnotations.class.getSimpleName());
         checkAnnotationsAreDisplayed(classesDetailsPage, methodsTestObjects);
     }
@@ -145,7 +140,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         TestStep.begin("Check Retried Annotation");
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()),
+                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()),
                 ReportTestUnderTestRetry.class.getSimpleName());
 
         HashMap<String,List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();

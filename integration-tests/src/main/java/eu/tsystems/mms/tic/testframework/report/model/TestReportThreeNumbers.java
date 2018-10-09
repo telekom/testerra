@@ -23,10 +23,8 @@ public class TestReportThreeNumbers extends AbstractTestReportNumbers {
         failedRetried = 4;
         failedExpected = 3;
         failureAspects = 5;
-        exitPoints = 32;
+        exitPoints = 36;
         percentage = 32;
-        isSkipped = true;
-        isExpectedToFail = true;
     }
 
 }

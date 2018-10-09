@@ -4,6 +4,7 @@ import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractTestReportNumbers;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTestDashboard;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
@@ -12,6 +13,7 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.text.DateFormat;
@@ -34,17 +36,6 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_1);
         String duration = dashboardPage.dashboardModuleTestResultNumberBreakdown.testDurationString.getText();
         Assert.assertTrue(duration.contains("s") && duration.contains("ms"), "Time Format of test duration is correct");
-    }
-
-    /**
-     * This test tests the delta of the duration of the test report for the correct format.
-     * It runs once in the 2nd report.
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2}, enabled=false)
-    public void testT03_checkTestDurationDelta() throws Exception {
-        DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_2);
-        String durationDelta = dashboardPage.dashboardModuleTestResultNumberBreakdown.testDurationDeltaString.getText();
-        Assert.assertTrue(durationDelta.contains("s") && durationDelta.contains("ms"), "Time Format of test duration delta is correct");
     }
 
     /**
@@ -87,7 +78,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT05_checkTestFinishDateAndTime() throws Exception {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         String elementString = dashboardPage.dashboardModuleTestResultNumberBreakdown.testEndTimeString.getText();
         String dateString;
         try {
@@ -122,7 +113,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT06_testReportPercentages() throws Exception {
         TestReportOneNumbers testReportOneNumbers = new TestReportOneNumbers();
-        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()), testReportOneNumbers);
+        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), testReportOneNumbers);
     }
 
     /**
@@ -131,7 +122,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
     public void testT07_testReportPercentages() throws Exception {
         TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
-        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()), testReportTwoNumbers);
+        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()), testReportTwoNumbers);
     }
 
     /**
@@ -140,7 +131,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
     public void testT08_testReportPercentages() throws Exception {
         TestReportThreeNumbers testReportThreeNumbers = new TestReportThreeNumbers();
-        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_3.toString()), testReportThreeNumbers);
+        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_3.getReportDirectory()), testReportThreeNumbers);
     }
 
     /**
@@ -149,7 +140,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
     public void testT09_testReportPercentages() throws Exception {
         TestReportFourNumbers testReportFourNumbers = new TestReportFourNumbers();
-        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.toString()), testReportFourNumbers);
+        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.getReportDirectory()), testReportFourNumbers);
     }
 
     /**
@@ -158,7 +149,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER5})
     public void testT10_testReportPercentages() throws Exception {
         TestReportFiveNumbers testReportFiveNumbers = new TestReportFiveNumbers();
-        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_5.toString()), testReportFiveNumbers);
+        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_5.getReportDirectory()), testReportFiveNumbers);
     }
 
     /**
@@ -167,61 +158,29 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
     public void testT11_testReportPercentages() throws Exception {
         TestReportSixNumbers testReportSixNumbers = new TestReportSixNumbers();
-        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()), testReportSixNumbers);
+        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()), testReportSixNumbers);
     }
 
     /**
      * This test tests the numbers and deltas of the different status.
      */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT12_checkTestNumbers() {
-        TestReportOneNumbers testReportOneNumbers = new TestReportOneNumbers();
-        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()),   true, false, testReportOneNumbers);
+    @Test(dataProvider = "testResultNumbers")
+    public void testT12_checkTestNumbers(String report, AbstractTestReportNumbers numbers) {
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(report));
+        dashboardPage.dashboardModuleTestResultNumberBreakdown.assertTestNumbers(numbers);
     }
 
-    /**
-     * This test tests the numbers and deltas of the different status.
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    public void testT13_checkTestNumbers() {
-        TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
-        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.toString()),   true, true, testReportTwoNumbers);
-    }
-
-    /**
-     * This test tests the numbers and deltas of the different status.
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
-    public void testT14_checkTestNumbers() {
-        TestReportThreeNumbers testReportThreeNumbers = new TestReportThreeNumbers();
-        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_3.toString()),   true, true, testReportThreeNumbers);
-    }
-
-    /**
-     * This test tests the numbers and deltas of the different status.
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
-    public void testT15_checkTestNumbers() {
-        TestReportFourNumbers testReportFourNumbers = new TestReportFourNumbers();
-        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.toString()),  true, false, testReportFourNumbers);
-    }
-
-    /**
-     * This test tests the numbers and deltas of the different status.
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER5})
-    public void testT16_checkTestNumbers() {
-        TestReportFiveNumbers testReportFiveNumbers = new TestReportFiveNumbers();
-        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_5.toString()), true, false, testReportFiveNumbers);
-    }
-
-    /**
-     * This test tests the numbers and deltas of the different status.
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    public void testT17_checkTestNumbers() {
-        TestReportSixNumbers testReportSixNumbers = new TestReportSixNumbers();
-        assertTestNumbers(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.toString()), false, false, testReportSixNumbers);
+    @DataProvider(parallel = true)
+    public Object[][] testResultNumbers(){
+        Object[][] result = new Object[][]{
+                new Object[]{ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory(),new TestReportOneNumbers()},
+                new Object[]{ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory(),new TestReportTwoNumbers()},
+                new Object[]{ReportDirectory.REPORT_DIRECTORY_3.getReportDirectory(),new TestReportThreeNumbers()},
+                new Object[]{ReportDirectory.REPORT_DIRECTORY_4.getReportDirectory(),new TestReportFourNumbers()},
+                new Object[]{ReportDirectory.REPORT_DIRECTORY_5.getReportDirectory(),new TestReportFiveNumbers()},
+                new Object[]{ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory(),new TestReportSixNumbers()}
+        };
+        return result;
     }
 
 
@@ -231,10 +190,4 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
         final String actualPercentage = dashboardPage.dashboardModuleTestResultNumberBreakdown.testPercentageString.getText();
         NonFunctionalAssert.assertTrue(actualPercentage.contains(expectedPercentage), "reportFilter percentage is correct. expected: " + expectedPercentage + " but found " + actualPercentage);
     }
-
-    private void assertTestNumbers(String report, boolean isSkipped, boolean isExpectedToFail, TestNumberHelper testNumberHelper) {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), report);
-        dashboardPage.dashboardModuleTestResultNumberBreakdown.assertTestNumbers(isSkipped, isExpectedToFail, testNumberHelper);
-    }
-
 }

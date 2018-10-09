@@ -18,9 +18,4 @@ public abstract class AbstractAnnotationMarkerTest extends AbstractTest {
             }
         }
     }
-
-    //protected void checkRetryAnnotationIsDisplayed(IReportAnnotationVerifier verifier, String retryMethodName) {
-      //  verifier.assertRetryMarkerIsDisplayed(retryMethodName);
-    //}
-
 }

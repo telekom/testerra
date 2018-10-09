@@ -67,7 +67,6 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * It runs once for every test status in report 4. 8 times in total.
      */
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
-    @Fails(ticketString = "XETA-676")
     public void testT03_clickTestNumberAndCheckBarColors(TestResult testResults) throws Exception {
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_4);
         if (dashboardPage.dashboardModuleTestResultNumberBreakdown.isNumberDisplayed(testResults)) {
@@ -113,7 +112,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT05_checksIfFennecLogoIsDisplayed() throws Exception {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         Assert.assertTrue(dashboardPage.fennecLogo.isDisplayed(), "Fennec logo is displayed on dashboard page.");
     }
 
@@ -125,7 +124,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT06_checksScreenshotForFailedMethod() throws Exception {
         //TODO try out other locator or using java script
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResult.FAILEDMINOR);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
         GuiElement method1 = null;
@@ -145,7 +144,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
     public void testT07_checkDashboardIndicationThatPassedTestIsAnnotatedWithFails() throws Exception {
         //TODO try out other locator or using java script
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.toString()));
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResult.PASSED);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
         AssertCollector.assertTrue(dashboardPage.dashboardModuleInformationCorridor.repairedFailsIndicationButton.isDisplayed(), "The dashboard page does not show the indicator, that there is a redundant @Fails annotation.");

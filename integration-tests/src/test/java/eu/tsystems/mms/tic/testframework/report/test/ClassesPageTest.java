@@ -44,7 +44,7 @@ public class ClassesPageTest extends AbstractTest {
         expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.FAILEDEXPECTED, "0");
         expectedClassesTableRowNumbers.put(TestResultHelper.TestResultClassesColumn.SKIPPED, "3");
 
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
 
         classesPage.assertNumbersForTestResultsOfOneTestClass(expectedClassesTableRowNumbers, className);
 
@@ -61,7 +61,7 @@ public class ClassesPageTest extends AbstractTest {
         final String successClass = ReportTestUnderTestPassed.class.getSimpleName();
         final String brokenClass = ReportTestUnderTestDependsOn.class.getSimpleName();
 
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertSuccessIndicatorIsDisplayedForClass(successClass);
         classesPage.assertBrokenIndicatorIsShownForClass(brokenClass);
     }
@@ -72,7 +72,7 @@ public class ClassesPageTest extends AbstractTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT03_checkHidePassedFilter() {
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.hidePassedTests();
         classesPage.assertClassesAreDisplayedForHidePassedTestFilter();
     }
@@ -86,7 +86,7 @@ public class ClassesPageTest extends AbstractTest {
 
         final String className = ReportTestUnderTestSyncFailed.class.getSimpleName();
 
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertSyncFailedWarningIsDisplayedForTestclass(className);
     }
 
@@ -97,7 +97,7 @@ public class ClassesPageTest extends AbstractTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT05_checkLinkToClassesDetails() {
         final String className = ReportTestUnderTestPassed.class.getSimpleName();
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.waitForPageToLoad();
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(className);
         classesDetailsPage.assertPageIsShown();
@@ -109,9 +109,9 @@ public class ClassesPageTest extends AbstractTest {
      * Checks whether the "XETA INFORMATION" is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(description = "local Build is shown. Is this correct?", intoReport = true)
+    @Fails(ticketString = "XETA-684")
     public void testT06_checkFennecInformationIsDisplayed() throws ParseException {
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertFennecInformationIsDisplayed();
     }
 
@@ -121,7 +121,7 @@ public class ClassesPageTest extends AbstractTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT07_checkLegendSymbolsAreDisplayed() {
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.toString()));
+        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertAllLegendSymbolsAreDisplayed();
     }
 

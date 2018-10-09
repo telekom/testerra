@@ -108,12 +108,6 @@
         </classes>
     </test>
 
-    <test name="7th Report Test WebDriver Config">
-        <classes>
-            <class name="eu.tsystems.mms.tic.testframework.report.test.functional.BrowserConfigTest"/>
-        </classes>
-    </test>
-
     <test name="8th Report Test">
         <groups>
             <run>

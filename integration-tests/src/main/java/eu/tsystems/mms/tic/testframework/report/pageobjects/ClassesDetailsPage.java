@@ -87,7 +87,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         testResultTableHeader.asserts().assertIsDisplayed();
         GuiElement methodNameElement = getInformationMethodBodyForTestMethodName(testundertestMethodName);
         methodNameElement.asserts().assertIsDisplayed();
-        GuiElement actualHeader = methodNameElement.getSubElement(By.xpath("./../../tr/th"));
+        GuiElement actualHeader = methodNameElement.getSubElement(By.xpath("./../tr/th"));
         String actualHeaderClassAttribute = actualHeader.getText();
         AssertCollector.assertEquals(actualHeaderClassAttribute, expectedHeaderClassAttribute, "The Test method is in the correct test result category for test result + " + expectedTestResultCategory);
     }
@@ -117,7 +117,8 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * @return the left test method info column as GuiElement
      */
     private GuiElement getInformationMethodBodyForTestMethodName(String testMethodName) {
-        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[contains(text(),'%s')]",testMethodName)), mainFrame);
+        //needed for config test methods
+        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']",testMethodName)), mainFrame);
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;
     }
@@ -170,9 +171,9 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         gotoMethodDetailsPage(detailsLink);
     }
 
-    public void assertScreenshotIsDisplayedForMethod(String testundertestMethod) {
+    public void assertScreenshotIsNotDisplayedForMethod(String testundertestMethod) {
         GuiElement screenshotElement = getScreenShotOfMethod(testundertestMethod, 1);
-        screenshotElement.asserts().assertIsDisplayed();
+        screenshotElement.asserts().assertIsNotDisplayed();
     }
 
     @Override
@@ -320,15 +321,6 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
             assertAnnotationMarkIsDisplayed(annotationType, methodName);
         }
     }
-
-    //@Override
-    /*public void assertRetryMarkerIsDisplayed(String methodName) {
-        GuiElement methodBody = getInformationMethodBodyForTestMethodName(methodName);
-        GuiElement annotationElement = methodBody.getSubElement(By.xpath("./." + String.format(LOCATOR_FONT_ANNOTATION, RETRIED_NAME)));
-        annotationElement.setName("annotationElementFor_" + RETRIED_NAME);
-        annotationElement.asserts().assertIsDisplayed();
-    }*/
-
 
     public void assertMethodExecutionOrder() {
         Map<Integer, Date> allExecutionNumbers = getAllExecutionEntries();

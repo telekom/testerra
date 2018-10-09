@@ -9,44 +9,67 @@ import java.util.List;
  */
 public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
 
-    public static final int NUMBER_OF_EXIT_POINTS = 32;
-
     public static final ExitPointEntry EP1 = new ExitPointEntry(
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
             1,
-            7,
-            "ExitPointCreaterTestClass1.testCreatorForDifferentExitPoints(ExitPointCreaterTestClass1.java:12)",
-            true
+            1,
+            //*[contains(text(),'Exit Point #1 (1 Tests)')]/../..//*[contains(text(),'ReportTestUnderTestCorridorHigh.java:15')]
+            "ReportTestUnderTestCorridorHigh.java:15",
+            true,
+            Arrays.asList("ReportTestUnderTestCorridorHigh - test_testHighCorridorFailed1"),Arrays.asList("Exception")
     );
 
     public static final ExitPointEntry EP2 = new ExitPointEntry(
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
             2,
-            3,
-            "ExitPointCreatorTestClass2.testCreatorForDifferentExitPoints2();",
+            1,
+            "ReportTestUnderTestCorridorHigh.java:20",
             true,
-            Arrays.asList("ReportTestUnderTestCorridorLow - test_testLowCorridorFailed3 (in Report- TestsUnderTest - Low-Corridor Creator)",
-                    "ReportTestUnderTestCorridorLow - test_testLowCorridorFailed4 (in Report- TestsUnderTest - Low-Corridor Creator)",
-                    "ReportTestUnderTestCorridorLow - test_testLowCorridorFailed5 (in Report- TestsUnderTest - Low-Corridor Creator)"),
-            Arrays.asList("ArithmeticException: / by zero",
-                    "ArithmeticException: / by zero",
-                    "ArithmeticException: / by zero")
+            Arrays.asList("ReportTestUnderTestCorridorHigh - test_testHighCorridorFailed2"),Arrays.asList("Exception")
+    );
+
+    public static final ExitPointEntry EP37 = new ExitPointEntry(
+            TestResultHelper.TestResultFailurePointEntryType.FAILED,
+            37,
+            1,
+            "",
+            true,
+            Arrays.asList("ReportTestUnderTestExpectedtoFail - test_FailedMinorAnnotatedWithFailInReport"),
+            Arrays.asList("FennecTestFailureException: Failing of test expected. Description: This is an unknown bug.","Exception")
+    );
+
+    public static final ExitPointEntry EP38 = new ExitPointEntry(
+            TestResultHelper.TestResultFailurePointEntryType.FAILED,
+            38,
+            1,
+            "",
+            true,
+            Arrays.asList("ReportTestUnderTestCorridorHigh - test_testHighCorridorFailed2"),
+            Arrays.asList("FennecTestFailureException: Failing of test expected. Description: This is a known bug.","Exception")
     );
 
     public static List<ExitPointEntry> getAllExitPointEntryTestObjects() {
         List testObjects = new ArrayList<ExitPointEntry>() {};
-        testObjects.addAll(Arrays.asList(EP1, EP2));
-        for (int index = 3; index <= NUMBER_OF_EXIT_POINTS; index++) {
-            final ExitPointEntry furtherExitPoint = new ExitPointEntry(
-                    TestResultHelper.TestResultFailurePointEntryType.FAILED,
-                    index,
-                    1,
-                    "",
-                    true);
+        for (int index = 0; index < new TestReportTwoNumbers().getExitPoints(); index++) {
+            ExitPointEntry furtherExitPoint;
+            if(index == 0)
+                furtherExitPoint = EP1;
+            else if(index == 1)
+                furtherExitPoint = EP2;
+            else if(index == 36)
+                furtherExitPoint = EP37;
+            else if(index == 37)
+                furtherExitPoint = EP38;
+            else {
+                furtherExitPoint = new ExitPointEntry(
+                        TestResultHelper.TestResultFailurePointEntryType.FAILED,
+                        index,
+                        1,
+                        "",
+                        true);
+            }
             testObjects.add(furtherExitPoint);
         }
         return testObjects;
     }
-
-
 }

@@ -17,7 +17,7 @@ public enum ReportDirectory {
         this.reportDirectory = reportDirectory;
     }
 
-    public String toString(){
+    public String getReportDirectory(){
         return reportDirectory;
     }
 }

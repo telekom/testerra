@@ -90,10 +90,8 @@ public abstract class AbstractReportFailuresTest extends AbstractTest {
      */
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
     public void testT07_checkMarkExpectedFailedTests() {
-        final boolean intoReport = true;
-        final boolean notIntoReport = false;
-        checkExpectedFailedMarkWorkflow(intoReport);
-        checkExpectedFailedMarkWorkflow(notIntoReport);
+        checkExpectedFailedMarkWorkflow(true);
+        checkExpectedFailedMarkWorkflow(false);
     }
 
     /**
@@ -102,7 +100,7 @@ public abstract class AbstractReportFailuresTest extends AbstractTest {
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
     public void testT08_checkForwardingToMethodDetailsPage() {
         final int failurePointPositionToCheck = 2;
-        final int methodPositionToCheck = 2;
+        final int methodPositionToCheck = 1;
         AbstractResultTableFailureEntry entryWithMethods = getExpectedFailurePointEntries().get(failurePointPositionToCheck - 1);
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
         failurePointsPage.assertDetailsLinkNavigation(entryWithMethods, methodPositionToCheck);

@@ -17,29 +17,28 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
 
     // Test Numbers
     @Check
-    public final GuiElement numberAllTestsLink = new GuiElement(this.driver, By.id("totalNumberOfTestMethods"), mainFrame);
-    public final GuiElement numberAllPassedTestsLink = new GuiElement(this.driver, By.id("totalNumberOfSuccessfulMethods"), mainFrame);
-    public final GuiElement numberAllFailedTestsLink = new GuiElement(this.driver, By.id("totalNumberOfFailedMethods"), mainFrame);
-    public final GuiElement numberFailedExpectedTestsString = new GuiElement(this.driver, By.id("numberOfFAILED_EXPECTED"), mainFrame);
-    public final GuiElement numberAllSkippedTestsLink = new GuiElement(this.driver, By.id("totalNumberOfSkippedMethods"), mainFrame);
-    public final GuiElement numberPassedTestsLink = new GuiElement(this.driver, By.id("numberOfPASSED"), mainFrame);
-    public final GuiElement numberPassedMinorTestsLink = new GuiElement(this.driver, By.id("numberOfMINOR"), mainFrame);
-    public final GuiElement numberFailedTestsLink = new GuiElement(this.driver, By.id("numberOfFAILED"), mainFrame);
-    public final GuiElement numberFailedMinorTestsLink = new GuiElement(this.driver, By.id("numberOfFAILED_MINOR"), mainFrame);
-    public final GuiElement numberSkippedTestsLink = new GuiElement(this.driver, By.id("numberOfSKIPPED"), mainFrame);
-    public final GuiElement numberExitPointsLinks = new GuiElement(this.driver, By.xpath("//*[@id='exitPointsLink']/a"), mainFrame);
+    public final GuiElement numberAllTests = new GuiElement(this.driver, By.id("totalNumberOfTestMethods"), mainFrame);
 
-    public final GuiElement deltaAllTestsString = new GuiElement(this.driver, By.id("totalNumberOfTestMethodsDelta"), mainFrame);
-    public final GuiElement deltaPassedTestsString = new GuiElement(this.driver, By.id("totalNumberOfSuccesfullMethodsDelta"), mainFrame);
-    public final GuiElement deltaFailedTestsString = new GuiElement(this.driver, By.id("totalNumberOfFailedMethodsDelta"), mainFrame);
-    public final GuiElement deltaSkippedTestsString = new GuiElement(this.driver, By.id("totalNumberOfSkippedMethodsDelta"), mainFrame);
+    public final GuiElement numberOfAllSuccessfulTests = new GuiElement(this.driver, By.id("totalNumberOfSuccessfulMethods"), mainFrame);
+    public final GuiElement numberPassedTests = new GuiElement(this.driver, By.id("numberOfPASSED"), mainFrame);
+    public final GuiElement numberPassedMinorTests = new GuiElement(this.driver, By.id("numberOfMINOR"), mainFrame);
 
-    public final GuiElement numberFailureAspectsLink = new GuiElement(this.driver, By.xpath("//*[@id='failureAspectsLink']/a"), mainFrame);
+    public final GuiElement numberAllSkippedTests = new GuiElement(this.driver, By.id("totalNumberOfSkippedMethods"), mainFrame);
+    public final GuiElement numberSkippedTests = new GuiElement(this.driver, By.id("numberOfSKIPPED"), mainFrame);
+
+    public final GuiElement numberOfAllBrokenTests = new GuiElement(this.driver, By.id("totalNumberOfFailedMethods"), mainFrame);
+    public final GuiElement numberFailedTests = new GuiElement(this.driver, By.id("numberOfFAILED"), mainFrame);
+    public final GuiElement numberFailedMinorTests = new GuiElement(this.driver, By.id("numberOfFAILED_MINOR"), mainFrame);
+    public final GuiElement numberFailedRetriedTests = new GuiElement(this.driver, By.id("numberOfFAILED_RETRIED"), mainFrame);
+    public final GuiElement numberFailedExpectedTests = new GuiElement(this.driver, By.id("numberOfFAILED_EXPECTED"), mainFrame);
+
+
+    public final GuiElement numberExitPoints = new GuiElement(this.driver, By.xpath("//*[@id='exitPointsLink']/a"), mainFrame);
+    public final GuiElement numberFailureAspects = new GuiElement(this.driver, By.xpath("//*[@id='failureAspectsLink']/a"), mainFrame);
 
     // Test time-data
     @Check
     public final GuiElement testDurationString = new GuiElement(this.driver, By.id("actualRunDuration"), mainFrame);
-    public final GuiElement testDurationDeltaString = new GuiElement(this.driver, By.id("actualRunDurationDelta"), mainFrame);
     @Check
     public final GuiElement testStartTimeString = new GuiElement(this.driver, By.id("actualRunStartTime"), mainFrame);
     @Check
@@ -64,22 +63,22 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
         boolean isDisplayed;
         switch (testResult) {
             case PASSED:
-                isDisplayed = numberPassedTestsLink.isDisplayed();
+                isDisplayed = numberPassedTests.isDisplayed();
                 break;
             case PASSEDMINOR:
-                isDisplayed = numberPassedMinorTestsLink.isDisplayed();
+                isDisplayed = numberPassedMinorTests.isDisplayed();
                 break;
             case FAILED:
-                isDisplayed = numberFailedTestsLink.isDisplayed();
+                isDisplayed = numberFailedTests.isDisplayed();
                 break;
             case FAILEDMINOR:
-                isDisplayed = numberFailedMinorTestsLink.isDisplayed();
+                isDisplayed = numberFailedMinorTests.isDisplayed();
                 break;
             case SKIPPED:
-                isDisplayed = numberSkippedTestsLink.isDisplayed();
+                isDisplayed = numberSkippedTests.isDisplayed();
                 break;
             case FAILEDEXPECTED:
-                isDisplayed = numberFailedExpectedTestsString.isDisplayed();
+                isDisplayed = numberFailedExpectedTests.isDisplayed();
                 break;
             default:
                 throw new FennecRuntimeException("Unsupported Test Counter for TestResult: " + testResult);
@@ -121,22 +120,22 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
         GuiElement counter;
         switch (testResult) {
             case PASSED:
-                counter = numberPassedTestsLink;
+                counter = numberPassedTests;
                 break;
             case PASSEDMINOR:
-                counter = numberPassedMinorTestsLink;
+                counter = numberPassedMinorTests;
                 break;
             case FAILED:
-                counter = numberFailedTestsLink;
+                counter = numberFailedTests;
                 break;
             case FAILEDMINOR:
-                counter = numberFailedMinorTestsLink;
+                counter = numberFailedMinorTests;
                 break;
             case SKIPPED:
-                counter = numberSkippedTestsLink;
+                counter = numberSkippedTests;
                 break;
             case FAILEDEXPECTED:
-                counter = numberFailedExpectedTestsString;
+                counter = numberFailedExpectedTests;
                 break;
             default:
                 throw new FennecRuntimeException("Unsupported Test Counter for TestResult: " + testResult);        }
@@ -154,68 +153,85 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
         return PageFactory.create(DashboardPage.class, this.driver);
     }
 
-    public void assertTestNumbers(boolean isSkipped, boolean isExpectedToFail, TestNumberHelper testNumberHelper) {
+    public void assertTestNumbers(TestNumberHelper testNumberHelper) {
 
-        assertCoreTestNumbers(testNumberHelper, true, true, isSkipped, true);
+        //check numbers of passed, failed and skipped tests
+        assertCoreTestNumbers(testNumberHelper);
 
         //check number of failure aspects and exit points
-        AssertCollector.assertEquals(eliminateNumbersOfFaiuresFromLink(numberFailureAspectsLink.getText()), testNumberHelper.getFailureAspects(), "The number failure aspects is NOT correct.");
-        AssertCollector.assertEquals(eliminateNumbersOfFaiuresFromLink(numberExitPointsLinks.getText()), testNumberHelper.getExitPoints(), "The number of exit points is NOT correct.");
+        AssertCollector.assertEquals(eliminateNumbersOfFaiuresFromLink(numberFailureAspects.getText()), testNumberHelper.getFailureAspects(), "The number failure aspects is NOT correct.");
+        AssertCollector.assertEquals(eliminateNumbersOfFaiuresFromLink(numberExitPoints.getText()), testNumberHelper.getExitPoints(), "The number of exit points is NOT correct.");
 
-        //check number of expected to fail tests
-        if (isExpectedToFail) {
-            GuiElement actualExpectedFailed = numberFailedExpectedTestsString;
-            AssertCollector.assertEquals(Integer.parseInt(actualExpectedFailed.getText().replaceAll("\\D", "")), testNumberHelper.getFailedExpected(), "The number of expected failed tests is correct.");
-        }
     }
 
 
-    public void assertCoreTestNumbers(TestNumberHelper testNumberHelper, boolean isPassed, boolean isFailed, boolean isSkipped, boolean isMinor) {
+    public void assertCoreTestNumbers(TestNumberHelper testNumberHelper) {
 
         /* ALL */
-        int actualAll = Integer.parseInt(numberAllTestsLink.getText());
+        int actualAll = Integer.parseInt(numberAllTests.getText());
         AssertCollector.assertEquals(actualAll, testNumberHelper.getAll(), "The number of overall tests is NOT correct.");
 
         /* PASSED */
-        if (isPassed) {
-            String allPassedString = numberAllPassedTestsLink.getText();
-            int actualAllPassed = Integer.parseInt(allPassedString.substring(0, allPassedString.indexOf(" ")));
-            AssertCollector.assertEquals(actualAllPassed, testNumberHelper.getAllSuccessful(), "The number of overall passed tests is NOT correct.");
-            String passedString = numberPassedTestsLink.getText();
+        //check all successful
+        String allPassedString = numberOfAllSuccessfulTests.getText();
+        int actualAllPassed = Integer.parseInt(allPassedString.substring(0, allPassedString.indexOf(" ")));
+        AssertCollector.assertEquals(actualAllPassed, testNumberHelper.getAllSuccessful(), "The number of overall passed tests is NOT correct.");
+        if (testNumberHelper.getAllSuccessful() > 0) {
+            //check passed
+            String passedString = numberPassedTests.getText();
             int actualPassed = Integer.parseInt(passedString.substring(1, passedString.indexOf("P") - 1));
             AssertCollector.assertEquals(actualPassed, testNumberHelper.getPassed(), "The number of passed number tests is NOT correct.");
-        }
 
-        /* FAILED */
-        if (isFailed) {
-            String allFailedString = numberAllFailedTestsLink.getText();
-            int actualAllFailed = Integer.parseInt(allFailedString.substring(0, allFailedString.indexOf(" ")));
-            AssertCollector.assertEquals(actualAllFailed, testNumberHelper.getAllBroken(), "The number of overall failed tests is NOT correct.");
-            String failedString = numberFailedTestsLink.getText();
-            int actualFailed = Integer.parseInt(failedString.substring(1, failedString.indexOf("F") - 1));
-            AssertCollector.assertEquals(actualFailed, testNumberHelper.getFailed(), "The number of failed tests is NOT correct.");
+            //check minor
+            if (testNumberHelper.getPassedMinor() > 0) {
+                String passedMinorString = numberPassedMinorTests.getText();
+                int actualPassedMinor = Integer.parseInt(passedMinorString.substring(1, passedMinorString.indexOf("M") - 1));
+                AssertCollector.assertEquals(actualPassedMinor, testNumberHelper.getPassedMinor(), "The number of passed with minor tests is NOT correct.");
+            }
         }
 
         /* SKIPPED */
-        if (isSkipped) {
-            String allSkippedString = numberAllSkippedTestsLink.getText();
-            int actualAllSkipped = Integer.parseInt(allSkippedString.substring(0, allSkippedString.indexOf(" ")));
-            String skippedString = numberSkippedTestsLink.getText();
+        //check all skipped
+        String allSkippedString = numberAllSkippedTests.getText();
+        int actualAllSkipped = Integer.parseInt(allSkippedString.substring(0, allSkippedString.indexOf(" ")));
+        AssertCollector.assertEquals(actualAllSkipped, testNumberHelper.getAllSkipped(), "The number of overall skipped tests is correct.");
+        if (testNumberHelper.getAllSkipped() > 0) {
+            String skippedString = numberSkippedTests.getText();
             int actualSkipped = Integer.parseInt(skippedString.substring(1, skippedString.indexOf("S") - 1));
-            AssertCollector.assertEquals(actualAllSkipped, testNumberHelper.getAllSkipped(), "The number of overall skipped tests is correct.");
             AssertCollector.assertEquals(actualSkipped, testNumberHelper.getSkipped(), "The number of skipped tests is correct.");
         }
 
-        /* MINORS */
-        if (isMinor) {
-            /* PASSED MINOR */
-            String passedMinorString = numberPassedMinorTestsLink.getText();
-            int actualPassedMinor = Integer.parseInt(passedMinorString.substring(1, passedMinorString.indexOf("M") - 1));
-            AssertCollector.assertEquals(actualPassedMinor, testNumberHelper.getPassedMinor(), "The number of passed with minor tests is NOT correct.");
-            /* FAILED MINOR */
-            String failedMinorString = numberFailedMinorTestsLink.getText();
-            int actualFailedMinor = Integer.parseInt(failedMinorString.substring(1, failedMinorString.indexOf("F") - 1));
-            AssertCollector.assertEquals(actualFailedMinor, testNumberHelper.getFailedMinor(), "The number of failed with minor tests is NOT correct.");
+        /* BROKEN */
+        //all broken
+        String allFailedString = numberOfAllBrokenTests.getText();
+        int actualAllFailed = Integer.parseInt(allFailedString.substring(0, allFailedString.indexOf(" ")));
+        AssertCollector.assertEquals(actualAllFailed, testNumberHelper.getAllBroken(), "The number of overall failed tests is NOT correct.");
+        if (testNumberHelper.getAllBroken() > 0) {
+            //failed
+            String failedString = numberFailedTests.getText();
+            int actualFailed = Integer.parseInt(failedString.substring(1, failedString.indexOf("F") - 1));
+            AssertCollector.assertEquals(actualFailed, testNumberHelper.getFailed(), "The number of failed tests is NOT correct.");
+
+            //check minor
+            if (testNumberHelper.getFailedMinor() > 0) {
+                String failedMinorString = numberFailedMinorTests.getText();
+                int actualFailedMinor = Integer.parseInt(failedMinorString.substring(1, failedMinorString.indexOf("F") - 1));
+                AssertCollector.assertEquals(actualFailedMinor, testNumberHelper.getFailedMinor(), "The number of failed with minor tests is NOT correct.");
+            }
+
+            //check retried
+            if (testNumberHelper.getFailedRetried() > 0) {
+                String failedRetried = numberFailedRetriedTests.getText();
+                int actualFailedRetried = Integer.parseInt(failedRetried.substring(1, failedRetried.indexOf("R") - 1));
+                AssertCollector.assertEquals(actualFailedRetried, testNumberHelper.getFailedRetried(), "The number of retried tests is NOT correct.");
+            }
+
+            //check expected to fail
+            if (testNumberHelper.getFailedExpected() > 0) {
+                String failedExpected = numberFailedExpectedTests.getText();
+                int actualFailedExpected = Integer.parseInt(failedExpected.substring(1, failedExpected.indexOf("E") - 1));
+                AssertCollector.assertEquals(actualFailedExpected, testNumberHelper.getFailedExpected(), "The number of failed expected tests is NOT correct.");
+            }
         }
     }
 

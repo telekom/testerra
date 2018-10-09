@@ -22,9 +22,7 @@ public class TestReportFourNumbers extends AbstractTestReportNumbers {
         allSkipped = 14;
         skipped = 14;
         failureAspects = 3;
-        exitPoints = 26;
+        exitPoints = 28;
         percentage = 31;
-        isSkipped = true;
-        isExpectedToFail = false;
     }
 }

@@ -24,7 +24,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
     private final String LOCATOR_FAILUREPOINT_ROW = "./../..//*[@id='row-%02d']";
     private final String LOCATOR_FAILUREPOINT_TOTAL = "//*[contains(text(),'%ss: %s')]";
     private final String LOCATOR_FAILUREPOINT_HEADER = "//*[contains(text(),'%s #%d (%d Tests)')]";
-    private final String LOCATOR_FAILUREPOINT_DESCRIPTION = LOCATOR_FAILUREPOINT_HEADER + "/../..//div[contains(text(),' %s')]";
+    private final String LOCATOR_FAILUREPOINT_DESCRIPTION = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[contains(text(),'%s')]";
     private final String LOCATOR_FAILUREPOINT_METHOD = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[contains(text(),'%s')]/following-sibling::*";
     private final String LOCATOR_FAILUREPOINT_READABLE_MESSAGE = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[contains(text(),'%s')]";
     private final String LOCATOR_FAILUREPOINT_DETAILS_BUTTON = LOCATOR_FAILUREPOINT_HEADER + "/../..//a[@title='Details']";
@@ -263,13 +263,22 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
     public void assertTestMethodInformation(AbstractResultTableFailureEntry entry) {
         assertMethodClassPathAndDescription(entry);
         toggleElementsForFailurePoint(entry);
-        List<String> possibleTestMethodNames = entry.getMethodDetailPathSimpleMethodNames();
+
         List<String> possibleAssertions = entry.getMethodDetailAssertions();
         for (int index = 0; index < entry.getMethodDetailPaths().size(); index++) {
             // Method Name Path
             GuiElement methodDetailElement = getTestMethodsForSingleFailurePoint(entry).get(index);
             methodDetailElement.asserts().assertIsDisplayed();
-            Assert.assertTrue(possibleTestMethodNames.contains(methodDetailElement.getText()), "Element " + methodDetailElement.getText() + " does NOT contain one of the following test methods: " + possibleTestMethodNames);
+            boolean isFound;
+            int i = 0;
+            do{
+                String expectedTestMethod = entry.getMethodDetailPathSimpleMethodNames().get(i);
+                isFound = methodDetailElement.getText().contains(expectedTestMethod);
+                i++;
+            }while(!isFound && i < entry.getMethodDetailPathSimpleMethodNames().size());
+
+            Assert.assertTrue(isFound, "Element " + methodDetailElement.getText() + " does NOT contain one of the following test methods: " + entry.getMethodDetailPathSimpleMethodNames());
+
             // Method Assertion Message
             GuiElement readableMessageElement = getReadableMessageElementsForFailurePoint(entry).get(index);
             readableMessageElement.asserts().assertIsDisplayed();

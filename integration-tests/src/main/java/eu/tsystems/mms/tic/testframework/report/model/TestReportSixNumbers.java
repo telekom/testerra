@@ -25,8 +25,6 @@ public class TestReportSixNumbers extends AbstractTestReportNumbers {
         failureAspects = 10;
         exitPoints = 32;
         percentage = 37;
-        isSkipped = false;
-        isExpectedToFail = false;
     }
 
 }

@@ -50,32 +50,20 @@ public class DashboardPageTest extends AbstractTestDashboard {
     }
 
     /**
-     * Tests whether checking the radio button 'Show Last Run' changes the bar chart to display inherited
-     * tests.
-     * It runs once in the 3rd report.
-     */
-    @Test(enabled=false, groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
-    public void testT02_clickShowPreviousRunAndCheckBarChartForNumberOfBars() throws Exception {
-        final int expectedNumberOfBars = 34;
-        DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_3);
-        int lastRunPieChartNumberOfBars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars().size();
-        Assert.assertEquals(lastRunPieChartNumberOfBars, expectedNumberOfBars, "The 'Show Last Run' checkbox works in third report.");
-    }
-
-    /**
      * Clicks the desired 'number' and tests the provided bars of the bar chart for correct colors.
      * It runs once for every test status in report 4. 8 times in total.
      */
-    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
+    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT03_clickTestNumberAndCheckBarColors(TestResult testResults) throws Exception {
-        DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_4);
+        DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_1);
         if (dashboardPage.dashboardModuleTestResultNumberBreakdown.isNumberDisplayed(testResults)) {
             dashboardPage = dashboardPage.dashboardModuleTestResultNumberBreakdown.clickNumberForTestResult(testResults);
-            List<GuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
-            for (GuiElement bar : bars) {
-                String color = bar.getAttribute("fill");
-                AssertCollector.assertEquals(color, testResults.getColor(), "The " + testResults.toString() + " bar chart in the fourth report has the correct color.");
-            }
+            //TODO sagu try to read out canvas
+            //List<GuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
+            //for (GuiElement bar : bars) {
+             //   String color = bar.getAttribute("fill");
+               // AssertCollector.assertEquals(color, testResults.getColor(), "The " + testResults.toString() + " bar chart in the fourth report has the correct color.");
+            //}
         }
 
     }

@@ -124,6 +124,20 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     }
 
     /**
+     * Method to get the left info column for a given test method name
+     *
+     * @param testMethodName
+     * @return the left test method info column as GuiElement
+     */
+    private GuiElement getInformationMethodBodyForTestMethodNameRetried(String testMethodName) {
+        //TODO delete this when id for retried method is given automatically
+        //needed for config test methods
+        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[contains(text(),'%s')]/..",testMethodName)), mainFrame);
+        informationMethodBody.setName("informationMethodBody");
+        return informationMethodBody;
+    }
+
+    /**
      * Method to get the left info column for a given test method tag name
      *
      * @param testMethodTagName
@@ -206,8 +220,8 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     }
 
     public GuiElement getDetailsLinkByMethodName(String methodName) {
-        GuiElement resultInfoBody = getResultInfoBody(methodName);
-        GuiElement detailsLink = resultInfoBody.getSubElement(By.xpath(".//a[@title='Details']"));
+        GuiElement informationMethodBody = getInformationMethodBodyForTestMethodName(methodName);
+        GuiElement detailsLink = informationMethodBody.getSubElement(By.xpath(".//a[@title='Details']"));
         detailsLink.setName("detailsLink");
         return detailsLink;
     }
@@ -310,6 +324,11 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     @Override
     public void assertAnnotationMarkIsDisplayed(ReportAnnotationType annotationType, String methodName) {
         GuiElement methodBody = getInformationMethodBodyForTestMethodName(methodName);
+        switch (annotationType){
+            case RETRIED:
+                methodBody = getInformationMethodBodyForTestMethodNameRetried(methodName);
+                break;
+        }
         GuiElement annotationElement = methodBody.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, annotationType.getAnnotationDisplayedName())));
         annotationElement.setName("annotationElementFor_" + annotationType.getAnnotationDisplayedName());
         annotationElement.asserts().assertIsDisplayed();

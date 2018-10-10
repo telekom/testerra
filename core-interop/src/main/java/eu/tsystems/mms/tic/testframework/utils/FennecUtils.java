@@ -63,8 +63,8 @@ public final class FennecUtils {
             return;
         }
 
-        String errorMessage = "Error modifying Asserter classes";
         ClassPool classPool = ClassPool.getDefault();
+        classPool.appendClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
 
         try {
             /*

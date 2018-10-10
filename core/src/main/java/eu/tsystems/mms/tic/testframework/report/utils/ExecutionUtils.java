@@ -29,10 +29,7 @@ package eu.tsystems.mms.tic.testframework.report.utils;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.InDevelopment;
 import eu.tsystems.mms.tic.testframework.annotations.SupportMethod;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMethod;
-import javassist.NotFoundException;
+import javassist.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IMethodInstance;
@@ -71,6 +68,7 @@ public final class ExecutionUtils {
      */
     public static Fails getFailsAnnotationInStackTrace(StackTraceElement[] stackTrace) {
         final ClassPool pool = ClassPool.getDefault();
+        pool.appendClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
 
         for (final StackTraceElement stackTraceElement : stackTrace) {
             int lineNumberFromStackTrace = stackTraceElement.getLineNumber();

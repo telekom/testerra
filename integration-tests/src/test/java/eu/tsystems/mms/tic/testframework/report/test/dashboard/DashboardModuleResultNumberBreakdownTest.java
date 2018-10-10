@@ -164,7 +164,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     /**
      * This test tests the numbers and deltas of the different status.
      */
-    @Test(dataProvider = "testResultNumbers")
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1},dataProvider = "testResultNumbers")
     public void testT12_checkTestNumbers(String report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(report));
         dashboardPage.dashboardModuleTestResultNumberBreakdown.assertTestNumbers(numbers);

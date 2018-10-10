@@ -22,12 +22,12 @@ public class TestResultHelper {
     public enum TestResult {
         //TODO sagu rework
         PASSED("green", "PASSED", "header passed", "Passed", "test passed"),
-        FAILED("red", "FAILED", "header broken", "Failed", "test broken"),
         PASSEDMINOR("SkyBlue", "PASSEDMINOR", "header nf", "Minor", "test nf"),
-        FAILEDMINOR("DeepPink","FAILEDMINOR", "header brokennf", "Failed with Minor", "test brokennf"),
         SKIPPED("orange","SKIPPED", "header skipped", "Skipped", "test skipped"),
-        FAILEDEXPECTED("grey","FAILEDEXPECTED", "header expectedFailed", "Expected Failed", "test expectedFailed"),
-        RETRIED("pink","RETRIED", "header retried", "Retried", "test retried");
+        FAILED("red", "FAILED", "header broken", "Failed", "test broken"),
+        FAILEDMINOR("DeepPink","FAILEDMINOR", "header brokennf", "Failed with Minor", "test brokennf"),
+        RETRIED("pink","RETRIED", "header retried", "Retried", "test retried"),
+        FAILEDEXPECTED("grey","FAILEDEXPECTED", "header expectedFailed", "Expected Failed", "test expectedFailed");
 
         private final String color;
         private final String testState;
@@ -65,14 +65,14 @@ public class TestResultHelper {
     }
 
     public enum TestResultClassesColumn {
-
+        ALL(""),
         PASSED(".//*[@title='Passed']"),
-        FAILED("(.//*[@title='Failed'])[2]"),
         PASSEDMINOR(".//*[@title='Minor']"),
-        FAILEDMINOR(".//*[@title='Failed with Minor']"),
         SKIPPED(".//*[@title='Skipped']"),
-        FAILEDEXPECTED(".//*[@title='Expected Failed']"),
-        ALL("");
+        FAILED("(.//*[@title='Failed'])[2]"),
+        FAILEDMINOR(".//*[@title='Failed with Minor']"),
+        RETRIED(".//*[@title='Retried']"),
+        FAILEDEXPECTED(".//*[@title='Expected Failed']");
 
         private final String xpathNumber;
 
@@ -86,7 +86,6 @@ public class TestResultHelper {
     }
 
     public enum TestResultFailurePointEntryType {
-
         FAILED(".//*[@class='textleft resultsTable broken']"),
         FAILEDEXPECTED_NOT_INTOREPORT(".//*[@class='textleft resultsTable broken expfailed']"),
         FAILEDEXPECTED_INTOREPORT(".//*[@class='textleft resultsTable broken']"),
@@ -138,18 +137,18 @@ public class TestResultHelper {
         switch (testResult) {
             case PASSED:
                 return new Color(0, 128, 0);
-            case FAILED:
-                return new Color(255, 0, 0);
             case PASSEDMINOR:
                 return new Color(135, 206, 235);
-            case FAILEDMINOR:
-                return new Color(255, 20, 147);
             case SKIPPED:
                 return new Color(255, 165, 0);
+            case FAILED:
+                return new Color(255, 0, 0);
+            case FAILEDMINOR:
+                return new Color(255, 20, 147);
+            case RETRIED:
+                return new Color(255,182,193);
             case FAILEDEXPECTED:
                 return new Color(0,0,0);
-            //case RETRIED:
-                //TODO
             default:
                 throw new FennecRuntimeException("Color not implemented: " + testResult.getColor() + " for TestResult: " + testResult.toString());
         }

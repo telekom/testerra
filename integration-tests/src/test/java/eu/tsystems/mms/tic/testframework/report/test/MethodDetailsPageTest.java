@@ -110,7 +110,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT04_checkMethodDetailsForFailedMinorTest() throws Exception {
-        String methodName = "test_FilterFailedMinorWithFailedRetry (2/2)";
+        String methodName = "test_FilterFailedMinor";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details
@@ -157,6 +157,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * It runs once for a test that failed with a minor in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @Fails(description = "Need id for tr")
     public void testT06_checkMethodDetailsForRetriedTest() throws Exception {
         String methodName = "test_FilterFailedNoMinorWithFailedRetry (1/2)";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
@@ -186,7 +187,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT07_checkMethodDetailsForExpectedFailedTest() throws Exception {
-        String methodName = "test_FailedMinorAnnotatedWithFail_Run2";
+        String methodName = "test_FailedMinorAnnotatedWithFail_Run1";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details

@@ -45,7 +45,6 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
     public final GuiElement testEndTimeString = new GuiElement(this.driver, By.id("actualRunEndTime"), mainFrame);
 
     // Percentages
-    @Check
     public final GuiElement testPercentageString = new GuiElement(this.driver, By.id("actualRunPassRate"), mainFrame);
 
     public DashboardModuleTestResultNumberBreakdown(WebDriver driver) {
@@ -68,14 +67,17 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
             case PASSEDMINOR:
                 isDisplayed = numberPassedMinorTests.isDisplayed();
                 break;
+            case SKIPPED:
+                isDisplayed = numberSkippedTests.isDisplayed();
+                break;
             case FAILED:
                 isDisplayed = numberFailedTests.isDisplayed();
                 break;
             case FAILEDMINOR:
                 isDisplayed = numberFailedMinorTests.isDisplayed();
                 break;
-            case SKIPPED:
-                isDisplayed = numberSkippedTests.isDisplayed();
+            case RETRIED:
+                isDisplayed = numberFailedRetriedTests.isDisplayed();
                 break;
             case FAILEDEXPECTED:
                 isDisplayed = numberFailedExpectedTests.isDisplayed();
@@ -125,14 +127,18 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
             case PASSEDMINOR:
                 counter = numberPassedMinorTests;
                 break;
+            case SKIPPED:
+                counter = numberSkippedTests;
+                break;
+
             case FAILED:
                 counter = numberFailedTests;
                 break;
             case FAILEDMINOR:
                 counter = numberFailedMinorTests;
                 break;
-            case SKIPPED:
-                counter = numberSkippedTests;
+            case RETRIED:
+                counter = numberFailedRetriedTests;
                 break;
             case FAILEDEXPECTED:
                 counter = numberFailedExpectedTests;

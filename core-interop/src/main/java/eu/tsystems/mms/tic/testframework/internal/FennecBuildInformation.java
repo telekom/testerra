@@ -49,40 +49,13 @@ public class FennecBuildInformation implements Serializable {
     /** The singleton instance. */
     private static FennecBuildInformation instance = null;
 
-    /**
-     * Property build.java.version.
-     */
-    private String buildJavaVersion;
-
-    /**
-     * Property build.os.name.
-     */
-    private String buildOsName;
-
-    /**
-     * Property build.os.arch.
-     */
-    private String buildOsArch;
-
-    /**
-     * Property build.os.version.
-     */
-    private String buildOsVersion;
-
-    /**
-     * Property build.user.name.
-     */
-    private String buildUserName;
-
-    /**
-     * Property fennec.version.
-     */
-    private String FennecVersion;
-
-    /**
-     * Property build.timestamp.
-     */
-    private String buildTimestamp;
+    public String buildJavaVersion;
+    public String buildOsName;
+    public String buildOsArch;
+    public String buildOsVersion;
+    public String buildUserName;
+    public String fennecVersion;
+    public String buildTimestamp;
 
     /**
      * Creates a new <code>FennecBuildInformation</code> object by reading the data properties file.
@@ -99,155 +72,17 @@ public class FennecBuildInformation implements Serializable {
                     LOGGER.info("Could not load build information");
                 }
                 final String localBuild = "local build";
-                instance.setBuildJavaVersion(PropertyManager.getProperty("build.java.version", localBuild));
-                instance.setBuildOsName(PropertyManager.getProperty("build.os.name", localBuild));
-                instance.setBuildOsArch(PropertyManager.getProperty("build.os.arch", localBuild));
-                instance.setBuildOsVersion(PropertyManager.getProperty("build.os.version", localBuild));
-                instance.setBuildUserName(PropertyManager.getProperty("build.user.name", localBuild));
-                instance.setFennecVersion(PropertyManager.getProperty("fennec.version", localBuild));
-                instance.setBuildTimestamp(PropertyManager.getProperty("build.timestamp", localBuild));
+                instance.buildJavaVersion = PropertyManager.getProperty("build.java.version", localBuild);
+                instance.buildOsName = PropertyManager.getProperty("build.os.name", localBuild);
+                instance.buildOsArch = PropertyManager.getProperty("build.os.arch", localBuild);
+                instance.buildOsVersion = PropertyManager.getProperty("build.os.version", localBuild);
+                instance.buildUserName = PropertyManager.getProperty("build.user.name", localBuild);
+                instance.fennecVersion = PropertyManager.getProperty("fennec.version", localBuild);
+                instance.buildTimestamp = PropertyManager.getProperty("build.timestamp", localBuild);
             }
         }
 
         return instance;
     }
 
-    /**
-     * gets build java version
-     *
-     * @return the buildJavaVersion
-     */
-    public String getBuildJavaVersion() {
-        return buildJavaVersion;
-    }
-
-    /**
-     * set build java version
-     *
-     * @param buildJavaVersion the buildJavaVersion to set
-     */
-    public void setBuildJavaVersion(String buildJavaVersion) {
-        this.buildJavaVersion = buildJavaVersion;
-    }
-
-    /**
-     * gets build os name
-     *
-     * @return the buildOsName
-     */
-    public String getBuildOsName() {
-        return buildOsName;
-    }
-
-    /**
-     * set build os name
-     *
-     * @param buildOsName the buildOsName to set
-     */
-    public void setBuildOsName(String buildOsName) {
-        this.buildOsName = buildOsName;
-    }
-
-    /**
-     * gets build os arch
-     *
-     * @return the buildOsArch
-     */
-    public String getBuildOsArch() {
-        return buildOsArch;
-    }
-
-    /**
-     * set build os arch
-     *
-     * @param buildOsArch the buildOsArch to set
-     */
-    public void setBuildOsArch(String buildOsArch) {
-        this.buildOsArch = buildOsArch;
-    }
-
-    /**
-     * gets build os version
-     *
-     * @return the buildOsVersion
-     */
-    public String getBuildOsVersion() {
-        return buildOsVersion;
-    }
-
-    /**
-     * set build os version
-     *
-     * @param buildOsVersion the buildOsVersion to set
-     */
-    public void setBuildOsVersion(String buildOsVersion) {
-        this.buildOsVersion = buildOsVersion;
-    }
-
-    /**
-     * gets build user name
-     *
-     * @return the buildUserName
-     */
-    public String getBuildUserName() {
-        return buildUserName;
-    }
-
-    /**
-     * set build user name
-     *
-     * @param buildUserName the buildUserName to set
-     */
-    public void setBuildUserName(String buildUserName) {
-        this.buildUserName = buildUserName;
-    }
-
-    /**
-     * gets fennec version
-     *
-     * @return the FennecVersion
-     */
-    public String getFennecVersion() {
-        return FennecVersion;
-    }
-
-    /**
-     * sets fennec version
-     *
-     * @param FennecVersion the FennecVersion to set
-     */
-    public void setFennecVersion(String FennecVersion) {
-        this.FennecVersion = FennecVersion;
-    }
-
-    /**
-     * gets the build timestamp
-     *
-     * @return the buildTimestamp
-     */
-    public String getBuildTimestamp() {
-        return buildTimestamp;
-    }
-
-    /**
-     * set build timestamp
-     *
-     * @param buildTimestamp the buildTimestamp to set
-     */
-    public void setBuildTimestamp(String buildTimestamp) {
-        this.buildTimestamp = buildTimestamp;
-    }
-
-    /**
-     * set instance
-     *
-     * @param instance the instance to set
-     */
-    public static void setInstance(FennecBuildInformation instance) {
-        FennecBuildInformation.instance = instance;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 }

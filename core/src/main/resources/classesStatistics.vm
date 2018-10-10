@@ -145,7 +145,7 @@
                     </tr>
                     <tr class="test">
                         <td class="textleft test">fennec Version:</td>
-                        <td class="textleft test">$!{FennecBuildInformation.FennecVersion}</td>
+                        <td class="textleft test">$!{FennecBuildInformation.fennecVersion}</td>
                     </tr>
                     <tr class="test">
                         <td class="textleft test">Build Timestamp:</td>

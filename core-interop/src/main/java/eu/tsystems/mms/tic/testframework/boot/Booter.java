@@ -78,14 +78,14 @@ public class Booter {
         get versions info
          */
         FennecBuildInformation buildInformation = FennecBuildInformation.getInstance();
-        bannerVersions.add("build.java.version: " + buildInformation.getBuildJavaVersion());
-        bannerVersions.add("build.os.name:      " + buildInformation.getBuildOsName());
-        bannerVersions.add("build.os.arch:      " + buildInformation.getBuildOsArch());
-        bannerVersions.add("build.os.version:   " + buildInformation.getBuildOsVersion());
-        bannerVersions.add("build.user.name:    " + buildInformation.getBuildUserName());
-        bannerVersions.add("build.timestamp:    " + buildInformation.getBuildTimestamp());
+        bannerVersions.add("build.java.version: " + buildInformation.buildJavaVersion);
+        bannerVersions.add("build.os.name:      " + buildInformation.buildOsName);
+        bannerVersions.add("build.os.arch:      " + buildInformation.buildOsArch);
+        bannerVersions.add("build.os.version:   " + buildInformation.buildOsVersion);
+        bannerVersions.add("build.user.name:    " + buildInformation.buildUserName);
+        bannerVersions.add("build.timestamp:    " + buildInformation.buildTimestamp);
 
-        fennecVersion = buildInformation.getFennecVersion();
+        fennecVersion = buildInformation.fennecVersion;
 
         /*
         beautify

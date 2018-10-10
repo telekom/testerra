@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Holds information about out the fennec version and other build informations.
@@ -49,13 +50,14 @@ public class FennecBuildInformation implements Serializable {
     /** The singleton instance. */
     private static FennecBuildInformation instance = null;
 
-    public String buildJavaVersion;
-    public String buildOsName;
-    public String buildOsArch;
-    public String buildOsVersion;
-    public String buildUserName;
-    public String fennecVersion;
-    public String buildTimestamp;
+    final String localBuild = "local build";
+    public String buildJavaVersion = localBuild;
+    public String buildOsName = localBuild;
+    public String buildOsArch = localBuild;
+    public String buildOsVersion = localBuild;
+    public String buildUserName = localBuild;
+    public String fennecVersion = localBuild;
+    public String buildTimestamp = "" + new Date();
 
     /**
      * Creates a new <code>FennecBuildInformation</code> object by reading the data properties file.
@@ -68,17 +70,16 @@ public class FennecBuildInformation implements Serializable {
                 instance = new FennecBuildInformation();
                 try {
                     PropertyManager.loadProperties("fennec-build.properties");
+                    instance.buildJavaVersion = PropertyManager.getProperty("build.java.version", instance.buildJavaVersion);
+                    instance.buildOsName = PropertyManager.getProperty("build.os.name", instance.buildOsName);
+                    instance.buildOsArch = PropertyManager.getProperty("build.os.arch", instance.buildOsArch);
+                    instance.buildOsVersion = PropertyManager.getProperty("build.os.version", instance.buildOsVersion);
+                    instance.buildUserName = PropertyManager.getProperty("build.user.name", instance.buildUserName);
+                    instance.fennecVersion = PropertyManager.getProperty("fennec.version", instance.fennecVersion);
+                    instance.buildTimestamp = PropertyManager.getProperty("build.timestamp", instance.buildTimestamp);
                 } catch (Exception e) {
-                    LOGGER.info("Could not load build information");
+                    LOGGER.info("No pre-set build information");
                 }
-                final String localBuild = "local build";
-                instance.buildJavaVersion = PropertyManager.getProperty("build.java.version", localBuild);
-                instance.buildOsName = PropertyManager.getProperty("build.os.name", localBuild);
-                instance.buildOsArch = PropertyManager.getProperty("build.os.arch", localBuild);
-                instance.buildOsVersion = PropertyManager.getProperty("build.os.version", localBuild);
-                instance.buildUserName = PropertyManager.getProperty("build.user.name", localBuild);
-                instance.fennecVersion = PropertyManager.getProperty("fennec.version", localBuild);
-                instance.buildTimestamp = PropertyManager.getProperty("build.timestamp", localBuild);
             }
         }
 

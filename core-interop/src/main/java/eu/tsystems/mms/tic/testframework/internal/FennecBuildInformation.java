@@ -75,8 +75,8 @@ public class FennecBuildInformation implements Serializable {
                     instance.buildOsArch = PropertyManager.getProperty("build.os.arch", instance.buildOsArch);
                     instance.buildOsVersion = PropertyManager.getProperty("build.os.version", instance.buildOsVersion);
                     instance.buildUserName = PropertyManager.getProperty("build.user.name", instance.buildUserName);
-                    instance.fennecVersion = PropertyManager.getProperty("fennec.version", instance.fennecVersion);
                     instance.buildTimestamp = PropertyManager.getProperty("build.timestamp", instance.buildTimestamp);
+                    instance.fennecVersion = PropertyManager.getProperty("build.fennec.version", instance.fennecVersion);
                 } catch (Exception e) {
                     LOGGER.info("No pre-set build information");
                 }

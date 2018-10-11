@@ -37,3 +37,16 @@ processResources {
 test {
     exclude '**'
 }
+
+task writeBuildInformation() {
+    doLast {
+        file('src/main/resources/fennec-build.properties').text = """build.java.version=${System.getProperty("java.version")}
+build.os.name=${System.getProperty("os.name")}
+build.os.arch=${System.getProperty("os.arch")}
+build.os.version=${System.getProperty("os.version")}
+build.user.name=${System.getProperty("user.name")}
+build.timestamp=${new Date()}
+build.fennec.version=$version
+"""
+    }
+}

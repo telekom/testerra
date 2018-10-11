@@ -150,23 +150,12 @@ allprojects {
 
         repositories {
 
-            // TODO: switch!!!!!!!!!!!!!!!!!!!!!!
-
-//            maven {
-//                name 'jfennec-bintray-or-whatever'
-//                url 'the-correct-url'
-//                credentials {
-//                    username githubUsername
-//                    password githubPassword
-//                }
-//            }
-
             maven {
-                name 'prj-ticautom'
-                url 'https://artifacts.mms-at-work.de/artifactory/shared-ticautom-snapshot'
+                name 'deploy'
+                url deployUrl
                 credentials {
-                    username mmsArtifactoryUsername
-                    password mmsArtifactoryPassword
+                    username deployUsername
+                    password deployPassword
                 }
             }
 

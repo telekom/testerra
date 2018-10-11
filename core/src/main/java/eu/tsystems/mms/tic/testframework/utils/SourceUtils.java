@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.FennecCommons;
+import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import org.reflections.Reflections;
@@ -180,13 +181,15 @@ public final class SourceUtils {
 
     @SuppressWarnings("unchecked")
     private static List<String> findClassNamesForSubTypesOf(Class clazz) {
-        List<String> classnames = new ArrayList<String>();
-        Reflections reflections = new Reflections(PACKAGE_SCOPE);
-        Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
-        for (Class aClass : subTypesOf) {
-            classnames.add(aClass.getName());
+        final List<String> classnames = new ArrayList<String>();
+        synchronized (Locks.REFLECTIONS) {
+            Reflections reflections = new Reflections(PACKAGE_SCOPE);
+            Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
+            for (Class aClass : subTypesOf) {
+                classnames.add(aClass.getName());
+            }
+            return classnames;
         }
-        return classnames;
     }
 
     private static String findFileAndShowSource(String className, String filename, String methodName, int lineNr) {

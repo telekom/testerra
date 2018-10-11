@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.boot;
 
 import eu.tsystems.mms.tic.testframework.common.FennecCommons;
+import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.FennecBuildInformation;
 import eu.tsystems.mms.tic.testframework.utils.FennecUtils;
@@ -77,14 +78,14 @@ public class Booter {
         get versions info
          */
         FennecBuildInformation buildInformation = FennecBuildInformation.getInstance();
-        bannerVersions.add("build.java.version: " + buildInformation.getBuildJavaVersion());
-        bannerVersions.add("build.os.name:      " + buildInformation.getBuildOsName());
-        bannerVersions.add("build.os.arch:      " + buildInformation.getBuildOsArch());
-        bannerVersions.add("build.os.version:   " + buildInformation.getBuildOsVersion());
-        bannerVersions.add("build.user.name:    " + buildInformation.getBuildUserName());
-        bannerVersions.add("build.timestamp:    " + buildInformation.getBuildTimestamp());
+        bannerVersions.add("build.java.version: " + buildInformation.buildJavaVersion);
+        bannerVersions.add("build.os.name:      " + buildInformation.buildOsName);
+        bannerVersions.add("build.os.arch:      " + buildInformation.buildOsArch);
+        bannerVersions.add("build.os.version:   " + buildInformation.buildOsVersion);
+        bannerVersions.add("build.user.name:    " + buildInformation.buildUserName);
+        bannerVersions.add("build.timestamp:    " + buildInformation.buildTimestamp);
 
-        fennecVersion = buildInformation.getFennecVersion();
+        fennecVersion = buildInformation.fennecVersion;
 
         /*
         beautify
@@ -114,27 +115,30 @@ public class Booter {
         configurationBuilder.addClassLoader(Thread.currentThread().getContextClassLoader());
         configurationBuilder.forPackages("eu.tsystems.mms.tic");
 
-        Reflections reflections = new Reflections(configurationBuilder);
-        Set<Class<? extends ModuleHook>> hooks = reflections.getSubTypesOf(ModuleHook.class);
-        if (hooks.isEmpty()) {
-            LOGGER.info("No Init Hooks found");
-        }
+        synchronized (Locks.REFLECTIONS) {
+            Reflections reflections = new Reflections(configurationBuilder);
+            Set<Class<? extends ModuleHook>> hooks = reflections.getSubTypesOf(ModuleHook.class);
 
-        final String startMarker = "******************* ";
-        final String endMarker = "################### ";
-
-        hooks.forEach(aClass -> {
-            try {
-                ModuleHook moduleHook = aClass.newInstance();
-                LOGGER.info(startMarker + "Calling Init Hook " + aClass.getSimpleName() + "...");
-                moduleHook.init();
-                MODULE_HOOKS.add(moduleHook);
-            } catch (InstantiationException | IllegalAccessException e) {
-                LOGGER.error(startMarker + "Could not load Init Hook " + aClass.getSimpleName());
+            if (hooks.isEmpty()) {
+                LOGGER.info("No Init Hooks found");
             }
-        });
 
-        LOGGER.info(endMarker + "Done processing Init Hooks.");
+            final String startMarker = "******************* ";
+            final String endMarker = "################### ";
+
+            hooks.forEach(aClass -> {
+                try {
+                    ModuleHook moduleHook = aClass.newInstance();
+                    LOGGER.info(startMarker + "Calling Init Hook " + aClass.getSimpleName() + "...");
+                    moduleHook.init();
+                    MODULE_HOOKS.add(moduleHook);
+                } catch (InstantiationException | IllegalAccessException e) {
+                    LOGGER.error(startMarker + "Could not load Init Hook " + aClass.getSimpleName());
+                }
+            });
+
+            LOGGER.info(endMarker + "Done processing Init Hooks.");
+        }
     }
 
     public static void shutdown() {

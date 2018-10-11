@@ -8,8 +8,6 @@
 
 package eu.tsystems.mms.tic.testframework.report.testundertest;
 
-import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
-import eu.tsystems.mms.tic.testframework.utils.TestUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
@@ -20,7 +18,6 @@ import org.testng.annotations.Test;
  *
  * @author fakr
  */
-@FennecClassContext
 public class ReportTestUnderTestDependsOn extends AbstractTest {
 
     @Test

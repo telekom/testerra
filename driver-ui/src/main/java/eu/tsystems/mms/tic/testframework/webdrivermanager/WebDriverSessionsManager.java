@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by pele on 08.01.2015.
@@ -72,7 +73,7 @@ final class WebDriverSessionsManager {
 
     private static final String FULL_SESSION_KEY_SPLIT_MARKER = "___";
 
-    static final Map<EventFiringWebDriver, WebDriverRequest> DRIVER_REQUEST_MAP = new HashMap<>();
+    static final Map<EventFiringWebDriver, WebDriverRequest> DRIVER_REQUEST_MAP = new ConcurrentHashMap<>();
 
     private static String getFullSessionKey(String sessionKey) {
         Thread currentThread = Thread.currentThread();

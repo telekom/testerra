@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
+import org.apache.commons.collections4.CollectionUtils;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
@@ -145,26 +146,25 @@ public class RunContext extends Context implements SynchronizableContext {
         return TestStatusController.Status.values();
     }
 
-    public void rescanForClassContextNames() {
-        Map<String, List<ClassContext>> map = new LinkedHashMap<>();
-        Map<String, ClassContext> mergeMap = new LinkedHashMap<>();
+    public synchronized void rescanForClassContextNames() {
+        final Map<String, List<ClassContext>> allClassesByFullClassName = new LinkedHashMap<>();
+        final Map<String, ClassContext> mergeMap = new LinkedHashMap<>();
 
         //scan
         suiteContexts.forEach(suiteContext ->
                 suiteContext.testContexts.forEach(testContext ->
                         testContext.classContexts.forEach(classContext -> {
                                     String id = classContext.fullClassName;
-                                    if (!map.containsKey(id)) {
-                                        map.put(id, new LinkedList<>());
+                                    if (!allClassesByFullClassName.containsKey(id)) {
+                                        allClassesByFullClassName.put(id, new LinkedList<>());
                                     }
-                                    map.get(id).add(classContext);
+                                    allClassesByFullClassName.get(id).add(classContext);
                                 }
                         )
                 )
         );
 
-        map.keySet().stream().filter(id -> map.get(id).size() > 1)
-                .forEach(id -> map.get(id).forEach(classContext -> {
+        allClassesByFullClassName.keySet().forEach(id -> allClassesByFullClassName.get(id).forEach(classContext -> {
                     if (classContext.fennecClassContext != null && classContext.fennecClassContext.mode() == FennecClassContext.Mode.ONE_FOR_ALL) {
                         if (!mergeMap.containsKey(id)) {
                             ClassContext mergedClassContext = new ClassContext(null, this);
@@ -177,13 +177,26 @@ public class RunContext extends Context implements SynchronizableContext {
                             mergeMap.put(id, mergedClassContext);
                         }
 
-                        mergeMap.get(id).methodContexts.addAll(classContext.methodContexts);
+                        // add all methods from this context to the merged one (beware of duplicates)
+                        final ClassContext mergedClassContext = mergeMap.get(id);
+                        final List<MethodContext> mergedMethodContexts = mergedClassContext.methodContexts;
+                        classContext.methodContexts.stream().filter(mc -> !mergedMethodContexts.contains(mc))
+                                .forEach(mc -> {
+                                        // modify parent class context
+                                        mc.parentContext = mc.classContext = mergedClassContext;
+
+                                        // add to the merged list
+                                        mergedMethodContexts.add(mc);
+                                });
+
+                        // mark as merged
                         classContext.merged = true;
                     } else {
                         classContext.name = classContext.simpleClassName + "_in_" + classContext.testContext.suiteContext.name + "-" + classContext.testContext.name;
                     }
                 }));
 
+        combinedClassContexts.clear();
         combinedClassContexts.addAll(mergeMap.values());
     }
 

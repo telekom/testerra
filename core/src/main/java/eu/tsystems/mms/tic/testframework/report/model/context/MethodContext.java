@@ -61,7 +61,9 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     public TestStep failedStep;
     public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.High;
 
-    public final ClassContext classContext;
+    public ClassContext classContext;
+    public TestContext testContext;
+    public SuiteContext suiteContext;
     public final RunContext runContext;
 
     private int hashCodeOfTestResult = 0;
@@ -93,11 +95,16 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
      * Public constructor. Creates a new <code>MethodContext</code> object.
      *  @param name        The test method name.
      * @param methodType  method type.
-     * @param classContext
-     * @param runContext
+     * @param classContext .
+     * @param suiteContext .
+     * @param testContext .
+     * @param runContext .
      */
-    public MethodContext(final String name, final MethodType methodType, final ClassContext classContext, RunContext runContext) {
+    public MethodContext(final String name, final MethodType methodType, final ClassContext classContext, final TestContext testContext, final SuiteContext suiteContext, final RunContext runContext) {
+        this.testContext = testContext;
+        this.suiteContext = suiteContext;
         this.runContext = runContext;
+
         this.name = name;
         this.classContext = classContext;
         this.methodRunIndex = Counters.increaseMethodExecutionCounter();
@@ -275,7 +282,7 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
         return status == TestStatusController.Status.FAILED_RETRIED || status == TestStatusController.Status.PASSED_RETRY;
     }
 
-    public static MethodContext create(final ITestResult testResult, final String testMethodName, final ClassContext classContext) {
+    public static MethodContext create(final ITestResult testResult, final String testMethodName, final ClassContext classContext, final TestContext testContext, final SuiteContext suiteContext) {
         MethodType methodType;
         if (testResult.getMethod().isTest()) {
             methodType = MethodType.TEST_METHOD;
@@ -283,7 +290,7 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
         else {
             methodType = MethodType.CONFIGURATION_METHOD;
         }
-        MethodContext methodContext = new MethodContext(testMethodName, methodType, classContext, classContext.runContext);
+        MethodContext methodContext = new MethodContext(testMethodName, methodType, classContext, testContext, suiteContext, classContext.runContext);
         methodContext.hashCodeOfTestResult = testResult.hashCode();
         return methodContext;
     }

@@ -100,7 +100,7 @@ public class ClassContext extends Context implements SynchronizableContext {
                 } else {
                     methodType = MethodType.CONFIGURATION_METHOD;
                 }
-                methodContext = new MethodContext(name, methodType, this, runContext);
+                methodContext = new MethodContext(name, methodType, this, testContext, testContext.suiteContext, runContext);
                 fillBasicContextValues(methodContext, name);
                 methodContext.testResult = testResult;
 

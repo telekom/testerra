@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.interop.CollectAssertionInfoArtefacts;
+import eu.tsystems.mms.tic.testframework.report.model.context.RunContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
@@ -61,6 +62,9 @@ public class MethodFinishedWorker extends MethodWorker {
             }
             methodContext.buildExitFingerprint();
         }
+
+        // set class context names (for correct method details context links)
+        ExecutionContextController.RUN_CONTEXT.rescanForClassContextNames();
 
         // generate html
         ReportUtils.createMethodDetailsStepsView(methodContext);

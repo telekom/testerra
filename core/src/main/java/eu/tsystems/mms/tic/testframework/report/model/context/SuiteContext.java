@@ -34,7 +34,7 @@ public class SuiteContext extends Context implements SynchronizableContext {
     public final RunContext runContext;
 
     public SuiteContext(RunContext runContext) {
-        this.runContext = runContext;
+        this.parentContext = this.runContext = runContext;
     }
 
     public TestContext getTestContext(ITestResult testResult, ITestContext iTestContext) {

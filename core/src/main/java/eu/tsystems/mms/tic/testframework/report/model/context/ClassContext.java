@@ -51,16 +51,17 @@ import java.util.stream.Collectors;
  */
 public class ClassContext extends Context implements SynchronizableContext {
 
-    final List<MethodContext> methodContexts = new LinkedList<>();
+    public final List<MethodContext> methodContexts = new LinkedList<>();
     public String fullClassName;
     public String simpleClassName;
     public final TestContext testContext;
     public final RunContext runContext;
     public FennecClassContext fennecClassContext = null;
     public boolean merged = false;
+    public ClassContext mergedIntoClassContext = null;
 
     public ClassContext(TestContext testContext, RunContext runContext) {
-        this.testContext = testContext;
+        this.parentContext = this.testContext = testContext;
         this.runContext = runContext;
     }
 
@@ -100,9 +101,26 @@ public class ClassContext extends Context implements SynchronizableContext {
                 } else {
                     methodType = MethodType.CONFIGURATION_METHOD;
                 }
-                methodContext = new MethodContext(name, methodType, this, testContext, testContext.suiteContext, runContext);
-                fillBasicContextValues(methodContext, name);
+
+                TestContext correctTestContext = testContext;
+                SuiteContext correctSuiteContext = testContext.suiteContext;
+                if (merged) {
+                    correctSuiteContext = runContext.getSuiteContext(testResult, iTestContext);
+                    correctTestContext = correctSuiteContext.getTestContext(testResult, iTestContext);
+                }
+
+                methodContext = new MethodContext(name, methodType, this, correctTestContext, correctSuiteContext, runContext);
+                fillBasicContextValues(methodContext, this, name);
                 methodContext.testResult = testResult;
+
+                /*
+                link to merged context
+                 */
+                if (merged) {
+                    synchronized (mergedIntoClassContext.methodContexts) {
+                        mergedIntoClassContext.methodContexts.add(methodContext);
+                    }
+                }
 
                 /*
                 also check for annotations
@@ -189,4 +207,9 @@ public class ClassContext extends Context implements SynchronizableContext {
         });
         return methodContexts;
     }
+
+    protected void setExplicitName() {
+        name = simpleClassName + "_" + testContext.suiteContext.name + "_" + testContext.name;
+    }
+
 }

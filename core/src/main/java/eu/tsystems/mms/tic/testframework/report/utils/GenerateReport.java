@@ -122,12 +122,6 @@ public class GenerateReport {
     }
 
     private static void pGenerateReport() {
-
-        /*
-         * Re-scan for FennecClassContexts
-         */
-        ExecutionContextController.RUN_CONTEXT.rescanForClassContextNames();
-
         /*
         get ALL ClassContexts
          */

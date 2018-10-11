@@ -62,9 +62,6 @@ public class MethodFinishedWorker extends MethodWorker {
             methodContext.buildExitFingerprint();
         }
 
-        // set class context names (for correct method details context links)
-        ExecutionContextController.RUN_CONTEXT.rescanForClassContextNames();
-
         // generate html
         ReportUtils.createMethodDetailsStepsView(methodContext);
 

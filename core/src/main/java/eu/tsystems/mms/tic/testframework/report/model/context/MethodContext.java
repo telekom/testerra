@@ -282,19 +282,6 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
         return status == TestStatusController.Status.FAILED_RETRIED || status == TestStatusController.Status.PASSED_RETRY;
     }
 
-    public static MethodContext create(final ITestResult testResult, final String testMethodName, final ClassContext classContext, final TestContext testContext, final SuiteContext suiteContext) {
-        MethodType methodType;
-        if (testResult.getMethod().isTest()) {
-            methodType = MethodType.TEST_METHOD;
-        }
-        else {
-            methodType = MethodType.CONFIGURATION_METHOD;
-        }
-        MethodContext methodContext = new MethodContext(testMethodName, methodType, classContext, testContext, suiteContext, classContext.runContext);
-        methodContext.hashCodeOfTestResult = testResult.hashCode();
-        return methodContext;
-    }
-
     @Override
     public String getName() {
         return name;

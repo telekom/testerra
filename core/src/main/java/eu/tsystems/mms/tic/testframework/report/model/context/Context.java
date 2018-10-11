@@ -51,6 +51,12 @@ public abstract class Context implements SynchronizableContext {
 
     protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
+    protected static void fillBasicContextValues(Context context, Context parentContext, String name) {
+        context.parentContext = parentContext;
+        context.name = name;
+        context.swi = parentContext.swi + "_" + name;
+    }
+
     protected <T extends Context> T getContext(Class<T> contextClass, List<T> contexts, String name, boolean autocreate, CreateDownStreamContext<T> createDownStreamContext) {
         synchronized (contexts) {
             List<T> collect = contexts.stream().filter(context -> name.equals(context.name)).collect(Collectors.toList());
@@ -64,7 +70,7 @@ public abstract class Context implements SynchronizableContext {
                      */
 
                     T context = createDownStreamContext.create();
-                    fillBasicContextValues(context, name);
+                    fillBasicContextValues(context, this, name);
                     contexts.add(context);
 
                     // fire context update event: create context
@@ -84,12 +90,6 @@ public abstract class Context implements SynchronizableContext {
                 return collect.get(0);
             }
         }
-    }
-
-    void fillBasicContextValues(Context context, String name) {
-        context.name = name;
-        context.parentContext = this;
-        context.swi = context.parentContext.swi + "_" + context.name;
     }
 
     public abstract TestStatusController.Status getStatus();

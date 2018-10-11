@@ -19,14 +19,12 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
 import eu.tsystems.mms.tic.testframework.events.FennecEvent;
 import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
 import eu.tsystems.mms.tic.testframework.events.FennecEventService;
 import eu.tsystems.mms.tic.testframework.events.FennecEventType;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
@@ -37,7 +35,7 @@ import java.util.stream.Collectors;
 public class RunContext extends Context implements SynchronizableContext {
 
     public final List<SuiteContext> suiteContexts = new LinkedList<>();
-    public final List<ClassContext> combinedClassContexts = new LinkedList<>();
+    public final List<ClassContext> mergedClassContexts = new LinkedList<>();
     public Map<String, List<MethodContext>> failureAspects = new LinkedHashMap<>();
     public Map<String, List<MethodContext>> exitPoints = new LinkedHashMap<>();
     public final RunConfig runConfig = new RunConfig();
@@ -120,7 +118,7 @@ public class RunContext extends Context implements SynchronizableContext {
             });
         });
 
-        combinedClassContexts.forEach(classContext -> methodStatsPerClass.put(classContext, classContext.getMethodStats(includeTestMethods, includeConfigMethods)));
+        mergedClassContexts.forEach(classContext -> methodStatsPerClass.put(classContext, classContext.getMethodStats(includeTestMethods, includeConfigMethods)));
 
         /*
         sort
@@ -143,60 +141,6 @@ public class RunContext extends Context implements SynchronizableContext {
 
     public TestStatusController.Status[] getAvailableStatuses() {
         return TestStatusController.Status.values();
-    }
-
-    public synchronized void rescanForClassContextNames() {
-        final Map<String, List<ClassContext>> allClassesByFullClassName = new LinkedHashMap<>();
-        final Map<String, ClassContext> mergeMap = new LinkedHashMap<>();
-
-        //scan
-        suiteContexts.forEach(suiteContext ->
-                suiteContext.testContexts.forEach(testContext ->
-                        testContext.classContexts.forEach(classContext -> {
-                                    String id = classContext.fullClassName;
-                                    if (!allClassesByFullClassName.containsKey(id)) {
-                                        allClassesByFullClassName.put(id, new LinkedList<>());
-                                    }
-                                    allClassesByFullClassName.get(id).add(classContext);
-                                }
-                        )
-                )
-        );
-
-        allClassesByFullClassName.keySet().forEach(id -> allClassesByFullClassName.get(id).forEach(classContext -> {
-                    if (classContext.fennecClassContext != null && classContext.fennecClassContext.mode() == FennecClassContext.Mode.ONE_FOR_ALL) {
-                        if (!mergeMap.containsKey(id)) {
-                            ClassContext mergedClassContext = new ClassContext(null, this);
-                            mergedClassContext.name = classContext.name;
-
-                            if (!StringUtils.isStringEmpty(classContext.fennecClassContext.value())) {
-                                mergedClassContext.name = classContext.fennecClassContext.value();
-                            }
-
-                            mergeMap.put(id, mergedClassContext);
-                        }
-
-                        // add all methods from this context to the merged one (beware of duplicates)
-                        final ClassContext mergedClassContext = mergeMap.get(id);
-                        final List<MethodContext> mergedMethodContexts = mergedClassContext.methodContexts;
-                        classContext.methodContexts.stream().filter(mc -> !mergedMethodContexts.contains(mc))
-                                .forEach(mc -> {
-                                        // modify parent class context
-                                        mc.parentContext = mc.classContext = mergedClassContext;
-
-                                        // add to the merged list
-                                        mergedMethodContexts.add(mc);
-                                });
-
-                        // mark as merged
-                        classContext.merged = true;
-                    } else {
-                        classContext.name = classContext.simpleClassName + "_in_" + classContext.testContext.suiteContext.name + "-" + classContext.testContext.name;
-                    }
-                }));
-
-        combinedClassContexts.clear();
-        combinedClassContexts.addAll(mergeMap.values());
     }
 
     public TestStatusController.Status[] getAvailableStatus() {

@@ -5,7 +5,7 @@
 
     $testMethod.name
     #if ($testMethod.classContext.merged)
-        (in $testMethod.classContext.testContext.suiteContext.name - $testMethod.classContext.testContext.name)
+        (in $testMethod.suiteContext.name - $testMethod.testContext.name)
     #end
 
     #parse("methodTags.vm")

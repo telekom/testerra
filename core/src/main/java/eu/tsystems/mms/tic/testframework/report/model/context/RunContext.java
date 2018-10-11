@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
-import org.apache.commons.collections4.CollectionUtils;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 

@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.Genera
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateOtherOutputsWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
-import eu.tsystems.mms.tic.testframework.interop.CollectAssertionInfoArtefacts;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.FennecListener;
@@ -37,7 +36,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.FennecUtils;
-import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.slf4j.Logger;

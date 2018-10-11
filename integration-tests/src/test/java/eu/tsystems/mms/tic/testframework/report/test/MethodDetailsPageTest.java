@@ -275,7 +275,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      *
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(description = "BUG OR NOT: Context for Class With MyContext is not shown correctly", intoReport = true)
+    @Fails(description = "XETA-686")
     public void testT13_checkContext() throws Exception {
         TestStep.begin("Checks Context for classes without using FennecClassContext");
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(),PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),ReportTestUnderTestPassed.class.getSimpleName(),"test_PassedMinor1");

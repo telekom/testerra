@@ -87,7 +87,7 @@ public final class Util {
         html += LINEBREAK;
         html += "<font size='1' color='grey'>" + methodContext.status.title + "</font>";
         html += LINEBREAK;
-        html += "<font size='1' color='white'>" + methodContext.classContext.name + "</font>";
+        html += "<font size='1' color='white'>" + methodContext.getEffectiveClassContext().name + "</font>";
         html += LINEBREAK;
         html += "<font size='1' color='white'>(" + methodContext.methodRunIndex + ")</font>";
 

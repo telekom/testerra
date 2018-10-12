@@ -327,4 +327,13 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
                 ", name='" + name + '\'' +
                 '}';
     }
+
+    public ClassContext getEffectiveClassContext() {
+        if (classContext.merged) {
+            return classContext.mergedIntoClassContext;
+        }
+        else {
+            return classContext;
+        }
+    }
 }

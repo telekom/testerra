@@ -7,7 +7,7 @@
             <a onclick="showLoadingIn(null);" href="methods/${testMethod.methodRunIndex}.html#${testMethod.name}">
                 $testMethod.name
                 #if ($testMethod.classContext.merged)
-                    (in $testMethod.classContext.testContext.suiteContext.name - $testMethod.classContext.testContext.name)
+                    (in $testMethod.suiteContext.name - $testMethod.testContext.name)
                 #end
 
                 #if (${testMethod.dashboardInfos.size()} > 0)

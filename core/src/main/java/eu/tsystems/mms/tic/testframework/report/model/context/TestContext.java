@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.testng.IClass;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
@@ -89,28 +90,36 @@ public class TestContext extends Context implements SynchronizableContext {
             hook into runContext mergedContexts
              */
             final FennecClassContext actualFennecClassContext = realClass.getAnnotation(FennecClassContext.class);
-            final ClassContext mergedClassContext;
 
-            synchronized (runContext.mergedClassContexts) {
-                // check if this class is present
-                Optional<ClassContext> first = runContext.mergedClassContexts.stream().filter(c -> c.fennecClassContext == actualFennecClassContext).findFirst();
-                if (first.isPresent()) {
-                    mergedClassContext = first.get();
-                } else {
-                    // create and add to list
-                    mergedClassContext = new ClassContext(this, runContext);
-                    mergedClassContext .fullClassName = realClass.getName();
-                    mergedClassContext .simpleClassName = realClass.getSimpleName();
-                    fillBasicContextValues(mergedClassContext , this, mergedClassContext .simpleClassName);
-                    mergedClassContext .fennecClassContext = actualFennecClassContext;
-                    mergedClassContext .merged = true;
-                    runContext.mergedClassContexts.add(mergedClassContext);
+            if (actualFennecClassContext.mode() == FennecClassContext.Mode.ONE_FOR_ALL) {
+                final ClassContext mergedClassContext;
+
+                synchronized (runContext.mergedClassContexts) {
+                    // check if this class is present
+                    Optional<ClassContext> first = runContext.mergedClassContexts.stream().filter(c -> c.fennecClassContext == actualFennecClassContext).findFirst();
+                    if (first.isPresent()) {
+                        mergedClassContext = first.get();
+                    } else {
+                        // create and add to list
+                        mergedClassContext = new ClassContext(this, runContext);
+                        mergedClassContext.fullClassName = realClass.getName();
+                        mergedClassContext.simpleClassName = realClass.getSimpleName();
+                        fillBasicContextValues(mergedClassContext, this, mergedClassContext.simpleClassName);
+                        mergedClassContext.fennecClassContext = actualFennecClassContext;
+                        mergedClassContext.merged = true;
+
+                        if (!StringUtils.isStringEmpty(actualFennecClassContext.value())) {
+                            mergedClassContext.name = actualFennecClassContext.value();
+                        }
+
+                        runContext.mergedClassContexts.add(mergedClassContext);
+                    }
                 }
-            }
 
-            // mark context reference
-            classContext.merged = true;
-            classContext.mergedIntoClassContext = mergedClassContext;
+                // mark context reference
+                classContext.merged = true;
+                classContext.mergedIntoClassContext = mergedClassContext;
+            }
         }
 
         return classContext;

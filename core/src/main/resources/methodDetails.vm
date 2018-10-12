@@ -192,7 +192,7 @@
                                 </h5>
 
                                 <div id="context" class="dashboardTextVerySmall hidden" style="line-height: 22px; color:#888;">
-                                    Class: <a href="../classes/${testMethod.classContext.id}.html" title="Jump to class">${testMethod.classContext.name}</a><br/>
+                                    Class: <a href="../classes/${testMethod.getEffectiveClassContext().id}.html" title="Jump to class">${testMethod.getEffectiveClassContext().name}</a><br/>
                                     Test: ${testMethod.testContext.name}<br/>
                                     Suite: ${testMethod.suiteContext.name}<br/>
                                     <br/>

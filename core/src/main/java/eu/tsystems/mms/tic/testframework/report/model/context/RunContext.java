@@ -104,6 +104,14 @@ public class RunContext extends Context implements SynchronizableContext {
         return counts;
     }
 
+    /**
+     * Get method statistics for all effective classes.
+     * The classes are all classContext from the context tree (without merged ones) AND mergedClassContexts from runContext.
+     *
+     * @param includeTestMethods .
+     * @param includeConfigMethods  .
+     * @return a map
+     */
     public Map<ClassContext, Map> getMethodStatsPerClass(boolean includeTestMethods, boolean includeConfigMethods) {
         final Map<ClassContext, Map> methodStatsPerClass = new LinkedHashMap<>();
         List < SuiteContext > suiteContexts = copyOfSuiteContexts();

@@ -108,15 +108,9 @@ public final class WebDriverManagerUtils {
 
         String browserInfo = pLogUserAgent(driver);
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        String context = "global";
         ClassContext classContext = methodContext.classContext;
-        if (methodContext != null && classContext != null) {
-            context = classContext.name + "." + methodContext.name +
-                    " : " + sessionKey + " on " + hostInfo;
-        }
+        String context = classContext.name + "." + methodContext.name + " : " + sessionKey + " on " + hostInfo;
         BrowserInformation.setBrowserInfoWithContext(browserInfo, context);
-        List<String> browserInfoWithContext = BrowserInformation.getContext(browserInfo);
-        //TODO: TestRunConfiguration.getInstance().addBrowserWithContext(browserInfo, browserInfoWithContext);
     }
 
     public static void logUserAgent(WebDriver driver) {

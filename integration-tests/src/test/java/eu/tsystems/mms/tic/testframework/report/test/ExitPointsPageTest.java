@@ -68,10 +68,9 @@ public class ExitPointsPageTest extends AbstractReportFailuresTest {
 
     @Override
     protected void checkExpectedFailedMarkWorkflow(boolean intoReport) {
-        int position = 38;
+        AbstractResultTableFailureEntry failedEntry = TestReportTwoExitPoints.FailedNotIntoReport;
         if(intoReport)
-            position = 37;
-        final AbstractResultTableFailureEntry failedEntry = failurePointEntryTestObjects.get(position - 1);
+            failedEntry = TestReportTwoExitPoints.FailedIntoReport;
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
         failurePointsPage.assertExpectedFailsReportMark(failedEntry, intoReport);
     }

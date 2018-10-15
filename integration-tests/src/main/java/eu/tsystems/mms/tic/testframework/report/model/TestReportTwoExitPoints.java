@@ -28,9 +28,9 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
             Arrays.asList("ReportTestUnderTestCorridorHigh - test_testHighCorridorFailed2"),Arrays.asList("Exception")
     );
 
-    public static final ExitPointEntry EP37 = new ExitPointEntry(
+    public static final ExitPointEntry FailedIntoReport = new ExitPointEntry(
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
-            37,
+            0,
             1,
             "",
             true,
@@ -38,13 +38,13 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
             Arrays.asList("FennecTestFailureException: Failing of test expected. Description: This is an unknown bug.","Exception")
     );
 
-    public static final ExitPointEntry EP38 = new ExitPointEntry(
+    public static final ExitPointEntry FailedNotIntoReport = new ExitPointEntry(
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
-            38,
+            0,
             1,
             "",
             true,
-            Arrays.asList("ReportTestUnderTestCorridorHigh - test_testHighCorridorFailed2"),
+            Arrays.asList("ReportTestUnderTestExpectedtoFail - test_FailedMinorAnnotatedWithFail_Run6"),
             Arrays.asList("FennecTestFailureException: Failing of test expected. Description: This is a known bug.","Exception")
     );
 
@@ -56,10 +56,6 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
                 furtherExitPoint = EP1;
             else if(index == 1)
                 furtherExitPoint = EP2;
-            else if(index == 36)
-                furtherExitPoint = EP37;
-            else if(index == 37)
-                furtherExitPoint = EP38;
             else {
                 furtherExitPoint = new ExitPointEntry(
                         TestResultHelper.TestResultFailurePointEntryType.FAILED,

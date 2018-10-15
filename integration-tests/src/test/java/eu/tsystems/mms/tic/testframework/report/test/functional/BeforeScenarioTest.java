@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.test.functional;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
@@ -64,6 +65,7 @@ public class BeforeScenarioTest extends AbstractTest {
      * Checks whether the Before[...] methods cause the skipping of the control methods
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9}, dataProvider = "beforeDP")
+    @Fails(ticketString = "XETA-688")
     public void testT04_checkControlMethodsAreSkippedIfBeforeMethodsFailed(BeforeConfiguration beforeConfig) {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.getReportDirectory()));
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(beforeConfig.getReportClassName());

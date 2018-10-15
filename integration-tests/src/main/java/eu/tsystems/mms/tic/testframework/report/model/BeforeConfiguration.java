@@ -6,11 +6,11 @@ package eu.tsystems.mms.tic.testframework.report.model;
 public enum BeforeConfiguration {
 
     BEFORE_SUITE("ReportTestUnderTestBeforeScenarios", "beforeSuiteFailed"),
-    BEFORE_TEST("ReportTestUnderTestBeforeScenarios_in_Before Scenario-Before Test Failed", "beforeTestFailed"),
-    BEFORE_GROUPS("ReportTestUnderTestBeforeScenarios_in_Before Scenario-Before Groups Failed", "beforeGroupsFailed"),
-    BEFORE_CLASS("ReportTestUnderTestBeforeScenarios_in_Before Scenario-Before Class Failed", "beforeClassFailed"),
-    BEFORE_METHOD("ReportTestUnderTestBeforeScenarios_in_Before Scenario-Before Method Failed", "beforeMethodFailed"),
-    ALL("ReportTestUnderTestBeforeScenarios_in_Before Scenario-Before Run All", "");
+    BEFORE_TEST("ReportTestUnderTestBeforeScenarios_Before Scenario_Before Test Failed", "beforeTestFailed"),
+    BEFORE_GROUPS("ReportTestUnderTestBeforeScenarios_Before Scenario_Before Groups Failed", "beforeGroupsFailed"),
+    BEFORE_CLASS("ReportTestUnderTestBeforeScenarios_Before Scenario_Before Class Failed", "beforeClassFailed"),
+    BEFORE_METHOD("ReportTestUnderTestBeforeScenarios_Before Scenario_Before Method Failed", "beforeMethodFailed"),
+    ALL("ReportTestUnderTestBeforeScenarios_Before Scenario_Before Run All", "");
 
     private String reportClassName;
 

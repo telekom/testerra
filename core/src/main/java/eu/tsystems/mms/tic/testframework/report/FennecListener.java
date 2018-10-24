@@ -39,6 +39,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.FennecEve
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.LoggingStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TestStartWorker;
+import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
@@ -214,7 +215,12 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
     @Override
     public void beforeInvocation(final IInvokedMethod method, final ITestResult testResult,
                                  final ITestContext context) {
-        pBeforeInvocation(method, testResult, context);
+        try {
+            pBeforeInvocation(method, testResult, context);
+        } catch (Throwable t) {
+            LOGGER.error("FATAL INTERNAL ERROR in beforeInvocation for " + method + ", " + testResult + ", " + context, t);
+            ReportInfo.getDashboardWarning().addInfo(1, "FATAL INTERNAL ERROR during execution! Please analyze the build logs for this error!");
+        }
     }
 
     /**
@@ -222,9 +228,9 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
      *
      * @param invokedMethod invoked method.
      * @param testResult    result of invoked method.
-     * @param context
+     * @param testContext
      */
-    private void pBeforeInvocation(final IInvokedMethod invokedMethod, final ITestResult testResult, ITestContext context) {
+    private void pBeforeInvocation(final IInvokedMethod invokedMethod, final ITestResult testResult, ITestContext testContext) {
         /*
         check for listener duplicates
          */
@@ -242,7 +248,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
         /*
          * store testresult, create method context
          */
-        final MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult); // stores the actual testresult, auto-creates the method context
+        final MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
         ExecutionContextController.setCurrentMethodContext(methodContext);
 
         final String infoText = "beforeInvocation: " + invokedMethod.getTestMethod().getTestClass().getName() + "." +
@@ -261,7 +267,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
 
         FennecUtils.addWorkersToExecutor(BEFORE_INVOCATION_WORKERS, workerExecutor);
 
-        workerExecutor.run(testResult, methodName, methodContext, context, invokedMethod);
+        workerExecutor.run(testResult, methodName, methodContext, testContext, invokedMethod);
 
         TestStep.end();
     }
@@ -442,7 +448,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
          */
         Throwable throwable = iTestResult.getThrowable();
         if (throwable != null && throwable.toString().contains(SKIP_FAILED_DEPENDENCY_MSG)) {
-            ExecutionContextController.setCurrentTestResult(iTestResult);
+            ExecutionContextController.setCurrentTestResult(iTestResult, null);
             ITestContext testContext = iTestResult.getTestContext();
             pAfterInvocation(null, iTestResult, testContext);
         }

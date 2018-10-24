@@ -4,6 +4,8 @@ import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.lang.reflect.Method;
+
 /**
  * Created by fakr on 07.11.2017
  */
@@ -50,12 +52,12 @@ public class ReportTestUnderTestBeforeScenarios extends AbstractTest {
     }
 
     @BeforeMethod(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9, SystemTestsGroup.BEFORE_METHOD_FAILED})
-    public void beforeMethodFailed() {
+    public void beforeMethodFailed(Method method) {
         Assert.assertTrue(false);
     }
 
     @BeforeMethod(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9})
-    public void beforeMethodPassed() {
+    public void beforeMethodPassed(Method method) {
         Assert.assertTrue(true);
     }
 

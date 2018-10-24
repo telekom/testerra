@@ -66,9 +66,9 @@ public class ExecutionContextController {
      * @param iTestResult The ITestResult to set.
      * @return the MethodContext for the result.
      */
-    public static MethodContext getMethodContextFromTestResult(final ITestResult iTestResult) {
-        ClassContext classContext = getClassContextFromTestResult(iTestResult, null, null);
-        return classContext.getMethodContext(iTestResult, null, null);
+    public static MethodContext getMethodContextFromTestResult(final ITestResult iTestResult, final ITestContext testContext) {
+        ClassContext classContext = getClassContextFromTestResult(iTestResult, testContext, null);
+        return classContext.getMethodContext(iTestResult, testContext, null);
     }
 
     /**
@@ -76,12 +76,12 @@ public class ExecutionContextController {
      *
      * @param iTestResult TestNg testResult representing current test.
      */
-    public static MethodContext setCurrentTestResult(final ITestResult iTestResult) {
+    public static MethodContext setCurrentTestResult(final ITestResult iTestResult, final ITestContext testContext) {
         CURRENT_TEST_RESULT.set(iTestResult);
         /*
         auto-create method context
          */
-        return getMethodContextFromTestResult(iTestResult);
+        return getMethodContextFromTestResult(iTestResult, testContext);
     }
 
     /**

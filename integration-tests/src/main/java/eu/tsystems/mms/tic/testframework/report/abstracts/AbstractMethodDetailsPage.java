@@ -2,7 +2,10 @@ package eu.tsystems.mms.tic.testframework.report.abstracts;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.*;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodStackPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodStepsPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

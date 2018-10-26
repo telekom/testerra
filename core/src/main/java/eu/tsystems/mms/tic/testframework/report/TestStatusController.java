@@ -181,31 +181,18 @@ public class TestStatusController {
                 // set xml status
                 FennecListener.XML_REPORTER.testFailed(reportEntry, "", "");
 
-                FailureCorridor.Value failureCorridorValue = methodContext.failureCorridorValue;
-
-                if (failureCorridorValue != null) {
-                    switch (failureCorridorValue) {
-                        case High:
-                            testsFailedHIGH++;
-                            break;
-                        case Mid:
-                            testsFailedMID++;
-                            break;
-                        case Low:
-                            testsFailedLOW++;
-                            break;
-                        default:
-                            throw new FennecSystemException("Could not set explicit Failure Corridor value. Missing state: " + failureCorridorValue);
-                    }
-                    LOGGER.debug("FC: " + testsFailedHIGH + "/" + testsFailedMID + "/" + testsFailedLOW);
-                }
+                levelFC(methodContext, true);
                 break;
 
             case SKIPPED:
                 testsSkipped++;
+                break;
 
             case FAILED_RETRIED:
                 testsFailedRetried++;
+                testsFailed--;
+
+                levelFC(methodContext, false);
                 break;
 
             default: throw new FennecSystemException("Not implemented: " + status);
@@ -213,6 +200,43 @@ public class TestStatusController {
 
         // update team city progress
         reportCountersToTeamCity();
+    }
+
+    private static void levelFC(MethodContext methodContext, boolean raise) {
+        FailureCorridor.Value failureCorridorValue = methodContext.failureCorridorValue;
+
+        if (failureCorridorValue != null) {
+            switch (failureCorridorValue) {
+                case High:
+                    if (raise) {
+                        testsFailedHIGH++;
+                    }
+                    else {
+                        testsFailedHIGH--;
+                    }
+                    break;
+                case Mid:
+                    if (raise) {
+                        testsFailedMID++;
+                    }
+                    else {
+                        testsFailedMID--;
+                    }
+                    break;
+                case Low:
+                    if (raise) {
+                        testsFailedLOW++;
+                    }
+                    else {
+                        testsFailedLOW--;
+                    }
+                    break;
+                default:
+                    throw new FennecSystemException("Could not set explicit Failure Corridor value. Missing state: " + failureCorridorValue);
+            }
+            LOGGER.debug("FC: " + testsFailedHIGH + "/" + testsFailedMID + "/" + testsFailedLOW);
+        }
+
     }
 
     public static String getFinalCountersMessage() {

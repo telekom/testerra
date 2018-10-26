@@ -164,12 +164,20 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         set browser version
          */
         // load global setting
-        String version = config.browserVersion;
+        String version = null;
 
-        // overload with browser specific version setting, if present
-        version = PropertyManager.getProperty(browser + ".version", version);
+        // load explicit, browser specific version setting, if present
+        final String explicitVersion = PropertyManager.getProperty(browser + ".version", null);
+        if (!StringUtils.isStringEmpty(explicitVersion)) {
+            version = explicitVersion;
+        }
 
-        // overload with explicit session request setting, if requested
+        // overload with global browser.version value, if present
+        if (!StringUtils.isStringEmpty(config.browserVersion)) {
+            version = config.browserVersion;
+        }
+
+        // overload with explicit session request setting, if present
         if (desktopWebDriverRequest.browserVersion != null) {
             version = desktopWebDriverRequest.browserVersion;
         }

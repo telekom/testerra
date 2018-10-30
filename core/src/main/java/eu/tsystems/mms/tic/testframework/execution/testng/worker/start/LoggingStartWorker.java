@@ -49,7 +49,7 @@ public class LoggingStartWorker extends MethodWorker {
              */
             if (testMethod.isBeforeMethodConfiguration() || testMethod.isAfterMethodConfiguration()) {
                 // check for method injection
-                ExecutionContextUtils.checkForInjectedMethod(testResult);
+                ExecutionContextUtils.checkForInjectedMethod(testResult, context);
             }
 
         }

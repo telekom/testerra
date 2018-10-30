@@ -65,7 +65,8 @@ public final class TestNGHelper {
         return tryAny(IClass.class, "TestClass",
                 () -> testResult.getTestClass(),
                 () -> invokedMethod.getTestMethod().getTestClass(),
-                () -> invokedMethod.getTestResult().getTestClass()
+                () -> invokedMethod.getTestResult().getTestClass(),
+                () -> testResult.getMethod().getTestClass()
         );
     }
 

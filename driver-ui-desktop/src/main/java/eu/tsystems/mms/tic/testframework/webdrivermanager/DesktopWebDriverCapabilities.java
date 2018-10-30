@@ -19,10 +19,12 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -102,8 +104,6 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         }
         final DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
 
-        String version = null;
-
         switch (browser) {
             case Browsers.htmlunit:
                 LOGGER.info("Creating capabilities for HtmlUnitDriver");
@@ -163,13 +163,27 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         /*
         set browser version
          */
+        // load global setting
+        String version = null;
+
+        // load explicit, browser specific version setting, if present
+        final String explicitVersion = PropertyManager.getProperty(browser + ".version", null);
+        if (!StringUtils.isStringEmpty(explicitVersion)) {
+            version = explicitVersion;
+        }
+
+        // overload with global browser.version value, if present
+        if (!StringUtils.isStringEmpty(config.browserVersion)) {
+            version = config.browserVersion;
+        }
+
+        // overload with explicit session request setting, if present
         if (desktopWebDriverRequest.browserVersion != null) {
             version = desktopWebDriverRequest.browserVersion;
         }
-        else {
-            version = config.browserVersion;
-        }
-        if (version != null) {
+
+        // set into capabilities
+        if (!StringUtils.isStringEmpty(version)) {
             WebDriverManagerUtils.addBrowserVersionToCapabilities(desiredCapabilities, version);
         }
 

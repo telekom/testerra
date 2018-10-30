@@ -29,7 +29,8 @@ ext {
     /*
     external stuff
      */
-    testng = 'org.testng:testng:6.12'
+    testng = 'org.testng:testng:6.14.3'
+//    testng = 'org.testng:testng:6.12'
     slf4j = [
             'org.slf4j:slf4j-api:1.8.0-beta2',
             'org.slf4j:slf4j-log4j12:1.8.0-beta2'

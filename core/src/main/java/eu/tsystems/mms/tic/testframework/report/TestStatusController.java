@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
+import org.testng.SkipException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -121,9 +122,17 @@ public class TestStatusController {
         /*
         set status
          */
-        if (methodContext.testResult != null && methodContext.testResult.getStatus() == ITestResult.CREATED && status == Status.FAILED) {
-            LOGGER.warn("TestNG bug - result status is CREATED, which is wrong. Method status is " + Status.FAILED + ", which is also wrong. Assuming SKIPPED.");
-            status = Status.SKIPPED;
+        if (methodContext.testResult != null) {
+            Throwable throwable = methodContext.testResult.getThrowable();
+
+            if (methodContext.testResult.getStatus() == ITestResult.CREATED && status == Status.FAILED) {
+                LOGGER.warn("TestNG bug - result status is CREATED, which is wrong. Method status is " + Status.FAILED + ", which is also wrong. Assuming SKIPPED.");
+                status = Status.SKIPPED;
+            }
+            else if (throwable instanceof SkipException) {
+                LOGGER.info("Found SkipException");
+                status = Status.SKIPPED;
+            }
         }
 
         methodContext.status = status;
@@ -172,31 +181,18 @@ public class TestStatusController {
                 // set xml status
                 FennecListener.XML_REPORTER.testFailed(reportEntry, "", "");
 
-                FailureCorridor.Value failureCorridorValue = methodContext.failureCorridorValue;
-
-                if (failureCorridorValue != null) {
-                    switch (failureCorridorValue) {
-                        case High:
-                            testsFailedHIGH++;
-                            break;
-                        case Mid:
-                            testsFailedMID++;
-                            break;
-                        case Low:
-                            testsFailedLOW++;
-                            break;
-                        default:
-                            throw new FennecSystemException("Could not set explicit Failure Corridor value. Missing state: " + failureCorridorValue);
-                    }
-                    LOGGER.debug("FC: " + testsFailedHIGH + "/" + testsFailedMID + "/" + testsFailedLOW);
-                }
+                levelFC(methodContext, true);
                 break;
 
             case SKIPPED:
                 testsSkipped++;
+                break;
 
             case FAILED_RETRIED:
                 testsFailedRetried++;
+                testsFailed--;
+
+                levelFC(methodContext, false);
                 break;
 
             default: throw new FennecSystemException("Not implemented: " + status);
@@ -204,6 +200,43 @@ public class TestStatusController {
 
         // update team city progress
         reportCountersToTeamCity();
+    }
+
+    private static void levelFC(MethodContext methodContext, boolean raise) {
+        FailureCorridor.Value failureCorridorValue = methodContext.failureCorridorValue;
+
+        if (failureCorridorValue != null) {
+            switch (failureCorridorValue) {
+                case High:
+                    if (raise) {
+                        testsFailedHIGH++;
+                    }
+                    else {
+                        testsFailedHIGH--;
+                    }
+                    break;
+                case Mid:
+                    if (raise) {
+                        testsFailedMID++;
+                    }
+                    else {
+                        testsFailedMID--;
+                    }
+                    break;
+                case Low:
+                    if (raise) {
+                        testsFailedLOW++;
+                    }
+                    else {
+                        testsFailedLOW--;
+                    }
+                    break;
+                default:
+                    throw new FennecSystemException("Could not set explicit Failure Corridor value. Missing state: " + failureCorridorValue);
+            }
+            LOGGER.debug("FC: " + testsFailedHIGH + "/" + testsFailedMID + "/" + testsFailedLOW);
+        }
+
     }
 
     public static String getFinalCountersMessage() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Before Scenario" verbose="1" parallel="methods" thread-count="10" data-provider-thread-count="10">
+<suite name="Before Scenario" verbose="1" parallel="methods" thread-count="10" data-provider-thread-count="10" configfailurepolicy="continue">
 
     <test name="Before Test Failed">
         <groups>
@@ -71,6 +71,5 @@
             <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestBeforeScenarios"/>
         </classes>
     </test>
-
 
 </suite>

@@ -85,7 +85,7 @@ public final class LoggingDispatcher {
         if (THREAD_LINK_OFFERS.containsKey(threadName)) {
             ITestResult iTestResult = THREAD_LINK_OFFERS.get(threadName);
             // use the test result in this thread as well
-            ExecutionContextController.setCurrentTestResult(iTestResult);
+            ExecutionContextController.setCurrentTestResult(iTestResult, iTestResult.getTestContext());
             THREAD_LINK_OFFERS.remove(threadName);
         }
 

@@ -163,12 +163,18 @@ public class TestContext extends Context implements SynchronizableContext {
                     classContexts.add(newClassContext);
                 }
 
-                defaultStoredClassContext.setExplicitName();
-                CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.swi, defaultStoredClassContext);
+                final String dummySWI = "dummy";
+                if (!dummySWI.equals(defaultStoredClassContext.swi)) {
+                    /*
+                    the defaultStoredClassContext is NOT a dummy already, set it to dummy
+                     */
+                    defaultStoredClassContext.setExplicitName();
+                    CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.swi, defaultStoredClassContext);
 
-                final ClassContext dummy = new ClassContext(null, runContext);
-                dummy.swi = "dummy";
-                CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.fullClassName, dummy);
+                    final ClassContext dummy = new ClassContext(null, runContext);
+                    dummy.swi = "dummy";
+                    CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.fullClassName, dummy);
+                }
             }
             else {
                 // Our new class is the first time coming up.

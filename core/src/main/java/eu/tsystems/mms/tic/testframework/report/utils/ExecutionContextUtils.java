@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.ITestContext;
 import org.testng.ITestResult;
 
 import java.lang.reflect.Method;
@@ -40,7 +41,7 @@ public class ExecutionContextUtils {
      *
      * @param testResult result to check.
      */
-    public static void checkForInjectedMethod(ITestResult testResult) {
+    public static void checkForInjectedMethod(ITestResult testResult, final ITestContext testContext) {
         boolean foundMethodObject = false;
         Object[] parameters = testResult.getParameters();
         if (parameters != null) {
@@ -48,7 +49,7 @@ public class ExecutionContextUtils {
                 if ((parameter != null) && (parameter instanceof Method)) {
                     Method method = (Method) parameter;
 
-                    MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult);
+                    MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult, testContext);
                     String testMethodName = methodContext.name;
 
                     String appendix = " <i>for " + method.getName() + "</i>";

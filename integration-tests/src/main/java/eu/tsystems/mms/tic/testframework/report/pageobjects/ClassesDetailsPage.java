@@ -78,12 +78,16 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     }
 
     public void assertMethodIsDisplayedInTheCorrectTestResultCategory(String testundertestMethodName, TestResultHelper.TestResult expectedTestResultCategory) {
+        assertMethodIsDisplayedInTheCorrectTestResultCategory(testundertestMethodName, null, expectedTestResultCategory)    ;
+    }
+
+    public void assertMethodIsDisplayedInTheCorrectTestResultCategory(String testundertestMethodName, String controlMethodName, TestResultHelper.TestResult expectedTestResultCategory) {
 
         final String expectedHeaderClassAttribute = expectedTestResultCategory.getXpathClassesDetailsHeader();
 
         GuiElement testResultTableHeader = getTestResultTableHeaderForTestResult(expectedTestResultCategory);
         testResultTableHeader.asserts().assertIsDisplayed();
-        GuiElement methodNameElement = getInformationMethodBodyForTestMethodName(testundertestMethodName);
+        GuiElement methodNameElement = getInformationMethodBodyForTestMethodName(testundertestMethodName, controlMethodName);
         methodNameElement.asserts().assertIsDisplayed();
         GuiElement actualHeader = methodNameElement.getSubElement(By.xpath("./../tr/th"));
         String actualHeaderClassAttribute = actualHeader.getText();
@@ -114,8 +118,22 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * @param testMethodName
      * @return the left test method info column as GuiElement
      */
+    private GuiElement getInformationMethodBodyForTestMethodName(String testMethodName, String configMethodName) {
+        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']",testMethodName)), mainFrame);
+        if(null != configMethodName){
+            informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s <i>for %s</i>']",testMethodName, configMethodName)), mainFrame);
+        }
+        informationMethodBody.setName("informationMethodBody");
+        return informationMethodBody;
+    }
+
+    /**
+     * Method to get the left info column for a given test method name
+     *
+     * @param testMethodName
+     * @return the left test method info column as GuiElement
+     */
     private GuiElement getInformationMethodBodyForTestMethodName(String testMethodName) {
-        //needed for config test methods
         GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']",testMethodName)), mainFrame);
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;

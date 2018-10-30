@@ -65,12 +65,18 @@ public class BeforeScenarioTest extends AbstractTest {
      * Checks whether the Before[...] methods cause the skipping of the control methods
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9}, dataProvider = "beforeDP")
-    @Fails(ticketString = "XETA-688")
     public void testT04_checkControlMethodsAreSkippedIfBeforeMethodsFailed(BeforeConfiguration beforeConfig) {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.getReportDirectory()));
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(beforeConfig.getReportClassName());
         /* Check SKIP-causing method */
-        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory(beforeConfig.getReportMethodName(), TestResultHelper.TestResult.FAILED);
+        String[] controlMethods = beforeConfig.getControlMethodName();
+        if(null != controlMethods){
+            for(String controlMethod : controlMethods){
+                classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory(beforeConfig.getReportMethodName(), controlMethod, TestResultHelper.TestResult.FAILED);
+            }
+        } else {
+            classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory(beforeConfig.getReportMethodName(), TestResultHelper.TestResult.FAILED);
+        }
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory(passedControlMethod, TestResultHelper.TestResult.SKIPPED);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory(failedControlMethod, TestResultHelper.TestResult.SKIPPED);
     }

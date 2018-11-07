@@ -8,11 +8,4 @@
         </classes>
     </test>
 
-    <test name="Browser From Config Creator">
-        <classes>
-            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.WebDriverSetupTest"/>
-        </classes>
-    </test>
-
-
 </suite>

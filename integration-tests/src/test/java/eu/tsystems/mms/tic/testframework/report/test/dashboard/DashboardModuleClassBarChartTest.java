@@ -19,24 +19,11 @@ import org.testng.annotations.Test;
 public class DashboardModuleClassBarChartTest extends AbstractTestDashboard {
 
     /**
-     * Checks whether the inherited test results are displayed
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER3}, enabled=false)
-    public void testT01_checkExecutionFilterInherited() {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_3.getReportDirectory()));
-        GuiElement testundertestExecutionFilterElement = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName(ReportTestUnderTestExecutionFilter.class.getSimpleName());
-        testundertestExecutionFilterElement.click();
-        dashboardPage.getResultTableHeaderForTestResult(TestResultHelper.TestResult.PASSED).asserts().assertIsNotDisplayed();
-        dashboardPage.getResultTableHeaderForTestResult(TestResultHelper.TestResult.FAILED).asserts().assertIsNotDisplayed();
-        dashboardPage.getResultTableHeaderForTestResult(TestResultHelper.TestResult.SKIPPED).asserts().assertIsNotDisplayed();
-    }
-
-    /**
      * Checks whether all test results are covered by the execution filter
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
     @Fails(ticketString = "XETA-679")
-    public void testT02_checkExecutionFilter() {
+    public void testT01_checkExecutionFilter() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()));
         GuiElement testundertestExecutionFilterElement = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName(ReportTestUnderTestExecutionFilter.class.getSimpleName());
 
@@ -52,7 +39,7 @@ public class DashboardModuleClassBarChartTest extends AbstractTestDashboard {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     @Fails(ticketString = "XETA-679")
-    public void testT03_checkReportAnnotations() {
+    public void testT02_checkReportAnnotations() {
         final String annotationMethod = "testAllMarkers";
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName(ReportTestUnderTestAnnotations.class.getSimpleName()).click();

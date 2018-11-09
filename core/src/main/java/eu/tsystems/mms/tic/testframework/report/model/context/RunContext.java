@@ -40,9 +40,7 @@ public class RunContext extends Context implements SynchronizableContext {
     public Map<String, List<MethodContext>> exitPoints = new LinkedHashMap<>();
     public final RunConfig runConfig = new RunConfig();
 
-    public long projectID = -1;
-    public long jobID = -1;
-    public long runID = -1;
+    public final Map<String, String> metaData = new LinkedHashMap<>();
 
     public RunContext() {
         name = runConfig.RUNCFG;

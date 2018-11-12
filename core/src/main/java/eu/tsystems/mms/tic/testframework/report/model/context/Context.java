@@ -52,7 +52,6 @@ public abstract class Context implements SynchronizableContext {
     protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     protected static void fillBasicContextValues(Context context, Context parentContext, String name) {
-        context.parentContext = parentContext;
         context.name = name;
         context.swi = parentContext.swi + "_" + name;
     }
@@ -186,8 +185,9 @@ public abstract class Context implements SynchronizableContext {
     public void updateEndTimeRecursive(Date date) {
         Context context = this;
         while (context != null) {
-            context.endTime = date;
+//            LOGGER.info("Updating " + context.getClass().getSimpleName() + " context " + context.name + ": " + date);
 
+            context.endTime = date;
             context = context.parentContext;
         }
     }

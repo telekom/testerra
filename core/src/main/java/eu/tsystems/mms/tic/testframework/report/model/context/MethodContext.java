@@ -106,7 +106,7 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
         this.runContext = runContext;
 
         this.name = name;
-        this.classContext = classContext;
+        this.parentContext = this.classContext = classContext;
         this.methodRunIndex = Counters.increaseMethodExecutionCounter();
         this.methodType = methodType;
     }

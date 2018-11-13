@@ -56,19 +56,16 @@ public class ExitPointsPage extends AbstractFailurePointsPage {
     @Override
     public void assertExpectedFailsReportMark(AbstractResultTableFailureEntry failedEntry, boolean intoReport) {
 
-        GuiElement exitPointEntry = null;
+        GuiElement exitPointEntry;
         GuiElement exitPointExtendButton;
         GuiElement exitPointMethod;
         GuiElement exitPointType = null;
-        boolean entryFound = false;
 
+        boolean entryFound = false;
         int maximumIndexOfTestsWithoutCodeLines = 40;
         int currentTestNumber = 34;
 
         while (currentTestNumber <= maximumIndexOfTestsWithoutCodeLines) {
-
-            // JSUtils.executeScript(driver, String.format("scrollBy(%d, %d)", 0, 1000));
-            // scroll to the bottom of the page every time
 
             exitPointEntry = getHeaderInformationElementAlternativeForExitpoints(failedEntry, currentTestNumber);
 
@@ -95,9 +92,6 @@ public class ExitPointsPage extends AbstractFailurePointsPage {
             }
         }
 
-
         exitPointType.asserts().assertIsDisplayed();
-
     }
-
 }

@@ -32,7 +32,7 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
             0,
             1,
-            "",
+            "test_FailedMinorAnnotatedWithFailInReport",
             true,
             Arrays.asList("ReportTestUnderTestExpectedtoFail - test_FailedMinorAnnotatedWithFailInReport"),
             Arrays.asList("FennecTestFailureException: Failing of test expected. Description: This is an unknown bug.","Exception")
@@ -42,7 +42,7 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
             0,
             1,
-            "",
+            "test_FailedMinorAnnotatedWithFail_Run6",
             true,
             Arrays.asList("ReportTestUnderTestExpectedtoFail - test_FailedMinorAnnotatedWithFail_Run6"),
             Arrays.asList("FennecTestFailureException: Failing of test expected. Description: This is a known bug.","Exception")

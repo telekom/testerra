@@ -28,12 +28,9 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
     private final String LOCATOR_FAILUREPOINT_METHOD = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[contains(text(),'%s')]/following-sibling::*";
     private final String LOCATOR_FAILUREPOINT_READABLE_MESSAGE = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[contains(text(),'%s')]";
     private final String LOCATOR_FAILUREPOINT_DETAILS_BUTTON = LOCATOR_FAILUREPOINT_HEADER + "/../..//a[@title='Details']";
-
-    private final String LOCATOR_FAILUREPOINT_DESCRIPTION_ALTERNATIVE = "//*div[contains(text(),'%s')]";
-    private final String LOCATOR_FAILUREPOINT_HEADER_ALTERNATIVE = LOCATOR_FAILUREPOINT_DESCRIPTION_ALTERNATIVE + "/../../..//*[contains(text(),'%s')]";
-    private final String LOCATOR_FAILUREPOINT_METHOD_ALTERNATIVE = LOCATOR_FAILUREPOINT_DESCRIPTION_ALTERNATIVE + "/../../..//*[contains(text(),'%s')]/following-sibling::*";
-    private final String LOCATOR_FAILUREPOINT_READABLE_MESSAGE_ALTERNATIVE = LOCATOR_FAILUREPOINT_DESCRIPTION_ALTERNATIVE+ "/../../..//*[contains(text(),'%s')]";
-    private final String LOCATOR_FAILUREPOINT_DETAILS_BUTTON_ALTERNATIVE = LOCATOR_FAILUREPOINT_DESCRIPTION_ALTERNATIVE + "/../../..//a[@title='Details']";
+    private final String LOCATOR_FAILUREPOINT_EXTEND_BUTTON = LOCATOR_FAILUREPOINT_HEADER + "//i[@class='fa fa-caret-square-o-down']";
+    private final String LOCATOR_FAILUREPOINT_INTO_REPORT_NO = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[@class='method expfailed']";
+    private final String LOCATOR_FAILUREPOINT_INTO_REPORT_YES = LOCATOR_FAILUREPOINT_HEADER + "/../..//*[@class='method ']";
 
     /**
      * Constructor called bei PageFactory
@@ -68,18 +65,70 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
         return headerElement;
     }
 
-    public GuiElement getHeaderInformationElementForFailurePointAlternativeForExitpoints(AbstractResultTableFailureEntry entry) {
+    /**
+     * Alternate Methods used for the new exit points
+     * @param entry
+     * @param index
+     * @return
+     */
+    public GuiElement getHeaderInformationElementAlternativeForExitpoints(AbstractResultTableFailureEntry entry, int index) {
         GuiElement headerElement = new GuiElement(driver, By.xpath(String.format(
-                LOCATOR_FAILUREPOINT_HEADER_ALTERNATIVE,
-                //DESCRIPTION
-                entry.getDescription(),
-                //HEADER
-                failurePointType.getLabel()
+                LOCATOR_FAILUREPOINT_HEADER,
+                failurePointType.getLabel(),
+                index,
+                entry.getNumberOfTests()
         )), mainFrame);
         headerElement.setName("headerElement");
         return headerElement;
     }
 
+    public GuiElement getExtendButtonAlternativeForExitpoints(AbstractResultTableFailureEntry entry, int index) {
+        GuiElement extendButton = new GuiElement(driver, By.xpath(String.format(
+                LOCATOR_FAILUREPOINT_EXTEND_BUTTON,
+                failurePointType.getLabel(),
+                index,
+                entry.getNumberOfTests()
+        )), mainFrame);
+        extendButton.setName("headerElement");
+        return extendButton;
+    }
+
+    public GuiElement getMethodInformationAlternativeForExitpoints(AbstractResultTableFailureEntry entry, int index) {
+        GuiElement methodElement = new GuiElement(driver, By.xpath(String.format(
+                LOCATOR_FAILUREPOINT_READABLE_MESSAGE,
+                failurePointType.getLabel(),
+                index,
+                entry.getNumberOfTests(),
+                entry.getDescription()
+        )), mainFrame);
+        methodElement.setName("headerElement");
+        return methodElement;
+    }
+
+    public GuiElement getIntoReportInformationAlternativeForExitpoints(AbstractResultTableFailureEntry entry, int index, boolean intoReport) {
+
+        if(intoReport) {
+            GuiElement extendButton = new GuiElement(driver, By.xpath(String.format(
+                    LOCATOR_FAILUREPOINT_INTO_REPORT_YES,
+                    failurePointType.getLabel(),
+                    index,
+                    entry.getNumberOfTests()
+            )), mainFrame);
+            extendButton.setName("headerElement");
+            return extendButton;
+
+        } else {
+            GuiElement extendButton = new GuiElement(driver, By.xpath(String.format(
+                    LOCATOR_FAILUREPOINT_INTO_REPORT_NO,
+                    failurePointType.getLabel(),
+                    index,
+                    entry.getNumberOfTests()
+            )), mainFrame);
+            extendButton.setName("headerElement");
+            return extendButton;
+        }
+
+    }
 
     /**
      * Getter for a List containing all FailurePoint entry row GuiElements based on header xPath
@@ -137,15 +186,6 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
                 entry.getEntryNumber(),
                 entry.getNumberOfTests(),
                 // DESCRIPTION
-                entry.getDescription()
-        )), mainFrame);
-        descriptionElement.setName("descriptionElement");
-        return descriptionElement;
-    }
-
-    public GuiElement getDescriptionElementByFailurePointAlternative(AbstractResultTableFailureEntry entry) {
-        GuiElement descriptionElement = new GuiElement(driver, By.xpath(String.format(
-                LOCATOR_FAILUREPOINT_DESCRIPTION_ALTERNATIVE,
                 entry.getDescription()
         )), mainFrame);
         descriptionElement.setName("descriptionElement");
@@ -219,23 +259,6 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
         return allMethods;
     }
 
-    public List<GuiElement> getTestMethodsForSingleFailurePointAlternative(AbstractResultTableFailureEntry entry) {
-        List<GuiElement> allMethods = new ArrayList<>();
-        for (int index = 0; index < entry.getNumberOfTests(); index++) {
-            GuiElement testMethodElement = new GuiElement(driver, By.xpath(String.format(
-                    LOCATOR_FAILUREPOINT_METHOD_ALTERNATIVE,
-                    // DESCRIPTION
-                    entry.getDescription(),
-                    // METHOD
-                    entry.getMethodDetailPaths().get(index).substring(0, entry.getMethodDetailPaths().get(index).lastIndexOf(" - t"))
-            )), mainFrame);
-            testMethodElement.setName("testMethodElementClassPath_" + index);
-            allMethods.add(testMethodElement);
-        }
-        return allMethods;
-    }
-
-
     /**
      * Returns FailurePoint row information concerning the description
      *
@@ -251,22 +274,6 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
                     failurePointType.getLabel(),
                     entry.getEntryNumber(),
                     entry.getNumberOfTests(),
-                    // ASSERTION
-                    entry.getMethodDetailAssertions().get(index)
-            )), mainFrame);
-            testMethodElement.setName("testMethodElementMessage_" + index);
-            allMessages.add(testMethodElement);
-        }
-        return allMessages;
-    }
-
-    public List<GuiElement> getReadableMessageElementsForFailurePointAlternative(AbstractResultTableFailureEntry entry) {
-        List<GuiElement> allMessages = new ArrayList<>();
-        for (int index = 0; index < entry.getNumberOfTests(); index++) {
-            GuiElement testMethodElement = new GuiElement(driver, By.xpath(String.format(
-                    LOCATOR_FAILUREPOINT_READABLE_MESSAGE_ALTERNATIVE,
-                    // DESCRIPTION
-                    entry.getDescription(),
                     // ASSERTION
                     entry.getMethodDetailAssertions().get(index)
             )), mainFrame);
@@ -297,21 +304,6 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
         }
         return allDetailLinks;
     }
-
-    public List<GuiElement> getDetailsLinksForFailurePointAlternative(AbstractResultTableFailureEntry entry) {
-        toggleElementsForFailurePoint(entry);
-        List<GuiElement> allDetailLinks = new ArrayList<>();
-        for (int index = 0; index < entry.getNumberOfTests(); index++) {
-            GuiElement detailLink = new GuiElement(driver, By.xpath(String.format(
-                    LOCATOR_FAILUREPOINT_DETAILS_BUTTON_ALTERNATIVE,
-                    entry.getDescription()
-            )), mainFrame);
-            detailLink.setName("detailLink_" + index);
-            allDetailLinks.add(detailLink);
-        }
-        return allDetailLinks;
-    }
-
 
     public void assertTotalNumberOfFailurePoints(int expectedNumberOfFailurePoints) {
         getTotalNumberOfFailurePointsElement(expectedNumberOfFailurePoints).asserts("The number of Failure Points is NOT correct.").assertIsDisplayed();

@@ -6,6 +6,7 @@ import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFai
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
 import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoNumbers;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
+import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -90,7 +91,6 @@ public abstract class AbstractReportFailuresTest extends AbstractTest {
      * It considers the cases 'intoReport = false' and 'intoReport = true'
      */
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
-    @Fails(description = "rework necessary")
     public void testT07_checkMarkExpectedFailedTests() {
         checkExpectedFailedMarkWorkflow(true);
         checkExpectedFailedMarkWorkflow(false);

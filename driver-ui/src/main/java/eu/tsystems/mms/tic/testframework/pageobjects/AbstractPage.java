@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
@@ -48,13 +49,10 @@ public abstract class AbstractPage {
     protected WebDriver driver;
 
     /**
-     * Element timeout in ms (String).
-     */
-    protected static String elementTimeoutStringInMs = "" + (POConfig.getUiElementTimeoutInSeconds() * 1000);
-    /**
      * Element timeout in seconds (int).
      */
-    protected static int elementTimeout = POConfig.getUiElementTimeoutInSeconds();
+    protected int elementTimeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
+
     /**
      * Protected logger.
      */
@@ -106,9 +104,8 @@ public abstract class AbstractPage {
      *
      * @param newElementTimeout a new timeout in seconds
      */
-    public static void setElementTimeout(final int newElementTimeout) {
-        elementTimeout = newElementTimeout;
-        elementTimeoutStringInMs = newElementTimeout + "000";
+    public void setElementTimeoutInSeconds(final int newElementTimeout) {
+        elementTimeoutInSeconds = newElementTimeout;
     }
 
     /**
@@ -283,8 +280,8 @@ public abstract class AbstractPage {
         throw new TimeoutException(message);
     }
 
-    public static int getElementTimeout() {
-        return elementTimeout;
+    public int getElementTimeoutInSeconds() {
+        return elementTimeoutInSeconds;
     }
 
     /**
@@ -297,6 +294,16 @@ public abstract class AbstractPage {
         STORED_PAGES.set(this);
     }
 
+    private PageOptions getPageOptions(List<Class<? extends AbstractPage>> allClasses) {
+        PageOptions pageOptions = null;
+        for (Class<? extends AbstractPage> c : allClasses) {
+            if (c.isAnnotationPresent(PageOptions.class)) {
+                pageOptions = c.getAnnotation(PageOptions.class);
+            }
+        }
+        return pageOptions;
+    }
+
     /**
      * Gets all @Check annotated fields of a class and executes a webdriver find().
      *
@@ -304,7 +311,15 @@ public abstract class AbstractPage {
      * @param fast    Fast search (minimal timeout)
      */
     private void checkAnnotatedFields(final boolean findNot, final boolean fast) {
-        ArrayList<Class<? extends AbstractPage>> allClasses = collectAllClasses(findNot);
+        List<Class<? extends AbstractPage>> allClasses = collectAllClasses(findNot);
+
+        /*
+        get and apply PageOptions
+         */
+        PageOptions pageOptions = getPageOptions(allClasses);
+        if (pageOptions != null) {
+            applyPageOptions(pageOptions);
+        }
 
         List<FieldWithActionConfig> fields = getFields(allClasses, findNot, fast);
         List<FieldAction> fieldActions = getFieldActions(fields, this);
@@ -317,6 +332,13 @@ public abstract class AbstractPage {
 
         for (Field field : fieldsMadeAccessible) {
             field.setAccessible(false);
+        }
+    }
+
+    private void applyPageOptions(PageOptions pageOptions) {
+        if (pageOptions.elementTimeoutInSeconds() >= 0) {
+            logger.info("Applying timeout value for this page object: " + pageOptions.elementTimeoutInSeconds() + "s");
+            setElementTimeoutInSeconds(pageOptions.elementTimeoutInSeconds());
         }
     }
 
@@ -333,7 +355,7 @@ public abstract class AbstractPage {
         return fieldsMadeAccessible;
     }
 
-    private List<FieldWithActionConfig> getFields(ArrayList<Class<? extends AbstractPage>> allClasses, boolean findNot, boolean fast) {
+    private List<FieldWithActionConfig> getFields(List<Class<? extends AbstractPage>> allClasses, boolean findNot, boolean fast) {
         ArrayList<FieldWithActionConfig> fieldToChecks = new ArrayList<FieldWithActionConfig>();
         for (final Class<? extends AbstractPage> cl : allClasses) {
             for (final Field field : cl.getDeclaredFields()) {
@@ -343,8 +365,8 @@ public abstract class AbstractPage {
         return fieldToChecks;
     }
 
-    private ArrayList<Class<? extends AbstractPage>> collectAllClasses(boolean findNot) {
-        final ArrayList<Class<? extends AbstractPage>> allClasses = new ArrayList<Class<? extends AbstractPage>>();
+    private List<Class<? extends AbstractPage>> collectAllClasses(boolean findNot) {
+        final LinkedList<Class<? extends AbstractPage>> allClasses = new LinkedList<>();
         allClasses.add(this.getClass());
 
         /*
@@ -381,15 +403,6 @@ public abstract class AbstractPage {
          */
         Collections.reverse(allClasses);
         return allClasses;
-    }
-
-    /**
-     * Retuns the element timeout in seconds.
-     *
-     * @return int value.
-     */
-    public static int getElementTimeoutInSeconds() {
-        return POConfig.getUiElementTimeoutInSeconds();
     }
 
     /**

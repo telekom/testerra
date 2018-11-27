@@ -38,6 +38,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickPathElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiElementTimeoutFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroupAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
@@ -151,7 +152,11 @@ public abstract class Page extends AbstractPage {
             SetNameFieldAction setNameFieldAction = new SetNameFieldAction(field.field, declaringPage);
             GuiElementGroupAction guiElementGroupAction = new GuiElementGroupAction(field.field, declaringPage, guiElementGroups);
 
+            /*
+            Priority List!!
+             */
             fieldActions.add(setNameFieldAction);
+            fieldActions.add(new SetGuiElementTimeoutFieldAction(field.field, declaringPage));
             fieldActions.add(guiElementGroupAction);
             fieldActions.add(guiElementCheckFieldAction);
         }
@@ -324,7 +329,7 @@ public abstract class Page extends AbstractPage {
     }
 
     public boolean waitForIsTextPresent(final String text) {
-        Timer timer = new Timer(1000, POConfig.getUiElementTimeoutInSeconds() * 1000);
+        Timer timer = new Timer(1000, elementTimeoutInSeconds * 1000);
         ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -337,7 +342,7 @@ public abstract class Page extends AbstractPage {
     }
 
     public boolean waitForIsTextDisplayed(final String text) {
-        Timer timer = new Timer(1000, POConfig.getUiElementTimeoutInSeconds() * 1000);
+        Timer timer = new Timer(1000, elementTimeoutInSeconds * 1000);
         ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {

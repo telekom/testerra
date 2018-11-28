@@ -46,6 +46,8 @@ public class ExecutionContextController {
         return CURRENT_TEST_RESULT.get();
     }
 
+    public static boolean testRunFinished = false;
+
     /**
      * Gets the ClassContext for TestNG ITestResult. If no ClassContext for result exists, it will set.
      *

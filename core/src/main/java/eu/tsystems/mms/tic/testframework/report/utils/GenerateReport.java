@@ -82,6 +82,9 @@ public class GenerateReport {
             // just run once, just in case we are not exiting...
             ran = true;
 
+            // set the testRunFinished flag
+            ExecutionContextController.testRunFinished = true;
+
             /*
             workers
              */

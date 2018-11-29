@@ -64,7 +64,7 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     public ClassContext classContext;
     public TestContext testContext;
     public SuiteContext suiteContext;
-    public final RunContext runContext;
+    public final ExecutionContext executionContext;
 
     private int hashCodeOfTestResult = 0;
 
@@ -98,12 +98,12 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
      * @param classContext .
      * @param suiteContext .
      * @param testContext .
-     * @param runContext .
+     * @param executionContext .
      */
-    public MethodContext(final String name, final MethodType methodType, final ClassContext classContext, final TestContext testContext, final SuiteContext suiteContext, final RunContext runContext) {
+    public MethodContext(final String name, final MethodType methodType, final ClassContext classContext, final TestContext testContext, final SuiteContext suiteContext, final ExecutionContext executionContext) {
         this.testContext = testContext;
         this.suiteContext = suiteContext;
-        this.runContext = runContext;
+        this.executionContext = executionContext;
 
         this.name = name;
         this.parentContext = this.classContext = classContext;

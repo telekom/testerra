@@ -20,8 +20,8 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.RunContext;
 
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +36,7 @@ public class ReportingData {
 
     public boolean failureCorridorMatched;
     public Collection<ClassContext> classContexts;
-    public RunContext runContext;
+    public ExecutionContext executionContext;
 
     public List<MethodContext> methodsWithAcknowledgements;
 

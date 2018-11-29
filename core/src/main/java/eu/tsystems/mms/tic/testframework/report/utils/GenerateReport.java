@@ -198,7 +198,7 @@ public class GenerateReport {
          */
         LOGGER.info("Create Report...");
         ReportingData reportingData = new ReportingData();
-        reportingData.runContext = ExecutionContextController.RUN_CONTEXT;
+        reportingData.executionContext = ExecutionContextController.RUN_CONTEXT;
         reportingData.failureCorridorMatched = FailureCorridor.isCorridorMatched();
         reportingData.classContexts = allClassContexts;
 

@@ -38,9 +38,9 @@
         #set($pagetitle = "Dashboard")
         #parse("header.vm")
 
-        #set ($counts = ${runContext.getMethodStats(true, false)})
-        #set ($numberOfRepresentationalTests = ${runContext.getNumberOfRepresentationalTests()})
-        #set ($methodStatsPerClass = ${runContext.getMethodStatsPerClass(true, false)})
+        #set ($counts = ${executionContext.getMethodStats(true, false)})
+        #set ($numberOfRepresentationalTests = ${executionContext.getNumberOfRepresentationalTests()})
+        #set ($methodStatsPerClass = ${executionContext.getMethodStatsPerClass(true, false)})
 
         <table class="standardTable" style="width:100%;">
             <tr>
@@ -113,7 +113,7 @@
                 </td>
                 <td class="cellCenter">
                     <div class="responsive">
-                        <div id="actualRunPassRate" class="dashboardTextBig">$!{runContext.passRate($counts, $numberOfRepresentationalTests)}%</div>
+                        <div id="actualRunPassRate" class="dashboardTextBig">$!{executionContext.passRate($counts, $numberOfRepresentationalTests)}%</div>
                     </div>
                 </td>
 
@@ -140,7 +140,7 @@
 
                 <!-- stats -->
                 <td id="cellTests" class="cellCenter">
-                    #set ($allstatus = $runContext.getAvailableStatus())
+                    #set ($allstatus = $executionContext.getAvailableStatus())
 
                     #set($nrOfFailureAspects = $failureAspectMap.size())
                     #set($nrOfExitPoints = $exitPointMap.size())
@@ -152,7 +152,7 @@
                     <table class="dashboardBorder">
                         <tr class="dashboardTextSmall" style="color:green; margin:5px;">
                             <td class="cellCenter" style="width:50%;">
-                                <div id="totalNumberOfSuccessfulMethods">${runContext.nrOfPassed($counts)} successful</div>
+                                <div id="totalNumberOfSuccessfulMethods">${executionContext.nrOfPassed($counts)} successful</div>
                             </td>
                             <td class="cellCenter" style="width:50%;">
 
@@ -170,7 +170,7 @@
                     <table class="dashboardBorder">
                         <tr class="dashboardTextSmall" style="color:orange; margin:5px;">
                             <td class="cellCenter" style="width:50%;">
-                                <div id="totalNumberOfSkippedMethods">${runContext.nrOfSkipped($counts)} skipped</div>
+                                <div id="totalNumberOfSkippedMethods">${executionContext.nrOfSkipped($counts)} skipped</div>
                             </td>
                             <td class="cellCenter" style="width:50%;">
 
@@ -188,7 +188,7 @@
                     <table class="dashboardBorder">
                         <tr class="dashboardTextSmall" style="color:red; margin:5px;">
                             <td class="cellCenter" style="width:50%;">
-                                <div id="totalNumberOfFailedMethods">${runContext.nrOfFailed($counts)} broken</div>
+                                <div id="totalNumberOfFailedMethods">${executionContext.nrOfFailed($counts)} broken</div>
                             </td>
                             <td class="cellCenter" style="width:50%;">
 
@@ -212,8 +212,8 @@
 
                                 <div>
                                     <font id="exitPointsLink" class="pointer" style="padding-top:14px;">
-                                        <a style="font-size:18px;opacity:0.8; color:red;" href="classes/exitPoints.html">${runContext.exitPoints.size()} Exit
-                                            #if (${runContext.exitPoints.size()} == 1)
+                                        <a style="font-size:18px;opacity:0.8; color:red;" href="classes/exitPoints.html">${executionContext.exitPoints.size()} Exit
+                                            #if (${executionContext.exitPoints.size()} == 1)
                                             Point
                                             #else
                                             Points
@@ -223,10 +223,10 @@
                                     <font class="dashboardTextVerySmall" style="padding:20px;">and</font>
                                     <font id="failureAspectsLink" class="pointer" style="padding-top:14px;">
                                         <a style="font-size:18px;opacity:0.8; color:red;" href="classes/failureAspects.html">
-                                            ${runContext.failureAspects.size()}
+                                            ${executionContext.failureAspects.size()}
 
                                             Failure
-                                            #if (${runContext.failureAspects.size()} == 1)
+                                            #if (${executionContext.failureAspects.size()} == 1)
                                             Aspect
                                             #else
                                             Aspects
@@ -244,11 +244,11 @@
 
                 <!-- duration -->
                 <td class="cellCenter" colspan="2">
-                    <div id="actualRunDuration" class="dashboardTextBig">${runContext.getDuration(${runContext.startTime}, ${runContext.endTime})}</div>
+                    <div id="actualRunDuration" class="dashboardTextBig">${executionContext.getDuration(${executionContext.startTime}, ${executionContext.endTime})}</div>
                     <br/>
-                    <div id="actualRunStartTime" class="dashboardTextSmall">Start ${runContext.startTime}</div>
+                    <div id="actualRunStartTime" class="dashboardTextSmall">Start ${executionContext.startTime}</div>
                     <br/>
-                    <div id="actualRunEndTime" class="dashboardTextSmall">End ${runContext.endTime}</div>
+                    <div id="actualRunEndTime" class="dashboardTextSmall">End ${executionContext.endTime}</div>
                 </td>
             </tr>
         </table>
@@ -338,7 +338,7 @@
 
     </body>
 
-#set ($statuses = ${runContext.getAvailableStatuses()})
+#set ($statuses = ${executionContext.getAvailableStatuses()})
 <!-- fill the pie charts -->
 <script type="text/javascript">
 
@@ -466,7 +466,7 @@ function drawClassesBars() {
         var data = {
             labels: categories,
             datasets: [
-                #foreach ($s in ${runContext.getAvailableStatuses()})
+                #foreach ($s in ${executionContext.getAvailableStatuses()})
                 {
                     label: '${s.name()}',
                     backgroundColor: '${s.color}',

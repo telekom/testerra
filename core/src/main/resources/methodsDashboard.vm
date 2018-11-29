@@ -11,7 +11,7 @@
     </td>
 </tr>
 #set ($methodStats = ${testClass.getMethodStats(true, true)})
-#foreach ($s in ${runContext.getAvailableStatuses()})
+#foreach ($s in ${executionContext.getAvailableStatuses()})
     #foreach( $testMethod in $testClass.getTestMethodsWithStatus($s) )
         #set($index = ${velocityCount} - 1)
         #if ($index < 10)

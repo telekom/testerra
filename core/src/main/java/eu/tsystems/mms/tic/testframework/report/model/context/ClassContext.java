@@ -55,14 +55,14 @@ public class ClassContext extends Context implements SynchronizableContext {
     public String fullClassName;
     public String simpleClassName;
     public final TestContext testContext;
-    public final RunContext runContext;
+    public final ExecutionContext executionContext;
     public FennecClassContext fennecClassContext = null;
     public boolean merged = false;
     public ClassContext mergedIntoClassContext = null;
 
-    public ClassContext(TestContext testContext, RunContext runContext) {
+    public ClassContext(TestContext testContext, ExecutionContext executionContext) {
         this.parentContext = this.testContext = testContext;
-        this.runContext = runContext;
+        this.executionContext = executionContext;
     }
 
     public MethodContext findTestMethodContainer(String methodName) {
@@ -105,11 +105,11 @@ public class ClassContext extends Context implements SynchronizableContext {
                 TestContext correctTestContext = testContext;
                 SuiteContext correctSuiteContext = testContext.suiteContext;
                 if (merged) {
-                    correctSuiteContext = runContext.getSuiteContext(testResult, iTestContext);
+                    correctSuiteContext = executionContext.getSuiteContext(testResult, iTestContext);
                     correctTestContext = correctSuiteContext.getTestContext(testResult, iTestContext);
                 }
 
-                methodContext = new MethodContext(name, methodType, this, correctTestContext, correctSuiteContext, runContext);
+                methodContext = new MethodContext(name, methodType, this, correctTestContext, correctSuiteContext, executionContext);
                 fillBasicContextValues(methodContext, this, name);
                 methodContext.testResult = testResult;
 

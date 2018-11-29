@@ -31,7 +31,7 @@ import org.testng.ITestResult;
  */
 public class ExecutionContextController {
 
-    public static final RunContext RUN_CONTEXT = new RunContext();
+    public static final ExecutionContext RUN_CONTEXT = new ExecutionContext();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionContextController.class);
 

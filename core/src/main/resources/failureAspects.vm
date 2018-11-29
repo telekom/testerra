@@ -31,7 +31,7 @@
         #set($pagetitle = "Failure Aspects")
         #parse("headerrelative.vm")
 
-        #set ($failureAspectMap = ${runContext.failureAspects})
+        #set ($failureAspectMap = ${executionContext.failureAspects})
 
         <br/>
 

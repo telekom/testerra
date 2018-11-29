@@ -32,7 +32,7 @@ import org.testng.ITestResult;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RunContext extends Context implements SynchronizableContext {
+public class ExecutionContext extends Context implements SynchronizableContext {
 
     public final List<SuiteContext> suiteContexts = new LinkedList<>();
     public final List<ClassContext> mergedClassContexts = new LinkedList<>();
@@ -42,7 +42,7 @@ public class RunContext extends Context implements SynchronizableContext {
 
     public final Map<String, String> metaData = new LinkedHashMap<>();
 
-    public RunContext() {
+    public ExecutionContext() {
         name = runConfig.RUNCFG;
         swi = name;
 
@@ -104,7 +104,7 @@ public class RunContext extends Context implements SynchronizableContext {
 
     /**
      * Get method statistics for all effective classes.
-     * The classes are all classContext from the context tree (without merged ones) AND mergedClassContexts from runContext.
+     * The classes are all classContext from the context tree (without merged ones) AND mergedClassContexts from executionContext.
      *
      * @param includeTestMethods .
      * @param includeConfigMethods  .

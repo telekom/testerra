@@ -64,7 +64,7 @@ public class ExitPointsPage extends AbstractFailurePointsPage {
         TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
 
         boolean entryFound = false;
-        int currentTestNumber = 1;
+        int currentTestNumber = 1; // first exit point entry
 
         while (currentTestNumber <= testReportTwoNumbers.getExitPoints()) {
 

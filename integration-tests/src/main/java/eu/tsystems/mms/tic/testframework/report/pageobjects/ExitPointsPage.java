@@ -55,22 +55,43 @@ public class ExitPointsPage extends AbstractFailurePointsPage {
      */
     @Override
     public void assertExpectedFailsReportMark(AbstractResultTableFailureEntry failedEntry, boolean intoReport) {
-        GuiElement tableRow;
-        toggleElementsForFailurePoint(failedEntry);
-        // Check - class is correct
-        if (intoReport) {
-            tableRow = getHeaderInformationElementForFailurePoint(failedEntry).getSubElement(By.xpath("./../.."));
-            tableRow = tableRow.getSubElement(By.cssSelector(".method"));
-            tableRow.asserts().assertIsDisplayed();
-        } else {
-            tableRow = getHeaderInformationElementForFailurePoint(failedEntry).getSubElement(By.xpath("./../.."));;
-            tableRow = tableRow.getSubElement(By.cssSelector(NOT_INTO_REPORT_SELECTOR));
-            tableRow.asserts().assertIsDisplayed();
-        }
-        // Check - text is correct
-        final String expectedMarkup = EXPECTED_MARKUP_TEXT;
-        final String actualMessage = getReadableMessageElementsForFailurePoint(failedEntry).get(0).getText();
-        Assert.assertTrue(actualMessage.contains(expectedMarkup), "The message " + actualMessage + " does NOT contain " + expectedMarkup);
-    }
 
+        GuiElement exitPointEntry;
+        GuiElement exitPointExtendButton;
+        GuiElement exitPointMethod;
+        GuiElement exitPointType = null;
+
+        boolean entryFound = false;
+        int maximumIndexOfTestsWithoutCodeLines = 40;
+        int currentTestNumber = 34;
+
+        while (currentTestNumber <= maximumIndexOfTestsWithoutCodeLines) {
+
+            exitPointEntry = getHeaderInformationElementAlternativeForExitpoints(failedEntry, currentTestNumber);
+
+            exitPointEntry.asserts().assertIsDisplayed();
+
+            exitPointExtendButton = getExtendButtonAlternativeForExitpoints(failedEntry, currentTestNumber);
+            exitPointExtendButton.click();
+
+            exitPointMethod = getMethodInformationAlternativeForExitpoints(failedEntry, currentTestNumber);
+
+            if (exitPointMethod.isDisplayed()) {
+                entryFound = true;
+                break;
+            }
+
+            currentTestNumber++;
+        }
+
+        if (entryFound) {
+            if (intoReport) {
+                exitPointType = getIntoReportInformationAlternativeForExitpoints(failedEntry, currentTestNumber, intoReport);
+            } else {
+                exitPointType = getIntoReportInformationAlternativeForExitpoints(failedEntry, currentTestNumber, intoReport);
+            }
+        }
+
+        exitPointType.asserts().assertIsDisplayed();
+    }
 }

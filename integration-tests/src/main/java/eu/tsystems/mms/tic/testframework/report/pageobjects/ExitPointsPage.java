@@ -69,7 +69,7 @@ public class ExitPointsPage extends AbstractFailurePointsPage {
         while (currentTestNumber <= testReportTwoNumbers.getExitPoints()) {
 
             exitPointEntry = getHeaderInformationElementAlternativeForExitpoints(failedEntry, currentTestNumber);
-            exitPointEntry.asserts().assertIsDisabled();
+            exitPointEntry.asserts().assertIsDisplayed();
 
             exitPointExtendButton = getExtendButtonAlternativeForExitpoints(failedEntry, currentTestNumber);
             exitPointExtendButton.click();

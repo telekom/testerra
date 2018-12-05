@@ -72,13 +72,11 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * Tests the desired pie chart segment and its displayed bars for the correct test method names.
      * It runs once for every test status in every report. 48 times in total.
      */
+    @Fails(ticketString = "XETA-677")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
     public void testT04_checkListedMethodsAfterClickingPieAndBar(TestResult testResults) throws Exception {
         //TODO try out other locator or using java script
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_2);
-
-        dashboardPage.clickerTest();
-        /*
         dashboardPage = dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResults);
         List<GuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
         for (GuiElement bar : bars) {
@@ -95,7 +93,6 @@ public class DashboardPageTest extends AbstractTestDashboard {
                 }
             }
         }
-        */
     }
 
     /**
@@ -143,10 +140,12 @@ public class DashboardPageTest extends AbstractTestDashboard {
     }
 
 
+    /*
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
     public void testT08_clickerTest(){
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_2);
 
         dashboardPage.clickerTest();
     }
+    */
 }

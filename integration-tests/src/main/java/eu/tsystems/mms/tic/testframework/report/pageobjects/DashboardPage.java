@@ -10,6 +10,8 @@ import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 
 /**
@@ -58,6 +60,26 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
         element.click();
         return PageFactory.create(DashboardPage.class, this.driver);
     }
+
+    /*
+
+    public void clickerTest() {
+
+        // for selenium action a WebElement element is needed.
+
+        // WebElement knownElement = driver.findElement(By.xpath("//*[@id='methodsPie']"));
+        // declaration doesnt work, location of element fails
+
+
+        GuiElement knownElement;
+        Actions builder = new Actions(driver);
+
+        knownElement = new GuiElement(driver, By.xpath("//*[@id='methodsPie']"), mainFrame);
+        knownElement.waitForIsDisplayed();
+        builder.moveToElement(knownElement.getWebElement(), 2, 5).click().build().perform();
+    }
+
+    */
 
     /**
      * Performs the click action on a given GuiElement.

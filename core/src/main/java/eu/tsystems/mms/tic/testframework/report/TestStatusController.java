@@ -36,7 +36,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.RUN_CONTEXT;
+import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.EXECUTION_CONTEXT;
 
 /**
  * Created by pele on 31.08.2016.
@@ -97,8 +97,8 @@ public class TestStatusController {
         statusMap.put("StatusBool", statusBool);
         statusMap.put("StatusMessage", statusMessage);
 
-        statusMap.put("RunCfg", RUN_CONTEXT.runConfig.RUNCFG);
-        statusMap.put("Date", RUN_CONTEXT.startTime.toString());
+        statusMap.put("RunCfg", EXECUTION_CONTEXT.runConfig.RUNCFG);
+        statusMap.put("Date", EXECUTION_CONTEXT.startTime.toString());
 
         return new JSONObject(statusMap);
     }
@@ -269,7 +269,7 @@ public class TestStatusController {
 
     public static void reportCountersToTeamCity() {
         String counterInfoMessage = getCounterInfoMessage();
-        String teamCityMessage = ReportUtils.getReportName() + " " + RUN_CONTEXT.runConfig.RUNCFG + ": " + counterInfoMessage;
+        String teamCityMessage = ReportUtils.getReportName() + " " + EXECUTION_CONTEXT.runConfig.RUNCFG + ": " + counterInfoMessage;
 
         LOGGER.info(teamCityMessage);
     }

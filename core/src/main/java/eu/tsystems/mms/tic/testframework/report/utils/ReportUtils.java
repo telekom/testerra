@@ -531,7 +531,7 @@ public final class ReportUtils {
     }
 
     public static String getReportName() {
-        return ExecutionContextController.RUN_CONTEXT.runConfig.getReportName();
+        return ExecutionContextController.EXECUTION_CONTEXT.runConfig.getReportName();
     }
 
     public static void generateReportEssentials() {

@@ -119,7 +119,7 @@ public class GenerateReport {
      * Stops logging of FennecCommands. Statistics are filled and reports are generated.
      */
     public static void generateReport() {
-        ExecutionContextController.RUN_CONTEXT.endTime = new Date();
+        ExecutionContextController.EXECUTION_CONTEXT.endTime = new Date();
         JVMMonitor.label("Report");
         pGenerateReport();
     }
@@ -128,7 +128,7 @@ public class GenerateReport {
         /*
         get ALL ClassContexts
          */
-        final List<ClassContext> allClassContexts = new ArrayList<>(ExecutionContextController.RUN_CONTEXT.getMethodStatsPerClass(true, false).keySet());
+        final List<ClassContext> allClassContexts = new ArrayList<>(ExecutionContextController.EXECUTION_CONTEXT.getMethodStatsPerClass(true, false).keySet());
 
         /*
          * Build maps for exit points and failure aspects
@@ -190,15 +190,15 @@ public class GenerateReport {
         /*
         Store
          */
-        ExecutionContextController.RUN_CONTEXT.exitPoints = exitPoints;
-        ExecutionContextController.RUN_CONTEXT.failureAspects = failureAspects;
+        ExecutionContextController.EXECUTION_CONTEXT.exitPoints = exitPoints;
+        ExecutionContextController.EXECUTION_CONTEXT.failureAspects = failureAspects;
 
         /*
          * Create report
          */
         LOGGER.info("Create Report...");
         ReportingData reportingData = new ReportingData();
-        reportingData.executionContext = ExecutionContextController.RUN_CONTEXT;
+        reportingData.executionContext = ExecutionContextController.EXECUTION_CONTEXT;
         reportingData.failureCorridorMatched = FailureCorridor.isCorridorMatched();
         reportingData.classContexts = allClassContexts;
 
@@ -228,7 +228,7 @@ public class GenerateReport {
         System.out.println("");
 
         IntRef testMethodsCount = new IntRef();
-        ExecutionContextController.RUN_CONTEXT.copyOfSuiteContexts().forEach(
+        ExecutionContextController.EXECUTION_CONTEXT.copyOfSuiteContexts().forEach(
                 suiteContext -> {
                     System.out.println("Suite: " + suiteContext.name);
                     suiteContext.copyOfTestContexts().forEach(

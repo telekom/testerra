@@ -35,7 +35,7 @@ public class FennecEventsWorker extends GenerateReportsWorker {
     @Override
     public void run() {
         // fire event
-        long startTime = ExecutionContextController.RUN_CONTEXT.startTime.getTime();
+        long startTime = ExecutionContextController.EXECUTION_CONTEXT.startTime.getTime();
         long endTime = new Date().getTime();
         FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.TEST_END)
                 .addUserData()

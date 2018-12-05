@@ -46,7 +46,7 @@ public class TestStartWorker extends MethodWorker {
                 // fire event for test start
                 FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.TEST_START)
                         .addUserData()
-                        .addData(FennecEventDataType.TIMESTAMP, ExecutionContextController.RUN_CONTEXT.startTime.getTime())
+                        .addData(FennecEventDataType.TIMESTAMP, ExecutionContextController.EXECUTION_CONTEXT.startTime.getTime())
                         .addData(FennecEventDataType.ITestResult, testResult)
                         .addData(FennecEventDataType.IInvokedMethod, method)
                 );

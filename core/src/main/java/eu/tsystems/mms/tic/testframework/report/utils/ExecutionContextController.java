@@ -31,7 +31,7 @@ import org.testng.ITestResult;
  */
 public class ExecutionContextController {
 
-    public static final ExecutionContext RUN_CONTEXT = new ExecutionContext();
+    public static final ExecutionContext EXECUTION_CONTEXT = new ExecutionContext();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionContextController.class);
 
@@ -55,7 +55,7 @@ public class ExecutionContextController {
      * @return the ClassContext for the result.
      */
     public static ClassContext getClassContextFromTestResult(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
-        SuiteContext suiteContext = RUN_CONTEXT.getSuiteContext(testResult, iTestContext);
+        SuiteContext suiteContext = EXECUTION_CONTEXT.getSuiteContext(testResult, iTestContext);
         TestContext testContext = suiteContext.getTestContext(testResult, iTestContext);
         ClassContext classContext = testContext.getClassContext(testResult, iTestContext, invokedMethod);
         return classContext;

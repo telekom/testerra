@@ -49,7 +49,7 @@ public class ReportingAllStatesTests extends AbstractTest {
 
     @Test
     public void testPassed() throws Exception {
-
+        TestUtils.sleep(1000);
     }
 
     @DataProvider(name = "dp")

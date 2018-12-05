@@ -31,7 +31,7 @@
         #set($pagetitle = "Exit Points")
         #parse("headerrelative.vm")
 
-        #set ($exitPointMap = ${runContext.exitPoints})
+        #set ($exitPointMap = ${executionContext.exitPoints})
 
         <br/>
 

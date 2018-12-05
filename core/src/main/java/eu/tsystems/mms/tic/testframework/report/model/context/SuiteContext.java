@@ -31,15 +31,15 @@ import java.util.List;
 public class SuiteContext extends Context implements SynchronizableContext {
 
     public final List<TestContext> testContexts = new LinkedList<>();
-    public final RunContext runContext;
+    public final ExecutionContext executionContext;
 
-    public SuiteContext(RunContext runContext) {
-        this.parentContext = this.runContext = runContext;
+    public SuiteContext(ExecutionContext executionContext) {
+        this.parentContext = this.executionContext = executionContext;
     }
 
     public TestContext getTestContext(ITestResult testResult, ITestContext iTestContext) {
         final String testName = TestNGHelper.getTestName(testResult, iTestContext);
-        return getContext(TestContext.class, testContexts, testName, true, () -> new TestContext(this, runContext));
+        return getContext(TestContext.class, testContexts, testName, true, () -> new TestContext(this, executionContext));
     }
 
     public List<TestContext> copyOfTestContexts() {

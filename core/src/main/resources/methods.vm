@@ -39,7 +39,7 @@
 
         #set($methodsAll = $testClass.copyOfMethodContexts())
 
-        #foreach ($s in ${runContext.getAvailableStatuses()})
+        #foreach ($s in ${executionContext.getAvailableStatuses()})
 
             #set ($methods = $filter.filterMethodContexts($methodsAll, true, true, $s))
             #if ($methods.size() > 0)

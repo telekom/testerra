@@ -40,6 +40,16 @@ import java.util.Map;
  */
 final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 
+    private static void safelyAddCapsValue(DesiredCapabilities caps, String key, Object value) {
+        if (value == null) {
+            return;
+        }
+        if (StringUtils.isStringEmpty("" + value)) {
+            return;
+        }
+        caps.setCapability(key, value);
+    }
+
     static void addContextCapabilities(DesiredCapabilities baseCapabilities, DesktopWebDriverRequest desktopWebDriverRequest) {
         /*
         priority:
@@ -62,7 +72,7 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
          */
         for (String key : GLOBALCAPABILITIES.keySet()) {
             Object value = GLOBALCAPABILITIES.get(key);
-            baseCapabilities.setCapability(key, value);
+            safelyAddCapsValue(baseCapabilities, key, value);
         }
 
         /*
@@ -72,7 +82,7 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         if (threadLocalCaps != null) {
             for (String key : threadLocalCaps.keySet()) {
                 Object value = threadLocalCaps.get(key);
-                baseCapabilities.setCapability(key, value);
+                safelyAddCapsValue(baseCapabilities, key, value);
             }
         }
 
@@ -82,7 +92,7 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         if (desktopWebDriverRequest.sessionCapabilities != null) {
             for (String key : desktopWebDriverRequest.sessionCapabilities.keySet()) {
                 Object value = desktopWebDriverRequest.sessionCapabilities.get(key);
-                baseCapabilities.setCapability(key, value);
+                safelyAddCapsValue(baseCapabilities, key, value);
             }
         }
 
@@ -90,7 +100,7 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
             Map<String, ?> stringMap = desktopWebDriverRequest.desiredCapabilities.asMap();
             for (String key : stringMap.keySet()) {
                 Object value = stringMap.get(key);
-                baseCapabilities.setCapability(key, value);
+                safelyAddCapsValue(baseCapabilities, key, value);
             }
         }
 

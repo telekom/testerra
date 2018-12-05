@@ -78,24 +78,11 @@ public class ClassesPageTest extends AbstractTest {
     }
 
     /**
-     * checkFailedWarningSymbolForTableRow
-     * Checks whether the "Sync failed warning" symbol is displayed for a testundertest class
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, enabled=false)
-    public void testT04_checkFailedWarningSymbolForTableRow() {
-
-        final String className = ReportTestUnderTestSyncFailed.class.getSimpleName();
-
-        ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
-        classesPage.assertSyncFailedWarningIsDisplayedForTestclass(className);
-    }
-
-    /**
      * checkLinkToClassesDetails
      * Checks whether the pageflow to ClassesDetailsPage by clicking on a testundertest class works
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT05_checkLinkToClassesDetails() {
+    public void testT04_checkLinkToClassesDetails() {
         final String className = ReportTestUnderTestPassed.class.getSimpleName();
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.waitForPageToLoad();
@@ -110,7 +97,7 @@ public class ClassesPageTest extends AbstractTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     @Fails(ticketString = "XETA-684")
-    public void testT06_checkFennecInformationIsDisplayed() throws ParseException {
+    public void testT05_checkFennecInformationIsDisplayed() throws ParseException {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertFennecInformationIsDisplayed();
     }
@@ -120,7 +107,7 @@ public class ClassesPageTest extends AbstractTest {
      * Checks whether the legend symbols in the class table footer are displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT07_checkLegendSymbolsAreDisplayed() {
+    public void testT06_checkLegendSymbolsAreDisplayed() {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertAllLegendSymbolsAreDisplayed();
     }

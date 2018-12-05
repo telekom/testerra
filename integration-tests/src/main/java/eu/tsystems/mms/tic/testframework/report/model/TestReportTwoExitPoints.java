@@ -14,7 +14,7 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
             1,
             1,
             //*[contains(text(),'Exit Point #1 (1 Tests)')]/../..//*[contains(text(),'ReportTestUnderTestCorridorHigh.java:15')]
-            "ReportTestUnderTestCorridorHigh.java:15",
+            "ReportTestUnderTestCorridorHigh.java:15  ↕ test_testHighCorridorFailed1",
             true,
             Arrays.asList("ReportTestUnderTestCorridorHigh - test_testHighCorridorFailed1"),Arrays.asList("Exception")
     );
@@ -23,7 +23,7 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
             2,
             1,
-            "ReportTestUnderTestCorridorHigh.java:20",
+            "ReportTestUnderTestCorridorHigh.java:20  ↕ test_testHighCorridorFailed2",
             true,
             Arrays.asList("ReportTestUnderTestCorridorHigh - test_testHighCorridorFailed2"),Arrays.asList("Exception")
     );
@@ -32,7 +32,7 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
             0,
             1,
-            "",
+            "test_FailedMinorAnnotatedWithFailInReport",
             true,
             Arrays.asList("ReportTestUnderTestExpectedtoFail - test_FailedMinorAnnotatedWithFailInReport"),
             Arrays.asList("FennecTestFailureException: Failing of test expected. Description: This is an unknown bug.","Exception")
@@ -42,7 +42,7 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
             0,
             1,
-            "",
+            "test_FailedMinorAnnotatedWithFail_Run6",
             true,
             Arrays.asList("ReportTestUnderTestExpectedtoFail - test_FailedMinorAnnotatedWithFail_Run6"),
             Arrays.asList("FennecTestFailureException: Failing of test expected. Description: This is a known bug.","Exception")

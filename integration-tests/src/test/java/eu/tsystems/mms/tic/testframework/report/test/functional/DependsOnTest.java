@@ -26,37 +26,11 @@ import org.testng.annotations.Test;
 public class DependsOnTest extends AbstractTest {
 
     /**
-     * Checks whether the timestamp of the methods on the classes page are fitting to the execution order.
-     * Concerning DataProvider and DependsOn test cases
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, enabled=false)
-    public void testT01_checkOrderOfDependsOnMethods() {
-        ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
-                WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),
-                ReportTestUnderTestDependsOn.class.getSimpleName());
-        classesDetailsPage.assertMethodExecutionOrder();
-    }
-
-    /**
-     * Checks whether @AfterMethod is executing in a correct manner
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, enabled=false)
-    public void testT02_checkAfterMethodIsExecutedCorrectly() {
-        ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
-                WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),
-                ReportTestUnderTestDependsOn.class.getSimpleName());
-        classesDetailsPage.changeConfigMethodDisplayStateTo(ReportConfigMethodStateHelper.ConfigMethodState.SHOWING);
-        classesDetailsPage.assertMethodExecutionOrder();
-    }
-
-    /**
      * Checks whether the depends on test result is displayed correctly
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "dependsOnParallel")
     @Fails(ticketString = "XETA-658")
-    public void testT03_checkDependsOnMethodChartDisplaysTheExpectedTestResults(String dependsOnClassName) {
+    public void testT01_checkDependsOnMethodChartDisplaysTheExpectedTestResults(String dependsOnClassName) {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         int barChartPosition = dashboardPage.dashboardModuleClassBarChart.getBarChartElementNumberByClassName(dependsOnClassName);
         AssertCollector.assertNotEquals(barChartPosition, -1, "The Class " + dependsOnClassName + " does not exists in bar chart class names");
@@ -69,7 +43,7 @@ public class DependsOnTest extends AbstractTest {
 
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "dependsOnTestObjects")
     @Fails(ticketString = "XETA-658")
-    public void testT04_checkDependsOnMethodChartEntryStates(MethodDependency dependsOnTestObject) {
+    public void testT02_checkDependsOnMethodChartEntryStates(MethodDependency dependsOnTestObject) {
 
         final String testClassName = "ReportTestUnderTestDependsOn__Report__TestsUnderTest__Parallel__2";
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory())).gotoClassesDetailsPageForClass(testClassName);

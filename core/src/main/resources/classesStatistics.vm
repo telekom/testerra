@@ -31,8 +31,8 @@
                 <th class="textcenter"><b>Total</b></th>
             </tr>
 
-            #set ($methodStatsPerClass = ${runContext.getMethodStatsPerClass(true, false)})
-            #set ($configMethodStatsPerClass = ${runContext.getMethodStatsPerClass(false, true)})
+            #set ($methodStatsPerClass = ${executionContext.getMethodStatsPerClass(true, false)})
+            #set ($configMethodStatsPerClass = ${executionContext.getMethodStatsPerClass(false, true)})
 
             #foreach($class in $methodStatsPerClass.keySet())
                 #set($status = ${class.getStatus()})
@@ -46,7 +46,7 @@
                     <a href="classes/${class.id}.html" class="tooltip">${class.name}</a>
                 </td>
 
-                #foreach ($s in ${runContext.getAvailableStatuses()})
+                #foreach ($s in ${executionContext.getAvailableStatuses()})
                     #if ($s.active)
                         #set ($nr = ${methodStatsPerClass.get($class).get($s)})
                         #set ($nrC = ${configMethodStatsPerClass.get($class).get($s)})
@@ -89,7 +89,7 @@
             #end
 
             <tr class="suite">
-                <td class="totalLabel">Total Tests: $!{runContext.getNumberOfRepresentationalTests()}</td>
+                <td class="totalLabel">Total Tests: $!{executionContext.getNumberOfRepresentationalTests()}</td>
             </tr>
         </table>
 

@@ -34,7 +34,7 @@ public class TestContext extends Context implements SynchronizableContext {
 
     public final List<ClassContext> classContexts = new LinkedList<>();
     public final SuiteContext suiteContext;
-    public final RunContext runContext;
+    public final ExecutionContext executionContext;
 
     /**
      * id to context map:
@@ -44,9 +44,9 @@ public class TestContext extends Context implements SynchronizableContext {
      */
     private static final Map<String, ClassContext> CLASS_CONTEXT_MARKS = new LinkedHashMap<>();
 
-    public TestContext(SuiteContext suiteContext, RunContext runContext) {
+    public TestContext(SuiteContext suiteContext, ExecutionContext executionContext) {
         this.parentContext = this.suiteContext = suiteContext;
-        this.runContext = runContext;
+        this.executionContext = executionContext;
     }
 
     public ClassContext getClassContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
@@ -87,21 +87,21 @@ public class TestContext extends Context implements SynchronizableContext {
          */
         if (realClass.isAnnotationPresent(FennecClassContext.class)) {
             /*
-            hook into runContext mergedContexts
+            hook into executionContext mergedContexts
              */
             final FennecClassContext actualFennecClassContext = realClass.getAnnotation(FennecClassContext.class);
 
             if (actualFennecClassContext.mode() == FennecClassContext.Mode.ONE_FOR_ALL) {
                 final ClassContext mergedClassContext;
 
-                synchronized (runContext.mergedClassContexts) {
+                synchronized (executionContext.mergedClassContexts) {
                     // check if this class is present
-                    Optional<ClassContext> first = runContext.mergedClassContexts.stream().filter(c -> c.fennecClassContext == actualFennecClassContext).findFirst();
+                    Optional<ClassContext> first = executionContext.mergedClassContexts.stream().filter(c -> c.fennecClassContext == actualFennecClassContext).findFirst();
                     if (first.isPresent()) {
                         mergedClassContext = first.get();
                     } else {
                         // create and add to list
-                        mergedClassContext = new ClassContext(this, runContext);
+                        mergedClassContext = new ClassContext(this, executionContext);
                         mergedClassContext.fullClassName = realClass.getName();
                         mergedClassContext.simpleClassName = realClass.getSimpleName();
                         fillBasicContextValues(mergedClassContext, this, mergedClassContext.simpleClassName);
@@ -112,7 +112,7 @@ public class TestContext extends Context implements SynchronizableContext {
                             mergedClassContext.name = actualFennecClassContext.value();
                         }
 
-                        runContext.mergedClassContexts.add(mergedClassContext);
+                        executionContext.mergedClassContexts.add(mergedClassContext);
                     }
                 }
 
@@ -129,7 +129,7 @@ public class TestContext extends Context implements SynchronizableContext {
         /*
         create a new class context, maybe this is later thrown away
          */
-        final ClassContext newClassContext = new ClassContext(this, runContext);
+        final ClassContext newClassContext = new ClassContext(this, executionContext);
         newClassContext.fullClassName = realClass.getName();
         newClassContext.simpleClassName = realClass.getSimpleName();
         fillBasicContextValues(newClassContext, this, newClassContext.simpleClassName);
@@ -171,7 +171,7 @@ public class TestContext extends Context implements SynchronizableContext {
                     defaultStoredClassContext.setExplicitName();
                     CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.swi, defaultStoredClassContext);
 
-                    final ClassContext dummy = new ClassContext(null, runContext);
+                    final ClassContext dummy = new ClassContext(null, executionContext);
                     dummy.swi = "dummy";
                     CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.fullClassName, dummy);
                 }

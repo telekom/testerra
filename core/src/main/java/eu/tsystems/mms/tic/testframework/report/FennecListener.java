@@ -169,7 +169,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
      */
 
     /**
-     * This method INTERCEPT THE XML_TEST not the methods
+     * This method INTERCEPTs THE XML_TEST not the methods
      * It is possible to filter methods an remove them completly from execution
      * Or you do a dependency analysis for execution filter
      *
@@ -183,7 +183,16 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
             ExecutionUtils.removeInDevelopmentMethods(list, iTestContext);
         }
 
+        // apply method interceptors
+        METHOD_EXECUTION_FILTERS.forEach(mi -> mi.intercept(list, iTestContext));
+
         return list;
+    }
+
+    private static List<IMethodInterceptor> METHOD_EXECUTION_FILTERS = new LinkedList<>();
+
+    public static void registerMethodExecutionFilter(IMethodInterceptor mi) {
+        METHOD_EXECUTION_FILTERS.add(mi);
     }
 
     /**

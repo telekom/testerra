@@ -4,7 +4,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFailurePointsPage;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFailureEntry;
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
-import org.openqa.selenium.By;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoNumbers;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
@@ -61,14 +61,14 @@ public class ExitPointsPage extends AbstractFailurePointsPage {
         GuiElement exitPointMethod;
         GuiElement exitPointType = null;
 
-        boolean entryFound = false;
-        int maximumIndexOfTestsWithoutCodeLines = 40;
-        int currentTestNumber = 34;
+        TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
 
-        while (currentTestNumber <= maximumIndexOfTestsWithoutCodeLines) {
+        boolean entryFound = false;
+        int currentTestNumber = 1; // first exit point entry
+
+        while (currentTestNumber <= testReportTwoNumbers.getExitPoints()) {
 
             exitPointEntry = getHeaderInformationElementAlternativeForExitpoints(failedEntry, currentTestNumber);
-
             exitPointEntry.asserts().assertIsDisplayed();
 
             exitPointExtendButton = getExtendButtonAlternativeForExitpoints(failedEntry, currentTestNumber);

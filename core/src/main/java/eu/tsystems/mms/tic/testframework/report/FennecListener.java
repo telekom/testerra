@@ -93,6 +93,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
      * Instance counter for this reporter. *
      */
     private static int instances = 0;
+    private static final Object LOCK = new Object();
 
     static {
         /*
@@ -123,9 +124,10 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
      * Default constructor. *
      */
     public FennecListener() {
-        // increment instance counter
-        instances++;
-        
+        synchronized (LOCK) {
+            // increment instance counter
+            instances++;
+        }
     }
 
     /**

@@ -95,6 +95,9 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
     private static int instances = 0;
 
     static {
+        // increment instance counter
+        instances++;
+
         /*
         Call Booter
          */

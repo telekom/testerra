@@ -178,13 +178,16 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
      * @return Alle mthods taht shuld be run
      */
     @Override
-    public List<IMethodInstance> intercept(final List<IMethodInstance> list, final ITestContext iTestContext) {
+    public List<IMethodInstance> intercept(List<IMethodInstance> list, final ITestContext iTestContext) {
+
         if (Flags.EXECUTION_OMIT_IN_DEVELOPMENT) {
             ExecutionUtils.removeInDevelopmentMethods(list, iTestContext);
         }
 
-        // apply method interceptors
-        METHOD_EXECUTION_FILTERS.forEach(mi -> mi.intercept(list, iTestContext));
+        // apply method interceptors - no lambda, because list is not final
+        for (final IMethodInterceptor methodInterceptor : METHOD_EXECUTION_FILTERS) {
+            list = methodInterceptor.intercept(list, iTestContext);
+        }
 
         return list;
     }

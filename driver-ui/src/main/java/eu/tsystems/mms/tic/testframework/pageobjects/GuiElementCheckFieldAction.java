@@ -166,21 +166,9 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                  */
                 String prioritizedErrorMessage = check.prioritizedErrorMessage();
                 if (!StringUtils.isStringEmpty(prioritizedErrorMessage)) {
-                    AssertionError assertionError = new AssertionError(prioritizedErrorMessage, pageNotFoundException);
-
-                    MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                    if (methodContext != null) {
-                        methodContext.setThrowable(prioritizedErrorMessage, assertionError);
-                    }
-
-                    throw assertionError;
+                    throw new AssertionError(prioritizedErrorMessage, pageNotFoundException);
                 }
                 else {
-                    MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                    if (methodContext != null) {
-                        methodContext.setThrowable(readableMessage, e);
-                    }
-
                     throw pageNotFoundException;
                 }
             }

@@ -20,6 +20,10 @@
 package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.events.FennecEvent;
+import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
+import eu.tsystems.mms.tic.testframework.events.FennecEventService;
+import eu.tsystems.mms.tic.testframework.events.FennecEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.FennecEventsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateFennecReportWorker;
@@ -192,6 +196,14 @@ public class GenerateReport {
          */
         ExecutionContextController.EXECUTION_CONTEXT.exitPoints = exitPoints;
         ExecutionContextController.EXECUTION_CONTEXT.failureAspects = failureAspects;
+
+        /*
+        final execution context sync
+         */
+        FennecEventService.getInstance().fireEvent(
+                new FennecEvent(FennecEventType.CONTEXT_UPDATE)
+                        .addData(FennecEventDataType.CONTEXT, ExecutionContextController.EXECUTION_CONTEXT)
+        );
 
         /*
          * Create report

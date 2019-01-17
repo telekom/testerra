@@ -47,7 +47,7 @@ public class FennecEventsFinishWorker extends MethodWorker {
         }
 
         final DataSet dataSet = new DataSet(
-                Thread.currentThread().getName() + "#" + Thread.currentThread().getId(), formattedContent,
+                methodContext.threadName, formattedContent,
                 startTimeTime,
                 endTimeTime);
         DataStorage.addDataSet(dataSet);

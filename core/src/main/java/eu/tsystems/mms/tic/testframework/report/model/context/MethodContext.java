@@ -241,7 +241,8 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     }
 
     public void setThreadName() {
-        this.threadName = Thread.currentThread().getName();
+        final Thread currentThread = Thread.currentThread();
+        this.threadName = currentThread.getName() + "#" + currentThread.getId();
     }
 
     public boolean isConfigMethod() {

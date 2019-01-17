@@ -57,7 +57,7 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     public List<Annotation> methodTags = new LinkedList<>();
     public int retryNumber = 0;
     public int methodRunIndex = -1;
-    public String threadName;
+    public String threadName = "unrelated";
     public TestStep failedStep;
     public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.High;
 

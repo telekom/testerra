@@ -178,11 +178,11 @@ final class WebDriverSessionsManager {
                 }
             });
 
-            // remove links
-            removeWebDriverSession(sessionId, eventFiringWebDriver, null);
-
             // quit it
             WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
+
+            // remove links
+            removeWebDriverSession(sessionId, eventFiringWebDriver, null);
 
             afterQuitActions.forEach(runnable -> {
                 try {

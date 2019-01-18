@@ -41,6 +41,7 @@ public class ExecutionContext extends Context implements SynchronizableContext {
     public final RunConfig runConfig = new RunConfig();
 
     public final Map<String, String> metaData = new LinkedHashMap<>();
+    public boolean crashed = false;
 
     public ExecutionContext() {
         name = runConfig.RUNCFG;

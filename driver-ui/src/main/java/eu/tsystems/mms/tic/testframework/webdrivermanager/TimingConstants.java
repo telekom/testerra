@@ -34,10 +34,10 @@ public final class TimingConstants {
 
     public static final int WATCHDOG_THREAD_POLL_INTERVAL_SECONDS = 10;
 
-    public static final int WEBDRIVER_COMMAND_TIMEOUT_SECONDS = PropertyManager.getIntProperty(FennecProperties.WATCHDOG_TIMEOUT_SECONDS, 600);
-    public static final int WATCHDOG_FIRST_ANNOUNCEMENT_SECONDS;
-    public static final int WATCHDOG_THREAD_HANGING_TIMEOUT_SECONDS;
-    public static final int WATCHDOG_FORCE_QUIT_TIMEOUT_SECONDS;
+    public static final int WEBDRIVER_COMMAND_TIMEOUT_SECONDS = PropertyManager.getIntProperty(FennecProperties.WATCHDOG_TIMEOUT_SECONDS, 120);
+    public static final int WATCHDOG_FIRST_ANNOUNCEMENT_SECONDS; // calculated
+    public static final int WATCHDOG_THREAD_HANGING_TIMEOUT_SECONDS; // calculated
+    public static final int WATCHDOG_FORCE_QUIT_TIMEOUT_SECONDS; // calculated
 
     static {
         if (WEBDRIVER_COMMAND_TIMEOUT_SECONDS < 2 * 60) {
@@ -47,7 +47,7 @@ public final class TimingConstants {
         }
         WATCHDOG_FIRST_ANNOUNCEMENT_SECONDS = WEBDRIVER_COMMAND_TIMEOUT_SECONDS / 2;
         WATCHDOG_THREAD_HANGING_TIMEOUT_SECONDS = WEBDRIVER_COMMAND_TIMEOUT_SECONDS - 20;
-        WATCHDOG_FORCE_QUIT_TIMEOUT_SECONDS = WEBDRIVER_COMMAND_TIMEOUT_SECONDS + 120;
+        WATCHDOG_FORCE_QUIT_TIMEOUT_SECONDS = WEBDRIVER_COMMAND_TIMEOUT_SECONDS + 60; // + 1 min
 
         LOGGER.info("WatchDog Timings:" +
                 "\n FlagUp:    " + WATCHDOG_THREAD_HANGING_TIMEOUT_SECONDS + "s" +

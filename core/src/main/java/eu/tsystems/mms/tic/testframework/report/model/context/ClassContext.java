@@ -38,10 +38,18 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
-import org.testng.*;
+import org.testng.IInvokedMethod;
+import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
+import org.testng.SkipException;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -61,15 +69,18 @@ public class ClassContext extends Context implements SynchronizableContext {
     public ClassContext mergedIntoClassContext = null;
 
     public ClassContext(TestContext testContext, ExecutionContext executionContext) {
+
         this.parentContext = this.testContext = testContext;
         this.executionContext = executionContext;
     }
 
     public MethodContext findTestMethodContainer(String methodName) {
+
         return getContext(MethodContext.class, methodContexts, methodName, false, null);
     }
 
     public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
+
         ITestNGMethod testMethod = TestNGHelper.getTestMethod(testResult, iTestContext, invokedMethod);
         String name = testMethod.getMethodName();
 
@@ -88,12 +99,10 @@ public class ClassContext extends Context implements SynchronizableContext {
                 final boolean isTest;
                 if (testResult.getMethod() != null) {
                     isTest = testResult.getMethod().isTest();
-                }
-                else if (invokedMethod != null) {
+                } else if (invokedMethod != null) {
                     isTest = invokedMethod.isTestMethod();
-                }
-                else {
-                    throw new FennecSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{testResult, iTestContext},"\n"));
+                } else {
+                    throw new FennecSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{testResult, iTestContext}, "\n"));
                 }
 
                 if (isTest) {
@@ -143,8 +152,92 @@ public class ClassContext extends Context implements SynchronizableContext {
                 FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
                         .addData(FennecEventDataType.CONTEXT, methodContext)
                         .addData(FennecEventDataType.WITH_PARENT, true));
+            } else {
+                if (collect.size() > 1) {
+                    LOGGER.error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");
+                }
+                methodContext = collect.get(0);
             }
-            else {
+            return methodContext;
+        }
+    }
+
+    public MethodContext getMethodContext(ITestContext iTestContext, ITestNGMethod iTestNGMethod) {
+
+        ITestNGMethod testMethod = iTestNGMethod;
+        String name = testMethod.getMethodName();
+
+        // TODO ERKU: Code-Duplette auflösen.
+
+        synchronized (methodContexts) {
+            List<MethodContext> collect = methodContexts.stream()
+                    .filter(methodContext -> iTestContext == methodContext.iTestContext && iTestNGMethod == methodContext.iTestNgMethod)
+                    .collect(Collectors.toList());
+
+            MethodContext methodContext;
+            if (collect.isEmpty()) {
+                /*
+                create new one
+                 */
+                MethodType methodType;
+
+                final boolean isTest;
+                if (iTestNGMethod != null) {
+                    isTest = iTestNGMethod.isTest();
+                } else {
+                    throw new FennecSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{iTestContext}, "\n"));
+                }
+
+                if (isTest) {
+                    methodType = MethodType.TEST_METHOD;
+                } else {
+                    methodType = MethodType.CONFIGURATION_METHOD;
+                }
+
+                TestContext correctTestContext = testContext;
+                SuiteContext correctSuiteContext = testContext.suiteContext;
+                if (merged) {
+                    correctSuiteContext = executionContext.getSuiteContext(iTestContext);
+                    correctTestContext = correctSuiteContext.getTestContext(iTestContext);
+                }
+
+                methodContext = new MethodContext(name, methodType, this, correctTestContext, correctSuiteContext, executionContext);
+                fillBasicContextValues(methodContext, this, name);
+
+                methodContext.iTestContext = iTestContext;
+                methodContext.iTestNgMethod = iTestNGMethod;
+
+                /*
+                link to merged context
+                 */
+                if (merged) {
+                    synchronized (mergedIntoClassContext.methodContexts) {
+                        mergedIntoClassContext.methodContexts.add(methodContext);
+                    }
+                }
+
+                /*
+                also check for annotations
+                 */
+                Method method = testMethod.getConstructorOrMethod().getMethod();
+                if (method.isAnnotationPresent(FailureCorridor.High.class)) {
+                    methodContext.failureCorridorValue = FailureCorridor.Value.High;
+                } else if (method.isAnnotationPresent(FailureCorridor.Mid.class)) {
+                    methodContext.failureCorridorValue = FailureCorridor.Value.Mid;
+                } else if (method.isAnnotationPresent(FailureCorridor.Low.class)) {
+                    methodContext.failureCorridorValue = FailureCorridor.Value.Low;
+                }
+
+                /*
+                add to method contexts
+                 */
+                methodContexts.add(methodContext);
+
+                // fire context update event: create method context
+                FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
+                        .addData(FennecEventDataType.CONTEXT, methodContext)
+                        .addData(FennecEventDataType.WITH_PARENT, true));
+            } else {
                 if (collect.size() > 1) {
                     LOGGER.error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");
                 }
@@ -155,12 +248,14 @@ public class ClassContext extends Context implements SynchronizableContext {
     }
 
     public List<MethodContext> copyOfMethodContexts() {
+
         synchronized (methodContexts) {
             return new LinkedList<>(methodContexts);
         }
     }
 
     public MethodContext safeAddSkipMethod(ITestResult testResult, IInvokedMethod invokedMethod) {
+
         MethodContext methodContext = getMethodContext(testResult, null, invokedMethod);
         methodContext.setThrowable(null, new SkipException("Skipped"));
         methodContext.status = TestStatusController.Status.SKIPPED;
@@ -169,16 +264,19 @@ public class ClassContext extends Context implements SynchronizableContext {
 
     @Override
     public TestStatusController.Status getStatus() {
+
         return getStatusFromContexts(getRepresentationalMethods());
     }
 
     public Context[] getRepresentationalMethods() {
+
         List<MethodContext> methodContexts = copyOfMethodContexts();
         Context[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod).toArray(Context[]::new);
         return contexts;
     }
 
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
+
         Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
 
         // initialize with 0
@@ -199,6 +297,7 @@ public class ClassContext extends Context implements SynchronizableContext {
     }
 
     public List<MethodContext> getTestMethodsWithStatus(TestStatusController.Status status) {
+
         List<MethodContext> methodContexts = new LinkedList<>();
         copyOfMethodContexts().forEach(methodContext -> {
             if (methodContext.isTestMethod() && status == methodContext.status) {
@@ -209,6 +308,7 @@ public class ClassContext extends Context implements SynchronizableContext {
     }
 
     protected void setExplicitName() {
+
         name = simpleClassName + "_" + testContext.suiteContext.name + "_" + testContext.name;
     }
 

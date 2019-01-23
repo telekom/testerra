@@ -19,11 +19,16 @@
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.*;
+import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.TestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
 /**
@@ -39,10 +44,12 @@ public class ExecutionContextController {
     private static final ThreadLocal<ITestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
 
     public static MethodContext getCurrentMethodContext() {
+
         return CURRENT_METHOD_CONTEXT.get();
     }
 
     public static ITestResult getCurrentTestResult() {
+
         return CURRENT_TEST_RESULT.get();
     }
 
@@ -52,12 +59,22 @@ public class ExecutionContextController {
      * Gets the ClassContext for TestNG ITestResult. If no ClassContext for result exists, it will set.
      *
      * @param testResult The ITestResult to set.
+     *
      * @return the ClassContext for the result.
      */
     public static ClassContext getClassContextFromTestResult(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
+
         SuiteContext suiteContext = EXECUTION_CONTEXT.getSuiteContext(testResult, iTestContext);
         TestContext testContext = suiteContext.getTestContext(testResult, iTestContext);
         ClassContext classContext = testContext.getClassContext(testResult, iTestContext, invokedMethod);
+        return classContext;
+    }
+
+    public static ClassContext getClassContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod) {
+
+        SuiteContext suiteContext = EXECUTION_CONTEXT.getSuiteContext(iTestContext);
+        TestContext testContext = suiteContext.getTestContext(iTestContext);
+        ClassContext classContext = testContext.getClassContext(iTestNgMethod);
         return classContext;
     }
 
@@ -66,11 +83,19 @@ public class ExecutionContextController {
      * created.
      *
      * @param iTestResult The ITestResult to set.
+     *
      * @return the MethodContext for the result.
      */
     public static MethodContext getMethodContextFromTestResult(final ITestResult iTestResult, final ITestContext testContext) {
+
         ClassContext classContext = getClassContextFromTestResult(iTestResult, testContext, null);
         return classContext.getMethodContext(iTestResult, testContext, null);
+    }
+
+    public static MethodContext getMethodContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod) {
+
+        ClassContext classContext = getClassContextFromTestContextAndMethod(iTestContext, iTestNgMethod);
+        return classContext.getMethodContext(iTestContext, iTestNgMethod);
     }
 
     /**
@@ -79,6 +104,7 @@ public class ExecutionContextController {
      * @param iTestResult TestNg testResult representing current test.
      */
     public static MethodContext setCurrentTestResult(final ITestResult iTestResult, final ITestContext testContext) {
+
         CURRENT_TEST_RESULT.set(iTestResult);
         /*
         auto-create method context
@@ -92,6 +118,7 @@ public class ExecutionContextController {
      * @param methodContext Method Context.
      */
     public static void setCurrentMethodContext(final MethodContext methodContext) {
+
         CURRENT_METHOD_CONTEXT.set(methodContext);
     }
 
@@ -99,6 +126,7 @@ public class ExecutionContextController {
      * Clear the -current testresult-. Use with care!
      */
     public static void clearCurrentTestResult() {
+
         CURRENT_TEST_RESULT.remove();
         CURRENT_METHOD_CONTEXT.remove();
     }

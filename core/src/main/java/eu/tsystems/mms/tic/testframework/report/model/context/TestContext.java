@@ -26,9 +26,14 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.testng.IClass;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class TestContext extends Context implements SynchronizableContext {
 
@@ -45,13 +50,26 @@ public class TestContext extends Context implements SynchronizableContext {
     private static final Map<String, ClassContext> CLASS_CONTEXT_MARKS = new LinkedHashMap<>();
 
     public TestContext(SuiteContext suiteContext, ExecutionContext executionContext) {
+
         this.parentContext = this.suiteContext = suiteContext;
         this.executionContext = executionContext;
     }
 
     public ClassContext getClassContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
-        IClass testClass = TestNGHelper.getTestClass(testResult, iTestContext, invokedMethod);
-        Class<?> realClass = testClass.getRealClass();
+
+        final IClass testClass = TestNGHelper.getTestClass(testResult, iTestContext, invokedMethod);
+        return this.pGetClassContext(testClass);
+    }
+
+    public ClassContext getClassContext(final ITestNGMethod iTestNgMethod) {
+
+        final IClass testClass = iTestNgMethod.getTestClass();
+        return this.pGetClassContext(testClass);
+    }
+
+    private ClassContext pGetClassContext(IClass testClass) {
+
+        final Class<?> realClass = testClass.getRealClass();
 
         /*
             tree example:
@@ -86,6 +104,7 @@ public class TestContext extends Context implements SynchronizableContext {
         check if @FennecClassContext is present on class
          */
         if (realClass.isAnnotationPresent(FennecClassContext.class)) {
+
             /*
             hook into executionContext mergedContexts
              */
@@ -123,6 +142,7 @@ public class TestContext extends Context implements SynchronizableContext {
         }
 
         return classContext;
+
     }
 
     private ClassContext getTreeClassContext(Class realClass) {
@@ -175,8 +195,7 @@ public class TestContext extends Context implements SynchronizableContext {
                     dummy.swi = "dummy";
                     CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.fullClassName, dummy);
                 }
-            }
-            else {
+            } else {
                 // Our new class is the first time coming up.
                 CLASS_CONTEXT_MARKS.put(newClassContext.fullClassName, newClassContext);
                 synchronized (classContexts) {
@@ -189,6 +208,7 @@ public class TestContext extends Context implements SynchronizableContext {
     }
 
     public List<ClassContext> copyOfClassContexts() {
+
         synchronized (classContexts) {
             return new LinkedList<>(classContexts);
         }
@@ -197,6 +217,8 @@ public class TestContext extends Context implements SynchronizableContext {
 
     @Override
     public TestStatusController.Status getStatus() {
+
         return getStatusFromContexts(classContexts.toArray(new Context[0]));
     }
+
 }

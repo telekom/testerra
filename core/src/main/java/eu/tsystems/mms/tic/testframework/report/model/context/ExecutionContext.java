@@ -62,8 +62,7 @@ public class ExecutionContext extends Context implements SynchronizableContext {
     }
 
     public SuiteContext getSuiteContext(final ITestContext iTestContext) {
-        final String suiteName = iTestContext.getSuite().getName();
-        return getContext(SuiteContext.class, suiteContexts, suiteName, true, () -> new SuiteContext(this));
+        return this.getSuiteContext(null, iTestContext);
     }
 
     public List<SuiteContext> copyOfSuiteContexts() {

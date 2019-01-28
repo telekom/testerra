@@ -78,92 +78,12 @@ public class ClassContext extends Context implements SynchronizableContext {
     }
 
     public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
-        ITestNGMethod testMethod = TestNGHelper.getTestMethod(testResult, iTestContext, invokedMethod);
-        String name = testMethod.getMethodName();
-
-        synchronized (methodContexts) {
-            List<MethodContext> collect = methodContexts.stream()
-                    .filter(methodContext -> testResult == methodContext.testResult)
-                    .collect(Collectors.toList());
-
-            MethodContext methodContext;
-            if (collect.isEmpty()) {
-                /*
-                create new one
-                 */
-                MethodType methodType;
-
-                final boolean isTest;
-                if (testResult.getMethod() != null) {
-                    isTest = testResult.getMethod().isTest();
-                } else if (invokedMethod != null) {
-                    isTest = invokedMethod.isTestMethod();
-                } else {
-                    throw new FennecSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{testResult, iTestContext}, "\n"));
-                }
-
-                if (isTest) {
-                    methodType = MethodType.TEST_METHOD;
-                } else {
-                    methodType = MethodType.CONFIGURATION_METHOD;
-                }
-
-                TestContext correctTestContext = testContext;
-                SuiteContext correctSuiteContext = testContext.suiteContext;
-                if (merged) {
-                    correctSuiteContext = executionContext.getSuiteContext(testResult, iTestContext);
-                    correctTestContext = correctSuiteContext.getTestContext(testResult, iTestContext);
-                }
-
-                methodContext = new MethodContext(name, methodType, this, correctTestContext, correctSuiteContext, executionContext);
-                fillBasicContextValues(methodContext, this, name);
-                methodContext.testResult = testResult;
-
-                /*
-                link to merged context
-                 */
-                if (merged) {
-                    synchronized (mergedIntoClassContext.methodContexts) {
-                        mergedIntoClassContext.methodContexts.add(methodContext);
-                    }
-                }
-
-                /*
-                also check for annotations
-                 */
-                Method method = testMethod.getConstructorOrMethod().getMethod();
-                if (method.isAnnotationPresent(FailureCorridor.High.class)) {
-                    methodContext.failureCorridorValue = FailureCorridor.Value.High;
-                } else if (method.isAnnotationPresent(FailureCorridor.Mid.class)) {
-                    methodContext.failureCorridorValue = FailureCorridor.Value.Mid;
-                } else if (method.isAnnotationPresent(FailureCorridor.Low.class)) {
-                    methodContext.failureCorridorValue = FailureCorridor.Value.Low;
-                }
-
-                /*
-                add to method contexts
-                 */
-                methodContexts.add(methodContext);
-
-                // fire context update event: create method context
-                FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
-                        .addData(FennecEventDataType.CONTEXT, methodContext)
-                        .addData(FennecEventDataType.WITH_PARENT, true));
-            } else {
-                if (collect.size() > 1) {
-                    LOGGER.error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");
-                }
-                methodContext = collect.get(0);
-            }
-            return methodContext;
-        }
+        final ITestNGMethod testMethod = TestNGHelper.getTestMethod(testResult, iTestContext, invokedMethod);
+        return this.getMethodContext(iTestContext, testMethod);
     }
 
     public MethodContext getMethodContext(ITestContext iTestContext, ITestNGMethod iTestNGMethod) {
-        ITestNGMethod testMethod = iTestNGMethod;
-        String name = testMethod.getMethodName();
-
-        // TODO ERKU: Code-Duplette auflösen.
+        final String name = iTestNGMethod.getMethodName();
 
         synchronized (methodContexts) {
             List<MethodContext> collect = methodContexts.stream()
@@ -181,7 +101,7 @@ public class ClassContext extends Context implements SynchronizableContext {
                 if (iTestNGMethod != null) {
                     isTest = iTestNGMethod.isTest();
                 } else {
-                    throw new FennecSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{iTestContext}, "\n"));
+                    throw new FennecSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{iTestNGMethod, iTestContext}, "\n"));
                 }
 
                 if (isTest) {
@@ -215,7 +135,7 @@ public class ClassContext extends Context implements SynchronizableContext {
                 /*
                 also check for annotations
                  */
-                Method method = testMethod.getConstructorOrMethod().getMethod();
+                Method method = iTestNGMethod.getConstructorOrMethod().getMethod();
                 if (method.isAnnotationPresent(FailureCorridor.High.class)) {
                     methodContext.failureCorridorValue = FailureCorridor.Value.High;
                 } else if (method.isAnnotationPresent(FailureCorridor.Mid.class)) {

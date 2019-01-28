@@ -31,7 +31,7 @@ public class Screenshot {
     /*
     Refers to the errorContext the screenshot belongs to.
      */
-    public long errorContextId;
+    public String errorContextId;
 
     @Override
     public String toString() {

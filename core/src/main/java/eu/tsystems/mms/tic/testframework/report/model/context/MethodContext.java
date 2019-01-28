@@ -127,6 +127,7 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
 
     @Override
     public boolean equals(final Object obj) {
+
         if (!(obj instanceof MethodContext)) {
             return false;
         }

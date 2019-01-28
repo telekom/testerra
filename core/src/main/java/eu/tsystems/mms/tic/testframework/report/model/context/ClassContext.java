@@ -69,18 +69,15 @@ public class ClassContext extends Context implements SynchronizableContext {
     public ClassContext mergedIntoClassContext = null;
 
     public ClassContext(TestContext testContext, ExecutionContext executionContext) {
-
         this.parentContext = this.testContext = testContext;
         this.executionContext = executionContext;
     }
 
     public MethodContext findTestMethodContainer(String methodName) {
-
         return getContext(MethodContext.class, methodContexts, methodName, false, null);
     }
 
     public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
-
         ITestNGMethod testMethod = TestNGHelper.getTestMethod(testResult, iTestContext, invokedMethod);
         String name = testMethod.getMethodName();
 
@@ -163,7 +160,6 @@ public class ClassContext extends Context implements SynchronizableContext {
     }
 
     public MethodContext getMethodContext(ITestContext iTestContext, ITestNGMethod iTestNGMethod) {
-
         ITestNGMethod testMethod = iTestNGMethod;
         String name = testMethod.getMethodName();
 
@@ -248,14 +244,12 @@ public class ClassContext extends Context implements SynchronizableContext {
     }
 
     public List<MethodContext> copyOfMethodContexts() {
-
         synchronized (methodContexts) {
             return new LinkedList<>(methodContexts);
         }
     }
 
     public MethodContext safeAddSkipMethod(ITestResult testResult, IInvokedMethod invokedMethod) {
-
         MethodContext methodContext = getMethodContext(testResult, null, invokedMethod);
         methodContext.setThrowable(null, new SkipException("Skipped"));
         methodContext.status = TestStatusController.Status.SKIPPED;
@@ -264,19 +258,16 @@ public class ClassContext extends Context implements SynchronizableContext {
 
     @Override
     public TestStatusController.Status getStatus() {
-
         return getStatusFromContexts(getRepresentationalMethods());
     }
 
     public Context[] getRepresentationalMethods() {
-
         List<MethodContext> methodContexts = copyOfMethodContexts();
         Context[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod).toArray(Context[]::new);
         return contexts;
     }
 
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
-
         Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
 
         // initialize with 0
@@ -297,7 +288,6 @@ public class ClassContext extends Context implements SynchronizableContext {
     }
 
     public List<MethodContext> getTestMethodsWithStatus(TestStatusController.Status status) {
-
         List<MethodContext> methodContexts = new LinkedList<>();
         copyOfMethodContexts().forEach(methodContext -> {
             if (methodContext.isTestMethod() && status == methodContext.status) {
@@ -308,7 +298,6 @@ public class ClassContext extends Context implements SynchronizableContext {
     }
 
     protected void setExplicitName() {
-
         name = simpleClassName + "_" + testContext.suiteContext.name + "_" + testContext.name;
     }
 

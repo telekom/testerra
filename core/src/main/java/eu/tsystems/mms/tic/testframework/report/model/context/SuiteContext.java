@@ -43,7 +43,6 @@ public class SuiteContext extends Context implements SynchronizableContext {
     }
 
     public TestContext getTestContext(final ITestContext iTestContext) {
-
         final String testName = iTestContext.getCurrentXmlTest().getName();
         return getContext(TestContext.class, testContexts, testName, true, () -> new TestContext(this, executionContext));
     }
@@ -58,5 +57,4 @@ public class SuiteContext extends Context implements SynchronizableContext {
     public TestStatusController.Status getStatus() {
         return getStatusFromContexts(testContexts.toArray(new Context[0]));
     }
-
 }

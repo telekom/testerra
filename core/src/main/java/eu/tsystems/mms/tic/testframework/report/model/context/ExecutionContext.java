@@ -49,7 +49,6 @@ public class ExecutionContext extends Context implements SynchronizableContext {
     public boolean crashed = false;
 
     public ExecutionContext() {
-
         name = runConfig.RUNCFG;
         swi = name;
 
@@ -58,19 +57,16 @@ public class ExecutionContext extends Context implements SynchronizableContext {
     }
 
     public SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
-
         final String suiteName = TestNGHelper.getSuiteName(testResult, iTestContext);
         return getContext(SuiteContext.class, suiteContexts, suiteName, true, () -> new SuiteContext(this));
     }
 
     public SuiteContext getSuiteContext(final ITestContext iTestContext) {
-
         final String suiteName = iTestContext.getSuite().getName();
         return getContext(SuiteContext.class, suiteContexts, suiteName, true, () -> new SuiteContext(this));
     }
 
     public List<SuiteContext> copyOfSuiteContexts() {
-
         synchronized (suiteContexts) {
             return new LinkedList<>(suiteContexts);
         }
@@ -78,12 +74,10 @@ public class ExecutionContext extends Context implements SynchronizableContext {
 
     @Override
     public TestStatusController.Status getStatus() {
-
         return getStatusFromContexts(suiteContexts.toArray(new Context[0]));
     }
 
     public int getNumberOfRepresentationalTests() {
-
         IntRef i = new IntRef();
         List<SuiteContext> suiteContexts = copyOfSuiteContexts();
         suiteContexts.forEach(suiteContext -> {
@@ -97,7 +91,6 @@ public class ExecutionContext extends Context implements SynchronizableContext {
     }
 
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
-
         Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
 
         // initialize with 0
@@ -130,7 +123,6 @@ public class ExecutionContext extends Context implements SynchronizableContext {
      * @return a map
      */
     public Map<ClassContext, Map> getMethodStatsPerClass(boolean includeTestMethods, boolean includeConfigMethods) {
-
         final Map<ClassContext, Map> methodStatsPerClass = new LinkedHashMap<>();
         List<SuiteContext> suiteContexts = copyOfSuiteContexts();
         suiteContexts.forEach(suiteContext -> {
@@ -166,13 +158,10 @@ public class ExecutionContext extends Context implements SynchronizableContext {
     }
 
     public TestStatusController.Status[] getAvailableStatuses() {
-
         return TestStatusController.Status.values();
     }
 
     public TestStatusController.Status[] getAvailableStatus() {
-
         return TestStatusController.Status.values();
     }
-
 }

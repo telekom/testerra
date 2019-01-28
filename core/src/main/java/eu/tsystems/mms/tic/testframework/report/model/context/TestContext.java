@@ -50,25 +50,21 @@ public class TestContext extends Context implements SynchronizableContext {
     private static final Map<String, ClassContext> CLASS_CONTEXT_MARKS = new LinkedHashMap<>();
 
     public TestContext(SuiteContext suiteContext, ExecutionContext executionContext) {
-
         this.parentContext = this.suiteContext = suiteContext;
         this.executionContext = executionContext;
     }
 
     public ClassContext getClassContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
-
         final IClass testClass = TestNGHelper.getTestClass(testResult, iTestContext, invokedMethod);
         return this.pGetClassContext(testClass);
     }
 
     public ClassContext getClassContext(final ITestNGMethod iTestNgMethod) {
-
         final IClass testClass = iTestNgMethod.getTestClass();
         return this.pGetClassContext(testClass);
     }
 
     private ClassContext pGetClassContext(IClass testClass) {
-
         final Class<?> realClass = testClass.getRealClass();
 
         /*
@@ -220,5 +216,4 @@ public class TestContext extends Context implements SynchronizableContext {
 
         return getStatusFromContexts(classContexts.toArray(new Context[0]));
     }
-
 }

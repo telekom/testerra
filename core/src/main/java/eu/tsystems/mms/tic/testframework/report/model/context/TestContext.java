@@ -204,7 +204,6 @@ public class TestContext extends Context implements SynchronizableContext {
     }
 
     public List<ClassContext> copyOfClassContexts() {
-
         synchronized (classContexts) {
             return new LinkedList<>(classContexts);
         }
@@ -213,7 +212,6 @@ public class TestContext extends Context implements SynchronizableContext {
 
     @Override
     public TestStatusController.Status getStatus() {
-
         return getStatusFromContexts(classContexts.toArray(new Context[0]));
     }
 }

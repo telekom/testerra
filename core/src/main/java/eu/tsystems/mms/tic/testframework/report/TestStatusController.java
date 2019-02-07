@@ -206,7 +206,7 @@ public class TestStatusController {
 
         if (failureCorridorValue != null) {
             switch (failureCorridorValue) {
-                case High:
+                case HIGH:
                     if (raise) {
                         testsFailedHIGH++;
                     }
@@ -214,7 +214,7 @@ public class TestStatusController {
                         testsFailedHIGH--;
                     }
                     break;
-                case Mid:
+                case MID:
                     if (raise) {
                         testsFailedMID++;
                     }
@@ -222,7 +222,7 @@ public class TestStatusController {
                         testsFailedMID--;
                     }
                     break;
-                case Low:
+                case LOW:
                     if (raise) {
                         testsFailedLOW++;
                     }

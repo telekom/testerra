@@ -127,11 +127,11 @@ public class ClassContext extends Context implements SynchronizableContext {
                  */
                 Method method = testMethod.getConstructorOrMethod().getMethod();
                 if (method.isAnnotationPresent(FailureCorridor.High.class)) {
-                    methodContext.failureCorridorValue = FailureCorridor.Value.High;
+                    methodContext.failureCorridorValue = FailureCorridor.Value.HIGH;
                 } else if (method.isAnnotationPresent(FailureCorridor.Mid.class)) {
-                    methodContext.failureCorridorValue = FailureCorridor.Value.Mid;
+                    methodContext.failureCorridorValue = FailureCorridor.Value.MID;
                 } else if (method.isAnnotationPresent(FailureCorridor.Low.class)) {
-                    methodContext.failureCorridorValue = FailureCorridor.Value.Low;
+                    methodContext.failureCorridorValue = FailureCorridor.Value.LOW;
                 }
 
                 /*

@@ -59,7 +59,7 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     public int methodRunIndex = -1;
     public String threadName = "unrelated";
     public TestStep failedStep;
-    public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.High;
+    public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.HIGH;
 
     public ClassContext classContext;
     public TestContext testContext;

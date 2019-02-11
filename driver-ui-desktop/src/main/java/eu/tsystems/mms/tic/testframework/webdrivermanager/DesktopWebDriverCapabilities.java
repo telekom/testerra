@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -33,12 +34,14 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Created by pele on 08.01.2015.
  */
-final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
+public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 
     private static void safelyAddCapsValue(DesiredCapabilities caps, String key, Object value) {
         if (value == null) {
@@ -103,7 +106,6 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 safelyAddCapsValue(baseCapabilities, key, value);
             }
         }
-
     }
 
     static DesiredCapabilities createCapabilities(final WebDriverManagerConfig config, DesktopWebDriverRequest desktopWebDriverRequest) {
@@ -198,9 +200,14 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         }
 
         /*
-         * add own desired capabilities
+        add own desired capabilities
          */
         addContextCapabilities(desiredCapabilities, desktopWebDriverRequest);
+
+        /*
+        add endpoint bases caps
+         */
+        addEndPointCapabilities(desktopWebDriverRequest);
 
         /*
         add some hidden configs
@@ -215,5 +222,22 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         }
 
         return desiredCapabilities;
+    }
+
+    private static void addEndPointCapabilities(DesktopWebDriverRequest desktopWebDriverRequest) {
+        for (Pattern pattern : ENDPOINT_CAPABILITIES.keySet()) {
+            if (pattern.matcher(desktopWebDriverRequest.seleniumServerHost).find()) {
+                Capabilities capabilities = ENDPOINT_CAPABILITIES.get(pattern);
+                Map<String, ?> m = capabilities.asMap();
+                desktopWebDriverRequest.sessionCapabilities.putAll(m);
+                LOGGER.info("Applying EndPoint Capabilities: " + m);
+            }
+        }
+    }
+
+    private static final Map<Pattern, Capabilities> ENDPOINT_CAPABILITIES = new LinkedHashMap<>();
+
+    public static void registerEndPointCapabilities(Pattern endPointSelector, Capabilities capabilities) {
+        ENDPOINT_CAPABILITIES.put(endPointSelector, capabilities);
     }
 }

@@ -200,14 +200,14 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         }
 
         /*
-        add own desired capabilities
-         */
-        addContextCapabilities(desiredCapabilities, desktopWebDriverRequest);
-
-        /*
         add endpoint bases caps
          */
         addEndPointCapabilities(desktopWebDriverRequest);
+
+        /*
+        add own desired capabilities
+         */
+        addContextCapabilities(desiredCapabilities, desktopWebDriverRequest);
 
         /*
         add some hidden configs

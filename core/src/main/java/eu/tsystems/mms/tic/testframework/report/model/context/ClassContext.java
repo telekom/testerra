@@ -41,6 +41,7 @@ import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import org.testng.*;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -112,6 +113,16 @@ public class ClassContext extends Context implements SynchronizableContext {
                 methodContext = new MethodContext(name, methodType, this, correctTestContext, correctSuiteContext, executionContext);
                 fillBasicContextValues(methodContext, this, name);
                 methodContext.testResult = testResult;
+
+                /*
+                enhance swi with parameters, set parameters into context
+                 */
+                Object[] parameters = testResult.getParameters();
+                if (parameters.length > 0) {
+                    methodContext.parameters = Arrays.stream(parameters).map(Object::toString).collect(Collectors.toList());
+                    String swiSuffix = methodContext.parameters.stream().map(Object::toString).collect(Collectors.joining("_"));
+                    methodContext.swi += "_" + swiSuffix;
+                }
 
                 /*
                 link to merged context

@@ -202,10 +202,6 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
             case FAILED_RETRIED:
                 return true;
 
-            case NO_RUN:
-            case PASSED:
-            case MINOR:
-            case SKIPPED:
             default:
                 return false;
         }
@@ -213,18 +209,14 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
 
     public boolean isPassed() {
         switch (status) {
-            case FAILED_EXPECTED:
-            case FAILED:
-            case FAILED_MINOR:
-            case FAILED_RETRIED:
-            case SKIPPED:
-            case NO_RUN:
-                return false;
-
             case PASSED:
+            case PASSED_RETRY:
             case MINOR:
-            default:
+            case MINOR_RETRY:
                 return true;
+
+            default:
+                return false;
         }
     }
 
@@ -311,6 +303,7 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
             case PASSED:
             case PASSED_RETRY:
             case MINOR:
+            case MINOR_RETRY:
             case FAILED:
             case FAILED_MINOR:
             case SKIPPED:

@@ -352,4 +352,9 @@ public class RetryAnalyzer implements IRetryAnalyzer {
     public static void registerAdditionalRetryAnalyzer(AdditionalRetryAnalyzer additionalRetryAnalyzer) {
         ADDITIONAL_RETRY_ANALYZERS.add(additionalRetryAnalyzer);
     }
+
+    public static boolean hasMethodBeenRetried(MethodContext methodContext) {
+        return RETRIED_METHODS.stream().anyMatch(m -> m.swi.equals(methodContext.swi));
+    }
+
 }

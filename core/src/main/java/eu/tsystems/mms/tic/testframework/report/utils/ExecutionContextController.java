@@ -83,13 +83,14 @@ public class ExecutionContextController {
      * @return the MethodContext for the result.
      */
     public static MethodContext getMethodContextFromTestResult(final ITestResult iTestResult, final ITestContext testContext) {
-        ClassContext classContext = getClassContextFromTestResult(iTestResult, testContext, null);
+        final Object[] parameters = iTestResult.getParameters();
+        final ClassContext classContext = getClassContextFromTestResult(iTestResult, testContext, null);
         return classContext.getMethodContext(iTestResult, testContext, null);
     }
 
-    public static MethodContext getMethodContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod) {
+    public static MethodContext getMethodContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod, final Object[] parameters) {
         ClassContext classContext = getClassContextFromTestContextAndMethod(iTestContext, iTestNgMethod);
-        return classContext.getMethodContext(iTestContext, iTestNgMethod);
+        return classContext.getMethodContext(iTestContext, iTestNgMethod, parameters);
     }
 
     /**

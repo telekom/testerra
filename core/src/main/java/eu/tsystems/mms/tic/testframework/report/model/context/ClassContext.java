@@ -50,7 +50,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.lang.reflect.Parameter;
 import java.util.stream.Collectors;
 
 /**
@@ -79,11 +78,12 @@ public class ClassContext extends Context implements SynchronizableContext {
     }
 
     public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
+        final Object[] parameters = testResult.getParameters(); // TODO ERKU - Hsat das Auswirkungen auf den Retest? Vermutlich schon wenn er den swi nicht auflösen kann.
         final ITestNGMethod testMethod = TestNGHelper.getTestMethod(testResult, iTestContext, invokedMethod);
-        return this.getMethodContext(iTestContext, testMethod);
+        return this.getMethodContext(iTestContext, testMethod, parameters);
     }
 
-    public MethodContext getMethodContext(ITestContext iTestContext, ITestNGMethod iTestNGMethod) {
+    public MethodContext getMethodContext(ITestContext iTestContext, ITestNGMethod iTestNGMethod, Object[] parameters) {
         final String name = iTestNGMethod.getMethodName();
 
         synchronized (methodContexts) {
@@ -127,7 +127,6 @@ public class ClassContext extends Context implements SynchronizableContext {
                 /*
                 enhance swi with parameters, set parameters into context
                  */
-                Object[] parameters = testResult.getParameters();
                 if (parameters.length > 0) {
                     methodContext.parameters = Arrays.stream(parameters).map(Object::toString).collect(Collectors.toList());
                     String swiSuffix = methodContext.parameters.stream().map(Object::toString).collect(Collectors.joining("_"));

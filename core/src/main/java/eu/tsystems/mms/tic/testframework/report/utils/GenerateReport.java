@@ -111,6 +111,11 @@ public class GenerateReport {
             Booter.shutdown();
 
             /*
+            print stats
+             */
+            ExecutionContextController.printExecutionStatistics();
+
+            /*
              * Check failure corridor and set exit code and state
              */
             if (Flags.FAILURE_CORRIDOR_ACTIVE) {

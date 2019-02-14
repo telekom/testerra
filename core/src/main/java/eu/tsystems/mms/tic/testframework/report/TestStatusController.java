@@ -161,6 +161,7 @@ public class TestStatusController {
 
             case PASSED_RETRY:
             case MINOR:
+            case MINOR_RETRY:
             case PASSED:
                 testsSuccessful++;
 
@@ -206,7 +207,7 @@ public class TestStatusController {
 
         if (failureCorridorValue != null) {
             switch (failureCorridorValue) {
-                case High:
+                case HIGH:
                     if (raise) {
                         testsFailedHIGH++;
                     }
@@ -214,7 +215,7 @@ public class TestStatusController {
                         testsFailedHIGH--;
                     }
                     break;
-                case Mid:
+                case MID:
                     if (raise) {
                         testsFailedMID++;
                     }
@@ -222,7 +223,7 @@ public class TestStatusController {
                         testsFailedMID--;
                     }
                     break;
-                case Low:
+                case LOW:
                     if (raise) {
                         testsFailedLOW++;
                     }
@@ -318,6 +319,7 @@ public class TestStatusController {
         PASSED("green", "&#x2714;", "Passed", true, true),
         MINOR("skyblue", "&#x2714;", "Minor", true, true),
         PASSED_RETRY("#6abd00", "&#x2714;", "Passed after Retry", false, true),
+        MINOR_RETRY("#60bd8e", "&#x2714;", "Minor after Retry", false, true),
         INFO("#b9b900", "i", "Info", true, false),
 
         FAILED("red", "&#x2718;", "Failed", true, true),
@@ -348,6 +350,7 @@ public class TestStatusController {
             switch (this) {
                 case PASSED:
                 case PASSED_RETRY:
+                case MINOR_RETRY:
                 case MINOR:
                 case INFO:
                     return true;
@@ -374,6 +377,7 @@ public class TestStatusController {
                 case PASSED:
                 case PASSED_RETRY:
                 case MINOR:
+                case MINOR_RETRY:
                 case INFO:
                     return false;
 
@@ -398,6 +402,7 @@ public class TestStatusController {
             switch (this) {
                 case PASSED:
                 case MINOR:
+                case MINOR_RETRY:
                 case PASSED_RETRY:
                 case INFO:
                 case FAILED:

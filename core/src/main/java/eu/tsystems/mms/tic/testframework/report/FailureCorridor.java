@@ -54,10 +54,10 @@ public final class FailureCorridor {
     public @interface Low {
     }
 
-    public static enum Value {
-        High(false, "grey"),
-        Mid(true, "grey"),
-        Low(true, "lightgrey");
+    public enum Value {
+        HIGH(false, "grey"),
+        MID(true, "grey"),
+        LOW(true, "lightgrey");
 
         public final boolean show;
         public final String color;

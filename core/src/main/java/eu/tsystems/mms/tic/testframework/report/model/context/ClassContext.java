@@ -50,6 +50,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.lang.reflect.Parameter;
 import java.util.stream.Collectors;
 
 /**
@@ -124,6 +125,16 @@ public class ClassContext extends Context implements SynchronizableContext {
                 methodContext.iTestNgMethod = iTestNGMethod;
 
                 /*
+                enhance swi with parameters, set parameters into context
+                 */
+                Object[] parameters = testResult.getParameters();
+                if (parameters.length > 0) {
+                    methodContext.parameters = Arrays.stream(parameters).map(Object::toString).collect(Collectors.toList());
+                    String swiSuffix = methodContext.parameters.stream().map(Object::toString).collect(Collectors.joining("_"));
+                    methodContext.swi += "_" + swiSuffix;
+                }
+
+                /*
                 link to merged context
                  */
                 if (merged) {
@@ -137,11 +148,11 @@ public class ClassContext extends Context implements SynchronizableContext {
                  */
                 Method method = iTestNGMethod.getConstructorOrMethod().getMethod();
                 if (method.isAnnotationPresent(FailureCorridor.High.class)) {
-                    methodContext.failureCorridorValue = FailureCorridor.Value.High;
+                    methodContext.failureCorridorValue = FailureCorridor.Value.HIGH;
                 } else if (method.isAnnotationPresent(FailureCorridor.Mid.class)) {
-                    methodContext.failureCorridorValue = FailureCorridor.Value.Mid;
+                    methodContext.failureCorridorValue = FailureCorridor.Value.MID;
                 } else if (method.isAnnotationPresent(FailureCorridor.Low.class)) {
-                    methodContext.failureCorridorValue = FailureCorridor.Value.Low;
+                    methodContext.failureCorridorValue = FailureCorridor.Value.LOW;
                 }
 
                 /*

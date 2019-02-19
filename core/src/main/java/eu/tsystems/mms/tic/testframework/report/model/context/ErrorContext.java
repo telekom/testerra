@@ -40,8 +40,8 @@ public abstract class ErrorContext extends Context {
     public final List<Video> videos = new LinkedList<>();
     public final List<Screenshot> screenshots = new LinkedList<>();
     public String errorFingerprint = "";
-    public String scriptSource;
-    public String executionObjectSource;
+    public ScriptSource scriptSource;
+    public ScriptSource executionObjectSource;
 
     public Throwable getThrowable() {
         return throwable;
@@ -233,16 +233,9 @@ public abstract class ErrorContext extends Context {
         /*
          * from scriptSource
          */
-        if (!StringUtils.isStringEmpty(scriptSource)) {
-            errorFingerprint = scriptSource;
+        if (scriptSource != null) {
+            errorFingerprint = scriptSource.toString();
             return;
-        }
-
-        // build testMethodName
-        String testMethodName = getName();
-        // check for retry naming
-        if (testMethodName.contains("(")) {
-            testMethodName = testMethodName.split("\\(")[0].trim();
         }
 
         /*

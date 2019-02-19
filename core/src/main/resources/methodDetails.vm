@@ -143,6 +143,15 @@
 
                             <div class="dashboardTextSmall" style="color:#888;">
                                 $testMethod.name
+
+                                #if ($testMethod.infos)
+                                    <i>
+                                        #foreach ($i in $testMethod.infos)
+                                            $i<br>
+                                        #end
+                                    </i>
+                                #end
+
                                 #parse("methodTags.vm")
                             </div>
                             <br/>
@@ -280,21 +289,45 @@
                                                         <td class="cellCenter">
                                                             #if ($testMethod.scriptSource)
                                                             <div id="sourceScript" style="text-align: initial">
-                                                                $testMethod.scriptSource
+<pre>
+<br>
+<code>$testMethod.scriptSource.fileName # $testMethod.scriptSource.methodName</code>
+<code>
+#foreach($s in $testMethod.scriptSource.lines)
+    #if ($s.mark)
+&#8623; $s.lineNumber : $s.line
+    #else
+&nbsp; $s.lineNumber : $s.line
+    #end
+#end
+</code><br/></pre>
                                                                 <br/>
                                                             </div>
                                                             #else
-                                                            No test sources found.
+                                                            No test sources
                                                             #end
                                                         </td>
                                                         <td class="cellCenter">
                                                             #if ($testMethod.executionObjectSource)
                                                             <div id="sourcePage" style="text-align: initial">
-                                                                $testMethod.executionObjectSource
-                                                                <br/>
+                                                                <div id="sourceScript" style="text-align: initial">
+<pre>
+<br>
+<code>$testMethod.executionObjectSource.fileName # $testMethod.executionObjectSource.methodName</code>
+<code>
+    #foreach($s in $testMethod.executionObjectSource.lines)
+        #if ($s.mark)
+            &#8623; $s.lineNumber : $s.line
+        #else
+            &nbsp; $s.lineNumber : $s.line
+        #end
+    #end
+</code><br/></pre>
+                                                                    <br/>
+                                                                </div>
                                                             </div>
                                                             #else
-                                                            No page object involved or no source present.
+                                                            No page object sources
                                                             #end
                                                         </td>
                                                     </tr>

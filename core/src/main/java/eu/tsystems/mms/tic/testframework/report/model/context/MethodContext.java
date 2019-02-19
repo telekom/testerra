@@ -254,6 +254,10 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     }
 
     public List<MethodContext> getRelatedMethodContexts() {
+        return getMethodContexts(relatedMethodContexts);
+    }
+
+    private List<MethodContext> getMethodContexts(List<MethodContext> relatedMethodContexts) {
         if (relatedMethodContexts == null) {
             return null;
         }
@@ -263,16 +267,11 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     }
 
     public List<MethodContext> getDependsOnMethodContexts() {
-        if (dependsOnMethodContexts == null) {
-            return null;
-        }
-        List<MethodContext> copy = new LinkedList<>(dependsOnMethodContexts);
-        Collections.reverse(copy);
-        return copy;
+        return getMethodContexts(dependsOnMethodContexts);
     }
 
     public boolean hasBeenRetried() {
-        return status == TestStatusController.Status.FAILED_RETRIED || status == TestStatusController.Status.PASSED_RETRY;
+        return retryNumber > 0;
     }
 
     @Override

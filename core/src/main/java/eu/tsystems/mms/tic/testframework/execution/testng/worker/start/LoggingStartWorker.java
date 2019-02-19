@@ -43,15 +43,6 @@ public class LoggingStartWorker extends MethodWorker {
              */
 
             LOGGER.info("Starting configuration method: " + testClassName + "." + methodName);
-
-            /*
-             * Config methods: log warning when injected method is missing
-             */
-            if (testMethod.isBeforeMethodConfiguration() || testMethod.isAfterMethodConfiguration()) {
-                // check for method injection
-                ExecutionContextUtils.checkForInjectedMethod(testResult, context);
-            }
-
         }
 
     }

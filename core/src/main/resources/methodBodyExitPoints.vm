@@ -12,6 +12,15 @@
 
     <a class="tooltip" title="Test: ${testMethod.name}">
         <font style="opacity:0.7;">${testMethod.classContext.name} - </font><b>$testMethod.name</b>
+
+        #if ($testMethod.infos)
+            <i>
+                #foreach ($i in $testMethod.infos)
+                    $i<br>
+                #end
+            </i>
+        #end
+
         #if ($testMethod.classContext.merged)
             (in $testMethod.suiteContext.name - $testMethod.testContext.name)
         #end

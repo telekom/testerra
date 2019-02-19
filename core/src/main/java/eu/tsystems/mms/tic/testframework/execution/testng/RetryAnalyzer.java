@@ -128,7 +128,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
         final String retryMessageString = "(" + (retryCounter + 1) + "/" + (maxRetries + 1) + ")";
 
         if (retryCounter >= maxRetries) {
-            raiseCounterAndChangeMethodName(testResult, maxRetries);
+            raiseCounterAndChangeMethodContext(testResult, maxRetries);
             LOGGER.warn("Not retrying " + testMethodName + " because run limit (" + maxRetries + ")");
             return false;
         }
@@ -170,7 +170,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
          * process retry
          */
         if (retry) {
-            methodContext = raiseCounterAndChangeMethodName(testResult, maxRetries);
+            methodContext = raiseCounterAndChangeMethodContext(testResult, maxRetries);
 
             Method realMethod = testResult.getMethod().getConstructorOrMethod().getMethod();
             // explicitly set status if it is not set atm
@@ -201,7 +201,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
         return false;
     }
 
-    private MethodContext raiseCounterAndChangeMethodName(final ITestResult testResult, final int maxRetries) {
+    private MethodContext raiseCounterAndChangeMethodContext(final ITestResult testResult, final int maxRetries) {
         // raise counter
         int retryCounter = raiseRetryCounter(testResult);
 
@@ -209,14 +209,9 @@ public class RetryAnalyzer implements IRetryAnalyzer {
         MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult, testResult.getTestContext());
         if (maxRetries > 0) {
 
-            String retryLog = "(" + retryCounter + "/" + (maxRetries + 1) + ")";
-
-            /*
-             * Rename originally executed method in report and set evaluate flag to false for this method.
-             */
-            String testMethodName = methodContext.getName();
-            testMethodName += " " + retryLog;
-            methodContext.name = testMethodName;
+            final String retryLog = "(" + retryCounter + "/" + (maxRetries + 1) + ")";
+            methodContext.infos.add(retryLog);
+            methodContext.retryNumber = retryCounter;
         }
 
         return methodContext;
@@ -232,7 +227,6 @@ public class RetryAnalyzer implements IRetryAnalyzer {
 
     private static int getRetryCounter(ITestResult testResult, boolean raise) {
         ITestNGMethod testNGMethod = testResult.getMethod();
-        Method method = testNGMethod.getConstructorOrMethod().getMethod();
 
         String id = testResult.getTestContext().getCurrentXmlTest().getName() + "/" +
                 testNGMethod.getRealClass().getName() + "." +

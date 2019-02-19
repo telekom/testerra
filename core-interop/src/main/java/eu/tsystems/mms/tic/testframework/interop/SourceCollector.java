@@ -19,8 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.interop;
 
+import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
+
 public interface SourceCollector extends Collector {
 
-    String getSourceFor(Throwable throwable);
+    ScriptSource getSourceFor(Throwable throwable);
 
 }

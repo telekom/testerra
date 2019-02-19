@@ -4,6 +4,15 @@
     #end
 
     $testMethod.name
+
+    #if ($testMethod.infos)
+        <i>
+        #foreach ($i in $testMethod.infos)
+            $i<br>
+        #end
+        </i>
+    #end
+
     #if ($testMethod.classContext.merged)
         (in $testMethod.suiteContext.name - $testMethod.testContext.name)
     #end
@@ -51,7 +60,7 @@
 <br/>
 
 <!-- buttons -->
-<div style="margin-top: -20px;">
+<div style="float:right; margin-top: -20px;">
     #if($testMethod.stackTrace)
         <a href="javascript:toggleElement('exception-${testMethod.methodRunIndex}')" title="Stacktrace">
             <!--<img src="../style/business-circular-pie-chart.png" alt="Stacktrace" title="Stacktrace" class="symbols"/>-->

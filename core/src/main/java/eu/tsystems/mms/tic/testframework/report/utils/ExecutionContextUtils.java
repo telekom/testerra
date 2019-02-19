@@ -52,12 +52,11 @@ public class ExecutionContextUtils {
                     MethodContext methodContext = ExecutionContextController.getMethodContextFromTestResult(testResult, testContext);
                     String testMethodName = methodContext.name;
 
-                    String appendix = " <i>for " + method.getName() + "</i>";
-                    if (!testMethodName.contains(appendix)) {
+                    final String info = "for " + method.getName();
+                    if (!testMethodName.contains(info)) {
                         LOGGER.info("Config method -" + testResult.getMethod().getMethodName() + "- called for "
                                 + method.getName());
-                        testMethodName += appendix;
-                        methodContext.name = testMethodName;
+                        methodContext.infos.add(info);
                     }
 
                     foundMethodObject = true;

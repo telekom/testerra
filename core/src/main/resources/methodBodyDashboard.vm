@@ -6,6 +6,15 @@
         <div class="ttwrapper">
             <a onclick="showLoadingIn(null);" href="methods/${testMethod.methodRunIndex}.html#${testMethod.name}">
                 $testMethod.name
+
+                #if ($testMethod.infos)
+                    <i>
+                        #foreach ($i in $testMethod.infos)
+                            $i<br>
+                        #end
+                    </i>
+                #end
+
                 #if ($testMethod.classContext.merged)
                     (in $testMethod.suiteContext.name - $testMethod.testContext.name)
                 #end

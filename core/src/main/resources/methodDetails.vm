@@ -416,12 +416,8 @@
             <div>
                 <div id="st" class="textLeft" style="padding:30px !important; text-align: left !important; margin-left: 20px;">
                     #if($testMethod.stackTrace)
-                        <div>
-                            <b>$testMethod.stackTrace.throwableFirstLine</b>
-                        </div>
-                        #foreach ($line in $testMethod.stackTrace.stackTrace)
-                            $line<br/>
-                        #end
+                        #set($stackTrace = $testMethod.stackTrace)
+                        #parse("stackTrace.vm")
                     #end
                 </div>
             </div>
@@ -459,12 +455,8 @@
                             <div style="display: none;" id="non-functional-exception-$velocityCountNF">
                                 <div style="margin-left: 10px;">
                                     #if($nfi.stackTrace)
-                                    <div>
-                                        <b>$nfi.stackTrace.throwableFirstLine</b>
-                                    </div>
-                                        #foreach ($line in $nfi.stackTrace.stackTrace)
-                                            $line<br/>
-                                        #end
+                                        #set($stackTrace = $nfi.stackTrace)
+                                        #parse("stackTrace.vm")
                                     #end
                                 </div>
                             </div>
@@ -516,12 +508,8 @@
                                     <div style="display: none;" id="collected-assert-exception-$velocityCountCA">
                                         <div style="margin-left: 10px;">
                                             #if($ai.stackTrace)
-                                                <div>
-                                                    <b>$ai.stackTrace.throwableFirstLine</b>
-                                                </div>
-                                                #foreach ($line in $ai.stackTrace.stackTrace)
-                                                    $line<br/>
-                                                #end
+                                                #set($stackTrace = $ai.stackTrace)
+                                                #parse("stackTrace.vm")
                                             #end
                                         </div>
                                     </div>

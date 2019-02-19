@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 import eu.tsystems.mms.tic.testframework.common.FennecCommons;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
 import java.util.LinkedList;
@@ -96,7 +97,7 @@ public abstract class ErrorContext extends Context {
             stacktrace first line, set error message
             set stacktrace
              */
-            stackTrace = throwableToStacktrace(throwable, true);
+            stackTrace = ExecutionUtils.createStackTrace(throwable);
 
             // set message
             String message;
@@ -114,7 +115,7 @@ public abstract class ErrorContext extends Context {
                 setReadableMessageForThrowable(message, throwable, false, forceUpdateReadableMessage);
             }
             else {
-                setReadableMessageForThrowable(stackTrace.throwableFirstLine, throwable, true, forceUpdateReadableMessage);
+                setReadableMessageForThrowable(stackTrace.getFirstLine(), throwable, true, forceUpdateReadableMessage);
             }
         }
     }
@@ -153,10 +154,10 @@ public abstract class ErrorContext extends Context {
     }
 
     private void setReadableMessageForThrowable(String readableErrorMessage, final Throwable forThrowable, boolean withFilter, boolean force) {
-        StackTrace stacktrace = throwableToStacktrace(forThrowable, false);
+        StackTrace stacktrace = ExecutionUtils.createStackTrace(forThrowable);
         boolean storedStacktraceIsContainedInNewOne = false;
         if (stacktraceForReadableMessage != null) {
-            storedStacktraceIsContainedInNewOne = stacktrace.stackTrace.contains(stacktraceForReadableMessage.stackTrace);
+            storedStacktraceIsContainedInNewOne = stacktrace.getFirstLine().equals(stacktraceForReadableMessage.getFirstLine());
         }
         if (!force && storedStacktraceIsContainedInNewOne) {
             // dont set new readable message
@@ -171,38 +172,6 @@ public abstract class ErrorContext extends Context {
         }
         this.readableErrorMessage = readableErrorMessage;
         this.stacktraceForReadableMessage = stacktrace;
-    }
-
-    protected StackTrace throwableToStacktrace(Throwable throwable, boolean html) {
-        List<String> stackTrace = new LinkedList<>();
-        final String throwableFirstLine = throwable.toString();
-        String additionalErrorMessage = "";
-
-        Throwable iteratingThrowable = throwable;
-            /*
-            build stacktrace
-             */
-        while (iteratingThrowable != null) {
-            final StackTraceElement[] stackTraceElements = iteratingThrowable.getStackTrace();
-            for (final StackTraceElement ste : stackTraceElements) {
-                // append
-                String line = ste.toString();
-                stackTrace.add(line);
-            }
-            iteratingThrowable = iteratingThrowable.getCause();
-            if (iteratingThrowable != null) {
-                String iteratingThrowableFirstLine = iteratingThrowable.toString();
-                if (html) {
-                    iteratingThrowableFirstLine = StringUtils.prepareStringForHTML(iteratingThrowableFirstLine);
-                }
-                additionalErrorMessage += "\ncaused by " + iteratingThrowableFirstLine;
-
-                stackTrace.add("caused by: ");
-                stackTrace.add(iteratingThrowableFirstLine);
-            }
-        }
-
-        return new StackTrace(throwableFirstLine, stackTrace, additionalErrorMessage);
     }
 
     private static final String splitmark = "####fennec#";
@@ -242,19 +211,16 @@ public abstract class ErrorContext extends Context {
          * stacktrace filter
          */
         if (stackTrace != null) {
-            for (String line : stackTrace.stackTrace) {
-                final String testframeworkPackage = FennecCommons.DEFAULT_PACKAGE_NAME + ".testframework";
-                if (line != null && line.contains(FennecCommons.DEFAULT_PACKAGE_NAME) &&
-                        ((!line.contains(testframeworkPackage))
-                                        ||
-                        (line.contains(testframeworkPackage) && line.contains("playground")))
-                        ){
-                    errorFingerprint = line;
-                    break;
-                }
+            final String testframeworkPackage = FennecCommons.DEFAULT_PACKAGE_NAME + ".testframework";
+            final String completeStackTrace = stackTrace.toString();
+            if (completeStackTrace.contains(FennecCommons.DEFAULT_PACKAGE_NAME) &&
+                    ((!completeStackTrace.contains(testframeworkPackage))
+                                    ||
+                    (completeStackTrace.contains(testframeworkPackage) && completeStackTrace.contains("playground")))
+                    ){
+                errorFingerprint = completeStackTrace;
             }
         }
-
     }
 
     /**

@@ -88,12 +88,8 @@
     <div class="stackTrace" id="exception-${testMethod.methodRunIndex}">
         <div id="st" class="textLeft" style="padding:30px !important; text-align: left !important; margin-left: 20px;">
             #if($testMethod.stackTrace)
-                <div>
-                    <b>$testMethod.stackTrace.throwableFirstLine</b>
-                </div>
-                #foreach ($line in $testMethod.stackTrace.stackTrace)
-                    $line<br/>
-                #end
+                #set($stackTrace = $testMethod.stackTrace)
+                #parse("stackTrace.vm")
             #end
         </div>
     </div>

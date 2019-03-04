@@ -24,12 +24,18 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.TestContext;
+import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.model.context.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by piet on 08.12.16.
@@ -57,7 +63,6 @@ public class ExecutionContextController {
      * Gets the ClassContext for TestNG ITestResult. If no ClassContext for result exists, it will set.
      *
      * @param testResult The ITestResult to set.
-     *
      * @return the ClassContext for the result.
      */
     public static ClassContext getClassContextFromTestResult(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
@@ -121,6 +126,38 @@ public class ExecutionContextController {
     public static void clearCurrentTestResult() {
         CURRENT_TEST_RESULT.remove();
         CURRENT_METHOD_CONTEXT.remove();
+    }
+
+    public static void printExecutionStatistics() {
+        final String prefix = "*** Stats: ";
+
+        LOGGER.info(prefix + "**********************************************");
+
+        LOGGER.info(prefix + "ExecutionContext: " + EXECUTION_CONTEXT.name);
+        LOGGER.info(prefix + "SuiteContexts:  " + EXECUTION_CONTEXT.suiteContexts.size());
+        LOGGER.info(prefix + "TestContexts:   " + EXECUTION_CONTEXT.suiteContexts.stream().mapToInt(s -> s.testContexts.size()).sum());
+        LOGGER.info(prefix + "ClassContexts:  " + EXECUTION_CONTEXT.suiteContexts.stream().flatMap(s -> s.testContexts.stream()).mapToInt(t -> t.classContexts.size()).sum());
+
+        List<MethodContext> allMethodContexts = EXECUTION_CONTEXT.suiteContexts.stream().flatMap(s -> s.testContexts.stream()).flatMap(t -> t.classContexts.stream()).flatMap(c -> c.methodContexts.stream()).collect(Collectors.toList());
+
+        LOGGER.info(prefix + "MethodContexts: " + allMethodContexts.size());
+
+        LOGGER.info(prefix + "**********************************************");
+
+        List<MethodContext> allTestMethods = allMethodContexts.stream().filter(MethodContext::isTestMethod).collect(Collectors.toList());
+
+        LOGGER.info(prefix + " Test Methods: " + allTestMethods.size());
+        LOGGER.info(prefix + "  Relevant: " + allTestMethods.stream().filter(m -> m.status.relevant).count());
+
+        for (TestStatusController.Status status : TestStatusController.Status.values()) {
+            LOGGER.info(prefix + " " + status.name() + ": " + allTestMethods.stream().filter(m -> m.status == status).count());
+        }
+
+        LOGGER.info(prefix + "**********************************************");
+
+        LOGGER.info(prefix + "Duration: " + EXECUTION_CONTEXT.getDuration(EXECUTION_CONTEXT.startTime, EXECUTION_CONTEXT.endTime));
+
+        LOGGER.info(prefix + "**********************************************");
     }
 
 }

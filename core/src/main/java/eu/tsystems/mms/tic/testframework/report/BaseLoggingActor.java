@@ -56,9 +56,10 @@ public class BaseLoggingActor extends AppenderSkeleton {
     !!!
      */
     private static final String DATE_FORMAT = "dd.MM.yyyy-HH:mm:ss";
-    private static final String LOGGER_PATTERN = "%p---%d{" + DATE_FORMAT + "}---%t---%c{1}---%m%n";
+
+    public static final String LOGGER_PATTERN = "%p---%d{" + DATE_FORMAT + "}---%t---%c{1}---%m%n";
     public static final String SPLITTER = "---";
-    private static final Layout LAYOUT = new PatternLayout(LOGGER_PATTERN);
+    public static final Layout LAYOUT = new PatternLayout(LOGGER_PATTERN);
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT);
 
     public static LogMessage createLogMessage(final String msg) {
@@ -117,7 +118,6 @@ public class BaseLoggingActor extends AppenderSkeleton {
             We can't create a "new" message und just format it. So we create a formatted output from orig event and
             just replace the old message with the new content.
              */
-
             final String origMessage = event.getMessage().toString();
             final String formattedMessage = LAYOUT.format(event);
             final String formattedTemplate = formattedMessage.replace(origMessage, PLACEHOLDER);
@@ -164,7 +164,7 @@ public class BaseLoggingActor extends AppenderSkeleton {
             LoggingDispatcher.addLogMessage(logMessage);
 
             for (LoggingActor loggingActor : LOGGING_ACTORS) {
-                loggingActor.process(event, formattedMessage);
+                loggingActor.process(event, finalLogMessage);
             }
         }
     }

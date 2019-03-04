@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.common.FennecCommons;
 import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +63,7 @@ public final class SourceUtils {
     private static final String PACKAGE_SCOPE = PropertyManager.getProperty(FennecProperties.PROJECT_PACKAGE,
             FennecCommons.DEFAULT_PACKAGE_NAME);
 
-    public static String findScriptSourceForThrowable(Throwable throwable) {
+    public static ScriptSource findScriptSourceForThrowable(Throwable throwable) {
         if (!FIND_SOURCES) {
             return null;
         }
@@ -93,7 +94,7 @@ public final class SourceUtils {
         }
 
         if (!ObjectUtils.isNull(className, fileName, methodName)) {
-            return findFileAndShowSource(className, fileName, methodName, lineNumber);
+            return getSourceFrom(className, fileName, methodName, lineNumber);
         }
         return null;
     }
@@ -109,7 +110,7 @@ public final class SourceUtils {
      * @param callerSubClass .
      * @return .
      */
-    public static String findSourceForThrowable(Throwable throwable, Class classWithFailure, Class callerSubClass) {
+    public static ScriptSource findSourceForThrowable(Throwable throwable, Class classWithFailure, Class callerSubClass) {
         if (!FIND_SOURCES) {
             return null;
         }
@@ -142,14 +143,14 @@ public final class SourceUtils {
         return findCallerSubclassInThrowable(throwable, classNames, 0, causeNumberForClass);
     }
 
-    private static String findCallerSubclassInThrowable(Throwable throwable, List classNames,
-                                                        int causeCounter, int fromCauseNumber) {
+    private static ScriptSource findCallerSubclassInThrowable(Throwable throwable, List classNames,
+                                                              int causeCounter, int fromCauseNumber) {
         if (causeCounter >= fromCauseNumber) {
             StackTraceElement[] stackTrace = throwable.getStackTrace();
             for (StackTraceElement stackTraceElement : stackTrace) {
                 String className = stackTraceElement.getClassName();
                 if (classNames.contains(className)) {
-                    return findFileAndShowSource(className, stackTraceElement.getFileName(),
+                    return getSourceFrom(className, stackTraceElement.getFileName(),
                             stackTraceElement.getMethodName(), stackTraceElement.getLineNumber());
                 }
             }
@@ -192,34 +193,27 @@ public final class SourceUtils {
         }
     }
 
-    private static String findFileAndShowSource(String className, String filename, String methodName, int lineNr) {
+    private static ScriptSource getSourceFrom(String className, String filename, String methodName, int lineNr) {
         String filePath = className.replace(".", "/").concat(".java");
         File file;
         file = new File(sourceRoot + "/main/java/" + filePath);
-        StringBuilder source = null;
+        ScriptSource source = null;
 
         if (file.exists()) {
             LOGGER.debug("Found file in main/java");
-            source = getSource(file, lineNr);
+            source = getSource(file, methodName, lineNr);
         }
         else {
             file = new File(sourceRoot + "/test/java/" + filePath);
             if (file.exists()) {
                 LOGGER.debug("Found file in test/java");
-                source = getSource(file, lineNr);
+                source = getSource(file, methodName, lineNr);
             }
         }
 
         if (source != null) {
             LOGGER.debug("Found source:\n" + source);
-            String code = source.toString().replace("\n", "<br>");
-            String codeTagBody = "<pre><br>" +
-                    "<code>" +
-                    filename + ":" + lineNr + "  &#8597; " + StringUtils.prepareStringForHTML(methodName) + "\n" +
-                    "</code>\n" +
-                    "<code>" + code + "</code><br>" +
-                    "</pre>";
-            return codeTagBody;
+            return source;
         }
         else {
             LOGGER.warn("Did not find source for " + filename + " in " + sourceRoot);
@@ -227,8 +221,9 @@ public final class SourceUtils {
         }
     }
 
-    private static StringBuilder getSource(File file, int lineNr) {
-        StringBuilder sb = new StringBuilder();
+    private static ScriptSource getSource(File file, String methodName, int lineNr) {
+        ScriptSource scriptSource = new ScriptSource(file.getName(), methodName);
+
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line = br.readLine();
@@ -242,19 +237,18 @@ public final class SourceUtils {
                     /*
                     LINE
                      */
-                    sb.append("  " + lineCounter + ": " + line + "\n");
+                    scriptSource.lines.add(new ScriptSource.Line(line, lineCounter, false));
                 }
                 else if (lineCounter == lineNr) {
                     /*
                     LINE WITH ISSUE
                      */
-                    sb.append("&#8623; " + lineCounter + ": " + line + "\n");
+                    scriptSource.lines.add(new ScriptSource.Line(line, lineCounter, true));
                 } else if (lineCounter > lineNr) {
                     // stop
                     br.close();
 
-                    // make public
-                    return sb;
+                    return scriptSource;
                 }
 
                 // read next line

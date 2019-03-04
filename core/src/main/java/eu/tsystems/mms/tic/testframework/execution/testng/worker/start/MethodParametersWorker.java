@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -36,6 +37,16 @@ public class MethodParametersWorker extends MethodWorker {
             if (parameters != null && parameters.length > 0) {
                 methodContext.parameters = Arrays.stream(parameters).collect(Collectors.toList());
             }
+        }
+        else {
+            /*
+             * Config methods: log warning when injected method is missing
+             */
+            if (testMethod.isBeforeMethodConfiguration() || testMethod.isAfterMethodConfiguration()) {
+                // check for method injection
+                ExecutionContextUtils.checkForInjectedMethod(testResult, context);
+            }
+
         }
     }
 }

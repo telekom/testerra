@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.interop;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 
 import java.util.LinkedList;
@@ -73,13 +74,13 @@ public class CollectAssertionInfoArtefacts {
         return videos;
     }
 
-    public static String getSourceFor(Throwable throwable) {
+    public static ScriptSource getSourceFor(Throwable throwable) {
         if (SOURCE_COLLECTORS.isEmpty()) {
             return null;
         }
 
         for (SourceCollector sourceCollector : SOURCE_COLLECTORS) {
-            String source = sourceCollector.getSourceFor(throwable);
+            ScriptSource source = sourceCollector.getSourceFor(throwable);
             if (source != null) {
                 return source;
             }

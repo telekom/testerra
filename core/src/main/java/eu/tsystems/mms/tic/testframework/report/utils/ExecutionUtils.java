@@ -29,6 +29,7 @@ package eu.tsystems.mms.tic.testframework.report.utils;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.InDevelopment;
 import eu.tsystems.mms.tic.testframework.annotations.SupportMethod;
+import eu.tsystems.mms.tic.testframework.report.model.context.StackTrace;
 import javassist.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,7 @@ import org.testng.ITestResult;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * ExecutionUtils
@@ -208,5 +210,23 @@ public final class ExecutionUtils {
                 }
             });
         }
+    }
+
+    public static StackTrace createStackTrace(Throwable throwable) {
+        StackTrace stackTrace = new StackTrace();
+        stackTrace.stackTrace = createCause(throwable);
+        return stackTrace;
+    }
+
+    private static StackTrace.Cause createCause(Throwable throwable) {
+        StackTrace.Cause cause = new StackTrace.Cause();
+        cause.className = throwable.getClass().getName();
+        cause.message = throwable.getMessage();
+        cause.stackTraceElements = Arrays.stream(throwable.getStackTrace()).map(ste -> "at " + ste).collect(Collectors.toList());
+
+        if ((throwable.getCause() != null) && (throwable.getCause() != throwable)) {
+            cause.cause = createCause(throwable.getCause());
+        }
+        return cause;
     }
 }

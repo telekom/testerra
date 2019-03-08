@@ -1,6 +1,12 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.events.FennecEvent;
+import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
+import eu.tsystems.mms.tic.testframework.events.FennecEventService;
+import eu.tsystems.mms.tic.testframework.events.FennecEventType;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -24,6 +30,23 @@ public class WebDriverProxy extends ObjectUtils.PassThroughProxy<WebDriver> {
             scid = sessionContext.id;
         }
         LOGGER.info("[SCID:" + scid + "] - " + method.getName() + " -");
+
+        /*
+        assign usage in current method
+        (this is useful for sessions that are shared between method contexts)
+         */
+        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+        if (methodContext != null) {
+            if (!methodContext.sessionContexts.contains(sessionContext)) {
+                methodContext.sessionContexts.add(sessionContext);
+
+                // fire sync of method context
+                FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
+                        .addData(FennecEventDataType.CONTEXT, methodContext));
+
+            }
+        }
+
         return method.invoke(target, args);
     }
 

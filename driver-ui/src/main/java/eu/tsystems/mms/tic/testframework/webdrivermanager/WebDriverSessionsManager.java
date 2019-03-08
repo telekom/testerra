@@ -19,6 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.events.FennecEvent;
+import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
+import eu.tsystems.mms.tic.testframework.events.FennecEventService;
+import eu.tsystems.mms.tic.testframework.events.FennecEventType;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
@@ -286,8 +290,13 @@ final class WebDriverSessionsManager {
         /*
         introduce session context to execution context
          */
-        SessionContext sessionContext = ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.get(eventFiringWebDriver);
+        String sessionId = WebDriverManagerUtils.getSessionId(eventFiringWebDriver);
+        SessionContext sessionContext = ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.get(sessionId);
         ExecutionContextController.EXECUTION_CONTEXT.exclusiveSessionContexts.add(sessionContext);
+        sessionContext.parentContext = ExecutionContextController.EXECUTION_CONTEXT;
+        // fire sync
+        FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
+                .addData(FennecEventDataType.CONTEXT, sessionContext));
 
         /*
         Delete session from session maps.
@@ -400,6 +409,11 @@ final class WebDriverSessionsManager {
             if (methodContext != null) {
                 methodContext.sessionContexts.add(sessionContext);
             }
+            sessionContext.parentContext = methodContext;
+
+            // fire sync
+            FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
+                    .addData(FennecEventDataType.CONTEXT, sessionContext));
 
             /*
             setup new session
@@ -419,6 +433,10 @@ final class WebDriverSessionsManager {
                 LOGGER.error("Could not create proxy for raw webdriver", e);
             }
             eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(rawDriver);
+
+            /*
+            store session
+             */
             storeWebDriverSession(sessionKey, eventFiringWebDriver, sessionContext);
 
             // setup the session
@@ -435,7 +453,13 @@ final class WebDriverSessionsManager {
                 }
             }
 
+            // store the request
             DRIVER_REQUEST_MAP.put((EventFiringWebDriver) eventFiringWebDriver, webDriverRequest);
+
+            // fire sync again, for updated sessionContext
+            FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
+                    .addData(FennecEventDataType.CONTEXT, sessionContext));
+
             return eventFiringWebDriver;
         }
         else {

@@ -44,7 +44,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -428,7 +427,7 @@ final class WebDriverSessionsManager {
              * For more info, please ask @rnhb
              */
             try {
-                rawDriver = ObjectUtils.passThroughProxy(WebDriver.class, rawDriver, WebDriverProxy.class);
+                rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class);
             } catch (Exception e) {
                 LOGGER.error("Could not create proxy for raw webdriver", e);
             }

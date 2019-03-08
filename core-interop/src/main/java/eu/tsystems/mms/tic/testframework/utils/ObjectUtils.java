@@ -61,7 +61,7 @@ public final class ObjectUtils {
                 handler);
     }
 
-    public static <T> T passThroughProxy(Class<? extends T> iface, T target, Class<? extends PassThroughProxy> handler) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public static <T> T simpleProxy(Class<? extends T> iface, T target, Class<? extends PassThroughProxy> handler) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         InvocationHandler handlerInstance = handler.getConstructor(iface).newInstance(target);
         return simpleProxy(iface, handlerInstance);
     }

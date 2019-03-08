@@ -61,10 +61,6 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
         create caps
          */
         DesiredCapabilities caps = new DesiredCapabilities();
-        caps.setCapability("jobId", "dummyJobId");
-        caps.setCapability("projectId", "dummyProjectId");
-        DesiredCapabilities tapOptions = new DesiredCapabilities();
-        tapOptions.setCapability("tapOptions", caps);
         // register caps
         DesktopWebDriverCapabilities.registerEndPointCapabilities(Pattern.compile(".*localhost.*"), caps);
 

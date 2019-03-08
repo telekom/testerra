@@ -164,7 +164,7 @@ public class BaseLoggingActor extends AppenderSkeleton {
             LoggingDispatcher.addLogMessage(logMessage);
 
             for (LoggingActor loggingActor : LOGGING_ACTORS) {
-                loggingActor.process(event, finalLogMessage);
+                loggingActor.process(event, formattedMessage.replaceAll(SPLITTER, " "));
             }
         }
     }

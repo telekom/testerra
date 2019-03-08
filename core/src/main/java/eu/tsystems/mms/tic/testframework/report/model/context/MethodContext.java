@@ -72,6 +72,8 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     public List<AssertionInfo> collectedAssertions = new LinkedList<>();
     public List<String> infos = new LinkedList<>();
 
+    public List<SessionContext> sessionContexts = new LinkedList<>();
+
     /**
      * Flag for putting all information into the report. Defaults to true. You can set this to false, may be for passed
      * configuration methods.

@@ -19,6 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Proxy;
+import java.util.stream.Stream;
+
 /**
  * Created by pele on 16.03.2016.
  */
@@ -41,5 +46,33 @@ public final class ObjectUtils {
             }
         }
         return false;
+    }
+
+    public static <T> T simpleProxy(Class<? extends T> iface, InvocationHandler handler, Class<?>...otherIfaces) {
+        Class<?>[] allInterfaces = Stream.concat(
+                Stream.of(iface),
+                Stream.of(otherIfaces))
+                .distinct()
+                .toArray(Class<?>[]::new);
+
+        return (T) Proxy.newProxyInstance(
+                iface.getClassLoader(),
+                allInterfaces,
+                handler);
+    }
+
+    public static <T> T passThroughProxy(Class<? extends T> iface, T target, Class<? extends PassThroughProxy> handler) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        InvocationHandler handlerInstance = handler.getConstructor(iface).newInstance(target);
+        return simpleProxy(iface, handlerInstance);
+    }
+
+    public static abstract class PassThroughProxy<T> implements InvocationHandler {
+
+        protected final T target;
+
+        public PassThroughProxy(T target) {
+            this.target = target;
+        }
+
     }
 }

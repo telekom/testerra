@@ -24,9 +24,14 @@ import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
+import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.internal.HttpClientFactory;
@@ -35,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -71,6 +77,11 @@ final class WebDriverSessionsManager {
     private static final Map<WebDriver, String> ALL_EVENTFIRING_WEBDRIVER_SESSIONS_INVERSE = Collections.synchronizedMap(new HashMap<>());
     private static final Map<WebDriver, Long> ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID = Collections.synchronizedMap(new HashMap<>());
 
+    /*
+    stores: webDriverSessionId = sessionContext
+     */
+    private static final Map<String, SessionContext> ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS = Collections.synchronizedMap(new HashMap<>());
+
     private static final String FULL_SESSION_KEY_SPLIT_MARKER = "___";
 
     static final Map<EventFiringWebDriver, WebDriverRequest> DRIVER_REQUEST_MAP = new ConcurrentHashMap<>();
@@ -80,10 +91,10 @@ final class WebDriverSessionsManager {
         return currentThread.getId() + FULL_SESSION_KEY_SPLIT_MARKER + sessionKey;
     }
 
-    static void storeWebDriverSession(String sessionId, WebDriver eventFiringWebDriver) {
-        String key1 = getFullSessionKey(sessionId);
-        ALL_EVENTFIRING_WEBDRIVER_SESSIONS.put(key1, eventFiringWebDriver);
-        ALL_EVENTFIRING_WEBDRIVER_SESSIONS_INVERSE.put(eventFiringWebDriver, key1);
+    static void storeWebDriverSession(String sessionKey, WebDriver eventFiringWebDriver, SessionContext sessionContext) {
+        String fullSessionKey = getFullSessionKey(sessionKey);
+        ALL_EVENTFIRING_WEBDRIVER_SESSIONS.put(fullSessionKey, eventFiringWebDriver);
+        ALL_EVENTFIRING_WEBDRIVER_SESSIONS_INVERSE.put(eventFiringWebDriver, fullSessionKey);
 
         final long threadId = Thread.currentThread().getId();
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID.put(eventFiringWebDriver, threadId);
@@ -98,6 +109,18 @@ final class WebDriverSessionsManager {
                 LOGGER.info("Saving driver in " + DriverStorage.class.getSimpleName() + " for : " + methodName + ": " + threadName);
                 DriverStorage.saveDriverForTestMethod(eventFiringWebDriver, threadName, methodName);
             }
+        }
+
+        /*
+        store driver to session context relation
+         */
+        final String sessionId = WebDriverUtils.getSessionId(eventFiringWebDriver);
+        if (sessionId != null) {
+            ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.put(sessionId, sessionContext);
+            LOGGER.info("Stored SessionContext " + sessionContext + " for session " + sessionId);
+        }
+        else {
+            LOGGER.error("Could not store SessionContext, could not get SessionId");
         }
     }
 
@@ -156,7 +179,14 @@ final class WebDriverSessionsManager {
         }
         LOGGER.info("Introducing webdriver object");
         EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(driver);
-        storeWebDriverSession(sessionKey, eventFiringWebDriver);
+
+        // create new session context
+        SessionContext sessionContext = new SessionContext(sessionKey, "external");
+
+        // store to method context
+        ExecutionContextController.getCurrentMethodContext().sessionContexts.add(sessionContext);
+
+        storeWebDriverSession(sessionKey, eventFiringWebDriver, sessionContext);
     }
 
     static final List<WebDriverSessionHandler> beforeQuitActions = new LinkedList<>();
@@ -252,6 +282,12 @@ final class WebDriverSessionsManager {
          */
         String uuid = EXCLUSIVE_PREFIX + UUID.randomUUID().toString();
         ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.put(uuid, eventFiringWebDriver);
+
+        /*
+        introduce session context to execution context
+         */
+        SessionContext sessionContext = ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.get(eventFiringWebDriver);
+        ExecutionContextController.EXECUTION_CONTEXT.exclusiveSessionContexts.add(sessionContext);
 
         /*
         Delete session from session maps.
@@ -352,15 +388,38 @@ final class WebDriverSessionsManager {
          */
         if (WEB_DRIVER_FACTORIES.containsKey(browser)) {
             WebDriverFactory webDriverFactory = WEB_DRIVER_FACTORIES.get(browser);
+
+            /*
+            create session context and link to method context
+             */
+            SessionContext sessionContext = new SessionContext(sessionKey, webDriverFactory.getClass().getSimpleName());
+            sessionContext.metaData.put("browser", webDriverRequest.browser);
+            sessionContext.metaData.put("browserVersion", webDriverRequest.browserVersion);
+            webDriverRequest.sessionContext = sessionContext;
+            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+            if (methodContext != null) {
+                methodContext.sessionContexts.add(sessionContext);
+            }
+
+            /*
+            setup new session
+             */
+            LOGGER.info("Requesting new web driver session " + sessionContext);
             WebDriver rawDriver = webDriverFactory.getRawWebDriver(webDriverRequest);
+
             /*
              * Watch out when wrapping the driver here. Any more wraps than EventFiringWebDriver will break at least
              * the MobileDriverAdapter. This is because we need to compare the lowermost implementation of WebDriver in this case.
              * It can be made more robust, if we always can retrieve the storedSessionId of the WebDriver, given a WebDriver object.
              * For more info, please ask @rnhb
              */
+            try {
+                rawDriver = ObjectUtils.passThroughProxy(WebDriver.class, rawDriver, WebDriverProxy.class);
+            } catch (Exception e) {
+                LOGGER.error("Could not create proxy for raw webdriver", e);
+            }
             eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(rawDriver);
-            storeWebDriverSession(sessionKey, eventFiringWebDriver);
+            storeWebDriverSession(sessionKey, eventFiringWebDriver, sessionContext);
 
             // setup the session
             webDriverFactory.setupSession((EventFiringWebDriver) eventFiringWebDriver, sessionKey, browser);
@@ -402,4 +461,7 @@ final class WebDriverSessionsManager {
         }
     }
 
+    public static SessionContext getSessionContext(String sessionId) {
+        return ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.get(sessionId);
+    }
 }

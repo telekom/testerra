@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 
 /**
  * Created by pele on 19.07.2017.
@@ -33,6 +34,7 @@ public abstract class WebDriverRequest {
     public String sessionKey;
     public String baseUrl;
     public String browserVersion;
+    public SessionContext sessionContext;
 
     /*
     Runtime

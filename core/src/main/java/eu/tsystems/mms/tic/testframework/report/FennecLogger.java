@@ -19,5 +19,5 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
-public class TestReportAppender extends BaseLoggingActor {
+public class FennecLogger extends BaseLoggingActor {
 }

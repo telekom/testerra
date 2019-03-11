@@ -20,7 +20,6 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 
 /**
  * Created by pele on 19.01.2017.

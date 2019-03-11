@@ -29,7 +29,8 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.*;
+import org.testng.ITestResult;
+import org.testng.SkipException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

@@ -69,40 +69,53 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by pele on 19.07.2017.
  */
-public class DesktopWebDriverFactory implements WebDriverFactory {
+public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverFactory.class);
 
     @Override
-    public WebDriver getRawWebDriver(WebDriverRequest webDriverRequest) {
-        DesktopWebDriverRequest desktopWebDriverRequest;
-        if (webDriverRequest instanceof DesktopWebDriverRequest) {
-            desktopWebDriverRequest = (DesktopWebDriverRequest) webDriverRequest;
+    protected DesktopWebDriverRequest buildRequest(WebDriverRequest request) {
+        DesktopWebDriverRequest r;
+        if (request instanceof DesktopWebDriverRequest) {
+            r = (DesktopWebDriverRequest) request;
         }
-        else if (webDriverRequest instanceof UnspecificWebDriverRequest) {
-            desktopWebDriverRequest = new DesktopWebDriverRequest();
-            desktopWebDriverRequest.copyFrom(webDriverRequest);
+        else if (request instanceof UnspecificWebDriverRequest) {
+            r = new DesktopWebDriverRequest();
+            r.copyFrom(request);
         }
         else {
-            throw new FennecSystemException(webDriverRequest.getClass().getSimpleName() +  " is not allowed here");
+            throw new FennecSystemException(request.getClass().getSimpleName() +  " is not allowed here");
         }
+
+        /*
+        set webdriver mode
+         */
+        if (r.webDriverMode == null) {
+            r.webDriverMode = WebDriverManager.config().webDriverMode;
+        }
+
+        return r;
+    }
+
+    @Override
+    public WebDriver getRawWebDriver(DesktopWebDriverRequest request) {
 
         /*
         start the session
          */
-        WebDriver driver = startSession(desktopWebDriverRequest);
+        WebDriver driver = startSession(request);
 
         /*
         Open url
          */
-        String baseUrl = desktopWebDriverRequest.baseUrl;
+        final String baseUrl = request.baseUrl;
         LOGGER.info("Opening baseUrl: " + baseUrl);
         StopWatch.startPageLoad(driver);
         try {
             driver.get(baseUrl);
         } catch (Exception e) {
             if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                throw new FennecRuntimeException("Could not start driver session, because of unreachable url: " + desktopWebDriverRequest.baseUrl, e);
+                throw new FennecRuntimeException("Could not start driver session, because of unreachable url: " + request.baseUrl, e);
             }
             throw e;
         }
@@ -111,19 +124,6 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
     }
 
     private WebDriver startSession(DesktopWebDriverRequest desktopWebDriverRequest) {
-        /*
-        set webdriver mode
-         */
-        if (desktopWebDriverRequest.webDriverMode == null) {
-            desktopWebDriverRequest.webDriverMode = WebDriverManager.config().webDriverMode;
-        }
-
-        /*
-        set base url
-         */
-        if (desktopWebDriverRequest.baseUrl == null) {
-            desktopWebDriverRequest.baseUrl = WebDriverManager.getBaseURL();
-        }
 
         /*
         if there is a factories entry for the requested browser, then create the new (raw) instance here and wrap it directly in EventFiringWD
@@ -164,7 +164,9 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
     }
 
     @Override
-    public void setupSession(EventFiringWebDriver eventFiringWebDriver, String sessionId, String browser) {
+    public void setupSession(EventFiringWebDriver eventFiringWebDriver, DesktopWebDriverRequest request) {
+        final String browser = request.browser;
+
         // activate clickpath event listener
         eventFiringWebDriver.register(new ClickpathEventListener());
 
@@ -217,7 +219,7 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
         }
     }
 
-    WebDriver newWebDriver(DesktopWebDriverRequest desktopWebDriverRequest) {
+    private WebDriver newWebDriver(DesktopWebDriverRequest desktopWebDriverRequest) {
         String sessionKey = desktopWebDriverRequest.sessionKey;
 
         final String url = getRemoteServerUrl(desktopWebDriverRequest);
@@ -227,7 +229,7 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
          */
         final DesiredCapabilities capabilities = DesktopWebDriverCapabilities.createCapabilities(WebDriverManager.config(), desktopWebDriverRequest);
 
-        String browser = desktopWebDriverRequest.browser;
+        final String browser = desktopWebDriverRequest.browser;
         /*
          * Remote or local
          */

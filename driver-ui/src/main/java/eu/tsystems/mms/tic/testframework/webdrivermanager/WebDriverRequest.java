@@ -30,10 +30,10 @@ public abstract class WebDriverRequest {
     /*
     Request
      */
-    public String browser;
     public String sessionKey;
-    public String baseUrl;
+    public String browser;
     public String browserVersion;
+    public String baseUrl;
     public SessionContext sessionContext;
 
     /*
@@ -49,5 +49,6 @@ public abstract class WebDriverRequest {
         this.sessionKey = webDriverRequest.sessionKey;
         this.baseUrl = webDriverRequest.baseUrl;
         this.browserVersion = webDriverRequest.browserVersion;
+        this.sessionContext = webDriverRequest.sessionContext;
     }
 }

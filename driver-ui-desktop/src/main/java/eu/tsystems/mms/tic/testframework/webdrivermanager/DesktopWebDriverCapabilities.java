@@ -109,13 +109,14 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         }
     }
 
-    static DesiredCapabilities createCapabilities(final WebDriverManagerConfig config, DesktopWebDriverRequest desktopWebDriverRequest) {
+    static DesiredCapabilities createCapabilities(final WebDriverManagerConfig config, DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
         String browser = desktopWebDriverRequest.browser;
         if (browser == null) {
             throw new FennecRuntimeException(
                     "Browser is not set correctly");
         }
         final DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+        desiredCapabilities.merge(preSetCaps);
 
         switch (browser) {
             case Browsers.htmlunit:
@@ -221,14 +222,6 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
             chromeOptions.addArguments("--headless", "--disable-gpu");
             desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         }
-
-        /*
-        add tap capabilities
-         */
-        DesiredCapabilities tapOptions = new DesiredCapabilities();
-        ExecutionContextController.EXECUTION_CONTEXT.metaData.forEach(tapOptions::setCapability);
-        tapOptions.setCapability("scid", desktopWebDriverRequest.sessionContext.id);
-        desiredCapabilities.setCapability("tapOptions", tapOptions);
 
         return desiredCapabilities;
     }

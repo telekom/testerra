@@ -73,10 +73,7 @@ public class DesktopWebDriverFactoryTest extends AbstractTest {
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability("enableVideo", true);
         caps.setCapability("enableVNC", true);
-        caps.setCapability("tap:jobId", "dummyJobId");
-        caps.setCapability("tap:projectId", "dummyProjectId");
-        DesiredCapabilities selenoidOptions = new DesiredCapabilities();
-        selenoidOptions.setCapability("selenoid:options", caps);
+
         // register caps
         DesktopWebDriverCapabilities.registerEndPointCapabilities(Pattern.compile(".*localhost.*"), caps);
 

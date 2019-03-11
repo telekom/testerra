@@ -136,11 +136,10 @@ public class ExecutionContextController {
 
         List<MethodContext> allTestMethods = allMethodContexts.stream().filter(MethodContext::isTestMethod).collect(Collectors.toList());
 
-        LOGGER.info(prefix + " Test Methods: " + allTestMethods.size());
-        LOGGER.info(prefix + "  Relevant: " + allTestMethods.stream().filter(m -> m.status.relevant).count());
+        LOGGER.info(prefix + "Test Methods Count: " + allTestMethods.size() + " (" + allTestMethods.stream().filter(m -> m.status.relevant).count() + " relevant)");
 
         for (TestStatusController.Status status : TestStatusController.Status.values()) {
-            LOGGER.info(prefix + " " + status.name() + ": " + allTestMethods.stream().filter(m -> m.status == status).count());
+            LOGGER.info(prefix + status.name() + ": " + allTestMethods.stream().filter(m -> m.status == status).count());
         }
 
         LOGGER.info(prefix + "**********************************************");

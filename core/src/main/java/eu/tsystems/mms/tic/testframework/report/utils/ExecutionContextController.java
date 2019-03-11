@@ -49,6 +49,8 @@ public class ExecutionContextController {
     private static final ThreadLocal<MethodContext> CURRENT_METHOD_CONTEXT = new ThreadLocal<>();
     private static final ThreadLocal<ITestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
 
+    private static final ThreadLocal<SessionContext> CURRENT_SESSION_CONTEXT = new ThreadLocal<>();
+
     public static MethodContext getCurrentMethodContext() {
         return CURRENT_METHOD_CONTEXT.get();
     }
@@ -118,6 +120,14 @@ public class ExecutionContextController {
      */
     public static void setCurrentMethodContext(final MethodContext methodContext) {
         CURRENT_METHOD_CONTEXT.set(methodContext);
+    }
+
+    public static void setCurrentSessionContext(final SessionContext sessionContext) {
+        CURRENT_SESSION_CONTEXT.set(sessionContext);
+    }
+
+    public static SessionContext getCurrentSessionContext() {
+        return CURRENT_SESSION_CONTEXT.get();
     }
 
     /**

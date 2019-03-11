@@ -48,6 +48,8 @@ public class ExecutionContext extends Context implements SynchronizableContext {
     public final Map<String, String> metaData = new LinkedHashMap<>();
     public boolean crashed = false;
 
+    public List<SessionContext> exclusiveSessionContexts = new LinkedList<>();
+
     public ExecutionContext() {
         name = runConfig.RUNCFG;
         swi = name;

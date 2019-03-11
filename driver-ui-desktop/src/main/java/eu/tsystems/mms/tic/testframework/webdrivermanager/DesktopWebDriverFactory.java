@@ -199,9 +199,6 @@ public class DesktopWebDriverFactory implements WebDriverFactory {
             }
         }
 
-        /*
-         GET baseUrl
-          */
         if (!Browsers.safari.equalsIgnoreCase(browser)) {
             int pageLoadTimeout = Constants.PAGE_LOAD_TIMEOUT_SECONDS;
             int scriptTimeout = PropertyManager.getIntProperty(FennecProperties.WEBDRIVER_TIMEOUT_SECONDS_SCRIPT, 120);

@@ -95,6 +95,25 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             r.webDriverMode = WebDriverManager.config().webDriverMode;
         }
 
+        /*
+        build endpoint stuff
+         */
+        String host = StringUtils.getFirstValidString(r.seleniumServerHost, PropertyManager.getProperty(FennecProperties.SELENIUM_SERVER_HOST), "localhost");
+        String port = StringUtils.getFirstValidString(r.seleniumServerPort, PropertyManager.getProperty(FennecProperties.SELENIUM_SERVER_PORT), "4444");
+        String url = StringUtils.getFirstValidString(r.seleniumServerURL, PropertyManager.getProperty(FennecProperties.SELENIUM_SERVER_URL), "http://" + host + ":" + port + "/wd/hub");
+
+        // set backwards
+        try {
+            URL url1 = new URL(url);
+            host = url1.getHost();
+            port = url1.getPort() + "";
+        } catch (MalformedURLException e) {
+            LOGGER.error("INTERNAL ERROR: Could not parse URL", e);
+        }
+        r.seleniumServerHost = host;
+        r.seleniumServerPort = port;
+        r.seleniumServerURL = url;
+
         return r;
     }
 
@@ -253,7 +272,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     private WebDriver newWebDriver(DesktopWebDriverRequest desktopWebDriverRequest, DesiredCapabilities capabilities) {
         String sessionKey = desktopWebDriverRequest.sessionKey;
 
-        final String url = getRemoteServerUrl(desktopWebDriverRequest);
+        final String url = desktopWebDriverRequest.seleniumServerURL;
 
         final String browser = desktopWebDriverRequest.browser;
         /*
@@ -338,25 +357,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         WebDriverManagerUtils.logUserAgent(sessionKey, newDriver, nodeInfo);
 
         return newDriver;
-    }
-
-    public static String getRemoteServerUrl(DesktopWebDriverRequest desktopWebDriverRequest) {
-        String host = StringUtils.getFirstValidString(desktopWebDriverRequest.seleniumServerHost, PropertyManager.getProperty(FennecProperties.SELENIUM_SERVER_HOST), "localhost");
-        String port = StringUtils.getFirstValidString(desktopWebDriverRequest.seleniumServerPort, PropertyManager.getProperty(FennecProperties.SELENIUM_SERVER_PORT), "4444");
-        String url = StringUtils.getFirstValidString(desktopWebDriverRequest.seleniumServerURL, PropertyManager.getProperty(FennecProperties.SELENIUM_SERVER_URL), "http://" + host + ":" + port + "/wd/hub");
-
-        // set backwards
-        try {
-            URL url1 = new URL(url);
-            host = url1.getHost();
-            port = url1.getPort() + "";
-        } catch (MalformedURLException e) {
-            LOGGER.error("INTERNAL ERROR: Could not parse URL", e);
-        }
-        desktopWebDriverRequest.seleniumServerHost = host;
-        desktopWebDriverRequest.seleniumServerPort = port;
-        desktopWebDriverRequest.seleniumServerURL = url;
-        return url;
     }
 
     /**

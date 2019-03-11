@@ -78,7 +78,7 @@ public final class SelenoidFunctions {
         WebDriverRequest request = WebDriverManager.getRelatedWebDriverRequest(driver);
         if (request instanceof DesktopWebDriverRequest) {
             DesktopWebDriverRequest desktopWebDriverRequest = (DesktopWebDriverRequest) request;
-            String remoteServerUrl = DesktopWebDriverFactory.getRemoteServerUrl(desktopWebDriverRequest);
+            String remoteServerUrl = desktopWebDriverRequest.seleniumServerURL;
 
             // get session id
             if (driver instanceof EventFiringWebDriver) {

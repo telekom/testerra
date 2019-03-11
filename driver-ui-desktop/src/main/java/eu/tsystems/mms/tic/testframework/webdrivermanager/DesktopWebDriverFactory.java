@@ -36,7 +36,7 @@ import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickpathEventListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
+import eu.tsystems.mms.tic.testframework.sikuli.FennecWebDriver;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TestUtils;
@@ -281,7 +281,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 }
             } catch (final FennecSetupException e) {
                 int ms = Constants.WEBDRIVER_START_RETRY_TIME_IN_MS;
-                LOGGER.error("Error starting SikuliWebDriver. Trying again in "
+                LOGGER.error("Error starting FennecWebDriver. Trying again in "
                         + (ms / 1000) + " seconds.", e);
                 TestUtils.sleep(ms);
                 newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
@@ -366,7 +366,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         }
 
         WebDriver driver;
-        LOGGER.info("Starting SikuliWebDriver (" + sessionKey + ") " + msg, new NewSessionMarker());
+        LOGGER.info("Starting FennecWebDriver (" + sessionKey + ") " + msg, new NewSessionMarker());
         org.apache.commons.lang3.time.StopWatch sw = new org.apache.commons.lang3.time.StopWatch();
         sw.start();
 
@@ -376,7 +376,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             remote mode
              */
             try {
-                driver = new SikuliWebDriver(remoteAddress, capabilities);
+                driver = new FennecWebDriver(remoteAddress, capabilities);
             } catch (Exception e) {
                 throw new FennecSetupException(errorMessage, e);
             }

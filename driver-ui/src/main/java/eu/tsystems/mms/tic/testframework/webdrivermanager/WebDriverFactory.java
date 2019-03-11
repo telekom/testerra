@@ -21,7 +21,9 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +89,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
          * For more info, please ask @rnhb
          */
         try {
-            rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class);
+            rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class, RemoteWebDriver.class.getInterfaces());
         } catch (Exception e) {
             LOGGER.error("Could not create proxy for raw webdriver", e);
         }

@@ -75,8 +75,8 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
         /*
         fill the session context
          */
-        sessionContext.metaData.put("browser", r.browser);
-        sessionContext.metaData.put("browserVersion", r.browserVersion);
+        sessionContext.metaData.put("requested.browser", r.browser);
+        sessionContext.metaData.put("requested.browserVersion", r.browserVersion);
 
         /*
         create basic capabilities

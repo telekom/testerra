@@ -23,6 +23,12 @@ import org.apache.log4j.spi.LoggingEvent;
 
 public interface LoggingActor {
 
-    void process(LoggingEvent event, String message);
+    /**
+     *
+     * @param event - the log event
+     * @param message - the formatted message
+     * @param withMCID - flag for logging with MCID (MethodContext ID)
+     */
+    void process(LoggingEvent event, String message, boolean withMCID);
 
 }

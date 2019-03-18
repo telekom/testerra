@@ -33,7 +33,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
-import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import org.openqa.selenium.WebDriver;
@@ -47,6 +46,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverFactory.wrapRawWebDriverWithEventFiringWebDriver;
 
 /**
  * Created by pele on 08.01.2015.
@@ -401,8 +402,6 @@ final class WebDriverSessionsManager {
             create session context and link to method context
              */
             SessionContext sessionContext = new SessionContext(sessionKey, webDriverFactory.getClass().getSimpleName());
-            sessionContext.metaData.put("browser", webDriverRequest.browser);
-            sessionContext.metaData.put("browserVersion", webDriverRequest.browserVersion);
             webDriverRequest.sessionContext = sessionContext;
             MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
             if (methodContext != null) {
@@ -417,29 +416,7 @@ final class WebDriverSessionsManager {
             /*
             setup new session
              */
-            LOGGER.info("Requesting new web driver session " + sessionContext);
-            WebDriver rawDriver = webDriverFactory.getRawWebDriver(webDriverRequest);
-
-            /*
-             * Watch out when wrapping the driver here. Any more wraps than EventFiringWebDriver will break at least
-             * the MobileDriverAdapter. This is because we need to compare the lowermost implementation of WebDriver in this case.
-             * It can be made more robust, if we always can retrieve the storedSessionId of the WebDriver, given a WebDriver object.
-             * For more info, please ask @rnhb
-             */
-            try {
-                rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class);
-            } catch (Exception e) {
-                LOGGER.error("Could not create proxy for raw webdriver", e);
-            }
-            eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(rawDriver);
-
-            /*
-            store session
-             */
-            storeWebDriverSession(sessionKey, eventFiringWebDriver, sessionContext);
-
-            // setup the session
-            webDriverFactory.setupSession((EventFiringWebDriver) eventFiringWebDriver, sessionKey, browser);
+            eventFiringWebDriver = webDriverFactory.getWebDriver(webDriverRequest, sessionContext);
 
             /*
             run the handlers
@@ -464,16 +441,6 @@ final class WebDriverSessionsManager {
         else {
             throw new FennecSystemException("No webdriver factory registered for browser " + browser);
         }
-    }
-
-    /**
-     * Get EventFiringWebDriver from default WebDriver instance.
-     *
-     * @param driver The default WebDriver instance.
-     * @return An EventFiringWebDriver instance.
-     */
-    private static EventFiringWebDriver wrapRawWebDriverWithEventFiringWebDriver(final WebDriver driver) {
-        return new EventFiringWebDriver(driver);
     }
 
     static void registerWebDriverFactory(WebDriverFactory webDriverFactory, String... browsers) {

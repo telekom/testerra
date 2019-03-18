@@ -47,12 +47,12 @@ import java.net.URL;
 /**
  * Fennec WebDriver is a ScreenshotWebdriver enhanced by the possibilty to find elements by coordinates and images.
  */
-public class SikuliWebDriver extends RemoteWebDriver implements SikuliDriver {
+public class FennecWebDriver extends RemoteWebDriver implements SikuliDriver {
 
     /**
      * Logger.
      */
-    private static Logger logger = LoggerFactory.getLogger(SikuliWebDriver.class);
+    private static Logger logger = LoggerFactory.getLogger(FennecWebDriver.class);
 
     /**
      * Default waiter.
@@ -70,7 +70,7 @@ public class SikuliWebDriver extends RemoteWebDriver implements SikuliDriver {
      * @param executor .
      * @param desiredCapabilities .
      */
-    public SikuliWebDriver(CommandExecutor executor, Capabilities desiredCapabilities) {
+    public FennecWebDriver(CommandExecutor executor, Capabilities desiredCapabilities) {
         super(executor, desiredCapabilities);
         init();
     }
@@ -80,7 +80,7 @@ public class SikuliWebDriver extends RemoteWebDriver implements SikuliDriver {
      *
      * @param desiredCapabilities .
      */
-    public SikuliWebDriver(Capabilities desiredCapabilities) {
+    public FennecWebDriver(Capabilities desiredCapabilities) {
         super(desiredCapabilities);
         init();
     }
@@ -91,7 +91,7 @@ public class SikuliWebDriver extends RemoteWebDriver implements SikuliDriver {
      * @param remoteAddress .
      * @param desiredCapabilities  .
      */
-    public SikuliWebDriver(URL remoteAddress, Capabilities desiredCapabilities) {
+    public FennecWebDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
         init();
     }

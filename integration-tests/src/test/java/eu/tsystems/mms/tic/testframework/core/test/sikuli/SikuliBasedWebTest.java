@@ -24,7 +24,7 @@ import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.sikuli.ImageElement;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliBy;
-import eu.tsystems.mms.tic.testframework.sikuli.SikuliWebDriver;
+import eu.tsystems.mms.tic.testframework.sikuli.FennecWebDriver;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -54,8 +54,8 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/iiswelcome.png");
 
-        SikuliWebDriver sikuliWebDriver = (SikuliWebDriver) ((EventFiringWebDriver) driver).getWrappedDriver();
-        ImageElement imageElement = sikuliWebDriver.findImageElement(resourceURL);
+        FennecWebDriver fennecWebDriver = (FennecWebDriver) ((EventFiringWebDriver) driver).getWrappedDriver();
+        ImageElement imageElement = fennecWebDriver.findImageElement(resourceURL);
         imageElement.click();
     }
 

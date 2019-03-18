@@ -49,8 +49,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.AttributedString;
 import java.text.DecimalFormat;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * Created by clgr on 09.10.2014.

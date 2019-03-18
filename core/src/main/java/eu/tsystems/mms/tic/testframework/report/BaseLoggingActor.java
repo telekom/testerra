@@ -32,7 +32,10 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.LoggingDispatcher;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.apache.log4j.*;
+import org.apache.log4j.AppenderSkeleton;
+import org.apache.log4j.Layout;
+import org.apache.log4j.Level;
+import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
 
 import java.text.SimpleDateFormat;
@@ -57,8 +60,8 @@ public class BaseLoggingActor extends AppenderSkeleton {
 
     public static final String LOGGER_PATTERN = "%p---%d{" + DATE_FORMAT + "}---%t---%c{1}---%m%n";
 
-    private static final Layout CONSOLE_LAYOUT = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss} [%t] [%-5p]: %c{2} - %m");
-    private static final Layout CONSOLE_LAYOUT_MCID = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss} [%t] [%-5p]: %c{2} - [MCID:%X{mcid}] %m");
+    public static final Layout CONSOLE_LAYOUT = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss} [%t] [%-5p]: %c{2} - %m");
+    public static final Layout CONSOLE_LAYOUT_MCID = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss} [%t] [%-5p]: %c{2} - [MCID:%X{mcid}] %m");
 
     public static final String SPLITTER = "---";
     public static final Layout LAYOUT = new PatternLayout(LOGGER_PATTERN);
@@ -109,9 +112,11 @@ public class BaseLoggingActor extends AppenderSkeleton {
         // enhance with method context id
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         String formattedMessage;
+        boolean withMCID = false;
         if (methodContext != null) {
             event.setProperty("mcid", methodContext.id);
             formattedMessage = CONSOLE_LAYOUT_MCID.format(event);
+            withMCID = true;
         }
         else {
             formattedMessage = CONSOLE_LAYOUT.format(event);
@@ -127,7 +132,7 @@ public class BaseLoggingActor extends AppenderSkeleton {
 
         // append for any other actors
         for (LoggingActor loggingActor : LOGGING_ACTORS) {
-            loggingActor.process(event, formattedMessage);
+            loggingActor.process(event, formattedMessage, withMCID);
         }
 
     }

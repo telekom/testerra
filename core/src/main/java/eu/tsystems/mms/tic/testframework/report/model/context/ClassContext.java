@@ -78,7 +78,7 @@ public class ClassContext extends Context implements SynchronizableContext {
     }
 
     public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
-        final Object[] parameters = testResult.getParameters(); // TODO ERKU - Hsat das Auswirkungen auf den Retest? Vermutlich schon wenn er den swi nicht auflösen kann.
+        final Object[] parameters = testResult.getParameters();
         final ITestNGMethod testMethod = TestNGHelper.getTestMethod(testResult, iTestContext, invokedMethod);
         return this.getMethodContext(iTestContext, testMethod, parameters);
     }

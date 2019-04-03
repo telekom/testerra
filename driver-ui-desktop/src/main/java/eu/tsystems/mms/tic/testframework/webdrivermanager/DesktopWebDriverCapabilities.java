@@ -157,6 +157,7 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 desiredCapabilities.setBrowserName(BrowserType.CHROME);
                 {
                     ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--no-sandbox");
                     desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                 }
                 break;

@@ -35,9 +35,9 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
+import org.apache.http.impl.conn.ManagedHttpClientConnectionFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.remote.internal.HttpClientFactory;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +63,7 @@ final class WebDriverSessionsManager {
         For remote webdriver: set request timeout to a lower time than 3 hours
          */
         try {
-            Field field = HttpClientFactory.class.getDeclaredField("TIMEOUT_THREE_HOURS");
+            Field field = ManagedHttpClientConnectionFactory.class.getDeclaredField("TIMEOUT_THREE_HOURS");
             field.setAccessible(true);
             Field modifiers = field.getClass().getDeclaredField("modifiers");
             modifiers.setAccessible(true);

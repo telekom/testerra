@@ -58,22 +58,6 @@ final class WebDriverSessionsManager {
 
     private static final Map<String, WebDriverFactory> WEB_DRIVER_FACTORIES = new HashMap<>();
 
-    static {
-        /*
-        For remote webdriver: set request timeout to a lower time than 3 hours
-         */
-        try {
-            Field field = ManagedHttpClientConnectionFactory.class.getDeclaredField("TIMEOUT_THREE_HOURS");
-            field.setAccessible(true);
-            Field modifiers = field.getClass().getDeclaredField("modifiers");
-            modifiers.setAccessible(true);
-            modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-            field.setInt(null, TimingConstants.WEBDRIVER_COMMAND_TIMEOUT_SECONDS * 1000);
-        } catch (Exception e) {
-            throw new FennecRuntimeException("Unable to apply WebDriver Timings", e);
-        }
-    }
-
     public static final String EXCLUSIVE_PREFIX = "EXCLUSIVE_";
 
     private static final Map<String, WebDriver> ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS = Collections.synchronizedMap(new HashMap<>());

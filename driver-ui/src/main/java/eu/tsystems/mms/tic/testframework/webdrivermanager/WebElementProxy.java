@@ -27,7 +27,10 @@ public class WebElementProxy extends ObjectUtils.PassThroughProxy<WebElement> {
         SessionContext sessionContext = WebDriverManager.getSessionContextFromWebDriver(driver);
 
         if (!method.getName().equals("toString")) {
-            String msg = method.getName() + " " + Arrays.stream(args).map(Object::toString).collect(Collectors.joining(" "));
+            String msg = method.getName();
+            if (args != null) {
+                msg += " " + Arrays.stream(args).map(Object::toString).collect(Collectors.joining(" "));
+            }
             ProxyUtils.log(LOGGER, sessionContext, msg);
         }
 

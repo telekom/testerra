@@ -51,7 +51,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
@@ -406,9 +405,9 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 case Browsers.chromeHeadless:
                     driver = new ChromeDriver(capabilities);
                     break;
-                case Browsers.htmlunit:
-                    driver = new HtmlUnitDriver(capabilities);
-                    break;
+//                case Browsers.htmlunit:
+//                    driver = new HtmlUnitDriver(capabilities);
+//                    break;
                 case Browsers.phantomjs:
                     File phantomjsFile = getPhantomJSBinary();
                     capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjsFile.getAbsolutePath());

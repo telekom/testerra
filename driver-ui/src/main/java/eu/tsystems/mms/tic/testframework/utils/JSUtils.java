@@ -217,6 +217,15 @@ public final class JSUtils {
         executeScript(driver, "FennecClickElement(arguments[0])",webElement);
     }
 
+    public static void highlightClick(final WebDriver driver, int x, int y) {
+        /*
+         * Try to inject JS for demo mode before executing highlight
+         */
+        turnOnDemoModeForCurrentPage(driver);
+
+        executeScript(driver, "xetaClick(arguments[0], arguments[1])", x, y);
+    }
+
     /**
      * Highlight a webelement on an actual driver session
      *

@@ -38,16 +38,21 @@ public final class Flags {
 
     private Flags() {
     }
+    
+    private static boolean p(String property, boolean defaultValue) {
+        return PropertyManager.getBooleanProperty(property, defaultValue);
+    }
 
-    public static boolean REPORT_SCREENSHOTS_PREVIEW = PropertyManager.getBooleanProperty(FennecProperties.REPORT_SCREENSHOTS_PREVIEW, true);
-    public static boolean GENERATE_PERF_STATISTICS = PropertyManager.getBooleanProperty(FennecProperties.PERF_GENERATE_STATISTICS, false);
+    public static boolean REPORT_SCREENSHOTS_PREVIEW = p(FennecProperties.REPORT_SCREENSHOTS_PREVIEW, true);
+    public static boolean GENERATE_PERF_STATISTICS = p(FennecProperties.PERF_GENERATE_STATISTICS, false);
     public static boolean PERF_STOP_WATCH_ACTIVE = false;
-    public static boolean REUSE_DATAPROVIDER_DRIVER_BY_THREAD = PropertyManager.getBooleanProperty(FennecProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, false);
-    public static boolean MONITOR_MEMORY = PropertyManager.getBooleanProperty(FennecProperties.MONITOR_MEMORY, true);
-    public static boolean DRY_RUN = PropertyManager.getBooleanProperty(FennecProperties.DRY_RUN, false);
-    public static boolean LIST_TESTS = PropertyManager.getBooleanProperty(FennecProperties.LIST_TESTS, false);
-    public static boolean WEB_TAKE_ACTION_SCREENSHOTS = PropertyManager.getBooleanProperty(FennecProperties.WEB_TAKE_ACTION_SCREENSHOTS, false);
-    public static boolean FAILURE_CORRIDOR_ACTIVE = PropertyManager.getBooleanProperty(FennecProperties.FAILURE_CORRIDOR_ACTIVE, false);
-    public static boolean EXECUTION_OMIT_IN_DEVELOPMENT = PropertyManager.getBooleanProperty(FennecProperties.EXECUTION_OMIT_IN_DEVELOPMENT, false);
-    public static boolean GUIELEMENT_HIGHLIGHTS = PropertyManager.getBooleanProperty(FennecProperties.GUIELEMENT_HIGHLIGHTS_ACTIVE, true);
+    public static boolean REUSE_DATAPROVIDER_DRIVER_BY_THREAD = p(FennecProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, false);
+    public static boolean MONITOR_MEMORY = p(FennecProperties.MONITOR_MEMORY, true);
+    public static boolean DRY_RUN = p(FennecProperties.DRY_RUN, false);
+    public static boolean LIST_TESTS = p(FennecProperties.LIST_TESTS, false);
+    public static boolean WEB_TAKE_ACTION_SCREENSHOTS = p(FennecProperties.WEB_TAKE_ACTION_SCREENSHOTS, false);
+    public static boolean FAILURE_CORRIDOR_ACTIVE = p(FennecProperties.FAILURE_CORRIDOR_ACTIVE, false);
+    public static boolean EXECUTION_OMIT_IN_DEVELOPMENT = p(FennecProperties.EXECUTION_OMIT_IN_DEVELOPMENT, false);
+    public static boolean GUIELEMENT_HIGHLIGHTS = p(FennecProperties.GUIELEMENT_HIGHLIGHTS_ACTIVE, true);
+    public static boolean LAYOUTCHECK_ASSERT_NF = p(FennecProperties.LAYOUTCHECK_ASSERT_INFO_MODE, false);
 }

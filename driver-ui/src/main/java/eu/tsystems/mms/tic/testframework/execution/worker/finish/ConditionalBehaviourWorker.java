@@ -33,7 +33,7 @@ public class ConditionalBehaviourWorker extends MethodWorker {
 
     @Override
     public void run() {
-        if (isTest() && isFailed() && TestStatusController.areAllTestsPassedYet()) {
+        if (isTest() && isFailed()) {
 
             // check state condition: shutdown
             boolean skipShutdown = PropertyManager.getBooleanProperty(
@@ -48,7 +48,7 @@ public class ConditionalBehaviourWorker extends MethodWorker {
             boolean skipFollowingTests = PropertyManager.getBooleanProperty(
                     FennecProperties.ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS, false);
             if (skipFollowingTests) {
-                LOGGER.debug("ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS: true");
+                LOGGER.info(FennecProperties.ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS + " : true, skipping all tests from now on");
                 FennecListener.skipAllTests();
             }
         }

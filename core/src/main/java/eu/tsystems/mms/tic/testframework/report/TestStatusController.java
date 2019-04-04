@@ -70,6 +70,7 @@ public class TestStatusController {
         statusMap.put("TestsFailed", testsFailed);
 
         statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
+        statusMap.put("DryRun", Flags.DRY_RUN);
 
         // set status
         String status;

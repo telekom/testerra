@@ -206,7 +206,12 @@ public final class ExecutionUtils {
             methodsDependedUpon.forEach(method -> {
                 if(!dependsOnMethods.contains(method)) {
                     dependsOnMethods.add(method);
-                    pAddDependencies(map, map.get(method));
+                    if (map.containsKey(method)) {
+                        pAddDependencies(map, map.get(method));
+                    }
+                    else {
+                        LOGGER.warn("Method " + method + " is not planned for execution");
+                    }
                 }
             });
         }

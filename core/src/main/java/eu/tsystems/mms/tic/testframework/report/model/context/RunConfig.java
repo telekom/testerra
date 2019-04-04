@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.internal.FennecBuildInformation;
+import eu.tsystems.mms.tic.testframework.internal.Flags;
 
 import java.io.File;
 
@@ -30,8 +31,8 @@ import java.io.File;
  */
 public final class RunConfig {
 
-    public final String RUNCFG = PropertyManager.getProperty(FennecProperties.RUNCFG, "DEFAULT");
-    public final FennecBuildInformation FennecBuildInformation = new FennecBuildInformation();
+    public final String RUNCFG = (Flags.DRY_RUN ? "DRY RUN " : "") + PropertyManager.getProperty(FennecProperties.RUNCFG, "DEFAULT");
+    public final FennecBuildInformation fennecBuildInformation = new FennecBuildInformation();
 
     public static String getModuleFolderName() {
         return new File(".").getAbsoluteFile().getParentFile().getName();

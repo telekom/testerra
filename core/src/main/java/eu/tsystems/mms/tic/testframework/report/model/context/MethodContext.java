@@ -36,6 +36,8 @@ import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
 import java.lang.annotation.Annotation;
@@ -51,6 +53,10 @@ import java.util.List;
 public class MethodContext extends ErrorContext implements SynchronizableContext {
 
     public ITestResult testResult;
+    public ITestContext iTestContext;
+    public ITestNGMethod iTestNgMethod;
+
+
     public TestStatusController.Status status = TestStatusController.Status.NO_RUN;
     public final MethodType methodType;
     public List<Object> parameters = new LinkedList<>();

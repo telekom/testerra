@@ -29,7 +29,12 @@ import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ExecutionContext extends Context implements SynchronizableContext {
@@ -56,6 +61,10 @@ public class ExecutionContext extends Context implements SynchronizableContext {
     public SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
         final String suiteName = TestNGHelper.getSuiteName(testResult, iTestContext);
         return getContext(SuiteContext.class, suiteContexts, suiteName, true, () -> new SuiteContext(this));
+    }
+
+    public SuiteContext getSuiteContext(final ITestContext iTestContext) {
+        return this.getSuiteContext(null, iTestContext);
     }
 
     public List<SuiteContext> copyOfSuiteContexts() {
@@ -109,13 +118,14 @@ public class ExecutionContext extends Context implements SynchronizableContext {
      * Get method statistics for all effective classes.
      * The classes are all classContext from the context tree (without merged ones) AND mergedClassContexts from executionContext.
      *
-     * @param includeTestMethods .
-     * @param includeConfigMethods  .
+     * @param includeTestMethods   .
+     * @param includeConfigMethods .
+     *
      * @return a map
      */
     public Map<ClassContext, Map> getMethodStatsPerClass(boolean includeTestMethods, boolean includeConfigMethods) {
         final Map<ClassContext, Map> methodStatsPerClass = new LinkedHashMap<>();
-        List < SuiteContext > suiteContexts = copyOfSuiteContexts();
+        List<SuiteContext> suiteContexts = copyOfSuiteContexts();
         suiteContexts.forEach(suiteContext -> {
             suiteContext.copyOfTestContexts().forEach(testContext -> {
                 testContext.copyOfClassContexts().forEach(classContext -> {

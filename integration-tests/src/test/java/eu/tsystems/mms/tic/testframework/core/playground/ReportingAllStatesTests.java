@@ -55,7 +55,7 @@ public class ReportingAllStatesTests extends AbstractTest {
         TestUtils.sleep(1000);
     }
 
-    @DataProvider(name = "dp")
+    @DataProvider(name = "dp", parallel = true)
     public Object[][] dp() {
 
         int size = 20;

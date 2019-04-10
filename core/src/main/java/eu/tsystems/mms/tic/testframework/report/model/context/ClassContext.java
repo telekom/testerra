@@ -80,16 +80,30 @@ public class ClassContext extends Context implements SynchronizableContext {
     public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
         final Object[] parameters = testResult.getParameters();
         final ITestNGMethod testMethod = TestNGHelper.getTestMethod(testResult, iTestContext, invokedMethod);
-        return this.getMethodContext(iTestContext, testMethod, parameters);
+        return this.getMethodContext(testResult, iTestContext, testMethod, parameters);
     }
 
-    public MethodContext getMethodContext(ITestContext iTestContext, ITestNGMethod iTestNGMethod, Object[] parameters) {
+    public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, ITestNGMethod iTestNGMethod, Object[] parameters) {
         final String name = iTestNGMethod.getMethodName();
 
+        final List<Object> parametersList = Arrays.stream(parameters).collect(Collectors.toList());
+
         synchronized (methodContexts) {
-            List<MethodContext> collect = methodContexts.stream()
-                    .filter(methodContext -> iTestContext == methodContext.iTestContext && iTestNGMethod == methodContext.iTestNgMethod)
-                    .collect(Collectors.toList());
+            List<MethodContext> collect;
+
+            if (testResult != null) {
+                collect = methodContexts.stream()
+                        .filter(mc -> testResult == mc.testResult)
+                        .collect(Collectors.toList());
+            }
+            else {
+                // TODO: (!!!!) this is not eindeutig
+                collect = methodContexts.stream()
+                        .filter(mc -> iTestContext == mc.iTestContext)
+                        .filter(mc -> iTestNGMethod == mc.iTestNgMethod)
+                        .filter(mc -> mc.parameters.containsAll(parametersList))
+                        .collect(Collectors.toList());
+            }
 
             MethodContext methodContext;
             if (collect.isEmpty()) {

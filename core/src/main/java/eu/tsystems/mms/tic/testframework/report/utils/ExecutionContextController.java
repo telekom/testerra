@@ -97,7 +97,7 @@ public class ExecutionContextController {
 
     public static MethodContext getMethodContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod, final Object[] parameters) {
         ClassContext classContext = getClassContextFromTestContextAndMethod(iTestContext, iTestNgMethod);
-        return classContext.getMethodContext(iTestContext, iTestNgMethod, parameters);
+        return classContext.getMethodContext(null, iTestContext, iTestNgMethod, parameters);
     }
 
     /**

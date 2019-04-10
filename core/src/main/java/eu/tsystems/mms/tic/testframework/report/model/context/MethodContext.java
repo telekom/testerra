@@ -56,7 +56,6 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     public ITestContext iTestContext;
     public ITestNGMethod iTestNgMethod;
 
-
     public TestStatusController.Status status = TestStatusController.Status.NO_RUN;
     public final MethodType methodType;
     public List<Object> parameters = new LinkedList<>();

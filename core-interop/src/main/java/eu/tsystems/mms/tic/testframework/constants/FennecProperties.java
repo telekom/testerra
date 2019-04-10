@@ -44,6 +44,11 @@ public final class FennecProperties {
      * Property to set the browser used by Selenium/ Webdriver.
      */
     public static final String BROWSER = "fennec.browser";
+    public static final String BROWSER_VERSION = "fennec.browser.version";
+
+    // BROWSER_SETTING syntax: browser:version
+    // BROWSER_SETTING overrides BROWSER and BROWSER_VERSION
+    public static final String BROWSER_SETTING = "fennec.browser.setting";
 
     /**
      * Property to set the host of the remote selenium server.
@@ -171,8 +176,6 @@ public final class FennecProperties {
     public static final String SCREENSHOT_ON_PAGELOAD = "fennec.screenshot.on.pageload";
 
     public static final String DB_TIMEOUT = "fennec.db.timeout";
-
-    public static final String BROWSER_VERSION = "fennec.browser.version";
 
     public static final String MONITOR_MEMORY = "fennec.monitor.memory";
 

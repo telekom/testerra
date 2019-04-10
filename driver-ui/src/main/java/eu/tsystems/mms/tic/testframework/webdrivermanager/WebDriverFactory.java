@@ -22,14 +22,18 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.HasInputDevices;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by rnhb on 12.02.2016.
@@ -114,7 +118,11 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
          * For more info, please ask @rnhb
          */
         try {
-            rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class, rawDriver.getClass().getInterfaces());
+            Class<?>[] interfaces = rawDriver.getClass().getInterfaces();
+            List<Class<?>> classes = Arrays.asList(interfaces);
+            classes.add(HasInputDevices.class);
+            classes.add(JavascriptExecutor.class);
+            rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class, classes.toArray(new Class[0]));
         } catch (Exception e) {
             LOGGER.error("Could not create proxy for raw webdriver", e);
         }

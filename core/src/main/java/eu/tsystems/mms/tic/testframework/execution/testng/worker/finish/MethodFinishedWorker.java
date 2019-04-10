@@ -38,38 +38,46 @@ public class MethodFinishedWorker extends MethodWorker {
         // clear current result
         ExecutionContextController.clearCurrentTestResult();
 
-        /*
-         * Read stored method infos, publish to method container and clean
-         */
-        ReportInfo.MethodInfo methodInfo = ReportInfo.getCurrentMethodInfo();
-        if (methodInfo != null) {
-            Map<String, String> infos = methodInfo.getInfos();
-            for (String key : infos.keySet()) {
-                methodContext.infos.add(key + " = " + infos.get(key));
-            }
-        }
-
-        // calculate fingerprint
-        if (isFailed()) {
-            Throwable throwable = methodContext.getThrowable();
-            if (throwable != null) {
-                // look for script source
-                ScriptSource scriptSourceForThrowable = SourceUtils.findScriptSourceForThrowable(throwable);
-                if (scriptSourceForThrowable != null) {
-                    methodContext.scriptSource = scriptSourceForThrowable;
+        try {
+            /*
+             * Read stored method infos, publish to method container and clean
+             */
+            ReportInfo.MethodInfo methodInfo = ReportInfo.getCurrentMethodInfo();
+            if (methodInfo != null) {
+                Map<String, String> infos = methodInfo.getInfos();
+                for (String key : infos.keySet()) {
+                    methodContext.infos.add(key + " = " + infos.get(key));
                 }
-                methodContext.executionObjectSource = CollectAssertionInfoArtefacts.getSourceFor(throwable);
             }
-            methodContext.buildExitFingerprint();
+
+            // calculate fingerprint
+            if (isFailed()) {
+                Throwable throwable = methodContext.getThrowable();
+                if (throwable != null) {
+                    // look for script source
+                    ScriptSource scriptSourceForThrowable = SourceUtils.findScriptSourceForThrowable(throwable);
+                    if (scriptSourceForThrowable != null) {
+                        methodContext.scriptSource = scriptSourceForThrowable;
+                    }
+                    methodContext.executionObjectSource = CollectAssertionInfoArtefacts.getSourceFor(throwable);
+                }
+                methodContext.buildExitFingerprint();
+            }
+
+            // generate html
+            try {
+                ReportUtils.createMethodDetailsStepsView(methodContext);
+            } catch (Throwable e) {
+                LOGGER.error("FATAL: Could not create html", e);
+            }
+        }
+        finally {
+            // clear method infos
+            ReportInfo.clearCurrentMethodInfo();
+
+            // gc
+            System.gc();
         }
 
-        // generate html
-        ReportUtils.createMethodDetailsStepsView(methodContext);
-
-        // clear method infos
-        ReportInfo.clearCurrentMethodInfo();
-
-        // gc
-        System.gc();
     }
 }

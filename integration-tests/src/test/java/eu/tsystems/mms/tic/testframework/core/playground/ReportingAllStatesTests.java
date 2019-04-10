@@ -58,9 +58,11 @@ public class ReportingAllStatesTests extends AbstractTest {
     @DataProvider(name = "dp")
     public Object[][] dp() {
 
-        Object[][] objects = new Object[2][1];
-        objects[0][0] = "1";
-        objects[1][0] = "2";
+        int size = 20;
+        Object[][] objects = new Object[size][1];
+        for (int i = 0; i < size; i++) {
+            objects[i][0] = "" + (i+1);
+        }
         return objects;
     }
 

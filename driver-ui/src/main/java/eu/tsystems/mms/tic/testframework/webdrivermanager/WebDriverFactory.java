@@ -114,7 +114,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
          * For more info, please ask @rnhb
          */
         try {
-            rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class, RemoteWebDriver.class.getInterfaces());
+            rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class, rawDriver.getClass().getInterfaces());
         } catch (Exception e) {
             LOGGER.error("Could not create proxy for raw webdriver", e);
         }

@@ -43,6 +43,7 @@ import eu.tsystems.mms.tic.testframework.utils.TestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
+import org.apache.commons.lang3.ClassUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
@@ -145,7 +146,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
             }
 
             // proxy the web element for logging
-            webElement = ObjectUtils.simpleProxy(WebElement.class, new WebElementProxy(webDriver, webElement));
+            webElement = ObjectUtils.simpleProxy(WebElement.class, new WebElementProxy(webDriver, webElement), webElement.getClass().getInterfaces());
 
             // set webelement
             guiElementData.webElement = webElement;

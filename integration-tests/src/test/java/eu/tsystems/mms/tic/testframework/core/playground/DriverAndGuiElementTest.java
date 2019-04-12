@@ -24,10 +24,8 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverCapabilities;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.*;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -50,6 +48,11 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
         request.webDriverMode = WebDriverMode.local;
         request.browser = Browsers.phantomjs;
         request.browserVersion = "egal";
+
+//        DesiredCapabilities caps = new DesiredCapabilities();
+//        WebDriverManagerUtils.addProxyToCapabilities(caps, "proxyblabla");
+//        WebDriverManager.setGlobalExtraCapabilities(caps);
+
         WebDriver driver = WebDriverManager.getWebDriver(request);
         PageFactory.create(PageWithExistingElement.class, driver);
     }

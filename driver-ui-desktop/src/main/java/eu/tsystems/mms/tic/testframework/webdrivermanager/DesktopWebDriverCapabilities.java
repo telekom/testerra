@@ -174,31 +174,9 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 throw new FennecSystemException(ErrorMessages.browserNotSupportedHere(browser));
         }
 
-        /*
-        set browser version
-         */
-        // load global setting
-        String version = null;
-
-        // load explicit, browser specific version setting, if present
-        final String explicitVersion = PropertyManager.getProperty(browser + ".version", null);
-        if (!StringUtils.isStringEmpty(explicitVersion)) {
-            version = explicitVersion;
-        }
-
-        // overload with global browser.version value, if present
-        if (!StringUtils.isStringEmpty(config.browserVersion)) {
-            version = config.browserVersion;
-        }
-
-        // overload with explicit session request setting, if present
-        if (desktopWebDriverRequest.browserVersion != null) {
-            version = desktopWebDriverRequest.browserVersion;
-        }
-
-        // set into capabilities
-        if (!StringUtils.isStringEmpty(version)) {
-            WebDriverManagerUtils.addBrowserVersionToCapabilities(desiredCapabilities, version);
+        // set browser version into capabilities
+        if (!StringUtils.isStringEmpty(desktopWebDriverRequest.browserVersion)) {
+            WebDriverManagerUtils.addBrowserVersionToCapabilities(desiredCapabilities, desktopWebDriverRequest.browserVersion);
         }
 
         /*

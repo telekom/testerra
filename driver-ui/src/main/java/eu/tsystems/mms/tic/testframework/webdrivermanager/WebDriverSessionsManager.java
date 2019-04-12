@@ -19,6 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.events.FennecEvent;
 import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
 import eu.tsystems.mms.tic.testframework.events.FennecEventService;
@@ -106,8 +108,7 @@ final class WebDriverSessionsManager {
         if (sessionId != null) {
             ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.put(sessionId, sessionContext);
             LOGGER.info("Stored SessionContext " + sessionContext + " for session " + sessionId);
-        }
-        else {
+        } else {
             LOGGER.error("Could not store SessionContext, could not get SessionId");
         }
     }
@@ -338,20 +339,33 @@ final class WebDriverSessionsManager {
         String sessionKey = WebDriverManager.DEFAULT_SESSION_KEY;
         if (!StringUtils.isStringEmpty(webDriverRequest.sessionKey)) {
             sessionKey = webDriverRequest.sessionKey;
-        }
-        else {
+        } else {
             webDriverRequest.sessionKey = sessionKey;
         }
 
         /*
         get browser
          */
-        String browser = WebDriverManager.config().browser; // default browser setting
+        /**
+         * Browser global setting.
+         */
+        String browser = WebDriverManager.config().browser();
+        String browserVersion = WebDriverManager.config().browserVersion();
+
         if (webDriverRequest.browser != null) {
+            LOGGER.info("Using explicit browser: " + browser);
             browser = webDriverRequest.browser;
-        }
-        else {
+        } else {
+            LOGGER.info("Using default browser: " + browser);
             webDriverRequest.browser = browser;
+        }
+
+        if (webDriverRequest.browserVersion != null) {
+            LOGGER.info("Using explicit browserVersion: " + browserVersion);
+            browserVersion = webDriverRequest.browserVersion;
+        } else {
+            LOGGER.info("Using default browserVersion: " + browserVersion);
+            webDriverRequest.browserVersion = browserVersion;
         }
 
         /*
@@ -360,7 +374,7 @@ final class WebDriverSessionsManager {
         if (sessionKey.startsWith(EXCLUSIVE_PREFIX)) {
             // returning exclusive session
             if (ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.containsKey(sessionKey)) {
-                return  ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.get(sessionKey);
+                return ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.get(sessionKey);
             } else {
                 throw new FennecSystemException("Session not useable anymore: " + sessionKey);
             }
@@ -372,7 +386,7 @@ final class WebDriverSessionsManager {
         /*
         session already exists?
          */
-        if (eventFiringWebDriver != null){
+        if (eventFiringWebDriver != null) {
             return eventFiringWebDriver;
         }
 
@@ -421,8 +435,7 @@ final class WebDriverSessionsManager {
                     .addData(FennecEventDataType.CONTEXT, sessionContext));
 
             return eventFiringWebDriver;
-        }
-        else {
+        } else {
             throw new FennecSystemException("No webdriver factory registered for browser " + browser);
         }
     }

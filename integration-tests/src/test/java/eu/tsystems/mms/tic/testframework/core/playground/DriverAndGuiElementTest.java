@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.core.playground;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
@@ -40,12 +39,17 @@ import java.util.regex.Pattern;
 
 public class DriverAndGuiElementTest extends AbstractTestSitesTest {
 
+    static {
+        System.setProperty("fennec.browser.setting", "firefox:66");
+    }
+
     @Test
     public void testGuiElement() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.baseUrl = TestPage.INPUT_TEST_PAGE.getUrl();
         request.webDriverMode = WebDriverMode.local;
         request.browser = Browsers.phantomjs;
+        request.browserVersion = "egal";
         WebDriver driver = WebDriverManager.getWebDriver(request);
         PageFactory.create(PageWithExistingElement.class, driver);
     }

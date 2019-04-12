@@ -29,6 +29,7 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
 import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,12 +78,6 @@ public class WebDriverManagerConfig {
     public boolean maximize = PropertyManager.getBooleanProperty(FennecProperties.BROWSER_MAXIMIZE, false);
 
     /**
-     * Browser global setting.
-     */
-    public String browser = PropertyManager.getProperty(FennecProperties.BROWSER, null);
-    public String browserVersion = PropertyManager.getProperty(FennecProperties.BROWSER_VERSION, null);
-
-    /**
      * Default constructor.
      */
     public WebDriverManagerConfig() {
@@ -93,14 +88,32 @@ public class WebDriverManagerConfig {
      * Init config values.
      */
     public void init() {
-        if (browser == null) {
-            LOGGER.warn(ErrorMessages.browserNotSetInAnyProperty());
-        }
-
         /*
         set remote
          */
         initWebDriverMode();
+    }
+
+    public static String browser() {
+        String browser = PropertyManager.getProperty(FennecProperties.BROWSER, null);
+
+        String browserSetting = PropertyManager.getProperty(FennecProperties.BROWSER_SETTING);
+        if (!StringUtils.isStringEmpty(browserSetting) && browserSetting.contains(":")) {
+            String[] split = browserSetting.split(":");
+            browser = split[0];
+        }
+
+        return browser;
+    }
+
+    public static String browserVersion() {
+        String browserVersion = PropertyManager.getProperty(FennecProperties.BROWSER_VERSION, null);
+        String browserSetting = PropertyManager.getProperty(FennecProperties.BROWSER_SETTING);
+        if (!StringUtils.isStringEmpty(browserSetting) && browserSetting.contains(":")) {
+            String[] split = browserSetting.split(":");
+            browserVersion = split[1];
+        }
+        return browserVersion;
     }
 
     /**

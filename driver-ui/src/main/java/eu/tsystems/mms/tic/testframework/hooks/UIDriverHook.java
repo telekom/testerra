@@ -74,20 +74,6 @@ public class UIDriverHook implements ModuleHook {
         CollectAssertionInfoArtefacts.registerScreenshotCollector(new ScreenshotGrabber());
         CollectAssertionInfoArtefacts.registerVideoCollector(new VideoGrabber());
         CollectAssertionInfoArtefacts.registerSourceCollector(new SourceGrabber());
-
-        /*
-        load BROWSER_SETTING and override BROWSER and BROWSER_VERSION
-         */
-        String browserSetting = PropertyManager.getProperty(FennecProperties.BROWSER_SETTING);
-        if (!StringUtils.isStringEmpty(browserSetting) && browserSetting.contains(":")) {
-            String[] split = browserSetting.split(":");
-            String browser = split[0];
-            String browserVersion = split[1];
-            LOGGER.info("Setting " + FennecProperties.BROWSER + "=" + browser);
-            System.setProperty(FennecProperties.BROWSER, browser);
-            LOGGER.info("Setting " + FennecProperties.BROWSER_VERSION + "=" + browserVersion);
-            System.setProperty(FennecProperties.BROWSER_VERSION, browserVersion);
-        }
     }
 
     @Override

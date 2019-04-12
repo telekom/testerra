@@ -62,12 +62,6 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
             r.baseUrl = WebDriverManager.getBaseURL();
         }
 
-        // not parsing "browser" here, it is already set for picking the correct factory ;)
-
-        if (r.browserVersion == null) {
-            r.browserVersion = WebDriverManager.config().browserVersion;
-        }
-
         // link session context
         r.sessionContext = sessionContext;
 

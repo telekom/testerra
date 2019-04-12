@@ -29,7 +29,7 @@ public abstract class AbstractTest extends FennecTest {
      * Sets the unsupportedBrowser=true flag for the @Fails annotation
      */
     protected static void setUnsupportedBrowserFlag() {
-        if (Browsers.phantomjs.equals(WebDriverManager.config().browser)) {
+        if (Browsers.phantomjs.equals(WebDriverManager.config().browser())) {
             System.setProperty("unsupportedBrowser", "true");
         }
     }

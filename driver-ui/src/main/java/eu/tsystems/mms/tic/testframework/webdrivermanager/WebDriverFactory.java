@@ -120,8 +120,11 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
         try {
             Class<?>[] interfaces = rawDriver.getClass().getInterfaces();
             List<Class<?>> classes = Arrays.asList(interfaces);
-            classes.add(HasInputDevices.class);
-            classes.add(JavascriptExecutor.class);
+
+
+            // TODO: the following does not work. throws java.lang.UnsupportedOperationException: null
+//            classes.add(HasInputDevices.class);
+//            classes.add(JavascriptExecutor.class);
             rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class, classes.toArray(new Class[0]));
         } catch (Exception e) {
             LOGGER.error("Could not create proxy for raw webdriver", e);

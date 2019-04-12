@@ -146,7 +146,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
     private void logSessionRequest(R finalRequest, DesiredCapabilities finalCaps) {
         StringBuffer msg = new StringBuffer();
         msg.append(logSCID()).append("Requesting new web driver session with capabilities:");
-        finalCaps.asMap().forEach((k, v) -> msg.append("\n").append(k).append("=").append(v));
+        finalCaps.asMap().forEach((k, v) -> msg.append(",").append(k).append("=").append(v));
 
         /*
         log proxy

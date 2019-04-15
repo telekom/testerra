@@ -135,6 +135,7 @@ public class ClassContext extends Context implements SynchronizableContext {
                 methodContext = new MethodContext(name, methodType, this, correctTestContext, correctSuiteContext, executionContext);
                 fillBasicContextValues(methodContext, this, name);
 
+                methodContext.testResult = testResult;
                 methodContext.iTestContext = iTestContext;
                 methodContext.iTestNgMethod = iTestNGMethod;
 
@@ -194,7 +195,7 @@ public class ClassContext extends Context implements SynchronizableContext {
     }
 
     public MethodContext safeAddSkipMethod(ITestResult testResult, IInvokedMethod invokedMethod) {
-        MethodContext methodContext = getMethodContext(testResult, null, invokedMethod);
+        MethodContext methodContext = getMethodContext(testResult, testResult.getTestContext(), invokedMethod);
         methodContext.setThrowable(null, new SkipException("Skipped"));
         methodContext.status = TestStatusController.Status.SKIPPED;
         return methodContext;

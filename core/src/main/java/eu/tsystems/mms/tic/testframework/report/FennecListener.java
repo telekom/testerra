@@ -465,8 +465,8 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
          */
         Throwable throwable = iTestResult.getThrowable();
         if (throwable != null && throwable.toString().contains(SKIP_FAILED_DEPENDENCY_MSG)) {
-            ExecutionContextController.setCurrentTestResult(iTestResult, null);
             ITestContext testContext = iTestResult.getTestContext();
+            ExecutionContextController.setCurrentTestResult(iTestResult, testContext);
             pAfterInvocation(null, iTestResult, testContext);
         }
     }

@@ -37,6 +37,7 @@ import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -106,10 +107,24 @@ public final class WebDriverManagerUtils {
             final HostInfo hostInfo) {
 
         String browserInfo = pLogUserAgent(driver);
+
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        ClassContext classContext = methodContext.classContext;
-        String context = classContext.name + "." + methodContext.name + " : " + sessionKey + " on " + hostInfo;
-        BrowserInformation.setBrowserInfoWithContext(browserInfo, context);
+        if (methodContext != null) {
+            ClassContext classContext = methodContext.classContext;
+            String context = classContext.name + "." + methodContext.name + " : " + sessionKey + " on " + hostInfo;
+            BrowserInformation.setBrowserInfoWithContext(browserInfo, context);
+        }
+        else {
+            LOGGER.warn("You started the web driver session not from inside a method, YOU SHALL NOT DO THIS ;)");
+        }
+
+        SessionContext sessionContext = ExecutionContextController.getCurrentSessionContext();
+        if (sessionContext != null) {
+            sessionContext.metaData.put("browserInfo", browserInfo);
+        }
+        else {
+            LOGGER.error("Something is wrong, I don't have a session context, but I'm in a session");
+        }
     }
 
     public static void logUserAgent(WebDriver driver) {

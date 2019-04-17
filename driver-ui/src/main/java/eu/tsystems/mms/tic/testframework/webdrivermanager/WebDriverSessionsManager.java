@@ -406,6 +406,7 @@ final class WebDriverSessionsManager {
                 methodContext.sessionContexts.add(sessionContext);
             }
             sessionContext.parentContext = methodContext;
+            ExecutionContextController.setCurrentSessionContext(sessionContext);
 
             // fire sync
             FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)

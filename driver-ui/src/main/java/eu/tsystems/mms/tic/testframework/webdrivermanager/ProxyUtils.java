@@ -24,6 +24,7 @@ class ProxyUtils {
         assign usage in current method
         (this is useful for sessions that are shared between method contexts)
          */
+        ExecutionContextController.setCurrentSessionContext(sessionContext);
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
             if (!methodContext.sessionContexts.contains(sessionContext)) {

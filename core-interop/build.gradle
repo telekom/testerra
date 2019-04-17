@@ -5,7 +5,7 @@ dependencies {
     compile testng
     compile colt
     compile reflections
-
+    compile "org.mongodb:bson:3.7.0"
 }
 
 test {

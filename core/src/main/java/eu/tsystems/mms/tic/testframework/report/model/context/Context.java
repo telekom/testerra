@@ -43,7 +43,7 @@ public abstract class Context implements SynchronizableContext {
     }
 
     public String name;
-    public final String id = "" + IDUtils.getRandomLongID();
+    public final String id = IDUtils.getB64encXID();
     public Context parentContext;
     public String swi; // system-wide identifier
     public Date startTime = new Date();

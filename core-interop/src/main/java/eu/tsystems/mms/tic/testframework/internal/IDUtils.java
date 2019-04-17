@@ -21,9 +21,7 @@ package eu.tsystems.mms.tic.testframework.internal;
 
 import cern.jet.random.Uniform;
 import cern.jet.random.engine.MersenneTwister64;
-import org.bouncycastle.util.encoders.Base64Encoder;
 import org.bson.codecs.ObjectIdGenerator;
-import sun.misc.BASE64Encoder;
 
 import java.util.Date;
 

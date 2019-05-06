@@ -387,7 +387,8 @@ public final class LayoutCheck {
         }
 
         List<Rectangle> markedRectangles = null;
-        if (!useIgnoreColor) {
+        boolean useExplicitRectangles = PropertyManager.getBooleanProperty(FennecProperties.LAYOUTCHECK_USE_AREA_COLOR, false);
+        if (!useIgnoreColor && useExplicitRectangles) {
             AnnotationReader annotationReader = new AnnotationReader();
             markedRectangles = annotationReader.readAnnotationDimensions(expectedImage);
             if (markedRectangles == null) {

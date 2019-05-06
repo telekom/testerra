@@ -247,6 +247,7 @@ public final class FennecProperties {
     public static final String LAYOUTCHECK_DISTANCE_PATH = "fennec.layoutcheck.distance.path";
     public static final String LAYOUTCHECK_ACTUAL_PATH = "fennec.layoutcheck.actual.path";
     public static final String LAYOUTCHECK_USE_IGNORE_COLOR = "fennec.layoutcheck.use.ignore.color";
+    public static final String LAYOUTCHECK_USE_AREA_COLOR = "fennec.layoutcheck.use.area.color";
     public static final String LAYOUTCHECK_PIXEL_RGB_DEVIATION_PERCENT = "fennec.layout.pixel.rgb.deviation.percent";
 
     // Properties for the layout comparator working with

@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
+import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -151,7 +152,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     private void checkForClickingJSAlternativeOrExit(ThrowablePackedResponse throwablePackedResponse, String action, Runnable runnable) {
         if (throwablePackedResponse.hasTimeoutException()) {
 
-            if (!UseJSAlternatives.class.isAssignableFrom(guiElementCore.getClass())) {
+            if (!UseJSAlternatives.class.isAssignableFrom(guiElementCore.getClass()) || !Flags.GUIELEMENT_USE_JS_ALTERNATIVES) {
                 // we cannot use clickJS()
                 throwablePackedResponse.finalizeTimer();
                 return;

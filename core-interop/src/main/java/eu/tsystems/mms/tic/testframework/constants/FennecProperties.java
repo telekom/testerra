@@ -152,6 +152,8 @@ public final class FennecProperties {
      */
     public static final String GUIELEMENT_TYPE = "fennec.guielement.type";
     public static final String GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = "fennec.guielement.default.assertcollector";
+    public static final String GUIELEMENT_USE_JS_ALTERNATIVES = "fennec.guielement.use.js.alternatives";
+
     /*
      * Package the project is located in.
      */

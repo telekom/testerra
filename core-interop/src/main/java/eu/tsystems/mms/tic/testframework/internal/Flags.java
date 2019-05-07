@@ -53,6 +53,10 @@ public final class Flags {
     public static boolean WEB_TAKE_ACTION_SCREENSHOTS = p(FennecProperties.WEB_TAKE_ACTION_SCREENSHOTS, false);
     public static boolean FAILURE_CORRIDOR_ACTIVE = p(FennecProperties.FAILURE_CORRIDOR_ACTIVE, false);
     public static boolean EXECUTION_OMIT_IN_DEVELOPMENT = p(FennecProperties.EXECUTION_OMIT_IN_DEVELOPMENT, false);
-    public static boolean GUIELEMENT_HIGHLIGHTS = p(FennecProperties.GUIELEMENT_HIGHLIGHTS_ACTIVE, true);
     public static boolean LAYOUTCHECK_ASSERT_NF = p(FennecProperties.LAYOUTCHECK_ASSERT_INFO_MODE, false);
+
+    public static boolean GUIELEMENT_HIGHLIGHTS = p(FennecProperties.GUIELEMENT_HIGHLIGHTS_ACTIVE, true);
+    public static boolean GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = p(FennecProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false);
+    public static boolean GUIELEMENT_USE_JS_ALTERNATIVES = p(FennecProperties.GUIELEMENT_USE_JS_ALTERNATIVES, true);
+
 }

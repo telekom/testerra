@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
@@ -81,8 +82,6 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
      * logger. What a surprise. Glad this JavaDoc is here.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);
-
-    private static boolean DEFAULT_ASSERT_IS_COLLECTOR = PropertyManager.getBooleanProperty(FennecProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false);
 
     private boolean forcedStandardAsserts = false;
 
@@ -194,7 +193,7 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
     }
 
     private void initDefaultAssert() {
-        if (!forcedStandardAsserts && DEFAULT_ASSERT_IS_COLLECTOR) {
+        if (!forcedStandardAsserts && Flags.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR) {
             functionalAssert = functionalAssertCollector;
         } else {
             functionalAssert = functionalStandardAssert;
@@ -949,10 +948,6 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
         GuiElementAssertDescriptionDecorator guiElementAssertDescriptionDecorator
                 = new GuiElementAssertDescriptionDecorator(errorMessage, functionalAssertCollector);
         return guiElementAssertDescriptionDecorator;
-    }
-
-    public static void setDefaultAssertCollector(boolean defaultAssertCollector) {
-        DEFAULT_ASSERT_IS_COLLECTOR = defaultAssertCollector;
     }
 
     public List<GuiElement> getList() {

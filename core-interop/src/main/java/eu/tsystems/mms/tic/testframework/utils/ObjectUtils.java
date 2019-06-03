@@ -84,7 +84,6 @@ public final class ObjectUtils {
 
         Class<?> superclass = o.getClass().getSuperclass();
         while (superclass != null) {
-            interfaces.add(superclass);
             interfaces.addAll(Arrays.asList(superclass.getInterfaces()));
             superclass = superclass.getSuperclass();
         }

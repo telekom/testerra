@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Proxy;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.HasInputDevices;
 import org.openqa.selenium.remote.CapabilityType;
@@ -112,14 +113,8 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
          * For more info, please ask @rnhb
          */
         try {
-            Class<?>[] interfaces = rawDriver.getClass().getInterfaces();
-            List<Class<?>> classes = Arrays.asList(interfaces);
-
-
-            // TODO: the following does not work. throws java.lang.UnsupportedOperationException: null
-//            classes.add(HasInputDevices.class);
-//            classes.add(JavascriptExecutor.class);
-            rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class, classes.toArray(new Class[0]));
+            Class[] interfaces = ObjectUtils.getAllInterfacesOf(rawDriver);
+            rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class, interfaces);
         } catch (Exception e) {
             LOGGER.error("Could not create proxy for raw webdriver", e);
         }

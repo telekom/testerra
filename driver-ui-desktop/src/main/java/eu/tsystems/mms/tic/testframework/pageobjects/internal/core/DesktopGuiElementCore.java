@@ -146,7 +146,9 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
             }
 
             // proxy the web element for logging
-            webElement = ObjectUtils.simpleProxy(WebElement.class, new WebElementProxy(webDriver, webElement), webElement.getClass().getInterfaces());
+            WebElementProxy webElementProxy = new WebElementProxy(webDriver, webElement);
+            Class[] interfaces = ObjectUtils.getAllInterfacesOf(webElement);
+            webElement = ObjectUtils.simpleProxy(WebElement.class, webElementProxy, interfaces);
 
             // set webelement
             guiElementData.webElement = webElement;

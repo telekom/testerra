@@ -22,6 +22,10 @@ package eu.tsystems.mms.tic.testframework.utils;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -67,12 +71,27 @@ public final class ObjectUtils {
     }
 
     public static abstract class PassThroughProxy<T> implements InvocationHandler {
-
         protected final T target;
 
         public PassThroughProxy(T target) {
             this.target = target;
         }
+    }
 
+    public static Class[] getAllInterfacesOf(Object o) {
+        List<Class> interfaces = new ArrayList<>();
+        interfaces.addAll(Arrays.asList(o.getClass().getInterfaces()));
+
+        Class<?> superclass = o.getClass().getSuperclass();
+        while (superclass != null) {
+            interfaces.add(superclass);
+            interfaces.addAll(Arrays.asList(superclass.getInterfaces()));
+            superclass = superclass.getSuperclass();
+        }
+
+        // remove duplicates
+        interfaces = new ArrayList<>(new HashSet<>(interfaces));
+
+        return interfaces.toArray(new Class[0]);
     }
 }

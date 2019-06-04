@@ -17,7 +17,16 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.report;
+package eu.tsystems.mms.tic.testframework.imgproc.templatematching.matchers;
 
-public class TestReportAppender extends BaseLoggingActor {
+import org.opencv.core.CvException;
+
+public class CheckedCvException extends Exception {
+    public CheckedCvException(CvException cve) {
+        super(cve);
+    }
+
+    public CheckedCvException(String message, Exception e) {
+        super(message, e);
+    }
 }

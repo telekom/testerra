@@ -25,7 +25,8 @@ public class ReportingAllStatesTests extends AbstractTest {
     enum How {
         FAST,
         LATE,
-        MINOR
+        MINOR,
+        RETRY
     }
 
     private void failingStep(How how) {
@@ -39,6 +40,8 @@ public class ReportingAllStatesTests extends AbstractTest {
             case MINOR:
                 NonFunctionalAssert.assertEquals(2, 1, "minor fail");
                 break;
+            case RETRY:
+                throw new WebDriverException("Error communicating with the remote browser. It may have died.");
         }
     }
 
@@ -52,12 +55,14 @@ public class ReportingAllStatesTests extends AbstractTest {
         TestUtils.sleep(1000);
     }
 
-    @DataProvider(name = "dp")
+    @DataProvider(name = "dp", parallel = true)
     public Object[][] dp() {
 
-        Object[][] objects = new Object[2][1];
-        objects[0][0] = "1";
-        objects[1][0] = "2";
+        int size = 20;
+        Object[][] objects = new Object[size][1];
+        for (int i = 0; i < size; i++) {
+            objects[i][0] = "" + (i+1);
+        }
         return objects;
     }
 
@@ -85,6 +90,26 @@ public class ReportingAllStatesTests extends AbstractTest {
     public void testFailed() throws Exception {
 
         failingStep(How.FAST);
+    }
+
+    static int repairRunPassed = 0;
+    static int repairRunMinor = 0;
+
+    @Test
+    public void testRepairPassed() throws Exception {
+        repairRunPassed++;
+        if (repairRunPassed == 1) {
+            failingStep(How.RETRY);
+        }
+    }
+
+    @Test
+    public void testRepairMinor() throws Exception {
+        repairRunMinor++;
+        if (repairRunMinor == 1) {
+            failingStep(How.RETRY);
+        }
+        failingStep(How.MINOR);
     }
 
     @Test(dependsOnMethods = "testFailed")
@@ -150,7 +175,7 @@ public class ReportingAllStatesTests extends AbstractTest {
     }
 
     //
-    @NoStatusMethod
+    @InfoMethod
     @Test
     public void testSkippedNoStatus() throws Exception {
 
@@ -232,7 +257,7 @@ public class ReportingAllStatesTests extends AbstractTest {
     public void testRerunTest() {
         TestUtils.sleep(RandomUtils.generateRandomInt(20));
 
-        throw new WebDriverException("Error communicating with the remote browser. It may have died.");
+        failingStep(How.RETRY);
     }
 
     @Test
@@ -240,7 +265,7 @@ public class ReportingAllStatesTests extends AbstractTest {
 
         TestUtils.sleep(RandomUtils.generateRandomInt(20));
 
-        throw new WebDriverException("Error communicating with the remote browser. It may have died.");
+        failingStep(How.RETRY);
     }
 
     @New
@@ -317,5 +342,11 @@ public class ReportingAllStatesTests extends AbstractTest {
 
     @BeforeMethod
     public void beforeMethod(Method method) {
+    }
+
+    @InfoMethod
+    @Test
+    public void testInfo() {
+
     }
 }

@@ -40,7 +40,6 @@ public class ProxyServerTest extends AbstractTest {
 
     @BeforeSuite
     public void setupFFProfile() {
-        WebDriverManager.config().browser = Browsers.firefox;
         WebDriverManager.config().webDriverMode = WebDriverMode.remote;
 
         DesiredCapabilities desiredCapabilities = WebDriverManagerUtils.generateNewDesiredCapabilities();

@@ -36,6 +36,8 @@ import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
 import java.lang.annotation.Annotation;
@@ -51,15 +53,18 @@ import java.util.List;
 public class MethodContext extends ErrorContext implements SynchronizableContext {
 
     public ITestResult testResult;
+    public ITestContext iTestContext;
+    public ITestNGMethod iTestNgMethod;
+
     public TestStatusController.Status status = TestStatusController.Status.NO_RUN;
     public final MethodType methodType;
     public List<Object> parameters = new LinkedList<>();
     public List<Annotation> methodTags = new LinkedList<>();
     public int retryNumber = 0;
     public int methodRunIndex = -1;
-    public String threadName;
+    public String threadName = "unrelated";
     public TestStep failedStep;
-    public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.High;
+    public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.HIGH;
 
     public ClassContext classContext;
     public TestContext testContext;
@@ -71,6 +76,8 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     public List<AssertionInfo> nonFunctionalInfos = new LinkedList<>();
     public List<AssertionInfo> collectedAssertions = new LinkedList<>();
     public List<String> infos = new LinkedList<>();
+
+    public List<SessionContext> sessionContexts = new LinkedList<>();
 
     /**
      * Flag for putting all information into the report. Defaults to true. You can set this to false, may be for passed
@@ -202,10 +209,6 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
             case FAILED_RETRIED:
                 return true;
 
-            case NO_RUN:
-            case PASSED:
-            case MINOR:
-            case SKIPPED:
             default:
                 return false;
         }
@@ -213,18 +216,14 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
 
     public boolean isPassed() {
         switch (status) {
-            case FAILED_EXPECTED:
-            case FAILED:
-            case FAILED_MINOR:
-            case FAILED_RETRIED:
-            case SKIPPED:
-            case NO_RUN:
-                return false;
-
             case PASSED:
+            case PASSED_RETRY:
             case MINOR:
-            default:
+            case MINOR_RETRY:
                 return true;
+
+            default:
+                return false;
         }
     }
 
@@ -241,7 +240,8 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     }
 
     public void setThreadName() {
-        this.threadName = Thread.currentThread().getName();
+        final Thread currentThread = Thread.currentThread();
+        this.threadName = currentThread.getName() + "#" + currentThread.getId();
     }
 
     public boolean isConfigMethod() {
@@ -261,6 +261,10 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     }
 
     public List<MethodContext> getRelatedMethodContexts() {
+        return getMethodContexts(relatedMethodContexts);
+    }
+
+    private List<MethodContext> getMethodContexts(List<MethodContext> relatedMethodContexts) {
         if (relatedMethodContexts == null) {
             return null;
         }
@@ -270,16 +274,11 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     }
 
     public List<MethodContext> getDependsOnMethodContexts() {
-        if (dependsOnMethodContexts == null) {
-            return null;
-        }
-        List<MethodContext> copy = new LinkedList<>(dependsOnMethodContexts);
-        Collections.reverse(copy);
-        return copy;
+        return getMethodContexts(dependsOnMethodContexts);
     }
 
     public boolean hasBeenRetried() {
-        return status == TestStatusController.Status.FAILED_RETRIED || status == TestStatusController.Status.PASSED_RETRY;
+        return retryNumber > 0;
     }
 
     @Override
@@ -310,6 +309,7 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
             case PASSED:
             case PASSED_RETRY:
             case MINOR:
+            case MINOR_RETRY:
             case FAILED:
             case FAILED_MINOR:
             case SKIPPED:

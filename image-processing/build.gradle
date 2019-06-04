@@ -1,0 +1,9 @@
+if (hasProperty("free")) {
+    doNotPublish(this)
+}
+
+dependencies {
+    compile opencv
+    compile driver_ui
+    compile 'org.javatuples:javatuples:1.2'
+}

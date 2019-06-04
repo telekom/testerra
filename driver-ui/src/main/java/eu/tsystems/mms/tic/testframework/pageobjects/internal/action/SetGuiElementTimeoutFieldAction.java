@@ -30,10 +30,14 @@ public class SetGuiElementTimeoutFieldAction extends FieldAction {
                 logger.error("Failed to set element timeout to " + field + ". Make sure the field was made accessible in the" +
                         " AbstractPage class before calling this method.");
             }
-            int elementTimeoutSeconds = declaringPage.getElementTimeoutInSeconds();
-            if (guiElement != null && guiElement.getTimeoutInSeconds() != elementTimeoutSeconds) {
-                logger.info("Setting non-default timeout for " + field + ": " + elementTimeoutSeconds + "s");
-                guiElement.setTimeoutInSeconds(elementTimeoutSeconds);
+            int timeoutFromPage = declaringPage.getElementTimeoutInSeconds();
+            if (guiElement != null) {
+                int alreadySetTimeout = guiElement.getTimeoutInSeconds();
+                if (alreadySetTimeout != timeoutFromPage) {
+                    // override timeout setting only if it is set to default
+                    logger.info("Setting page specific timeout for " + declaringPage.getClass().getSimpleName() + "/" + field.getName() + ": " + timeoutFromPage + "s");
+                    guiElement.setTimeoutInSeconds(timeoutFromPage);
+                }
             }
         }
     }

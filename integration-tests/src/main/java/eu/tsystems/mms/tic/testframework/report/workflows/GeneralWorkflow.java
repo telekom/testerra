@@ -34,7 +34,6 @@ public class GeneralWorkflow {
      */
     public static DashboardPage doOpenBrowserAndReportDashboardPage(WebDriver webDriver, String reportDirectory) {
         LOGGER.debug("Open the dashboard page for the report directory " + reportDirectory);
-        webDriver.manage().window().maximize();
         webDriver.navigate().to(getURIForReport(reportDirectory).toString());
         return PageFactory.create(DashboardPage.class, webDriver);
     }

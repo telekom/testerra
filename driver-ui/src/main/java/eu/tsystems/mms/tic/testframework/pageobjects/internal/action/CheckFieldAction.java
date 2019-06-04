@@ -23,6 +23,8 @@ import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
 import java.lang.reflect.Modifier;
 
@@ -108,7 +110,15 @@ public abstract class CheckFieldAction extends FieldAction {
         } else {
             logger.debug("Looking for GuiElement on " + declaringClass.getSimpleName() + ": " + fieldName
                     + " with locator " + checkableInstance.toString());
-            checkField(check, fast);
+            try {
+                checkField(check, fast);
+            } catch (Throwable t) {
+                MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+                if (methodContext != null && t.getMessage() != null) {
+                    methodContext.setThrowable(t.getMessage(), t);
+                }
+                throw t;
+            }
         }
     }
 

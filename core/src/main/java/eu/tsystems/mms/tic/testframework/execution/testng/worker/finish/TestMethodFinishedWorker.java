@@ -31,17 +31,49 @@ import eu.tsystems.mms.tic.testframework.internal.Counters;
 public class TestMethodFinishedWorker extends MethodWorker {
     @Override
     public void run() {
-        if (isTest()) {
-            /*
-             * Log and introduce result
-             */
-            String testClassName = testMethod.getTestClass().getName();
-            if (isSuccess()) {
-                LOGGER.info("Test successful: " + testClassName + "." + methodName);
-            } else if (isFailed()) {
-                LOGGER.info("Test failed: " + testClassName + "." + methodName);
-            }
+        String msg = "";
 
+        if (isTest()) {
+            msg += "Test ";
+        }
+        else {
+            msg += "Config method ";
+        }
+
+        final String testClassName = testMethod.getTestClass().getName();
+        msg += testClassName + "." + methodName + " ";
+
+        Throwable throwable = null;
+        if (isFailed()) {
+            msg += "failed";
+            throwable = testResult.getThrowable();
+            if (throwable != null) {
+                msg += " with: ";
+            }
+        }
+        else if (isSuccess()) {
+            msg += "passed";
+        }
+        else if (isSkipped()) {
+            msg += "skipped";
+        }
+
+        /*
+         * Log and introduce result
+         */
+
+        if (isSuccess()) {
+            LOGGER.info(msg);
+        } else if (isFailed()) {
+            if (throwable != null) {
+                LOGGER.error(msg, throwable);
+            }
+            else {
+                LOGGER.error(msg);
+            }
+        }
+
+        if (isTest()) {
             // clean thread local event user data
             FennecEventUserDataManager.cleanupThreadLocalData();
 

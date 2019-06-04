@@ -42,6 +42,10 @@ public class SuiteContext extends Context implements SynchronizableContext {
         return getContext(TestContext.class, testContexts, testName, true, () -> new TestContext(this, executionContext));
     }
 
+    public TestContext getTestContext(final ITestContext iTestContext) {
+        return this.getTestContext(null, iTestContext);
+    }
+
     public List<TestContext> copyOfTestContexts() {
         synchronized (testContexts) {
             return new LinkedList<>(testContexts);

@@ -32,14 +32,19 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Proxy;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -67,7 +72,7 @@ public final class WebDriverUtils {
 
     /**
      * Does what the name says.
-     * 
+     *
      * @param windowTitle Title of the window to switch to.
      * @param withoutWait True for don't wait and don't get a second chance.
      * @return true if switching was successful.
@@ -78,29 +83,29 @@ public final class WebDriverUtils {
 
     /**
      * Does what the name says.
-     * 
-     * @param windowTitle Title of the window to switch to.
-     * @param fast True for don't wait and don't get a second chance.
-     * @param driver Webdriver object or null (then the default session will be used)
+     *
+     * @param windowTitle          Title of the window to switch to.
+     * @param fast                 True for don't wait and don't get a second chance.
+     * @param driver               Webdriver object or null (then the default session will be used)
      * @param excludeWindowHandles .
      * @return true if switching was successful.
      */
     public static boolean findWindowAndSwitchTo(final String windowTitle, final boolean fast, WebDriver driver,
-            final String... excludeWindowHandles) {
+                                                final String... excludeWindowHandles) {
         return findWindowAndSwitchTo(windowTitle, null, fast, driver, excludeWindowHandles);
     }
 
     /**
      * Does what the name says.
      *
-     * @param windowTitle Title of the window to switch to.
-     * @param fast True for don't wait and don't get a second chance.
-     * @param driver Webdriver object or null (then the default session will be used)
+     * @param windowTitle          Title of the window to switch to.
+     * @param fast                 True for don't wait and don't get a second chance.
+     * @param driver               Webdriver object or null (then the default session will be used)
      * @param excludeWindowHandles .
      * @return true if switching was successful.
      */
     public static boolean findWindowAndSwitchTo(final String windowTitle, final String urlContains, final boolean fast, WebDriver driver,
-            final String... excludeWindowHandles) {
+                                                final String... excludeWindowHandles) {
         if (driver == null) {
             driver = WebDriverManager.getWebDriver();
         }
@@ -110,14 +115,13 @@ public final class WebDriverUtils {
         Timer timer;
         if (fast) {
             timer = new Timer(500, 1000);
-        }
-        else {
+        } else {
             timer = new Timer();
         }
 
         final String expectedCriteriaMsg =
                 "\ntitle: " + windowTitle +
-                "\nurl  : " + urlContains;
+                        "\nurl  : " + urlContains;
 
         final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
@@ -179,7 +183,7 @@ public final class WebDriverUtils {
 
     /**
      * Generate DesiredCapabilities.
-     * 
+     *
      * @return DesiredCapabilities.
      */
     public static DesiredCapabilities generateNewDesiredCapabilities() {
@@ -233,7 +237,7 @@ public final class WebDriverUtils {
      * Response codes other than 200 generate nonfunctional errors.
      *
      * @param description A desciption for the current linkChecker run.
-     * @param driver the current driver.
+     * @param driver      the current driver.
      */
     public static void linkChecker(final String description, final WebDriver driver) {
         LOGGER.info("LinkChecker: " + description);
@@ -247,19 +251,16 @@ public final class WebDriverUtils {
 
             if (!StringUtils.isAnyStringEmpty(id)) {
                 linkname = "id: " + id;
-            }
-            else if (!StringUtils.isAnyStringEmpty(name)) {
+            } else if (!StringUtils.isAnyStringEmpty(name)) {
                 linkname = "name: " + name;
-            }
-            else if (!StringUtils.isAnyStringEmpty(alt)) {
+            } else if (!StringUtils.isAnyStringEmpty(alt)) {
                 linkname = "alt: " + alt;
             }
 
             final Object o = JSUtils.executeScript(driver, "return arguments[0].href;", link);
             if (o != null && o instanceof String) {
                 hrefs.put(linkname, (String) o);
-            }
-            else {
+            } else {
                 hrefs.put(linkname, null);
             }
         }
@@ -308,4 +309,40 @@ public final class WebDriverUtils {
             }
         }
     }
+
+    public static WebDriver getLowestWebDriver(WebDriver driver) {
+        if (driver instanceof EventFiringWebDriver) {
+            EventFiringWebDriver efWd = (EventFiringWebDriver) driver;
+            driver = efWd.getWrappedDriver();
+        }
+
+        if (driver instanceof Proxy) {
+            Proxy proxy = (Proxy) driver;
+
+            try {
+                Field h = Proxy.class.getDeclaredField("h");
+                h.setAccessible(true);
+                Object handler = h.get(proxy);
+                if (handler instanceof WebDriverProxy) {
+                    WebDriverProxy webDriverProxy = (WebDriverProxy) handler;
+                    driver = webDriverProxy.getWrappedWebDriver();
+                }
+            } catch (Exception e) {
+                LOGGER.error("Could not get proxy instance out of proxied webDriver");
+            }
+        }
+
+        return driver;
+    }
+
+    public static String getSessionId(WebDriver driver) {
+        driver = getLowestWebDriver(driver);
+        if (driver instanceof RemoteWebDriver) {
+            RemoteWebDriver remoteWebDriver = (RemoteWebDriver) driver;
+            return remoteWebDriver.getSessionId().toString();
+        }
+
+        return null;
+    }
+
 }

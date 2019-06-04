@@ -23,6 +23,8 @@ import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +37,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by pele on 24.08.2015.
  */
 public final class Timings {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Timings.class);
 
     public static final long LARGE_LIMIT = 2000;
 
@@ -49,18 +53,19 @@ public final class Timings {
     }
 
     private static File createGraph(String title, String filename, Map<Integer, Long> map) {
-        XYSeriesCollection collection = new XYSeriesCollection();
-        XYSeries series = new XYSeries("find()s");
-        for (Integer integer : map.keySet()) {
-            series.add(integer, map.get(integer));
-        }
-        collection.addSeries(series);
-        JFreeChart chart = GraphGenerator.createLineChart(collection, title, "#", "ms", GraphGenerator.DataType.NUMBER);
         try {
+            XYSeriesCollection collection = new XYSeriesCollection();
+            XYSeries series = new XYSeries("find()s");
+            for (Integer integer : map.keySet()) {
+                series.add(integer, map.get(integer));
+            }
+            collection.addSeries(series);
+            JFreeChart chart = GraphGenerator.createLineChart(collection, title, "#", "ms", GraphGenerator.DataType.NUMBER);
             File file = GraphGenerator.saveGraphAsJPEG(chart, "graph/" + filename + ".jpg", 800, 400);
             return file;
-        } catch (IOException e) {
-            throw new FennecSystemException("Could not save graph", e);
+        } catch (Exception e) {
+            LOGGER.error("Could not save graph", e);
+            return null;
         }
     }
 

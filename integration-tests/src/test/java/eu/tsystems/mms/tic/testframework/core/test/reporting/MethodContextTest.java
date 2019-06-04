@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.core.test.reporting;
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.StackTrace;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.testng.annotations.Test;
 
@@ -48,7 +49,7 @@ public class MethodContextTest extends AbstractTest {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.setThrowable(null, getStackedThrowable());
 
-        List<String> stackTrace = methodContext.getStackTrace().stackTrace;
+        StackTrace stackTrace = methodContext.getStackTrace();
 
         String errorMessage = methodContext.getReadableErrorMessage();
         AssertCollector.assertTrue(errorMessage.contains(level0String), "error message contains " + level0String);
@@ -58,8 +59,10 @@ public class MethodContextTest extends AbstractTest {
                 level2.toString(),
                 level3.toString(),
         };
+
+        String stackTraceString = stackTrace.toString();
         for (String s : toCheck) {
-            AssertCollector.assertTrue(stackTrace.contains(s), "stack trace contains " + s);
+            AssertCollector.assertTrue(stackTraceString.contains(s), "stack trace contains " + s);
         }
     }
 }

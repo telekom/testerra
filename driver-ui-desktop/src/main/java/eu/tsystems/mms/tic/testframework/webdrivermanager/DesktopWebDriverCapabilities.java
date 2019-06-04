@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -33,12 +34,14 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Created by pele on 08.01.2015.
  */
-final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
+public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 
     private static void safelyAddCapsValue(DesiredCapabilities caps, String key, Object value) {
         if (value == null) {
@@ -103,16 +106,16 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 safelyAddCapsValue(baseCapabilities, key, value);
             }
         }
-
     }
 
-    static DesiredCapabilities createCapabilities(final WebDriverManagerConfig config, DesktopWebDriverRequest desktopWebDriverRequest) {
+    static DesiredCapabilities createCapabilities(final WebDriverManagerConfig config, DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
         String browser = desktopWebDriverRequest.browser;
         if (browser == null) {
             throw new FennecRuntimeException(
                     "Browser is not set correctly");
         }
         final DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+        desiredCapabilities.merge(preSetCaps);
 
         switch (browser) {
             case Browsers.htmlunit:
@@ -154,6 +157,7 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 desiredCapabilities.setBrowserName(BrowserType.CHROME);
                 {
                     ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--no-sandbox");
                     desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                 }
                 break;
@@ -170,35 +174,18 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 throw new FennecSystemException(ErrorMessages.browserNotSupportedHere(browser));
         }
 
+        // set browser version into capabilities
+        if (!StringUtils.isStringEmpty(desktopWebDriverRequest.browserVersion)) {
+            WebDriverManagerUtils.addBrowserVersionToCapabilities(desiredCapabilities, desktopWebDriverRequest.browserVersion);
+        }
+
         /*
-        set browser version
+        add endpoint bases caps
          */
-        // load global setting
-        String version = null;
-
-        // load explicit, browser specific version setting, if present
-        final String explicitVersion = PropertyManager.getProperty(browser + ".version", null);
-        if (!StringUtils.isStringEmpty(explicitVersion)) {
-            version = explicitVersion;
-        }
-
-        // overload with global browser.version value, if present
-        if (!StringUtils.isStringEmpty(config.browserVersion)) {
-            version = config.browserVersion;
-        }
-
-        // overload with explicit session request setting, if present
-        if (desktopWebDriverRequest.browserVersion != null) {
-            version = desktopWebDriverRequest.browserVersion;
-        }
-
-        // set into capabilities
-        if (!StringUtils.isStringEmpty(version)) {
-            WebDriverManagerUtils.addBrowserVersionToCapabilities(desiredCapabilities, version);
-        }
+        addEndPointCapabilities(desktopWebDriverRequest);
 
         /*
-         * add own desired capabilities
+        add own desired capabilities
          */
         addContextCapabilities(desiredCapabilities, desktopWebDriverRequest);
 
@@ -215,5 +202,22 @@ final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         }
 
         return desiredCapabilities;
+    }
+
+    private static void addEndPointCapabilities(DesktopWebDriverRequest desktopWebDriverRequest) {
+        for (Pattern pattern : ENDPOINT_CAPABILITIES.keySet()) {
+            if (pattern.matcher(desktopWebDriverRequest.seleniumServerHost).find()) {
+                Capabilities capabilities = ENDPOINT_CAPABILITIES.get(pattern);
+                Map<String, ?> m = capabilities.asMap();
+                desktopWebDriverRequest.sessionCapabilities.putAll(m);
+                LOGGER.info("Applying EndPoint Capabilities: " + m);
+            }
+        }
+    }
+
+    private static final Map<Pattern, Capabilities> ENDPOINT_CAPABILITIES = new LinkedHashMap<>();
+
+    public static void registerEndPointCapabilities(Pattern endPointSelector, Capabilities capabilities) {
+        ENDPOINT_CAPABILITIES.put(endPointSelector, capabilities);
     }
 }

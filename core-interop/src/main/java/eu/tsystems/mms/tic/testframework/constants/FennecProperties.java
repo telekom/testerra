@@ -44,6 +44,11 @@ public final class FennecProperties {
      * Property to set the browser used by Selenium/ Webdriver.
      */
     public static final String BROWSER = "fennec.browser";
+    public static final String BROWSER_VERSION = "fennec.browser.version";
+
+    // BROWSER_SETTING syntax: browser:version
+    // BROWSER_SETTING overrides BROWSER and BROWSER_VERSION
+    public static final String BROWSER_SETTING = "fennec.browser.setting";
 
     /**
      * Property to set the host of the remote selenium server.
@@ -147,6 +152,8 @@ public final class FennecProperties {
      */
     public static final String GUIELEMENT_TYPE = "fennec.guielement.type";
     public static final String GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = "fennec.guielement.default.assertcollector";
+    public static final String GUIELEMENT_USE_JS_ALTERNATIVES = "fennec.guielement.use.js.alternatives";
+
     /*
      * Package the project is located in.
      */
@@ -171,8 +178,6 @@ public final class FennecProperties {
     public static final String SCREENSHOT_ON_PAGELOAD = "fennec.screenshot.on.pageload";
 
     public static final String DB_TIMEOUT = "fennec.db.timeout";
-
-    public static final String BROWSER_VERSION = "fennec.browser.version";
 
     public static final String MONITOR_MEMORY = "fennec.monitor.memory";
 
@@ -206,7 +211,7 @@ public final class FennecProperties {
     public static final String WATCHDOG_TIMEOUT_SECONDS = "fennec.watchdog.timeout.seconds";
 
     /*
-    Fehlerkorridor
+    failure corridor
      */
     public static final String FAILURE_CORRIDOR_ACTIVE = "fennec.failure.corridor.active";
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS = "fennec.failure.corridor.allowed.failed.tests";
@@ -222,4 +227,66 @@ public final class FennecProperties {
     public static final String EXECUTION_OMIT_IN_DEVELOPMENT = "fennec.execution.omit.indevelopment";
 
     public static final String GUIELEMENT_HIGHLIGHTS_ACTIVE = "fennec.guielement.highlights.active";
+    
+    /*
+    layout stuff
+     */
+
+    /*
+     * The mode for the screenreferencer. Values are pixel (default) or annotated.
+     */
+    public static final String LAYOUTCHECK_MODE = "fennec.layoutcheck.mode";
+    // if true, will use non-functional asserts
+    public static final String LAYOUTCHECK_ASSERT_INFO_MODE = "fennec.layoutcheck.assert.info.mode";
+
+    public static final String LAYOUTCHECK_TAKEREFERENCE = "fennec.layoutcheck.takereference";
+    public static final String LAYOUTCHECK_REFERENCE_NAMETEMPLATE = "fennec.layoutcheck.reference.nametemplate";
+    public static final String LAYOUTCHECK_ANNOTATED_NAMETEMPLATE = "fennec.layoutcheck.annotated.nametemplate";
+    public static final String LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE = "fennec.layoutcheck.annotationdata.nametemplate";
+    public static final String LAYOUTCHECK_ACTUAL_NAMETEMPLATE = "fennec.layoutcheck.actual.nametemplate";
+    public static final String LAYOUTCHECK_DISTANCE_NAMETEMPLATE = "fennec.layoutcheck.distance.nametemplate";
+    public static final String LAYOUTCHECK_REFERENCE_PATH = "fennec.layoutcheck.reference.path";
+    public static final String LAYOUTCHECK_DISTANCE_PATH = "fennec.layoutcheck.distance.path";
+    public static final String LAYOUTCHECK_ACTUAL_PATH = "fennec.layoutcheck.actual.path";
+    public static final String LAYOUTCHECK_USE_IGNORE_COLOR = "fennec.layoutcheck.use.ignore.color";
+    public static final String LAYOUTCHECK_USE_AREA_COLOR = "fennec.layoutcheck.use.area.color";
+    public static final String LAYOUTCHECK_PIXEL_RGB_DEVIATION_PERCENT = "fennec.layout.pixel.rgb.deviation.percent";
+
+    // Properties for the layout comparator working with
+    public static final String LAYOUTCHECK_MATCH_THRESHOLD = "fennec.layoutcheck.match.threshold";
+    public static final String LAYOUTCHECK_DISPLACEMENT_THRESHOLD = "fennec.layoutcheck.displacement.threshold";
+    public static final String LAYOUTCHECK_INTRA_GROUPING_THRESHOLD = "fennec.layoutcheck.intra.grouping.threshold";
+    public static final String LAYOUTCHECK_MINIMUM_MARKED_PIXELS = "fennec.layoutcheck.minimum.marked.pixels";
+    public static final String LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO = "fennec.layoutcheck.maximum.marked.pixels.ratio";
+    public static final String LAYOUTCHECK_MATCHING_ALGORITHM = "fennec.layoutcheck.matching.algorithm";
+    /**
+     * minimalDistanceBetweenMatches
+     */
+    public static final String LAYOUTCHECK_INTERNAL_PARAMETER_1 = "fennec.layoutcheck.internal.parameter.1";
+    /**
+     * minimalSizeDifferenceOfSubImages
+     */
+    public static final String LAYOUTCHECK_INTERNAL_PARAMETER_2 = "fennec.layoutcheck.internal.parameter.2";
+    /**
+     * minimumSimilarMovementErrorsForDisplacementCorrection
+     */
+    public static final String LAYOUTCHECK_INTERNAL_PARAMETER_3 = "fennec.layoutcheck.internal.parameter.3";
+    /**
+     * distanceBetweenMultipleMatchesToProduceWarning
+     */
+    public static final String LAYOUTCHECK_INTERNAL_PARAMETER_4 = "fennec.layoutcheck.internal.parameter.4";
+    public static final String LAYOUTCHECK_IGNORE_AMBIGUOUS_MOVEMENT = "fennec.layoutcheck.ignore.ambiguous.movement";
+    public static final String LAYOUTCHECK_IGNORE_MOVEMENT = "fennec.layoutcheck.ignore.movement";
+    public static final String LAYOUTCHECK_IGNORE_GROUP_MOVEMENT = "fennec.layoutcheck.ignore.group.movement";
+    public static final String LAYOUTCHECK_IGNORE_MISSING_ELEMENTS = "fennec.layoutcheck.ignore.missing.elements";
+    public static final String LAYOUTCHECK_IGNORE_AMBIGUOUS_MATCH = "fennec.layoutcheck.ignore.ambiguous.match";
+
+    /**
+     * If below 1, the value is regarded as percent threshold for erroneous pixels / all edge and text pixel. If 1 or
+     * greater, it is regarded as absolute error pixel count.
+     */
+    public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_ERROR_THRESHOLD = "fennec.layoutcheck.text.error.detector.error.threshold";
+    public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH = "fennec.layoutcheck.text.error.detector.minimal.line.length";
+    public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGESTRENGTH = "fennec.layoutcheck.text.error.detector.minimal.edge.strength";
+    
 }

@@ -34,9 +34,11 @@ import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessio
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
+import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -487,4 +489,11 @@ public final class WebDriverManager {
         return WebDriverSessionsManager.DRIVER_REQUEST_MAP.get(driver);
     }
 
+    public static SessionContext getSessionContextFromWebDriver(WebDriver driver) {
+        String sessionId = WebDriverUtils.getSessionId(driver);
+        if (sessionId != null) {
+            return WebDriverSessionsManager.getSessionContext(sessionId);
+        }
+        return null;
+    }
 }

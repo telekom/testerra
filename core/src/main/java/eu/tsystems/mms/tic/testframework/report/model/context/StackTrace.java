@@ -20,25 +20,41 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StackTrace {
 
-    public final String throwableFirstLine;
-    public final List<String> stackTrace;
-    public final String additionalErrorMessage;
+    public static class Cause {
 
-    public StackTrace(String throwableFirstLine, List<String> stackTrace, String additionalErrorMessage) {
-        this.throwableFirstLine = throwableFirstLine;
-        this.stackTrace = stackTrace;
-        this.additionalErrorMessage = additionalErrorMessage;
+        public String className;
+        public String message;
+        public List<String> stackTraceElements;
+        public Cause cause;
+
+        @Override
+        public String toString() {
+            String s = className + ": " + message + "\n" + stackTraceElements.stream().collect(Collectors.joining("\n"));
+            if (cause != null) {
+                s += "\ncaused by: " + cause;
+            }
+            return s;
+        }
     }
+
+    public Cause stackTrace;
+    public String additionalErrorMessage;
 
     @Override
     public String toString() {
-        String out = throwableFirstLine + "\n";
-        for (String s : stackTrace) {
-            out += s + "\n";
+        String msg = "";
+        if (additionalErrorMessage != null) {
+            msg += "(" + additionalErrorMessage + ")\n";
         }
-        return out;
+        msg += stackTrace;
+        return msg;
+    }
+
+    public String getFirstLine() {
+        return stackTrace.className + ": " + stackTrace.message;
     }
 }

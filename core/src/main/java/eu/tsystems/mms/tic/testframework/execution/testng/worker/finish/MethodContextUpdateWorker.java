@@ -19,10 +19,12 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
+import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
 import eu.tsystems.mms.tic.testframework.events.FennecEvent;
 import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
 import eu.tsystems.mms.tic.testframework.events.FennecEventService;
 import eu.tsystems.mms.tic.testframework.events.FennecEventType;
+import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -38,63 +40,80 @@ public class MethodContextUpdateWorker extends MethodWorker {
         // !!! do nothing when state is RETRY (already set from RetryAnalyzer)
         if (methodContext.status != TestStatusController.Status.FAILED_RETRIED) {
 
-            /*
-             * method container status and steps
-             */
-            if (isFailed()) {
+            // in case of info method
+            if (method.isAnnotationPresent(InfoMethod.class) && (isSkipped() || isSuccess())) {
+                TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.INFO, method);
+            } else {
 
                 /*
-                 * set throwable
+                 * method container status and steps
                  */
-                Throwable throwable = testResult.getThrowable();
-                methodContext.setThrowable(null, throwable);
+                if (isFailed()) {
 
-                /*
-                 * set status
-                 */
-                if (isTest()) {
-                    Object expectedFailed = testResult.getAttribute(SharedTestResultAttributes.expectedFailed);
-                    if (expectedFailed == Boolean.TRUE) {
-                        // expected failed
-                        TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_EXPECTED, method);
-                    } else {
-                        // regular failed
-                        TestStatusController.Status status = TestStatusController.Status.FAILED;
-                        if (methodContext.nonFunctionalInfos.size() > 0) {
-                            status = TestStatusController.Status.FAILED_MINOR;
+                    /*
+                     * set throwable
+                     */
+                    Throwable throwable = testResult.getThrowable();
+                    methodContext.setThrowable(null, throwable);
+
+                    /*
+                     * set status
+                     */
+                    if (isTest()) {
+                        Object expectedFailed = testResult.getAttribute(SharedTestResultAttributes.expectedFailed);
+                        if (expectedFailed == Boolean.TRUE) {
+                            // expected failed
+                            TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED_EXPECTED, method);
+                        } else {
+                            // regular failed
+                            TestStatusController.Status status = TestStatusController.Status.FAILED;
+                            if (methodContext.nonFunctionalInfos.size() > 0) {
+                                status = TestStatusController.Status.FAILED_MINOR;
+                            }
+
+                            TestStatusController.setMethodStatus(methodContext, status, method);
                         }
-
-                        TestStatusController.setMethodStatus(methodContext, status, method);
+                    } else {
+                        TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED, method);
                     }
-                } else {
-                    TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.FAILED, method);
-                }
 
-                /*
-                 * Enhance step infos
-                 */
-                TestStep currentTestStep = methodContext.steps().getCurrentTestStep();
-                methodContext.failedStep = currentTestStep;
+                    /*
+                     * Enhance step infos
+                     */
+                    TestStep currentTestStep = methodContext.steps().getCurrentTestStep();
+                    methodContext.failedStep = currentTestStep;
 
-                String msg = "";
-                String readableMessage = methodContext.getReadableErrorMessage();
-                if (!StringUtils.isStringEmpty(readableMessage)) {
-                    msg += readableMessage;
-                }
+                    String msg = "";
+                    String readableMessage = methodContext.getReadableErrorMessage();
+                    if (!StringUtils.isStringEmpty(readableMessage)) {
+                        msg += readableMessage;
+                    }
 
-                String additionalErrorMessage = methodContext.getAdditionalErrorMessage();
-                if (!StringUtils.isStringEmpty(additionalErrorMessage)) {
-                    msg += additionalErrorMessage;
+                    String additionalErrorMessage = methodContext.getAdditionalErrorMessage();
+                    if (!StringUtils.isStringEmpty(additionalErrorMessage)) {
+                        msg += additionalErrorMessage;
+                    }
+                    currentTestStep.getCurrentTestStepAction().addFailingLogMessage(msg);
+                } else if (isSuccess()) {
+                    TestStatusController.Status status = TestStatusController.Status.PASSED;
+
+                    // is it a retried test?
+                    if (RetryAnalyzer.hasMethodBeenRetried(methodContext)) {
+                        status = TestStatusController.Status.PASSED_RETRY;
+                        if (methodContext.nonFunctionalInfos.size() > 0) {
+                            status = TestStatusController.Status.MINOR_RETRY;
+                        }
+                    } else {
+                        if (methodContext.nonFunctionalInfos.size() > 0) {
+                            status = TestStatusController.Status.MINOR;
+                        }
+                    }
+
+                    // set status
+                    TestStatusController.setMethodStatus(methodContext, status, method);
+                } else if (isSkipped()) {
+                    TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.SKIPPED, method);
                 }
-                currentTestStep.getCurrentTestStepAction().addFailingLogMessage(msg);
-            } else if (isSuccess()) {
-                TestStatusController.Status status = TestStatusController.Status.PASSED;
-                if (methodContext.nonFunctionalInfos.size() > 0) {
-                    status = TestStatusController.Status.MINOR;
-                }
-                TestStatusController.setMethodStatus(methodContext, status, method);
-            } else if (isSkipped()) {
-                TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.SKIPPED, method);
             }
         }
 

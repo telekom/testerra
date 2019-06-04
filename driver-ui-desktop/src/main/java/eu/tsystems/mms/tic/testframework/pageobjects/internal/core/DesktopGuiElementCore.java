@@ -38,9 +38,12 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
+import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.TestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
+import org.apache.commons.lang3.ClassUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
@@ -142,8 +145,13 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
                 }
             }
 
+            // proxy the web element for logging
+            WebElementProxy webElementProxy = new WebElementProxy(webDriver, webElement);
+            Class[] interfaces = ObjectUtils.getAllInterfacesOf(webElement);
+            webElement = ObjectUtils.simpleProxy(WebElement.class, webElementProxy, interfaces);
+
             // set webelement
-            guiElementData.webElement = (webElement);
+            guiElementData.webElement = webElement;
 
             // find timings
             int findCounter = Timings.raiseFindCounter();

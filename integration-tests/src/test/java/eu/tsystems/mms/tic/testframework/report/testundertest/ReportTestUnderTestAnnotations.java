@@ -50,7 +50,7 @@ public class ReportTestUnderTestAnnotations extends AbstractTest {
     }
 
     //@Test
-    @NoStatusMethod
+    @InfoMethod
     // TODO how is this displayed in report?
     public void testNoStatusMethodMarker() {
     }

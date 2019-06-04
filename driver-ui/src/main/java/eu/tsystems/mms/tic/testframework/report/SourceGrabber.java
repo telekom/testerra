@@ -23,21 +23,22 @@ import eu.tsystems.mms.tic.testframework.interop.SourceCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 
 public class SourceGrabber implements SourceCollector {
 
     @Override
-    public String getSourceFor(Throwable throwable) {
+    public ScriptSource getSourceFor(Throwable throwable) {
         // look for guielement error
-        String code = SourceUtils.findSourceForThrowable(throwable, GuiElement.class, Page.class);
+        ScriptSource source = SourceUtils.findSourceForThrowable(throwable, GuiElement.class, Page.class);
 
         // look for abstract page error
-        if (code == null) {
-            code = SourceUtils.findSourceForThrowable(throwable, AbstractPage.class, Page.class);
+        if (source == null) {
+            source = SourceUtils.findSourceForThrowable(throwable, AbstractPage.class, Page.class);
         }
 
-        return code;
+        return source;
     }
 
 }

@@ -19,12 +19,23 @@
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
+import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.TestContext;
+import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by piet on 08.12.16.
@@ -37,6 +48,8 @@ public class ExecutionContextController {
 
     private static final ThreadLocal<MethodContext> CURRENT_METHOD_CONTEXT = new ThreadLocal<>();
     private static final ThreadLocal<ITestResult> CURRENT_TEST_RESULT = new ThreadLocal<>();
+
+    private static final ThreadLocal<SessionContext> CURRENT_SESSION_CONTEXT = new ThreadLocal<>();
 
     public static MethodContext getCurrentMethodContext() {
         return CURRENT_METHOD_CONTEXT.get();
@@ -61,16 +74,30 @@ public class ExecutionContextController {
         return classContext;
     }
 
+    public static ClassContext getClassContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod) {
+        SuiteContext suiteContext = EXECUTION_CONTEXT.getSuiteContext(iTestContext);
+        TestContext testContext = suiteContext.getTestContext(iTestContext);
+        ClassContext classContext = testContext.getClassContext(iTestNgMethod);
+        return classContext;
+    }
+
     /**
      * Gets the MethodContext for TestNG ITestResult. If no MethodContext for test result exists, it will
      * created.
      *
      * @param iTestResult The ITestResult to set.
+     *
      * @return the MethodContext for the result.
      */
     public static MethodContext getMethodContextFromTestResult(final ITestResult iTestResult, final ITestContext testContext) {
-        ClassContext classContext = getClassContextFromTestResult(iTestResult, testContext, null);
+        final Object[] parameters = iTestResult.getParameters();
+        final ClassContext classContext = getClassContextFromTestResult(iTestResult, testContext, null);
         return classContext.getMethodContext(iTestResult, testContext, null);
+    }
+
+    public static MethodContext getMethodContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod, final Object[] parameters) {
+        ClassContext classContext = getClassContextFromTestContextAndMethod(iTestContext, iTestNgMethod);
+        return classContext.getMethodContext(null, iTestContext, iTestNgMethod, parameters);
     }
 
     /**
@@ -95,12 +122,51 @@ public class ExecutionContextController {
         CURRENT_METHOD_CONTEXT.set(methodContext);
     }
 
+    public static void setCurrentSessionContext(final SessionContext sessionContext) {
+        CURRENT_SESSION_CONTEXT.set(sessionContext);
+    }
+
+    public static SessionContext getCurrentSessionContext() {
+        return CURRENT_SESSION_CONTEXT.get();
+    }
+
     /**
      * Clear the -current testresult-. Use with care!
      */
     public static void clearCurrentTestResult() {
         CURRENT_TEST_RESULT.remove();
         CURRENT_METHOD_CONTEXT.remove();
+    }
+
+    public static void printExecutionStatistics() {
+        final String prefix = "*** Stats: ";
+
+        LOGGER.info(prefix + "**********************************************");
+
+        LOGGER.info(prefix + "ExecutionContext: " + EXECUTION_CONTEXT.name);
+        LOGGER.info(prefix + "SuiteContexts:  " + EXECUTION_CONTEXT.suiteContexts.size());
+        LOGGER.info(prefix + "TestContexts:   " + EXECUTION_CONTEXT.suiteContexts.stream().mapToInt(s -> s.testContexts.size()).sum());
+        LOGGER.info(prefix + "ClassContexts:  " + EXECUTION_CONTEXT.suiteContexts.stream().flatMap(s -> s.testContexts.stream()).mapToInt(t -> t.classContexts.size()).sum());
+
+        List<MethodContext> allMethodContexts = EXECUTION_CONTEXT.suiteContexts.stream().flatMap(s -> s.testContexts.stream()).flatMap(t -> t.classContexts.stream()).flatMap(c -> c.methodContexts.stream()).collect(Collectors.toList());
+
+        LOGGER.info(prefix + "MethodContexts: " + allMethodContexts.size());
+
+        LOGGER.info(prefix + "**********************************************");
+
+        List<MethodContext> allTestMethods = allMethodContexts.stream().filter(MethodContext::isTestMethod).collect(Collectors.toList());
+
+        LOGGER.info(prefix + "Test Methods Count: " + allTestMethods.size() + " (" + allTestMethods.stream().filter(m -> m.status.relevant).count() + " relevant)");
+
+        for (TestStatusController.Status status : TestStatusController.Status.values()) {
+            LOGGER.info(prefix + status.name() + ": " + allTestMethods.stream().filter(m -> m.status == status).count());
+        }
+
+        LOGGER.info(prefix + "**********************************************");
+
+        LOGGER.info(prefix + "Duration: " + EXECUTION_CONTEXT.getDuration(EXECUTION_CONTEXT.startTime, EXECUTION_CONTEXT.endTime));
+
+        LOGGER.info(prefix + "**********************************************");
     }
 
 }

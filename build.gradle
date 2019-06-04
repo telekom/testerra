@@ -67,7 +67,8 @@ ext {
 
     jfreechart = 'org.jfree:jfreechart:1.0.19'
 
-    seleniumVersion = '3.13.0'
+    seleniumVersion = '3.141.59'
+//    seleniumVersion = '3.13.0'
     selenium = [
             'org.seleniumhq.selenium:selenium-remote-driver:' + seleniumVersion,
             'org.seleniumhq.selenium:selenium-java:' + seleniumVersion,

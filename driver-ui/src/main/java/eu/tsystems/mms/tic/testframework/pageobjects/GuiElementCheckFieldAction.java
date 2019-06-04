@@ -25,8 +25,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.CheckFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
@@ -166,21 +164,9 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                  */
                 String prioritizedErrorMessage = check.prioritizedErrorMessage();
                 if (!StringUtils.isStringEmpty(prioritizedErrorMessage)) {
-                    AssertionError assertionError = new AssertionError(prioritizedErrorMessage, pageNotFoundException);
-
-                    MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                    if (methodContext != null) {
-                        methodContext.setThrowable(prioritizedErrorMessage, assertionError);
-                    }
-
-                    throw assertionError;
+                    throw new AssertionError(prioritizedErrorMessage, pageNotFoundException);
                 }
                 else {
-                    MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                    if (methodContext != null) {
-                        methodContext.setThrowable(readableMessage, e);
-                    }
-
                     throw pageNotFoundException;
                 }
             }

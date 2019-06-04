@@ -17,17 +17,24 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.annotations;
+package eu.tsystems.mms.tic.testframework.imgproc.templatematching.matchers.featurebased;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.opencv.core.Mat;
+import org.opencv.features2d.DMatch;
 
-/**
- * Created by pele on 23.02.2017.
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface NoStatusMethod {
+import java.nio.file.Path;
+
+class TemplateImage extends AbstractTemplateOrSceneImage {
+    TemplateImage(Path path) throws Exception {
+        super(path);
+    }
+
+    TemplateImage(Mat image) throws Exception {
+        super(image);
+    }
+
+    @Override
+    int getIdx(DMatch dmatch) {
+        return dmatch.queryIdx;
+    }
 }

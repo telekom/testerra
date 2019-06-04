@@ -21,7 +21,9 @@ package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.interop.CollectAssertionInfoArtefacts;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
+import eu.tsystems.mms.tic.testframework.report.model.context.CustomErrorContextObject;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +55,11 @@ public final class CollectedAssertions {
         if (screenshots != null) {
             assertionInfo.screenshots.addAll(screenshots);
         }
+
+        // get custom error contexts in queue
+        List<CustomErrorContextObject> customErrorContextObjects = ExecutionContextController.getCurrentMethodContext().customErrorContextObjects;
+        assertionInfo.customErrorContextObjects.addAll(customErrorContextObjects);
+        customErrorContextObjects.clear();
 
         // and store
         assertionInfos.add(assertionInfo);

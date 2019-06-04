@@ -13,12 +13,24 @@ public class ReportTestUnderTestAnnotations extends AbstractTest {
     @SupportMethod
     @New
     @ReadyForApproval
+    @InDevelopment
+    @NoRetry
     public void testAllMarkers() throws Exception {
     }
 
     @Test
     @SupportMethod
     public void testSupportMethodMarker() {
+    }
+
+    @Test
+    @InDevelopment
+    public void testInDevelopmentMarker() {
+    }
+
+    @Test
+    @NoRetry
+    public void testNoRetryMarker() {
     }
 
     @Test
@@ -40,13 +52,19 @@ public class ReportTestUnderTestAnnotations extends AbstractTest {
     //@Test
     @NoStatusMethod
     // TODO how is this displayed in report?
-    public void testNoStatusMethod() {
+    public void testNoStatusMethodMarker() {
     }
 
     //@Test
     @SkipMetrics
     // TODO how is this displayed in report?
-    public void testSkipMetrics() {
+    public void testSkipMetricsMarker() {
+    }
+
+    //@Test
+    @DismissDryRun
+    // TODO how is this displayed in report?
+    public void testDismissDryRunMarker() {
     }
 
 }

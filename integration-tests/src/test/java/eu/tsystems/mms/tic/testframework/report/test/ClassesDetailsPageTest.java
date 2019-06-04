@@ -118,11 +118,13 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
     public void testT05_checkAnnotationsAreDisplayed() {
         //TODO use DataProvider for this, enhanced to Minor Errors
         HashMap<String,List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
-        methodsTestObjects.put("testAllMarkers", Arrays.asList(ReportAnnotationType.NEW, ReportAnnotationType.READY_FOR_APPROVAL, ReportAnnotationType.SUPPORT_METHOD));
+        methodsTestObjects.put("testAllMarkers", Arrays.asList(ReportAnnotationType.NEW, ReportAnnotationType.READY_FOR_APPROVAL, ReportAnnotationType.SUPPORT_METHOD, ReportAnnotationType.IN_DEVELOPMENT, ReportAnnotationType.NO_RETRY));
         methodsTestObjects.put("testNewMarkerFailure", Collections.singletonList(ReportAnnotationType.NEW));
         methodsTestObjects.put("testNewMarkerSuccess", Collections.singletonList(ReportAnnotationType.NEW));
         methodsTestObjects.put("testReadyForApprovalMarker", Collections.singletonList(ReportAnnotationType.READY_FOR_APPROVAL));
         methodsTestObjects.put("testSupportMethodMarker", Collections.singletonList(ReportAnnotationType.SUPPORT_METHOD));
+        methodsTestObjects.put("testNoRetryMarker", Collections.singletonList(ReportAnnotationType.NO_RETRY));
+        methodsTestObjects.put("testInDevelopmentMarker", Collections.singletonList(ReportAnnotationType.IN_DEVELOPMENT));
 
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
             WebDriverManager.getWebDriver(),

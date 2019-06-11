@@ -8,6 +8,8 @@ public enum ReportAnnotationType {
     SUPPORT_METHOD("Support Method", "SupportMethod"),
     NEW("New", "New"),
     READY_FOR_APPROVAL("Ready For Approval", "ReadyForApproval"),
+    IN_DEVELOPMENT("In Development","InDevelopment"),
+    NO_RETRY("No Retry","NoRetry"),
     RETRIED("Retried", "Retried"),
     MINOR("Minor Errors", "Minor Errors");
 

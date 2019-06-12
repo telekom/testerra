@@ -215,7 +215,7 @@ public final class FailureCorridor {
         return allowedTestFailuresLOW;
     }
 
-    public static void printStatusAndJumpOut() {
+    public static void printStatusToStdOut() {
         String statusMessage = ReportUtils.getReportName() + " " + ExecutionContextController.EXECUTION_CONTEXT.runConfig + ": ";
         if (!FailureCorridor.isCorridorMatched()) {
             // show error first
@@ -227,20 +227,11 @@ public final class FailureCorridor {
             statusMessage += FailureCorridor.getStatusMessage();
         }
 
-        String stdOutMessage = "\n\nfennec: " + statusMessage + "\n\n";
 
-        // exit
-        if (!FailureCorridor.isCorridorMatched()) {
-            LOGGER.info("Exiting due to failure corridor status (not matched)");
-            String statistics = getStatistics();
-            System.err.println(statistics);
-            System.err.println(stdOutMessage);
-            System.err.println("(fennec will endTime the build here. Don't mind about messages like 'The forked VM terminated without properly saying goodbye. VM crash or System.exit called?'.)");
-            System.exit(99);
-        } else {
-            System.out.println(stdOutMessage);
-            System.out.println("(Make sure '<testFailureIgnore>true</testFailureIgnore>' is set to see the tests GREEN, because they should be GREEN.)");
-//            System.exit(0); go through, only works when testFailureIgnore is set to true in surefire
-        }
+        String statistics = getStatistics();
+        System.out.println(statistics);
+
+        String stdOutMessage = "\n\nfennec: " + statusMessage + "\n\n";
+        System.out.println(stdOutMessage);
     }
 }

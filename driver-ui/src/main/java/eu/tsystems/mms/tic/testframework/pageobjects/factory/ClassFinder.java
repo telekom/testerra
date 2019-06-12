@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -32,7 +33,6 @@ import org.openqa.selenium.WebDriver;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -358,7 +358,7 @@ final class ClassFinder {
             String leftValue = split[1];
             String rightValue = split[2];
             if (KEYWORD_RES.equals(leftValue)) {
-                throw new NotImplementedException(); // TODO
+                throw new NotYetImplementedException();
             }
             else {
                 if (!KEYWORD_MIN.equals(leftValue)) {

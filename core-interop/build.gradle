@@ -7,10 +7,10 @@ dependencies {
     compile reflections
     compile "org.mongodb:bson:3.7.0"
 
-    implementation "com.sun.xml.bind:jaxb-core:2.2.11"
-    implementation "com.sun.xml.bind:jaxb-impl:2.2.11"
-    implementation "javax.xml.bind:jaxb-api:2.2.11"
-    implementation "javax.activation:activation:1.1.1"
+    compile "com.sun.xml.bind:jaxb-core:2.2.11"
+    compile "com.sun.xml.bind:jaxb-impl:2.2.11"
+    compile "javax.xml.bind:jaxb-api:2.2.11"
+    compile "javax.activation:activation:1.1.1"
 }
 
 test {

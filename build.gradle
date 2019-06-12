@@ -1,5 +1,4 @@
 plugins {
-//    id "com.github.jk1.dependency-license-report" version "0.5.1" apply true
     id "io.spring.dependency-management" version "1.0.6.RELEASE" apply true
 }
 
@@ -68,7 +67,7 @@ ext {
     jfreechart = 'org.jfree:jfreechart:1.0.19'
 
     seleniumVersion = '3.141.59'
-//    seleniumVersion = '3.13.0'
+
     selenium = [
             'org.seleniumhq.selenium:selenium-remote-driver:' + seleniumVersion,
             'org.seleniumhq.selenium:selenium-java:' + seleniumVersion,
@@ -133,7 +132,6 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
-//    apply plugin: 'com.github.jk1.dependency-license-report' // run: gradle generateLicenseReport
 
     repositories {
         mavenLocal()
@@ -151,16 +149,13 @@ allprojects {
         }
 
         repositories {
-
             maven {
-                name 'deploy'
-                url deployUrl
+                url System.getProperty("deployUrl", "none")
                 credentials {
-                    username deployUsername
-                    password deployPassword
+                    username System.getProperty("deployUsername", "none")
+                    password System.getProperty("deployPassword", "none")
                 }
             }
-
         }
     }
 
@@ -190,8 +185,3 @@ allprojects {
 dependencies {
     compile apache_commons
 }
-
-//task displayLicenses(dependsOn: ['classes', 'generateLicenseReport'], type: JavaExec) {
-//    main = 'eu.tsystems.mms.tic.testframework.build.LicenseCollector'
-//    classpath = sourceSets.main.runtimeClasspath
-//}

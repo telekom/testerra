@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,6 +76,16 @@ public final class ObjectUtils {
 
         public PassThroughProxy(T target) {
             this.target = target;
+        }
+
+        public Object invoke(Method method, Object[] args) throws Throwable {
+            try {
+                return method.invoke(target, args);
+            } catch (IllegalAccessException | IllegalArgumentException e) {
+                throw e;
+            } catch (InvocationTargetException e) {
+                throw e.getTargetException();
+            }
         }
     }
 

@@ -36,7 +36,7 @@ public class WebElementProxy extends ObjectUtils.PassThroughProxy<WebElement> {
 
         ProxyUtils.updateSessionContextRelations(sessionContext);
 
-        return method.invoke(target, args);
+        return invoke(method, args);
     }
 
     public WebElement getWrappedWebElement() {

@@ -108,7 +108,7 @@ ext {
         'com.google.guava:guava:25.1-jre'
     ]
 
-    userAgentPparser = 'nl.basjes.parse.useragent:yauaa:4.1'
+    userAgentPparser = 'nl.basjes.parse.useragent:yauaa:5.10'
 
     colt = 'colt:colt:1.2.0'
 

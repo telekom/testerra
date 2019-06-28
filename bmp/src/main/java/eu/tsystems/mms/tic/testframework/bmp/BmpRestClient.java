@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.WebApplicationException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Map;
 
@@ -51,6 +52,7 @@ public class BmpRestClient {
     private final int restPort;
     public String url;
     private Integer proxyPort = null;
+    private URL upstreamProxy;
 
     /**
      * Hide Default constructor.
@@ -60,6 +62,13 @@ public class BmpRestClient {
         this.host = host;
         this.restPort = restPort;
         this.url = "http://" + host + ":" + restPort + "/";
+    }
+
+    /**
+     * Sets the upstream proxy to route requests through
+     */
+    public void setUpstreamProxy(URL url) {
+        upstreamProxy = url;
     }
 
     public void setHeader(String key, String value) {
@@ -91,6 +100,11 @@ public class BmpRestClient {
      */
     public int startServer() {
         String path = "proxy?trustAllServers=true";
+
+        if (upstreamProxy!=null) {
+            path += String.format("&httpProxy=%s:%d", upstreamProxy.getHost(), upstreamProxy.getPort());
+        }
+
         try {
             String response = sendPost(path, "bindAddress=" + host);
             JsonElement jsonElement = new JsonParser().parse(response);

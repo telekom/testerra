@@ -129,8 +129,13 @@ public class UITestUtils extends TestUtils {
                 // get page source (webdriver)
                 String pageSource = eventFiringWebDriver.getPageSource();
 
-                // save page source to file
-                savePageSource(pageSource, sourceTargetFile);
+                if (pageSource == null) {
+                    LOGGER.error("getPageSource() returned nothing, skipping to add page source");
+                }
+                else {
+                    // save page source to file
+                    savePageSource(pageSource, sourceTargetFile);
+                }
 
                 /*
                 get infos

@@ -70,7 +70,7 @@ public abstract class Shot {
     public static File takeScreenshot(WebDriver driver) {
         try {
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            LOGGER.debug("Stored screenshot to " + screenshot);
+            LOGGER.info("Stored screenshot to " + screenshot);
             return screenshot;
         } catch (Exception e) {
             LOGGER.error("Could not get screenshot", e);

@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
  *   -Duser.language=en
  * @see https://stackoverflow.com/questions/4659929/how-to-use-utf-8-in-resource-properties-with-resourcebundle
  */
-class UTF8ResourceBundleControl extends ResourceBundle.Control {
+public class UTF8ResourceBundleControl extends ResourceBundle.Control {
     public ResourceBundle newBundle
         (String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
         throws IllegalAccessException, InstantiationException, IOException

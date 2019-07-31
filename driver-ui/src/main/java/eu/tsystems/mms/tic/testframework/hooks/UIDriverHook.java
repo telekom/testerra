@@ -72,7 +72,6 @@ public class UIDriverHook implements ModuleHook {
         RetryAnalyzer.registerAdditionalRetryAnalyzer(new WebDriverRetryAnalyzer());
         // Screenshots and Videos
         CollectAssertionInfoArtefacts.registerScreenshotCollector(new ScreenshotGrabber());
-        CollectAssertionInfoArtefacts.registerVideoCollector(new VideoGrabber());
         CollectAssertionInfoArtefacts.registerSourceCollector(new SourceGrabber());
     }
 

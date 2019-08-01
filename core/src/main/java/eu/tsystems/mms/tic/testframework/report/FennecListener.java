@@ -59,6 +59,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.*;
 import org.testng.xml.XmlSuite;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -106,6 +107,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
          */
         JVMMonitor.label("Start");
 
+        // loading flags, the latest
         if (Flags.MONITOR_MEMORY) {
             FennecEventService.addListener(new JVMMonitor());
         }
@@ -381,7 +383,13 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
         /*
         add workers in workflow order
          */
-        TestStep.begin("fennec TearDown");
+        TestStep.begin("TearDown");
+        if (testResult.isSuccess()) {
+            LOGGER.info(methodName + " PASSED");
+        }
+        else if (testResult.getStatus() == ITestResult.FAILURE) {
+            LOGGER.error(methodName + " FAILED", testResult.getThrowable());
+        }
 
         /*
         Workers #1

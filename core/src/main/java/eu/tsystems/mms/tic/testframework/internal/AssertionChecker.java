@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
-import eu.tsystems.mms.tic.testframework.interop.CollectAssertionInfoArtefacts;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -81,15 +81,12 @@ public final class AssertionChecker {
             AssertionInfo assertionInfo = methodContext.addNonFunctionalInfo(throwable);
 
             // get screenshots and videos
-            List<Screenshot> screenshots = CollectAssertionInfoArtefacts.collectScreenshots();
+            List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
             if (screenshots != null) {
                 assertionInfo.screenshots.addAll(screenshots);
             }
 
-            List<Video> videos = CollectAssertionInfoArtefacts.collectVideos();
-            if (videos != null) {
-                assertionInfo.videos.addAll(videos);
-            }
+            // not collecting a video here
         }
     }
 }

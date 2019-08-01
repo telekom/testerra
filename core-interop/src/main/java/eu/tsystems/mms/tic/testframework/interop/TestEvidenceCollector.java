@@ -19,14 +19,19 @@
  */
 package eu.tsystems.mms.tic.testframework.interop;
 
+import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class CollectAssertionInfoArtefacts {
+public final class TestEvidenceCollector {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestEvidenceCollector.class);
 
     private static final List<ScreenshotCollector> SCREENSHOT_COLLECTORS = new LinkedList<>();
     private static final List<VideoCollector> VIDEO_COLLECTORS = new LinkedList<>();
@@ -45,6 +50,10 @@ public class CollectAssertionInfoArtefacts {
     }
 
     public static List<Screenshot> collectScreenshots() {
+        if (!Flags.SCREENSHOTTER_ACTIVE) {
+            return null;
+        }
+
         if (SCREENSHOT_COLLECTORS.isEmpty()) {
             return null;
         }
@@ -60,6 +69,10 @@ public class CollectAssertionInfoArtefacts {
     }
 
     public static List<Video> collectVideos() {
+        if (!Flags.SCREENCASTER_ACTIVE) {
+            return null;
+        }
+
         if (VIDEO_COLLECTORS.isEmpty()) {
             return null;
         }
@@ -87,4 +100,11 @@ public class CollectAssertionInfoArtefacts {
         }
         return null;
     }
+
+    public static void logInfo() {
+        LOGGER.info("Screenshots: " + SCREENSHOT_COLLECTORS.size() + " screenshot collectors, " + SOURCE_COLLECTORS.size() + " source collectors");
+        LOGGER.info("Videos: " + VIDEO_COLLECTORS.size() + " video collectors");
+        LOGGER.info("Videos: ScreenCaster enabled=" + Flags.SCREENCASTER_ACTIVE);
+    }
+
 }

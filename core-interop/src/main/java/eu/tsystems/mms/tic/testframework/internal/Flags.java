@@ -59,4 +59,9 @@ public final class Flags {
     public static boolean GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = p(FennecProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false);
     public static boolean GUIELEMENT_USE_JS_ALTERNATIVES = p(FennecProperties.GUIELEMENT_USE_JS_ALTERNATIVES, true);
 
+    public static boolean SCREENSHOTTER_ACTIVE = p(FennecProperties.SCREENSHOTTER_ACTIVE, true);
+    public static boolean SCREENCASTER_ACTIVE = p(FennecProperties.SCREENCASTER_ACTIVE, true);
+
+    public static final boolean SCREENSHOT_ON_PAGELOAD = p(FennecProperties.SCREENSHOT_ON_PAGELOAD, false);
+
 }

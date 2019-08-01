@@ -59,10 +59,6 @@ public class WebDriverManagerConfig {
     public WebDriverMode webDriverMode = WebDriverMode.local;
 
     /**
-     * Take SCreenshots.
-     */
-    public boolean takeScreenShotsActive = PropertyManager.getBooleanProperty(FennecProperties.AUTOSCREENSHOTS, true);
-    /**
      * Close windows after Test Methods.
      */
     public boolean closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(

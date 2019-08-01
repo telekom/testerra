@@ -20,45 +20,29 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 
+import java.util.List;
+
 /**
  * Created by pele on 19.01.2017.
  */
-public class TakeScreenshotsWorker extends MethodWorker {
+public class TakeInSessionEvidencesWorker extends AbstractEvidencesWorker {
 
-    private void webDriverManagerScreenshotRoutine() {
+    void collect() {
         if (WebDriverManager.hasSessionsActiveInThisThread()) {
-            /*
-             * Take Screenshot of failure and log it into report.
-             */
-            WebDriverManagerConfig config = WebDriverManager.config();
-            if (config.takeScreenShotsActive) {
-                try {
-                    UITestUtils.takeScreenshots(methodContext, true);
-                } catch (Exception e) {
-                    LOGGER.error("Error taking screenshot(s) after failed method", e);
-                }
-            }
-       }
-    }
-
-    @Override
-    public void run() {
-        if (isFailed()) {
-            Object attribute = testResult.getAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly);
-
-            if (attribute != Boolean.TRUE) {
-                webDriverManagerScreenshotRoutine();
-            }
-        }
-        else if (isSkipped()) {
-            if (methodContext.status == TestStatusController.Status.FAILED_RETRIED) {
-                webDriverManagerScreenshotRoutine();
+            // get screenshots and videos
+            List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
+            if (screenshots != null) {
+                methodContext.screenshots.addAll(screenshots);
             }
         }
     }
+
 }

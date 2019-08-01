@@ -106,6 +106,10 @@ public class UITestUtils extends TestUtils {
 
     public static Screenshot takeScreenshot(final WebDriver eventFiringWebDriver,
                                             String originalWindowHandle, String sessionKey) {
+        if (!Flags.SCREENSHOTTER_ACTIVE) {
+            return null;
+        }
+
         final String timestamp = FILES_DATE_FORMAT.format(new Date());
         final String screenshotFileName = UUID.randomUUID() + "_"+ timestamp + ".png";
         final String pageSourceFileName = screenshotFileName + ".html";
@@ -271,6 +275,7 @@ public class UITestUtils extends TestUtils {
             File file = Shot.takeScreenshot(driver);
             try {
                 FileUtils.moveFile(file, screenShotTargetFile);
+                LOGGER.info("Stored screenshot to: " + screenShotTargetFile);
             } catch (IOException e) {
                 LOGGER.error("Error storing screenshot", e);
             }
@@ -569,30 +574,4 @@ public class UITestUtils extends TestUtils {
         return UITestUtils.takeScreenshotsFromSessions(errorContext, webDriverSessions, explicitlyForThisContext);
     }
 
-    public static List<Screenshot> takeScreenshots(ScreenshotCollector screenshotCollector, boolean intoReport, boolean explicitlyForThisContext) {
-        List<Screenshot> screenshots = screenshotCollector.takeScreenshots();
-
-        if (intoReport) {
-            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-
-            if (explicitlyForThisContext) {
-                screenshots.forEach(s -> s.errorContextId = methodContext.id);
-            }
-
-            publishScreenshotsToErrorContext(methodContext, screenshots);
-        }
-
-        return screenshots;
-    }
-
-    public static List<Video> takeVideos(VideoCollector videoCollector, boolean intoReport) {
-        List<Video> videos = videoCollector.getVideos();
-
-        if (intoReport) {
-            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-            methodContext.videos.addAll(videos);
-        }
-
-        return videos;
-    }
 }

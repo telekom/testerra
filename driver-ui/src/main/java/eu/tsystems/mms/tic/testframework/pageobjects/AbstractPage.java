@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
+import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -62,12 +63,6 @@ public abstract class AbstractPage {
      * Page storage.
      */
     private static final ThreadLocal<AbstractPage> STORED_PAGES = new ThreadLocal<AbstractPage>();
-
-    /**
-     * Screenshot on page load flag.
-     */
-    private static final boolean SCREENSHOT_ON_PAGELOAD = PropertyManager.getBooleanProperty(
-            FennecProperties.SCREENSHOT_ON_PAGELOAD, false);
 
     private boolean forcedGuiElementStandardAsserts = false;
 
@@ -112,7 +107,7 @@ public abstract class AbstractPage {
      * Executes a screenshot when the specific property is set.
      */
     private void screenShotOnPageLoad() {
-        if (SCREENSHOT_ON_PAGELOAD) {
+        if (Flags.SCREENSHOT_ON_PAGELOAD) {
             takeScreenshot();
         }
     }
@@ -409,7 +404,7 @@ public abstract class AbstractPage {
      * taking screenshot from all open windows
      */
     public void takeScreenshot() {
-        UITestUtils.takeScreenshots();
+        UITestUtils.takeScreenshot(driver, true);
     }
 
     public abstract void waitForPageToLoad();

@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
-import eu.tsystems.mms.tic.testframework.interop.CollectAssertionInfoArtefacts;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
@@ -59,7 +59,7 @@ public class MethodFinishedWorker extends MethodWorker {
                     if (scriptSourceForThrowable != null) {
                         methodContext.scriptSource = scriptSourceForThrowable;
                     }
-                    methodContext.executionObjectSource = CollectAssertionInfoArtefacts.getSourceFor(throwable);
+                    methodContext.executionObjectSource = TestEvidenceCollector.getSourceFor(throwable);
                 }
                 methodContext.buildExitFingerprint();
             }

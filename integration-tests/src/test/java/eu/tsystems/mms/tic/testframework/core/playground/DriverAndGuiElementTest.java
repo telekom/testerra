@@ -80,4 +80,14 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
         Assert.assertEquals(sessionCapabilities.get("projectId"), caps.getCapability("projectId"), "EndPoint Capability is set");
     }
 
+    @Test
+    public void testFailing() throws Exception {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.baseUrl = "http://google.de";
+        request.webDriverMode = WebDriverMode.local;
+        request.browser = Browsers.phantomjs;
+
+        WebDriverManager.getWebDriver(request);
+        Assert.assertTrue(false);
+    }
 }

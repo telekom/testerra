@@ -481,48 +481,25 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
         guiElementData.resetLogLevel();
     }
 
-    private Screenshot takeBeforeScreenshot() {
-        return UITestUtils.takeScreenshot(getDriver(), false);
-    }
-
-    private Screenshot takeAfterScreenshot() {
-        return UITestUtils.takeScreenshot(getDriver(), false);
-    }
-
     @Override
     public void type(String text) {
-        Screenshot screenshotBefore = takeBeforeScreenshot();
-
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.type(text);
         guiElementData.resetLogLevel();
-
-        Screenshot screenshotAfter = takeAfterScreenshot();
-        TestStepController.addScreenshotsToCurrentAction(screenshotBefore, screenshotAfter);
     }
 
     @Override
     public void click() {
-        Screenshot screenshotBefore = takeBeforeScreenshot();
-
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.click();
         guiElementData.resetLogLevel();
-
-        Screenshot screenshotAfter = takeAfterScreenshot();
-        TestStepController.addScreenshotsToCurrentAction(screenshotBefore, screenshotAfter);
     }
 
     @Override
     public void clickJS() {
-        Screenshot screenshotBefore = takeBeforeScreenshot();
-
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickJS();
         guiElementData.resetLogLevel();
-
-        Screenshot screenshotAfter = takeAfterScreenshot();
-        TestStepController.addScreenshotsToCurrentAction(screenshotBefore, screenshotAfter);
     }
 
     @Override

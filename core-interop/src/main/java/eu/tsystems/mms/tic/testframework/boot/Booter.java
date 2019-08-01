@@ -23,6 +23,7 @@ import eu.tsystems.mms.tic.testframework.common.FennecCommons;
 import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.FennecBuildInformation;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.utils.FennecUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.reflections.Reflections;
@@ -38,7 +39,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Booter {
+public final class Booter {
 
     private static final Logger LOGGER;
     private static final List<ModuleHook> MODULE_HOOKS = new LinkedList<>();
@@ -50,6 +51,8 @@ public class Booter {
         // when logger is configured:
         printFennecBanner();
         initHooks();
+        // log evidence collector
+        TestEvidenceCollector.logInfo();
     }
 
     public static void bootOnce() {}
@@ -128,11 +131,11 @@ public class Booter {
 
             hooks.forEach(aClass -> {
                 try {
-                    ModuleHook moduleHook = aClass.newInstance();
+                    ModuleHook moduleHook = aClass.getConstructor().newInstance();
                     LOGGER.info(startMarker + "Calling Init Hook " + aClass.getSimpleName() + "...");
                     moduleHook.init();
                     MODULE_HOOKS.add(moduleHook);
-                } catch (InstantiationException | IllegalAccessException e) {
+                } catch (Exception e) {
                     LOGGER.error(startMarker + "Could not load Init Hook " + aClass.getSimpleName());
                 }
             });

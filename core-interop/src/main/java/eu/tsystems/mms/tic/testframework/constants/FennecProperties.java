@@ -74,7 +74,8 @@ public final class FennecProperties {
     /**
      * Property key stating to take automatic screenshots or not.
      */
-    public static final String AUTOSCREENSHOTS = "fennec.takeAutomaticScreenshot";
+    public static final String SCREENSHOTTER_ACTIVE = "fennec.screenshotter.active";
+//    public static final String AUTOSCREENSHOTS = "fennec.takeAutomaticScreenshot";
 
     /**
      * Key of reportDir Property.
@@ -288,5 +289,7 @@ public final class FennecProperties {
     public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_ERROR_THRESHOLD = "fennec.layoutcheck.text.error.detector.error.threshold";
     public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH = "fennec.layoutcheck.text.error.detector.minimal.line.length";
     public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGESTRENGTH = "fennec.layoutcheck.text.error.detector.minimal.edge.strength";
-    
+
+    public static final String SCREENCASTER_ACTIVE = "fennec.screencaster.active";
+
 }

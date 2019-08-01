@@ -19,17 +19,14 @@
  */
 package eu.tsystems.mms.tic.testframework.hooks;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.WebDriverRetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.*;
 import eu.tsystems.mms.tic.testframework.execution.worker.shutdown.WebDriverShutDownAfterTestsWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.start.WebDriverLoggingStartWorker;
-import eu.tsystems.mms.tic.testframework.interop.CollectAssertionInfoArtefacts;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.*;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,11 +52,16 @@ public class UIDriverHook implements ModuleHook {
         //finish
         FennecListener.registerAfterMethodWorker(ConditionalBehaviourWorker.class);
         FennecListener.registerAfterMethodWorker(LogWDSessionsWorker.class);
-        FennecListener.registerAfterMethodWorker(TakeScreenshotsWorker.class);
+        FennecListener.registerAfterMethodWorker(TakeInSessionEvidencesWorker.class);
 
         FennecListener.registerAfterMethodWorker(WebDriverSessionsAfterMethodWorker.class); // the utilizable one
 
+        /*
+        ********* SESSIONS SHUTDOWN *********
+         */
         FennecListener.registerAfterMethodWorker(WebDriverShutDownWorker.class);
+
+        FennecListener.registerAfterMethodWorker(TakeOutOfSessionsEvidencesWorker.class);
         FennecListener.registerAfterMethodWorker(TestMethodFinishWorker.class);
 
         //shutdown
@@ -71,8 +73,8 @@ public class UIDriverHook implements ModuleHook {
         // RetryAnalyzer
         RetryAnalyzer.registerAdditionalRetryAnalyzer(new WebDriverRetryAnalyzer());
         // Screenshots and Videos
-        CollectAssertionInfoArtefacts.registerScreenshotCollector(new ScreenshotGrabber());
-        CollectAssertionInfoArtefacts.registerSourceCollector(new SourceGrabber());
+        TestEvidenceCollector.registerScreenshotCollector(new ScreenshotGrabber());
+        TestEvidenceCollector.registerSourceCollector(new SourceGrabber());
     }
 
     @Override

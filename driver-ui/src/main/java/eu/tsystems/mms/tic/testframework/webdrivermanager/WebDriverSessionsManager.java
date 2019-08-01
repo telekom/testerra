@@ -54,7 +54,7 @@ import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverFactor
 /**
  * Created by pele on 08.01.2015.
  */
-final class WebDriverSessionsManager {
+public final class WebDriverSessionsManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverSessionsManager.class);
 
@@ -81,8 +81,9 @@ final class WebDriverSessionsManager {
         return currentThread.getId() + FULL_SESSION_KEY_SPLIT_MARKER + sessionKey;
     }
 
-    static void storeWebDriverSession(String sessionKey, WebDriver eventFiringWebDriver, SessionContext sessionContext) {
-        String fullSessionKey = getFullSessionKey(sessionKey);
+    static void storeWebDriverSession(WebDriverRequest webDriverRequest, WebDriver eventFiringWebDriver, SessionContext sessionContext) {
+        final String sessionKey = webDriverRequest.sessionKey;
+        final String fullSessionKey = getFullSessionKey(sessionKey);
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS.put(fullSessionKey, eventFiringWebDriver);
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_INVERSE.put(eventFiringWebDriver, fullSessionKey);
 
@@ -111,6 +112,10 @@ final class WebDriverSessionsManager {
         } else {
             LOGGER.error("Could not store SessionContext, could not get SessionId");
         }
+
+        // store the request
+        DRIVER_REQUEST_MAP.put((EventFiringWebDriver) eventFiringWebDriver, webDriverRequest);
+
     }
 
     static void removeWebDriverSession(String sessionId, WebDriver eventFiringWebDriver, String fullSessionKeyOrNull) {
@@ -175,11 +180,21 @@ final class WebDriverSessionsManager {
         // store to method context
         ExecutionContextController.getCurrentMethodContext().sessionContexts.add(sessionContext);
 
-        storeWebDriverSession(sessionKey, eventFiringWebDriver, sessionContext);
+        UnspecificWebDriverRequest r = new UnspecificWebDriverRequest();
+        r.sessionKey = sessionKey;
+        storeWebDriverSession(r, eventFiringWebDriver, sessionContext);
     }
 
     static final List<WebDriverSessionHandler> beforeQuitActions = new LinkedList<>();
     static final List<Runnable> afterQuitActions = new LinkedList<>();
+
+    public static void registerWebDriverShutDownHandler(WebDriverSessionHandler beforeQuit) {
+        WebDriverSessionsManager.beforeQuitActions.add(beforeQuit);
+    }
+
+    public static void registerWebDriverShutDownHandler(Runnable afterQuit) {
+        WebDriverSessionsManager.afterQuitActions.add(afterQuit);
+    }
 
     static void shutDownAllThreadSessions() {
         long threadId = Thread.currentThread().getId();
@@ -391,6 +406,10 @@ final class WebDriverSessionsManager {
         }
 
         /*
+        **** STARTING NEW SESSION ****
+         */
+
+        /*
         decide which session manager to use
          */
         if (WEB_DRIVER_FACTORIES.containsKey(browser)) {
@@ -427,9 +446,6 @@ final class WebDriverSessionsManager {
                     LOGGER.error("Error executing webdriver startup handler", e);
                 }
             }
-
-            // store the request
-            DRIVER_REQUEST_MAP.put((EventFiringWebDriver) eventFiringWebDriver, webDriverRequest);
 
             // fire sync again, for updated sessionContext
             FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)

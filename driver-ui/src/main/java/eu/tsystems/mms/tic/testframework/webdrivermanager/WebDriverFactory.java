@@ -63,19 +63,21 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
             r.baseUrl = WebDriverManager.getBaseURL();
         }
 
-        // link session context
-        r.sessionContext = sessionContext;
 
         /*
         build the final request (filled with all requested values)
          */
         R finalRequest = buildRequest(r);
+        r = null; // invalidate
+
+        // link session context
+        finalRequest.sessionContext = sessionContext;
 
         /*
         fill the session context
          */
-        sessionContext.metaData.put("requested.browser", r.browser);
-        sessionContext.metaData.put("requested.browserVersion", r.browserVersion);
+        sessionContext.metaData.put("requested.browser", finalRequest.browser);
+        sessionContext.metaData.put("requested.browserVersion", finalRequest.browserVersion);
 
         /*
         create basic capabilities
@@ -123,7 +125,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
         /*
         store session
          */
-        WebDriverSessionsManager.storeWebDriverSession(r.sessionKey, eventFiringWebDriver, sessionContext);
+        WebDriverSessionsManager.storeWebDriverSession(finalRequest, eventFiringWebDriver, sessionContext);
 
         /*
         finalize the session setup

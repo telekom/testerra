@@ -17,16 +17,27 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.report;
+package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
-import eu.tsystems.mms.tic.testframework.interop.VideoCollector;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
 import java.util.List;
 
-public class VideoGrabber implements VideoCollector {
-    @Override
-    public List<Video> getVideos() {
-        return null;
+/**
+ * Created by pele on 19.01.2017.
+ */
+public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker {
+
+    void collect() {
+        List<Video> videos = TestEvidenceCollector.collectVideos();
+        if (videos != null) {
+            methodContext.videos.addAll(videos);
+        }
     }
+
 }

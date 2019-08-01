@@ -47,7 +47,6 @@ public final class Booter {
     static {
         FennecCommons.init();
         LOGGER = LoggerFactory.getLogger(Booter.class);
-        FennecUtils.prepareAsserts();
         // when logger is configured:
         printFennecBanner();
         initHooks();

@@ -44,8 +44,6 @@ import java.util.List;
  */
 public final class FennecUtils {
 
-    private static boolean assertsPrepared = false;
-
     private FennecUtils() {
     }
 
@@ -53,57 +51,6 @@ public final class FennecUtils {
      * The logger.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(FennecUtils.class);
-
-    /**
-     * Modifies the Asserter classes of the test frameworks for the use with non-functional tests. Call this method
-     * before the classloader catched the original classes.
-     */
-    public static void prepareAsserts() {
-        if (assertsPrepared) {
-            return;
-        }
-
-        ClassPool classPool = ClassPool.getDefault();
-        classPool.appendClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
-
-        try {
-            /*
-            !! DO NOT change the string values into class references!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-             */
-
-            final CtClass testNgAssert = classPool.getCtClass("org.testng.Assert");
-            CtMethod[] testNGAssertMethods = testNgAssert.getDeclaredMethods();
-
-            /*
-             * Pitch original assert methods
-             */
-            for (CtMethod testNGAssertMethod : testNGAssertMethods) {
-                /*
-                 * Pitching Testng assert
-                 */
-                if (testNGAssertMethod.getName().startsWith("assert")) {
-                    LOGGER.trace("Patching method: " + testNgAssert.getSimpleName() + "."
-                            + testNGAssertMethod.getName());
-                    /*
-                     * Hack this method;
-                     */
-                    if (hasDescription(testNGAssertMethod)) {
-                        testNGAssertMethod.insertBefore("{eu.tsystems.mms.tic.testframework." +
-                                        "internal.Counters.increaseDescriptedAsserts();}");
-                    } else {
-                        testNGAssertMethod.insertBefore("{eu.tsystems.mms.tic.testframework." +
-                                        "internal.Counters.increaseUndescriptedAsserts();}");
-                    }
-                }
-            }
-        } catch (NotFoundException e) {
-            LOGGER.error("fennec class patching not possible", e);
-        } catch (CannotCompileException e) {
-            throw new FennecSystemException(e);
-        }
-
-        assertsPrepared = true;
-    }
 
     private static boolean hasDescription(CtMethod testNGAssertMethod) {
         try {

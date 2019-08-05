@@ -34,7 +34,14 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReports
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.Worker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.*;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.CQWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.FennecConnectorSyncEventsWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.FennecEventsFinishWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodAnnotationCheckerWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodFinishedWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TestMethodFinishedWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.FennecEventsStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.LoggingStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
@@ -56,10 +63,23 @@ import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import eu.tsystems.mms.tic.testframework.utils.FennecUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.*;
+import org.testng.IConfigurable;
+import org.testng.IConfigureCallBack;
+import org.testng.IHookCallBack;
+import org.testng.IHookable;
+import org.testng.IInvokedMethod;
+import org.testng.IInvokedMethodListener2;
+import org.testng.IMethodInstance;
+import org.testng.IMethodInterceptor;
+import org.testng.IReporter;
+import org.testng.ISuite;
+import org.testng.ISuiteListener;
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
 import org.testng.xml.XmlSuite;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,7 +90,7 @@ import java.util.List;
  * @author mrgi, mibu, pele, sepr
  */
 public class FennecListener implements IInvokedMethodListener2, IReporter,
-        IHookable, IConfigurable, IMethodInterceptor, ITestListener {
+        IHookable, IConfigurable, IMethodInterceptor, ITestListener, ISuiteListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FennecListener.class);
 
@@ -89,6 +109,9 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
     private static final List<Class<? extends Worker>> BEFORE_INVOCATION_WORKERS = new LinkedList<>();
     private static final List<Class<? extends Worker>> AFTER_INVOCATION_WORKERS = new LinkedList<>();
     public static final List<Class<? extends Worker>> GENERATE_REPORTS_WORKERS = new LinkedList<>();
+
+    private static List<IMethodInterceptor> METHOD_EXECUTION_FILTERS = new LinkedList<>();
+    private static List<ISuiteListener> SUITE_LISTENERS = new LinkedList<>();
 
     /**
      * Instance counter for this reporter. *
@@ -182,6 +205,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
      *
      * @param list         All methods that should be run due to current XML-Test
      * @param iTestContext .
+     *
      * @return Alle mthods taht shuld be run
      */
     @Override
@@ -199,7 +223,6 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
         return list;
     }
 
-    private static List<IMethodInterceptor> METHOD_EXECUTION_FILTERS = new LinkedList<>();
 
     public static void registerMethodExecutionFilter(IMethodInterceptor mi) {
         METHOD_EXECUTION_FILTERS.add(mi);
@@ -253,7 +276,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
         /*
         check for listener duplicates
          */
-//        context.
+        //        context.
 
 
         final String methodName = getMethodName(testResult);
@@ -300,7 +323,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
      */
     @Override
     public void afterInvocation(final IInvokedMethod method, final ITestResult testResult,
-                                             final ITestContext context) {
+                                final ITestContext context) {
         pAfterInvocation(method, testResult, context);
     }
 
@@ -326,7 +349,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
      *
      * @param invokedMethod invoked method.
      * @param testResult    result of invoked method.
-     * @param testContext       steps of test.
+     * @param testContext   steps of test.
      */
     // CHECKSTYLE:OFF
     private void pAfterInvocation(final IInvokedMethod invokedMethod, final ITestResult testResult,
@@ -337,8 +360,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
         if (invokedMethod != null) {
             methodName = invokedMethod.getTestMethod().getMethodName();
             testClassName = invokedMethod.getTestMethod().getTestClass().getName();
-        }
-        else {
+        } else {
             methodName = testResult.getMethod().getConstructorOrMethod().getName();
             testClassName = testResult.getTestClass().getName();
         }
@@ -367,12 +389,10 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
                  */
                 ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult, testContext, invokedMethod);
                 methodContext = classContext.safeAddSkipMethod(testResult, invokedMethod);
-            }
-            else if (testResult.getStatus() == ITestResult.SKIP) {
+            } else if (testResult.getStatus() == ITestResult.SKIP) {
                 ClassContext classContext = ExecutionContextController.getClassContextFromTestResult(testResult, testContext, invokedMethod);
                 methodContext = classContext.safeAddSkipMethod(testResult, invokedMethod);
-            }
-            else {
+            } else {
                 throw new FennecSystemException("INTERNAL ERROR. Could not create methodContext for " + methodName + " with result: " + testResult);
             }
         }
@@ -386,8 +406,7 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
         TestStep.begin("TearDown");
         if (testResult.isSuccess()) {
             LOGGER.info(methodName + " PASSED");
-        }
-        else if (testResult.getStatus() == ITestResult.FAILURE) {
+        } else if (testResult.getStatus() == ITestResult.FAILURE) {
             LOGGER.error(methodName + " FAILED", testResult.getThrowable());
         }
 
@@ -492,6 +511,36 @@ public class FennecListener implements IInvokedMethodListener2, IReporter,
     @Override
     public void onFinish(ITestContext iTestContext) {
 
+    }
+
+    public static void registerSuiteListener(final ISuiteListener listener) {
+        SUITE_LISTENERS.add(listener);
+    }
+
+    /**
+     * This method runs, when SUITE starts!
+     *
+     * @param iSuite
+     */
+    @Override
+    public void onStart(ISuite iSuite) {
+
+        for (final ISuiteListener suiteListener : SUITE_LISTENERS) {
+            suiteListener.onStart(iSuite);
+        }
+    }
+
+    /**
+     * This method runs, when SUITE ends!
+     *
+     * @param iSuite
+     */
+    @Override
+    public void onFinish(ISuite iSuite) {
+
+        for (final ISuiteListener suiteListener : SUITE_LISTENERS) {
+            suiteListener.onFinish(iSuite);
+        }
     }
 
     public static boolean isActive() {

@@ -50,6 +50,8 @@ public class ExecutionContext extends Context implements SynchronizableContext {
 
     public List<SessionContext> exclusiveSessionContexts = new LinkedList<>();
 
+    public int estimatedTestMethodCount;
+
     public ExecutionContext() {
         name = runConfig.RUNCFG;
         swi = name;

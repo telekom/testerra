@@ -19,14 +19,13 @@
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.TestContext;
-import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.model.context.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IInvokedMethod;
@@ -65,6 +64,7 @@ public class ExecutionContextController {
      * Gets the ClassContext for TestNG ITestResult. If no ClassContext for result exists, it will set.
      *
      * @param testResult The ITestResult to set.
+     *
      * @return the ClassContext for the result.
      */
     public static ClassContext getClassContextFromTestResult(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
@@ -167,6 +167,11 @@ public class ExecutionContextController {
         LOGGER.info(prefix + "Duration: " + EXECUTION_CONTEXT.getDuration(EXECUTION_CONTEXT.startTime, EXECUTION_CONTEXT.endTime));
 
         LOGGER.info(prefix + "**********************************************");
+    }
+
+    public static void setEstimatedTestMethodCount(final int estimatedTestMethodCount) {
+
+        EXECUTION_CONTEXT.estimatedTestMethodCount = estimatedTestMethodCount;
     }
 
 }

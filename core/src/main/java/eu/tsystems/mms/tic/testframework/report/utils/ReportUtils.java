@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.ConsumptionMeasurementsCollector;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
@@ -265,7 +265,7 @@ public final class ReportUtils {
     public static void copyFile(final String relativeFile, final File targetDir) {
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativeFile);
         if (is == null) {
-            throw new FennecSystemException("Could not find " + relativeFile);
+            throw new TesterraSystemException("Could not find " + relativeFile);
         }
         try {
             File destFile = new File(targetDir, relativeFile);
@@ -277,7 +277,7 @@ public final class ReportUtils {
 
             FileUtils.copyInputStreamToFile(is, destFile);
         } catch (Exception e) {
-            throw new FennecSystemException("Could not copy resource " + relativeFile, e);
+            throw new TesterraSystemException("Could not copy resource " + relativeFile, e);
         }
     }
 
@@ -496,7 +496,7 @@ public final class ReportUtils {
         try {
             executorService.awaitTermination(1, TimeUnit.HOURS);
         } catch (InterruptedException e) {
-            throw new FennecSystemException("Report generation took too long", e);
+            throw new TesterraSystemException("Report generation took too long", e);
         }
 
         LOGGER.info("Report written to " + Report.REPORT_DIRECTORY.getAbsolutePath());
@@ -535,7 +535,7 @@ public final class ReportUtils {
     }
 
     public static void generateReportEssentials() {
-        PerfTestContainer.prepareMeasurementsForFennecReport();
+        PerfTestContainer.prepareMeasurementsForTesterraReport();
         GenerateReport.generateReport();
     }
 

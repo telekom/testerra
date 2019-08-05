@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=utf-8"/>
     <meta http-equiv="Content-Style-Type" content="text/css"/>
-    <title>fennec Test Results</title>
+    <title>tt. Test Results</title>
 </head>
 <body>
 <style type="text/css">
@@ -93,7 +93,7 @@ body {
 
 
 </style>
-<h1 class="headline">fennec Test Results -
+<h1 class="headline">tt. Test Results -
 #if($failureCorridorMatched)
     <span style="color: #077E07">PASSED</span>
     #else

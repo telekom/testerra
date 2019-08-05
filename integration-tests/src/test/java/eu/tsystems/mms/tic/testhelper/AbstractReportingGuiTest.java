@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testhelper;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.testing.FennecTest;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by piet on 27.07.16.
  */
-public abstract class AbstractReportingGuiTest extends FennecTest {
+public abstract class AbstractReportingGuiTest extends TesterraTest {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 

@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testhelper;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.testing.FennecTest;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -30,7 +30,7 @@ import org.testng.Assert;
 /**
  * Created by piet on 27.07.16.
  */
-public abstract class AbstractReportingTest extends FennecTest {
+public abstract class AbstractReportingTest extends TesterraTest {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 

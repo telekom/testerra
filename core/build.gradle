@@ -20,14 +20,14 @@ dependencies {
 }
 
 processResources {
-    filesMatching('**/fennec-build.properties') {
+    filesMatching('**/testerra-build.properties') {
         filter ReplaceTokens, tokens: [
                 'build.java.version': Jvm.current().javaVersion.toString(),
                 'build.os.name'     : System.getProperty("os.name"),
                 'build.os.arch'     : System.getProperty("os.arch"),
                 'build.os.version'  : System.getProperty("os.version"),
                 'build.user.name'   : System.getProperty("user.name"),
-                'fennec.version'      : project.version.toString(),
+                'build.version'     : project.version.toString(),
                 'build.timestamp'   : new Date().toString()
         ]
     }
@@ -39,13 +39,13 @@ test {
 
 task writeBuildInformation() {
     doLast {
-        file('src/main/resources/fennec-build.properties').text = """build.java.version=${System.getProperty("java.version")}
+        file('src/main/resources/testerra-build.properties').text = """build.java.version=${System.getProperty("java.version")}
 build.os.name=${System.getProperty("os.name")}
 build.os.arch=${System.getProperty("os.arch")}
 build.os.version=${System.getProperty("os.version")}
 build.user.name=${System.getProperty("user.name")}
 build.timestamp=${new Date()}
-build.fennec.version=$version
+build.version=$version
 """
     }
 }

@@ -1,8 +1,7 @@
 package eu.tsystems.mms.tic.testframework.layout.textlayout;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import org.opencv.core.Mat;
 
 import java.util.LinkedList;
@@ -13,8 +12,8 @@ import java.util.List;
  */
 public class LineDetector {
 
-    private final int minLineLength = PropertyManager.getIntProperty(FennecProperties.LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH, 25);
-    private final double minEdgeStrength = PropertyManager.getDoubleProperty(FennecProperties.LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH, 5);
+    private final int minLineLength = PropertyManager.getIntProperty(TesterraProperties.LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH, 25);
+    private final double minEdgeStrength = PropertyManager.getDoubleProperty(TesterraProperties.LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH, 5);
 
     public List<Line> detectLines(Mat mat) {
         LinkedList<Line> lines = new LinkedList<Line>();

@@ -20,9 +20,9 @@
 package eu.tsystems.mms.tic.testframework.report.model.context.report;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
@@ -39,7 +39,7 @@ public class Report {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Report.class);
 
-    private static final String DEFAULT_REPORTDIR = "fennec-report";
+    private static final String DEFAULT_REPORTDIR = "testerra-report";
     public static final File REPORT_DIRECTORY;
 
     public static final String FRAMES_FOLDER_NAME = "frames";
@@ -52,17 +52,17 @@ public class Report {
         /*
         Initialize report directory
          */
-        final String relativeReportDir = PropertyManager.getProperty(FennecProperties.REPORTDIR, DEFAULT_REPORTDIR);
+        final String relativeReportDir = PropertyManager.getProperty(TesterraProperties.REPORTDIR, DEFAULT_REPORTDIR);
         REPORT_DIRECTORY = new File(relativeReportDir);
 
         // cleanup
         try {
             FileUtils.deleteDirectory(REPORT_DIRECTORY);
         } catch (IOException e) {
-            throw new FennecRuntimeException("Could not clean report dir.", e);
+            throw new TesterraRuntimeException("Could not clean report dir.", e);
         }
         if (!REPORT_DIRECTORY.mkdirs()) {
-            throw new FennecSystemException(
+            throw new TesterraSystemException(
                     "Error cleaning report dir: " + REPORT_DIRECTORY +
                             "\nCheck consoles or other directory and file accesses for locks.");
         }

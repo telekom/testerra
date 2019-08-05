@@ -40,7 +40,7 @@ import java.util.List;
  *
  * @author pele
  */
-public class ByCoordinates extends FennecBy {
+public class ByCoordinates extends TesterraBy {
 
     private final int x;
     private final int y;

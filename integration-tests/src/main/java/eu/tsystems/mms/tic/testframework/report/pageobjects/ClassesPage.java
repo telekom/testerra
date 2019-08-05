@@ -39,12 +39,9 @@ public class ClassesPage extends AbstractReportPage {
     //additional functions on class page
     private GuiElement hidePassedTestsCheckbox = new GuiElement(this.driver, By.id("hidePassed"), mainFrame);
 
-
-    // FENNEC INFORMATION
-
     private GuiElement buildUserString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[1]/td[2]"), mainFrame);
 
-    private GuiElement fennecVerionString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[2]/td[2]"), mainFrame);
+    private GuiElement buildVerionString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[2]/td[2]"), mainFrame);
 
     private GuiElement buildTimeStampString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[3]/td[2]"), mainFrame);
 
@@ -196,12 +193,12 @@ public class ClassesPage extends AbstractReportPage {
     /**
      * Asserts the values of the "XETA INFORMATION" section are correctly displayed
      */
-    public void assertFennecInformationIsDisplayed() throws ParseException {
+    public void assertTesterraInformationIsDisplayed() throws ParseException {
 
         final DateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy", Locale.ENGLISH);
 
         buildUserString.asserts().assertIsDisplayed();
-        fennecVerionString.asserts().assertIsDisplayed();
+        buildVerionString.asserts().assertIsDisplayed();
         buildTimeStampString.asserts().assertIsDisplayed();
         dateFormat.parse(buildTimeStampString.getText());
     }

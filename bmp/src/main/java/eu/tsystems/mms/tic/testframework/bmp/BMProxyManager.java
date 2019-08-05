@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.bmp;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.slf4j.Logger;
@@ -53,7 +53,7 @@ public final class BMProxyManager {
 
     private static void transferAndLockPortPool() {
         if (portPool == null) {
-            throw new FennecSystemException("Port pool in null");
+            throw new TesterraSystemException("Port pool in null");
         }
 
         String ports = "";

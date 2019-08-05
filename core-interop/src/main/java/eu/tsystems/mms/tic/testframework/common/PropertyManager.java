@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.constants.RTConstants;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +63,7 @@ public final class PropertyManager {
         final InputStream propertiesInputStream = FileUtils.getLocalOrResourceFileAsStream(resourceFile);
 
         if (propertiesInputStream == null) {
-            throw new FennecSystemException("Resource property file not found: " + resourceFile);
+            throw new TesterraSystemException("Resource property file not found: " + resourceFile);
         }
 
         if (charset == null) {
@@ -87,7 +87,7 @@ public final class PropertyManager {
     /** Static constructor, creating static Properties object. */
     static {
         // set static properties
-        String propertyFile = RTConstants.getFennecTestPropertiesFile();
+        String propertyFile = RTConstants.getTesterraTestPropertiesFile();
         pLoadProperties(FILEPROPERTIES, propertyFile, null);
     }
 

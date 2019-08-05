@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
-import eu.tsystems.mms.tic.testframework.report.FennecListener;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.testng.Assert;
 import org.testng.collections.Lists;
 
@@ -107,7 +107,7 @@ public class AssertCollector {
      */
     static public void fail(String message) {
         AssertionError assertionError = new AssertionError(message);
-        if (FennecListener.isActive()) {
+        if (TesterraListener.isActive()) {
             CollectedAssertions.store(assertionError);
         }
         else {

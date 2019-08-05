@@ -27,12 +27,12 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
-import eu.tsystems.mms.tic.testframework.events.FennecEvent;
-import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
-import eu.tsystems.mms.tic.testframework.events.FennecEventService;
-import eu.tsystems.mms.tic.testframework.events.FennecEventType;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
@@ -64,7 +64,7 @@ public class ClassContext extends Context implements SynchronizableContext {
     public String simpleClassName;
     public final TestContext testContext;
     public final ExecutionContext executionContext;
-    public FennecClassContext fennecClassContext = null;
+    public TesterraClassContext testerraClassContext = null;
     public boolean merged = false;
     public ClassContext mergedIntoClassContext = null;
 
@@ -116,7 +116,7 @@ public class ClassContext extends Context implements SynchronizableContext {
                 if (iTestNGMethod != null) {
                     isTest = iTestNGMethod.isTest();
                 } else {
-                    throw new FennecSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{iTestNGMethod, iTestContext}, "\n"));
+                    throw new TesterraSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{iTestNGMethod, iTestContext}, "\n"));
                 }
 
                 if (isTest) {
@@ -175,9 +175,9 @@ public class ClassContext extends Context implements SynchronizableContext {
                 methodContexts.add(methodContext);
 
                 // fire context update event: create method context
-                FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
-                        .addData(FennecEventDataType.CONTEXT, methodContext)
-                        .addData(FennecEventDataType.WITH_PARENT, true));
+                TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                        .addData(TesterraEventDataType.CONTEXT, methodContext)
+                        .addData(TesterraEventDataType.WITH_PARENT, true));
             } else {
                 if (collect.size() > 1) {
                     LOGGER.error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");

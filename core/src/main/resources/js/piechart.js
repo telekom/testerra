@@ -167,7 +167,7 @@
       }
       settings.onPieClick.apply($(this),[e,data]);
 
-      var category = data[index].id; // fennec-416
+      var category = data[index].id; // tt.-416
       var elementId = $this.attr("id");
       pieClickEventCallBack(elementId, category, activated);
     }

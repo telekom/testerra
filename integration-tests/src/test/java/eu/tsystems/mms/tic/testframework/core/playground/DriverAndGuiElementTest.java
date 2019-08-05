@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 public class DriverAndGuiElementTest extends AbstractTestSitesTest {
 
     static {
-        System.setProperty("fennec.browser.setting", "firefox:66");
+        System.setProperty("tt.browser.setting", "firefox:66");
     }
 
     @Test

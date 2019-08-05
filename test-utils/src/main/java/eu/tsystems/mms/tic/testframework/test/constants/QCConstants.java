@@ -28,7 +28,7 @@ public final class QCConstants {
     }
 
     /** QC Path where all TestSets are placed. */
-    public static final String QC_TESTSUNDERTEST_FOLDER = "Root\\Fennec\\TestSetsUnderTest\\";
+    public static final String QC_TESTSUNDERTEST_FOLDER = "Root\\Testerra\\TestSetsUnderTest\\";
 
     /**
      * Maximum of time that has been gone between QC Synchronization of tests and control by integration tests. Tests
@@ -40,7 +40,7 @@ public final class QCConstants {
     public static final long QCWEBSERVICE_SYNCINTERVAL = 60000;
 
     /** Path that does not exist in QC */
-    public static final String NOT_EXISTING_FOLDER = "Root\\Fennec\\Not\\Existing\\";
+    public static final String NOT_EXISTING_FOLDER = "Root\\Testerra\\Not\\Existing\\";
     public static final String NOT_EXISTING_TESTSET = "NotExistingTestSet";
     public static final String NOT_EXISTING_PATH = NOT_EXISTING_FOLDER + NOT_EXISTING_TESTSET;
 

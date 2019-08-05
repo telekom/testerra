@@ -30,8 +30,8 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.model.HostInfo;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
@@ -93,7 +93,7 @@ public final class WebDriverManagerUtils {
          * baseURL defined by System property or config file
          */
         else {
-            baseUrl = PropertyManager.getProperty(FennecProperties.BASEURL, "");
+            baseUrl = PropertyManager.getProperty(TesterraProperties.BASEURL, "");
         }
         return baseUrl;
     }
@@ -317,7 +317,7 @@ public final class WebDriverManagerUtils {
             try {
                 nodeURL = new URL(proxyID);
             } catch (MalformedURLException e) {
-                throw new FennecRuntimeException("IP and nodePort not readable from proxyID.", e);
+                throw new TesterraRuntimeException("IP and nodePort not readable from proxyID.", e);
             }
             nodeInfo = new NodeInfo(nodeURL.getHost(), nodeURL.getPort());
             nodeInfo.setMTSPort(port - 1000);
@@ -325,7 +325,7 @@ public final class WebDriverManagerUtils {
             return nodeInfo;
         } catch (final Exception e) {
             LOGGER.error("Unexpected Error while getting webdriver node details", e);
-            throw new FennecRuntimeException("Error while retrieving node info: " + e.getMessage(), e);
+            throw new TesterraRuntimeException("Error while retrieving node info: " + e.getMessage(), e);
         }
     }
 

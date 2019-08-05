@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -70,8 +70,8 @@ public class FrameLogic {
         while (framesToAdd != null) {
             GuiElement frameToAdd = framesToAdd[framesToAdd.length - 1];
             if (frameToAdd == null) {
-                throw new FennecSystemException("Error when retrieving the frame hierarchy. This means, the GuiElement or one" +
-                        " of its frames was not correctly constructed inside of fennec.");
+                throw new TesterraSystemException("Error when retrieving the frame hierarchy. This means, the GuiElement or one" +
+                        " of its frames was not correctly constructed inside of testerra.");
             }
             frameList.add(frameToAdd);
             FrameLogic frameLogic = frameToAdd.getFrameLogic();

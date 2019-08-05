@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.FennecWebTestFramedPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.WebTestFramedPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -46,7 +46,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest {
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        FennecWebTestFramedPage page = new FennecWebTestFramedPage(driver);
+        WebTestFramedPage page = new WebTestFramedPage(driver);
         page.assertIsTextPresent("Frame1234");
     }
 
@@ -56,7 +56,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest {
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        FennecWebTestFramedPage page = new FennecWebTestFramedPage(driver);
+        WebTestFramedPage page = new WebTestFramedPage(driver);
         page.assertIsTextPresent("Bifi");
     }
 
@@ -66,7 +66,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest {
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        FennecWebTestFramedPage page = new FennecWebTestFramedPage(driver);
+        WebTestFramedPage page = new WebTestFramedPage(driver);
         page.assertIsNotTextPresent("Bifi");
     }
 
@@ -76,7 +76,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest {
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        FennecWebTestFramedPage page = new FennecWebTestFramedPage(driver);
+        WebTestFramedPage page = new WebTestFramedPage(driver);
         page.assertIsNotTextPresent("Frame1234");
     }
 
@@ -86,7 +86,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest {
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        FennecWebTestFramedPage page = new FennecWebTestFramedPage(driver);
+        WebTestFramedPage page = new WebTestFramedPage(driver);
         page.assertIsTextDisplayed("Frame1234");
     }
 
@@ -96,7 +96,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest {
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        FennecWebTestFramedPage page = new FennecWebTestFramedPage(driver);
+        WebTestFramedPage page = new WebTestFramedPage(driver);
         page.assertIsTextDisplayed("Bifi");
     }
 
@@ -106,7 +106,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest {
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        FennecWebTestFramedPage page = new FennecWebTestFramedPage(driver);
+        WebTestFramedPage page = new WebTestFramedPage(driver);
         page.assertIsNotTextDisplayed("Bifi");
     }
 
@@ -116,7 +116,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest {
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        FennecWebTestFramedPage page = new FennecWebTestFramedPage(driver);
+        WebTestFramedPage page = new WebTestFramedPage(driver);
         page.assertIsNotTextDisplayed("Frame1234");
     }
 

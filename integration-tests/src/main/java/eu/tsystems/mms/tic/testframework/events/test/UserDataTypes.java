@@ -26,14 +26,14 @@
  */
 package eu.tsystems.mms.tic.testframework.events.test;
 
-import eu.tsystems.mms.tic.testframework.events.IFennecEventDataType;
+import eu.tsystems.mms.tic.testframework.events.ITesterraEventDataType;
 
 /**
  * <Beschreibung der Klasse>
  *
  * @author pele
  */
-public enum UserDataTypes implements IFennecEventDataType {
+public enum UserDataTypes implements ITesterraEventDataType {
 
     UMGEBUNG(String.class),
     BLUBB(String.class);

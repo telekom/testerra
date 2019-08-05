@@ -52,7 +52,7 @@ public final class ErrorMessages {
      * @return error message
      */
     public static String seleniumServerHostMissing() {
-        return "fennec.selenium.server.host missing! Using localhost.";
+        return "tt.selenium.server.host missing! Using localhost.";
     }
 
     /**
@@ -61,7 +61,7 @@ public final class ErrorMessages {
      * @return error message
      */
     public static String seleniumServerPortMissing() {
-        return "fennec.selenium.server.port missing! Using 4444.";
+        return "tt.selenium.server.port missing! Using 4444.";
     }
 
     /**
@@ -70,7 +70,7 @@ public final class ErrorMessages {
      * @return error message.
      */
     public static String skippedByQcExecutionFilter() {
-        return "Skipped by fennec QC execution filter!";
+        return "Skipped by QC execution filter!";
     }
 
 }

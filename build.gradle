@@ -12,12 +12,12 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
 
-group 'eu.tsystems.mms.tic.jfennec'
+group 'eu.tsystems.mms.tic.testerra'
 version '1-SNAPSHOT'
 
 ext {
     /*
-    fennec stuff
+    module stuff
      */
     core_interop = project(':core-interop')
     driver_ui = project(':driver-ui')
@@ -128,7 +128,7 @@ def dnp(prj) {
 }
 
 allprojects {
-    group 'eu.tsystems.mms.tic.jfennec'
+    group 'eu.tsystems.mms.tic.testerra'
     version '1-SNAPSHOT'
 
     apply plugin: 'java'

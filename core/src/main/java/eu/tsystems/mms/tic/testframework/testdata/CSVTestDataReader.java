@@ -28,7 +28,7 @@
 package eu.tsystems.mms.tic.testframework.testdata;
 
 import com.opencsv.CSVReader;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,7 +127,7 @@ public class CSVTestDataReader {
         try {
             allDataSets = reader.readAll();
         } catch (IOException e) {
-            throw new FennecRuntimeException("Could not read data from: " + fileInResources);
+            throw new TesterraRuntimeException("Could not read data from: " + fileInResources);
         }
 
         int headerRowNr = getHeaderRow();

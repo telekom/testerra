@@ -20,26 +20,26 @@
 package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
-import eu.tsystems.mms.tic.testframework.events.FennecEvent;
-import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
-import eu.tsystems.mms.tic.testframework.events.FennecEventService;
-import eu.tsystems.mms.tic.testframework.events.FennecEventType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorkerExecutor;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.FennecEventsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateFennecReportWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.TestEndEventWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateTesterraReportWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateOtherOutputsWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.FennecListener;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
-import eu.tsystems.mms.tic.testframework.utils.FennecUtils;
+import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.slf4j.Logger;
@@ -94,11 +94,11 @@ public class GenerateReport {
              */
             GenerateReportsWorkerExecutor workerExecutor = new GenerateReportsWorkerExecutor();
 
-            workerExecutor.add(new FennecEventsWorker());
+            workerExecutor.add(new TestEndEventWorker());
 
-            FennecUtils.addWorkersToExecutor(FennecListener.GENERATE_REPORTS_WORKERS, workerExecutor);
+            FrameworkUtils.addWorkersToExecutor(TesterraListener.GENERATE_REPORTS_WORKERS, workerExecutor);
 
-            workerExecutor.add(new GenerateFennecReportWorker());
+            workerExecutor.add(new GenerateTesterraReportWorker());
             workerExecutor.add(new GenerateOtherOutputsWorker());
 
             // run workers
@@ -125,7 +125,7 @@ public class GenerateReport {
     }
 
     /**
-     * Stops logging of FennecCommands. Statistics are filled and reports are generated.
+     * Stops logging of TesterraCommands. Statistics are filled and reports are generated.
      */
     public static void generateReport() {
         ExecutionContextController.EXECUTION_CONTEXT.endTime = new Date();
@@ -205,9 +205,9 @@ public class GenerateReport {
         /*
         final execution context sync
          */
-        FennecEventService.getInstance().fireEvent(
-                new FennecEvent(FennecEventType.CONTEXT_UPDATE)
-                        .addData(FennecEventDataType.CONTEXT, ExecutionContextController.EXECUTION_CONTEXT)
+        TesterraEventService.getInstance().fireEvent(
+                new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                        .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.EXECUTION_CONTEXT)
         );
 
         /*

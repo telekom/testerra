@@ -112,7 +112,7 @@ jQuery.browser.opera = /opera/.test(navigator.userAgent.toLowerCase());
             $.support.opacity=true;
         }
         var ie6=(typeof document.body.style.maxHeight === "undefined");
-        var _1e=false;//$.browser.opera&&$.fennec.browser.version<=9.5;
+        var _1e=false;//$.browser.opera&&$.tt.browser.version<=9.5;
         var w,h,w2,h2;
         var cw,ch;cw=ch=0;
         var _1f=false;

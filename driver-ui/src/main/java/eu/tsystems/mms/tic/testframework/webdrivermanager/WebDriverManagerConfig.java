@@ -27,8 +27,7 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.slf4j.Logger;
@@ -62,16 +61,16 @@ public class WebDriverManagerConfig {
      * Close windows after Test Methods.
      */
     public boolean closeWindowsAfterTestMethod = PropertyManager.getBooleanProperty(
-            FennecProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS,
+            TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS,
             true);
     /**
      * Close windows on failure.
      */
     public boolean closeWindowsOnFailure = PropertyManager.getBooleanProperty(
-            FennecProperties.CLOSE_WINDOWS_ON_FAILURE,
+            TesterraProperties.CLOSE_WINDOWS_ON_FAILURE,
             true);
 
-    public boolean maximize = PropertyManager.getBooleanProperty(FennecProperties.BROWSER_MAXIMIZE, false);
+    public boolean maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
 
     /**
      * Default constructor.
@@ -91,9 +90,9 @@ public class WebDriverManagerConfig {
     }
 
     public static String browser() {
-        String browser = PropertyManager.getProperty(FennecProperties.BROWSER, null);
+        String browser = PropertyManager.getProperty(TesterraProperties.BROWSER, null);
 
-        String browserSetting = PropertyManager.getProperty(FennecProperties.BROWSER_SETTING);
+        String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
         if (!StringUtils.isStringEmpty(browserSetting) && browserSetting.contains(":")) {
             String[] split = browserSetting.split(":");
             browser = split[0];
@@ -103,8 +102,8 @@ public class WebDriverManagerConfig {
     }
 
     public static String browserVersion() {
-        String browserVersion = PropertyManager.getProperty(FennecProperties.BROWSER_VERSION, null);
-        String browserSetting = PropertyManager.getProperty(FennecProperties.BROWSER_SETTING);
+        String browserVersion = PropertyManager.getProperty(TesterraProperties.BROWSER_VERSION, null);
+        String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
         if (!StringUtils.isStringEmpty(browserSetting) && browserSetting.contains(":")) {
             String[] split = browserSetting.split(":");
             browserVersion = split[1];
@@ -118,7 +117,7 @@ public class WebDriverManagerConfig {
      * @return the webDriverMode
      */
     private WebDriverMode initWebDriverMode() {
-        String modeString = PropertyManager.getProperty(FennecProperties.WEBDRIVERMODE, webDriverMode.name()).trim();
+        String modeString = PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, webDriverMode.name()).trim();
         webDriverMode = WebDriverMode.valueOf(modeString);
         return webDriverMode;
     }

@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 /**
- * This class represents the Page Object for the expandable menu in the right upper corner of a FennecReportPage
+ * This class represents the Page Object for the expandable menu in the right upper corner of a TesterraReportPage
  */
 public class BurgerMenu extends AbstractReportPage {
 

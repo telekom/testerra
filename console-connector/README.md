@@ -1,5 +1,5 @@
-# jfennec console-connector
-jfennec console-connector provides SSH and Telnet connectors in a simplified way. 
+# console-connector
+console-connector provides SSH and Telnet connectors in a simplified way. 
 
 ## Installation / Usage
 
@@ -10,7 +10,7 @@ For maven:
 ```xml
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.jfennec</groupId>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>console-connector</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
@@ -19,7 +19,7 @@ For maven:
 
 For gradle:
 ```text
-compile 'eu.tsystems.mms.tic.jfennec:console-connector:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:console-connector:1-SNAPSHOT'
 ```
 
 ###### Using console-connector module:
@@ -27,10 +27,10 @@ compile 'eu.tsystems.mms.tic.jfennec:console-connector:1-SNAPSHOT'
 The following example shows how to create an SSH connection and execute a command.
 
 ```java
-public class MyTest extends FennecTest {
+public class MyTest extends TesterraTest {
     
     @Test
-    public void testT01_My_first_fennec_test() {
+    public void testT01_My_first_test() {
         SSHConnector ssh = new SSHConnector(host, username, password);
         String output = ssh.execute("ls -al");
         //...

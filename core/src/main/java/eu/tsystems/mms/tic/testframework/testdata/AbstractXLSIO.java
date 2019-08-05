@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.testdata;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
@@ -184,20 +184,20 @@ public abstract class AbstractXLSIO {
                     .getResourceAsStream(fileInResources);
 
             if (resourceAsStream == null) {
-                throw new FennecSystemException("Error reading resource file " + fileInResources);
+                throw new TesterraSystemException("Error reading resource file " + fileInResources);
             }
 
             try {
                 workbook = WorkbookFactory.create(resourceAsStream);
             } catch (IOException e) {
-                throw new FennecSystemException("Cannot read xls(x) file: " + fileInResources, e);
+                throw new TesterraSystemException("Cannot read xls(x) file: " + fileInResources, e);
             } catch (InvalidFormatException e) {
-                throw new FennecSystemException("Cannot read xls(x) file: " + fileInResources, e);
+                throw new TesterraSystemException("Cannot read xls(x) file: " + fileInResources, e);
             }
             // Get data sheet by name
             sheet = workbook.getSheet(sheetName);
             if (sheet == null) {
-                throw new FennecSystemException("No sheet with name " + sheetName + " found.");
+                throw new TesterraSystemException("No sheet with name " + sheetName + " found.");
             }
             return null;
         }
@@ -219,14 +219,14 @@ public abstract class AbstractXLSIO {
                 FileInputStream fileInputStream = new FileInputStream(filename);
                 workbook = WorkbookFactory.create(fileInputStream);
             } catch (IOException e) {
-                throw new FennecSystemException("Cannot read xls(x) file: " + filename, e);
+                throw new TesterraSystemException("Cannot read xls(x) file: " + filename, e);
             } catch (InvalidFormatException e) {
-                throw new FennecSystemException("Cannot read xls(x) file: " + filename, e);
+                throw new TesterraSystemException("Cannot read xls(x) file: " + filename, e);
             }
             // Get data sheet by name
             sheet = workbook.getSheet(sheetName);
             if (sheet == null) {
-                throw new FennecSystemException("No sheet with name " + sheetName + " found.");
+                throw new TesterraSystemException("No sheet with name " + sheetName + " found.");
             }
 
             return null;
@@ -258,7 +258,7 @@ public abstract class AbstractXLSIO {
                 return row;
             }
         }
-        throw new FennecSystemException("Could not find a dataset for >" + id + "< in column " + indexColumn
+        throw new TesterraSystemException("Could not find a dataset for >" + id + "< in column " + indexColumn
                 + " in current worksheet.");
     }
 

@@ -1,5 +1,5 @@
-# jfennec core
-jfennec core provides the framework core functionality: test control based on [testng](https://testng.org/doc/index.html), 
+# core
+core provides the framework core functionality: test control based on [testng](https://testng.org/doc/index.html), 
 logging, reporting.  
 
 ## Installation / Usage
@@ -9,7 +9,7 @@ For maven:
 ```xml
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.jfennec</groupId>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>core</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
@@ -18,25 +18,25 @@ For maven:
 
 For gradle:
 ```text
-compile 'eu.tsystems.mms.tic.jfennec:core:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:core:1-SNAPSHOT'
 ```
 
 ###### Using console-connector module:
 
-The main class to use is FennecTest. With all your test classes inheriting from this class, jfennec is activated
+The main class to use is TesterraTest. With all your test classes inheriting from this class, testerra is activated
 for every test you are executing.  
 
 ```java
-public class MyTest extends FennecTest {
+public class MyTest extends TesterraTest {
     
     @Test
-    public void testT01_My_first_fennec_test() {
+    public void testT01_My_first_tt._test() {
         //...
     }
 }
 ```
 
-Any module you are using will automatically hook into the execution by implementing the FennecHook:
+Any module you are using will automatically hook into the execution by implementing the TesterraHook:
 
 ```java
 public class YourModuleHook implements ModuleHook {
@@ -47,13 +47,13 @@ public class YourModuleHook implements ModuleHook {
         hook your module...
          */
         //start
-        FennecListener.registerBeforeMethodWorker(...);
+        TesterraListener.registerBeforeMethodWorker(...);
 
         //finish
-        FennecListener.registerAfterMethodWorker(...);
+        TesterraListener.registerAfterMethodWorker(...);
 
         //shutdown
-        FennecListener.registerGenerateReportsWorker(...);
+        TesterraListener.registerGenerateReportsWorker(...);
 
         /*
         register services
@@ -78,9 +78,9 @@ public class YourModuleHook implements ModuleHook {
 }
 ```
 
-## FennecListener
+## TesterraListener
 
-The FennecListener is the core testng listener by which jfennec is controlling the execution. It is not recommended to 
+The TesterraListener is the core testng listener by which testerra is controlling the execution. It is not recommended to 
 overwrite this class, since you have the possibility to hook in your functionality. 
 
 ***

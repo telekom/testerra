@@ -1,4 +1,4 @@
-Die Datei server.cer muss für testzwecke der jvm hinzugefügt.
+Die Datei server.cer muss fï¿½r testzwecke der jvm hinzugefï¿½gt.
 (selbsterstelltes Zertifikat um ssl Verbindung zum mailserver zu testen)
-In jdk Ordner lib/security gehen und folgenden Befehl ausführen:
-keytool -import -alias fennec.mailserver -file server.cert -keystore cacerts –storepass changeit
+In jdk Ordner lib/security gehen und folgenden Befehl ausfï¿½hren:
+keytool -import -alias tt.mailserver -file server.cert -keystore cacerts ï¿½storepass changeit

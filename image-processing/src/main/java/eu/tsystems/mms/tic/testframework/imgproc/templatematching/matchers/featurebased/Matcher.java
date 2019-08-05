@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.imgproc.templatematching.matchers.featurebased;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.imgproc.ImgprocUtils;
 import eu.tsystems.mms.tic.testframework.imgproc.templatematching.strategy.MatchingAlgorithm;
 import eu.tsystems.mms.tic.testframework.imgproc.utils.OpenCvInitializer;
@@ -57,7 +57,7 @@ public class Matcher implements MatchingAlgorithm<Match> {
         try {
             return params.get();
         } catch (Exception e) {
-            throw new FennecSystemException("threadlocal parameters for template matcher not set", e);
+            throw new TesterraSystemException("threadlocal parameters for template matcher not set", e);
         }
     }
 
@@ -123,7 +123,7 @@ public class Matcher implements MatchingAlgorithm<Match> {
             match = matchResult.match;
             matchResult.release();
         } catch (InterruptedException ie) {
-            throw new FennecSystemException("Unexpected Error. Possible causes: out of memory, matcher process killed externally, actual bug", ie);
+            throw new TesterraSystemException("Unexpected Error. Possible causes: out of memory, matcher process killed externally, actual bug", ie);
         } catch (ExecutionException ee) {
             LOGGER.error("error while searching for template " + template + " in scene " + scene, ee.getCause());
         }

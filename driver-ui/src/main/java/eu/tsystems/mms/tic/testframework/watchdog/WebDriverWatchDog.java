@@ -19,10 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.watchdog;
 
-import eu.tsystems.mms.tic.testframework.events.FennecEvent;
-import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
-import eu.tsystems.mms.tic.testframework.events.FennecEventService;
-import eu.tsystems.mms.tic.testframework.events.FennecEventType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
@@ -177,8 +177,8 @@ public final class WebDriverWatchDog {
 
                                             // update crashed execution context
                                             ExecutionContextController.EXECUTION_CONTEXT.crashed = true;
-                                            FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
-                                                    .addData(FennecEventDataType.CONTEXT, ExecutionContextController.EXECUTION_CONTEXT));
+                                            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                                                    .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.EXECUTION_CONTEXT));
 
                                             System.exit(99);
                                         }

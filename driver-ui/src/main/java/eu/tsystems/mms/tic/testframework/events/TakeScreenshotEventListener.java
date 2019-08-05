@@ -19,10 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.events;
 
-public class TakeScreenshotEventListener implements IFennecEventListener {
+public class TakeScreenshotEventListener implements TesterraEventListener {
     @Override
-    public void fireEvent(FennecEvent FennecEvent) {
-        if (FennecEvent.getFennecEventType() == FennecEventType.TAKE_SCREENSHOTS) {
+    public void fireEvent(TesterraEvent TesterraEvent) {
+        if (TesterraEvent.getTesterraEventType() == TesterraEventType.TAKE_SCREENSHOTS) {
 
         }
     }

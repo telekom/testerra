@@ -20,10 +20,10 @@
 package eu.tsystems.mms.tic.testframework;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.testing.FennecTest;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
-public abstract class AbstractTest extends FennecTest {
+public abstract class AbstractTest extends TesterraTest {
 
     /**
      * Sets the unsupportedBrowser=true flag for the @Fails annotation

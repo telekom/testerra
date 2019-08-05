@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.location;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.sikuli.WebDriverScreen;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
@@ -49,7 +49,7 @@ import java.util.List;
  *
  * @author pele
  */
-public class ByImage extends FennecBy {
+public class ByImage extends TesterraBy {
 
     private final URL url;
     private TakesScreenshot takesScreenshotDriver;
@@ -82,7 +82,7 @@ public class ByImage extends FennecBy {
             this.driver = driver;
         }
         else {
-            throw new FennecSystemException("Your WebDriver instance is not a TakesScreenshot instance. " +
+            throw new TesterraSystemException("Your WebDriver instance is not a TakesScreenshot instance. " +
                     "Only TakesScreenshot webdrivers are supported for this action.");
         }
     }

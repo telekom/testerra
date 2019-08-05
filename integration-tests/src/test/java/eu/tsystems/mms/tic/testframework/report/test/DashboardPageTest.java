@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -25,7 +25,7 @@ import static eu.tsystems.mms.tic.testframework.report.model.TestResultHelper.Te
 /**
  * Created by riwa on 24.11.2016.
  */
-@FennecClassContext("View-Dashboard-General")
+@TesterraClassContext("View-Dashboard-General")
 public class DashboardPageTest extends AbstractTestDashboard {
 
     /**
@@ -96,12 +96,12 @@ public class DashboardPageTest extends AbstractTestDashboard {
     }
 
     /**
-     * Tests if the fennec logo is displayed.
+     * Tests if the tt. logo is displayed.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT05_checksIfFennecLogoIsDisplayed() throws Exception {
+    public void testT05_checksIfTesterraLogoIsDisplayed() throws Exception {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
-        Assert.assertTrue(dashboardPage.fennecLogo.isDisplayed(), "Fennec logo is displayed on dashboard page.");
+        Assert.assertTrue(dashboardPage.testerraLogo.isDisplayed(), "Testerra logo is displayed on dashboard page.");
     }
 
     /**

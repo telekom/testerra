@@ -27,9 +27,9 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
@@ -47,11 +47,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.*;
@@ -167,7 +164,7 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
             GuiElementCoreFactory guiElementCoreFactory = coreFactories.get(currentBrowser);
             guiElementCore = guiElementCoreFactory.create(by, driver, this.guiElementData);
         } else {
-            throw new FennecSystemException("No GuiElementCoreFactory registered for " + currentBrowser);
+            throw new TesterraSystemException("No GuiElementCoreFactory registered for " + currentBrowser);
         }
         GuiElementStatusCheck guiElementStatusCheck = guiElementCore;
 
@@ -237,8 +234,8 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
         GuiElementFacade guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
 
-        int delayAfterAction = PropertyManager.getIntProperty(FennecProperties.DELAY_AFTER_GUIELEMENT_ACTION_MILLIS);
-        int delayBeforeAction = PropertyManager.getIntProperty(FennecProperties.DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS);
+        int delayAfterAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_AFTER_GUIELEMENT_ACTION_MILLIS);
+        int delayBeforeAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS);
         if (delayAfterAction > 0 || delayBeforeAction > 0) {
             guiElementFacade = new DelayActionsGuiElementFacade(guiElementFacade, delayBeforeAction, delayAfterAction, guiElementData);
         }

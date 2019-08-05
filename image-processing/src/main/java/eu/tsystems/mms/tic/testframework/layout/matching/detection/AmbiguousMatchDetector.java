@@ -7,7 +7,7 @@
  */
 package eu.tsystems.mms.tic.testframework.layout.matching.detection;
 
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.AmbiguousMatchError;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
@@ -27,7 +27,7 @@ import java.util.List;
 public class AmbiguousMatchDetector extends FeatureDetector {
 
     public AmbiguousMatchDetector() {
-        ignorePropertyKey = FennecProperties.LAYOUTCHECK_IGNORE_AMBIGUOUS_MATCH;
+        ignorePropertyKey = TesterraProperties.LAYOUTCHECK_IGNORE_AMBIGUOUS_MATCH;
     }
 
     @Override

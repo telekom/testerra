@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.constants.Constants;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -203,7 +203,7 @@ public final class WebDriverUtils {
                         + webElement.getLocation().getY());
                 return webElement;
             } else {
-                throw new FennecSystemException("Could not get WebElement under " + x + "," + y);
+                throw new TesterraSystemException("Could not get WebElement under " + x + "," + y);
             }
         }
         return null;

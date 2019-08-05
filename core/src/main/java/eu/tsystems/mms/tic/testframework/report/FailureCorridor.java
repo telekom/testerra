@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
@@ -68,10 +68,10 @@ public final class FailureCorridor {
         }
     }
 
-    private static int allowedTestFailures = PropertyManager.getIntProperty(FennecProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS, -1);
-    private static int allowedTestFailuresHIGH = PropertyManager.getIntProperty(FennecProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH, -1);
-    private static int allowedTestFailuresMID = PropertyManager.getIntProperty(FennecProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID, -1);
-    private static int allowedTestFailuresLOW = PropertyManager.getIntProperty(FennecProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW, -1);
+    private static int allowedTestFailures = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS, -1);
+    private static int allowedTestFailuresHIGH = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH, -1);
+    private static int allowedTestFailuresMID = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID, -1);
+    private static int allowedTestFailuresLOW = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW, -1);
 
     public static void setFailureCorridorActive(boolean active) {
         Flags.FAILURE_CORRIDOR_ACTIVE = active;
@@ -231,7 +231,7 @@ public final class FailureCorridor {
         String statistics = getStatistics();
         System.out.println(statistics);
 
-        String stdOutMessage = "\n\nfennec: " + statusMessage + "\n\n";
+        String stdOutMessage = "\n\ntesterra: " + statusMessage + "\n\n";
         System.out.println(stdOutMessage);
     }
 }

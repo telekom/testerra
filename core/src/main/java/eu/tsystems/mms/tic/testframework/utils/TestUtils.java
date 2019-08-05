@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 import java.util.UUID;
 
 /**
- * Helper class containing some util methods for fennec.
+ * Helper class containing some util methods for testerra.
  *
  * @author pele
  */

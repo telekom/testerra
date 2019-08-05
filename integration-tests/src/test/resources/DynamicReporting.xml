@@ -1,8 +1,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Fennec Core Test Suite" verbose="10" configfailurepolicy="continue">
+<suite name="Testerra Core Test Suite" verbose="10" configfailurepolicy="continue">
 
     <listeners>
-        <listener class-name="eu.tsystems.mms.tic.testframework.report.FennecListener"/>
+        <listener class-name="eu.tsystems.mms.tic.testframework.report.TesterraListener"/>
     </listeners>
 
     <test name="Test1">

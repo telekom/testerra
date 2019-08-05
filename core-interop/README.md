@@ -1,5 +1,5 @@
-# jfennec core-interop
-jfennec core-interop is an abstraction of the core to provide core module access by interfaces without the
+# core-interop
+core-interop is an abstraction of the core to provide core module access by interfaces without the
 need of a direct coupling to the core module. This module is intended to be used by developers of additional
 framework modules.
 
@@ -10,7 +10,7 @@ For maven:
 ```xml
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.jfennec</groupId>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>core-interop</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
@@ -19,7 +19,7 @@ For maven:
 
 For gradle:
 ```text
-compile 'eu.tsystems.mms.tic.jfennec:core-interop:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:core-interop:1-SNAPSHOT'
 ```
 
 ###### Using core-interop module:

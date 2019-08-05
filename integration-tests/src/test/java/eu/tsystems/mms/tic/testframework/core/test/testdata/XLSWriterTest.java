@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.testdata;
 
 import eu.tsystems.mms.tic.testframework.AbstractTest;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.testdata.XLSTestDataReader;
 import eu.tsystems.mms.tic.testframework.testdata.XLSWriter;
@@ -161,7 +161,7 @@ public class XLSWriterTest extends AbstractTest {
         XLSWriter xlsWriter = new XLSWriter();
         try {
             xlsWriter.openFileFromResource("notExisting.xls", "sheet1");
-        } catch (FennecSystemException e) {
+        } catch (TesterraSystemException e) {
             Assert.assertNotNull(e.getMessage());
             final String msg = "Error reading resource file";
             Assert.assertTrue(e.getMessage().contains(msg), "Error message contains '" + msg + "'");
@@ -184,7 +184,7 @@ public class XLSWriterTest extends AbstractTest {
         String filepath = rootDir + "\\target\\" + file;
         try {
             xlsWriter.openFileAbsolute(filepath, "sheet1");
-        } catch (FennecSystemException e) {
+        } catch (TesterraSystemException e) {
             Assert.assertEquals(e.getMessage(),
                     "Cannot read xls(x) file: " + file.getAbsolutePath() + "\\target\\.");
             return;

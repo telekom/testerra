@@ -19,8 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.bmp;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.proxy.http.BrowserMobHttpClient;
 import org.apache.http.HttpHost;
@@ -101,7 +101,7 @@ public class ProxyServer {
                 fw2.write("");
                 fw2.close();
             } catch (IOException e) {
-                throw new FennecSystemException("Error creating browsermob proxy setup files", e);
+                throw new TesterraSystemException("Error creating browsermob proxy setup files", e);
             }
         }
     }
@@ -109,7 +109,7 @@ public class ProxyServer {
     public void startCapture() {
         bmpProxyServer.setCaptureContent(true);
         bmpProxyServer.setCaptureHeaders(true);
-        bmpProxyServer.newHar("fennec.captured.har");
+        bmpProxyServer.newHar("testerra.captured.har");
     }
 
     public Har stopCapture() {
@@ -142,7 +142,7 @@ public class ProxyServer {
             bmpProxyServer.start();
 //            httpClient = getHttpClient(bmpProxyServer);
         } catch (Exception e) {
-            throw new FennecRuntimeException(e);
+            throw new TesterraRuntimeException(e);
         }
 
         bmpProxyServer.setOptions(options);
@@ -194,7 +194,7 @@ public class ProxyServer {
             bmpProxyServer.stop();
             LOGGER.info("BMP server on port " + bmpProxyServer.getPort() + " stopped");
         } catch (Exception e) {
-            throw new FennecRuntimeException(e);
+            throw new TesterraRuntimeException(e);
         }
     }
 

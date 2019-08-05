@@ -1,9 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Fennec Imgproc Unit Test Suite" verbose="10" configfailurepolicy="continue" thread-count="10"
+<suite name="Testerra Imgproc Unit Test Suite" verbose="10" configfailurepolicy="continue" thread-count="10"
        parallel="false">
 
     <listeners>
-        <listener class-name="eu.tsystems.mms.tic.testframework.report.FennecListener"/>
+        <listener class-name="eu.tsystems.mms.tic.testframework.report.TesterraListener"/>
     </listeners>
 
     <test name="Imgproc Templatematching Featurebased Matcher Test">

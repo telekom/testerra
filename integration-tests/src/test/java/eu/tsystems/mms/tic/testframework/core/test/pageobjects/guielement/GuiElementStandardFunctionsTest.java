@@ -281,7 +281,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if mouseOver() works with FennecProperties "false"
+     * Test if mouseOver() works with TesterraProperties "false"
      */
     @Test
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
@@ -291,7 +291,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if mouseOver() works with FennecProperties "true"
+     * Test if mouseOver() works with TesterraProperties "true"
      */
     @Test
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")

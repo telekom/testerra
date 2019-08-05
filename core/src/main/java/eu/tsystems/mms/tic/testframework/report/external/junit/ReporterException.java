@@ -38,7 +38,7 @@ package eu.tsystems.mms.tic.testframework.report.external.junit;
  * under the License.
  */
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 
 /**
  * Exception occurring during report generation.
@@ -46,7 +46,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
 public class ReporterException
-    extends FennecRuntimeException
+    extends TesterraRuntimeException
 {
     public ReporterException( String message, Exception nested )
     {

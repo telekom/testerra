@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.dbconnector.query;
 
 import eu.tsystems.mms.tic.testframework.dbconnector.Table;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 
 /**
  * Class representing an update query.
@@ -55,10 +55,10 @@ public class UpdateQuery<T extends Table> extends Query<T> implements INonSelect
         this.setFromTable(table);
         if (cols == null | values == null | cols.length != values.length | cols.length == 0) {
             LOG.error("columns and/or values not valid.");
-            throw new FennecRuntimeException("columns and/or values not valid.");
+            throw new TesterraRuntimeException("columns and/or values not valid.");
         } else if (where == null | where.length() == 0) {
             LOG.error("where clause needed to specifiy rows that need to be updated.");
-            throw new FennecRuntimeException("where clause needed to specifiy rows that need to be updated.");
+            throw new TesterraRuntimeException("where clause needed to specifiy rows that need to be updated.");
         } else {
             final StringBuffer colValueString = new StringBuffer();
             for (int i = 0; i < cols.length; i++) {

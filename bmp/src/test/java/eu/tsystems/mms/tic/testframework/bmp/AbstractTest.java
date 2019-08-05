@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.bmp;
 
-import eu.tsystems.mms.tic.testframework.testing.FennecTest;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 
-public abstract class AbstractTest extends FennecTest {
+public abstract class AbstractTest extends TesterraTest {
 }

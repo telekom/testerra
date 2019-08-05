@@ -1,4 +1,4 @@
-rootProject.name = 'jfennec'
+rootProject.name = 'testerra'
 include 'core'
 include 'core-interop'
 include 'driver-ui'

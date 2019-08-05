@@ -26,10 +26,10 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.common.FennecCommons;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -56,12 +56,12 @@ public final class SourceUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SourceUtils.class);
 
-    private static String sourceRoot = System.getProperty(FennecProperties.MODULE_SOURCE_ROOT, "src");
-    private static int linePrefetch = PropertyManager.getIntProperty(FennecProperties.SOURCE_LINES_PREFETCH, 5);
-    private static final boolean FIND_SOURCES = PropertyManager.getBooleanProperty(FennecProperties.REPORT_ACTIVATE_SOURCES, true);
+    private static String sourceRoot = System.getProperty(TesterraProperties.MODULE_SOURCE_ROOT, "src");
+    private static int linePrefetch = PropertyManager.getIntProperty(TesterraProperties.SOURCE_LINES_PREFETCH, 5);
+    private static final boolean FIND_SOURCES = PropertyManager.getBooleanProperty(TesterraProperties.REPORT_ACTIVATE_SOURCES, true);
     private static HashMap<Class, List<String>> cachedClassNames = new HashMap<Class, List<String>>();
-    private static final String PACKAGE_SCOPE = PropertyManager.getProperty(FennecProperties.PROJECT_PACKAGE,
-            FennecCommons.DEFAULT_PACKAGE_NAME);
+    private static final String PACKAGE_SCOPE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE,
+            TesterraCommons.DEFAULT_PACKAGE_NAME);
 
     public static ScriptSource findScriptSourceForThrowable(Throwable throwable) {
         if (!FIND_SOURCES) {
@@ -75,7 +75,7 @@ public final class SourceUtils {
         int lineNumber = 0;
         boolean inDefaultPackageSection = false;
         for (StackTraceElement stackTraceElement : stackTrace) {
-            if (stackTraceElement.getClassName().startsWith(FennecCommons.DEFAULT_PACKAGE_NAME)) {
+            if (stackTraceElement.getClassName().startsWith(TesterraCommons.DEFAULT_PACKAGE_NAME)) {
                 className = stackTraceElement.getClassName();
                 fileName = stackTraceElement.getFileName();
                 lineNumber = stackTraceElement.getLineNumber();

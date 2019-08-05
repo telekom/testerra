@@ -3,10 +3,10 @@
 <log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
     <!-- Appender that writes all log messages in the html test report, when 
         they are logged while a test runs. -->
-    <appender name="FennecLogger"
-        class="eu.tsystems.mms.tic.testframework.report.FennecLogger">
+    <appender name="TesterraLogger"
+        class="eu.tsystems.mms.tic.testframework.report.TesterraLogger">
     </appender>
-    <!-- Normal file appender to compare behaviour of the FennecLogger. -->
+    <!-- Normal file appender to compare behaviour of the TesterraLogger. -->
     <appender name="file" class="org.apache.log4j.RollingFileAppender">
         <param name="file" value="target/log4j.log" />
         <param name="MaxFileSize" value="100KB" />
@@ -19,6 +19,6 @@
     <root>
         <!--<level value="DEBUG" />-->
         <level value="INFO" />
-        <appender-ref ref="FennecLogger" />
+        <appender-ref ref="TesterraLogger" />
     </root>
 </log4j:configuration>

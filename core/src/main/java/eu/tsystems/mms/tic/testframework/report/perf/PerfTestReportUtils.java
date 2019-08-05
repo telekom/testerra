@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.perf;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.utils.NumberUtils;
 import org.testng.ITestResult;
@@ -447,7 +447,7 @@ public final class PerfTestReportUtils {
                                         break;
 
                                     default:
-                                        throw new FennecRuntimeException("TransactionThroughput is not supported for the given timeUnit");
+                                        throw new TesterraRuntimeException("TransactionThroughput is not supported for the given timeUnit");
                                 }
                             }
                         }
@@ -512,7 +512,7 @@ public final class PerfTestReportUtils {
 
             // Exception
             default:
-                throw new FennecRuntimeException("Camparison not supported for the given timeUnit");
+                throw new TesterraRuntimeException("Camparison not supported for the given timeUnit");
         }
 
         if (timeStampOfMeasurement.equals(timeStampInTransactionMap)) {
@@ -558,7 +558,7 @@ public final class PerfTestReportUtils {
 
                         // Exception
                         default:
-                            throw new FennecRuntimeException("RequestThroughput is not supported for the given timeUnit");
+                            throw new TesterraRuntimeException("RequestThroughput is not supported for the given timeUnit");
 
                     }
                 }
@@ -642,8 +642,8 @@ public final class PerfTestReportUtils {
 //        String browser = WebDriverManager.config().getBrowser().name();
 //        String wedDriverMode = WebDriverManager.config().getWebDriverMode();
 //        String reuse = "" + Flags.REUSE_DATAPROVIDER_DRIVER_BY_THREAD;
-//        String thinkTime = "" + PropertyManager.getIntProperty(FennecProperties.PERF_PAGE_THINKTIME_MS, 0);
-//        String server = PropertyManager.getProperty(FennecProperties.SELENIUMHOST);
+//        String thinkTime = "" + PropertyManager.getIntProperty(TesterraProperties.PERF_PAGE_THINKTIME_MS, 0);
+//        String server = PropertyManager.getProperty(TesterraProperties.SELENIUMHOST);
 //
 //        ITestNGMethod[] executedTestmethods = PerfTestContainer.getTestContext().getAllTestMethods();
 //        for (ITestNGMethod testMethod : executedTestmethods) {
@@ -670,7 +670,7 @@ public final class PerfTestReportUtils {
 //                writer.close();
 //
 //            } catch (IOException e) {
-//                throw new FennecSystemException("Error while saving the test configuration after perf test");
+//                throw new TesterraSystemException("Error while saving the test configuration after perf test");
 //            }
 //        }
 //    }
@@ -685,7 +685,7 @@ public final class PerfTestReportUtils {
 //            try {
 //                generator.generateAllGraphs(pageLoadInfosPerTestMethod);
 //            } catch (IOException e) {
-//                throw new FennecSystemException("Error while saving Load Test Report Graphics");
+//                throw new TesterraSystemException("Error while saving Load Test Report Graphics");
 //            }
 //        }
 //    }
@@ -860,7 +860,7 @@ public final class PerfTestReportUtils {
 //                String testMethodName = iTestResult.getMethod().getMethodName();
 //                writer.append(String.valueOf(timeStamp)).append(";");
 //                writer.append("null;");
-//                String hostAddress = System.getProperty(FennecProperties.SELENIUMHOST, "local");
+//                String hostAddress = System.getProperty(TesterraProperties.SELENIUMHOST, "local");
 //                writer.append(hostAddress).append(";");
 //                writer.append("End_of_").append(testMethodName).append("_").append(threadName).append(";");
 //                writer.append("TA;");
@@ -877,7 +877,7 @@ public final class PerfTestReportUtils {
 //                writer.close();
 //            }
 //        } catch (IOException e) {
-//            throw new FennecSystemException("Error while saving the CSV file");
+//            throw new TesterraSystemException("Error while saving the CSV file");
 //        }
 //    }
 

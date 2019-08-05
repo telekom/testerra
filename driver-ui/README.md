@@ -1,5 +1,5 @@
-# jfennec driver-ui
-jfennec driver-ui is the base module for ui driven tests. All modules with ui implementations rely on this module, as it
+# driver-ui
+driver-ui is the base module for ui driven tests. All modules with ui implementations rely on this module, as it
 provides the WebDriverManager and GuiElement and the Page class for the page object pattern, plus PageFactory. 
 This module is the scripting base - without specifying a driver implementation.  
 
@@ -10,7 +10,7 @@ For maven:
 ```xml
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.jfennec</groupId>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>driver-ui</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
@@ -19,7 +19,7 @@ For maven:
 
 For gradle:
 ```text
-compile 'eu.tsystems.mms.tic.jfennec:driver-ui:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:driver-ui:1-SNAPSHOT'
 ```
 
 ###### Using driver-ui module:
@@ -27,10 +27,10 @@ compile 'eu.tsystems.mms.tic.jfennec:driver-ui:1-SNAPSHOT'
 With this module you are able to script your ui tests:
 
 ```java
-public class MyTest extends FennecTest {
+public class MyTest extends TesterraTest {
     
     @Test
-    public void testT01_My_first_fennec_test() {
+    public void testT01_My_first_tt._test() {
         WebDriver driver = WebDriverManager.getWebDriver();
         MyPage myPage = PageFactory.create(MyPage.class, driver);
         ...

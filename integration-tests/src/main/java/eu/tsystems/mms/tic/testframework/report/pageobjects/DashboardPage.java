@@ -19,7 +19,7 @@ import org.testng.Assert;
  */
 public class DashboardPage extends AbstractReportPage implements IReportAnnotationVerifier {
     @Check
-    public final GuiElement fennecLogo = new GuiElement(this.driver, By.cssSelector("img[alt='fennec']"), mainFrame);
+    public final GuiElement testerraLogo = new GuiElement(this.driver, By.cssSelector("img[alt='testerra']"), mainFrame);
     public final DashboardModuleTestResultPieChart dashboardModuleTestResultPieChart = PageFactory.create(DashboardModuleTestResultPieChart.class, driver);
     public final DashboardModuleTestResultNumberBreakdown dashboardModuleTestResultNumberBreakdown = PageFactory.create(DashboardModuleTestResultNumberBreakdown.class, driver);
     public final DashboardModuleFailureCorridor dashboardModuleFailureCorridor = PageFactory.create(DashboardModuleFailureCorridor.class, driver);
@@ -85,7 +85,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
      * Performs the click action on a given GuiElement.
      *
      * @param methodDetail a specific GuiElement
-     * @return a new FennecReportMethodDetailPage
+     * @return a new TesterraReportMethodDetailPage
      */
     public MethodDetailsPage clickMethodDetail(GuiElement methodDetail) {
         methodDetail.click();

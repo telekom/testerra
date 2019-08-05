@@ -27,8 +27,8 @@
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -282,7 +282,7 @@ public abstract class AbstractMailConnector {
      *
      * @return The message.
      *
-     * @throws eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException thrown if an error by waiting for the
+     * @throws TesterraSystemException thrown if an error by waiting for the
      *                                                                          message occurs.
      */
     @Deprecated
@@ -300,18 +300,18 @@ public abstract class AbstractMailConnector {
      *
      * @param subject The subject which message should contain.
      *
-     * @return Message wrapped in {@link FennecMail} object
+     * @return Message wrapped in {@link TesterraMail} object
      *
-     * @throws eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException thrown if an error by waiting for the
+     * @throws TesterraSystemException thrown if an error by waiting for the
      *                                                                          message occurs.
      */
     @Deprecated
-    public FennecMail waitForFennecMail(final String subject) {
+    public TesterraMail waitForTesterraMail(final String subject) {
 
         final SearchCriteria searchCriteria = new SearchCriteria(SearchCriteriaType.SUBJECT, subject);
         List<SearchCriteria> searchCriterias = new ArrayList<>(1);
         searchCriterias.add(searchCriteria);
-        return this.pWaitForFennecMail(searchCriterias);
+        return this.pWaitForTesterraMail(searchCriterias);
     }
 
     /**
@@ -333,12 +333,12 @@ public abstract class AbstractMailConnector {
      *
      * @param searchCriterias Map of searchcriteria for expected Mail.
      *
-     * @return Message wrapped in FennecMail object
+     * @return Message wrapped in TesterraMail object
      */
     @Deprecated
-    public FennecMail waitForFennecMail(final List<SearchCriteria> searchCriterias) {
+    public TesterraMail waitForTesterraMail(final List<SearchCriteria> searchCriterias) {
 
-        return this.pWaitForFennecMail(searchCriterias);
+        return this.pWaitForTesterraMail(searchCriterias);
     }
 
     /**
@@ -346,14 +346,14 @@ public abstract class AbstractMailConnector {
      *
      * @param searchCriteriaMap The subject which message should contain.
      *
-     * @return message wrapped in {@link FennecMail} object.
+     * @return message wrapped in {@link TesterraMail} object.
      *
-     * @throws FennecSystemException thrown if an error by waiting for the message occurs.
+     * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      */
-    private FennecMail pWaitForFennecMail(List<SearchCriteria> searchCriteriaMap) {
+    private TesterraMail pWaitForTesterraMail(List<SearchCriteria> searchCriteriaMap) {
 
         List<MimeMessage> messages = pWaitForMessage(searchCriteriaMap, MAX_READ_TRIES, SLEEP_SECONDS);
-        return new FennecMail(messages.get(0));
+        return new TesterraMail(messages.get(0));
     }
 
     /**
@@ -363,11 +363,11 @@ public abstract class AbstractMailConnector {
      *
      * @return The message.
      *
-     * @throws FennecSystemException thrown if an error by waiting for the message occurs.
+     * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      */
-    public List<FennecMail> waitForFennecMails(List<SearchCriteria> searchCriterias) {
+    public List<TesterraMail> waitForTesterraMails(List<SearchCriteria> searchCriterias) {
 
-        return waitForFennecMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
+        return waitForTesterraMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
     }
 
     /**
@@ -379,19 +379,19 @@ public abstract class AbstractMailConnector {
      *
      * @return The message.
      *
-     * @throws FennecSystemException thrown if an error by waiting for the message occurs.
+     * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      */
-    public List<FennecMail> waitForFennecMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
+    public List<TesterraMail> waitForTesterraMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
 
         List<MimeMessage> messages = pWaitForMessage(searchCriterias, maxReadTries, pollingTimerSeconds);
-        List<FennecMail> out = new LinkedList<>();
+        List<TesterraMail> out = new LinkedList<>();
         for (MimeMessage message : messages) {
-            out.add(new FennecMail(message));
+            out.add(new TesterraMail(message));
         }
         return out;
     }
 
-    private List<MimeMessage> pWaitForMessage(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) throws FennecSystemException {
+    private List<MimeMessage> pWaitForMessage(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) throws TesterraSystemException {
 
         String msg = "Wait for message with criterias: ";
         for (SearchCriteria searchCriteria : searchCriterias) {
@@ -476,7 +476,7 @@ public abstract class AbstractMailConnector {
 
         } catch (final Exception e) {
             logger.error("Error searching for message", e);
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         } finally {
             if (store != null) {
                 try {
@@ -488,7 +488,7 @@ public abstract class AbstractMailConnector {
         }
 
         if (out.size() == 0) {
-            throw new FennecSystemException(String.format("No messages found after %s seconds.",
+            throw new TesterraSystemException(String.format("No messages found after %s seconds.",
                     pollingTimerSeconds * maxReadTries));
         }
 
@@ -575,7 +575,7 @@ public abstract class AbstractMailConnector {
                 if (message.getSentDate() != null) {
 
                     if (!(searchCriteria.getValue() instanceof Date)) {
-                        throw new FennecRuntimeException(
+                        throw new TesterraRuntimeException(
                                 "Values of SearchCriteriaType AFTER_DATE must be of type java.util.Date");
                     }
 
@@ -611,7 +611,7 @@ public abstract class AbstractMailConnector {
                 }
                 break;
             default:
-                throw new FennecSystemException("Not yet implemented: " + searchCriteriaType);
+                throw new TesterraSystemException("Not yet implemented: " + searchCriteriaType);
         }
         return matches;
     }
@@ -621,9 +621,9 @@ public abstract class AbstractMailConnector {
      *
      * @return The number of new messages.
      *
-     * @throws FennecSystemException thrown if message count can't be ascertained.
+     * @throws TesterraSystemException thrown if message count can't be ascertained.
      */
-    public int getMessageCount() throws FennecSystemException {
+    public int getMessageCount() throws TesterraSystemException {
 
         return this.pGetMessageCount();
     }
@@ -633,9 +633,9 @@ public abstract class AbstractMailConnector {
      *
      * @return The number of new messages.
      *
-     * @throws FennecSystemException thrown if message count can't be ascertained.
+     * @throws TesterraSystemException thrown if message count can't be ascertained.
      */
-    private int pGetMessageCount() throws FennecSystemException {
+    private int pGetMessageCount() throws TesterraSystemException {
 
         Store store;
         int nrOfMessages = 0;
@@ -649,10 +649,10 @@ public abstract class AbstractMailConnector {
             store.close();
         } catch (final NoSuchProviderException e) {
             logger.error(e.getMessage());
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         } catch (final MessagingException e) {
             logger.error("Error in getMessageCount", e);
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         }
 
         return nrOfMessages;
@@ -663,9 +663,9 @@ public abstract class AbstractMailConnector {
      *
      * @return An array containing the messages.
      *
-     * @throws FennecSystemException thrown if messages couldn't read.
+     * @throws TesterraSystemException thrown if messages couldn't read.
      */
-    public MimeMessage[] getMessages() throws FennecSystemException {
+    public MimeMessage[] getMessages() throws TesterraSystemException {
 
         return this.pGetMessages();
     }
@@ -675,9 +675,9 @@ public abstract class AbstractMailConnector {
      *
      * @return An array containing the messages.
      *
-     * @throws FennecSystemException thrown if messages couldn't read.
+     * @throws TesterraSystemException thrown if messages couldn't read.
      */
-    private MimeMessage[] pGetMessages() throws FennecSystemException {
+    private MimeMessage[] pGetMessages() throws TesterraSystemException {
 
         Store store = null;
         ArrayList<MimeMessage> mimes = null;
@@ -700,7 +700,7 @@ public abstract class AbstractMailConnector {
             // folder.close(true); // leads to error "folder not open" when reading message content
             store.close();
         } catch (final MessagingException e) {
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         }
         return mimes.toArray(new MimeMessage[mimes.size()]);
     }
@@ -715,22 +715,22 @@ public abstract class AbstractMailConnector {
      *
      * @return true if message was deleted, else false
      *
-     * @throws FennecSystemException thrown if an message can't deleted.
+     * @throws TesterraSystemException thrown if an message can't deleted.
      */
     public boolean deleteMessage(final String recipient, final Message.RecipientType recipientType,
-                                 final String subject, final String messageId) throws FennecSystemException {
+                                 final String subject, final String messageId) throws TesterraSystemException {
 
         return this.pDeleteMessage(recipient, recipientType, subject, messageId);
     }
 
     /**
-     * deletes fennec mail by it's message id from inbox.
+     * deletes tt. mail by it's message id from inbox.
      *
-     * @param mail {@link FennecMail} object with messageId set.
+     * @param mail {@link TesterraMail} object with messageId set.
      *
      * @return true if message has been deleted.
      */
-    public boolean deleteMessage(FennecMail mail) {
+    public boolean deleteMessage(TesterraMail mail) {
         return deleteMessage(null, Message.RecipientType.TO, null, mail.getMessageID());
     }
 
@@ -765,7 +765,7 @@ public abstract class AbstractMailConnector {
                         subject = criteria.getStringValue();
                         break;
                     default:
-                        throw new FennecRuntimeException("SearchCriteriaType not supported");
+                        throw new TesterraRuntimeException("SearchCriteriaType not supported");
                 }
                 isDeleted = deleteMessage(recipient, Message.RecipientType.TO, subject, messageId);
             }
@@ -777,11 +777,11 @@ public abstract class AbstractMailConnector {
      * move given message into folder with given name.
      *
      * @param targetFolder Name of folder to move into.
-     * @param message {@link FennecMail} to move (compared by messageId)
+     * @param message {@link TesterraMail} to move (compared by messageId)
      * 
      * @return true if moved.
      */
-    public boolean moveMessage(String targetFolder, FennecMail message) {
+    public boolean moveMessage(String targetFolder, TesterraMail message) {
         SearchCriteria searchCriteria = new SearchCriteria(SearchCriteriaType.MESSAGEID, message.getMessageID());
         return pMoveMessage(targetFolder, searchCriteria) == 1;
     }
@@ -847,10 +847,10 @@ public abstract class AbstractMailConnector {
 
         } catch (final NoSuchProviderException e) {
             logger.error(e.getMessage());
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         } catch (final MessagingException e) {
             logger.error(e.getMessage());
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         }
         return count;
     }
@@ -880,7 +880,7 @@ public abstract class AbstractMailConnector {
                     isDeleted = deleteMessage(null, Message.RecipientType.TO, null, deleteCriteriaValue);
                     break;
                 default:
-                    throw new FennecSystemException("Not supported: " + deleteCriteriaType);
+                    throw new TesterraSystemException("Not supported: " + deleteCriteriaType);
             }
             booleanValues.add(isDeleted);
         }
@@ -915,10 +915,10 @@ public abstract class AbstractMailConnector {
      *
      * @return true if message was deleted, else false
      *
-     * @throws FennecSystemException thrown if an message can't deleted.
+     * @throws TesterraSystemException thrown if an message can't deleted.
      */
     private boolean pDeleteMessage(final String recipient, final Message.RecipientType recipientType,
-                                   final String subject, final String messageId) throws FennecSystemException {
+                                   final String subject, final String messageId) throws TesterraSystemException {
 
         boolean deleted = false;
 
@@ -944,10 +944,10 @@ public abstract class AbstractMailConnector {
 
         } catch (final NoSuchProviderException e) {
             logger.error(e.getMessage());
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         } catch (final MessagingException e) {
             logger.error(e.getMessage());
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         }
         return deleted;
     }
@@ -963,11 +963,11 @@ public abstract class AbstractMailConnector {
      *
      * @return True if message was found and deleted, else false.
      *
-     * @throws FennecSystemException If some error by reading the messages occurred.
+     * @throws TesterraSystemException If some error by reading the messages occurred.
      */
     private boolean compareMessageAndDelete(final Message message, final String recipient,
                                             final Message.RecipientType recipientType, final String subject,
-                                            final String messageId) throws FennecSystemException {
+                                            final String messageId) throws TesterraSystemException {
 
         try {
             MessageUtils.multiPartBugfix(message);
@@ -1014,7 +1014,7 @@ public abstract class AbstractMailConnector {
             return false;
         } catch (final MessagingException e) {
             logger.error("Error handling message", e);
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         }
     }
 }

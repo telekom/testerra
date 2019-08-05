@@ -19,12 +19,12 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
-import eu.tsystems.mms.tic.testframework.common.FennecCommons;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -57,8 +57,8 @@ final class ClassFinder {
     private static final String PATTERN_HI = SCHEMA_DIV + RESOLUTION_REGEX + SCHEMA_DIV + KEYWORD_MAX;
     private static final String PATTERN_RES = "TODO"; // TODO
 
-    private static final String PROJECT_PACKAGE = PropertyManager.getProperty(FennecProperties.PROJECT_PACKAGE,
-            FennecCommons.DEFAULT_PACKAGE_NAME);
+    private static final String PROJECT_PACKAGE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE,
+            TesterraCommons.DEFAULT_PACKAGE_NAME);
 
     private static class Caches {
 
@@ -209,7 +209,7 @@ final class ClassFinder {
             prioritizedClassInfos = Caches.getCache(baseClass, prefix);
 
             if (prioritizedClassInfos == null) {
-                throw new FennecSystemException("Something went wrong scanning this class for sub types: " + baseClass.getName());
+                throw new TesterraSystemException("Something went wrong scanning this class for sub types: " + baseClass.getName());
             }
         }
 
@@ -266,7 +266,7 @@ final class ClassFinder {
         Evaluate
          */
         if (bestMatchingClass == null) {
-            throw new FennecRuntimeException("Could not find a matching page class implementation for " + baseClass.getSimpleName() +
+            throw new TesterraRuntimeException("Could not find a matching page class implementation for " + baseClass.getSimpleName() +
                     "\nMaybe you can solve this by making the base class non-abstract.");
         } else {
             if (viewPortWidth > 0) {

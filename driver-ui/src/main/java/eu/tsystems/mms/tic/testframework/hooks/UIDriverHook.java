@@ -43,29 +43,29 @@ public class UIDriverHook implements ModuleHook {
         UITestStepIntegration.init();
 
         /*
-        init FennecListener Workers
+        init TesterraListener Workers
          */
         //start
-        FennecListener.registerBeforeMethodWorker(PerformanceStartWorker.class);
-        FennecListener.registerBeforeMethodWorker(WebDriverLoggingStartWorker.class);
+        TesterraListener.registerBeforeMethodWorker(PerformanceStartWorker.class);
+        TesterraListener.registerBeforeMethodWorker(WebDriverLoggingStartWorker.class);
 
         //finish
-        FennecListener.registerAfterMethodWorker(ConditionalBehaviourWorker.class);
-        FennecListener.registerAfterMethodWorker(LogWDSessionsWorker.class);
-        FennecListener.registerAfterMethodWorker(TakeInSessionEvidencesWorker.class);
+        TesterraListener.registerAfterMethodWorker(ConditionalBehaviourWorker.class);
+        TesterraListener.registerAfterMethodWorker(LogWDSessionsWorker.class);
+        TesterraListener.registerAfterMethodWorker(TakeInSessionEvidencesWorker.class);
 
-        FennecListener.registerAfterMethodWorker(WebDriverSessionsAfterMethodWorker.class); // the utilizable one
+        TesterraListener.registerAfterMethodWorker(WebDriverSessionsAfterMethodWorker.class); // the utilizable one
 
         /*
         ********* SESSIONS SHUTDOWN *********
          */
-        FennecListener.registerAfterMethodWorker(WebDriverShutDownWorker.class);
+        TesterraListener.registerAfterMethodWorker(WebDriverShutDownWorker.class);
 
-        FennecListener.registerAfterMethodWorker(TakeOutOfSessionsEvidencesWorker.class);
-        FennecListener.registerAfterMethodWorker(TestMethodFinishWorker.class);
+        TesterraListener.registerAfterMethodWorker(TakeOutOfSessionsEvidencesWorker.class);
+        TesterraListener.registerAfterMethodWorker(TestMethodFinishWorker.class);
 
         //shutdown
-        FennecListener.registerGenerateReportsWorker(WebDriverShutDownAfterTestsWorker.class);
+        TesterraListener.registerGenerateReportsWorker(WebDriverShutDownAfterTestsWorker.class);
 
         /*
         register services

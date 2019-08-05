@@ -27,8 +27,8 @@
 package eu.tsystems.mms.tic.testframework.dbconnector.connection;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +45,7 @@ import java.util.Properties;
 public final class DBConnection {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DBConnection.class);
-    private static final int TIMEOUT_IN_MS = PropertyManager.getIntProperty(FennecProperties.DB_TIMEOUT, 10000);
+    private static final int TIMEOUT_IN_MS = PropertyManager.getIntProperty(TesterraProperties.DB_TIMEOUT, 10000);
     private static final int EXECUTOR_SERVICE_THREADCOUNT = 5;
 
     /**
@@ -141,7 +141,7 @@ public final class DBConnection {
                 break;
 
             default:
-                throw new FennecSystemException("Unknown JDBC Driver was used. Connection could not be established: " +
+                throw new TesterraSystemException("Unknown JDBC Driver was used. Connection could not be established: " +
                         driver.name());
         }
 

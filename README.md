@@ -1,5 +1,5 @@
-# jfennec
-jfennec is an open source test automation library for web frontend testing. It provides a tool suite for many use cases: 
+# testerra
+testerra is an open source test automation library for web frontend testing. It provides a tool suite for many use cases: 
 a base API for Page Object Pattern (including responsive layouts) and GuiElements (smarter WebElements (Selenium)), 
 enhanced reporting functionality, a utility collection and some additional helpful modules.
 
@@ -30,7 +30,7 @@ For maven:
 ```xml
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.jfennec</groupId>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>core</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
@@ -39,28 +39,28 @@ For maven:
 
 For gradle:
 ```text
-compile 'eu.tsystems.mms.tic.jfennec:core:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:core:1-SNAPSHOT'
 ```
 
 ###### Parent module:
 Or, for maven you can use the "parent" project, to have all modules at once:
 ```xml
 <parent>
-    <groupId>eu.tsystems.mms.tic.jfennec</groupId>
+    <groupId>eu.tsystems.mms.tic.testerra</groupId>
     <artifactId>parent</artifactId>
     <version>1-SNAPSHOT</version>
 </parent>
 ```
 
-###### Using jfennec functionality:
+###### Using testerra functionality:
 
-Create a Test Class and extend the FennecTest class:
+Create a Test Class and extend the TesterraTest class:
 
 ```java
-public class MyTest extends FennecTest {
+public class MyTest extends TesterraTest {
     
     @Test
-    public void testT01_My_first_fennec_test() {
+    public void testT01_My_first_tt._test() {
         // ...
     }
 }

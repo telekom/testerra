@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.mailconnector.imap;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractMailConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +90,7 @@ public class ImapMailConnector extends AbstractMailConnector {
             mailprops.put("mail.imaps.protocol", "imaps");
             mailprops.put("mail.imaps.socketFactory.port", getPort());
             mailprops.put("mail.imaps.socketFactory.class",
-                    "eu.tsystems.mms.tic.testframework.mailconnector.FennecSSLSocketFactory");
+                    "eu.tsystems.mms.tic.testframework.mailconnector.TesterraSSLSocketFactory");
             mailprops.put("mail.store.protocol", "imaps");
         } else {
             mailprops.put("mail.imap.host", getServer());
@@ -116,18 +116,18 @@ public class ImapMailConnector extends AbstractMailConnector {
     /**
      * Marks all messages in inbox as seen.
      * 
-     * @throws FennecSystemException Error connecting with Server.
+     * @throws TesterraSystemException Error connecting with Server.
      */
-    public void markAllMailsAsSeen() throws FennecSystemException {
+    public void markAllMailsAsSeen() throws TesterraSystemException {
         this.pMarkAllMailsAsSeen();
     }
 
     /**
      * Marks all messages in inbox as seen.
      * 
-     * @throws FennecSystemException Error connecting with Server.
+     * @throws TesterraSystemException Error connecting with Server.
      */
-    private void pMarkAllMailsAsSeen() throws FennecSystemException {
+    private void pMarkAllMailsAsSeen() throws TesterraSystemException {
         Store store;
         try {
             store = getSession().getStore();
@@ -142,10 +142,10 @@ public class ImapMailConnector extends AbstractMailConnector {
             store.close();
         } catch (final NoSuchProviderException e) {
             LOGGER.error(e.getMessage());
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         } catch (final MessagingException e) {
             LOGGER.error(e.getMessage());
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         }
     }
 }

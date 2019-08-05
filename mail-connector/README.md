@@ -1,5 +1,5 @@
-# jfennec mail-connector
-jfennec mail-connector provides a simplified tool set for connections to mail boxes.
+# mail-connector
+mail-connector provides a simplified tool set for connections to mail boxes.
 
 ## Installation / Usage
 
@@ -8,7 +8,7 @@ For maven:
 ```xml
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.jfennec</groupId>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>mail-connector</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
@@ -17,7 +17,7 @@ For maven:
 
 For gradle:
 ```text
-compile 'eu.tsystems.mms.tic.jfennec:mail-connector:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:mail-connector:1-SNAPSHOT'
 ```
 
 ###### Using mail-connector module:
@@ -25,15 +25,15 @@ compile 'eu.tsystems.mms.tic.jfennec:mail-connector:1-SNAPSHOT'
 The following example shows how to create a connector and wait for mails:
 
 ```java
-public class MyTest extends FennecTest {
+public class MyTest extends TesterraTest {
     
     @Test
-    public void testT01_My_first_fennec_test() {
+    public void testT01_My_first_tt._test() {
         // create a new imap connector
         ImapConnector con = new ImapConnector(...);
         
         // wait for mails
-        List<FennecMail> mails = con.waitForFennecMails(...);
+        List<TesterraMail> mails = con.waitForTesterraMails(...);
     }
 }
 ```

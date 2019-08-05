@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFramePage;
@@ -77,7 +77,7 @@ public class DashboardModuleMethodChart extends AbstractFramePage {
                 methodChartSkippedMethodsTable.asserts().assertIsDisplayed();
                 break;
             default:
-                throw new FennecRuntimeException("Method not implemented for TestResult: " + testResult);
+                throw new TesterraRuntimeException("Method not implemented for TestResult: " + testResult);
         }
     }
 
@@ -96,7 +96,7 @@ public class DashboardModuleMethodChart extends AbstractFramePage {
             case SKIPPED:
                 return methodChartSkippedMethodsTable.findElements(By.tagName("tr")).size() - 1;
             default:
-                throw new FennecRuntimeException("Method not implemented for TestResult: " + testResult);
+                throw new TesterraRuntimeException("Method not implemented for TestResult: " + testResult);
         }
     }
 

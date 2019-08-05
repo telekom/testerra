@@ -20,9 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
@@ -83,14 +81,14 @@ public abstract class AbstractPage {
         AbstractPage page = STORED_PAGES.get();
 
         if (page == null) {
-            throw new FennecRuntimeException("There is no page object stored. Call store() before!");
+            throw new TesterraRuntimeException("There is no page object stored. Call store() before!");
         }
 
         if (c.isInstance(page)) {
             page.handleDemoMode(WebDriverManager.getWebDriver());
             return (T) page;
         } else {
-            throw new FennecRuntimeException("The page object is not of expected type.");
+            throw new TesterraRuntimeException("The page object is not of expected type.");
         }
     }
 

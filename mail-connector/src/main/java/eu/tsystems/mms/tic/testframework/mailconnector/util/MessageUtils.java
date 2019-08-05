@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,9 +62,9 @@ public final class MessageUtils {
      * 
      * @param message The message to get the headers.
      * @return A string array containing the headers.
-     * @throws FennecSystemException thrown if email headers can't read.
+     * @throws TesterraSystemException thrown if email headers can't read.
      */
-    public static String[] getEmailHeaders(final MimeMessage message) throws FennecSystemException {
+    public static String[] getEmailHeaders(final MimeMessage message) throws TesterraSystemException {
         return pGetEmailHeaders(message);
     }
 
@@ -73,9 +73,9 @@ public final class MessageUtils {
      * 
      * @param message The message to get the headers.
      * @return A string array containing the headers.
-     * @throws FennecSystemException thrown if email headers can't read.
+     * @throws TesterraSystemException thrown if email headers can't read.
      */
-    private static String[] pGetEmailHeaders(final MimeMessage message) throws FennecSystemException {
+    private static String[] pGetEmailHeaders(final MimeMessage message) throws TesterraSystemException {
         ArrayList<String> headersAsStrings;
         try {
             multiPartBugfix(message);
@@ -85,7 +85,7 @@ public final class MessageUtils {
                 headersAsStrings.add((String) headers.nextElement());
             }
         } catch (final Exception e) {
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         }
         return headersAsStrings.toArray(new String[headersAsStrings.size()]);
     }
@@ -124,10 +124,10 @@ public final class MessageUtils {
      * @param messages An array containing all the messages to search.
      * 
      * @return An array containing only the filtered messages.
-     * @throws FennecSystemException thrown if messages can't be filtered.
+     * @throws TesterraSystemException thrown if messages can't be filtered.
      */
     public static Message[] messagesFilter(final Map<String, String> map,
-            final Message[] messages) throws FennecSystemException {
+            final Message[] messages) throws TesterraSystemException {
         return pMessagesFilter(map, messages);
     }
 
@@ -139,10 +139,10 @@ public final class MessageUtils {
      * @param messages An array containing all the messages to search.
      * 
      * @return An array containing only the filtered messages.
-     * @throws FennecSystemException thrown if messages can't be filtered.
+     * @throws TesterraSystemException thrown if messages can't be filtered.
      */
     private static Message[] pMessagesFilter(final Map<String, String> map,
-            final Message[] messages) throws FennecSystemException {
+            final Message[] messages) throws TesterraSystemException {
         final ArrayList<Message> messageList = new ArrayList<Message>();
         for (final Message m : messages) {
             try {
@@ -157,7 +157,7 @@ public final class MessageUtils {
                     messageList.add(m);
                 }
             } catch (final MessagingException e) {
-                throw new FennecSystemException(e);
+                throw new TesterraSystemException(e);
             }
         }
         final Message[] ret = new Message[messageList.size()];

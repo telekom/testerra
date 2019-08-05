@@ -7,7 +7,7 @@
  */
 package eu.tsystems.mms.tic.testframework.layout.matching.detection;
 
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.ElementMovedError;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
@@ -29,7 +29,7 @@ import java.util.List;
 public class MovedElementDetector extends FeatureDetector {
 
     public MovedElementDetector() {
-        ignorePropertyKey = FennecProperties.LAYOUTCHECK_IGNORE_MOVEMENT;
+        ignorePropertyKey = TesterraProperties.LAYOUTCHECK_IGNORE_MOVEMENT;
     }
 
     @Override

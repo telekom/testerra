@@ -275,8 +275,8 @@ public class PropertyManagerTest extends AbstractTest {
 
     @Test
     public void testT41SystemPropertyFromFile() {
-        // should load the system property fennec.test.system.prop=fennecfennec from system.properties
-        String property = PropertyManager.getProperty("fennec.test.system.prop");
-        Assert.assertEquals(property, "fennecfennec", "should load the system property fennec.test.system.prop=fennecfennec from system.properties");
+        // should load the system property tt.test.system.prop=tt.tt. from system.properties
+        String property = PropertyManager.getProperty("tt.test.system.prop");
+        Assert.assertEquals(property, "tt.tt.", "should load the system property tt.test.system.prop=tt.tt. from system.properties");
     }
 }

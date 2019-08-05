@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.common.FennecCommons;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.seleniumhq.jetty9.server.handler.ContextHandler;
 import org.seleniumhq.jetty9.server.handler.ResourceHandler;
@@ -32,7 +32,7 @@ public class Server {
     }
 
     public static void main(String[] args) throws Exception {
-        FennecCommons.init();
+        TesterraCommons.init();
         start();
         System.out.println("Hit ENTER to stop");
         System.in.read();

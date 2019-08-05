@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTest;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
@@ -46,8 +46,8 @@ public class TimerTest extends AbstractTest {
     private final String msgTimeout = "Sequence execution timed out "+ DURATION_IN_MS +" ms (polling every " + SLEEP_TIME_IN_MS + " ms)";
     private final String msgTimeoutExceptionThrown = "TimeoutException was thrown";
 
-    private final String msgFennecRuntimeException = "FennecRuntimeException Message";
-    private final String msgFennecRuntimeExceptionThrown = "FennecRuntimeException was thrown";
+    private final String msgTesterraRuntimeException = "TesterraRuntimeException Message";
+    private final String msgTesterraRuntimeExceptionThrown = "TesterraRuntimeException was thrown";
 
     @Test
     public void testT01_ExecuteSequence() throws Exception {
@@ -118,14 +118,14 @@ public class TimerTest extends AbstractTest {
         Throwable throwable = new Throwable();
         ThrowablePackedResponse<String> out = new ThrowablePackedResponse<String>(null, throwable, false, new TimeoutException(throwable));
         TimeoutException timeoutException = null;
-        FennecRuntimeException fennecRuntimeException;
+        TesterraRuntimeException testerraRuntimeException;
 
         try {
             out = timer.executeSequence(new Timer.Sequence<String>() {
                 @Override
                 public void run() {
                     setReturningObject("huhu");
-                    throw new FennecRuntimeException(msgFennecRuntimeException);
+                    throw new TesterraRuntimeException(msgTesterraRuntimeException);
                 }
             });
         } catch (TimeoutException e) {
@@ -141,10 +141,10 @@ public class TimerTest extends AbstractTest {
         Assert.assertNull(response, msgCorrectResponse);
         Assert.assertNotNull(timeoutException, msgTimeoutExceptionThrown);
 
-        fennecRuntimeException = (FennecRuntimeException) timeoutException.getCause();
+        testerraRuntimeException = (TesterraRuntimeException) timeoutException.getCause();
 
-        Assert.assertNotNull(fennecRuntimeException, msgFennecRuntimeExceptionThrown);
-        Assert.assertEquals(fennecRuntimeException.getMessage(), msgFennecRuntimeException, msgFennecRuntimeExceptionThrown);
+        Assert.assertNotNull(testerraRuntimeException, msgTesterraRuntimeExceptionThrown);
+        Assert.assertEquals(testerraRuntimeException.getMessage(), msgTesterraRuntimeException, msgTesterraRuntimeExceptionThrown);
     }
 
     @Test
@@ -217,7 +217,7 @@ public class TimerTest extends AbstractTest {
         Timer timer = new Timer(SLEEP_TIME_IN_MS, DURATION_IN_MS);
         Throwable throwable = new Throwable();
         ThrowablePackedResponse<String> out = new ThrowablePackedResponse<String>(null, throwable, false, new TimeoutException(throwable));
-        FennecRuntimeException fennecRuntimeException;
+        TesterraRuntimeException testerraRuntimeException;
 
         boolean isTimeoutExceptionThrown = false;
 
@@ -227,7 +227,7 @@ public class TimerTest extends AbstractTest {
                 public void run() {
                     setSkipThrowingException(true);
                     setReturningObject("huhu");
-                    throw new FennecRuntimeException(msgFennecRuntimeException);
+                    throw new TesterraRuntimeException(msgTesterraRuntimeException);
                 }
             });
         } catch (TimeoutException e) {
@@ -235,12 +235,12 @@ public class TimerTest extends AbstractTest {
         }
 
         String response = out.getResponse();
-        fennecRuntimeException = (FennecRuntimeException) out.getThrowable();
+        testerraRuntimeException = (TesterraRuntimeException) out.getThrowable();
 
         Assert.assertFalse(isTimeoutExceptionThrown, msgTimeoutExceptionThrown);
         Assert.assertNotNull(response, msgCorrectResponse);
-        Assert.assertNotNull(fennecRuntimeException, msgCorrectThrowable);
+        Assert.assertNotNull(testerraRuntimeException, msgCorrectThrowable);
         Assert.assertEquals(response, "huhu", msgCorrectResponse);
-        Assert.assertEquals(fennecRuntimeException.getMessage(), msgFennecRuntimeException, msgCorrectThrowable);
+        Assert.assertEquals(testerraRuntimeException.getMessage(), msgTesterraRuntimeException, msgCorrectThrowable);
     }
 }

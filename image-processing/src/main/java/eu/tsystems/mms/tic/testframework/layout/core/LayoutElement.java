@@ -7,7 +7,7 @@
  */
 package eu.tsystems.mms.tic.testframework.layout.core;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import org.opencv.core.Mat;
 import org.opencv.core.Range;
@@ -120,7 +120,7 @@ public class LayoutElement implements Serializable {
         }
         colorString = colorString.substring(0, colorString.length() - 1);
         colorString += "]";
-        throw new FennecRuntimeException("The reference image snippet at " + corners[Corners.UPPER_LEFT.i] + " to " + corners[Corners.LOWER_RIGHT.i] +
+        throw new TesterraRuntimeException("The reference image snippet at " + corners[Corners.UPPER_LEFT.i] + " to " + corners[Corners.LOWER_RIGHT.i] +
                 " does only contain the color " + colorString + ". It is highly likely that the annotation is incorrect or " +
                 "uses a wrong Reference Image");
     }

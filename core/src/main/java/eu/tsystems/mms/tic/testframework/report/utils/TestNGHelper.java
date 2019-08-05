@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.testng.*;
 
 public final class TestNGHelper {
@@ -43,7 +43,7 @@ public final class TestNGHelper {
             }
         }
 
-        throw new FennecSystemException("Could not get " + scope);
+        throw new TesterraSystemException("Could not get " + scope);
     }
 
     public static String getSuiteName(ITestResult testResult, ITestContext testContext) {

@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
@@ -82,7 +82,7 @@ public class DashboardModuleTestResultPieChart extends AbstractFramePage {
                 pie = failedExpectedPieSegment;
                 break;
             default:
-                throw new FennecRuntimeException("Unsupported Pie for TestResult: " + testResult);
+                throw new TesterraRuntimeException("Unsupported Pie for TestResult: " + testResult);
         }
         return pie;
     }
@@ -103,7 +103,7 @@ public class DashboardModuleTestResultPieChart extends AbstractFramePage {
                 guiElement.mouseOver();
                 break;
             default:
-                throw new FennecRuntimeException("Unsupported mouseAction for GuiElement " + guiElement.getName());
+                throw new TesterraRuntimeException("Unsupported mouseAction for GuiElement " + guiElement.getName());
         }
     }
 }

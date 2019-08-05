@@ -51,7 +51,7 @@ public final class AssertionChecker {
     private static final Logger LOGGER = LoggerFactory.getLogger(AssertionChecker.class);
 
     /**
-     * fennec utility method that checks is called from NonFunctionalAssert. It stores the Throwable, creates
+     * utility method that checks is called from NonFunctionalAssert. It stores the Throwable, creates
      * a screenshot if possible and lets the test continue.
      *
      * @param throwable .

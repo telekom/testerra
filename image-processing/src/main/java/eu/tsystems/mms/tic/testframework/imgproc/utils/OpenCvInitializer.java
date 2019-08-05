@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.imgproc.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +59,7 @@ public class OpenCvInitializer {
                 }
                 // else use default
             } else {
-                throw new FennecSystemException("Unsupported os: " + osname);
+                throw new TesterraSystemException("Unsupported os: " + osname);
             }
         }
 
@@ -68,7 +68,7 @@ public class OpenCvInitializer {
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceFileName);
         if (is == null) {
             LOGGER.error("Could not load resource: " + resourceFileName);
-            throw new FennecSystemException("Could not load resource: " + resourceFileName);
+            throw new TesterraSystemException("Could not load resource: " + resourceFileName);
         }
 
         int readBytes;
@@ -92,7 +92,7 @@ public class OpenCvInitializer {
             // System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         } catch (IOException e) {
             LOGGER.error("Error preparing " + libraryFileName);
-            throw new FennecSystemException("Error preparing " + libraryFileName, e);
+            throw new TesterraSystemException("Error preparing " + libraryFileName, e);
         }
 
         LOGGER.info("Successfully loaded " + resourceFileName);

@@ -19,11 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -111,7 +110,7 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
     static DesiredCapabilities createCapabilities(final WebDriverManagerConfig config, DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
         String browser = desktopWebDriverRequest.browser;
         if (browser == null) {
-            throw new FennecRuntimeException(
+            throw new TesterraRuntimeException(
                     "Browser is not set correctly");
         }
         final DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
@@ -171,7 +170,7 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 desiredCapabilities.setCapability("se:ieOptions", options);
                 break;
             default:
-                throw new FennecSystemException(ErrorMessages.browserNotSupportedHere(browser));
+                throw new TesterraSystemException(ErrorMessages.browserNotSupportedHere(browser));
         }
 
         // set browser version into capabilities

@@ -28,7 +28,7 @@ package eu.tsystems.mms.tic.testframework.dbconnector;
 
 import eu.tsystems.mms.tic.testframework.dbconnector.connection.DBConnection;
 import eu.tsystems.mms.tic.testframework.dbconnector.connection.Driver;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -70,7 +70,7 @@ public abstract class AbstractConnection {
         try {
             return this.pOpen();
         } catch (ClassNotFoundException e) {
-            throw new FennecRuntimeException(e);
+            throw new TesterraRuntimeException(e);
         }
     }
 

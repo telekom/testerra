@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import org.testng.annotations.DataProvider;
 
 import java.awt.*;
@@ -150,7 +150,7 @@ public class TestResultHelper {
             case FAILEDEXPECTED:
                 return new Color(0,0,0);
             default:
-                throw new FennecRuntimeException("Color not implemented: " + testResult.getColor() + " for TestResult: " + testResult.toString());
+                throw new TesterraRuntimeException("Color not implemented: " + testResult.getColor() + " for TestResult: " + testResult.toString());
         }
     }
 }

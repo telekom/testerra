@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractAnnotationMarkerTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Created by fakr on 19.06.2017.
  */
-@FennecClassContext("View-ClassesDetails")
+@TesterraClassContext("View-ClassesDetails")
 public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
 
     /**
@@ -87,7 +87,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
-                classWithFailedMethods.getAnnotation(FennecClassContext.class).value());
+                classWithFailedMethods.getAnnotation(TesterraClassContext.class).value());
 
         final String testmethodName = "test_FailedMinor1";
         classesDetailsPage.assertMethodNameIsDisplayedForTestMethod(testmethodName,

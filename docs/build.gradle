@@ -1,19 +1,7 @@
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath "org.asciidoctor:asciidoctor-gradle-jvm:2.3.0"
-    }
-}
-
 plugins {
     id "org.asciidoctor.convert" version "2.3.0"
+    id 'com.github.mgk.gradle.s3' version '1.4.0'
 }
-
-apply plugin: "org.asciidoctor.convert"
 
 ext {
     sources = 'src'
@@ -21,6 +9,13 @@ ext {
     destinationDir = 'build/docs'
     sourceDirForS3 = "${destinationDir}/html5"
     destDirS3 = 'testerra/latest'
+}
+
+import com.github.mgk.gradle.S3Upload
+
+s3 {
+    profile = 'tapas'
+    bucket = 'tapas-docs'
 }
 
 asciidoctor {
@@ -49,4 +44,22 @@ asciidoctor {
             highlightjsdir: 'highlight',
             icons: 'font',
             imagesdir: 'images'
+}
+
+task publishDoc() {
+    dependsOn asciidoctor
+
+    doLast {
+        def dir = file("${sourceDirForS3}")
+
+        fileTree(dir: dir).each { f ->
+            def path = dir.toPath().relativize(f.toPath())
+            def t = task "upload-${path}"(type: S3Upload) {
+                file = f
+                key = "${destDirS3}/${path}"
+                overwrite = true
+            }
+            t.execute()
+        }
+    }
 }

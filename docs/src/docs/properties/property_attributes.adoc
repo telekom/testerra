@@ -1,0 +1,24 @@
+// Defintion of property attributes
+// If a property was changed in Testerra, change it here!
+
+// Testerra core
+:proxy_settings_load:               tt.proxy.settings.load
+:proxy_settings_file:               tt.proxy.settings.file
+
+// webdriver
+:browser:                           tt.browser
+:browser_version:                   tt.browser.version
+:browser_setting:                   tt.browser.setting
+:baseurl:                           tt.baseurl
+:webdriver_mode:                    tt.webdriver.mode
+:selenium_server_url:               tt.selenium.server.url
+:selenium_server_host:              tt.selenium.server.host
+:selenium_server_port:              tt.selenium.server.port
+:browser_maximize:                  tt.browser.maximize
+:display_resolution:                tt.display.resolution
+:wdm_closewindows_aftertestmethods: tt.wdm.closewindows.aftertestmethods
+:wdm_closewindows_onfailure:        tt.wdm.closewindows.onfailure
+:takeAutomaticScreenshot:           tt.takeAutomaticScreenshot
+
+// pagefactory
+:project_package:                   tt.project.package

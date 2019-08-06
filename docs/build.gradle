@@ -1,0 +1,52 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.asciidoctor:asciidoctor-gradle-jvm:2.3.0"
+    }
+}
+
+plugins {
+    id "org.asciidoctor.convert" version "2.3.0"
+}
+
+apply plugin: "org.asciidoctor.convert"
+
+ext {
+    sources = 'src'
+    sourcesDoc = "${sources}/docs"
+    destinationDir = 'build/docs'
+    sourceDirForS3 = "${destinationDir}/html5"
+    destDirS3 = 'testerra/latest'
+}
+
+asciidoctor {
+    sourceDir = file("${sourcesDoc}")
+    sources {
+        include 'index.adoc'
+    }
+    resources {
+        from("$sources") {
+            include 'images/**', 'css/**', 'js/**', 'highlight/**'
+        }
+    }
+    outputDir = file("$destinationDir")
+    options doctype: 'book',
+            backends: 'html5'
+
+    attributes docinfo: 'shared',
+            toc: 'left',
+            toclevels: 2,
+            sectnums: '',
+            sectanchors: '',
+            Author: 'The Testerra Team of T-Systems Multimedia Solutions GmbH',
+            revnumber: "${version}",
+            'source-highlighter': 'highlightjs',
+            'highlightjs-theme': 'atom-one-light',
+            highlightjsdir: 'highlight',
+            icons: 'font',
+            imagesdir: 'images'
+}

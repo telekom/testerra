@@ -13,8 +13,8 @@ include::getting-started.adoc[leveloffset=+1]
 = Testerra Framework
 include::webdriver-manager.adoc[leveloffset=+1]
 include::browser-caps.adoc[leveloffset=+1]
-//include::GuiElements.adoc[leveloffset=+1]
-//include::PageObjects.adoc[leveloffset=+1]
+include::guielement.adoc[leveloffset=+1]
+include::pageobjects.adoc[leveloffset=+1]
 
 = Testerra Features
 include::modules.adoc[leveloffset=+1]

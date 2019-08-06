@@ -1,5 +1,5 @@
 = Create a new project
-include::properties/property_attributes.adoc[]
+include::properties/property-attributes.adoc[]
 
 == System requirements
 

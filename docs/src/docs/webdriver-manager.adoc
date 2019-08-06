@@ -1,0 +1,251 @@
+= WebDriverManager
+include::properties/property-attributes.adoc[]
+
+== Overview
+WebDriverManager is the central component to create or close your WebDriver session.
+
+WebDriverManager uses the standard Selenium Webdriver but it is much simpler to configure your session or create a new remote Selenium session.
+
+== WebDriver sessions
+
+=== Create a local session
+
+With a local session you don't need a remote Selenium server. Testerra is using its build-in Selenium libary to create a new browser session.
+
+You need at least the following settings:
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+// Setting the browser
+{browser}=firefox
+
+// Setting the start page
+{baseurl}=http://example.org
+----
+
+To tell Selenium where the Webdriver binary is located, use the `system.properties` file
+
+.system.properties
+[source, properties]
+----
+webdriver.gecko.driver=src\\main\\resources\\geckodriver.exe
+----
+
+.Usage in your test method
+[source, java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
+----
+
+The `driver` object points to a new browser session and the site `http://example.org` was loaded.
+
+=== Create a remote session
+
+For using a remote Selenium server (e.g. a Selenium Grid) you only have to add some properties.
+
+.Additional settings in test.properties
+[source, properties, subs="attributes"]
+----
+{webdriver_mode}=remote
+
+// Define the remote Selenium server
+// The shown values are default
+{selenium_server_host}=localhost
+{selenium_server_port}=4444
+
+// In a grid you should specify a browser version if you have more then one version per browser type
+{browser_version}=65
+----
+
+You don't need a Webdriver binary definition in your `system.properties` because your remote Selenium server needs a configuration for the Webdriver binaries.
+
+There is no need to change your test method to create a new session.
+
+.Usage in your test method
+[source, java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
+----
+
+TIP: Use as often as possible a remote Selenium server, also for development. So your project is independed from any Webdriver configuration and needed Webdriver binary files.
+
+[TIP]
+======
+You can also use a simpel way to define browser type and version:
+[source, properties, subs="attributes"]
+----
+# Instead of both single properties...
+{browser}=firefox
+{browser_version}=65
+
+# ... you can use the following
+{browser_setting}=firefox_65
+----
+======
+
+=== Usage of WebDriver sessions
+
+For the first call of `getWebDriver()` Selenium is triggered to open a new Browser windows with the defined URL.
+
+For every other call of `getWebDriver()` in the *same test context* WebDriverManager always returns the existing session.
+
+This makes it possible to retrieve the current session in any context and avoids to force the user to pass the instance around.
+
+=== Multiple sessions
+
+The WebDriverManager can handle more than one session in one test context. Every session has a defined session key. If no key was set, the default session key is called `default`.
+
+The following example creates two unindependend browser sessions:
+
+[source, java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
+WebDriver driverWindow2 = WebDriverManager.getWebDriver("window2");
+
+// Get the session key
+String key1 = WebDriverManagerUtils.getSessionId(driver);        // key1 contains 'default'
+
+String key2 = WebDriverManagerUtils.getSessionId(driverWindow2); // key2 contains 'window2'
+----
+
+=== Close a session
+
+In most cases it is not needed to close your session manually. Testerra always closes all open session at the end of a test method.
+
+If you want to reuse a session in the next test method, you can deactivate the automatic close.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+// Default value is true
+{wdm_closewindows_aftertestmethods}=false
+----
+
+To close active sessions manually, do the following:
+[source, java]
+----
+// Close all active session in the current test context.
+WebDriverManager.shutdown();
+
+// Close all active session without check the wdm.closewindows.aftertestmethods property
+WebDriverManager.forceShutdown()
+
+// Close all active session in all current parallel test threads.
+WebDriverManager.forceShutdownAllThreads()
+----
+
+[NOTE]
+====
+Testerra calls `WebDriverManager.shutdown()` automatically at the end of every test method.
+
+With `wdm.closewindows.aftertestmethods` you can control this behaviour.
+
+At the end of the test run Testerra alwawys calls `WebDriverManager.forceShutdown()` to cleanup all sessions.
+====
+
+=== Exclusive sessions
+
+#Should be tested#
+
+String uuid WebDriverManager.makeSessionExclusive(WebDriver driver)
+WebDriverManager.shutdownExclusiveSession(String key)
+
+== WebDriver configuration
+
+=== Global configuration
+
+A global configuration applies to all new sessions created by WebDriverManager.
+
+You can set a global configuration by
+
+* `test.properties`
+* at runtime by `System.setProperty()`
+* at runtime by `WebDriverManager.config()` (only browser session behaviour)
+
+==== Configure with `test.properties`
+
+Like shown above all session properties can be set in `test.properties`.
+
+include::properties/webdriver-props.adoc[leveloffset=+1]
+
+==== Configure with `System.setProperty()`
+
+At runtime you can change the global configuration of all properties with `System.setProperty()`.
+
+[source, java]
+----
+System.setProperty(TesterraProperties.BROWSER, Browsers.firefox);
+System.setProperty(TesterraProperties.BROWSER_VERSION, "66");
+----
+
+==== Configure with `WebDriverManager.config()`
+
+Some of the WebdriverManager settings you can change as follows
+
+[source, java]
+----
+WebDriverManager.config().executeCloseWindows = true;
+
+// tt.wdm.closewindows.aftertestmethods
+WebDriverManager.config().closeWindowsAfterTestMethod = true;
+
+// tt.wdm.closewindows.onfailure
+WebDriverManager.config().closeWindowsOnFailure = false;
+
+// tt.browser.maximize
+WebDriverManager.config().maximize = true;
+
+// tt.takeAutomaticScreenshot
+WebDriverManager.config().takeScreenShotsActive = false;
+
+// tt.webdriver.mode
+WebDriverManager.config().webDriverMode = WebDriverMode.remote;
+----
+
+Except for `executeCloseWindows` the associated property name is added as comment.
+
+[NOTE]
+======
+`WebDriverManager.config().executeCloseWindows` controls the closing of browser windows after every test method in generally.
+
+If `executeCloseWindows = false`, the settings `closeWindowsAfterTestMethod` and `closeWindowsOnFailure` have no effect.
+
+Keep in mind, that after the complete test run a browser close is forced.
+======
+
+You can reset the settings to the default values or defined in `test.properties` as follows
+
+[source,java]
+----
+WebDriverManager.resetConfig();
+----
+
+
+#what is with this?#
+WebDriverManager.setBaseURL()
+
+=== Local configuration
+
+If you only want to change the settings for one session, you can use `WebDriverRequest`. All defined attributes overrides the standard configuration. If an attribute is not set the global definition is used.
+
+[source, java]
+----
+WebDriverRequest myRequest = new DesktopWebDriverRequest();
+myRequest.baseUrl = "http://example.org";
+myRequest.browser = Browsers.firefox;
+myRequest.browserVersion = "66";
+myRequest.sessionKey = "mysession";     // if no custom session defined, the default value 'default' is set
+
+WebDriver driver = WebDriverManager.getWebDriver(myRequest);
+----
+
+== Working with sessions
+
+#Other stuff# you can do
+
+WebDriverManagerUtils
+
+WebDriverUtils ??
+
+https://testautomation-mms.atlassian.net/wiki/spaces/XETA/pages/327794/01+-+WebDriverManager#id-01-WebDriverManager-Other

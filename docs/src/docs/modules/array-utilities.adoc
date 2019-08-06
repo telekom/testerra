@@ -1,0 +1,12 @@
+= Array Utilities
+
+This class is extends the Apache array utils by the following method:
+
+[source,java]
+----
+//	Concat all elements of a string array to a single string with a special sperator.
+String fields[] = {"one", "two", "three"};
+
+// should result in "one:two:three"
+String oneString = ArrayUtils.join(fields, ":");
+----

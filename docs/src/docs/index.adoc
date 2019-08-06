@@ -8,19 +8,19 @@ Testerra is developed by our Test Automation Experts at T-Systems Multimedia Sol
 ****
 
 = Getting Started
-include::gettingstarted.adoc[leveloffset=+1]
+include::getting-started.adoc[leveloffset=+1]
 
-//= Testerra Framework
-//include::WebDriverManager.adoc[leveloffset=+1]
-//include::Browser_caps.adoc[leveloffset=+1]
+= Testerra Framework
+include::webdriver-manager.adoc[leveloffset=+1]
+include::browser-caps.adoc[leveloffset=+1]
 //include::GuiElements.adoc[leveloffset=+1]
 //include::PageObjects.adoc[leveloffset=+1]
 
-//= Testerra Features
-//include::Modules.adoc[leveloffset=+1]
+= Testerra Features
+include::modules.adoc[leveloffset=+1]
 
-//= Appendix
-//include::overview_properties.adoc[leveloffset=+1]
+= Appendix
+include::properties.adoc[leveloffset=+1]
 
 [glossary]
 //= Glossary

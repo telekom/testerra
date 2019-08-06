@@ -1,0 +1,13 @@
+= Overview of all Testerra properties
+
+== Testerra core properties
+
+include::properties/core-probs.adoc[leveloffset=+1]
+
+== WebdriverManager properties
+
+include::properties/webdriver-props.adoc[leveloffset=+1]
+
+== PageFactory properties
+
+include::properties/pagefactory-props.adoc[leveloffset=+1]

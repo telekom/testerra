@@ -52,17 +52,21 @@ public class SearchPage extends Page {
 
 The following lines demonstrate how to use page objects in your test method.
 
-#Make a complete test class#
-
 [source,java]
 ----
-// assume the String searchText is defined according to your testdata set
+import ...
 
-HomePage homePage = PageFactory.create(HomePage.class, driver);
-SearchPage searchPage = homePage.openSearch();
-ResultPage resultPage = searchPage.search(searchText);
-resultPage.assertResultSetIsNotEmpty();
-homePage = resultPage.close();
+public class TestClass extends TesterraTest {
+
+    @Test
+    public void myTest() {
+        HomePage homePage = PageFactory.create(HomePage.class, driver);
+        SearchPage searchPage = homePage.openSearch();
+        ResultPage resultPage = searchPage.search("search text");
+        resultPage.assertResultSetIsNotEmpty();
+        homePage = resultPage.close();
+    }
+}
 ----
 
 == Instantiation

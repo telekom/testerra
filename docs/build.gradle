@@ -1,6 +1,6 @@
 plugins {
     id "org.asciidoctor.convert" version "2.3.0"
-    id 'com.github.mgk.gradle.s3' version '1.4.0'
+    id "jp.classmethod.aws.s3" version "0.40"
 }
 
 ext {
@@ -9,13 +9,15 @@ ext {
     destinationDir = 'build/docs'
     sourceDirForS3 = "${destinationDir}/html5"
     destDirS3 = 'testerra/latest'
+    myBucketName = 'tapas-docs'
 }
 
-import com.github.mgk.gradle.S3Upload
+import com.amazonaws.services.s3.model.ObjectMetadata
+import jp.classmethod.aws.gradle.s3.AmazonS3FileUploadTask
 
-s3 {
-    profile = 'tapas'
-    bucket = 'tapas-docs'
+aws {
+    profileName = 'tapas'
+    region = 'eu-central-1'
 }
 
 asciidoctor {
@@ -46,20 +48,35 @@ asciidoctor {
             imagesdir: 'images'
 }
 
-task publishDoc() {
-    dependsOn asciidoctor
+// Upload all generated files and corresponding images, CSS, JS, ...
+task uploadDoc() {
 
     doLast {
         def dir = file("${sourceDirForS3}")
 
         fileTree(dir: dir).each { f ->
             def path = dir.toPath().relativize(f.toPath())
-            def t = task "upload-${path}"(type: S3Upload) {
+            def t = task "upload-${path}"(type: AmazonS3FileUploadTask) {
+                bucketName myBucketName
                 file = f
                 key = "${destDirS3}/${path}"
-                overwrite = true
+                def m = new ObjectMetadata()
+                m.setCacheControl("no-cache, no-store")
+                objectMetadata = m
             }
             t.execute()
         }
     }
+
+}
+
+// Just for testing - upload a single file
+task uploadContent(type: AmazonS3FileUploadTask) {
+    file file("${sourceDirForS3}/index.html") // must be a file
+    bucketName myBucketName
+    key "${destDirS3}/index.html"
+
+    def m = new ObjectMetadata()
+    m.setCacheControl("no-cache, no-store")
+    objectMetadata = m
 }

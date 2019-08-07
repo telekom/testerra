@@ -3,6 +3,11 @@ plugins {
     id "jp.classmethod.aws.s3" version "0.40"
 }
 
+import com.amazonaws.services.s3.model.ObjectMetadata
+import jp.classmethod.aws.gradle.s3.AmazonS3FileUploadTask
+import jp.classmethod.aws.gradle.s3.SyncTask
+
+
 ext {
     sources = 'src'
     sourcesDoc = "${sources}/docs"
@@ -11,9 +16,6 @@ ext {
     destDirS3 = 'testerra/latest'
     myBucketName = 'tapas-docs'
 }
-
-import com.amazonaws.services.s3.model.ObjectMetadata
-import jp.classmethod.aws.gradle.s3.AmazonS3FileUploadTask
 
 aws {
     profileName = 'tapas'
@@ -48,26 +50,17 @@ asciidoctor {
             imagesdir: 'images'
 }
 
-// Upload all generated files and corresponding images, CSS, JS, ...
-task uploadDoc() {
+task syncContents(type: SyncTask) {
+    source file("${sourceDirForS3}") // must be directory
+    bucketName myBucketName
+    prefix "${destDirS3}/"
 
-    doLast {
-        def dir = file("${sourceDirForS3}")
-
-        fileTree(dir: dir).each { f ->
-            def path = dir.toPath().relativize(f.toPath())
-            def t = task "upload-${path}"(type: AmazonS3FileUploadTask) {
-                bucketName myBucketName
-                file = f
-                key = "${destDirS3}/${path}"
-                def m = new ObjectMetadata()
-                m.setCacheControl("no-cache, no-store")
-                objectMetadata = m
-            }
-            t.execute()
-        }
+    // to set all file's metadata "no-cache, no-store"
+    metadataProvider { bucket, key, file ->
+        ObjectMetadata m = new ObjectMetadata()
+        m.setCacheControl("no-cache, no-store")
+        return m
     }
-
 }
 
 // Just for testing - upload a single file
@@ -80,3 +73,6 @@ task uploadContent(type: AmazonS3FileUploadTask) {
     m.setCacheControl("no-cache, no-store")
     objectMetadata = m
 }
+
+asciidoctor.dependsOn(clean)
+syncContents.dependsOn(asciidoctor)

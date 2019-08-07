@@ -1,3 +1,7 @@
+/*
+    Custom CSS file for tabbed code snippets
+*/
+
 :root{
     --tab-color: rgba(122, 37, 24,8);
     --tab-color-hover: rgba(122, 37, 24, 0.11);

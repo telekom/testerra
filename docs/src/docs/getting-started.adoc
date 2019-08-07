@@ -112,7 +112,7 @@ public class ExamplePage extends Page {
 
 [TIP]
 ======
-The basic Page class added all the page object functionality of Testerra to your project. See #Page Objects chapter# for more details.
+The basic Page class added all the page object functionality of Testerra to your project. See <<PageObjects>> chapter for more details.
 
 The GuiElement describes the elements like links, buttons, etc. on your page. Learn more about GuiElements in <<GuiElements>>.
 ======

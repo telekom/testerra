@@ -1,0 +1,7 @@
+include::property-attributes.adoc[]
+
+[cols="2,^1,4",options="header"]
+|===
+| Property | default | Description
+| {project_package} | eu.tsystems.mms.tic | The package where the PageFactory searches for screen resolution specific subclasses.
+|===

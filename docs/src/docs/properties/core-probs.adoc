@@ -1,0 +1,8 @@
+include::property-attributes.adoc[]
+
+[cols="2,^1,4",options="header"]
+|===
+| Property | default | Description
+| {proxy_settings_load} | true | Boolean flag to load proxysettings properties on startup automatically.
+| {proxy_settings_file} | proxysettings.properties | File name of property file for proxy settings. |
+|===

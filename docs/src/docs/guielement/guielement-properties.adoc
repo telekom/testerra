@@ -1,0 +1,52 @@
+= Get properties
+
+== Selenium webelement properties
+
+GuiElement provide all Selenium methods get more details about the webelement.
+
+.The given HTML snippet
+[source,html]
+----
+...
+<a href="newpage.html" style="font-size: 20px;">My link</a>
+...
+----
+
+.Standard attributes
+[source,java]
+----
+GuiElement elem = new GuiElement(driver, By.xpath("//a"));
+
+String text = elem.getText();                   // returns "My link"
+String attr = elem.getAttribute("href");        // returns "newpage.html"
+String name = elem.getTagName();                // returns "a"
+Point point = elem.getLocation();               // returns the top left corner of the element
+Dimension dim = elem.getSize();                 // returns width and heigth of the element
+Rectangle rect = elem.getRect();                // returns rectangle with location and size
+String value = elem.getCssValue("font-size");   // returns "20px"
+----
+
+== Additional properties
+
+GuiElement provide some more special methods which could helpful for assertions.
+
+.The given HTML snippet
+[source,html]
+----
+...
+<a href="newpage.html" style="font-size: 20px;">
+    <span>My</span>
+    <span>Link</span>
+</a>
+...
+----
+
+.Special GuiElement methods
+[source,java]
+----
+GuiElement link = new GuiElement(driver, By.xpath("//a"));
+List<String> list = link.getTextsFromChildren();    // returns a list ["My", "Link"]
+
+GuiElement span = new GuiElement(driver, By.xpath("//a/span"));
+int count = span.getNumberOfFoundElements();        // returns 2
+----

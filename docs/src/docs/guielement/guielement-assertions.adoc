@@ -1,0 +1,92 @@
+= Assertions
+
+GuiElements provide many kinds of assertion methods to verify your elements.
+
+NOTE: The following chapters only contains a selection of existing assertion methods. Please have a look to the #JavaDoc# for a complete list.
+
+== Functional asserts
+
+If a functional assert fails, it will make the whole test fail and abort.
+
+[source,java]
+----
+GuiElement element = new GuiElement(driver, By.id("button"));
+
+// assertText only returns true, if the text is exaclty the passed string
+element.asserts().assertText("mytext");
+element.asserts().assertContainsText("mytext");
+
+// assertIsPresent is true, if the element can be found within the currect site
+element.asserts().assertIsPresent();
+element.asserts().assertIsNotPresent();
+
+// assertIsDisplayed returns true, if the element is visible and reachable by Selenium
+element.asserts().assertIsDisplayed();
+element.asserts().assertIsNotDisplayed();
+
+// ... and many more
+----
+
+== Assert collector of functional asserts
+
+Assert Collector is a collector for functional asserts of a GuiElement. Failing an assert it will not abort the test method, but it will throw an exception at *the end* of the test method. So you have a chance to validate many more aspects in one test run.
+
+[source,java]
+----
+GuiElement element = new GuiElement(driver, By.id("label"));
+
+element.assertCollector().assertIsPresent();
+element.assertCollector().assertText("mytext");
+----
+
+== Non-functional asserts
+
+Non-functional asserts do not let the test fail. But the assertion message will be added to the log with loglevel ERROR.
+
+Non-functional asserts provide the same assertation methods like functional asserts.
+
+[source,java]
+----
+GuiElement element = new GuiElement(driver, By.id("label"));
+
+element.nonFunctionalAsserts().assertIsPresent();
+element.nonFunctionalAsserts().assertText("mytext");
+----
+
+== Layout asserts
+
+GuiElements can be checked for their relative layouts.
+
+[source,java]
+----
+GuiElement left = new GuiElement(driver, By.id("left"));
+GuiElement right = new GuiElement(driver, By.id("right"));
+
+left.assertLayout(Layout.outer().leftOf(right));
+----
+
+The following checks are available in the `Layout` class:
+
+* leftOf
+* rightOf
+* above
+* below
+* sameTop
+* sameBottom
+* sameLeft
+* sameRight
+
+The same methods have a delta parameter that can be used to set deviations.
+
+=== Inner and outer borders
+
+For WebElements, there are internal and external sizes that can be addressed by the layout check. Interesting are the CSS values for 'border' and 'padding'. The 'margin' is not relevant.
+
+A check with `Layout.outer()` also observed the padding and margin definitions.
+
+A check with `Layout.inner()` ignores padding and margin. It takes the position of the inner elements for check.
+
+[source,java]
+----
+left.assertLayout(Layout.inner().leftOf(right));
+----

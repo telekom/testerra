@@ -44,13 +44,6 @@ public final class AssertUtils {
         Assert.assertFalse(actual.contains(expected), String.format("%s [%s] contains [%s]", description, actual, expected));
     }
 
-    /**
-     * @deprecated
-     */
-    public static void assertGreaterThan(long actual, long expected, String descriptionPart) {
-        Assert.assertTrue(actual > expected, descriptionPart + " satisfies " + actual + " > " + expected);
-    }
-
     public static void assertGreaterThan(BigDecimal actual, BigDecimal expected) {
         assertGreaterThan(actual, expected, "");
     }

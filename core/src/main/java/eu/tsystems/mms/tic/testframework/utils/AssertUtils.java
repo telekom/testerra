@@ -48,12 +48,6 @@ public final class AssertUtils {
         Assert.assertTrue(actual > expected, descriptionPart + " satisfies " + actual + " > " + expected);
     }
 
-    private static int compareNumbers(Number actual, Number expected) {
-        BigDecimal a = new BigDecimal(actual.toString());
-        BigDecimal e = new BigDecimal(expected.toString());
-        return a.compareTo(e);
-    }
-
     public static void assertGreaterThan(BigDecimal actual, BigDecimal expected) {
         assertGreaterThan(actual, expected, String.format("'%s' is greater than '%s'", actual, expected));
     }

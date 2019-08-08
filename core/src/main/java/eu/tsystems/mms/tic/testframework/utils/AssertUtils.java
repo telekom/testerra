@@ -54,21 +54,35 @@ public final class AssertUtils {
         return a.compareTo(e);
     }
 
-    public static void assertGreaterThan(Number actual, Number expected) {
-        Assert.assertTrue(compareNumbers(actual, expected)==1, String.format("'%s' is greater than '%s'", actual, expected));
+    public static void assertGreaterThan(BigDecimal actual, BigDecimal expected) {
+        assertGreaterThan(actual, expected, String.format("'%s' is greater than '%s'", actual, expected));
     }
 
-    public static void assertGreaterEqualThan(Number actual, Number expected) {
-        int comparison = compareNumbers(actual, expected);
-        Assert.assertTrue(comparison==1||comparison==0, String.format("'%s' is greater or equal than '%s'", actual, expected));
+    public static void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected) {
+        assertGreaterEqualThan(actual, expected, String.format("'%s' is greater or equal than '%s'", actual, expected));
     }
 
-    public static void assertLowerThan(Number actual, Number expected) {
-        Assert.assertTrue(compareNumbers(actual, expected)==-1, String.format("'%s' is lower than '%s'", actual, expected));
+    public static void assertLowerThan(BigDecimal actual, BigDecimal expected) {
+        assertLowerThan(actual, expected, String.format("'%s' is lower than '%s'", actual, expected));
     }
 
-    public static void assertLowerEqualThan(Number actual, Number expected) {
-        int comparison = compareNumbers(actual, expected);
-        Assert.assertTrue(comparison==-1||comparison==0, String.format("'%s' is lower or equal than '%s'", actual, expected));
+    public static void assertLowerEqualThan(BigDecimal actual, BigDecimal expected) {
+        assertLowerEqualThan(actual, expected, String.format("'%s' is lower or equal than '%s'", actual, expected));
+    }
+
+    public static void assertGreaterThan(BigDecimal actual, BigDecimal expected, String description) {
+        Assert.assertTrue(actual.compareTo(expected)==1, description);
+    }
+
+    public static void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, String description) {
+        Assert.assertTrue(actual.compareTo(expected) >= 0, description);
+    }
+
+    public static void assertLowerThan(BigDecimal actual, BigDecimal expected, String description) {
+        Assert.assertTrue(actual.compareTo(expected)==-1, description);
+    }
+
+    public static void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, String description) {
+        Assert.assertTrue(actual.compareTo(expected) <= 0, description);
     }
 }

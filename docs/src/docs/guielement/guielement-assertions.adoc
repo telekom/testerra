@@ -90,3 +90,21 @@ A check with `Layout.inner()` ignores padding and margin. It takes the position 
 ----
 left.assertLayout(Layout.inner().leftOf(right));
 ----
+
+.A simple example for a layout check
+image::GuiElement_layout_comperator.png[]
+
+[source,java]
+----
+GuiElement image1 = new GuiElement(driver, By.xpath("//..."));
+GuiElement image2 = new GuiElement(driver, By.xpath("//..."));
+GuiElement image3 = new GuiElement(driver, By.xpath("//..."));
+
+// Assertions are true
+image1.assertLayout(Layout.outer().leftOf(image2));
+image1.assertLayout(Layout.outer().sameTop(image2, 0));
+image1.assertLayout(Layout.outer().sameBottom(image3, 0));
+
+// Assertions are false
+image1.assertLayout(Layout.outer().sameBottom(image2, 0));
+----

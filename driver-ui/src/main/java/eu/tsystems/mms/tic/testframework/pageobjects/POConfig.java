@@ -41,9 +41,9 @@ public final class POConfig {
 
     /** Private Constructor, cause this is a util class. */
     private POConfig() { }
-    
+
     /**
-     * The element-timeout in seconds. Default: 30s.
+     * The element-timeout in seconds. Default: 8s.
      */
     private static int uiElementTimeoutInSeconds = PropertyManager.getIntProperty(TesterraProperties.ELEMENT_TIMEOUT_SECONDS, 8);
 

@@ -11,3 +11,7 @@ include::properties/webdriver-props.adoc[leveloffset=+1]
 == PageFactory properties
 
 include::properties/pagefactory-props.adoc[leveloffset=+1]
+
+== GuiElement properties
+
+include::properties/guielement-probs.adoc[leveloffset=+1]

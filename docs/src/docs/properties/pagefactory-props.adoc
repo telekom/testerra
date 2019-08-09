@@ -4,4 +4,5 @@ include::property-attributes.adoc[]
 |===
 | Property | default | Description
 | {project_package} | eu.tsystems.mms.tic | The package where the PageFactory searches for screen resolution specific subclasses.
+| {page_factory_loops} | 20 | The loop detections prevents endless recursive creation of new page instances. This property defines the max count of loops.
 |===

@@ -35,6 +35,11 @@ For custom window browser size use `driver.manage().window().setSize(new Dimensi
 | {wdm_closewindows_aftertestmethods} | true | If true, after every test method all open browser windows are closed.
 | {wdm_closewindows_onfailure} | true | If true, after failed test methods all open browser windows are closed
 | {takeAutomaticScreenshot} | true | If true and test methods fail, a screenshot is created automatically
+| {webdriver_timeouts_seconds_pageload} | 120 | Defines the Selenium timeout for page load seconds.
 
+(`driver.manage().timeouts().pageLoadTimeout()`)
+| {webdriver_timeouts_seconds_script} | 120 |  Defines the Selenium timeout for execution of async scripts in seconds.
+
+(`driver.manage().timeouts().setScriptTimeout()`)
 |===
 

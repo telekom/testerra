@@ -1,0 +1,18 @@
+include::property-attributes.adoc[]
+
+[cols="2,^1,4",options="header"]
+|===
+| Property | default | Description
+| {reportdir} | /target/surefire-reports/report/ | Creates the report in the specified directory below the working directory.
+| {reportname} | na. | Names the report (e.g. the project where Testerra is used)
+| {runcfg} | na. | Set a run configuration to use different variations (test sets) of a test scope within a build task.
+
+#Is this still relevant for history in report for free Testerra?#
+| {screenshotter_active} | true | If true, screenshots will take automatically in general.
+| {report_screenshots_preview} | true | If true a screenshots preview is added to the test methods in the report
+| {screenshot_on_pageload} | false | If true, screenshot after page is loaded will be taken
+| {screencaster_active} | true | If true, a screencast is generated for failed tests.
+
+#Is this a feature of Testerra free?#
+| {web_take_action_screenshots} | false | If true a screenshot is created before and after every click step
+|===

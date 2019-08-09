@@ -6,7 +6,6 @@
 :proxy_settings_file:               tt.proxy.settings.file
 :test_properties_file:              tt.test.properties.file
 
-
 // webdriver
 :browser:                           tt.browser
 :browser_version:                   tt.browser.version
@@ -34,6 +33,40 @@
 :guielement_default_assertcollector: tt.guielement.default.assertcollector
 :guielement_use_js_alternatives:    tt.guielement.use.js.alternatives
 :guielement_checkrule:              tt.guielement.checkrule
+
+
+// report
+:reportdir:                         tt.reportdir
+:reportname:                        tt.reportname
+:runcfg:                            tt.runcfg
+:screenshotter_active:              tt.screenshotter.active
+:report_screenshots_preview:        tt.report.screenshots.preview
+:screenshot_on_pageload:            tt.screenshot.on.pageload
+:screencaster_active:               tt.screencaster.active
+:web_take_action_screenshots:       tt.web.take.action.screenshots
+
+// Is not used, stich is deactivated/removed
+// public static final String STITCH_CHROME_SCREENSHOTS = "tt.stitch.chrome.screenshots";
+
+
+
+
+
+//
+//public static final String MODULE_SOURCE_ROOT = "tt.module.source.root";
+// **
+//* tt.source.lines.prefetch
+//*/
+//public static final String SOURCE_LINES_PREFETCH = "tt.source.lines.prefetch";
+//**
+//* tt.report.activate.sources
+//*/
+//public static final String REPORT_ACTIVATE_SOURCES = "tt.report.activate.sources";
+//**
+//* .
+//*/
+
+
 
 
 // --> new stuff
@@ -85,31 +118,6 @@
 //public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW = "tt.failure.corridor.allowed.failed.tests.low";
 
 
-// report
-//public static final String REPORTDIR = "tt.reportdir";
-//public static final String REPORTNAME = "tt.reportname";
-//public static final String RUNCFG = "tt.runcfg";
-//public static final String REPORT_SCREENSHOTS_PREVIEW = "tt.report.screenshots.preview";
-//**
-//* Module source root
-//
-//public static final String MODULE_SOURCE_ROOT = "tt.module.source.root";
-// **
-//* tt.source.lines.prefetch
-//*/
-//public static final String SOURCE_LINES_PREFETCH = "tt.source.lines.prefetch";
-//**
-//* tt.report.activate.sources
-//*/
-//public static final String REPORT_ACTIVATE_SOURCES = "tt.report.activate.sources";
-//**
-//* If true, screenshot after page is loaded will be taken.
-//*/
-//public static final String SCREENSHOT_ON_PAGELOAD = "tt.screenshot.on.pageload";
-//public static final String SCREENCASTER_ACTIVE = "tt.screencaster.active";
-//public static final String STITCH_CHROME_SCREENSHOTS = "tt.stitch.chrome.screenshots";
-//public static final String REPORT_DATAPROVIDER_INFOS = "tt.report.dataprovider.infos";
-//public static final String WEB_TAKE_ACTION_SCREENSHOTS = "tt.web.take.action.screenshots";
 
 
 
@@ -184,3 +192,15 @@
 //public static final String PERF_PAGE_THINKTIME_MS = "tt.perf.page.thinktime.ms";
 //** Perf test Property, used to set default values of a Load test */
 //public static final String PERF_TEST = "tt.perf.test";
+
+
+
+// unknown stuff
+
+//    public static final String DB_TIMEOUT = "tt.db.timeout";
+//
+//    public static final String MONITOR_MEMORY = "tt.monitor.memory";
+//
+//
+//
+//    public static final String EXECUTION_OMIT_IN_DEVELOPMENT = "tt.execution.omit.indevelopment";

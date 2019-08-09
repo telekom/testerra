@@ -15,3 +15,7 @@ include::properties/pagefactory-props.adoc[leveloffset=+1]
 == GuiElement properties
 
 include::properties/guielement-probs.adoc[leveloffset=+1]
+
+== Report properties
+
+include::properties/report-probs.adoc[leveloffset=+1]

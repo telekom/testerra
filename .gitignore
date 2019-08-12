@@ -8,3 +8,4 @@ licenses
 *.zip
 out
 build
+gradlew

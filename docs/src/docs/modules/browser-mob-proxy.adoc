@@ -58,15 +58,13 @@ bmpClient.setBasicAuth(baseUrl.getHost(), basicAuthUser, basicAuthPassword);
 
 == Upstream proxy
 
-If your SUT should use proxy, you can setup BMP to use a upstream proxy like in link:[Simple proxy setup]
+If your SUT should use proxy, you can setup BMP to use a upstream proxy like in link:[SUT Browser Proxy]
 
 [source,java]
 ----
-import java.net.URL;
+import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
 
-/* Additional Proxy setup here */
-URL proxyUrl = new URL(PropertyManager.getProperty("proxy"));
-bmpClient.setUpstreamProxy(proxyUrl);
+bmpClient.setUpstreamProxy(ProxyUtils.getSystemHttpProxyUrl());
 ----
 
 == Other features

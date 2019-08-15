@@ -262,36 +262,37 @@ TIP: Testerra uses as default values 'localhost' ({selenium_server_host}) and '4
 
 === Using a proxy
 
-Create a file named `proxysettings.properties` and locate it to `src/main/resources/`. This file is used by all Testerra network features and the JVM.
+There are three ways for setting up a proxy for your test run environment.
+
+- System proxy settings for Gradle and the JVM
+- Testerra proxy settings for TestNG and JVM
+- Browser proxy settings for the SUT set up by browser capabilities you can find here <<Browser capabilities,Proxy setup>>
+
+==== System proxy (recommended)
+
+To setup a proxy for the whole system, including Gradle, the JVM and Testerra, the recommended way is to pass it by command line arguments like
+[source]
+----
+gradle test -Dhttp.proxyHost=your-proxy-host.com -Dhttp.proxyPort=8080
+----
+IMPORTANT: Setting the System proxy will override the Testerra proxy settings.
+
+==== Testerra proxy
+
+If you want to setup a proxy for Testerra, including TestNG and the JVM, just add `proxysettings.properties` to your resource bundle with the following content
 
 .Example of proxysettings.properties
 [source,properties]
 ----
-https.proxyHost=proxy.your-company.com
-https.proxyPort=8080
-https.proxyUser=
-https.proxyPassword=
-
-http.proxyHost=proxy.your-company.com
+http.proxyHost=your-proxy-host.com
 http.proxyPort=8080
 http.proxyUser=
 http.proxyPassword=
-
 http.nonProxyHosts=localhost|192.168.0.1
-https.nonProxyHosts=localhost|192.168.0.1
-
+----
+These properties are automatically loaded by the `PropertyManager` and set up as System proxy settings during runtime with the following message
+----
+[main] [INFO ]: common.TesterraCommons - Setting system property proxy = http://your-proxy-host.com:8080
 ----
 
-This file is automatically loaded and set up on startup, which is shown with the following message
-
-----
-[main] [INFO ]: common.TesterraCommons - Setting system property proxy = http://proxy.your-company.com:8080
-----
-
-[NOTE]
-====
-Your browser session does not get the proxy configuration automatically!
-
-Please add the proxy configuration via <<Browser capabilities>>
-====
-
+IMPORTANT: Setting up the Testerra proxy will not setup a proxy for Gradle nor a browser.

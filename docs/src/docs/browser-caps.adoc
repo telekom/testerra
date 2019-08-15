@@ -4,41 +4,15 @@
 
 https://testautomation-mms.atlassian.net/wiki/spaces/XETA/pages/327794/01+-+WebDriverManager#id-01-WebDriverManager-Capabilities
 
-== Proxy Setup
+== Proxy setup
 
-There are two ways for setting up proxy for your test run environment.
-
-- System proxy settings for Testerra, TestNG and Java
-- Browser proxy settings for the SUT
-
-=== System Proxy (recommended)
-
-To setup a proxy for the whole system, including Gradle and Testerra, the recommended way is to pass it by command line arguments like
-[source]
-----
-gradle test -Dhttp.proxyHost=your-proxy-host.com -Dhttp.proxyPort=8080
-----
-IMPORTANT: Setting the System proxy this way will override the Testerra proxy settings.
-
-=== Testerra Proxy
-
-If you want to setup a proxy for Testerra only, just add  `proxysettings.properties` to your resource bundle with the following content
-
-[source,properties]
-----
-http.proxyHost=your-proxy-host.com
-http.proxyPort=8080
-----
-These properties are automatically loaded by the `PropertyManager` and set up as System proxy settings during runtime.
-
-IMPORTANT: Setting up the Testerra proxy will not setup a proxy for Gradle nor a SUT.
-
-=== SUT Browser Proxy
 #Need to rework#
 
 #Use addProxy method of WebDriverManagerUtils#
 
-If you want that the SUT uses a proxy, you can just configure that by default Selenium capabilites.
+If you want that the browser uses a proxy for the SUT, you can just configure that by default Selenium capabilites.
+
+NOTE: If you want to setup a proxy for the whole runtime environment, you have to follow the instructions at <<Using a proxy>>
 
 [source,java]
 ----

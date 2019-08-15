@@ -53,6 +53,7 @@ public final class CollectedAssertions {
         // take scrennshots
         List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
         if (screenshots != null) {
+            screenshots.forEach(s -> s.errorContextId = assertionInfo.id);
             assertionInfo.screenshots.addAll(screenshots);
         }
 

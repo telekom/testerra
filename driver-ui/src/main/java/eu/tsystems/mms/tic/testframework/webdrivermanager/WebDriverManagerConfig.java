@@ -122,4 +122,8 @@ public class WebDriverManagerConfig {
         return webDriverMode;
     }
 
+    public boolean areSessionsClosedAfterTestMethod() {
+        return executeCloseWindows && closeWindowsAfterTestMethod;
+    }
+
 }

@@ -34,9 +34,16 @@ import java.util.List;
 public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker {
 
     void collect() {
-        List<Video> videos = TestEvidenceCollector.collectVideos();
-        if (videos != null) {
-            methodContext.videos.addAll(videos);
+        if (isTest() && WebDriverManager.config().areSessionsClosedAfterTestMethod()) {
+            /*
+            videos are now fetched only after test methods
+             */
+            List<Video> videos = TestEvidenceCollector.collectVideos();
+            LOGGER.info("Evidence Videos: " + videos);
+            if (videos != null) {
+                videos.forEach(v -> v.errorContextId = methodContext.id);
+                methodContext.videos.addAll(videos);
+            }
         }
     }
 

@@ -5,4 +5,5 @@ include::modules/array-utilities.adoc[leveloffset=+1]
 include::modules/date-utilities.adoc[leveloffset=+1]
 include::modules/browser-mob-proxy.adoc[leveloffset=+1]
 include::modules/property-manager.adoc[leveloffset=+1]
+include::modules/proxy-utilities.adoc[leveloffset=+1]
 

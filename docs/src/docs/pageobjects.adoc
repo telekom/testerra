@@ -90,6 +90,11 @@ PageFactory.checkNot(searchPage.class, driver);
 The checkNot is successful if at least one mandatory GuiElement ("@Check") is not shown.
 
 === Inject additional objects
+
+#dynamic texts in guielements# +
+#no pages as pagevariables -> too complex# +
+#example with string used in guielement#
+
 In most cases the above way is preferred to create pages. But sometimes additional objects should be passed to a page object.
 This can be some data or anything you want. For this case there is another create method implemented in the `PageFactory`:
 

@@ -457,6 +457,11 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
+    public boolean waitForCssClass(String className) {
+        return guiElementWait.waitForCssClass(className);
+    }
+
+    @Override
     public boolean waitForIsSelectable() {
         return guiElementWait.waitForIsSelectable();
     }

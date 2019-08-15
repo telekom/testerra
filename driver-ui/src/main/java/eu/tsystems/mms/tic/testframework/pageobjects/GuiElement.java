@@ -782,6 +782,11 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
     }
 
     @Override
+    public boolean waitForCssClass(String className) {
+        return guiElementFacade.waitForCssClass(className);
+    }
+
+    @Override
     public boolean waitForIsSelectable() {
         return guiElementFacade.waitForIsSelectable();
     }

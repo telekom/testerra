@@ -69,34 +69,22 @@ bmpClient.setUpstreamProxy(ProxyUtils.getSystemHttpProxyUrl());
 
 == Other features
 
-#No tables!#
-
-[cols="5a,2"]
-|===
-| Example | Description
-
-|
 [source,java]
 ----
+/*
+ Maps specifc host names to another host names or IP adresses
+ */
 bmpClient.setHostMapping(Map<String, String> hostNameMapping);
-----
-| Map specifc host names to another host names or IP adresses.
 
-|
-[source,java]
-----
+/*
+ Capture the traffic and return it as a JsonElement
+ You can choose, if you want to capture only the headers, the content or both via the boolean flags.
+ */
 bmpClient.startCapture(boolean headers, boolean content);
 JsonElement element = client.stopCapture();
-----
-|
-Capture the traffic and return it as a JsonElement.
-You can choose, if you want to capture only the headers, the content or both via the boolean flags.
 
-|
-[source,java]
-----
+/*
+ Adds additional key-value pairs to the headers.
+*/
 bmpClient.setHeader(String key, String value);
 ----
-| Adds additional key-value pairs to the headers.
-
-|===

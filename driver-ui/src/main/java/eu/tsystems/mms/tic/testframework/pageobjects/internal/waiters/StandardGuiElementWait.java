@@ -247,6 +247,30 @@ public class StandardGuiElementWait implements GuiElementWait {
     }
 
     @Override
+    public boolean waitForTextContainsNot(String... texts) {
+        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
+            @Override
+            public void run() {
+                setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
+                setSkipThrowingException(true);
+
+                String currentText = guiElementStatusCheck.getText();
+                boolean gone = true;
+                for (String text : texts) {
+                    if (currentText.contains(text)) {
+                        gone = false;
+                        break;
+                    }
+                }
+                setPassState(gone);
+                setReturningObject(gone);
+            }
+        };
+        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        return response.logThrowableAndReturnResponse();
+    }
+
+    @Override
     public boolean waitForAttribute(final String attributeName) {
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override

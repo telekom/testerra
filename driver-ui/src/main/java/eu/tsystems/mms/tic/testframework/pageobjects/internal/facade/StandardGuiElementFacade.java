@@ -442,6 +442,11 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
+    public boolean waitForTextContainsNot(String... text) {
+        return guiElementWait.waitForTextContainsNot(text);
+    }
+
+    @Override
     public boolean waitForAttribute(String attributeName) {
         return guiElementWait.waitForAttribute(attributeName);
     }

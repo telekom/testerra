@@ -1,0 +1,29 @@
+include::property-attributes.adoc[]
+
+[cols="2,^1,4a",options="header"]
+|===
+| Property | default | Description
+| {guielement_highlights_active} | true | Visually marks every GuiElement that is being processed. Might break a LayoutTest.
+| {demomode} |  |
+| {dryrun} | true | All testmethods are executed with ignoring all steps. Also all setup methods (before, after) are ignored. +
+This is useful to check your TestNG suite without executing real testcode.
+| {list_tests} |  |
+| {on_state_testfailed_skip_shutdown} |  |
+| {on_state_testfailed_skip_following_tests} |  |
+| {skip_execution_when_previously_passed} |  |
+| {failed_tests_if_throwable_classes} |  | Failed tests condition: Throwable Class(~es, devided by ','. +
+#link to more#
+| {failed_tests_if_throwable_messages} |  | Failed tests condition. Throwable Message(~s, devided by ','). +
+#link to more#
+| {failed_tests_max_retries} |  | +
+{platform_badge}
+| {failed_tests_retry_flapping} |  |
+| {reuse_dataprovider_driver_by_thread} | false | Reuse existing Webdriver session for a thread of dataprovider
+| {watchdog_enable} |  |
+| {watchdog_timeout_seconds} |  |
+| {failure_corridor_active} |  |
+| {failure_corridor_allowed_failed_tests} |  |
+| {failure_corridor_allowed_failed_tests_high} |  |
+| {failure_corridor_allowed_failed_tests_mid} |  |
+| {failure_corridor_allowed_failed_tests_low} |  |
+|===

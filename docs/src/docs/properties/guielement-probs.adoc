@@ -12,4 +12,7 @@ include::property-attributes.adoc[]
 | {guielement_use_js_alternatives} | true | As a fallback of a click action Testerra tries a clickJS
 | {guielement_checkrule} | `CheckRule.IS_DISPLAYED` | Rule for Page objects validation of GuiElements +
 (see <<Check Annotations>>)
+| {delay_after_guielement_find_millis} | 0 | Waits in milliseconds after a _find_ to an GuiElement.
+| {delay_after_guielement_action_millis} | 0 | Waits in milliseconds after an _action_ on a GuiElement.
+| {delay_before_guielement_action_millis} | 0 | Waits in milliseconds before an _action_ on a GuiElement.
 |===

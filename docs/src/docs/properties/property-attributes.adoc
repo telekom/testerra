@@ -33,7 +33,9 @@
 :guielement_default_assertcollector: tt.guielement.default.assertcollector
 :guielement_use_js_alternatives:    tt.guielement.use.js.alternatives
 :guielement_checkrule:              tt.guielement.checkrule
-
+:delay_after_guielement_find_millis:        tt.delay.after.guielement.find.millis
+:delay_before_guielement_action_millis:     tt.delay.before.guielement.action.millis
+:delay_after_guielement_action_millis:      tt.delay.after.guielement.action.millis
 
 // report
 :reportdir:                         tt.reportdir
@@ -43,12 +45,28 @@
 :report_screenshots_preview:        tt.report.screenshots.preview
 :screenshot_on_pageload:            tt.screenshot.on.pageload
 :screencaster_active:               tt.screencaster.active
-:web_take_action_screenshots:       tt.web.take.action.screenshots
 
-// Is not used, stich is deactivated/removed
-// public static final String STITCH_CHROME_SCREENSHOTS = "tt.stitch.chrome.screenshots";
+// execution
+:guielement_highlights_active:      tt.guielement.highlights.active
+:dryrun:                            tt.dryrun
+:demomode:                          tt.demomode
+:list_tests:                        tt.list.tests
+:on_state_testfailed_skip_shutdown: tt.on.state.testfailed.skip.shutdown
+:skip_execution_when_previously_passed:     tt.skip.execution.when.previously.passed
+:on_state_testfailed_skip_following_tests:  tt.on.state.testfailed.skip.following.tests
+:failed_tests_if_throwable_classes:         tt.failed.tests.if.throwable.classes
+:failed_tests_if_throwable_messages:        tt.failed.tests.if.throwable.messages
+:failed_tests_max_retries:          tt.failed.tests.max.retries
+:failed_tests_retry_flapping:       tt.failed.tests.retry.flapping
+:reuse_dataprovider_driver_by_thread:       tt.reuse.dataprovider.driver.by.thread
+:watchdog_enable:                   tt.watchdog.enable
+:watchdog_timeout_seconds:          tt.watchdog.timeout.seconds
 
-
+:failure_corridor_active:           tt.failure.corridor.active
+:failure_corridor_allowed_failed_tests:         tt.failure.corridor.allowed.failed.tests
+:failure_corridor_allowed_failed_tests_high:    tt.failure.corridor.allowed.failed.tests.high
+:failure_corridor_allowed_failed_tests_mid:     tt.failure.corridor.allowed.failed.tests.mid
+:failure_corridor_allowed_failed_tests_low:     tt.failure.corridor.allowed.failed.tests.low
 
 
 
@@ -72,50 +90,6 @@
 // --> new stuff
 
 
-// execution
-//public static final String FAILED_TESTS_MAX_RETRIES = "tt.failed.tests.max.retries";
-//public static final String FAILED_TESTS_RETRY_FLAPPING = "tt.failed.tests.retry.flapping";
-//**
-//* Failed tests condition: Throwable Class(~es, devided by ','.
-//*/
-//public static final String FAILED_TESTS_IF_THROWABLE_CLASSES = "tt.failed.tests.if.throwable.classes";
-//
-//**
-// * Failed tests condition. Throwable Message(~s, devided by ',').
-// */
-//public static final String FAILED_TESTS_IF_THROWABLE_MESSAGES = "tt.failed.tests.if.throwable.messages";
-//public static final String DRY_RUN = "tt.dryrun";
-//**
-// * Visually marks every GuiElement that is being processed. Might break a LayoutTest.
-// */
-//public static final String DEMO_MODE = "tt.demomode";
-//public static final String SKIP_EXECUTION_WHEN_PREVIOUSLY_PASSED = "tt.skip.execution.when.previously.passed";
-//public static final String ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS = "tt.on.state.testfailed.skip.following.tests";
-//**
-//* State condition.
-//*/
-//public static final String ON_STATE_TESTFAILED_SKIP_SHUTDOWN = "tt.on.state.testfailed.skip.shutdown";
-//public static final String GUIELEMENT_HIGHLIGHTS_ACTIVE = "tt.guielement.highlights.active";
-//
-//** reuse existing driver for a thread of dataprovider */
-//public static final String REUSE_DATAPROVIDER_DRIVER_BY_THREAD = "tt.reuse.dataprovider.driver.by.thread";
-//
-//public static final String DELAY_AFTER_GUIELEMENT_FIND_MILLIS = "tt.delay.after.guielement.find.millis";
-//public static final String DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS = "tt.delay.before.guielement.action.millis";
-//public static final String DELAY_AFTER_GUIELEMENT_ACTION_MILLIS = "tt.delay.after.guielement.action.millis";
-//
-//public static final String WATCHDOG_ENABLE = "tt.watchdog.enable";
-//public static final String WATCHDOG_TIMEOUT_SECONDS = "tt.watchdog.timeout.seconds";
-//public static final String LIST_TESTS = "tt.list.tests";
-//
-//*
-//failure corridor
-//*/
-//public static final String FAILURE_CORRIDOR_ACTIVE = "tt.failure.corridor.active";
-//public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS = "tt.failure.corridor.allowed.failed.tests";
-//public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH = "tt.failure.corridor.allowed.failed.tests.high";
-//public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID = "tt.failure.corridor.allowed.failed.tests.mid";
-//public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW = "tt.failure.corridor.allowed.failed.tests.low";
 
 
 

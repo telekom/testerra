@@ -91,30 +91,44 @@ The checkNot is successful if at least one mandatory GuiElement ("@Check") is no
 
 === Inject additional objects
 
-#dynamic texts in guielements# +
-#no pages as pagevariables -> too complex# +
-#example with string used in guielement#
+In some cases you need to provide dynamic information to the page, which are only known at runtime.
 
-In most cases the above way is preferred to create pages. But sometimes additional objects should be passed to a page object.
-This can be some data or anything you want. For this case there is another create method implemented in the `PageFactory`:
+This information is an object implements `PageVariables`.
 
 [source,java]
 ----
 class MyData implements PageVariables {
-	// insert your code and data here
+    public String value;
 }
-
-MyData pageVariablesObject = new MyData();
-MyPage myPage = PageFactory.create(MyPage.class, driver, pageVariablesObject);
 ----
 
-Example: A page should be represented, which consists of subpages and a header. The header is the same on all subpages. Here, the header can be represented by a seperate page object which implements the PageVariables interface . The subpages are represented by their own page objects. When the subpages are instantiated, they all get passed the header object.
+For example you can can use that additional information for custom GuiElements.
 
 [source,java]
 ----
-Header header = PageFactory.create(Header.class, driver);
-SubPage subPage = PageFactory.create(SubPage.class, driver, header);
-OtherSubPage otherSubPage = PageFactory.create(OtherSubPage.class, driver, header);
+class MyPage extends Page {
+
+    @Check
+    private GuiElement customElement;
+
+    public MyPage(WebDriver driver, MyData data) {
+        super(driver);
+        this.customElement =
+            new GuiElement(driver, By.xpath("//*[@text = '" + data.value + "']"));
+    }
+}
+----
+
+In your test method you define your `PageVariable` object and create the page with the `PageFactory`.
+
+Testerra verifies all the GuiElements _after_ all GuiElements were instantiated and the constructor was executed.
+
+[source,java]
+----
+MyData pageVariablesObject = new MyData();
+pageVariablesObject.value = "some information";
+
+MyPage myPage = PageFactory.create(MyPage.class, driver, pageVariablesObject);
 ----
 
 ===	Page Prefixes

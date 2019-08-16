@@ -10,23 +10,25 @@ https://testautomation-mms.atlassian.net/wiki/spaces/XETA/pages/327794/01+-+WebD
 
 #Use addProxy method of WebDriverManagerUtils#
 
-If you want that the SUT uses a proxy, you can just configure that by default Selenium capabilites.
+If you want that the browser uses a proxy for the SUT, you can just configure that by default Selenium capabilites.
+
+NOTE: If you want to setup a proxy for the whole runtime environment, you have to follow the instructions at <<Using a proxy>>
 
 [source,java]
 ----
 import org.testng.annotations.BeforeSuite;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
 
 public abstract class AbstractTest extends TesterraTest {
     @BeforeSuite
     public void proxySetup() {
+
+        URL proxyUrl = ProxyUtils.getSystemHttpProxyUrl();
         DesiredCapabilities dc = new DesiredCapabilities();
-        WebDriverManagerUtils.addProxyToCapabilities(dc, PropertyManager.getProperty("proxy"));
+        WebDriverManagerUtils.addProxyToCapabilities(dc, proxyUrl.toString());
         WebDriverManager.setGlobalExtraCapabilities(dc);
     }
 }
 ----
-
-NOTE: This example uses the same `proxy` property for the Testerra proxy support.

@@ -62,7 +62,7 @@ public final class TesterraProperties {
     public static final String SELENIUM_SERVER_PORT = "tt.selenium.server.port";
 
     /**
-     * Property Key for package where qcconnector looks for tests.
+     * Property Key for webdriver mode remote|local
      */
     public static final String WEBDRIVERMODE = "tt.webdriver.mode";
 

@@ -24,15 +24,15 @@ public class ProxyUtils {
         String proxyUrlString = prefix + "://";
         try {
             String user = System.getProperty(prefix + ".proxyUser");
-            if (user.length() > 0) {
+            if (user != null) {
                 proxyUrlString += URLEncoder.encode(user, urlEncoding);
             }
             String password = System.getProperty(prefix + ".proxyPassword");
-            if (password.length() > 0) {
+            if (password != null) {
                 proxyUrlString += ":" + URLEncoder.encode(password, urlEncoding);
             }
 
-            if (user.length() > 0) {
+            if (user != null) {
                 proxyUrlString += "@";
             }
             proxyUrlString += System.getProperty(prefix + ".proxyHost") + ":" + System.getProperty(prefix + ".proxyPort");

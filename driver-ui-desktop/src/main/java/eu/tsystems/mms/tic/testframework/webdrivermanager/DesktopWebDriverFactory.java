@@ -34,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
-import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickpathEventListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -193,9 +192,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     public void setupSession(EventFiringWebDriver eventFiringWebDriver, DesktopWebDriverRequest request) {
         final String browser = request.browser;
 
-        // activate clickpath event listener
-        eventFiringWebDriver.register(new ClickpathEventListener());
-
         // add event listeners
         eventFiringWebDriver.register(new VisualEventDriverListener());
         eventFiringWebDriver.register(new EventLoggingEventDriverListener());
@@ -347,6 +343,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
          */
         SessionId webDriverSessionId = ((RemoteWebDriver) newDriver).getSessionId();
         desktopWebDriverRequest.storedSessionId = webDriverSessionId.toString();
+        desktopWebDriverRequest.sessionContext.sessionId = desktopWebDriverRequest.storedSessionId;
         LOGGER.info(logSCID() + "Remote Session ID: " + webDriverSessionId);
 
         /*

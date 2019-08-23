@@ -9,7 +9,8 @@ public class SessionContext extends Context implements SynchronizableContext {
 
     public String sessionKey;
     public String provider;
-    public Map<String, String> metaData = new LinkedHashMap<>();
+    public Map<String, Object> metaData = new LinkedHashMap<>();
+    public String sessionId;
 
     public SessionContext(String sessionKey, String provider) {
         this.sessionKey = sessionKey;

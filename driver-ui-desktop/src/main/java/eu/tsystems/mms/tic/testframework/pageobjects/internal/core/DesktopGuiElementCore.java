@@ -29,8 +29,6 @@ import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickPath;
-import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickPathElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
@@ -309,7 +307,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
         find();
 
-        ClickPath.stack(new ClickPathElement(ClickPathElement.CPEType.NON_CLICK_ACTION, "TYPE to " + toString()), guiElementData.webElement, webDriver);
         WebElement webElement = guiElementData.webElement;
         webElement.clear();
         webElement.sendKeys(text);
@@ -330,7 +327,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     public void click() {
         find();
         LOGGER.debug("click(): found element, adding ClickPath");
-        ClickPath.stack(new ClickPathElement(ClickPathElement.CPEType.CLICK, toString()), guiElementData.webElement, webDriver);
         LOGGER.debug("click(): added ClickPath, clicking relative");
         pClickRelative(this, webDriver, guiElementData.webElement);
         LOGGER.debug("click(): clicked relative");
@@ -368,14 +364,12 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     @Override
     public void clickJS() {
         find();
-        ClickPath.stack(new ClickPathElement(ClickPathElement.CPEType.CLICK, toString()), guiElementData.webElement, webDriver);
         JSUtils.executeScript(webDriver, "arguments[0].click();", guiElementData.webElement);
     }
 
     @Override
     public void clickAbsolute() {
         find();
-        ClickPath.stack(new ClickPathElement(ClickPathElement.CPEType.CLICK, toString()), guiElementData.webElement, webDriver);
         pClickAbsolute(this, webDriver, guiElementData.webElement);
     }
 
@@ -423,12 +417,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     @Override
     public void sendKeys(CharSequence... charSequences) {
         find();
-        String c = "" + charSequences;
-        if (guiElementData.sensibleData) {
-            c = "********";
-        }
-        ClickPath.stack(new ClickPathElement(ClickPathElement.CPEType.NON_CLICK_ACTION,
-                "TYPE >" + c + "< to " + toString()), guiElementData.webElement, webDriver);
         guiElementData.webElement.sendKeys(charSequences);
     }
 

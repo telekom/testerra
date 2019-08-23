@@ -223,8 +223,6 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
                 ConfiguredAssert configuredAssert = new ConfiguredAssert(functional, collected);
                 guiElementAssert = new ConfigurableGuiElementAssert(guiElementCore, guiElementWait, configuredAssert, guiElementData);
                 guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, guiElementData);
-                // Decorator to add assertions to the clickpath report
-                guiElementAssert = new GuiElementAssertClickPathDecorator(guiElementAssert, guiElementData);
                 guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, guiElementData);
         }
         return guiElementAssert;

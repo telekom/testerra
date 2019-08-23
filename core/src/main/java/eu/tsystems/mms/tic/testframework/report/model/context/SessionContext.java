@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,6 +16,9 @@ public class SessionContext extends Context implements SynchronizableContext {
     public SessionContext(String sessionKey, String provider) {
         this.sessionKey = sessionKey;
         this.provider = provider;
+
+        final MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+        this.name = currentMethodContext.getName() + "_" + sessionKey;
     }
 
     private SessionContext() {

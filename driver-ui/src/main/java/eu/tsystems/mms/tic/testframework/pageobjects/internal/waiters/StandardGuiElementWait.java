@@ -325,6 +325,11 @@ public class StandardGuiElementWait implements GuiElementWait {
     }
 
     @Override
+    public boolean waitForCssClass(String className) {
+        return waitForAttributeContains("class", className);
+    }
+
+    @Override
     public boolean waitForIsSelectable() {
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override

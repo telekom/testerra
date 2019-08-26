@@ -560,8 +560,8 @@ public class UITestUtils extends TestUtils {
         List<WebDriver> webDriversFromThread = WebDriverManager.getWebDriversFromThread(threadId);
         Map<String, WebDriver> webDriverSessions = new HashMap<>(webDriversFromThread.size());
         for (WebDriver webDriver : webDriversFromThread) {
-            String sessionId = WebDriverManager.getSessionKeyFrom(webDriver);
-            webDriverSessions.put(sessionId, webDriver);
+            String sessionKey = WebDriverManager.getSessionKeyFrom(webDriver);
+            webDriverSessions.put(sessionKey, webDriver);
         }
 
         if (webDriversFromThread.size() == 0) {

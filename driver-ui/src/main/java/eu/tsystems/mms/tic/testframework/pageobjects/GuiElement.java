@@ -39,10 +39,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.*;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.*;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.creation.GuiElementCoreFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacadeLoggingDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.*;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
@@ -223,16 +220,16 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
                 ConfiguredAssert configuredAssert = new ConfiguredAssert(functional, collected);
                 guiElementAssert = new ConfigurableGuiElementAssert(guiElementCore, guiElementWait, configuredAssert, guiElementData);
                 guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, guiElementData);
-                // Decorator to add assertions to the clickpath report
-                guiElementAssert = new GuiElementAssertClickPathDecorator(guiElementAssert, guiElementData);
                 guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, guiElementData);
         }
         return guiElementAssert;
     }
 
     private GuiElementFacade getFacade(GuiElementCore guiElementCore, GuiElementWait guiElementWait, GuiElementAssert guiElementAssert) {
-        GuiElementFacade guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
+        GuiElementFacade guiElementFacade;
+        guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
+        guiElementFacade = new GuiElementFace(guiElementFacade, guiElementData);
 
         int delayAfterAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_AFTER_GUIELEMENT_ACTION_MILLIS);
         int delayBeforeAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS);

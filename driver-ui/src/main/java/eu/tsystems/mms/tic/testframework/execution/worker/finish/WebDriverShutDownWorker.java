@@ -20,7 +20,6 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
-import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickPath;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WDInternal;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
@@ -86,8 +85,5 @@ public class WebDriverShutDownWorker extends MethodWorker {
 
         // WDM cleanup threadlocals
         WebDriverManager.cleanupThreadlocals();
-
-        // cleanup ClickPath
-        ClickPath.clear();
     }
 }

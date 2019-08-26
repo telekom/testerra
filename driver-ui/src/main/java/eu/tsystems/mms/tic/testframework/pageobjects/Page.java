@@ -33,8 +33,6 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
-import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickPath;
-import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickPathElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
@@ -54,6 +52,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -66,6 +65,12 @@ public abstract class Page extends AbstractPage {
 
     public static final String CHECKPAGE_METHOD_NAME = "checkPage";
     private final GuiElementGroups guiElementGroups;
+
+    private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
+
+    public static void registerPageLoadHandler(PageLoadHandler h) {
+        pageLoadHandlers.add(h);
+    }
 
     /**
      * Constructor for existing sessions.
@@ -84,8 +89,10 @@ public abstract class Page extends AbstractPage {
         // performance test stop timer
         perfTestExtras();
 
-        // clickpath
-        ClickPath.stack(new ClickPathElement(ClickPathElement.CPEType.PAGE, this.getClass().getSimpleName()), driver);
+        // call page load handlers
+        for (PageLoadHandler pageLoadHandler : pageLoadHandlers) {
+            pageLoadHandler.run(this);
+        }
 
         // initialize ge groups
         guiElementGroups = new GuiElementGroups();

@@ -64,9 +64,6 @@
                             #else
                             <span class="successIndicator" title="Passed.">&#x2714;</span>
                             #end
-                            #if($testClass.syncFailed)
-                            <img alt="Sync failed." src="style/warnung.svg" title="Sync Failed."/>
-                            #end
                             #set($sub="_")
                             <a href="suites/$testClass.suiteName$sub$testClass.testName$sub${testClass.testClassName}.html"
                                target="main">
@@ -124,10 +121,7 @@
                             <font size="4" style="vertical-align:middle;">&#x2714;</font>
                         </span>
                     #end
-                    #if($testClass.syncFailed)
-                        <img alt="QC Sync failed, see console log for details" src="style/warnung.svg"  title="QC Sync failed, see console log for details" />
-                    #end
-                    
+
                     #if(${testClass.suiteName})
                     #set($sub="_")
                     <a href="suites/$testClass.suiteName$sub$testClass.testName$sub${testClass.testClassName}.html"

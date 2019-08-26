@@ -40,6 +40,7 @@ public final class ErrorMessages {
      * browser properties are invalid
      *
      * @param browserString .
+     *
      * @return .
      */
     public static String browserNotSupportedHere(String browserString) {
@@ -63,14 +64,4 @@ public final class ErrorMessages {
     public static String seleniumServerPortMissing() {
         return "tt.selenium.server.port missing! Using 4444.";
     }
-
-    /**
-     * Info when a test is skipped by the qc execution filter.
-     * 
-     * @return error message.
-     */
-    public static String skippedByQcExecutionFilter() {
-        return "Skipped by QC execution filter!";
-    }
-
 }

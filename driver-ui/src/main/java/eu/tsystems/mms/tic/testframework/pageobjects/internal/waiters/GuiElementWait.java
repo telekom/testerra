@@ -120,6 +120,14 @@ public interface GuiElementWait {
      */
     boolean waitForTextContains(String... text);
 
+    /**
+     * Waiting until GuiElement contains not the given text. Please note that this will only wait successfully, if the
+     * elements text is actually visible at some point.
+     *
+     * @param text Text to wait for.
+     * @return true is not present, false if is. No Exception is thrown.
+     */
+    boolean waitForTextContainsNot(String... text);
 
     /**
      * Wait for an attribute to be present.

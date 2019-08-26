@@ -710,6 +710,14 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
+    public boolean waitForTextContainsNot(String... text) {
+        beforeDelegation("waitForTextContainsNot", "\"" + Arrays.toString(text) + "\"");
+        boolean b = decoratedFacade.waitForTextContainsNot(text);
+        afterDelegation("waitForIsGone(" + Arrays.toString(text) + ") = " + b);
+        return b;
+    }
+
+    @Override
     public boolean waitForAttribute(String attributeName) {
         beforeDelegation("waitForAttribute", "\"" + attributeName + "\"");
         boolean b = decoratedFacade.waitForAttribute(attributeName);

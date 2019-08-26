@@ -764,6 +764,11 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
     }
 
     @Override
+    public boolean waitForTextContainsNot(String... text) {
+        return guiElementFacade.waitForTextContainsNot(text);
+    }
+
+    @Override
     public boolean waitForAttribute(String attributeName) {
         return guiElementFacade.waitForAttribute(attributeName);
     }

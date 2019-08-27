@@ -148,7 +148,7 @@ public final class FailureCorridor {
         }
     }
 
-    private static String getStatistics() {
+    public static String getStatistics() {
         //  V-X-S: 3-2-1  H-M-L: 0-0-0 (1-1-1)
 
         int testsSuccessful = TestStatusController.getTestsSuccessful();

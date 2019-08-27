@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
@@ -167,6 +168,11 @@ public class ExecutionContextController {
 
         LOGGER.info(prefix + "ExecutionContext Status: " + EXECUTION_CONTEXT.getStatus());
         LOGGER.info(prefix + "FailureCorridor Enabled: " + Flags.FAILURE_CORRIDOR_ACTIVE);
+
+        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
+            LOGGER.info(prefix + "**********************************************");
+            LOGGER.info(prefix + "FailureCorridor Status : " + FailureCorridor.getStatistics() + " " + FailureCorridor.getStatusMessage());
+        }
 
         LOGGER.info(prefix + "**********************************************");
 

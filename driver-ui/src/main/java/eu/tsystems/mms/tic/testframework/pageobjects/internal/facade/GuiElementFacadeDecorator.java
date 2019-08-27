@@ -758,6 +758,14 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
+    public boolean waitForCssClass(String className) {
+        beforeDelegation("waitForCssClass");
+        boolean b = decoratedFacade.waitForCssClass(className);
+        afterDelegation("waitForCssClass("+className+") = " + b);
+        return b;
+    }
+
+    @Override
     public String toString() {
         String s = decoratedFacade.toString();
         return s;

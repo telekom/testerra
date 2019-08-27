@@ -164,6 +164,10 @@ public class ExecutionContextController {
 
         LOGGER.info(prefix + "**********************************************");
 
+        LOGGER.info(prefix + "ExecutionContext Status: " + EXECUTION_CONTEXT.getStatus());
+
+        LOGGER.info(prefix + "**********************************************");
+
         LOGGER.info(prefix + "Duration: " + EXECUTION_CONTEXT.getDuration(EXECUTION_CONTEXT.startTime, EXECUTION_CONTEXT.endTime));
 
         LOGGER.info(prefix + "**********************************************");

@@ -1,0 +1,15 @@
+= PDF Utilities
+
+This is an utility class for extracting text content of PDF documents for verifications.
+
+[source,java]
+----
+// reads text from a file given by a filename (absolute path of file).
+String textFromPdf = PdfUtils.getStringFromPdf(String pdfFileLocation);
+----
+
+[source,java]
+----
+//reads text from a pdf given as input steam.
+String textFromPdf = PdfUtils.getStringFromPdf(InputStream stream);
+----

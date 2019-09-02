@@ -462,7 +462,6 @@ public class AssertCollector {
             }
             fail(formatted + "expected object to not be null");
         }
-        assertTrue(object != null, message);
     }
 
     /**

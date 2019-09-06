@@ -330,4 +330,16 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
         }
         handleAfterAssertion("assertIsDisplayedFromWebElement", thrownAssertionError);
     }
+
+    @Override
+    public void assertMatchPixels(final String targetImageName) {
+        callBeforeAssertion();
+        AssertionError thrownAssertionError = null;
+        try {
+            decoratedAssert.assertMatchPixels(targetImageName);
+        } catch (AssertionError e) {
+            thrownAssertionError = e;
+        }
+        handleAfterAssertion("assertMatchPixels", thrownAssertionError);
+    }
 }

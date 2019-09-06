@@ -53,6 +53,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -699,6 +700,11 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
     }
 
     @Override
+    public File takeScreenshot() {
+        return guiElementFacade.takeScreenshot();
+    }
+
+    @Override
     public boolean waitForIsPresent() {
         return guiElementFacade.waitForIsPresent();
     }
@@ -840,6 +846,12 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
 
     public void assertLayout(Layout layout) {
         guiElementFacade.assertLayout(layout);
+    }
+
+    @Deprecated
+    @Override
+    public void assertMatchPixels(final String targetImageName) {
+        guiElementFacade.assertMatchPixels(targetImageName);
     }
 
     public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {

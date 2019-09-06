@@ -135,4 +135,9 @@ public class PerformanceTestGuiElementAssert implements GuiElementAssert {
     public void assertLayout(Layout layout) {
 
     }
+
+    @Override
+    public void assertMatchPixels(String targetImageName) {
+
+    }
 }

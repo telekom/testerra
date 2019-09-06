@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.utils.Timer;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -559,6 +560,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+    }
+
+    @Override
+    public File takeScreenshot() {
+        return guiElementCore.takeScreenshot();
     }
 
     @Override

@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -38,9 +39,11 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     private GuiElementAssert guiElementAssert;
     private GuiElementCore guiElementCore;
 
-    public StandardGuiElementFacade(GuiElementCore guiElementCore,
-                                    GuiElementWait guiElementWait,
-                                    GuiElementAssert guiElementAssert) {
+    public StandardGuiElementFacade(
+        GuiElementCore guiElementCore,
+        GuiElementWait guiElementWait,
+        GuiElementAssert guiElementAssert
+    ) {
         this.guiElementWait = guiElementWait;
         this.guiElementAssert = guiElementAssert;
         this.guiElementCore = guiElementCore;
@@ -134,6 +137,17 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     @Override
     public void assertAnyFollowingTextNodeContains(String contains) {
         guiElementAssert.assertAnyFollowingTextNodeContains(contains);
+    }
+
+    @Deprecated
+    @Override
+    public void assertMatchPixels(final String targetImageName) {
+        guiElementAssert.assertMatchPixels(targetImageName);
+    }
+
+    @Override
+    public File takeScreenshot() {
+        return guiElementCore.takeScreenshot();
     }
 
     @Override

@@ -139,12 +139,6 @@ public class StandardGuiElementFacade implements GuiElementFacade {
         guiElementAssert.assertAnyFollowingTextNodeContains(contains);
     }
 
-    @Deprecated
-    @Override
-    public void assertMatchPixels(final String targetImageName) {
-        guiElementAssert.assertMatchPixels(targetImageName);
-    }
-
     @Override
     public File takeScreenshot() {
         return guiElementCore.takeScreenshot();

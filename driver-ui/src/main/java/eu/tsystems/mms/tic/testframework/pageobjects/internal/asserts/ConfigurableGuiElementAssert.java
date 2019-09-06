@@ -197,9 +197,4 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     public void assertLayout(Layout layout) {
         configuredAssert.assertLayout(guiElementData.guiElement, layout);
     }
-
-    @Override
-    public void assertMatchPixels(final String targetImageName) {
-        configuredAssert.assertTrue(true, targetImageName);
-    }
 }

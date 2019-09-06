@@ -7,6 +7,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
+import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutErrorContextObject;
 import eu.tsystems.mms.tic.testframework.layout.reporting.ScreenReferenceReportItem;
@@ -42,6 +43,16 @@ import java.util.List;
  * @author mibu
  */
 public final class LayoutCheck {
+
+    private static class MatchStep {
+        Path referenceFileName;
+        Path annotatedReferenceFileName;
+        Path actualFileName;
+        Path distanceFileName;
+        Path annotationDataFileName;
+        String consecutiveTargetImageName;
+        boolean takeReferenceOnly;
+    }
 
     /**
      * Hide Default constructor.
@@ -111,7 +122,7 @@ public final class LayoutCheck {
 
     /**
      * Handles a screenshot action called from a test. Takes a new reference screenshot if the property
-     * 'xeta.layoutcheck.takereference' is set to true. Otherwise takes a screenshot and creates a new distance
+     * 'Testerra.layoutcheck.takereference' is set to true. Otherwise takes a screenshot and creates a new distance
      * image comparing the actual shown website to an existing reference screenshot.
      *
      * @param driver          Web driver instance
@@ -140,15 +151,90 @@ public final class LayoutCheck {
     }
 
     /**
-     * (private method) Creates directories for the images/ screenshots and creates distance image
-     *
-     * @param driver          WebDriver used
-     * @param targetImageName name of the target image
-     * @param mode            PIXEL or ANNOTATED
-     * @return distance between the images
+     * Matches annotations and returns
      */
-    private static synchronized double pRun(final TakesScreenshot driver, final String targetImageName, final Mode mode) {
-        LOGGER.debug("Starting ScreenReferencer in " + mode.name() + " mode.");
+    public static LayoutMatch matchAnnotations(
+        final TakesScreenshot driver,
+        final String targetImageName
+    ) {
+        MatchStep step = prepare(driver,targetImageName);
+        LayoutComparator comparator = matchAnnotations(targetImageName, step);
+        return comparator.getLayoutMatch();
+    }
+
+    private static LayoutComparator matchAnnotations(
+        final String targetImageName,
+        MatchStep step
+    ) {
+        // read images
+        String referenceAbsoluteFileName = step.referenceFileName.toAbsolutePath().toString();
+        String annotatedAbsoluteFileName = step.annotatedReferenceFileName.toAbsolutePath().toString();
+        String actualAbsoluteFileName = step.actualFileName.toAbsolutePath().toString();
+        String distanceAbsoluteFileName = step.distanceFileName.toAbsolutePath().toString();
+        String annotationDataAbsoluteFileName = step.annotationDataFileName.toAbsolutePath().toString();
+
+        double distance;
+
+        // create distance image to given reference
+        LayoutComparator layoutComparator = new LayoutComparator();
+        List<LayoutFeature> annotatedModeCriticalMatches;
+        try {
+            layoutComparator.compareImages(
+                referenceAbsoluteFileName,
+                annotatedAbsoluteFileName,
+                actualAbsoluteFileName,
+                distanceAbsoluteFileName,
+                annotationDataAbsoluteFileName
+            );
+
+            // relation between error-elements and annotated elements
+            distance = layoutComparator.getErrorRelation();
+            annotatedModeCriticalMatches = layoutComparator.getCriticalMatches();
+        } catch (FileNotFoundException e) {
+            LOGGER.error(e.getMessage());
+            throw new TesterraSystemException("Error reading images", e);
+        }
+
+        LOGGER.debug(String.format("Saved distance image at '%s'.", step.distanceFileName));
+
+        toReport(
+            targetImageName,
+            Mode.ANNOTATED,
+            distance,
+            step.referenceFileName,
+            step.actualFileName,
+            step.distanceFileName,
+            step.annotatedReferenceFileName,
+            annotatedModeCriticalMatches
+        );
+
+        return layoutComparator;
+    }
+
+    /**
+     * Takes reference screenshots and prepares file paths for discrete matching modes
+     */
+    private static MatchStep prepare(
+        final TakesScreenshot driver,
+        final String targetImageName
+    ) {
+        final MatchStep step = new MatchStep();
+        String screenReferencePath = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_PATH);
+        step.referenceFileName = Paths.get(screenReferencePath + "/"
+            + String.format(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_NAMETEMPLATE,
+            "Reference%s.png"),
+            targetImageName));
+        step.annotationDataFileName = Paths.get(screenReferencePath + "/"
+            + String.format(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE,
+            "Reference%s_data.json"),
+            targetImageName));
+        step.annotatedReferenceFileName = Paths.get(screenReferencePath + "/"
+            + String.format(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATED_NAMETEMPLATE,
+            "ReferenceAnnotated%s.png"),
+            targetImageName));
+
+        // take the screenshot
+        final File screenshot = driver.getScreenshotAs(OutputType.FILE);
 
         String runCountModifier = "";
         if (!runCount.containsKey(targetImageName)) {
@@ -159,125 +245,110 @@ public final class LayoutCheck {
             runCountModifier = newCount.toString();
         }
 
-        double distance = 0;
-
-        String screenReferencePath = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_PATH);
-
-        if (SystemUtils.IS_OS_LINUX) {
-            screenReferencePath = screenReferencePath.replace('\\', '/');
-        }
-        else if (SystemUtils.IS_OS_WINDOWS) {
-            screenReferencePath = screenReferencePath.replace('/', '\\');
-        }
-
-        final Path referenceFileName = Paths.get(screenReferencePath + "/"
-                + String.format(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_NAMETEMPLATE,
-                "Reference%s.png"),
-                targetImageName));
-        final Path annotationDataFileName = Paths.get(screenReferencePath + "/"
-                + String.format(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE,
-                "Reference%s_data.json"),
-                targetImageName));
-        final Path annotatedReferenceFileName = Paths.get(screenReferencePath + "/"
-                + String.format(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATED_NAMETEMPLATE,
-                "ReferenceAnnotated%s.png"),
-                targetImageName));
-
-        // take the screenshot
-        final File screenshot = driver.getScreenshotAs(OutputType.FILE);
-
-        boolean takeReference = PropertyManager.getBooleanProperty(TesterraProperties.LAYOUTCHECK_TAKEREFERENCE, false);
-        if (takeReference) {
+        step.takeReferenceOnly = PropertyManager.getBooleanProperty(TesterraProperties.LAYOUTCHECK_TAKEREFERENCE, false);
+        if (step.takeReferenceOnly) {
             // take reference screenshot
             try {
-                FileUtils.copyFile(screenshot, referenceFileName.toFile());
+                FileUtils.copyFile(screenshot, step.referenceFileName.toFile());
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
                 throw new TesterraSystemException("Error when saving reference screenshot.", e);
             }
-            LOGGER.debug(String.format("Saved reference screenshot at '%s'.", referenceFileName.toString()));
-
+            LOGGER.debug(String.format("Saved reference screenshot at '%s'.", step.referenceFileName.toString()));
         } else {
-            String targetImageNameWithModifier = targetImageName + runCountModifier;
-            // take actual screenshot
-            final Path actualFileName = Paths.get(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_PATH) + "/"
-                    + String.format(PropertyManager.getProperty(
-                    TesterraProperties.LAYOUTCHECK_ACTUAL_NAMETEMPLATE, "Actual%s.png"),
-                    targetImageNameWithModifier));
+            step.consecutiveTargetImageName = targetImageName + runCountModifier;
+            step.actualFileName = Paths.get(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_PATH) + "/"
+                + String.format(PropertyManager.getProperty(
+                TesterraProperties.LAYOUTCHECK_ACTUAL_NAMETEMPLATE, "Actual%s.png"),
+                step.consecutiveTargetImageName));
+
             try {
-                FileUtils.copyFile(screenshot, actualFileName.toFile());
+                FileUtils.copyFile(screenshot, step.actualFileName.toFile());
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
                 throw new TesterraSystemException("Error when saving screenshot.", e);
             }
-            LOGGER.debug(String.format("Saved actual screenshot at '%s'.", actualFileName.toString()));
+            LOGGER.debug(String.format("Saved actual screenshot at '%s'.", step.actualFileName.toString()));
 
             // create distance file name
-            final Path distanceFileName = Paths.get(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_DISTANCE_PATH) + "/"
-                    + String.format(PropertyManager.getProperty(
-                    TesterraProperties.LAYOUTCHECK_DISTANCE_NAMETEMPLATE, "Distance%s.png"),
-                    targetImageNameWithModifier));
+            step.distanceFileName = Paths.get(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_DISTANCE_PATH) + "/"
+                + String.format(PropertyManager.getProperty(
+                TesterraProperties.LAYOUTCHECK_DISTANCE_NAMETEMPLATE, "Distance%s.png"),
+                step.consecutiveTargetImageName));
+        }
 
+        return step;
+    }
+
+    /**
+     * Matches image pixels and returns an absolute distance value
+     */
+    public static double matchPixels(final TakesScreenshot driver, final String targetImageName) {
+        return pRun(driver, targetImageName, Mode.PIXEL);
+    }
+
+    /**
+     * (private method) Creates directories for the images/ screenshots and creates distance image
+     *
+     * @param driver          WebDriver used
+     * @param targetImageName name of the target image
+     * @param mode            PIXEL or ANNOTATED
+     * @return distance between the images
+     */
+    private static synchronized double pRun(final TakesScreenshot driver, final String targetImageName, final Mode mode) {
+        LOGGER.debug("Starting ScreenReferencer in " + mode.name() + " mode.");
+
+        MatchStep step = prepare(driver, targetImageName);
+        double distance = 0;
+
+        if (step.takeReferenceOnly == false) {
             switch (mode) {
                 case PIXEL:
                     try {
                         // read images
-                        File refFile = referenceFileName.toFile();
-                        File actualFile = actualFileName.toFile();
+                        File refFile = step.referenceFileName.toFile();
+                        File actualFile = step.actualFileName.toFile();
 
                         if (!refFile.exists()) {
-                            throw new FileNotFoundException(referenceFileName.toString());
+                            throw new FileNotFoundException(step.referenceFileName.toString());
                         }
                         if (!actualFile.exists()) {
-                            throw new FileNotFoundException(actualFileName.toString());
+                            throw new FileNotFoundException(step.actualFileName.toString());
                         }
 
                         final BufferedImage referenceImage = ImageIO.read(refFile);
                         final BufferedImage actualImage = ImageIO.read(actualFile);
                         final boolean useIgnoreColor = PropertyManager.getBooleanProperty(
-                                TesterraProperties.LAYOUTCHECK_USE_IGNORE_COLOR, false);
+                            TesterraProperties.LAYOUTCHECK_USE_IGNORE_COLOR, false);
 
                         // create distance image to given reference
-                        distance = generateDistanceImage(referenceImage, actualImage,
-                                distanceFileName.toAbsolutePath().toString(), useIgnoreColor);
+                        distance = generateDistanceImage(
+                            referenceImage,
+                            actualImage,
+                            step.distanceFileName.toAbsolutePath().toString(),
+                            useIgnoreColor
+                        );
                     } catch (IOException e) {
                         LOGGER.error(e.getMessage());
                         throw new TesterraSystemException("Error reading images", e);
                     }
 
-                    LOGGER.debug(String.format("Saved distance image at '%s'.", distanceFileName));
+                    LOGGER.debug(String.format("Saved distance image at '%s'.", step.distanceFileName));
 
-                    toReport(targetImageNameWithModifier, Mode.PIXEL, distance, referenceFileName,
-                            actualFileName, distanceFileName, annotatedReferenceFileName, null);
-
+                    toReport(
+                        step.consecutiveTargetImageName,
+                        Mode.PIXEL,
+                        distance,
+                        step.referenceFileName,
+                        step.actualFileName,
+                        step.distanceFileName,
+                        step.annotatedReferenceFileName,
+                        null
+                    );
                     break;
                 case ANNOTATED:
-                    // read images
-                    String referenceAbsoluteFileName = referenceFileName.toAbsolutePath().toString();
-                    String annotatedAbsoluteFileName = annotatedReferenceFileName.toAbsolutePath().toString();
-                    String actualAbsoluteFileName = actualFileName.toAbsolutePath().toString();
-                    String distanceAbsoluteFileName = distanceFileName.toAbsolutePath().toString();
-                    String annotationDataAbsoluteFileName = annotationDataFileName.toAbsolutePath().toString();
-
-                    // create distance image to given reference
-                    LayoutComparator layoutComparator = new LayoutComparator();
-                    List<LayoutFeature> annotatedModeCriticalMatches;
-                    try {
-                        layoutComparator.compareImages(referenceAbsoluteFileName, annotatedAbsoluteFileName,
-                                actualAbsoluteFileName, distanceAbsoluteFileName, annotationDataAbsoluteFileName);
-
-                        // relation between error-elements and annotated elements
-                        distance = layoutComparator.getErrorRelation();
-                        annotatedModeCriticalMatches = layoutComparator.getCriticalMatches();
-                    } catch (FileNotFoundException e) {
-                        LOGGER.error(e.getMessage());
-                        throw new TesterraSystemException("Error reading images", e);
-                    }
-
-                    LOGGER.debug(String.format("Saved distance image at '%s'.", distanceFileName));
-
-                    toReport(targetImageName, Mode.ANNOTATED, distance, referenceFileName,
-                            actualFileName, distanceFileName, annotatedReferenceFileName, annotatedModeCriticalMatches);
+                    LayoutComparator layoutComparator = matchAnnotations(targetImageName, step);
+                    distance = layoutComparator.getErrorRelation();
                     break;
                 default:
                     LOGGER.error("Mode" + mode.name() + "not supported");

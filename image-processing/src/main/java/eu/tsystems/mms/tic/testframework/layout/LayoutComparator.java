@@ -340,4 +340,7 @@ public class LayoutComparator {
                     "annotated image (" + annotatedSize + ").";
         }
     }
+    public LayoutMatch getLayoutMatch() {
+        return this.layoutMatch;
+    }
 }

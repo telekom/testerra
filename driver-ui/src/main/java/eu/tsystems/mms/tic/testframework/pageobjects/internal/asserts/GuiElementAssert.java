@@ -178,4 +178,10 @@ public interface GuiElementAssert {
      * @param layout Layout description.
      */
     void assertLayout(Layout layout);
+
+    /**
+     * Asserts the pixel of this web element
+     */
+    void assertMatchPixels(final String targetImageName);
+
 }

@@ -424,12 +424,6 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
         guiElementFacade.assertInputFieldLength(length);
     }
 
-    @Deprecated
-    @Override
-    public void assertLayout(Layout layout) {
-        guiElementFacade.assertLayout(layout);
-    }
-
     @Override
     public WebElement getWebElement() {
         return guiElementFacade.getWebElement();
@@ -848,6 +842,16 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
 
     public WebDriver getDriver() {
         return guiElementData.webDriver;
+    }
+
+    public void assertLayout(Layout layout) {
+        guiElementFacade.assertLayout(layout);
+    }
+
+    @Deprecated
+    @Override
+    public void assertMatchPixels(final String targetImageName) {
+        guiElementFacade.assertMatchPixels(targetImageName);
     }
 
     public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {

@@ -16,7 +16,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.opencv.core.Mat;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -69,18 +68,19 @@ public final class LayoutCheck {
         PIXEL, ANNOTATED
     }
 
+    private static final double DISTANCE_NO_MATCH = 0;
+    private static final int RGB_DEVIATION_PERCENT = PropertyManager.getIntProperty(TesterraProperties.LAYOUTCHECK_PIXEL_RGB_DEVIATION_PERCENT, 0);
+    private static final double RGB_MAX_DEVIATION = 255;
+
     private static HashMap<String, Integer> runCount = new HashMap<String, Integer>();
 
     static {
         // ensure the folders to save the images exist
-        final File folder = new File(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_PATH,
-                "src/test/resources/screenreference/reference"));
+        final File folder = new File(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_PATH, "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/reference"));
         folder.mkdirs();
-        final File folderdest = new File(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_DISTANCE_PATH,
-                "src/test/resources/screenreference/distance"));
+        final File folderdest = new File(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_DISTANCE_PATH, "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/distance"));
         folderdest.mkdirs();
-        final File folderact = new File(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_PATH,
-                "src/test/resources/screenreference/actual"));
+        final File folderact = new File(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_PATH, "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/actual"));
         folderact.mkdirs();
     }
 
@@ -157,14 +157,26 @@ public final class LayoutCheck {
         final TakesScreenshot driver,
         final String targetImageName
     ) {
-        MatchStep step = prepare(driver,targetImageName);
-        LayoutComparator comparator = matchAnnotations(targetImageName, step);
-        return comparator.getLayoutMatch();
+        final File screenshot = driver.getScreenshotAs(OutputType.FILE);
+        return matchAnnotations(screenshot, targetImageName);
+    }
+
+    public static LayoutMatch matchAnnotations(
+        final File screenshot,
+        final String targetImageName
+    ) {
+        MatchStep step = prepare(screenshot, targetImageName);
+        if (step.takeReferenceOnly) {
+            return new LayoutMatch();
+        } else {
+            LayoutComparator comparator = matchAnnotations(targetImageName, step);
+            return comparator.getLayoutMatch();
+        }
     }
 
     private static LayoutComparator matchAnnotations(
         final String targetImageName,
-        MatchStep step
+        final MatchStep step
     ) {
         // read images
         String referenceAbsoluteFileName = step.referenceFileName.toAbsolutePath().toString();
@@ -215,26 +227,28 @@ public final class LayoutCheck {
      * Takes reference screenshots and prepares file paths for discrete matching modes
      */
     private static MatchStep prepare(
-        final TakesScreenshot driver,
+        final File screenshot,
         final String targetImageName
     ) {
         final MatchStep step = new MatchStep();
         String screenReferencePath = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_PATH);
-        step.referenceFileName = Paths.get(screenReferencePath + "/"
-            + String.format(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_NAMETEMPLATE,
-            "Reference%s.png"),
-            targetImageName));
-        step.annotationDataFileName = Paths.get(screenReferencePath + "/"
-            + String.format(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE,
-            "Reference%s_data.json"),
-            targetImageName));
-        step.annotatedReferenceFileName = Paths.get(screenReferencePath + "/"
-            + String.format(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATED_NAMETEMPLATE,
-            "ReferenceAnnotated%s.png"),
-            targetImageName));
-
-        // take the screenshot
-        final File screenshot = driver.getScreenshotAs(OutputType.FILE);
+        step.referenceFileName = Paths.get(screenReferencePath + "/" + String.format(
+                PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_NAMETEMPLATE, "Reference%s.png"),
+                targetImageName
+            )
+        );
+        step.annotationDataFileName = Paths.get(
+            screenReferencePath + "/" + String.format(
+                PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE, "Reference%s_data.json"),
+                targetImageName
+            )
+        );
+        step.annotatedReferenceFileName = Paths.get(
+            screenReferencePath + "/" + String.format(
+                PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATED_NAMETEMPLATE, "ReferenceAnnotated%s.png"),
+                targetImageName
+            )
+        );
 
         String runCountModifier = "";
         if (!runCount.containsKey(targetImageName)) {
@@ -284,7 +298,66 @@ public final class LayoutCheck {
      * Matches image pixels and returns an absolute distance value
      */
     public static double matchPixels(final TakesScreenshot driver, final String targetImageName) {
-        return pRun(driver, targetImageName, Mode.PIXEL);
+        final File screenshot = driver.getScreenshotAs(OutputType.FILE);
+        return matchPixels(screenshot, targetImageName);
+    }
+
+    public static double matchPixels(final File screenshot, final String targetImageName) {
+        final MatchStep step = prepare(screenshot, targetImageName);
+        if (step.takeReferenceOnly) {
+            return DISTANCE_NO_MATCH;
+        } else {
+            return matchPixels(targetImageName, step);
+        }
+    }
+
+    private static double matchPixels(final String targetImageName, final MatchStep step) {
+        double distance;
+        try {
+            // read images
+            File refFile = step.referenceFileName.toFile();
+            File actualFile = step.actualFileName.toFile();
+
+            if (!refFile.exists()) {
+                throw new FileNotFoundException(step.referenceFileName.toString());
+            }
+            if (!actualFile.exists()) {
+                throw new FileNotFoundException(step.actualFileName.toString());
+            }
+
+            final BufferedImage referenceImage = ImageIO.read(refFile);
+            final BufferedImage actualImage = ImageIO.read(actualFile);
+
+            final boolean useIgnoreColor = PropertyManager.getBooleanProperty(
+                TesterraProperties.LAYOUTCHECK_USE_IGNORE_COLOR,
+                false
+            );
+
+            // create distance image to given reference
+            distance = generateDistanceImage(
+                referenceImage,
+                actualImage,
+                step.distanceFileName.toAbsolutePath().toString(),
+                useIgnoreColor
+            );
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+            throw new TesterraSystemException("Error reading images", e);
+        }
+
+        LOGGER.debug(String.format("Saved distance image at '%s'.", step.distanceFileName));
+
+        toReport(
+            step.consecutiveTargetImageName,
+            Mode.PIXEL,
+            distance,
+            step.referenceFileName,
+            step.actualFileName,
+            step.distanceFileName,
+            step.annotatedReferenceFileName,
+            null
+        );
+        return distance;
     }
 
     /**
@@ -295,68 +368,29 @@ public final class LayoutCheck {
      * @param mode            PIXEL or ANNOTATED
      * @return distance between the images
      */
-    private static synchronized double pRun(final TakesScreenshot driver, final String targetImageName, final Mode mode) {
+    private static synchronized double pRun(
+        final TakesScreenshot driver,
+        final String targetImageName,
+        final Mode mode
+    ) {
         LOGGER.debug("Starting ScreenReferencer in " + mode.name() + " mode.");
-
-        MatchStep step = prepare(driver, targetImageName);
-        double distance = 0;
+        final File screenshot = driver.getScreenshotAs(OutputType.FILE);
+        final MatchStep step = prepare(screenshot, targetImageName);
 
         if (step.takeReferenceOnly == false) {
             switch (mode) {
                 case PIXEL:
-                    try {
-                        // read images
-                        File refFile = step.referenceFileName.toFile();
-                        File actualFile = step.actualFileName.toFile();
-
-                        if (!refFile.exists()) {
-                            throw new FileNotFoundException(step.referenceFileName.toString());
-                        }
-                        if (!actualFile.exists()) {
-                            throw new FileNotFoundException(step.actualFileName.toString());
-                        }
-
-                        final BufferedImage referenceImage = ImageIO.read(refFile);
-                        final BufferedImage actualImage = ImageIO.read(actualFile);
-                        final boolean useIgnoreColor = PropertyManager.getBooleanProperty(
-                            TesterraProperties.LAYOUTCHECK_USE_IGNORE_COLOR, false);
-
-                        // create distance image to given reference
-                        distance = generateDistanceImage(
-                            referenceImage,
-                            actualImage,
-                            step.distanceFileName.toAbsolutePath().toString(),
-                            useIgnoreColor
-                        );
-                    } catch (IOException e) {
-                        LOGGER.error(e.getMessage());
-                        throw new TesterraSystemException("Error reading images", e);
-                    }
-
-                    LOGGER.debug(String.format("Saved distance image at '%s'.", step.distanceFileName));
-
-                    toReport(
-                        step.consecutiveTargetImageName,
-                        Mode.PIXEL,
-                        distance,
-                        step.referenceFileName,
-                        step.actualFileName,
-                        step.distanceFileName,
-                        step.annotatedReferenceFileName,
-                        null
-                    );
-                    break;
+                    return matchPixels(targetImageName, step);
                 case ANNOTATED:
                     LayoutComparator layoutComparator = matchAnnotations(targetImageName, step);
-                    distance = layoutComparator.getErrorRelation();
-                    break;
+                    return layoutComparator.getErrorRelation();
                 default:
                     LOGGER.error("Mode" + mode.name() + "not supported");
                     throw new TesterraSystemException("Mode " + mode.name() + " not supported.");
             }
         }
 
-        return distance;
+        return DISTANCE_NO_MATCH;
     }
 
     public static float runTextLayoutErrorDetection(WebDriver driverWithWebsiteToRunTestOn, String reportImageName) {
@@ -435,8 +469,11 @@ public final class LayoutCheck {
      * @return Percents of pixels that are different
      */
     private static double generateDistanceImage(
-            final BufferedImage expectedImage, final BufferedImage actualImage,
-            final String resultFilename, final boolean useIgnoreColor) {
+            final BufferedImage expectedImage,
+            final BufferedImage actualImage,
+            final String resultFilename,
+            final boolean useIgnoreColor
+    ) {
         // for counting the pixels that are different
         int pixelsInError = 0;
         int noOfIgnoredPixels = 0;
@@ -549,9 +586,6 @@ public final class LayoutCheck {
         return ((double) pixelsInError / (totalPixels - noOfIgnoredPixels)) * 100;
     }
 
-    private static final int RGB_DEVIATION_PERCENT = PropertyManager.getIntProperty(TesterraProperties.LAYOUTCHECK_PIXEL_RGB_DEVIATION_PERCENT, 0);
-    private static final double RGB_MAX_DEVIATION = 255;
-
     public static boolean doRGBsMatch(int expectedRgb, int actualImageRGB) {
         if (expectedRgb == actualImageRGB) {
             return true;
@@ -600,20 +634,24 @@ public final class LayoutCheck {
         return (image.getWidth() > x) && (image.getHeight() > y);
     }
 
-    private static void toReport(final String name, Mode mode, final double distance,
-                                 final Path referenceScreenshotPath, final Path actualScreenshotPath,
-                                 final Path distanceScreenshotPath, final Path annotatedReferenceScreenshotPath, List<LayoutFeature> annotatedModeCriticalMatches) {
+    private static void toReport(
+        final String name,
+        Mode mode,
+        final double distance,
+        final Path referenceScreenshotPath,
+        final Path actualScreenshotPath,
+        final Path distanceScreenshotPath,
+        final Path annotatedReferenceScreenshotPath,
+        List<LayoutFeature> annotatedModeCriticalMatches
+    ) {
         // copy the screenshots to target
         copyFileToReport(referenceScreenshotPath);
         copyFileToReport(actualScreenshotPath);
         copyFileToReport(distanceScreenshotPath);
 
-        final String relReferenceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH
-                + referenceScreenshotPath.getFileName().toString();
-        final String relActualScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH
-                + actualScreenshotPath.getFileName().toString();
-        final String relDistanceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH
-                + distanceScreenshotPath.getFileName().toString();
+        final String relReferenceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + "/" + referenceScreenshotPath.getFileName().toString();
+        final String relActualScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + "/" + actualScreenshotPath.getFileName().toString();
+        final String relDistanceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + "/" + distanceScreenshotPath.getFileName().toString();
 
         // TODO: replace with exportable content
         // create the report item
@@ -622,8 +660,7 @@ public final class LayoutCheck {
                 relActualScreenshotPath, relDistanceScreenshotPath);
         if (mode == Mode.ANNOTATED) {
             copyFileToReport(annotatedReferenceScreenshotPath);
-            String cleanedAnnotatedReferenceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH
-                    + annotatedReferenceScreenshotPath.getFileName().toString();
+            String cleanedAnnotatedReferenceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + annotatedReferenceScreenshotPath.getFileName().toString();
             scri.setAnnotatedScreenshotPath(cleanedAnnotatedReferenceScreenshotPath);
             if (annotatedModeCriticalMatches.size() > 0) {
                 scri.setAnnotatedModeCriticalMatches(annotatedModeCriticalMatches);

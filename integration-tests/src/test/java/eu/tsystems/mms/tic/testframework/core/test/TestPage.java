@@ -17,7 +17,7 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects;
+package eu.tsystems.mms.tic.testframework.core.test;
 
 /**
  * Created by rnhb on 02.06.2015.

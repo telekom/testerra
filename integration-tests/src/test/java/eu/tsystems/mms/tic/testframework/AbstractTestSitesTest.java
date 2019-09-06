@@ -35,7 +35,11 @@ public abstract class AbstractTestSitesTest extends AbstractTest {
     public void setUp() throws Exception {
         Server.start();
 
-        WebDriverManager.setBaseURL(TestPage.INPUT_TEST_PAGE.getUrl());
+        WebDriverManager.setBaseURL(getStartPage().getUrl());
+    }
+
+    protected TestPage getStartPage() {
+        return TestPage.INPUT_TEST_PAGE;
     }
 
     @AfterTest(alwaysRun = true)

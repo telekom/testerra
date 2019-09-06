@@ -31,7 +31,8 @@ public enum TestPage {
     FRAME_TEST_PAGE("http://localhost:80/testsites/FrameSimple/frame.html", INPUT_TEST_PAGE),
     DRAG_AND_DROP("http://localhost:80/testsites/DragAndDrop/index.html", INPUT_TEST_PAGE),
     DRAG_AND_DROP_OVER_FRAMES("http://localhost:80/testsites/DragAndDropFrame/index.html", INPUT_TEST_PAGE),
-    MULTISELECT("http://localhost:80/testsites/Multiselect/index.html", INPUT_TEST_PAGE)
+    MULTISELECT("http://localhost:80/testsites/Multiselect/index.html", INPUT_TEST_PAGE),
+    LAYOUT("http://localhost:80/testsites/Layout/index.html", INPUT_TEST_PAGE)
     ;
 
     private String url;

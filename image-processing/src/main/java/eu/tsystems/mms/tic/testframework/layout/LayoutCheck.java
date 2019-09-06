@@ -272,9 +272,11 @@ public final class LayoutCheck {
         } else {
             step.consecutiveTargetImageName = targetImageName + runCountModifier;
             step.actualFileName = Paths.get(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_PATH) + "/"
-                + String.format(PropertyManager.getProperty(
-                TesterraProperties.LAYOUTCHECK_ACTUAL_NAMETEMPLATE, "Actual%s.png"),
-                step.consecutiveTargetImageName));
+                + String.format(
+                    PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_NAMETEMPLATE, "Actual%s.png"),
+                    step.consecutiveTargetImageName
+                )
+            );
 
             try {
                 FileUtils.copyFile(screenshot, step.actualFileName.toFile());
@@ -286,9 +288,11 @@ public final class LayoutCheck {
 
             // create distance file name
             step.distanceFileName = Paths.get(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_DISTANCE_PATH) + "/"
-                + String.format(PropertyManager.getProperty(
-                TesterraProperties.LAYOUTCHECK_DISTANCE_NAMETEMPLATE, "Distance%s.png"),
-                step.consecutiveTargetImageName));
+                + String.format(
+                    PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_DISTANCE_NAMETEMPLATE, "Distance%s.png"),
+                    step.consecutiveTargetImageName
+                )
+            );
         }
 
         return step;

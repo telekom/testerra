@@ -397,60 +397,6 @@ public final class LayoutCheck {
         return DISTANCE_NO_MATCH;
     }
 
-    public static float runTextLayoutErrorDetection(WebDriver driverWithWebsiteToRunTestOn, String reportImageName) {
-        TextLayoutErrorDetector textLayoutErrorDetector = new TextLayoutErrorDetector();
-        return pRunTextLayoutErrorDetection(driverWithWebsiteToRunTestOn, reportImageName, textLayoutErrorDetector);
-    }
-
-    public static float runTextLayoutErrorDetection(WebDriver driverWithWebsiteToRunTestOn, String reportImageName,
-                                                    String[] tagsContainingText) {
-        TextLayoutErrorDetector textLayoutErrorDetector = new TextLayoutErrorDetector(tagsContainingText);
-        return pRunTextLayoutErrorDetection(driverWithWebsiteToRunTestOn, reportImageName, textLayoutErrorDetector);
-    }
-
-    private static float pRunTextLayoutErrorDetection(WebDriver driverWithWebsiteToRunTestOn, String reportImageName,
-                                                      TextLayoutErrorDetector textLayoutErrorDetector) {
-        TextLayoutScreenData screenData = textLayoutErrorDetector.captureScreenData(driverWithWebsiteToRunTestOn);
-
-        Mat diffMat = ImageUtil.getAbsoluteDifference(screenData.getScreenshotTextColor1(),
-                screenData.getScreenshotTextColor2());
-        // ImageUtil.writeImage(diffMat, "diffMat.png");
-
-        Mat greyScaleMat = ImageUtil.convertToGrey(screenData.getScreenshotNoText());
-        // ImageUtil.writeImage(greyScaleMat, "grey.png");
-
-        Mat edgesFromGrey = textLayoutErrorDetector.applySimpleEdgeFilter(greyScaleMat);
-        // ImageUtil.writeImage(edgesFromGrey, "1edgesFromGrey.png");
-
-        LineDetector lineDetector = new LineDetector();
-        List<Line> lines = lineDetector.detectLines(edgesFromGrey);
-
-        String imageDestination = "../../" + reportImageName + ".png";
-        TextLayoutErrorReport textLayoutErrorReport = TextLayoutErrorReport.createReport(lines, diffMat,
-                imageDestination);
-//        ImageUtil.writeImage(textLayoutErrorReport.getReportMat(),
-//                ReportUtils.getReportDir() + reportImageName + ".png");
-
-        driverWithWebsiteToRunTestOn.navigate().refresh();
-
-        int errorPixelCount = textLayoutErrorReport.getErrorPixelCount();
-        int correctLinePixelCount = textLayoutErrorReport.getCorrectLinePixelCount();
-        float errorRatio = textLayoutErrorReport.getErrorRatio();
-        LOGGER.info("Finished text error detection. Found " + correctLinePixelCount + " correct line pixels, " +
-                textLayoutErrorReport.getCorrectTextPixelCount() + " correct text pixels and " + errorPixelCount
-                + " pixel errors with " +
-                "both text and line overlapping. The error ratio is " + errorRatio + ".");
-
-        double errorThreshold = PropertyManager
-                .getDoubleProperty(TesterraProperties.LAYOUTCHECK_TEXT_ERRORDETECTOR_ERROR_THRESHOLD, 0);
-        boolean errorThresholdExceeded = textLayoutErrorReport.isErrorThresholdExceeded(errorThreshold);
-
-        // TODO: this is NOT correct:
-        toReport(reportImageName, Mode.PIXEL, errorPixelCount, null, null, null, null, null);
-
-        return errorRatio;
-    }
-
     /**
      * Returns the color of a pixel at a certain position of the image
      *

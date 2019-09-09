@@ -13,7 +13,7 @@ GuiElements are *self refreshing*: Every action on it will trigger a find call, 
 include::guielement/guielement-creation.adoc[leveloffset=+1]
 include::guielement/guielement-actions.adoc[leveloffset=+1]
 include::guielement/guielement-assertions.adoc[leveloffset=+1]
-//include::guielement/guielement-checks.adoc[leveloffset=+1]
 include::guielement/guielement-properties.adoc[leveloffset=+1]
 include::guielement/guielement-waiters.adoc[leveloffset=+1]
 include::guielement/guielement-guielementgroups.adoc[leveloffset=+1]
+include::guielement/guielement-checks.adoc[leveloffset=+1]

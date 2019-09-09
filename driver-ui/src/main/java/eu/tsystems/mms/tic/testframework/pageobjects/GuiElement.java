@@ -856,8 +856,8 @@ public class GuiElement implements
 
     @Deprecated
     @Override
-    public void assertPixelDistanceLowerEqualThan(final String targetImageName, final double distanceThresholdPercent) {
-        guiElementFacade.assertPixelDistanceLowerEqualThan(targetImageName, distanceThresholdPercent);
+    public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
+        guiElementFacade.assertScreenshot(targetImageName, confidenceThreshold);
     }
 
     public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {

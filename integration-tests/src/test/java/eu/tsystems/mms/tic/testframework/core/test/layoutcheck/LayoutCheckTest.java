@@ -42,12 +42,12 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
     @Test
     public void testCheckElementLayout() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
-        guiElement.asserts().assertPixelDistanceLowerEqualThan("TestArticle", 0.1);
+        guiElement.asserts().assertScreenshot("TestArticle", 0.1);
     }
 
     @Test(expectedExceptions = TimeoutException.class)
     public void testCheckElementLayoutDistance() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
-        guiElement.asserts().assertPixelDistanceLowerEqualThan("TestArticleChrome", 10);
+        guiElement.asserts().assertScreenshot("TestArticleChrome", 10);
     }
 }

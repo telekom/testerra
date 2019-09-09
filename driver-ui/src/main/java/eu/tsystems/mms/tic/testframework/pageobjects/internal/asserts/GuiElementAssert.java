@@ -182,6 +182,6 @@ public interface GuiElementAssert {
     /**
      * Asserts the pixel of this web element
      */
-    void assertPixelDistanceLowerEqualThan(final String targetImageName, final double distanceThresholdPercent);
+    void assertScreenshot(final String targetImageName, final double confidenceThreshold);
 
 }

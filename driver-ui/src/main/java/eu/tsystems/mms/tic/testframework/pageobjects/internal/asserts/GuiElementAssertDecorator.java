@@ -332,11 +332,11 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
     }
 
     @Override
-    public void assertPixelDistanceLowerEqualThan(final String targetImageName, final double distanceThresholdPercent) {
+    public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
         callBeforeAssertion();
         AssertionError thrownAssertionError = null;
         try {
-            decoratedAssert.assertPixelDistanceLowerEqualThan(targetImageName, distanceThresholdPercent);
+            decoratedAssert.assertScreenshot(targetImageName, confidenceThreshold);
         } catch (AssertionError e) {
             thrownAssertionError = e;
         }

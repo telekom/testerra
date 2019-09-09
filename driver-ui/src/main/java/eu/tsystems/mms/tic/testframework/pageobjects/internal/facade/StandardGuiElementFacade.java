@@ -38,6 +38,7 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     private GuiElementWait guiElementWait;
     private GuiElementAssert guiElementAssert;
     private GuiElementCore guiElementCore;
+    @Inject private Logger logger;
 
     public StandardGuiElementFacade(
         GuiElementCore guiElementCore,

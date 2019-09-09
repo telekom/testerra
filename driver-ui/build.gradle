@@ -1,10 +1,10 @@
 dependencies {
-    compile core // to be removed
-
+    compile core
     compile selenium
-    compile sikuli
-    compile opencv
     compile datatypes
+    compile image_processing
+    //compile group: 'com.google.inject', name: 'guice', version: '4.0'
+    //compile 'com.google.inject:guice-parent:4.2.3-SNAPSHOT'
 }
 
 test {

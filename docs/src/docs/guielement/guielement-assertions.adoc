@@ -12,9 +12,10 @@ If a functional assert fails, it will make the whole test fail and abort.
 ----
 GuiElement element = new GuiElement(driver, By.id("button"));
 
-// assertText only returns true, if the text is exaclty the passed string
+// assertText only returns true, if the text is exactly the passed string
 element.asserts().assertText("mytext");
-element.asserts().assertContainsText("mytext");
+element.asserts().assertTextContains("my");
+element.asserts().assertTextContainsNot("foo");
 
 // assertIsPresent is true, if the element can be found within the currect site
 element.asserts().assertIsPresent();
@@ -23,6 +24,10 @@ element.asserts().assertIsNotPresent();
 // assertIsDisplayed returns true, if the element is visible and reachable by Selenium
 element.asserts().assertIsDisplayed();
 element.asserts().assertIsNotDisplayed();
+
+// CSS class checks
+element.asserts().assertCssClassIsPresent("active");
+element.asserts().assertCssClassIsGone("disabled");
 
 // ... and many more
 ----

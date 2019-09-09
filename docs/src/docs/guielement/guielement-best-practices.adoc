@@ -1,29 +1,35 @@
-= Best Practives
+= Best Practices
 
-== Always describe your asserts
+== Always prefer Assertions
 
-Standard TestNG Asserts allow to pass an description text. Use this to describe any assert and it's expected value. You can also use <<Assert Utilities>> to more precise in your statement.
+If you need to check several properties of a GuiElement, always use
+
+. <<Assertions>>
+. over <<Waiters>>
+. over <<Checks>>
 
 [source,java]
 ----
 // Good practice
-Assert.assertEquals(guiElement.getText(), "Search results", "Search results headline");
+guiElement.asserts().assertText("Search results");
 
 // Bad practice
 Assert.assertTrue(guiElement.getText().contains("Search results"));
 ----
 
 
-== Use waiters
+== Always describe your asserts
 
-If you need to check the presence of an element, an attribute or text content, it's always recommended to use <<Waiters>>.
+In that specific case where you can't use `asserts()`,
+then use the extended <<Assert Utilities>> to more precise in your statement and pass a proper description text.
 
 [source,java]
 ----
+int actualSearchResultCount = Integer.parseInt(guiElement.getText());
+
 // Good practice
-Assert.assertTrue(guiElement.waitForIsPresent(), "Element is present");
-Assert.assertTrue(guiElement.waitForIsNotPresent(), "Element is gone");
+AssertUtils.assertGreaterThan(actualSearchResultCount, 5, "Search results count");
 
 // Bad practice
-Assert.assertFalse(guiElement.isPresent(), "Element is present");
+Assert.assertTrue(actualSearchResultCount > 5);
 ----

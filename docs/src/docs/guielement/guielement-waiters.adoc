@@ -17,12 +17,15 @@ See #GuiElement Timeout#.
 [source,java]
 ----
 GuiElement guiElement = new GuiElement(driver, By.xpath("//a"));
-
-boolean result = guiElement.waitForIsDisplayed();
-boolean result = guiElement.waitForText(String text);
-boolean result = guiElement.waitForAttribute(String attribute, String value);
-boolean result = guiElement.waitForIsSelected();
-boolean result = guiElement.waitForTextContains("Hello");
-boolean result = guiElement.waitForTextContainsNot("Foo bar");
-boolean result = guiElement.waitForCssClass("active");
+boolean result;
+result = guiElement.waitForIsDisplayed();
+result = guiElement.waitForText(String text);
+result = guiElement.waitForAttribute(String attribute, String value);
+result = guiElement.waitForAttributeContains(String attribute, String value);
+result = guiElement.waitForAttributeContainsNot(String attribute, String value);
+result = guiElement.waitForIsSelected();
+result = guiElement.waitForTextContains("Hello");
+result = guiElement.waitForTextContainsNot("Foo bar");
+result = guiElement.waitForCssClassIsPresent("active");
+result = guiElement.waitForCssClassIsGone("disabled");
 ----

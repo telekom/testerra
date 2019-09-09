@@ -22,11 +22,16 @@ package eu.tsystems.mms.tic.testframework.core.test.layoutcheck;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.TesterraBy;
+import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.TakesScreenshot;
 import org.testng.annotations.Test;
+
+import java.math.BigDecimal;
 
 public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
 
@@ -50,4 +55,11 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("TestArticleChrome", 10);
     }
+
+    @Test
+    public void testCheckPageLayout() {
+        final double actualDist = LayoutCheck.matchPixels((TakesScreenshot)WebDriverManager.getWebDriver(), "LayoutTestPage");
+        AssertUtils.assertLowerEqualThan(new BigDecimal(actualDist), new BigDecimal(0), "LayoutTestPage");
+    }
+
 }

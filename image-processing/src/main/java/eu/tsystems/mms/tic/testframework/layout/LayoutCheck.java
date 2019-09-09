@@ -659,9 +659,15 @@ public final class LayoutCheck {
 
         // TODO: replace with exportable content
         // create the report item
-        ScreenReferenceReportItem scri = new ScreenReferenceReportItem(name, mode, distance,
-                relReferenceScreenshotPath,
-                relActualScreenshotPath, relDistanceScreenshotPath);
+        ScreenReferenceReportItem scri = new ScreenReferenceReportItem(
+            name,
+            mode,
+            distance,
+            relReferenceScreenshotPath,
+            relActualScreenshotPath,
+            relDistanceScreenshotPath
+        );
+
         if (mode == Mode.ANNOTATED) {
             copyFileToReport(annotatedReferenceScreenshotPath);
             String cleanedAnnotatedReferenceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + annotatedReferenceScreenshotPath.getFileName().toString();
@@ -681,6 +687,7 @@ public final class LayoutCheck {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.customErrorContextObjects.add(error);
 
+        /*
         String msg = "Layout check failed: " + name;
         if (Flags.LAYOUTCHECK_ASSERT_NF) {
             NonFunctionalAssert.assertTrue(false, msg);
@@ -688,7 +695,7 @@ public final class LayoutCheck {
         else {
             Assert.fail(msg);
         }
-
+        */
     }
 
     /**

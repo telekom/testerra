@@ -26,6 +26,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
+import eu.tsystems.mms.tic.testframework.utils.Timer;
+import org.testng.Assert;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -203,7 +205,17 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertPixelDistanceGreaterEqualThan(final String targetImageName, final double expectedDistance) {
-        double actualDistance = LayoutCheck.matchPixels(guiElementCore.takeScreenshot(), targetImageName);
-        AssertUtils.assertGreaterEqualThan(new BigDecimal(actualDistance), new BigDecimal(expectedDistance), String.format("Pixel distance of '%s' refering to image '%s'", guiElementData, targetImageName));
+        final int LAYOUT_CHECK_UI_WAIT = 300;
+        final int LAYOUT_CHECK_MAX_TRIES = 3;
+        Timer timer = new Timer(LAYOUT_CHECK_UI_WAIT,LAYOUT_CHECK_UI_WAIT*LAYOUT_CHECK_MAX_TRIES);
+        final BigDecimal expectedDistanceDecimal = new BigDecimal(expectedDistance);
+        final String assertMessage = String.format("Pixel distance of '%s' refering to image '%s'", guiElementData, targetImageName);
+        timer.executeSequence(new Timer.Sequence() {
+            @Override
+            public void run() throws Throwable {
+                double actualDistance = LayoutCheck.matchPixels(guiElementCore.takeScreenshot(), targetImageName);
+                AssertUtils.assertGreaterEqualThan(new BigDecimal(actualDistance), expectedDistanceDecimal, assertMessage);
+            }
+        });
     }
 }

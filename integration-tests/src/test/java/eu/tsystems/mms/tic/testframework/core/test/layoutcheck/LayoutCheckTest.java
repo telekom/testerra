@@ -49,13 +49,6 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
     @Test
     public void testCheckElementLayout() throws IOException {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
-        File file = guiElement.takeScreenshot();
-        log().info("File: " + file);
-        FileUtils.copyFile(file, new File("./"+file.getName()));
-        Assert.assertEquals(
-            0.1,
-            LayoutCheck.matchPixels(file, "TestArticle"),
-            "TestArticle"
-        );
+        guiElement.asserts().assertPixelDistanceGreaterEqualThan("TestArticle", 1);
     }
 }

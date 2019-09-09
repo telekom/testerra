@@ -79,7 +79,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 
 final String guiElementImage = "HeaderComponent";
 final GuiElement guiElement;
-guiElement.asserts().assertPixelDistanceLowerEqualThan(guiElementImage, 10);
+guiElement.asserts().assertScreenshot(guiElementImage, 10);
 ----
 
 === Take reference screenshots on first run

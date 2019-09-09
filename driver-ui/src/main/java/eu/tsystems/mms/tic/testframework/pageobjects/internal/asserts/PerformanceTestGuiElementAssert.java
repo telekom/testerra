@@ -137,7 +137,7 @@ public class PerformanceTestGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
-    public void assertMatchPixels(String targetImageName) {
+    public void assertPixelDistanceLowerOrEqualThan(String targetImageName) {
 
     }
 }

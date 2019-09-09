@@ -801,7 +801,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public void assertMatchPixels(final String targetImageName) {
+    public void assertPixelDistanceLowerOrEqualThan(final String targetImageName) {
         beforeDelegation("assertMatchPixels");
         decoratedFacade.assertIsNotDisplayed();
         afterDelegation();

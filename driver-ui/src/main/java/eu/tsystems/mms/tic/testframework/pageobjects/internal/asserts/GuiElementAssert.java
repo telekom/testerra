@@ -182,6 +182,6 @@ public interface GuiElementAssert {
     /**
      * Asserts the pixel of this web element
      */
-    void assertMatchPixels(final String targetImageName);
+    void assertPixelDistanceLowerOrEqualThan(final String targetImageName, final double distance);
 
 }

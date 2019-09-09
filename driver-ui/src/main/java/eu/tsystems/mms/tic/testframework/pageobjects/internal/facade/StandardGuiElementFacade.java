@@ -141,8 +141,8 @@ public class StandardGuiElementFacade implements GuiElementFacade {
 
     @Deprecated
     @Override
-    public void assertMatchPixels(final String targetImageName) {
-        guiElementAssert.assertMatchPixels(targetImageName);
+    public void assertPixelDistanceLowerOrEqualThan(final String targetImageName) {
+        guiElementAssert.assertPixelDistanceLowerOrEqualThan(targetImageName);
     }
 
     @Override

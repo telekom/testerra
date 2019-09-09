@@ -199,7 +199,7 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
-    public void assertMatchPixels(final String targetImageName) {
+    public void assertPixelDistanceLowerOrEqualThan(final String targetImageName) {
         configuredAssert.assertTrue(true, targetImageName);
     }
 }

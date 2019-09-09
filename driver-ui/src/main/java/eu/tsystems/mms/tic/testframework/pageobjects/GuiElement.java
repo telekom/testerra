@@ -850,8 +850,8 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
 
     @Deprecated
     @Override
-    public void assertMatchPixels(final String targetImageName) {
-        guiElementFacade.assertMatchPixels(targetImageName);
+    public void assertPixelDistanceLowerOrEqualThan(final String targetImageName) {
+        guiElementFacade.assertPixelDistanceLowerOrEqualThan(targetImageName);
     }
 
     public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {

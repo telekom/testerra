@@ -20,6 +20,11 @@ test {
         s = ['src/test/resources/testng/ReportTestsUnderTest' + nr + '.xml']
     }
 
+    def taskState = findProperty("taskState")
+    if (taskState) {
+        s = ['src/test/resources/testng/tapas/TapasTask' + taskState + '.xml']
+    }
+
     useTestNG() {
         suites s
         configFailurePolicy "continue"

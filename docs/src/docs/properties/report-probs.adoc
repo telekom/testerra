@@ -1,0 +1,14 @@
+include::property-attributes.adoc[]
+
+[cols="2,^1,4a",options="header"]
+|===
+| Property | default | Description
+| {reportdir} | /target/surefire-reports/report/ | Creates the report in the specified directory below the working directory.
+| {reportname} | na. | Names the report (e.g. the project where Testerra is used)
+| {runcfg} | na. | Set a run configuration to use different variations (test sets) of a test scope within a build task.
+| {screenshotter_active} | true | If true, screenshots are fetched and added to the report.
+| {report_screenshots_preview} | true | If true a screenshots preview is added to the test methods in the report
+| {screenshot_on_pageload} | false | If true, screenshot after page is loaded will be taken
+| {screencaster_active} | true | If true, all screencasts are fetchted and added to the report. +
+{platform_badge}
+|===

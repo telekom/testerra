@@ -1,24 +1,32 @@
 = Testerra
 This reference covers version: _{revnumber}_
 
-.What is Testerra?
-****
-It is an integrated framework for automating tests for (web) applications. Testerra can also be understood as a building block for test automation projects with various basic components. It also includes a prepared "foundation" on which complex test automation environments can be built.
-Testerra is developed by our Test Automation Experts at T-Systems Multimedia Solutions GmbH Dresden (link:https://test-and-integration.t-systems-mms.com[Website]). In numerous projects Testerra is used as the standard test automation framework.
-****
+// Platform badge with link
+:platform_badge: image:https://img.shields.io/badge/-PLATFORM-blue[link="index.html#_opensource_and_platform"]
 
+:sectnums!:
+
+= What is Testerra?
+include::what-is-testerra.adoc[leveloffset=+1]
+
+:sectnums:
+
+'''
 = Getting Started
 include::getting-started.adoc[leveloffset=+1]
 
+'''
 = Testerra Framework
 include::webdriver-manager.adoc[leveloffset=+1]
 include::browser-caps.adoc[leveloffset=+1]
 include::guielement.adoc[leveloffset=+1]
 include::pageobjects.adoc[leveloffset=+1]
 
+'''
 = Testerra Features
 include::modules.adoc[leveloffset=+1]
 
+'''
 = Appendix
 include::properties.adoc[leveloffset=+1]
 

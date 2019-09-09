@@ -21,20 +21,21 @@ a| Browser label, the following browsers are possible
 | {browser_setting} | | You can combine browser type and version as single string like `firefox_65`
 | {baseurl} | na. | URL of the first site called in a new browser session
 | {webdriver_mode} | local | Sets the webdriver mode. remote uses an external Selenium server
-| {selenium_server_url} | na. | The complete URL to a remote Selenium server.
-
-For example: `http://localhost:4444/wd/hub`
+| {selenium_server_url} | na. | The complete URL to a remote Selenium server. +
+(e.g.: `http://localhost:4444/wd/hub`)
 
 This setting overriedes the following two properties.
 | {selenium_server_host} | localhost | The host name of the remote Selenium server.
 | {selenium_server_port} | 4444 | The port of the remote Selenium server.
 | {browser_maximize} | false | Try to maximize the browser window.
-| {display_resolution} | 1920x1200 | Fall-back resolution, if maximize does not work
-
+| {display_resolution} | 1920x1200 | Fall-back resolution, if maximize does not work. +
 For custom window browser size use `driver.manage().window().setSize(new Dimensions(x, y))`
 | {wdm_closewindows_aftertestmethods} | true | If true, after every test method all open browser windows are closed.
 | {wdm_closewindows_onfailure} | true | If true, after failed test methods all open browser windows are closed
 | {takeAutomaticScreenshot} | true | If true and test methods fail, a screenshot is created automatically
-
+| {webdriver_timeouts_seconds_pageload} | 120 | Defines the Selenium timeout for page load seconds. +
+(`driver.manage().timeouts().pageLoadTimeout()`)
+| {webdriver_timeouts_seconds_script} | 120 |  Defines the Selenium timeout for execution of async scripts in seconds. +
+(`driver.manage().timeouts().setScriptTimeout()`)
 |===
 

@@ -27,7 +27,11 @@ package eu.tsystems.mms.tic.testframework.constants;
 public enum JSMouseAction {
 
     CLICK("click"),
-    DOUBLE_CLICK("dblclick");
+    DOUBLE_CLICK("dblclick"),
+    MOVE("mousemove"),
+    DOWN("mousedown"),
+    UP("mouseup"),
+    ;
 
     private final String actionType;
 

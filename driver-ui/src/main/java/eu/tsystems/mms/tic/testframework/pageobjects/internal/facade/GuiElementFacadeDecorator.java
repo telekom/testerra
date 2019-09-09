@@ -794,6 +794,12 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
+    @Deprecated
+    public boolean waitForCssClass(String className) {
+        return waitForCssClassIsPresent(className);
+    }
+
+    @Override
     public boolean waitForAttributeContainsNot(final String attributeName, final String value) {
         beforeDelegation("waitForAttributeContainsNot");
         boolean b = decoratedFacade.waitForAttributeContainsNot(attributeName, value);

@@ -72,32 +72,8 @@ public class TestStatusController {
         statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
         statusMap.put("DryRun", Flags.DRY_RUN);
 
-        // set status
-        String status;
-        String statusMessage;
-        boolean statusBool;
-        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
-            if (FailureCorridor.isCorridorMatched()) {
-                status = PASSED;
-                statusBool = true;
-            } else {
-                status = FAILED;
-                statusBool = false;
-            }
-            statusMessage = FailureCorridor.getStatusMessage();
-        } else {
-            statusMessage = getFinalCountersMessage();
-            if (testsSuccessful > 0 && testsSkipped == 0 && testsFailed == 0) {
-                status = PASSED;
-                statusBool = true;
-            } else {
-                status = FAILED;
-                statusBool = false;
-            }
-        }
-        statusMap.put("Status", status);
-        statusMap.put("StatusBool", statusBool);
-        statusMap.put("StatusMessage", statusMessage);
+        statusMap.put("Status", EXECUTION_CONTEXT.getStatus());
+        statusMap.put("StatusBool", EXECUTION_CONTEXT.getStatus() == Status.PASSED);
 
         statusMap.put("RunCfg", EXECUTION_CONTEXT.runConfig.RUNCFG);
         statusMap.put("Date", EXECUTION_CONTEXT.startTime.toString());

@@ -340,6 +340,6 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
         } catch (AssertionError e) {
             thrownAssertionError = e;
         }
-        handleAfterAssertion("assertPixelDistanceGreaterEqualThan", thrownAssertionError);
+        handleAfterAssertion("assertScreenshot", thrownAssertionError);
     }
 }

@@ -802,7 +802,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
 
     @Override
     public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
-        beforeDelegation("assertPixelDistanceGreaterEqualThan");
+        beforeDelegation("assertScreenshot");
         decoratedFacade.assertScreenshot(targetImageName, confidenceThreshold);
         afterDelegation();
     }

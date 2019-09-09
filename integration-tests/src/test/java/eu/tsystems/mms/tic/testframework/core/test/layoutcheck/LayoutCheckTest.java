@@ -20,19 +20,15 @@
 package eu.tsystems.mms.tic.testframework.core.test.layoutcheck;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
+import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.TesterraBy;
-import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.io.IOException;
 
 public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
@@ -47,8 +43,14 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
     }
 
     @Test
-    public void testCheckElementLayout() throws IOException {
+    public void testCheckElementLayout() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
-        guiElement.asserts().assertPixelDistanceGreaterEqualThan("TestArticle", 1);
+        guiElement.asserts().assertPixelDistanceLowerEqualThan("TestArticle", 0.1);
+    }
+
+    @Test(expectedExceptions = TimeoutException.class)
+    public void testCheckElementLayoutDistance() {
+        GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
+        guiElement.asserts().assertPixelDistanceLowerEqualThan("TestArticleChrome", 10);
     }
 }

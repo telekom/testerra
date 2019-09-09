@@ -5,25 +5,20 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutErrorContextObject;
 import eu.tsystems.mms.tic.testframework.layout.reporting.ScreenReferenceReportItem;
-import eu.tsystems.mms.tic.testframework.layout.textlayout.*;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.apache.commons.io.FileUtils;
-import org.opencv.core.Mat;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -68,7 +63,7 @@ public final class LayoutCheck {
         PIXEL, ANNOTATED
     }
 
-    private static final double DISTANCE_NO_MATCH = 0;
+    private static final double NO_DISTANCE = 0;
     private static final int RGB_DEVIATION_PERCENT = PropertyManager.getIntProperty(TesterraProperties.LAYOUTCHECK_PIXEL_RGB_DEVIATION_PERCENT, 0);
     private static final double RGB_MAX_DEVIATION = 255;
 
@@ -207,8 +202,6 @@ public final class LayoutCheck {
             throw new TesterraSystemException("Error reading images", e);
         }
 
-        LOGGER.debug(String.format("Saved distance image at '%s'.", step.distanceFileName));
-
         toReport(
             targetImageName,
             Mode.ANNOTATED,
@@ -309,7 +302,7 @@ public final class LayoutCheck {
     public static double matchPixels(final File screenshot, final String targetImageName) {
         final MatchStep step = prepare(screenshot, targetImageName);
         if (step.takeReferenceOnly) {
-            return DISTANCE_NO_MATCH;
+            return NO_DISTANCE;
         } else {
             return matchPixels(targetImageName, step);
         }
@@ -348,8 +341,6 @@ public final class LayoutCheck {
             LOGGER.error(e.getMessage());
             throw new TesterraSystemException("Error reading images", e);
         }
-
-        LOGGER.debug(String.format("Saved distance image at '%s'.", step.distanceFileName));
 
         toReport(
             step.consecutiveTargetImageName,
@@ -394,7 +385,7 @@ public final class LayoutCheck {
             }
         }
 
-        return DISTANCE_NO_MATCH;
+        return NO_DISTANCE;
     }
 
     /**

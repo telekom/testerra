@@ -204,17 +204,17 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
-    public void assertPixelDistanceGreaterEqualThan(final String targetImageName, final double expectedDistance) {
+    public void assertPixelDistanceLowerEqualThan(final String targetImageName, final double distanceThresholdPercent) {
         final int LAYOUT_CHECK_UI_WAIT = 300;
         final int LAYOUT_CHECK_MAX_TRIES = 3;
         Timer timer = new Timer(LAYOUT_CHECK_UI_WAIT,LAYOUT_CHECK_UI_WAIT*LAYOUT_CHECK_MAX_TRIES);
-        final BigDecimal expectedDistanceDecimal = new BigDecimal(expectedDistance);
-        final String assertMessage = String.format("%s pixel distance referring to image '%s'", guiElementData, targetImageName);
+        final BigDecimal expectedDistanceThreshold = new BigDecimal(distanceThresholdPercent);
+        final String assertMessage = String.format("%s pixel distance percent referring to image '%s'", guiElementData, targetImageName);
         timer.executeSequence(new Timer.Sequence() {
             @Override
             public void run() throws Throwable {
                 double actualDistance = LayoutCheck.matchPixels(guiElementCore.takeScreenshot(), targetImageName);
-                AssertUtils.assertGreaterEqualThan(new BigDecimal(actualDistance), expectedDistanceDecimal, assertMessage);
+                AssertUtils.assertLowerEqualThan(new BigDecimal(actualDistance), expectedDistanceThreshold, assertMessage);
             }
         });
     }

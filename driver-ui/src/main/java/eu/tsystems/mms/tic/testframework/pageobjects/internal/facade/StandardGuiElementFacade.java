@@ -141,8 +141,8 @@ public class StandardGuiElementFacade implements GuiElementFacade {
 
     @Deprecated
     @Override
-    public void assertPixelDistanceGreaterEqualThan(final String targetImageName, final double expectedDistance) {
-        guiElementAssert.assertPixelDistanceGreaterEqualThan(targetImageName, expectedDistance);
+    public void assertPixelDistanceLowerEqualThan(final String targetImageName, final double distanceThresholdPercent) {
+        guiElementAssert.assertPixelDistanceLowerEqualThan(targetImageName, distanceThresholdPercent);
     }
 
     @Override

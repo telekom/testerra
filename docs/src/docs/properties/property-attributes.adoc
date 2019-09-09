@@ -52,7 +52,6 @@
 :demomode:                          tt.demomode
 :list_tests:                        tt.list.tests
 :on_state_testfailed_skip_shutdown: tt.on.state.testfailed.skip.shutdown
-:skip_execution_when_previously_passed:     tt.skip.execution.when.previously.passed
 :on_state_testfailed_skip_following_tests:  tt.on.state.testfailed.skip.following.tests
 :failed_tests_if_throwable_classes:         tt.failed.tests.if.throwable.classes
 :failed_tests_if_throwable_messages:        tt.failed.tests.if.throwable.messages

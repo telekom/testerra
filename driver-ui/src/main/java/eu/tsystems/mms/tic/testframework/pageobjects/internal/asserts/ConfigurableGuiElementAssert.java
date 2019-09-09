@@ -154,7 +154,7 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertAnyFollowingTextNodeContains(String contains) {
-        configuredAssert.assertTrue(guiElementWait.waitForAnyFollowingTextNodeContains(contains), "Element " + guiElementData +
+        configuredAssert.assertTrue(guiElementWait.waitForAnyFollowingTextNodeContains(contains), guiElementData +
                 "contains text \"" + contains + "\".");
     }
 
@@ -209,7 +209,7 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
         final int LAYOUT_CHECK_MAX_TRIES = 3;
         Timer timer = new Timer(LAYOUT_CHECK_UI_WAIT,LAYOUT_CHECK_UI_WAIT*LAYOUT_CHECK_MAX_TRIES);
         final BigDecimal expectedDistanceDecimal = new BigDecimal(expectedDistance);
-        final String assertMessage = String.format("Pixel distance of '%s' refering to image '%s'", guiElementData, targetImageName);
+        final String assertMessage = String.format("%s pixel distance referring to image '%s'", guiElementData, targetImageName);
         timer.executeSequence(new Timer.Sequence() {
             @Override
             public void run() throws Throwable {

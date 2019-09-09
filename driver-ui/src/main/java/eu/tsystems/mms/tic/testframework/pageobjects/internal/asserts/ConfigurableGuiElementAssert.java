@@ -19,12 +19,15 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
+import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 /**
@@ -199,7 +202,8 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
-    public void assertPixelDistanceLowerOrEqualThan(final String targetImageName) {
-        configuredAssert.assertTrue(true, targetImageName);
+    public void assertPixelDistanceGreaterEqualThan(final String targetImageName, final double expectedDistance) {
+        double actualDistance = LayoutCheck.matchPixels(guiElementCore.takeScreenshot(), targetImageName);
+        AssertUtils.assertGreaterEqualThan(new BigDecimal(actualDistance), new BigDecimal(expectedDistance), String.format("Pixel distance of '%s' refering to image '%s'", guiElementData, targetImageName));
     }
 }

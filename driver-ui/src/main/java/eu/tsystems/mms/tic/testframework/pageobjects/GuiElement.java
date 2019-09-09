@@ -61,7 +61,13 @@ import java.util.*;
  * <p>
  * Authors: pele, rnhb
  */
-public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, GuiElementWait, Nameable {
+public class GuiElement implements
+    Checkable,
+    GuiElementAssert,
+    GuiElementCore,
+    GuiElementWait,
+    Nameable
+{
 
     private static final Map<String, GuiElementCoreFactory> coreFactories = new HashMap<>();
 
@@ -850,8 +856,8 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
 
     @Deprecated
     @Override
-    public void assertPixelDistanceLowerOrEqualThan(final String targetImageName) {
-        guiElementFacade.assertPixelDistanceLowerOrEqualThan(targetImageName);
+    public void assertPixelDistanceGreaterEqualThan(final String targetImageName, final double expectedDistance) {
+        guiElementFacade.assertPixelDistanceGreaterEqualThan(targetImageName, expectedDistance);
     }
 
     public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {

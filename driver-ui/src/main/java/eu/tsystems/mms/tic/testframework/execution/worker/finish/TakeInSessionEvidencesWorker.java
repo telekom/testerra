@@ -19,14 +19,9 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.context.Video;
-import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
 
 import java.util.List;
 
@@ -39,7 +34,9 @@ public class TakeInSessionEvidencesWorker extends AbstractEvidencesWorker {
         if (WebDriverManager.hasSessionsActiveInThisThread()) {
             // get screenshots and videos
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
+
             if (screenshots != null) {
+                screenshots.forEach(s -> s.errorContextId = methodContext.id);
                 methodContext.screenshots.addAll(screenshots);
             }
         }

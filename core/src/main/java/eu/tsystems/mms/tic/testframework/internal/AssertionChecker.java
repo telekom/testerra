@@ -83,6 +83,7 @@ public final class AssertionChecker {
             // get screenshots and videos
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
             if (screenshots != null) {
+                screenshots.forEach(s -> s.errorContextId = assertionInfo.id);
                 assertionInfo.screenshots.addAll(screenshots);
             }
 

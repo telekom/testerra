@@ -124,6 +124,16 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
+    public void assertTextContains(String... text) {
+
+    }
+
+    @Override
+    public void assertTextContainsNot(String... text) {
+
+    }
+
+    @Override
     public void assertAttributeIsPresent(String attributeName) {
         configuredAssert.assertTrue(guiElementWait.waitForAttribute(attributeName), "Attribute is present: " + attributeName);
     }
@@ -142,9 +152,18 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertAttributeContains(String attributeName, String textContainedByAttribute) {
-        configuredAssert.assertTrue(guiElementWait.waitForAttributeContains(attributeName, textContainedByAttribute),
-                guiElementData + " does not contain the requested text\n Expected: " + textContainedByAttribute + "\n Actual: "
-                        + guiElementCore.getAttribute(attributeName));
+        configuredAssert.assertTrue(
+            guiElementWait.waitForAttributeContains(attributeName, textContainedByAttribute),
+            String.format("%s does not contain the requested text\n Expected: %s\n Actual: %s", guiElementData, textContainedByAttribute, guiElementCore.getAttribute(attributeName))
+        );
+    }
+
+    @Override
+    public void assertAttributeContainsNot(final String attributeName, final String textNotContainedByAttribute) {
+        configuredAssert.assertTrue(
+            guiElementWait.waitForAttributeContainsNot(attributeName, textNotContainedByAttribute),
+            String.format("%s does not contain the requested text\n Expected: %s\n Actual: %s", guiElementData, textNotContainedByAttribute, guiElementCore.getAttribute(attributeName))
+        );
     }
 
     @Override
@@ -196,5 +215,15 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     @Override
     public void assertLayout(Layout layout) {
         configuredAssert.assertLayout(guiElementData.guiElement, layout);
+    }
+
+    @Override
+    public void assertCssClassIsPresent(final String className) {
+        configuredAssert.assertTrue(guiElementWait.waitForCssClassIsPresent(className), String.format("%s has css class '%s'", guiElementData, className));
+    }
+
+    @Override
+    public void assertCssClassIsGone(final String className) {
+        configuredAssert.assertTrue(guiElementWait.waitForCssClassIsGone(className), String.format("%s has not css class '%s'", guiElementData, className));
     }
 }

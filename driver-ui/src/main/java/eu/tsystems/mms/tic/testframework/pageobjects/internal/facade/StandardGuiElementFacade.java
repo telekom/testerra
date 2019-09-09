@@ -112,8 +112,19 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
+    @Deprecated
     public void assertContainsText(String... text) {
         guiElementAssert.assertContainsText(text);
+    }
+
+    @Override
+    public void assertTextContains(String... text) {
+        guiElementAssert.assertTextContains(text);
+    }
+
+    @Override
+    public void assertTextContainsNot(String... text) {
+        guiElementAssert.assertTextContainsNot(text);
     }
 
     @Override
@@ -129,6 +140,11 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     @Override
     public void assertAttributeContains(String attributeName, String textContainedByAttribute) {
         guiElementAssert.assertAttributeContains(attributeName, textContainedByAttribute);
+    }
+
+    @Override
+    public void assertAttributeContainsNot(final String attributeName, final String textNotContainedByAttribute) {
+        guiElementAssert.assertAttributeContainsNot(attributeName, textNotContainedByAttribute);
     }
 
     @Override
@@ -154,6 +170,16 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     @Override
     public void assertLayout(Layout layout) {
         guiElementAssert.assertLayout(layout);
+    }
+
+    @Override
+    public void assertCssClassIsPresent(final String className) {
+        guiElementAssert.assertCssClassIsPresent(className);
+    }
+
+    @Override
+    public void assertCssClassIsGone(final String className) {
+        guiElementAssert.assertCssClassIsGone(className);
     }
 
     @Override
@@ -462,8 +488,24 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
+    public boolean waitForAttributeContainsNot(final String attributeName, final String value) {
+        return guiElementWait.waitForAttributeContainsNot(attributeName, value);
+    }
+
+    @Override
+    @Deprecated
     public boolean waitForCssClass(String className) {
-        return guiElementWait.waitForCssClass(className);
+        return guiElementWait.waitForCssClassIsPresent(className);
+    }
+
+    @Override
+    public boolean waitForCssClassIsPresent(final String className) {
+        return guiElementWait.waitForCssClassIsPresent(className);
+    }
+
+    @Override
+    public boolean waitForCssClassIsGone(final String className) {
+        return guiElementWait.waitForCssClassIsGone(className);
     }
 
     @Override

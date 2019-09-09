@@ -46,6 +46,14 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
+     * Test if GuiElement.asserts().assertContainsText works for one string that is contained
+     */
+    @Test
+    public void testT01_GuiElement_assertTextContains() {
+        getElementWithText().asserts().assertTextContains(testPage.getElementText());
+    }
+
+    /**
      * Negative test if GuiElement.asserts().assertContainsText works for one string that is not contained
      */
     @Test(expectedExceptions = {AssertionError.class, TimeoutException.class})
@@ -112,15 +120,23 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
      * Test if GuiElement.asserts().assertAttributeText works for an attribute that contains the specified part
      */
     @Test
-    public void testT09_GuiElement_assertAttributeContainsText() {
+    public void testT09_GuiElement_assertAttributeContains() {
         getElementWithAttribute().asserts().assertAttributeContains(testPage.getAttributeName(), testPage.getAttributeValuePart());
+    }
+
+    /**
+     * Test if GuiElement.asserts().assertAttributeText works for an attribute that contains the specified part
+     */
+    @Test
+    public void testT09_GuiElement_assertAttributeContainsNot() {
+        getElementWithAttribute().asserts().assertTextContainsNot(testPage.getAttributeName(), "inexistent");
     }
 
     /**
      * Test if GuiElement.asserts().assertAttributeText works for an attribute that does not contain the specified part
      */
     @Test(expectedExceptions = {AssertionError.class})
-    public void testT10N_GuiElement_assertAttributeContainsText() {
+    public void testT10N_GuiElement_assertAttributeContains() {
         getElementWithAttribute().asserts().assertAttributeContains(testPage.getAttributeName(), "blurp012zyx");
     }
 
@@ -830,6 +846,14 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     public void testT97_GuiElement_rightClickJS() {
         GuiElement element = getClickableElement();
         element.rightClickJS();
+    }
+
+    @Test
+    public void testT98_GuiElement_assertClassIsPresent() {
+        GuiElement element = getGuiElementBy(By.xpath(String.format("//*[@data-qa='%s']", "action/toggleClass")));
+        element.asserts().assertCssClassIsGone("active");
+        element.click();
+        element.asserts().assertCssClassIsPresent("active");
     }
 
 }

@@ -4,6 +4,7 @@
 // Testerra core
 :proxy_settings_load:               tt.proxy.settings.load
 :proxy_settings_file:               tt.proxy.settings.file
+:test_properties_file:              tt.test.properties.file
 
 // webdriver
 :browser:                           tt.browser
@@ -19,6 +20,160 @@
 :wdm_closewindows_aftertestmethods: tt.wdm.closewindows.aftertestmethods
 :wdm_closewindows_onfailure:        tt.wdm.closewindows.onfailure
 :takeAutomaticScreenshot:           tt.takeAutomaticScreenshot
+:webdriver_timeouts_seconds_pageload:   webdriver.timeouts.seconds.pageload
+:webdriver_timeouts_seconds_script:     webdriver.timeouts.seconds.script
 
 // pagefactory
 :project_package:                   tt.project.package
+:page_factory_loops:                tt.page.factory.loops
+
+// guielement
+:element_timeout_seconds:           tt.element.timeout.seconds
+:guielement_type:                   tt.guielement.type
+:guielement_default_assertcollector: tt.guielement.default.assertcollector
+:guielement_use_js_alternatives:    tt.guielement.use.js.alternatives
+:guielement_checkrule:              tt.guielement.checkrule
+:delay_after_guielement_find_millis:        tt.delay.after.guielement.find.millis
+:delay_before_guielement_action_millis:     tt.delay.before.guielement.action.millis
+:delay_after_guielement_action_millis:      tt.delay.after.guielement.action.millis
+
+// report
+:reportdir:                         tt.reportdir
+:reportname:                        tt.reportname
+:runcfg:                            tt.runcfg
+:screenshotter_active:              tt.screenshotter.active
+:report_screenshots_preview:        tt.report.screenshots.preview
+:screenshot_on_pageload:            tt.screenshot.on.pageload
+:screencaster_active:               tt.screencaster.active
+
+// execution
+:guielement_highlights_active:      tt.guielement.highlights.active
+:dryrun:                            tt.dryrun
+:demomode:                          tt.demomode
+:list_tests:                        tt.list.tests
+:on_state_testfailed_skip_shutdown: tt.on.state.testfailed.skip.shutdown
+:on_state_testfailed_skip_following_tests:  tt.on.state.testfailed.skip.following.tests
+:failed_tests_if_throwable_classes:         tt.failed.tests.if.throwable.classes
+:failed_tests_if_throwable_messages:        tt.failed.tests.if.throwable.messages
+:failed_tests_max_retries:          tt.failed.tests.max.retries
+:failed_tests_retry_flapping:       tt.failed.tests.retry.flapping
+:reuse_dataprovider_driver_by_thread:       tt.reuse.dataprovider.driver.by.thread
+:watchdog_enable:                   tt.watchdog.enable
+:watchdog_timeout_seconds:          tt.watchdog.timeout.seconds
+
+:failure_corridor_active:           tt.failure.corridor.active
+:failure_corridor_allowed_failed_tests:         tt.failure.corridor.allowed.failed.tests
+:failure_corridor_allowed_failed_tests_high:    tt.failure.corridor.allowed.failed.tests.high
+:failure_corridor_allowed_failed_tests_mid:     tt.failure.corridor.allowed.failed.tests.mid
+:failure_corridor_allowed_failed_tests_low:     tt.failure.corridor.allowed.failed.tests.low
+
+
+
+//
+//public static final String MODULE_SOURCE_ROOT = "tt.module.source.root";
+// **
+//* tt.source.lines.prefetch
+//*/
+//public static final String SOURCE_LINES_PREFETCH = "tt.source.lines.prefetch";
+//**
+//* tt.report.activate.sources
+//*/
+//public static final String REPORT_ACTIVATE_SOURCES = "tt.report.activate.sources";
+//**
+//* .
+//*/
+
+
+
+
+// --> new stuff
+
+
+
+
+
+
+
+// Layout test
+//*
+//* The mode for the screenreferencer. Values are pixel (default) or annotated.
+//*/
+//public static final String LAYOUTCHECK_MODE = "tt.layoutcheck.mode";
+// if true, will use non-functional asserts
+//public static final String LAYOUTCHECK_ASSERT_INFO_MODE = "tt.layoutcheck.assert.info.mode";
+//
+//public static final String LAYOUTCHECK_TAKEREFERENCE = "tt.layoutcheck.takereference";
+//public static final String LAYOUTCHECK_REFERENCE_NAMETEMPLATE = "tt.layoutcheck.reference.nametemplate";
+//public static final String LAYOUTCHECK_ANNOTATED_NAMETEMPLATE = "tt.layoutcheck.annotated.nametemplate";
+//public static final String LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE = "tt.layoutcheck.annotationdata.nametemplate";
+//public static final String LAYOUTCHECK_ACTUAL_NAMETEMPLATE = "tt.layoutcheck.actual.nametemplate";
+//public static final String LAYOUTCHECK_DISTANCE_NAMETEMPLATE = "tt.layoutcheck.distance.nametemplate";
+//public static final String LAYOUTCHECK_REFERENCE_PATH = "tt.layoutcheck.reference.path";
+//public static final String LAYOUTCHECK_DISTANCE_PATH = "tt.layoutcheck.distance.path";
+//public static final String LAYOUTCHECK_ACTUAL_PATH = "tt.layoutcheck.actual.path";
+//public static final String LAYOUTCHECK_USE_IGNORE_COLOR = "tt.layoutcheck.use.ignore.color";
+//public static final String LAYOUTCHECK_USE_AREA_COLOR = "tt.layoutcheck.use.area.color";
+//public static final String LAYOUTCHECK_PIXEL_RGB_DEVIATION_PERCENT = "tt.layout.pixel.rgb.deviation.percent";
+
+
+// Properties for the layout comparator working with
+//public static final String LAYOUTCHECK_MATCH_THRESHOLD = "tt.layoutcheck.match.threshold";
+//public static final String LAYOUTCHECK_DISPLACEMENT_THRESHOLD = "tt.layoutcheck.displacement.threshold";
+//public static final String LAYOUTCHECK_INTRA_GROUPING_THRESHOLD = "tt.layoutcheck.intra.grouping.threshold";
+//public static final String LAYOUTCHECK_MINIMUM_MARKED_PIXELS = "tt.layoutcheck.minimum.marked.pixels";
+//public static final String LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO = "tt.layoutcheck.maximum.marked.pixels.ratio";
+//public static final String LAYOUTCHECK_MATCHING_ALGORITHM = "tt.layoutcheck.matching.algorithm";
+//**
+// * minimalDistanceBetweenMatches
+// */
+//public static final String LAYOUTCHECK_INTERNAL_PARAMETER_1 = "tt.layoutcheck.internal.parameter.1";
+//**
+// * minimalSizeDifferenceOfSubImages
+// */
+//public static final String LAYOUTCHECK_INTERNAL_PARAMETER_2 = "tt.layoutcheck.internal.parameter.2";
+//**
+// * minimumSimilarMovementErrorsForDisplacementCorrection
+// */
+//public static final String LAYOUTCHECK_INTERNAL_PARAMETER_3 = "tt.layoutcheck.internal.parameter.3";
+//**
+// * distanceBetweenMultipleMatchesToProduceWarning
+// */
+//public static final String LAYOUTCHECK_INTERNAL_PARAMETER_4 = "tt.layoutcheck.internal.parameter.4";
+//public static final String LAYOUTCHECK_IGNORE_AMBIGUOUS_MOVEMENT = "tt.layoutcheck.ignore.ambiguous.movement";
+//public static final String LAYOUTCHECK_IGNORE_MOVEMENT = "tt.layoutcheck.ignore.movement";
+//public static final String LAYOUTCHECK_IGNORE_GROUP_MOVEMENT = "tt.layoutcheck.ignore.group.movement";
+//public static final String LAYOUTCHECK_IGNORE_MISSING_ELEMENTS = "tt.layoutcheck.ignore.missing.elements";
+//public static final String LAYOUTCHECK_IGNORE_AMBIGUOUS_MATCH = "tt.layoutcheck.ignore.ambiguous.match";
+//
+//**
+// * If below 1, the value is regarded as percent threshold for erroneous pixels / all edge and text pixel. If 1 or
+// * greater, it is regarded as absolute error pixel count.
+// */
+//public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_ERROR_THRESHOLD = "tt.layoutcheck.text.error.detector.error.threshold";
+//public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH = "tt.layoutcheck.text.error.detector.minimal.line.length";
+//public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGESTRENGTH = "tt.layoutcheck.text.error.detector.minimal.edge.strength";
+
+
+// Performance indicator
+// **
+//* Flag for Perf Test Statistics generation.
+//*/
+//public static final String PERF_GENERATE_STATISTICS = "tt.perf.generate.statistics";
+//**
+//* Perf test thinktime.
+//*/
+//public static final String PERF_PAGE_THINKTIME_MS = "tt.perf.page.thinktime.ms";
+//** Perf test Property, used to set default values of a Load test */
+//public static final String PERF_TEST = "tt.perf.test";
+
+
+
+// unknown stuff
+
+//    public static final String DB_TIMEOUT = "tt.db.timeout";
+//
+//    public static final String MONITOR_MEMORY = "tt.monitor.memory";
+//
+//
+//
+//    public static final String EXECUTION_OMIT_IN_DEVELOPMENT = "tt.execution.omit.indevelopment";

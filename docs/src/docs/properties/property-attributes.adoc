@@ -95,6 +95,12 @@
 
 
 // Layout test
+
+:layoutcheck_takereference: tt.layoutcheck.takereference
+:layoutcheck_reference_path: tt.layoutcheck.reference.path
+:layoutcheck_reference_nametemplate: tt.layoutcheck.reference.nametemplate
+:layoutcheck_ignore_color: tt.layoutcheck.use.ignore.color
+
 //*
 //* The mode for the screenreferencer. Values are pixel (default) or annotated.
 //*/

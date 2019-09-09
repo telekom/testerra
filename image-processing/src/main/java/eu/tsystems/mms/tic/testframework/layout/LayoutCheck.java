@@ -268,7 +268,7 @@ public final class LayoutCheck {
                 LOGGER.error(e.getMessage());
                 throw new TesterraSystemException("Error when saving reference screenshot.", e);
             }
-            LOGGER.debug(String.format("Saved reference screenshot at '%s'.", step.referenceFileName.toString()));
+            LOGGER.info(String.format("Saved reference screenshot at '%s'.", step.referenceFileName.toString()));
         } else {
             step.consecutiveTargetImageName = targetImageName + runCountModifier;
             step.actualFileName = Paths.get(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_PATH) + "/"

@@ -11,10 +11,10 @@ If you need to check several properties of a GuiElement, always prefer
 [source,java]
 ----
 // Good practice
-guiElement.asserts().assertText("Search results");
+element.asserts().assertText("Search results");
 
 // Bad practice
-Assert.assertTrue(guiElement.getText().contains("Search results"));
+Assert.assertTrue(element.getText().contains("Search results"));
 ----
 
 
@@ -25,7 +25,7 @@ then use the extended <<Assert Utilities>> to more precise in your statement and
 
 [source,java]
 ----
-int actualSearchResultCount = Integer.parseInt(guiElement.getText());
+int actualSearchResultCount = Integer.parseInt(element.getText());
 
 // Good practice
 AssertUtils.assertGreaterThan(actualSearchResultCount, 5, "Search results count");

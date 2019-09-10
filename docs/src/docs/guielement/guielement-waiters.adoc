@@ -18,14 +18,14 @@ See also <<PageObjects,Timeout-Settings>>
 ----
 boolean result;
 
-result = guiElement.waitForIsDisplayed();
-result = guiElement.waitForText(String text);
-result = guiElement.waitForAttribute(String attribute, String value);
-result = guiElement.waitForAttributeContains(String attribute, String value);
-result = guiElement.waitForAttributeContainsNot(String attribute, String value);
-result = guiElement.waitForIsSelected();
-result = guiElement.waitForTextContains("Hello");
-result = guiElement.waitForTextContainsNot("Foo bar");
-result = guiElement.waitForCssClassIsPresent("active");
-result = guiElement.waitForCssClassIsGone("disabled");
+result = element.waitForIsDisplayed();
+result = element.waitForText(String text);
+result = element.waitForAttribute(String attribute, String value);
+result = element.waitForAttributeContains(String attribute, String value);
+result = element.waitForAttributeContainsNot(String attribute, String value);
+result = element.waitForIsSelected();
+result = element.waitForTextContains("Hello");
+result = element.waitForTextContainsNot("Foo bar");
+result = element.waitForCssClassIsPresent("active");
+result = element.waitForCssClassIsGone("disabled");
 ----

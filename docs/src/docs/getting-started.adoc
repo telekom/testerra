@@ -16,8 +16,19 @@ Then create a new Maven or Gradle project. Usally the IDE can do this comfortabl
 
 === Add Testerra dependencies
 
-For Testerra you need at least the following dependencies you add to your `pom.xml` or `build.gradle` file.
+For Testerra you need at least the following dependencies you add to your `build.gradle` or `pom.xml` file.
 
+.build.gradle
+[source, gradle, role="secondary"]
+----
+dependencies {
+    compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
+}
+test {
+    useTestNG() {
+    }
+}
+----
 
 .pom.xml
 [source, xml, role="primary"]
@@ -34,27 +45,22 @@ For Testerra you need at least the following dependencies you add to your `pom.x
 </project>
 ----
 
-.build.gradle
-[source, gradle, role="secondary"]
-----
-dependencies {
-    compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
-}
-test{
-    useTestNG() {
-    }
-}
-----
-
 === Setup Webdriver binary
 
 To execute tests, a driver for the browser is needed. In this example we take Firefox. Download the correct geckodriver depending on your OS. Then place the geckodriver binary in the `src/main/resources` directory.
 
 Geckodriver: https://github.com/mozilla/geckodriver/releases
 
+=== Create project structure
+
+Your project structure should comply with these simple constraints.
+
+* `src/main` Contains all the code for your project like <<PageObjects>>, Models and language specific resources.
+* `src/test` Contains all test related code like your Tests, Test-Suites, Test-Data and Testerra related setup.
+
 === Create test.properties
 
-The `test.properties` file contains the central configuration. Create a new file at `src/main/resources/` with the name `test.properties`.
+Create a new file at `src/test/resources/` with the name `test.properties`.
 
 .test.properties
 [source, properties, subs="attributes"]
@@ -66,7 +72,7 @@ The `test.properties` file contains the central configuration. Create a new file
 {baseurl}=http://example.org
 ----
 
-TIP: All defined properties can be overwritten by adding system parameters to your Maven command. For example, `-Dbrowser=chrome` overwrites the browser property in test.properties.
+TIP: All defined properties can be overwritten by adding system parameters to your command (e.a `-D{browser}=chrome`)
 
 === Create system.properties
 
@@ -95,6 +101,8 @@ Now its time to create a first simple page class. It should be saved at path `sr
 .New page class
 [source, java]
 ----
+import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+
 public class ExamplePage extends Page {
 
     @Check
@@ -140,16 +148,16 @@ NOTE: By extending from `TesterraTest` all runtime features are loaded automatic
 === Run tests
 Now the test is ready to run.  To do it just run the following command:
 
-.Maven
-[source, bash, role="primary"]
-----
- mvn clean test
-----
-
 .Gradle
 [source, bash, role="secondary"]
 ----
  gradle test
+----
+
+.Maven
+[source, bash, role="primary"]
+----
+ mvn clean test
 ----
 
 === Testerra Report
@@ -228,7 +236,7 @@ test {
 
 === Extended Logging
 
-To get more details in the Testerra report, you should create a log4j config file. Create a new file `test-log4j.xml` in the directory `src/main/resources`. As a example for this configuration, you can copy the following into this file.
+To get more details in the Testerra report, you should create a log4j config file. Create a new file `test-log4j.xml` in the directory `src/test/resources`. As a example for this configuration, you can copy the following into this file.
 
 .test-log4j.xml
 [source, xml]
@@ -283,7 +291,7 @@ IMPORTANT: Setting the System proxy will override the Testerra proxy settings.
 
 ==== Testerra proxy
 
-If you want to setup a proxy for Testerra, including TestNG and the JVM, just add `proxysettings.properties` to your resource bundle with the following content
+If you want to setup a proxy for Testerra, including TestNG and the JVM, just add `proxysettings.properties` to your resource bundle at `src/test/resources` with the following content
 
 .Example of proxysettings.properties
 [source,properties]

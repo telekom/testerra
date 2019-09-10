@@ -11,13 +11,13 @@ then the wait methods return true.
 Otherwise, after the timeout has passed they return false without any further
 action or assertion.
 
-See #GuiElement Timeout#.
+See also <<PageObjects,Timeout-Settings>>
 
 .Usage:
 [source,java]
 ----
-GuiElement guiElement = new GuiElement(driver, By.xpath("//a"));
 boolean result;
+
 result = guiElement.waitForIsDisplayed();
 result = guiElement.waitForText(String text);
 result = guiElement.waitForAttribute(String attribute, String value);

@@ -324,15 +324,15 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
     }
 
     @Override
-    public void assertCssClassIsGone(String className) {
+    public void assertCssClassIsNotPresent(String className) {
         callBeforeAssertion();
         AssertionError thrownAssertionError = null;
         try {
-            decoratedAssert.assertCssClassIsGone(className);
+            decoratedAssert.assertCssClassIsNotPresent(className);
         } catch (AssertionError e) {
             thrownAssertionError = e;
         }
-        handleAfterAssertion("assertCssClassIsGone " + className, thrownAssertionError);
+        handleAfterAssertion("assertCssClassIsNotPresent " + className, thrownAssertionError);
     }
 
     @Override

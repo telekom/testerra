@@ -231,8 +231,8 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
-    public void assertCssClassIsGone(final String className) {
-        configuredAssert.assertTrue(guiElementWait.waitForCssClassIsGone(className), String.format("%s has not css class '%s'", guiElementData, className));
+    public void assertCssClassIsNotPresent(final String className) {
+        configuredAssert.assertTrue(guiElementWait.waitForCssClassIsNotPresent(className), String.format("%s has not css class '%s'", guiElementData, className));
     }
 
     @Override

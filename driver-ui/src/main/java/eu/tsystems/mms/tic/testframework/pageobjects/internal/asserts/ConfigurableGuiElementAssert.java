@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-//import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
@@ -41,7 +40,6 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     private final ConfiguredAssert configuredAssert;
     private final GuiElementData guiElementData;
 
-    //@Inject
     public ConfigurableGuiElementAssert(
         GuiElementCore guiElementCore,
         GuiElementWait guiElementWait,

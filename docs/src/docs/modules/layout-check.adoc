@@ -17,15 +17,15 @@ At this point an automatic comparison of reference screenshots can help. This te
 A layout test with the Testerra utilities is actually a comparison between a reference and the actual state. This is done via the screenshot functionality of Selenium, in which both screenshots (reference and actual) are compared pixel by pixel from top to bottom. In this comparison, a third image is created in which differences (ReferencePixel != ActualPixel) are marked in red.
 The LayoutCheck can perform a check in two ways:
 
-- PIXEL: Pixel-based image comparison of the entire reference image without exception. You get a quantified value for pixel displacement in percent (0-100%)
-- ANNOTATED: The image comparison is based on annotations in the reference image. The annotations are rectangles in a certain color, which include the areas to be checked. You get a quantified value for displaced annotations in percent.
+- *PIXEL*: Pixel-based image comparison of the entire reference image without exception. You get a quantified value for pixel displacement in percent (0-100%)
+- *ANNOTATED*: The image comparison is based on annotations in the reference image. The annotations are rectangles in a certain color, which include the areas to be checked. You get a quantified value for displaced annotations in percent.
 
 === Prerequisites
 The following prerequisites must be met
 
 . Concrete execution environment: Layout tests should run in a concrete browser environment to ensure the comparability of the screenshots.
 ** Size of browser window: Define fixed size to exclude different sizes of the images at different VM resolutions
-** Screen resolution and scaling: Make sure you have the same screen resolution and scaling on each presentation device (ea. {taf} uses a resolution of {default_resolution} with a scaling of 1 per default in headless environments)
+** Screen resolution and scaling: Make sure you have the same screen resolution and scaling on each presentation device (ea. Testerra uses a resolution of {default_resolution} with a scaling of 1 per default in headless environments)
 . Build Server: The library underlying ANNOTATED mode supports the operating systems
 ** Windows 32 - and 64 - Bit
 ** Linux Debian 32 - and 64 - Bit (glibc >= 2.15; Jenkins)
@@ -53,20 +53,26 @@ The directory for reference image may result in `src/test/resources/layout-refer
 
 The comparison is generally carried out over the entire reference image. In this case, it is a prerequisite that the reference screenshot and the screenshot created during the test runtime have the same resolution (height and width are identical).
 
-Mostly the website consists of many more elements than should be checked. Ingredients such as the header, menus or footer may falsify the test result if there are deviations from the reference, but these are not currently the subject of the test. For this reason, the {layoutcheck_ignore_color} property can be used to determine that a particular color in the image can be excluded from comparison. In the reference image, certain areas can be colored. {taf} recognizes the color at the top leftmost pixel in the image (x=1, y=1). This must be dyed additionally.
+Mostly the website consists of many more elements than should be checked. Ingredients such as the header, menus or footer may falsify the test result if there are deviations from the reference, but these are not currently the subject of the test. For this reason, the {layoutcheck_ignore_color} property can be used to determine that a particular color in the image can be excluded from comparison. In the reference image, certain areas can be colored. Testerra recognizes the color at the top leftmost pixel in the image (x=1, y=1). This must be dyed additionally.
 
 To validate the layout in Pixel Mode, you can check the whole page or a single <<GuiElements,GuiElement>>.
 
-=== Check the whole Page
+=== Check the whole page
 
 [source, java]
 ----
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 
+...
+
 final String pageImage = "WelcomePage";
 float dist = LayoutCheck.run(driver, pageImage);
-AssertUtils.assertLowerEqualThan(new BigDecimal(dist), new BigDecimal(10), String.format("Pixel distance of page %s", pageImage));
+AssertUtils.assertLowerEqualThan(
+        new BigDecimal(dist),
+        new BigDecimal(10),
+        String.format("Pixel distance of page %s",
+        pageImage));
 ----
 
 === Check a single GuiElement
@@ -76,6 +82,8 @@ To check the layout of a single GuiElement only, you can use the standard assert
 [source, java]
 ----
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+
+...
 
 final String guiElementImage = "HeaderComponent";
 final GuiElement guiElement;
@@ -96,6 +104,6 @@ WARNING: All concrete distance values in this {layoutcheck_takereference}-mode w
 
 == ANNOTATED Mode
 
-For this mode, an arbitrary number of rectangles with a line width of one pixel are defined in the reference images. The color of the rectangles is to be communicated to {taf} via the upper left pixel (x=1, y=1). In the current screenshot, {taf} searches for the area within the annotated selection. The resolution of the current screenshot is irrelevant.
+For this mode, an arbitrary number of rectangles with a line width of one pixel are defined in the reference images. The color of the rectangles is to be communicated to Testerra via the upper left pixel (x=1, y=1). In the current screenshot, Testerra searches for the area within the annotated selection. The resolution of the current screenshot is irrelevant.
 
-*tbd*
+#tbd#

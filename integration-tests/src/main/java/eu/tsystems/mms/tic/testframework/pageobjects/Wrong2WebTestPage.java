@@ -74,12 +74,12 @@ public class Wrong2WebTestPage extends Page {
         final String something = "some";
         input1.type(something);
         button1.click();
-        textOutputField.assertAnyFollowingTextNodeContains(something);
+        textOutputField.asserts().assertAnyFollowingTextNodeContains(something);
     }
 
     /**
      * Click on link to open this page again.
-     * 
+     *
      * @return Instance of the new page.
      */
     public Wrong2WebTestPage reloadPage() {
@@ -89,7 +89,7 @@ public class Wrong2WebTestPage extends Page {
 
     /**
      * Click on not existing element
-     * 
+     *
      */
     public void gotoHell() {
         GuiElement guiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
@@ -98,7 +98,7 @@ public class Wrong2WebTestPage extends Page {
 
     /**
      * Proof whether non existing element is present
-     * 
+     *
      */
     public void nonfunctionalAssert() {
         GuiElement guiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));

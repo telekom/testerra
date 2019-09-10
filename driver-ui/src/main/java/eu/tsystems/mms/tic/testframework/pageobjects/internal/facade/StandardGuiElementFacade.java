@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
-import com.sun.jersey.spi.inject.Inject;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
@@ -27,10 +26,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
-
 import java.io.File;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by rnhb on 12.08.2015.
@@ -141,7 +138,6 @@ public class StandardGuiElementFacade implements GuiElementFacade {
         guiElementAssert.assertAnyFollowingTextNodeContains(contains);
     }
 
-    @Deprecated
     @Override
     public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
         guiElementAssert.assertScreenshot(targetImageName, confidenceThreshold);

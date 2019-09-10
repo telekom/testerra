@@ -263,5 +263,9 @@ public interface GuiElementCore extends GuiElementStatusCheck, WebElement {
 
     void doubleClickJS();
 
+    /**
+     * Takes a screenshot of the GuiElement
+     * @return File object of the screenshot or NULL on error
+     */
     File takeScreenshot();
 }

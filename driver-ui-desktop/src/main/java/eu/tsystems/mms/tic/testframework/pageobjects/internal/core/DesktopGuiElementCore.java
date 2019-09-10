@@ -885,7 +885,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
                 ImageIO.write(eleScreenshot, "png", screenshot);
                 return screenshot;
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error(String.format("%s unable to take screenshot: %s ", this.guiElementData, e));
             }
         }
 

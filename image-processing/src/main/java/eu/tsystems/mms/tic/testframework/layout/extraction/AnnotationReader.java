@@ -133,11 +133,12 @@ public class AnnotationReader {
     /**
      * Extracts the elements that are marked with the marking color.
      *
-     * @deprecated  This feature is deprecated and will be removed in the future
+     * @deprecated This feature is deprecated and will be removed in the future
      * @param baseImage Image to extract image information from
      * @param annotatedImage Image to extract annotation information from
      * @return List of LayoutElement
      */
+    @Deprecated
     public List<LayoutElement> extractAnnotatedLayoutElements(Mat baseImage, Mat annotatedImage) {
         XetaMat xetaMat = new XetaMat(annotatedImage);
         HashSet<Point2D> markedPoints = getMarkedPixels(xetaMat);

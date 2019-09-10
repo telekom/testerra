@@ -325,8 +325,37 @@ public class StandardGuiElementWait implements GuiElementWait {
     }
 
     @Override
+    public boolean waitForAttributeContainsNot(final String attributeName, final String value) {
+        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
+            @Override
+            public void run() {
+                setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
+                setSkipThrowingException(true);
+
+                String attribute = guiElementStatusCheck.getAttribute(attributeName);
+                boolean hasNotAttribute = attribute == null || attribute.contains(value) == false;
+                setPassState(hasNotAttribute);
+                setReturningObject(hasNotAttribute);
+            }
+        };
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        return throwablePackedResponse.logThrowableAndReturnResponse();
+    }
+
+    @Override
+    @Deprecated
     public boolean waitForCssClass(String className) {
+        return waitForCssClassIsPresent(className);
+    }
+
+    @Override
+    public boolean waitForCssClassIsPresent(final String className) {
         return waitForAttributeContains("class", className);
+    }
+
+    @Override
+    public boolean waitForCssClassIsGone(final String className) {
+        return waitForAttributeContainsNot("class", className);
     }
 
     @Override

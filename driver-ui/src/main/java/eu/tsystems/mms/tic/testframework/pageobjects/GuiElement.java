@@ -385,7 +385,19 @@ public class GuiElement implements
     @Deprecated
     @Override
     public void assertContainsText(String... text) {
-        guiElementFacade.assertContainsText(text);
+        guiElementFacade.assertTextContains(text);
+    }
+
+    @Override
+    @Deprecated
+    public void assertTextContains(String... text) {
+        guiElementFacade.assertTextContains(text);
+    }
+
+    @Override
+    @Deprecated
+    public void assertTextContainsNot(String... text) {
+        guiElementFacade.assertTextContainsNot(text);
     }
 
     @Deprecated
@@ -404,6 +416,12 @@ public class GuiElement implements
     @Override
     public void assertAttributeContains(String attributeName, String textContainedByValue) {
         guiElementFacade.assertAttributeContains(attributeName, textContainedByValue);
+    }
+
+    @Override
+    @Deprecated
+    public void assertAttributeContainsNot(final String attributeName, final String textNotContainedByAttribute) {
+        guiElementFacade.assertTextContainsNot(attributeName, textNotContainedByAttribute);
     }
 
     @Deprecated
@@ -796,8 +814,24 @@ public class GuiElement implements
     }
 
     @Override
-    public boolean waitForCssClass(String className) {
-        return guiElementFacade.waitForCssClass(className);
+    public boolean waitForAttributeContainsNot(String attributeName, String value) {
+        return guiElementFacade.waitForAttributeContainsNot(attributeName, value);
+    }
+
+    @Override
+    @Deprecated
+    public boolean waitForCssClass(final String className) {
+        return guiElementFacade.waitForCssClassIsPresent(className);
+    }
+
+    @Override
+    public boolean waitForCssClassIsPresent(final String className) {
+        return guiElementFacade.waitForCssClassIsPresent(className);
+    }
+
+    @Override
+    public boolean waitForCssClassIsGone(final String className) {
+        return guiElementFacade.waitForCssClassIsGone(className);
     }
 
     @Override
@@ -854,6 +888,18 @@ public class GuiElement implements
     @Override
     public void assertLayout(Layout layout) {
         guiElementFacade.assertLayout(layout);
+    }
+
+    @Override
+    @Deprecated
+    public void assertCssClassIsPresent(final String className) {
+        guiElementFacade.assertCssClassIsPresent(className);
+    }
+
+    @Override
+    @Deprecated
+    public void assertCssClassIsGone(final String className) {
+        guiElementFacade.assertCssClassIsGone(className);
     }
 
     @Deprecated

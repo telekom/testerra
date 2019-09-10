@@ -184,9 +184,24 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
+    @Deprecated
     public void assertContainsText(String... text) {
         beforeDelegation("assertContainsText", "\"" + Arrays.toString(text) + "\"");
         decoratedFacade.assertContainsText(text);
+        afterDelegation();
+    }
+
+    @Override
+    public void assertTextContains(String... text) {
+        beforeDelegation("assertTextContains", "\"" + Arrays.toString(text) + "\"");
+        decoratedFacade.assertTextContains(text);
+        afterDelegation();
+    }
+
+    @Override
+    public void assertTextContainsNot(String... text) {
+        beforeDelegation("assertTextContainsNot", "\"" + Arrays.toString(text) + "\"");
+        decoratedFacade.assertTextContainsNot(text);
         afterDelegation();
     }
 
@@ -208,6 +223,13 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     public void assertAttributeContains(String attributeName, String textContainedByAttribute) {
         beforeDelegation("assertAttributeContains", "\"" + attributeName + "\" = \"" + textContainedByAttribute + "\"");
         decoratedFacade.assertAttributeContains(attributeName, textContainedByAttribute);
+        afterDelegation();
+    }
+
+    @Override
+    public void assertAttributeContainsNot(String attributeName, String textNotContainedByAttribute) {
+        beforeDelegation("assertAttributeContainsNot", "\"" + attributeName + "\" = \"" + textNotContainedByAttribute + "\"");
+        decoratedFacade.assertAttributeContainsNot(attributeName, textNotContainedByAttribute);
         afterDelegation();
     }
 
@@ -243,6 +265,20 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     public void assertLayout(Layout layout) {
         beforeDelegation("assertLayout", layout.toString());
         decoratedFacade.assertLayout(layout);
+        afterDelegation();
+    }
+
+    @Override
+    public void assertCssClassIsPresent(final String className) {
+        beforeDelegation("assertCssClassIsPresent",className);
+        decoratedFacade.assertCssClassIsPresent(className);
+        afterDelegation();
+    }
+
+    @Override
+    public void assertCssClassIsGone(final String className) {
+        beforeDelegation("assertCssClassIsGone",className);
+        decoratedFacade.assertCssClassIsGone(className);
         afterDelegation();
     }
 
@@ -759,12 +795,41 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
+    @Deprecated
     public boolean waitForCssClass(String className) {
-        beforeDelegation("waitForCssClass");
-        boolean b = decoratedFacade.waitForCssClass(className);
-        afterDelegation("waitForCssClass("+className+") = " + b);
+        return waitForCssClassIsPresent(className);
+    }
+
+    @Override
+    public boolean waitForAttributeContainsNot(final String attributeName, final String value) {
+        beforeDelegation("waitForAttributeContainsNot");
+        boolean b = decoratedFacade.waitForAttributeContainsNot(attributeName, value);
+        afterDelegation("waitForAttributeContainsNot() = " + b);
         return b;
     }
+
+    @Override
+    @Deprecated
+    public boolean waitForCssClass(final String className) {
+        return waitForCssClassIsPresent(className);
+    }
+
+    @Override
+    public boolean waitForCssClassIsPresent(final String className) {
+        beforeDelegation("waitForCssClassIsPresent");
+        boolean b = decoratedFacade.waitForCssClassIsPresent(className);
+        afterDelegation("waitForCssClassIsPresent() = " + b);
+        return b;
+    }
+
+    @Override
+    public boolean waitForCssClassIsGone(final String className) {
+        beforeDelegation("waitForCssClassIsGone");
+        boolean b = decoratedFacade.waitForCssClassIsGone(className);
+        afterDelegation("waitForCssClassIsGone() = " + b);
+        return b;
+    }
+
 
     @Override
     public String toString() {

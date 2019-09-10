@@ -850,6 +850,8 @@ public class GuiElement implements
         return guiElementData.webDriver;
     }
 
+    @Deprecated
+    @Override
     public void assertLayout(Layout layout) {
         guiElementFacade.assertLayout(layout);
     }

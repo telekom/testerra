@@ -61,7 +61,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
         g.setTimeoutInSeconds(8);
 
-        boolean result = g.waitForIsDisplayedFromWebElement();
+        boolean result = g.waits().waitForIsDisplayedFromWebElement();
         Assert.assertTrue(result, "Text was found after TimeOut");
     }
 
@@ -71,7 +71,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         GuiElement g = getDynamicTextElement();
         g.setTimeoutInSeconds(3);
 
-        boolean result = g.waitForIsDisplayedFromWebElement();
+        boolean result = g.waits().waitForIsDisplayedFromWebElement();
         Assert.assertFalse(result, "Text was not found after TimeOut");
     }
 
@@ -89,7 +89,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         getHideWithTimeOutButton().click();
 
         g.setTimeoutInSeconds(8);
-        boolean result = g.waitForIsNotDisplayedFromWebElement();
+        boolean result = g.waits().waitForIsNotDisplayedFromWebElement();
         Assert.assertTrue(result, "Text was not found after TimeOut");
     }
 
@@ -102,7 +102,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         GuiElement g = getDynamicTextElement();
         g.setTimeoutInSeconds(3);
         g.asserts().assertIsDisplayed();
-        boolean result = g.waitForIsNotDisplayedFromWebElement();
+        boolean result = g.waits().waitForIsNotDisplayedFromWebElement();
         Assert.assertFalse(result, "Text was not found after TimeOut");
     }
 
@@ -110,7 +110,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     @Test
     public void testT5_GuiElement_waitForAnyFollowingTextNodeContains() {
         GuiElement element = getParent2();
-        boolean ret = element.waitForAnyFollowingTextNodeContains("Show alert");
+        boolean ret = element.waits().waitForAnyFollowingTextNodeContains("Show alert");
         Assert.assertTrue(ret, "Found Node with given Text");
 
     }
@@ -124,21 +124,21 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
         getInsertTextByJSButton().click();
 
-        boolean ret = parent.waitForAnyFollowingTextNodeContains("per Javascript");
+        boolean ret = parent.waits().waitForAnyFollowingTextNodeContains("per Javascript");
         Assert.assertTrue(ret, "Found Node with given Text");
     }
 
     @Test(expectedExceptions = {AssertionError.class})
     public void testT7N_GuiElement_waitForAnyFollowingTextNodeContains() {
         GuiElement element = getParent2();
-        boolean ret = element.waitForAnyFollowingTextNodeContains("42");
+        boolean ret = element.waits().waitForAnyFollowingTextNodeContains("42");
         Assert.assertTrue(ret, "Found Node with given Text");
     }
 
     @Test
     public void testT8_GuiElement_waitForAttribute() {
         GuiElement element = getElementWithAttribute();
-        boolean isAttribute = element.waitForAttribute("value");
+        boolean isAttribute = element.waits().waitForAttribute("value");
         Assert.assertEquals(isAttribute, true, "Attribute is present");
     }
 
@@ -150,21 +150,21 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         rdButton.setTimeoutInSeconds(4);
         getAddAttributeWithTimeOutButton().click();
 
-        boolean isAttribute = rdButton.waitForAttribute("someAttribute");
+        boolean isAttribute = rdButton.waits().waitForAttribute("someAttribute");
         Assert.assertEquals(isAttribute, true, "Attribute is present");
     }
 
     @Test
     public void testT10_GuiElement_waitForAttribute() {
         GuiElement element = getElementWithAttribute();
-        boolean isAttribute = element.waitForAttribute("href");
+        boolean isAttribute = element.waits().waitForAttribute("href");
         Assert.assertEquals(isAttribute, false, "Attribute is present");
     }
 
     @Test
     public void testT11_GuiElement_waitForAttribute() {
         GuiElement element = getElementWithAttribute();
-        boolean isAttribute = element.waitForAttribute("value", "Button2");
+        boolean isAttribute = element.waits().waitForAttribute("value", "Button2");
         Assert.assertEquals(isAttribute, true, "Attribute with value is present");
     }
 
@@ -176,21 +176,21 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         rdButton.setTimeoutInSeconds(4);
         getAddAttributeWithTimeOutButton().click();
 
-        boolean isAttribute = rdButton.waitForAttribute("someAttribute", "someValue");
+        boolean isAttribute = rdButton.waits().waitForAttribute("someAttribute", "someValue");
         Assert.assertEquals(isAttribute, true, "Attribute is present");
     }
 
     @Test
     public void testT13_GuiElement_waitForAttribute() {
         GuiElement element = getElementWithAttribute();
-        boolean isAttribute = element.waitForAttribute("value", "Button3");
+        boolean isAttribute = element.waits().waitForAttribute("value", "Button3");
         Assert.assertEquals(isAttribute, false, "Attribute with value is present");
     }
 
     @Test
     public void testT14_GuiElement_waitForAttributeContains() {
         GuiElement element = getElementWithAttribute();
-        boolean isAttribute = element.waitForAttributeContains("value", "Butt");
+        boolean isAttribute = element.waits().waitForAttributeContains("value", "Butt");
         Assert.assertEquals(isAttribute, true, "Attribute with value is present");
     }
 
@@ -202,20 +202,20 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         rdButton.setTimeoutInSeconds(4);
         getAddAttributeWithTimeOutButton().click();
 
-        boolean isAttribute = rdButton.waitForAttributeContains("someAttribute", "meVal");
+        boolean isAttribute = rdButton.waits().waitForAttributeContains("someAttribute", "meVal");
         Assert.assertEquals(isAttribute, true, "Attribute is present");
     }
 
     @Test
     public void testT16_GuiElement_waitForAttributeContains() {
         GuiElement element = getElementWithAttribute();
-        boolean isAttribute = element.waitForAttributeContains("value", "Gandalf");
+        boolean isAttribute = element.waits().waitForAttributeContains("value", "Gandalf");
         Assert.assertEquals(isAttribute, false, "Attribute with value is present");
     }
 
     @Test
     public void testT17_GuiElement_waitForIsDisabled() {
-        boolean found = getDisabledElement().waitForIsDisabled();
+        boolean found = getDisabledElement().waits().waitForIsDisabled();
         Assert.assertTrue(found, "The Element is found.");
     }
 
@@ -228,47 +228,47 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         GuiElement g = getRadio();
         g.setTimeoutInSeconds(4);
 
-        boolean result = g.waitForIsDisabled();
+        boolean result = g.waits().waitForIsDisabled();
         Assert.assertTrue(result, "Radio Button was disabled after TimeOut");
     }
 
     @Test
     public void testT19_GuiElement_waitForIsDisabled() {
-        boolean found = getEnabledElement().waitForIsDisabled();
+        boolean found = getEnabledElement().waits().waitForIsDisabled();
         Assert.assertFalse(found, "The Element is found.");
     }
 
 
     /**
-     * Test if GuiElement.waitForIsNotPresent works for a not displayed element
+     * Test if GuiElement.waits().waitForIsNotPresent works for a not displayed element
      */
     @Test
     public void testT20_GuiElement_waitForIsNotPresent() {
-        boolean found = getNotDisplayedElement().waitForIsNotPresent();
+        boolean found = getNotDisplayedElement().waits().waitForIsNotPresent();
         Assert.assertTrue(found, "The Element is found.");
     }
 
     /**
-     * Test if GuiElement.waitForIsNotPresent works for a displayed element
+     * Test if GuiElement.waits().waitForIsNotPresent works for a displayed element
      */
     @Test
     public void testT21N_GuiElement_waitForIsNotPresent() {
-        boolean found = getDisplayedElement().waitForIsNotPresent();
+        boolean found = getDisplayedElement().waits().waitForIsNotPresent();
         Assert.assertFalse(found, "The Element is found.");
     }
 
 
     /**
-     * Test if GuiElement.waitForText works for text that is there already
+     * Test if GuiElement.waits().waitForText works for text that is there already
      */
     @Test
     public void testT22_GuiElement_waitForText() {
 
-        getElementWithText().waitForText(testPage.getElementText());
+        getElementWithText().waits().waitForText(testPage.getElementText());
     }
 
     /**
-     * Test if GuiElement.waitForText works for text that is created by JavaScript after Timeout
+     * Test if GuiElement.waits().waitForText works for text that is created by JavaScript after Timeout
      */
     @Test
     public void testT23_GuiElement_waitForText() {
@@ -280,30 +280,30 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
         getChangeTextByJSButton().click();
 
-        boolean result = g.waitForText("Dieser Text wurde per Javascript ge\u00E4ndert");
+        boolean result = g.waits().waitForText("Dieser Text wurde per Javascript ge\u00E4ndert");
         Assert.assertTrue(result, "Text was found after TimeOut");
     }
 
     /**
-     * Test if GuiElement.waitForText works for text that is not there
+     * Test if GuiElement.waits().waitForText works for text that is not there
      */
     @Test
     public void testT24N_GuiElement_waitForText() {
-        boolean assertionFailed = getElementWithText().waitForText("100qwertz7");
+        boolean assertionFailed = getElementWithText().waits().waitForText("100qwertz7");
         Assert.assertFalse(assertionFailed, "The Element doesn't have this Text, the wait should timeout");
     }
 
     /**
-     * Test if GuiElement.waitForTextContains works for a text-fragment that is there already
+     * Test if GuiElement.waits().waitForTextContains works for a text-fragment that is there already
      */
     @Test
     public void testT25_GuiElement_waitForTextContains() {
-        boolean found = getElementWithText().waitForTextContains(testPage.getElementTextArray()[0]);
+        boolean found = getElementWithText().waits().waitForTextContains(testPage.getElementTextArray()[0]);
         Assert.assertTrue(found, "The Element is found");
     }
 
     /**
-     * Test if GuiElement.waitForTextContains works for text that is created by JavaScript after Timeout
+     * Test if GuiElement.waits().waitForTextContains works for text that is created by JavaScript after Timeout
      */
     @Test
     public void testT26_GuiElement_waitForTextContains() {
@@ -315,30 +315,30 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
         getChangeTextByJSButton().click();
 
-        boolean result = g.waitForTextContains("per Javascript");
+        boolean result = g.waits().waitForTextContains("per Javascript");
         Assert.assertTrue(result, "Text was found after TimeOut");
     }
 
     /**
-     * Test if GuiElement.waitForTextContains works for a text-fragment that is not there
+     * Test if GuiElement.waits().waitForTextContains works for a text-fragment that is not there
      */
     @Test
     public void testT27N_GuiElement_waitForTextContains() {
-        boolean found = getElementWithText().waitForTextContains("blopka321ertz");
+        boolean found = getElementWithText().waits().waitForTextContains("blopka321ertz");
         Assert.assertFalse(found, "The Element is found.");
     }
 
     /**
-     * Test if GuiElement.waitForIsDisplayed works for a displayed element
+     * Test if GuiElement.waits().waitForIsDisplayed works for a displayed element
      */
     @Test
     public void testT28_GuiElement_waitForIsDisplayed() {
-        boolean found = getDisplayedElement().waitForIsDisplayed();
+        boolean found = getDisplayedElement().waits().waitForIsDisplayed();
         Assert.assertTrue(found, "The Element is found.");
     }
 
     /**
-     * Test if GuiElement.waitForIsDisplayed works for text that is created by JavaScript after Timeout
+     * Test if GuiElement.waits().waitForIsDisplayed works for text that is created by JavaScript after Timeout
      */
     @Test
     public void testT29_GuiElement_waitForIsDisplayed() {
@@ -350,16 +350,16 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         GuiElement g = getDynamicTextElement();
         g.setTimeoutInSeconds(3);
 
-        boolean result = g.waitForIsDisplayed();
+        boolean result = g.waits().waitForIsDisplayed();
         Assert.assertTrue(result, "Text was found after TimeOut");
     }
 
     /**
-     * Test if GuiElement.waitForIsDisplayed works for a not displayed element
+     * Test if GuiElement.waits().waitForIsDisplayed works for a not displayed element
      */
     @Test
     public void testT30N_GuiElement_waitForIsDisplayed() {
-        boolean found = getNotDisplayedElement().waitForIsDisplayed();
+        boolean found = getNotDisplayedElement().waits().waitForIsDisplayed();
         Assert.assertFalse(found, "The Element is found.");
     }
 
@@ -374,31 +374,31 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         GuiElement g = getDynamicTextElement();
         g.setTimeoutInSeconds(3);
 
-        boolean result = g.waitForIsNotDisplayed();
+        boolean result = g.waits().waitForIsNotDisplayed();
         Assert.assertTrue(result, "Text was found after TimeOut");
     }
 
     /**
-     * Test if GuiElement.waitForIsNotDisplayed works for a displayed element
+     * Test if GuiElement.waits().waitForIsNotDisplayed works for a displayed element
      */
     @Test
     public void testT32N_GuiElement_waitForIsNotDisplayed() {
-        boolean notDisplayed = getDisplayedElement().waitForIsNotDisplayed();
+        boolean notDisplayed = getDisplayedElement().waits().waitForIsNotDisplayed();
         Assert.assertFalse(notDisplayed, "The Element is checked as (not not) displayed");
     }
 
     /**
-     * Test if GuiElement.waitForIsPresent works for a displayed element
+     * Test if GuiElement.waits().waitForIsPresent works for a displayed element
      */
     @Test
     public void testT33_GuiElement_waitForIsPresent() {
-        boolean found = getDisplayedElement().waitForIsPresent();
+        boolean found = getDisplayedElement().waits().waitForIsPresent();
         Assert.assertTrue(found, "The Element is found.");
 
     }
 
     /**
-     * Test if GuiElement.waitForIsPresent works for text that is created by JavaScript after Timeout
+     * Test if GuiElement.waits().waitForIsPresent works for text that is created by JavaScript after Timeout
      */
     @Test
     public void testT34_GuiElement_waitForIsPresent() {
@@ -409,30 +409,30 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         GuiElement g = getInsertedTextElement();
         g.setTimeoutInSeconds(3);
 
-        boolean result = g.waitForIsPresent();
+        boolean result = g.waits().waitForIsPresent();
         Assert.assertTrue(result, "Text was found after TimeOut");
     }
 
     /**
-     * Test if GuiElement.waitForIsPresent works for a non existing element
+     * Test if GuiElement.waits().waitForIsPresent works for a non existing element
      */
     @Test
     public void testT35N_GuiElement_waitForIsPresent() {
-        boolean found = getNotExistingElement().waitForIsPresent();
+        boolean found = getNotExistingElement().waits().waitForIsPresent();
         Assert.assertFalse(found, "The Element is found.");
     }
 
     /**
-     * Test if GuiElement.waitForIsEnabled works for an enabled element
+     * Test if GuiElement.waits().waitForIsEnabled works for an enabled element
      */
     @Test
     public void testT36_GuiElement_waitForIsEnabled() {
-        boolean found = getEnabledElement().waitForIsEnabled();
+        boolean found = getEnabledElement().waits().waitForIsEnabled();
         Assert.assertTrue(found, "The Element is found.");
     }
 
     /**
-     * Test if GuiElement.waitForIsEnabled works for an Element that is Enabled with Timeout by Javascript
+     * Test if GuiElement.waits().waitForIsEnabled works for an Element that is Enabled with Timeout by Javascript
      */
     @Test
     public void testT37_GuiElement_waitForIsEnabled() {
@@ -445,16 +445,16 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         getEnableRDButton().click();
 
         g.setTimeoutInSeconds(6);
-        boolean result = g.waitForIsEnabled();
+        boolean result = g.waits().waitForIsEnabled();
         Assert.assertTrue(result, "Radio Button was enabled after TimeOut");
     }
 
     /**
-     * Test if GuiElement.waitForIsEnabled works for a disabled element
+     * Test if GuiElement.waits().waitForIsEnabled works for a disabled element
      */
     @Test
     public void testT38N_GuiElement_waitForIsEnabled() {
-        boolean found = getDisabledElement().waitForIsEnabled();
+        boolean found = getDisabledElement().waits().waitForIsEnabled();
         Assert.assertFalse(found, "The Element is found.");
     }
 
@@ -472,7 +472,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         getSelectRadioButtonMitVerzoegerungButton().click();
 
         radio.setTimeoutInSeconds(8);
-        boolean result = radio.waitForIsSelected();
+        boolean result = radio.waits().waitForIsSelected();
         Assert.assertTrue(result, "Radio Button was selected after TimeOut");
     }
 
@@ -490,7 +490,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         getDeselectRadioButtonMitVerzoegerungButton().click();
 
         g.setTimeoutInSeconds(8);
-        boolean result = g.waitForIsNotSelected();
+        boolean result = g.waits().waitForIsNotSelected();
         Assert.assertTrue(result, "Radio Button was deselected after TimeOut");
     }
 

@@ -68,15 +68,7 @@ Create a new file at `src/test/resources` with the name `test.properties`.
 
 TIP: All defined properties can be overwritten later by adding system parameters to your command (e.a `-D{browser}=chrome`)
 
-[TIP]
-======
-Both property files are loaded automatically, but there is a fix order:
-
-. test.properties
-. system.properties.
-
-Therefore you can also overwrite properties in test.properties by the values of system.properties.
-======
+There are more supported `.properties` files described in the <<PropertyManager>> section.
 
 === Create Page Class
 

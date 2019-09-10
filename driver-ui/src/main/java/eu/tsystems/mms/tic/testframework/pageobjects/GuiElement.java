@@ -583,91 +583,109 @@ public class GuiElement implements
     }
 
     @Override
+    @Deprecated
     public boolean waitForIsPresent() {
         return guiElementFacade.waitForIsPresent();
     }
 
     @Override
+    @Deprecated
     public boolean waitForIsNotPresent() {
         return guiElementFacade.waitForIsNotPresent();
     }
 
     @Override
+    @Deprecated
     public boolean waitForIsEnabled() {
         return guiElementFacade.waitForIsEnabled();
     }
 
     @Override
+    @Deprecated
     public boolean waitForIsDisabled() {
         return guiElementFacade.waitForIsDisabled();
     }
 
     @Override
+    @Deprecated
     public boolean waitForAnyFollowingTextNodeContains(String contains) {
         return guiElementFacade.waitForAnyFollowingTextNodeContains(contains);
     }
 
     @Override
+    @Deprecated
     public boolean waitForIsDisplayed() {
         return guiElementFacade.waitForIsDisplayed();
     }
 
     @Override
+    @Deprecated
     public boolean waitForIsNotDisplayed() {
         return guiElementFacade.waitForIsNotDisplayed();
     }
 
     @Override
+    @Deprecated
     public boolean waitForIsDisplayedFromWebElement() {
         return guiElementFacade.waitForIsDisplayedFromWebElement();
     }
 
     @Override
+    @Deprecated
     public boolean waitForIsNotDisplayedFromWebElement() {
         return guiElementFacade.waitForIsNotDisplayedFromWebElement();
     }
 
     @Override
+    @Deprecated
     public boolean waitForIsSelected() {
         return guiElementFacade.waitForIsSelected();
     }
 
     @Override
+    @Deprecated
     public boolean waitForIsNotSelected() {
         return guiElementFacade.waitForIsNotSelected();
     }
 
     @Override
+    @Deprecated
     public boolean waitForText(String text) {
         return guiElementFacade.waitForText(text);
     }
 
     @Override
+    @Deprecated
     public boolean waitForTextContains(String... text) {
         return guiElementFacade.waitForTextContains(text);
     }
 
     @Override
+    @Deprecated
     public boolean waitForTextContainsNot(String... text) {
         return guiElementFacade.waitForTextContainsNot(text);
     }
 
     @Override
+    @Deprecated
     public boolean waitForAttribute(String attributeName) {
         return guiElementFacade.waitForAttribute(attributeName);
     }
 
     @Override
+    @Deprecated
     public boolean waitForAttribute(String attributeName, String value) {
         return guiElementFacade.waitForAttribute(attributeName, value);
     }
 
     @Override
+    @Deprecated
     public boolean waitForAttributeContains(String attributeName, String value) {
         return guiElementFacade.waitForAttributeContains(attributeName, value);
     }
 
     @Override
+    @Deprecated
     public boolean waitForAttributeContainsNot(String attributeName, String value) {
         return guiElementFacade.waitForAttributeContainsNot(attributeName, value);
     }
@@ -679,21 +697,25 @@ public class GuiElement implements
     }
 
     @Override
+    @Deprecated
     public boolean waitForCssClassIsPresent(final String className) {
         return guiElementFacade.waitForCssClassIsPresent(className);
     }
 
     @Override
+    @Deprecated
     public boolean waitForCssClassIsGone(final String className) {
         return guiElementFacade.waitForCssClassIsGone(className);
     }
 
     @Override
+    @Deprecated
     public boolean waitForIsSelectable() {
         return guiElementFacade.waitForIsSelectable();
     }
 
     @Override
+    @Deprecated
     public boolean waitForIsNotSelectable() {
         return guiElementFacade.waitForIsNotSelectable();
     }
@@ -850,4 +872,10 @@ public class GuiElement implements
         return this;
     }
 
+    /**
+     * Provides access to all wait methods
+     */
+    public GuiElementWait waits() {
+        return guiElementWait;
+    }
 }

@@ -43,7 +43,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.*;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
-import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -63,7 +62,6 @@ import java.util.*;
  */
 public class GuiElement implements
     Checkable,
-    GuiElementAssert,
     GuiElementCore,
     GuiElementWait,
     Nameable
@@ -302,150 +300,6 @@ public class GuiElement implements
     @Deprecated
     public boolean hasDescription() {
         return !StringUtils.isStringEmpty(guiElementData.name);
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsPresentFast() {
-        guiElementFacade.assertIsPresentFast();
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsPresent() {
-        guiElementFacade.assertIsPresent();
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsNotPresent() {
-        guiElementFacade.assertIsNotPresent();
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsNotPresentFast() {
-        guiElementFacade.assertIsNotPresentFast();
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsSelected() {
-        guiElementFacade.assertIsSelected();
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsNotSelected() {
-        guiElementFacade.assertIsNotSelected();
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsNotSelectable() {
-        guiElementFacade.assertIsNotSelectable();
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsSelectable() {
-        guiElementFacade.assertIsSelectable();
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsDisplayed() {
-        guiElementFacade.assertIsDisplayed();
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsNotDisplayed() {
-        guiElementFacade.assertIsNotDisplayed();
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsDisplayedFromWebElement() {
-        guiElementFacade.assertIsDisplayedFromWebElement();
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsNotDisplayedFromWebElement() {
-        guiElementFacade.assertIsNotDisplayedFromWebElement();
-    }
-
-    @Deprecated
-    @Override
-    public void assertText(String text) {
-        guiElementFacade.assertText(text);
-    }
-
-    @Deprecated
-    @Override
-    public void assertContainsText(String... text) {
-        guiElementFacade.assertTextContains(text);
-    }
-
-    @Override
-    @Deprecated
-    public void assertTextContains(String... text) {
-        guiElementFacade.assertTextContains(text);
-    }
-
-    @Override
-    @Deprecated
-    public void assertTextContainsNot(String... text) {
-        guiElementFacade.assertTextContainsNot(text);
-    }
-
-    @Deprecated
-    @Override
-    public void assertAttributeIsPresent(String attributeName) {
-        guiElementFacade.assertAttributeIsPresent(attributeName);
-    }
-
-    @Deprecated
-    @Override
-    public void assertAttributeValue(String attributeName, String value) {
-        guiElementFacade.assertAttributeValue(attributeName, value);
-    }
-
-    @Deprecated
-    @Override
-    public void assertAttributeContains(String attributeName, String textContainedByValue) {
-        guiElementFacade.assertAttributeContains(attributeName, textContainedByValue);
-    }
-
-    @Override
-    @Deprecated
-    public void assertAttributeContainsNot(final String attributeName, final String textNotContainedByAttribute) {
-        guiElementFacade.assertTextContainsNot(attributeName, textNotContainedByAttribute);
-    }
-
-    @Deprecated
-    @Override
-    public void assertAnyFollowingTextNodeContains(String contains) {
-        guiElementFacade.assertAnyFollowingTextNodeContains(contains);
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsEnabled() {
-        guiElementFacade.assertIsEnabled();
-    }
-
-    @Deprecated
-    @Override
-    public void assertIsDisabled() {
-        guiElementFacade.assertIsDisabled();
-    }
-
-    @Deprecated
-    @Override
-    public void assertInputFieldLength(int length) {
-        guiElementFacade.assertInputFieldLength(length);
     }
 
     @Override
@@ -882,30 +736,6 @@ public class GuiElement implements
 
     public WebDriver getDriver() {
         return guiElementData.webDriver;
-    }
-
-    @Deprecated
-    @Override
-    public void assertLayout(Layout layout) {
-        guiElementFacade.assertLayout(layout);
-    }
-
-    @Override
-    @Deprecated
-    public void assertCssClassIsPresent(final String className) {
-        guiElementFacade.assertCssClassIsPresent(className);
-    }
-
-    @Override
-    @Deprecated
-    public void assertCssClassIsGone(final String className) {
-        guiElementFacade.assertCssClassIsGone(className);
-    }
-
-    @Deprecated
-    @Override
-    public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
-        guiElementFacade.assertScreenshot(targetImageName, confidenceThreshold);
     }
 
     public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {

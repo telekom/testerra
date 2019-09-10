@@ -23,7 +23,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
-import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 import java.io.File;
@@ -35,7 +34,6 @@ import java.util.List;
 public class StandardGuiElementFacade implements GuiElementFacade {
 
     private GuiElementWait guiElementWait;
-    private GuiElementAssert guiElementAssert;
     private GuiElementCore guiElementCore;
 
     public StandardGuiElementFacade(
@@ -44,154 +42,12 @@ public class StandardGuiElementFacade implements GuiElementFacade {
         GuiElementAssert guiElementAssert
     ) {
         this.guiElementWait = guiElementWait;
-        this.guiElementAssert = guiElementAssert;
         this.guiElementCore = guiElementCore;
-    }
-
-    @Override
-    public void assertIsPresentFast() {
-        guiElementAssert.assertIsPresentFast();
-    }
-
-    @Override
-    public void assertIsPresent() {
-        guiElementAssert.assertIsPresent();
-    }
-
-    @Override
-    public void assertIsNotPresent() {
-        guiElementAssert.assertIsNotPresent();
-    }
-
-    @Override
-    public void assertIsNotPresentFast() {
-        guiElementAssert.assertIsNotPresentFast();
-    }
-
-    @Override
-    public void assertIsSelected() {
-        guiElementAssert.assertIsSelected();
-    }
-
-    @Override
-    public void assertIsNotSelected() {
-        guiElementAssert.assertIsNotSelected();
-    }
-
-    @Override
-    public void assertIsNotSelectable() {
-        guiElementAssert.assertIsNotSelectable();
-    }
-
-    @Override
-    public void assertIsSelectable() {
-        guiElementAssert.assertIsSelectable();
-    }
-
-    @Override
-    public void assertIsDisplayed() {
-        guiElementAssert.assertIsDisplayed();
-    }
-
-    @Override
-    public void assertIsNotDisplayed() {
-        guiElementAssert.assertIsNotDisplayed();
-    }
-
-    @Override
-    public void assertIsDisplayedFromWebElement() {
-        guiElementAssert.assertIsDisplayedFromWebElement();
-    }
-
-    @Override
-    public void assertIsNotDisplayedFromWebElement() {
-        guiElementAssert.assertIsNotDisplayedFromWebElement();
-    }
-
-    @Override
-    public void assertText(String text) {
-        guiElementAssert.assertText(text);
-    }
-
-    @Override
-    @Deprecated
-    public void assertContainsText(String... text) {
-        guiElementAssert.assertContainsText(text);
-    }
-
-    @Override
-    public void assertTextContains(String... text) {
-        guiElementAssert.assertTextContains(text);
-    }
-
-    @Override
-    public void assertTextContainsNot(String... text) {
-        guiElementAssert.assertTextContainsNot(text);
-    }
-
-    @Override
-    public void assertAttributeIsPresent(String attributeName) {
-        guiElementAssert.assertAttributeIsPresent(attributeName);
-    }
-
-    @Override
-    public void assertAttributeValue(String attributeName, String value) {
-        guiElementAssert.assertAttributeValue(attributeName, value);
-    }
-
-    @Override
-    public void assertAttributeContains(String attributeName, String textContainedByAttribute) {
-        guiElementAssert.assertAttributeContains(attributeName, textContainedByAttribute);
-    }
-
-    @Override
-    public void assertAttributeContainsNot(final String attributeName, final String textNotContainedByAttribute) {
-        guiElementAssert.assertAttributeContainsNot(attributeName, textNotContainedByAttribute);
-    }
-
-    @Override
-    public void assertAnyFollowingTextNodeContains(String contains) {
-        guiElementAssert.assertAnyFollowingTextNodeContains(contains);
-    }
-
-    @Override
-    public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
-        guiElementAssert.assertScreenshot(targetImageName, confidenceThreshold);
     }
 
     @Override
     public File takeScreenshot() {
         return guiElementCore.takeScreenshot();
-    }
-
-    @Override
-    public void assertIsEnabled() {
-        guiElementAssert.assertIsEnabled();
-    }
-
-    @Override
-    public void assertIsDisabled() {
-        guiElementAssert.assertIsDisabled();
-    }
-
-    @Override
-    public void assertInputFieldLength(int length) {
-        guiElementAssert.assertInputFieldLength(length);
-    }
-
-    @Override
-    public void assertLayout(Layout layout) {
-        guiElementAssert.assertLayout(layout);
-    }
-
-    @Override
-    public void assertCssClassIsPresent(final String className) {
-        guiElementAssert.assertCssClassIsPresent(className);
-    }
-
-    @Override
-    public void assertCssClassIsGone(final String className) {
-        guiElementAssert.assertCssClassIsGone(className);
     }
 
     @Override

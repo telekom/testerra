@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -797,5 +798,17 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         Rectangle rect = decoratedFacade.getRect();
         afterDelegation("getRect = " + rect);
         return rect;
+    }
+
+    @Override
+    public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
+        beforeDelegation("assertScreenshot");
+        decoratedFacade.assertScreenshot(targetImageName, confidenceThreshold);
+        afterDelegation();
+    }
+
+    @Override
+    public File takeScreenshot() {
+        return decoratedFacade.takeScreenshot();
     }
 }

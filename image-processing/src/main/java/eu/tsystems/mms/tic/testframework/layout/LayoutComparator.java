@@ -121,9 +121,14 @@ public class LayoutComparator {
      * @param annotationDataFileName              Name of the data file containing annotations.
      * @throws FileNotFoundException if file does not exist
      */
-    public void compareImages(String referenceAbsoluteFileName, String annotatedScreenshotAbsoluteFileName,
-                              String actualScreenshotAbsoluteFileName, String distanceAbsoluteFileName, String annotationDataFileName)
-            throws FileNotFoundException {
+    public void compareImages(
+        String referenceAbsoluteFileName,
+        String annotatedScreenshotAbsoluteFileName,
+        String actualScreenshotAbsoluteFileName,
+        String distanceAbsoluteFileName,
+        String annotationDataFileName
+    )
+        throws FileNotFoundException {
 
         loadProperties();
 
@@ -158,11 +163,16 @@ public class LayoutComparator {
         // extract annotated elements
         List<LayoutElement> annotatedElements;
         if (annotationContainer != null) {
-            annotatedElements = annotationReader.extractAnnotatedElementsFromAnnotationContainer(referenceImage,
-                    annotationContainer);
+            annotatedElements = annotationReader.extractAnnotatedElementsFromAnnotationContainer(
+                referenceImage,
+                annotationContainer
+            );
         } else {
-            annotatedElements = annotationReader.extractAnnotatedLayoutElements(referenceImage,
-                    annotatedImage);
+            LOGGER.warn(String.format("Unable to read annotations from file '%s', falling back reading annotations from [0, 0] pixel color (deprecated)", annotationDataFileName));
+            annotatedElements = annotationReader.extractAnnotatedLayoutElements(
+                referenceImage,
+                annotatedImage
+            );
         }
 
         // create distance graph
@@ -329,5 +339,8 @@ public class LayoutComparator {
             return "Reference Image (" + referenceSize + ") is not the same size as the " +
                     "annotated image (" + annotatedSize + ").";
         }
+    }
+    public LayoutMatch getLayoutMatch() {
+        return this.layoutMatch;
     }
 }

@@ -179,4 +179,9 @@ public interface GuiElementAssert {
      */
     void assertLayout(Layout layout);
 
+    /**
+     * Asserts the pixel of this web element
+     */
+    void assertScreenshot(final String targetImageName, final double confidenceThreshold);
+
 }

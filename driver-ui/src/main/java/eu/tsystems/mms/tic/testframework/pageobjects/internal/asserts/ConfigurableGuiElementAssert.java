@@ -19,12 +19,15 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
-
+import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
+import eu.tsystems.mms.tic.testframework.utils.Timer;
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 /**
@@ -37,7 +40,12 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     private final ConfiguredAssert configuredAssert;
     private final GuiElementData guiElementData;
 
-    public ConfigurableGuiElementAssert(GuiElementCore guiElementCore, GuiElementWait guiElementWait, ConfiguredAssert configuredAssert, GuiElementData guiElementData) {
+    public ConfigurableGuiElementAssert(
+        GuiElementCore guiElementCore,
+        GuiElementWait guiElementWait,
+        ConfiguredAssert configuredAssert,
+        GuiElementData guiElementData
+    ) {
         this.guiElementWait = guiElementWait;
         this.guiElementCore = guiElementCore;
         this.configuredAssert = configuredAssert;
@@ -149,7 +157,7 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertAnyFollowingTextNodeContains(String contains) {
-        configuredAssert.assertTrue(guiElementWait.waitForAnyFollowingTextNodeContains(contains), "Element " + guiElementData +
+        configuredAssert.assertTrue(guiElementWait.waitForAnyFollowingTextNodeContains(contains), guiElementData +
                 "contains text \"" + contains + "\".");
     }
 
@@ -196,5 +204,21 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     @Override
     public void assertLayout(Layout layout) {
         configuredAssert.assertLayout(guiElementData.guiElement, layout);
+    }
+
+    @Override
+    public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
+        final int LAYOUT_CHECK_UI_WAIT = 300;
+        final int LAYOUT_CHECK_MAX_TRIES = 3;
+        Timer timer = new Timer(LAYOUT_CHECK_UI_WAIT,LAYOUT_CHECK_UI_WAIT*LAYOUT_CHECK_MAX_TRIES);
+        final BigDecimal expectedDistanceThreshold = new BigDecimal(confidenceThreshold);
+        final String assertMessage = String.format("%s pixel distance percent referring to image '%s'", guiElementData, targetImageName);
+        timer.executeSequence(new Timer.Sequence() {
+            @Override
+            public void run() {
+                double actualDistance = LayoutCheck.matchPixels(guiElementCore.takeScreenshot(), targetImageName);
+                AssertUtils.assertLowerEqualThan(new BigDecimal(actualDistance), expectedDistanceThreshold, assertMessage);
+            }
+        });
     }
 }

@@ -53,6 +53,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -60,7 +61,13 @@ import java.util.*;
  * <p>
  * Authors: pele, rnhb
  */
-public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, GuiElementWait, Nameable {
+public class GuiElement implements
+    Checkable,
+    GuiElementAssert,
+    GuiElementCore,
+    GuiElementWait,
+    Nameable
+{
 
     private static final Map<String, GuiElementCoreFactory> coreFactories = new HashMap<>();
 
@@ -717,6 +724,11 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
     }
 
     @Override
+    public File takeScreenshot() {
+        return guiElementFacade.takeScreenshot();
+    }
+
+    @Override
     public boolean waitForIsPresent() {
         return guiElementFacade.waitForIsPresent();
     }
@@ -872,6 +884,8 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
         return guiElementData.webDriver;
     }
 
+    @Deprecated
+    @Override
     public void assertLayout(Layout layout) {
         guiElementFacade.assertLayout(layout);
     }
@@ -886,6 +900,12 @@ public class GuiElement implements Checkable, GuiElementAssert, GuiElementCore, 
     @Deprecated
     public void assertCssClassIsGone(final String className) {
         guiElementFacade.assertCssClassIsGone(className);
+    }
+
+    @Deprecated
+    @Override
+    public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
+        guiElementFacade.assertScreenshot(targetImageName, confidenceThreshold);
     }
 
     public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {

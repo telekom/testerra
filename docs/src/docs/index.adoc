@@ -1,8 +1,7 @@
 = Testerra
 This reference covers version: _{revnumber}_
 
-// Platform badge with link
-:platform_badge: image:https://img.shields.io/badge/-PLATFORM-blue[link="index.html#_opensource_and_platform"]
+include::common-attributes.adoc[]
 
 :sectnums!:
 
@@ -31,4 +30,5 @@ include::modules.adoc[leveloffset=+1]
 include::properties.adoc[leveloffset=+1]
 
 [glossary]
-//= Glossary
+= Glossary
+SUT:: System under test

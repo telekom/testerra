@@ -219,4 +219,9 @@ public interface GuiElementAssert {
      */
     void assertCssClassIsGone(final String className);
 
+    /**
+     * Asserts the pixel of this web element
+     */
+    void assertScreenshot(final String targetImageName, final double confidenceThreshold);
+
 }

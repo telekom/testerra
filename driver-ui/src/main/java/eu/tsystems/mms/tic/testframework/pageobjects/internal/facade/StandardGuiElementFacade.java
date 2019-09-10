@@ -26,7 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
-
+import java.io.File;
 import java.util.List;
 
 /**
@@ -38,9 +38,11 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     private GuiElementAssert guiElementAssert;
     private GuiElementCore guiElementCore;
 
-    public StandardGuiElementFacade(GuiElementCore guiElementCore,
-                                    GuiElementWait guiElementWait,
-                                    GuiElementAssert guiElementAssert) {
+    public StandardGuiElementFacade(
+        GuiElementCore guiElementCore,
+        GuiElementWait guiElementWait,
+        GuiElementAssert guiElementAssert
+    ) {
         this.guiElementWait = guiElementWait;
         this.guiElementAssert = guiElementAssert;
         this.guiElementCore = guiElementCore;
@@ -150,6 +152,16 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     @Override
     public void assertAnyFollowingTextNodeContains(String contains) {
         guiElementAssert.assertAnyFollowingTextNodeContains(contains);
+    }
+
+    @Override
+    public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
+        guiElementAssert.assertScreenshot(targetImageName, confidenceThreshold);
+    }
+
+    @Override
+    public File takeScreenshot() {
+        return guiElementCore.takeScreenshot();
     }
 
     @Override

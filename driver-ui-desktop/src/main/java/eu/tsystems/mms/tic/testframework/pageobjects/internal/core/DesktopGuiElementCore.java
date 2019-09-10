@@ -48,6 +48,10 @@ import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -850,5 +854,41 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         WebElement webElement = getWebElement();
         Point location = webElement.getLocation();
         JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, location.getX(), location.getY());
+    }
+
+    @Override
+    public File takeScreenshot() {
+
+        final boolean isSelenium4 = false;
+
+        if (isSelenium4) {
+            return getScreenshotAs(OutputType.FILE);
+        } else {
+            try {
+                find();
+                final TakesScreenshot driver = ((TakesScreenshot)guiElementData.webDriver);
+                final WebElement element = guiElementData.webElement;
+
+                File screenshot = driver.getScreenshotAs(OutputType.FILE);
+                BufferedImage fullImg = ImageIO.read(screenshot);
+
+                Point point = element.getLocation();
+                int eleWidth = element.getSize().getWidth();
+                int eleHeight = element.getSize().getHeight();
+
+                BufferedImage eleScreenshot = fullImg.getSubimage(
+                    point.getX(),
+                    point.getY(),
+                    eleWidth,
+                    eleHeight
+                );
+                ImageIO.write(eleScreenshot, "png", screenshot);
+                return screenshot;
+            } catch (IOException e) {
+                LOGGER.error(String.format("%s unable to take screenshot: %s ", this.guiElementData, e));
+            }
+        }
+
+        return null;
     }
 }

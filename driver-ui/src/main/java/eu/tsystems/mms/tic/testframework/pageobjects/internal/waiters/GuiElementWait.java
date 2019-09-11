@@ -182,7 +182,7 @@ public interface GuiElementWait {
      * @param className Class name to check
      * @return true if the css class is gone
      */
-    boolean waitForCssClassIsGone(final String className);
+    boolean waitForCssClassIsNotPresent(final String className);
 
     /**
      * Waits until the element is selectable or times out.

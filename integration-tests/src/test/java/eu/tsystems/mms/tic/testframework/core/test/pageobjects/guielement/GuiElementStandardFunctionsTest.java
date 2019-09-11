@@ -851,7 +851,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Test
     public void testT98_GuiElement_assertClassIsPresent() {
         GuiElement element = getGuiElementBy(By.xpath(String.format("//*[@data-qa='%s']", "action/toggleClass")));
-        element.asserts().assertCssClassIsGone("active");
+        element.asserts().assertCssClassIsNotPresent("active");
         element.click();
         element.asserts().assertCssClassIsPresent("active");
     }

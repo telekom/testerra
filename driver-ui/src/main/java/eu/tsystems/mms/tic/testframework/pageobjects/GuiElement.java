@@ -704,8 +704,8 @@ public class GuiElement implements
 
     @Override
     @Deprecated
-    public boolean waitForCssClassIsGone(final String className) {
-        return guiElementFacade.waitForCssClassIsGone(className);
+    public boolean waitForCssClassIsNotPresent(final String className) {
+        return guiElementFacade.waitForCssClassIsNotPresent(className);
     }
 
     @Override

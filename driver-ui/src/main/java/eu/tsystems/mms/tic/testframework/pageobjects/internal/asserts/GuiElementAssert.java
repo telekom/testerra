@@ -217,7 +217,7 @@ public interface GuiElementAssert {
      * Checks if the element has not a given css class name
      * @param className
      */
-    void assertCssClassIsGone(final String className);
+    void assertCssClassIsNotPresent(final String className);
 
     /**
      * Asserts the pixel of this web element

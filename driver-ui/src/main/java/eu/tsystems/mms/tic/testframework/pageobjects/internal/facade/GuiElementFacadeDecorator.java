@@ -625,10 +625,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public boolean waitForCssClassIsGone(final String className) {
-        beforeDelegation("waitForCssClassIsGone");
-        boolean b = decoratedFacade.waitForCssClassIsGone(className);
-        afterDelegation("waitForCssClassIsGone() = " + b);
+    public boolean waitForCssClassIsNotPresent(final String className) {
+        beforeDelegation("waitForCssClassIsNotPresent");
+        boolean b = decoratedFacade.waitForCssClassIsNotPresent(className);
+        afterDelegation("waitForCssClassIsNotPresent() = " + b);
         return b;
     }
 

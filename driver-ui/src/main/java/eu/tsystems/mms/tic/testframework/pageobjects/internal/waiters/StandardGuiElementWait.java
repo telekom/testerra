@@ -354,7 +354,7 @@ public class StandardGuiElementWait implements GuiElementWait {
     }
 
     @Override
-    public boolean waitForCssClassIsGone(final String className) {
+    public boolean waitForCssClassIsNotPresent(final String className) {
         return waitForAttributeContainsNot("class", className);
     }
 

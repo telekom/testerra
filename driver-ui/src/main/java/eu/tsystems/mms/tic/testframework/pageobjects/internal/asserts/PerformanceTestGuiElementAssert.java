@@ -157,7 +157,7 @@ public class PerformanceTestGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
-    public void assertCssClassIsGone(String className) {
+    public void assertCssClassIsNotPresent(String className) {
 
     }
 

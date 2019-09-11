@@ -372,8 +372,8 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public boolean waitForCssClassIsGone(final String className) {
-        return guiElementWait.waitForCssClassIsGone(className);
+    public boolean waitForCssClassIsNotPresent(final String className) {
+        return guiElementWait.waitForCssClassIsNotPresent(className);
     }
 
     @Override

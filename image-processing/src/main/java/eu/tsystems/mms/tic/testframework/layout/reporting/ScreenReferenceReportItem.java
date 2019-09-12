@@ -66,8 +66,14 @@ public class ScreenReferenceReportItem implements Serializable {
      * @param actualScreenshotPath Path to actual screenshot
      * @param distanceScreenshotPath Path to distance screenshot
      */
-    public ScreenReferenceReportItem(String name, LayoutCheck.Mode mode, double distance, String referenceScreenshotPath,
-                                     String actualScreenshotPath, String distanceScreenshotPath) {
+    public ScreenReferenceReportItem(
+        String name,
+        LayoutCheck.Mode mode,
+        double distance,
+        String referenceScreenshotPath,
+        String actualScreenshotPath,
+        String distanceScreenshotPath
+    ) {
         super();
         this.name = name;
         this.mode = mode;

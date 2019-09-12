@@ -9,7 +9,6 @@ import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutErrorContextObject;
-import eu.tsystems.mms.tic.testframework.layout.reporting.ScreenReferenceReportItem;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -66,17 +65,17 @@ public final class LayoutCheck {
     private static final double NO_DISTANCE = 0;
     private static final int RGB_DEVIATION_PERCENT = PropertyManager.getIntProperty(TesterraProperties.LAYOUTCHECK_PIXEL_RGB_DEVIATION_PERCENT, 0);
     private static final double RGB_MAX_DEVIATION = 255;
+    private static final File REFERENCE_IMAGES_PATH = new File(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_PATH, "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/reference"));
+    private static final File DISTANCE_IMAGES_PATH = new File(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_DISTANCE_PATH, "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/distance"));
+    private static final File ACTUAL_IMAGES_PATH = new File(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_PATH, "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/actual"));
 
     private static HashMap<String, Integer> runCount = new HashMap<String, Integer>();
 
     static {
         // ensure the folders to save the images exist
-        final File folder = new File(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_PATH, "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/reference"));
-        folder.mkdirs();
-        final File folderdest = new File(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_DISTANCE_PATH, "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/distance"));
-        folderdest.mkdirs();
-        final File folderact = new File(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_PATH, "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/actual"));
-        folderact.mkdirs();
+        REFERENCE_IMAGES_PATH.mkdirs();
+        DISTANCE_IMAGES_PATH.mkdirs();
+        ACTUAL_IMAGES_PATH.mkdirs();
     }
 
     /**
@@ -224,20 +223,20 @@ public final class LayoutCheck {
         final String targetImageName
     ) {
         final MatchStep step = new MatchStep();
-        String screenReferencePath = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_PATH);
-        step.referenceFileName = Paths.get(screenReferencePath + "/" + String.format(
+        step.referenceFileName = Paths.get(REFERENCE_IMAGES_PATH + "/" +
+            String.format(
                 PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_REFERENCE_NAMETEMPLATE, "Reference%s.png"),
                 targetImageName
             )
         );
-        step.annotationDataFileName = Paths.get(
-            screenReferencePath + "/" + String.format(
+        step.annotationDataFileName = Paths.get(REFERENCE_IMAGES_PATH + "/" +
+            String.format(
                 PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE, "Reference%s_data.json"),
                 targetImageName
             )
         );
-        step.annotatedReferenceFileName = Paths.get(
-            screenReferencePath + "/" + String.format(
+        step.annotatedReferenceFileName = Paths.get(REFERENCE_IMAGES_PATH + "/" +
+            String.format(
                 PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ANNOTATED_NAMETEMPLATE, "ReferenceAnnotated%s.png"),
                 targetImageName
             )
@@ -264,8 +263,9 @@ public final class LayoutCheck {
             LOGGER.info(String.format("Saved reference screenshot at '%s'.", step.referenceFileName.toString()));
         } else {
             step.consecutiveTargetImageName = targetImageName + runCountModifier;
-            step.actualFileName = Paths.get(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_PATH) + "/"
-                + String.format(
+            step.actualFileName = Paths.get(
+                ACTUAL_IMAGES_PATH + "/" +
+                String.format(
                     PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_ACTUAL_NAMETEMPLATE, "Actual%s.png"),
                     step.consecutiveTargetImageName
                 )
@@ -280,8 +280,8 @@ public final class LayoutCheck {
             LOGGER.debug(String.format("Saved actual screenshot at '%s'.", step.actualFileName.toString()));
 
             // create distance file name
-            step.distanceFileName = Paths.get(PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_DISTANCE_PATH) + "/"
-                + String.format(
+            step.distanceFileName = Paths.get(DISTANCE_IMAGES_PATH + "/" +
+                String.format(
                     PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_DISTANCE_NAMETEMPLATE, "Distance%s.png"),
                     step.consecutiveTargetImageName
                 )
@@ -410,10 +410,10 @@ public final class LayoutCheck {
      * @return Percents of pixels that are different
      */
     private static double generateDistanceImage(
-            final BufferedImage expectedImage,
-            final BufferedImage actualImage,
-            final String resultFilename,
-            final boolean useIgnoreColor
+        final BufferedImage expectedImage,
+        final BufferedImage actualImage,
+        final String resultFilename,
+        final boolean useIgnoreColor
     ) {
         // for counting the pixels that are different
         int pixelsInError = 0;
@@ -556,10 +556,13 @@ public final class LayoutCheck {
      * @return Calculated maximum size of the images
      */
     private static Dimension calculateMaxImageSize(
-            final BufferedImage expectedImage, final BufferedImage actualImage) {
-        return new Dimension(Math.max(expectedImage.getWidth(),
-                actualImage.getWidth()), Math.max(expectedImage.getHeight(),
-                actualImage.getHeight()));
+        final BufferedImage expectedImage,
+        final BufferedImage actualImage
+    ) {
+        return new Dimension(
+            Math.max(expectedImage.getWidth(), actualImage.getWidth()),
+            Math.max(expectedImage.getHeight(), actualImage.getHeight())
+        );
     }
 
     /**
@@ -570,8 +573,11 @@ public final class LayoutCheck {
      * @param y     Y-coordinate of the pixel
      * @return true, if the pixel is within the images bounds, otherwise false
      */
-    private static boolean isPixelInImageBounds(final BufferedImage image,
-                                                final int x, final int y) {
+    private static boolean isPixelInImageBounds(
+        final BufferedImage image,
+        final int x,
+        final int y
+    ) {
         return (image.getWidth() > x) && (image.getHeight() > y);
     }
 
@@ -585,11 +591,25 @@ public final class LayoutCheck {
         final Path annotatedReferenceScreenshotPath,
         List<LayoutFeature> annotatedModeCriticalMatches
     ) {
-        // copy the screenshots to target
-        copyFileToReport(referenceScreenshotPath);
-        copyFileToReport(actualScreenshotPath);
-        copyFileToReport(distanceScreenshotPath);
 
+        LayoutErrorContextObject error = new LayoutErrorContextObject();
+        error.name = name;
+        error.mode = mode.name();
+        try {
+            error.expectedScreenshot = Report.provideScreenshot(referenceScreenshotPath.toFile(),null, Report.Mode.MOVE);
+            error.actualScreenshot = Report.provideScreenshot(actualScreenshotPath.toFile(), null, Report.Mode.MOVE);
+            error.distanceScreenshot = Report.provideScreenshot(distanceScreenshotPath.toFile(), null, Report.Mode.MOVE);
+            error.distanceScreenshot.meta().put("Distance", Double.toString(distance));
+            if (mode == Mode.ANNOTATED) {
+                error.annotatedScreenshot = Report.provideScreenshot(annotatedReferenceScreenshotPath.toFile(), null, Report.Mode.MOVE);
+            }
+        } catch (IOException e) {
+            LOGGER.debug(e.toString());
+        }
+        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+        methodContext.customErrorContextObjects.add(error);
+
+        /*
         final String relReferenceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + "/" + referenceScreenshotPath.getFileName().toString();
         final String relActualScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + "/" + actualScreenshotPath.getFileName().toString();
         final String relDistanceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + "/" + distanceScreenshotPath.getFileName().toString();
@@ -606,23 +626,13 @@ public final class LayoutCheck {
         );
 
         if (mode == Mode.ANNOTATED) {
-            copyFileToReport(annotatedReferenceScreenshotPath);
             String cleanedAnnotatedReferenceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + annotatedReferenceScreenshotPath.getFileName().toString();
             scri.setAnnotatedScreenshotPath(cleanedAnnotatedReferenceScreenshotPath);
             if (annotatedModeCriticalMatches.size() > 0) {
                 scri.setAnnotatedModeCriticalMatches(annotatedModeCriticalMatches);
             }
         }
-
-        LayoutErrorContextObject error = new LayoutErrorContextObject();
-        error.name = name;
-        error.mode = mode.name();
-        error.msg = "Distance: " + distance;
-        error.imageFileNameReference = relReferenceScreenshotPath;
-        error.imageFileNameActual = relActualScreenshotPath;
-        error.imageFileNameDistance = relDistanceScreenshotPath;
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        methodContext.customErrorContextObjects.add(error);
+        */
 
         /*
         String msg = "Layout check failed: " + name;
@@ -633,29 +643,5 @@ public final class LayoutCheck {
             Assert.fail(msg);
         }
         */
-    }
-
-    /**
-     * Copies the given file to the report dir and returns the resulting path.
-     *
-     * @param from The path of the file to copy
-     */
-    private static void copyFileToReport(final Path from) {
-        // TODO: shouldnt this be done from the core??
-        final String fileName = from.getFileName().toString();
-        final File references = new File(Report.REPORT_DIRECTORY, Constants.SCREENREFERENCES_PATH);
-        if (!references.exists()) {
-            references.mkdirs();
-        }
-
-        try {
-            File fromFile = from.toFile();
-            File toFile = new File(references, fileName);
-            FileUtils.copyFile(fromFile, toFile);
-            LOGGER.debug(String.format("Copied screenshot from '%s' to '%s'", fromFile.getAbsolutePath(),
-                    toFile.getAbsolutePath()));
-        } catch (IOException e) {
-            LOGGER.error("Error trying to copy screenshot to report", e.getMessage());
-        }
     }
 }

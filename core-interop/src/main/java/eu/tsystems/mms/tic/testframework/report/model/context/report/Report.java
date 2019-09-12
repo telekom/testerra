@@ -134,6 +134,7 @@ public class Report {
         provide screenshot
          */
         screenshot.filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(screenshotFile.getName());
+        screenshot.meta().put(Screenshot.Meta.FILE_NAME.toString(), screenshotFile.getName());
         final File targetScreenshotFile = new File(SCREENSHOTS_DIRECTORY, screenshot.filename);
         switch (mode) {
             case COPY:
@@ -150,6 +151,7 @@ public class Report {
          */
         if (screenshotSourceFileOrNull != null) {
             screenshot.sourceFilename = screenshot.filename + ".html";
+            screenshot.meta().put(Screenshot.Meta.SOURCE_FILE_NAME.toString(), screenshotSourceFileOrNull.getName());
             final File targetSourceFile = new File(SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
             switch (mode) {
                 case COPY:

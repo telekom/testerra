@@ -32,7 +32,9 @@ public class Screenshot {
         WINDOW("Window"),
         URL("URL"),
         DATE("Date"),
-        DRIVER_FOCUS("Driver Focus")
+        DRIVER_FOCUS("Driver Focus"),
+        FILE_NAME("FileName"),
+        SOURCE_FILE_NAME("SourceFileName"),
         ;
 
         private String key;

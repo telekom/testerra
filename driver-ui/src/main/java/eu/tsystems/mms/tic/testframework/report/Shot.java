@@ -65,9 +65,7 @@ public abstract class Shot {
 
     public static File takeScreenshot(WebDriver driver) {
         try {
-            File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            LOGGER.info("Screenshot written to " + screenshot);
-            return screenshot;
+            return ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         } catch (Exception e) {
             LOGGER.error("Could not get screenshot", e);
         }

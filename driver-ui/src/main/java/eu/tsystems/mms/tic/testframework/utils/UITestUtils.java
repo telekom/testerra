@@ -117,29 +117,19 @@ public class UITestUtils extends TestUtils {
             return null;
         }
 
-        final Screenshot screenshot = new Screenshot();
-
-        final Date screenshotDate = new Date();
-        screenshot.meta().put(Screenshot.Meta.DATE.toString(), screenshotDate.toString());
-
-        final String timestamp = FILES_DATE_FORMAT.format(screenshotDate);
-        screenshot.filename = UUID.randomUUID() + "_"+ timestamp + ".png";;
-        screenshot.sourceFilename = screenshot.filename + ".html";
-
         WebDriverRequest webDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
         if (Browsers.htmlunit.equalsIgnoreCase(webDriverRequest.browser)) {
             LOGGER.warn("Not taking screenshot for htmunit");
             return null;
         }
 
-        File screenShotTargetFile = new File(Report.SCREENSHOTS_DIRECTORY, screenshot.filename);
-        File sourceTargetFile = new File(Report.SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
-
         /*
          * Take the screenshot
          */
         if (eventFiringWebDriver != null) {
             try {
+                final File screenShotTargetFile = File.createTempFile("screenshot", null);
+                final File sourceTargetFile = File.createTempFile("pagesource", null);
                 takeWebDriverScreenshotToFile(eventFiringWebDriver, screenShotTargetFile);
 
                 // get page source (webdriver)
@@ -149,9 +139,14 @@ public class UITestUtils extends TestUtils {
                     LOGGER.error("getPageSource() returned nothing, skipping to add page source");
                 }
                 else {
+
                     // save page source to file
                     savePageSource(pageSource, sourceTargetFile);
                 }
+
+                final Screenshot screenshot = Report.provideScreenshot(screenShotTargetFile, sourceTargetFile, Report.Mode.MOVE);
+                final Date screenshotDate = new Date();
+                screenshot.meta().put(Screenshot.Meta.DATE.toString(), screenshotDate.toString());
 
                 /*
                 get infos
@@ -189,7 +184,6 @@ public class UITestUtils extends TestUtils {
 
                 String currentUrl = eventFiringWebDriver.getCurrentUrl();
                 screenshot.meta().put(Screenshot.Meta.WINDOW.toString(), window);
-                screenshot.meta().put(Screenshot.Meta.URL.toString(), currentUrl);
                 screenshot.meta().put(Screenshot.Meta.URL.toString(), currentUrl);
 
                 return screenshot;
@@ -275,9 +269,8 @@ public class UITestUtils extends TestUtils {
             File file = Shot.takeScreenshot(driver);
             try {
                 FileUtils.moveFile(file, screenShotTargetFile);
-                LOGGER.info("Stored screenshot to: " + screenShotTargetFile);
             } catch (IOException e) {
-                LOGGER.error("Error storing screenshot", e);
+                LOGGER.error("Error moving screenshot", e);
             }
         }
         catch (Throwable t) {

@@ -596,7 +596,7 @@ public final class LayoutCheck {
         error.name = name;
         error.mode = mode.name();
         try {
-            error.expectedScreenshot = Report.provideScreenshot(referenceScreenshotPath.toFile(),null, Report.Mode.MOVE);
+            error.expectedScreenshot = Report.provideScreenshot(referenceScreenshotPath.toFile(),null, Report.Mode.COPY);
             error.actualScreenshot = Report.provideScreenshot(actualScreenshotPath.toFile(), null, Report.Mode.MOVE);
             error.distanceScreenshot = Report.provideScreenshot(distanceScreenshotPath.toFile(), null, Report.Mode.MOVE);
             error.distanceScreenshot.meta().put("Distance", Double.toString(distance));

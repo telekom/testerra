@@ -29,6 +29,7 @@ package eu.tsystems.mms.tic.testframework.report;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,11 +64,16 @@ public abstract class Shot {
         this.screenshotCause = screenshotCause;
     }
 
+    /**
+     *
+     * @param driver
+     * @return File or NULL if no screenshot could be taken
+     */
     public static File takeScreenshot(WebDriver driver) {
         try {
             return ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        } catch (Exception e) {
-            LOGGER.error("Could not get screenshot", e);
+        } catch (WebDriverException e) {
+            LOGGER.error("Could not get screenshot: "+ e.getLocalizedMessage());
         }
         return null;
     }

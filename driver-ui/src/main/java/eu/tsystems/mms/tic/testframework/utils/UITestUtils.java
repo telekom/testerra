@@ -128,8 +128,8 @@ public class UITestUtils extends TestUtils {
          */
         if (eventFiringWebDriver != null) {
             try {
-                final File screenShotTargetFile = File.createTempFile("screenshot", null);
-                final File sourceTargetFile = File.createTempFile("pagesource", null);
+                final File screenShotTargetFile = FileUtils.createTempFileName("screenshot.png");
+                final File sourceTargetFile = FileUtils.createTempFileName("pagesource.html");
                 takeWebDriverScreenshotToFile(eventFiringWebDriver, screenShotTargetFile);
 
                 // get page source (webdriver)
@@ -265,16 +265,13 @@ public class UITestUtils extends TestUtils {
     }
 
     private static void makeSimpleScreenshot(WebDriver driver, File screenShotTargetFile) {
-        try {
-            File file = Shot.takeScreenshot(driver);
+        File file = Shot.takeScreenshot(driver);
+        if (file != null) {
             try {
                 FileUtils.moveFile(file, screenShotTargetFile);
             } catch (IOException e) {
-                LOGGER.error("Error moving screenshot", e);
+                LOGGER.error("Error moving screenshot: " + e.getLocalizedMessage());
             }
-        }
-        catch (Throwable t) {
-            throw new TesterraSystemException("Error taking screenshot", t);
         }
     }
 

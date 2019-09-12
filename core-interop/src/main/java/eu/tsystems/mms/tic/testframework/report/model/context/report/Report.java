@@ -90,14 +90,42 @@ public class Report {
         MOVE
     }
 
-    public static Screenshot provideScreenshot(File screenshotFile, File sourceFileOrNull, Mode mode, List<String> infosOrNull) throws IOException {
+    /**
+     * Adds a screenshot to the report
+     * @param screenshotFile The screenshot file
+     * @param screenshotSourceFileOrNull The source code of the screenshot origin
+     * @param mode
+     * @return Screenshot instance
+     */
+    public static Screenshot provideScreenshot(
+        File screenshotFile,
+        File screenshotSourceFileOrNull,
+        Mode mode
+    ) throws IOException {
+        return provideScreenshot(screenshotFile, screenshotSourceFileOrNull, mode, null);
+    }
+
+    /**
+     * Adds a screenshot to the report
+     * @param screenshotFile The screenshot file
+     * @param screenshotSourceFileOrNull The source code of the screenshot origin
+     * @param mode
+     * @param ignored This parameter is @deprecated and ignored
+     * @return Screenshot instance
+     */
+    public static Screenshot provideScreenshot(
+        File screenshotFile,
+        File screenshotSourceFileOrNull,
+        Mode mode,
+        List<String> ignored
+    ) throws IOException {
         if (!screenshotFile.exists()) {
             LOGGER.error("Cannot provide screenshot: " + screenshotFile + " does not exist");
             return null;
         }
-        if (sourceFileOrNull != null && !sourceFileOrNull.exists()) {
-            LOGGER.warn("Cannot provide screenshot source: " + sourceFileOrNull + " does not exist");
-            sourceFileOrNull = null;
+        if (screenshotSourceFileOrNull != null && !screenshotSourceFileOrNull.exists()) {
+            LOGGER.warn("Cannot provide screenshot source: " + screenshotSourceFileOrNull + " does not exist");
+            screenshotSourceFileOrNull = null;
         }
 
         final Screenshot screenshot = new Screenshot();
@@ -105,9 +133,8 @@ public class Report {
         /*
         provide screenshot
          */
-        final String screenshotFileExtension = FilenameUtils.getExtension(screenshotFile.getName());
-        final String screenshotFileName = UUID.randomUUID() + "." + screenshotFileExtension;
-        final File targetScreenshotFile = new File(SCREENSHOTS_DIRECTORY, screenshotFileName);
+        screenshot.filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(screenshotFile.getName());
+        final File targetScreenshotFile = new File(SCREENSHOTS_DIRECTORY, screenshot.filename);
         switch (mode) {
             case COPY:
                 FileUtils.copyFile(screenshotFile, targetScreenshotFile, true);
@@ -116,33 +143,34 @@ public class Report {
                 FileUtils.moveFile(screenshotFile, targetScreenshotFile);
                 break;
         }
-        screenshot.filename = screenshotFileName;
+
 
         /*
         provide source
          */
-        if (sourceFileOrNull != null) {
-            final String sourceFileName = screenshotFileName + ".html";
-            final File targetSourceFile = new File(SCREENSHOTS_DIRECTORY, sourceFileName);
+        if (screenshotSourceFileOrNull != null) {
+            screenshot.sourceFilename = screenshot.filename + ".html";
+            final File targetSourceFile = new File(SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
             switch (mode) {
                 case COPY:
-                    FileUtils.copyFile(sourceFileOrNull, targetSourceFile, true);
+                    FileUtils.copyFile(screenshotSourceFileOrNull, targetSourceFile, true);
                     break;
                 case MOVE:
-                    FileUtils.moveFile(sourceFileOrNull, targetSourceFile);
+                    FileUtils.moveFile(screenshotSourceFileOrNull, targetSourceFile);
                     break;
             }
-            screenshot.sourceFilename = sourceFileName;
-        }
 
-        screenshot.infos = infosOrNull;
+        }
 
         LOGGER.info("Provided screenshot " + screenshotFile + " as " + targetScreenshotFile);
 
         return screenshot;
     }
 
-    public static Video provideVideo(File file, Mode mode) throws IOException {
+    public static Video provideVideo(
+        File file,
+        Mode mode
+    ) throws IOException {
         if (!file.exists()) {
             LOGGER.error("Cannot provide video: " + file + " does not exist");
             return null;

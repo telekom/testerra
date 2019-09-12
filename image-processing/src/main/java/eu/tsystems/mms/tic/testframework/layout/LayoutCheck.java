@@ -8,7 +8,7 @@ import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
-import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutErrorContextObject;
+import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -590,7 +590,7 @@ public final class LayoutCheck {
         final Path distanceScreenshotPath = step.distanceFileName;
         final Path annotatedReferenceScreenshotPath = step.annotatedReferenceFileName;
 
-        LayoutErrorContextObject error = new LayoutErrorContextObject();
+        LayoutErrorContext error = new LayoutErrorContext();
         error.name = name;
         error.mode = mode.name();
         try {

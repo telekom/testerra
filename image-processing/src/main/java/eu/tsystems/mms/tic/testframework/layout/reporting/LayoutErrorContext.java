@@ -3,7 +3,7 @@ package eu.tsystems.mms.tic.testframework.layout.reporting;
 import eu.tsystems.mms.tic.testframework.report.model.context.CustomErrorContextObject;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
-public class LayoutErrorContextObject implements CustomErrorContextObject {
+public class LayoutErrorContext implements CustomErrorContextObject {
 
     public String name;
     public String mode;

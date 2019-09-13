@@ -5,7 +5,7 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 
 public abstract class AbstractEvidencesWorker extends MethodWorker {
 
-    abstract void collect();
+    protected abstract void collect();
 
     @Override
     public void run() {
@@ -15,8 +15,7 @@ public abstract class AbstractEvidencesWorker extends MethodWorker {
             if (attribute != Boolean.TRUE) {
                 collect();
             }
-        }
-        else if (isSkipped()) {
+        } else if (isSkipped()) {
             if (methodContext.status == TestStatusController.Status.FAILED_RETRIED) {
                 collect();
             }

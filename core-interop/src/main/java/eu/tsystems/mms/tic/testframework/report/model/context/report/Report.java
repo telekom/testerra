@@ -102,23 +102,6 @@ public class Report {
         File screenshotSourceFileOrNull,
         Mode mode
     ) throws IOException {
-        return provideScreenshot(screenshotFile, screenshotSourceFileOrNull, mode, null);
-    }
-
-    /**
-     * Adds a screenshot to the report
-     * @param screenshotFile The screenshot file
-     * @param screenshotSourceFileOrNull The source code of the screenshot origin
-     * @param mode
-     * @param ignored This parameter is @deprecated and ignored
-     * @return Screenshot instance
-     */
-    public static Screenshot provideScreenshot(
-        File screenshotFile,
-        File screenshotSourceFileOrNull,
-        Mode mode,
-        List<String> ignored
-    ) throws IOException {
         if (!screenshotFile.exists()) {
             LOGGER.error("Cannot provide screenshot: " + screenshotFile + " does not exist");
             return null;

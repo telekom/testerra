@@ -2,24 +2,30 @@
 
 In testing practice the test automation code must tolerate delays caused e.g. by page loading or javascript activities when checking conditions on GuiElements.
 
-Therefore GuiElement provides dedicated methods to wait for a condition that operate 
+Therefore GuiElement provides dedicated methods to wait for a condition that operate
 on the following principle:
 
-If the condition (which is checked continuously) is met within the timeout 
+If the condition (which is checked continuously) is met within the timeout
 then the wait methods return true.
 
-Otherwise, after the timeout has passed they return false without any further 
+Otherwise, after the timeout has passed they return false without any further
 action or assertion.
 
-See #GuiElement Timeout#.
+See also <<PageObjects,Timeout-Settings>>
 
 .Usage:
 [source,java]
 ----
-GuiElement guiElement = new GuiElement(driver, By.xpath("//a"));
+boolean result;
 
-boolean result = guiElement.waitForIsDisplayed();
-boolean result = guiElement.waitForText(String text);
-boolean result = guiElement.waitForAttribute(String attribute, String value);
-boolean result = guiElement.waitForIsSelected();
+result = element.waitForIsDisplayed();
+result = element.waitForText(String text);
+result = element.waitForAttribute(String attribute, String value);
+result = element.waitForAttributeContains(String attribute, String value);
+result = element.waitForAttributeContainsNot(String attribute, String value);
+result = element.waitForIsSelected();
+result = element.waitForTextContains("Hello");
+result = element.waitForTextContainsNot("Foo bar");
+result = element.waitForCssClassIsPresent("active");
+result = element.waitForCssClassIsGone("disabled");
 ----

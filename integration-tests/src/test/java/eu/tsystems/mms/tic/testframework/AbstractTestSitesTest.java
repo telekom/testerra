@@ -19,8 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework;
 
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.Server;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
+import eu.tsystems.mms.tic.testframework.core.test.Server;
+import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,11 @@ public abstract class AbstractTestSitesTest extends AbstractTest {
     public void setUp() throws Exception {
         Server.start();
 
-        WebDriverManager.setBaseURL(TestPage.INPUT_TEST_PAGE.getUrl());
+        WebDriverManager.setBaseURL(getStartPage().getUrl());
+    }
+
+    protected TestPage getStartPage() {
+        return TestPage.INPUT_TEST_PAGE;
     }
 
     @AfterTest(alwaysRun = true)

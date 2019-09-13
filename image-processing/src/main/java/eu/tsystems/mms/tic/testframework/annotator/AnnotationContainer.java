@@ -32,7 +32,7 @@ import java.util.List;
 
 /**
  * Class to serialize annotations into a file.
- * 
+ *
  * Used by Annotator and LayoutComparator.
  */
 public class AnnotationContainer implements Serializable {
@@ -82,7 +82,7 @@ public class AnnotationContainer implements Serializable {
 
     /**
      * Write this Object to a json File.
-     * 
+     *
      * @param jsonFile File to write detials into.
      * @throws IOException Exception handling file.
      */
@@ -99,7 +99,7 @@ public class AnnotationContainer implements Serializable {
 
     /**
      * Deserialize {@link AnnotationContainer} from json file.
-     * 
+     *
      * @param jsonFile File to read.
      * @return {@link AnnotationContainer}
      * @throws IOException Exception handling File.

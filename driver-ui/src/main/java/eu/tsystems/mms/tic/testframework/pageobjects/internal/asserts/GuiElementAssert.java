@@ -31,6 +31,7 @@ public interface GuiElementAssert {
     /**
      * Assert isPresent() = true.
      */
+    @Deprecated
     void assertIsPresentFast();
 
     /**
@@ -50,6 +51,7 @@ public interface GuiElementAssert {
     /**
      * Assert isPresent() = false.
      */
+    @Deprecated
     void assertIsNotPresentFast();
 
     /**
@@ -116,7 +118,24 @@ public interface GuiElementAssert {
      *
      * @param text Strings that should be contained in text. Will NOT be trimmed.
      */
+    @Deprecated
     void assertContainsText(String... text);
+
+    /**
+     * Checks if the GuiElement, contains the given texts. Please note that this will only assert successfully, if the
+     * elements text is actually visible.
+     *
+     * @param text Strings that should be contained in text. Will NOT be trimmed.
+     */
+    void assertTextContains(String... text);
+
+    /**
+     * Checks if the GuiElement, contains not given texts. Please note that this will only assert successfully, if the
+     * elements text is actually visible.
+     *
+     * @param text Strings that should not be contained in text. Will NOT be trimmed.
+     */
+    void assertTextContainsNot(String... text);
 
     /**
      * Assert attribute is present.
@@ -143,6 +162,15 @@ public interface GuiElementAssert {
      * @see GuiElementWait#waitForAttributeContains(String, String)
      */
     void assertAttributeContains(String attributeName, String textContainedByAttribute);
+
+    /**
+     * Checks if the GuiElement, contains not the given text in an attribute.
+     *
+     * @param attributeName        Attribute whose value is checked. Will be trimmed.
+     * @param textNotContainedByAttribute Text that should not be contained. Will NOT be trimmed.
+     * @see GuiElementWait#waitForAttributeContainsNot(String, String)
+     */
+    void assertAttributeContainsNot(final String attributeName, final String textNotContainedByAttribute);
 
     /**
      * Checks, if the GuiElement contains the Text in one of the minor TextNodes.
@@ -178,5 +206,22 @@ public interface GuiElementAssert {
      * @param layout Layout description.
      */
     void assertLayout(Layout layout);
+
+    /**
+     * Checks if the element has a given css class name
+     * @param className
+     */
+    void assertCssClassIsPresent(final String className);
+
+    /**
+     * Checks if the element has not a given css class name
+     * @param className
+     */
+    void assertCssClassIsNotPresent(final String className);
+
+    /**
+     * Asserts the pixel of this web element
+     */
+    void assertScreenshot(final String targetImageName, final double confidenceThreshold);
 
 }

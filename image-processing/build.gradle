@@ -1,9 +1,11 @@
-if (hasProperty("free")) {
+/*if (hasProperty("free")) {
     doNotPublish(this)
-}
+}*/
 
 dependencies {
     compile opencv
-    compile driver_ui
+    compile core
+    compile selenium
+    compile datatypes
     compile 'org.javatuples:javatuples:1.2'
 }

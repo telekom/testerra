@@ -356,8 +356,6 @@ public class UITestUtils extends TestUtils {
             if (methodContext != null) {
                 Screenshot screenshot1 = new Screenshot();
                 screenshot1.filename = filename;
-                screenshot1.infos.add("Desktop Native Session");
-
                 methodContext.screenshots.add(screenshot1);
             }
         } else {

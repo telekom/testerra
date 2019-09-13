@@ -47,8 +47,6 @@ public class Screenshot {
 
     public String filename;
     public String sourceFilename;
-    @Deprecated
-    public List<String> infos = new LinkedList<>();
     private Map<String, String> meta = new HashMap<>();
 
     /*

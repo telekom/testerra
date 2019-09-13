@@ -373,12 +373,12 @@
                     <div style="margin: 10px; float: left;">
                         <div>
                             <video width="600" height="300" controls autoplay>
-                                <source src="$video" type="video/mp4">
+                                <source src="../../videos/$video.filename" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
                         <div>
-                            <a href="$video" download="$video" title="Video">Download</a>
+                            <a href="../../videos/$video" download="../../videos/$video.filename" title="Video">Download</a>
                         </div>
                     </div>
                     #end

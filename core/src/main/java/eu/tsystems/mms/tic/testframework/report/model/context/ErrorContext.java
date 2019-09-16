@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,6 +38,8 @@ public abstract class ErrorContext extends Context {
     private transient Throwable throwable = null;
     private transient StackTrace stacktraceForReadableMessage = null;
     public StackTrace stackTrace;
+    public final List<Video> videos = new LinkedList<>();
+    public final List<Screenshot> screenshots = new LinkedList<>();
     public String errorFingerprint = "";
     public ScriptSource scriptSource;
     public ScriptSource executionObjectSource;
@@ -220,4 +223,23 @@ public abstract class ErrorContext extends Context {
             }
         }
     }
+
+    /**
+     * Checks if at least 1 screenshot exists.
+     *
+     * @return true if screenshot exists
+     */
+    public boolean hasScreenshot() {
+        return screenshots.size() > 0;
+    }
+
+    /**
+     * Checks if at least 1 video exists.
+     *
+     * @return true if video exists
+     */
+    public boolean hasVideo() {
+        return videos.size() > 0;
+    }
+
 }

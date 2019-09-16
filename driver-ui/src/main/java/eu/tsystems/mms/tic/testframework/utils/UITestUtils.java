@@ -101,7 +101,7 @@ public class UITestUtils extends TestUtils {
                 screenshots.add(screenshot);
 
                 MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                addScreenshotsToMethodContext(methodContext, screenshots);
+                addScreenshotsToErrorContext(methodContext, screenshots);
             }
         }
 
@@ -201,22 +201,28 @@ public class UITestUtils extends TestUtils {
     /**
      * Publish the screenshots to the report into the current errorContext.
      *
-     * @param methodContext
+     * @param errorContextOrNull
      * @param screenshots
      * @return
      */
-    private static void addScreenshotsToMethodContext(MethodContext methodContext, List<Screenshot> screenshots) {
-        if (methodContext != null) {
+    private static void addScreenshotsToErrorContext(ErrorContext errorContextOrNull, List<Screenshot> screenshots) {
+        if (errorContextOrNull != null) {
             /*
             only add if we can NOT find any screenshots for this error context
              */
-            long count = methodContext.screenshots.stream().filter(s -> s.errorContextId == methodContext.id).count();
+            long count = errorContextOrNull.screenshots.stream().filter(s -> s.errorContextId == errorContextOrNull.id).count();
 
             if (count == 0) {
-                methodContext.screenshots.addAll(screenshots);
+                errorContextOrNull.screenshots.addAll(screenshots);
 
-                for (Screenshot screenshot : screenshots) {
-                    methodContext.steps().getCurrentTestStep().getCurrentTestStepAction().addScreenshots(null, screenshot);
+                /*
+                 * add AFTER path to action log
+                 */
+                if (errorContextOrNull instanceof MethodContext) {
+                    MethodContext methodContext = (MethodContext) errorContextOrNull;
+                    for (Screenshot screenshot : screenshots) {
+                        methodContext.steps().getCurrentTestStep().getCurrentTestStepAction().addScreenshots(null, screenshot);
+                    }
                 }
 
                 LOGGER.info("Linked screenshots: " + screenshots);
@@ -433,10 +439,7 @@ public class UITestUtils extends TestUtils {
                 screenshots.forEach(screenshot -> screenshot.errorContextId = errorContext.id);
             }
 
-            if (errorContext instanceof MethodContext) {
-                final MethodContext methodContext = (MethodContext)errorContext;
-                addScreenshotsToMethodContext(methodContext, screenshots);
-            }
+            addScreenshotsToErrorContext(errorContext, screenshots);
         }
 
         return screenshots;

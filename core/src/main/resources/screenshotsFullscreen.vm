@@ -19,9 +19,9 @@
                 #set ($path = "../../screenshots/${screenshot.filename}")
 
                 #set ($infoText = "")
-                #if (${screenshot.infos.size()} > 0)
-                    #foreach ($line in ${screenshot.infos})
-                        #set ($infoText = $infoText + $line + "<br/>")
+                #if ($screenshot.meta().size() > 0)
+                    #foreach ($mapEntry in $screenshot.meta().entrySet())
+                        #set ($infoText = $infoText + $mapEntry.getKey() + ":"+ $mapEntry.getValue() + "<br/>")
                     #end
                 #else
                     #set ($infoText = "No further information")

@@ -59,7 +59,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
     @Test
     public void testCheckPageLayout() {
         final double actualDist = LayoutCheck.matchPixels((TakesScreenshot)WebDriverManager.getWebDriver(), "LayoutTestPage");
-        AssertUtils.assertLowerEqualThan(new BigDecimal(actualDist), new BigDecimal(0), "LayoutTestPage");
+        AssertUtils.assertLowerEqualThan(new BigDecimal(actualDist), new BigDecimal(0), "LayoutTestPage pixel distance");
     }
 
 }

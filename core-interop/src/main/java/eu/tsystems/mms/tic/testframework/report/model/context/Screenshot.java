@@ -19,14 +19,35 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Screenshot {
 
+    public enum Meta {
+        SESSION_KEY("SessionKey"),
+        TITLE("Title"),
+        WINDOW("Window"),
+        URL("URL"),
+        DATE("Date"),
+        DRIVER_FOCUS("Driver Focus"),
+        FILE_NAME("FileName"),
+        SOURCE_FILE_NAME("SourceFileName"),
+        ;
+
+        private String key;
+
+        Meta(final String key) {
+            this.key = key;
+        }
+
+        public String toString() {
+            return key;
+        }
+    }
+
     public String filename;
     public String sourceFilename;
-    public List<String> infos = new LinkedList<>();
+    private Map<String, String> meta = new HashMap<>();
 
     /*
     Refers to the errorContext the screenshot belongs to.
@@ -38,7 +59,11 @@ public class Screenshot {
         return "Screenshot{" +
                 "filename='" + filename + '\'' +
                 ", sourceFilename='" + sourceFilename + '\'' +
-                ", infos=" + infos +
+                ", meta=" + meta +
                 '}';
+    }
+
+    public Map<String, String> meta() {
+        return meta;
     }
 }

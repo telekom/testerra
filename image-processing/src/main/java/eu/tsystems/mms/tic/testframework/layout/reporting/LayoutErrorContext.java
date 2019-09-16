@@ -1,9 +1,9 @@
 package eu.tsystems.mms.tic.testframework.layout.reporting;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.CustomErrorContextObject;
+import eu.tsystems.mms.tic.testframework.report.model.context.CustomErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
-public class LayoutErrorContext implements CustomErrorContextObject {
+public class LayoutErrorContext implements CustomErrorContext {
 
     public String name;
     public String mode;
@@ -12,11 +12,5 @@ public class LayoutErrorContext implements CustomErrorContextObject {
     public Screenshot actualScreenshot;
     public Screenshot distanceScreenshot;
     public Screenshot annotatedScreenshot;
-
-    @Override
-    public void renderHtml() {
-
-    }
-
 
 }

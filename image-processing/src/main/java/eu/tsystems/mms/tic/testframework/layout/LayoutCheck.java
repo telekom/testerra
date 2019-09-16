@@ -606,7 +606,7 @@ public final class LayoutCheck {
             LOGGER.debug(e.toString());
         }
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        methodContext.customErrorContextObjects.add(error);
+        methodContext.customErrorContexts.add(error);
 
         /*
         final String relReferenceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + "/" + referenceScreenshotPath.getFileName().toString();

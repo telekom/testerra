@@ -78,23 +78,8 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     public List<String> infos = new LinkedList<>();
 
     public List<SessionContext> sessionContexts = new LinkedList<>();
-
-    /**
-     * Flag for putting all information into the report. Defaults to true. You can set this to false, may be for passed
-     * configuration methods.
-     */
-    public boolean intoReport = true;
-
     public String priorityMessage = null;
-
-    public TestStepController testStepController = new TestStepController();
-
-    /**
-     * Stores additional Info for test method
-     * Like Dataprovider.. or suitename ...
-     */
-    public List<String> dashboardInfos = new LinkedList<>();
-
+    final private TestStepController testStepController = new TestStepController();
     public List<MethodContext> relatedMethodContexts;
     public List<MethodContext> dependsOnMethodContexts;
 
@@ -107,7 +92,14 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
      * @param testContext .
      * @param executionContext .
      */
-    public MethodContext(final String name, final MethodType methodType, final ClassContext classContext, final TestContext testContext, final SuiteContext suiteContext, final ExecutionContext executionContext) {
+    public MethodContext(
+        final String name,
+        final MethodType methodType,
+        final ClassContext classContext,
+        final TestContext testContext,
+        final SuiteContext suiteContext,
+        final ExecutionContext executionContext
+    ) {
         this.testContext = testContext;
         this.suiteContext = suiteContext;
         this.executionContext = executionContext;

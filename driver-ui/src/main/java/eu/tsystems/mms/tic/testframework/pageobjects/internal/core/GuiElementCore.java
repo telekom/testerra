@@ -27,6 +27,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -261,4 +262,10 @@ public interface GuiElementCore extends GuiElementStatusCheck, WebElement {
     void rightClickJS();
 
     void doubleClickJS();
+
+    /**
+     * Takes a screenshot of the GuiElement
+     * @return File object of the screenshot or NULL on error
+     */
+    File takeScreenshot();
 }

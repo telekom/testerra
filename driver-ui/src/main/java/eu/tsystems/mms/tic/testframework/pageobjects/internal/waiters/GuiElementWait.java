@@ -151,14 +151,38 @@ public interface GuiElementWait {
      * @param value         value which is waited for
      * @return true if the attribute eventually has the value
      */
-    boolean waitForAttributeContains(String attributeName, String value);
+    boolean waitForAttributeContains(final String attributeName, final String value);
+
+    /**
+     * Wait for an attribute to have the given value.
+     *
+     * @param attributeName attribute to check
+     * @param value         value which is waited for
+     * @return true if the attribute eventually has the value
+     */
+    boolean waitForAttributeContainsNot(final String attributeName, final String value);
 
     /**
      * Waits until the element has the given css class name
      * @param className Class name to check
      * @return true if the css class is present
      */
+    @Deprecated
     boolean waitForCssClass(final String className);
+
+    /**
+     * Waits until the element has the given css class name
+     * @param className Class name to check
+     * @return true if the css class is present
+     */
+    boolean waitForCssClassIsPresent(final String className);
+
+    /**
+     * Waits until the element has not the given css class name
+     * @param className Class name to check
+     * @return true if the css class is gone
+     */
+    boolean waitForCssClassIsNotPresent(final String className);
 
     /**
      * Waits until the element is selectable or times out.

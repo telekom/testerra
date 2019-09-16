@@ -68,7 +68,7 @@ public class WebTestPage3 extends Page {
     }
 
     public void subElement() {
-        new GuiElement(driver, By.tagName("body")).getSubElement(By.tagName("p")).assertIsPresentFast();
+        new GuiElement(driver, By.tagName("body")).getSubElement(By.tagName("p")).asserts().assertIsPresentFast();
     }
 
     public void clickOnFieldNotExisting() {

@@ -1,4 +1,4 @@
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects;
+package eu.tsystems.mms.tic.testframework.core.test;
 
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;

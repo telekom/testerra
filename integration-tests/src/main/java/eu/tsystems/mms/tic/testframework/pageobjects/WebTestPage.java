@@ -75,12 +75,12 @@ public class WebTestPage extends AbstractWebTestPage {
     public void assertFunctionalityOfButton1() {
         final String something = "some";
         input1.type(something);
-        textOutputField.assertContainsText(something);
+        textOutputField.asserts().assertTextContains(something);
     }
 
     /**
      * Click on link to open this page again.
-     * 
+     *
      * @return Instance of the new page.
      */
     public WebTestPage reloadPage() {
@@ -90,7 +90,7 @@ public class WebTestPage extends AbstractWebTestPage {
 
     /**
      * Click on not existing element
-     * 
+     *
      */
     public void gotoHell() {
         GuiElement guiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
@@ -99,7 +99,7 @@ public class WebTestPage extends AbstractWebTestPage {
 
     /**
      * Proof whether non existing element is present
-     * 
+     *
      */
     public void nonfunctionalAssert() {
         GuiElement guiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));

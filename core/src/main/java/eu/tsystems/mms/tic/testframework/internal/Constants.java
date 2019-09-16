@@ -36,7 +36,7 @@ public final class Constants {
     public static final String SCREENSHOTS_PATH = "screenshots/";
 
     /** Screen references path relative to report index file. */
-    public static final String SCREENREFERENCES_PATH = "screenreferences/";
+    public static final String SCREENREFERENCES_PATH = "screenreferences";
 
     public static final String DYNATRACE_LOGGER_DECORATOR_CLASS = "eu.tsystems.mms.tic.testframework.bmp.dynatrace.DynatraceLoggingDecorator";
     public static final String DYNATRACE_LOGGER_CLASS = "eu.tsystems.mms.tic.testframework.bmp.dynatrace.DynaTraceLogger";

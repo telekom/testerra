@@ -21,10 +21,9 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
-
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -84,165 +83,11 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public void assertIsPresentFast() {
-        beforeDelegation("assertIsPresentFast");
-        decoratedFacade.assertIsPresentFast();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertIsPresent() {
-        beforeDelegation("assertIsPresent");
-        decoratedFacade.assertIsPresent();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertIsNotPresent() {
-        beforeDelegation("assertIsNotPresent");
-        decoratedFacade.assertIsNotPresent();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertIsNotPresentFast() {
-        beforeDelegation("assertIsNotPresentFast");
-        decoratedFacade.assertIsNotPresentFast();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertIsSelected() {
-        beforeDelegation("assertIsSelected");
-        decoratedFacade.assertIsSelected();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertIsNotSelected() {
-        beforeDelegation("assertIsNotSelected");
-        decoratedFacade.assertIsNotSelected();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertIsNotSelectable() {
-        beforeDelegation("assertIsNotSelectable");
-        decoratedFacade.assertIsNotSelectable();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertIsSelectable() {
-        beforeDelegation("assertIsSelectable");
-        decoratedFacade.assertIsSelectable();
-        afterDelegation();
-    }
-
-    @Override
     public int getNumberOfFoundElements() {
         beforeDelegation("getNumberOfFoundElements");
         int numberOfFoundElements = decoratedFacade.getNumberOfFoundElements();
         afterDelegation();
         return numberOfFoundElements;
-    }
-
-    @Override
-    public void assertIsDisplayed() {
-        beforeDelegation("assertIsDisplayed");
-        decoratedFacade.assertIsDisplayed();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertIsNotDisplayed() {
-        beforeDelegation("assertIsNotDisplayed");
-        decoratedFacade.assertIsNotDisplayed();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertIsDisplayedFromWebElement() {
-        beforeDelegation("assertIsDisplayedFromWebElement");
-        decoratedFacade.assertIsDisplayedFromWebElement();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertIsNotDisplayedFromWebElement() {
-        beforeDelegation("assertIsNotDisplayedFromWebElement");
-        decoratedFacade.assertIsNotDisplayedFromWebElement();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertText(String text) {
-        beforeDelegation("assertText", "\"" + text + "\"");
-        decoratedFacade.assertText(text);
-        afterDelegation();
-    }
-
-    @Override
-    public void assertContainsText(String... text) {
-        beforeDelegation("assertContainsText", "\"" + Arrays.toString(text) + "\"");
-        decoratedFacade.assertContainsText(text);
-        afterDelegation();
-    }
-
-    @Override
-    public void assertAttributeIsPresent(String attributeName) {
-        beforeDelegation("assertAttributeIsPresent", "\"" + attributeName + "\"");
-        decoratedFacade.assertAttributeIsPresent(attributeName);
-        afterDelegation();
-    }
-
-    @Override
-    public void assertAttributeValue(String attributeName, String value) {
-        beforeDelegation("assertAttributeValue", "\"" + attributeName + "\" = \"" + value + "\"");
-        decoratedFacade.assertAttributeValue(attributeName, value);
-        afterDelegation();
-    }
-
-    @Override
-    public void assertAttributeContains(String attributeName, String textContainedByAttribute) {
-        beforeDelegation("assertAttributeContains", "\"" + attributeName + "\" = \"" + textContainedByAttribute + "\"");
-        decoratedFacade.assertAttributeContains(attributeName, textContainedByAttribute);
-        afterDelegation();
-    }
-
-    @Override
-    public void assertAnyFollowingTextNodeContains(String contains) {
-        beforeDelegation("assertAnyFollowingTextNodeContains", "\"" + contains + "\"");
-        decoratedFacade.assertAnyFollowingTextNodeContains(contains);
-        afterDelegation();
-    }
-
-    @Override
-    public void assertIsEnabled() {
-        beforeDelegation("assertIsEnabled");
-        decoratedFacade.assertIsEnabled();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertIsDisabled() {
-        beforeDelegation("assertIsDisabled");
-        decoratedFacade.assertIsDisabled();
-        afterDelegation();
-    }
-
-    @Override
-    public void assertInputFieldLength(int length) {
-        beforeDelegation("assertInputFieldLength", String.valueOf(length));
-        decoratedFacade.assertInputFieldLength(length);
-        afterDelegation();
-    }
-
-    @Override
-    public void assertLayout(Layout layout) {
-        beforeDelegation("assertLayout", layout.toString());
-        decoratedFacade.assertLayout(layout);
-        afterDelegation();
     }
 
     @Override
@@ -758,12 +603,35 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public boolean waitForCssClass(String className) {
-        beforeDelegation("waitForCssClass");
-        boolean b = decoratedFacade.waitForCssClass(className);
-        afterDelegation("waitForCssClass("+className+") = " + b);
+    public boolean waitForAttributeContainsNot(final String attributeName, final String value) {
+        beforeDelegation("waitForAttributeContainsNot");
+        boolean b = decoratedFacade.waitForAttributeContainsNot(attributeName, value);
+        afterDelegation("waitForAttributeContainsNot() = " + b);
         return b;
     }
+
+    @Override
+    @Deprecated
+    public boolean waitForCssClass(final String className) {
+        return waitForCssClassIsPresent(className);
+    }
+
+    @Override
+    public boolean waitForCssClassIsPresent(final String className) {
+        beforeDelegation("waitForCssClassIsPresent");
+        boolean b = decoratedFacade.waitForCssClassIsPresent(className);
+        afterDelegation("waitForCssClassIsPresent() = " + b);
+        return b;
+    }
+
+    @Override
+    public boolean waitForCssClassIsNotPresent(final String className) {
+        beforeDelegation("waitForCssClassIsNotPresent");
+        boolean b = decoratedFacade.waitForCssClassIsNotPresent(className);
+        afterDelegation("waitForCssClassIsNotPresent() = " + b);
+        return b;
+    }
+
 
     @Override
     public String toString() {
@@ -797,5 +665,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         Rectangle rect = decoratedFacade.getRect();
         afterDelegation("getRect = " + rect);
         return rect;
+    }
+
+    @Override
+    public File takeScreenshot() {
+        return decoratedFacade.takeScreenshot();
     }
 }

@@ -23,6 +23,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -297,5 +298,13 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
         Rectangle rect = decoratedGuiElementCore.getRect();
         afterDelegation();
         return rect;
+    }
+
+    @Override
+    public File takeScreenshot() {
+        beforeDelegation();
+        File screenshot = decoratedGuiElementCore.takeScreenshot();
+        afterDelegation();
+        return screenshot;
     }
 }

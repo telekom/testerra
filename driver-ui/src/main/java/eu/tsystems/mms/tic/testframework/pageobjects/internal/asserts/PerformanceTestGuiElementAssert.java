@@ -97,6 +97,16 @@ public class PerformanceTestGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
+    public void assertTextContains(String... text) {
+
+    }
+
+    @Override
+    public void assertTextContainsNot(String... text) {
+
+    }
+
+    @Override
     public void assertAttributeIsPresent(String attributeName) {
 
     }
@@ -108,6 +118,11 @@ public class PerformanceTestGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertAttributeContains(String attributeName, String textContainedByAttribute) {
+
+    }
+
+    @Override
+    public void assertAttributeContainsNot(String attributeName, String textNotContainedByAttribute) {
 
     }
 
@@ -133,6 +148,21 @@ public class PerformanceTestGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertLayout(Layout layout) {
+
+    }
+
+    @Override
+    public void assertCssClassIsPresent(String className) {
+
+    }
+
+    @Override
+    public void assertCssClassIsNotPresent(String className) {
+
+    }
+
+    @Override
+    public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
 
     }
 }

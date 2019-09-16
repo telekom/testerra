@@ -1,0 +1,10 @@
+include::property-attributes.adoc[]
+
+[cols="2,^1,4a",options="header"]
+|===
+| Property | default | Description
+| {layoutcheck_reference_path} | `src/test/resources/screenreferences/reference` | Path where the reference screenshots where saved
+| {layoutcheck_reference_nametemplate} | `Reference%s.png` | Prefix for ReferenceScreenshots
+| {layoutcheck_takereference} | false | Determines whether reference images where taken in the current run
+| {layoutcheck_ignore_color} | false | Specifies whether the upper left pixel in the reference image defines an "ignore color". If true, then every pixel with this color will be ignored during the later comparison.
+|===

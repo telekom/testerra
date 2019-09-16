@@ -7,7 +7,7 @@ public class LayoutErrorContext implements CustomErrorContext {
 
     public String name;
     public String mode;
-    public String msg;
+    public double distance;
     public Screenshot expectedScreenshot;
     public Screenshot actualScreenshot;
     public Screenshot distanceScreenshot;

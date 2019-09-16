@@ -593,6 +593,7 @@ public final class LayoutCheck {
         LayoutErrorContext error = new LayoutErrorContext();
         error.name = name;
         error.mode = mode.name();
+        error.distance = distance;
         try {
             // Always copy the reference image
             error.expectedScreenshot = Report.provideScreenshot(referenceScreenshotPath.toFile(),null, Report.Mode.COPY);

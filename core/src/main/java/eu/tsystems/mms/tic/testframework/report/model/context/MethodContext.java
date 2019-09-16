@@ -78,6 +78,8 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     public List<String> infos = new LinkedList<>();
 
     public List<SessionContext> sessionContexts = new LinkedList<>();
+    public final List<Video> videos = new LinkedList<>();
+    public final List<Screenshot> screenshots = new LinkedList<>();
 
     /**
      * Flag for putting all information into the report. Defaults to true. You can set this to false, may be for passed

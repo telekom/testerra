@@ -19,10 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
@@ -33,7 +30,7 @@ import java.util.List;
  */
 public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker {
 
-    void collect() {
+    protected void collect() {
         if (isTest() && WebDriverManager.config().areSessionsClosedAfterTestMethod()) {
             /*
             videos are now fetched only after test methods

@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -180,7 +180,7 @@ public class FileDownloader {
         }
 
         if (link == null || link.length() == 0) {
-            throw new FennecSystemException("Neither href nor src attribute found on GuiElement.");
+            throw new TesterraSystemException("Neither href nor src attribute found on GuiElement.");
         }
 
         return this.download(element.getDriver(), link, targetFileName);

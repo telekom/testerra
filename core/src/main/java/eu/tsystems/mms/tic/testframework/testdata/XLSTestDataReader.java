@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.testdata;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
@@ -86,7 +86,7 @@ public class XLSTestDataReader extends AbstractXLSIO {
         Row headerRow = sheet.getRow(this.headerRow - 1);
 
         if (headerRow == null) {
-            throw new FennecSystemException("Header row is empty. Row " + this.headerRow + " (1-based)");
+            throw new TesterraSystemException("Header row is empty. Row " + this.headerRow + " (1-based)");
         }
 
         // find matching row

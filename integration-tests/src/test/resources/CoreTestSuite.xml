@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Fennec Core Test Suite" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="false">
+<suite name="Testerra Core Test Suite" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="false">
 
     <test name="02 Core Tests parallel" parallel="methods">
         <groups>

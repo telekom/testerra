@@ -20,13 +20,13 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
 import eu.tsystems.mms.tic.testframework.annotations.NoRetry;
-import eu.tsystems.mms.tic.testframework.events.FennecEvent;
-import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
-import eu.tsystems.mms.tic.testframework.events.FennecEventService;
-import eu.tsystems.mms.tic.testframework.events.FennecEventType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
-import eu.tsystems.mms.tic.testframework.report.FennecListener;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestNGMethod;
@@ -41,14 +41,14 @@ public class TestStartWorker extends MethodWorker {
     @Override
     public void run() {
         // set StartTime at very first test invocation.
-        synchronized (FennecListener.class) {
+        synchronized (TesterraListener.class) {
             if (wasMethodInvoked()) {
                 // fire event for test start
-                FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.TEST_START)
+                TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.TEST_START)
                         .addUserData()
-                        .addData(FennecEventDataType.TIMESTAMP, ExecutionContextController.EXECUTION_CONTEXT.startTime.getTime())
-                        .addData(FennecEventDataType.ITestResult, testResult)
-                        .addData(FennecEventDataType.IInvokedMethod, method)
+                        .addData(TesterraEventDataType.TIMESTAMP, ExecutionContextController.EXECUTION_CONTEXT.startTime.getTime())
+                        .addData(TesterraEventDataType.ITestResult, testResult)
+                        .addData(TesterraEventDataType.IInvokedMethod, method)
                 );
             }
         }
@@ -57,7 +57,7 @@ public class TestStartWorker extends MethodWorker {
         methodContext.setThreadName();
 
         // Thread visualizer and method timer start.
-        FennecListener.startMethodTimer();
+        TesterraListener.startMethodTimer();
 
         // add retry analyzer
         if (isTest()) {
@@ -67,7 +67,7 @@ public class TestStartWorker extends MethodWorker {
 
     private void addRetryAnalyzer(ITestNGMethod testNGMethod, Method method) {
         /*
-         * Checks the test testNGMethod annotation for a retry analyzer. If no one is specified, it uses the fennec retry
+         * Checks the test testNGMethod annotation for a retry analyzer. If no one is specified, it uses the tt. retry
          * analyzer.
          */
         if (testNGMethod != null) {
@@ -75,13 +75,13 @@ public class TestStartWorker extends MethodWorker {
             if (retryAnalyzer == null) {
 
                 if (method.isAnnotationPresent(NoRetry.class)) {
-                    LOGGER.debug("Not adding fennec RetryAnalyzer for @NoRetry " + method.getName());
+                    LOGGER.debug("Not adding testerra RetryAnalyzer for @NoRetry " + method.getName());
                 } else {
                     testNGMethod.setRetryAnalyzer(new RetryAnalyzer());
-                    LOGGER.info("Adding fennec RetryAnalyzer for " + method.getName());
+                    LOGGER.info("Adding testerra RetryAnalyzer for " + method.getName());
                 }
             } else {
-                LOGGER.info("Using a non-fennec retry analyzer: " + retryAnalyzer + " on " + method.getName());
+                LOGGER.info("Using a non-testerra retry analyzer: " + retryAnalyzer + " on " + method.getName());
             }
         }
 

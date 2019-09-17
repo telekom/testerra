@@ -1,0 +1,47 @@
+= UITest utilities
+
+The `UITestUtils` supports you to generate additional screenshots.
+
+You can add the screenshots into the report to the method steps.
+
+.Use the WebDriverManager within a test method
+[source, java]
+----
+@Test
+public void testDemo() {
+    ...
+    boolean intoReport = true;
+    UITestUtils.takeScreenshot(WebDriverManager.getWebDriver(), true);
+    ...
+}
+----
+
+.Within a page you can use the driver object.
+[source, java]
+----
+class ExamplePage extends Page {
+
+    ...
+
+    public void doAnything() {
+        UITestUtils.takeScreenshot(this.driver, true);
+    }
+}
+----
+
+You can also store a simple screenshot to your project directory.
+
+.Save a screenshot as a simple file.
+[source, java]
+----
+@Test
+public void testDemo() {
+    ...
+    // FileSystems.getDefault() returns the current working directory
+    File path = FileSystems.getDefault().getPath("screen.png").toFile();
+    UITestUtils.takeWebDriverScreenshotToFile(WebDriverManager.getWebDriver(), path);
+    ...
+}
+----
+
+NOTE: Screenshots are always saved in the PNG image format.

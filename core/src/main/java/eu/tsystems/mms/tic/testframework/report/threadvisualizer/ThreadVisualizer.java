@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import org.apache.velocity.VelocityContext;
@@ -68,13 +68,13 @@ public class ThreadVisualizer {
         final String css = tvFolderName + "/timeline.css";
         final InputStream cssIS = Thread.currentThread().getContextClassLoader().getResourceAsStream(css);
         if (cssIS == null) {
-            throw new FennecRuntimeException(css + " not found");
+            throw new TesterraRuntimeException(css + " not found");
         }
 
         final String js = tvFolderName + "/timeline.js";
         final InputStream jsIS = Thread.currentThread().getContextClassLoader().getResourceAsStream(js);
         if (jsIS == null) {
-            throw new FennecRuntimeException(js + " not found");
+            throw new TesterraRuntimeException(js + " not found");
         }
 
         // copy

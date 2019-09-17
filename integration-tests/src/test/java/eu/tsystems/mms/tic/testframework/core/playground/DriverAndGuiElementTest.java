@@ -21,10 +21,9 @@ package eu.tsystems.mms.tic.testframework.core.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
+import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.*;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.openqa.selenium.WebDriver;
@@ -38,7 +37,7 @@ import java.util.regex.Pattern;
 public class DriverAndGuiElementTest extends AbstractTestSitesTest {
 
     static {
-        System.setProperty("fennec.browser.setting", "firefox:66");
+        System.setProperty("tt.browser.setting", "firefox:66");
     }
 
     @Test
@@ -80,4 +79,14 @@ public class DriverAndGuiElementTest extends AbstractTestSitesTest {
         Assert.assertEquals(sessionCapabilities.get("projectId"), caps.getCapability("projectId"), "EndPoint Capability is set");
     }
 
+    @Test
+    public void testFailing() throws Exception {
+        DesktopWebDriverRequest request = new DesktopWebDriverRequest();
+        request.baseUrl = "http://google.de";
+        request.webDriverMode = WebDriverMode.local;
+        request.browser = Browsers.phantomjs;
+
+        WebDriverManager.getWebDriver(request);
+        Assert.assertTrue(false);
+    }
 }

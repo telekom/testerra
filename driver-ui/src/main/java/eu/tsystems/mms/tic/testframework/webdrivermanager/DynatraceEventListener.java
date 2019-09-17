@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
@@ -59,15 +59,15 @@ public class DynatraceEventListener implements WebDriverEventListener {
             dtLoggerClass = contextClassLoader.loadClass(
                     eu.tsystems.mms.tic.testframework.internal.Constants.DYNATRACE_LOGGER_CLASS);
         } catch (ClassNotFoundException e) {
-            throw new FennecSystemException(
-                    "Dynatrace Logging is activated but the fennec-browsermob-proxy module is not loaded.");
+            throw new TesterraSystemException(
+                    "Dynatrace Logging is activated but the tt.-browsermob-proxy module is not loaded.");
         }
 
         final String errorMessage = "Error initializing the DynaTrace Event Logger";
         try {
             addDynaTraceHeaderMethod = dtLoggerClass.getMethod("addDynaTraceHeader", String.class);
         } catch (NoSuchMethodException e) {
-            throw new FennecSystemException(errorMessage, e);
+            throw new TesterraSystemException(errorMessage, e);
         }
     }
 

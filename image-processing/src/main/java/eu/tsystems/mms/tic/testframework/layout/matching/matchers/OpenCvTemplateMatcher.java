@@ -1,10 +1,11 @@
 package eu.tsystems.mms.tic.testframework.layout.matching.matchers;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.layout.DefaultParameter;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
 import eu.tsystems.mms.tic.testframework.layout.core.ValuedPoint2D;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
@@ -14,7 +15,10 @@ import java.util.LinkedList;
 /**
  * Created by joku on 03.11.2016.
  */
-public class OpenCvTemplateMatcher implements TemplateMatchingAlgorithm {
+public class OpenCvTemplateMatcher implements
+    TemplateMatchingAlgorithm,
+    Loggable
+{
 
     public enum MatchingMode {
         // SQDIFF(0),
@@ -34,7 +38,7 @@ public class OpenCvTemplateMatcher implements TemplateMatchingAlgorithm {
      * Defines at which score a region is considered a match. Should be as high as possible and as low as needed.
      */
     protected double matchThreshold = PropertyManager.getDoubleProperty(
-            FennecProperties.LAYOUTCHECK_MATCH_THRESHOLD,
+            TesterraProperties.LAYOUTCHECK_MATCH_THRESHOLD,
             DefaultParameter.LAYOUTCHECK_MATCH_THRESHOLD);
 
     protected MatchingMode matchingMode;
@@ -64,7 +68,9 @@ public class OpenCvTemplateMatcher implements TemplateMatchingAlgorithm {
             for (int y = 0; y < resultRows; y++) {
                 double value = result.get(y, x)[0];
                 if (value > matchThreshold) {
-                    matchedPoints.add(new ValuedPoint2D(x, y, value));
+                    ValuedPoint2D p = new ValuedPoint2D(x, y, value);
+                    log().info(String.format("Found point %s for image %s with match: %f > %f", p, template.size(), value, matchThreshold));
+                    matchedPoints.add(p);
                 }
             }
         }

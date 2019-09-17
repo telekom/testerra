@@ -27,9 +27,9 @@ public final class RTConstants {
     /**
      * The properties file.
      */
-    private static final String PROPERTY_FILE = System.getProperty(FennecProperties.TEST_PROPERTIES_FILE, "test.properties");
+    private static final String PROPERTY_FILE = System.getProperty(TesterraProperties.TEST_PROPERTIES_FILE, "test.properties");
 
-    public static String getFennecTestPropertiesFile() {
+    public static String getTesterraTestPropertiesFile() {
         return PROPERTY_FILE;
     }
 

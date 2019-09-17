@@ -174,15 +174,33 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
     }
 
     @Override
+    @Deprecated
     public void assertContainsText(String... text) {
+        assertTextContains(text);
+    }
+
+    @Override
+    public void assertTextContains(String... text) {
         callBeforeAssertion();
         AssertionError thrownAssertionError = null;
         try {
-            decoratedAssert.assertContainsText(text);
+            decoratedAssert.assertTextContains(text);
         } catch (AssertionError e) {
             thrownAssertionError = e;
         }
-        handleAfterAssertion("assertContainsText \"" + Arrays.toString(text) + "\"", thrownAssertionError);
+        handleAfterAssertion("assertTextContains \"" + Arrays.toString(text) + "\"", thrownAssertionError);
+    }
+
+    @Override
+    public void assertTextContainsNot(String... text) {
+        callBeforeAssertion();
+        AssertionError thrownAssertionError = null;
+        try {
+            decoratedAssert.assertTextContainsNot(text);
+        } catch (AssertionError e) {
+            thrownAssertionError = e;
+        }
+        handleAfterAssertion("assertTextContainsNot \"" + Arrays.toString(text) + "\"", thrownAssertionError);
     }
 
     @Override
@@ -219,6 +237,18 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
             thrownAssertionError = e;
         }
         handleAfterAssertion("assertAttributeContains \"" + attributeName + "\" =~ \"" + textContainedByAttribute + "\"", thrownAssertionError);
+    }
+
+    @Override
+    public void assertAttributeContainsNot(final String attributeName, final String textNotContainedByAttribute) {
+        callBeforeAssertion();
+        AssertionError thrownAssertionError = null;
+        try {
+            decoratedAssert.assertAttributeContainsNot(attributeName, textNotContainedByAttribute);
+        } catch (AssertionError e) {
+            thrownAssertionError = e;
+        }
+        handleAfterAssertion("assertAttributeContainsNot \"" + attributeName + "\" =~ \"" + textNotContainedByAttribute + "\"", thrownAssertionError);
     }
 
     @Override
@@ -282,6 +312,30 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
     }
 
     @Override
+    public void assertCssClassIsPresent(final String className) {
+        callBeforeAssertion();
+        AssertionError thrownAssertionError = null;
+        try {
+            decoratedAssert.assertCssClassIsPresent(className);
+        } catch (AssertionError e) {
+            thrownAssertionError = e;
+        }
+        handleAfterAssertion("assertCssClassIsPresent " + className, thrownAssertionError);
+    }
+
+    @Override
+    public void assertCssClassIsNotPresent(String className) {
+        callBeforeAssertion();
+        AssertionError thrownAssertionError = null;
+        try {
+            decoratedAssert.assertCssClassIsNotPresent(className);
+        } catch (AssertionError e) {
+            thrownAssertionError = e;
+        }
+        handleAfterAssertion("assertCssClassIsNotPresent " + className, thrownAssertionError);
+    }
+
+    @Override
     public void assertIsPresent() {
         callBeforeAssertion();
         AssertionError thrownAssertionError = null;
@@ -329,5 +383,17 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
             thrownAssertionError = e;
         }
         handleAfterAssertion("assertIsDisplayedFromWebElement", thrownAssertionError);
+    }
+
+    @Override
+    public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
+        callBeforeAssertion();
+        AssertionError thrownAssertionError = null;
+        try {
+            decoratedAssert.assertScreenshot(targetImageName, confidenceThreshold);
+        } catch (AssertionError e) {
+            thrownAssertionError = e;
+        }
+        handleAfterAssertion("assertScreenshot", thrownAssertionError);
     }
 }

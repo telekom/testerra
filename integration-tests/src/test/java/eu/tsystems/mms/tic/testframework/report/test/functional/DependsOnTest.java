@@ -1,19 +1,17 @@
 package eu.tsystems.mms.tic.testframework.report.test.functional;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
 import eu.tsystems.mms.tic.testframework.report.general.MethodDependency;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
-import eu.tsystems.mms.tic.testframework.report.model.ReportConfigMethodStateHelper;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.DashboardModuleMethodChart;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestDependsOn;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.DataProvider;
@@ -22,7 +20,7 @@ import org.testng.annotations.Test;
 /**
  * Created by fakr on 09.10.2017
  */
-@FennecClassContext("Functional-DependsOn")
+@TesterraClassContext("Functional-DependsOn")
 public class DependsOnTest extends AbstractTest {
 
     /**

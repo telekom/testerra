@@ -23,10 +23,10 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.Constants;
 import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSetupException;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSetupException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Defaults;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
@@ -34,9 +34,8 @@ import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
-import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickpathEventListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.sikuli.FennecWebDriver;
+import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -87,7 +86,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             r.copyFrom(request);
         }
         else {
-            throw new FennecSystemException(request.getClass().getSimpleName() +  " is not allowed here");
+            throw new TesterraSystemException(request.getClass().getSimpleName() +  " is not allowed here");
         }
 
         /*
@@ -100,9 +99,9 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         /*
         build endpoint stuff
          */
-        String host = StringUtils.getFirstValidString(r.seleniumServerHost, PropertyManager.getProperty(FennecProperties.SELENIUM_SERVER_HOST), "localhost");
-        String port = StringUtils.getFirstValidString(r.seleniumServerPort, PropertyManager.getProperty(FennecProperties.SELENIUM_SERVER_PORT), "4444");
-        String url = StringUtils.getFirstValidString(r.seleniumServerURL, PropertyManager.getProperty(FennecProperties.SELENIUM_SERVER_URL), "http://" + host + ":" + port + "/wd/hub");
+        String host = StringUtils.getFirstValidString(r.seleniumServerHost, PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_HOST), "localhost");
+        String port = StringUtils.getFirstValidString(r.seleniumServerPort, PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_PORT), "4444");
+        String url = StringUtils.getFirstValidString(r.seleniumServerURL, PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_URL), "http://" + host + ":" + port + "/wd/hub");
 
         // set backwards
         try {
@@ -141,7 +140,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             driver.get(baseUrl);
         } catch (Exception e) {
             if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                throw new FennecRuntimeException("Could not start driver session, because of unreachable url: " + request.baseUrl, e);
+                throw new TesterraRuntimeException("Could not start driver session, because of unreachable url: " + request.baseUrl, e);
             }
             throw e;
         }
@@ -186,15 +185,12 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             return newWebDriver(desktopWebDriverRequest, desiredCapabilities);
         }
 
-        throw new FennecSystemException("WebDriverManager is in a bad state. Please report this to the fennec developers.");
+        throw new TesterraSystemException("WebDriverManager is in a bad state. Please report this to the tt. developers.");
     }
 
     @Override
     public void setupSession(EventFiringWebDriver eventFiringWebDriver, DesktopWebDriverRequest request) {
         final String browser = request.browser;
-
-        // activate clickpath event listener
-        eventFiringWebDriver.register(new ClickpathEventListener());
 
         // add event listeners
         eventFiringWebDriver.register(new VisualEventDriverListener());
@@ -255,7 +251,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
         if (!Browsers.safari.equalsIgnoreCase(browser)) {
             int pageLoadTimeout = Constants.PAGE_LOAD_TIMEOUT_SECONDS;
-            int scriptTimeout = PropertyManager.getIntProperty(FennecProperties.WEBDRIVER_TIMEOUT_SECONDS_SCRIPT, 120);
+            int scriptTimeout = PropertyManager.getIntProperty(TesterraProperties.WEBDRIVER_TIMEOUT_SECONDS_SCRIPT, 120);
             try {
                 eventFiringWebDriver.manage().timeouts().pageLoadTimeout(pageLoadTimeout, TimeUnit.SECONDS);
             } catch (Exception e) {
@@ -290,7 +286,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             try {
                 remoteAddress = new URL(url);
             } catch (final MalformedURLException e) {
-                throw new FennecRuntimeException("MalformedUrlException while building Remoteserver URL: " + url, e);
+                throw new TesterraRuntimeException("MalformedUrlException while building Remoteserver URL: " + url, e);
             }
 
             /*
@@ -326,7 +322,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     default:
                         newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
                 }
-            } catch (final FennecSetupException e) {
+            } catch (final TesterraSetupException e) {
                 int ms = Constants.WEBDRIVER_START_RETRY_TIME_IN_MS;
                 LOGGER.error(logSCID() + "Error starting WebDriver. Trying again in "
                         + (ms / 1000) + " seconds.", e);
@@ -347,6 +343,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
          */
         SessionId webDriverSessionId = ((RemoteWebDriver) newDriver).getSessionId();
         desktopWebDriverRequest.storedSessionId = webDriverSessionId.toString();
+        desktopWebDriverRequest.sessionContext.sessionId = desktopWebDriverRequest.storedSessionId;
         LOGGER.info(logSCID() + "Remote Session ID: " + webDriverSessionId);
 
         /*
@@ -381,9 +378,9 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             remote mode
              */
             try {
-                driver = new FennecWebDriver(remoteAddress, capabilities);
+                driver = new TesterraWebDriver(remoteAddress, capabilities);
             } catch (Exception e) {
-                throw new FennecSetupException(errorMessage, e);
+                throw new TesterraSetupException(errorMessage, e);
             }
 
             // set local file detector
@@ -425,10 +422,10 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     driver = new EdgeDriver(capabilities);
                     break;
                 default:
-                    throw new FennecSystemException(ErrorMessages.browserNotSupportedHere(browser));
+                    throw new TesterraSystemException(ErrorMessages.browserNotSupportedHere(browser));
             }
         } else {
-            throw new FennecSystemException("Internal Error when starting webdriver.");
+            throw new TesterraSystemException("Internal Error when starting webdriver.");
         }
 
         sw.stop();

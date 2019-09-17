@@ -1,8 +1,8 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFailurePointsPage;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFailureEntry;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractReportFailuresTest;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by riwa on 04.04.2017.
  */
-@FennecClassContext("View-ExitPoints")
+@TesterraClassContext("View-ExitPoints")
 public class ExitPointsPageTest extends AbstractReportFailuresTest {
     //TODO restructure tests: find exit points with the help of method names and not with index
 
@@ -36,7 +36,7 @@ public class ExitPointsPageTest extends AbstractReportFailuresTest {
             case SystemTestsGroup.SYSTEMTESTSFILTER2:
                 return new TestReportTwoNumbers().getExitPoints();
             default:
-                throw new FennecRuntimeException("Not implemented for Report: " + reportFilter);
+                throw new TesterraRuntimeException("Not implemented for Report: " + reportFilter);
         }
     }
 
@@ -52,7 +52,7 @@ public class ExitPointsPageTest extends AbstractReportFailuresTest {
                 }
                 return counter;
             default:
-                throw new FennecRuntimeException("Not implemented for Report: " + reportFilter);
+                throw new TesterraRuntimeException("Not implemented for Report: " + reportFilter);
         }
     }
 
@@ -62,7 +62,7 @@ public class ExitPointsPageTest extends AbstractReportFailuresTest {
             case SystemTestsGroup.SYSTEMTESTSFILTER2:
                 return TestReportTwoExitPoints.getAllExitPointEntryTestObjects();
             default:
-                throw new FennecRuntimeException("Not implemented for Report: " + reportFilter);
+                throw new TesterraRuntimeException("Not implemented for Report: " + reportFilter);
         }
     }
 

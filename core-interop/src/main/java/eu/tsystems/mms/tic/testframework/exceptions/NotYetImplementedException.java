@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.exceptions;
 
 /**
- * RuntimeException for fennec.
+ * RuntimeException for tt.
  * 
  * @author pele
  */

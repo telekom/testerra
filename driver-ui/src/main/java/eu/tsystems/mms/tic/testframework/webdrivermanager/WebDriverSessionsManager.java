@@ -19,14 +19,12 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.events.FennecEvent;
-import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
-import eu.tsystems.mms.tic.testframework.events.FennecEventService;
-import eu.tsystems.mms.tic.testframework.events.FennecEventType;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
@@ -37,15 +35,12 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
-import org.apache.http.impl.conn.ManagedHttpClientConnectionFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -54,7 +49,7 @@ import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverFactor
 /**
  * Created by pele on 08.01.2015.
  */
-final class WebDriverSessionsManager {
+public final class WebDriverSessionsManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverSessionsManager.class);
 
@@ -81,8 +76,9 @@ final class WebDriverSessionsManager {
         return currentThread.getId() + FULL_SESSION_KEY_SPLIT_MARKER + sessionKey;
     }
 
-    static void storeWebDriverSession(String sessionKey, WebDriver eventFiringWebDriver, SessionContext sessionContext) {
-        String fullSessionKey = getFullSessionKey(sessionKey);
+    static void storeWebDriverSession(WebDriverRequest webDriverRequest, WebDriver eventFiringWebDriver, SessionContext sessionContext) {
+        final String sessionKey = webDriverRequest.sessionKey;
+        final String fullSessionKey = getFullSessionKey(sessionKey);
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS.put(fullSessionKey, eventFiringWebDriver);
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_INVERSE.put(eventFiringWebDriver, fullSessionKey);
 
@@ -111,6 +107,10 @@ final class WebDriverSessionsManager {
         } else {
             LOGGER.error("Could not store SessionContext, could not get SessionId");
         }
+
+        // store the request
+        DRIVER_REQUEST_MAP.put((EventFiringWebDriver) eventFiringWebDriver, webDriverRequest);
+
     }
 
     static void removeWebDriverSession(String sessionId, WebDriver eventFiringWebDriver, String fullSessionKeyOrNull) {
@@ -175,11 +175,21 @@ final class WebDriverSessionsManager {
         // store to method context
         ExecutionContextController.getCurrentMethodContext().sessionContexts.add(sessionContext);
 
-        storeWebDriverSession(sessionKey, eventFiringWebDriver, sessionContext);
+        UnspecificWebDriverRequest r = new UnspecificWebDriverRequest();
+        r.sessionKey = sessionKey;
+        storeWebDriverSession(r, eventFiringWebDriver, sessionContext);
     }
 
     static final List<WebDriverSessionHandler> beforeQuitActions = new LinkedList<>();
     static final List<Runnable> afterQuitActions = new LinkedList<>();
+
+    public static void registerWebDriverShutDownHandler(WebDriverSessionHandler beforeQuit) {
+        WebDriverSessionsManager.beforeQuitActions.add(beforeQuit);
+    }
+
+    public static void registerWebDriverShutDownHandler(Runnable afterQuit) {
+        WebDriverSessionsManager.afterQuitActions.add(afterQuit);
+    }
 
     static void shutDownAllThreadSessions() {
         long threadId = Thread.currentThread().getId();
@@ -252,7 +262,7 @@ final class WebDriverSessionsManager {
 
     static synchronized String makeSessionExclusive(final WebDriver eventFiringWebDriver) {
         if (!(eventFiringWebDriver instanceof EventFiringWebDriver)) {
-            throw new FennecRuntimeException("Nah, your WebDriver is not an EventFiringWebDriver.");
+            throw new TesterraRuntimeException("Nah, your WebDriver is not an EventFiringWebDriver.");
         }
 
         if (ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.containsValue(eventFiringWebDriver)) {
@@ -280,8 +290,8 @@ final class WebDriverSessionsManager {
         ExecutionContextController.EXECUTION_CONTEXT.exclusiveSessionContexts.add(sessionContext);
         sessionContext.parentContext = ExecutionContextController.EXECUTION_CONTEXT;
         // fire sync
-        FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
-                .addData(FennecEventDataType.CONTEXT, sessionContext));
+        TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                .addData(TesterraEventDataType.CONTEXT, sessionContext));
 
         /*
         Delete session from session maps.
@@ -376,7 +386,7 @@ final class WebDriverSessionsManager {
             if (ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.containsKey(sessionKey)) {
                 return ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.get(sessionKey);
             } else {
-                throw new FennecSystemException("Session not useable anymore: " + sessionKey);
+                throw new TesterraSystemException("Session not useable anymore: " + sessionKey);
             }
         }
 
@@ -389,6 +399,10 @@ final class WebDriverSessionsManager {
         if (eventFiringWebDriver != null) {
             return eventFiringWebDriver;
         }
+
+        /*
+        **** STARTING NEW SESSION ****
+         */
 
         /*
         decide which session manager to use
@@ -409,8 +423,8 @@ final class WebDriverSessionsManager {
             ExecutionContextController.setCurrentSessionContext(sessionContext);
 
             // fire sync
-            FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
-                    .addData(FennecEventDataType.CONTEXT, sessionContext));
+            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                    .addData(TesterraEventDataType.CONTEXT, sessionContext));
 
             /*
             setup new session
@@ -428,16 +442,13 @@ final class WebDriverSessionsManager {
                 }
             }
 
-            // store the request
-            DRIVER_REQUEST_MAP.put((EventFiringWebDriver) eventFiringWebDriver, webDriverRequest);
-
             // fire sync again, for updated sessionContext
-            FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
-                    .addData(FennecEventDataType.CONTEXT, sessionContext));
+            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                    .addData(TesterraEventDataType.CONTEXT, sessionContext));
 
             return eventFiringWebDriver;
         } else {
-            throw new FennecSystemException("No webdriver factory registered for browser " + browser);
+            throw new TesterraSystemException("No webdriver factory registered for browser " + browser);
         }
     }
 

@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.common;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.transfer.BooleanPackedResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,8 +46,8 @@ public final class PropertiesParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesParser.class);
 
     /**
-     * Parses a property and searches for fennec properties replacement marks: "{...}".
-     * These marks will then be replaced by the fennec property (if defined).
+     * Parses a property and searches for testerra properties replacement marks: "{...}".
+     * These marks will then be replaced by the property (if defined).
      * The replacement is recursive and has a loop detection.
      * Do the initial call with: parseLine(p, null).
      *
@@ -73,7 +73,7 @@ public final class PropertiesParser {
             Check for loop
              */
             if (searchedStrings.contains(key)) {
-                throw new FennecSystemException("Loop detected while replacing a property: " + match);
+                throw new TesterraSystemException("Loop detected while replacing a property: " + match);
             } else {
                 /*
                 ask
@@ -120,8 +120,8 @@ public final class PropertiesParser {
     }
 
     /**
-     * Parses a property and searches for fennec properties replacement marks: "{...}".
-     * These marks will then be replaced by the fennec property (if defined).
+     * Parses a property and searches for properties replacement marks: "{...}".
+     * These marks will then be replaced by the property (if defined).
      * The replacement is recursive and has a loop detection.
      *
      * @param line the current line.

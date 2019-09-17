@@ -1,0 +1,78 @@
+plugins {
+    id "org.asciidoctor.convert" version "2.3.0"
+    id "jp.classmethod.aws.s3" version "0.40"
+}
+
+import com.amazonaws.services.s3.model.ObjectMetadata
+import jp.classmethod.aws.gradle.s3.AmazonS3FileUploadTask
+import jp.classmethod.aws.gradle.s3.SyncTask
+
+
+ext {
+    sources = 'src'
+    sourcesDoc = "${sources}/docs"
+    destinationDir = 'build/docs'
+    sourceDirForS3 = "${destinationDir}/html5"
+    destDirS3 = 'testerra/latest'
+    myBucketName = 'tapas-docs'
+}
+
+aws {
+    profileName = 'tapas'
+    region = 'eu-central-1'
+}
+
+asciidoctor {
+    sourceDir = file("${sourcesDoc}")
+    sources {
+        include 'index.adoc'
+    }
+    resources {
+        from("$sources") {
+            include 'images/**', 'css/**', 'js/**', 'highlight/**'
+        }
+    }
+    outputDir = file("$destinationDir")
+    options doctype: 'book',
+            backends: 'html5'
+
+    attributes docinfo: 'shared',
+            toc: 'left',
+            toclevels: 2,
+            sectnums: '',
+            sectanchors: '',
+            Author: 'The Testerra Team of T-Systems Multimedia Solutions GmbH',
+            revnumber: "${version}",
+            'source-highlighter': 'highlightjs',
+            'highlightjs-theme': 'atom-one-light',
+            highlightjsdir: 'highlight',
+            icons: 'font',
+            imagesdir: 'images'
+}
+
+task syncContents(type: SyncTask) {
+    source file("${sourceDirForS3}") // must be directory
+    bucketName myBucketName
+    prefix "${destDirS3}/"
+
+    // to set all file's metadata "no-cache, no-store"
+    metadataProvider { bucket, key, file ->
+        ObjectMetadata m = new ObjectMetadata()
+        m.setCacheControl("no-cache, no-store")
+        return m
+    }
+}
+
+// Just for testing - upload a single file
+task uploadContent(type: AmazonS3FileUploadTask) {
+    file file("${sourceDirForS3}/index.html") // must be a file
+    bucketName myBucketName
+    key "${destDirS3}/index.html"
+
+    def m = new ObjectMetadata()
+    m.setCacheControl("no-cache, no-store")
+    objectMetadata = m
+}
+
+asciidoctor.dependsOn(clean)
+syncContents.dependsOn(asciidoctor)

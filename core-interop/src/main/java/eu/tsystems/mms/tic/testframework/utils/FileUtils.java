@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.utils;
 import de.idyl.winzipaes.AesZipFileEncrypter;
 import de.idyl.winzipaes.impl.AESEncrypter;
 import de.idyl.winzipaes.impl.AESEncrypterJCA;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -81,7 +81,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
         try {
             uri = resource.toURI();
         } catch (URISyntaxException e) {
-            throw new FennecSystemException("Error getting file uri: " + resource);
+            throw new TesterraSystemException("Error getting file uri: " + resource);
         }
         File file = new File(uri);
         String absolutePath = file.getAbsolutePath();
@@ -100,7 +100,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
         try {
             absoluteFilePath = getAbsoluteFilePath(fileInResources);
         } catch (FileNotFoundException e) {
-            throw new FennecSystemException("Error loading file: " + fileInResources, e);
+            throw new TesterraSystemException("Error loading file: " + fileInResources, e);
         }
 
         return readFromFile(absoluteFilePath);

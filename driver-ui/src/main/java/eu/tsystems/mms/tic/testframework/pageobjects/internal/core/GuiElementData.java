@@ -42,7 +42,7 @@ import java.util.List;
 public class GuiElementData {
 
     public final By by;
-    @Deprecated // Evil, should never be used!!!
+    @Deprecated // Evil, should never be used!!! <<< why, i need it?? pele 23.08.2019
     public final GuiElement guiElement;
 
     public final WebDriver webDriver;

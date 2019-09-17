@@ -22,9 +22,9 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.Retry;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecInheritedFailedException;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraInheritedFailedException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -67,7 +67,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
     private static final List<MethodContext> RETRIED_METHODS = Collections.synchronizedList(new LinkedList<>());
 
     static {
-        final String classes = PropertyManager.getProperty(FennecProperties.FAILED_TESTS_IF_THROWABLE_CLASSES);
+        final String classes = PropertyManager.getProperty(TesterraProperties.FAILED_TESTS_IF_THROWABLE_CLASSES);
         if (classes != null) {
             String[] split = classes.split(",");
             for (String clazz : split) {
@@ -80,7 +80,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
             }
         }
 
-        final String messages = PropertyManager.getProperty(FennecProperties.FAILED_TESTS_IF_THROWABLE_MESSAGES);
+        final String messages = PropertyManager.getProperty(TesterraProperties.FAILED_TESTS_IF_THROWABLE_MESSAGES);
         if (messages != null) {
             String[] split = messages.split(",");
             for (String message : split) {
@@ -108,7 +108,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
             }
         }
 
-        return PropertyManager.getIntProperty(FennecProperties.FAILED_TESTS_MAX_RETRIES, 1);
+        return PropertyManager.getIntProperty(TesterraProperties.FAILED_TESTS_MAX_RETRIES, 1);
 
     }
 
@@ -134,10 +134,10 @@ public class RetryAnalyzer implements IRetryAnalyzer {
         }
 
         /*
-         * no retry when FennecInheritedExceptions raise
+         * no retry when TesterraInheritedExceptions raise
          */
         final Throwable throwable1 = testResult.getThrowable();
-        if (throwable1 != null && throwable1 instanceof FennecInheritedFailedException) {
+        if (throwable1 != null && throwable1 instanceof TesterraInheritedFailedException) {
             return false;
         }
 
@@ -183,7 +183,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
                 if (throwable != null) {
                     methodContext.setThrowable(message, throwable);
                 } else {
-                    methodContext.setThrowable(message, new FennecSystemException(message));
+                    methodContext.setThrowable(message, new TesterraSystemException(message));
                 }
             }
 

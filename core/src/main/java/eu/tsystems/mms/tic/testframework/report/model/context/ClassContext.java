@@ -27,29 +27,21 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
-import eu.tsystems.mms.tic.testframework.events.FennecEvent;
-import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
-import eu.tsystems.mms.tic.testframework.events.FennecEventService;
-import eu.tsystems.mms.tic.testframework.events.FennecEventType;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
-import org.testng.IInvokedMethod;
-import org.testng.ITestContext;
-import org.testng.ITestNGMethod;
-import org.testng.ITestResult;
-import org.testng.SkipException;
+import org.testng.*;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -64,7 +56,7 @@ public class ClassContext extends Context implements SynchronizableContext {
     public String simpleClassName;
     public final TestContext testContext;
     public final ExecutionContext executionContext;
-    public FennecClassContext fennecClassContext = null;
+    public TesterraClassContext testerraClassContext = null;
     public boolean merged = false;
     public ClassContext mergedIntoClassContext = null;
 
@@ -88,15 +80,14 @@ public class ClassContext extends Context implements SynchronizableContext {
 
         final List<Object> parametersList = Arrays.stream(parameters).collect(Collectors.toList());
 
-        synchronized (methodContexts) {
-            List<MethodContext> collect;
+        List<MethodContext> collect;
 
+        synchronized (methodContexts) {
             if (testResult != null) {
                 collect = methodContexts.stream()
                         .filter(mc -> testResult == mc.testResult)
                         .collect(Collectors.toList());
-            }
-            else {
+            } else {
                 // TODO: (!!!!) this is not eindeutig
                 collect = methodContexts.stream()
                         .filter(mc -> iTestContext == mc.iTestContext)
@@ -104,88 +95,90 @@ public class ClassContext extends Context implements SynchronizableContext {
                         .filter(mc -> mc.parameters.containsAll(parametersList))
                         .collect(Collectors.toList());
             }
+        }
 
-            MethodContext methodContext;
-            if (collect.isEmpty()) {
+        MethodContext methodContext;
+        if (collect.isEmpty()) {
                 /*
                 create new one
                  */
-                MethodType methodType;
+            MethodType methodType;
 
-                final boolean isTest;
-                if (iTestNGMethod != null) {
-                    isTest = iTestNGMethod.isTest();
-                } else {
-                    throw new FennecSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{iTestNGMethod, iTestContext}, "\n"));
-                }
+            final boolean isTest;
+            if (iTestNGMethod != null) {
+                isTest = iTestNGMethod.isTest();
+            } else {
+                throw new TesterraSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{iTestNGMethod, iTestContext}, "\n"));
+            }
 
-                if (isTest) {
-                    methodType = MethodType.TEST_METHOD;
-                } else {
-                    methodType = MethodType.CONFIGURATION_METHOD;
-                }
+            if (isTest) {
+                methodType = MethodType.TEST_METHOD;
+            } else {
+                methodType = MethodType.CONFIGURATION_METHOD;
+            }
 
-                TestContext correctTestContext = testContext;
-                SuiteContext correctSuiteContext = testContext.suiteContext;
-                if (merged) {
-                    correctSuiteContext = executionContext.getSuiteContext(iTestContext);
-                    correctTestContext = correctSuiteContext.getTestContext(iTestContext);
-                }
+            TestContext correctTestContext = testContext;
+            SuiteContext correctSuiteContext = testContext.suiteContext;
+            if (merged) {
+                correctSuiteContext = executionContext.getSuiteContext(iTestContext);
+                correctTestContext = correctSuiteContext.getTestContext(iTestContext);
+            }
 
-                methodContext = new MethodContext(name, methodType, this, correctTestContext, correctSuiteContext, executionContext);
-                fillBasicContextValues(methodContext, this, name);
+            methodContext = new MethodContext(name, methodType, this, correctTestContext, correctSuiteContext, executionContext);
+            fillBasicContextValues(methodContext, this, name);
 
-                methodContext.testResult = testResult;
-                methodContext.iTestContext = iTestContext;
-                methodContext.iTestNgMethod = iTestNGMethod;
+            methodContext.testResult = testResult;
+            methodContext.iTestContext = iTestContext;
+            methodContext.iTestNgMethod = iTestNGMethod;
 
                 /*
                 enhance swi with parameters, set parameters into context
                  */
-                if (parameters.length > 0) {
-                    methodContext.parameters = Arrays.stream(parameters).map(Object::toString).collect(Collectors.toList());
-                    String swiSuffix = methodContext.parameters.stream().map(Object::toString).collect(Collectors.joining("_"));
-                    methodContext.swi += "_" + swiSuffix;
-                }
+            if (parameters.length > 0) {
+                methodContext.parameters = Arrays.stream(parameters).map(Object::toString).collect(Collectors.toList());
+                String swiSuffix = methodContext.parameters.stream().map(Object::toString).collect(Collectors.joining("_"));
+                methodContext.swi += "_" + swiSuffix;
+            }
 
                 /*
                 link to merged context
                  */
-                if (merged) {
-                    synchronized (mergedIntoClassContext.methodContexts) {
-                        mergedIntoClassContext.methodContexts.add(methodContext);
-                    }
+            if (merged) {
+                synchronized (mergedIntoClassContext.methodContexts) {
+                    mergedIntoClassContext.methodContexts.add(methodContext);
                 }
+            }
 
                 /*
                 also check for annotations
                  */
-                Method method = iTestNGMethod.getConstructorOrMethod().getMethod();
-                if (method.isAnnotationPresent(FailureCorridor.High.class)) {
-                    methodContext.failureCorridorValue = FailureCorridor.Value.HIGH;
-                } else if (method.isAnnotationPresent(FailureCorridor.Mid.class)) {
-                    methodContext.failureCorridorValue = FailureCorridor.Value.MID;
-                } else if (method.isAnnotationPresent(FailureCorridor.Low.class)) {
-                    methodContext.failureCorridorValue = FailureCorridor.Value.LOW;
-                }
-
-                /*
-                add to method contexts
-                 */
-                methodContexts.add(methodContext);
-
-                // fire context update event: create method context
-                FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
-                        .addData(FennecEventDataType.CONTEXT, methodContext)
-                        .addData(FennecEventDataType.WITH_PARENT, true));
-            } else {
-                if (collect.size() > 1) {
-                    LOGGER.error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");
-                }
-                methodContext = collect.get(0);
+            Method method = iTestNGMethod.getConstructorOrMethod().getMethod();
+            if (method.isAnnotationPresent(FailureCorridor.High.class)) {
+                methodContext.failureCorridorValue = FailureCorridor.Value.HIGH;
+            } else if (method.isAnnotationPresent(FailureCorridor.Mid.class)) {
+                methodContext.failureCorridorValue = FailureCorridor.Value.MID;
+            } else if (method.isAnnotationPresent(FailureCorridor.Low.class)) {
+                methodContext.failureCorridorValue = FailureCorridor.Value.LOW;
             }
-            return methodContext;
+
+            /*
+            add to method contexts
+             */
+            synchronized (methodContexts) {
+                methodContexts.add(methodContext);
+            }
+
+            // fire context update event: create method context
+            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                    .addData(TesterraEventDataType.CONTEXT, methodContext)
+                    .addData(TesterraEventDataType.WITH_PARENT, true));
+        } else {
+            if (collect.size() > 1) {
+                LOGGER.error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");
+            }
+            methodContext = collect.get(0);
         }
+        return methodContext;
     }
 
     public List<MethodContext> copyOfMethodContexts() {

@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import eu.tsystems.mms.tic.testframework.dbconnector.test.connectors.TestTable;
-import eu.tsystems.mms.tic.testframework.testing.FennecTest;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
@@ -53,7 +53,7 @@ import org.testng.annotations.BeforeSuite;
  * @author sepr
  * 
  */
-public abstract class AbstractDBConnectorTest extends FennecTest {
+public abstract class AbstractDBConnectorTest extends TesterraTest {
 
     /** Logger for all DBConnector Tests. */
     public static final Logger LOGGER = LoggerFactory.getLogger(AbstractDBConnectorTest.class);

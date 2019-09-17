@@ -5,7 +5,7 @@
     <head>
         <title>Test Results Report - Log Output</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-        <meta name="description" content="fennec Test Report - Log Output"/>
+        <meta name="description" content="Test Report - Log Output"/>
 
         #parse("styleincludes.vm")
 

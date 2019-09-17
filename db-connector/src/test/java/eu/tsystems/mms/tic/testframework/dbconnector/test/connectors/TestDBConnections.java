@@ -31,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.dbconnector.ProjectConnections;
 import eu.tsystems.mms.tic.testframework.dbconnector.connection.Driver;
 
 /**
- * Class holding DBConnections for FennecTest-Project.
+ * Class holding DBConnections for TesterraTest-Project.
  * 
  * Created with IntelliJ IDEA. User: pele Date: 18.05.12 Time: 12:43
  */
@@ -43,10 +43,10 @@ public class TestDBConnections extends ProjectConnections {
     public static final TestDBConnections DB1 =
             new TestDBConnections(
                     new DBConnector<TestDBConnections>("localhost", "3306", Driver.MYSQL,
-                            "Fennecdbconnector", "fennec", "your_passwd"));
+                            "Testerradbconnector", "testerra", "your_passwd"));
 
     /**
-     * Connection to H2 DB that stores fennec Results.
+     * Connection to H2 DB that stores Results.
      */
     public static final TestDBConnections H2RESULTS =
             new TestDBConnections(

@@ -42,7 +42,7 @@ public final class LoggerUtils {
     }
 
     /**
-     * Configure the log level for fennec.
+     * Configure the log level for tt.
      * 
      * @param logger The logger to log.
      * @param level The LogLevel which log messages should be logged,

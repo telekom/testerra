@@ -118,21 +118,21 @@ public final class MouseActions {
                                               int fromY,
                                               int toX, int toY) {
 
-        JSUtils.implementJavascriptOnPage(driver, "js/inject/dragAndDrop.js", "FennecDragAndDrop");
+        JSUtils.implementJavascriptOnPage(driver, "js/inject/dragAndDrop.js", "TesterraDragAndDrop");
 
         final String jsSelectorDrag = JSUtils.getJavaScriptSelector(drag);
         final String jsSelectorDrop = JSUtils.getJavaScriptSelector(drop);
 
-        final String script = "FennecDNDFrame(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);";
+        final String script = "TesterraDNDFrame(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);";
         JSUtils.executeScript(driver, script, jsSelectorDrag, jsSelectorDrop, fromX, fromY, toX, toY);
     }
 
     public static void dragAndDrop(final WebDriver driver, WebElement drag, WebElement drop, int fromX, int fromY,
             int toX, int toY) {
 
-        JSUtils.implementJavascriptOnPage(driver, "js/inject/dragAndDrop.js", "FennecDragAndDrop");
+        JSUtils.implementJavascriptOnPage(driver, "js/inject/dragAndDrop.js", "TesterraDragAndDrop");
 
-        final String script = "FennecDND(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);";
+        final String script = "TesterraDND(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);";
 
         JSUtils.executeScript(driver, script, drag, drop, fromX, fromY, toX, toY);
     }
@@ -151,8 +151,8 @@ public final class MouseActions {
         int toX = fromX + offsetX;
         int toY = fromY + offsetY;
 
-        JSUtils.implementJavascriptOnPage(driver, "js/inject/dragAndDrop.js", "FennecDragAndDrop");
-        final String script = "FennecSwipe(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);";
+        JSUtils.implementJavascriptOnPage(driver, "js/inject/dragAndDrop.js", "TesterraDragAndDrop");
+        final String script = "TesterraSwipe(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);";
         JSUtils.executeScript(driver, script, elementToSwipe.getWebElement(), fromX, fromY, toX, toY);
     }
 

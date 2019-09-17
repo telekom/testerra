@@ -20,8 +20,8 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.pageobjects.*;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -54,17 +54,17 @@ public class CheckPageTest extends AbstractTestSitesTest {
         new PageWithNotExistingElement(WebDriverManager.getWebDriver());
     }
 
-    @Test(expectedExceptions = FennecRuntimeException.class)
+    @Test(expectedExceptions = TesterraRuntimeException.class)
     public void testT03_checkNullElement() throws Exception {
         new PageWithNullElement(WebDriverManager.getWebDriver());
     }
 
-    @Test(expectedExceptions = FennecRuntimeException.class)
+    @Test(expectedExceptions = TesterraRuntimeException.class)
     public void testT04_checkStaticElement() throws Exception {
         new PageWithExistingStaticElement(WebDriverManager.getWebDriver());
     }
 
-    @Test(expectedExceptions = FennecRuntimeException.class)
+    @Test(expectedExceptions = TesterraRuntimeException.class)
     public void testT05_checkNonCheckableElement() throws Exception {
         new PageWithNonCheckableCheck(WebDriverManager.getWebDriver());
     }

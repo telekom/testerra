@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.dbconnector.test.connectors;
 
 /**
- * Class containing structure of largeobjects table in db Fennecdbconnector.
+ * Class containing structure of largeobjects table in db Testerradbconnector.
  * 
  * @author sepr
  * 

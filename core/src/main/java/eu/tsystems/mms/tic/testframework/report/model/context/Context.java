@@ -19,11 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.events.FennecEvent;
-import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
-import eu.tsystems.mms.tic.testframework.events.FennecEventService;
-import eu.tsystems.mms.tic.testframework.events.FennecEventType;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
@@ -73,13 +73,13 @@ public abstract class Context implements SynchronizableContext {
                     contexts.add(context);
 
                     // fire context update event: create context
-                    FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE)
-                            .addData(FennecEventDataType.CONTEXT, context)
-                            .addData(FennecEventDataType.WITH_PARENT, true));
+                    TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                            .addData(TesterraEventDataType.CONTEXT, context)
+                            .addData(TesterraEventDataType.WITH_PARENT, true));
 
                     return context;
                 } catch (Exception e) {
-                    throw new FennecSystemException("Error creating Context Class", e);
+                    throw new TesterraSystemException("Error creating Context Class", e);
                 }
 
             } else {

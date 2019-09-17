@@ -1,8 +1,8 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFailurePointsPage;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFailureEntry;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractReportFailuresTest;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by riwa on 24.11.2016.
  */
-@FennecClassContext("View-FailureAspects")
+@TesterraClassContext("View-FailureAspects")
 public class FailureAspectsPageTest extends AbstractReportFailuresTest {
 
     @BeforeMethod(alwaysRun = true)
@@ -35,7 +35,7 @@ public class FailureAspectsPageTest extends AbstractReportFailuresTest {
             case SystemTestsGroup.SYSTEMTESTSFILTER2:
                 return new TestReportTwoNumbers().getFailureAspects();
             default:
-                throw new FennecRuntimeException("Not implemented for Report: " + reportFilter);
+                throw new TesterraRuntimeException("Not implemented for Report: " + reportFilter);
         }
     }
 
@@ -51,7 +51,7 @@ public class FailureAspectsPageTest extends AbstractReportFailuresTest {
                 }
                 return counter;
             default:
-                throw new FennecRuntimeException("Not implemented for Report: " + reportFilter);
+                throw new TesterraRuntimeException("Not implemented for Report: " + reportFilter);
         }
     }
 
@@ -61,7 +61,7 @@ public class FailureAspectsPageTest extends AbstractReportFailuresTest {
             case SystemTestsGroup.SYSTEMTESTSFILTER2:
                 return TestReportTwoFailureAspects.getAllFailureAspectEntryTestObjects();
             default:
-                throw new FennecRuntimeException("Not implemented for Report: " + reportFilter);
+                throw new TesterraRuntimeException("Not implemented for Report: " + reportFilter);
         }
     }
     @Override

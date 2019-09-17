@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -35,7 +35,7 @@ public class Css extends WebElementFilter {
 
     private Css(String cssName, String expectedCssValue, StringChecker stringChecker) {
         if (cssName == null) {
-            throw new FennecSystemException("Css name can not be null.");
+            throw new TesterraSystemException("Css name can not be null.");
         }
         this.cssName = cssName;
         this.expectedCssValue = expectedCssValue;

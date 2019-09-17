@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.SequenceTimeoutException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
@@ -218,7 +218,7 @@ public class Timer {
                 success = false;
 
                 if (throwable instanceof OutOfMemoryError) {
-                    throw new FennecSystemException("OOME catched", throwable);
+                    throw new TesterraSystemException("OOME catched", throwable);
                 } else if (throwable instanceof IllegalArgumentException) {
                     // jump out immediately
                     throw (IllegalArgumentException) throwable;

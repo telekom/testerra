@@ -8,7 +8,7 @@
 package eu.tsystems.mms.tic.testframework.layout.matching;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.layout.DefaultParameter;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
 import eu.tsystems.mms.tic.testframework.layout.core.ValuedPoint2D;
@@ -26,7 +26,7 @@ import java.util.List;
 public class GraphBasedTemplateMatcher extends TemplateMatcher {
 
     private double minimalDistanceBetweenMatches = PropertyManager.getIntProperty(
-            FennecProperties.LAYOUTCHECK_INTERNAL_PARAMETER_1,
+            TesterraProperties.LAYOUTCHECK_INTERNAL_PARAMETER_1,
             DefaultParameter.LAYOUTCHECK_INTERNAL_PARAMETER_1);
 
     private final TemplateMatchingAlgorithm templateMatchingAlgorithm;

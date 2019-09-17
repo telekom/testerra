@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
-import eu.tsystems.mms.tic.testframework.interop.CollectAssertionInfoArtefacts;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -51,7 +51,7 @@ public final class AssertionChecker {
     private static final Logger LOGGER = LoggerFactory.getLogger(AssertionChecker.class);
 
     /**
-     * fennec utility method that checks is called from NonFunctionalAssert. It stores the Throwable, creates
+     * utility method that checks is called from NonFunctionalAssert. It stores the Throwable, creates
      * a screenshot if possible and lets the test continue.
      *
      * @param throwable .
@@ -81,15 +81,13 @@ public final class AssertionChecker {
             AssertionInfo assertionInfo = methodContext.addNonFunctionalInfo(throwable);
 
             // get screenshots and videos
-            List<Screenshot> screenshots = CollectAssertionInfoArtefacts.collectScreenshots();
+            List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
             if (screenshots != null) {
+                screenshots.forEach(s -> s.errorContextId = assertionInfo.id);
                 assertionInfo.screenshots.addAll(screenshots);
             }
 
-            List<Video> videos = CollectAssertionInfoArtefacts.collectVideos();
-            if (videos != null) {
-                assertionInfo.videos.addAll(videos);
-            }
+            // not collecting a video here
         }
     }
 }

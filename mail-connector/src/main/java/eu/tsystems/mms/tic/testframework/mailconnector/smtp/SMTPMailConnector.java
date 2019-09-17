@@ -27,8 +27,8 @@
 package eu.tsystems.mms.tic.testframework.mailconnector.smtp;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractMailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.MessageUtils;
 import net.iharder.Base64;
@@ -108,7 +108,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
         mailprops.put("mail.debug", isDebug());
         mailprops.put("mail.smtp.socketFactory.port", getPort());
         mailprops.put("mail.smtp.socketFactory.class",
-                "eu.tsystems.mms.tic.testframework.mailconnector.FennecSSLSocketFactory");
+                "eu.tsystems.mms.tic.testframework.mailconnector.TesterraSSLSocketFactory");
 
         LOGGER.info("building session");
         setSession(Session.getInstance(mailprops,
@@ -128,10 +128,10 @@ public class SMTPMailConnector extends AbstractMailConnector {
      * Send a new message.
      * 
      * @param message The message to send.
-     * @throws FennecSystemException thrown if message was not sent.
+     * @throws TesterraSystemException thrown if message was not sent.
      * 
      */
-    public void sendMessage(final MimeMessage message) throws FennecSystemException {
+    public void sendMessage(final MimeMessage message) throws TesterraSystemException {
         this.pSendMessage(message);
     }
 
@@ -139,10 +139,10 @@ public class SMTPMailConnector extends AbstractMailConnector {
      * Send a new message.
      * 
      * @param message The message to send.
-     * @throws FennecSystemException thrown if message was not sent.
+     * @throws TesterraSystemException thrown if message was not sent.
      * 
      */
-    private void pSendMessage(final MimeMessage message) throws FennecSystemException {
+    private void pSendMessage(final MimeMessage message) throws TesterraSystemException {
         Transport transport = null;
         try {
             transport = getSession().getTransport();
@@ -163,7 +163,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
         } catch (final NoSuchProviderException e) {
             LOGGER.error(e.getMessage(), e);
         } catch (final MessagingException e) {
-            throw new FennecSystemException("Email NOT sent! " + e.getMessage(), e);
+            throw new TesterraSystemException("Email NOT sent! " + e.getMessage(), e);
         }
     }
 
@@ -247,11 +247,11 @@ public class SMTPMailConnector extends AbstractMailConnector {
      * 
      * @return A MimeMessage containing a virus signature.
      * 
-     * @throws FennecSystemException thrown if virus Mail can't generated.
-     * @throws FennecRuntimeException thrown if address parameters were wrong.
+     * @throws TesterraSystemException thrown if virus Mail can't generated.
+     * @throws TesterraRuntimeException thrown if address parameters were wrong.
      */
     public MimeMessage generateVirusMail(final String from, final String receiver,
-            final String ccReceiver, final String bcc) throws FennecSystemException, FennecRuntimeException {
+            final String ccReceiver, final String bcc) throws TesterraSystemException, TesterraRuntimeException {
         return this.pGenerateVirusMail(from, receiver, ccReceiver, bcc);
     }
 
@@ -265,11 +265,11 @@ public class SMTPMailConnector extends AbstractMailConnector {
      * 
      * @return A MimeMessage containing a virus signature.
      * 
-     * @throws FennecSystemException thrown if virus Mail can't generated.
-     * @throws FennecRuntimeException thrown if address parameters were wrong.
+     * @throws TesterraSystemException thrown if virus Mail can't generated.
+     * @throws TesterraRuntimeException thrown if address parameters were wrong.
      */
     private MimeMessage pGenerateVirusMail(final String from, final String receiver,
-            final String ccReceiver, final String bcc) throws FennecSystemException, FennecRuntimeException {
+            final String ccReceiver, final String bcc) throws TesterraSystemException, TesterraRuntimeException {
         final MimeMessage message = new MimeMessage(getSession());
         try {
 
@@ -306,9 +306,9 @@ public class SMTPMailConnector extends AbstractMailConnector {
             message.setContent(multiPart);
             message.saveChanges();
         } catch (final AddressException aex) {
-            throw new FennecRuntimeException("Some of the address parameters were wrong.", aex);
+            throw new TesterraRuntimeException("Some of the address parameters were wrong.", aex);
         } catch (final MessagingException e) {
-            throw new FennecSystemException(e);
+            throw new TesterraSystemException(e);
         }
         return message;
     }

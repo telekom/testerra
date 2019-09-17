@@ -88,7 +88,7 @@ public class POP3MailConnector extends AbstractMailConnector {
             mailprops.put("mail.store.protocol", "pop3s");
             mailprops.put("mail.pop3.socketFactory.port", getPort());
             mailprops.put("mail.pop3s.socketFactory.class",
-                    "eu.tsystems.mms.tic.testframework.mailconnector.FennecSSLSocketFactory");
+                    "eu.tsystems.mms.tic.testframework.mailconnector.TesterraSSLSocketFactory");
         } else {
             mailprops.put("mail.pop3.host", getServer());
             mailprops.put("mail.pop3.port", getPort());

@@ -1,0 +1,284 @@
+= Create a new project
+include::properties/property-attributes.adoc[]
+
+== System requirements
+
+...
+
+
+== Mandatory steps
+
+=== Create Maven or Gradle Project
+
+As a prequisite, Maven or Gradle need to be installed and configured. There a lot of manuals are on the internet, so this is not described here. The Testerra libs are deployed to https://bintray.com/bintray/jcenter. Please add this to your local settings.
+
+Then create a new Maven or Gradle project. Usally the IDE can do this comfortably.
+
+=== Add Testerra dependencies
+
+For Testerra you need at least the following dependencies you add to your `build.gradle` or `pom.xml` file.
+
+.build.gradle
+[source, gradle, role="primary"]
+----
+dependencies {
+    compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
+}
+test {
+    useTestNG() {
+    }
+}
+----
+
+.pom.xml
+[source, xml, role="secondary"]
+----
+<project>
+    [..]
+    <dependencies>
+        <dependency>
+            <groupId>eu.tsystems.mms.tic.testerra</groupId>
+            <artifactId>driver-ui-desktop</artifactId>
+            <version>1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+</project>
+----
+
+=== Create project structure
+
+Your project structure should comply with these simple constraints.
+
+* `src/main` Contains all the code for your project like <<PageObjects>>, Models and language specific resources.
+* `src/test` Contains all test related code like your Tests, Test-Suites, Test-Data and Testerra related setup.
+
+=== Create test.properties
+
+Create a new file at `src/test/resources` with the name `test.properties`.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+// Setting the browser
+{browser}=firefox
+
+// Setting the start page
+{baseurl}=http://example.org
+----
+
+TIP: All defined properties can be overwritten later by adding system parameters to your command (e.a `-D{browser}=chrome`)
+
+There are more supported `.properties` files described in the <<PropertyManager>> section.
+
+=== Create Page Class
+
+Now its time to create a first simple page class. It should be saved at path `src\main\java\<package>`. The following example represents the website example.org. It contains one possible link to click and one method to test.
+
+.New page class
+[source, java]
+----
+import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+
+public class ExamplePage extends Page {
+
+    @Check
+    private GuiElement moreInformationLink = new GuiElement(driver, By.partialLinkText("More information"));
+
+    public ExamplePage(WebDriver driver) {
+        super(driver);
+    }
+
+    public void clickOnMoreInformation() {
+        moreInformationLink.click();
+    }
+}
+----
+
+[TIP]
+======
+The basic Page class added all the page object functionality of Testerra to your project. See <<PageObjects>> chapter for more details.
+
+The GuiElement describes the elements like links, buttons, etc. on your page. Learn more about GuiElements in <<GuiElements>>.
+======
+
+=== Create Test Class and Test Method
+
+Next create a simple test class with a test method. The test class needs to extend from `TesterraTest`. It should be located at path `src\test\java\<package>`. To stick to the example above, here is a very simple test class which navigates to exampe.org and clicks on the link defined on the example page. Again, probably imports must be made in IDE.
+
+.New test class
+[source, java]
+----
+public class ExampleTest extends TesterraTest {
+
+    @Test
+    public void testT01_My_first_test() {
+        WebDriver driver = WebDriverManager.getWebDriver();
+        ExamplePage examplePage = PageFactory.create(ExamplePage.class, driver);
+        examplePage.clickOnMoreInformation();
+    }
+}
+----
+
+NOTE: By extending from `TesterraTest` all runtime features are loaded automatically.
+
+=== Setup Selenium
+
+If you don't have a remote selenium yet, you can easily install it by the package manager of your choice.
+
+.https://chocolatey.org[chocolately] for Windows (recommended)
+[source, cmd]
+----
+choco install selenium selenium-chrome-driver
+----
+
+And setup the Selenium server address in `test.properties`
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+{webdriver_mode}=remote
+{selenium_server_host}=localhost
+{selenium_server_port}=4444
+----
+
+TIP: Testerra uses as default values 'localhost' ({selenium_server_host}) and '4444' ({selenium_server_port}) if the properties are not defined.
+
+=== Setup a test suite
+
+To customize the executing of your tests, you have to create a TestNG suite file `suite.xml` and locate it at `src/test/resources`
+
+.suite.xml
+[source, xml]
+----
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite1" verbose="1" thread-count="10" configfailurepolicy="continue" parallel="false">
+    <test name="Test1" parallel="methods">
+        <classes>
+            <class name="ExampleTest"/>
+        </classes>
+    </test>
+</suite>
+----
+
+=== Setup test build target
+
+In order to get tests to work, you need to setup a build target `test` in your project.
+
+.build.gradle
+[source, gradle, role="primary"]
+----
+test {
+    useTestNG() {
+        suites file('src/test/resources/suite.xml')
+    }
+
+    testLogging {
+        outputs.upToDateWhen { false }
+        showStandardStreams = true
+    }
+
+    // Important: Forward all JVM properties like proxy settings to TestNG
+    options {
+        systemProperties(System.getProperties())
+    }
+
+    // basically execution returns "GREEN" (framework exits with exit code > 0 if there were failures)
+    ignoreFailures = true
+}
+----
+
+.pom.xml
+[source, xml, role="secondary"]
+----
+ <!--In Maven we need to download the Maven Surefire Plugin. Copy this version of Surefire under <build> in your pom.xml file -->
+<project>
+    [...]
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.0</version>
+                    <configuration>
+                        <suiteXmlFiles>
+                            <suiteXmlFile>src/test/resources/suite.xml</suiteXmlFile>
+                        </suiteXmlFiles>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
+----
+
+=== Run the tests
+Finally you are good to run your very first test by entering the following command:
+
+.Gradle
+[source, bash, role="primary"]
+----
+ gradle test
+----
+
+.Maven
+[source, bash, role="secondary"]
+----
+ mvn clean test
+----
+
+=== Testerra Report
+
+The Testerra test report is automatically generated and can be found at `<project>/testerra-report/index.html`.
+
+
+== Project extensions
+
+=== Using a proxy
+
+There are three ways for setting up a proxy for your test run environment.
+
+- System proxy settings for Gradle and the JVM
+- Testerra proxy settings for TestNG and JVM
+- Browser proxy settings for the SUT set up by browser capabilities you can find here <<Browser capabilities,Proxy setup>>
+
+==== System proxy (recommended)
+
+To setup a proxy for the whole system, including Gradle, the JVM and Testerra, the recommended way is to pass it by command line arguments like
+[source]
+----
+gradle test -Dhttps.proxyHost=your-proxy-host.com -Dhttps.proxyPort=8080
+----
+IMPORTANT: Setting the System proxy will override the Testerra proxy settings.
+
+==== Testerra proxy
+
+If you want to setup a proxy for Testerra, including TestNG and the JVM, just add `proxysettings.properties` to your resource bundle at `src/test/resources` with the following content
+
+.Example of proxysettings.properties
+[source,properties]
+----
+https.proxyHost=your-proxy-host.com
+https.proxyPort=8080
+https.proxyUser=
+https.proxyPassword=
+https.nonProxyHosts=localhost|192.168.0.1
+----
+These properties are automatically loaded by the `PropertyManager` and set up as System proxy settings during runtime with the following message
+----
+[main] [INFO ]: common.TesterraCommons - Setting system property proxy = http://your-proxy-host.com:8080
+----
+
+IMPORTANT: Setting up the Testerra proxy will not setup a proxy for Gradle nor a browser.
+
+=== Extended Logging
+
+To get more details in the Testerra report, you should create a log4j config file. Create a new file `test-log4j.xml` in the directory `src/test/resources`. As a example for this configuration, you can copy the following into this file.
+
+.test-log4j.xml
+[source, xml]
+----
+include::../res/test-log4j.xml[]
+----
+
+Now the log in the console output is more readable and also the log gets added in the Testerra report.

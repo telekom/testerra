@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
-import eu.tsystems.mms.tic.testframework.internal.FennecBuildInformation;
+import eu.tsystems.mms.tic.testframework.internal.TesterraBuildInformation;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
@@ -361,7 +361,7 @@ public class ReportFormatter {
     private static VelocityContext getVelocityContext() {
         VelocityContext context = new VelocityContext();
         context.put("executionContext", ExecutionContextController.EXECUTION_CONTEXT);
-        context.put("FennecBuildInformation", FennecBuildInformation.getInstance());
+        context.put("TesterraBuildInformation", TesterraBuildInformation.getInstance());
         context.put("reportScreenshotsPreview", Flags.REPORT_SCREENSHOTS_PREVIEW);
         context.put("reportName", ReportUtils.getReportName());
         context.put("dryrun", Flags.DRY_RUN);

@@ -9,8 +9,8 @@ package eu.tsystems.mms.tic.testframework.layout;
 
 import eu.tsystems.mms.tic.testframework.annotator.AnnotationContainer;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.layout.core.DistanceGraphInterpreter;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
@@ -92,7 +92,7 @@ public class LayoutComparator {
      * Public constructor
      */
     public LayoutComparator() {
-        String matcherProperty = PropertyManager.getProperty(FennecProperties.LAYOUTCHECK_MATCHING_ALGORITHM, "opencvtemplatematcher");
+        String matcherProperty = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_MATCHING_ALGORITHM, "opencvtemplatematcher");
         TemplateMatchingAlgorithm templateMatchingAlgorithm;
         if (matcherProperty.equals("opencvtemplatematcher")) {
             templateMatchingAlgorithm = new OpenCvTemplateMatcher(OpenCvTemplateMatcher.MatchingMode.CCOEFF_NORMED);
@@ -121,9 +121,14 @@ public class LayoutComparator {
      * @param annotationDataFileName              Name of the data file containing annotations.
      * @throws FileNotFoundException if file does not exist
      */
-    public void compareImages(String referenceAbsoluteFileName, String annotatedScreenshotAbsoluteFileName,
-                              String actualScreenshotAbsoluteFileName, String distanceAbsoluteFileName, String annotationDataFileName)
-            throws FileNotFoundException {
+    public void compareImages(
+        String referenceAbsoluteFileName,
+        String annotatedScreenshotAbsoluteFileName,
+        String actualScreenshotAbsoluteFileName,
+        String distanceAbsoluteFileName,
+        String annotationDataFileName
+    )
+        throws FileNotFoundException {
 
         loadProperties();
 
@@ -137,7 +142,7 @@ public class LayoutComparator {
             // The reference image and the annotated image have to be the same size.
             if (referenceImage.height() != annotatedImage.height()
                     || referenceImage.width() != annotatedImage.width()) {
-                throw new FennecSystemException(
+                throw new TesterraSystemException(
                         Messages.referenceAndAnnotationNotEquallySized(referenceImage.size().toString(),
                                 annotatedImage.size().toString()));
             }
@@ -158,11 +163,16 @@ public class LayoutComparator {
         // extract annotated elements
         List<LayoutElement> annotatedElements;
         if (annotationContainer != null) {
-            annotatedElements = annotationReader.extractAnnotatedElementsFromAnnotationContainer(referenceImage,
-                    annotationContainer);
+            annotatedElements = annotationReader.extractAnnotatedElementsFromAnnotationContainer(
+                referenceImage,
+                annotationContainer
+            );
         } else {
-            annotatedElements = annotationReader.extractAnnotatedLayoutElements(referenceImage,
-                    annotatedImage);
+            LOGGER.warn(String.format("Unable to read annotations from file '%s', falling back reading annotations from [0, 0] pixel color (deprecated)", annotationDataFileName));
+            annotatedElements = annotationReader.extractAnnotatedLayoutElements(
+                referenceImage,
+                annotatedImage
+            );
         }
 
         // create distance graph
@@ -243,7 +253,7 @@ public class LayoutComparator {
 
     private void loadProperties() {
         minimalSizeDifferenceOfSubImages = PropertyManager.getIntProperty(
-                FennecProperties.LAYOUTCHECK_INTERNAL_PARAMETER_2,
+                TesterraProperties.LAYOUTCHECK_INTERNAL_PARAMETER_2,
                 DefaultParameter.LAYOUTCHECK_INTERNAL_PARAMETER_2);
     }
 
@@ -293,7 +303,7 @@ public class LayoutComparator {
      */
     public List<LayoutFeature> getCriticalMatches() {
         if (layoutMatch == null) {
-            throw new FennecSystemException("Layout match calculation error");
+            throw new TesterraSystemException("Layout match calculation error");
         }
         return layoutMatch.getCriticalMatches();
     }
@@ -329,5 +339,8 @@ public class LayoutComparator {
             return "Reference Image (" + referenceSize + ") is not the same size as the " +
                     "annotated image (" + annotatedSize + ").";
         }
+    }
+    public LayoutMatch getLayoutMatch() {
+        return this.layoutMatch;
     }
 }

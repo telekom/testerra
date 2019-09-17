@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -121,9 +121,9 @@ public final class CertUtils {
                 sc.init(null, ALL_TRUSTING_TRUST_MANAGER, new java.security.SecureRandom());
                 sslSocketFactory = sc.getSocketFactory();
             } catch (NoSuchAlgorithmException e) {
-                throw new FennecSystemException("Error trusting all certificates.", e);
+                throw new TesterraSystemException("Error trusting all certificates.", e);
             } catch (KeyManagementException e) {
-                throw new FennecSystemException("Error trusting all certificates.", e);
+                throw new TesterraSystemException("Error trusting all certificates.", e);
             }
         }
 

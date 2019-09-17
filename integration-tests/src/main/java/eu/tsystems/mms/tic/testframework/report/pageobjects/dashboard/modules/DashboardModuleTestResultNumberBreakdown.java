@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -83,7 +83,7 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
                 isDisplayed = numberFailedExpectedTests.isDisplayed();
                 break;
             default:
-                throw new FennecRuntimeException("Unsupported Test Counter for TestResult: " + testResult);
+                throw new TesterraRuntimeException("Unsupported Test Counter for TestResult: " + testResult);
         }
         return isDisplayed;
     }
@@ -144,7 +144,7 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
                 counter = numberFailedExpectedTests;
                 break;
             default:
-                throw new FennecRuntimeException("Unsupported Test Counter for TestResult: " + testResult);        }
+                throw new TesterraRuntimeException("Unsupported Test Counter for TestResult: " + testResult);        }
         switch (mouseAction) {
             case CLICK:
                 counter.click();
@@ -153,7 +153,7 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
                 counter.mouseOver();
                 break;
             default:
-                throw new FennecRuntimeException("Unsupported mouseAction: " + mouseAction.name());
+                throw new TesterraRuntimeException("Unsupported mouseAction: " + mouseAction.name());
         }
         counter.click();
         return PageFactory.create(DashboardPage.class, this.driver);

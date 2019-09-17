@@ -56,12 +56,12 @@ public class BaseLoggingActor extends AppenderSkeleton {
 
     !!!
      */
-    private static final String DATE_FORMAT = "dd.MM.yyyy-HH:mm:ss";
+    private static final String DATE_FORMAT = "dd.MM.yyyy-HH:mm:ss.SSS";
 
     public static final String LOGGER_PATTERN = "%p---%d{" + DATE_FORMAT + "}---%t---%c{1}---%m%n";
 
-    public static final Layout CONSOLE_LAYOUT = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss} [%t] [%-5p]: %c{2} - %m");
-    public static final Layout CONSOLE_LAYOUT_MCID = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss} [%t] [%-5p]: %c{2} - [MCID:%X{mcid}] %m");
+    public static final Layout CONSOLE_LAYOUT = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss.SSS} [%t] [%-5p]: %c{2} - %m");
+    public static final Layout CONSOLE_LAYOUT_MCID = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss.SSS} [%t] [%-5p]: %c{2} - [MCID:%X{mcid}] %m");
 
     public static final String SPLITTER = "---";
     public static final Layout LAYOUT = new PatternLayout(LOGGER_PATTERN);

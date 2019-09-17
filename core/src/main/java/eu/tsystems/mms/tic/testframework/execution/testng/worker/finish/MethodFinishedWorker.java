@@ -19,9 +19,13 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
-import eu.tsystems.mms.tic.testframework.interop.CollectAssertionInfoArtefacts;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
@@ -33,8 +37,11 @@ import java.util.Map;
  * Created by pele on 19.01.2017.
  */
 public class MethodFinishedWorker extends MethodWorker {
+
+
     @Override
     public void run() {
+
         // clear current result
         ExecutionContextController.clearCurrentTestResult();
 
@@ -59,7 +66,7 @@ public class MethodFinishedWorker extends MethodWorker {
                     if (scriptSourceForThrowable != null) {
                         methodContext.scriptSource = scriptSourceForThrowable;
                     }
-                    methodContext.executionObjectSource = CollectAssertionInfoArtefacts.getSourceFor(throwable);
+                    methodContext.executionObjectSource = TestEvidenceCollector.getSourceFor(throwable);
                 }
                 methodContext.buildExitFingerprint();
             }
@@ -70,8 +77,12 @@ public class MethodFinishedWorker extends MethodWorker {
             } catch (Throwable e) {
                 LOGGER.error("FATAL: Could not create html", e);
             }
-        }
-        finally {
+        } finally {
+
+            // Fire CONTEXT UPDATE EVENT.
+            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                    .addData(TesterraEventDataType.CONTEXT, methodContext));
+
             // clear method infos
             ReportInfo.clearCurrentMethodInfo();
 

@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.utils.xmlutils;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -51,12 +51,12 @@ public abstract class AbstractXMLUtils {
         try {
             factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
         } catch (ParserConfigurationException e) {
-            throw new FennecSystemException("Error disabling loading external dtd's. Document type definitions will be loaded externally.", e);
+            throw new TesterraSystemException("Error disabling loading external dtd's. Document type definitions will be loaded externally.", e);
         }
         try {
             return factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            throw new FennecSystemException("Error creating a DocumentBuilder. Won't be able to parse xPath", e);
+            throw new TesterraSystemException("Error creating a DocumentBuilder. Won't be able to parse xPath", e);
         }
     }
 

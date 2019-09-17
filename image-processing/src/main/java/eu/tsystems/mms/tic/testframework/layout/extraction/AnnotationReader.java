@@ -9,8 +9,8 @@ package eu.tsystems.mms.tic.testframework.layout.extraction;
 
 import eu.tsystems.mms.tic.testframework.annotator.AnnotationContainer;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.layout.DefaultParameter;
 import eu.tsystems.mms.tic.testframework.layout.LayoutComparator;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
@@ -68,12 +68,12 @@ public class AnnotationReader {
         loadProperties();
 
         if (markedPoints.size() > size.x * size.y * maximalFractionOfMarkedPixels) {
-            throw new FennecSystemException(
+            throw new TesterraSystemException(
                     LayoutComparator.Messages.tooManyMarkedPixels("" + maximalFractionOfMarkedPixels * 100));
         }
 
         if (markedPoints.size() <= minimumMarkedPixels) {
-            throw new FennecSystemException(LayoutComparator.Messages.tooFewMarkedPixels());
+            throw new TesterraSystemException(LayoutComparator.Messages.tooFewMarkedPixels());
         }
         return markedPoints;
     }
@@ -90,7 +90,7 @@ public class AnnotationReader {
         HashSet<Point2D> markedPoints = null;
         try {
             markedPoints = getMarkedPixels(xetaBufferedImage);
-        } catch (FennecSystemException e) {
+        } catch (TesterraSystemException e) {
             LOGGER.warn(e.getMessage());
         }
 
@@ -133,10 +133,12 @@ public class AnnotationReader {
     /**
      * Extracts the elements that are marked with the marking color.
      *
+     * @deprecated This feature is deprecated and will be removed in the future
      * @param baseImage Image to extract image information from
      * @param annotatedImage Image to extract annotation information from
      * @return List of LayoutElement
      */
+    @Deprecated
     public List<LayoutElement> extractAnnotatedLayoutElements(Mat baseImage, Mat annotatedImage) {
         XetaMat xetaMat = new XetaMat(annotatedImage);
         HashSet<Point2D> markedPoints = getMarkedPixels(xetaMat);
@@ -180,10 +182,10 @@ public class AnnotationReader {
 
     private void loadProperties() {
         maximalFractionOfMarkedPixels = PropertyManager.getDoubleProperty(
-                FennecProperties.LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO,
+                TesterraProperties.LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO,
                 DefaultParameter.LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO);
         minimumMarkedPixels = PropertyManager.getIntProperty(
-                FennecProperties.LAYOUTCHECK_MINIMUM_MARKED_PIXELS,
+                TesterraProperties.LAYOUTCHECK_MINIMUM_MARKED_PIXELS,
                 DefaultParameter.LAYOUTCHECK_MINIMUM_MARKED_PIXELS);
     }
 

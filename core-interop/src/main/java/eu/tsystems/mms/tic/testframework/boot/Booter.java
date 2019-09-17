@@ -19,11 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.boot;
 
-import eu.tsystems.mms.tic.testframework.common.FennecCommons;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
-import eu.tsystems.mms.tic.testframework.internal.FennecBuildInformation;
-import eu.tsystems.mms.tic.testframework.utils.FennecUtils;
+import eu.tsystems.mms.tic.testframework.internal.TesterraBuildInformation;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
@@ -38,28 +38,29 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Booter {
+public final class Booter {
 
     private static final Logger LOGGER;
     private static final List<ModuleHook> MODULE_HOOKS = new LinkedList<>();
 
     static {
-        FennecCommons.init();
+        TesterraCommons.init();
         LOGGER = LoggerFactory.getLogger(Booter.class);
-        FennecUtils.prepareAsserts();
         // when logger is configured:
-        printFennecBanner();
+        printTesterraBanner();
         initHooks();
+        // log evidence collector
+        TestEvidenceCollector.logInfo();
     }
 
     public static void bootOnce() {}
 
     /**
-     * Prints fennec build informations.
+     * Prints testerra build information.
      */
-    private static void printFennecBanner() {
-        List<String> bannerfennec = new LinkedList<>();
-        String fennecVersion = "";
+    private static void printTesterraBanner() {
+        List<String> frameworkBanner = new LinkedList<>();
+        String buildVersion = "";
         List<String> bannerVersions = new LinkedList<>();
 
         /*
@@ -68,7 +69,7 @@ public class Booter {
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("banner.txt");
         if (is != null) {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            br.lines().forEach(bannerfennec::add);
+            br.lines().forEach(frameworkBanner::add);
         }
         else {
             LOGGER.debug("Could not read banner");
@@ -77,7 +78,7 @@ public class Booter {
         /*
         get versions info
          */
-        FennecBuildInformation buildInformation = FennecBuildInformation.getInstance();
+        TesterraBuildInformation buildInformation = TesterraBuildInformation.getInstance();
         bannerVersions.add("build.java.version: " + buildInformation.buildJavaVersion);
         bannerVersions.add("build.os.name:      " + buildInformation.buildOsName);
         bannerVersions.add("build.os.arch:      " + buildInformation.buildOsArch);
@@ -85,17 +86,17 @@ public class Booter {
         bannerVersions.add("build.user.name:    " + buildInformation.buildUserName);
         bannerVersions.add("build.timestamp:    " + buildInformation.buildTimestamp);
 
-        fennecVersion = buildInformation.fennecVersion;
+        buildVersion = buildInformation.buildVersion;
 
         /*
         beautify
          */
         String wall = " ° ";
-        final int widthLogo = bannerfennec.stream().mapToInt(String::length).max().getAsInt();
-        bannerfennec = bannerfennec.stream().map(s -> s + StringUtils.repeat(" ", widthLogo - s.length())).collect(Collectors.toList());
+        final int widthLogo = frameworkBanner.stream().mapToInt(String::length).max().getAsInt();
+        frameworkBanner = frameworkBanner.stream().map(s -> s + StringUtils.repeat(" ", widthLogo - s.length())).collect(Collectors.toList());
         final int width = bannerVersions.stream().mapToInt(String::length).max().getAsInt();
-        bannerfennec = bannerfennec.stream().map(s -> wall + StringUtils.center(s, width) + wall).collect(Collectors.toList());
-        fennecVersion = wall + StringUtils.center(fennecVersion, width) + wall;
+        frameworkBanner = frameworkBanner.stream().map(s -> wall + StringUtils.center(s, width) + wall).collect(Collectors.toList());
+        buildVersion = wall + StringUtils.center(buildVersion, width) + wall;
         bannerVersions = bannerVersions.stream().map(s -> wall + s + StringUtils.repeat(" ", width - s.length()) + wall).collect(Collectors.toList());
 
         /*
@@ -103,8 +104,8 @@ public class Booter {
          */
         String ruler = StringUtils.repeat(wall, width / wall.length() + 2);
         LOGGER.info(ruler);
-        bannerfennec.forEach(LOGGER::info);
-        LOGGER.info(fennecVersion);
+        frameworkBanner.forEach(LOGGER::info);
+        LOGGER.info(buildVersion);
         LOGGER.info(ruler);
         bannerVersions.forEach(LOGGER::info);
         LOGGER.info(ruler);
@@ -128,11 +129,11 @@ public class Booter {
 
             hooks.forEach(aClass -> {
                 try {
-                    ModuleHook moduleHook = aClass.newInstance();
+                    ModuleHook moduleHook = aClass.getConstructor().newInstance();
                     LOGGER.info(startMarker + "Calling Init Hook " + aClass.getSimpleName() + "...");
                     moduleHook.init();
                     MODULE_HOOKS.add(moduleHook);
-                } catch (InstantiationException | IllegalAccessException e) {
+                } catch (Exception e) {
                     LOGGER.error(startMarker + "Could not load Init Hook " + aClass.getSimpleName());
                 }
             });

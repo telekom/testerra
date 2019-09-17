@@ -19,22 +19,19 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.events.FennecEvent;
-import eu.tsystems.mms.tic.testframework.events.FennecEventDataType;
-import eu.tsystems.mms.tic.testframework.events.FennecEventService;
-import eu.tsystems.mms.tic.testframework.events.FennecEventType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ExecutionContext extends Context implements SynchronizableContext {
@@ -50,12 +47,14 @@ public class ExecutionContext extends Context implements SynchronizableContext {
 
     public List<SessionContext> exclusiveSessionContexts = new LinkedList<>();
 
+    public int estimatedTestMethodCount;
+
     public ExecutionContext() {
         name = runConfig.RUNCFG;
         swi = name;
 
         // fire context update event: create context
-        FennecEventService.getInstance().fireEvent(new FennecEvent(FennecEventType.CONTEXT_UPDATE).addData(FennecEventDataType.CONTEXT, this));
+        TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE).addData(TesterraEventDataType.CONTEXT, this));
     }
 
     public SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
@@ -75,7 +74,15 @@ public class ExecutionContext extends Context implements SynchronizableContext {
 
     @Override
     public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(suiteContexts.toArray(new Context[0]));
+        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
+            if (FailureCorridor.isCorridorMatched()) {
+                return TestStatusController.Status.PASSED;
+            } else {
+                return TestStatusController.Status.FAILED;
+            }
+        } else {
+            return getStatusFromContexts(suiteContexts.toArray(new Context[0]));
+        }
     }
 
     public int getNumberOfRepresentationalTests() {
@@ -120,7 +127,6 @@ public class ExecutionContext extends Context implements SynchronizableContext {
      *
      * @param includeTestMethods   .
      * @param includeConfigMethods .
-     *
      * @return a map
      */
     public Map<ClassContext, Map> getMethodStatsPerClass(boolean includeTestMethods, boolean includeConfigMethods) {

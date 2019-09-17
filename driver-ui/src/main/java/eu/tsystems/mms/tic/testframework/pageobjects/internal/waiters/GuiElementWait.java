@@ -120,6 +120,14 @@ public interface GuiElementWait {
      */
     boolean waitForTextContains(String... text);
 
+    /**
+     * Waiting until GuiElement contains not the given text. Please note that this will only wait successfully, if the
+     * elements text is actually visible at some point.
+     *
+     * @param text Text to wait for.
+     * @return true is not present, false if is. No Exception is thrown.
+     */
+    boolean waitForTextContainsNot(String... text);
 
     /**
      * Wait for an attribute to be present.
@@ -137,13 +145,44 @@ public interface GuiElementWait {
     boolean waitForAttribute(String attributeName, String value);
 
     /**
-     * Wait for a an attribute to have the given value.
+     * Wait for an attribute to have the given value.
      *
      * @param attributeName attribute to check
      * @param value         value which is waited for
      * @return true if the attribute eventually has the value
      */
-    boolean waitForAttributeContains(String attributeName, String value);
+    boolean waitForAttributeContains(final String attributeName, final String value);
+
+    /**
+     * Wait for an attribute to have the given value.
+     *
+     * @param attributeName attribute to check
+     * @param value         value which is waited for
+     * @return true if the attribute eventually has the value
+     */
+    boolean waitForAttributeContainsNot(final String attributeName, final String value);
+
+    /**
+     * Waits until the element has the given css class name
+     * @param className Class name to check
+     * @return true if the css class is present
+     */
+    @Deprecated
+    boolean waitForCssClass(final String className);
+
+    /**
+     * Waits until the element has the given css class name
+     * @param className Class name to check
+     * @return true if the css class is present
+     */
+    boolean waitForCssClassIsPresent(final String className);
+
+    /**
+     * Waits until the element has not the given css class name
+     * @param className Class name to check
+     * @return true if the css class is gone
+     */
+    boolean waitForCssClassIsNotPresent(final String className);
 
     /**
      * Waits until the element is selectable or times out.

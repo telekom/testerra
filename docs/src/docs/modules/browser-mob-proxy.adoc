@@ -1,0 +1,90 @@
+= Browser Mob Proxy
+
+Browser Mob Proxy (BMP) is a utility for manipulating network traffic. You can use it to enable Basic Auth for your SUT and other features.
+
+== External BMP server (recommended)
+
+Best practice for using a Testerra with a Proxy, is to use a dedicated BMP instance.
+
+[source,java]
+----
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.AfterSuite;
+import eu.tsystems.mms.tic.testframework.bmp.BmpRestClient;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.Proxy;
+
+public abstract class AbstractTest extends TesterraTest {
+    private static BmpRestClient bmpClient;
+
+    @BeforeSuite
+    public void proxySetup() {
+        final String bmpHost = "proxy.example.com";
+        final int bmpPort = 8080;
+        bmpClient = new BmpRestClient(bmpHost, bmpPort);
+        /* Additional Proxy setup here */
+        final int proxyPort = bmpClient.startServer();
+        String bmpProxyAddress = String.format("%s:%d", bmpHost, proxyPort);
+        Proxy proxy = new Proxy();
+        proxy.setHttpProxy(bmpProxyAddress)
+            .setFtpProxy(bmpProxyAddress)
+            .setSslProxy(bmpProxyAddress)
+            .setNoProxy(bmpProxyAddress);
+
+        WebDriverManager.setGlobalExtraCapability(CapabilityType.PROXY, proxy);
+    }
+
+    @AfterSuite
+    public void proxyTeardown() {
+        bmpClient.stopServer();
+    }
+}
+----
+
+== Basic Auth
+
+If your SUT is located behind a restricted are, protected by HTTP basic auth, you can setup these credentials as following.
+
+[source,java]
+----
+import java.net.URL;
+
+/* Additional Proxy setup here */
+URL baseUrl = new URL(PropertyManager.getProperty("tt.baseurl"));
+final String basicAuthUser;
+final String basicAuthPassword;
+bmpClient.setBasicAuth(baseUrl.getHost(), basicAuthUser, basicAuthPassword);
+----
+
+== Upstream proxy
+
+If your SUT should use proxy, you can setup BMP to use a upstream proxy like in link:[SUT Browser Proxy]
+
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
+
+bmpClient.setUpstreamProxy(ProxyUtils.getSystemHttpProxyUrl());
+----
+
+== Other features
+
+[source,java]
+----
+/*
+ Maps specifc host names to another host names or IP adresses
+ */
+bmpClient.setHostMapping(Map<String, String> hostNameMapping);
+
+/*
+ Capture the traffic and return it as a JsonElement
+ You can choose, if you want to capture only the headers, the content or both via the boolean flags.
+ */
+bmpClient.startCapture(boolean headers, boolean content);
+JsonElement element = client.stopCapture();
+
+/*
+ Adds additional key-value pairs to the headers.
+*/
+bmpClient.setHeader(String key, String value);
+----

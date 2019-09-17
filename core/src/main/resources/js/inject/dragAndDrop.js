@@ -1,4 +1,4 @@
-function FennecCreateDragEvent(eventName, options)
+function TesterraCreateDragEvent(eventName, options)
 {
   var event = document.createEvent("DragEvent");
   var screenX = window.screenX + options.clientX;
@@ -56,7 +56,7 @@ function FennecCreateDragEvent(eventName, options)
 };
 /* Creates a mouse event */
 
-function FennecCreateMouseEvent(eventName, options)
+function TesterraCreateMouseEvent(eventName, options)
 {
   var event = document.createEvent("MouseEvent");
   var screenX = window.screenX + options.clientX;
@@ -85,7 +85,7 @@ function FennecCreateMouseEvent(eventName, options)
 };
 /* Runs the events */
 
-function FennecDispatchEvent(webElement, eventName, event)
+function TesterraDispatchEvent(webElement, eventName, event)
 {
   if (webElement.dispatchEvent) {
     webElement.dispatchEvent(event);
@@ -95,70 +95,70 @@ function FennecDispatchEvent(webElement, eventName, event)
 };
 /* Simulates an individual event */
 
-function FennecSimulateEventCall(element, eventName, dragStartEvent, options) {
+function TesterraSimulateEventCall(element, eventName, dragStartEvent, options) {
   var event = null;
   if (eventName.indexOf("mouse") > - 1) {
-    event = FennecCreateMouseEvent(eventName, options);
+    event = TesterraCreateMouseEvent(eventName, options);
   } else {
-    event = FennecCreateDragEvent(eventName, options);
+    event = TesterraCreateDragEvent(eventName, options);
   };
   if (dragStartEvent != null) {
     event.dataTransfer = dragStartEvent.dataTransfer;
   }
-  FennecDispatchEvent(element, eventName, event);
+  TesterraDispatchEvent(element, eventName, event);
   return event;
 };
 
-function FennecDND(drag, drop, dragFromX, dragFromY, dragToX, dragToY) {
+function TesterraDND(drag, drop, dragFromX, dragFromY, dragToX, dragToY) {
   /*
     Execute dnd
     */
 
-  var mouseDownEvent = FennecSimulateEventCall(drag, "mousedown", null, {
+  var mouseDownEvent = TesterraSimulateEventCall(drag, "mousedown", null, {
     clientX: dragFromX,
     clientY: dragFromY
   });
-  var dragStartEvent = FennecSimulateEventCall(drag, "dragstart", null, {
+  var dragStartEvent = TesterraSimulateEventCall(drag, "dragstart", null, {
     clientX: dragFromX,
     clientY: dragFromY
   });
-  var dragEnterEvent = FennecSimulateEventCall(drop, "dragenter", dragStartEvent, {
+  var dragEnterEvent = TesterraSimulateEventCall(drop, "dragenter", dragStartEvent, {
     clientX: dragToX,
     clientY: dragToY
   });
-  var dragOverEvent = FennecSimulateEventCall(drop, "dragover", dragStartEvent, {
+  var dragOverEvent = TesterraSimulateEventCall(drop, "dragover", dragStartEvent, {
     clientX: dragToX,
     clientY: dragToY
   });
-  var dropEvent = FennecSimulateEventCall(drop, "drop", dragStartEvent, {
+  var dropEvent = TesterraSimulateEventCall(drop, "drop", dragStartEvent, {
     clientX: dragToX,
     clientY: dragToY
   });
-  var dragEndEvent = FennecSimulateEventCall(drag, "dragend", dragStartEvent, {
+  var dragEndEvent = TesterraSimulateEventCall(drag, "dragend", dragStartEvent, {
     clientX: dragToX,
     clientY: dragToY
   });
 };
 
-function FennecDNDFrame(dragJsLocator, dropJsLocator, fromX, fromY, toX, toY) {
+function TesterraDNDFrame(dragJsLocator, dropJsLocator, fromX, fromY, toX, toY) {
 
     var drag = eval(dragJsLocator);
     var drop = eval(dropJsLocator);
 
-    FennecDND(drag, drop, fromX, fromY, toX, toY);
+    TesterraDND(drag, drop, fromX, fromY, toX, toY);
 };
 
-function FennecSwipe(element, fromX, fromY, toX, toY) {
+function TesterraSwipe(element, fromX, fromY, toX, toY) {
 
-  var mouseDownEvent = FennecSimulateEventCall(element, "mousedown", null, {
+  var mouseDownEvent = TesterraSimulateEventCall(element, "mousedown", null, {
     clientX: fromX,
     clientY: fromY
   });
-  var mouseMoveEvent = FennecSimulateEventCall(element, "mousemove", null, {
+  var mouseMoveEvent = TesterraSimulateEventCall(element, "mousemove", null, {
     clientX: toX,
     clientY: toY
   });
-  var mouseUpEvent = FennecSimulateEventCall(element, "mouseup", null, {
+  var mouseUpEvent = TesterraSimulateEventCall(element, "mouseup", null, {
     clientX: toX,
     clientY: toY
   });

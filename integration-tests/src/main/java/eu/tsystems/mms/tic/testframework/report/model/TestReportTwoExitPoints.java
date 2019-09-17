@@ -35,7 +35,7 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
             "test_FailedMinorAnnotatedWithFailInReport",
             true,
             Arrays.asList("ReportTestUnderTestExpectedtoFail - test_FailedMinorAnnotatedWithFailInReport"),
-            Arrays.asList("FennecTestFailureException: Failing of test expected. Description: This is an unknown bug.","Exception")
+            Arrays.asList("TesterraTestFailureException: Failing of test expected. Description: This is an unknown bug.","Exception")
     );
 
     public static final ExitPointEntry FailedNotIntoReport = new ExitPointEntry(
@@ -45,7 +45,7 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
             "test_FailedMinorAnnotatedWithFail_Run6",
             true,
             Arrays.asList("ReportTestUnderTestExpectedtoFail - test_FailedMinorAnnotatedWithFail_Run6"),
-            Arrays.asList("FennecTestFailureException: Failing of test expected. Description: This is a known bug.","Exception")
+            Arrays.asList("TesterraTestFailureException: Failing of test expected. Description: This is a known bug.","Exception")
     );
 
     public static List<ExitPointEntry> getAllExitPointEntryTestObjects() {

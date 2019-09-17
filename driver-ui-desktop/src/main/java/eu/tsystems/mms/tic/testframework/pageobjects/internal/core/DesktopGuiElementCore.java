@@ -21,16 +21,14 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickPath;
-import eu.tsystems.mms.tic.testframework.pageobjects.clickpath.ClickPathElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
@@ -43,7 +41,6 @@ import eu.tsystems.mms.tic.testframework.utils.TestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
-import org.apache.commons.lang3.ClassUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
@@ -51,6 +48,10 @@ import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -64,7 +65,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);
 
-    private static final int delayAfterFindInMilliSeconds = PropertyManager.getIntProperty(FennecProperties.DELAY_AFTER_GUIELEMENT_FIND_MILLIS);
+    private static final int delayAfterFindInMilliSeconds = PropertyManager.getIntProperty(TesterraProperties.DELAY_AFTER_GUIELEMENT_FIND_MILLIS);
 
     private final WebDriver webDriver;
 
@@ -310,7 +311,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
         find();
 
-        ClickPath.stack(new ClickPathElement(ClickPathElement.CPEType.NON_CLICK_ACTION, "TYPE to " + toString()), guiElementData.webElement, webDriver);
         WebElement webElement = guiElementData.webElement;
         webElement.clear();
         webElement.sendKeys(text);
@@ -331,7 +331,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     public void click() {
         find();
         LOGGER.debug("click(): found element, adding ClickPath");
-        ClickPath.stack(new ClickPathElement(ClickPathElement.CPEType.CLICK, toString()), guiElementData.webElement, webDriver);
         LOGGER.debug("click(): added ClickPath, clicking relative");
         pClickRelative(this, webDriver, guiElementData.webElement);
         LOGGER.debug("click(): clicked relative");
@@ -369,14 +368,12 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     @Override
     public void clickJS() {
         find();
-        ClickPath.stack(new ClickPathElement(ClickPathElement.CPEType.CLICK, toString()), guiElementData.webElement, webDriver);
         JSUtils.executeScript(webDriver, "arguments[0].click();", guiElementData.webElement);
     }
 
     @Override
     public void clickAbsolute() {
         find();
-        ClickPath.stack(new ClickPathElement(ClickPathElement.CPEType.CLICK, toString()), guiElementData.webElement, webDriver);
         pClickAbsolute(this, webDriver, guiElementData.webElement);
     }
 
@@ -424,12 +421,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     @Override
     public void sendKeys(CharSequence... charSequences) {
         find();
-        String c = "" + charSequences;
-        if (guiElementData.sensibleData) {
-            c = "********";
-        }
-        ClickPath.stack(new ClickPathElement(ClickPathElement.CPEType.NON_CLICK_ACTION,
-                "TYPE >" + c + "< to " + toString()), guiElementData.webElement, webDriver);
         guiElementData.webElement.sendKeys(charSequences);
     }
 
@@ -533,7 +524,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         // in isPresent(), find() was executed which should set "webElement" or throw an exception
         WebElement webElement = guiElementData.webElement;
         if (webElement == null) {
-            throw new FennecSystemException("Internal error. This state should not be reached.");
+            throw new TesterraSystemException("Internal error. This state should not be reached.");
         }
 
         if (webElement.isDisplayed()) {
@@ -863,5 +854,41 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         WebElement webElement = getWebElement();
         Point location = webElement.getLocation();
         JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, location.getX(), location.getY());
+    }
+
+    @Override
+    public File takeScreenshot() {
+
+        final boolean isSelenium4 = false;
+
+        if (isSelenium4) {
+            return getScreenshotAs(OutputType.FILE);
+        } else {
+            try {
+                find();
+                final TakesScreenshot driver = ((TakesScreenshot)guiElementData.webDriver);
+                final WebElement element = guiElementData.webElement;
+
+                File screenshot = driver.getScreenshotAs(OutputType.FILE);
+                BufferedImage fullImg = ImageIO.read(screenshot);
+
+                Point point = element.getLocation();
+                int eleWidth = element.getSize().getWidth();
+                int eleHeight = element.getSize().getHeight();
+
+                BufferedImage eleScreenshot = fullImg.getSubimage(
+                    point.getX(),
+                    point.getY(),
+                    eleWidth,
+                    eleHeight
+                );
+                ImageIO.write(eleScreenshot, "png", screenshot);
+                return screenshot;
+            } catch (IOException e) {
+                LOGGER.error(String.format("%s unable to take screenshot: %s ", this.guiElementData, e));
+            }
+        }
+
+        return null;
     }
 }

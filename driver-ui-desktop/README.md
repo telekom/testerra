@@ -1,5 +1,5 @@
-# jfennec driver-ui-desktop
-jfennec driver-ui-desktop is the desktop implementation for the ui-driver. It will register a selenium backed 
+# driver-ui-desktop
+driver-ui-desktop is the desktop implementation for the ui-driver. It will register a selenium backed 
 driver background for WebDriverManager, Page and GuiElement actions. Putting this module in your classpath with
 automatically register firefox, chrome and more desktop browsers to the ui-driver to execute tests on.   
 
@@ -10,7 +10,7 @@ For maven:
 ```xml
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.jfennec</groupId>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>driver-ui-desktop</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
@@ -19,7 +19,7 @@ For maven:
 
 For gradle:
 ```text
-compile 'eu.tsystems.mms.tic.jfennec:driver-ui-desktop:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
 ```
 
 ###### Using driver-ui-desktop module:

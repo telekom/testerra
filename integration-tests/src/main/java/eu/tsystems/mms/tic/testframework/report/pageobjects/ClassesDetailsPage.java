@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -391,7 +391,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
             try {
                 startDate = dateFormat.parse(startDateString);
             } catch (ParseException e) {
-                throw new FennecRuntimeException("Could not parse start date " + startDateString + " of method with execution number " + executionNumberString);
+                throw new TesterraRuntimeException("Could not parse start date " + startDateString + " of method with execution number " + executionNumberString);
             }
             int executionNumber = Integer.parseInt(executionNumberString);
             executionEntries.put(executionNumber, startDate);

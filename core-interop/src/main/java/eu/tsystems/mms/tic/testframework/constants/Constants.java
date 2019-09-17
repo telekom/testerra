@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.constants;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 
 import java.text.SimpleDateFormat;
 
@@ -39,13 +39,13 @@ public final class Constants {
     public static final int WEBDRIVER_START_RETRY_TIME_IN_MS = 10000;
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT_DATE;
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT_DELTA;
-    public static final int PAGE_LOAD_TIMEOUT_SECONDS = PropertyManager.getIntProperty(FennecProperties.WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD, 120);
+    public static final int PAGE_LOAD_TIMEOUT_SECONDS = PropertyManager.getIntProperty(TesterraProperties.WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD, 120);
 
     /*
     Download paths
      */
-    static final String DOWNLOAD_DIRECTORY_WIN = "C:\\FennecDownloads\\";
-    static final String DOWNLOAD_DIRECTORY_LINUX = "/tmp/FennecDownloads/";
+    static final String DOWNLOAD_DIRECTORY_WIN = "C:\\TesterraDownloads\\";
+    static final String DOWNLOAD_DIRECTORY_LINUX = "/tmp/TesterraDownloads/";
 
 
     static {
@@ -53,7 +53,7 @@ public final class Constants {
             SIMPLE_DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
             SIMPLE_DATE_FORMAT_DELTA = new SimpleDateFormat("H 'h' m 'min' s 'sec' S 'ms'");
         } catch (Exception e) {
-            throw new FennecSystemException("Internal Error", e);
+            throw new TesterraSystemException("Internal Error", e);
         }
     }
 

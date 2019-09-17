@@ -28,21 +28,18 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TestOS;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
-import eu.tsystems.mms.tic.testframework.interop.ScreenshotCollector;
-import eu.tsystems.mms.tic.testframework.interop.VideoCollector;
 import eu.tsystems.mms.tic.testframework.remote.RemoteDownloadPath;
 import eu.tsystems.mms.tic.testframework.report.Shot;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -63,7 +60,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Helper class containing some util methods for fennec.
+ * Helper class containing some util methods for tt.
  *
  * @author pele
  */
@@ -86,7 +83,7 @@ public class UITestUtils extends TestUtils {
 
     private static final String BROWSER_DOWNLOAD_PATH_UUID = UUID.randomUUID().toString();
 
-    private static final boolean STITCH = PropertyManager.getBooleanProperty(FennecProperties.STITCH_CHROME_SCREENSHOTS, true);
+    private static final boolean STITCH = PropertyManager.getBooleanProperty(TesterraProperties.STITCH_CHROME_SCREENSHOTS, true);
 
     public static Screenshot takeScreenshot(final WebDriver driver, boolean intoReport) {
         Screenshot screenshot = takeScreenshot(driver, driver.getWindowHandle(), WebDriverManager.getSessionKeyFrom(driver));
@@ -106,6 +103,10 @@ public class UITestUtils extends TestUtils {
 
     public static Screenshot takeScreenshot(final WebDriver eventFiringWebDriver,
                                             String originalWindowHandle, String sessionKey) {
+        if (!Flags.SCREENSHOTTER_ACTIVE) {
+            return null;
+        }
+
         final String timestamp = FILES_DATE_FORMAT.format(new Date());
         final String screenshotFileName = UUID.randomUUID() + "_"+ timestamp + ".png";
         final String pageSourceFileName = screenshotFileName + ".html";
@@ -271,12 +272,13 @@ public class UITestUtils extends TestUtils {
             File file = Shot.takeScreenshot(driver);
             try {
                 FileUtils.moveFile(file, screenShotTargetFile);
+                LOGGER.info("Stored screenshot to: " + screenShotTargetFile);
             } catch (IOException e) {
                 LOGGER.error("Error storing screenshot", e);
             }
         }
         catch (Throwable t) {
-            throw new FennecSystemException("Error taking screenshot", t);
+            throw new TesterraSystemException("Error taking screenshot", t);
         }
     }
 
@@ -397,12 +399,12 @@ public class UITestUtils extends TestUtils {
     private static GuiElementType guiElementType = null;
 
     public static void loadGuiElementType() {
-        String guiElementTypeProperty = PropertyManager.getProperty(FennecProperties.GUIELEMENT_TYPE, "sequence");
+        String guiElementTypeProperty = PropertyManager.getProperty(TesterraProperties.GUIELEMENT_TYPE, "sequence");
         try {
             guiElementType = GuiElementType.valueOf(guiElementTypeProperty);
         } catch (IllegalArgumentException e) {
             String errorMessage = "GuiElementType not supported: " + guiElementTypeProperty;
-            throw new FennecSystemException(errorMessage);
+            throw new TesterraSystemException(errorMessage);
         }
     }
 
@@ -498,28 +500,28 @@ public class UITestUtils extends TestUtils {
      * all properties can be overwritten with the values in test.properties
      */
     public static void initializePerfTest() {
-        boolean perfTest = PropertyManager.getBooleanProperty(FennecProperties.PERF_TEST, false);
+        boolean perfTest = PropertyManager.getBooleanProperty(TesterraProperties.PERF_TEST, false);
         if (perfTest) {
             Properties fileProperties = PropertyManager.getFileProperties();
-            String value = fileProperties.getProperty(FennecProperties.PERF_GENERATE_STATISTICS, "true");
-            fileProperties.setProperty(FennecProperties.PERF_GENERATE_STATISTICS, value);
+            String value = fileProperties.getProperty(TesterraProperties.PERF_GENERATE_STATISTICS, "true");
+            fileProperties.setProperty(TesterraProperties.PERF_GENERATE_STATISTICS, value);
 
             /* Override initial value of flag */
-            boolean isPropertyActive = PropertyManager.getBooleanProperty(FennecProperties.PERF_GENERATE_STATISTICS);
+            boolean isPropertyActive = PropertyManager.getBooleanProperty(TesterraProperties.PERF_GENERATE_STATISTICS);
             Flags.GENERATE_PERF_STATISTICS = isPropertyActive;
 
-            value = fileProperties.getProperty(FennecProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
-            fileProperties.setProperty(FennecProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, value);
+            value = fileProperties.getProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
+            fileProperties.setProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, value);
 
-            value = fileProperties.getProperty(FennecProperties.GUIELEMENT_TYPE, "perf");
-            fileProperties.setProperty(FennecProperties.GUIELEMENT_TYPE, value);
+            value = fileProperties.getProperty(TesterraProperties.GUIELEMENT_TYPE, "perf");
+            fileProperties.setProperty(TesterraProperties.GUIELEMENT_TYPE, value);
 
             // in case of perfTest reuse driver instances for dataprovider threads
-            value = fileProperties.getProperty(FennecProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, "true");
-            fileProperties.setProperty(FennecProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, value);
+            value = fileProperties.getProperty(TesterraProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, "true");
+            fileProperties.setProperty(TesterraProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, value);
 
             /* Override initial value of flag */
-            isPropertyActive = PropertyManager.getBooleanProperty(FennecProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD);
+            isPropertyActive = PropertyManager.getBooleanProperty(TesterraProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD);
             Flags.REUSE_DATAPROVIDER_DRIVER_BY_THREAD = isPropertyActive;
         }
     }
@@ -558,8 +560,8 @@ public class UITestUtils extends TestUtils {
         List<WebDriver> webDriversFromThread = WebDriverManager.getWebDriversFromThread(threadId);
         Map<String, WebDriver> webDriverSessions = new HashMap<>(webDriversFromThread.size());
         for (WebDriver webDriver : webDriversFromThread) {
-            String sessionId = WebDriverManager.getSessionKeyFrom(webDriver);
-            webDriverSessions.put(sessionId, webDriver);
+            String sessionKey = WebDriverManager.getSessionKeyFrom(webDriver);
+            webDriverSessions.put(sessionKey, webDriver);
         }
 
         if (webDriversFromThread.size() == 0) {
@@ -569,30 +571,4 @@ public class UITestUtils extends TestUtils {
         return UITestUtils.takeScreenshotsFromSessions(errorContext, webDriverSessions, explicitlyForThisContext);
     }
 
-    public static List<Screenshot> takeScreenshots(ScreenshotCollector screenshotCollector, boolean intoReport, boolean explicitlyForThisContext) {
-        List<Screenshot> screenshots = screenshotCollector.takeScreenshots();
-
-        if (intoReport) {
-            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-
-            if (explicitlyForThisContext) {
-                screenshots.forEach(s -> s.errorContextId = methodContext.id);
-            }
-
-            publishScreenshotsToErrorContext(methodContext, screenshots);
-        }
-
-        return screenshots;
-    }
-
-    public static List<Video> takeVideos(VideoCollector videoCollector, boolean intoReport) {
-        List<Video> videos = videoCollector.getVideos();
-
-        if (intoReport) {
-            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-            methodContext.videos.addAll(videos);
-        }
-
-        return videos;
-    }
 }

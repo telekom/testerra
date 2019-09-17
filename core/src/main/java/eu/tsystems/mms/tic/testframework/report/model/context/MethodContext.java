@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
@@ -316,7 +316,7 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
                 return true;
 
             default:
-                throw new FennecSystemException("Method state not implemented: " + status);
+                throw new TesterraSystemException("Method state not implemented: " + status);
         }
     }
 

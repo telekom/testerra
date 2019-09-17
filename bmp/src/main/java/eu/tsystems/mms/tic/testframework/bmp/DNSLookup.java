@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.bmp;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.xbill.DNS.*;
 
 import java.net.UnknownHostException;
@@ -76,7 +76,7 @@ public final class DNSLookup {
                 default:
                     msg += lookup.getErrorString();
             }
-            throw new FennecSystemException(msg);
+            throw new TesterraSystemException(msg);
         }
         
     }

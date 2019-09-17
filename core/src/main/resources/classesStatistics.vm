@@ -114,42 +114,42 @@
         <br/>
         <br/>
 
-            <table id="Fennecinfo" class="overviewTable infotable">
+            <table id="Testerrainfo" class="overviewTable infotable">
                 <thead>
                     <tr>
                         <th colspan="2" class="header suite">
-                            <h5>fennec Information</h5>
+                            <h5>Information</h5>
                         </th>
                     </tr>
                 </thead>
                 <tbody id="tests-3" class="tests">
                     <!--<tr class="test">-->
                         <!--<td class="textleft test">Build Java Version:</td>-->
-                        <!--<td class="textleft test">$!{FennecBuildInformation.buildJavaVersion}</td>-->
+                        <!--<td class="textleft test">$!{TesterraBuildInformation.buildJavaVersion}</td>-->
                     <!--</tr>-->
                     <!--<tr class="test">-->
                         <!--<td class="textleft test">Build OS Name:</td>-->
-                        <!--<td class="textleft test">$!{FennecBuildInformation.buildOsName}</td>-->
+                        <!--<td class="textleft test">$!{TesterraBuildInformation.buildOsName}</td>-->
                     <!--</tr>-->
                     <!--<tr class="test">-->
                         <!--<td class="textleft test">Build OS Architecture:</td>-->
-                        <!--<td class="textleft test">$!{FennecBuildInformation.buildOsArch}</td>-->
+                        <!--<td class="textleft test">$!{TesterraBuildInformation.buildOsArch}</td>-->
                     <!--</tr>-->
                     <!--<tr class="test">-->
                         <!--<td class="textleft test">Build OS Version:</td>-->
-                        <!--<td class="textleft test">$!{FennecBuildInformation.buildOsVersion}</td>-->
+                        <!--<td class="textleft test">$!{TesterraBuildInformation.buildOsVersion}</td>-->
                     <!--</tr>-->
                     <tr class="test">
                         <td class="textleft test">Build User:</td>
-                        <td class="textleft test">$!{FennecBuildInformation.buildUserName}</td>
+                        <td class="textleft test">$!{TesterraBuildInformation.buildUserName}</td>
                     </tr>
                     <tr class="test">
-                        <td class="textleft test">fennec Version:</td>
-                        <td class="textleft test">$!{FennecBuildInformation.fennecVersion}</td>
+                        <td class="textleft test">Build Version:</td>
+                        <td class="textleft test">$!{TesterraBuildInformation.buildVersion}</td>
                     </tr>
                     <tr class="test">
                         <td class="textleft test">Build Timestamp:</td>
-                        <td class="textleft test">$!{FennecBuildInformation.buildTimestamp}</td>
+                        <td class="textleft test">$!{TesterraBuildInformation.buildTimestamp}</td>
                     </tr>
                 </tbody>
             </table>

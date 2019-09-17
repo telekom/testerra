@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -77,12 +77,12 @@ public class TestContext extends Context implements SynchronizableContext {
             A=the only one A context (A'++ don't exist)
             A=dummy (A'++ exist)
 
-            **** no FennecClassContext
+            **** no TesterraClassContext
             C running first time: C -> A
             C running seconds time: return A
             C' (another testcontext) running first time: C' -> A'', A -> A'
 
-            **** with FennecClassContext
+            **** with TesterraClassContext
             same like above, with classContext reference to merge Context
          */
 
@@ -97,21 +97,21 @@ public class TestContext extends Context implements SynchronizableContext {
         classContext = getTreeClassContext(realClass);
 
         /*
-        check if @FennecClassContext is present on class
+        check if @TesterraClassContext is present on class
          */
-        if (realClass.isAnnotationPresent(FennecClassContext.class)) {
+        if (realClass.isAnnotationPresent(TesterraClassContext.class)) {
 
             /*
             hook into executionContext mergedContexts
              */
-            final FennecClassContext actualFennecClassContext = realClass.getAnnotation(FennecClassContext.class);
+            final TesterraClassContext actualTesterraClassContext = realClass.getAnnotation(TesterraClassContext.class);
 
-            if (actualFennecClassContext.mode() == FennecClassContext.Mode.ONE_FOR_ALL) {
+            if (actualTesterraClassContext.mode() == TesterraClassContext.Mode.ONE_FOR_ALL) {
                 final ClassContext mergedClassContext;
 
                 synchronized (executionContext.mergedClassContexts) {
                     // check if this class is present
-                    Optional<ClassContext> first = executionContext.mergedClassContexts.stream().filter(c -> c.fennecClassContext == actualFennecClassContext).findFirst();
+                    Optional<ClassContext> first = executionContext.mergedClassContexts.stream().filter(c -> c.testerraClassContext == actualTesterraClassContext).findFirst();
                     if (first.isPresent()) {
                         mergedClassContext = first.get();
                     } else {
@@ -120,11 +120,11 @@ public class TestContext extends Context implements SynchronizableContext {
                         mergedClassContext.fullClassName = realClass.getName();
                         mergedClassContext.simpleClassName = realClass.getSimpleName();
                         fillBasicContextValues(mergedClassContext, this, mergedClassContext.simpleClassName);
-                        mergedClassContext.fennecClassContext = actualFennecClassContext;
+                        mergedClassContext.testerraClassContext = actualTesterraClassContext;
                         mergedClassContext.merged = true;
 
-                        if (!StringUtils.isStringEmpty(actualFennecClassContext.value())) {
-                            mergedClassContext.name = actualFennecClassContext.value();
+                        if (!StringUtils.isStringEmpty(actualTesterraClassContext.value())) {
+                            mergedClassContext.name = actualTesterraClassContext.value();
                         }
 
                         executionContext.mergedClassContexts.add(mergedClassContext);

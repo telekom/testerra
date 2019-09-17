@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
@@ -67,7 +67,7 @@ public abstract class CheckFieldAction extends FieldAction {
         boolean isCheckable = Checkable.class.isAssignableFrom(typeOfField);
 
         if (isCheckAnnotated && !isCheckable) {
-            throw new FennecRuntimeException("Field " + fieldName + " in " + declaringClass.getCanonicalName()
+            throw new TesterraRuntimeException("Field " + fieldName + " in " + declaringClass.getCanonicalName()
                     + " is annotated with @Check, but the class is not checkable. A class is checkable, if it " +
                     "implements the marker interface " + Checkable.class.getCanonicalName());
         }
@@ -75,7 +75,7 @@ public abstract class CheckFieldAction extends FieldAction {
         if (isCheckable) {
             if (((field.getModifiers() & Modifier.STATIC) == Modifier.STATIC)) {
                 // if the Check annotated field is not static
-                throw new FennecRuntimeException("Checkable field MUST be non-static: " +
+                throw new TesterraRuntimeException("Checkable field MUST be non-static: " +
                         declaringClass.getCanonicalName() + "." + field.getName());
             }
             else {
@@ -104,7 +104,7 @@ public abstract class CheckFieldAction extends FieldAction {
         }
         Check check = field.getAnnotation(Check.class);
         if (checkableInstance == null) {
-            throw new FennecRuntimeException("Field " + fieldName + " in " + declaringClass.getCanonicalName()
+            throw new TesterraRuntimeException("Field " + fieldName + " in " + declaringClass.getCanonicalName()
                     + " is annotated with @Check and was never initialized (it is null). This is not allowed" +
                     " because @Check indicates a mandatory GuiElement of a Page.");
         } else {

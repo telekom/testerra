@@ -1,0 +1,16 @@
+= PropertyManager
+
+Standard loading of property files:
+
+* test.properties
+* proxysettings.properties
+* system.properties
+
+#In which order?#
+
+[source,java]
+----
+PropertyManager.loadProperties("file");
+
+PropertyManager.loadThreadLocalProperties("file");
+----

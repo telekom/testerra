@@ -19,17 +19,14 @@
  */
 package eu.tsystems.mms.tic.testframework.hooks;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.WebDriverRetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.*;
 import eu.tsystems.mms.tic.testframework.execution.worker.shutdown.WebDriverShutDownAfterTestsWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.start.WebDriverLoggingStartWorker;
-import eu.tsystems.mms.tic.testframework.interop.CollectAssertionInfoArtefacts;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.*;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,24 +43,29 @@ public class UIDriverHook implements ModuleHook {
         UITestStepIntegration.init();
 
         /*
-        init FennecListener Workers
+        init TesterraListener Workers
          */
         //start
-        FennecListener.registerBeforeMethodWorker(PerformanceStartWorker.class);
-        FennecListener.registerBeforeMethodWorker(WebDriverLoggingStartWorker.class);
+        TesterraListener.registerBeforeMethodWorker(PerformanceStartWorker.class);
+        TesterraListener.registerBeforeMethodWorker(WebDriverLoggingStartWorker.class);
 
         //finish
-        FennecListener.registerAfterMethodWorker(ConditionalBehaviourWorker.class);
-        FennecListener.registerAfterMethodWorker(LogWDSessionsWorker.class);
-        FennecListener.registerAfterMethodWorker(TakeScreenshotsWorker.class);
+        TesterraListener.registerAfterMethodWorker(ConditionalBehaviourWorker.class);
+        TesterraListener.registerAfterMethodWorker(LogWDSessionsWorker.class);
+        TesterraListener.registerAfterMethodWorker(TakeInSessionEvidencesWorker.class);
 
-        FennecListener.registerAfterMethodWorker(WebDriverSessionsAfterMethodWorker.class); // the utilizable one
+        TesterraListener.registerAfterMethodWorker(WebDriverSessionsAfterMethodWorker.class); // the utilizable one
 
-        FennecListener.registerAfterMethodWorker(WebDriverShutDownWorker.class);
-        FennecListener.registerAfterMethodWorker(TestMethodFinishWorker.class);
+        /*
+        ********* SESSIONS SHUTDOWN *********
+         */
+        TesterraListener.registerAfterMethodWorker(WebDriverShutDownWorker.class);
+
+        TesterraListener.registerAfterMethodWorker(TakeOutOfSessionsEvidencesWorker.class);
+        TesterraListener.registerAfterMethodWorker(TestMethodFinishWorker.class);
 
         //shutdown
-        FennecListener.registerGenerateReportsWorker(WebDriverShutDownAfterTestsWorker.class);
+        TesterraListener.registerGenerateReportsWorker(WebDriverShutDownAfterTestsWorker.class);
 
         /*
         register services
@@ -71,9 +73,8 @@ public class UIDriverHook implements ModuleHook {
         // RetryAnalyzer
         RetryAnalyzer.registerAdditionalRetryAnalyzer(new WebDriverRetryAnalyzer());
         // Screenshots and Videos
-        CollectAssertionInfoArtefacts.registerScreenshotCollector(new ScreenshotGrabber());
-        CollectAssertionInfoArtefacts.registerVideoCollector(new VideoGrabber());
-        CollectAssertionInfoArtefacts.registerSourceCollector(new SourceGrabber());
+        TestEvidenceCollector.registerScreenshotCollector(new ScreenshotGrabber());
+        TestEvidenceCollector.registerSourceCollector(new SourceGrabber());
     }
 
     @Override

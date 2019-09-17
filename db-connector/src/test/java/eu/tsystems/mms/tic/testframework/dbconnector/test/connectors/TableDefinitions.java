@@ -34,7 +34,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
- * Class containing TableDefinitions for fennec DBConnector test.
+ * Class containing TableDefinitions for DBConnector test.
  * 
  * Created with IntelliJ IDEA. User: pele Date: 18.05.12 Time: 13:41 *
  */

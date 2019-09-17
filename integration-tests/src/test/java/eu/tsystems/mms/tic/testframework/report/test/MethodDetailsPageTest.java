@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractAnnotationMarkerTest;
@@ -29,7 +29,7 @@ import java.util.Locale;
 /**
  * Created by riwa on 24.11.2016.
  */
-@FennecClassContext("View-MethodDetails")
+@TesterraClassContext("View-MethodDetails")
 public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
     /**
@@ -273,14 +273,14 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT13_checkContext() throws Exception {
-        TestStep.begin("Checks Context for classes without using FennecClassContext");
+        TestStep.begin("Checks Context for classes without using TesterraClassContext");
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(),PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),ReportTestUnderTestPassed.class.getSimpleName(),"test_PassedMinor1");
         methodDetailsPage = methodDetailsPage.toggleContext();
         AssertCollector.assertEquals(methodDetailsPage.getContextClassString(), ReportTestUnderTestPassed.class.getSimpleName());
         AssertCollector.assertEquals(methodDetailsPage.getContextTestString(), "Passed Creator");
         AssertCollector.assertEquals(methodDetailsPage.getContextSuiteString(), "Report- TestsUnderTest");
 
-        TestStep.begin("Checks Context for classes with using FennecClassContext");
+        TestStep.begin("Checks Context for classes with using TesterraClassContext");
         methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(),PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),"My_Context","test_FailedMinor1");
         methodDetailsPage = methodDetailsPage.toggleContext();
         AssertCollector.assertEquals(methodDetailsPage.getContextClassString(), "My_Context");

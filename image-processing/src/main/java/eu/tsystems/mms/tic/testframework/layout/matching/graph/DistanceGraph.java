@@ -8,7 +8,7 @@
 package eu.tsystems.mms.tic.testframework.layout.matching.graph;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.layout.DefaultParameter;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
 import eu.tsystems.mms.tic.testframework.layout.core.Point2D;
@@ -177,7 +177,7 @@ public class DistanceGraph {
      */
     public void checkForParameterWarnings() {
          distanceBetweenMultipleMatchesToProduceWarning = PropertyManager.getDoubleProperty(
-                 FennecProperties.LAYOUTCHECK_INTERNAL_PARAMETER_4,
+                 TesterraProperties.LAYOUTCHECK_INTERNAL_PARAMETER_4,
                  DefaultParameter.LAYOUTCHECK_INTERNAL_PARAMETER_4);
 
         HashSet<Edge> warnedEdges = new HashSet<Edge>();
@@ -214,7 +214,7 @@ public class DistanceGraph {
      */
     public void incorporateSubImageDisplacement() {
         minimumSimilarMovementErrorsForDisplacementCorrection = PropertyManager.getDoubleProperty(
-                FennecProperties.LAYOUTCHECK_INTERNAL_PARAMETER_3,
+                TesterraProperties.LAYOUTCHECK_INTERNAL_PARAMETER_3,
                 DefaultParameter.LAYOUTCHECK_INTERNAL_PARAMETER_3);
 
         GroupMovementDetector groupMovementDetector = new GroupMovementDetector();

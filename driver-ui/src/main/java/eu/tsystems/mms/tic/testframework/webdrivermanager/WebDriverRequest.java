@@ -41,7 +41,6 @@ public abstract class WebDriverRequest {
      */
     public String storedSessionId;
     public NodeInfo storedExecutingNode;
-    public String storedVideoName;
 
 
     public void copyFrom(WebDriverRequest webDriverRequest) {

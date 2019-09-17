@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 
 /**
@@ -41,21 +41,21 @@ public final class POConfig {
 
     /** Private Constructor, cause this is a util class. */
     private POConfig() { }
-    
+
     /**
-     * The element-timeout in seconds. Default: 30s.
+     * The element-timeout in seconds. Default: 8s.
      */
-    private static int uiElementTimeoutInSeconds = PropertyManager.getIntProperty(FennecProperties.ELEMENT_TIMEOUT_SECONDS, 8);
+    private static int uiElementTimeoutInSeconds = PropertyManager.getIntProperty(TesterraProperties.ELEMENT_TIMEOUT_SECONDS, 8);
 
     private static final ThreadLocal<Integer> THREAD_LOCAL_TIMEOUT = new ThreadLocal<>();
 
-    private static CheckRule guiElementCheckRule = CheckRule.valueOf(PropertyManager.getProperty(FennecProperties.GUIELEMENT_CHECK_RULE, CheckRule.IS_DISPLAYED.name()));
+    private static CheckRule guiElementCheckRule = CheckRule.valueOf(PropertyManager.getProperty(TesterraProperties.GUIELEMENT_CHECK_RULE, CheckRule.IS_DISPLAYED.name()));
 
     /**
      * DEMO mode. Highlight GuiElements actions on Page Object pages or
      * when implemented the highlightElement.js scipt on actual page.
      */
-    private static boolean demoMode = PropertyManager.getBooleanProperty(FennecProperties.DEMO_MODE, true);
+    private static boolean demoMode = PropertyManager.getBooleanProperty(TesterraProperties.DEMO_MODE, true);
 
     public static int getUiElementTimeoutInSeconds() {
         if (THREAD_LOCAL_TIMEOUT.get() != null) {

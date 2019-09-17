@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework;
 
 import com.jcraft.jsch.*;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 
 import java.io.File;
@@ -132,7 +132,7 @@ public class SSHConnector {
                 break;
             case KEY_FILE:
                 if (keyFile == null) {
-                    throw new FennecSystemException("No keyfile specified. keyfile must be absolute file path to private key.");
+                    throw new TesterraSystemException("No keyfile specified. keyfile must be absolute file path to private key.");
                 }
                 jSch.addIdentity(keyFile.getAbsolutePath(), password);
 
@@ -140,7 +140,7 @@ public class SSHConnector {
                 session.setPassword(password);
                 break;
             default:
-                throw new FennecSystemException("No valid auth method: " + authMethod);
+                throw new TesterraSystemException("No valid auth method: " + authMethod);
         }
 
         session.setConfig("StrictHostKeyChecking", "no");

@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithPageOptions;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;

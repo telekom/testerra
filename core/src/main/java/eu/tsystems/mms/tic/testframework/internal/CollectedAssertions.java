@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
-import eu.tsystems.mms.tic.testframework.interop.CollectAssertionInfoArtefacts;
+import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.CustomErrorContextObject;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -51,8 +51,9 @@ public final class CollectedAssertions {
         AssertionInfo assertionInfo = new AssertionInfo(throwable);
 
         // take scrennshots
-        List<Screenshot> screenshots = CollectAssertionInfoArtefacts.collectScreenshots();
+        List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
         if (screenshots != null) {
+            screenshots.forEach(s -> s.errorContextId = assertionInfo.id);
             assertionInfo.screenshots.addAll(screenshots);
         }
 

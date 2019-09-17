@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.*;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
@@ -68,7 +68,7 @@ public class PageFactoryPrefixedTest extends AbstractTestSitesTest {
             LOGGER.info("Setting browser size to " + w + "x" + h);
             driver.manage().window().setSize(new Dimension(w, h));
         } catch (Exception e) {
-            throw new FennecRuntimeException("Unable to set viewport size", e);
+            throw new TesterraRuntimeException("Unable to set viewport size", e);
         }
     }
 

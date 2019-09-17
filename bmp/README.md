@@ -1,5 +1,5 @@
-# jfennec bmp
-jfennec bmp is a small utility module for using the [browsermob-proxy](https://github.com/lightbody/browsermob-proxy) in 
+# bmp
+bmp is a small utility module for using the [browsermob-proxy](https://github.com/lightbody/browsermob-proxy) in 
 an easy way. 
 
 ## Installation / Usage
@@ -11,7 +11,7 @@ For maven:
 ```xml
 <dependencies>
     <dependency>
-        <groupId>eu.tsystems.mms.tic.jfennec</groupId>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>bmp</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
@@ -20,7 +20,7 @@ For maven:
 
 For gradle:
 ```text
-compile 'eu.tsystems.mms.tic.jfennec:bmp:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:bmp:1-SNAPSHOT'
 ```
 
 ###### Using bmp module:
@@ -28,10 +28,10 @@ compile 'eu.tsystems.mms.tic.jfennec:bmp:1-SNAPSHOT'
 The following example shows how to create a new local proxy instance and capture traffic.
 
 ```java
-public class MyTest extends FennecTest {
+public class MyTest extends TesterraTest {
     
     @Test
-    public void testT01_My_first_fennec_test() {
+    public void testT01_My_first_tt._test() {
         HttpHost proxyHost = new HttpHost(PROXY_HOST, PROXY_PORT);
         UsernamePasswordCredentials credentials = null;
         ProxyServer proxyServer = new ProxyServer(9999, proxyHost, credentials);
@@ -46,10 +46,10 @@ public class MyTest extends FennecTest {
 Or, more easily, you can use the proxy manager:
 
 ```java
-public class MyTest extends FennecTest {
+public class MyTest extends TesterraTest {
     
     @Test
-    public void testT01_My_first_fennec_test() {
+    public void testT01_My_first_tt._test() {
         final ProxyServer proxyServer = BMProxyManager.getProxyServer();
         // ...
         BMProxyManager.shutDownProxyServer();

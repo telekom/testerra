@@ -1,0 +1,49 @@
+/*
+    Custom CSS file for tabbed code snippets
+*/
+
+:root{
+    --tab-color: rgba(122, 37, 24,8);
+    --tab-color-hover: rgba(122, 37, 24, 0.11);
+}
+
+.switch--item.selected{
+    background-color: var(--tab-color) !important;
+    color: white  !important;
+}
+
+.switch--item{
+    color: var(--tab-color) !important;
+    border-radius: 10px 10px 0px 0px;
+    border-color: transparent !important;
+    background: white;
+    transition: 50ms;
+    opacity: 1;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.switch--item:not(.selected):hover{
+    background-color: var(--tab-color-hover) !important;
+    transition: background-color .3s;
+}
+
+.switch{
+    border-color: transparent !important  ;
+    border-width: 1px 1px 0 1px;
+    border-style: solid;
+    display: inline-block;
+
+ }
+
+.hidden {
+    display: none;
+}
+
+.switch--item:not(:first-child) {
+    border-width: 0 0 0 1px;
+    border-style: solid;
+}

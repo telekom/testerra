@@ -15,7 +15,7 @@ import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
 
-@FennecClassContext("MyClass")
+@TesterraClassContext("MyClass")
 public class ReportingAllStatesTests extends AbstractTest {
 
     static {

@@ -1,0 +1,4 @@
+// Platform badge with link
+:platform_badge: image:https://img.shields.io/badge/-PLATFORM-blue[link="index.html#_opensource_and_platform"]
+
+:default_resolution:                1920x1200 (16:10)

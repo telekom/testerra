@@ -21,8 +21,8 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.varia
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.TestPage;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -47,12 +47,12 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
     static {
         POConfig.setUiElementTimeoutInSeconds(3);
-        PropertyManager.getGlobalProperties().setProperty(FennecProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
+        PropertyManager.getGlobalProperties().setProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
     }
 
     @AfterTest(alwaysRun = true)
     public void resetWDCloseWindowsMode() {
-        PropertyManager.getGlobalProperties().setProperty(FennecProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "true");
+        PropertyManager.getGlobalProperties().setProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "true");
     }
 
     /**

@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.FennecClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
@@ -11,7 +11,6 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesPage;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestDependsOn;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestPassed;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestSyncFailed;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
@@ -23,7 +22,7 @@ import java.util.Map;
 /**
  * Created by fakr on 31.05.2017.
  */
-@FennecClassContext("View-Classes")
+@TesterraClassContext("View-Classes")
 public class ClassesPageTest extends AbstractTest {
 
 
@@ -92,14 +91,14 @@ public class ClassesPageTest extends AbstractTest {
     }
 
     /**
-     * checkFennecInformationIsDisplayed
+     * checkTesterraInformationIsDisplayed
      * Checks whether the "XETA INFORMATION" is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     @Fails(ticketString = "XETA-684")
-    public void testT05_checkFennecInformationIsDisplayed() throws ParseException {
+    public void testT05_checkTesterraInformationIsDisplayed() throws ParseException {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
-        classesPage.assertFennecInformationIsDisplayed();
+        classesPage.assertTesterraInformationIsDisplayed();
     }
 
     /**

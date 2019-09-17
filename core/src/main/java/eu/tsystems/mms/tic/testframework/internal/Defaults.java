@@ -20,8 +20,8 @@
 package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.FennecProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,11 +33,11 @@ public final class Defaults {
         String value = PropertyManager.getProperty(property, defaultValue);
         Matcher matcher = compile.matcher(value);
         if (!matcher.find()) {
-            throw new FennecRuntimeException(property + " does not match pattern " + pattern + " : " + value);
+            throw new TesterraRuntimeException(property + " does not match pattern " + pattern + " : " + value);
         }
         return value;
     }
 
-    public static String DISPLAY_RESOLUTION = load(FennecProperties.DISPLAY_RESOLUTION, "1920x1200", "\\d+x\\d+");
+    public static String DISPLAY_RESOLUTION = load(TesterraProperties.DISPLAY_RESOLUTION, "1920x1200", "\\d+x\\d+");
 
 }

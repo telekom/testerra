@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecTestFailureException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraTestFailureException;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
@@ -87,8 +87,8 @@ public class MethodAnnotationCheckerWorker extends MethodWorker {
                     final String message = stringBuilder.toString();
 
                     // set throwable
-                    final FennecTestFailureException FennecTestFailureException = new FennecTestFailureException(message, throwable);
-                    testResult.setThrowable(FennecTestFailureException);
+                    final TesterraTestFailureException TesterraTestFailureException = new TesterraTestFailureException(message, throwable);
+                    testResult.setThrowable(TesterraTestFailureException);
 
                     // set readable message
                     methodContext.setThrowable(null, throwable, true);

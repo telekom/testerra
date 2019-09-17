@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.mailconnector.pop3.POP3MailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.smtp.SMTPMailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.*;
-import eu.tsystems.mms.tic.testframework.testing.FennecTest;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,17 +53,17 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Integration Tests for FennecMailConnector.
+ * Integration Tests for TesterraMailConnector.
  * 
  * @author mrgi, tbmi
  */
-public class MailConnectorTest extends FennecTest {
+public class MailConnectorTest extends TesterraTest {
 
     // CONSTANTS
     /** Constant PATH_HOME */
     private static final String PATH_HOME = System.getProperty("user.dir");
     /** Constant PATH_RES */
-    private static final String PATH_RES = PATH_HOME +  /*"/fennec-mailconnector" +*/ "/src/test/resources/";
+    private static final String PATH_RES = PATH_HOME +  /*"/tt.-mailconnector" +*/ "/src/test/resources/";
     /** Constant STR_MAIL_SUBJECT */
     private static final String STR_MAIL_SUBJECT = "Test mail for TC: ";
     /** Constant STR_MAIL_TEXT */
@@ -158,7 +158,7 @@ public class MailConnectorTest extends FennecTest {
 
         // EXECUTION - Send and receive message.
         smtp.sendMessage(msg);
-        FennecMail receivedMsg = waitForMessage(subject);
+        TesterraMail receivedMsg = waitForMessage(subject);
 
         // TEST - Compare sent message with received message (content & headers).
 
@@ -191,7 +191,7 @@ public class MailConnectorTest extends FennecTest {
         // EXECUTION - Send and receive message.
         smtp.sendMessage(msg);
 
-        FennecMail receivedMsg = waitForMessage(subject);
+        TesterraMail receivedMsg = waitForMessage(subject);
 
         // TEST 1 - Fail, if the message contains no attachment (content is plain text).
         if (!(receivedMsg.getMessage().getContent() instanceof MimeMultipart)) {
@@ -248,7 +248,7 @@ public class MailConnectorTest extends FennecTest {
 
         // EXECUTION 2 - Send and retrieve encrypted message.
         smtp.sendMessage(encryptedMsg);
-        FennecMail receivedMsg = waitForMessage(subject);
+        TesterraMail receivedMsg = waitForMessage(subject);
 
         // TEST 2 - Content should be encrypted (not equal to original message).
         boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
@@ -290,7 +290,7 @@ public class MailConnectorTest extends FennecTest {
 
         // EXECUTION 2 - Send and retrieve encrypted message.
         smtp.sendMessage(encryptedMsg);
-        FennecMail receivedMsg = waitForMessage(subject);
+        TesterraMail receivedMsg = waitForMessage(subject);
 
         // TEST 2 - Content should be encrypted (not equal to original message).
         boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
@@ -329,7 +329,7 @@ public class MailConnectorTest extends FennecTest {
 
         // EXECUTION - Send and receive message.
         smtpSSL.sendMessage(msg);
-        FennecMail receivedMsg = waitForMessage(subject);
+        TesterraMail receivedMsg = waitForMessage(subject);
 
         // TEST - Compare sent message with received message (content & headers).
         boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
@@ -475,7 +475,7 @@ public class MailConnectorTest extends FennecTest {
 
         // EXECUTION - Send and receive message.
         smtp.sendMessage(msg);
-        FennecMail receivedMsg = waitForMessage(searchCriterias);
+        TesterraMail receivedMsg = waitForMessage(searchCriterias);
 
         // get content
         receivedMsg.getMessage().getContent();
@@ -518,14 +518,14 @@ public class MailConnectorTest extends FennecTest {
      * 
      * @param subject the subject to look for
      * @throws AssertionError in case no message was received at all
-     * @return the received FennecMail-message
+     * @return the received TesterraMail-message
      */
-    private FennecMail waitForMessage(String subject) throws AssertionError {
-        FennecMail receivedMsg = null;
+    private TesterraMail waitForMessage(String subject) throws AssertionError {
+        TesterraMail receivedMsg = null;
 
         // TEST - Fail, if no message was received.
         try {
-            receivedMsg = pop3.waitForFennecMail(subject);
+            receivedMsg = pop3.waitForTesterraMail(subject);
         } catch (Exception e) {
             Assert.fail(ERR_NO_MSG_RECEIVED);
         }
@@ -538,14 +538,14 @@ public class MailConnectorTest extends FennecTest {
      * 
      * @param searchCriterias .
      * @throws AssertionError in case no message was received at all
-     * @return the received FennecMail-message
+     * @return the received TesterraMail-message
      */
-    private FennecMail waitForMessage(final List<SearchCriteria> searchCriterias) throws AssertionError {
-        FennecMail receivedMsg = null;
+    private TesterraMail waitForMessage(final List<SearchCriteria> searchCriterias) throws AssertionError {
+        TesterraMail receivedMsg = null;
 
         // TEST - Fail, if no message was received.
         try {
-            receivedMsg = pop3.waitForFennecMail(searchCriterias);
+            receivedMsg = pop3.waitForTesterraMail(searchCriterias);
         } catch (Exception e) {
             Assert.fail(ERR_NO_MSG_RECEIVED);
         }
@@ -556,12 +556,12 @@ public class MailConnectorTest extends FennecTest {
     /**
      * Clean up method which deletes the message, which is passed as first parameter.
      * 
-     * @param msg the FennecMail-message to delete
+     * @param msg the TesterraMail-message to delete
      * @param pop3Instance mailclient to use.
      * @throws AssertionError if the inbox is not empty after deleting the message
      * @throws MessagingException if there is an error while retrieving the recipient or subject
      */
-    private void deleteMessage(FennecMail msg, POP3MailConnector pop3Instance) throws AssertionError, MessagingException {
+    private void deleteMessage(TesterraMail msg, POP3MailConnector pop3Instance) throws AssertionError, MessagingException {
         RecipientType to = RecipientType.TO;
         String recipient = msg.getRecipients().get(0);
         String subject = msg.getSubject();

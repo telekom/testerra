@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.exceptions.FennecSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
@@ -72,32 +72,8 @@ public class TestStatusController {
         statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
         statusMap.put("DryRun", Flags.DRY_RUN);
 
-        // set status
-        String status;
-        String statusMessage;
-        boolean statusBool;
-        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
-            if (FailureCorridor.isCorridorMatched()) {
-                status = PASSED;
-                statusBool = true;
-            } else {
-                status = FAILED;
-                statusBool = false;
-            }
-            statusMessage = FailureCorridor.getStatusMessage();
-        } else {
-            statusMessage = getFinalCountersMessage();
-            if (testsSuccessful > 0 && testsSkipped == 0 && testsFailed == 0) {
-                status = PASSED;
-                statusBool = true;
-            } else {
-                status = FAILED;
-                statusBool = false;
-            }
-        }
-        statusMap.put("Status", status);
-        statusMap.put("StatusBool", statusBool);
-        statusMap.put("StatusMessage", statusMessage);
+        statusMap.put("Status", EXECUTION_CONTEXT.getStatus());
+        statusMap.put("StatusBool", EXECUTION_CONTEXT.getStatus() == Status.PASSED);
 
         statusMap.put("RunCfg", EXECUTION_CONTEXT.runConfig.RUNCFG);
         statusMap.put("Date", EXECUTION_CONTEXT.startTime.toString());
@@ -111,7 +87,7 @@ public class TestStatusController {
          */
 
         if (methodContext == null) {
-            throw new FennecSystemException("Test method object is null");
+            throw new TesterraSystemException("Test method object is null");
         }
 
         /*
@@ -168,7 +144,7 @@ public class TestStatusController {
                 testsSuccessful++;
 
                 // set xml status
-                FennecListener.XML_REPORTER.testSucceeded(reportEntry);
+                TesterraListener.XML_REPORTER.testSucceeded(reportEntry);
 
                 break;
 
@@ -181,7 +157,7 @@ public class TestStatusController {
                 testsFailed++;
 
                 // set xml status
-                FennecListener.XML_REPORTER.testFailed(reportEntry, "", "");
+                TesterraListener.XML_REPORTER.testFailed(reportEntry, "", "");
 
                 levelFC(methodContext, true);
                 break;
@@ -197,7 +173,7 @@ public class TestStatusController {
                 levelFC(methodContext, false);
                 break;
 
-            default: throw new FennecSystemException("Not implemented: " + status);
+            default: throw new TesterraSystemException("Not implemented: " + status);
         }
 
         // update team city progress
@@ -234,7 +210,7 @@ public class TestStatusController {
                     }
                     break;
                 default:
-                    throw new FennecSystemException("Could not set explicit Failure Corridor value. Missing state: " + failureCorridorValue);
+                    throw new TesterraSystemException("Could not set explicit Failure Corridor value. Missing state: " + failureCorridorValue);
             }
             LOGGER.debug("FC: " + testsFailedHIGH + "/" + testsFailedMID + "/" + testsFailedLOW);
         }
@@ -365,7 +341,7 @@ public class TestStatusController {
                 case FAILED_RETRIED:
                     return false;
 
-                default: throw new FennecSystemException("Unhandled state: " + this);
+                default: throw new TesterraSystemException("Unhandled state: " + this);
             }
         }
 
@@ -396,7 +372,7 @@ public class TestStatusController {
                     return true;
 
 
-                default: throw new FennecSystemException("Unhandled state: " + this);
+                default: throw new TesterraSystemException("Unhandled state: " + this);
             }
         }
 
@@ -417,7 +393,7 @@ public class TestStatusController {
                 case NO_RUN:
                     return true;
 
-                default: throw new FennecSystemException("Unhandled state: " + this);
+                default: throw new TesterraSystemException("Unhandled state: " + this);
             }
         }
 

@@ -19,8 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.common.FennecCommons;
-import eu.tsystems.mms.tic.testframework.exceptions.FennecRuntimeException;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -148,7 +148,7 @@ public abstract class ErrorContext extends Context {
             }
             return "Selenium: " + out;
         }
-        else if (line.startsWith(FennecRuntimeException.class.getPackage().getName())) {
+        else if (line.startsWith(TesterraRuntimeException.class.getPackage().getName())) {
             return line.replace(TimeoutException.class.getPackage().getName() + ".", "");
         }
         return line;
@@ -175,7 +175,7 @@ public abstract class ErrorContext extends Context {
         this.stacktraceForReadableMessage = stacktrace;
     }
 
-    private static final String splitmark = "####fennec#";
+    private static final String splitmark = "####tt.#";
 
     private String filterReadableMessage(String message) {
         String splitter = ": ";
@@ -212,9 +212,9 @@ public abstract class ErrorContext extends Context {
          * stacktrace filter
          */
         if (stackTrace != null) {
-            final String testframeworkPackage = FennecCommons.DEFAULT_PACKAGE_NAME + ".testframework";
+            final String testframeworkPackage = TesterraCommons.DEFAULT_PACKAGE_NAME + ".testframework";
             final String completeStackTrace = stackTrace.toString();
-            if (completeStackTrace.contains(FennecCommons.DEFAULT_PACKAGE_NAME) &&
+            if (completeStackTrace.contains(TesterraCommons.DEFAULT_PACKAGE_NAME) &&
                     ((!completeStackTrace.contains(testframeworkPackage))
                                     ||
                     (completeStackTrace.contains(testframeworkPackage) && completeStackTrace.contains("playground")))

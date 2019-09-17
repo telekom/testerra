@@ -43,7 +43,7 @@ public abstract class ErrorContext extends Context {
     public String errorFingerprint = "";
     public ScriptSource scriptSource;
     public ScriptSource executionObjectSource;
-    final public List<CustomErrorContext> customErrorContexts = new LinkedList<>();
+    final public List<CustomContext> customContexts = new LinkedList<>();
 
     public Throwable getThrowable() {
         return throwable;
@@ -223,23 +223,4 @@ public abstract class ErrorContext extends Context {
             }
         }
     }
-
-    /**
-     * Checks if at least 1 screenshot exists.
-     *
-     * @return true if screenshot exists
-     */
-    public boolean hasScreenshot() {
-        return screenshots.size() > 0;
-    }
-
-    /**
-     * Checks if at least 1 video exists.
-     *
-     * @return true if video exists
-     */
-    public boolean hasVideo() {
-        return videos.size() > 0;
-    }
-
 }

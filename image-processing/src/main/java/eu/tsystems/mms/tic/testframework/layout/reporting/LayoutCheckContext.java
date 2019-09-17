@@ -1,9 +1,9 @@
 package eu.tsystems.mms.tic.testframework.layout.reporting;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.CustomErrorContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
-public class LayoutErrorContext implements CustomErrorContext {
+public class LayoutCheckContext implements CustomContext {
 
     public String name;
     public String mode;

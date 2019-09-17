@@ -27,8 +27,8 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
@@ -36,10 +36,24 @@ import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.*;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.*;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ConfigurableGuiElementAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertExecutionLogDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PerformanceTestGuiElementAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheckFrameAwareDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.creation.GuiElementCoreFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.*;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacadeLoggingDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFace;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
@@ -47,13 +61,24 @@ import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * GuiElement is the access point for most tests and is an extension of WebElement.
@@ -61,11 +86,10 @@ import java.util.*;
  * Authors: pele, rnhb
  */
 public class GuiElement implements
-    Checkable,
-    GuiElementCore,
-    GuiElementWait,
-    Nameable
-{
+        Checkable,
+        GuiElementCore,
+        GuiElementWait,
+        Nameable {
 
     private static final Map<String, GuiElementCoreFactory> coreFactories = new HashMap<>();
 
@@ -103,7 +127,7 @@ public class GuiElement implements
 
     private GuiElement(GuiElementData guiElementData, int index) {
         this.guiElementData = guiElementData.copy();
-        this.guiElementData.index  = index;
+        this.guiElementData.index = index;
         if (!StringUtils.isEmpty(guiElementData.name)) {
             this.guiElementData.name = guiElementData.name + "_" + index;
         }
@@ -127,6 +151,7 @@ public class GuiElement implements
      * @param name   .
      * @param driver Actual driver object.
      * @param by     By locator.
+     *
      * @deprecated name is automatically read from field name
      */
     @Deprecated
@@ -144,6 +169,7 @@ public class GuiElement implements
      * @param by     By locator.
      * @param frames frames containing the element
      * @param driver Driver Object.
+     *
      * @deprecated name is automatically read from field name
      */
     @Deprecated
@@ -249,6 +275,7 @@ public class GuiElement implements
      * Different filters can be applied in conjunction (and).
      *
      * @param filters Filters to be applied
+     *
      * @return The same GuiElement
      */
     public GuiElement withWebElementFilter(WebElementFilter... filters) {
@@ -262,6 +289,7 @@ public class GuiElement implements
      * Add a Decorator to log every action performed on this element with addition to a short description of it.
      *
      * @param description A very short description of this GuiElement, for example "Continue Shopping Button"
+     *
      * @deprecated use setName() instead.
      */
     @Deprecated
@@ -275,6 +303,7 @@ public class GuiElement implements
      * given locator. It does not wait for the subelement if the parent has been found!
      *
      * @param byLocator Locator of new element.
+     *
      * @return GuiElement
      */
     public GuiElement getSubElement(By byLocator) {
@@ -287,6 +316,7 @@ public class GuiElement implements
      *
      * @param byLocator   Locator of new element.
      * @param description Description for GuiElement
+     *
      * @return GuiElement
      */
     public GuiElement getSubElement(By byLocator, String description) {
@@ -295,6 +325,7 @@ public class GuiElement implements
 
     /**
      * @return true if name is not empty or null
+     *
      * @deprecated should not be public, will be removed
      */
     @Deprecated
@@ -797,6 +828,7 @@ public class GuiElement implements
      * instead of the technical cause like an isDisplayed error.
      *
      * @param errorMessage Cause returned on assertion error.
+     *
      * @return GuiElementAssert object for functional assertions
      */
     public GuiElementAssert asserts(String errorMessage) {
@@ -819,6 +851,7 @@ public class GuiElement implements
      * given as cause, instead of the technical cause like an isDisplayed error.
      *
      * @param errorMessage Cause returned on assertion error.
+     *
      * @return GuiElementAssert object for non-functional assertions
      */
     public GuiElementAssert nonFunctionalAsserts(String errorMessage) {
@@ -841,6 +874,7 @@ public class GuiElement implements
      * instead of the technical cause like an isDisplayed error.
      *
      * @param errorMessage Cause returned on assertion error.
+     *
      * @return GuiElementAssert object for functional assertions
      */
     public GuiElementAssert assertCollector(String errorMessage) {

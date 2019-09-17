@@ -22,18 +22,24 @@ package eu.tsystems.mms.tic.testframework.utils;
 import de.idyl.winzipaes.AesZipFileEncrypter;
 import de.idyl.winzipaes.impl.AESEncrypter;
 import de.idyl.winzipaes.impl.AESEncrypterJCA;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Objects;
 
 import static java.lang.Thread.currentThread;
 
@@ -53,21 +59,78 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * Simply get the resource as a stream shortcut.
      *
      * @param fileInResources .
+     *
      * @return Input Stream.
      */
     public static InputStream getResourceInputStream(final String fileInResources) throws FileNotFoundException {
-        InputStream resourceAsStream = currentThread().getContextClassLoader().getResourceAsStream(fileInResources);
-        if (resourceAsStream == null) {
-            throw new FileNotFoundException(fileInResources);
+
+        final URL resource = getResourceURL(fileInResources);
+
+        LOGGER.info("Loading from: " + resource);
+        try {
+            return Objects.requireNonNull(resource).openStream();
+        } catch (NullPointerException | IOException e) {
+            throw new FileNotFoundException(fileInResources, e);
         }
-        return resourceAsStream;
+    }
+
+    /**
+     * Simply get the resource as a stream - BUT DOES NOT return if resource file is inside a a included dependency jar.
+     *
+     * @param fileInResources {@link String}
+     *
+     * @return InputStream
+     */
+    public static InputStream getLocalResourceInputStream(final String fileInResources) {
+
+        final URL resource = getResourceURL(fileInResources);
+
+        // exit, when no file present
+        // exit, when file is not loaded from our resource path but from jar
+        if (resource == null || !resource.toString().startsWith("file:")) {
+            throw new TesterraSystemException("File not found: " + fileInResources);
+        }
+
+        LOGGER.info("Loading from: " + resource);
+        try {
+            return Objects.requireNonNull(resource).openStream();
+        } catch (IOException e) {
+            throw new TesterraSystemException(fileInResources, e);
+        }
+    }
+
+    /**
+     * Gets a local file if present, otherwise search for resource file.
+     *
+     * @param filePathAndName .
+     *
+     * @return InputStream
+     *
+     * @throws FileNotFoundException .
+     */
+    public static InputStream getLocalFileOrResourceInputStream(final String filePathAndName) throws FileNotFoundException {
+
+        final File relativeFile = new File(filePathAndName);
+
+        if (relativeFile.exists()) {
+            try {
+                LOGGER.info("Loading from: " + relativeFile);
+                return new FileInputStream(relativeFile);
+            } catch (java.io.FileNotFoundException e) {
+                throw new FileNotFoundException(filePathAndName, e);
+            }
+        }
+
+        return FileUtils.getResourceInputStream(filePathAndName);
     }
 
     /**
      * Get an absolute file path from a resource file path.
      *
      * @param fileInResources .
+     *
      * @return Absolute file path.
+     *
      * @throws FileNotFoundException
      */
     public static String getAbsoluteFilePath(String fileInResources) throws FileNotFoundException {
@@ -92,7 +155,9 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * Read a resource file into a string.
      *
      * @param fileInResources .
+     *
      * @return string.
+     *
      * @throws IOException
      */
     public static String readFromResourceFile(String fileInResources) throws IOException {
@@ -110,7 +175,9 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * Read an absolute file into a string.
      *
      * @param absoluteFilePath .
+     *
      * @return String.
+     *
      * @throws IOException
      */
     public static String readFromFile(String absoluteFilePath) throws IOException {
@@ -169,7 +236,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
             throw new IllegalArgumentException("No files named to zip.");
         }
         final ZipFile zipFile = new ZipFile(targetFile);
-        for (InputStream is: inputStreams) {
+        for (InputStream is : inputStreams) {
             zipFile.addStream(is, params);
         }
     }

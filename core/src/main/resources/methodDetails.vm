@@ -372,7 +372,7 @@
                     #foreach($video in ${testMethod.videos})
                     <div style="margin: 10px; float: left;">
                         <div>
-                            <video width="600" height="300" controls autoplay>
+                            <video width="1024" height="512" controls autoplay>
                                 <source src="../../videos/$video.filename" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>

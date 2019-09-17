@@ -37,4 +37,22 @@ public class DesktopWebDriverRequest extends WebDriverRequest {
     public String seleniumServerPort;
     public WebDriverMode webDriverMode;
 
+
+    @Override
+    public String toString() {
+        return "DesktopWebDriverRequest{" +
+                "sessionCapabilities=" + sessionCapabilities +
+                ", desiredCapabilities=" + desiredCapabilities +
+                ", seleniumServerURL='" + seleniumServerURL + '\'' +
+                ", seleniumServerHost='" + seleniumServerHost + '\'' +
+                ", seleniumServerPort='" + seleniumServerPort + '\'' +
+                ", webDriverMode=" + webDriverMode +
+                ", browser=" + browser +
+                ", sessionKey='" + sessionKey + '\'' +
+                ", baseUrl='" + baseUrl + '\'' +
+                ", browserVersion='" + browserVersion + '\'' +
+                ", storedSessionId='" + storedSessionId + '\'' +
+                ", storedExecutingNode=" + storedExecutingNode +
+                '}';
+    }
 }

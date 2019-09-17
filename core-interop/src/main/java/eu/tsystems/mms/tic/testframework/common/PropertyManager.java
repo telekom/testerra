@@ -28,14 +28,15 @@ package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.constants.RTConstants;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -44,6 +45,12 @@ import java.util.Properties;
  * @author mibu, pele, mrgi, sepr
  */
 public final class PropertyManager {
+
+    static {
+        TesterraCommons.init();
+    }
+
+    public static void ensureLoaded() { }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertyManager.class);
 
@@ -59,11 +66,41 @@ public final class PropertyManager {
 
     static final Properties GLOBALPROPERTIES = new Properties();
 
-    private static void pLoadProperties(final Properties properties, final String resourceFile, String charset) {
-        final InputStream propertiesInputStream = FileUtils.getLocalOrResourceFileAsStream(resourceFile);
+    /*
+     * Static constructor, creating static Properties object.
+     *
+     * NOTE: DO NOT USE LOGGER in this static block!
+     */
+    static {
+        // set static properties
+        String propertyFile = RTConstants.getTesterraTestPropertiesFile();
+        pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null, true);
+        System.out.println("Loaded boot time properties from: " + propertyFile);
+        System.out.print("Global Properties: " + FILEPROPERTIES);
+    }
 
-        if (propertiesInputStream == null) {
-            throw new TesterraSystemException("Resource property file not found: " + resourceFile);
+    /*
+    LOADERS section
+     */
+    private static void pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset, boolean localOnly) {
+
+        final URL resource = Thread.currentThread().getContextClassLoader().getResource(resourceFile);
+        final InputStream propertiesInputStream;
+
+        // exit, when no file present
+        // exit, when file is not loaded from our resource path but from jar
+        if (resource == null) {
+            throw new TesterraSystemException("Property file not found in your resource path: " + resourceFile);
+        }
+
+        if (localOnly && !resource.toString().startsWith("file:")) {
+            throw new TesterraSystemException("Local Property file not found in your resource path: " + resourceFile);
+        }
+
+        try {
+            propertiesInputStream = Objects.requireNonNull(resource).openStream();
+        } catch (IOException e) {
+            throw new TesterraSystemException("Error reading property file: " + resourceFile);
         }
 
         if (charset == null) {
@@ -84,29 +121,18 @@ public final class PropertyManager {
         }
     }
 
-    /** Static constructor, creating static Properties object. */
-    static {
-        // set static properties
-        String propertyFile = RTConstants.getTesterraTestPropertiesFile();
-        pLoadProperties(FILEPROPERTIES, propertyFile, null);
-    }
-
-    /*
-    LOADERS section
-     */
-
-    private static Properties pLoadThreadLocalProperties(final String resourceFile, final String charset) {
+    private static Properties pLoadThreadLocalProperties(final String resourceFile, final String charset, boolean localOnly) {
         Properties threadLocalProperties;
         if (THREAD_LOCAL_PROPERTIES.get() == null) {
             threadLocalProperties = new Properties();
             THREAD_LOCAL_PROPERTIES.set(threadLocalProperties);
-        }
-        else {
+        } else {
             threadLocalProperties = THREAD_LOCAL_PROPERTIES.get();
         }
 
-        pLoadProperties(threadLocalProperties, resourceFile, charset);
+        pLoadPropertiesFromResource(threadLocalProperties, resourceFile, charset, localOnly);
 
+        LOGGER.info("ThreadLocalProperties: " + threadLocalProperties);
         return threadLocalProperties;
     }
 
@@ -114,42 +140,94 @@ public final class PropertyManager {
      * Load properties from a property file.
      *
      * @param resourceFile The property file to load.
+     *
      * @return Return loaded properties.
      */
+    public static Properties loadThreadLocalProperties(final String resourceFile, boolean localOnly) {
+        return pLoadThreadLocalProperties(resourceFile, null, localOnly);
+    }
+
+    /**
+     * Loads a local property file.
+     *
+     * @param resourceFile
+     *
+     * @return
+     */
     public static Properties loadThreadLocalProperties(final String resourceFile) {
-        return pLoadThreadLocalProperties(resourceFile, null);
+        return loadThreadLocalProperties(resourceFile, true);
     }
 
     /**
      * Load properties from a property file.
      *
      * @param resourceFile The property file to load.
+     *
      * @return Return loaded properties.
+     */
+    public static Properties loadThreadLocalProperties(final String resourceFile, final String charset, boolean localOnly) {
+        return pLoadThreadLocalProperties(resourceFile, charset, localOnly);
+    }
+
+    /**
+     * Loads a local property file.
+     *
+     * @param resourceFile
+     * @param charset
+     *
+     * @return
      */
     public static Properties loadThreadLocalProperties(final String resourceFile, final String charset) {
-        return pLoadThreadLocalProperties(resourceFile, null);
+        return loadThreadLocalProperties(resourceFile, charset, true);
     }
 
     /**
      * Load static properties from a property file.
      *
      * @param resourceFile The property file to load.
+     *
      * @return Return loaded properties.
+     */
+    public static Properties loadProperties(final String resourceFile, boolean localOnly) {
+        pLoadPropertiesFromResource(FILEPROPERTIES, resourceFile, null, localOnly);
+        LOGGER.info("Global Properties: " + FILEPROPERTIES);
+        return FILEPROPERTIES;
+    }
+
+    /**
+     * Loads a local property file.
+     *
+     * @param resourceFile
+     *
+     * @return
      */
     public static Properties loadProperties(final String resourceFile) {
-        pLoadProperties(FILEPROPERTIES, resourceFile, null);
-        return FILEPROPERTIES;
+        return loadProperties(resourceFile, true);
     }
 
     /**
      * Load static properties from a property file.
      *
      * @param resourceFile The property file to load.
+     *
      * @return Return loaded properties.
      */
-    public static Properties loadProperties(final String resourceFile, final String charset) {
-        pLoadProperties(FILEPROPERTIES, resourceFile, charset);
+    public static Properties loadProperties(final String resourceFile, final String charset, boolean localOnly) {
+        pLoadPropertiesFromResource(FILEPROPERTIES, resourceFile, charset, localOnly);
+        LOGGER.info("Global Properties: " + FILEPROPERTIES);
         return FILEPROPERTIES;
+    }
+
+    /**
+     * Loads a local property file.
+     *
+     * @param resourceFile
+     * @param charset
+     *
+     * @return
+     */
+    public static Properties loadProperties(final String resourceFile, final String charset) {
+        return loadProperties(resourceFile, charset, true);
     }
 
     /*
@@ -166,6 +244,7 @@ public final class PropertyManager {
      * Gets the value of the property identified by its key.
      *
      * @param key The properties key.
+     *
      * @return The properties value.
      */
     public static String getProperty(final String key) {
@@ -177,6 +256,7 @@ public final class PropertyManager {
      *
      * @param key          The properties key.
      * @param defaultValue default value
+     *
      * @return The properties value.
      */
     public static String getProperty(final String key, final String defaultValue) {
@@ -193,6 +273,7 @@ public final class PropertyManager {
      *
      * @param key          key of the property
      * @param defaultValue default value
+     *
      * @return property value
      */
     public static int getIntProperty(final String key, final int defaultValue) {
@@ -208,6 +289,7 @@ public final class PropertyManager {
      * Gets the value of the property identified by its key.
      *
      * @param key key of the property
+     *
      * @return property value or -1 if value cannot be parsed.
      */
     public static int getIntProperty(final String key) {
@@ -224,6 +306,7 @@ public final class PropertyManager {
      *
      * @param key          key of the property
      * @param defaultValue default value
+     *
      * @return property value
      */
     public static double getDoubleProperty(String key, double defaultValue) {
@@ -242,6 +325,7 @@ public final class PropertyManager {
      * Gets the value of the property identified by its key.
      *
      * @param key key of the property
+     *
      * @return property value or -1 if value cannot be parsed or is not set.
      */
     public static double getDoubleProperty(final String key) {
@@ -261,6 +345,7 @@ public final class PropertyManager {
      *
      * @param key          key of the property
      * @param defaultValue default value
+     *
      * @return property value
      */
     public static long getLongProperty(String key, long defaultValue) {
@@ -279,6 +364,7 @@ public final class PropertyManager {
      * Gets the value of the property identified by its key.
      *
      * @param key key of the property
+     *
      * @return property value or -1 if value cannot be parsed or is not set.
      */
     public static long getLongProperty(final String key) {
@@ -297,7 +383,9 @@ public final class PropertyManager {
      * Get boolean property.
      *
      * @param key true or false.
+     *
      * @return boolean property value or default false, if property is not set
+     *
      * @see java.lang.Boolean#parseBoolean(String)
      */
     public static boolean getBooleanProperty(final String key) {
@@ -313,6 +401,7 @@ public final class PropertyManager {
      *
      * @param key          key of the property
      * @param defaultValue default value
+     *
      * @return property value
      */
     public static boolean getBooleanProperty(final String key, final boolean defaultValue) {

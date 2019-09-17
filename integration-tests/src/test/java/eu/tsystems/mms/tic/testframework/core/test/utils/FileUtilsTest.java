@@ -21,13 +21,19 @@ package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by toku on 07.01.2015.
@@ -35,10 +41,22 @@ import java.io.IOException;
 public class FileUtilsTest extends AbstractTest {
 
     private static final String testfile = "testfiles/Test.txt";
+    private static final Path localFilePath = Paths.get(System.getProperty("user.dir"), "FileUtilsTest.txt");
+
+    @AfterMethod
+    public void removeLocalFileIfPresent(Method method) throws IOException {
+
+        final File file = localFilePath.toFile();
+
+        if (file.exists()) {
+            FileUtils.forceDelete(file);
+        }
+    }
 
     /**
      * checks if method gets the absolute file path
-     * @throws IOException .
+     *
+     * @throws IOException           .
      * @throws FileNotFoundException .
      */
     @Test
@@ -50,7 +68,8 @@ public class FileUtilsTest extends AbstractTest {
 
     /**
      * reads content from resource file and checks it
-     * @throws IOException .
+     *
+     * @throws IOException           .
      * @throws FileNotFoundException .
      */
     @Test
@@ -61,7 +80,8 @@ public class FileUtilsTest extends AbstractTest {
 
     /**
      * reads content from file and checks it
-     * @throws IOException .
+     *
+     * @throws IOException           .
      * @throws FileNotFoundException .
      */
     @Test
@@ -69,9 +89,40 @@ public class FileUtilsTest extends AbstractTest {
         String absoluteFilePath = FileUtils.getAbsoluteFilePath(testfile);
         String content = FileUtils.readFromFile(absoluteFilePath);
         AssertUtils.assertContains(content, "Huhu");
-
-
     }
 
+    @Test
+    public void testT04_readFileNotExistingFailed() {
 
+        TesterraSystemException foundException = null;
+
+        try {
+            FileUtils.getLocalResourceInputStream("/does/not/exist.txt");
+        } catch (final TesterraSystemException e) {
+            foundException = e;
+        }
+
+        Assert.assertNotNull(foundException, "No Exception occurred, but we expected one.");
+    }
+
+    @Test
+    public void testT05_readLocalResourceFileInsideJarFailed() {
+
+        TesterraSystemException foundException = null;
+
+        try {
+            FileUtils.getLocalResourceInputStream("testng.css");
+        } catch (final TesterraSystemException e) {
+            foundException = e;
+        }
+
+        Assert.assertNotNull(foundException, "No Exception occurred, but we expected one.");
+    }
+
+    @Test
+    public void testT06_readResourceFileInsideJarSuccessful() throws FileNotFoundException {
+
+        final InputStream resourceInputStream = FileUtils.getResourceInputStream("testng.css");
+        Assert.assertNotNull(resourceInputStream, "Resource File found.");
+    }
 }

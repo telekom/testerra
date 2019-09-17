@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.imgproc.templatematching.matchers.feat
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.imgproc.templatematching.matchers.featurebased.Match;
 import eu.tsystems.mms.tic.testframework.imgproc.templatematching.matchers.featurebased.Matcher;
-import eu.tsystems.mms.tic.testframework.imgproc.utils.OpenCvInitializer;
+import eu.tsystems.mms.tic.testframework.layout.OpenCvInitializer;
 import org.opencv.core.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +49,7 @@ public class AbstractTest {
     protected static final Path RESOURCES_DIR = Paths.get("src/test/resources/templatematching/matchers/featurebased");
 
     static {
-        OpenCvInitializer.initOnce();
+        OpenCvInitializer.init();
     }
 
     protected <T> void processConcurrently(Stream<T> input, Consumer<T> consumer, int parallelism) {

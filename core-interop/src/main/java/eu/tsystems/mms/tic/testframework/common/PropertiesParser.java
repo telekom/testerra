@@ -36,6 +36,10 @@ import java.util.regex.Pattern;
  */
 public final class PropertiesParser {
 
+    static {
+        PropertyManager.ensureLoaded();
+    }
+
     private static final Pattern patternReplace = Pattern.compile("\\{[^\\}]*\\}");
     private static final String REGEX_SENSIBLE = "@SENSIBLE@";
     private static final Pattern PATTERN_SENSIBLE = Pattern.compile(REGEX_SENSIBLE);

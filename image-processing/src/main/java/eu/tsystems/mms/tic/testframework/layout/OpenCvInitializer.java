@@ -43,6 +43,12 @@ public class OpenCvInitializer {
                     libraryFileName = "opencv_java249_64.dll";
                 }
                 // else use default
+            } else if (osname.contains("mac")) {
+                if (arch != null && arch.contains("64")) {
+                    libraryFileName = "libopencv_java249_64.dylib";
+                } else {
+                    libraryFileName = "libopencv_java249_32.dylib";
+                }
             } else {
                 throw new TesterraSystemException("Unsupported os: " + osname);
             }

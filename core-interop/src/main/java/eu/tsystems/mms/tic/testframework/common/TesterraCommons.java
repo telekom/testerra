@@ -20,8 +20,6 @@
 package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.constants.RTConstants;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.log4j.BasicConfigurator;
@@ -44,6 +42,7 @@ public class TesterraCommons {
     private static final String p = "eu.tsystems.mms.tic.testframework";
 
     private static boolean loggingInitialized = false;
+    private static boolean proxySettingsLoaded = false;
 
     public static final String DEFAULT_PACKAGE_NAME = "eu.tsystems.mms.tic";
 
@@ -60,22 +59,10 @@ public class TesterraCommons {
     }
 
     public static void setTesterraLogLevel() {
-        /*
-        Try to get tt. log level from system or test.properties
-         */
-        Properties properties = new Properties();
-        String propertyFile = RTConstants.getTesterraTestPropertiesFile();
-        try {
-            InputStream is = FileUtils.getLocalOrResourceFileAsStream(propertyFile);
-            properties.load(is);
-        } catch (Exception e) {
-            throw new TesterraSystemException("test.properties not found", e);
-        }
+
 
         // load from file
-        String TesterraLogLevelString = properties.getProperty("tt.loglevel", null);
-        // overload from system
-        TesterraLogLevelString = System.getProperty("tt.loglevel", TesterraLogLevelString);
+        String TesterraLogLevelString = PropertyManager.getProperty(TesterraProperties.LOG_LEVEL, "INFO");
 
         /*
         Patch log level
@@ -120,7 +107,15 @@ public class TesterraCommons {
     /**
      * Loads proxy settings from a file.
      */
-    private static void initializeProxySettings() {
+    public static void initializeProxySettings() {
+        if (!proxySettingsLoaded) {
+            pSetSystemProxySettingsFromConfigFile();
+            proxySettingsLoaded = true;
+        }
+    }
+
+    private static void pSetSystemProxySettingsFromConfigFile() {
+
         final boolean loadProxySettings = PropertyManager.getBooleanProperty(TesterraProperties.PROXY_SETTINGS_LOAD, true);
         if (!loadProxySettings) {
             LOGGER.info("Skipping loading of Proxy Settings.");
@@ -128,8 +123,7 @@ public class TesterraCommons {
         }
 
         final String filename = PropertyManager.getProperty(TesterraProperties.PROXY_SETTINGS_FILE, "proxysettings.properties");
-
-        final InputStream inputStream = FileUtils.getLocalOrResourceFileAsStream(filename);
+        final InputStream inputStream = FileUtils.getLocalResourceInputStream(filename);
 
         if (inputStream == null) {
             LOGGER.warn("File " + filename + " not found. No proxy settings loaded.");
@@ -151,8 +145,7 @@ public class TesterraCommons {
                 final String propertyValue = props.getProperty(property);
                 System.setProperty(property, propertyValue);
                 LOGGER.info("Setting system property " + property + " = " + propertyValue);
-            }
-            else {
+            } else {
                 LOGGER.warn("System property " + property + " is NOT set because it was already set to "
                         + systemPropertyValue);
             }
@@ -162,7 +155,7 @@ public class TesterraCommons {
     private static void initializeSystemProperties() {
         final Properties systemProperties = new Properties();
         try {
-            InputStream is = FileUtils.getLocalOrResourceFileAsStream(SYSTEM_PROPERTIES_FILE);
+            InputStream is = FileUtils.getLocalResourceInputStream(SYSTEM_PROPERTIES_FILE);
 
             if (is == null) {
                 LOGGER.warn("Not loaded: " + SYSTEM_PROPERTIES_FILE);
@@ -175,8 +168,7 @@ public class TesterraCommons {
                 final String newValue = "" + systemProperties.get(key);
                 if (!StringUtils.isStringEmpty(value)) {
                     LOGGER.warn("SystemProperty - Overwriting " + key + "=" + value + " << " + newValue);
-                }
-                else {
+                } else {
                     LOGGER.info("SystemProperty - Setting " + key + "=" + newValue);
                 }
                 System.setProperty(key, newValue);

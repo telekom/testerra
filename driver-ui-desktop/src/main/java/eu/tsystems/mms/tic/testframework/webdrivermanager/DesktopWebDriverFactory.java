@@ -39,8 +39,8 @@ import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.utils.TestUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Dimension;
@@ -66,6 +66,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -326,7 +327,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 int ms = Constants.WEBDRIVER_START_RETRY_TIME_IN_MS;
                 LOGGER.error(logSCID() + "Error starting WebDriver. Trying again in "
                         + (ms / 1000) + " seconds.", e);
-                TestUtils.sleep(ms);
+                TimerUtils.sleep(ms);
                 newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
             }
 
@@ -380,6 +381,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             try {
                 driver = new TesterraWebDriver(remoteAddress, capabilities);
             } catch (Exception e) {
+                WebDriverSessionsManager.SESSION_STARTUP_ERRORS.put(new Date(), e);
                 throw new TesterraSetupException(errorMessage, e);
             }
 

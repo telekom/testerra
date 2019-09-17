@@ -591,7 +591,7 @@ public final class LayoutCheck {
         final Path annotatedReferenceScreenshotPath = step.annotatedReferenceFileName;
 
         LayoutCheckContext context = new LayoutCheckContext();
-        context.name = name;
+        context.image = name;
         context.mode = mode.name();
         context.distance = distance;
         try {

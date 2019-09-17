@@ -98,13 +98,13 @@
                             <td class="" colspan="3" style="font-size: 15px; color: black; background-color: #DDDDDD; font-weight: normal;">
                                 #set ($testMethod = $exitPointMap.get($exitPoint).get(0))
 
-                                #if ($testMethod.scriptSource)
+                                #if ($testMethod.errorContext().scriptSource)
                                     <div id="source" style="text-align: initial">
-                                        $testMethod.scriptSource
+                                        $testMethod.errorContext().scriptSource
                                     </div>
-                                #elseif ($testMethod.errorFingerprint)
+                                #elseif ($testMethod.errorContext().errorFingerprint)
                                     <div class="error">
-                                        $testMethod.errorFingerprint
+                                        $testMethod.errorContext().errorFingerprint
                                     </div>
                                 #end
                             </td>

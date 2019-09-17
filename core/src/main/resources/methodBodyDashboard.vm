@@ -34,8 +34,8 @@
 
             #if ($testMethod.isFailed())
                 <div class="tttooltip textleft">
-                    #if ($testMethod.readableErrorMessage)
-                        $testMethod.readableErrorMessage
+                    #if ($testMethod.errorContext().readableErrorMessage)
+                        $testMethod.errorContext().readableErrorMessage
                     #else
                         Please take a look at the details page...
                     #end

@@ -526,7 +526,7 @@ public final class ReportUtils {
             ReportFormatter.createMethodsFrame(reportFile2, methodContext, "methodDetails.vm");
             LOGGER.debug("Created method details view for " + methodContext);
         } catch (Exception e) {
-            LOGGER.error("Could not create method details view for " + methodContext, e);
+            LOGGER.error("Could not create method details view for " + methodContext + ": " + e);
         }
     }
 

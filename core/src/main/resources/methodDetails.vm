@@ -68,7 +68,7 @@
                 <h6><i class="symbols fa fa-file-text-o fa-2x"></i>Steps</h6>
             </div>
 
-            #if ($testMethod.stackTrace)
+            #if ($testMethod.errorContext().stackTrace)
             <div id="buttonstack" onclick="toggleDetailsView('exception', 'toggleview', 'buttonstack', 'togglebutton');"
                  title="Show Stacktrace" class="detailsmenu togglebutton">
                 <h6><i class="symbols fa fa-align-left fa-2x fa-flip-vertical"></i>Stack</h6>
@@ -233,7 +233,7 @@
                             <div>
                                 <!-- error infos -->
                                 <div>
-                                    #set($fingerprint = $testMethod.errorFingerprint)
+                                    #set($fingerprint = $testMethod.errorContext().errorFingerprint)
                                     <div>
                                         <h5 style="position:relative;">
                                             <a href="#" onclick="toggleElement('fingerprint');" title="Show Fingerprint">
@@ -247,8 +247,8 @@
                                                 <div style="color: red; font-size: 30px; padding: 25px; line-height: 40px;">
                                         #end
 
-                                        #if ($testMethod.readableErrorMessage)
-                                            $testMethod.readableErrorMessage
+                                        #if ($testMethod.errorContext().readableErrorMessage)
+                                            $testMethod.errorContext().readableErrorMessage
                                         #end
                                         #if ($testMethod.priorityMessage)
                                             <div class="skipped">
@@ -287,13 +287,13 @@
                                                     </thead>
                                                     <tr>
                                                         <td class="cellCenter">
-                                                            #if ($testMethod.scriptSource)
+                                                            #if ($testMethod.errorContext().scriptSource)
                                                             <div id="sourceScript" style="text-align: initial">
 <pre>
 <br>
-<code>$testMethod.scriptSource.fileName # $testMethod.scriptSource.methodName</code>
+<code>$testMethod.errorContext().scriptSource.fileName # $testMethod.errorContext().scriptSource.methodName</code>
 <code>
-#foreach($s in $testMethod.scriptSource.lines)
+#foreach($s in $testMethod.errorContext().scriptSource.lines)
     #if ($s.mark)
 &#8623; $s.lineNumber : $s.line
     #else
@@ -308,14 +308,14 @@
                                                             #end
                                                         </td>
                                                         <td class="cellCenter">
-                                                            #if ($testMethod.executionObjectSource)
+                                                            #if ($testMethod.errorContext().executionObjectSource)
                                                             <div id="sourcePage" style="text-align: initial">
                                                                 <div id="sourceScript" style="text-align: initial">
 <pre>
 <br>
-<code>$testMethod.executionObjectSource.fileName # $testMethod.executionObjectSource.methodName</code>
+<code>$testMethod.errorContext().executionObjectSource.fileName # $testMethod.errorContext().executionObjectSource.methodName</code>
 <code>
-    #foreach($s in $testMethod.executionObjectSource.lines)
+    #foreach($s in $testMethod.errorContext().executionObjectSource.lines)
         #if ($s.mark)
             &#8623; $s.lineNumber : $s.line
         #else
@@ -435,8 +435,8 @@
             <!-- stacktrace -->
             <div>
                 <div id="st" class="textLeft" style="padding:30px !important; text-align: left !important; margin-left: 20px;">
-                    #if($testMethod.stackTrace)
-                        #set($stackTrace = $testMethod.stackTrace)
+                    #if($testMethod.errorContext().stackTrace)
+                        #set($stackTrace = $testMethod.errorContext().stackTrace)
                         #parse("stackTrace.vm")
                     #end
                 </div>
@@ -470,7 +470,7 @@
                         <td width="100%" style="text-align:left;">
                             <a href="javascript:void(0);" onclick="toggleElement('non-functional-exception-$velocityCountNF')"
                                title="Click to expand/collapse" style="color:SkyBlue; font-weight: bold;">
-                                $nfi.readableErrorMessage
+                                $nfi.errorContext().readableErrorMessage
                             </a>
                             <div style="display: none;" id="non-functional-exception-$velocityCountNF">
                                 <div style="margin-left: 10px;">
@@ -523,7 +523,7 @@
                                 <td width="100%" style="text-align:left;">
                                     <a href="javascript:void(0);" onclick="toggleElement('collected-assert-exception-$velocityCountCA')"
                                        title="Click to expand/collapse" style="color:red; font-weight: bold;">
-                                        $ai.readableErrorMessage
+                                        $ai.errorContext().readableErrorMessage
                                     </a>
                                     <div style="display: none;" id="collected-assert-exception-$velocityCountCA">
                                         <div style="margin-left: 10px;">

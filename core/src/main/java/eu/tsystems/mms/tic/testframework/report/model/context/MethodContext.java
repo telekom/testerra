@@ -50,7 +50,7 @@ import java.util.List;
  *
  * @author mibu
  */
-public class MethodContext extends ErrorContext implements SynchronizableContext {
+public class MethodContext extends Context implements SynchronizableContext {
 
     public ITestResult testResult;
     public ITestContext iTestContext;
@@ -79,9 +79,15 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
 
     public List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
-    final private TestStepController testStepController = new TestStepController();
+    private final TestStepController testStepController = new TestStepController();
     public List<MethodContext> relatedMethodContexts;
     public List<MethodContext> dependsOnMethodContexts;
+
+    public final List<Video> videos = new LinkedList<>();
+    public final List<Screenshot> screenshots = new LinkedList<>();
+    public final List<CustomContext> customContexts = new LinkedList<>();
+
+    private ErrorContext errorContext;
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
@@ -116,6 +122,13 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
 
     public TestStepController steps() {
         return testStepController;
+    }
+
+    public ErrorContext errorContext() {
+        if (errorContext == null) {
+            errorContext = new ErrorContext();
+        }
+        return errorContext;
     }
 
     @Override
@@ -263,7 +276,6 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
         return retryNumber > 0;
     }
 
-    @Override
     public String getName() {
         return name;
     }

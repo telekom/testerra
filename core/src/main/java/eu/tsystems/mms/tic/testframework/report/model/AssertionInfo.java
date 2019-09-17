@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model;
 
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 
 /**
@@ -27,22 +26,10 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
  */
 public class AssertionInfo extends ErrorContext {
 
-    private static final long serialVersionUID = Serial.SERIAL;
-
     /**
      * Constructor.
      */
     public AssertionInfo(Throwable throwable) {
         setThrowable(null, throwable);
-    }
-
-    @Override
-    public String getName() {
-        return "AssertionInfo";
-    }
-
-    @Override
-    public TestStatusController.Status getStatus() {
-        return TestStatusController.Status.FAILED;
     }
 }

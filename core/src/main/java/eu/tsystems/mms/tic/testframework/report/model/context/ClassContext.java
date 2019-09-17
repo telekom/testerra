@@ -189,7 +189,7 @@ public class ClassContext extends Context implements SynchronizableContext {
 
     public MethodContext safeAddSkipMethod(ITestResult testResult, IInvokedMethod invokedMethod) {
         MethodContext methodContext = getMethodContext(testResult, testResult.getTestContext(), invokedMethod);
-        methodContext.setThrowable(null, new SkipException("Skipped"));
+        methodContext.errorContext().setThrowable(null, new SkipException("Skipped"));
         methodContext.status = TestStatusController.Status.SKIPPED;
         return methodContext;
     }

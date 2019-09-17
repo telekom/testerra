@@ -22,28 +22,23 @@ package eu.tsystems.mms.tic.testframework.report.model.context;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by sagu on 21.09.2016.
  */
-public abstract class ErrorContext extends Context {
+public class ErrorContext extends Context {
 
     public String readableErrorMessage;
     public String additionalErrorMessage;
     private transient Throwable throwable = null;
     private transient StackTrace stacktraceForReadableMessage = null;
     public StackTrace stackTrace;
-    public final List<Video> videos = new LinkedList<>();
-    public final List<Screenshot> screenshots = new LinkedList<>();
     public String errorFingerprint = "";
     public ScriptSource scriptSource;
     public ScriptSource executionObjectSource;
-    final public List<CustomContext> customContexts = new LinkedList<>();
 
     public Throwable getThrowable() {
         return throwable;
@@ -121,8 +116,6 @@ public abstract class ErrorContext extends Context {
         }
     }
 
-    public abstract String getName();
-
     private String throwableToMessage(Throwable throwable) {
         String line = throwable.toString();
 
@@ -132,7 +125,7 @@ public abstract class ErrorContext extends Context {
         String msgDependsOn = "depends on";
         if (line.contains(msgDependsOn)) {
             String[] split = line.split(msgDependsOn);
-            return getName() + " " + msgDependsOn + split[1];
+            return getClass().getName() + " " + msgDependsOn + split[1];
         }
         else if (line.startsWith(AssertionError.class.getName())) {
             return "Assert" + line.split(AssertionError.class.getName())[1];
@@ -222,5 +215,10 @@ public abstract class ErrorContext extends Context {
                 errorFingerprint = completeStackTrace;
             }
         }
+    }
+
+    @Override
+    public TestStatusController.Status getStatus() {
+        return TestStatusController.Status.FAILED;
     }
 }

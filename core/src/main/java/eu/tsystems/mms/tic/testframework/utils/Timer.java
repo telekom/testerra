@@ -276,7 +276,7 @@ public class Timer {
             if (catchedThrowableMessage != null) {
                 MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
                 if (currentMethodContext != null) {
-                    currentMethodContext.setThrowable(catchedThrowableMessage, catchedThrowable);
+                    currentMethodContext.errorContext().setThrowable(catchedThrowableMessage, catchedThrowable);
                 }
             }
             timeoutException = new TimeoutException(message, catchedThrowable);

@@ -4,19 +4,19 @@
 
     <test name="test1">
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.ReportingAllStatesTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.ReportingAllStatesTests"/>
         </classes>
     </test>
 
     <test name="test2">
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.ReportingAllStatesTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.ReportingAllStatesTests"/>
         </classes>
     </test>
 
     <test name="test3">
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.SimplePassingTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.SimplePassingTest"/>
         </classes>
     </test>
 

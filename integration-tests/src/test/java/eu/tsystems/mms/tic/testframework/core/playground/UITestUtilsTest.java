@@ -1,4 +1,4 @@
-package eu.tsystems.mms.tic.testframework.core.test;
+package eu.tsystems.mms.tic.testframework.core.playground;
 
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;

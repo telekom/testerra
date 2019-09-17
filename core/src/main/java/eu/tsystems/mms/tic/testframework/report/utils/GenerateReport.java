@@ -157,7 +157,7 @@ public class GenerateReport {
                     /*
                     get exit points (this is the fingerprint)
                      */
-                    final String fingerprint = methodContext.errorFingerprint;
+                    final String fingerprint = methodContext.errorContext().errorFingerprint;
                     final String failuresMapKey;
                     if (StringUtils.isStringEmpty(fingerprint)) {
                         // fingerprint unknown -> "others"
@@ -177,7 +177,7 @@ public class GenerateReport {
                     /*
                     get failure aspects (this is the error message)
                      */
-                    final String readableMessage = methodContext.getReadableErrorMessage();
+                    final String readableMessage = methodContext.errorContext().getReadableErrorMessage();
                     if (!failureAspects.containsKey(readableMessage)) {
                         failureAspects.put(readableMessage, new LinkedList<>());
                     }

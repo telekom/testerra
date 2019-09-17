@@ -91,10 +91,10 @@ public class MethodAnnotationCheckerWorker extends MethodWorker {
                     testResult.setThrowable(TesterraTestFailureException);
 
                     // set readable message
-                    methodContext.setThrowable(null, throwable, true);
-                    String formerReadableMessage = methodContext.getReadableErrorMessage();
+                    methodContext.errorContext().setThrowable(null, throwable, true);
+                    String formerReadableMessage = methodContext.errorContext().getReadableErrorMessage();
                     methodContext.addPriorityMessage(formerReadableMessage);
-                    methodContext.setThrowable(message, throwable, true);
+                    methodContext.errorContext().setThrowable(message, throwable, true);
 
                     // flag testresult as expected failed
                     if (fails.intoReport()) {

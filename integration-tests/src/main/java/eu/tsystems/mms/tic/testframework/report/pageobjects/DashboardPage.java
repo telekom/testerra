@@ -29,7 +29,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
 
     public DashboardPage(WebDriver driver) {
         super(driver);
-        dashboardModuleClassBarChart.barChartBars.waitForIsDisplayed();
+        dashboardModuleClassBarChart.barChartBars.waits().waitForIsDisplayed();
     }
 
     /**

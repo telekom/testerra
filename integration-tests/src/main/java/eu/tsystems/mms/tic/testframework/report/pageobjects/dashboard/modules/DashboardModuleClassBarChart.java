@@ -30,7 +30,7 @@ public class DashboardModuleClassBarChart extends AbstractFramePage {
      */
     public List<GuiElement> getCurrentBars() {
         List<GuiElement> bars = new LinkedList<>();
-        barChartBars.waitForIsDisplayed();
+        barChartBars.waits().waitForIsDisplayed();
         GuiElement displayedBars = barChartBars.getSubElement(By.xpath(".//*[contains(@class,'highcharts-tracker')]/*[@height!='0']"));
         displayedBars.setName("displayedBars");
         int barCount = displayedBars.getList().size();

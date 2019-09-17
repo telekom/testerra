@@ -234,13 +234,6 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public void refresh() {
-        beforeDelegation();
-        decoratedGuiElementCore.refresh();
-        afterDelegation();
-    }
-
-    @Override
     public void doubleClick() {
         beforeDelegation();
         decoratedGuiElementCore.doubleClick();

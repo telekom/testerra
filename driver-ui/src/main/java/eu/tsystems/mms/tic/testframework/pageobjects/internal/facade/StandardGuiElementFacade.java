@@ -221,11 +221,6 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public void refresh() {
-        guiElementCore.refresh();
-    }
-
-    @Override
     public boolean anyFollowingTextNodeContains(String contains) {
         return guiElementCore.anyFollowingTextNodeContains(contains);
     }
@@ -358,12 +353,6 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     @Override
     public boolean waitForAttributeContainsNot(final String attributeName, final String value) {
         return guiElementWait.waitForAttributeContainsNot(attributeName, value);
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForCssClass(String className) {
-        return guiElementWait.waitForCssClassIsPresent(className);
     }
 
     @Override

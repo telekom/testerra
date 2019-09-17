@@ -181,14 +181,6 @@ public class ReportInfo {
     private static final DashboardInfo dashboardInfo = new DashboardInfo();
     private static final DashboardWarning dashboardWarning = new DashboardWarning();
 
-    /**
-     * @deprecated Renamed method. 'Actual' -> 'Current'
-     */
-    @Deprecated
-    public static MethodInfo getActualMethodInfo() {
-        return getCurrentMethodInfo();
-    }
-
     public static MethodInfo getCurrentMethodInfo() {
         if (currentMethodInfo.get() == null) {
             currentMethodInfo.set(new MethodInfo());
@@ -206,14 +198,6 @@ public class ReportInfo {
 
     public static DashboardWarning getDashboardWarning() {
         return dashboardWarning;
-    }
-
-    /**
-     * @deprecated Renamed method. 'Actual' -> 'Current'
-     */
-    @Deprecated
-    public static void clearActualMethodInfo() {
-        clearCurrentMethodInfo();
     }
 
     public static void clearCurrentMethodInfo() {

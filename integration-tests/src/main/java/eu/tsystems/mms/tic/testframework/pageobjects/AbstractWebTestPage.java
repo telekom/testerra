@@ -36,7 +36,7 @@ import org.openqa.selenium.WebDriver;
 public abstract class AbstractWebTestPage extends Page {
 
     @Check
-    protected final GuiElement openAgainLink = new GuiElement(driver, By.id("11"), "Open Again Link");
+    protected final GuiElement openAgainLink = new GuiElement(driver, By.id("11"));
 
     /**
      * Constructor for existing sessions.

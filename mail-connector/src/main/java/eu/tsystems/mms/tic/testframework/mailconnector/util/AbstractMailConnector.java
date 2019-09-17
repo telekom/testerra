@@ -17,9 +17,9 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-/* 
+/*
  * Created on 08.11.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -278,72 +278,6 @@ public abstract class AbstractMailConnector {
     /**
      * Wait until message with subject received.
      *
-     * @param subject The subject which message should contain.
-     *
-     * @return The message.
-     *
-     * @throws TesterraSystemException thrown if an error by waiting for the
-     *                                                                          message occurs.
-     */
-    @Deprecated
-    public Message waitForMessage(final String subject) {
-
-        final SearchCriteria searchCriteria = new SearchCriteria(SearchCriteriaType.SUBJECT, subject);
-        List<SearchCriteria> searchCriterias = new ArrayList<SearchCriteria>(1);
-        searchCriterias.add(searchCriteria);
-        List<MimeMessage> messages = pWaitForMessage(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
-        return messages.get(0);
-    }
-
-    /**
-     * Wait until message with subject received.
-     *
-     * @param subject The subject which message should contain.
-     *
-     * @return Message wrapped in {@link TesterraMail} object
-     *
-     * @throws TesterraSystemException thrown if an error by waiting for the
-     *                                                                          message occurs.
-     */
-    @Deprecated
-    public TesterraMail waitForTesterraMail(final String subject) {
-
-        final SearchCriteria searchCriteria = new SearchCriteria(SearchCriteriaType.SUBJECT, subject);
-        List<SearchCriteria> searchCriterias = new ArrayList<>(1);
-        searchCriterias.add(searchCriteria);
-        return this.pWaitForTesterraMail(searchCriterias);
-    }
-
-    /**
-     * Wait until message with search criteria is received.
-     *
-     * @param searchCriterias Map of searchcriteria for expected Mail.
-     *
-     * @return Message if found.
-     */
-    @Deprecated
-    public Message waitForMessage(final List<SearchCriteria> searchCriterias) {
-
-        List<MimeMessage> messages = pWaitForMessage(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
-        return messages.get(0);
-    }
-
-    /**
-     * Wait until message with search criteria is received.
-     *
-     * @param searchCriterias Map of searchcriteria for expected Mail.
-     *
-     * @return Message wrapped in TesterraMail object
-     */
-    @Deprecated
-    public TesterraMail waitForTesterraMail(final List<SearchCriteria> searchCriterias) {
-
-        return this.pWaitForTesterraMail(searchCriterias);
-    }
-
-    /**
-     * Wait until message with subject received.
-     *
      * @param searchCriteriaMap The subject which message should contain.
      *
      * @return message wrapped in {@link TesterraMail} object.
@@ -441,7 +375,7 @@ public abstract class AbstractMailConnector {
                     final Message[] messages = folder.getMessages(lastMessageCount, newMessageCount);
                     for (int j = messages.length - 1; j >= 0; j--) {
                         boolean notMatched = false;
-                        
+
                         for (SearchCriteria searchCriteria : searchCriterias) {
                             notMatched = !criteriaMatchesMessage(searchCriteria, messages[j]);
                             if (notMatched) {
@@ -778,7 +712,7 @@ public abstract class AbstractMailConnector {
      *
      * @param targetFolder Name of folder to move into.
      * @param message {@link TesterraMail} to move (compared by messageId)
-     * 
+     *
      * @return true if moved.
      */
     public boolean moveMessage(String targetFolder, TesterraMail message) {
@@ -792,7 +726,7 @@ public abstract class AbstractMailConnector {
      * @param targetFolder Name of folder to move into.
      * @param messagesCriterias List of search criteria list - inner list represents searchcriterias to identify one
      *            message
-     * 
+     *
      * @return count of moved mails.
      */
     public int moveMessage(String targetFolder, SearchCriteria... messagesCriterias) {

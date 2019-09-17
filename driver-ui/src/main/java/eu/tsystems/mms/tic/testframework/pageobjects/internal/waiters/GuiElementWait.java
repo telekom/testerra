@@ -167,14 +167,6 @@ public interface GuiElementWait {
      * @param className Class name to check
      * @return true if the css class is present
      */
-    @Deprecated
-    boolean waitForCssClass(final String className);
-
-    /**
-     * Waits until the element has the given css class name
-     * @param className Class name to check
-     * @return true if the css class is present
-     */
     boolean waitForCssClassIsPresent(final String className);
 
     /**

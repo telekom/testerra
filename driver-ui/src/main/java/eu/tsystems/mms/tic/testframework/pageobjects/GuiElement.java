@@ -51,7 +51,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.util.*;
 
@@ -63,7 +62,6 @@ import java.util.*;
 public class GuiElement implements
     Checkable,
     GuiElementCore,
-    GuiElementWait,
     Nameable
 {
 
@@ -121,19 +119,6 @@ public class GuiElement implements
         this(driver, by, "");
     }
 
-    /**
-     * Constructor with explicit web driver session and description.
-     *
-     * @param name   .
-     * @param driver Actual driver object.
-     * @param by     By locator.
-     * @deprecated name is automatically read from field name
-     */
-    @Deprecated
-    public GuiElement(final WebDriver driver, final By by, final String name) {
-        this(driver, by, name, new GuiElement[0]);
-    }
-
     public GuiElement(final WebDriver driver, final By by, final GuiElement... guiElements) {
         this(driver, by, "", guiElements);
     }
@@ -146,8 +131,7 @@ public class GuiElement implements
      * @param driver Driver Object.
      * @deprecated name is automatically read from field name
      */
-    @Deprecated
-    public GuiElement(WebDriver driver, By by, String name, GuiElement... frames) {
+    private GuiElement(WebDriver driver, By by, String name, GuiElement... frames) {
         FrameLogic frameLogic = null;
         if (frames != null && frames.length > 0) {
             frameLogic = new FrameLogic(driver, frames);
@@ -291,15 +275,6 @@ public class GuiElement implements
      */
     public GuiElement getSubElement(By byLocator, String description) {
         return guiElementFacade.getSubElement(byLocator, description);
-    }
-
-    /**
-     * @return true if name is not empty or null
-     * @deprecated should not be public, will be removed
-     */
-    @Deprecated
-    public boolean hasDescription() {
-        return !StringUtils.isStringEmpty(guiElementData.name);
     }
 
     @Override
@@ -507,14 +482,6 @@ public class GuiElement implements
         return guiElementFacade.getTextsFromChildren();
     }
 
-    /**
-     * @deprecated Remove this, you don't need it. The GuiElement refreshes itself in case of an error.
-     */
-    @Deprecated
-    public void refresh() {
-        guiElementFacade.refresh();
-    }
-
     @Override
     public boolean anyFollowingTextNodeContains(String contains) {
         return guiElementFacade.anyFollowingTextNodeContains(contains);
@@ -580,144 +547,6 @@ public class GuiElement implements
     @Override
     public File takeScreenshot() {
         return guiElementFacade.takeScreenshot();
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForIsPresent() {
-        return guiElementFacade.waitForIsPresent();
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForIsNotPresent() {
-        return guiElementFacade.waitForIsNotPresent();
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForIsEnabled() {
-        return guiElementFacade.waitForIsEnabled();
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForIsDisabled() {
-        return guiElementFacade.waitForIsDisabled();
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForAnyFollowingTextNodeContains(String contains) {
-        return guiElementFacade.waitForAnyFollowingTextNodeContains(contains);
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForIsDisplayed() {
-        return guiElementFacade.waitForIsDisplayed();
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForIsNotDisplayed() {
-        return guiElementFacade.waitForIsNotDisplayed();
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForIsDisplayedFromWebElement() {
-        return guiElementFacade.waitForIsDisplayedFromWebElement();
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForIsNotDisplayedFromWebElement() {
-        return guiElementFacade.waitForIsNotDisplayedFromWebElement();
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForIsSelected() {
-        return guiElementFacade.waitForIsSelected();
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForIsNotSelected() {
-        return guiElementFacade.waitForIsNotSelected();
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForText(String text) {
-        return guiElementFacade.waitForText(text);
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForTextContains(String... text) {
-        return guiElementFacade.waitForTextContains(text);
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForTextContainsNot(String... text) {
-        return guiElementFacade.waitForTextContainsNot(text);
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForAttribute(String attributeName) {
-        return guiElementFacade.waitForAttribute(attributeName);
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForAttribute(String attributeName, String value) {
-        return guiElementFacade.waitForAttribute(attributeName, value);
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForAttributeContains(String attributeName, String value) {
-        return guiElementFacade.waitForAttributeContains(attributeName, value);
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForAttributeContainsNot(String attributeName, String value) {
-        return guiElementFacade.waitForAttributeContainsNot(attributeName, value);
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForCssClass(final String className) {
-        return guiElementFacade.waitForCssClassIsPresent(className);
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForCssClassIsPresent(final String className) {
-        return guiElementFacade.waitForCssClassIsPresent(className);
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForCssClassIsNotPresent(final String className) {
-        return guiElementFacade.waitForCssClassIsNotPresent(className);
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForIsSelectable() {
-        return guiElementFacade.waitForIsSelectable();
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForIsNotSelectable() {
-        return guiElementFacade.waitForIsNotSelectable();
     }
 
     /**

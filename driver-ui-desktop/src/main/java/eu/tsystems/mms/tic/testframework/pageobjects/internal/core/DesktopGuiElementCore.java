@@ -730,11 +730,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public void refresh() {
-        find();
-    }
-
-    @Override
     public boolean anyFollowingTextNodeContains(String contains) {
         By byStringContain = By.xpath(String.format(".//*[contains(text(),\"%s\")]", contains));
         GuiElement subElement = getSubElement(byStringContain, null);

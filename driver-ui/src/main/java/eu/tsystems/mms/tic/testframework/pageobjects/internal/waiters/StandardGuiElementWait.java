@@ -343,12 +343,6 @@ public class StandardGuiElementWait implements GuiElementWait {
     }
 
     @Override
-    @Deprecated
-    public boolean waitForCssClass(String className) {
-        return waitForCssClassIsPresent(className);
-    }
-
-    @Override
     public boolean waitForCssClassIsPresent(final String className) {
         return waitForAttributeContains("class", className);
     }

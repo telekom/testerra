@@ -37,18 +37,6 @@ import org.openqa.selenium.WebDriver;
 public abstract class TesterraBy extends By {
 
     /**
-     * tt. by coordinates
-     *
-     * @param x .
-     * @param y .
-     * @return .
-     */
-    @Deprecated
-    public static TesterraBy coordinates(final int x, final int y) {
-        return new ByCoordinates(x, y);
-    }
-
-    /**
      * tt. by coordinates using webdriver
      * @param driver .
      * @param x .

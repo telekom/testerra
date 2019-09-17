@@ -73,11 +73,11 @@ public class MethodContext extends Context implements SynchronizableContext {
 
     private int hashCodeOfTestResult = 0;
 
-    public List<AssertionInfo> nonFunctionalInfos = new LinkedList<>();
-    public List<AssertionInfo> collectedAssertions = new LinkedList<>();
-    public List<String> infos = new LinkedList<>();
+    public final List<AssertionInfo> nonFunctionalInfos = new LinkedList<>();
+    public final List<AssertionInfo> collectedAssertions = new LinkedList<>();
+    public final List<String> infos = new LinkedList<>();
 
-    public List<SessionContext> sessionContexts = new LinkedList<>();
+    public final List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
     private final TestStepController testStepController = new TestStepController();
     public List<MethodContext> relatedMethodContexts;
@@ -174,10 +174,6 @@ public class MethodContext extends Context implements SynchronizableContext {
      * @param throwable         .
      */
     public AssertionInfo addNonFunctionalInfo(final Throwable throwable) {
-        if (nonFunctionalInfos == null) {
-            nonFunctionalInfos = new LinkedList<>();
-        }
-
         AssertionInfo assertionInfo = new AssertionInfo(throwable);
 
         this.nonFunctionalInfos.add(assertionInfo);
@@ -186,9 +182,6 @@ public class MethodContext extends Context implements SynchronizableContext {
     }
 
     public void addCollectedAssertions(final List<AssertionInfo> collectedAssertions) {
-        if (this.collectedAssertions == null) {
-            this.collectedAssertions = new LinkedList<>();
-        }
         this.collectedAssertions.addAll(collectedAssertions);
     }
 

@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +41,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.UUID;
 
 import static java.lang.Thread.currentThread;
 
@@ -290,17 +292,8 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
         return new File(resourceURL.getFile());
     }
 
-    public static InputStream getLocalOrResourceFileAsStream(String resourceFile) {
-        File localFile = new File(resourceFile);
-        if (localFile.exists()) {
-            try {
-                return new FileInputStream(localFile);
-            } catch (java.io.FileNotFoundException e) {
-                LOGGER.error("Could not open local file: " + resourceFile);
-            }
-        }
-
-        return Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceFile);
+    public static File createTempFileName(String fileName) {
+        final String extension = FilenameUtils.getExtension(fileName);
+        return new File(System.getProperty("java.io.tmpdir") + "/" + FilenameUtils.getBaseName(fileName) + "-" + UUID.randomUUID() + (extension.length() > 0 ? "." + extension : ""));
     }
-
 }

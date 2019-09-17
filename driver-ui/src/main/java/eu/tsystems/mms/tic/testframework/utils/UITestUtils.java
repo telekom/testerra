@@ -17,9 +17,9 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-/* 
+/*
  * Created on 23.02.2012
- * 
+ *
  * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -85,8 +85,15 @@ public class UITestUtils extends TestUtils {
 
     private static final boolean STITCH = PropertyManager.getBooleanProperty(TesterraProperties.STITCH_CHROME_SCREENSHOTS, true);
 
-    public static Screenshot takeScreenshot(final WebDriver driver, boolean intoReport) {
-        Screenshot screenshot = takeScreenshot(driver, driver.getWindowHandle(), WebDriverManager.getSessionKeyFrom(driver));
+    public static Screenshot takeScreenshot(
+        final WebDriver driver,
+        boolean intoReport
+    ) {
+        Screenshot screenshot = takeScreenshot(
+            driver,
+            driver.getWindowHandle(),
+            WebDriverManager.getSessionKeyFrom(driver)
+        );
 
         if (intoReport) {
             if (screenshot != null) {
@@ -94,22 +101,21 @@ public class UITestUtils extends TestUtils {
                 screenshots.add(screenshot);
 
                 MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                publishScreenshotsToErrorContext(methodContext, screenshots);
+                addScreenshotsToErrorContext(methodContext, screenshots);
             }
         }
 
         return screenshot;
     }
 
-    public static Screenshot takeScreenshot(final WebDriver eventFiringWebDriver,
-                                            String originalWindowHandle, String sessionKey) {
+    public static Screenshot takeScreenshot(
+        final WebDriver eventFiringWebDriver,
+        String originalWindowHandle,
+        String sessionKey
+    ) {
         if (!Flags.SCREENSHOTTER_ACTIVE) {
             return null;
         }
-
-        final String timestamp = FILES_DATE_FORMAT.format(new Date());
-        final String screenshotFileName = UUID.randomUUID() + "_"+ timestamp + ".png";
-        final String pageSourceFileName = screenshotFileName + ".html";
 
         WebDriverRequest webDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
         if (Browsers.htmlunit.equalsIgnoreCase(webDriverRequest.browser)) {
@@ -117,14 +123,13 @@ public class UITestUtils extends TestUtils {
             return null;
         }
 
-        File screenShotTargetFile = new File(Report.SCREENSHOTS_DIRECTORY, screenshotFileName);
-        File sourceTargetFile = new File(Report.SCREENSHOTS_DIRECTORY, pageSourceFileName);
-
         /*
          * Take the screenshot
          */
         if (eventFiringWebDriver != null) {
             try {
+                final File screenShotTargetFile = FileUtils.createTempFileName("screenshot.png");
+                final File sourceTargetFile = FileUtils.createTempFileName("pagesource.html");
                 takeWebDriverScreenshotToFile(eventFiringWebDriver, screenShotTargetFile);
 
                 // get page source (webdriver)
@@ -134,18 +139,22 @@ public class UITestUtils extends TestUtils {
                     LOGGER.error("getPageSource() returned nothing, skipping to add page source");
                 }
                 else {
+
                     // save page source to file
                     savePageSource(pageSource, sourceTargetFile);
                 }
 
+                final Screenshot screenshot = Report.provideScreenshot(screenShotTargetFile, sourceTargetFile, Report.Mode.MOVE);
+                final Date screenshotDate = new Date();
+                screenshot.meta().put(Screenshot.Meta.DATE.toString(), screenshotDate.toString());
+
                 /*
                 get infos
                  */
-                final List<String> screenshotInfos = new LinkedList<>();
                 if (sessionKey != null) {
-                    screenshotInfos.add("SessionKey: " + sessionKey);
+                    screenshot.meta().put(Screenshot.Meta.SESSION_KEY.toString(), sessionKey);
                 }
-                screenshotInfos.add("Title: " + eventFiringWebDriver.getTitle());
+                screenshot.meta().put(Screenshot.Meta.TITLE.toString(), eventFiringWebDriver.getTitle());
 
                 /*
                 window and focus infos
@@ -153,12 +162,11 @@ public class UITestUtils extends TestUtils {
                 String window = "";
                 String windowHandle = eventFiringWebDriver.getWindowHandle();
                 if (originalWindowHandle != null) {
-                    final String focusMsg = "Driver Focus: ";
                     if (windowHandle.equals(originalWindowHandle)) {
-                        screenshotInfos.add(focusMsg + true);
+                        screenshot.meta().put(Screenshot.Meta.DRIVER_FOCUS.toString(), "true");
                     }
                     else {
-                        screenshotInfos.add(focusMsg + false);
+                        screenshot.meta().put(Screenshot.Meta.DRIVER_FOCUS.toString(), "false");
                     }
                 }
                 Set<String> windowHandles = eventFiringWebDriver.getWindowHandles();
@@ -174,18 +182,9 @@ public class UITestUtils extends TestUtils {
                     }
                 }
 
-                screenshotInfos.add("Window: " + window);
                 String currentUrl = eventFiringWebDriver.getCurrentUrl();
-                screenshotInfos.add("URL: " + currentUrl);
-                screenshotInfos.add("Date: " + new Date());
-
-                /*
-                create screenshot
-                 */
-                final Screenshot screenshot = new Screenshot();
-                screenshot.filename = screenshotFileName;
-                screenshot.sourceFilename = pageSourceFileName;
-                screenshot.infos = screenshotInfos;
+                screenshot.meta().put(Screenshot.Meta.WINDOW.toString(), window);
+                screenshot.meta().put(Screenshot.Meta.URL.toString(), currentUrl);
 
                 return screenshot;
 
@@ -206,11 +205,11 @@ public class UITestUtils extends TestUtils {
      * @param screenshots
      * @return
      */
-    private static Screenshot publishScreenshotsToErrorContext(ErrorContext errorContextOrNull, List<Screenshot> screenshots) {
+    private static void addScreenshotsToErrorContext(ErrorContext errorContextOrNull, List<Screenshot> screenshots) {
         if (errorContextOrNull != null) {
-                    /*
-                    only add if we can NOT find any screenshots for this error context
-                     */
+            /*
+            only add if we can NOT find any screenshots for this error context
+             */
             long count = errorContextOrNull.screenshots.stream().filter(s -> s.errorContextId == errorContextOrNull.id).count();
 
             if (count == 0) {
@@ -227,12 +226,10 @@ public class UITestUtils extends TestUtils {
                 }
 
                 LOGGER.info("Linked screenshots: " + screenshots);
-            }
-            else {
+            } else {
                 LOGGER.warn("Skipped linking screenshot, because we already have " + count + " screenshots for this ErrorContext");
             }
         }
-        return null;
     }
 
     public static void takeWebDriverScreenshotToFile(WebDriver eventFiringWebDriver, File screenShotTargetFile) {
@@ -268,17 +265,13 @@ public class UITestUtils extends TestUtils {
     }
 
     private static void makeSimpleScreenshot(WebDriver driver, File screenShotTargetFile) {
-        try {
-            File file = Shot.takeScreenshot(driver);
+        File file = Shot.takeScreenshot(driver);
+        if (file != null) {
             try {
                 FileUtils.moveFile(file, screenShotTargetFile);
-                LOGGER.info("Stored screenshot to: " + screenShotTargetFile);
             } catch (IOException e) {
-                LOGGER.error("Error storing screenshot", e);
+                LOGGER.error("Error moving screenshot: " + e.getLocalizedMessage());
             }
-        }
-        catch (Throwable t) {
-            throw new TesterraSystemException("Error taking screenshot", t);
         }
     }
 
@@ -363,8 +356,6 @@ public class UITestUtils extends TestUtils {
             if (methodContext != null) {
                 Screenshot screenshot1 = new Screenshot();
                 screenshot1.filename = filename;
-                screenshot1.infos.add("Desktop Native Session");
-
                 methodContext.screenshots.add(screenshot1);
             }
         } else {
@@ -420,8 +411,11 @@ public class UITestUtils extends TestUtils {
         return guiElementType;
     }
 
-    public static List<Screenshot> takeScreenshotsFromSessions(ErrorContext errorContext,
-                                                           Map<String, WebDriver> rawWebDriverInstances, boolean explicitly) {
+    public static List<Screenshot> takeScreenshotsFromSessions(
+        ErrorContext errorContext,
+        Map<String, WebDriver> rawWebDriverInstances,
+        boolean explicitly
+    ) {
         List<String> processedWebDriverSessions = new ArrayList<>(1);
         List<Screenshot> screenshots = new LinkedList<>();
         if (rawWebDriverInstances != null) {
@@ -445,7 +439,7 @@ public class UITestUtils extends TestUtils {
                 screenshots.forEach(screenshot -> screenshot.errorContextId = errorContext.id);
             }
 
-            publishScreenshotsToErrorContext(errorContext, screenshots);
+            addScreenshotsToErrorContext(errorContext, screenshots);
         }
 
         return screenshots;

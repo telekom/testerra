@@ -341,6 +341,26 @@
                             </div>
                             #end
 
+                            #if ($testMethod.customErrorContextObjects.size()>0)
+                                <div class="fotorama"
+                                     data-navposition="top"
+                                     data-allowfullscreen="native"
+                                     data-nav="thumbs"
+                                     data-thumbwidth="64"
+                                     data-thumbheight="64"
+                                     data-height="40%"
+                                     data-width="40%"
+                                >
+                                    #foreach ($customError in $testMethod.customErrorContextObjects)
+                                        #if ($customError.class.simpleName == "LayoutErrorContext")
+                                            <img src="../../screenshots/$customError.expectedScreenshot.filename" data-caption="Expected"/>
+                                            <img src="../../screenshots/$customError.actualScreenshot.filename" data-caption="Actual"/>
+                                            <img src="../../screenshots/$customError.distanceScreenshot.filename" data-caption="Distance"/>
+                                        #end
+                                    #end
+                                </div>
+                            #end
+
                             #set ($size = ${testMethod.nonFunctionalInfos.size()})
                             #if ($size > 0)
                             <!-- minor -->

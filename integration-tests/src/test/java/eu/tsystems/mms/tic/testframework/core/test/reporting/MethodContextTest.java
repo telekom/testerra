@@ -47,11 +47,11 @@ public class MethodContextTest extends AbstractTest {
     @Test
     public void testT01_SetThrowable() throws Exception {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        methodContext.setThrowable(null, getStackedThrowable());
+        methodContext.errorContext().setThrowable(null, getStackedThrowable());
 
-        StackTrace stackTrace = methodContext.getStackTrace();
+        StackTrace stackTrace = methodContext.errorContext().getStackTrace();
 
-        String errorMessage = methodContext.getReadableErrorMessage();
+        String errorMessage = methodContext.errorContext().getReadableErrorMessage();
         AssertCollector.assertTrue(errorMessage.contains(level0String), "error message contains " + level0String);
 
         String[] toCheck = new String[]{

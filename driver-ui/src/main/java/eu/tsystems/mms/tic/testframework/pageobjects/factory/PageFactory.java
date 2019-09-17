@@ -150,7 +150,7 @@ public final class PageFactory {
 
                     MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
                     if (methodContext != null) {
-                        methodContext.setThrowable(message, e, true);
+                        methodContext.errorContext().setThrowable(message, e, true);
                     }
 
                     throw e;

@@ -206,7 +206,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
             MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
             if (currentMethodContext != null) {
-                currentMethodContext.setThrowable(message, cause);
+                currentMethodContext.errorContext().setThrowable(message, cause);
             }
 
             throw new ElementNotFoundException(message, cause);

@@ -47,7 +47,7 @@ public class Screenshot {
 
     public String filename;
     public String sourceFilename;
-    private Map<String, String> meta = new HashMap<>();
+    final private Map<String, String> meta = new HashMap<>();
 
     /*
     Refers to the errorContext the screenshot belongs to.

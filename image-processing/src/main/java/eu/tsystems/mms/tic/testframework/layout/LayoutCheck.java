@@ -593,6 +593,7 @@ public final class LayoutCheck {
         LayoutErrorContext error = new LayoutErrorContext();
         error.name = name;
         error.mode = mode.name();
+        error.distance = distance;
         try {
             // Always copy the reference image
             error.expectedScreenshot = Report.provideScreenshot(referenceScreenshotPath.toFile(),null, Report.Mode.COPY);
@@ -606,7 +607,7 @@ public final class LayoutCheck {
             LOGGER.debug(e.toString());
         }
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        methodContext.customErrorContextObjects.add(error);
+        methodContext.customErrorContexts.add(error);
 
         /*
         final String relReferenceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + "/" + referenceScreenshotPath.getFileName().toString();

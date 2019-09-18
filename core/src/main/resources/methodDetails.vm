@@ -341,7 +341,7 @@
                             </div>
                             #end
 
-                            #if ($testMethod.customErrorContextObjects.size()>0)
+                            #if ($testMethod.customErrorContexts.size()>0)
                                 <div class="fotorama"
                                      data-navposition="top"
                                      data-allowfullscreen="native"
@@ -351,7 +351,7 @@
                                      data-height="40%"
                                      data-width="40%"
                                 >
-                                    #foreach ($customError in $testMethod.customErrorContextObjects)
+                                    #foreach ($customError in $testMethod.customErrorContexts)
                                         #if ($customError.class.simpleName == "LayoutErrorContext")
                                             <img src="../../screenshots/$customError.expectedScreenshot.filename" data-caption="Expected"/>
                                             <img src="../../screenshots/$customError.actualScreenshot.filename" data-caption="Actual"/>

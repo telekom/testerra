@@ -85,14 +85,6 @@ public class TestStep implements Serializable {
         return closed;
     }
 
-    /**
-     * @deprecated Renamed method. 'Actual' -> 'Current'
-     */
-    @Deprecated
-    public TestStepAction getActualTestStepAction() {
-        return getCurrentTestStepAction();
-    }
-
     public TestStepAction getCurrentTestStepAction() {
         if (testStepActions.size() == 0) {
             return getTestStepAction("Internal");

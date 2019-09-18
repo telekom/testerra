@@ -441,19 +441,6 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public void refresh() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                guiElementCore.refresh();
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
-        throwablePackedResponse.finalizeTimer();
-    }
-
-    @Override
     public void doubleClick() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override

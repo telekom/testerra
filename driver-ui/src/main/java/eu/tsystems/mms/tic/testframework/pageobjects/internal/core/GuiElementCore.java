@@ -212,13 +212,6 @@ public interface GuiElementCore extends GuiElementStatusCheck, WebElement {
     List<String> getTextsFromChildren();
 
     /**
-     * Force find.
-     *
-     * @return refresh
-     */
-    void refresh();
-
-    /**
      * doubleclick
      *
      * @return .

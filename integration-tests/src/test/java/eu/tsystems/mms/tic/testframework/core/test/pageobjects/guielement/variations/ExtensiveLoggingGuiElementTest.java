@@ -33,7 +33,7 @@ public class ExtensiveLoggingGuiElementTest extends GuiElementTestCollector {
     @Override
     public GuiElement getGuiElementBy(By locator) {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement guiElement = new GuiElement(driver, locator, "Test Description");
+        GuiElement guiElement = new GuiElement(driver, locator);
         return guiElement;
     }
 

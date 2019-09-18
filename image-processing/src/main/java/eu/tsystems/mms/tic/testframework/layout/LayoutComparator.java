@@ -161,19 +161,10 @@ public class LayoutComparator {
         templateMatcher.setReferenceImageIsSubImage(referenceImageIsSubImage);
 
         // extract annotated elements
-        List<LayoutElement> annotatedElements;
-        if (annotationContainer != null) {
-            annotatedElements = annotationReader.extractAnnotatedElementsFromAnnotationContainer(
-                referenceImage,
-                annotationContainer
-            );
-        } else {
-            LOGGER.warn(String.format("Unable to read annotations from file '%s', falling back reading annotations from [0, 0] pixel color (deprecated)", annotationDataFileName));
-            annotatedElements = annotationReader.extractAnnotatedLayoutElements(
-                referenceImage,
-                annotatedImage
-            );
-        }
+        List<LayoutElement> annotatedElements = annotationReader.extractAnnotatedElementsFromAnnotationContainer(
+            referenceImage,
+            annotationContainer
+        );
 
         // create distance graph
         LOGGER.info("Comparing Reference and Actual image based on given annotations.");
@@ -272,28 +263,6 @@ public class LayoutComparator {
         }
         Mat image = ImageUtil.loadImage(file.getAbsolutePath());
         return image;
-    }
-
-    /**
-     * Debug Method to save all annotated elements as image.
-     *
-     * @param referenceAbsoluteFileName           Reference image.
-     * @param annotatedScreenshotAbsoluteFileName Annotated image.
-     * @param nameTemplateForElementsToCreate     Name for the images to create
-     * @throws FileNotFoundException
-     */
-    public static void createFilesForAnnotatedElements(String referenceAbsoluteFileName,
-                                                       String annotatedScreenshotAbsoluteFileName,
-                                                       String nameTemplateForElementsToCreate) throws FileNotFoundException {
-        Mat referenceImage = loadImageFromFile(referenceAbsoluteFileName);
-        Mat annotatedImage = loadImageFromFile(annotatedScreenshotAbsoluteFileName);
-        List<LayoutElement> annotatedElements = new AnnotationReader().extractAnnotatedLayoutElements(referenceImage,
-                annotatedImage);
-        int imageCounter = 1;
-        for (LayoutElement annotatedElement : annotatedElements) {
-            ImageUtil.writeImage(annotatedElement.getImage(), nameTemplateForElementsToCreate + imageCounter + ".png");
-            imageCounter++;
-        }
     }
 
     /**

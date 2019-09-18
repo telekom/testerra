@@ -46,14 +46,6 @@ public class TestStepController implements Serializable {
 
     private List<TestStep> testSteps = Collections.synchronizedList(new LinkedList<TestStep>());
 
-    /**
-     * @deprecated Renamed method. 'Actual' -> 'Current'
-     */
-    @Deprecated
-    public TestStep getActualTestStep() {
-        return getCurrentTestStep();
-    }
-
     public TestStep getCurrentTestStep() {
         // if there are no test steps yet, create an initial one
         if (testSteps.size() == 0) {

@@ -43,16 +43,16 @@ public class Wrong2WebTestPage extends Page {
 
     /** First text field on page. */
     @Check
-    private final GuiElement input1 = new GuiElement(driver, By.id("aaaaa1"), "Input1");
+    private final GuiElement input1 = new GuiElement(driver, By.id("aaaaa1"));
     /** A button on the page. */
     @Check
-    private final GuiElement button1 = new GuiElement(driver, By.id("sssssss4"), "Button1");
+    private final GuiElement button1 = new GuiElement(driver, By.id("sssssss4"));
     /** The output text field. */
     @Check
-    private final GuiElement textOutputField = new GuiElement(driver, By.xpath("//p[@id='ssssssss99']"), "TextOutputField");
+    private final GuiElement textOutputField = new GuiElement(driver, By.xpath("//p[@id='ssssssss99']"));
     /** Link to open site again. */
     @Check
-    private final GuiElement openAgainLink = new GuiElement(driver, By.id("cccccc11"), "Open Again Link");
+    private final GuiElement openAgainLink = new GuiElement(driver, By.id("cccccc11"));
 
     /**
      * Default Page constructor.

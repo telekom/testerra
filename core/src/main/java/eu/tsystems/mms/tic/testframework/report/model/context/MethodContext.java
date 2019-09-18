@@ -138,16 +138,6 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     }
 
     /**
-     * Gets whether the test method execution was exception.
-     *
-     * @return The value of <code>exception</code>.
-     */
-    @Deprecated
-    public boolean isException() {
-        return status == TestStatusController.Status.FAILED;
-    }
-
-    /**
      * checks if test was skipped
      *
      * @return the skipped

@@ -813,13 +813,6 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     @Test
-    public void testT93_GuiElement_refresh() {
-        GuiElement element = getTableElement();
-        element.refresh();
-        //not sure how to test this
-    }
-
-    @Test
     public void TestT94_GuiElement_highlight() {
         GuiElement element = getClickableElement();
         element.highlight();

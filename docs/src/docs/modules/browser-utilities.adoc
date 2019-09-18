@@ -8,5 +8,5 @@ This class offers some utility functions to handle browser specifics relevant fo
 // Internet explorer to https locations with improper certificate.
 // In case the explorer opens an alert window the parameter handleAlert can be 
 // set to finally close it.
-BroswerUtils.skipIESecurityWarning(WebDriver driver, boolean handleAlert);
+BrowserUtils.skipIESecurityWarning(WebDriver driver, boolean handleAlert);
 ----

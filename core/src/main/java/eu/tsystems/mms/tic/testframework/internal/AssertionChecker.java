@@ -50,29 +50,6 @@ public final class AssertionChecker {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(AssertionChecker.class);
 
-    /**
-     * utility method that checks is called from NonFunctionalAssert. It stores the Throwable, creates
-     * a screenshot if possible and lets the test continue.
-     *
-     * @param throwable .
-     * @throws Throwable .
-     */
-    @Deprecated
-    public static void check(final Throwable throwable) throws Throwable {
-        StackTraceElement[] stackTrace = throwable.getStackTrace();
-        for (StackTraceElement stackTraceElement : stackTrace) {
-            String className = stackTraceElement.getClassName();
-            if ("eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert".equals(className)) {
-
-                return;
-            }
-        }
-        /*
-        else
-         */
-        throw throwable;
-    }
-
     public static void storeNonFunctionalInfo(Throwable throwable) {
         LOGGER.error("Found non-functional error", throwable);
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();

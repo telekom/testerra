@@ -8,4 +8,5 @@ include::modules/property-manager.adoc[leveloffset=+1]
 include::modules/proxy-utilities.adoc[leveloffset=+1]
 include::modules/testui-utilities.adoc[leveloffset=+1]
 include::modules/layout-check.adoc[leveloffset=+1]
+include::modules/csv-reader.adoc[leveloffset=+1]
 

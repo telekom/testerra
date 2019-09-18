@@ -12,7 +12,9 @@ CertUtils.trustAllCerts();
 
 [source,java]
 ----
-// Trust only certificates for a special connection and a SSL socket factory
+// Trust only certificates for a special connection and a SSL socket factory.
 HttpsURLConnection CertUtils.trustAllCerts(
-        HttpsURLConnection connection, SSLSocketFactory sslSocketFactory);
+    HttpsURLConnection connection,
+    SSLSocketFactory sslSocketFactory
+);
 ----

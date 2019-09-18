@@ -276,21 +276,6 @@ public abstract class AbstractMailConnector {
     }
 
     /**
-     * Wait until message with subject received.
-     *
-     * @param searchCriteriaMap The subject which message should contain.
-     *
-     * @return message wrapped in {@link TesterraMail} object.
-     *
-     * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
-     */
-    private TesterraMail pWaitForTesterraMail(List<SearchCriteria> searchCriteriaMap) {
-
-        List<MimeMessage> messages = pWaitForMessage(searchCriteriaMap, MAX_READ_TRIES, SLEEP_SECONDS);
-        return new TesterraMail(messages.get(0));
-    }
-
-    /**
      * Wait until messages with search criteria are received.
      *
      * @param searchCriterias The subject which message should contain.

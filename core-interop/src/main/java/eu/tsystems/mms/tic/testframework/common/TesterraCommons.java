@@ -60,18 +60,17 @@ public class TesterraCommons {
 
     public static void setTesterraLogLevel() {
 
-
         // load from file
-        String TesterraLogLevelString = PropertyManager.getProperty(TesterraProperties.LOG_LEVEL, "INFO");
+        String testerraLogLevelString = PropertyManager.getProperty(TesterraProperties.LOG_LEVEL, "INFO");
 
         /*
         Patch log level
          */
-        if (TesterraLogLevelString != null) {
+        if (testerraLogLevelString != null) {
             org.apache.log4j.Logger TesterraLogger = org.apache.log4j.Logger.getLogger(p);
-            TesterraLogLevelString = TesterraLogLevelString.trim().toUpperCase();
+            testerraLogLevelString = testerraLogLevelString.trim().toUpperCase();
 
-            Level level = Level.toLevel(TesterraLogLevelString); // is debug when conversion fails
+            Level level = Level.toLevel(testerraLogLevelString); // is debug when conversion fails
             TesterraLogger.setLevel(level);
         }
     }

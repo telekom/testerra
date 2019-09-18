@@ -1,0 +1,110 @@
+= CSV Reader
+
+The CSV Reader class provides a basic reader for CSV files to handle.
+This is useful to handle testdata.
+It provides two ways to read a csv file.
+
+== Read file into map
+
+To simplify how this method work, we assume that the following snippet is the csv file to read.
+The default separator is ';', but it is changeable via a method call of `setSeparator`.
+
+[source,csv]
+----
+;;;;;
+id;serviceNumber;price;productName;date;calculate
+testdata;8001888972600;10,00 EUR;iPhone 16GB;01.08.2014;15,00 EUR
+testdata2;8001888972601;20,00 EUR;iPhone 32GB;10.10.2014;35,00 EUR
+testdata3;8001888972602;30,00 EUR;iPhone 64GB;05.12.2014;55,00 EUR
+----
+
+With following code snippet you can read a csv file of your resource directory into a simple key-value based map.
+You can set the header row of the csv file programmatically and therefore the values of this row will be used as key.
+All other rows are then values of the given key.
+
+[source,java]
+----
+final CSVTestDataReader csvTestDataReader = new CSVTestDataReader();
+csvTestDataReader.setHeaderRow(1);
+
+final List<Map<String, String>> testDataMap = csvTestDataReader.readCsvTestDataFromResource("testfiles/TestCSVReader.csv");
+
+Assert.assertEquals(testDataMap.get(0).get("id"), "testdata");
+----
+
+== Read files into beans
+
+The other way to read a csv file is to convert it into java beans.
+Therefore you have to specify the class that matches the java bean design pattern.
+Then you can transform the csv file into a object of the given class by calling following methods.
+
+[source,java]
+----
+final CSVTestDataReader csvTestDataReader = new CSVTestDataReader();
+csvTestDataReader.setHeaderRow(1);
+
+final List<TestCsvReaderBean> testDataList = csvTestDataReader.readCsvIntoBeans("testfiles/TestCSVReader.csv", TestCsvReaderBean.class);
+
+Assert.assertNotNull(testDataList);
+Assert.assertNotEquals(testDataList.size(), 0);
+
+final TestCsvReaderBean testCSVReader = testDataList.get(0);
+final String serviceNumber = testCSVReader.getServiceNumber();
+
+Assert.assertEquals(serviceNumber, "8001888972600");
+----
+
+Further to this approach it is possible to concat objects like you do in your java bean as well.
+Given the following classes and the given csv, you will notice, that `TestCsvReaderWithSubBean` has a property of type `TestCsvReaderSubBean`.
+In order to solve this, the csv reader will try to find a csv file named like your class `TestCsvReaderSubBean` in your resources.
+If it exists, the csv reader will read this "sub-file" as well an will inject the object into the main type.
+
+But how?
+Just ensure that you provide a unique line identifier.
+The csv reader will then take care.
+
+.TestCsvReaderWithSubBean.java
+[source,java]
+----
+public class TestCsvReaderBeanWithSubBean {
+
+    public String id;
+    public String name;
+    public String firstName;
+    public TestCsvReaderSubBean subBean;
+
+    // getter and setter here...
+}
+----
+
+.TestCsvReaderSubBean.java
+[source,java]
+----
+public class TestCsvReaderBeanWithSubBean {
+
+    public String id;
+    public String name;
+    public String firstName;
+    public TestCsvReaderSubBean subBean;
+
+    // getter and setter here...
+}
+----
+
+.TestCsvReaderWithSubBean.csv
+[source,csv]
+----
+id;name;firstName;subBean
+AH_1;Wussow;Michael;SUB_1
+AH_2;Siemens;Hans;SUB_2
+----
+
+.TestCsvReaderSubBean.csv
+[source,csv]
+----
+id;street;city
+SUB_1;Hansstr. 12;Dresden
+SUB_2;Wummsstr. 13;Leipzig
+----
+
+

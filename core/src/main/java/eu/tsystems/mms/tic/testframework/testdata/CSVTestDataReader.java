@@ -66,8 +66,8 @@ public class CSVTestDataReader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CSVTestDataReader.class);
 
-    final static char DEFAULT_SEPARATOR = ';';
-    final static char DEFAULT_QUOTE_CHAR = '\"';
+    private final static char DEFAULT_SEPARATOR = ';';
+    private final static char DEFAULT_QUOTE_CHAR = '\"';
 
     private char separator = DEFAULT_SEPARATOR;
     private char quoteChar = DEFAULT_QUOTE_CHAR;
@@ -78,6 +78,7 @@ public class CSVTestDataReader {
     private int headerRow = 0;
 
     public CSVTestDataReader() {
+
     }
 
     public char getSeparator() {
@@ -120,47 +121,32 @@ public class CSVTestDataReader {
         this.headerRow = headerRow;
     }
 
-    private FileReader openFileFromResources(String fileInResources) {
-        File resourceFile = FileUtils.getResourceFile(fileInResources);
-        FileReader resourceFileReader = null;
-        try {
-            resourceFileReader = new FileReader(resourceFile);
-        } catch (FileNotFoundException e) {
-            Assert.fail("Could not read file: " + fileInResources);
-        }
-        return resourceFileReader;
-    }
 
-    public List<Map<String, String>> readCSVTestDataFromResource(String fileInResources) {
-        List<Map<String, String>> dataSetsList = new LinkedList<>();
-        FileReader fileReader = openFileFromResources(fileInResources);
-        CSVReader reader = new com.opencsv.CSVReader(fileReader, getSeparator(), getQuoteChar(), getSkippedLines());
+    public List<Map<String, String>> readCsvTestDataFromResource(String fileInResources) {
 
-        List<String[]> allDataSets;
+        // init values
+        final List<Map<String, String>> dataSetsList = new LinkedList<>();
 
-        try {
-            allDataSets = reader.readAll();
-        } catch (IOException e) {
-            throw new TesterraRuntimeException("Could not read data from: " + fileInResources);
-        }
+        // init reader
+        final List<String[]> content = this.readAllLinesFromCsvFile(fileInResources);
+        final String[] headerRow = content.get(this.headerRow);
+        final int nrOfHeaders = headerRow.length;
 
-        int headerRowNr = getHeaderRow();
-        String[] headerRow = allDataSets.get(headerRowNr);
-        int nrOfHeaders = headerRow.length;
+        for (int j = this.headerRow + 1; j < content.size(); j++) {
 
-        for (int j = headerRowNr + 1; j < allDataSets.size(); j++) {
-            String[] cells = allDataSets.get(j);
+            final String[] cells = content.get(j);
             /*
             Exit with clear error print out
              */
             if (cells.length != nrOfHeaders) {
-                String message = "Could not read " + fileInResources + "\nline: ";
+
+                final StringBuilder message = new StringBuilder("Could not read " + fileInResources + "\nline: ");
                 for (String cell : cells) {
-                    message += cell + separator;
+                    message.append(cell).append(separator);
                 }
-                LOGGER.error(message);
+                LOGGER.error(message.toString());
             } else {
-                Map<String, String> dataSet = new LinkedHashMap<>();
+                final Map<String, String> dataSet = new LinkedHashMap<>();
                 for (int i = 0; i < nrOfHeaders; i++) {
                     dataSet.put(headerRow[i], cells[i]);
                 }
@@ -169,32 +155,6 @@ public class CSVTestDataReader {
         }
 
         return dataSetsList;
-    }
-
-    protected CSVReader getCSVReader(String fileName) {
-        CSVReader reader;
-        try {
-            String filePath = findFileInResources(fileName);
-            if (filePath == null) {
-                throw new TesterraRuntimeException(String.format("Could not find %s in resources", fileName));
-            }
-            File file = FileUtils.getResourceFile(filePath);
-            FileReader fileReader = new FileReader(file);
-            reader = new CSVReader(fileReader, getSeparator(), getQuoteChar(), getSkippedLines());
-        } catch (FileNotFoundException e) {
-            throw new TesterraRuntimeException(e);
-        }
-
-        return reader;
-    }
-
-    protected String findFileInResources(String filename) {
-        Reflections reflections = new Reflections("", new ResourcesScanner());
-        Set<String> resourceList = reflections.getResources(x -> true);
-        return resourceList.stream()
-                .filter(path -> path.contains(filename))
-                .findFirst()
-                .orElse(null);
     }
 
     /**
@@ -208,24 +168,42 @@ public class CSVTestDataReader {
      *
      * @return list with created beans
      */
-    public <T> List<T> readCsvIntoBeans(String fileInResources, Class<T> clazz) {
-        LOGGER.info("Reading from %s", fileInResources);
+    public <T> List<T> readCsvIntoBeans(final String fileInResources, final Class<T> clazz) {
 
-        CSVReader reader = getCSVReader(fileInResources);
-        List<String[]> content;
-        try {
-            content = reader.readAll();
-        } catch (IOException e) {
-            throw new TesterraRuntimeException(e);
+        final List<String[]> content = this.readAllLinesFromCsvFile(fileInResources);
+        final List<String> header = Arrays.asList(content.get(this.headerRow));
+
+        if (this.headerRow >= 0) {
+            content.subList(0, this.headerRow + 1).clear();
         }
-
-        List<String> header = Arrays.asList(content.get(0));
-        content.remove(0);
 
         return content.stream()
                 .map(arr -> createBeanFromLine(clazz, Arrays.asList(arr), header))
                 .collect(Collectors.toList());
     }
+
+    private String findFileInResources(String filename) {
+
+        Reflections reflections = new Reflections("", new ResourcesScanner());
+        Set<String> resourceList = reflections.getResources(x -> true);
+        return resourceList.stream()
+                .filter(path -> path.contains(filename))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private FileReader openFileFromResources(String fileInResources) {
+
+        final File resourceFile = FileUtils.getResourceFile(fileInResources);
+        FileReader resourceFileReader = null;
+        try {
+            resourceFileReader = new FileReader(resourceFile);
+        } catch (FileNotFoundException e) {
+            Assert.fail("Could not read file: " + fileInResources);
+        }
+        return resourceFileReader;
+    }
+
 
     /**
      * creates a bean object with given identifier from specified csv file of type clazz
@@ -239,22 +217,22 @@ public class CSVTestDataReader {
      *
      * @return an object of type class with given identifier
      */
-    public <T> T readLineIntoBean(String fileInResources, Class<T> clazz, String identifier) {
-        LOGGER.info("Reading line with %s from %s", identifier, fileInResources);
+    private <T> T readLineIntoBean(String fileInResources, Class<T> clazz, String identifier) {
 
-        CSVReader reader = getCSVReader(fileInResources);
-        Iterator<String[]> ite = reader.iterator();
-        List<String> headers = Arrays.asList(ite.next());
-        Iterable<String[]> iterable = () -> ite;
+        LOGGER.info(String.format("Reading line with %s from %s", identifier, fileInResources));
 
-        List<String> correctLine = StreamSupport.stream(iterable.spliterator(), true)
+        final List<String[]> reader = readAllLinesFromCsvFile(fileInResources);
+        final Iterator<String[]> ite = reader.iterator();
+        final List<String> headers = Arrays.asList(ite.next());
+        final Iterable<String[]> iterable = () -> ite;
+
+        final List<String> correctLine = StreamSupport.stream(iterable.spliterator(), true)
                 .map(Arrays::asList)
                 .filter(line -> line.contains(identifier))
                 .findFirst()
                 .orElseThrow(() -> new TesterraRuntimeException(String.format("No line with identifier '%s' found in %s", identifier, fileInResources)));
 
         return createBeanFromLine(clazz, correctLine, headers);
-
     }
 
     private Object handleField(Class type, String value) {
@@ -286,12 +264,14 @@ public class CSVTestDataReader {
     }
 
     private <T> T createBeanFromLine(Class<T> clazz, List<String> line, List<String> header) {
+
         LOGGER.info(String.format("Creating Bean of %s with following data: %s", clazz.getSimpleName(), String.join(",", line)));
 
         T bean;
         try {
             bean = clazz.newInstance();
             for (int col = 0; col < header.size(); col++) {
+
                 final String headerName = header.get(col);
 
                 if (col >= line.size()) {
@@ -307,7 +287,6 @@ public class CSVTestDataReader {
                 Class type = propDesc.getPropertyType();
                 Object obj = handleField(type, line.get(col));
                 setter.invoke(bean, obj);
-
             }
         } catch (InstantiationException | IllegalAccessException | IntrospectionException | InvocationTargetException e) {
             throw new TesterraRuntimeException(e);
@@ -316,4 +295,17 @@ public class CSVTestDataReader {
         return bean;
     }
 
+    private List<String[]> readAllLinesFromCsvFile(final String fileName) {
+
+        LOGGER.info(String.format("Reading from %s", fileName));
+
+        final FileReader fileReader = this.openFileFromResources(fileName);
+        final CSVReader csvReader = new CSVReader(fileReader, getSeparator(), getQuoteChar(), getSkippedLines());
+
+        try {
+            return csvReader.readAll();
+        } catch (IOException e) {
+            throw new TesterraRuntimeException(String.format("Could not read csv file in resources %s.", fileName), e);
+        }
+    }
 }

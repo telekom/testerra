@@ -137,7 +137,7 @@ public abstract class Page extends AbstractPage {
         }
         // wait Thinktime + Offset
         logger.info("Waiting a Thinktime of " + timeToWait + " milliseconds");
-        TestUtils.sleep(timeToWait);
+        TimerUtils.sleep(timeToWait);
     }
 
     @Override
@@ -275,7 +275,7 @@ public abstract class Page extends AbstractPage {
      * @return boolean true if success == text is not present. false otherwise.
      */
     public boolean waitForIsNotTextPresentWithDelay(final String text, final int delayInSeconds) {
-        TestUtils.sleep(delayInSeconds * 1000);
+        TimerUtils.sleep(delayInSeconds * 1000);
         return waitForIsNotTextPresent(text);
     }
 
@@ -285,7 +285,7 @@ public abstract class Page extends AbstractPage {
      * @return boolean true if success == text is not present. false otherwise.
      */
     public boolean waitForIsNotTextDisplayedWithDelay(final String text, final int delayInSeconds) {
-        TestUtils.sleep(delayInSeconds * 1000);
+        TimerUtils.sleep(delayInSeconds * 1000);
         return waitForIsNotTextDisplayed(text);
     }
 

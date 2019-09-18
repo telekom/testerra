@@ -6,7 +6,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.RandomUtils;
-import eu.tsystems.mms.tic.testframework.utils.TestUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import org.openqa.selenium.WebDriverException;
 import org.testng.Assert;
@@ -52,7 +52,7 @@ public class ReportingAllStatesTests extends AbstractTest {
 
     @Test
     public void testPassed() throws Exception {
-        TestUtils.sleep(1000);
+        TimerUtils.sleep(1000);
     }
 
     @DataProvider(name = "dp", parallel = true)
@@ -255,7 +255,7 @@ public class ReportingAllStatesTests extends AbstractTest {
 
     @Test
     public void testRerunTest() {
-        TestUtils.sleep(RandomUtils.generateRandomInt(20));
+        TimerUtils.sleep(RandomUtils.generateRandomInt(20));
 
         failingStep(How.RETRY);
     }
@@ -263,7 +263,7 @@ public class ReportingAllStatesTests extends AbstractTest {
     @Test
     public void testRerunReverseTest() {
 
-        TestUtils.sleep(RandomUtils.generateRandomInt(20));
+        TimerUtils.sleep(RandomUtils.generateRandomInt(20));
 
         failingStep(How.RETRY);
     }

@@ -246,7 +246,7 @@ public class FileDownloader {
         InputStream inputStream = connection.getInputStream();
 
         if (useSecondConnection) {
-            TestUtils.sleep(3000, "FileDownloader flaky connections workaround");
+            TimerUtils.sleep(3000, "FileDownloader flaky connections workaround");
             URLConnection connection2 = openConnection(fileToDownload, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
             inputStream = connection2.getInputStream();
         }

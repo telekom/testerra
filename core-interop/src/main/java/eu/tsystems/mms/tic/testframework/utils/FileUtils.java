@@ -102,31 +102,6 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
     }
 
     /**
-     * Gets a local file if present, otherwise search for resource file.
-     *
-     * @param filePathAndName .
-     *
-     * @return InputStream
-     *
-     * @throws FileNotFoundException .
-     */
-    public static InputStream getLocalFileOrResourceInputStream(final String filePathAndName) throws FileNotFoundException {
-
-        final File relativeFile = new File(filePathAndName);
-
-        if (relativeFile.exists()) {
-            try {
-                LOGGER.info("Loading from: " + relativeFile);
-                return new FileInputStream(relativeFile);
-            } catch (java.io.FileNotFoundException e) {
-                throw new FileNotFoundException(filePathAndName, e);
-            }
-        }
-
-        return FileUtils.getResourceInputStream(filePathAndName);
-    }
-
-    /**
      * Get an absolute file path from a resource file path.
      *
      * @param fileInResources .
@@ -136,6 +111,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * @throws FileNotFoundException
      */
     public static String getAbsoluteFilePath(String fileInResources) throws FileNotFoundException {
+
         ClassLoader contextClassLoader = currentThread().getContextClassLoader();
         URL resource = contextClassLoader.getResource(fileInResources);
         if (resource == null) {
@@ -163,6 +139,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * @throws IOException
      */
     public static String readFromResourceFile(String fileInResources) throws IOException {
+
         String absoluteFilePath = null;
         try {
             absoluteFilePath = getAbsoluteFilePath(fileInResources);
@@ -288,8 +265,14 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
     }
 
     public static File getResourceFile(String resourceFile) {
-        URL resourceURL = getResourceURL(resourceFile);
-        return new File(resourceURL.getFile());
+
+        final URL resourceUrl = getResourceURL(resourceFile);
+
+        if (resourceUrl == null) {
+            throw new TesterraSystemException("Could not load resource file. File does not exist: " + resourceFile);
+        }
+
+        return new File(resourceUrl.getFile());
     }
 
     public static File createTempFileName(String fileName) {

@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.utils.TestUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 
 /**
  * Created by rnhb on 09.02.2016.
@@ -38,12 +38,12 @@ public class DelayActionsGuiElementFacade extends GuiElementFacadeDecorator {
 
     @Override
     protected void beforeActionDelegation(String message) {
-        TestUtils.sleep(beforeActionSleepTime);
+        TimerUtils.sleep(beforeActionSleepTime);
     }
 
     @Override
     protected void afterActionDelegation() {
-        TestUtils.sleep(afterActionSleepTime);
+        TimerUtils.sleep(afterActionSleepTime);
     }
 
     @Override

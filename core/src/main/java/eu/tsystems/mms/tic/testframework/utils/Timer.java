@@ -154,7 +154,7 @@ public class Timer {
         execThread.start();
 
         while (!execThread.finished && !isTimeOver()) {
-            TestUtils.sleep(1000);
+            TimerUtils.sleep(1000);
         }
 
         if (execThread.finished) {

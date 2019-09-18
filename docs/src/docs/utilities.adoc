@@ -1,11 +1,11 @@
 = Utilities
 
-include::modules/assert-utilities.adoc[leveloffset=+1]
-include::modules/array-utilities.adoc[leveloffset=+1]
-include::modules/browser-utilities.adoc[leveloffset=+1]
-include::modules/cert-utilities.adoc[leveloffset=+1]
-include::modules/date-utilities.adoc[leveloffset=+1]
-include::modules/pdf-utilities.adoc[leveloffset=+1]
-include::modules/proxy-utilities.adoc[leveloffset=+1]
-include::modules/testui-utilities.adoc[leveloffset=+1]
+include::utilities/assert-utilities.adoc[leveloffset=+1]
+include::utilities/array-utilities.adoc[leveloffset=+1]
+include::utilities/browser-utilities.adoc[leveloffset=+1]
+include::utilities/cert-utilities.adoc[leveloffset=+1]
+include::utilities/date-utilities.adoc[leveloffset=+1]
+include::utilities/pdf-utilities.adoc[leveloffset=+1]
+include::utilities/proxy-utilities.adoc[leveloffset=+1]
+include::utilities/testui-utilities.adoc[leveloffset=+1]
 

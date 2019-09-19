@@ -6,5 +6,5 @@ include::property-attributes.adoc[]
 | {proxy_settings_load} | true | Boolean flag to load proxysettings properties on startup automatically.
 | {proxy_settings_file} | proxysettings.properties | File name of property file for proxy settings.
 | {test_properties_file} | test.properties | File name of the standard configuration file of Testerra
-| {loglevel} | INFO | Loglevel to use. If this parameter is set, Testerra will try to override log4j-loglevel.
+| {loglevel} | INFO | If this parameter is set, Testerra will try to override the defined log4j-loglevel for the framework.
 |===

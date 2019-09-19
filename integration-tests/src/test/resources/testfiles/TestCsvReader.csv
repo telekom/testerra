@@ -1,5 +1,4 @@
-;;;;;
-id;serviceNumber;price;productName;date;calculate
-testdata;8001888972600;10,00 EUR;iPhone 16GB;01.08.2014;15,00 EUR
-testdata2;8001888972601;20,00 EUR;iPhone 32GB;10.10.2014;35,00 EUR
-testdata3;8001888972602;30,00 EUR;iPhone 64GB;05.12.2014;55,00 EUR
+;;;
+id;name;firstName
+AH_1;Wussow;Michael
+AH_2;Siemens;Hans

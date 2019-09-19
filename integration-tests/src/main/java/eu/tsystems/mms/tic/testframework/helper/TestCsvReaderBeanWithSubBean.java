@@ -13,10 +13,10 @@ package eu.tsystems.mms.tic.testframework.helper;
  */
 public class TestCsvReaderBeanWithSubBean {
 
-    public String id;
-    public String name;
-    public String firstName;
-    public TestCsvReaderSubBean subBean;
+    private String id;
+    private String name;
+    private String firstName;
+    private TestCsvReaderSubBean subBean;
 
     public String getId() {
         return id;

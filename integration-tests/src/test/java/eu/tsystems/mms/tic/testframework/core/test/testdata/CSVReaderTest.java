@@ -30,12 +30,11 @@ public class CSVReaderTest {
         final CSVTestDataReader csvTestDataReader = new CSVTestDataReader();
         csvTestDataReader.setHeaderRow(1);
 
-        final List<Map<String, String>> testDataMap = csvTestDataReader.readCsvTestDataFromResource("testfiles/TestCSVReader.csv");
+        final List<Map<String, String>> testDataMap = csvTestDataReader.readCsvTestDataFromResource("testfiles/TestCsvReader.csv");
 
-        Assert.assertEquals(testDataMap.size(), 3);
-        Assert.assertEquals(testDataMap.get(0).get("id"), "testdata");
-        Assert.assertEquals(testDataMap.get(1).get("id"), "testdata2");
-        Assert.assertEquals(testDataMap.get(2).get("id"), "testdata3");
+        Assert.assertEquals(testDataMap.size(), 2);
+        Assert.assertEquals(testDataMap.get(0).get("id"), "AH_1");
+        Assert.assertEquals(testDataMap.get(1).get("id"), "AH_2");
     }
 
     @Test
@@ -62,17 +61,16 @@ public class CSVReaderTest {
         final CSVTestDataReader csvTestDataReader = new CSVTestDataReader();
         csvTestDataReader.setHeaderRow(1);
 
-        final List<TestCsvReaderBean> testDataList = csvTestDataReader.readCsvIntoBeans("testfiles/TestCSVReader.csv", TestCsvReaderBean.class);
+        final List<TestCsvReaderBean> testDataList = csvTestDataReader.readCsvIntoBeans("testfiles/TestCsvReader.csv", TestCsvReaderBean.class);
 
         Assert.assertNotNull(testDataList);
         Assert.assertNotEquals(testDataList.size(), 0);
 
         final TestCsvReaderBean testCSVReader = testDataList.get(0);
-        final String serviceNumber = testCSVReader.getServiceNumber();
 
-        Assert.assertEquals(serviceNumber, "8001888972600");
+        final String id = testCSVReader.getId();
+        Assert.assertEquals(id, "AH_1");
     }
-
 
     @Test
     public void testT04_CsvBeanReaderWithSubBean() {

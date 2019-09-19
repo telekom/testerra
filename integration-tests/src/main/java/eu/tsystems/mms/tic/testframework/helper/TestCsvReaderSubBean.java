@@ -13,9 +13,9 @@ package eu.tsystems.mms.tic.testframework.helper;
  */
 public class TestCsvReaderSubBean {
 
-    public String id;
-    public String street;
-    public String city;
+    private String id;
+    private String street;
+    private String city;
 
     public String getId() {
         return id;

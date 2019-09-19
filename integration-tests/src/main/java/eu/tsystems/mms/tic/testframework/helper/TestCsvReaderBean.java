@@ -13,12 +13,9 @@ package eu.tsystems.mms.tic.testframework.helper;
  */
 public class TestCsvReaderBean {
 
-    public String id;
-    public String serviceNumber;
-    public String price;
-    public String productName;
-    public String date;
-    public String calculate;
+    private String id;
+    private String name;
+    private String firstName;
 
     public String getId() {
         return id;
@@ -28,43 +25,19 @@ public class TestCsvReaderBean {
         this.id = id;
     }
 
-    public String getServiceNumber() {
-        return serviceNumber;
+    public String getName() {
+        return name;
     }
 
-    public void setServiceNumber(String serviceNumber) {
-        this.serviceNumber = serviceNumber;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPrice() {
-        return price;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getCalculate() {
-        return calculate;
-    }
-
-    public void setCalculate(String calculate) {
-        this.calculate = calculate;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 }

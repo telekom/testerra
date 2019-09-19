@@ -1,5 +1,19 @@
 = Best Practices
 
+== Project setup
+
+=== Normalize file encoding
+
+Always use the same file encoding for all your source file types like `.html`, `.properties`, `.java` etc.
+
+IntelliJ: You can change the default encoding for files at _File -> Settings -> File Encodings_
+
+=== Normalize file endings
+
+Prevent using default line ending `CRLF` on Windows.
+
+Git: Setup `git config --global core.autocrlf input` to prevent any commited CRLF.
+
 == Always prefer Assertions
 
 If you need to check several properties of a GuiElement, always prefer

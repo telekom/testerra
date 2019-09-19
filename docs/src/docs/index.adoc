@@ -27,6 +27,7 @@ include::modules.adoc[leveloffset=+1]
 
 '''
 = Appendix
+include::best-practices.adoc[leveloffset=+1]
 include::properties.adoc[leveloffset=+1]
 
 [glossary]

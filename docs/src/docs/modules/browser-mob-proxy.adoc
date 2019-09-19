@@ -2,6 +2,38 @@
 
 Browser Mob Proxy (BMP) is a utility for manipulating network traffic. You can use it to enable Basic Auth for your SUT and other features.
 
+== Project setup
+
+.build.gradle
+[source, gradle, role="primary"]
+----
+compile 'eu.tsystems.mms.tic.testerra:bmp:1-SNAPSHOT'
+----
+
+.pom.xml
+[source, xml, role="secondary"]
+----
+<dependencies>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>bmp</artifactId>
+        <version>1-SNAPSHOT</version>
+        <exclusions>
+            <exclusion>
+                <groupId>net.lightbody.bmp</groupId>
+                <artifactId>browsermob-proxy</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>net.lightbody.bmp</groupId>
+        <artifactId>browsermob-proxy</artifactId>
+        <version>2.1.1</version>
+        <type>pom</type>
+    </dependency>
+</dependencies>
+----
+
 == External BMP server (recommended)
 
 Best practice for using a Testerra with a Proxy, is to use a dedicated BMP instance.

@@ -1,4 +1,6 @@
 = Array Utilities
+// This class is mostly for internal use and it is open to be decided if 
+// this will be part of the API documentation finally.
 
 This class is extends the Apache array utils by the following method:
 

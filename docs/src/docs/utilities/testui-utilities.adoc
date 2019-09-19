@@ -1,4 +1,4 @@
-= UITest utilities
+= UITest Utilities
 
 The `UITestUtils` supports you to generate additional screenshots.
 

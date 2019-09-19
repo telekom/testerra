@@ -99,15 +99,12 @@ public class TestCsvReaderBeanWithSubBean {
 .TestCsvReaderSubBean.java
 [source,java]
 ----
-public class TestCsvReaderBeanWithSubBean {
+public class TestCsvReaderSubBean {
 
     private String id;
-    private String name;
-    private String firstName;
-    private TestCsvReaderSubBean subBean;
+    private String street;
+    private String city;
 
     // getter and setter here...
 }
 ----
-
-

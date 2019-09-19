@@ -30,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
-import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -48,11 +47,7 @@ public class SikuliFirefoxDriver extends FirefoxDriver implements SikuliDriver {
      */
     public SikuliFirefoxDriver() {
         WebDriverScreen webDriverScreen;
-        try {
-            webDriverScreen = new WebDriverScreen(this);
-        } catch (IOException e1) {
-            throw new RuntimeException("unable to initialize SikuliFirefoxDriver");
-        }
+        webDriverScreen = new WebDriverScreen(this);
         webdriverRegion = new DefaultScreenRegion(webDriverScreen);
     }
 
@@ -61,6 +56,7 @@ public class SikuliFirefoxDriver extends FirefoxDriver implements SikuliDriver {
      *
      * @param x .
      * @param y .
+     *
      * @return .
      */
     public WebElement findElementByLocation(int x, int y) {
@@ -71,6 +67,7 @@ public class SikuliFirefoxDriver extends FirefoxDriver implements SikuliDriver {
      * searches for image element
      *
      * @param imageUrl .
+     *
      * @return .
      */
     public ImageElement findImageElement(URL imageUrl) {

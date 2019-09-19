@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.report.hooks;
 
 import eu.tsystems.mms.tic.testframework.annotations.DismissDryRun;
-import eu.tsystems.mms.tic.testframework.utils.TestUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestNGMethod;
@@ -38,7 +38,7 @@ public abstract class Hook {
         final DismissDryRun dismissDryRun = constructorOrMethod.getMethod().getAnnotation(DismissDryRun.class);
         if (dismissDryRun == null) {
             LOGGER.info("Dry run: " + testNGMethod.getMethodName());
-            TestUtils.sleep(50);
+            TimerUtils.sleep(50);
             return true;
         }
         return false;

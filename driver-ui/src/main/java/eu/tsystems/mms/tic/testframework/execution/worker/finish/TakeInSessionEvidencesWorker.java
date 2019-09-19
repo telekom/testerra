@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class TakeInSessionEvidencesWorker extends AbstractEvidencesWorker {
 
-    void collect() {
+    protected void collect() {
         if (WebDriverManager.hasSessionsActiveInThisThread()) {
             // get screenshots and videos
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();

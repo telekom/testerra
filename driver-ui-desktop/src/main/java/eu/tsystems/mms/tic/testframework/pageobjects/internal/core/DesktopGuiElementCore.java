@@ -37,7 +37,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import eu.tsystems.mms.tic.testframework.utils.TestUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
@@ -123,7 +123,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         }
 
         if (delayAfterFindInMilliSeconds > 0) {
-            TestUtils.sleep(delayAfterFindInMilliSeconds);
+            TimerUtils.sleep(delayAfterFindInMilliSeconds);
         }
         return numberOfFoundElements;
     }
@@ -727,11 +727,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         }
 
         return childTexts;
-    }
-
-    @Override
-    public void refresh() {
-        find();
     }
 
     @Override

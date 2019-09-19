@@ -27,7 +27,10 @@
 package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <Beschreibung der Klasse>
@@ -36,9 +39,23 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
  */
 public final class Flags {
 
+    static {
+        TesterraCommons.init();
+    }
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Flags.class);
+
+    static {
+        PropertyManager.ensureLoaded();
+        LOGGER.info("Loading Flags");
+    }
+
+    public static void init() {}
+
     private Flags() {
     }
-    
+
+
     private static boolean p(String property, boolean defaultValue) {
         return PropertyManager.getBooleanProperty(property, defaultValue);
     }

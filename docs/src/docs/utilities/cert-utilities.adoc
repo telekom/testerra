@@ -1,0 +1,20 @@
+= Certificate Utilities
+
+This is an utility class that offers the possibility to trust all SSL certificates.
+
+IMPORTANT: Accepting all SSL certs is a risk and should only be used in trusted environments.
+
+[source,java]
+----
+// Trust all certificates in the current Java VM instance.
+CertUtils.trustAllCerts();
+----
+
+[source,java]
+----
+// Trust only certificates for a special connection and a SSL socket factory.
+HttpsURLConnection CertUtils.trustAllCerts(
+    HttpsURLConnection connection,
+    SSLSocketFactory sslSocketFactory
+);
+----

@@ -341,6 +341,26 @@
                             </div>
                             #end
 
+                            #if ($testMethod.customErrorContexts.size()>0)
+                                <div class="fotorama"
+                                     data-navposition="top"
+                                     data-allowfullscreen="native"
+                                     data-nav="thumbs"
+                                     data-thumbwidth="64"
+                                     data-thumbheight="64"
+                                     data-height="40%"
+                                     data-width="40%"
+                                >
+                                    #foreach ($customError in $testMethod.customErrorContexts)
+                                        #if ($customError.class.simpleName == "LayoutErrorContext")
+                                            <img src="../../screenshots/$customError.expectedScreenshot.filename" data-caption="Expected"/>
+                                            <img src="../../screenshots/$customError.actualScreenshot.filename" data-caption="Actual"/>
+                                            <img src="../../screenshots/$customError.distanceScreenshot.filename" data-caption="Distance"/>
+                                        #end
+                                    #end
+                                </div>
+                            #end
+
                             #set ($size = ${testMethod.nonFunctionalInfos.size()})
                             #if ($size > 0)
                             <!-- minor -->
@@ -372,13 +392,13 @@
                     #foreach($video in ${testMethod.videos})
                     <div style="margin: 10px; float: left;">
                         <div>
-                            <video width="600" height="300" controls autoplay>
-                                <source src="$video" type="video/mp4">
+                            <video width="1024" height="512" controls autoplay>
+                                <source src="../../videos/$video.filename" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
                         <div>
-                            <a href="$video" download="$video" title="Video">Download</a>
+                            <a href="../../videos/$video" download="../../videos/$video.filename" title="Video">Download</a>
                         </div>
                     </div>
                     #end

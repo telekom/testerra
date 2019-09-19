@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.imgproc.templatematching.matchers.feat
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.imgproc.ImgprocUtils;
 import eu.tsystems.mms.tic.testframework.imgproc.templatematching.strategy.MatchingAlgorithm;
-import eu.tsystems.mms.tic.testframework.imgproc.utils.OpenCvInitializer;
+import eu.tsystems.mms.tic.testframework.layout.OpenCvInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,13 +35,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class Matcher implements MatchingAlgorithm<Match> {
+
     private static ThreadLocal<Parameters> params = new ThreadLocal<>();
     private final Parameters initialParameters;
     private static Logger LOGGER = LoggerFactory.getLogger(Matcher.class);
     public static final ZonedDateTime firstInitTimestamp = ImgprocUtils.now();
 
     static {
-        OpenCvInitializer.initOnce();
+        OpenCvInitializer.init();
     }
 
     public Matcher(Parameters parameters) {
@@ -106,7 +107,9 @@ public class Matcher implements MatchingAlgorithm<Match> {
      *
      * @param template
      * @param scene
+     *
      * @return
+     *
      * @throws Exception
      */
     @Override

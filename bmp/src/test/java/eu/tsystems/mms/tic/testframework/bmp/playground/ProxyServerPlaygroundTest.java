@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.bmp.AbstractTest;
 import eu.tsystems.mms.tic.testframework.bmp.BMProxyManager;
 import eu.tsystems.mms.tic.testframework.bmp.ProxyServer;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.utils.TestUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import net.lightbody.bmp.core.har.Har;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -57,7 +57,7 @@ public class ProxyServerPlaygroundTest extends AbstractTest {
         ProxyServer proxyServer2 = new ProxyServer(9992, proxyHost, credentials);
         ProxyServer proxyServer3 = new ProxyServer(9993, proxyHost, credentials);
 
-        TestUtils.sleep(2000);
+        TimerUtils.sleep(2000);
 
         proxyServer1.stopProxy();
         proxyServer2.stopProxy();
@@ -68,7 +68,7 @@ public class ProxyServerPlaygroundTest extends AbstractTest {
     public void testBMPManger() throws Exception {
         final ProxyServer proxyServer = BMProxyManager.getProxyServer();
 
-        TestUtils.sleep(3000);
+        TimerUtils.sleep(3000);
 
         BMProxyManager.shutDownProxyServer();
     }

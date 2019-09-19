@@ -5,6 +5,7 @@
 :proxy_settings_load:               tt.proxy.settings.load
 :proxy_settings_file:               tt.proxy.settings.file
 :test_properties_file:              tt.test.properties.file
+:loglevel:                          tt.loglevel
 
 // webdriver
 :browser:                           tt.browser

@@ -403,13 +403,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public void refresh() {
-        beforeDelegation("refresh");
-        decoratedFacade.refresh();
-        afterDelegation();
-    }
-
-    @Override
     public boolean anyFollowingTextNodeContains(String contains) {
         beforeDelegation("anyFollowingTextNodeContains", "\"" + contains + "\"");
         boolean b = decoratedFacade.anyFollowingTextNodeContains(contains);
@@ -608,12 +601,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         boolean b = decoratedFacade.waitForAttributeContainsNot(attributeName, value);
         afterDelegation("waitForAttributeContainsNot() = " + b);
         return b;
-    }
-
-    @Override
-    @Deprecated
-    public boolean waitForCssClass(final String className) {
-        return waitForCssClassIsPresent(className);
     }
 
     @Override

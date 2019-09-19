@@ -17,9 +17,9 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-/* 
+/*
  * Created on 28.03.2013
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -191,20 +191,6 @@ public final class WebDriverManagerUtils {
     static void removeCachedBrowserInformation(WebDriver eventFiringWebDriver) {
         if (CACHED_BROWSER_INFOS.containsKey(eventFiringWebDriver)) {
             CACHED_BROWSER_INFOS.remove(eventFiringWebDriver);
-        }
-    }
-
-    @Deprecated
-    public static HostInfo getExecutingSeleniumHost(WebDriver driver) {
-        if (driver instanceof EventFiringWebDriver) {
-            driver = ((EventFiringWebDriver) driver).getWrappedDriver();
-        }
-
-        if (driver instanceof RemoteWebDriver) {
-            return getExecutingRemoteWebDriverNode((RemoteWebDriver) driver);
-        } else {
-            // local mode without supervisor
-            return null;
         }
     }
 

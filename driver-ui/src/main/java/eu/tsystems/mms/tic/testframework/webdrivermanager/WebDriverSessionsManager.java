@@ -57,6 +57,8 @@ public final class WebDriverSessionsManager {
 
     public static final String EXCLUSIVE_PREFIX = "EXCLUSIVE_";
 
+    public static final Map<Date, Throwable> SESSION_STARTUP_ERRORS = new LinkedHashMap<>();
+
     private static final Map<String, WebDriver> ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS = Collections.synchronizedMap(new HashMap<>());
     private static final Map<String, WebDriver> ALL_EVENTFIRING_WEBDRIVER_SESSIONS = Collections.synchronizedMap(new HashMap<>());
     private static final Map<WebDriver, String> ALL_EVENTFIRING_WEBDRIVER_SESSIONS_INVERSE = Collections.synchronizedMap(new HashMap<>());

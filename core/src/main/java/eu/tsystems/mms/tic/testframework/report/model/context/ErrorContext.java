@@ -43,7 +43,7 @@ public abstract class ErrorContext extends Context {
     public String errorFingerprint = "";
     public ScriptSource scriptSource;
     public ScriptSource executionObjectSource;
-    public List<CustomErrorContextObject> customErrorContextObjects = new LinkedList<>();
+    final public List<CustomErrorContext> customErrorContexts = new LinkedList<>();
 
     public Throwable getThrowable() {
         return throwable;

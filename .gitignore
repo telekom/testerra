@@ -9,3 +9,7 @@ licenses
 out
 build
 gradlew
+/bin/
+/.classpath
+/.project
+**/*.settings

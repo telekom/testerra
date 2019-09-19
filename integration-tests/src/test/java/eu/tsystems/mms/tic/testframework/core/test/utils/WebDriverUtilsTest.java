@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
  */
 public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
-    private final String msgSwitchSuccessfully = "Find and switch to window successfully";
+    private final String msgSwitchSuccessfully = "Find and switch to window successful";
 
     private WebDriver createWebDriver(boolean extraSession) {
         WebDriver driver;

@@ -1,5 +1,5 @@
 <!-- tree -->
-<table width="100%" style="margin-left: 10px; margin-right: 10px;">
+<table width="100%" style="margin-right: 10px;">
     <tr>
         <td style="min-width:100px; max-width:400px;">
             <div class="selectList">
@@ -118,34 +118,35 @@
                                     </td>
                                 </tr>
 
-                                #if ($entry.beforeScreenshot || $entry.afterScreenshot)
-                                    <tr class="logentry viewclass_${stepNumber} $viewclass">
-                                        <td class="top textleft">
-                                            <!--<a href="#" onclick="javascript:$('#link_${viewclass}').click();">${stepNumber}.${actionNumber}</a>-->
-                                        </td>
-                                        <td></td>
-                                        <td colspan="2" style="position: relative;">
-                                            <!-- before -->
-                                            #if ($entry.beforeScreenshot)
-                                            <a href="../screenshots/${entry.beforeScreenshot.filename}" target="_blank">
-                                                <img alt="before" src="../screenshots/${entry.beforeScreenshot.filename}" width="300px"/>
-                                            </a>
-                                            <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;"><h6>
-                                                Screenshot before</h6></div>
-                                            #end
-                                        </td>
-                                        <td colspan="2" style="position: relative;">
-                                            <!-- after -->
-                                            #if ($entry.getAfterScreenshot())
-                                            <a href="../screenshots/${entry.afterScreenshot.filename}" target="_blank">
-                                                <img alt="after" src="../screenshots/${entry.afterScreenshot.filename}" width="300px"/>
-                                            </a>
-                                            <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;"><h6>
-                                                Screenshot after</h6></div>
-                                            #end
-                                        </td>
-                                    </tr>
                                 #end
+
+                                #if ($entry.beforeScreenshot || $entry.afterScreenshot)
+                                <tr class="logentry viewclass_${stepNumber} $viewclass">
+                                    <td class="top textleft">
+                                        <!--<a href="#" onclick="javascript:$('#link_${viewclass}').click();">${stepNumber}.${actionNumber}</a>-->
+                                    </td>
+                                    <td></td>
+                                    <td colspan="2" style="position: relative;">
+                                        <!-- before -->
+                                        #if ($entry.beforeScreenshot)
+                                        <a href="../../screenshots/${entry.beforeScreenshot.filename}" target="_blank">
+                                            <img alt="before" src="../../screenshots/${entry.beforeScreenshot.filename}" width="300px"/>
+                                        </a>
+                                        <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;"><h6>
+                                            Screenshot before</h6></div>
+                                        #end
+                                    </td>
+                                    <td colspan="2" style="position: relative;">
+                                        <!-- after -->
+                                        #if ($entry.afterScreenshot)
+                                        <a href="../../screenshots/${entry.afterScreenshot.filename}" target="_blank">
+                                            <img alt="after" src="../../screenshots/${entry.afterScreenshot.filename}" width="300px"/>
+                                        </a>
+                                        <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;"><h6>
+                                            Screenshot after</h6></div>
+                                        #end
+                                    </td>
+                                </tr>
                             #end
                         #end
                     #end

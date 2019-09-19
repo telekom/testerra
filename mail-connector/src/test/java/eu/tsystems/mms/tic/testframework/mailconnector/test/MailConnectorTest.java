@@ -17,7 +17,7 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-/* 
+/*
  * Created on 14.08.2012
  *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
@@ -54,7 +54,7 @@ import java.util.List;
 
 /**
  * Integration Tests for TesterraMailConnector.
- * 
+ *
  * @author mrgi, tbmi
  */
 public class MailConnectorTest extends TesterraTest {
@@ -120,7 +120,7 @@ public class MailConnectorTest extends TesterraTest {
     /**
      * Saves a message to file, reloads it from that file and ensures that headers and content of the saved message and
      * loaded message are equal.
-     * 
+     *
      * @throws Exception if there was an error while retrieving the message content
      */
     @Test
@@ -146,7 +146,7 @@ public class MailConnectorTest extends TesterraTest {
     /**
      * Tests the correct sending with an SMTPMailConnector (values from mailconnection.properties) and reading with a
      * POP3MailConnector.
-     * 
+     *
      * @throws Exception if there is en error during clean up
      */
     @Test
@@ -174,7 +174,7 @@ public class MailConnectorTest extends TesterraTest {
 
     /**
      * Tests the correct creating and sending of mails with attachment.
-     * 
+     *
      * @throws Exception if there was an error while sending/receiving the messages.
      */
     @Test
@@ -228,7 +228,7 @@ public class MailConnectorTest extends TesterraTest {
 
     /**
      * Tests the correct creating and sending of mails, encrypted with a key store file.
-     * 
+     *
      * @throws Exception if there was an error while sending/receiving the messages.
      */
     @Test(enabled = false)
@@ -269,7 +269,7 @@ public class MailConnectorTest extends TesterraTest {
 
     /**
      * Tests the correct creating and sending of mails, encrypted with a certificate.
-     * 
+     *
      * @throws Exception if there was an error while sending/receiving the messages.
      */
     @Test(enabled = false)
@@ -305,7 +305,7 @@ public class MailConnectorTest extends TesterraTest {
     /**
      * Tests the correct sending with SMTPMailConnector (Values from mailconnection.properties) and reading with
      * POP3MailConnector.
-     * 
+     *
      * @throws Exception Messages could not be sent or retrieved. loading or saving Mail to file.
      */
     @Test
@@ -351,7 +351,7 @@ public class MailConnectorTest extends TesterraTest {
 
     /**
      * Tests the signing of a message with keystore.
-     * 
+     *
      * @throws Exception Message could not be signed.
      */
     @Test
@@ -388,7 +388,7 @@ public class MailConnectorTest extends TesterraTest {
 
     /**
      * Test for mailconnector.
-     * 
+     *
      * @throws Exception Exception by mail submission
      */
     @Test
@@ -406,7 +406,7 @@ public class MailConnectorTest extends TesterraTest {
 
     /**
      * Test for mailconnector.
-     * 
+     *
      * @throws Exception Exception by mail submission
      */
     @Test
@@ -423,7 +423,7 @@ public class MailConnectorTest extends TesterraTest {
 
     /**
      * Test for mailconnector.
-     * 
+     *
      * @throws Exception Exception by mail submission
      */
     @Test
@@ -440,7 +440,7 @@ public class MailConnectorTest extends TesterraTest {
 
     /**
      * Test for mailconnector.
-     * 
+     *
      * @throws Exception Exception by mail submission
      */
     @Test
@@ -494,7 +494,7 @@ public class MailConnectorTest extends TesterraTest {
 
     /**
      * Creates a default test message.
-     * 
+     *
      * @param mailSession Session to be used for Mail.
      * @param subject Subject of mail.
      * @return MimeMessage object.
@@ -515,47 +515,51 @@ public class MailConnectorTest extends TesterraTest {
 
     /**
      * Waits until a message with a given subject was received.
-     * 
+     *
      * @param subject the subject to look for
      * @throws AssertionError in case no message was received at all
      * @return the received TesterraMail-message
      */
     private TesterraMail waitForMessage(String subject) throws AssertionError {
-        TesterraMail receivedMsg = null;
+        List<TesterraMail> receivedMsg = null;
 
         // TEST - Fail, if no message was received.
         try {
-            receivedMsg = pop3.waitForTesterraMail(subject);
+            final SearchCriteria searchCriteria = new SearchCriteria(SearchCriteriaType.SUBJECT, subject);
+            List<SearchCriteria> searchCriterias = new ArrayList<>(1);
+            searchCriterias.add(searchCriteria);
+            receivedMsg = pop3.waitForTesterraMails(searchCriterias);
         } catch (Exception e) {
             Assert.fail(ERR_NO_MSG_RECEIVED);
         }
 
-        return receivedMsg;
+        return receivedMsg.get(0);
     }
 
     /**
      * Waits until a message with a given subject was received.
-     * 
+     *
      * @param searchCriterias .
      * @throws AssertionError in case no message was received at all
      * @return the received TesterraMail-message
      */
     private TesterraMail waitForMessage(final List<SearchCriteria> searchCriterias) throws AssertionError {
-        TesterraMail receivedMsg = null;
+        List<TesterraMail> receivedMsg = null;
+
 
         // TEST - Fail, if no message was received.
         try {
-            receivedMsg = pop3.waitForTesterraMail(searchCriterias);
+            receivedMsg = pop3.waitForTesterraMails(searchCriterias);
         } catch (Exception e) {
             Assert.fail(ERR_NO_MSG_RECEIVED);
         }
 
-        return receivedMsg;
+        return receivedMsg.get(0);
     }
 
     /**
      * Clean up method which deletes the message, which is passed as first parameter.
-     * 
+     *
      * @param msg the TesterraMail-message to delete
      * @param pop3Instance mailclient to use.
      * @throws AssertionError if the inbox is not empty after deleting the message

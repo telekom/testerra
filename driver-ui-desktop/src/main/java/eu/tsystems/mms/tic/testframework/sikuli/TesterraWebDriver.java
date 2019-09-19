@@ -26,7 +26,6 @@
  */
 package eu.tsystems.mms.tic.testframework.sikuli;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import org.openqa.selenium.Capabilities;
@@ -41,7 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
-import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -67,7 +65,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
     /**
      * Constructor.
      *
-     * @param executor .
+     * @param executor            .
      * @param desiredCapabilities .
      */
     public TesterraWebDriver(CommandExecutor executor, Capabilities desiredCapabilities) {
@@ -88,8 +86,8 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
     /**
      * Constructor.
      *
-     * @param remoteAddress .
-     * @param desiredCapabilities  .
+     * @param remoteAddress       .
+     * @param desiredCapabilities .
      */
     public TesterraWebDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
@@ -101,11 +99,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
      */
     public void init() {
         WebDriverScreen webDriverScreen;
-        try {
-            webDriverScreen = new WebDriverScreen(this);
-        } catch (IOException e) {
-            throw new TesterraRuntimeException("Enable to initialize", e);
-        }
+        webDriverScreen = new WebDriverScreen(this);
         webdriverRegion = new DefaultScreenRegion(webDriverScreen);
     }
 
@@ -114,14 +108,14 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
      *
      * @param x .
      * @param y .
+     *
      * @return .
      */
     public WebElement findElementByLocation(int x, int y) {
         Object o = JSUtils.executeScript(this, "return document.elementFromPoint(" + x + "," + y + ")");
         if (o instanceof WebElement) {
             return (WebElement) o;
-        }
-        else {
+        } else {
             logger.info("Could not find web element: " + o.toString());
         }
         return null;
@@ -131,6 +125,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
      * Find by picture.
      *
      * @param imageUrl .
+     *
      * @return .
      */
     public ImageElement findImageElement(URL imageUrl) {

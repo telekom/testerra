@@ -83,6 +83,8 @@ public final class TesterraProperties {
     public static final String REPORTDIR = "tt.reportdir";
     public static final String REPORTNAME = "tt.reportname";
 
+    public static final String LOG_LEVEL ="tt.loglevel";
+
     /**
      * tt. test property file.
      */

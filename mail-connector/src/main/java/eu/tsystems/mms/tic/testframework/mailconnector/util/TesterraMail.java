@@ -17,9 +17,9 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-/* 
+/*
  * Created on 24.07.2014
- * 
+ *
  * Copyright(c) 2011 - 2014 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -37,34 +37,52 @@ import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.IllegalCharsetNameException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * E-Mail Objekt, das alle Inhalte eines javax.mail.Message-Objekts ausliest.
- * 
- * @author sepr
+ *
+ * @author sepr, clgr
  */
 public class TesterraMail {
 
-    /** Logger. */
+    /**
+     * Logger.
+     */
     protected static final Logger LOGGER = LoggerFactory.getLogger(TesterraMail.class);
 
-    /** Liste von Anhängen der Mail. */
+    /**
+     * Liste von Anhängen der Mail.
+     */
     private final Map<String, String> attachments;
 
-    /** Textinhalt der Mail. */
+    /**
+     * Textinhalt der Mail.
+     */
     private String messageText;
 
-    /** Message-Object */
+    /**
+     * Message-Object
+     */
     private final MimeMessage message;
 
-    /** Liste der Empfänger (CC,BCC,TO) */
+    /**
+     * Liste der Empfänger (CC,BCC,TO)
+     */
     private final List<String> recipientList = new LinkedList<String>();
 
-    /** Liste der Absender */
+    /**
+     * Liste der Absender
+     */
     private final List<String> senderList = new LinkedList<String>();
 
-    /** Betreff der Nachricht */
+    /**
+     * Betreff der Nachricht
+     */
     private String subject = null;
 
     private String messageID;
@@ -73,7 +91,7 @@ public class TesterraMail {
 
     /**
      * Methode liefert die enthaltene Message Instanz
-     * 
+     *
      * @return message
      */
     public MimeMessage getMessage() {
@@ -82,10 +100,9 @@ public class TesterraMail {
 
     /**
      * Methode zur Umwandlung eines Address-Arrays in Empfängerliste
-     * 
+     *
      * @param allRecipients Array, mit zu wandelnden Empfänger-Adressen
-     * 
-     * */
+     */
     private void setRecipientsFromAddressArray(final Address[] allRecipients) {
         if (allRecipients != null) {
             for (Address address : allRecipients) {
@@ -96,7 +113,7 @@ public class TesterraMail {
 
     /**
      * Methode zur Umwandlung eines Address-Array in Absenderliste
-     * 
+     *
      * @param allSenders Array, mit zu wandelnden Absendern-Adressen
      */
     private void setSendersFromAddressArray(final Address[] allSenders) {
@@ -109,7 +126,7 @@ public class TesterraMail {
 
     /**
      * Methode zum Setzen des Betreffes
-     * 
+     *
      * @param subject String E-Mail-Betreff
      */
     private void setSubject(final String subject) {
@@ -118,7 +135,7 @@ public class TesterraMail {
 
     /**
      * Methode liefert ein Array aller Empfänger
-     * 
+     *
      * @return Address[], Liste aller Empfänger
      */
     public List<String> getRecipients() {
@@ -127,7 +144,7 @@ public class TesterraMail {
 
     /**
      * Methode liefert ein Array aller Absender
-     * 
+     *
      * @return Address[], Liste aller Absender
      */
     public List<String> getSenders() {
@@ -136,7 +153,7 @@ public class TesterraMail {
 
     /**
      * Methode liefert den Betreff
-     * 
+     *
      * @return String, E-Mail-Betreff
      */
     public String getSubject() {
@@ -145,7 +162,7 @@ public class TesterraMail {
 
     /**
      * Konstruktor, der Message-Objekt in FTMessage wandelt.
-     * 
+     *
      * @param javaMessage zu wandelndes Message-Objekt.
      */
     public TesterraMail(final MimeMessage javaMessage) {
@@ -198,16 +215,7 @@ public class TesterraMail {
                     is = ((Multipart) message.getContent()).getBodyPart(j).getInputStream();
                     encoding = ((Multipart) message.getContent()).getBodyPart(j).getContentType();
 
-                    // das eigentliche encoding aus dem Content Type extrahieren
-                    // CSOFF: MagicNumber
-                    encoding = encoding.substring(encoding.lastIndexOf("charset=") + 8);
-
-                    // CSON: MagicNumber
-                    int index = encoding.indexOf(';');
-
-                    if (index > 0) {
-                        encoding = encoding.substring(0, encoding.indexOf(';'));
-                    }
+                    encoding = getCharSetForEncoding(encoding);
 
                     String mail;
                     String attachmentName;
@@ -230,23 +238,41 @@ public class TesterraMail {
             } else {
                 is = message.getInputStream();
                 encoding = message.getContentType();
-                // CSOFF: MagicNumber
-                encoding = encoding.substring(encoding.lastIndexOf("charset=") + 8);
-
-                // CSON: MagicNumber
-                int index = encoding.indexOf(';');
-
-                if (index > 0) {
-                    encoding = encoding.substring(0, encoding.indexOf(';'));
-                }
+                encoding = getCharSetForEncoding(encoding);
 
                 messageText = IOUtils.toString(is, encoding).replaceAll("\r", "");
             }
-        } catch (MessagingException ex) {
+        } catch (MessagingException | IOException ex) {
             LOGGER.error("error reading details from mail", ex);
-        } catch (IOException e) {
-            LOGGER.error("error reading details from mail", e);
         }
+    }
+
+    /**
+     * get charset for encoding from Mail, use UTF-8 as default
+     *
+     * @param encoding
+     *
+     * @return
+     */
+    private String getCharSetForEncoding(String encoding) {
+        final int indexOfEncoding = encoding.lastIndexOf("charset=");
+
+        if (indexOfEncoding > -1) {
+            // das eigentliche encoding aus dem Content Type extrahieren
+            // CSOFF: MagicNumber
+            encoding = encoding.substring(indexOfEncoding + 8);
+            // CSON: MagicNumber
+            final int index = encoding.indexOf(';');
+
+            if (index > 0) {
+                encoding = encoding.substring(0, encoding.indexOf(';'));
+            }
+        } else {
+            LOGGER.warn("No Encoding found in Mail. Using 'UTF-8' instead.");
+            encoding = "UTF-8";
+        }
+
+        return encoding;
     }
 
     /**
@@ -260,10 +286,10 @@ public class TesterraMail {
 
     /**
      * Gets the content of the given attachment
-     * 
+     *
      * @param fileName Name of attachment
+     *
      * @return content of attachment
-     * 
      */
     public String getAttachmentsContent(String fileName) {
         return attachments.get(fileName);
@@ -271,7 +297,7 @@ public class TesterraMail {
 
     /**
      * Gibt Textinhalt der E-Mail zurück.
-     * 
+     *
      * @return Textinhalt der E-Mail als String
      */
     public String getMessageText() {

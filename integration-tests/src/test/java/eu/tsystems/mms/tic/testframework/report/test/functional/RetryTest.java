@@ -13,7 +13,7 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.DashboardModuleMethodChart;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.utils.TestUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -172,7 +172,7 @@ public class RetryTest extends AbstractTest {
         int retryOccurrenceCounter = 1;
         for (; retryOccurrenceCounter < numberOfRetryMethods + 1; retryOccurrenceCounter++) {
             GuiElement reportTestUnderTestRetry = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName("ReportTestUnderTestRetry");
-            TestUtils.sleep(1000);
+            TimerUtils.sleep(1000);
             reportTestUnderTestRetry.asserts().assertIsDisplayed();
             reportTestUnderTestRetry.click();
             String expectedMethodName = "test_DataProviderTest [Retry" + retryOccurrenceCounter + "] (2/2)";

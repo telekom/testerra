@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
+import org.json.JSONObject;
 import org.openqa.selenium.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,7 @@ public final class JSUtils {
     public static void implementJavascriptOnPage(final WebDriver driver, final String resourceFile, final String id) {
 
         // TODO rnhb&pele: find a solution that is not conflicting with GuiElement activity (maybe run this before
-        // GuiElement) --> Switch to default content will endTime in "GuiElement not found", because the frame of GuiElement
+        // GuiElement) --> Switch to default content will end in "GuiElement not found", because the frame of GuiElement
         // isn't active anymore
         // driver.switchTo().defaultContent();
         if (isJavascriptImplementedOnPage(driver, id)) {
@@ -108,20 +109,24 @@ public final class JSUtils {
         implementJavascriptOnPage(id, driver, inline);
     }
 
-    public static void implementJavascriptOnPage(String scriptId, WebDriver driver, String script) {
-        String inline = script.replaceAll("\n", "");
-        inline = inline.replaceAll("\r", "");
-
+    public static void implementJavascriptOnPage(
+            String scriptId,
+            WebDriver driver,
+            String script
+    ) {
         try {
-            if (inline.length() > 0) {
+            if (script.length() > 0) {
                 JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
-                javascriptExecutor.executeScript(
-                        "var script=document.createElement('script');" +
-                                "var text=document.createTextNode('" + inline + "');" +
+                String injectedScript = String.format("var script=document.createElement('script');" +
+                                "var text=document.createTextNode(%s);" +
                                 "script.type='text/javascript';" +
-                                "script.id='" + scriptId + "';" +
+                                "script.id=%s;" +
                                 "script.appendChild(text);" +
-                                "document.body.appendChild(script);");
+                                "document.body.appendChild(script);",
+                        JSONObject.quote(script),
+                        JSONObject.quote(scriptId)
+                );
+                javascriptExecutor.executeScript(injectedScript);
             }
         } catch (Exception e) {
             LOGGER.error("Error executing javascript", e);
@@ -279,8 +284,13 @@ public final class JSUtils {
      * @param x .
      * @param y .
      */
-    public static void executeJavaScriptMouseAction(final WebDriver driver,
-            WebElement containerWebElement, JSMouseAction type, int x, int y) {
+    public static void executeJavaScriptMouseAction(
+            final WebDriver driver,
+            WebElement containerWebElement,
+            JSMouseAction type,
+            int x,
+            int y
+    ) {
         String aimedElement = "arguments[0]";
         if (containerWebElement == null) {
             aimedElement = "document";

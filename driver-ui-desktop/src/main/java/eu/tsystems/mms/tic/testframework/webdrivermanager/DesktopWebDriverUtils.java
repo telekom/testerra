@@ -47,12 +47,13 @@ public final class DesktopWebDriverUtils {
         grid3 mode
          */
         try {
-            String nodeResponse = RESTUtils.requestGET(url + "/host/" + sessionId);
+            String nodeResponse = RESTUtils.requestGET(url + "/host/" + sessionId, 30 * 1000, String.class);
             JSONObject out = new JSONObject(nodeResponse);
             NodeInfo nodeInfo = new NodeInfo(out.getString("Name"), out.getInt("Port"));
             return nodeInfo;
         }
         catch (Exception e) {
+            LOGGER.info("Could not get node info", e);
             return new NodeInfo(host, Integer.valueOf(port));
         }
     }

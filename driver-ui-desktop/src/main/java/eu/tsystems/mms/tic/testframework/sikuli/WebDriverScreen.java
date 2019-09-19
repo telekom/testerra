@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.sikuli;
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.sikuli.api.Screen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,26 +38,13 @@ import java.io.IOException;
 public class WebDriverScreen implements Screen {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final TakesScreenshot driver;
-    private final Dimension size;
+    private final WebDriver driver;
 
     /**
      * @param driver .
-     * @throws IOException .
      */
-    public WebDriverScreen(TakesScreenshot driver) throws IOException {
+    public WebDriverScreen(WebDriver driver) {
         this.driver = driver;
-        byte[] screenshotAs = driver.getScreenshotAs(OutputType.BYTES);
-        if (screenshotAs != null) {
-            ByteArrayInputStream bis = new ByteArrayInputStream(screenshotAs);
-            BufferedImage b = ImageIO.read(bis);
-            bis.close();
-            //		File screenshotFile = driver.getScreenshotAs(OutputType.FILE);
-            //		BufferedImage b = ImageIO.read(screenshotFile);
-            size = new Dimension(b.getWidth(), b.getHeight());
-        } else {
-            size = new Dimension();
-        }
     }
 
     BufferedImage crop(BufferedImage src, int x, int y, int width, int height) {
@@ -67,30 +55,41 @@ public class WebDriverScreen implements Screen {
         return dest;
     }
 
+
     @Override
     public BufferedImage getScreenshot(int x, int y, int width,
-            int height) {
-        byte[] bytes = driver.getScreenshotAs(OutputType.BYTES);
-        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-        try {
-            BufferedImage full = ImageIO.read(bais);
-            BufferedImage cropped = crop(full, x, y, width, height);
-            return cropped;
-        } catch (IOException e) {
-            logger.warn("Error getting screenshot", e);
-        } finally {
+                                       int height) {
+        if (driver instanceof TakesScreenshot) {
             try {
-                bais.close();
-            } catch (IOException e) {
-                logger.trace("Cannot close stream.", e);
+                byte[] bytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+                ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+                try {
+                    BufferedImage full = ImageIO.read(bais);
+                    BufferedImage cropped = crop(full, x, y, width, height);
+                    return cropped;
+                } catch (IOException e) {
+                    logger.warn("Error getting screenshot", e);
+                } finally {
+                    try {
+                        bais.close();
+                    } catch (IOException e) {
+                        logger.trace("Cannot close stream.", e);
+                    }
+                }
+
+                return null;
+            } finally {
+                System.gc();
             }
+        } else {
+            throw new RuntimeException("WebDriver object is not a TakesScreenshot instance");
         }
-        return null;
     }
 
     @Override
     public Dimension getSize() {
-        return size;
+        org.openqa.selenium.Dimension dimension = driver.manage().window().getSize();
+        return new Dimension(dimension.width, dimension.height);
     }
 
 }

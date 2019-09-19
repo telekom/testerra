@@ -358,7 +358,7 @@ public final class MouseActions {
 
     private static void sleep(IntRef sleepMS) {
         if (sleepMS.getI() > 0) {
-            TestUtils.sleep(sleepMS.getI());
+            TimerUtils.sleep(sleepMS.getI());
         }
     }
 }

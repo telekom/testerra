@@ -32,7 +32,7 @@ import java.net.URL;
  */
 public class RESTUtils {
 
-    private static final int DEFAULT_TIMEOUT = 5 * 60 * 1000;
+    public static final int DEFAULT_TIMEOUT = 5 * 60 * 1000;
 
     /**
      * REST POST with parameters.

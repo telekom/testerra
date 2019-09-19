@@ -31,7 +31,11 @@ import eu.tsystems.mms.tic.testframework.sikuli.WebDriverScreen;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.*;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.sikuli.api.DefaultScreenRegion;
 import org.sikuli.api.ImageTarget;
 import org.sikuli.api.ScreenLocation;
@@ -39,7 +43,10 @@ import org.sikuli.api.ScreenRegion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.awt.*;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,22 +61,19 @@ public class ByImage extends TesterraBy {
     private final URL url;
     private TakesScreenshot takesScreenshotDriver;
     private WebDriver driver;
-    private int centerX;
-    private int centerY;
-
+    private Point center = new Point(0, 0);
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * decision for using driver or webdriver by image
      *
      * @param driver .
-     * @param url .
+     * @param url    .
      */
     public ByImage(final WebDriver driver, final URL url) {
         if (driver != null) {
             checkDriver(driver);
-        }
-        else {
+        } else {
             checkDriver(WebDriverManager.getWebDriver());
         }
 
@@ -80,8 +84,7 @@ public class ByImage extends TesterraBy {
         if (driver instanceof TakesScreenshot) {
             this.takesScreenshotDriver = (TakesScreenshot) driver;
             this.driver = driver;
-        }
-        else {
+        } else {
             throw new TesterraSystemException("Your WebDriver instance is not a TakesScreenshot instance. " +
                     "Only TakesScreenshot webdrivers are supported for this action.");
         }
@@ -90,30 +93,25 @@ public class ByImage extends TesterraBy {
     @Override
     public List<WebElement> findElements(SearchContext searchContext) {
         WebDriverScreen webDriverScreen;
-        try {
-            webDriverScreen = new WebDriverScreen(takesScreenshotDriver);
-        } catch (IOException e1) {
-            throw new RuntimeException("unable to initialize SikuliFirefoxDriver");
-        }
+        webDriverScreen = new WebDriverScreen(driver);
         ScreenRegion webdriverRegion = new DefaultScreenRegion(webDriverScreen);
 
         ImageTarget target = new ImageTarget(url);
         final ScreenRegion imageRegion = webdriverRegion.find(target); //wait(target, DEFAULT_WAIT_TIMEOUT_MSECS);
-                                                                       // timing is made in here - pele 10.02.2014
+        // timing is made in here - pele 10.02.2014
 
         if (imageRegion != null) {
-            java.awt.Rectangle r = imageRegion.getBounds();
+            Rectangle r = imageRegion.getBounds();
             logger.debug("image " + url + " found at " + r.x + "," + r.y + " with dimension " + r.width + "," + r.height);
-        }
-        else {
+        } else {
             throw new RuntimeException("Element not found similar to " + url);
         }
 
         ScreenLocation center = imageRegion.getCenter();
-        centerX = center.getX();
-        centerY = center.getY();
+        this.center.x = center.getX();
+        this.center.y = center.getY();
         driver.switchTo().defaultContent();
-        WebElement webElement = WebDriverUtils.findElementByLocation(driver, centerX, centerY); // x and y are switched
+        WebElement webElement = WebDriverUtils.findElementByLocation(driver, this.center.x, this.center.y); // x and y are switched
 
         List<WebElement> webElements = new ArrayList<WebElement>(1);
         if (webElement != null) {
@@ -129,40 +127,65 @@ public class ByImage extends TesterraBy {
 
                 // calculate offset
                 Point location = webElement.getLocation();
-                centerX = centerX - location.getX();
-                centerY = centerY - location.getY();
+                this.center.x -= location.getX();
+                this.center.y -= location.getY();
 
                 driver.switchTo().frame(webElement);
-                webElement = WebDriverUtils.findElementByLocation(driver, centerX, centerY);
+                webElement = WebDriverUtils.findElementByLocation(driver, this.center.x, this.center.y);
 
                 if (webElement == null) {
                     tagName = null;
-                }
-                else {
+                } else {
                     tagName = webElement.getTagName();
                 }
             }
 
             // finally add the element
             webElements.add(webElement);
-        }
-        else {
+        } else {
             return webElements;
         }
 
         return webElements;
     }
 
-    public int getCenterX() {
-        return centerX;
+    public Point getCenter() {
+        return this.center;
     }
 
+    /**
+     * @deprecated
+     */
+    public int getCenterX() {
+        return this.center.x;
+    }
+
+    /**
+     * @deprecated
+     */
     public int getCenterY() {
-        return centerY;
+        return this.center.y;
     }
 
     @Override
     public String toString() {
-        return "ByImage{" + url + '}';
+        try {
+            if (url == null) {
+                throw new TesterraSystemException("url is null, ensure to have an URL set!");
+            }
+            URI uri = url.toURI();
+            if (uri == null) {
+                throw new TesterraSystemException("Cannot build uri from url: " + url);
+            }
+            File file = new File(uri);
+            if (file == null) {
+                throw new TesterraSystemException("Cannot find file: " + uri);
+            }
+            return "ByImage{" +
+                    "url=" + file.getName() +
+                    '}';
+        } catch (URISyntaxException e) {
+            return "Unknown Image";
+        }
     }
 }

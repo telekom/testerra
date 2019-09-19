@@ -22,8 +22,8 @@ package eu.tsystems.mms.tic.testframework.utils;
 import de.idyl.winzipaes.AesZipFileEncrypter;
 import de.idyl.winzipaes.impl.AESEncrypter;
 import de.idyl.winzipaes.impl.AESEncrypterJCA;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
@@ -31,10 +31,16 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.UUID;
 
 import static java.lang.Thread.currentThread;
@@ -55,24 +61,57 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * Simply get the resource as a stream shortcut.
      *
      * @param fileInResources .
+     *
      * @return Input Stream.
      */
     public static InputStream getResourceInputStream(final String fileInResources) throws FileNotFoundException {
-        InputStream resourceAsStream = currentThread().getContextClassLoader().getResourceAsStream(fileInResources);
-        if (resourceAsStream == null) {
-            throw new FileNotFoundException(fileInResources);
+
+        final URL resource = getResourceURL(fileInResources);
+
+        LOGGER.info("Loading from: " + resource);
+        try {
+            return Objects.requireNonNull(resource).openStream();
+        } catch (NullPointerException | IOException e) {
+            throw new FileNotFoundException(fileInResources, e);
         }
-        return resourceAsStream;
+    }
+
+    /**
+     * Simply get the resource as a stream - BUT DOES NOT return if resource file is inside a a included dependency jar.
+     *
+     * @param fileInResources {@link String}
+     *
+     * @return InputStream
+     */
+    public static InputStream getLocalResourceInputStream(final String fileInResources) {
+
+        final URL resource = getResourceURL(fileInResources);
+
+        // exit, when no file present
+        // exit, when file is not loaded from our resource path but from jar
+        if (resource == null || !resource.toString().startsWith("file:")) {
+            throw new TesterraSystemException("File not found: " + fileInResources);
+        }
+
+        LOGGER.info("Loading from: " + resource);
+        try {
+            return Objects.requireNonNull(resource).openStream();
+        } catch (IOException e) {
+            throw new TesterraSystemException(fileInResources, e);
+        }
     }
 
     /**
      * Get an absolute file path from a resource file path.
      *
      * @param fileInResources .
+     *
      * @return Absolute file path.
+     *
      * @throws FileNotFoundException
      */
     public static String getAbsoluteFilePath(String fileInResources) throws FileNotFoundException {
+
         ClassLoader contextClassLoader = currentThread().getContextClassLoader();
         URL resource = contextClassLoader.getResource(fileInResources);
         if (resource == null) {
@@ -94,10 +133,13 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * Read a resource file into a string.
      *
      * @param fileInResources .
+     *
      * @return string.
+     *
      * @throws IOException
      */
     public static String readFromResourceFile(String fileInResources) throws IOException {
+
         String absoluteFilePath = null;
         try {
             absoluteFilePath = getAbsoluteFilePath(fileInResources);
@@ -112,7 +154,9 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * Read an absolute file into a string.
      *
      * @param absoluteFilePath .
+     *
      * @return String.
+     *
      * @throws IOException
      */
     public static String readFromFile(String absoluteFilePath) throws IOException {
@@ -171,7 +215,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
             throw new IllegalArgumentException("No files named to zip.");
         }
         final ZipFile zipFile = new ZipFile(targetFile);
-        for (InputStream is: inputStreams) {
+        for (InputStream is : inputStreams) {
             zipFile.addStream(is, params);
         }
     }
@@ -221,25 +265,18 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
     }
 
     public static File getResourceFile(String resourceFile) {
-        URL resourceURL = getResourceURL(resourceFile);
-        return new File(resourceURL.getFile());
-    }
 
-    public static InputStream getLocalOrResourceFileAsStream(String resourceFile) {
-        File localFile = new File(resourceFile);
-        if (localFile.exists()) {
-            try {
-                return new FileInputStream(localFile);
-            } catch (java.io.FileNotFoundException e) {
-                LOGGER.error("Could not open local file: " + resourceFile);
-            }
+        final URL resourceUrl = getResourceURL(resourceFile);
+
+        if (resourceUrl == null) {
+            throw new TesterraSystemException("Could not load resource file. File does not exist: " + resourceFile);
         }
 
-        return Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceFile);
+        return new File(resourceUrl.getFile());
     }
 
     public static File createTempFileName(String fileName) {
         final String extension = FilenameUtils.getExtension(fileName);
-        return new File(System.getProperty("java.io.tmpdir")+"/"+ FilenameUtils.getBaseName(fileName) +"-"+ UUID.randomUUID()+(extension.length()>0?"."+extension:""));
+        return new File(System.getProperty("java.io.tmpdir") + "/" + FilenameUtils.getBaseName(fileName) + "-" + UUID.randomUUID() + (extension.length() > 0 ? "." + extension : ""));
     }
 }

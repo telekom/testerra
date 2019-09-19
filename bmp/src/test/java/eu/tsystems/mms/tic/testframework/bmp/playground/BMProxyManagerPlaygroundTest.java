@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.bmp.AbstractTest;
 import eu.tsystems.mms.tic.testframework.bmp.BMProxyManager;
 import eu.tsystems.mms.tic.testframework.bmp.NoFreePortException;
 import eu.tsystems.mms.tic.testframework.bmp.ProxyServer;
-import eu.tsystems.mms.tic.testframework.utils.TestUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class BMProxyManagerPlaygroundTest extends AbstractTest {
     public void testProxyServer1() throws NoFreePortException {
         final ProxyServer proxyServer = BMProxyManager.getProxyServer();
 
-        TestUtils.sleep(3000);
+        TimerUtils.sleep(3000);
 
         BMProxyManager.shutDownProxyServer();
     }
@@ -56,7 +56,7 @@ public class BMProxyManagerPlaygroundTest extends AbstractTest {
     public void testProxyServer2() throws NoFreePortException {
         final ProxyServer proxyServer = BMProxyManager.getProxyServer();
 
-        TestUtils.sleep(3000);
+        TimerUtils.sleep(3000);
 
         BMProxyManager.shutDownProxyServer();
     }
@@ -65,7 +65,7 @@ public class BMProxyManagerPlaygroundTest extends AbstractTest {
     public void testProxyServer3() throws NoFreePortException {
         final ProxyServer proxyServer = BMProxyManager.getProxyServer();
 
-        TestUtils.sleep(3000);
+        TimerUtils.sleep(3000);
 
         BMProxyManager.shutDownProxyServer();
     }
@@ -74,7 +74,7 @@ public class BMProxyManagerPlaygroundTest extends AbstractTest {
     public void testProxyServer4() throws NoFreePortException {
         final ProxyServer proxyServer = BMProxyManager.getProxyServer();
 
-        TestUtils.sleep(3000);
+        TimerUtils.sleep(3000);
 
         BMProxyManager.shutDownProxyServer();
     }
@@ -83,7 +83,7 @@ public class BMProxyManagerPlaygroundTest extends AbstractTest {
     public void testProxyServer5() throws NoFreePortException {
         final ProxyServer proxyServer = BMProxyManager.getProxyServer();
 
-        TestUtils.sleep(3000);
+        TimerUtils.sleep(3000);
 
         BMProxyManager.shutDownProxyServer();
     }

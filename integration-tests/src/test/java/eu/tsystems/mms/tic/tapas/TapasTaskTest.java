@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.tapas;
 
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.utils.TestUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
@@ -31,7 +31,7 @@ public class TapasTaskTest {
     @Test
     public void test_TestStateExecuting() {
         //sleeps for three minutes
-        TestUtils.sleep(180000);
+        TimerUtils.sleep(180000);
     }
 
     @Test

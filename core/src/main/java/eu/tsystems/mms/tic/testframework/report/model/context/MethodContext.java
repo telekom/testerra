@@ -50,7 +50,7 @@ import java.util.List;
  *
  * @author mibu
  */
-public class MethodContext extends ErrorContext implements SynchronizableContext {
+public class MethodContext extends Context implements SynchronizableContext {
 
     public ITestResult testResult;
     public ITestContext iTestContext;
@@ -73,15 +73,21 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
 
     private int hashCodeOfTestResult = 0;
 
-    public List<AssertionInfo> nonFunctionalInfos = new LinkedList<>();
-    public List<AssertionInfo> collectedAssertions = new LinkedList<>();
-    public List<String> infos = new LinkedList<>();
+    public final List<AssertionInfo> nonFunctionalInfos = new LinkedList<>();
+    public final List<AssertionInfo> collectedAssertions = new LinkedList<>();
+    public final List<String> infos = new LinkedList<>();
 
-    public List<SessionContext> sessionContexts = new LinkedList<>();
+    public final List<SessionContext> sessionContexts = new LinkedList<>();
     public String priorityMessage = null;
-    final private TestStepController testStepController = new TestStepController();
+    private final TestStepController testStepController = new TestStepController();
     public List<MethodContext> relatedMethodContexts;
     public List<MethodContext> dependsOnMethodContexts;
+
+    public final List<Video> videos = new LinkedList<>();
+    public final List<Screenshot> screenshots = new LinkedList<>();
+    public final List<CustomContext> customContexts = new LinkedList<>();
+
+    private ErrorContext errorContext;
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
@@ -116,6 +122,13 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
 
     public TestStepController steps() {
         return testStepController;
+    }
+
+    public ErrorContext errorContext() {
+        if (errorContext == null) {
+            errorContext = new ErrorContext();
+        }
+        return errorContext;
     }
 
     @Override
@@ -161,10 +174,6 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
      * @param throwable         .
      */
     public AssertionInfo addNonFunctionalInfo(final Throwable throwable) {
-        if (nonFunctionalInfos == null) {
-            nonFunctionalInfos = new LinkedList<>();
-        }
-
         AssertionInfo assertionInfo = new AssertionInfo(throwable);
 
         this.nonFunctionalInfos.add(assertionInfo);
@@ -173,9 +182,6 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
     }
 
     public void addCollectedAssertions(final List<AssertionInfo> collectedAssertions) {
-        if (this.collectedAssertions == null) {
-            this.collectedAssertions = new LinkedList<>();
-        }
         this.collectedAssertions.addAll(collectedAssertions);
     }
 
@@ -263,7 +269,6 @@ public class MethodContext extends ErrorContext implements SynchronizableContext
         return retryNumber > 0;
     }
 
-    @Override
     public String getName() {
         return name;
     }

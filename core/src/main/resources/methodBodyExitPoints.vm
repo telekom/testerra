@@ -32,8 +32,8 @@
     <div>
         <font class="message" style="$style2">
             <b>
-                #if ($testMethod.readableErrorMessage)
-                    $testMethod.readableErrorMessage
+                #if ($testMethod.errorContext().readableErrorMessage)
+                    $testMethod.errorContext().readableErrorMessage
                 #end
 
                 #if ($testMethod.priorityMessage)

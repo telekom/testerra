@@ -113,7 +113,7 @@ public class UITestUtils {
                 screenshots.add(screenshot);
 
                 MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                addScreenshotsToErrorContext(methodContext, screenshots);
+                addScreenshotsToMethodContext(methodContext, screenshots);
             }
         }
 
@@ -210,29 +210,26 @@ public class UITestUtils {
     /**
      * Publish the screenshots to the report into the current errorContext.
      *
-     * @param errorContextOrNull
+     * @param methodContext
      * @param screenshots
      *
      * @return
      */
-    private static void addScreenshotsToErrorContext(ErrorContext errorContextOrNull, List<Screenshot> screenshots) {
-        if (errorContextOrNull != null) {
+    private static void addScreenshotsToMethodContext(MethodContext methodContext, List<Screenshot> screenshots) {
+        if (methodContext != null) {
             /*
             only add if we can NOT find any screenshots for this error context
              */
-            long count = errorContextOrNull.screenshots.stream().filter(s -> s.errorContextId == errorContextOrNull.id).count();
+            long count = methodContext.screenshots.stream().filter(s -> s.errorContextId == methodContext.id).count();
 
             if (count == 0) {
-                errorContextOrNull.screenshots.addAll(screenshots);
+                methodContext.screenshots.addAll(screenshots);
 
                 /*
                  * add AFTER path to action log
                  */
-                if (errorContextOrNull instanceof MethodContext) {
-                    MethodContext methodContext = (MethodContext) errorContextOrNull;
-                    for (Screenshot screenshot : screenshots) {
-                        methodContext.steps().getCurrentTestStep().getCurrentTestStepAction().addScreenshots(null, screenshot);
-                    }
+                for (Screenshot screenshot : screenshots) {
+                    methodContext.steps().getCurrentTestStep().getCurrentTestStepAction().addScreenshots(null, screenshot);
                 }
 
                 LOGGER.info("Linked screenshots: " + screenshots);
@@ -424,9 +421,9 @@ public class UITestUtils {
     }
 
     public static List<Screenshot> takeScreenshotsFromSessions(
-            ErrorContext errorContext,
-            Map<String, WebDriver> rawWebDriverInstances,
-            boolean explicitly
+            final MethodContext methodContext,
+            final Map<String, WebDriver> rawWebDriverInstances,
+        final boolean explicitly
     ) {
         List<String> processedWebDriverSessions = new ArrayList<>(1);
         List<Screenshot> screenshots = new LinkedList<>();
@@ -436,7 +433,7 @@ public class UITestUtils {
                 if (!processedWebDriverSessions.contains(sessionKey)) { // already processed
                     final WebDriver driver = rawWebDriverInstances.get(sessionKey);
                     try {
-                        List<Screenshot> screenshotsForSession = pTakeAllScreenshotsForSession(sessionKey, driver, errorContext);
+                        List<Screenshot> screenshotsForSession = pTakeAllScreenshotsForSession(sessionKey, driver);
                         screenshots.addAll(screenshotsForSession);
                     } catch (Exception e) {
                         LOGGER.warn("Could not take screenshot from session: " + sessionKey, e);
@@ -445,19 +442,19 @@ public class UITestUtils {
             }
         }
 
-        if (errorContext != null) {
+        if (methodContext != null) {
             // which means we have to publish the screenshots
             if (explicitly) {
-                screenshots.forEach(screenshot -> screenshot.errorContextId = errorContext.id);
+                screenshots.forEach(screenshot -> screenshot.errorContextId = methodContext.id);
             }
 
-            addScreenshotsToErrorContext(errorContext, screenshots);
+            addScreenshotsToMethodContext(methodContext, screenshots);
         }
 
         return screenshots;
     }
 
-    private static List<Screenshot> pTakeAllScreenshotsForSession(String sessionKey, WebDriver driver, ErrorContext errorContext) {
+    private static List<Screenshot> pTakeAllScreenshotsForSession(String sessionKey, WebDriver driver) {
 
         final List<Screenshot> screenshots = new LinkedList<>();
 
@@ -559,11 +556,10 @@ public class UITestUtils {
     /**
      * Take screenshots from all windows and store them into the info container.
      *
-     * @param errorContext
-     *
+     * @param methodContext
      * @return
      */
-    public static List<Screenshot> takeScreenshots(final ErrorContext errorContext, boolean explicitlyForThisContext) {
+    public static List<Screenshot> takeScreenshots(final MethodContext methodContext, boolean explicitlyForThisContext) {
         long threadId = Thread.currentThread().getId();
         List<WebDriver> webDriversFromThread = WebDriverManager.getWebDriversFromThread(threadId);
         Map<String, WebDriver> webDriverSessions = new HashMap<>(webDriversFromThread.size());
@@ -576,7 +572,7 @@ public class UITestUtils {
             LOGGER.warn("No webdriver or selenium session found. Could not take screenshot(s).");
         }
 
-        return UITestUtils.takeScreenshotsFromSessions(errorContext, webDriverSessions, explicitlyForThisContext);
+        return UITestUtils.takeScreenshotsFromSessions(methodContext, webDriverSessions, explicitlyForThisContext);
     }
 
 }

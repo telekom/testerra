@@ -128,7 +128,7 @@ public abstract class AbstractPage {
 
             MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
             if (methodContext != null) {
-                methodContext.setThrowable(message, t);
+                methodContext.errorContext().setThrowable(message, t);
             }
 
             /*
@@ -228,7 +228,7 @@ public abstract class AbstractPage {
 
                 MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
                 if (methodContext != null) {
-                    methodContext.setThrowable(throwableMessage, importantThrowable);
+                    methodContext.errorContext().setThrowable(throwableMessage, importantThrowable);
                 }
 
                 if (importantThrowable instanceof Error) {
@@ -244,7 +244,7 @@ public abstract class AbstractPage {
         logger.info("Checking mandatory elements done for: " + classSimpleName);
 
         screenShotOnPageLoad();
-        
+
         logger.info("Page load successful: " + classSimpleName);
     }
 

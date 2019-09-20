@@ -115,7 +115,7 @@ public abstract class CheckFieldAction extends FieldAction {
             } catch (Throwable t) {
                 MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
                 if (methodContext != null && t.getMessage() != null) {
-                    methodContext.setThrowable(t.getMessage(), t);
+                    methodContext.errorContext().setThrowable(t.getMessage(), t);
                 }
                 throw t;
             }

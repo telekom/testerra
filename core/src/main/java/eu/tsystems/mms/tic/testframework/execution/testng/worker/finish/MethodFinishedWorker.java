@@ -59,16 +59,16 @@ public class MethodFinishedWorker extends MethodWorker {
 
             // calculate fingerprint
             if (isFailed()) {
-                Throwable throwable = methodContext.getThrowable();
+                Throwable throwable = methodContext.errorContext().getThrowable();
                 if (throwable != null) {
                     // look for script source
                     ScriptSource scriptSourceForThrowable = SourceUtils.findScriptSourceForThrowable(throwable);
                     if (scriptSourceForThrowable != null) {
-                        methodContext.scriptSource = scriptSourceForThrowable;
+                        methodContext.errorContext().scriptSource = scriptSourceForThrowable;
                     }
-                    methodContext.executionObjectSource = TestEvidenceCollector.getSourceFor(throwable);
+                    methodContext.errorContext().executionObjectSource = TestEvidenceCollector.getSourceFor(throwable);
                 }
-                methodContext.buildExitFingerprint();
+                methodContext.errorContext().buildExitFingerprint();
             }
 
             // generate html

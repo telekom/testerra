@@ -54,7 +54,7 @@ public class MethodContextUpdateWorker extends MethodWorker {
                      * set throwable
                      */
                     Throwable throwable = testResult.getThrowable();
-                    methodContext.setThrowable(null, throwable);
+                    methodContext.errorContext().setThrowable(null, throwable);
 
                     /*
                      * set status
@@ -84,12 +84,12 @@ public class MethodContextUpdateWorker extends MethodWorker {
                     methodContext.failedStep = currentTestStep;
 
                     String msg = "";
-                    String readableMessage = methodContext.getReadableErrorMessage();
+                    String readableMessage = methodContext.errorContext().getReadableErrorMessage();
                     if (!StringUtils.isStringEmpty(readableMessage)) {
                         msg += readableMessage;
                     }
 
-                    String additionalErrorMessage = methodContext.getAdditionalErrorMessage();
+                    String additionalErrorMessage = methodContext.errorContext().getAdditionalErrorMessage();
                     if (!StringUtils.isStringEmpty(additionalErrorMessage)) {
                         msg += additionalErrorMessage;
                     }

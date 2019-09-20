@@ -42,11 +42,11 @@
         <div>
             <font class="message">
                 <b>
-                    #if ($testMethod.readableErrorMessage)
-                        $testMethod.readableErrorMessage
+                    #if ($testMethod.errorContext().readableErrorMessage)
+                        $testMethod.errorContext().readableErrorMessage
                     #end
-                    #if ($testMethod.additionalErrorMessage)
-                        $testMethod.additionalErrorMessage
+                    #if ($testMethod.errorContext().additionalErrorMessage)
+                        $testMethod.errorContext().additionalErrorMessage
                     #end
                 </b>
             </font>
@@ -61,7 +61,7 @@
 
 <!-- buttons -->
 <div style="float:right; margin-top: -20px;">
-    #if($testMethod.stackTrace)
+    #if($testMethod.errorContext().stackTrace)
         <a href="javascript:toggleElement('exception-${testMethod.methodRunIndex}')" title="Stacktrace">
             <!--<img src="../style/business-circular-pie-chart.png" alt="Stacktrace" title="Stacktrace" class="symbols"/>-->
             <i class="symbols fa fa-align-left fa-2x fa-flip-vertical"></i>
@@ -87,8 +87,8 @@
 <div>
     <div class="stackTrace" id="exception-${testMethod.methodRunIndex}">
         <div id="st" class="textLeft" style="padding:30px !important; text-align: left !important; margin-left: 20px;">
-            #if($testMethod.stackTrace)
-                #set($stackTrace = $testMethod.stackTrace)
+            #if($testMethod.errorContext().stackTrace)
+                #set($stackTrace = $testMethod.errorContext().stackTrace)
                 #parse("stackTrace.vm")
             #end
         </div>

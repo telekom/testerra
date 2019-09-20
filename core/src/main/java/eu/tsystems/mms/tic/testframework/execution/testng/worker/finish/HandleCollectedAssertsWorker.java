@@ -52,7 +52,7 @@ public class HandleCollectedAssertsWorker extends MethodWorker {
                 testResult.setThrowable(testMethodContainerError);
 
                 // update test method container
-                methodContext.setThrowable(null, testMethodContainerError);
+                methodContext.errorContext().setThrowable(null, testMethodContainerError);
                 testResult.setAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly, Boolean.TRUE);
             }
         }

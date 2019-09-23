@@ -1,0 +1,115 @@
+= Best Practices
+
+This section contains several articles for best practices for the usage and implementation of tests with Testerra.
+
+== Project setup
+
+Project setup recommendations.
+
+=== Normalize file encoding
+
+Always use the same file encoding for all your source file types like `.html`, `.properties`, `.java` etc.
+
+IntelliJ: You can change the default encoding for files at _File -> Settings -> File Encodings_
+
+=== Normalize file endings
+
+Prevent using default line ending `CRLF` on Windows.
+
+Git: Setup `git config --global core.autocrlf input` to prevent any commited CRLF.
+
+== Support multiple profiles
+
+Supporting multiple profiles is useful, for different environments or test suites.
+
+.build.gradle
+[source, gradle, role="primary"]
+----
+test {
+    def profiles = [
+        "mySuite": "suite.xml"
+    ]
+
+    def suiteFiles = []
+    profiles.each { k, v ->
+        if (project.hasProperty("" + k)) {
+            def f = 'src/test/resources/' + v
+            suiteFiles << f
+        }
+    }
+
+    useTestNG() {
+        suites(suiteFiles as String[])
+    }
+}
+----
+
+.pom.xml
+[source, xml, role="secondary"]
+----
+<project>
+   <profiles>
+        <profile>
+            <id>mySuite</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skip>false</skip>
+                            <suiteXmlFiles>
+                                <suiteXmlFile>src/test/resources/suite.xml</suiteXmlFile>
+                            </suiteXmlFiles>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
+----
+
+.Gradle
+[source, bash, role="primary"]
+----
+gradle test -PmySuite
+----
+.Maven
+[source, bash, role="secondary"]
+----
+mvn test -PmySuite
+----
+
+== Always prefer Assertions
+
+If you need to check several properties of a GuiElement, always prefer
+
+. <<Assertions>> due to the human-readable and precise description
+. over <<Waiters>> because of their fault tolerance
+. over <<Checks>>
+
+[source,java]
+----
+// Good practice
+element.asserts().assertText("Search results");
+
+// Bad practice
+Assert.assertTrue(element.getText().contains("Search results"));
+----
+
+
+== Always describe your asserts
+
+In that specific case where you can't use `asserts()`,
+then use the extended <<Assert Utilities>> to more precise in your statement and pass a proper description text.
+
+[source,java]
+----
+int actualSearchResultCount = Integer.parseInt(element.getText());
+
+// Good practice
+AssertUtils.assertGreaterThan(actualSearchResultCount, 5, "Search results count");
+
+// Bad practice
+Assert.assertTrue(actualSearchResultCount > 5);
+----

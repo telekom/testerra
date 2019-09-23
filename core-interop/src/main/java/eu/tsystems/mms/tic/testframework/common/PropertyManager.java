@@ -60,7 +60,7 @@ public final class PropertyManager {
 
     static final Properties GLOBALPROPERTIES = new Properties();
 
-    static final PropertiesParser parser = new PropertiesParser();
+    public static final PropertiesParser parser = new PropertiesParser();
 
     /*
      * Static constructor, creating static Properties object.

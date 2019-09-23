@@ -22,10 +22,12 @@ package eu.tsystems.mms.tic.testframework.core.test.utils;
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -38,6 +40,7 @@ import java.nio.file.Paths;
 /**
  * Created by toku on 07.01.2015.
  */
+@Listeners(TesterraListener.class)
 public class FileUtilsTest extends AbstractTest {
 
     private static final String testfile = "testfiles/Test.txt";
@@ -108,21 +111,14 @@ public class FileUtilsTest extends AbstractTest {
     @Test
     public void testT05_readLocalResourceFileInsideJarFailed() {
 
-        TesterraSystemException foundException = null;
-
-        try {
-            FileUtils.getLocalResourceInputStream("testng.css");
-        } catch (final TesterraSystemException e) {
-            foundException = e;
-        }
-
-        Assert.assertNotNull(foundException, "No Exception occurred, but we expected one.");
+        InputStream localResourceInputStream = FileUtils.getLocalResourceInputStream("testng.css");
+        Assert.assertNull(localResourceInputStream, "Error reading file.");
     }
 
     @Test
-    public void testT06_readResourceFileInsideJarSuccessful() {
+    public void testT06_readResourceFileInsideJarSuccessful() throws FileNotFoundException {
 
-        final InputStream resourceInputStream = FileUtils.getLocalResourceInputStream("testng.css");
+        final InputStream resourceInputStream = FileUtils.getResourceInputStream("testng.css");
         Assert.assertNotNull(resourceInputStream, "Resource File found.");
     }
 }

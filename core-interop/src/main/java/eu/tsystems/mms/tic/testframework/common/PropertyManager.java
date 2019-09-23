@@ -46,13 +46,6 @@ import java.util.Properties;
  */
 public final class PropertyManager {
 
-    static {
-        TesterraCommons.init();
-    }
-
-    @Deprecated
-    public static void ensureLoaded() { }
-
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertyManager.class);
 
     /**

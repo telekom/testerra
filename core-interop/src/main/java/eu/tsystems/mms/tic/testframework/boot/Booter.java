@@ -19,8 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.boot;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.common.Locks;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.TesterraBuildInformation;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
@@ -70,8 +70,7 @@ public final class Booter {
         if (is != null) {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             br.lines().forEach(frameworkBanner::add);
-        }
-        else {
+        } else {
             LOGGER.debug("Could not read banner");
         }
 

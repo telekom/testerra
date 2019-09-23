@@ -161,7 +161,7 @@ public final class PropertiesParser {
     private String pGetPrioritizedProperty(final String key) {
         String value=null;
         for (Properties property : properties) {
-            value = property.getProperty(key);
+            value = property.getProperty(key, value);
         }
         return value;
     }

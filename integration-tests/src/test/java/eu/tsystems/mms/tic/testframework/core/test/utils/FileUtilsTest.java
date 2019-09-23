@@ -22,12 +22,10 @@ package eu.tsystems.mms.tic.testframework.core.test.utils;
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -40,7 +38,6 @@ import java.nio.file.Paths;
 /**
  * Created by toku on 07.01.2015.
  */
-@Listeners(TesterraListener.class)
 public class FileUtilsTest extends AbstractTest {
 
     private static final String testfile = "testfiles/Test.txt";

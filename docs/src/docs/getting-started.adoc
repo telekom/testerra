@@ -176,20 +176,8 @@ In order to get tests to work, you need to setup a build target `test` in your p
 [source, gradle, role="primary"]
 ----
 test {
-    def profiles = [
-        "mySuite": "suite.xml"
-    ]
-
-    def suiteFiles = []
-    profiles.each { k, v ->
-        if (project.hasProperty("" + k)) {
-            def f = 'src/test/resources/' + v
-            suiteFiles << f
-        }
-    }
-
     useTestNG() {
-        suites(suiteFiles as String[])
+        suites file('src/test/resources/suite.xml')
     }
 
     testLogging {
@@ -250,13 +238,13 @@ Finally you are good to run your very first test by entering the following comma
 .Gradle
 [source, bash, role="primary"]
 ----
-gradle test -PmySuite
+gradle test
 ----
 
 .Maven
 [source, bash, role="secondary"]
 ----
-mvn test -P mySuite
+mvn test
 ----
 
 === Testerra Report

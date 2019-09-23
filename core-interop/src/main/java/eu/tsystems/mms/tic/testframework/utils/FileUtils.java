@@ -91,7 +91,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
         // exit, when no file present
         // exit, when file is not loaded from our resource path but from jar
         if (resource == null || !resource.toString().startsWith("file:")) {
-            return null;
+            throw new TesterraSystemException("File not found: " + fileInResources);
         }
 
         LOGGER.info("Loading from: " + resource);

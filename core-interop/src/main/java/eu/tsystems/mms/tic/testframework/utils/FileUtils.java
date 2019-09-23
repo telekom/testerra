@@ -64,7 +64,6 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      *
      * @return Input Stream.
      */
-    @Deprecated
     public static InputStream getResourceInputStream(final String fileInResources) throws FileNotFoundException {
 
         final URL resource = getResourceURL(fileInResources);

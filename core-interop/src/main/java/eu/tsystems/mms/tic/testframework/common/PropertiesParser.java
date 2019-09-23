@@ -25,7 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,16 +38,11 @@ import java.util.regex.Pattern;
  */
 public final class PropertiesParser {
 
-    static {
-        PropertyManager.ensureLoaded();
-    }
-
     private static final Pattern patternReplace = Pattern.compile("\\{[^\\}]*\\}");
     private static final String REGEX_SENSIBLE = "@SENSIBLE@";
     private static final Pattern PATTERN_SENSIBLE = Pattern.compile(REGEX_SENSIBLE);
 
-    private PropertiesParser() {
-    }
+    public final List<Properties> properties = new LinkedList();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesParser.class);
 
@@ -59,7 +56,7 @@ public final class PropertiesParser {
      * @param searchedStrings a list of replacement marks already replaced (loop detection).
      * @return the line with substitutions.
      */
-    private static String parseLine(String line, List<String> searchedStrings) {
+    private String parseLine(String line, List<String> searchedStrings) {
         if (searchedStrings == null) {
             searchedStrings = new ArrayList<String>(1);
         }
@@ -131,11 +128,11 @@ public final class PropertiesParser {
      * @param line the current line.
      * @return the line with substitutions.
      */
-    public static String parseLine(String line) {
+    private String parseLine(String line) {
         return parseLine(line, null);
     }
 
-    static String getParsedPropertyStringValue(String key) {
+    public String getProperty(String key) {
         String value = pGetPrioritizedProperty(key);
 
         // replace marked system properties in this value (bla_{huhu} to bla_blubb if huhu=blubb)
@@ -152,22 +149,171 @@ public final class PropertiesParser {
         return value;
     }
 
-    private static String pGetPrioritizedProperty(String key) {
-        // load static property (by default loaded from test.properties)
-        String value = PropertyManager.FILEPROPERTIES.getProperty(key);
-
-        // overload by system property
-        value = System.getProperty(key, value);
-
-        // load default properties
-        value = PropertyManager.GLOBALPROPERTIES.getProperty(key, value);
-
-        // overload by threadlocal
-        if (PropertyManager.THREAD_LOCAL_PROPERTIES.get() != null) {
-            value = PropertyManager.THREAD_LOCAL_PROPERTIES.get().getProperty(key, value);
+    public String getProperty(final String key, final String defaultValue) {
+        final String value = getProperty(key);
+        if (value == null || value.length() <= 0) {
+            return defaultValue;
+        } else {
+            return value;
         }
+    }
 
+    private String pGetPrioritizedProperty(final String key) {
+        String value=null;
+        for (Properties property : properties) {
+            value = property.getProperty(key);
+        }
         return value;
+    }
+
+    /**
+     * Gets the value of the property or the default identified by its key.
+     *
+     * @param key          key of the property
+     * @param defaultValue default value
+     *
+     * @return property value
+     */
+    public int getIntProperty(final String key, final int defaultValue) {
+        final String prop = getProperty(key);
+        try {
+            return Integer.parseInt(prop);
+        } catch (final NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Gets the value of the property identified by its key.
+     *
+     * @param key key of the property
+     *
+     * @return property value or -1 if value cannot be parsed.
+     */
+    public int getIntProperty(final String key) {
+        final String prop = getProperty(key);
+        try {
+            return Integer.parseInt(prop);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * Gets the value of the property or the default identified by its key.
+     *
+     * @param key          key of the property
+     * @param defaultValue default value
+     *
+     * @return property value
+     */
+    public double getDoubleProperty(String key, double defaultValue) {
+        final String prop = getProperty(key);
+        if (prop == null) {
+            return defaultValue;
+        }
+        try {
+            return Double.parseDouble(prop);
+        } catch (final NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Gets the value of the property identified by its key.
+     *
+     * @param key key of the property
+     *
+     * @return property value or -1 if value cannot be parsed or is not set.
+     */
+    public double getDoubleProperty(final String key) {
+        final String prop = getProperty(key);
+        if (prop == null) {
+            return -1;
+        }
+        try {
+            return Double.parseDouble(prop);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * Gets the value of the property or the default identified by its key.
+     *
+     * @param key          key of the property
+     * @param defaultValue default value
+     *
+     * @return property value
+     */
+    public long getLongProperty(String key, long defaultValue) {
+        final String prop = getProperty(key);
+        if (prop == null) {
+            return defaultValue;
+        }
+        try {
+            return Long.parseLong(prop);
+        } catch (final NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Gets the value of the property identified by its key.
+     *
+     * @param key key of the property
+     *
+     * @return property value or -1 if value cannot be parsed or is not set.
+     */
+    public long getLongProperty(final String key) {
+        final String prop = getProperty(key);
+        if (prop == null) {
+            return -1;
+        }
+        try {
+            return Long.parseLong(prop);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * Get boolean property.
+     *
+     * @param key true or false.
+     *
+     * @return boolean property value or default false, if property is not set
+     *
+     * @see java.lang.Boolean#parseBoolean(String)
+     */
+    public boolean getBooleanProperty(final String key) {
+        final String prop = getProperty(key);
+        if (prop == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(prop.trim());
+    }
+
+    /**
+     * Gets the value of the property or the default identified by its key.
+     *
+     * @param key          key of the property
+     * @param defaultValue default value
+     *
+     * @return property value
+     */
+    public boolean getBooleanProperty(final String key, final boolean defaultValue) {
+        final String prop = getProperty(key);
+        if (prop == null) {
+            return defaultValue;
+        }
+        if (prop.equalsIgnoreCase("true")) {
+            return true;
+        } else if (prop.equalsIgnoreCase("false")) {
+            return false;
+        } else {
+            return defaultValue;
+        }
     }
 
 }

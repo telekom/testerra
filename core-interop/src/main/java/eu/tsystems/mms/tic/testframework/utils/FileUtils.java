@@ -81,7 +81,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      *
      * @param fileInResources {@link String}
      *
-     * @return InputStream
+     * @return InputStream or NULL if file is not a local resource file
      */
     public static InputStream getLocalResourceInputStream(final String fileInResources) {
 
@@ -90,7 +90,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
         // exit, when no file present
         // exit, when file is not loaded from our resource path but from jar
         if (resource == null || !resource.toString().startsWith("file:")) {
-            throw new TesterraSystemException("File not found: " + fileInResources);
+            return null;
         }
 
         LOGGER.info("Loading from: " + resource);

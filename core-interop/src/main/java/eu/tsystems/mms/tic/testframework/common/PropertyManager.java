@@ -46,18 +46,12 @@ import java.util.Properties;
  */
 public final class PropertyManager {
 
-    static {
-        TesterraCommons.init();
-    }
-
-    public static void ensureLoaded() { }
-
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertyManager.class);
 
     /**
      * Threadlocal Properties.
      */
-    static final ThreadLocal<Properties> THREAD_LOCAL_PROPERTIES = new ThreadLocal<Properties>();
+    static final ThreadLocal<Properties> THREAD_LOCAL_PROPERTIES = new ThreadLocal<>();
 
     /**
      * The static properties.
@@ -65,6 +59,8 @@ public final class PropertyManager {
     static final Properties FILEPROPERTIES = new Properties();
 
     static final Properties GLOBALPROPERTIES = new Properties();
+
+    static final PropertiesParser parser = new PropertiesParser();
 
     /*
      * Static constructor, creating static Properties object.
@@ -77,6 +73,10 @@ public final class PropertyManager {
         pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null, true);
         System.out.println("Loaded boot time properties from: " + propertyFile);
         System.out.print("Global Properties: " + FILEPROPERTIES);
+
+        parser.properties.add(FILEPROPERTIES);
+        parser.properties.add(System.getProperties());
+        parser.properties.add(GLOBALPROPERTIES);
     }
 
     /*
@@ -122,14 +122,7 @@ public final class PropertyManager {
     }
 
     private static Properties pLoadThreadLocalProperties(final String resourceFile, final String charset, boolean localOnly) {
-        Properties threadLocalProperties;
-        if (THREAD_LOCAL_PROPERTIES.get() == null) {
-            threadLocalProperties = new Properties();
-            THREAD_LOCAL_PROPERTIES.set(threadLocalProperties);
-        } else {
-            threadLocalProperties = THREAD_LOCAL_PROPERTIES.get();
-        }
-
+        Properties threadLocalProperties = getThreadLocalProperties();
         pLoadPropertiesFromResource(threadLocalProperties, resourceFile, charset, localOnly);
 
         LOGGER.info("ThreadLocalProperties: " + threadLocalProperties);
@@ -248,7 +241,7 @@ public final class PropertyManager {
      * @return The properties value.
      */
     public static String getProperty(final String key) {
-        return PropertiesParser.getParsedPropertyStringValue(key);
+        return parser.getProperty(key);
     }
 
     /**
@@ -260,12 +253,7 @@ public final class PropertyManager {
      * @return The properties value.
      */
     public static String getProperty(final String key, final String defaultValue) {
-        final String prop = getProperty(key);
-        if (prop == null || prop.length() <= 0) {
-            return defaultValue;
-        } else {
-            return prop;
-        }
+        return parser.getProperty(key, defaultValue);
     }
 
     /**
@@ -277,12 +265,7 @@ public final class PropertyManager {
      * @return property value
      */
     public static int getIntProperty(final String key, final int defaultValue) {
-        final String prop = getProperty(key);
-        try {
-            return Integer.parseInt(prop);
-        } catch (final NumberFormatException e) {
-            return defaultValue;
-        }
+        return parser.getIntProperty(key, defaultValue);
     }
 
     /**
@@ -293,12 +276,7 @@ public final class PropertyManager {
      * @return property value or -1 if value cannot be parsed.
      */
     public static int getIntProperty(final String key) {
-        final String prop = getProperty(key);
-        try {
-            return Integer.parseInt(prop);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+        return parser.getIntProperty(key);
     }
 
     /**
@@ -310,15 +288,7 @@ public final class PropertyManager {
      * @return property value
      */
     public static double getDoubleProperty(String key, double defaultValue) {
-        final String prop = getProperty(key);
-        if (prop == null) {
-            return defaultValue;
-        }
-        try {
-            return Double.parseDouble(prop);
-        } catch (final NumberFormatException e) {
-            return defaultValue;
-        }
+        return parser.getDoubleProperty(key, defaultValue);
     }
 
     /**
@@ -329,15 +299,7 @@ public final class PropertyManager {
      * @return property value or -1 if value cannot be parsed or is not set.
      */
     public static double getDoubleProperty(final String key) {
-        final String prop = getProperty(key);
-        if (prop == null) {
-            return -1;
-        }
-        try {
-            return Double.parseDouble(prop);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+        return parser.getDoubleProperty(key);
     }
 
     /**
@@ -349,15 +311,7 @@ public final class PropertyManager {
      * @return property value
      */
     public static long getLongProperty(String key, long defaultValue) {
-        final String prop = getProperty(key);
-        if (prop == null) {
-            return defaultValue;
-        }
-        try {
-            return Long.parseLong(prop);
-        } catch (final NumberFormatException e) {
-            return defaultValue;
-        }
+        return parser.getLongProperty(key, defaultValue);
     }
 
     /**
@@ -368,15 +322,7 @@ public final class PropertyManager {
      * @return property value or -1 if value cannot be parsed or is not set.
      */
     public static long getLongProperty(final String key) {
-        final String prop = getProperty(key);
-        if (prop == null) {
-            return -1;
-        }
-        try {
-            return Long.parseLong(prop);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+        return parser.getLongProperty(key);
     }
 
     /**
@@ -389,11 +335,7 @@ public final class PropertyManager {
      * @see java.lang.Boolean#parseBoolean(String)
      */
     public static boolean getBooleanProperty(final String key) {
-        final String prop = getProperty(key);
-        if (prop == null) {
-            return false;
-        }
-        return Boolean.parseBoolean(prop.trim());
+        return parser.getBooleanProperty(key);
     }
 
     /**
@@ -405,17 +347,7 @@ public final class PropertyManager {
      * @return property value
      */
     public static boolean getBooleanProperty(final String key, final boolean defaultValue) {
-        final String prop = getProperty(key);
-        if (prop == null) {
-            return defaultValue;
-        }
-        if (prop.equalsIgnoreCase("true")) {
-            return true;
-        } else if (prop.equalsIgnoreCase("false")) {
-            return false;
-        } else {
-            return defaultValue;
-        }
+        return parser.getBooleanProperty(key, defaultValue);
     }
 
     /**
@@ -439,6 +371,7 @@ public final class PropertyManager {
     public static Properties getThreadLocalProperties() {
         if (THREAD_LOCAL_PROPERTIES.get() == null) {
             THREAD_LOCAL_PROPERTIES.set(new Properties());
+            parser.properties.add(THREAD_LOCAL_PROPERTIES.get());
         }
         return THREAD_LOCAL_PROPERTIES.get();
     }

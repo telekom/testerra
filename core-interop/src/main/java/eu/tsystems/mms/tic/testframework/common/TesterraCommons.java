@@ -95,11 +95,6 @@ public class TesterraCommons {
                 }
             }
             loggingInitialized = true;
-
-            /*
-            Logging is basically initialized here. We CAN now overwrite the tt. log level.
-             */
-            setTesterraLogLevel();
         }
     }
 
@@ -178,8 +173,11 @@ public class TesterraCommons {
     }
 
     public static void init() {
-        initializeLogging(true);
-        initializeSystemProperties();
-        initializeProxySettings();
+
+        TesterraCommons.initializeLogging(true);
+        TesterraCommons.setTesterraLogLevel(); // calls PropertyManager --> Calls this init method...
+
+        TesterraCommons.initializeSystemProperties(); // calls LOGGING, but we are not initialized now.
+        TesterraCommons.initializeProxySettings();
     }
 }

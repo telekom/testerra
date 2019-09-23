@@ -1,0 +1,51 @@
+= Localization
+
+Websites come in many languages, where the functionality may not change, but labels of buttons, input or other interactive elements.
+Testerra provides an easy and simple way to support the localization of GuiElements.
+
+== Add localization resource bundle
+
+The localization is based on Unicode `.properties` files loaded during runtime.
+To add such files, create a new resource bundle `lang` in `src/main/resources` and add all required locales.
+
+.lang_en.properties
+[source, properties, role="primary"]
+----
+BTN_LOGIN=Login
+----
+
+.lang_de.properties
+[source, properties, role="secondary"]
+----
+BTN_LOGIN=Anmelden
+----
+
+NOTE: You can change the default encoding for `.properties` files in IntellJ at _File -> Settings -> File Encodings_
+
+== Access localization text
+
+Now you can instance GuiElements by localized strings.
+
+[source, java]
+----
+import eu.tsystems.mms.tic.testframework.l10n.SimpleLocalization;
+
+enum Localization {
+    BTN_LOGIN;
+
+    public String toString() {
+        return SimpleLocalization.getText(this.name());
+    }
+}
+
+GuiElement loginBtn = new GuiElement(By.linkText(Localization.BTN_LOGIN));
+----
+
+== Change runtime locale
+
+The best way to change the locale for your tests is, to pass the language property as command line argument.
+
+[source, bash]
+----
+gradle test -Duser.language=de
+----

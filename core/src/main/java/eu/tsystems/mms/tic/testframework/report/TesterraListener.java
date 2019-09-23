@@ -104,7 +104,7 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
      */
     private static boolean skipAllMethods = false;
 
-    static final JUnitXMLReporter XML_REPORTER = new JUnitXMLReporter(true, Report.XML_DIRECTORY);
+    static final JUnitXMLReporter XML_REPORTER;
 
     private static final List<Class<? extends Worker>> BEFORE_INVOCATION_WORKERS = new LinkedList<>();
     private static final List<Class<? extends Worker>> AFTER_INVOCATION_WORKERS = new LinkedList<>();
@@ -139,6 +139,7 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
         LOGGER.info("Context ClassLoader for TesterraListener: " + contextClassLoader);
 
         // start test for xml
+        XML_REPORTER = new JUnitXMLReporter(true, Report.XML_DIRECTORY);
         XML_REPORTER.testSetStarting(new SimpleReportEntry("", "Test starting"));
 
         // start memory monitor
@@ -154,6 +155,7 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
             instances++;
         }
     }
+
 
     /**
      * Determines whether there was an error in the current test. This is necessary to not synchronize a test result

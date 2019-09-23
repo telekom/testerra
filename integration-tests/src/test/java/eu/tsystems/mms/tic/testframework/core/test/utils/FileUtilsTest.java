@@ -120,9 +120,9 @@ public class FileUtilsTest extends AbstractTest {
     }
 
     @Test
-    public void testT06_readResourceFileInsideJarSuccessful() throws FileNotFoundException {
+    public void testT06_readResourceFileInsideJarSuccessful() {
 
-        final InputStream resourceInputStream = FileUtils.getResourceInputStream("testng.css");
+        final InputStream resourceInputStream = FileUtils.getLocalResourceInputStream("testng.css");
         Assert.assertNotNull(resourceInputStream, "Resource File found.");
     }
 }

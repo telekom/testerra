@@ -54,6 +54,7 @@ public final class PropertiesParser {
      *
      * @param line            the current line.
      * @param searchedStrings a list of replacement marks already replaced (loop detection).
+     *
      * @return the line with substitutions.
      */
     private String parseLine(String line, List<String> searchedStrings) {
@@ -126,9 +127,10 @@ public final class PropertiesParser {
      * The replacement is recursive and has a loop detection.
      *
      * @param line the current line.
+     *
      * @return the line with substitutions.
      */
-    private String parseLine(String line) {
+    public String parseLine(String line) {
         return parseLine(line, null);
     }
 
@@ -159,7 +161,7 @@ public final class PropertiesParser {
     }
 
     private String pGetPrioritizedProperty(final String key) {
-        String value=null;
+        String value = null;
         for (Properties property : properties) {
             value = property.getProperty(key);
         }

@@ -21,12 +21,14 @@ For Testerra you need at least the following dependencies you add to your `build
 .build.gradle
 [source, gradle, role="primary"]
 ----
+apply plugin: 'java'
+
+// Its highly recommended to normalize your project to Unicode
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = "UTF-8"
+
 dependencies {
     compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
-}
-test {
-    useTestNG() {
-    }
 }
 ----
 
@@ -34,7 +36,13 @@ test {
 [source, xml, role="secondary"]
 ----
 <project>
-    [..]
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <!-- Its highly recommended to normalize your project to Unicode -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>eu.tsystems.mms.tic.testerra</groupId>
@@ -190,25 +198,37 @@ test {
 .pom.xml
 [source, xml, role="secondary"]
 ----
- <!--In Maven we need to download the Maven Surefire Plugin. Copy this version of Surefire under <build> in your pom.xml file -->
 <project>
-    [...]
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.0</version>
-                    <configuration>
-                        <suiteXmlFiles>
-                            <suiteXmlFile>src/test/resources/suite.xml</suiteXmlFile>
-                        </suiteXmlFiles>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>mySuite</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skip>false</skip>
+                            <suiteXmlFiles>
+                                <suiteXmlFile>src/test/resources/suite.xml</suiteXmlFile>
+                            </suiteXmlFiles>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
 ----
 
@@ -218,13 +238,13 @@ Finally you are good to run your very first test by entering the following comma
 .Gradle
 [source, bash, role="primary"]
 ----
- gradle test
+gradle test
 ----
 
 .Maven
 [source, bash, role="secondary"]
 ----
- mvn clean test
+mvn test
 ----
 
 === Testerra Report

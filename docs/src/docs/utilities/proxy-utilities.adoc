@@ -1,4 +1,4 @@
-= Proxy Utilites
+= Proxy Utilities
 
 This is a static helper class based for reading the proxy configuration from system properties.
 

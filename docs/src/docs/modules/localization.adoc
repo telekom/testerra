@@ -49,3 +49,24 @@ The best way to change the locale for your tests is, to pass the language proper
 ----
 gradle test -Duser.language=de
 ----
+
+For Maven, you need some extra configuration
+
+.pom.xml
+[source, xml]
+----
+<project>
+    <properties>
+        <user.language>de</user.language>
+        <user.country>DE</user.country>
+        <argLine>-Duser.language=${user.language} -Duser.country=${user.country}</argLine>
+    </properties>
+</project>
+----
+
+before running the command
+[source, bash]
+----
+mvn test -Duser.language=de -Duser.country=DE
+----
+

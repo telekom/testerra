@@ -35,7 +35,7 @@ import java.util.Date;
 
 /**
  * Holds information about out the built version and other build information.
- * 
+ *
  * @author mibu
  */
 public class TesterraBuildInformation implements Serializable {
@@ -61,7 +61,7 @@ public class TesterraBuildInformation implements Serializable {
 
     /**
      * Creates a new <code>TesterraBuildInformation</code> object by reading the data properties file.
-     * 
+     *
      * @return The test run configurations.
      */
     public static TesterraBuildInformation getInstance() {
@@ -69,7 +69,7 @@ public class TesterraBuildInformation implements Serializable {
             if (instance == null) {
                 instance = new TesterraBuildInformation();
                 try {
-                    PropertyManager.loadProperties("testerra-build.properties", false);
+                    PropertyManager.loadProperties("testerra-build.properties");
                     instance.buildJavaVersion = PropertyManager.getProperty("build.java.version", instance.buildJavaVersion);
                     instance.buildOsName = PropertyManager.getProperty("build.os.name", instance.buildOsName);
                     instance.buildOsArch = PropertyManager.getProperty("build.os.arch", instance.buildOsArch);

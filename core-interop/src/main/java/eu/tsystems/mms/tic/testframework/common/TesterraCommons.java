@@ -117,7 +117,7 @@ public class TesterraCommons {
         }
 
         final String filename = PropertyManager.getProperty(TesterraProperties.PROXY_SETTINGS_FILE, "proxysettings.properties");
-        final InputStream inputStream = FileUtils.getLocalResourceInputStream(filename);
+        final InputStream inputStream = FileUtils.getLocalFileOrResourceInputStream(filename);
 
         if (inputStream == null) {
             LOGGER.warn("File " + filename + " not found. No proxy settings loaded.");

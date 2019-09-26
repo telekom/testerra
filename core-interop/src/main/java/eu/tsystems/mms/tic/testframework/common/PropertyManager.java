@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.constants.RTConstants;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -42,6 +43,7 @@ import java.util.Properties;
  * @author mibu, pele, mrgi, sepr
  */
 public final class PropertyManager {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertyManager.class);
 
     /**
@@ -68,7 +70,7 @@ public final class PropertyManager {
         String propertyFile = RTConstants.getTesterraTestPropertiesFile();
         pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
         System.out.println("Loaded boot time properties from: " + propertyFile);
-        System.out.print("Global Properties: " + FILEPROPERTIES);
+        System.out.println("Global Properties: " + FILEPROPERTIES);
 
         parser.properties.add(FILEPROPERTIES);
         parser.properties.add(System.getProperties());
@@ -79,6 +81,7 @@ public final class PropertyManager {
     LOADERS section
      */
     private static void pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset) {
+
         final InputStream propertiesInputStream = FileUtils.getLocalFileOrResourceInputStream(resourceFile);
 
         if (charset == null) {
@@ -95,7 +98,7 @@ public final class PropertyManager {
             throw new IllegalStateException(String.format("The properties file %s contains illegal characters!",
                     resourceFile), illArgEx);
         } catch (final Exception e) {
-            LOGGER.error("Error loading properties file", e);
+            LOGGER.error("Error loading properties file " + resourceFile, e);
         }
     }
 
@@ -134,12 +137,13 @@ public final class PropertyManager {
      * Load static properties from a property file.
      *
      * @param resourceFile The property file to load.
-     * @param localOnly Deprecated, Testerra only loads local files
+     * @param localOnly    Deprecated, Testerra only loads local files
+     *
      * @return Return loaded properties.
      */
     @Deprecated
     public static Properties loadProperties(final String resourceFile, boolean localOnly) {
-       return loadProperties(resourceFile);
+        return loadProperties(resourceFile);
     }
 
     /**
@@ -150,7 +154,7 @@ public final class PropertyManager {
      * @return
      */
     public static Properties loadProperties(final String resourceFile) {
-       return loadProperties(resourceFile, null);
+        return loadProperties(resourceFile, null);
     }
 
     /**

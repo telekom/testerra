@@ -175,9 +175,12 @@ public class TesterraCommons {
     public static void init() {
 
         TesterraCommons.initializeLogging(true);
-        TesterraCommons.setTesterraLogLevel(); // calls PropertyManager --> Calls this init method...
 
-        TesterraCommons.initializeSystemProperties(); // calls LOGGING, but we are not initialized now.
+        // implicit calls PropertyManager static block - init all the properties, load property file as well!
+        TesterraCommons.setTesterraLogLevel();
+
+        // calls LOGGING - Ensure we have Logging initialized before calling!
+        TesterraCommons.initializeSystemProperties();
         TesterraCommons.initializeProxySettings();
     }
 }

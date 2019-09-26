@@ -29,7 +29,12 @@ import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
 import org.apache.commons.io.FilenameUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -56,6 +61,8 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * @param fileInResources {@link String}
      *
      * @return InputStream
+     *
+     * @implNote avoid logging here!
      */
     public static InputStream getLocalResourceInputStream(final String fileInResources) throws TesterraSystemException {
 
@@ -64,9 +71,9 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
         // exit, when no file present
         // exit, when file is not loaded from our resource path but from jar
         if (resource == null || !resource.toString().startsWith("file:")) {
-            throw new TesterraSystemException("No local resource file: "+ fileInResources);
+            throw new TesterraSystemException("No local resource file found: " + fileInResources);
         }
-        //LOGGER.info("Loading from: " + resource);
+
         try {
             return Objects.requireNonNull(resource).openStream();
         } catch (IOException e) {
@@ -77,22 +84,35 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
     /**
      * Gets a local file if present, otherwise search for resource file.
      *
-     * @param filePathAndName .
+     * @param filePathAndName {@link String} relative path of file or resource
      *
      * @return InputStream|NULL
      *
-     * @throws FileNotFoundException .
+     * @throws TesterraSystemException Exception, when file not existing
+     * @implNote avoid logging here!
      */
     public static InputStream getLocalFileOrResourceInputStream(final String filePathAndName) {
         try {
             return getLocalFileInputStream(filePathAndName);
+            // throws FileNotFound, when not present! --> Try to get the resource file instead.
         } catch (FileNotFoundException e) {
-            return getLocalResourceInputStream(filePathAndName);
+            return getLocalResourceInputStream(filePathAndName); // throws a TesterraException
         }
     }
 
+    /**
+     * Gets a local file if present, otherwise returns null
+     *
+     * @param filePathAndName {@link String} relative path of file to load
+     *
+     * @return InputStream|NULL
+     *
+     * @throws FileNotFoundException Exception, when file not existing
+     */
     public static InputStream getLocalFileInputStream(final String filePathAndName) throws FileNotFoundException {
+
         final File relativeFile = new File(filePathAndName);
+
         if (relativeFile.exists()) {
             try {
                 return new FileInputStream(relativeFile);
@@ -100,7 +120,8 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
                 throw new FileNotFoundException(filePathAndName, e);
             }
         }
-        return null;
+
+        throw new FileNotFoundException(filePathAndName); // throw this, because File really does not exist!
     }
 
     /**

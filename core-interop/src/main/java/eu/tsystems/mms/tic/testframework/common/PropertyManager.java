@@ -27,16 +27,14 @@
 package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.constants.RTConstants;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -70,9 +68,9 @@ public final class PropertyManager {
     static {
         // set static properties
         String propertyFile = RTConstants.getTesterraTestPropertiesFile();
-        pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null, true);
+        pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
         System.out.println("Loaded boot time properties from: " + propertyFile);
-        System.out.print("Global Properties: " + FILEPROPERTIES);
+        System.out.println("Global Properties: " + FILEPROPERTIES);
 
         parser.properties.add(FILEPROPERTIES);
         parser.properties.add(System.getProperties());
@@ -82,26 +80,9 @@ public final class PropertyManager {
     /*
     LOADERS section
      */
-    private static void pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset, boolean localOnly) {
+    private static void pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset) {
 
-        final URL resource = Thread.currentThread().getContextClassLoader().getResource(resourceFile);
-        final InputStream propertiesInputStream;
-
-        // exit, when no file present
-        // exit, when file is not loaded from our resource path but from jar
-        if (resource == null) {
-            throw new TesterraSystemException("Property file not found in your resource path: " + resourceFile);
-        }
-
-        if (localOnly && !resource.toString().startsWith("file:")) {
-            throw new TesterraSystemException("Local Property file not found in your resource path: " + resourceFile);
-        }
-
-        try {
-            propertiesInputStream = Objects.requireNonNull(resource).openStream();
-        } catch (IOException e) {
-            throw new TesterraSystemException("Error reading property file: " + resourceFile);
-        }
+        final InputStream propertiesInputStream = FileUtils.getLocalFileOrResourceInputStream(resourceFile);
 
         if (charset == null) {
             charset = Charset.defaultCharset().name();
@@ -117,27 +98,16 @@ public final class PropertyManager {
             throw new IllegalStateException(String.format("The properties file %s contains illegal characters!",
                     resourceFile), illArgEx);
         } catch (final Exception e) {
-            LOGGER.error("Error loading properties file", e);
+            LOGGER.error("Error loading properties file " + resourceFile, e);
         }
     }
 
-    private static Properties pLoadThreadLocalProperties(final String resourceFile, final String charset, boolean localOnly) {
+    private static Properties pLoadThreadLocalProperties(final String resourceFile, final String charset) {
         Properties threadLocalProperties = getThreadLocalProperties();
-        pLoadPropertiesFromResource(threadLocalProperties, resourceFile, charset, localOnly);
+        pLoadPropertiesFromResource(threadLocalProperties, resourceFile, charset);
 
         LOGGER.info("ThreadLocalProperties: " + threadLocalProperties);
         return threadLocalProperties;
-    }
-
-    /**
-     * Load properties from a property file.
-     *
-     * @param resourceFile The property file to load.
-     *
-     * @return Return loaded properties.
-     */
-    public static Properties loadThreadLocalProperties(final String resourceFile, boolean localOnly) {
-        return pLoadThreadLocalProperties(resourceFile, null, localOnly);
     }
 
     /**
@@ -148,18 +118,7 @@ public final class PropertyManager {
      * @return
      */
     public static Properties loadThreadLocalProperties(final String resourceFile) {
-        return loadThreadLocalProperties(resourceFile, true);
-    }
-
-    /**
-     * Load properties from a property file.
-     *
-     * @param resourceFile The property file to load.
-     *
-     * @return Return loaded properties.
-     */
-    public static Properties loadThreadLocalProperties(final String resourceFile, final String charset, boolean localOnly) {
-        return pLoadThreadLocalProperties(resourceFile, charset, localOnly);
+        return loadThreadLocalProperties(resourceFile, null);
     }
 
     /**
@@ -171,20 +130,20 @@ public final class PropertyManager {
      * @return
      */
     public static Properties loadThreadLocalProperties(final String resourceFile, final String charset) {
-        return loadThreadLocalProperties(resourceFile, charset, true);
+        return pLoadThreadLocalProperties(resourceFile, charset);
     }
 
     /**
      * Load static properties from a property file.
      *
      * @param resourceFile The property file to load.
+     * @param localOnly    Deprecated, Testerra only loads local files
      *
      * @return Return loaded properties.
      */
+    @Deprecated
     public static Properties loadProperties(final String resourceFile, boolean localOnly) {
-        pLoadPropertiesFromResource(FILEPROPERTIES, resourceFile, null, localOnly);
-        LOGGER.info("Global Properties: " + FILEPROPERTIES);
-        return FILEPROPERTIES;
+        return loadProperties(resourceFile);
     }
 
     /**
@@ -195,20 +154,7 @@ public final class PropertyManager {
      * @return
      */
     public static Properties loadProperties(final String resourceFile) {
-        return loadProperties(resourceFile, true);
-    }
-
-    /**
-     * Load static properties from a property file.
-     *
-     * @param resourceFile The property file to load.
-     *
-     * @return Return loaded properties.
-     */
-    public static Properties loadProperties(final String resourceFile, final String charset, boolean localOnly) {
-        pLoadPropertiesFromResource(FILEPROPERTIES, resourceFile, charset, localOnly);
-        LOGGER.info("Global Properties: " + FILEPROPERTIES);
-        return FILEPROPERTIES;
+        return loadProperties(resourceFile, null);
     }
 
     /**
@@ -220,7 +166,9 @@ public final class PropertyManager {
      * @return
      */
     public static Properties loadProperties(final String resourceFile, final String charset) {
-        return loadProperties(resourceFile, charset, true);
+        pLoadPropertiesFromResource(FILEPROPERTIES, resourceFile, charset);
+        LOGGER.info("Global Properties: " + FILEPROPERTIES);
+        return FILEPROPERTIES;
     }
 
     /*

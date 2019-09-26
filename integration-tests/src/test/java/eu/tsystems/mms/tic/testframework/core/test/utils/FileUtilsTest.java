@@ -106,16 +106,23 @@ public class FileUtilsTest extends AbstractTest {
     }
 
     @Test
-    public void testT05_readLocalResourceFileInsideJarFailed() {
+    public void testT05_readResourceInsideDependencyJarFailed() {
 
-        InputStream localResourceInputStream = FileUtils.getLocalResourceInputStream("testng.css");
-        Assert.assertNull(localResourceInputStream, "Error reading file.");
+        TesterraSystemException exception = null;
+
+        try {
+            FileUtils.getLocalResourceInputStream("testng.css");
+        } catch (TesterraSystemException e) {
+            exception = e;
+        }
+
+        Assert.assertNotNull(exception, "Error reading file.");
     }
 
     @Test
-    public void testT06_readResourceFileInsideJarSuccessful() throws FileNotFoundException {
+    public void testT06_readLocalFile() {
 
-        final InputStream resourceInputStream = FileUtils.getResourceInputStream("testng.css");
+        final InputStream resourceInputStream = FileUtils.getLocalFileOrResourceInputStream("build.gradle");
         Assert.assertNotNull(resourceInputStream, "Resource File found.");
     }
 }

@@ -117,7 +117,7 @@ public class TesterraCommons {
         }
 
         final String filename = PropertyManager.getProperty(TesterraProperties.PROXY_SETTINGS_FILE, "proxysettings.properties");
-        final InputStream inputStream = FileUtils.getLocalResourceInputStream(filename);
+        final InputStream inputStream = FileUtils.getLocalFileOrResourceInputStream(filename);
 
         if (inputStream == null) {
             LOGGER.warn("File " + filename + " not found. No proxy settings loaded.");
@@ -175,9 +175,12 @@ public class TesterraCommons {
     public static void init() {
 
         TesterraCommons.initializeLogging(true);
-        TesterraCommons.setTesterraLogLevel(); // calls PropertyManager --> Calls this init method...
 
-        TesterraCommons.initializeSystemProperties(); // calls LOGGING, but we are not initialized now.
+        // implicit calls PropertyManager static block - init all the properties, load property file as well!
+        TesterraCommons.setTesterraLogLevel();
+
+        // calls LOGGING - Ensure we have Logging initialized before calling!
+        TesterraCommons.initializeSystemProperties();
         TesterraCommons.initializeProxySettings();
     }
 }

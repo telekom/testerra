@@ -1,0 +1,51 @@
+= Timer Utilities
+
+The timer utilities mainly provide two important classes for you.
+
+=== TimerUtils
+
+If you want to pause your current test execution, because you may have to wait for something or need a hard timeout you can use the `TimerUtils`.
+
+[source,java]
+----
+// Will pause current thread for 1 second.
+TimerUtils.sleep(1000);
+
+// You can pass a comment as well
+TimerUtils.sleep(5000, "Wait for something to happen.");
+----
+
+Both of these methods calls of `sleep()` will produce a log message.
+If you want to sleep without a message, `TimerUtils` of Testerra provides a method `sleepSilent()`.
+
+=== Timer
+
+The `Timer` provides a basic timer feature, if you have to execute the same snippet of code in an defined interval.
+The `Timer` ships with an internal class called `Sequence`.
+With this little helper it is possible to define the sequence you want to execute in an timed interval.
+
+[source,java]
+----
+final Timer timer = new Timer(500, 15_000);
+timer.executeSequence(new Timer.Sequence<Boolean>() {
+    @Override
+    public void run() throws Throwable {
+        // sequence code here
+    }
+});
+----
+
+Note: With this approach you will block your current thread, mostly your main thread.
+If you want to execute your `Sequence` in another thread - we got you.
+Just use the `executeSequenceThread` method.
+
+[source,java]
+----
+final Timer timer = new Timer(500, 15_000);
+timer.executeSequenceThread(new Timer.Sequence<Boolean>() {
+    @Override
+    public void run() throws Throwable {
+        // do your sequence here
+    }
+});
+----

@@ -86,7 +86,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      *
      * @param filePathAndName {@link String} relative path of file or resource
      *
-     * @return InputStream|NULL
+     * @return InputStream
      *
      * @throws TesterraSystemException Exception, when file not existing
      * @implNote avoid logging here!
@@ -105,7 +105,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      *
      * @param filePathAndName {@link String} relative path of file to load
      *
-     * @return InputStream|NULL
+     * @return InputStream
      *
      * @throws FileNotFoundException Exception, when file not existing
      */

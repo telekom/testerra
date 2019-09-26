@@ -22,28 +22,30 @@ package eu.tsystems.mms.tic.testframework.core.test.utils;
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * Created by nigr on 04.09.2015.
  */
-public class TimerTest extends AbstractTest {
+public class TimerTest extends AbstractTest implements Loggable {
 
     public static final int DURATION_IN_MS = 1000;
     public static final int SLEEP_TIME_IN_MS = 50;
     public static final int UPPER_BOUND_IN_MS = 200;
 
-    private final String msgMinimumTime = "Timer need at least "+ DURATION_IN_MS + " ms to pass";
+    private final String msgMinimumTime = "Timer need at least " + DURATION_IN_MS + " ms to pass";
     private final String msgMaximumTime = "Sequence execution timed out within variance";
 
     private final String msgCorrectPass = "Timer passed sequence correctly";
     private final String msgCorrectResponse = "Response was returned correctly";
     private final String msgCorrectThrowable = "Throwable was returned correctly";
 
-    private final String msgTimeout = "Sequence execution timed out "+ DURATION_IN_MS +" ms (polling every " + SLEEP_TIME_IN_MS + " ms)";
+    private final String msgTimeout = "Sequence execution timed out " + DURATION_IN_MS + " ms (polling every " + SLEEP_TIME_IN_MS + " ms)";
     private final String msgTimeoutExceptionThrown = "TimeoutException was thrown";
 
     private final String msgTesterraRuntimeException = "TesterraRuntimeException Message";
@@ -173,7 +175,7 @@ public class TimerTest extends AbstractTest {
 
         Assert.assertTrue(timer.isTimeOver(), msgCorrectPass);
         Assert.assertTrue(timeMillisDuration >= DURATION_IN_MS, msgMinimumTime);
-        Assert.assertTrue(timeMillisDuration <= DURATION_IN_MS  + UPPER_BOUND_IN_MS, msgMaximumTime);
+        Assert.assertTrue(timeMillisDuration <= DURATION_IN_MS + UPPER_BOUND_IN_MS, msgMaximumTime);
         Assert.assertNotNull(timeoutException, msgTimeoutExceptionThrown);
         Assert.assertEquals(timeoutException.getMessage(), msgTimeout);
         Assert.assertNull(response, msgCorrectResponse);
@@ -242,5 +244,77 @@ public class TimerTest extends AbstractTest {
         Assert.assertNotNull(testerraRuntimeException, msgCorrectThrowable);
         Assert.assertEquals(response, "huhu", msgCorrectResponse);
         Assert.assertEquals(testerraRuntimeException.getMessage(), msgTesterraRuntimeException, msgCorrectThrowable);
+    }
+
+    @Test
+    public void testT08_ExecuteSequenceInThread() {
+
+        final Timer.Sequence<Object> sequenceToRun = new Timer.Sequence<Object>() {
+
+            int count = 0;
+
+            @Override
+            public void run() {
+
+                if (count == 5) {
+                    setPassState(true);
+                    setReturningObject("Green!");
+                    return;
+                }
+
+                TimerUtils.sleep(1500, "InnerSequence Run " + count);
+                setPassState(false);
+                count++;
+            }
+        };
+
+        final Timer timer = new Timer(500, 15_000);
+        timer.executeSequenceThread(sequenceToRun);
+
+        log().info("Outer Sequence Step 1");
+        TimerUtils.sleep(5_000);
+        log().info("Outer Sequence Step 2");
+        TimerUtils.sleep(5_000);
+        log().info("Outer Sequence Step 3");
+        TimerUtils.sleep(5_000);
+
+        final String returningObject = (String) sequenceToRun.getReturningObject();
+        Assert.assertEquals(returningObject, "Green!");
+    }
+
+    @Test
+    public void testT09_ExecuteSequenceInThreadHittingTimeout() {
+
+        final Timer.Sequence<Object> sequenceToRun = new Timer.Sequence<Object>() {
+
+            int count = 0;
+
+            @Override
+            public void run() {
+
+                if (count == 5) {
+                    setPassState(true);
+                    return;
+                }
+
+                TimerUtils.sleep(1500, "InnerSequence Run " + count);
+                setPassState(false);
+                setReturningObject("False!");
+                count++;
+            }
+        };
+
+        final Timer timer = new Timer(500, 5_000);
+        timer.executeSequenceThread(sequenceToRun);
+
+        log().info("Outer Sequence Step 1");
+        TimerUtils.sleep(5_000);
+        log().info("Outer Sequence Step 2");
+        TimerUtils.sleep(5_000);
+        log().info("Outer Sequence Step 3");
+        TimerUtils.sleep(5_000);
+
+        final String returningObject = (String) sequenceToRun.getReturningObject();
+        Assert.assertEquals(returningObject, "False!");
     }
 }

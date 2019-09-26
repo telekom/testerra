@@ -70,7 +70,6 @@ public final class PropertyManager {
         String propertyFile = RTConstants.getTesterraTestPropertiesFile();
         pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
         System.out.println("Loaded boot time properties from: " + propertyFile);
-        System.out.println("Global Properties: " + FILEPROPERTIES);
 
         parser.properties.add(FILEPROPERTIES);
         parser.properties.add(System.getProperties());

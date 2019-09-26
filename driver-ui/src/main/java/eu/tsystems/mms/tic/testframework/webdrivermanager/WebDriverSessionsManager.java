@@ -425,8 +425,10 @@ public final class WebDriverSessionsManager {
             ExecutionContextController.setCurrentSessionContext(sessionContext);
 
             // fire sync
-            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addData(TesterraEventDataType.CONTEXT, sessionContext));
+            TesterraEventService.getInstance().fireEvent(
+                new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                    .addData(TesterraEventDataType.CONTEXT, sessionContext)
+            );
 
             /*
             setup new session
@@ -445,8 +447,10 @@ public final class WebDriverSessionsManager {
             }
 
             // fire sync again, for updated sessionContext
-            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addData(TesterraEventDataType.CONTEXT, sessionContext));
+            TesterraEventService.getInstance().fireEvent(
+                new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                    .addData(TesterraEventDataType.CONTEXT, sessionContext)
+            );
 
             return eventFiringWebDriver;
         } else {

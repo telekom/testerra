@@ -33,7 +33,9 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -131,8 +133,8 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 break;
             case Browsers.firefox:
                 desiredCapabilities.setBrowserName(BrowserType.FIREFOX);
-
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
+                firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", Locale.getDefault().getLanguage(), Locale.getDefault().getCountry()));
                 desiredCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
                 break;
             case Browsers.safari:
@@ -154,11 +156,12 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
             case Browsers.chromeHeadless:
                 LOGGER.info("Creating capabilities for ChromeDriver");
                 desiredCapabilities.setBrowserName(BrowserType.CHROME);
-                {
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.addArguments("--no-sandbox");
-                    desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-                }
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--no-sandbox");
+                Map<String, Object> prefs = new HashMap<>();
+                prefs.put("intl.accept_languages", String.format("%s_%s", Locale.getDefault().getLanguage(), Locale.getDefault().getCountry()));
+                chromeOptions.setExperimentalOption("prefs", prefs);
+                desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                 break;
             case Browsers.ie:
                 LOGGER.info("Creating capabilities for InternetExplorerDriver");

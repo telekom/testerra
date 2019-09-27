@@ -32,9 +32,8 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import java.util.HashMap;
+
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -121,15 +120,15 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
          * This is the standard way of setting the browser locale for Selenoid based sessions
          * @see https://aerokube.com/selenoid/latest/#_per_session_environment_variables_env
          */
-        final Locale browserLocale = Locale.getDefault();
-        desiredCapabilities.setCapability("env",
-            String.format(
-                "[\"LANG=%s.UTF-8\", \"LANGUAGE=%s\", \"LC_ALL=%s.UTF-8\"]",
-                browserLocale,
-                browserLocale.getLanguage(),
-                browserLocale
-            )
-        );
+//        final Locale browserLocale = Locale.getDefault();
+//        desiredCapabilities.setCapability("env",
+//            String.format(
+//                "[\"LANG=%s.UTF-8\", \"LANGUAGE=%s\", \"LC_ALL=%s.UTF-8\"]",
+//                browserLocale,
+//                browserLocale.getLanguage(),
+//                browserLocale
+//            )
+//        );
 
         switch (browser) {
             case Browsers.htmlunit:
@@ -147,7 +146,7 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
             case Browsers.firefox:
                 desiredCapabilities.setBrowserName(BrowserType.FIREFOX);
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
-                firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", browserLocale.getLanguage(), browserLocale.getCountry()));
+                //firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", browserLocale.getLanguage(), browserLocale.getCountry()));
                 desiredCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
                 break;
             case Browsers.safari:
@@ -171,9 +170,9 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 desiredCapabilities.setBrowserName(BrowserType.CHROME);
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.addArguments("--no-sandbox");
-                Map<String, Object> prefs = new HashMap<>();
-                prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
-                chromeOptions.setExperimentalOption("prefs", prefs);
+                //Map<String, Object> prefs = new HashMap<>();
+                //prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
+                //chromeOptions.setExperimentalOption("prefs", prefs);
                 desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                 break;
             case Browsers.ie:

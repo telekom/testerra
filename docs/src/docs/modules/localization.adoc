@@ -76,7 +76,4 @@ The WebDriver API official doesn't support changing the language of a browser se
 non-standard or experimental ways on https://stackoverflow.com/questions/33016300/selenium-change-language-browser-chrome-firefox[Stackoverflow]
 to change your browser locale.
 
-The most common solutions for Firefox and Chrome are already implemented and these browser should always send
-the `Accept-Languages` header based on `Locale.getDefault()`.
-
 Anyways, it's currently the better way to visit your SUT with an undefined language and change it there with the ability it's providing for that.

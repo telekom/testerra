@@ -229,9 +229,6 @@ public final class TesterraProperties {
     public static final String PAGE_FACTORY_LOOPS = "tt.page.factory.loops";
     public static final String EXECUTION_OMIT_IN_DEVELOPMENT = "tt.execution.omit.indevelopment";
 
-    @Deprecated
-    public static final String GUIELEMENT_HIGHLIGHTS_ACTIVE = "tt.guielement.highlights.active";
-
     /*
     layout stuff
      */

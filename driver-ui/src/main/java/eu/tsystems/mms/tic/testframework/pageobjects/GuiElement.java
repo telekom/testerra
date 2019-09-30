@@ -326,6 +326,16 @@ public class GuiElement implements
     }
 
     @Override
+    public long getScrollX() {
+        return guiElementCore.getScrollX();
+    }
+
+    @Override
+    public long getScrollY() {
+        return guiElementCore.getScrollY();
+    }
+
+    @Override
     public void select() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.select();

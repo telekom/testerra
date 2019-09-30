@@ -866,7 +866,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     @Override
     public File takeScreenshot() {
 
-        LOGGER.info("scroll to element");
         this.scrollToElement();
 
         final boolean isSelenium4 = false;
@@ -885,8 +884,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
                 Point point = element.getLocation();
                 int eleWidth = element.getSize().getWidth();
                 int eleHeight = element.getSize().getHeight();
-
-                LOGGER.info(String.format("img: %sx%s, %s, %s", fullImg.getWidth(), fullImg.getHeight(), point, element.getSize()));
 
                 BufferedImage eleScreenshot = fullImg.getSubimage(
                     point.getX()-(int)getScrollX(),

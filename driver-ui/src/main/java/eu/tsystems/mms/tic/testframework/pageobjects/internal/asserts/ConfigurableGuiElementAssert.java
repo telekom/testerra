@@ -255,7 +255,7 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
         });
 
         LayoutCheck.MatchStep matchStep = atomicMatchStep.get();
-        if (matchStep!=null) {
+        if (matchStep!=null && matchStep.takeReferenceOnly == false) {
             LayoutCheck.toReport(matchStep);
         }
     }

@@ -44,7 +44,7 @@ public final class LayoutCheck {
         Path distanceFileName;
         Path annotationDataFileName;
         String consecutiveTargetImageName;
-        boolean takeReferenceOnly;
+        public boolean takeReferenceOnly;
         public double distance = NO_DISTANCE;
         public LayoutComparator layoutComparator;
     }

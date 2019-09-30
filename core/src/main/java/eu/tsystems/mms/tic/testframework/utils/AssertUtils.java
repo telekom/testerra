@@ -29,50 +29,62 @@ import java.math.BigDecimal;
 public final class AssertUtils {
 
     public static void assertContains(String actual, String expected) {
-        assertContains(actual, expected, "");
+        assertContains(actual, expected, "expected");
     }
 
     public static void assertContainsNot(String actual, String expected) {
-        assertContainsNot(actual, expected, "");
+        assertContainsNot(actual, expected, "expected");
     }
 
     public static void assertContains(String actual, String expected, String description) {
-        Assert.assertTrue(actual.contains(expected), String.format("%s [%s] contains [%s]", description, actual, expected));
+        if (!actual.contains(expected)) {
+            Assert.fail(String.format("%s [%s] contains [%s]", description, actual, expected));
+        }
     }
 
     public static void assertContainsNot(String actual, String expected, String description) {
-        Assert.assertFalse(actual.contains(expected), String.format("%s [%s] contains [%s]", description, actual, expected));
+        if (actual.contains(expected)) {
+            Assert.fail(String.format("%s [%s] contains not [%s]", description, actual, expected));
+        }
     }
 
     public static void assertGreaterThan(BigDecimal actual, BigDecimal expected) {
-        assertGreaterThan(actual, expected, "");
+        assertGreaterThan(actual, expected, "expected");
     }
 
     public static void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected) {
-        assertGreaterEqualThan(actual, expected, "");
+        assertGreaterEqualThan(actual, expected, "expected");
     }
 
     public static void assertLowerThan(BigDecimal actual, BigDecimal expected) {
-        assertLowerThan(actual, expected, "");
+        assertLowerThan(actual, expected, "expected");
     }
 
     public static void assertLowerEqualThan(BigDecimal actual, BigDecimal expected) {
-        assertLowerEqualThan(actual, expected, "");
+        assertLowerEqualThan(actual, expected, "expected");
     }
 
     public static void assertGreaterThan(BigDecimal actual, BigDecimal expected, String description) {
-        Assert.assertTrue(actual.compareTo(expected)==1, String.format("%s [%s] is greater than [%s]", description, actual, expected));
+        if (actual.compareTo(expected)!=1) {
+            Assert.fail(String.format("%s [%s] is greater than [%s]", description, actual, expected));
+        }
     }
 
     public static void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, String description) {
-        Assert.assertTrue(actual.compareTo(expected) >= 0, String.format("%s [%s] is greater or equal than [%s]", description, actual, expected));
+        if (actual.compareTo(expected) < 0) {
+            Assert.fail(String.format("%s [%s] is greater or equal than [%s]", description, actual, expected));
+        }
     }
 
     public static void assertLowerThan(BigDecimal actual, BigDecimal expected, String description) {
-        Assert.assertTrue(actual.compareTo(expected)==-1, String.format("%s [%s] is lower than [%s]", description, actual, expected));
+        if (actual.compareTo(expected)!=-1) {
+            Assert.fail(String.format("%s [%s] is lower than [%s]", description, actual, expected));
+        }
     }
 
     public static void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, String description) {
-        Assert.assertTrue(actual.compareTo(expected) <= 0, String.format("%s [%s] is lower or equal than [%s]", description, actual, expected));
+        if (actual.compareTo(expected) > 0) {
+            Assert.fail(String.format("%s [%s] is lower or equal than [%s]", description, actual, expected));
+        }
     }
 }

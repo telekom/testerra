@@ -367,7 +367,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
      * @param remoteAddress .
      * @return.
      */
-    private WebDriver startNewWebDriverSession(String browser, DesiredCapabilities capabilities, URL remoteAddress, String msg, String sessionKey) {
+    private WebDriver startNewWebDriverSession(
+        String browser,
+        DesiredCapabilities capabilities,
+        URL remoteAddress,
+        String msg,
+        String sessionKey
+    ) {
         WebDriver driver;
         LOGGER.info(logSCID() + "Starting WebDriver (" + sessionKey + ") " + msg, new NewSessionMarker());
         org.apache.commons.lang3.time.StopWatch sw = new org.apache.commons.lang3.time.StopWatch();
@@ -399,8 +405,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     driver = new InternetExplorerDriver(capabilities);
                     break;
                 case Browsers.chrome:
-                    driver = new ChromeDriver(capabilities);
-                    break;
                 case Browsers.chromeHeadless:
                     driver = new ChromeDriver(capabilities);
                     break;

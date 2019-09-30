@@ -116,6 +116,20 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         final DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         desiredCapabilities.merge(preSetCaps);
 
+        /*
+         * This is the standard way of setting the browser locale for Selenoid based sessions
+         * @see https://aerokube.com/selenoid/latest/#_per_session_environment_variables_env
+         */
+//        final Locale browserLocale = Locale.getDefault();
+//        desiredCapabilities.setCapability("env",
+//            String.format(
+//                "[\"LANG=%s.UTF-8\", \"LANGUAGE=%s\", \"LC_ALL=%s.UTF-8\"]",
+//                browserLocale,
+//                browserLocale.getLanguage(),
+//                browserLocale
+//            )
+//        );
+
         switch (browser) {
             case Browsers.htmlunit:
                 LOGGER.info("Creating capabilities for HtmlUnitDriver");
@@ -131,8 +145,8 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 break;
             case Browsers.firefox:
                 desiredCapabilities.setBrowserName(BrowserType.FIREFOX);
-
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
+                //firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", browserLocale.getLanguage(), browserLocale.getCountry()));
                 desiredCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
                 break;
             case Browsers.safari:
@@ -154,11 +168,12 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
             case Browsers.chromeHeadless:
                 LOGGER.info("Creating capabilities for ChromeDriver");
                 desiredCapabilities.setBrowserName(BrowserType.CHROME);
-                {
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.addArguments("--no-sandbox");
-                    desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-                }
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--no-sandbox");
+                //Map<String, Object> prefs = new HashMap<>();
+                //prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
+                //chromeOptions.setExperimentalOption("prefs", prefs);
+                desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                 break;
             case Browsers.ie:
                 LOGGER.info("Creating capabilities for InternetExplorerDriver");

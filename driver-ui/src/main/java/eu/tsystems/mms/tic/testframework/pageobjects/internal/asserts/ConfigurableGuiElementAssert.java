@@ -27,8 +27,10 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Created by rnhb on 11.08.2015.
@@ -241,13 +243,20 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
         final int LAYOUT_CHECK_MAX_TRIES = 3;
         Timer timer = new Timer(LAYOUT_CHECK_UI_WAIT,LAYOUT_CHECK_UI_WAIT*LAYOUT_CHECK_MAX_TRIES);
         final BigDecimal expectedDistanceThreshold = new BigDecimal(confidenceThreshold);
-        final String assertMessage = String.format("%s pixel distance percent referring to image '%s'", guiElementData, targetImageName);
+        final String assertMessage = String.format("%s image '%s' pixel distance percent", guiElementData, targetImageName);
+        final AtomicReference<LayoutCheck.MatchStep> atomicMatchStep = new AtomicReference<>();
         timer.executeSequence(new Timer.Sequence() {
             @Override
             public void run() {
-                double actualDistance = LayoutCheck.matchPixels(guiElementCore.takeScreenshot(), targetImageName);
-                AssertUtils.assertLowerEqualThan(new BigDecimal(actualDistance), expectedDistanceThreshold, assertMessage);
+                LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(guiElementCore.takeScreenshot(), targetImageName);
+                AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance), expectedDistanceThreshold, assertMessage);
+                atomicMatchStep.set(matchStep);
             }
         });
+
+        LayoutCheck.MatchStep matchStep = atomicMatchStep.get();
+        if (matchStep!=null) {
+            LayoutCheck.toReport(matchStep);
+        }
     }
 }

@@ -47,7 +47,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
     @Test
     public void testCheckElementLayout() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
-        guiElement.asserts().assertScreenshot("TestArticle", 0.1);
+        guiElement.asserts().assertScreenshot("TestArticle", 1.3);
     }
 
     @Test(expectedExceptions = TimeoutException.class)
@@ -58,8 +58,8 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void testCheckPageLayout() {
-        final double actualDist = LayoutCheck.matchPixels((TakesScreenshot)WebDriverManager.getWebDriver(), "LayoutTestPage");
-        AssertUtils.assertLowerEqualThan(new BigDecimal(actualDist), new BigDecimal(0), "LayoutTestPage pixel distance");
+        LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels((TakesScreenshot) WebDriverManager.getWebDriver(), "LayoutTestPage");
+        AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance), new BigDecimal(1), "LayoutTestPage pixel distance");
     }
 
 }

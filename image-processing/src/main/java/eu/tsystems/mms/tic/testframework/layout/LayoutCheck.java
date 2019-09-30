@@ -108,6 +108,7 @@ public final class LayoutCheck {
      * @param mode PIXEL or ANNOTATED
      * @return Percents of pixels that are different
      */
+    @Deprecated
     public static double run(WebDriver webDriver, final String targetImageName, final Mode mode) {
         if (TakesScreenshot.class.isAssignableFrom(webDriver.getClass())) {
             return pRun((TakesScreenshot) webDriver, targetImageName, mode).distance;

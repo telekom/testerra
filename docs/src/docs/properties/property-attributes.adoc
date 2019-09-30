@@ -48,7 +48,6 @@
 :screencaster_active:               tt.screencaster.active
 
 // execution
-:guielement_highlights_active:      tt.guielement.highlights.active
 :dryrun:                            tt.dryrun
 :demomode:                          tt.demomode
 :list_tests:                        tt.list.tests

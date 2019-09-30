@@ -18,9 +18,9 @@
  *     jhmr <Johannes.Maresch@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-/* 
+/*
  * Created on 26.03.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -229,8 +229,9 @@ public final class TesterraProperties {
     public static final String PAGE_FACTORY_LOOPS = "tt.page.factory.loops";
     public static final String EXECUTION_OMIT_IN_DEVELOPMENT = "tt.execution.omit.indevelopment";
 
+    @Deprecated
     public static final String GUIELEMENT_HIGHLIGHTS_ACTIVE = "tt.guielement.highlights.active";
-    
+
     /*
     layout stuff
      */

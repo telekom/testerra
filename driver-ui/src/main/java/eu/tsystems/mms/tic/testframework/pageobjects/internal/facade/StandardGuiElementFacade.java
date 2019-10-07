@@ -71,6 +71,16 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
+    public long getScrollX() {
+        return guiElementCore.getScrollX();
+    }
+
+    @Override
+    public long getScrollY() {
+        return guiElementCore.getScrollY();
+    }
+
+    @Override
     public void select() {
         guiElementCore.select();
     }

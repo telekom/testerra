@@ -94,6 +94,16 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         throwablePackedResponse.finalizeTimer();
     }
 
+    @Override
+    public long getScrollX() {
+        return guiElementCore.getScrollX();
+    }
+
+    @Override
+    public long getScrollY() {
+        return guiElementCore.getScrollY();
+    }
+
 
     @Override
     public void select() {

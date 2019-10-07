@@ -27,12 +27,12 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
+import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
@@ -194,9 +194,14 @@ public final class JSUtils {
      * @param g .
      * @param b .
      */
-    public static void highlightWebElement(final WebDriver driver, final WebElement webElement, final int r,
-            final int g, final int b) {
-        if (!Flags.GUIELEMENT_HIGHLIGHTS) {
+    public static void highlightWebElement(
+        final WebDriver driver,
+        final WebElement webElement,
+        final int r,
+        final int g,
+        final int b
+    ) {
+        if (!POConfig.isDemoMode()) {
             return;
         }
 
@@ -209,28 +214,6 @@ public final class JSUtils {
                 webElement);
     }
 
-    public static void highlightWebElementClick(final WebDriver driver, final WebElement webElement) {
-        if (!Flags.GUIELEMENT_HIGHLIGHTS) {
-            return;
-        }
-
-        /*
-         * Try to inject JS for demo mode before executing highlight
-         */
-        turnOnDemoModeForCurrentPage(driver);
-
-        executeScript(driver, "TesterraClickElement(arguments[0])",webElement);
-    }
-
-    public static void highlightClick(final WebDriver driver, int x, int y) {
-        /*
-         * Try to inject JS for demo mode before executing highlight
-         */
-        turnOnDemoModeForCurrentPage(driver);
-
-        executeScript(driver, "xetaClick(arguments[0], arguments[1])", x, y);
-    }
-
     /**
      * Highlight a webelement on an actual driver session
      *
@@ -240,9 +223,14 @@ public final class JSUtils {
      * @param g .
      * @param b .
      */
-    public static void highlightWebElementStatic(final WebDriver driver, final WebElement webElement, final int r,
-            final int g, final int b) {
-        if (!Flags.GUIELEMENT_HIGHLIGHTS) {
+    public static void highlightWebElementStatic(
+        final WebDriver driver,
+        final WebElement webElement,
+        final int r,
+        final int g,
+        final int b
+    ) {
+        if (!POConfig.isDemoMode()) {
             return;
         }
 
@@ -341,7 +329,7 @@ public final class JSUtils {
     /**
      * Get a javascript based selector including frame hierarchy by extracting the By-Property of GuiElement
      * Uses Reflection
-     * 
+     *
      * @param element GuiElement
      * @return String
      */
@@ -368,7 +356,7 @@ public final class JSUtils {
 
     /**
      * Gets the selector without frame hierarchy
-     * 
+     *
      * @param element GuiElement
      * @param documentSelector String Current Selector
      * @return String

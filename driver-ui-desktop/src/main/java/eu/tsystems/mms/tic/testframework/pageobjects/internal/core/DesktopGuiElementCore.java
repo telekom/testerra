@@ -260,6 +260,18 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         pScrollToElement(yOffset);
     }
 
+    @Override
+    public long getScrollX() {
+        Object data = JSUtils.executeScript(webDriver, "return window.pageXOffset;");
+        return (long)data;
+    }
+
+    @Override
+    public long getScrollY() {
+        Object data = JSUtils.executeScript(webDriver, "return window.pageYOffset;");
+        return (long)data;
+    }
+
     /**
      * Private scroll to element.
      */
@@ -854,6 +866,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     @Override
     public File takeScreenshot() {
 
+        this.scrollToElement();
+
         final boolean isSelenium4 = false;
 
         if (isSelenium4) {
@@ -872,8 +886,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
                 int eleHeight = element.getSize().getHeight();
 
                 BufferedImage eleScreenshot = fullImg.getSubimage(
-                    point.getX(),
-                    point.getY(),
+                    point.getX()-(int)getScrollX(),
+                    point.getY()-(int)getScrollY(),
                     eleWidth,
                     eleHeight
                 );

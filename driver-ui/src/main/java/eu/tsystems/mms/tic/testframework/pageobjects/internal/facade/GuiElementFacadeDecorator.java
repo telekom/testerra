@@ -123,6 +123,26 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
+    public long getScrollX() {
+        beforeActionDelegation("getScrollX");
+        beforeDelegation("getScrollX");
+        long offset = decoratedFacade.getScrollX();
+        afterDelegation();
+        afterActionDelegation();
+        return offset;
+    }
+
+    @Override
+    public long getScrollY() {
+        beforeActionDelegation("getScrollY");
+        beforeDelegation("getScrollY");
+        long offset = decoratedFacade.getScrollY();
+        afterDelegation();
+        afterActionDelegation();
+        return offset;
+    }
+
+    @Override
     public void select() {
         beforeActionDelegation("select");
         beforeDelegation("select");

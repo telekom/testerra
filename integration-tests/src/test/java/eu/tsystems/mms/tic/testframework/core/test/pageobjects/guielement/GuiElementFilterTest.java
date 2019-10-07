@@ -23,6 +23,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -98,6 +99,14 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement nonVisibleTable = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.DISPLAYED.is(false));
+        nonVisibleTable.asserts().assertIsNotDisplayed();
+    }
+
+    @Test
+    public void testT05_Displayed_Is_As_Selector() {
+        goToTestPage();
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement nonVisibleTable = new GuiElement(driver, Locate.xpath(".//*[@id]").notDisplayed());
         nonVisibleTable.asserts().assertIsNotDisplayed();
     }
 

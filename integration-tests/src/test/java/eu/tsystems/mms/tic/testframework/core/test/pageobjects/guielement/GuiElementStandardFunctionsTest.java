@@ -23,7 +23,9 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -251,6 +253,22 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         Assert.assertNotNull(webElement);
     }
 
+    @Test
+    public void testT23_GuiElement_findByIDUnique() {
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement guiElement = new GuiElement(driver, Locate.id("11"));
+        WebElement webElement = guiElement.getWebElement();
+        Assert.assertNotNull(webElement);
+    }
+
+    @Test
+    public void testT23_GuiElement_findNonUnique() {
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement guiElement = new GuiElement(driver, Locate.xpath("//div").unique());
+        WebElement webElement = guiElement.getWebElement();
+        Assert.assertNotNull(webElement);
+    }
+
     /**
      * Test if GuiElement.find() works for an existing element found by a Xpath
      */
@@ -303,7 +321,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT29N_GuiElement_mouseOverNotSupportedMouseActions() {
         getTextBoxElement().mouseOver();
-        getLoggerTableElement().asserts().assertContainsText("Mouse over");
+        getLoggerTableElement().asserts().assertTextContains("Mouse over");
     }
 
     /**
@@ -313,7 +331,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT30_GuiElement_mouseOverWithSupportedMouseActions() {
         getTextBoxElement().mouseOver();
-        getLoggerTableElement().asserts().assertContainsText("Mouse over");
+        getLoggerTableElement().asserts().assertTextContains("Mouse over");
     }
 
     /**

@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.TesterraBy;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.TakesScreenshot;
@@ -41,7 +41,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
     }
 
     private GuiElement getGuiElementQa(final String qaTag) {
-        return new GuiElement(WebDriverManager.getWebDriver(), TesterraBy.xpath(String.format("//*[@data-qa='%s']",qaTag)));
+        return new GuiElement(WebDriverManager.getWebDriver(), Locate.qa(qaTag));
     }
 
     @Test

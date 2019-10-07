@@ -57,6 +57,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGui
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -86,9 +87,10 @@ import java.util.Map;
  * Authors: pele, rnhb
  */
 public class GuiElement implements
-        Checkable,
-        GuiElementCore,
-        Nameable {
+    Checkable,
+    GuiElementCore,
+    Nameable
+{
 
     private static final Map<String, GuiElementCoreFactory> coreFactories = new HashMap<>();
 
@@ -122,6 +124,7 @@ public class GuiElement implements
 
     private GuiElementCore guiElementCore;
     private GuiElementWait guiElementWait;
+    private Locate locator;
     private final GuiElementData guiElementData;
 
     private GuiElement(GuiElementData guiElementData, int index) {
@@ -141,27 +144,45 @@ public class GuiElement implements
      * @param by     By locator.
      */
     public GuiElement(final WebDriver driver, final By by) {
-        this(driver, by, "");
+        this(driver, by, null);
     }
 
-    public GuiElement(final WebDriver driver, final By by, final GuiElement... guiElements) {
-        this(driver, by, "", guiElements);
+    public GuiElement(final WebDriver driver, final Locate locator) {
+        this(driver, locator, null);
     }
 
     /**
      * Constructor with frames and explicit webDriver session.
      *
-     * @param by     By locator.
+     * @param locator     By locator.
      * @param frames frames containing the element
      * @param driver Driver Object.
      */
-    private GuiElement(WebDriver driver, By by, String name, GuiElement... frames) {
+    public GuiElement(
+        final WebDriver driver,
+        final Locate locator,
+        final GuiElement... frames
+    ) {
+        this(driver, locator.getBy(), frames);
+        this.locator = locator;
+    }
+
+    public GuiElement(
+        final WebDriver driver,
+        final By by,
+        final GuiElement... frames
+    ) {
         FrameLogic frameLogic = null;
         if (frames != null && frames.length > 0) {
             frameLogic = new FrameLogic(driver, frames);
         }
-        guiElementData = new GuiElementData(driver, name, frameLogic, by, this);
+        guiElementData = new GuiElementData(driver, "", frameLogic, by, this);
         buildInternals(driver, by);
+        this.locator = new Locate(by);
+    }
+
+    public Locate getLocator() {
+        return locator;
     }
 
     private void buildInternals(WebDriver driver, By by) {
@@ -259,10 +280,12 @@ public class GuiElement implements
      * @param filters Filters to be applied
      *
      * @return The same GuiElement
+     * @deprecated Use TesterraBy instead
      */
+    @Deprecated
     public GuiElement withWebElementFilter(WebElementFilter... filters) {
         if (filters != null) {
-            Collections.addAll(guiElementData.webElementFilters, filters);
+            Collections.addAll(locator.getFilters(), filters);
         }
         return this;
     }
@@ -614,8 +637,9 @@ public class GuiElement implements
         guiElementData.parent = parent;
     }
 
+    @Deprecated
     public List<WebElementFilter> getWebElementFilters() {
-        return guiElementData.webElementFilters;
+        return locator.getFilters();
     }
 
     @Override

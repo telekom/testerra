@@ -21,8 +21,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -71,7 +72,11 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     private final GuiElementData guiElementData;
 
-    public DesktopGuiElementCore(By by, WebDriver webDriver, GuiElementData guiElementData) {
+    public DesktopGuiElementCore(
+        By by,
+        WebDriver webDriver,
+        GuiElementData guiElementData
+    ) {
         this.by = by;
         this.webDriver = webDriver;
         this.guiElementData = guiElementData;
@@ -103,15 +108,17 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
             }
             if (elements != null) {
                 guiElementData.executionLog.addMessage("Found " + elements.size() + " WebElements for the locator " + by);
-                elements = applyFilters(elements);
+                final Locate selector = guiElementData.guiElement.getLocator();
+                if (selector.isUnique() && elements.size() > 1) {
+                    throw new Exception("To many WebElements found (" + elements.size() + ")");
+                }
+                elements = applyFilters(elements, selector.getFilters());
                 numberOfFoundElements = elements.size();
 
                 findCounter = setWebElement(elements);
-            } else {
-                guiElementData.executionLog.addMessage("Found no WebElements for the locator " + by);
             }
         } catch (Exception e) {
-            guiElementData.executionLog.addMessage("WebElement was not found:" + e.toString());
+            //guiElementData.executionLog.addMessage("WebElement was not found:" + e.toString());
             notFoundCause = e;
         }
         throwExceptionIfWebElementIsNull(notFoundCause);
@@ -168,8 +175,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         }
     }
 
-    private List<WebElement> applyFilters(List<WebElement> foundElements) {
-        List<WebElementFilter> webElementFilters = guiElementData.webElementFilters;
+    private List<WebElement> applyFilters(List<WebElement> foundElements, List<WebElementFilter> webElementFilters) {
         if (webElementFilters == null || webElementFilters.isEmpty()) {
             LOGGER.debug("find(): No WebElementFilters existing, not filtering");
             return foundElements;
@@ -348,8 +354,11 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         LOGGER.debug("click(): clicked relative");
     }
 
-    private void pClickRelative(GuiElementCore guiElementCore, WebDriver driver,
-                                WebElement webElement) {
+    private void pClickRelative(
+        GuiElementCore guiElementCore,
+        WebDriver driver,
+        WebElement webElement
+    ) {
         By by = guiElementCore.getBy();
         if (by instanceof ByImage) {
             ByImage byImage = (ByImage) by;

@@ -45,56 +45,71 @@ public class Locate {
     private boolean unique = false;
     private By by;
 
-    public Locate(By by) {
-        this.by = by;
+    private Locate() {
+
+    }
+
+    public static Locate by() {
+        return new Locate();
+    }
+    public static Locate by(By by) {
+        final Locate locate = new Locate();
+        locate.by = by;
+        return locate;
     }
 
     /**
      * @param id The value of the "id" attribute to search for.
      * @return A By which locates elements by the value of the "id" attribute.
      */
-    public static Locate id(String id) {
-        return new Locate(new By.ById(id)).unique();
+    public Locate id(String id) {
+        this.by = new By.ById(id);
+        return this;
     }
 
     /**
      * @param linkText The exact text to match against.
      * @return A By which locates A elements by the exact text it displays.
      */
-    public static Locate linkText(String linkText) {
-        return new Locate(new By.ByLinkText(linkText));
+    public Locate linkText(String linkText) {
+        by = new By.ByLinkText(linkText);
+        return this;
     }
 
     /**
      * @param partialLinkText The partial text to match against
      * @return a By which locates elements that contain the given link text.
      */
-    public static Locate partialLinkText(String partialLinkText) {
-        return new Locate(new By.ByPartialLinkText(partialLinkText));
+    public Locate partialLinkText(String partialLinkText) {
+        by = new By.ByPartialLinkText(partialLinkText);
+        return this;
     }
 
     /**
      * @param name The value of the "name" attribute to search for.
      * @return A By which locates elements by the value of the "name" attribute.
      */
-    public static Locate name(String name) {
-        return new Locate(new By.ByName(name));
+    public Locate name(String name) {
+        by = new By.ByName(name);
+        return this;
     }
 
     /**
      * @param tagName The element's tag name.
      * @return A By which locates elements by their tag name.
      */
-    public static Locate tagName(String tagName) {
-        return new Locate(new By.ByTagName(tagName));
+    public Locate tagName(String tagName) {
+        by = new By.ByTagName(tagName);
+        return this;
     }
 
     /**
      * @param xpathExpression The XPath to use.
      * @return A By which locates elements via XPath.
      */
-    public static Locate xpath(String xpathExpression) {
-        return new Locate(new By.ByXPath(xpathExpression));
+    public Locate xpath(String xpathExpression) {
+        by = new By.ByXPath(xpathExpression);
+        return this;
     }
 
     /**
@@ -105,8 +120,9 @@ public class Locate {
      * @param className The value of the "class" attribute to search for.
      * @return A By which locates elements by the value of the "class" attribute.
      */
-    public static Locate className(String className) {
-        return new Locate(new By.ByClassName(className));
+    public Locate className(String className) {
+        by = new By.ByClassName(className);
+        return this;
     }
 
     /**
@@ -117,9 +133,13 @@ public class Locate {
      * @param cssSelector CSS expression.
      * @return A By which locates elements by CSS.
      */
-    public static Locate css(String cssSelector) {
-        return new Locate(new By.ByCssSelector(cssSelector));
+    public Locate cssSelector(String cssSelector) {
+        by = new By.ByCssSelector(cssSelector);
+        return this;
     }
+
+
+
     /**
      * tt. by coordinates using webdriver
      *
@@ -128,12 +148,14 @@ public class Locate {
      * @param y      .
      * @return .
      */
-    public static Locate coordinates(final WebDriver driver, final int x, final int y) {
-        return new Locate(new ByCoordinates(driver, x, y));
+    public Locate coordinates(final WebDriver driver, final int x, final int y) {
+        by = new ByCoordinates(driver, x, y);
+        return this;
     }
 
-    public static Locate qa(final String string) {
-        return new Locate(new By.ByXPath(String.format("//*[@data-qa='%s']", string))).unique();
+    public Locate qa(final String string) {
+        by = new By.ByXPath(String.format("//*[@data-qa='%s']", string));
+        return this;
     }
 
     public By getBy() {

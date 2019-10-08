@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variat
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
+import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.*;
@@ -256,7 +257,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Test
     public void testT23_GuiElement_findByIDUnique() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement guiElement = new GuiElement(driver, Locate.id("11"));
+        GuiElement guiElement = new GuiElement(driver, Locate.by().unique().id("11"));
         WebElement webElement = guiElement.getWebElement();
         Assert.assertNotNull(webElement);
     }
@@ -264,9 +265,13 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Test
     public void testT23_GuiElement_findNonUnique() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement guiElement = new GuiElement(driver, Locate.xpath("//div").unique());
-        WebElement webElement = guiElement.getWebElement();
-        Assert.assertNotNull(webElement);
+        GuiElement guiElement = new GuiElement(driver, Locate.by().unique().xpath("//div"));
+        try {
+            WebElement webElement = guiElement.getWebElement();
+        } catch (TimeoutException e) {
+
+            AssertUtils.assertContains(e.getCause().getMessage(), "GuiElement not found: "+ guiElement.getLocator());
+        }
     }
 
     /**

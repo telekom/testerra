@@ -178,7 +178,7 @@ public class GuiElement implements
         }
         guiElementData = new GuiElementData(driver, "", frameLogic, by, this);
         buildInternals(driver, by);
-        this.locator = new Locate(by);
+        this.locator = Locate.by(by);
     }
 
     public Locate getLocator() {

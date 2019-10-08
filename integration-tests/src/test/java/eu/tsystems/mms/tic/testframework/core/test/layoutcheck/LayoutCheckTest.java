@@ -41,7 +41,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
     }
 
     private GuiElement getGuiElementQa(final String qaTag) {
-        return new GuiElement(WebDriverManager.getWebDriver(), Locate.qa(qaTag));
+        return new GuiElement(WebDriverManager.getWebDriver(), Locate.by().qa(qaTag));
     }
 
     @Test

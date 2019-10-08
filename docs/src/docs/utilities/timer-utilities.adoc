@@ -2,7 +2,7 @@
 
 The timer utilities mainly provide two important classes for you.
 
-=== TimerUtils
+== TimerUtils
 
 If you want to pause your current test execution, because you may have to wait for something or need a hard timeout you can use the `TimerUtils`.
 
@@ -18,7 +18,7 @@ TimerUtils.sleep(5000, "Wait for something to happen.");
 Both of these methods calls of `sleep()` will produce a log message.
 If you want to sleep without a message, `TimerUtils` of Testerra provides a method `sleepSilent()`.
 
-=== Timer
+== Timer
 
 The `Timer` provides a basic timer feature, if you have to execute the same snippet of code in an defined interval.
 The `Timer` ships with an internal class called `Sequence`.

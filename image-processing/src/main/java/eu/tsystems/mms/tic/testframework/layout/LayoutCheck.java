@@ -6,8 +6,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
-import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
-import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
@@ -18,6 +16,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -37,14 +36,17 @@ import java.util.List;
  */
 public final class LayoutCheck {
 
-    private static class MatchStep {
+    public static class MatchStep {
+        public Mode mode;
         Path referenceFileName;
         Path annotatedReferenceFileName;
         Path actualFileName;
         Path distanceFileName;
         Path annotationDataFileName;
         String consecutiveTargetImageName;
-        boolean takeReferenceOnly;
+        public boolean takeReferenceOnly;
+        public double distance = NO_DISTANCE;
+        public LayoutComparator layoutComparator;
     }
 
     /**
@@ -106,9 +108,10 @@ public final class LayoutCheck {
      * @param mode PIXEL or ANNOTATED
      * @return Percents of pixels that are different
      */
+    @Deprecated
     public static double run(WebDriver webDriver, final String targetImageName, final Mode mode) {
         if (TakesScreenshot.class.isAssignableFrom(webDriver.getClass())) {
-            return pRun((TakesScreenshot) webDriver, targetImageName, mode);
+            return pRun((TakesScreenshot) webDriver, targetImageName, mode).distance;
         } else {
             throw new RuntimeException("Passed WebDriver does not implement TakesScreenshot. WebDriver is of class " + webDriver.getClass());
         }
@@ -124,12 +127,13 @@ public final class LayoutCheck {
      *                        properties)
      * @return Percents of pixels that are different (0 if reference is taken)
      */
+    @Deprecated
     public static double run(final TakesScreenshot driver, final String targetImageName) {
         String modeString = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_MODE, "pixel").trim()
                 .toUpperCase();
         Mode mode = Mode.valueOf(modeString);
 
-        return pRun(driver, targetImageName, mode);
+        return pRun(driver, targetImageName, mode).distance;
     }
 
     /**
@@ -140,14 +144,15 @@ public final class LayoutCheck {
      * @param mode            PIXEL or ANNOTATED
      * @return distance between the images
      */
+    @Deprecated
     public static double run(final TakesScreenshot driver, final String targetImageName, final Mode mode) {
-        return pRun(driver, targetImageName, mode);
+        return pRun(driver, targetImageName, mode).distance;
     }
 
     /**
      * Matches annotations and returns
      */
-    public static LayoutMatch matchAnnotations(
+    public static MatchStep matchAnnotations(
         final TakesScreenshot driver,
         final String targetImageName
     ) {
@@ -155,26 +160,19 @@ public final class LayoutCheck {
         return matchAnnotations(screenshot, targetImageName);
     }
 
-    public static LayoutMatch matchAnnotations(
+    public static MatchStep matchAnnotations(
         final File screenshot,
         final String targetImageName
     ) {
         MatchStep step = prepare(screenshot, targetImageName);
-        if (step.takeReferenceOnly) {
-            return new LayoutMatch();
-        } else {
-            LayoutComparator comparator = matchAnnotations(step);
-            toReport(
-                step,
-                Mode.ANNOTATED,
-                comparator.getErrorRelation(),
-                comparator.getCriticalMatches()
-            );
-            return comparator.getLayoutMatch();
+        step.mode = Mode.ANNOTATED;
+        if (!step.takeReferenceOnly) {
+            matchAnnotations(step);
         }
+        return step;
     }
 
-    private static LayoutComparator matchAnnotations(final MatchStep step) {
+    private static void matchAnnotations(final MatchStep step) {
         // read images
         String referenceAbsoluteFileName = step.referenceFileName.toAbsolutePath().toString();
         String annotatedAbsoluteFileName = step.annotatedReferenceFileName.toAbsolutePath().toString();
@@ -197,7 +195,8 @@ public final class LayoutCheck {
             throw new TesterraSystemException("Error reading images", e);
         }
 
-        return layoutComparator;
+        step.distance = layoutComparator.getErrorRelation();
+        step.layoutComparator = layoutComparator;
     }
 
     /**
@@ -279,29 +278,21 @@ public final class LayoutCheck {
     /**
      * Matches image pixels and returns an absolute distance value
      */
-    public static double matchPixels(final TakesScreenshot driver, final String targetImageName) {
+    public static MatchStep matchPixels(final TakesScreenshot driver, final String targetImageName) {
         final File screenshot = driver.getScreenshotAs(OutputType.FILE);
         return matchPixels(screenshot, targetImageName);
     }
 
-    public static double matchPixels(final File screenshot, final String targetImageName) {
+    public static MatchStep matchPixels(final File screenshot, final String targetImageName) {
         final MatchStep step = prepare(screenshot, targetImageName);
-        if (step.takeReferenceOnly) {
-            return NO_DISTANCE;
-        } else {
-            final double distance = matchPixels(step);
-            toReport(
-                step,
-                Mode.PIXEL,
-                distance,
-                null
-            );
-            return distance;
+        step.mode = Mode.PIXEL;
+        if (!step.takeReferenceOnly) {
+            matchPixels(step);
         }
+        return step;
     }
 
-    private static double matchPixels(final MatchStep step) {
-        double distance;
+    private static void matchPixels(final MatchStep step) {
         try {
             // read images
             File refFile = step.referenceFileName.toFile();
@@ -323,7 +314,7 @@ public final class LayoutCheck {
             );
 
             // create distance image to given reference
-            distance = generateDistanceImage(
+            step.distance = generateDistanceImage(
                 referenceImage,
                 actualImage,
                 step.distanceFileName.toAbsolutePath().toString(),
@@ -333,8 +324,6 @@ public final class LayoutCheck {
             LOGGER.error(e.getMessage());
             throw new TesterraSystemException("Error reading images", e);
         }
-
-        return distance;
     }
 
     /**
@@ -345,7 +334,7 @@ public final class LayoutCheck {
      * @param mode            PIXEL or ANNOTATED
      * @return distance between the images
      */
-    private static synchronized double pRun(
+    private static synchronized MatchStep pRun(
         final TakesScreenshot driver,
         final String targetImageName,
         final Mode mode
@@ -353,28 +342,17 @@ public final class LayoutCheck {
         LOGGER.debug("Starting ScreenReferencer in " + mode.name() + " mode.");
         final File screenshot = driver.getScreenshotAs(OutputType.FILE);
         final MatchStep step = prepare(screenshot, targetImageName);
-        double distance = NO_DISTANCE;
 
         if (step.takeReferenceOnly == false) {
+            step.mode = mode;
             switch (mode) {
                 case PIXEL:
-                    distance = matchPixels(step);
-                    toReport(
-                        step,
-                        mode,
-                        distance,
-                        null
-                    );
+                    matchPixels(step);
+                    toReport(step);
                     break;
                 case ANNOTATED:
-                    LayoutComparator layoutComparator = matchAnnotations(step);
-                    distance = layoutComparator.getErrorRelation();
-                    toReport(
-                        step,
-                        mode,
-                        distance,
-                        layoutComparator.getCriticalMatches()
-                    );
+                    matchAnnotations(step);
+                    toReport(step);
                     break;
                 default:
                     LOGGER.error("Mode" + mode.name() + "not supported");
@@ -382,7 +360,7 @@ public final class LayoutCheck {
             }
         }
 
-        return distance;
+        return step;
     }
 
     /**
@@ -578,29 +556,24 @@ public final class LayoutCheck {
         return (image.getWidth() > x) && (image.getHeight() > y);
     }
 
-    private static void toReport(
-        final MatchStep step,
-        Mode mode,
-        final double distance,
-        List<LayoutFeature> annotatedModeCriticalMatches
-    ) {
+    public static void toReport(final MatchStep step) {
         final String name = step.consecutiveTargetImageName;
         final Path referenceScreenshotPath = step.referenceFileName;
         final Path actualScreenshotPath = step.actualFileName;
         final Path distanceScreenshotPath = step.distanceFileName;
-        final Path annotatedReferenceScreenshotPath = step.annotatedReferenceFileName;
 
         LayoutCheckContext context = new LayoutCheckContext();
         context.image = name;
-        context.mode = mode.name();
-        context.distance = distance;
+        context.mode = step.mode.name();
+        context.distance = step.distance;
         try {
             // Always copy the reference image
             context.expectedScreenshot = Report.provideScreenshot(referenceScreenshotPath.toFile(),null, Report.Mode.COPY);
             context.actualScreenshot = Report.provideScreenshot(actualScreenshotPath.toFile(), null, Report.Mode.MOVE);
             context.distanceScreenshot = Report.provideScreenshot(distanceScreenshotPath.toFile(), null, Report.Mode.MOVE);
-            context.distanceScreenshot.meta().put("Distance", Double.toString(distance));
-            if (mode == Mode.ANNOTATED) {
+            context.distanceScreenshot.meta().put("Distance", Double.toString(step.distance));
+            if (step.annotatedReferenceFileName!=null) {
+                final Path annotatedReferenceScreenshotPath = step.annotatedReferenceFileName;
                 context.annotatedScreenshot = Report.provideScreenshot(annotatedReferenceScreenshotPath.toFile(), null, Report.Mode.MOVE);
             }
         } catch (IOException e) {
@@ -608,40 +581,5 @@ public final class LayoutCheck {
         }
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.customContexts.add(context);
-
-        /*
-        final String relReferenceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + "/" + referenceScreenshotPath.getFileName().toString();
-        final String relActualScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + "/" + actualScreenshotPath.getFileName().toString();
-        final String relDistanceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + "/" + distanceScreenshotPath.getFileName().toString();
-
-        // TODO: replace with exportable content
-        // create the report item
-        ScreenReferenceReportItem scri = new ScreenReferenceReportItem(
-            name,
-            mode,
-            distance,
-            relReferenceScreenshotPath,
-            relActualScreenshotPath,
-            relDistanceScreenshotPath
-        );
-
-        if (mode == Mode.ANNOTATED) {
-            String cleanedAnnotatedReferenceScreenshotPath = "../../" + Constants.SCREENREFERENCES_PATH + annotatedReferenceScreenshotPath.getFileName().toString();
-            scri.setAnnotatedScreenshotPath(cleanedAnnotatedReferenceScreenshotPath);
-            if (annotatedModeCriticalMatches.size() > 0) {
-                scri.setAnnotatedModeCriticalMatches(annotatedModeCriticalMatches);
-            }
-        }
-        */
-
-        /*
-        String msg = "Layout check failed: " + name;
-        if (Flags.LAYOUTCHECK_ASSERT_NF) {
-            NonFunctionalAssert.assertTrue(false, msg);
-        }
-        else {
-            Assert.fail(msg);
-        }
-        */
     }
 }

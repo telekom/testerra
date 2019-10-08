@@ -24,13 +24,13 @@ import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
+
 /**
  * Created by toku on 13.01.2015.
  */
 
 public class AssertUtilsTest extends AbstractTest {
-
-    private String errorMessage = "String does not contain expected content";
 
     /**
      * checks if string contains expected content
@@ -81,8 +81,77 @@ public class AssertUtilsTest extends AbstractTest {
             return;
         }
         Assert.fail("");
+    }
+
+    @Test
+    public void test_assertLowerThan() {
+        AssertUtils.assertLowerEqualThan(new BigDecimal(1), new BigDecimal(2));
+    }
+
+    @Test
+    public void test_assertLowerThanFails() {
+        try {
+            AssertUtils.assertLowerEqualThan(new BigDecimal(2), new BigDecimal(1));
+        } catch (AssertionError e) {
+            System.out.println(e);
+        }
 
     }
 
+    @Test
+    public void test_assertGreaterThan() {
+        AssertUtils.assertGreaterThan(new BigDecimal(2), new BigDecimal(1));
+    }
+
+    @Test
+    public void test_assertGreaterThanFails() {
+        try {
+            AssertUtils.assertGreaterThan(new BigDecimal(1), new BigDecimal(2));
+        } catch (AssertionError e) {
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void test_assertLowerEqualThan() {
+        AssertUtils.assertLowerEqualThan(new BigDecimal(2), new BigDecimal(2));
+    }
+
+    @Test
+    public void test_assertLowerEqualThanFails() {
+        try {
+            AssertUtils.assertLowerEqualThan(new BigDecimal(2), new BigDecimal(1));
+        } catch (AssertionError e) {
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void test_assertGreaterEqualThan() {
+        AssertUtils.assertGreaterEqualThan(new BigDecimal(2), new BigDecimal(2));
+    }
+
+    @Test
+    public void test_assertGreaterEqualThanFails() {
+        try {
+            AssertUtils.assertGreaterEqualThan(new BigDecimal(1), new BigDecimal(2));
+        } catch (AssertionError e) {
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void test_assertContainsNot() {
+        AssertUtils.assertContainsNot("affe", "haus");
+    }
+
+    @Test
+    public void test_assertContainsNotFails() {
+        try {
+            AssertUtils.assertContainsNot("affe", "affe");
+        } catch (AssertionError e) {
+            System.out.println(e);
+        }
+    }
 
 }

@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -53,7 +53,7 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
     }
 
     private void highlight(boolean successful) {
-        if (!Flags.GUIELEMENT_HIGHLIGHTS) {
+        if (!POConfig.isDemoMode()) {
             return;
         }
 

@@ -51,12 +51,6 @@ public final class POConfig {
 
     private static CheckRule guiElementCheckRule = CheckRule.valueOf(PropertyManager.getProperty(TesterraProperties.GUIELEMENT_CHECK_RULE, CheckRule.IS_DISPLAYED.name()));
 
-    /**
-     * DEMO mode. Highlight GuiElements actions on Page Object pages or
-     * when implemented the highlightElement.js scipt on actual page.
-     */
-    private static boolean demoMode = PropertyManager.getBooleanProperty(TesterraProperties.DEMO_MODE, true);
-
     public static int getUiElementTimeoutInSeconds() {
         if (THREAD_LOCAL_TIMEOUT.get() != null) {
             return THREAD_LOCAL_TIMEOUT.get();
@@ -69,11 +63,7 @@ public final class POConfig {
     }
 
     public static boolean isDemoMode() {
-        return demoMode;
-    }
-
-    public static void setDemoMode(boolean demoMode) {
-        POConfig.demoMode = demoMode;
+        return PropertyManager.getBooleanProperty(TesterraProperties.DEMO_MODE, true);
     }
 
     public static CheckRule getGuiElementCheckRule() {

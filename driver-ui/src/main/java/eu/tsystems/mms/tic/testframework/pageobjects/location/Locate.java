@@ -41,8 +41,8 @@ import java.util.List;
  */
 public class Locate {
 
-    private List<WebElementFilter> _filters;
-    private boolean _unique = false;
+    private List<WebElementFilter> filters;
+    private boolean unique = false;
     private By by;
 
     public Locate(By by) {
@@ -141,11 +141,11 @@ public class Locate {
     }
 
     public boolean isUnique() {
-        return this._unique;
+        return this.unique;
     }
 
     public Locate unique() {
-        this._unique = true;
+        this.unique = true;
         return this;
     }
 
@@ -164,18 +164,18 @@ public class Locate {
     }
 
     public List<WebElementFilter> getFilters() {
-        if (this._filters == null) {
-            this._filters = new ArrayList<>();
+        if (this.filters == null) {
+            this.filters = new ArrayList<>();
         }
-        return this._filters;
+        return this.filters;
     }
 
     @Override
     public String toString() {
-        String toString = by.toString() + (_unique ? " (unique)" : "");
-        if (_filters != null && !_filters.isEmpty()) {
-            toString += " with WebElementFilter" + (_filters.size() > 1 ? "s" : "") + " { ";
-            for (WebElementFilter webElementFilter : _filters) {
+        String toString = by.toString() + (unique ? " (unique)" : "");
+        if (filters != null && !filters.isEmpty()) {
+            toString += " with WebElementFilter" + (filters.size() > 1 ? "s" : "") + " { ";
+            for (WebElementFilter webElementFilter : filters) {
                 toString += webElementFilter.toString() + ", ";
             }
             // cut the last comma with space

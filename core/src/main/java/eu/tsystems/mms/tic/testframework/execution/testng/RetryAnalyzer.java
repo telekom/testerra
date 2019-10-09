@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
+import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IResultMap;
@@ -38,7 +39,12 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Testng Retry Analyzer.
@@ -145,16 +151,25 @@ public class RetryAnalyzer implements IRetryAnalyzer {
         no retry for tests with expected Fails annotation
          */
         if (testResult.getMethod().getConstructorOrMethod().getMethod().isAnnotationPresent(Fails.class)) {
-            LOGGER.warn("Not retrying this method, because test is @Fails annotated.");
-            return false;
+
+            // BUT ONLY: No retry for methods that hav a validFor
+            final Fails failsAnnotation = testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
+            if (FailsAnnotationFilter.isFailsAnnotationValid(failsAnnotation)) {
+                LOGGER.warn("Not retrying this method, because test is @Fails annotated.");
+                return false;
+            }
         }
 
         /*
         no retry for tests with fails annotaion in stacktrace
          */
         if (throwable1 != null && ExecutionUtils.getFailsAnnotationInStackTrace(throwable1.getStackTrace()) != null) {
-            LOGGER.warn("Not retrying this method, because a method in stacktrace is @Fails annotated.");
-            return false;
+
+            final Fails failsAnnotation = testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
+            if (FailsAnnotationFilter.isFailsAnnotationValid(failsAnnotation)) {
+                LOGGER.warn("Not retrying this method, because a method in stacktrace is @Fails annotated.");
+                return false;
+            }
         }
 
         boolean containingFilteredThrowable = isTestResultContainingFilteredThrowable(testResult);
@@ -258,6 +273,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
      * checks if test results contain throwable results
      *
      * @param testResult .
+     *
      * @return .
      */
     public static boolean isTestResultContainingFilteredThrowable(final ITestResult testResult) {
@@ -286,7 +302,9 @@ public class RetryAnalyzer implements IRetryAnalyzer {
 
     /**
      * Returns a retryCause when a stacktrace match was found, otherwise null, which means, that we do not want a retry.
+     *
      * @param throwable The throwable to check.
+     *
      * @return a cause or null
      */
     private static Throwable checkThrowable(Throwable throwable) {

@@ -299,20 +299,6 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public List<WebElement> findElements(final By byLocator) {
-        Timer.Sequence<List<WebElement>> sequence = new Timer.Sequence<List<WebElement>>() {
-            @Override
-            public void run() {
-                List<WebElement> webElementList = guiElementCore.findElements(byLocator);
-                setReturningObject(webElementList);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<List<WebElement>> throwablePackedResponse = timerWrapper.executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
-    }
-
-    @Override
     public GuiElement getSubElement(final By byLocator, final String description) {
         Timer.Sequence<GuiElement> sequence = new Timer.Sequence<GuiElement>() {
             @Override
@@ -323,20 +309,6 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         };
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse<GuiElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
-    }
-
-    @Override
-    public WebElement findElement(final By byLocator) {
-        Timer.Sequence<WebElement> sequence = new Timer.Sequence<WebElement>() {
-            @Override
-            public void run() {
-                WebElement webElement = guiElementCore.findElement(byLocator);
-                setReturningObject(webElement);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<WebElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -365,20 +337,6 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         };
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse<Dimension> throwablePackedResponse = timerWrapper.executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
-    }
-
-    @Override
-    public Rectangle getRect() {
-        Timer.Sequence<Rectangle> sequence = new Timer.Sequence<Rectangle>() {
-            @Override
-            public void run() {
-                Rectangle rect = guiElementCore.getRect();
-                setReturningObject(rect);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Rectangle> throwablePackedResponse = timerWrapper.executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -714,8 +672,4 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         return response.logThrowableAndReturnResponse();
     }
 
-    @Override
-    public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {
-        return guiElementCore.getScreenshotAs(target);
-    }
 }

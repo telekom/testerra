@@ -175,24 +175,8 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public List<WebElement> findElements(By byLocator) {
-        beforeDelegation();
-        List<WebElement> elements = decoratedGuiElementCore.findElements(byLocator);
-        afterDelegation();
-        return elements;
-    }
-
-    @Override
     public GuiElement getSubElement(By byLocator, String description) {
         return decoratedGuiElementCore.getSubElement(byLocator, description);
-    }
-
-    @Override
-    public WebElement findElement(By byLocator) {
-        beforeDelegation();
-        WebElement webElement = decoratedGuiElementCore.findElement(byLocator);
-        afterDelegation();
-        return webElement;
     }
 
     @Override
@@ -279,14 +263,6 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {
-        beforeDelegation();
-        X screenshotAs = decoratedGuiElementCore.getScreenshotAs(target);
-        afterDelegation();
-        return screenshotAs;
-    }
-
-    @Override
     public void swipe(int offsetX, int offSetY) {
         beforeDelegation();
         decoratedGuiElementCore.swipe(offsetX, offSetY);
@@ -299,14 +275,6 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
         int numberOfFoundElements = decoratedGuiElementCore.getNumberOfFoundElements();
         afterDelegation();
         return numberOfFoundElements;
-    }
-
-    @Override
-    public Rectangle getRect() {
-        beforeDelegation();
-        Rectangle rect = decoratedGuiElementCore.getRect();
-        afterDelegation();
-        return rect;
     }
 
     @Override

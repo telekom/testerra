@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Created by rnhb on 12.08.2015.
  */
-public interface GuiElementCore extends GuiElementStatusCheck, WebElement {
+public interface GuiElementCore extends GuiElementStatusCheck {
 
     /**
      * Returns the Webelement.
@@ -149,14 +149,6 @@ public interface GuiElementCore extends GuiElementStatusCheck, WebElement {
     String getTagName();
 
     /**
-     * WebElement.findElements.
-     *
-     * @param byLocator .
-     * @return List of Webelemts located by by-locator.
-     */
-    List<WebElement> findElements(By byLocator);
-
-    /**
      * get sub element by locator
      *
      * @param byLocator   Locator of new element.
@@ -164,14 +156,6 @@ public interface GuiElementCore extends GuiElementStatusCheck, WebElement {
      * @return GuiElement
      */
     GuiElement getSubElement(By byLocator, String description);
-
-    /**
-     * WebElement.findElement.
-     *
-     * @param byLocator .
-     * @return Webelement located by by-locator.
-     */
-    WebElement findElement(By byLocator);
 
     /**
      * WebElement.getLocation.

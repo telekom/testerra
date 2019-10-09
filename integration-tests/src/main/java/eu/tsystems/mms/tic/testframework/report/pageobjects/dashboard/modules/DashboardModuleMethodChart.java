@@ -7,9 +7,7 @@ import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFramePage;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -90,26 +88,13 @@ public class DashboardModuleMethodChart extends AbstractFramePage {
     public int getNumberMethodsInMethodChartForTestResult(TestResultHelper.TestResult testResult) {
         switch (testResult) {
             case FAILED:
-                return methodChartFailedMethodsTable.findElements(By.tagName("tr")).size() - 1;
+                return methodChartFailedMethodsTable.getWebElement().findElements(By.tagName("tr")).size() - 1;
             case PASSED:
-                return methodChartPassedMethodsTable.findElements(By.tagName("tr")).size() - 1;
+                return methodChartPassedMethodsTable.getWebElement().findElements(By.tagName("tr")).size() - 1;
             case SKIPPED:
-                return methodChartSkippedMethodsTable.findElements(By.tagName("tr")).size() - 1;
+                return methodChartSkippedMethodsTable.getWebElement().findElements(By.tagName("tr")).size() - 1;
             default:
                 throw new TesterraRuntimeException("Method not implemented for TestResult: " + testResult);
         }
-    }
-
-    public List<String> getDisplayedMethodNamesForMethod(String methodName) {
-        List<WebElement> displayedMethodTableEntries = methodChartFailedMethodsTable.findElements(By.tagName("a"));
-        List<String> displayedMethodNames = new ArrayList<>();
-        for (WebElement displayedMethod : displayedMethodTableEntries) {
-            // TODO does not work
-            String displayedMethodName = displayedMethod.getText();
-            if (displayedMethodName.contains(methodName)) {
-                displayedMethodNames.add(displayedMethodName);
-            }
-        }
-        return displayedMethodNames;
     }
 }

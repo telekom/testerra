@@ -36,24 +36,10 @@ import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ConfigurableGuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertExecutionLogDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PerformanceTestGuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheckFrameAwareDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.*;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.*;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.creation.GuiElementCoreFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacadeLoggingDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFace;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.*;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
@@ -61,24 +47,13 @@ import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.Rectangle;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * GuiElement is the access point for most tests and is an extension of WebElement.
@@ -443,16 +418,6 @@ public class GuiElement implements
     }
 
     @Override
-    public List<WebElement> findElements(By byLocator) {
-        return guiElementFacade.findElements(byLocator);
-    }
-
-    @Override
-    public WebElement findElement(By byLocator) {
-        return guiElementFacade.findElement(byLocator);
-    }
-
-    @Override
     public boolean isDisplayed() {
         return guiElementFacade.isDisplayed();
     }
@@ -483,11 +448,6 @@ public class GuiElement implements
     @Override
     public Dimension getSize() {
         return guiElementFacade.getSize();
-    }
-
-    @Override
-    public Rectangle getRect() {
-        return null;
     }
 
     @Override
@@ -625,10 +585,6 @@ public class GuiElement implements
 
     public WebDriver getDriver() {
         return guiElementData.webDriver;
-    }
-
-    public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {
-        return guiElementFacade.getScreenshotAs(target);
     }
 
     public boolean hasSensibleData() {

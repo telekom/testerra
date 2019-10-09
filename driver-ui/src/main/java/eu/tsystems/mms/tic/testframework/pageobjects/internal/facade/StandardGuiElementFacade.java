@@ -156,18 +156,8 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public List<WebElement> findElements(By byLocator) {
-        return guiElementCore.findElements(byLocator);
-    }
-
-    @Override
     public GuiElement getSubElement(By byLocator, String description) {
         return guiElementCore.getSubElement(byLocator, description);
-    }
-
-    @Override
-    public WebElement findElement(By byLocator) {
-        return guiElementCore.findElement(byLocator);
     }
 
     @Override
@@ -193,11 +183,6 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     @Override
     public Dimension getSize() {
         return guiElementCore.getSize();
-    }
-
-    @Override
-    public Rectangle getRect() {
-        return guiElementCore.getRect();
     }
 
     @Override
@@ -383,10 +368,5 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     @Override
     public boolean waitForIsNotSelectable() {
         return guiElementWait.waitForIsNotSelectable();
-    }
-
-    @Override
-    public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {
-        return guiElementCore.getScreenshotAs(target);
     }
 }

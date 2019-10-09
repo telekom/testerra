@@ -617,27 +617,27 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Test
     public void testT67_GuiElement_findElement() {
         GuiElement element = getSelectableElement();
-        WebElement webElement = element.findElement(By.xpath("//div[1]"));
+        WebElement webElement = element.getWebElement().findElement(By.xpath("//div[1]"));
         Assert.assertNotNull(webElement, "Found Element");
     }
 
     @Test
     public void testT68N_GuiElement_findElement() {
         GuiElement element = getSelectableElement();
-        ThrowableUtils.expectThrowable(TimeoutException.class, () -> element.findElement(By.xpath("//div[text()=\'\']")));
+        ThrowableUtils.expectThrowable(NoSuchElementException.class, () -> element.getWebElement().findElement(By.xpath("//div[text()=\'\']")));
     }
 
     @Test
     public void testT69_GuiElement_findElements() {
         GuiElement element = getSelectableElement();
-        List<WebElement> webElements = element.findElements(By.xpath("//div"));
+        List<WebElement> webElements = element.getWebElement().findElements(By.xpath("//div"));
         Assert.assertNotEquals(webElements.size(), 0, "List is not empty");
     }
 
     @Test
     public void testT70N_GuiElement_findElements() {
         GuiElement element = getSelectableElement();
-        List<WebElement> webElements = element.findElements(By.xpath("//div[text()=\'\']"));
+        List<WebElement> webElements = element.getWebElement().findElements(By.xpath("//div[text()=\'\']"));
         Assert.assertEquals(webElements.size(), 0, "List is empty");
     }
 
@@ -790,17 +790,6 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     public void testT90N_GuiElement_IsDisplayedFromWebElement() {
         boolean result = getNotDisplayedElement().isDisplayedFromWebElement();
         Assert.assertFalse(result, "Element is displayed");
-    }
-
-    /*
-    This is not implemented correctly or not working on webdriver side. We do not test this. - pele 27.11.2015
-     */
-//    @Test
-    public void testT91_GuiElement_getScreenshotAsFile() {
-        GuiElement displayedElement = getDisplayedElement();
-        Assert.assertNotNull(displayedElement, "GuiElement is not null");
-        Object screenShotFile = displayedElement.getScreenshotAs(OutputType.FILE);
-        Assert.assertNotNull(screenShotFile, "Screenshot has been taken");
     }
 
     @Test

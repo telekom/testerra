@@ -20,6 +20,7 @@ dependencies {
     compile 'com.opencsv:opencsv:3.9'
     compile 'nl.basjes.parse.useragent:yauaa:4.5'
     compile 'org.json:json:20140107'
+    compile "javax.xml.bind:jaxb-api:2.2.11"
 }
 
 processResources {

@@ -1,11 +1,10 @@
 dependencies {
     compile core
-    compile selenium
-    compile datatypes
     compile image_processing
-    compile sikuli
-    //compile group: 'com.google.inject', name: 'guice', version: '4.0'
-    //compile 'com.google.inject:guice-parent:4.2.3-SNAPSHOT'
+
+    // <UITestUtils>
+    compile 'org.sikuli:sikuli-api:1.2.0'
+    // </UITestUtils>
 }
 
 test {

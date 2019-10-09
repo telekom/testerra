@@ -3,20 +3,23 @@ import org.gradle.internal.jvm.Jvm
 
 dependencies {
     compile core_interop
+    compile 'org.apache.poi:poi-ooxml:3.17'
+    compile 'org.apache.pdfbox:pdfbox:1.8.10'
+    compile 'com.sun.jersey:jersey-client:1.19.3'
+    compile 'org.jsoup:jsoup:1.7.2'
+    compile 'org.jdom:jdom2:2.0.6'
+    compile 'org.apache.commons:commons-lang3:3.5'
+    compile 'org.codehaus.plexus:plexus-utils:2.1'
 
-    compile testng
-    compile slf4j
-    compile gson
-    compile jaxwsrs
-    compile jersey
-    compile velocity
-    compile apache_http
-    compile jfreechart
-    compile javassist
-    compile datatypes
-    compile plexus
-    compile apache_commons
-    compile userAgentPparser
+    // <Report>
+    compile 'org.apache.velocity:velocity:1.7'
+    compile 'org.jfree:jfreechart:1.0.19'
+    // </Report>
+
+    compile 'org.apache.httpcomponents:httpclient:4.5'
+    compile 'com.opencsv:opencsv:3.9'
+    compile 'nl.basjes.parse.useragent:yauaa:4.5'
+    compile 'org.json:json:20140107'
 }
 
 processResources {

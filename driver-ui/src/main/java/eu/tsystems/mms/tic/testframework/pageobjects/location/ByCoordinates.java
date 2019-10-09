@@ -28,6 +28,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.location;
 
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -40,7 +41,7 @@ import java.util.List;
  *
  * @author pele
  */
-public class ByCoordinates extends TesterraBy {
+public class ByCoordinates extends By {
 
     private final int x;
     private final int y;

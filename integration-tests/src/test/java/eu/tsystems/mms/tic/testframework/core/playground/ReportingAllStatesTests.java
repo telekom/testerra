@@ -1,17 +1,28 @@
 package eu.tsystems.mms.tic.testframework.core.playground;
 
 import eu.tsystems.mms.tic.testframework.AbstractTest;
-import eu.tsystems.mms.tic.testframework.annotations.*;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.annotations.InDevelopment;
+import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
+import eu.tsystems.mms.tic.testframework.annotations.New;
+import eu.tsystems.mms.tic.testframework.annotations.ReadyForApproval;
+import eu.tsystems.mms.tic.testframework.annotations.SupportMethod;
+import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.RandomUtils;
-import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.openqa.selenium.WebDriverException;
 import org.testng.Assert;
 import org.testng.SkipException;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 
@@ -245,6 +256,24 @@ public class ReportingAllStatesTests extends AbstractTest {
     @Fails(ticketId = 2345, validFor = "test.foobar.fails.annotation.test.property.one=two")
     public void testPassedWithFailsAnnotationNotValid() throws Exception {
 
+    }
+
+    @Test
+    @Fails
+    public void testRetryAnalyzerWithFails() {
+        throw new WebDriverException("Error communicating with the remote browser. It may have died.");
+    }
+
+    @Test
+    @Fails(validFor = "test.foobar.fails.annotation.test.property.one=one")
+    public void testRetryAnalyzerWithFailsValid() {
+        throw new WebDriverException("Error communicating with the remote browser. It may have died.");
+    }
+
+    @Test
+    @Fails(validFor = "test.foobar.fails.annotation.test.property.one=foo")
+    public void testRetryAnalyzerWithFailsInvalid() {
+        throw new WebDriverException("Error communicating with the remote browser. It may have died.");
     }
 
 

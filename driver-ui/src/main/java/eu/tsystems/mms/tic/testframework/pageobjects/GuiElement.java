@@ -36,49 +36,25 @@ import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ConfigurableGuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertExecutionLogDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PerformanceTestGuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheckFrameAwareDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.*;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.*;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.creation.GuiElementCoreFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacadeLoggingDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFace;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.*;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.Rectangle;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * GuiElement is the access point for most tests and is an extension of WebElement.
@@ -86,9 +62,10 @@ import java.util.Map;
  * Authors: pele, rnhb
  */
 public class GuiElement implements
-        Checkable,
-        GuiElementCore,
-        Nameable {
+    Checkable,
+    GuiElementCore,
+    Nameable
+{
 
     private static final Map<String, GuiElementCoreFactory> coreFactories = new HashMap<>();
 
@@ -122,6 +99,7 @@ public class GuiElement implements
 
     private GuiElementCore guiElementCore;
     private GuiElementWait guiElementWait;
+    private Locate locator;
     private final GuiElementData guiElementData;
 
     private GuiElement(GuiElementData guiElementData, int index) {
@@ -141,27 +119,45 @@ public class GuiElement implements
      * @param by     By locator.
      */
     public GuiElement(final WebDriver driver, final By by) {
-        this(driver, by, "");
+        this(driver, by, null);
     }
 
-    public GuiElement(final WebDriver driver, final By by, final GuiElement... guiElements) {
-        this(driver, by, "", guiElements);
+    public GuiElement(final WebDriver driver, final Locate locator) {
+        this(driver, locator, null);
     }
 
     /**
      * Constructor with frames and explicit webDriver session.
      *
-     * @param by     By locator.
+     * @param locator     By locator.
      * @param frames frames containing the element
      * @param driver Driver Object.
      */
-    private GuiElement(WebDriver driver, By by, String name, GuiElement... frames) {
+    public GuiElement(
+        final WebDriver driver,
+        final Locate locator,
+        final GuiElement... frames
+    ) {
+        this(driver, locator.getBy(), frames);
+        this.locator = locator;
+    }
+
+    public GuiElement(
+        final WebDriver driver,
+        final By by,
+        final GuiElement... frames
+    ) {
         FrameLogic frameLogic = null;
         if (frames != null && frames.length > 0) {
             frameLogic = new FrameLogic(driver, frames);
         }
-        guiElementData = new GuiElementData(driver, name, frameLogic, by, this);
+        guiElementData = new GuiElementData(driver, "", frameLogic, by, this);
         buildInternals(driver, by);
+        this.locator = Locate.by(by);
+    }
+
+    public Locate getLocator() {
+        return locator;
     }
 
     private void buildInternals(WebDriver driver, By by) {
@@ -259,10 +255,12 @@ public class GuiElement implements
      * @param filters Filters to be applied
      *
      * @return The same GuiElement
+     * @deprecated Use TesterraBy instead
      */
+    @Deprecated
     public GuiElement withWebElementFilter(WebElementFilter... filters) {
         if (filters != null) {
-            Collections.addAll(guiElementData.webElementFilters, filters);
+            Collections.addAll(locator.getFilters(), filters);
         }
         return this;
     }
@@ -443,16 +441,6 @@ public class GuiElement implements
     }
 
     @Override
-    public List<WebElement> findElements(By byLocator) {
-        return guiElementFacade.findElements(byLocator);
-    }
-
-    @Override
-    public WebElement findElement(By byLocator) {
-        return guiElementFacade.findElement(byLocator);
-    }
-
-    @Override
     public boolean isDisplayed() {
         return guiElementFacade.isDisplayed();
     }
@@ -483,11 +471,6 @@ public class GuiElement implements
     @Override
     public Dimension getSize() {
         return guiElementFacade.getSize();
-    }
-
-    @Override
-    public Rectangle getRect() {
-        return null;
     }
 
     @Override
@@ -614,8 +597,9 @@ public class GuiElement implements
         guiElementData.parent = parent;
     }
 
+    @Deprecated
     public List<WebElementFilter> getWebElementFilters() {
-        return guiElementData.webElementFilters;
+        return locator.getFilters();
     }
 
     @Override
@@ -625,10 +609,6 @@ public class GuiElement implements
 
     public WebDriver getDriver() {
         return guiElementData.webDriver;
-    }
-
-    public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {
-        return guiElementFacade.getScreenshotAs(target);
     }
 
     public boolean hasSensibleData() {

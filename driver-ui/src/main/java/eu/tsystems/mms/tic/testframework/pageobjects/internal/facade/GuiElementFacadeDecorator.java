@@ -309,27 +309,11 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public List<WebElement> findElements(By byLocator) {
-        beforeDelegation("findElements", byLocator.toString());
-        List<WebElement> elements = decoratedFacade.findElements(byLocator);
-        afterDelegation("findElements(" + byLocator + ") = " + elements.toString());
-        return elements;
-    }
-
-    @Override
     public GuiElement getSubElement(By byLocator, String description) {
         beforeDelegation("getSubElement", ">" + description + "< " + byLocator);
         GuiElement subElement = decoratedFacade.getSubElement(byLocator, description);
         afterDelegation("getSubElement(" + byLocator + ", " + description + ") = " + subElement);
         return subElement;
-    }
-
-    @Override
-    public WebElement findElement(By byLocator) {
-        beforeDelegation("findElement", byLocator.toString());
-        WebElement element = decoratedFacade.findElement(byLocator);
-        afterDelegation("findElement(" + byLocator + ") = " + element);
-        return element;
     }
 
     @Override
@@ -646,14 +630,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         return s;
     }
 
-    @Override
-    public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {
-        beforeDelegation("getScreenshotAs");
-        X screenshotAs = decoratedFacade.getScreenshotAs(target);
-        afterDelegation("getScreenshotAs(" + target + ") = " + screenshotAs);
-        return screenshotAs;
-    }
-
     private String obfuscateIfSensible(final String data) {
         if (guiElementData.sensibleData) {
             return "*****************";
@@ -666,13 +642,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         decoratedFacade.swipe(offsetX, offSetY);
     }
 
-    @Override
-    public Rectangle getRect() {
-        beforeDelegation("getRect");
-        Rectangle rect = decoratedFacade.getRect();
-        afterDelegation("getRect = " + rect);
-        return rect;
-    }
 
     @Override
     public File takeScreenshot() {

@@ -20,7 +20,6 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.exceptions.SequenceTimeoutException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -62,7 +61,7 @@ public class Timer {
     }
 
     public Timer(long sleepTimeInMs, long durationInMs, ExecutionLog executionLog) {
-        if (sleepTimeInMs > durationInMs){
+        if (sleepTimeInMs > durationInMs) {
             LOGGER.error("SleepTime should not be greater than Duration of Timer. It will result in only one execution: " +
                     sleepTimeInMs + " > " + durationInMs);
         }
@@ -77,6 +76,7 @@ public class Timer {
      * @param <T>
      */
     public abstract static class Sequence<T> {
+
         private T returningObject = null;
         private Boolean passState = null;
         private boolean skipThrowingException = false;
@@ -115,56 +115,26 @@ public class Timer {
         this.errorMessage = errorMessage;
     }
 
-    private static class ExecThread extends Thread {
-
-        boolean finished = false;
-
-        final Sequence sequence;
-
-        private ExecThread(Sequence sequence) {
-            this.sequence = sequence;
-        }
-
-        @Override
-        public void run() {
-            try {
-                sequence.run();
-            } catch (Throwable throwable) {
-                throw new RuntimeException(throwable);
-            }
-            finished = true;
-        }
-    }
-
     /**
      * Execute a sequence and kill it if it times out. Be careful, for killing it uses Thread.stop(), which
      * is deprecated, but the only way java can kill a thread.
      *
-     * @param sequence Sequence.
      * @param <T>      Return type.
-     * @return Object of return type.
-     * @throws SequenceTimeoutException .
+     * @param sequence Sequence.
      */
-    public <T> T executeSequenceThread(final Sequence<T> sequence) throws SequenceTimeoutException {
-        checkTimerValues();
-        startTimer();
+    public <T> void executeSequenceThread(final Sequence<T> sequence) {
 
-        ExecThread execThread = new ExecThread(sequence);
-        execThread.setName("Sequence");
-        execThread.start();
+        final Thread thread = new Thread(() -> {
 
-        while (!execThread.finished && !isTimeOver()) {
-            TimerUtils.sleep(1000);
-        }
+            try {
+                executeSequence(sequence);
+            } catch (TimeoutException e) {
+                LOGGER.warn("Timeout in executed thread.", e);
+            }
+        });
 
-        if (execThread.finished) {
-            return sequence.getReturningObject();
-        }
-
-        // kill the thread, the only way to do this is stop()
-        execThread.stop();
-
-        throw new SequenceTimeoutException("Timeout executing sequence");
+        thread.setName("Sequence_" + sequence.hashCode());
+        thread.start();
     }
 
     private void checkTimerValues() {
@@ -190,6 +160,7 @@ public class Timer {
      *
      * @param <T>      .
      * @param sequence .
+     *
      * @return .
      */
     public <T> ThrowablePackedResponse<T> executeSequence(Sequence<T> sequence) {

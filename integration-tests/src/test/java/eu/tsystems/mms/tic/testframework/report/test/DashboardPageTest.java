@@ -14,7 +14,6 @@ import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -83,7 +82,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
             dashboardPage = dashboardPage.click(bar);
 
             String label = null;
-            for (WebElement methoddetail : dashboardPage.getMethodChartModule().getCurrentMethods()) {
+            for (GuiElement methoddetail : dashboardPage.getMethodChartModule().getCurrentMethods()) {
                 label = methoddetail.getText();
                 label = label.toUpperCase();
                 if (testResults == TestResult.FAILEDMINOR) {

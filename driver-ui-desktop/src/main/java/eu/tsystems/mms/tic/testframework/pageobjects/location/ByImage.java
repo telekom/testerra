@@ -32,10 +32,7 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.SearchContext;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.sikuli.api.DefaultScreenRegion;
 import org.sikuli.api.ImageTarget;
 import org.sikuli.api.ScreenLocation;
@@ -43,7 +40,7 @@ import org.sikuli.api.ScreenRegion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -56,7 +53,7 @@ import java.util.List;
  *
  * @author pele
  */
-public class ByImage extends TesterraBy {
+public class ByImage extends By {
 
     private final URL url;
     private TakesScreenshot takesScreenshotDriver;

@@ -23,7 +23,10 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
+import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -251,6 +254,26 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         Assert.assertNotNull(webElement);
     }
 
+    @Test
+    public void testT23_GuiElement_findByIDUnique() {
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement guiElement = new GuiElement(driver, Locate.by().unique().id("11"));
+        WebElement webElement = guiElement.getWebElement();
+        Assert.assertNotNull(webElement);
+    }
+
+    @Test
+    public void testT23_GuiElement_findNonUnique() {
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement guiElement = new GuiElement(driver, Locate.by().unique().xpath("//div"));
+        try {
+            WebElement webElement = guiElement.getWebElement();
+        } catch (TimeoutException e) {
+
+            AssertUtils.assertContains(e.getCause().getMessage(), "GuiElement not found: "+ guiElement.getLocator());
+        }
+    }
+
     /**
      * Test if GuiElement.find() works for an existing element found by a Xpath
      */
@@ -303,7 +326,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT29N_GuiElement_mouseOverNotSupportedMouseActions() {
         getTextBoxElement().mouseOver();
-        getLoggerTableElement().asserts().assertContainsText("Mouse over");
+        getLoggerTableElement().asserts().assertTextContains("Mouse over");
     }
 
     /**
@@ -313,7 +336,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT30_GuiElement_mouseOverWithSupportedMouseActions() {
         getTextBoxElement().mouseOver();
-        getLoggerTableElement().asserts().assertContainsText("Mouse over");
+        getLoggerTableElement().asserts().assertTextContains("Mouse over");
     }
 
     /**
@@ -617,27 +640,27 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Test
     public void testT67_GuiElement_findElement() {
         GuiElement element = getSelectableElement();
-        WebElement webElement = element.findElement(By.xpath("//div[1]"));
+        WebElement webElement = element.getWebElement().findElement(By.xpath("//div[1]"));
         Assert.assertNotNull(webElement, "Found Element");
     }
 
     @Test
     public void testT68N_GuiElement_findElement() {
         GuiElement element = getSelectableElement();
-        ThrowableUtils.expectThrowable(TimeoutException.class, () -> element.findElement(By.xpath("//div[text()=\'\']")));
+        ThrowableUtils.expectThrowable(NoSuchElementException.class, () -> element.getWebElement().findElement(By.xpath("//div[text()=\'\']")));
     }
 
     @Test
     public void testT69_GuiElement_findElements() {
         GuiElement element = getSelectableElement();
-        List<WebElement> webElements = element.findElements(By.xpath("//div"));
+        List<WebElement> webElements = element.getWebElement().findElements(By.xpath("//div"));
         Assert.assertNotEquals(webElements.size(), 0, "List is not empty");
     }
 
     @Test
     public void testT70N_GuiElement_findElements() {
         GuiElement element = getSelectableElement();
-        List<WebElement> webElements = element.findElements(By.xpath("//div[text()=\'\']"));
+        List<WebElement> webElements = element.getWebElement().findElements(By.xpath("//div[text()=\'\']"));
         Assert.assertEquals(webElements.size(), 0, "List is empty");
     }
 
@@ -790,17 +813,6 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     public void testT90N_GuiElement_IsDisplayedFromWebElement() {
         boolean result = getNotDisplayedElement().isDisplayedFromWebElement();
         Assert.assertFalse(result, "Element is displayed");
-    }
-
-    /*
-    This is not implemented correctly or not working on webdriver side. We do not test this. - pele 27.11.2015
-     */
-//    @Test
-    public void testT91_GuiElement_getScreenshotAsFile() {
-        GuiElement displayedElement = getDisplayedElement();
-        Assert.assertNotNull(displayedElement, "GuiElement is not null");
-        Object screenShotFile = displayedElement.getScreenshotAs(OutputType.FILE);
-        Assert.assertNotNull(screenShotFile, "Screenshot has been taken");
     }
 
     @Test

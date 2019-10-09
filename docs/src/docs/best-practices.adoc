@@ -162,6 +162,11 @@ Where `name` and `id` are free to define, `type` is not and should be one of the
 </ul>
 ----
 
+You can select this item by using the `Locate` extension.
+[source, java]
+----
+new GuiElement(driver, Locate.by().qa("section/animal/ape"));
+----
 
 == Always prefer Assertions
 

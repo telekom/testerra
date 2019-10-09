@@ -23,7 +23,6 @@ import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -32,9 +31,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by rnhb on 21.12.2016.
@@ -48,7 +44,6 @@ public class GuiElementData {
     public final WebDriver webDriver;
     public String name;
     public final ExecutionLog executionLog;
-    public final List<WebElementFilter> webElementFilters;
     public int timeoutInSeconds;
     public final TimerWrapper timerWrapper;
     public WebElement webElement;
@@ -62,7 +57,13 @@ public class GuiElementData {
     public String browser;
     public boolean shadowRoot = false;
 
-    public GuiElementData(WebDriver webDriver, String name, FrameLogic frameLogic, By by, GuiElement guiElement) {
+    public GuiElementData(
+        WebDriver webDriver,
+        String name,
+        FrameLogic frameLogic,
+        By by,
+        GuiElement guiElement
+    ) {
         this.webDriver = webDriver;
         this.name = name;
         this.by = by;
@@ -70,8 +71,6 @@ public class GuiElementData {
         this.executionLog = new ExecutionLog();
         this.timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
         this.frameLogic = frameLogic;
-
-        this.webElementFilters = new ArrayList<>();
         // Central Timer Object which is used by all sequence executions
         this.timerWrapper = new TimerWrapper(timerSleepTimeInMs, timeoutInSeconds, webDriver, executionLog);
     }
@@ -95,17 +94,9 @@ public class GuiElementData {
 
     @Override
     public String toString() {
-        String toString = by.toString();
+        String toString = guiElement.getLocator().toString();
         if (parent != null) {
             toString += " child of " + parent;
-        }
-        if (webElementFilters != null && !webElementFilters.isEmpty()) {
-            toString += " with WebElementFilter" + (webElementFilters.size() > 1 ? "s" : "") + " { ";
-            for (WebElementFilter webElementFilter : webElementFilters) {
-                toString += webElementFilter.toString() + ", ";
-            }
-            // cut the last comma with space
-            toString = toString.substring(0, toString.length() - 2) + " }";
         }
 
         if (hasName()) {
@@ -137,7 +128,6 @@ public class GuiElementData {
             frameLogic = new FrameLogic(webDriver, this.frameLogic.getFrames());
         }
         GuiElementData guiElementData = new GuiElementData(webDriver, this.name, frameLogic, by, this.guiElement);
-        guiElementData.webElementFilters.addAll(this.webElementFilters);
         return guiElementData;
     }
 

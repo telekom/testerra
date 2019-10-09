@@ -21,8 +21,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -71,7 +72,11 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     private final GuiElementData guiElementData;
 
-    public DesktopGuiElementCore(By by, WebDriver webDriver, GuiElementData guiElementData) {
+    public DesktopGuiElementCore(
+        By by,
+        WebDriver webDriver,
+        GuiElementData guiElementData
+    ) {
         this.by = by;
         this.webDriver = webDriver;
         this.guiElementData = guiElementData;
@@ -97,21 +102,23 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         try {
             List<WebElement> elements;
             if (parent != null) {
-                elements = parent.findElements(by);
+                elements = parent.getWebElement().findElements(by);
             } else {
                 elements = webDriver.findElements(by);
             }
             if (elements != null) {
                 guiElementData.executionLog.addMessage("Found " + elements.size() + " WebElements for the locator " + by);
-                elements = applyFilters(elements);
+                final Locate selector = guiElementData.guiElement.getLocator();
+                if (selector.isUnique() && elements.size() > 1) {
+                    throw new Exception("To many WebElements found (" + elements.size() + ")");
+                }
+                elements = applyFilters(elements, selector.getFilters());
                 numberOfFoundElements = elements.size();
 
                 findCounter = setWebElement(elements);
-            } else {
-                guiElementData.executionLog.addMessage("Found no WebElements for the locator " + by);
             }
         } catch (Exception e) {
-            guiElementData.executionLog.addMessage("WebElement was not found:" + e.toString());
+            //guiElementData.executionLog.addMessage("WebElement was not found:" + e.toString());
             notFoundCause = e;
         }
         throwExceptionIfWebElementIsNull(notFoundCause);
@@ -168,8 +175,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         }
     }
 
-    private List<WebElement> applyFilters(List<WebElement> foundElements) {
-        List<WebElementFilter> webElementFilters = guiElementData.webElementFilters;
+    private List<WebElement> applyFilters(List<WebElement> foundElements, List<WebElementFilter> webElementFilters) {
         if (webElementFilters == null || webElementFilters.isEmpty()) {
             LOGGER.debug("find(): No WebElementFilters existing, not filtering");
             return foundElements;
@@ -348,8 +354,11 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         LOGGER.debug("click(): clicked relative");
     }
 
-    private void pClickRelative(GuiElementCore guiElementCore, WebDriver driver,
-                                WebElement webElement) {
+    private void pClickRelative(
+        GuiElementCore guiElementCore,
+        WebDriver driver,
+        WebElement webElement
+    ) {
         By by = guiElementCore.getBy();
         if (by instanceof ByImage) {
             ByImage byImage = (ByImage) by;
@@ -478,13 +487,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public List<WebElement> findElements(By byLocator) {
-        find();
-        List<WebElement> elements = guiElementData.webElement.findElements(byLocator);
-        return elements;
-    }
-
-    @Override
     public GuiElement getSubElement(By byLocator, String description) {
         FrameLogic frameLogic = guiElementData.frameLogic;
         GuiElement[] frames = null;
@@ -511,13 +513,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         subElement.setName(description);
         subElement.setParent(this);
         return subElement;
-    }
-
-    @Override
-    public WebElement findElement(By byLocator) {
-        find();
-        WebElement newWebElement = guiElementData.webElement.findElement(byLocator);
-        return newWebElement;
     }
 
     @Override
@@ -628,12 +623,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public Rectangle getRect() {
-        find();
-        return guiElementData.webElement.getRect();
-    }
-
-    @Override
     public String getCssValue(String cssIdentifier) {
         find();
         String cssValue = guiElementData.webElement.getCssValue(cssIdentifier);
@@ -728,7 +717,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     private List<String> pGetTextsFromChildren() {
         // find() not necessary here, because findElements() is called, which calls find().
-        List<WebElement> childElements = findElements(By.xpath(".//*"));
+        List<WebElement> childElements = guiElementData.webElement.findElements(By.xpath(".//*"));
 
         ArrayList<String> childTexts = new ArrayList<String>();
         for (WebElement childElement : childElements) {
@@ -831,13 +820,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public <X> X getScreenshotAs(OutputType<X> target) throws WebDriverException {
-        find();
-        //  this doesn't work atm
-        return guiElementData.webElement.getScreenshotAs(target);
-    }
-
-    @Override
     public void rightClick() {
         find();
         Actions actions = new Actions(webDriver);
@@ -868,15 +850,15 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
         this.scrollToElement();
 
+        final WebElement element = guiElementData.webElement;
         final boolean isSelenium4 = false;
 
         if (isSelenium4) {
-            return getScreenshotAs(OutputType.FILE);
+            return element.getScreenshotAs(OutputType.FILE);
         } else {
             try {
                 find();
                 final TakesScreenshot driver = ((TakesScreenshot)guiElementData.webDriver);
-                final WebElement element = guiElementData.webElement;
 
                 File screenshot = driver.getScreenshotAs(OutputType.FILE);
                 BufferedImage fullImg = ImageIO.read(screenshot);

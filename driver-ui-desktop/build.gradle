@@ -1,15 +1,14 @@
 dependencies {
-    compile core_interop
     compile driver_ui
 
-    // Start: PhantomJS
+    // <PhantomJS>
     compile 'net.anthavio:phanbedder-2.1.1:1.0.0'
     compile ('com.codeborne:phantomjsdriver:1.4.4') {
         // @see https://stackoverflow.com/questions/43859075/using-latest-selenium-ver-with-java-8-is-giving-logginghandler-error
         exclude group: 'org.seleniumhq.selenium', module: 'selenium-api'
         exclude group: 'org.seleniumhq.selenium', module: 'selenium-remote-driver'
     }
-    // End: PhantomJS
+    // </PhantomJS>
 }
 
 test {

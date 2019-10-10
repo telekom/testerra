@@ -138,8 +138,6 @@ public class Locate {
         return this;
     }
 
-
-
     /**
      * tt. by coordinates using webdriver
      *

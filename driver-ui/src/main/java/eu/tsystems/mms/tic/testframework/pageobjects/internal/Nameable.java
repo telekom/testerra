@@ -24,6 +24,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
  */
 public interface Nameable {
 
-    void setName(String name);
+    Object setName(String name);
     String getName();
 }

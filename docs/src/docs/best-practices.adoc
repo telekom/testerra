@@ -201,3 +201,7 @@ AssertUtils.assertGreaterThan(actualSearchResultCount, 5, "Search results count"
 // Bad practice
 Assert.assertTrue(actualSearchResultCount > 5);
 ----
+
+
+== Working with WebElements
+

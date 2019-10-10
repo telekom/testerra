@@ -16,6 +16,7 @@ dependencies {
     compile 'org.jfree:jfreechart:1.0.19'
     // </Report>
 
+    compile 'org.apache.httpcomponents:httpcore:4.4.1'
     compile 'org.apache.httpcomponents:httpclient:4.5'
     compile 'com.opencsv:opencsv:3.9'
     compile 'nl.basjes.parse.useragent:yauaa:4.5'

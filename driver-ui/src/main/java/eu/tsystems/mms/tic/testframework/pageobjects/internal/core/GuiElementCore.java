@@ -88,7 +88,9 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      *
      * @param text The text to type.
      * @return this.
+     * @deprecated Use validateInput() instead
      */
+    @Deprecated
     void type(String text);
 
     /**

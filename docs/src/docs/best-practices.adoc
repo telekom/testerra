@@ -203,7 +203,7 @@ Assert.assertTrue(actualSearchResultCount > 5);
 ----
 
 
-== Working with WebElements
+== Working with HTML elements
 
 === Radio buttons
 

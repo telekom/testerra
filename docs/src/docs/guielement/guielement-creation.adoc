@@ -20,9 +20,9 @@ The Method `getSubElement()` generates a new GuiElement. It will only be searche
 GuiElement upper = new GuiElement(driver, By.name("upperElement"));
 
 // Create the sub elements
-GuiElement lower = upper.getSubElement(driver, By.name("lowerElement"));
+GuiElement lower = upper.getSubElement(By.name("lowerElement"));
 // Don't forget the dot (.) before the slashes!
-GuiElement lower2 = upper.getSubElement(driver, By.xpath(".//p[@id='element']"));
+GuiElement lower2 = upper.getSubElement(By.xpath(".//p[@id='element']"));
 ----
 
 == Advanced GuiElement locating

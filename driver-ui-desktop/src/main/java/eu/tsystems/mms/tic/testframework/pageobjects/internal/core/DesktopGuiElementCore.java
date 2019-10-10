@@ -849,9 +849,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         if (isSelenium4) {
             return element.getScreenshotAs(OutputType.FILE);
         } else {
-            final boolean visible = isVisible(false);
-            LOGGER.info("Element visibile: " + visible);
-            if (!visible) {
+            if (!isVisible(false)) {
                 this.scrollToElement();
             }
             Rectangle viewport = WebDriverUtils.getViewport(webDriver);

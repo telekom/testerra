@@ -49,6 +49,14 @@ This will throw an exception, if not one WebElement has been found.
 GuiElement myElement = new GuiElement(driver, Locate.by().displayed().xpath(".//button"));
 ----
 
+=== Prepared xpath expressions
+[source,java]
+----
+Locate locator = Locate.prepare("//button[text()='%s'])");
+GuiElement loginButton = new GuiElement(driver, locator.with("Login"));
+GuiElement logoutButton = new GuiElement(driver, locator.with("Logout"));
+----
+
 === Filtering elements (draft)
 
 Searching for a special locator can lead to multiple findings. With filters, it is possible to check them for individual properties for:

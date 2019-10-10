@@ -263,7 +263,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     @Test
-    public void testT23_GuiElement_findNonUnique() {
+    public void test_GuiElement_findNonUnique() {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement guiElement = new GuiElement(driver, Locate.by().unique().xpath("//div"));
         try {
@@ -272,6 +272,14 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
             AssertUtils.assertContains(e.getCause().getMessage(), "GuiElement not found: "+ guiElement.getLocator());
         }
+    }
+
+    @Test
+    public void test_GuiElement_findPrepared() {
+        final Locate locator = Locate.prepare("//*[@id='%s']");
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement guiElement = new GuiElement(driver, locator.with("11"));
+        Assert.assertNotNull(guiElement.getWebElement());
     }
 
     /**

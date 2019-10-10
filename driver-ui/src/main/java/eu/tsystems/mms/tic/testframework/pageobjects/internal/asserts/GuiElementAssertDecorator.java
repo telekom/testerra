@@ -396,4 +396,28 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
         }
         handleAfterAssertion("assertScreenshot", thrownAssertionError);
     }
+
+    @Override
+    public void assertVisible(boolean complete) {
+        callBeforeAssertion();
+        AssertionError thrownAssertionError = null;
+        try {
+            decoratedAssert.assertVisible(complete);
+        } catch (AssertionError e) {
+            thrownAssertionError = e;
+        }
+        handleAfterAssertion("assertVisible", thrownAssertionError);
+    }
+
+    @Override
+    public void assertNotVisible() {
+        callBeforeAssertion();
+        AssertionError thrownAssertionError = null;
+        try {
+            decoratedAssert.assertNotVisible();
+        } catch (AssertionError e) {
+            thrownAssertionError = e;
+        }
+        handleAfterAssertion("assertNotVisible", thrownAssertionError);
+    }
 }

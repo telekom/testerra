@@ -66,6 +66,14 @@ public abstract class GuiElementStatusCheckDecorator implements GuiElementStatus
     }
 
     @Override
+    public boolean isVisible(boolean complete) {
+        beforeDelegation();
+        boolean visible = decoratedGuiElementStatusCheck.isVisible(complete);
+        afterDelegation();
+        return visible;
+    }
+
+    @Override
     public boolean isSelected() {
         beforeDelegation();
         boolean selected = decoratedGuiElementStatusCheck.isSelected();

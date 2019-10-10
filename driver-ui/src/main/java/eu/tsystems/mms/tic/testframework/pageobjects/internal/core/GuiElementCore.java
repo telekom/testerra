@@ -58,18 +58,6 @@ public interface GuiElementCore extends GuiElementStatusCheck {
     void scrollToElement(int yOffset);
 
     /**
-     * Returns the window's horizontal scroll position
-     * @return
-     */
-    long getScrollX();
-
-    /**
-     * Returns the window's vertical scroll position
-     * @return
-     */
-    long getScrollY();
-
-    /**
      * Select a selectable element.
      *
      * @return this.

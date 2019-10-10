@@ -71,16 +71,6 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public long getScrollX() {
-        return guiElementCore.getScrollX();
-    }
-
-    @Override
-    public long getScrollY() {
-        return guiElementCore.getScrollY();
-    }
-
-    @Override
     public void select() {
         guiElementCore.select();
     }
@@ -163,6 +153,11 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     @Override
     public boolean isDisplayed() {
         return guiElementCore.isDisplayed();
+    }
+
+    @Override
+    public boolean isVisible(boolean complete) {
+        return guiElementCore.isVisible(complete);
     }
 
     @Override
@@ -293,6 +288,16 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     @Override
     public boolean waitForIsNotDisplayed() {
         return guiElementWait.waitForIsNotDisplayed();
+    }
+
+    @Override
+    public boolean waitForIsVisible(boolean complete) {
+        return guiElementWait.waitForIsVisible(complete);
+    }
+
+    @Override
+    public boolean waitForIsNotVisible() {
+        return guiElementWait.waitForIsNotVisible();
     }
 
     @Override

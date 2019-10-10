@@ -48,6 +48,25 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
     public void testCheckElementLayout() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("TestArticle", 1.3);
+
+        guiElement = getGuiElementQa("section/invisibleTestArticle");
+        guiElement.asserts().assertScreenshot("InvisibleTestArticle", 1.3);
+    }
+
+    @Test
+    public void testCheckElementVisibility() {
+        GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
+        guiElement.asserts().assertVisible(true);
+
+        guiElement = getGuiElementQa("section/invisibleTestArticle");
+        guiElement.asserts().assertNotVisible();
+
+        // Scroll to offset doesn't work
+        //guiElement.scrollToElement(300);
+        //Assert.assertFalse(guiElement.isVisible(true));
+
+        guiElement.scrollToElement();
+        guiElement.asserts().assertVisible(true);
     }
 
     @Test(expectedExceptions = TimeoutException.class)

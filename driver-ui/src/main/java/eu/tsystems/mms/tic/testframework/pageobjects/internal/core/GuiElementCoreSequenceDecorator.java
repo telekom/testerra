@@ -95,17 +95,6 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public long getScrollX() {
-        return guiElementCore.getScrollX();
-    }
-
-    @Override
-    public long getScrollY() {
-        return guiElementCore.getScrollY();
-    }
-
-
-    @Override
     public void select() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
@@ -583,6 +572,24 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
                 boolean displayed = guiElementCore.isDisplayed();
                 setReturningObject(displayed);
                 setPassState(displayed);
+            }
+        };
+        sequence.setSkipThrowingException(true);
+        ThrowablePackedResponse<Boolean> response = timerWrapper.executeShortIntervalSequence(sequence);
+        return response.logThrowableAndReturnResponse();
+    }
+
+    @Override
+    public boolean isVisible(boolean complete) {
+        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
+            @Override
+            public void run() {
+                setReturningObject(false);
+                setSkipThrowingException(true);
+
+                boolean visible = guiElementCore.isVisible(complete);
+                setReturningObject(visible);
+                setPassState(visible);
             }
         };
         sequence.setSkipThrowingException(true);

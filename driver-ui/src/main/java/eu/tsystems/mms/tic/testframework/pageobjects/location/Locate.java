@@ -222,6 +222,9 @@ public class Locate {
      * @return
      */
     public Locate with(Object... args) {
-        return xpath(String.format(preparedFormat, args));
+        Locate locate = by();
+        locate.unique = unique;
+        locate.filters = filters;
+        return locate.xpath(String.format(preparedFormat, args));
     }
 }

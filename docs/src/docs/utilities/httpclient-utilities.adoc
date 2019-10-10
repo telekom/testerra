@@ -1,0 +1,59 @@
+= HttpClient Utilities
+
+This is an utility class that lets you send an http request to a web site to retrieve and process its response.
+
+.Example on how to use the HttpClient utility.
+[source,java]
+----
+
+
+// at first define a callback that handles the response
+// for demonstration it reads the html content and returns it to the caller
+HttpClientUtils.ResponseCallBack callback = new HttpClientUtils.ResponseCallBack() {
+	public String run(HttpResponse response) {
+		System.out.println("incoming response!");
+		try {
+			InputStream inputStream = response.getEntity().getContent();
+			
+			StringWriter writer = new StringWriter();
+			IOUtils.copy(inputStream, writer, encoding);
+			String result = writer.toString();
+			inputStream.close();
+			return result;
+		}	catch(IOException ioex) {
+			// mostly caused by connection reset by peer or connection abortion
+			// handle error here
+			return "error...";
+		}
+	}
+};
+
+// define an url to retrieve its HTML content
+String myUrl = "http://www.google.de";
+
+// now the proxyHost has to be defined
+HttpHost proxyHost = new HttpHost("proxy.your-company.de", 8080, "http");
+
+// if we would set autoProxy to true the the method would construct its proxy by using the 
+// standard System Properties http.proxyHost and http.proxyPort, 
+// so then we would and pass null as proxyHost
+boolean autoProxy = false;
+
+// we set also a proper timeout in milliseconds
+int timeout = 60000;
+
+// we want to see all log methods of the process
+boolean suppressLogs = false;
+
+// send out the request and get the content / error
+String htmlString = HttpClientUtils.request(myUrl, autoProxy, proxyHost, timeout, callback, suppressLogs);
+
+----
+
+There is also a simpler version of this method that takes only the url and the callback. 
+The defaults for this method are autoProxy=true, timeout=10000, suppressLogs=false 
+[source,java]
+----
+// send out the request and get the content / error
+String htmlString = HttpClientUtils.request(myUrl, callback);
+----

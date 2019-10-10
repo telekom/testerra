@@ -211,12 +211,8 @@ Since radio buttons share the same name, as the following example shows
 
 [source,html]
 ----
-<label>
-    <input type="radio" name="beverage" value="tee">
-</label>
-<label>
-    <input type="radio" name="beverage" value="coffee">
-</label>
+<input type="radio" name="beverage" value="tee">
+<input type="radio" name="beverage" value="coffee">
 ----
 
 It's not a good practice to select it `By.name`. Its better to select both options separately.

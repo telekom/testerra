@@ -572,6 +572,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     public boolean isVisible(final boolean complete) {
         Rectangle viewport = WebDriverUtils.getViewport(webDriver);
         final WebElement webElement = getWebElement();
+        if (!webElement.isDisplayed()) return false;
         // getRect doesn't work
         Point elementLocation = webElement.getLocation();
         Dimension elementSize = webElement.getSize();

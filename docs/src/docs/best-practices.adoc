@@ -201,3 +201,29 @@ AssertUtils.assertGreaterThan(actualSearchResultCount, 5, "Search results count"
 // Bad practice
 Assert.assertTrue(actualSearchResultCount > 5);
 ----
+
+
+== Working with HTML elements
+
+=== Radio buttons
+
+Since radio buttons share the same name, as the following example shows
+
+[source,html]
+----
+<input type="radio" name="beverage" value="tee">
+<input type="radio" name="beverage" value="coffee">
+----
+
+It's not a good practice to select it `By.name`. Its better to select both options separately.
+
+[source,java]
+----
+// Good practice
+Locate locator = Locate.prepare("//input[@name='%s' and @value='%s']").unique();
+GuiElement teeOption = new GuiElement(driver, locator.with("beverage", "tee"));
+GuiElement coffeeOption = new GuiElement(driver, locator.with("beverage", "coffee"));
+
+// Bad practice
+GuiElement options = new GuiElement(driver, By.name("beverage"));
+----

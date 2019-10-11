@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 import java.io.File;
@@ -314,6 +315,16 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         GuiElement subElement = decoratedFacade.getSubElement(byLocator, description);
         afterDelegation("getSubElement(" + byLocator + ", " + description + ") = " + subElement);
         return subElement;
+    }
+
+    @Override
+    public GuiElement getSubElement(Locate locator) {
+        return decoratedFacade.getSubElement(locator);
+    }
+
+    @Override
+    public GuiElement getSubElement(By by) {
+        return decoratedFacade.getSubElement(by);
     }
 
     @Override

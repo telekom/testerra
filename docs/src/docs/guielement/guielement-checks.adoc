@@ -2,14 +2,33 @@
 
 Similar to the assertion methods GuiElement provide so called check methods.
 
+== Visibilty checks
+
+Checks if the element is present in the DOM
 [source,java]
 ----
-GuiElement element = new GuiElement(driver, By.xpath("//div");
-
-// The availability of elements can check by the following methods
 element.isPresent();
-element.isDisplayed();
+----
 
+Checks if the element is present in the Viewport
+and if it's visible by it's `display` and `visibility` style properties.
+[source,java]
+----
+element.isDisplayed();
+----
+
+Checks if the element is displayed and if it's partially or `complete` visible
+in the scroll area of the Viewport.
+
+[source,java]
+----
+element.isVisible(final boolean complete);
+----
+
+== Standard WebElement checks
+
+[source,java]
+----
 // The following methods are calling the standard webelement method
 element.inEnabled();
 element.isSelected();
@@ -17,12 +36,3 @@ element.isSelected();
 // Tries to find out if an element could be selected.
 element.isSelectable();
 ----
-
-[NOTE]
-======
-Method `isDisplayed` checks the following 3 issues:
-
-* element is present in the DOM
-* element is visible (not hidden by another element) and
-* the element is inside the viewport.
-======

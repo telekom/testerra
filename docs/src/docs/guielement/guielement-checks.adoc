@@ -19,6 +19,7 @@ element.isDisplayed();
 
 Checks if the element is displayed and if it's partially or `complete` visible
 in the scroll area of the Viewport.
+It doesn't relate to the perceptually visibility to the human eye based on `opacity` or `z-index` style properties.
 
 [source,java]
 ----

@@ -51,7 +51,7 @@ String htmlString = HttpClientUtils.request(myUrl, autoProxy, proxyHost, timeout
 ----
 
 There is also a simpler version of this method that takes only the url and the callback. 
-The defaults for this method are autoProxy=true, timeout=10000, suppressLogs=false 
+The defaults for this method are autoProxy=true, timeout=10000, suppressLogs=false.
 [source,java]
 ----
 // send out the request and get the content / error

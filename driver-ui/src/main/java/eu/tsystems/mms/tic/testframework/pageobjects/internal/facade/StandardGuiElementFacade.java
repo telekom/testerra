@@ -23,6 +23,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 import java.io.File;
@@ -148,6 +149,16 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     @Override
     public GuiElement getSubElement(By byLocator, String description) {
         return guiElementCore.getSubElement(byLocator, description);
+    }
+
+    @Override
+    public GuiElement getSubElement(Locate locator) {
+        return guiElementCore.getSubElement(locator);
+    }
+
+    @Override
+    public GuiElement getSubElement(By by) {
+        return guiElementCore.getSubElement(by);
     }
 
     @Override

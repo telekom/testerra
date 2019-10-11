@@ -419,20 +419,17 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     @Override
     public void submit() {
-        find();
-        guiElementData.webElement.submit();
+        getWebElement().submit();
     }
 
     @Override
     public void sendKeys(CharSequence... charSequences) {
-        find();
-        guiElementData.webElement.sendKeys(charSequences);
+        getWebElement().sendKeys(charSequences);
     }
 
     @Override
     public void clear() {
-        find();
-        guiElementData.webElement.clear();
+        getWebElement().clear();
     }
 
     @Override
@@ -471,32 +468,40 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public GuiElement getSubElement(By byLocator, String description) {
+    public GuiElement getSubElement(By by, String description) {
+        return getSubElement(by).setName(description);
+    }
+
+    public GuiElement getSubElement(Locate locate) {
         FrameLogic frameLogic = guiElementData.frameLogic;
         GuiElement[] frames = null;
         if (frameLogic != null) {
             frames = frameLogic.getFrames();
         }
 
-        String locatorToString = byLocator.toString();
+        String locatorToString = locate.getBy().toString();
         if (locatorToString.toLowerCase().contains("xpath")) {
             int i = locatorToString.indexOf(":") + 1;
             String locator = locatorToString.substring(i).trim();
             // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
             if (locator.startsWith("/")) {
                 LOGGER.warn("GetSubElement: Forced replacement of / to ./ at startTime of By.xpath locator, because / would not be relative: " + locator);
-                byLocator = By.xpath(locator);
+                locate = Locate.by(By.xpath(locator));
             } else if (!locator.startsWith(".") && !(locator.length() >= 2 && locator.startsWith("(") && locator.substring(1, 2).equals("."))) {
                 LOGGER.warn("Apparently, getSubElement is called with an By.xpath locator that does not startTime with a dot. " +
-                        "This will most likely lead to unexpected and potentially quiet errors. Locator is \"" +
-                        locatorToString + "\".");
+                    "This will most likely lead to unexpected and potentially quiet errors. Locator is \"" +
+                    locatorToString + "\".");
             }
         }
 
-        GuiElement subElement = new GuiElement(webDriver, byLocator, frames);
-        subElement.setName(description);
+        GuiElement subElement = new GuiElement(webDriver, locate, frames);
         subElement.setParent(this);
         return subElement;
+    }
+
+    @Override
+    public GuiElement getSubElement(By by) {
+        return getSubElement(Locate.by(by));
     }
 
     @Override

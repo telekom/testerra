@@ -768,17 +768,19 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Test
     public void testT83N_GuiElement_IsDisplayed() {
         GuiElement element = getNotDisplayedElement();
-
-        boolean found = element.isDisplayed();
-        Assert.assertFalse(found, "The Element is displayed.");
+        Assert.assertFalse(element.isDisplayed(), "The Element is displayed.");
     }
 
     @Test
-    public void testT84_GuiElement_scrollToElement() {
-        GuiElement element = getDisplayedElement();
-        element.scrollToElement();
-        boolean found = element.isDisplayed();
-        Assert.assertTrue(found, "The Element is displayed.");
+    public void test_GuiElement_NotExisting_IsDisplayed() {
+        GuiElement element = getNotExistingElement();
+        Assert.assertFalse(element.isDisplayed(), "The Element is displayed.");
+    }
+
+    @Test
+    public void test_GuiElement_NotVisible_IsDisplayed() {
+        GuiElement element =  getGuiElementBy(By.id("notVisibleElement"));;
+        Assert.assertFalse(element.isDisplayed(), "The Element is displayed.");
     }
 
     @Test

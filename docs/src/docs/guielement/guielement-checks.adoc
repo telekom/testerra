@@ -19,12 +19,13 @@ element.isDisplayed();
 
 Checks if the element is displayed and if it's partially or `complete` visible
 in the scroll area of the Viewport.
-It doesn't relate to the perceptually visibility to the human eye based on `opacity` or `z-index` style properties.
 
 [source,java]
 ----
 element.isVisible(final boolean complete);
 ----
+
+NOTE: It doesn't relate to `opacity` or `z-index` style properties. If you need to test the perceptually visibility to the human eye, you should consider to implement <<LayoutCheck>>.
 
 == Standard WebElement checks
 

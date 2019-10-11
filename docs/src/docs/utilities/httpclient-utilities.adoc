@@ -20,7 +20,7 @@ HttpClientUtils.ResponseCallBack callback = new HttpClientUtils.ResponseCallBack
 			String result = writer.toString();
 			inputStream.close();
 			return result;
-		}	catch(IOException ioex) {
+		} catch(IOException ioex) {
 			// mostly caused by connection reset by peer or connection abortion
 			// handle error here
 			return "error...";

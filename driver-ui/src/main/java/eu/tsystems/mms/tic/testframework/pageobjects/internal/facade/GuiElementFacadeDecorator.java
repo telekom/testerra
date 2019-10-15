@@ -124,26 +124,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public long getScrollX() {
-        beforeActionDelegation("getScrollX");
-        beforeDelegation("getScrollX");
-        long offset = decoratedFacade.getScrollX();
-        afterDelegation();
-        afterActionDelegation();
-        return offset;
-    }
-
-    @Override
-    public long getScrollY() {
-        beforeActionDelegation("getScrollY");
-        beforeDelegation("getScrollY");
-        long offset = decoratedFacade.getScrollY();
-        afterDelegation();
-        afterActionDelegation();
-        return offset;
-    }
-
-    @Override
     public void select() {
         beforeActionDelegation("select");
         beforeDelegation("select");
@@ -336,6 +316,14 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
+    public boolean isVisible(boolean complete) {
+        beforeDelegation("isVisible");
+        boolean visible = decoratedFacade.isVisible(complete);
+        afterDelegation("isVisible() = " + visible);
+        return visible;
+    }
+
+    @Override
     public boolean isDisplayedFromWebElement() {
         beforeDelegation("isDisplayedFromWebElement");
         boolean displayedFromWebElement = decoratedFacade.isDisplayedFromWebElement();
@@ -511,6 +499,22 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         beforeDelegation("waitForIsNotDisplayed");
         boolean b = decoratedFacade.waitForIsNotDisplayed();
         afterDelegation("waitForIsNotDisplayed() = " + b);
+        return b;
+    }
+
+    @Override
+    public boolean waitForIsVisible(boolean complete) {
+        beforeDelegation("waitForIsVisible");
+        boolean b = decoratedFacade.waitForIsVisible(complete);
+        afterDelegation("waitForIsVisible() = " + b);
+        return b;
+    }
+
+    @Override
+    public boolean waitForIsNotVisible() {
+        beforeDelegation("waitForIsNotVisible");
+        boolean b = decoratedFacade.waitForIsNotVisible();
+        afterDelegation("waitForIsNotVisible() = " + b);
         return b;
     }
 

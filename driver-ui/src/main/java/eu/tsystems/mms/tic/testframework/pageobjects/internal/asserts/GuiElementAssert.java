@@ -220,8 +220,18 @@ public interface GuiElementAssert {
     void assertCssClassIsNotPresent(final String className);
 
     /**
-     * Asserts the pixel of this web element
+     * Asserts the pixel of this element
      */
     void assertScreenshot(final String targetImageName, final double confidenceThreshold);
 
+    /**
+     * Asserts the visibility of this element
+     * @param complete The element is completely visible
+     */
+    void assertVisible(final boolean complete);
+
+    /**
+     * Asserts the invisibility of this element
+     */
+    void assertNotVisible();
 }

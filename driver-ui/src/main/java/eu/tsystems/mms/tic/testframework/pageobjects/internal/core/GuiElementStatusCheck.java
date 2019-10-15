@@ -53,6 +53,12 @@ public interface GuiElementStatusCheck {
     boolean isDisplayed();
 
     /**
+     * Checks if the element is visible in the current viewport
+     * @return
+     */
+    boolean isVisible(final boolean complete);
+
+    /**
      * WebElement.isSelected.
      *
      * @return true if element is selected.

@@ -35,10 +35,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import eu.tsystems.mms.tic.testframework.utils.MouseActions;
-import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.utils.*;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
@@ -266,24 +263,11 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         pScrollToElement(yOffset);
     }
 
-    @Override
-    public long getScrollX() {
-        Object data = JSUtils.executeScript(webDriver, "return window.pageXOffset;");
-        return (long)data;
-    }
-
-    @Override
-    public long getScrollY() {
-        Object data = JSUtils.executeScript(webDriver, "return window.pageYOffset;");
-        return (long)data;
-    }
-
     /**
      * Private scroll to element.
      */
     private void pScrollToElement(int yOffset) {
-        find();
-        final Point location = guiElementData.webElement.getLocation();
+        final Point location = getWebElement().getLocation();
         final int x = location.getX();
         final int y = location.getY() - yOffset;
         LOGGER.trace("Scrolling into view: " + x + ", " + y);
@@ -585,6 +569,19 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
+    public boolean isVisible(final boolean complete) {
+        if (!isDisplayed()) return false;
+        Rectangle viewport = WebDriverUtils.getViewport(webDriver);
+        final WebElement webElement = getWebElement();
+        // getRect doesn't work
+        Point elementLocation = webElement.getLocation();
+        Dimension elementSize = webElement.getSize();
+        java.awt.Rectangle viewportRect = new java.awt.Rectangle(viewport.x, viewport.y, viewport.width, viewport.height);
+        java.awt.Rectangle elementRect = new java.awt.Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
+        return ((complete && viewportRect.contains(elementRect)) || viewportRect.intersects(elementRect));
+    }
+
+    @Override
     public boolean isSelectable() {
         return pIsSelectable();
     }
@@ -852,17 +849,17 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     @Override
     public File takeScreenshot() {
-
-        this.scrollToElement();
-
-        final WebElement element = guiElementData.webElement;
+        final WebElement element = getWebElement();
         final boolean isSelenium4 = false;
 
         if (isSelenium4) {
             return element.getScreenshotAs(OutputType.FILE);
         } else {
+            if (!isVisible(false)) {
+                this.scrollToElement();
+            }
+            Rectangle viewport = WebDriverUtils.getViewport(webDriver);
             try {
-                find();
                 final TakesScreenshot driver = ((TakesScreenshot)guiElementData.webDriver);
 
                 File screenshot = driver.getScreenshotAs(OutputType.FILE);
@@ -873,8 +870,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
                 int eleHeight = element.getSize().getHeight();
 
                 BufferedImage eleScreenshot = fullImg.getSubimage(
-                    point.getX()-(int)getScrollX(),
-                    point.getY()-(int)getScrollY(),
+                    point.getX()-viewport.getX(),
+                    point.getY()-viewport.getY(),
                     eleWidth,
                     eleHeight
                 );

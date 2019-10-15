@@ -259,4 +259,14 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
             LayoutCheck.toReport(matchStep);
         }
     }
+
+    @Override
+    public void assertVisible(boolean complete) {
+        configuredAssert.assertTrue(guiElementWait.waitForIsVisible(complete), guiElementData + " is "+(complete?"complete ":"")+"visible");
+    }
+
+    @Override
+    public void assertNotVisible() {
+        configuredAssert.assertTrue(guiElementWait.waitForIsNotVisible(), guiElementData + " is not visible");
+    }
 }

@@ -68,22 +68,6 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public long getScrollX() {
-        beforeDelegation();
-        long offset = decoratedGuiElementCore.getScrollX();
-        afterDelegation();
-        return offset;
-    }
-
-    @Override
-    public long getScrollY() {
-        beforeDelegation();
-        long offset = decoratedGuiElementCore.getScrollX();
-        afterDelegation();
-        return offset;
-    }
-
-    @Override
     public void select() {
         beforeDelegation();
         decoratedGuiElementCore.select();
@@ -294,5 +278,13 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
         File screenshot = decoratedGuiElementCore.takeScreenshot();
         afterDelegation();
         return screenshot;
+    }
+
+    @Override
+    public boolean isVisible(boolean complete) {
+        beforeDelegation();
+        boolean visible = decoratedGuiElementCore.isVisible(complete);
+        afterDelegation();
+        return visible;
     }
 }

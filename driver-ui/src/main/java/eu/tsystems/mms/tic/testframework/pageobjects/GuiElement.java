@@ -330,16 +330,6 @@ public class GuiElement implements
     }
 
     @Override
-    public long getScrollX() {
-        return guiElementCore.getScrollX();
-    }
-
-    @Override
-    public long getScrollY() {
-        return guiElementCore.getScrollY();
-    }
-
-    @Override
     public void select() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.select();
@@ -449,6 +439,11 @@ public class GuiElement implements
     @Override
     public boolean isDisplayed() {
         return guiElementFacade.isDisplayed();
+    }
+
+    @Override
+    public boolean isVisible(final boolean complete) {
+        return guiElementFacade.isVisible(complete);
     }
 
     @Override
@@ -614,8 +609,9 @@ public class GuiElement implements
         return guiElementData.toString();
     }
 
+    @Deprecated
     public WebDriver getDriver() {
-        return guiElementData.webDriver;
+        return getWebDriver();
     }
 
     public boolean hasSensibleData() {

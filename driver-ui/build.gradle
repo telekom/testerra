@@ -12,8 +12,9 @@ dependencies {
 
     implementation 'com.sun.jersey:jersey-client:1.19.3'
     implementation 'org.json:json:20140107'
-    implementation 'commons-codec:commons-codec:1.10'
-    //implementation 'org.apache.commons:commons-lang3:3.5'
+    implementation 'org.apache.commons:commons-codec:1.10'
+    implementation 'org.apache.commons:commons-lang3:3.5'
+    implementation 'org.apache.commons:commons-collections4:4.1'
 }
 
 test {

@@ -28,7 +28,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.location;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -136,19 +135,6 @@ public class Locate {
      */
     public Locate cssSelector(String cssSelector) {
         by = new By.ByCssSelector(cssSelector);
-        return this;
-    }
-
-    /**
-     * tt. by coordinates using webdriver
-     *
-     * @param driver .
-     * @param x      .
-     * @param y      .
-     * @return .
-     */
-    public Locate coordinates(final WebDriver driver, final int x, final int y) {
-        by = new ByCoordinates(driver, x, y);
         return this;
     }
 

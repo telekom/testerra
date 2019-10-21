@@ -4,6 +4,7 @@ package eu.tsystems.mms.tic.testframework.report.pageobjects;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractReportPage;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
@@ -72,7 +73,7 @@ public class ClassesPage extends AbstractReportPage {
         Map<TestResultHelper.TestResultClassesColumn, String> actual = new HashMap<>();
         GuiElement classTableRow = getClassTableRowForClass(className);
         classTableRow.asserts().assertIsDisplayed();
-        GuiElement classTestNumber;
+        IGuiElement classTestNumber;
         if (testResult != TestResultHelper.TestResultClassesColumn.ALL) {
             classTestNumber = classTableRow.getSubElement(By.xpath(testResult.getNumberXPath()));
             classTestNumber.setName("classTestNumber");
@@ -134,7 +135,7 @@ public class ClassesPage extends AbstractReportPage {
      */
     public void assertSuccessIndicatorIsDisplayedForClass(String className) {
         GuiElement classTableRow = getClassTableRowForClass(className);
-        GuiElement successIndicator = classTableRow.getSubElement(By.xpath("//*[@class='textleft']/span[@title='Passed']"));
+        IGuiElement successIndicator = classTableRow.getSubElement(By.xpath("//*[@class='textleft']/span[@title='Passed']"));
         successIndicator.setName("successIndicator");
         successIndicator.asserts().assertIsDisplayed();
     }
@@ -146,10 +147,10 @@ public class ClassesPage extends AbstractReportPage {
      */
     public void assertBrokenIndicatorIsShownForClass(String className) {
         GuiElement classTableRow = getClassTableRowForClass(className);
-        GuiElement brokenIndicator = classTableRow.getSubElement(By.xpath(".//*[@class='textleft']/span[@title='Failed']"));
+        IGuiElement brokenIndicator = classTableRow.getSubElement(By.xpath(".//*[@class='textleft']/span[@title='Failed']"));
         brokenIndicator.setName("brokenIndicator");
         brokenIndicator.asserts().assertIsDisplayed();
-        GuiElement successIndicator = classTableRow.getSubElement(By.xpath(".//*[@class='textleft']/span[@title='Passed']"));
+        IGuiElement successIndicator = classTableRow.getSubElement(By.xpath(".//*[@class='textleft']/span[@title='Passed']"));
         successIndicator.setName("successIndicator");
         successIndicator.asserts().assertIsNotDisplayed();
     }
@@ -173,7 +174,7 @@ public class ClassesPage extends AbstractReportPage {
     public void assertSyncFailedWarningIsDisplayedForTestclass(String className) {
         GuiElement classTableRow = getClassTableRowForClass(className);
         classTableRow.setName(className + "ClassTableRow");
-        GuiElement syncFailedWarningMethodIndicator = classTableRow.getSubElement(By.xpath(".//img[@title='" + SYNC_FAILED_WARNING_INDICATOR_TITLE + "']"));
+        IGuiElement syncFailedWarningMethodIndicator = classTableRow.getSubElement(By.xpath(".//img[@title='" + SYNC_FAILED_WARNING_INDICATOR_TITLE + "']"));
         syncFailedWarningMethodIndicator.setName("syncFailedWarningMethodIndicator");
         syncFailedWarningMethodIndicator.asserts().assertIsDisplayed();
     }

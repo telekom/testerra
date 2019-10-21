@@ -31,11 +31,10 @@ import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ConfigurableGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
@@ -57,7 +56,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGui
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -83,11 +81,7 @@ import java.util.Map;
  * <p>
  * Authors: pele, rnhb
  */
-public class GuiElement implements
-    Checkable,
-    GuiElementCore,
-    Nameable
-{
+public class GuiElement implements IGuiElement {
 
     private static final Map<String, GuiElementCoreFactory> coreFactories = new HashMap<>();
 
@@ -308,7 +302,7 @@ public class GuiElement implements
      *
      * @return GuiElement
      */
-    public GuiElement getSubElement(By by) {
+    public IGuiElement getSubElement(By by) {
         return getSubElement(by, null);
     }
 
@@ -322,12 +316,12 @@ public class GuiElement implements
      * @return GuiElement
      */
     @Deprecated
-    public GuiElement getSubElement(By by, String description) {
+    public IGuiElement getSubElement(By by, String description) {
         return guiElementFacade.getSubElement(by, description);
     }
 
     @Override
-    public GuiElement getSubElement(Locate locator) {
+    public IGuiElement getSubElement(Locate locator) {
         return guiElementFacade.getSubElement(locator);
     }
 

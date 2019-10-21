@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameAwareSelect;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import org.openqa.selenium.By;
@@ -67,7 +67,7 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
     }
 
     @Override
-    public GuiElement getSubElement(By byLocator, String description) {
+    public IGuiElement getSubElement(By byLocator, String description) {
         return decoratedGuiElementCore.getSubElement(byLocator, description);
     }
 

@@ -21,14 +21,14 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 import org.testng.Assert;
 
 /**
  * Created by rnhb on 13.11.2015.
  */
-public class ConfiguredAssert {
+public class ConfiguredAssert implements IConfiguredAssert {
 
     private final boolean functionalAssertions;
     private final boolean collected;
@@ -40,6 +40,7 @@ public class ConfiguredAssert {
         prefix = functionalAssertions ? "" : "Nonfunctional: ";
     }
 
+    @Override
     public void assertTrue(boolean value, String assertionMessage) {
         if (functionalAssertions) {
             if (collected) {
@@ -53,6 +54,7 @@ public class ConfiguredAssert {
         }
     }
 
+    @Override
     public void assertFalse(boolean value, String assertionMessage) {
         if (functionalAssertions) {
             if (collected) {
@@ -66,7 +68,8 @@ public class ConfiguredAssert {
         }
     }
 
-    public void assertLayout(GuiElement guiElement, Layout layout) {
+    @Override
+    public void assertLayout(IGuiElement guiElement, ILayout layout) {
         layout.checkOn(guiElement, this);
     }
 }

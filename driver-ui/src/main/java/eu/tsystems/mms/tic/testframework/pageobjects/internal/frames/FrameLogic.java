@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -38,7 +39,7 @@ import java.util.List;
  * <p>
  * Created by rnhb on 25.03.2015.
  */
-public class FrameLogic {
+public class FrameLogic implements IFrameLogic {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FrameLogic.class);
 
@@ -59,13 +60,9 @@ public class FrameLogic {
         this.frames = frames;
     }
 
-    /**
-     * Returns a list of frames as GuiElement in switching order.
-     *
-     * @return List of frames as GuiElement in switching order
-     */
-    public List<GuiElement> getAllFramesInOrder() {
-        List<GuiElement> frameList = new LinkedList<GuiElement>();
+    @Override
+    public List<IGuiElement> getAllFramesInOrder() {
+        List<IGuiElement> frameList = new LinkedList<>();
         GuiElement[] framesToAdd = frames;
         while (framesToAdd != null) {
             GuiElement frameToAdd = framesToAdd[framesToAdd.length - 1];
@@ -85,15 +82,13 @@ public class FrameLogic {
         return frameList;
     }
 
-    /**
-     * Switches to the frame the GuiElement is inside in.
-     */
+    @Override
     public void switchToCorrectFrame() {
-        List<GuiElement> allFrames = getAllFramesInOrder();
+        List<IGuiElement> allFrames = getAllFramesInOrder();
 
         driver.switchTo().defaultContent();
         ArrayList<WebElement> frameWebElementList = new ArrayList<WebElement>();
-        for (GuiElement frameGuiElement : allFrames) {
+        for (IGuiElement frameGuiElement : allFrames) {
             // do not switch to the webElement that was recovered last, as this will be done by getWebElement of 'frameGuiElement'
             for (int i = 0; i < frameWebElementList.size() - 1; i++) {
                 // get webelement
@@ -119,9 +114,7 @@ public class FrameLogic {
         }
     }
 
-    /**
-     * Switch to the default content.
-     */
+    @Override
     public void switchToDefaultFrame() {
         LOGGER.debug("Switching to DefaultContent");
         driver.switchTo().defaultContent();
@@ -130,6 +123,7 @@ public class FrameLogic {
         yOffset = 0;
     }
 
+    @Override
     public GuiElement[] getFrames() {
         return frames;
     }
@@ -148,6 +142,7 @@ public class FrameLogic {
         return string + "}";
     }
 
+    @Override
     public boolean hasFrames() {
         return getFrames() != null && getFrames().length > 0;
     }

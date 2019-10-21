@@ -32,8 +32,10 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
 import org.slf4j.Logger;
@@ -342,8 +344,8 @@ public final class JSUtils {
         final FrameLogic frameLogic = element.getFrameLogic();
 
         if (frameLogic != null) {
-            List<GuiElement> allFramesInOrder = frameLogic.getAllFramesInOrder();
-            for (GuiElement guiElement : allFramesInOrder) {
+            List<IGuiElement> allFramesInOrder = frameLogic.getAllFramesInOrder();
+            for (IGuiElement guiElement : allFramesInOrder) {
                 hierarchyFrameSelector = pGetSimpleJsSelector(guiElement, hierarchyFrameSelector) + jsFrameExpander;
             }
         }
@@ -361,7 +363,7 @@ public final class JSUtils {
      * @param documentSelector String Current Selector
      * @return String
      */
-    private static String pGetSimpleJsSelector(final GuiElement element, final String documentSelector) {
+    private static String pGetSimpleJsSelector(final IGuiElement element, final String documentSelector) {
 
         final String jsById = documentSelector + ".getElementById(\"###\")";
         final String jsByClassName = documentSelector + ".getElementsByClassName(\"###\")[0]";
@@ -417,7 +419,7 @@ public final class JSUtils {
         return selector.toString().replaceFirst("By.*:", "").trim();
     }
 
-    public static Map<String, Long> getElementInnerBorders(GuiElement guiElement) {
+    public static Map<String, Long> getElementInnerBorders(IGuiElement guiElement) {
         String cmd = "el = arguments[0];" +
                 "bl = window.getComputedStyle(el, null).getPropertyValue('border-left-width');" +
                 "br = window.getComputedStyle(el, null).getPropertyValue('border-right-width');" +
@@ -466,7 +468,7 @@ public final class JSUtils {
                 "" +
                 "return {left:x, right:xx, top:y, bottom:yy};";
         WebDriver driver = guiElement.getWebDriver();
-        FrameLogic frameLogic = guiElement.getFrameLogic();
+        IFrameLogic frameLogic = guiElement.getFrameLogic();
         WebElement webElement = guiElement.getWebElement();
         if (frameLogic != null) {
             frameLogic.switchToCorrectFrame();

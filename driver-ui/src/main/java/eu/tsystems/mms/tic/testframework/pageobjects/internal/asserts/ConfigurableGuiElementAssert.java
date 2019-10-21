@@ -24,7 +24,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
-import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
+import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 
@@ -223,7 +223,7 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
-    public void assertLayout(Layout layout) {
+    public void assertLayout(ILayout layout) {
         configuredAssert.assertLayout(guiElementData.guiElement, layout);
     }
 

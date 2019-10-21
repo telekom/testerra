@@ -20,12 +20,16 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.internal.Flags;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
@@ -289,35 +293,35 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public GuiElement getSubElement(final By byLocator, final String description) {
-        Timer.Sequence<GuiElement> sequence = new Timer.Sequence<GuiElement>() {
+    public IGuiElement getSubElement(final By byLocator, final String description) {
+        Timer.Sequence<IGuiElement> sequence = new Timer.Sequence<IGuiElement>() {
             @Override
             public void run() {
-                GuiElement guiElement = guiElementCore.getSubElement(byLocator, description);
+                IGuiElement guiElement = guiElementCore.getSubElement(byLocator, description);
                 setReturningObject(guiElement);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<GuiElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<IGuiElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
     @Override
-    public GuiElement getSubElement(Locate locator) {
-        Timer.Sequence<GuiElement> sequence = new Timer.Sequence<GuiElement>() {
+    public IGuiElement getSubElement(Locate locator) {
+        Timer.Sequence<IGuiElement> sequence = new Timer.Sequence<IGuiElement>() {
             @Override
             public void run() {
-                GuiElement guiElement = guiElementCore.getSubElement(locator);
+                IGuiElement guiElement = guiElementCore.getSubElement(locator);
                 setReturningObject(guiElement);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<GuiElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<IGuiElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
     @Override
-    public GuiElement getSubElement(By by) {
+    public IGuiElement getSubElement(By by) {
         return getSubElement(by, "");
     }
 

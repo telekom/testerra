@@ -9,6 +9,7 @@ dependencies {
     implementation 'colt:colt:1.2.0'
     compile 'org.testng:testng:6.14.3'
     implementation 'org.reflections:reflections:0.9.11'
+    compile 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
 }
 
 test {

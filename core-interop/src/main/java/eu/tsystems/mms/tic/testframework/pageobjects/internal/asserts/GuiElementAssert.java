@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
-import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
+import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 
 /**
  * User: rnhb
@@ -205,7 +205,7 @@ public interface GuiElementAssert {
      *
      * @param layout Layout description.
      */
-    void assertLayout(Layout layout);
+    void assertLayout(ILayout layout);
 
     /**
      * Checks if the element has a given css class name

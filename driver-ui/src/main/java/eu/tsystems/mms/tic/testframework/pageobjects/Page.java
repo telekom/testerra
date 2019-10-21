@@ -17,9 +17,9 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-/* 
+/*
  * Created on 04.01.2013
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -40,6 +40,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiEleme
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroupAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -61,7 +62,7 @@ import java.util.Random;
  *
  * @author pele
  */
-public abstract class Page extends AbstractPage {
+public abstract class Page extends AbstractPage implements ILocator {
 
     public static final String CHECKPAGE_METHOD_NAME = "checkPage";
     private final GuiElementGroups guiElementGroups;
@@ -419,5 +420,14 @@ public abstract class Page extends AbstractPage {
         }
 
         return simpleClassName + " -> " + actionName;
+    }
+    public IGuiElement by(final String cssSelector) {
+        return new GuiElement(driver, By.cssSelector(cssSelector));
+    }
+    public IGuiElement by(final Locate locator) {
+        return new GuiElement(driver, locator);
+    }
+    public IGuiElement by(final By by) {
+        return new GuiElement(driver, by);
     }
 }

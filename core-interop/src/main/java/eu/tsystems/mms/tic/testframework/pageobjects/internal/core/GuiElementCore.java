@@ -19,9 +19,9 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -145,21 +145,21 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @return GuiElement
      */
     @Deprecated
-    GuiElement getSubElement(By byLocator, String description);
+    IGuiElement getSubElement(By byLocator, String description);
 
     /**
      * Get sub element by new locator
      * @param locator
      * @return
      */
-    GuiElement getSubElement(Locate locator);
+    IGuiElement getSubElement(Locate locator);
 
     /**
      * Get sub element by Selenium By
      * @param by
      * @return
      */
-    GuiElement getSubElement(By by);
+    IGuiElement getSubElement(By by);
 
     /**
      * WebElement.getLocation.

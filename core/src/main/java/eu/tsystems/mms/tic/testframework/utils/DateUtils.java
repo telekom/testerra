@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by pele on 13.04.2015.
  */
-public final class DateUtils extends org.apache.commons.lang.time.DateUtils {
+public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy_HH:mm:ss");
 

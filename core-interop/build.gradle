@@ -1,6 +1,6 @@
 dependencies {
-    compile 'commons-io:commons-io:2.4'
-    compile 'commons-lang:commons-lang:2.6'
+    compile 'commons-io:commons-io:2.6'
+    compile 'org.apache.commons:commons-lang3:3.9'
     compile 'org.slf4j:slf4j-log4j12:1.8.0-beta2'
     implementation 'org.javassist:javassist:3.20.0-GA'
     implementation 'net.lingala.zip4j:zip4j:1.3.2'

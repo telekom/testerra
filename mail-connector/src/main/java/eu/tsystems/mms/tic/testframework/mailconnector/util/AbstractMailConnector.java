@@ -31,17 +31,29 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.mail.*;
+import javax.mail.Address;
+import javax.mail.Flags;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessageRemovedException;
+import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Session;
+import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * abstract class to handle mail connector

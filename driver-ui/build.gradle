@@ -1,9 +1,9 @@
 dependencies {
-    implementation core
-    implementation image_processing
+    compile core
+    compile image_processing
 
     // <UITestUtils>
-    implementation 'org.sikuli:sikuli-api:1.2.0'
+    compile 'org.sikuli:sikuli-api:1.2.0'
     // </UITestUtils>
 
     // <PageFactory>
@@ -12,9 +12,9 @@ dependencies {
 
     implementation 'com.sun.jersey:jersey-client:1.19.3'
     implementation 'org.json:json:20140107'
-    implementation 'org.apache.commons:commons-codec:1.10'
-    implementation 'org.apache.commons:commons-lang3:3.5'
-    implementation 'org.apache.commons:commons-collections4:4.1'
+    implementation 'commons-codec:commons-codec:1.13'
+    implementation 'commons-collections:commons-collections:3.2.2'
+    implementation 'org.reflections:reflections:0.9.11'
 }
 
 test {

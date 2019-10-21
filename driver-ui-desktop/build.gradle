@@ -1,5 +1,5 @@
 dependencies {
-    implementation driver_ui
+    compile driver_ui
 
     // <PhantomJS>
     implementation 'net.anthavio:phanbedder-2.1.1:1.0.0'
@@ -9,6 +9,8 @@ dependencies {
         exclude group: 'org.seleniumhq.selenium', module: 'selenium-remote-driver'
     }
     // </PhantomJS>
+
+    implementation 'org.json:json:20140107'
 }
 
 test {

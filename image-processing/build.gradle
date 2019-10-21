@@ -13,11 +13,12 @@ def opencv = [
 ]
 
 dependencies {
-    compile core
-    compile opencv
+    implementation core
+    implementation opencv
+    implementation 'commons-io:commons-io:2.4'
     compile 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
 
     // <LayoutCheck>
-    compile 'com.google.code.gson:gson:2.6.2'
+    implementation 'com.google.code.gson:gson:2.6.2'
     // </LayoutCheck>
 }

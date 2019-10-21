@@ -1,12 +1,12 @@
 dependencies {
-    compile core_interop
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'org.json:json:20140107'
-    compile 'javax.ws.rs:javax.ws.rs-api:2.0.1'
+    implementation core_interop
+    implementation 'com.google.code.gson:gson:2.6.2'
+    implementation 'org.json:json:20140107'
+    implementation 'javax.ws.rs:javax.ws.rs-api:2.0.1'
 
 //    compile 'net.lightbody.bmp:browsermob-proxy:2.1.1'
-    compile group: 'net.lightbody.bmp', name: 'browsermob-proxy', version: '2.1.1', ext: 'pom'
-    compile 'net.lightbody.bmp:browsermob-legacy:2.1.1'
+    implementation group: 'net.lightbody.bmp', name: 'browsermob-proxy', version: '2.1.1', ext: 'pom'
+    implementation 'net.lightbody.bmp:browsermob-legacy:2.1.1'
 
     testCompile driver_ui_desktop
 }

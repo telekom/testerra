@@ -19,11 +19,15 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -290,20 +294,20 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElement getSubElement(By byLocator, String description) {
+    public IGuiElement getSubElement(By byLocator, String description) {
         beforeDelegation("getSubElement", ">" + description + "< " + byLocator);
-        GuiElement subElement = decoratedFacade.getSubElement(byLocator, description);
+        IGuiElement subElement = decoratedFacade.getSubElement(byLocator, description);
         afterDelegation("getSubElement(" + byLocator + ", " + description + ") = " + subElement);
         return subElement;
     }
 
     @Override
-    public GuiElement getSubElement(Locate locator) {
+    public IGuiElement getSubElement(Locate locator) {
         return decoratedFacade.getSubElement(locator);
     }
 
     @Override
-    public GuiElement getSubElement(By by) {
+    public IGuiElement getSubElement(By by) {
         return decoratedFacade.getSubElement(by);
     }
 

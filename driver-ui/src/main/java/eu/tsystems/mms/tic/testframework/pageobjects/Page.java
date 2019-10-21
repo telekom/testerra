@@ -40,6 +40,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiEleme
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroupAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -62,7 +64,7 @@ import java.util.Random;
  *
  * @author pele
  */
-public abstract class Page extends AbstractPage implements ILocator {
+public abstract class Page extends AbstractPage implements IPage {
 
     public static final String CHECKPAGE_METHOD_NAME = "checkPage";
     private final GuiElementGroups guiElementGroups;
@@ -429,5 +431,15 @@ public abstract class Page extends AbstractPage implements ILocator {
     }
     public IGuiElement by(final By by) {
         return new GuiElement(driver, by);
+    }
+    public IAssertableValue title() {
+        return new AssertableValue(driver.getTitle(), Property.TITLE.toString(), this);
+    }
+    public IAssertableValue url() {
+        return new AssertableValue(driver.getCurrentUrl(), Property.URL.toString(), this);
+    }
+    public IPage navigate(final String to) {
+        driver.navigate().to(to);
+        return this;
     }
 }

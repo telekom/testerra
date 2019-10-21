@@ -17,10 +17,10 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement.variations;
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -28,12 +28,12 @@ import org.openqa.selenium.WebDriver;
 public class DeepFrameAwareGuiElementTest extends GuiElementTestCollector {
 
     @Override
-    public GuiElement getGuiElementBy(By locator) {
+    public IGuiElement getGuiElementBy(By locator) {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement frame1 = new GuiElement(driver, By.name("frame1")).setDescription("frame1");
-        GuiElement frame12 = new GuiElement(driver, By.name("frame12"), frame1).setDescription("frame2");
-        GuiElement frame123 = new GuiElement(driver, By.name("frame123"), frame12).setDescription("frame3");
-        GuiElement frame1234 = new GuiElement(driver, By.name("InputFrame1234"), frame123).setDescription("frame4");
+        IGuiElement frame1 = new GuiElement(driver, By.name("frame1")).setDescription("frame1");
+        IGuiElement frame12 = new GuiElement(driver, By.name("frame12"), frame1).setDescription("frame2");
+        IGuiElement frame123 = new GuiElement(driver, By.name("frame123"), frame12).setDescription("frame3");
+        IGuiElement frame1234 = new GuiElement(driver, By.name("InputFrame1234"), frame123).setDescription("frame4");
         return new GuiElement(driver, locator, frame1234).setDescription("GuiElementUnderTest");
     }
 

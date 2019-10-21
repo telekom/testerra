@@ -40,7 +40,7 @@ import java.util.*;
 /**
  * Created by rnhb on 24.02.2015.
  */
-public abstract class AbstractPage {
+public abstract class AbstractPage implements IWebDriverRetainer {
 
     /**
      * The webdriver object.
@@ -416,7 +416,14 @@ public abstract class AbstractPage {
     public void assertPageIsNotShown() {
     }
 
+    /**
+     * @deprecated
+     */
     public WebDriver getDriver() {
+        return driver;
+    }
+
+    public WebDriver getWebDriver() {
         return driver;
     }
 }

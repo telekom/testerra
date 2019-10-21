@@ -3,7 +3,6 @@ package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractReportPage;
@@ -29,22 +28,22 @@ public class ClassesPage extends AbstractReportPage {
 
     //legend iterator
     @Check
-    private GuiElement testsPassedLegendIndicator = new GuiElement(this.driver, By.xpath("//span[@title='Passed']"), mainFrame);
+    private IGuiElement testsPassedLegendIndicator = new GuiElement(this.driver, By.xpath("//span[@title='Passed']"), mainFrame);
 
-    private GuiElement testsRetriedLegendIndicator = new GuiElement(this.driver, By.xpath("//span[@title='Passed after Retry']"), mainFrame);
+    private IGuiElement testsRetriedLegendIndicator = new GuiElement(this.driver, By.xpath("//span[@title='Passed after Retry']"), mainFrame);
 
-    private GuiElement testsFailedLegendIndicator = new GuiElement(this.driver, By.xpath("//span[@title='Failed']"), mainFrame);
+    private IGuiElement testsFailedLegendIndicator = new GuiElement(this.driver, By.xpath("//span[@title='Failed']"), mainFrame);
 
-    private GuiElement configMethodsIndicator = new GuiElement(this.driver, By.xpath("//font[@class='configMethods']"), mainFrame);
+    private IGuiElement configMethodsIndicator = new GuiElement(this.driver, By.xpath("//font[@class='configMethods']"), mainFrame);
 
     //additional functions on class page
-    private GuiElement hidePassedTestsCheckbox = new GuiElement(this.driver, By.id("hidePassed"), mainFrame);
+    private IGuiElement hidePassedTestsCheckbox = new GuiElement(this.driver, By.id("hidePassed"), mainFrame);
 
-    private GuiElement buildUserString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[1]/td[2]"), mainFrame);
+    private IGuiElement buildUserString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[1]/td[2]"), mainFrame);
 
-    private GuiElement buildVerionString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[2]/td[2]"), mainFrame);
+    private IGuiElement buildVerionString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[2]/td[2]"), mainFrame);
 
-    private GuiElement buildTimeStampString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[3]/td[2]"), mainFrame);
+    private IGuiElement buildTimeStampString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[3]/td[2]"), mainFrame);
 
     public ClassesPage(WebDriver driver) {
         super(driver);
@@ -55,7 +54,7 @@ public class ClassesPage extends AbstractReportPage {
      *
      * @return list of web elements representing the class table row (tr)
      */
-    public List<GuiElement> getTestClasses() {
+    public List<IGuiElement> getTestClasses() {
         return new GuiElement(driver, By.xpath("//*[@class='testclassrow hidden test' and @style='display: table-row;']"), mainFrame).getList();
     }
 
@@ -71,7 +70,7 @@ public class ClassesPage extends AbstractReportPage {
 
 
         Map<TestResultHelper.TestResultClassesColumn, String> actual = new HashMap<>();
-        GuiElement classTableRow = getClassTableRowForClass(className);
+        IGuiElement classTableRow = getClassTableRowForClass(className);
         classTableRow.asserts().assertIsDisplayed();
         IGuiElement classTestNumber;
         if (testResult != TestResultHelper.TestResultClassesColumn.ALL) {
@@ -97,10 +96,10 @@ public class ClassesPage extends AbstractReportPage {
      * Returns the single table row element (tr) based on the given class name
      *
      * @param className
-     * @return GuiElement classTableRow
+     * @return IGuiElement classTableRow
      */
-    private GuiElement getClassTableRowForClass(String className) {
-        GuiElement classTableRow = new GuiElement(driver, By.xpath("//a[contains(text(),'" + className + "')]/../.."), mainFrame);
+    private IGuiElement getClassTableRowForClass(String className) {
+        IGuiElement classTableRow = new GuiElement(driver, By.xpath("//a[contains(text(),'" + className + "')]/../.."), mainFrame);
         classTableRow.setName("classTableRow");
         return classTableRow;
     }
@@ -109,10 +108,10 @@ public class ClassesPage extends AbstractReportPage {
      * Returns the single table row element (tr) based on the given row position
      *
      * @param position
-     * @return GuiElement classTableRow
+     * @return IGuiElement classTableRow
      */
-    private GuiElement getClassTableRowForPosition(int position) {
-        GuiElement classTableRow = new GuiElement(this.driver, By.xpath("//*[@class='columnHeadings']/following-sibling::tr[" + position + "]"), mainFrame);
+    private IGuiElement getClassTableRowForPosition(int position) {
+        IGuiElement classTableRow = new GuiElement(this.driver, By.xpath("//*[@class='columnHeadings']/following-sibling::tr[" + position + "]"), mainFrame);
         classTableRow.setName("classTableRow");
         return classTableRow;
     }
@@ -134,7 +133,7 @@ public class ClassesPage extends AbstractReportPage {
      * @param className
      */
     public void assertSuccessIndicatorIsDisplayedForClass(String className) {
-        GuiElement classTableRow = getClassTableRowForClass(className);
+        IGuiElement classTableRow = getClassTableRowForClass(className);
         IGuiElement successIndicator = classTableRow.getSubElement(By.xpath("//*[@class='textleft']/span[@title='Passed']"));
         successIndicator.setName("successIndicator");
         successIndicator.asserts().assertIsDisplayed();
@@ -146,7 +145,7 @@ public class ClassesPage extends AbstractReportPage {
      * @param className
      */
     public void assertBrokenIndicatorIsShownForClass(String className) {
-        GuiElement classTableRow = getClassTableRowForClass(className);
+        IGuiElement classTableRow = getClassTableRowForClass(className);
         IGuiElement brokenIndicator = classTableRow.getSubElement(By.xpath(".//*[@class='textleft']/span[@title='Failed']"));
         brokenIndicator.setName("brokenIndicator");
         brokenIndicator.asserts().assertIsDisplayed();
@@ -159,8 +158,8 @@ public class ClassesPage extends AbstractReportPage {
      * Asserts only failed tests with the red mark (X) are displayed
      */
     public void assertClassesAreDisplayedForHidePassedTestFilter() {
-        List<GuiElement> testClasses = getTestClasses();
-        for (GuiElement currentTestClass : testClasses) {
+        List<IGuiElement> testClasses = getTestClasses();
+        for (IGuiElement currentTestClass : testClasses) {
             String className = currentTestClass.getSubElement(By.xpath(".//a")).getText();
             assertBrokenIndicatorIsShownForClass(className);
         }
@@ -172,7 +171,7 @@ public class ClassesPage extends AbstractReportPage {
      * @param className
      */
     public void assertSyncFailedWarningIsDisplayedForTestclass(String className) {
-        GuiElement classTableRow = getClassTableRowForClass(className);
+        IGuiElement classTableRow = getClassTableRowForClass(className);
         classTableRow.setName(className + "ClassTableRow");
         IGuiElement syncFailedWarningMethodIndicator = classTableRow.getSubElement(By.xpath(".//img[@title='" + SYNC_FAILED_WARNING_INDICATOR_TITLE + "']"));
         syncFailedWarningMethodIndicator.setName("syncFailedWarningMethodIndicator");
@@ -241,7 +240,7 @@ public class ClassesPage extends AbstractReportPage {
      * @return ClassesDetailsPage
      */
     public ClassesDetailsPage gotoClassesDetailsPageForClass(String className) {
-        GuiElement classTableRowLink = new GuiElement(driver, By.partialLinkText(className), mainFrame);
+        IGuiElement classTableRowLink = new GuiElement(driver, By.partialLinkText(className), mainFrame);
         classTableRowLink.setName(className + "ClassTableRowLink");
         classTableRowLink.click();
         return PageFactory.create(ClassesDetailsPage.class, driver);

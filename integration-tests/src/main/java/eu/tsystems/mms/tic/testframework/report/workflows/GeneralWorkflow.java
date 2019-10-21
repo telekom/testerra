@@ -1,9 +1,17 @@
 package eu.tsystems.mms.tic.testframework.report.workflows;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.*;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.ExitPointsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.FailureAspectsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodScreenshotPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodStackPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodStepsPage;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +89,7 @@ public class GeneralWorkflow {
         return exitPointsPage;
     }
 
-    public static MethodDetailsPage doOpenReportMethodDetailsPage(DashboardPage dashboardPage, GuiElement method) {
+    public static MethodDetailsPage doOpenReportMethodDetailsPage(DashboardPage dashboardPage, IGuiElement method) {
         return dashboardPage.clickMethodDetail(method);
     }
 

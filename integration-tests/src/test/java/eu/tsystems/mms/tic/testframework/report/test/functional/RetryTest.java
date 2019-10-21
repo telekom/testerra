@@ -4,7 +4,7 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
@@ -37,7 +37,7 @@ public class RetryTest extends AbstractTest {
         final String retryClassName = "ReportTestUnderTestRetry";
 
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
-        GuiElement retryBarChartMethodLabel = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName(retryClassName);
+        IGuiElement retryBarChartMethodLabel = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName(retryClassName);
         retryBarChartMethodLabel.click();
         DashboardModuleMethodChart dashboardModuleMethodChart = dashboardPage.getMethodChartModule();
         AssertCollector.assertEquals(dashboardModuleMethodChart.getNumberMethodsInMethodChartForTestResult(TestResultHelper.TestResult.FAILED), 7, "Number of failed methods in Class " + retryClassName + " is correct:");
@@ -71,15 +71,15 @@ public class RetryTest extends AbstractTest {
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.FAILED);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
 
-        List<GuiElement> currentMethods = dashboardPage.getMethodChartModule().getCurrentMethods();
+        List<IGuiElement> currentMethods = dashboardPage.getMethodChartModule().getCurrentMethods();
 
-        for (GuiElement currentMethod : currentMethods) {
+        for (IGuiElement currentMethod : currentMethods) {
 
             String testMethodName = currentMethod.getText();
             testMethodName = testMethodName.substring(0, testMethodName.indexOf(" Suite: "));
             AssertCollector.assertTrue(testNames.contains(testMethodName), "The test method '" + testMethodName + "' is an expected retry test method.");
 
-            GuiElement methodRetryTag = currentMethod.getSubElement(By.xpath("((./../font)[2])"));
+            IGuiElement methodRetryTag = currentMethod.getSubElement(By.xpath("((./../font)[2])"));
 
             if (methodRetryTag.isDisplayed()) {
 
@@ -114,18 +114,18 @@ public class RetryTest extends AbstractTest {
         final int numberOfRetryMethods = 3;
 
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
-        GuiElement reportTestUnderTestRetry = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName("ReportTestUnderTestRetry");
+        IGuiElement reportTestUnderTestRetry = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName("ReportTestUnderTestRetry");
         reportTestUnderTestRetry.click();
         DashboardModuleMethodChart dashboardModuleMethodChart = dashboardPage.getMethodChartModule();
         AssertCollector.assertEquals(dashboardModuleMethodChart.getNumberMethodsInMethodChartForTestResult(TestResultHelper.TestResult.FAILED), numberOfFailedMethods, "The number of failed tests using DataProvider and Retry is correct.");
         AssertCollector.assertEquals(dashboardModuleMethodChart.getNumberMethodsInMethodChartForTestResult(TestResultHelper.TestResult.PASSED), numberOfPassedMethods, "The number of passed tests using DataProvider and Retry is correct.");
 
         int retryOccurrenceCounter = 0;
-        List<GuiElement> currentMethods = dashboardPage.getMethodChartModule().getCurrentMethods();
+        List<IGuiElement> currentMethods = dashboardPage.getMethodChartModule().getCurrentMethods();
 
-        for (GuiElement currentMethod : currentMethods) {
+        for (IGuiElement currentMethod : currentMethods) {
 
-            GuiElement methodRetryTag = currentMethod.getSubElement(By.xpath("((./../font)[2])"));
+            IGuiElement methodRetryTag = currentMethod.getSubElement(By.xpath("((./../font)[2])"));
 
             if (currentMethod.getText().contains("test_DataProviderTest (2/2)") && methodRetryTag.isDisplayed() ) {
 
@@ -153,9 +153,9 @@ public class RetryTest extends AbstractTest {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.FAILED);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
-        GuiElement methodDetail = dashboardPage.getMethodChartModule().getCurrentMethods().get(0);
+        IGuiElement methodDetail = dashboardPage.getMethodChartModule().getCurrentMethods().get(0);
         MethodDetailsPage retryDetailsPage = GeneralWorkflow.doOpenReportMethodDetailsPage(dashboardPage, methodDetail);
-        GuiElement latestHistoryEntry = retryDetailsPage.getHistoryElementByPosition(1); // Latest
+        IGuiElement latestHistoryEntry = retryDetailsPage.getHistoryElementByPosition(1); // Latest
         latestHistoryEntry.assertCollector().assertIsNotDisplayed();
 
     }
@@ -171,12 +171,12 @@ public class RetryTest extends AbstractTest {
 
         int retryOccurrenceCounter = 1;
         for (; retryOccurrenceCounter < numberOfRetryMethods + 1; retryOccurrenceCounter++) {
-            GuiElement reportTestUnderTestRetry = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName("ReportTestUnderTestRetry");
+            IGuiElement reportTestUnderTestRetry = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName("ReportTestUnderTestRetry");
             TimerUtils.sleep(1000);
             reportTestUnderTestRetry.asserts().assertIsDisplayed();
             reportTestUnderTestRetry.click();
             String expectedMethodName = "test_DataProviderTest [Retry" + retryOccurrenceCounter + "] (2/2)";
-            for (GuiElement indexMethod : dashboardPage.getMethodChartModule().getCurrentMethods()) {
+            for (IGuiElement indexMethod : dashboardPage.getMethodChartModule().getCurrentMethods()) {
                 if (indexMethod.getText().contains(expectedMethodName)) {
                     MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenReportMethodDetailsPage(dashboardPage, indexMethod);
                     AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(expectedMethodName), "The name of retry method should be correct on Method Details Page. Expected " + expectedMethodName + " but found " + methodDetailsPage.getMethodNameString());

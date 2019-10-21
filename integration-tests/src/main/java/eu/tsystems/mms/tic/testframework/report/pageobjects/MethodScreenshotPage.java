@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -10,15 +10,15 @@ import org.openqa.selenium.WebDriver;
  */
 public class MethodScreenshotPage extends MethodDetailsPage {
     @Check
-    private GuiElement screenShotInfoButton = new GuiElement(this.driver, By.xpath("//i[@class='bgwhite fa fa-info']"), mainFrame);
+    private IGuiElement screenShotInfoButton = new GuiElement(this.driver, By.xpath("//i[@class='bgwhite fa fa-info']"), mainFrame);
 
-    private GuiElement screenShot = new GuiElement(this.driver, By.xpath("//div[@class='fotorama__html']"), mainFrame);
+    private IGuiElement screenShot = new GuiElement(this.driver, By.xpath("//div[@class='fotorama__html']"), mainFrame);
 
     public MethodScreenshotPage(WebDriver driver) {
         super(driver);
         checkPage();
     }
-    public GuiElement getScreenShot() {
+    public IGuiElement getScreenShot() {
         return screenShot;
     }
 

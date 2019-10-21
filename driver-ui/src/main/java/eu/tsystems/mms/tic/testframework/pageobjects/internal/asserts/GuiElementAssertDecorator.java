@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
+import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -300,7 +300,7 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
     }
 
     @Override
-    public void assertLayout(Layout layout) {
+    public void assertLayout(ILayout layout) {
         callBeforeAssertion();
         AssertionError thrownAssertionError = null;
         try {

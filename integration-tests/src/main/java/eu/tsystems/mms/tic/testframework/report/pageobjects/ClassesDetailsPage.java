@@ -4,6 +4,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractReportPage;
 import eu.tsystems.mms.tic.testframework.report.model.IReportAnnotationVerifier;
@@ -19,8 +20,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by jlma on 14.06.2017.
@@ -30,11 +35,11 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     private String testResultLocatorPattern = "//th[text()='%s']";
 
     @Check
-    private GuiElement headLine = new GuiElement(this.driver, By.xpath("//div[@class='dashboardTextBig']"), mainFrame);
+    private IGuiElement headLine = new GuiElement(this.driver, By.xpath("//div[@class='dashboardTextBig']"), mainFrame);
 
-    private GuiElement configMethodsButton = new GuiElement(this.driver, By.id("toggleSuccessfulConfigMethodsView"), mainFrame);
+    private IGuiElement configMethodsButton = new GuiElement(this.driver, By.id("toggleSuccessfulConfigMethodsView"), mainFrame);
 
-    private GuiElement successfulConfigMethodsHeader = new GuiElement(this.driver, By.id("successfulConfigMethods"), mainFrame);
+    private IGuiElement successfulConfigMethodsHeader = new GuiElement(this.driver, By.id("successfulConfigMethods"), mainFrame);
 
     public ClassesDetailsPage(WebDriver driver) {
         super(driver);
@@ -51,14 +56,14 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         return classesPage.gotoClassesDetailsPageForClass(testUnderTestClassName);
     }
 
-    private GuiElement getTestResultTableHeaderForTestResult(TestResultHelper.TestResult testResult) {
-        GuiElement testResultTableHeader = new GuiElement(driver, By.xpath(String.format(testResultLocatorPattern, testResult.getXpathClassesDetailsHeader())), mainFrame);
+    private IGuiElement getTestResultTableHeaderForTestResult(TestResultHelper.TestResult testResult) {
+        IGuiElement testResultTableHeader = new GuiElement(driver, By.xpath(String.format(testResultLocatorPattern, testResult.getXpathClassesDetailsHeader())), mainFrame);
         testResultTableHeader.setName("testResultTableHeader");
         return testResultTableHeader;
     }
 
     public void assertColorIsDisplayedForTestResult(TestResultHelper.TestResult testResult) {
-        GuiElement testResultTableHeader = getTestResultTableHeaderForTestResult(testResult);
+        IGuiElement testResultTableHeader = getTestResultTableHeaderForTestResult(testResult);
         testResultTableHeader.asserts().assertIsDisplayed();
         String colorString = testResultTableHeader.getCssValue("background-color");
         Color actualColor = toColorFromCSSColorString(colorString);
@@ -67,7 +72,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     }
 
     public void assertMethodNameIsDisplayedForTestMethod(String expectedMethodName, String... expectedSuiteNames) {
-        GuiElement actualMethodNameElement = getInformationMethodBodyForTestMethodName(expectedMethodName);
+        IGuiElement actualMethodNameElement = getInformationMethodBodyForTestMethodName(expectedMethodName);
         actualMethodNameElement.asserts().assertIsDisplayed();
         String actualMethodName = actualMethodNameElement.getText();
         AssertCollector.assertTrue(actualMethodName.contains(expectedMethodName), "The displayed method name is equal to the expected method name");
@@ -85,11 +90,11 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
 
         final String expectedHeaderClassAttribute = expectedTestResultCategory.getXpathClassesDetailsHeader();
 
-        GuiElement testResultTableHeader = getTestResultTableHeaderForTestResult(expectedTestResultCategory);
+        IGuiElement testResultTableHeader = getTestResultTableHeaderForTestResult(expectedTestResultCategory);
         testResultTableHeader.asserts().assertIsDisplayed();
-        GuiElement methodNameElement = getInformationMethodBodyForTestMethodName(testundertestMethodName, controlMethodName);
+        IGuiElement methodNameElement = getInformationMethodBodyForTestMethodName(testundertestMethodName, controlMethodName);
         methodNameElement.asserts().assertIsDisplayed();
-        GuiElement actualHeader = methodNameElement.getSubElement(By.xpath("./../tr/th"));
+        IGuiElement actualHeader = methodNameElement.getSubElement(By.xpath("./../tr/th"));
         String actualHeaderClassAttribute = actualHeader.getText();
         AssertCollector.assertEquals(actualHeaderClassAttribute, expectedHeaderClassAttribute, "The Test method is in the correct test result category for test result + " + expectedTestResultCategory);
     }
@@ -98,16 +103,16 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
 
         final String expectedHeaderClassAttribute = expectedTestResultCategory.getTestXPath();
 
-        GuiElement testResultTableHeader = getTestResultTableHeaderForTestResult(expectedTestResultCategory);
+        IGuiElement testResultTableHeader = getTestResultTableHeaderForTestResult(expectedTestResultCategory);
         testResultTableHeader.asserts().assertIsDisplayed();
 
-        GuiElement methodTagNameElement = getInformationMethodBodyForTestMethodNameWithTag(tagName);
+        IGuiElement methodTagNameElement = getInformationMethodBodyForTestMethodNameWithTag(tagName);
         methodTagNameElement.asserts().assertIsDisplayed();
 
-        GuiElement actualMethodName = methodTagNameElement.getSubElement(By.xpath("./../../a[contains(text(),'"+testundertestMethodName+"')]"));
+        IGuiElement actualMethodName = methodTagNameElement.getSubElement(By.xpath("./../../a[contains(text(),'"+testundertestMethodName+"')]"));
         actualMethodName.asserts().assertIsDisplayed();
 
-        GuiElement actualHeader = methodTagNameElement.getSubElement(By.xpath("./../../.."));
+        IGuiElement actualHeader = methodTagNameElement.getSubElement(By.xpath("./../../.."));
         String actualHeaderClassAttribute = actualHeader.getAttribute("class");
         AssertCollector.assertEquals(actualHeaderClassAttribute, expectedHeaderClassAttribute, "The Test method is in the correct test result category for test result + " + expectedTestResultCategory);
     }
@@ -116,10 +121,10 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * Method to get the left info column for a given test method name
      *
      * @param testMethodName
-     * @return the left test method info column as GuiElement
+     * @return the left test method info column as IGuiElement
      */
-    private GuiElement getInformationMethodBodyForTestMethodName(String testMethodName, String configMethodName) {
-        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']",testMethodName)), mainFrame);
+    private IGuiElement getInformationMethodBodyForTestMethodName(String testMethodName, String configMethodName) {
+        IGuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']",testMethodName)), mainFrame);
         if(null != configMethodName){
             informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s <i>for %s</i>']",testMethodName, configMethodName)), mainFrame);
         }
@@ -131,10 +136,10 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * Method to get the left info column for a given test method name
      *
      * @param testMethodName
-     * @return the left test method info column as GuiElement
+     * @return the left test method info column as IGuiElement
      */
-    private GuiElement getInformationMethodBodyForTestMethodName(String testMethodName) {
-        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']",testMethodName)), mainFrame);
+    private IGuiElement getInformationMethodBodyForTestMethodName(String testMethodName) {
+        IGuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']",testMethodName)), mainFrame);
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;
     }
@@ -143,12 +148,12 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * Method to get the left info column for a given test method name
      *
      * @param testMethodName
-     * @return the left test method info column as GuiElement
+     * @return the left test method info column as IGuiElement
      */
-    private GuiElement getInformationMethodBodyForTestMethodNameRetried(String testMethodName) {
+    private IGuiElement getInformationMethodBodyForTestMethodNameRetried(String testMethodName) {
         //TODO delete this when id for retried method is given automatically
         //needed for config test methods
-        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[contains(text(),'%s')]/..",testMethodName)), mainFrame);
+        IGuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[contains(text(),'%s')]/..",testMethodName)), mainFrame);
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;
     }
@@ -157,26 +162,26 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * Method to get the left info column for a given test method tag name
      *
      * @param testMethodTagName
-     * @return the left test method info column as GuiElement
+     * @return the left test method info column as IGuiElement
      */
-    private GuiElement getInformationMethodBodyForTestMethodNameWithTag(String testMethodTagName) {
+    private IGuiElement getInformationMethodBodyForTestMethodNameWithTag(String testMethodTagName) {
 
-        GuiElement informationMethodBody = new GuiElement(driver, By.xpath("//font[contains(text(),'"+testMethodTagName+"')]"), mainFrame);
+        IGuiElement informationMethodBody = new GuiElement(driver, By.xpath("//font[contains(text(),'"+testMethodTagName+"')]"), mainFrame);
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;
     }
 
 
     public void assertRetrySymbolIsDisplayedForMethod(String testundertestMethodName) {
-        GuiElement methodInfoBody = getInformationMethodBodyForTestMethodName(testundertestMethodName);
-        GuiElement retrySymbol = methodInfoBody.getSubElement(By.xpath("./..//img[@title='Retry']"));
+        IGuiElement methodInfoBody = getInformationMethodBodyForTestMethodName(testundertestMethodName);
+        IGuiElement retrySymbol = methodInfoBody.getSubElement(By.xpath("./..//img[@title='Retry']"));
         retrySymbol.setName("retrySymbol");
         retrySymbol.asserts().assertIsDisplayed();
     }
 
     public void assertErrorMessageIsDisplayedForTestMethod(String testMethodName) {
-        GuiElement resultInfoBody = getResultInfoBody(testMethodName);
-        GuiElement exceptionMessageElement = resultInfoBody.getSubElement(By.className("message"));
+        IGuiElement resultInfoBody = getResultInfoBody(testMethodName);
+        IGuiElement exceptionMessageElement = resultInfoBody.getSubElement(By.className("message"));
         exceptionMessageElement.setName("exceptionMessageElement");
         exceptionMessageElement.asserts().assertIsDisplayed();
         AssertCollector.assertFalse(exceptionMessageElement.getText().isEmpty(), "The exception message is empty");
@@ -184,25 +189,25 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     }
 
     public void assertStackTraceLinkIsDisplayedForTestMethod(String testMethodName) {
-        GuiElement resultInfoBody = getResultInfoBody(testMethodName);
-        GuiElement stackTraceLink = resultInfoBody.getSubElement(By.xpath(".//a[@title='Stacktrace']"));
+        IGuiElement resultInfoBody = getResultInfoBody(testMethodName);
+        IGuiElement stackTraceLink = resultInfoBody.getSubElement(By.xpath(".//a[@title='Stacktrace']"));
         stackTraceLink.setName("stackTraceLink");
         stackTraceLink.asserts().assertIsDisplayed();
         stackTraceLink.click();
-        GuiElement stackTrace = stackTraceLink.getSubElement(By.xpath("./../..//div[@class='stackTrace']"));
+        IGuiElement stackTrace = stackTraceLink.getSubElement(By.xpath("./../..//div[@class='stackTrace']"));
         stackTrace.setName("stackTrace");
         stackTrace.asserts().assertIsDisplayed();
         Assert.assertTrue(stackTrace.getText().contains(testMethodName), "The StackTrace contains the testmethod name: " + testMethodName);
     }
 
     public void assertDetailsLinkIsDisplayedAndWorks(String testMethodName) {
-        GuiElement detailsLink = getDetailsLinkByMethodName(testMethodName);
+        IGuiElement detailsLink = getDetailsLinkByMethodName(testMethodName);
         detailsLink.asserts().assertIsDisplayed();
         gotoMethodDetailsPage(detailsLink);
     }
 
     public void assertScreenshotIsNotDisplayedForMethod(String testundertestMethod) {
-        GuiElement screenshotElement = getScreenShotOfMethod(testundertestMethod, 1);
+        IGuiElement screenshotElement = getScreenShotOfMethod(testundertestMethod, 1);
         screenshotElement.asserts().assertIsNotDisplayed();
     }
 
@@ -235,16 +240,16 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         return configMethodsButton.getText().contains(expectedState.getStateIndicator());
     }
 
-    public GuiElement getDetailsLinkByMethodName(String methodName) {
-        GuiElement informationMethodBody = getInformationMethodBodyForTestMethodName(methodName);
-        GuiElement detailsLink = informationMethodBody.getSubElement(By.xpath(".//a[@title='Details']"));
+    public IGuiElement getDetailsLinkByMethodName(String methodName) {
+        IGuiElement informationMethodBody = getInformationMethodBodyForTestMethodName(methodName);
+        IGuiElement detailsLink = informationMethodBody.getSubElement(By.xpath(".//a[@title='Details']"));
         detailsLink.setName("detailsLink");
         return detailsLink;
     }
 
-    public GuiElement getDetailsLinkByMethodNameWithTag(String methodTagName) {
-        GuiElement resultInfoBody = getResultInfoBodyWithTag(methodTagName);
-        GuiElement detailsLink = resultInfoBody.getSubElement(By.xpath(".//a[@title='Details']"));
+    public IGuiElement getDetailsLinkByMethodNameWithTag(String methodTagName) {
+        IGuiElement resultInfoBody = getResultInfoBodyWithTag(methodTagName);
+        IGuiElement detailsLink = resultInfoBody.getSubElement(By.xpath(".//a[@title='Details']"));
         detailsLink.setName("detailsLink");
         return detailsLink;
     }
@@ -253,7 +258,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         return successfulConfigMethodsHeader.isDisplayed();
     }
 
-    private boolean isElementTextDisplayedAndParsableToDate(GuiElement element) {
+    private boolean isElementTextDisplayedAndParsableToDate(IGuiElement element) {
 
         final String durationIndicator = "duration";
         final DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.GERMAN);
@@ -278,11 +283,11 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * Method to get the right result column for a given test method name
      *
      * @param testMethodName
-     * @return the right test method result column as GuiElement
+     * @return the right test method result column as IGuiElement
      */
-    private GuiElement getResultInfoBody(String testMethodName) {
-        GuiElement methodInfoBody = getInformationMethodBodyForTestMethodName(testMethodName);
-        GuiElement resultInfoBody = methodInfoBody.getSubElement(By.xpath("./..//td[@class='result']"));
+    private IGuiElement getResultInfoBody(String testMethodName) {
+        IGuiElement methodInfoBody = getInformationMethodBodyForTestMethodName(testMethodName);
+        IGuiElement resultInfoBody = methodInfoBody.getSubElement(By.xpath("./..//td[@class='result']"));
         resultInfoBody.setName("resultInfoBody");
         return resultInfoBody;
     }
@@ -291,31 +296,31 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * Method to get the right result column for a given test method tag name
      *
      * @param testMethodTagName
-     * @return the right test method result column as GuiElement
+     * @return the right test method result column as IGuiElement
      */
-    private GuiElement getResultInfoBodyWithTag(String testMethodTagName) {
-        GuiElement methodInfoBody = getInformationMethodBodyForTestMethodNameWithTag(testMethodTagName);
-        GuiElement resultInfoBody = methodInfoBody.getSubElement(By.xpath("./..//*[@class='result']"));
+    private IGuiElement getResultInfoBodyWithTag(String testMethodTagName) {
+        IGuiElement methodInfoBody = getInformationMethodBodyForTestMethodNameWithTag(testMethodTagName);
+        IGuiElement resultInfoBody = methodInfoBody.getSubElement(By.xpath("./..//*[@class='result']"));
         resultInfoBody.setName("resultInfoBody");
         return resultInfoBody;
     }
 
     /**
-     * Returns the Screenshot GuiElement for a given method in report. The index specify the screenshot if the method has more then one
+     * Returns the Screenshot IGuiElement for a given method in report. The index specify the screenshot if the method has more then one
      *
      * @param testundertestMethodName the simple method name of the testundertest method in report
      * @param screenShotIndex         specify the screenShot since there could be more then one. 1 == First, 2 == Second, ...
      * @return
      */
-    private GuiElement getScreenShotOfMethod(String testundertestMethodName, int screenShotIndex) {
-        GuiElement resultInfoBody = getResultInfoBody(testundertestMethodName);
+    private IGuiElement getScreenShotOfMethod(String testundertestMethodName, int screenShotIndex) {
+        IGuiElement resultInfoBody = getResultInfoBody(testundertestMethodName);
         resultInfoBody.asserts().assertIsDisplayed();
-        GuiElement screenShotElement = resultInfoBody.getSubElement(By.xpath(".//div[@class='spacy shadow'][" + screenShotIndex + "]"));
+        IGuiElement screenShotElement = resultInfoBody.getSubElement(By.xpath(".//div[@class='spacy shadow'][" + screenShotIndex + "]"));
         screenShotElement.setName("screenShotElement#" + screenShotIndex);
         return screenShotElement;
     }
 
-    public MethodDetailsPage gotoMethodDetailsPage(GuiElement detailsLink) {
+    public MethodDetailsPage gotoMethodDetailsPage(IGuiElement detailsLink) {
         detailsLink.click();
         return PageFactory.create(MethodDetailsPage.class, driver);
     }
@@ -339,13 +344,13 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
 
     @Override
     public void assertAnnotationMarkIsDisplayed(ReportAnnotationType annotationType, String methodName) {
-        GuiElement methodBody = getInformationMethodBodyForTestMethodName(methodName);
+        IGuiElement methodBody = getInformationMethodBodyForTestMethodName(methodName);
         switch (annotationType){
             case RETRIED:
                 methodBody = getInformationMethodBodyForTestMethodNameRetried(methodName);
                 break;
         }
-        GuiElement annotationElement = methodBody.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, annotationType.getAnnotationDisplayedName())));
+        IGuiElement annotationElement = methodBody.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, annotationType.getAnnotationDisplayedName())));
         annotationElement.setName("annotationElementFor_" + annotationType.getAnnotationDisplayedName());
         annotationElement.asserts().assertIsDisplayed();
     }
@@ -377,8 +382,8 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     public Map<Integer, Date> getAllExecutionEntries() {
         final DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.GERMAN);
         Map<Integer, Date> executionEntries = new HashMap<>();
-        List<GuiElement> testMethodInfos = new GuiElement(driver, By.xpath(".//table[contains(@class,'resultsTable')]//div[5]"), mainFrame).getList();
-        for (GuiElement testMethodInfo : testMethodInfos) {
+        List<IGuiElement> testMethodInfos = new GuiElement(driver, By.xpath(".//table[contains(@class,'resultsTable')]//div[5]"), mainFrame).getList();
+        for (IGuiElement testMethodInfo : testMethodInfos) {
             if (!testMethodInfo.isDisplayed()) {
                 continue;
             }

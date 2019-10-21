@@ -17,10 +17,10 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement.variations;
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -32,9 +32,9 @@ import org.testng.annotations.Test;
 public class SubElementGuiElementTest extends GuiElementTestCollector {
 
     @Override
-    public GuiElement getGuiElementBy(By locator) {
+    public IGuiElement getGuiElementBy(By locator) {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement parentElement = new GuiElement(driver, By.xpath("//body"));
+        IGuiElement parentElement = new GuiElement(driver, By.xpath("//body"));
         return parentElement.getSubElement(locator);
     }
 
@@ -48,8 +48,8 @@ public class SubElementGuiElementTest extends GuiElementTestCollector {
      */
     @Test
     public void testT03N_GuiElement_getSubElement_notExistingParentElement() {
-        GuiElement parent = getNotExistingElement();
-        GuiElement subElement = parent.getSubElement(By.linkText("Open again"));
+        IGuiElement parent = getNotExistingElement();
+        IGuiElement subElement = parent.getSubElement(By.linkText("Open again"));
         subElement.asserts().assertIsNotPresent();
     }
 
@@ -61,13 +61,13 @@ public class SubElementGuiElementTest extends GuiElementTestCollector {
      * @param locatorForSubElement Locator of the subElement
      */
     public void checkGetSubElementWithLocatorIsNotPresent(By locatorForSubElement) {
-        GuiElement innerElement = getGuiElementBy(locatorForSubElement);
-        GuiElement otherElement = getParent1();
+        IGuiElement innerElement = getGuiElementBy(locatorForSubElement);
+        IGuiElement otherElement = getParent1();
 
         innerElement.asserts().assertIsPresent();
         otherElement.asserts().assertIsPresent();
 
-        GuiElement subElement = otherElement.getSubElement(locatorForSubElement);
+        IGuiElement subElement = otherElement.getSubElement(locatorForSubElement);
         subElement.asserts().assertIsNotPresent();
     }
 

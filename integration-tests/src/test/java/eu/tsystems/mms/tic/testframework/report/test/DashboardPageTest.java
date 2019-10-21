@@ -4,7 +4,7 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTestDashboard;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
@@ -38,8 +38,8 @@ public class DashboardPageTest extends AbstractTestDashboard {
         try {
             DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_3);
             dashboardPage = dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);
-            List<GuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
-            for (GuiElement bar : bars) {
+            List<IGuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
+            for (IGuiElement bar : bars) {
                 String color = bar.getAttribute("fill");
                 AssertCollector.assertEquals(color, testResult.getColor(), "All bars in the second report " + testResult.toString() + " bar chart for actual run are correct.");
             }
@@ -58,8 +58,8 @@ public class DashboardPageTest extends AbstractTestDashboard {
         if (dashboardPage.dashboardModuleTestResultNumberBreakdown.isNumberDisplayed(testResults)) {
             dashboardPage = dashboardPage.dashboardModuleTestResultNumberBreakdown.clickNumberForTestResult(testResults);
             //TODO sagu try to read out canvas
-            //List<GuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
-            //for (GuiElement bar : bars) {
+            //List<IGuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
+            //for (IGuiElement bar : bars) {
              //   String color = bar.getAttribute("fill");
                // AssertCollector.assertEquals(color, testResults.getColor(), "The " + testResults.toString() + " bar chart in the fourth report has the correct color.");
             //}
@@ -77,12 +77,12 @@ public class DashboardPageTest extends AbstractTestDashboard {
         //TODO try out other locator or using java script
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_2);
         dashboardPage = dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResults);
-        List<GuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
-        for (GuiElement bar : bars) {
+        List<IGuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
+        for (IGuiElement bar : bars) {
             dashboardPage = dashboardPage.click(bar);
 
             String label = null;
-            for (GuiElement methoddetail : dashboardPage.getMethodChartModule().getCurrentMethods()) {
+            for (IGuiElement methoddetail : dashboardPage.getMethodChartModule().getCurrentMethods()) {
                 label = methoddetail.getText();
                 label = label.toUpperCase();
                 if (testResults == TestResult.FAILEDMINOR) {
@@ -114,8 +114,8 @@ public class DashboardPageTest extends AbstractTestDashboard {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResult.FAILEDMINOR);
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
-        GuiElement method1 = null;
-        for (GuiElement method : dashboardPage.getMethodChartModule().getCurrentMethods()) {
+        IGuiElement method1 = null;
+        for (IGuiElement method : dashboardPage.getMethodChartModule().getCurrentMethods()) {
             if (method.getText().contains("test_FailedInheritedMinor2"))
                 method1 = method;
         }

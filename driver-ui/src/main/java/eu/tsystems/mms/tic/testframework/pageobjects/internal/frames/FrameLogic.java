@@ -20,7 +20,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -44,7 +43,7 @@ public class FrameLogic implements IFrameLogic {
     private static final Logger LOGGER = LoggerFactory.getLogger(FrameLogic.class);
 
     private final WebDriver driver;
-    private final GuiElement[] frames;
+    private final IGuiElement[] frames;
 
     private int xOffset = 0;
     private int yOffset = 0;
@@ -55,7 +54,7 @@ public class FrameLogic implements IFrameLogic {
      * @param driver .
      * @param frames .
      */
-    public FrameLogic(WebDriver driver, GuiElement[] frames) {
+    public FrameLogic(WebDriver driver, IGuiElement[] frames) {
         this.driver = driver;
         this.frames = frames;
     }
@@ -63,15 +62,15 @@ public class FrameLogic implements IFrameLogic {
     @Override
     public List<IGuiElement> getAllFramesInOrder() {
         List<IGuiElement> frameList = new LinkedList<>();
-        GuiElement[] framesToAdd = frames;
+        IGuiElement[] framesToAdd = frames;
         while (framesToAdd != null) {
-            GuiElement frameToAdd = framesToAdd[framesToAdd.length - 1];
+            IGuiElement frameToAdd = framesToAdd[framesToAdd.length - 1];
             if (frameToAdd == null) {
                 throw new TesterraSystemException("Error when retrieving the frame hierarchy. This means, the GuiElement or one" +
                         " of its frames was not correctly constructed inside of testerra.");
             }
             frameList.add(frameToAdd);
-            FrameLogic frameLogic = frameToAdd.getFrameLogic();
+            IFrameLogic frameLogic = frameToAdd.getFrameLogic();
             if (frameLogic != null) {
                 framesToAdd = frameLogic.getFrames();
             } else {
@@ -124,7 +123,7 @@ public class FrameLogic implements IFrameLogic {
     }
 
     @Override
-    public GuiElement[] getFrames() {
+    public IGuiElement[] getFrames() {
         return frames;
     }
 
@@ -133,7 +132,7 @@ public class FrameLogic implements IFrameLogic {
         String string = "FrameLogic = {";
         int i = 1;
         if (hasFrames()) {
-            for (GuiElement frame : frames) {
+            for (IGuiElement frame : frames) {
                 string += "\n" + i + ". :" + frame;
             }
         } else {

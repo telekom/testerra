@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFailurePointsPage;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFailureEntry;
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
@@ -39,7 +39,7 @@ public class FailureAspectsPage extends AbstractFailurePointsPage {
 
     @Override
     public void assertExpectedFailsReportMark(AbstractResultTableFailureEntry failedEntry, boolean intoReport) {
-        GuiElement headerTableRow = getHeaderInformationElementForFailurePoint(failedEntry).getSubElement(By.xpath("./../../.."));
+        IGuiElement headerTableRow = getHeaderInformationElementForFailurePoint(failedEntry).getSubElement(By.xpath("./../../.."));
         headerTableRow.setName("headerTableRow");
         Assert.assertEquals(headerTableRow.getAttribute("class"), failedEntry.getFailurePointEntryType().getClassAttribute(), "The Expected Failed points are NOT correct marked");
     }

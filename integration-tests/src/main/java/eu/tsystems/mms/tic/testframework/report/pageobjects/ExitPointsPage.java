@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFailurePointsPage;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFailureEntry;
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
@@ -56,10 +56,10 @@ public class ExitPointsPage extends AbstractFailurePointsPage {
     @Override
     public void assertExpectedFailsReportMark(AbstractResultTableFailureEntry failedEntry, boolean intoReport) {
 
-        GuiElement exitPointEntry;
-        GuiElement exitPointExtendButton;
-        GuiElement exitPointMethod;
-        GuiElement exitPointType = null;
+        IGuiElement exitPointEntry;
+        IGuiElement exitPointExtendButton;
+        IGuiElement exitPointMethod;
+        IGuiElement exitPointType = null;
 
         TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
 

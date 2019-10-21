@@ -21,7 +21,8 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.enums.DragAndDropOption;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -69,17 +70,17 @@ public final class MouseActions {
         }
     }
 
-    public static void dragAndDrop(GuiElement drag, GuiElement drop) {
+    public static void dragAndDrop(IGuiElement drag, IGuiElement drop) {
         dragAndDrop(drag, drop, new DragAndDropOption[0]);
     }
 
-    public static void dragAndDropJS(GuiElement drag, GuiElement drop) {
-        final FrameLogic dragFrameLogic = drag.getFrameLogic();
+    public static void dragAndDropJS(IGuiElement drag, IGuiElement drop) {
+        final IFrameLogic dragFrameLogic = drag.getFrameLogic();
         final WebElement dragWebElement = drag.getWebElement();
         final Point dragLocation = drag.getLocation();
         final Dimension dragSize = drag.getSize();
 
-        final FrameLogic dropFrameLogic = drop.getFrameLogic();
+        final IFrameLogic dropFrameLogic = drop.getFrameLogic();
         final WebElement dropWebElement = drop.getWebElement();
         final Point dropLocation = drop.getLocation();
         final Dimension dropSize = drop.getSize();
@@ -93,7 +94,7 @@ public final class MouseActions {
         int dragToY = dropLocation.getY() + (dropSize == null ? 0
                 : MouseActions.Position.getY(MouseActions.Position.Center, dropSize.getHeight()));
 
-        final WebDriver driver = drag.getDriver();
+        final WebDriver driver = drag.getWebDriver();
 
         // frame? ...
         if (dragFrameLogic == null && dropFrameLogic == null) {
@@ -105,7 +106,7 @@ public final class MouseActions {
 
     /**
      * Perfoms a drag and drop over frames using the JS selectors.
-     * 
+     *
      * @param driver WebDriver
      * @param drag GuiElement
      * @param drop GuiElement
@@ -114,9 +115,15 @@ public final class MouseActions {
      * @param toX int
      * @param toY int
      */
-    private static void dragAndDropOverFrames(final WebDriver driver, GuiElement drag, GuiElement drop, int fromX,
-                                              int fromY,
-                                              int toX, int toY) {
+    private static void dragAndDropOverFrames(
+        final WebDriver driver,
+        IGuiElement drag,
+        IGuiElement drop,
+        int fromX,
+        int fromY,
+        int toX,
+        int toY
+    ) {
 
         JSUtils.implementJavascriptOnPage(driver, "js/inject/dragAndDrop.js", "TesterraDragAndDrop");
 
@@ -163,8 +170,11 @@ public final class MouseActions {
      * @param target .
      * @param dragAndDropOptions .
      */
-    public static void dragAndDrop(GuiElement source, GuiElement target,
-                                   DragAndDropOption... dragAndDropOptions) {
+    public static void dragAndDrop(
+        IGuiElement source,
+        IGuiElement target,
+        DragAndDropOption... dragAndDropOptions
+    ) {
         // assert that they are displayed
         source.asserts("Drag source element is not displayed").assertIsDisplayed();
         target.asserts("Drop target element is not displayed").assertIsDisplayed();
@@ -193,16 +203,16 @@ public final class MouseActions {
 
         List<Runnable> workflow = new LinkedList<>();
 
-        WebDriver driver = source.getDriver();
+        WebDriver driver = source.getWebDriver();
         final Actions actions = new Actions(driver);
 
         /*
         Get elements and frames
          */
         final WebElement sourceWebElement = source.getWebElement();
-        final FrameLogic sourceFrameLogic = source.getFrameLogic();
+        final IFrameLogic sourceFrameLogic = source.getFrameLogic();
         final WebElement destinationWebElement = target.getWebElement();
-        final FrameLogic destinationFrameLogic = target.getFrameLogic();
+        final IFrameLogic destinationFrameLogic = target.getFrameLogic();
 
         final IntRef sleepMS = new IntRef();
         sleepMS.setI(0);

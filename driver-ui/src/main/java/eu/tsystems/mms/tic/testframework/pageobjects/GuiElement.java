@@ -31,6 +31,12 @@ import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableBinaryValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableQuantifiedValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableBinaryValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableQuantifiedValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
@@ -152,7 +158,7 @@ public class GuiElement implements IGuiElement {
     public GuiElement(
         final WebDriver driver,
         final Locate locator,
-        final GuiElement... frames
+        final IGuiElement... frames
     ) {
         this(driver, locator.getBy(), frames);
         this.locator = locator;
@@ -161,7 +167,7 @@ public class GuiElement implements IGuiElement {
     public GuiElement(
         final WebDriver driver,
         final By by,
-        final GuiElement... frames
+        final IGuiElement... frames
     ) {
         FrameLogic frameLogic = null;
         if (frames != null && frames.length > 0) {
@@ -346,10 +352,11 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public void select() {
+    public IGuiElement select() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.select();
         guiElementData.resetLogLevel();
+        return this;
     }
 
     /**
@@ -371,60 +378,69 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public void deselect() {
+    public IGuiElement deselect() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.deselect();
         guiElementData.resetLogLevel();
+        return this;
     }
 
     @Override
-    public void type(String text) {
+    public IGuiElement type(String text) {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.type(text);
         guiElementData.resetLogLevel();
+        return this;
     }
 
     @Override
-    public void click() {
+    public GuiElementCore click() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.click();
         guiElementData.resetLogLevel();
+        return this;
     }
 
     @Override
-    public void clickJS() {
+    public IGuiElement clickJS() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickJS();
         guiElementData.resetLogLevel();
+        return this;
     }
 
     @Override
-    public void clickAbsolute() {
+    public IGuiElement clickAbsolute() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickAbsolute();
         guiElementData.resetLogLevel();
+        return this;
     }
 
     @Override
-    public void mouseOverAbsolute2Axis() {
+    public IGuiElement mouseOverAbsolute2Axis() {
         guiElementFacade.mouseOverAbsolute2Axis();
+        return this;
     }
 
     @Override
-    public void submit() {
+    public IGuiElement submit() {
         guiElementFacade.submit();
+        return this;
     }
 
     @Override
-    public void sendKeys(CharSequence... charSequences) {
+    public IGuiElement sendKeys(CharSequence... charSequences) {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.sendKeys(charSequences);
         guiElementData.resetLogLevel();
+        return this;
     }
 
     @Override
-    public void clear() {
+    public IGuiElement clear() {
         guiElementFacade.clear();
+        return this;
     }
 
     @Override
@@ -496,13 +512,15 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public void mouseOver() {
+    public IGuiElement mouseOver() {
         guiElementFacade.mouseOver();
+        return this;
     }
 
     @Override
-    public void mouseOverJS() {
+    public IGuiElement mouseOverJS() {
         guiElementFacade.mouseOverJS();
+        return this;
     }
 
     @Override
@@ -530,8 +548,9 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public void doubleClick() {
+    public GuiElementCore doubleClick() {
         guiElementFacade.doubleClick();
+        return this;
     }
 
     public int getTimeoutInSeconds() {
@@ -548,13 +567,15 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public void highlight() {
+    public GuiElementCore highlight() {
         guiElementFacade.highlight();
+        return this;
     }
 
     @Override
-    public void swipe(int offsetX, int offSetY) {
+    public GuiElementCore swipe(int offsetX, int offSetY) {
         guiElementFacade.swipe(offsetX, offSetY);
+        return this;
     }
 
     @Override
@@ -568,18 +589,21 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public void rightClick() {
+    public IGuiElement rightClick() {
         guiElementFacade.rightClick();
+        return this;
     }
 
     @Override
-    public void rightClickJS() {
+    public IGuiElement rightClickJS() {
         guiElementFacade.rightClickJS();
+        return this;
     }
 
     @Override
-    public void doubleClickJS() {
+    public IGuiElement doubleClickJS() {
         guiElementFacade.doubleClickJS();
+        return this;
     }
 
     @Override
@@ -719,11 +743,11 @@ public class GuiElement implements IGuiElement {
         return guiElementAssertDescriptionDecorator;
     }
 
-    public List<GuiElement> getList() {
+    public List<IGuiElement> getList() {
         int numberOfFoundElements = getNumberOfFoundElements();
-        List<GuiElement> guiElements = new ArrayList<>(numberOfFoundElements);
+        List<IGuiElement> guiElements = new ArrayList<>(numberOfFoundElements);
         for (int i = 0; i < numberOfFoundElements; i++) {
-            GuiElement guiElement = new GuiElement(guiElementData, i);
+            IGuiElement guiElement = new GuiElement(guiElementData, i);
             guiElements.add(guiElement);
         }
         return guiElements;
@@ -747,5 +771,50 @@ public class GuiElement implements IGuiElement {
      */
     public GuiElementWait waits() {
         return guiElementWait;
+    }
+
+    @Override
+    public IAssertableValue text() {
+        return new AssertableValue(getText(), Property.TEXT.toString(), this);
+    }
+
+    @Override
+    public IAssertableValue value() {
+        return value(Attribute.VALUE);
+    }
+
+    @Override
+    public IAssertableValue value(Attribute attribute) {
+        return new AssertableValue(getAttribute(attribute.toString()), String.format("@%s", Property.ATTRIBUTE), this);
+    }
+
+    @Override
+    public IAssertableBinaryValue present() {
+        return new AssertableBinaryValue(waits().waitForIsPresent(), Property.PRESENT.toString(), this);
+    }
+
+    @Override
+    public IAssertableBinaryValue<Boolean> visible(boolean complete) {
+        return new AssertableBinaryValue(isVisible(true), Property.VISIBLE.toString(), this);
+    }
+
+    @Override
+    public IAssertableBinaryValue displayed() {
+        return new AssertableBinaryValue(isDisplayed(), Property.DISPLAYED.toString(), this);
+    }
+
+    @Override
+    public IAssertableBinaryValue<Boolean> enabled() {
+        return new AssertableBinaryValue(isDisplayed(), Property.DISPLAYED.toString(), this);
+    }
+
+    @Override
+    public IAssertableBinaryValue<Boolean> selected() {
+        return new AssertableBinaryValue<>(isSelected(), Property.SELECTED.toString(), this);
+    }
+
+    @Override
+    public IAssertableQuantifiedValue<Boolean> layout() {
+        return new AssertableQuantifiedValue<>(1, Property.LAYOUT.toString(), this);
     }
 }

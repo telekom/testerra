@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -9,17 +10,16 @@ import org.openqa.selenium.WebDriver;
  */
 public class MethodEvolutionPage extends MethodDetailsPage {
 
-    private GuiElement graphView = new GuiElement(this.driver, By.id("historygrapharea"), mainFrame);
+    private IGuiElement graphView = new GuiElement(this.driver, By.id("historygrapharea"), mainFrame);
 
-    private GuiElement noEvolutionIndicator = graphView.getSubElement(By.tagName("h6"));
-
+    private IGuiElement noEvolutionIndicator = graphView.getSubElement(By.tagName("h6"));
 
 
     public MethodEvolutionPage(WebDriver driver) {
         super(driver);
     }
 
-    public GuiElement getNoEvolutionIndicator() {
+    public IGuiElement getNoEvolutionIndicator() {
         return noEvolutionIndicator;
     }
 }

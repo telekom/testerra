@@ -63,14 +63,14 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      *
      * @return this.
      */
-    void select();
+    GuiElementCore select();
 
     /**
      * Deselect a selectable element.
      *
      * @return this.
      */
-    void deselect();
+    GuiElementCore deselect();
 
     /**
      * Types text into element method with delete of prior content and following check if content was correct written.
@@ -78,42 +78,42 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @param text The text to type.
      * @return this.
      */
-    void type(String text);
+    GuiElementCore type(String text);
 
     /**
      * Click on element with prior mouseover.
      *
      * @return .
      */
-    void click();
+    GuiElementCore click();
 
     /**
      * Clicks on a web element using javascript.
      *
      * @return .
      */
-    void clickJS();
+    GuiElementCore clickJS();
 
     /**
      * click
      *
      * @return .
      */
-    void clickAbsolute();
+    GuiElementCore clickAbsolute();
 
     /**
      * hover mouse over 2 axis
      *
      * @return .
      */
-    void mouseOverAbsolute2Axis();
+    GuiElementCore mouseOverAbsolute2Axis();
 
     /**
      * submit
      *
      * @return .
      */
-    void submit();
+    GuiElementCore submit();
 
     /**
      * WebElement.sendKeys.
@@ -121,14 +121,14 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @param charSequences .
      * @return send Keys
      */
-    void sendKeys(CharSequence... charSequences);
+    GuiElementCore sendKeys(CharSequence... charSequences);
 
     /**
      * WebElement.clear.
      *
      * @return clear webelement
      */
-    void clear();
+    GuiElementCore clear();
 
     /**
      * WebElement.getTagName.
@@ -188,14 +188,14 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      *
      * @return this.
      */
-    void mouseOver();
+    GuiElementCore mouseOver();
 
     /**
      * Mouseover directly over js event.
      *
      * @return this.
      */
-    void mouseOverJS();
+    GuiElementCore mouseOverJS();
 
     /**
      * Returns the Select-Object.
@@ -216,14 +216,14 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      *
      * @return .
      */
-    void doubleClick();
+    GuiElementCore doubleClick();
 
     /**
      * Highlight element.
      *
      * @return element.
      */
-    void highlight();
+    GuiElementCore highlight();
 
     /**
      * Swipe the element by the given offset. (0,0) should be the top left.
@@ -231,7 +231,7 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @param offsetX horizontal offset in pixel.
      * @param offSetY vertical offset in pixel.
      */
-    void swipe(int offsetX, int offSetY);
+    GuiElementCore swipe(int offsetX, int offSetY);
 
     /**
      * Types your text and returns the length of the attribute 'value' afterwards.
@@ -251,10 +251,10 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      */
     int getNumberOfFoundElements();
 
-    void rightClick();
-    void rightClickJS();
+    GuiElementCore rightClick();
+    GuiElementCore rightClickJS();
 
-    void doubleClickJS();
+    GuiElementCore doubleClickJS();
 
     /**
      * Takes a screenshot of the GuiElement

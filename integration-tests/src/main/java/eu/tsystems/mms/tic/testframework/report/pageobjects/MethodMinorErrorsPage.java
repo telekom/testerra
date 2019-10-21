@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,15 +10,15 @@ import org.openqa.selenium.WebDriver;
  */
 public class MethodMinorErrorsPage extends MethodDetailsPage {
     //TODO need IDs here, the xpaths are terrible -> Jira-Ticket: XETA-573
-    GuiElement assertion = new GuiElement(this.driver, By.cssSelector(".standardTable.tr>td>a"), mainFrame);
-    GuiElement assertionMessage = new GuiElement(this.driver, By.cssSelector("#non-functional-exception-0>div"), mainFrame);
+    IGuiElement assertion = new GuiElement(this.driver, By.cssSelector(".standardTable.tr>td>a"), mainFrame);
+    IGuiElement assertionMessage = new GuiElement(this.driver, By.cssSelector("#non-functional-exception-0>div"), mainFrame);
 
     public MethodMinorErrorsPage(WebDriver driver) {
         super(driver);
         checkPage();
     }
 
-    public GuiElement getAssertion() {
+    public IGuiElement getAssertion() {
         return assertion;
     }
 

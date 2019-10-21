@@ -31,13 +31,15 @@ import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.json.JSONObject;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -335,13 +337,13 @@ public final class JSUtils {
      * @param element GuiElement
      * @return String
      */
-    public static String getJavaScriptSelector(final GuiElement element) {
+    public static String getJavaScriptSelector(final IGuiElement element) {
 
         final String jsFrameExpander = ".contentDocument";
         String hierarchyFrameSelector = "document";
 
         // Run through hierarchy
-        final FrameLogic frameLogic = element.getFrameLogic();
+        final IFrameLogic frameLogic = element.getFrameLogic();
 
         if (frameLogic != null) {
             List<IGuiElement> allFramesInOrder = frameLogic.getAllFramesInOrder();
@@ -562,7 +564,7 @@ public final class JSUtils {
         return 0;
     }
 
-    public static Point getElementLocationInViewPort(GuiElement guiElement) {
+    public static Point getElementLocationInViewPort(IGuiElement guiElement) {
         int x = 0;
         int y = 0;
 
@@ -570,8 +572,8 @@ public final class JSUtils {
         calculate frames
          */
         if (guiElement.getFrameLogic() != null) {
-            GuiElement[] frames = guiElement.getFrameLogic().getFrames();
-            for (GuiElement frame : frames) {
+            IGuiElement[] frames = guiElement.getFrameLogic().getFrames();
+            for (IGuiElement frame : frames) {
                 Point elementLocationInParent = getElementLocationInParent(frame, Where.TOP_LEFT);
                 x += elementLocationInParent.x;
                 y += elementLocationInParent.y;
@@ -593,15 +595,15 @@ public final class JSUtils {
         TOP_LEFT
     }
 
-    public static Point getElementLocationInParent(GuiElement guiElement, Where where) {
+    public static Point getElementLocationInParent(IGuiElement guiElement, Where where) {
         WebElement webElement = guiElement.getWebElement();
-        FrameLogic frameLogic = guiElement.getFrameLogic();
+        IFrameLogic frameLogic = guiElement.getFrameLogic();
 
         if (frameLogic != null) {
             frameLogic.switchToCorrectFrame();
         }
 
-        Object o = executeScript(guiElement.getDriver(), "return arguments[0].getBoundingClientRect();", webElement);
+        Object o = executeScript(guiElement.getWebDriver(), "return arguments[0].getBoundingClientRect();", webElement);
 
         if (o == null) {
             throw new TesterraSystemException("Could not get information about web element, please see the logs");
@@ -628,7 +630,7 @@ public final class JSUtils {
         }
     }
 
-    public static Point getRelativePositionVector(GuiElement from, GuiElement to) {
+    public static Point getRelativePositionVector(IGuiElement from, IGuiElement to) {
         Point start = getElementLocationInViewPort(from);
         Point end = getElementLocationInViewPort(to);
 

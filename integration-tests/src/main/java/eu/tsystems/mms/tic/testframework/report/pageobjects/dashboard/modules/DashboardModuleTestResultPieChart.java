@@ -3,6 +3,7 @@ package eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFramePage;
 import eu.tsystems.mms.tic.testframework.report.model.MouseAction;
@@ -15,13 +16,13 @@ public class DashboardModuleTestResultPieChart extends AbstractFramePage {
 
     // Actual Run Pie Chart
     @Check
-    private GuiElement actualPieChart = new GuiElement(this.driver, By.id("methodsPie"), mainFrame);
-    private GuiElement passedPieSegment = actualPieChart.getSubElement(By.id("Passed"));
-    private GuiElement passedMinorPieSegment = actualPieChart.getSubElement(By.id("Minor"));
-    private GuiElement failedPieSegment = actualPieChart.getSubElement(By.id("Failed"));
-    private GuiElement failedMinorPieSegment = actualPieChart.getSubElement(By.id("Failed with Minor"));
-    private GuiElement skippedPieSegment = actualPieChart.getSubElement(By.id("Skipped"));
-    private GuiElement failedExpectedPieSegment = actualPieChart.getSubElement(By.id("Expected Failed"));
+    private IGuiElement actualPieChart = new GuiElement(this.driver, By.id("methodsPie"), mainFrame);
+    private IGuiElement passedPieSegment = actualPieChart.getSubElement(By.id("Passed"));
+    private IGuiElement passedMinorPieSegment = actualPieChart.getSubElement(By.id("Minor"));
+    private IGuiElement failedPieSegment = actualPieChart.getSubElement(By.id("Failed"));
+    private IGuiElement failedMinorPieSegment = actualPieChart.getSubElement(By.id("Failed with Minor"));
+    private IGuiElement skippedPieSegment = actualPieChart.getSubElement(By.id("Skipped"));
+    private IGuiElement failedExpectedPieSegment = actualPieChart.getSubElement(By.id("Expected Failed"));
 
     public DashboardModuleTestResultPieChart(WebDriver driver) {
         super(driver);
@@ -35,7 +36,7 @@ public class DashboardModuleTestResultPieChart extends AbstractFramePage {
      * @throws
      */
     public DashboardPage clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult testResult) throws Exception {
-        GuiElement pie = getActualRunPieSegment(testResult);
+        IGuiElement pie = getActualRunPieSegment(testResult);
         triggerGuiElement(pie.getSubElement(By.xpath("./../*[@class='lightPie']")), MouseAction.CLICK);
         return PageFactory.create(DashboardPage.class, this.driver);
     }
@@ -48,7 +49,7 @@ public class DashboardModuleTestResultPieChart extends AbstractFramePage {
      * @throws
      */
     public DashboardPage hoverActualRunPieSegmentForTestResult(TestResultHelper.TestResult testResult) throws Exception {
-        GuiElement pie = getActualRunPieSegment(testResult);
+        IGuiElement pie = getActualRunPieSegment(testResult);
         triggerGuiElement(pie, MouseAction.MOUSE_OVER);
         return PageFactory.create(DashboardPage.class, this.driver);
     }
@@ -57,11 +58,11 @@ public class DashboardModuleTestResultPieChart extends AbstractFramePage {
      * Returns a pie chart segment (actual test) depending on a given testresult category.
      *
      * @param testResult the result category (Passed, Failed, Failed Inherited, ...)
-     * @return the pie chart segment GuiElement
+     * @return the pie chart segment IGuiElement
      * @throws
      */
-    public GuiElement getActualRunPieSegment(TestResultHelper.TestResult testResult) throws Exception {
-        GuiElement pie;
+    public IGuiElement getActualRunPieSegment(TestResultHelper.TestResult testResult) throws Exception {
+        IGuiElement pie;
         switch (testResult) {
             case PASSED:
                 pie = passedPieSegment;
@@ -88,22 +89,22 @@ public class DashboardModuleTestResultPieChart extends AbstractFramePage {
     }
 
     /**
-     * Triggers a given event on a given GuiElement.
+     * Triggers a given event on a given IGuiElement.
      *
-     * @param guiElement the element to be triggered depending on MouseAction
+     * @param IGuiElement the element to be triggered depending on MouseAction
      * @param mouseAction     the mouseAction to be performed
      * @throws Exception
      */
-    public void triggerGuiElement(GuiElement guiElement, MouseAction mouseAction) throws Exception {
+    public void triggerGuiElement(IGuiElement IGuiElement, MouseAction mouseAction) throws Exception {
         switch (mouseAction) {
             case CLICK:
-                guiElement.click();
+                IGuiElement.click();
                 break;
             case MOUSE_OVER:
-                guiElement.mouseOver();
+                IGuiElement.mouseOver();
                 break;
             default:
-                throw new TesterraRuntimeException("Unsupported mouseAction for GuiElement " + guiElement.getName());
+                throw new TesterraRuntimeException("Unsupported mouseAction for IGuiElement " + IGuiElement.getName());
         }
     }
 }

@@ -2,12 +2,17 @@ package eu.tsystems.mms.tic.testframework.report.test.dashboard;
 
 import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractTestReportNumbers;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTestDashboard;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
-import eu.tsystems.mms.tic.testframework.report.model.*;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportFiveNumbers;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportFourNumbers;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportOneNumbers;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportSixNumbers;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportThreeNumbers;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoNumbers;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -35,7 +40,7 @@ public class DashboardModuleFailureCorridorTest extends AbstractTestDashboard {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testResultNumbers")
     public void testT01_checkFailureCorridorMatchingForColor(ReportDirectory report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = getDashboardPage(report);
-        GuiElement corridorMatch = dashboardPage.dashboardModuleFailureCorridor.failureCorridorDescription;
+        IGuiElement corridorMatch = dashboardPage.dashboardModuleFailureCorridor.failureCorridorDescription;
         String style = numbers.getFailureCorridorMatched();
         Assert.assertTrue(corridorMatch.getAttribute("style").contains(style), "The failure corridor matches. The style in the reportFilter " + report + " is " + style + ".");
     }

@@ -36,17 +36,17 @@ import org.openqa.selenium.WebDriver;
 public class WebTestFramedPage extends Page {
 
 
-    GuiElement inputFrame1 = new GuiElement(driver, By.name("InputFrame1"));
+    IGuiElement inputFrame1 = new GuiElement(driver, By.name("InputFrame1"));
 
     /** First text field on page. */
     @Check
-    private final GuiElement input1 = new GuiElement(driver, By.id("1"), inputFrame1);
+    private final IGuiElement input1 = new GuiElement(driver, By.id("1"), inputFrame1);
     /** A button on the page. */
     @Check(nonFunctional = true)
-    private final GuiElement button1 = new GuiElement(driver, By.id("4"), inputFrame1);
+    private final IGuiElement button1 = new GuiElement(driver, By.id("4"), inputFrame1);
     /** The output text field. */
-    private final GuiElement textOutputField = new GuiElement(driver, By.xpath("//p[@id='99']"));
-    private final GuiElement textOutputFieldNotExisting = new GuiElement(driver, By.xpath("//p[@id='notthere']"));
+    private final IGuiElement textOutputField = new GuiElement(driver, By.xpath("//p[@id='99']"));
+    private final IGuiElement textOutputFieldNotExisting = new GuiElement(driver, By.xpath("//p[@id='notthere']"));
 
     /**
      * Default Page constructor.

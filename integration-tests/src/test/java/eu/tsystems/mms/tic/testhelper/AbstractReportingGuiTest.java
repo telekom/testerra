@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testhelper;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -57,7 +57,7 @@ public abstract class AbstractReportingGuiTest extends TesterraTest {
         logger.info("use frontend again");
 
         WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement notExistent = new GuiElement(driver, By.id("huhuhu"));
+        IGuiElement notExistent = new GuiElement(driver, By.id("huhuhu"));
         notExistent.setName("notExistent");
         switch (how) {
             case HARD:

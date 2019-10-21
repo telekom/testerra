@@ -17,11 +17,11 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement.variations;
 
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -32,7 +32,7 @@ import org.openqa.selenium.WebDriver;
 public class StandardGuiElementTest extends GuiElementTestCollector {
 
     @Override
-    public GuiElement getGuiElementBy(By locator) {
+    public IGuiElement getGuiElementBy(By locator) {
         final WebDriver driver = WebDriverManager.getWebDriver();
         return new GuiElement(driver, locator);
     }

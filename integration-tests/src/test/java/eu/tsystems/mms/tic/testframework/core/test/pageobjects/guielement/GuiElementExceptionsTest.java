@@ -17,10 +17,10 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -33,14 +33,14 @@ import org.testng.annotations.Test;
 public class GuiElementExceptionsTest extends AbstractTestSitesTest {
 
     /**
-     * created because isPresent threw an exception when the GuiElement had a not existing frame
+     * created because isPresent threw an exception when the IGuiElement had a not existing frame
      * thanks at maco for finding!
      */
     @Test
     public void testT01N_GuiElement_notExistingFrame() {
         WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement notExistingFrame = new GuiElement(driver, By.xpath("meNoExist"));
-        GuiElement elementToSearch = new GuiElement(driver, By.xpath("thisDoesNotMatter"), notExistingFrame);
+        IGuiElement notExistingFrame = new GuiElement(driver, By.xpath("meNoExist"));
+        IGuiElement elementToSearch = new GuiElement(driver, By.xpath("thisDoesNotMatter"), notExistingFrame);
 
         try {
             elementToSearch.isPresent();

@@ -21,9 +21,17 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
-import eu.tsystems.mms.tic.testframework.pageobjects.*;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingStaticElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNonCheckableCheck;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNotExistingElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNullElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -75,7 +83,7 @@ public class CheckPageTest extends AbstractTestSitesTest {
 
         Page page = new Page(webDriver) {
             @Check
-            GuiElement testElement = new GuiElement(driver, By.xpath("not existing"));
+            IGuiElement testElement = new GuiElement(driver, By.xpath("not existing"));
         };
 
         boolean exceptionWasThrown = false;
@@ -95,7 +103,7 @@ public class CheckPageTest extends AbstractTestSitesTest {
 
         class ParentPage extends Page {
             @Check
-            GuiElement testElement = new GuiElement(driver, By.xpath("not existing"));
+            IGuiElement testElement = new GuiElement(driver, By.xpath("not existing"));
 
             public ParentPage(WebDriver driver) {
                 super(driver);

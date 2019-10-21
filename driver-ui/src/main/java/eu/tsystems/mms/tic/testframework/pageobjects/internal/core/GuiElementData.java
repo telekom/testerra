@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
@@ -39,7 +39,7 @@ public class GuiElementData {
 
     public final By by;
     @Deprecated // Evil, should never be used!!! <<< why, i need it?? pele 23.08.2019
-    public final GuiElement guiElement;
+    public final IGuiElement guiElement;
 
     public final WebDriver webDriver;
     public String name;
@@ -62,7 +62,7 @@ public class GuiElementData {
         String name,
         FrameLogic frameLogic,
         By by,
-        GuiElement guiElement
+        IGuiElement guiElement
     ) {
         this.webDriver = webDriver;
         this.name = name;
@@ -106,7 +106,7 @@ public class GuiElementData {
         if (hasFrameLogic()) {
             String frameString = " inside Frames={";
             if (frameLogic.hasFrames()) {
-                for (GuiElement frame : frameLogic.getFrames()) {
+                for (IGuiElement frame : frameLogic.getFrames()) {
                     frameString += frame.toString() + ", ";
                 }
             } else {

@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 
@@ -64,22 +65,6 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
         beforeDelegation();
         decoratedGuiElementCore.scrollToElement(yOffset);
         afterDelegation();
-    }
-
-    @Override
-    public long getScrollX() {
-        beforeDelegation();
-        long offset = decoratedGuiElementCore.getScrollX();
-        afterDelegation();
-        return offset;
-    }
-
-    @Override
-    public long getScrollY() {
-        beforeDelegation();
-        long offset = decoratedGuiElementCore.getScrollX();
-        afterDelegation();
-        return offset;
     }
 
     @Override
@@ -177,6 +162,16 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     @Override
     public GuiElement getSubElement(By byLocator, String description) {
         return decoratedGuiElementCore.getSubElement(byLocator, description);
+    }
+
+    @Override
+    public GuiElement getSubElement(Locate locator) {
+        return decoratedGuiElementCore.getSubElement(locator);
+    }
+
+    @Override
+    public GuiElement getSubElement(By by) {
+        return decoratedGuiElementCore.getSubElement(by);
     }
 
     @Override
@@ -283,5 +278,13 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
         File screenshot = decoratedGuiElementCore.takeScreenshot();
         afterDelegation();
         return screenshot;
+    }
+
+    @Override
+    public boolean isVisible(boolean complete) {
+        beforeDelegation();
+        boolean visible = decoratedGuiElementCore.isVisible(complete);
+        afterDelegation();
+        return visible;
     }
 }

@@ -165,4 +165,14 @@ public class PerformanceTestGuiElementAssert implements GuiElementAssert {
     public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
 
     }
+
+    @Override
+    public void assertVisible(boolean complete) {
+
+    }
+
+    @Override
+    public void assertNotVisible() {
+
+    }
 }

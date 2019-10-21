@@ -35,10 +35,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import eu.tsystems.mms.tic.testframework.utils.MouseActions;
-import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.utils.*;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
@@ -266,24 +263,11 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         pScrollToElement(yOffset);
     }
 
-    @Override
-    public long getScrollX() {
-        Object data = JSUtils.executeScript(webDriver, "return window.pageXOffset;");
-        return (long)data;
-    }
-
-    @Override
-    public long getScrollY() {
-        Object data = JSUtils.executeScript(webDriver, "return window.pageYOffset;");
-        return (long)data;
-    }
-
     /**
      * Private scroll to element.
      */
     private void pScrollToElement(int yOffset) {
-        find();
-        final Point location = guiElementData.webElement.getLocation();
+        final Point location = getWebElement().getLocation();
         final int x = location.getX();
         final int y = location.getY() - yOffset;
         LOGGER.trace("Scrolling into view: " + x + ", " + y);
@@ -435,20 +419,17 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     @Override
     public void submit() {
-        find();
-        guiElementData.webElement.submit();
+        getWebElement().submit();
     }
 
     @Override
     public void sendKeys(CharSequence... charSequences) {
-        find();
-        guiElementData.webElement.sendKeys(charSequences);
+        getWebElement().sendKeys(charSequences);
     }
 
     @Override
     public void clear() {
-        find();
-        guiElementData.webElement.clear();
+        getWebElement().clear();
     }
 
     @Override
@@ -487,32 +468,40 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public GuiElement getSubElement(By byLocator, String description) {
+    public GuiElement getSubElement(By by, String description) {
+        return getSubElement(by).setName(description);
+    }
+
+    public GuiElement getSubElement(Locate locate) {
         FrameLogic frameLogic = guiElementData.frameLogic;
         GuiElement[] frames = null;
         if (frameLogic != null) {
             frames = frameLogic.getFrames();
         }
 
-        String locatorToString = byLocator.toString();
+        String locatorToString = locate.getBy().toString();
         if (locatorToString.toLowerCase().contains("xpath")) {
             int i = locatorToString.indexOf(":") + 1;
             String locator = locatorToString.substring(i).trim();
             // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
             if (locator.startsWith("/")) {
                 LOGGER.warn("GetSubElement: Forced replacement of / to ./ at startTime of By.xpath locator, because / would not be relative: " + locator);
-                byLocator = By.xpath(locator);
+                locate = Locate.by(By.xpath(locator));
             } else if (!locator.startsWith(".") && !(locator.length() >= 2 && locator.startsWith("(") && locator.substring(1, 2).equals("."))) {
                 LOGGER.warn("Apparently, getSubElement is called with an By.xpath locator that does not startTime with a dot. " +
-                        "This will most likely lead to unexpected and potentially quiet errors. Locator is \"" +
-                        locatorToString + "\".");
+                    "This will most likely lead to unexpected and potentially quiet errors. Locator is \"" +
+                    locatorToString + "\".");
             }
         }
 
-        GuiElement subElement = new GuiElement(webDriver, byLocator, frames);
-        subElement.setName(description);
+        GuiElement subElement = new GuiElement(webDriver, locate, frames);
         subElement.setParent(this);
         return subElement;
+    }
+
+    @Override
+    public GuiElement getSubElement(By by) {
+        return getSubElement(Locate.by(by));
     }
 
     @Override
@@ -577,6 +566,19 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         boolean displayed = guiElementData.webElement.isDisplayed();
         guiElementData.executionLog.addMessage("isDisplayedFromWebElement = " + displayed);
         return displayed;
+    }
+
+    @Override
+    public boolean isVisible(final boolean complete) {
+        if (!isDisplayed()) return false;
+        Rectangle viewport = WebDriverUtils.getViewport(webDriver);
+        final WebElement webElement = getWebElement();
+        // getRect doesn't work
+        Point elementLocation = webElement.getLocation();
+        Dimension elementSize = webElement.getSize();
+        java.awt.Rectangle viewportRect = new java.awt.Rectangle(viewport.x, viewport.y, viewport.width, viewport.height);
+        java.awt.Rectangle elementRect = new java.awt.Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
+        return ((complete && viewportRect.contains(elementRect)) || viewportRect.intersects(elementRect));
     }
 
     @Override
@@ -847,17 +849,17 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     @Override
     public File takeScreenshot() {
-
-        this.scrollToElement();
-
-        final WebElement element = guiElementData.webElement;
+        final WebElement element = getWebElement();
         final boolean isSelenium4 = false;
 
         if (isSelenium4) {
             return element.getScreenshotAs(OutputType.FILE);
         } else {
+            if (!isVisible(false)) {
+                this.scrollToElement();
+            }
+            Rectangle viewport = WebDriverUtils.getViewport(webDriver);
             try {
-                find();
                 final TakesScreenshot driver = ((TakesScreenshot)guiElementData.webDriver);
 
                 File screenshot = driver.getScreenshotAs(OutputType.FILE);
@@ -868,8 +870,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
                 int eleHeight = element.getSize().getHeight();
 
                 BufferedImage eleScreenshot = fullImg.getSubimage(
-                    point.getX()-(int)getScrollX(),
-                    point.getY()-(int)getScrollY(),
+                    point.getX()-viewport.getX(),
+                    point.getY()-viewport.getY(),
                     eleWidth,
                     eleHeight
                 );

@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import org.openqa.selenium.*;
@@ -93,17 +94,6 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
     }
-
-    @Override
-    public long getScrollX() {
-        return guiElementCore.getScrollX();
-    }
-
-    @Override
-    public long getScrollY() {
-        return guiElementCore.getScrollY();
-    }
-
 
     @Override
     public void select() {
@@ -310,6 +300,25 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse<GuiElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
+    }
+
+    @Override
+    public GuiElement getSubElement(Locate locator) {
+        Timer.Sequence<GuiElement> sequence = new Timer.Sequence<GuiElement>() {
+            @Override
+            public void run() {
+                GuiElement guiElement = guiElementCore.getSubElement(locator);
+                setReturningObject(guiElement);
+            }
+        };
+        sequence.setSkipThrowingException(true);
+        ThrowablePackedResponse<GuiElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        return throwablePackedResponse.finalizeTimer();
+    }
+
+    @Override
+    public GuiElement getSubElement(By by) {
+        return getSubElement(by, "");
     }
 
     @Override
@@ -583,6 +592,24 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
                 boolean displayed = guiElementCore.isDisplayed();
                 setReturningObject(displayed);
                 setPassState(displayed);
+            }
+        };
+        sequence.setSkipThrowingException(true);
+        ThrowablePackedResponse<Boolean> response = timerWrapper.executeShortIntervalSequence(sequence);
+        return response.logThrowableAndReturnResponse();
+    }
+
+    @Override
+    public boolean isVisible(boolean complete) {
+        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
+            @Override
+            public void run() {
+                setReturningObject(false);
+                setSkipThrowingException(true);
+
+                boolean visible = guiElementCore.isVisible(complete);
+                setReturningObject(visible);
+                setPassState(visible);
             }
         };
         sequence.setSkipThrowingException(true);

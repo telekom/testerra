@@ -142,6 +142,34 @@ public class StandardGuiElementWait implements GuiElementWait {
     }
 
     @Override
+    public boolean waitForIsVisible(boolean complete) {
+        return pWaitForVisibleStatus(true, complete);
+    }
+
+    @Override
+    public boolean waitForIsNotVisible() {
+        return pWaitForVisibleStatus(false, false);
+    }
+
+    private boolean pWaitForVisibleStatus(final boolean visible, final boolean complete) {
+        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
+            @Override
+            public void run() {
+                setReturningObject(!visible); // in case of an error while executing webelement method -> no exception has to be thrown
+                setSkipThrowingException(true);
+
+                boolean displayed = guiElementStatusCheck.isVisible(complete);
+                boolean sequenceStatus = displayed == visible;
+                setPassState(sequenceStatus);
+                setReturningObject(sequenceStatus);
+            }
+        };
+        LOGGER.debug("Executing pWaitForVisibleStatus=" + visible + " with Sequence.");
+        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        return response.logThrowableAndReturnResponse();
+    }
+
+    @Override
     public boolean waitForIsDisplayedFromWebElement() {
         return pWaitForDisplayedFromWebelementStatus(true);
     }

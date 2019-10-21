@@ -44,6 +44,7 @@ public class Locate {
     private List<WebElementFilter> filters;
     private boolean unique = false;
     private By by;
+    private String preparedFormat;
 
     private Locate() {
 
@@ -138,8 +139,6 @@ public class Locate {
         return this;
     }
 
-
-
     /**
      * tt. by coordinates using webdriver
      *
@@ -204,5 +203,28 @@ public class Locate {
             toString = toString.substring(0, toString.length() - 2) + " }";
         }
         return toString;
+    }
+
+    /**
+     * Prepares a xpath selector
+     * @param format
+     * @return
+     */
+    public static Locate prepare(final String format) {
+        final Locate locate = new Locate();
+        locate.preparedFormat = format;
+        return locate;
+    }
+
+    /**
+     * Formats an xpath selector
+     * @param args
+     * @return
+     */
+    public Locate with(Object... args) {
+        Locate locate = by();
+        locate.unique = unique;
+        locate.filters = filters;
+        return locate.xpath(String.format(preparedFormat, args));
     }
 }

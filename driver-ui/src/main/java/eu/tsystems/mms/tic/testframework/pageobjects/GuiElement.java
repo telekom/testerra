@@ -282,25 +282,31 @@ public class GuiElement implements
      * Get sub element by locator. Using this executes a find on the parent element and the parent.findElement for the
      * given locator. It does not wait for the subelement if the parent has been found!
      *
-     * @param byLocator Locator of new element.
+     * @param by Locator of new element.
      *
      * @return GuiElement
      */
-    public GuiElement getSubElement(By byLocator) {
-        return getSubElement(byLocator, null);
+    public GuiElement getSubElement(By by) {
+        return getSubElement(by, null);
     }
 
     /**
      * Get sub element by locator. Using this executes a find on the parent element and the parent.findElement for the
      * given locator. It does not wait for the subelement if the parent has been found!
      *
-     * @param byLocator   Locator of new element.
+     * @param by   Locator of new element.
      * @param description Description for GuiElement
      *
      * @return GuiElement
      */
-    public GuiElement getSubElement(By byLocator, String description) {
-        return guiElementFacade.getSubElement(byLocator, description);
+    @Deprecated
+    public GuiElement getSubElement(By by, String description) {
+        return guiElementFacade.getSubElement(by, description);
+    }
+
+    @Override
+    public GuiElement getSubElement(Locate locator) {
+        return guiElementFacade.getSubElement(locator);
     }
 
     @Override
@@ -321,16 +327,6 @@ public class GuiElement implements
     @Override
     public void scrollToElement(int yOffset) {
         guiElementFacade.scrollToElement(yOffset);
-    }
-
-    @Override
-    public long getScrollX() {
-        return guiElementCore.getScrollX();
-    }
-
-    @Override
-    public long getScrollY() {
-        return guiElementCore.getScrollY();
     }
 
     @Override
@@ -443,6 +439,11 @@ public class GuiElement implements
     @Override
     public boolean isDisplayed() {
         return guiElementFacade.isDisplayed();
+    }
+
+    @Override
+    public boolean isVisible(final boolean complete) {
+        return guiElementFacade.isVisible(complete);
     }
 
     @Override
@@ -593,8 +594,9 @@ public class GuiElement implements
      *
      * @param parent Object that should act as parent.
      */
-    public void setParent(GuiElementCore parent) {
+    public GuiElement setParent(GuiElementCore parent) {
         guiElementData.parent = parent;
+        return this;
     }
 
     @Deprecated
@@ -607,8 +609,9 @@ public class GuiElement implements
         return guiElementData.toString();
     }
 
+    @Deprecated
     public WebDriver getDriver() {
-        return guiElementData.webDriver;
+        return getWebDriver();
     }
 
     public boolean hasSensibleData() {
@@ -621,8 +624,9 @@ public class GuiElement implements
     }
 
     @Override
-    public void setName(String name) {
+    public GuiElement setName(String name) {
         guiElementData.name = name;
+        return this;
     }
 
     @Override

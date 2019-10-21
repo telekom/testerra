@@ -13,7 +13,7 @@ public class AssertableQuantifiedValue<T> extends AssertableBinaryValue implemen
 
     @Override
     public IAssertableQuantifiedValue equals(final String expected) {
-        Assert.assertEquals(actual, expected);
+        Assert.assertEquals(actual, expected, String.format("%s %s", object, property));
         return this;
     }
 
@@ -29,7 +29,7 @@ public class AssertableQuantifiedValue<T> extends AssertableBinaryValue implemen
 
     @Override
     public AssertableQuantifiedValue greaterThan(final BigDecimal expected) {
-        AssertUtils.assertGreaterThan(new BigDecimal((String)actual), expected);
+        AssertUtils.assertGreaterThan(new BigDecimal((String)actual), expected, String.format("%s %s", object, property));
         return this;
     }
 
@@ -61,7 +61,7 @@ public class AssertableQuantifiedValue<T> extends AssertableBinaryValue implemen
 
     @Override
     public AssertableQuantifiedValue greaterEqualThan(final BigDecimal expected) {
-        AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected);
+        AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected, String.format("%s %s", object, property));
         return this;
     }
 
@@ -77,7 +77,7 @@ public class AssertableQuantifiedValue<T> extends AssertableBinaryValue implemen
 
     @Override
     public AssertableQuantifiedValue lowerEqualThan(final BigDecimal expected) {
-        AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected);
+        AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected, String.format("%s %s", object, property));
         return this;
     }
 }

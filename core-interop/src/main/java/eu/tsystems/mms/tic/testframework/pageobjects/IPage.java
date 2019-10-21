@@ -5,7 +5,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.By;
 
 public interface IPage extends IWebDriverRetainer {
-    IGuiElement by(final String cssSelector);
+    IGuiElement byId(final String id);
+    IGuiElement byQa(final String qa);
     IGuiElement by(final Locate locator);
     IGuiElement by(final By by);
     IAssertableValue title();

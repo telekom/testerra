@@ -11,13 +11,13 @@ public class AssertableValue<T> extends AssertableQuantifiedValue implements IAs
 
     @Override
     public AssertableValue contains(final String expected) {
-        AssertUtils.assertContains((String)actual, expected);
+        AssertUtils.assertContains((String)actual, expected, String.format("%s %s", object, property));
         return this;
     }
 
     @Override
     public AssertableValue containsNot(final String expected) {
-        AssertUtils.assertContainsNot((String)actual, expected);
+        AssertUtils.assertContainsNot((String)actual, expected, String.format("%s %s", object, property));
         return this;
     }
 

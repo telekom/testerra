@@ -20,7 +20,6 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.enums.DragAndDropOption;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
@@ -144,9 +143,9 @@ public final class MouseActions {
         JSUtils.executeScript(driver, script, drag, drop, fromX, fromY, toX, toY);
     }
 
-    public static void swipeElement(final GuiElement elementToSwipe, int offsetX, int offsetY) {
+    public static void swipeElement(final IGuiElement elementToSwipe, int offsetX, int offsetY) {
 
-        WebDriver driver = elementToSwipe.getDriver();
+        WebDriver driver = elementToSwipe.getWebDriver();
         Point location = elementToSwipe.getLocation();
         Dimension size = elementToSwipe.getSize();
 

@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.core.test.utils;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -41,15 +42,15 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
         return WebDriverManager.getWebDriver();
     }
 
-    private IGuiElement[] beforeDragAndDropSimple() {
+    private GuiElement[] beforeDragAndDropSimple() {
         final WebDriver driver = getDriver();
 
         String url = TestPage.DRAG_AND_DROP.getUrl();
 
         driver.get(url);
 
-        IGuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorSimple);
-        IGuiElement destinationGuiElement = new GuiElement(driver, By.id("divRectangle"));
+        GuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorSimple);
+        GuiElement destinationGuiElement = new GuiElement(driver, By.id("divRectangle"));
         return new GuiElement[] { sourceGuiElement, destinationGuiElement };
     }
 
@@ -62,8 +63,8 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
         IGuiElement leftFrame = new GuiElement(driver, By.id("draggableNodes"));
         IGuiElement rightFrame = new GuiElement(driver, By.id("dropTargets"));
 
-        IGuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorFrames, leftFrame);
-        IGuiElement destinationGuiElement = new GuiElement(driver, By.id("dropTarget"), rightFrame);
+        GuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorFrames, leftFrame);
+        GuiElement destinationGuiElement = new GuiElement(driver, By.id("dropTarget"), rightFrame);
         return new GuiElement[] { sourceGuiElement, destinationGuiElement };
     }
 

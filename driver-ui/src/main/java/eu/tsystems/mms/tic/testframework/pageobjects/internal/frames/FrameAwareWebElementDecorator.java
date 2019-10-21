@@ -19,8 +19,15 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import org.openqa.selenium.*;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -30,9 +37,9 @@ import java.util.List;
 public class FrameAwareWebElementDecorator implements WebElement {
 
     private WebElement webElement;
-    private FrameLogic frameLogic;
+    private IFrameLogic frameLogic;
 
-    public FrameAwareWebElementDecorator(WebElement element, GuiElement[] frames, WebDriver driver) {
+    public FrameAwareWebElementDecorator(WebElement element, IGuiElement[] frames, WebDriver driver) {
         this.webElement = element;
         frameLogic = new FrameLogic(driver, frames);
     }

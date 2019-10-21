@@ -4,6 +4,7 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
@@ -155,7 +156,7 @@ public class RetryTest extends AbstractTest {
         dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
         IGuiElement methodDetail = dashboardPage.getMethodChartModule().getCurrentMethods().get(0);
         MethodDetailsPage retryDetailsPage = GeneralWorkflow.doOpenReportMethodDetailsPage(dashboardPage, methodDetail);
-        IGuiElement latestHistoryEntry = retryDetailsPage.getHistoryElementByPosition(1); // Latest
+        GuiElement latestHistoryEntry = retryDetailsPage.getHistoryElementByPosition(1); // Latest
         latestHistoryEntry.assertCollector().assertIsNotDisplayed();
 
     }

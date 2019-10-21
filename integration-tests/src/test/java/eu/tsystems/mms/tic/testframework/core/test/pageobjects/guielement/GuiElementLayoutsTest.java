@@ -38,7 +38,7 @@ public abstract class GuiElementLayoutsTest extends GuiElementStandardFunctionsT
     public void testT01_LeftOf() throws Exception {
         IGuiElement left = getGuiElementBy(By.id("1"));
         IGuiElement right = getGuiElementBy(By.linkText("Open again"));
-        left.asserts().assertLayout(Layout.outer().outer().leftOf(right));
+        left.asserts().assertLayout(Layout.outer().leftOf(right));
     }
 
     @Test(expectedExceptions = AssertionError.class)

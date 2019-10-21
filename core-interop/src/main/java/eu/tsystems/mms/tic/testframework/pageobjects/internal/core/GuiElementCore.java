@@ -55,8 +55,8 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      *
      * @return this.
      */
-    void scrollToElement();
-    void scrollToElement(int yOffset);
+    GuiElementCore scrollToElement();
+    GuiElementCore scrollToElement(int yOffset);
 
     /**
      * Select a selectable element.

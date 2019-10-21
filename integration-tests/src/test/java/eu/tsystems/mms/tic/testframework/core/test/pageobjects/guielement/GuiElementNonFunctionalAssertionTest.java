@@ -17,9 +17,9 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -32,8 +32,8 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
 
     @Test
     public void testT1_GuiElement_NonFunctionalAssertLayout() throws Exception {
-        IGuiElement e1 = getGuiElementBy(By.id("1"));
-        IGuiElement e2 = getGuiElementBy(By.id("11"));
+        GuiElement e1 = getGuiElementBy(By.id("1"));
+        GuiElement e2 = getGuiElementBy(By.id("11"));
         boolean exceptionWasThrown = false;
         try {
             e1.nonFunctionalAsserts().assertLayout(Layout.inner().sameRight(e2, 0));
@@ -168,7 +168,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT12_GuiElement_nonFunctionalAssertIsSelected() {
         boolean exceptionWasThrown = false;
         try {
-            IGuiElement g = getSelectableElement();
+            GuiElement g = getSelectableElement();
             g.select(true);
             g.nonFunctionalAsserts().assertIsSelected();
         } catch (AssertionError e) {
@@ -182,7 +182,7 @@ public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWai
     public void testT13N_GuiElement_nonFunctionalAssertIsNotSelected() {
         boolean exceptionWasThrown = false;
         try {
-            IGuiElement g = getSelectableElement();
+            GuiElement g = getSelectableElement();
             g.select(true);
             g.nonFunctionalAsserts().assertIsNotSelected();
         } catch (AssertionError e) {

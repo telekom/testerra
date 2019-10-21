@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
@@ -254,13 +255,15 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public void scrollToElement() {
+    public GuiElementCore scrollToElement() {
         pScrollToElement(0);
+        return this;
     }
 
     @Override
-    public void scrollToElement(int yOffset) {
+    public GuiElementCore scrollToElement(int yOffset) {
         pScrollToElement(yOffset);
+        return this;
     }
 
     /**
@@ -276,22 +279,25 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public void select() {
+    public GuiElementCore select() {
         if (!isSelected()) {
             click();
         }
+        return this;
     }
 
     @Override
-    public void deselect() {
+    public GuiElementCore deselect() {
         if (isSelected()) {
             click();
         }
+        return this;
     }
 
     @Override
-    public void type(String text) {
+    public GuiElementCore type(String text) {
         pType(text);
+        return this;
     }
 
     private void pType(String text) {
@@ -330,13 +336,15 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public void click() {
+    public GuiElementCore click() {
         find();
         LOGGER.debug("click(): found element, adding ClickPath");
         LOGGER.debug("click(): added ClickPath, clicking relative");
         pClickRelative(this, webDriver, guiElementData.webElement);
         LOGGER.debug("click(): clicked relative");
+        return this;
     }
+
 
     private void pClickRelative(
         GuiElementCore guiElementCore,
@@ -371,22 +379,25 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public void clickJS() {
+    public GuiElementCore clickJS() {
         find();
         JSUtils.executeScript(webDriver, "arguments[0].click();", guiElementData.webElement);
+        return this;
     }
 
     @Override
-    public void clickAbsolute() {
+    public GuiElementCore clickAbsolute() {
         find();
         pClickAbsolute(this, webDriver, guiElementData.webElement);
+        return this;
     }
 
     @Override
-    public void mouseOverAbsolute2Axis() {
+    public GuiElementCore mouseOverAbsolute2Axis() {
         find();
         demoMouseOver();
         mouseOverAbsolute2Axis(webDriver, guiElementData.webElement);
+        return this;
     }
 
     /**
@@ -418,18 +429,21 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public void submit() {
+    public GuiElementCore submit() {
         getWebElement().submit();
+        return this;
     }
 
     @Override
-    public void sendKeys(CharSequence... charSequences) {
+    public GuiElementCore sendKeys(CharSequence... charSequences) {
         getWebElement().sendKeys(charSequences);
+        return this;
     }
 
     @Override
-    public void clear() {
+    public GuiElementCore clear() {
         getWebElement().clear();
+        return this;
     }
 
     @Override
@@ -474,7 +488,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     public GuiElement getSubElement(Locate locate) {
         FrameLogic frameLogic = guiElementData.frameLogic;
-        GuiElement[] frames = null;
+        IGuiElement[] frames = null;
         if (frameLogic != null) {
             frames = frameLogic.getFrames();
         }
@@ -632,7 +646,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public void mouseOver() {
+    public GuiElementCore mouseOver() {
         String browser = guiElementData.browser;
         switch (browser) {
             case Browsers.safari:
@@ -645,6 +659,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
             default:
                 pMouseOver();
         }
+        return this;
     }
 
     /**
@@ -675,9 +690,10 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public void mouseOverJS() {
+    public GuiElementCore mouseOverJS() {
         demoMouseOver();
         pMouseOverJS();
+        return this;
     }
 
     private void pMouseOverJS() {
@@ -740,7 +756,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public void doubleClick() {
+    public GuiElementCore doubleClick() {
         find();
         WebElement webElement = guiElementData.webElement;
         By localBy = getBy();
@@ -770,18 +786,21 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
                 actions.moveToElement(webElement).click().click().build().perform();
             }
         }
+        return this;
     }
 
     @Override
-    public void highlight() {
+    public GuiElementCore highlight() {
         LOGGER.debug("highlight(): starting highlight");
         JSUtils.highlightWebElement(webDriver, getWebElement(), 0, 0, 255);
         LOGGER.debug("highlight(): finished highlight");
+        return this;
     }
 
     @Override
-    public void swipe(int offsetX, int offSetY) {
+    public GuiElementCore swipe(int offsetX, int offSetY) {
         MouseActions.swipeElement(guiElementData.guiElement, offsetX, offSetY);
+        return this;
     }
 
     @Override
@@ -822,14 +841,15 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public void rightClick() {
+    public GuiElementCore rightClick() {
         find();
         Actions actions = new Actions(webDriver);
         actions.moveToElement(guiElementData.webElement).contextClick().build().perform();
+        return this;
     }
 
     @Override
-    public void rightClickJS() {
+    public GuiElementCore rightClickJS() {
         find();
         String script = "var element = arguments[0];" +
                 "var e = element.ownerDocument.createEvent('MouseEvents');" +
@@ -837,14 +857,16 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
                 "return !element.dispatchEvent(e);";
 
         JSUtils.executeScript(webDriver, script, guiElementData.webElement);
+        return this;
     }
 
     @Override
-    public void doubleClickJS() {
+    public GuiElementCore doubleClickJS() {
         find();
         WebElement webElement = getWebElement();
         Point location = webElement.getLocation();
         JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, location.getX(), location.getY());
+        return this;
     }
 
     @Override

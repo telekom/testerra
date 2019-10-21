@@ -342,13 +342,15 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public void scrollToElement() {
+    public GuiElement scrollToElement() {
         guiElementFacade.scrollToElement();
+        return this;
     }
 
     @Override
-    public void scrollToElement(int yOffset) {
+    public GuiElement scrollToElement(int yOffset) {
         guiElementFacade.scrollToElement(yOffset);
+        return this;
     }
 
     @Override
@@ -364,7 +366,8 @@ public class GuiElement implements IGuiElement {
      *
      * @param select true/false/null.
      */
-    public void select(Boolean select) {
+    @Override
+    public GuiElement select(Boolean select) {
         guiElementData.setLogLevel(LogLevel.INFO);
         if (select == null) {
             LOGGER.info("Select option is null. Selecting/Deselecting nothing.");
@@ -375,6 +378,7 @@ public class GuiElement implements IGuiElement {
             guiElementFacade.deselect();
         }
         guiElementData.resetLogLevel();
+        return this;
     }
 
     @Override

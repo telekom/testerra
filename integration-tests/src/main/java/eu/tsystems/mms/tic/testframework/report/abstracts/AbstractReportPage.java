@@ -2,6 +2,7 @@ package eu.tsystems.mms.tic.testframework.report.abstracts;
 
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.BurgerMenu;

@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -38,13 +38,13 @@ public class FrameAwareSelect extends Select {
     /**
      * Frames containing this element, in the correct order from outer to inner.
      */
-    private final GuiElement[] frames;
+    private final IGuiElement[] frames;
 
     private final WebDriver driver;
 
     private final Select select;
 
-    private final FrameLogic frameLogic;
+    private final IFrameLogic frameLogic;
 
     /**
      * This is not actually an extension of the Select class, but a decorator.
@@ -55,7 +55,7 @@ public class FrameAwareSelect extends Select {
      * @param frames           frames this element sits in
      * @param driver           driver
      */
-    public FrameAwareSelect(Select selectWebElement, WebElement element, GuiElement[] frames, WebDriver driver) {
+    public FrameAwareSelect(Select selectWebElement, WebElement element, IGuiElement[] frames, WebDriver driver) {
         super(element);
         this.frames = frames;
         this.driver = driver;

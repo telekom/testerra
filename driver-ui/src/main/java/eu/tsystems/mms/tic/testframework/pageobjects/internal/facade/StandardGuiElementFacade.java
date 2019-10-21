@@ -66,63 +66,75 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public void scrollToElement() {
+    public GuiElementCore scrollToElement() {
         guiElementCore.scrollToElement();
+        return this;
     }
 
     @Override
-    public void scrollToElement(int yOffset) {
+    public GuiElementCore scrollToElement(int yOffset) {
         guiElementCore.scrollToElement(yOffset);
+        return this;
     }
 
     @Override
-    public void select() {
+    public GuiElementCore select() {
         guiElementCore.select();
+        return this;
     }
 
     @Override
-    public void deselect() {
+    public GuiElementCore deselect() {
         guiElementCore.deselect();
+        return this;
     }
 
     @Override
-    public void type(String text) {
+    public GuiElementCore type(String text) {
         guiElementCore.type(text);
+        return this;
     }
 
     @Override
-    public void click() {
+    public GuiElementCore click() {
         guiElementCore.click();
+        return this;
     }
 
     @Override
-    public void clickJS() {
+    public GuiElementCore clickJS() {
         guiElementCore.clickJS();
+        return this;
     }
 
     @Override
-    public void clickAbsolute() {
+    public GuiElementCore clickAbsolute() {
         guiElementCore.clickAbsolute();
+        return this;
     }
 
     @Override
-    public void mouseOverAbsolute2Axis() {
+    public GuiElementCore mouseOverAbsolute2Axis() {
         guiElementCore.mouseOverAbsolute2Axis();
+        return this;
     }
 
     @Override
-    public void submit() {
+    public GuiElementCore submit() {
         guiElementCore.submit();
+        return this;
     }
 
     @Override
-    public void sendKeys(CharSequence... charSequences) {
+    public GuiElementCore sendKeys(CharSequence... charSequences) {
         guiElementCore.sendKeys(charSequences);
+        return this;
     }
 
     @Override
-    public void clear() {
+    public GuiElementCore clear() {
         guiElementCore.clear();
+        return this;
     }
 
     @Override
@@ -201,13 +213,15 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public void mouseOver() {
+    public GuiElementCore mouseOver() {
         guiElementCore.mouseOver();
+        return this;
     }
 
     @Override
-    public void mouseOverJS() {
+    public GuiElementCore mouseOverJS() {
         guiElementCore.mouseOverJS();
+        return this;
     }
 
     @Override
@@ -231,18 +245,21 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public void doubleClick() {
+    public GuiElementCore doubleClick() {
         guiElementCore.doubleClick();
+        return this;
     }
 
     @Override
-    public void highlight() {
+    public GuiElementCore highlight() {
         guiElementCore.highlight();
+        return this;
     }
 
     @Override
-    public void swipe(int offsetX, int offSetY) {
+    public GuiElementCore swipe(int offsetX, int offSetY) {
         guiElementCore.swipe(offsetX, offSetY);
+        return this;
     }
 
     @Override
@@ -256,18 +273,21 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public void rightClick() {
+    public GuiElementCore rightClick() {
         guiElementCore.rightClick();
+        return this;
     }
 
     @Override
-    public void rightClickJS() {
+    public GuiElementCore rightClickJS() {
         guiElementCore.rightClickJS();
+        return this;
     }
 
     @Override
-    public void doubleClickJS() {
+    public GuiElementCore doubleClickJS() {
         guiElementCore.doubleClickJS();
+        return this;
     }
 
     @Override

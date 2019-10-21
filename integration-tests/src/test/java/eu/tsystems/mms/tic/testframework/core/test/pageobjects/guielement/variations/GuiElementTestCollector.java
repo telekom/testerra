@@ -17,9 +17,9 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement.variations;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
 
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement.GuiElementNonFunctionalAssertionTest;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.GuiElementNonFunctionalAssertionTest;
 
 /**
  * Created by pele on 31.08.2015.

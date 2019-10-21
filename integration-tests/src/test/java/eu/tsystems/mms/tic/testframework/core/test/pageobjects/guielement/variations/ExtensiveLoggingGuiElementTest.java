@@ -17,10 +17,10 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement.variations;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -31,10 +31,9 @@ import org.openqa.selenium.WebDriver;
 public class ExtensiveLoggingGuiElementTest extends GuiElementTestCollector {
 
     @Override
-    public IGuiElement getGuiElementBy(By locator) {
+    public GuiElement getGuiElementBy(By locator) {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        IGuiElement IGuiElement = new GuiElement(driver, locator);
-        return IGuiElement;
+        return new GuiElement(driver, locator);
     }
 
     @Override

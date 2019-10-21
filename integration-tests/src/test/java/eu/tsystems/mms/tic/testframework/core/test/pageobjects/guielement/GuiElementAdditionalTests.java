@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -41,7 +41,7 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
         final String absoluteFilePath = resourceFile.getAbsolutePath();
 
 
-        IGuiElement input = new GuiElement(driver, By.id("2"));
+        GuiElement input = new GuiElement(driver, By.id("2"));
         input.sendKeys(absoluteFilePath);
     }
 

@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement.variations.AbstractGuiElementTest;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
@@ -52,7 +52,11 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Test
     public void testT01_GuiElement_assertContainsText() {
         getElementWithText().asserts().assertContainsText(testPage.getElementText());
-        getPageObject().by("#11").text().contains(testPage.getElementText());
+    }
+
+    @Test
+    public void test_NewApi_GuiElement_assertTextContains() {
+        getPageObject().byId("11").text().contains("affe");
     }
 
     /**

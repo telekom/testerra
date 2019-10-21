@@ -102,7 +102,7 @@ public class WebTestPage extends AbstractWebTestPage {
      *
      */
     public void nonfunctionalAssert() {
-        IGuiElement IGuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
+        GuiElement IGuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
         IGuiElement.nonFunctionalAssert.assertIsPresent();
     }
 

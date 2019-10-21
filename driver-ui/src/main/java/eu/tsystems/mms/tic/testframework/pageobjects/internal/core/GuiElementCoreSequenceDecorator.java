@@ -74,7 +74,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public void scrollToElement() {
+    public GuiElementCore scrollToElement() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -84,10 +84,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
-    public void scrollToElement(int yOffset) {
+    public GuiElementCore scrollToElement(int yOffset) {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -97,10 +98,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
-    public void select() {
+    public GuiElementCore select() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -111,10 +113,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
-    public void deselect() {
+    public GuiElementCore deselect() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -125,10 +128,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
-    public void type(final String text) {
+    public GuiElementCore type(final String text) {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -138,10 +142,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
-    public void click() {
+    public GuiElementCore click() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -152,6 +157,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
 
         checkForClickingJSAlternativeOrExit(throwablePackedResponse, "click", guiElementCore::clickJS);
+        return this;
     }
 
     private void checkForClickingJSAlternativeOrExit(ThrowablePackedResponse throwablePackedResponse, String action, Runnable runnable) {
@@ -201,7 +207,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public void clickJS() {
+    public GuiElementCore clickJS() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -211,10 +217,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
-    public void clickAbsolute() {
+    public GuiElementCore clickAbsolute() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -224,10 +231,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
-    public void mouseOverAbsolute2Axis() {
+    public GuiElementCore mouseOverAbsolute2Axis() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -237,10 +245,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
-    public void submit() {
+    public GuiElementCore submit() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -250,10 +259,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
-    public void sendKeys(final CharSequence... charSequences) {
+    public GuiElementCore sendKeys(final CharSequence... charSequences) {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -263,10 +273,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
-    public void clear() {
+    public GuiElementCore clear() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -276,6 +287,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
@@ -368,7 +380,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public void mouseOver() {
+    public GuiElementCore mouseOver() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -378,10 +390,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         };
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
-    public void mouseOverJS() {
+    public GuiElementCore mouseOverJS() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -391,6 +404,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
@@ -422,7 +436,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public void doubleClick() {
+    public GuiElementCore doubleClick() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -433,10 +447,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
 
         checkForClickingJSAlternativeOrExit(throwablePackedResponse, "doubleClick", guiElementCore::doubleClickJS);
+        return this;
     }
 
     @Override
-    public void highlight() {
+    public GuiElementCore highlight() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -446,10 +461,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.logThrowableAndReturnResponse();
+        return this;
     }
 
     @Override
-    public void swipe(final int offsetX, final int offSetY) {
+    public GuiElementCore swipe(final int offsetX, final int offSetY) {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -459,6 +475,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
@@ -491,7 +508,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public void rightClick() {
+    public GuiElementCore rightClick() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -502,10 +519,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
 
         checkForClickingJSAlternativeOrExit(throwablePackedResponse, "rightClick", guiElementCore::rightClickJS);
+        return this;
     }
 
     @Override
-    public void rightClickJS() {
+    public GuiElementCore rightClickJS() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -515,10 +533,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override
-    public void doubleClickJS() {
+    public GuiElementCore doubleClickJS() {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
@@ -528,6 +547,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
+        return this;
     }
 
     @Override

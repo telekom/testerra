@@ -17,14 +17,14 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement.variations;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.core.test.TestPageObject;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -38,7 +38,7 @@ import org.testng.annotations.BeforeMethod;
 import java.lang.reflect.Method;
 
 /**
- * Test of IGuiElement methods
+ * Test of GuiElement methods
  *
  * @author rnhb
  */
@@ -77,162 +77,162 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
     }
 
     /**
-     * abstract methods to get specific IGuiElement (e.g. FrameAwareInternalGuiElementDecorator) in a specific state
+     * abstract methods to get specific GuiElement (e.g. FrameAwareInternalGuiElementDecorator) in a specific state
      * (e.g. present, not present)
      */
-    public IGuiElement getAnyElement() {
+    public GuiElement getAnyElement() {
         return getAnyElementByXpath();
     }
 
-    public IGuiElement getNotExistingElement() {
+    public GuiElement getNotExistingElement() {
         return getGuiElementBy(By.id("notExistingId"));
     }
 
-    public IGuiElement getAnyElementByXpath() {
+    public GuiElement getAnyElementByXpath() {
         return getGuiElementBy(By.xpath("//*[@id='11']"));
     }
 
-    public IGuiElement getAnyElementByClassName() {
+    public GuiElement getAnyElementByClassName() {
         return getGuiElementBy(By.className("className"));
     }
 
-    public IGuiElement getAnyElementByLinkText() {
+    public GuiElement getAnyElementByLinkText() {
         return getGuiElementBy(By.linkText("Open again"));
     }
 
-    public IGuiElement getAnyElementByPartialLinkText() {
+    public GuiElement getAnyElementByPartialLinkText() {
         return getGuiElementBy(By.partialLinkText("Open"));
     }
 
-    public IGuiElement getAnyElementByName() {
+    public GuiElement getAnyElementByName() {
         return getGuiElementBy(By.name("radioBtn"));
     }
 
-    public IGuiElement getDisplayedElement() {
+    public GuiElement getDisplayedElement() {
         return getGuiElementBy(By.id("11"));
     }
 
-    public IGuiElement getNotDisplayedElement() {
+    public GuiElement getNotDisplayedElement() {
         return getGuiElementBy(By.id("notDisplayedElement"));
     }
 
-    public IGuiElement getSelectableElement() {
+    public GuiElement getSelectableElement() {
         return getGuiElementBy(By.id("3"));
     }
 
-    public IGuiElement getNotSelectableElement() {
+    public GuiElement getNotSelectableElement() {
         return getGuiElementBy(By.id("11"));
     }
 
-    public IGuiElement getClickableElement() {
+    public GuiElement getClickableElement() {
         return getGuiElementBy(By.xpath("//input[@type='submit']"));
     }
 
-    public IGuiElement getEnabledElement() {
+    public GuiElement getEnabledElement() {
         return getGuiElementBy(By.id("16"));
     }
 
-    public IGuiElement getElementWithText() {
+    public GuiElement getElementWithText() {
         return getGuiElementBy(By.id("11"));
     }
 
-    public IGuiElement getElementWithAttribute() {
+    public GuiElement getElementWithAttribute() {
         return getGuiElementBy(By.id("6"));
     }
 
-    public IGuiElement getParent1() {
+    public GuiElement getParent1() {
         return getGuiElementBy(By.xpath("//div[1]"));
     }
 
-    public IGuiElement getParent2() {
+    public GuiElement getParent2() {
         return getGuiElementBy(By.xpath("//div[2]"));
     }
 
-    public IGuiElement getDisabledElement() {
+    public GuiElement getDisabledElement() {
         return getGuiElementBy(By.id("7"));
     }
 
-    public IGuiElement getTextBoxElement() {
+    public GuiElement getTextBoxElement() {
         return getGuiElementBy(By.id("5"));
     }
 
-    public IGuiElement getLoggerTableElement() {
+    public GuiElement getLoggerTableElement() {
         return getGuiElementBy(By.id("99"));
     }
 
-    public IGuiElement getTableElement() {
+    public GuiElement getTableElement() {
         return getGuiElementBy(By.id("100"));
     }
 
-    public IGuiElement getMultiSelect() {
+    public GuiElement getMultiSelect() {
         return getGuiElementBy(By.xpath("//select[1]"));
     }
 
-    public IGuiElement getSingleSelect() {
+    public GuiElement getSingleSelect() {
         return getGuiElementBy(By.xpath("//select[2]"));
     }
 
-    public IGuiElement getTimeOutInput() {
+    public GuiElement getTimeOutInput() {
         return getGuiElementBy(By.id("inputMillis"));
     }
 
-    public IGuiElement getShowWithTimeOutButton() {
+    public GuiElement getShowWithTimeOutButton() {
         return getGuiElementBy(By.id("showText"));
     }
 
-    public IGuiElement getHideWithTimeOutButton() {
+    public GuiElement getHideWithTimeOutButton() {
         return getGuiElementBy(By.id("hideText"));
     }
 
-    public IGuiElement getChangeTextByJSButton() {
+    public GuiElement getChangeTextByJSButton() {
         return getGuiElementBy(By.id("changeText"));
     }
 
-    public IGuiElement getInsertTextByJSButton() {
+    public GuiElement getInsertTextByJSButton() {
         return getGuiElementBy(By.id("insertText"));
     }
 
-    public IGuiElement getDynamicTextElement() {
+    public GuiElement getDynamicTextElement() {
         return getGuiElementBy(By.id("switch"));
     }
 
-    public IGuiElement getInsertedTextElement() {
+    public GuiElement getInsertedTextElement() {
         return getGuiElementBy(By.id("dynText"));
     }
 
-    public IGuiElement getEnableRDButton() {
+    public GuiElement getEnableRDButton() {
         return getGuiElementBy(By.id("enableRdButton"));
     }
 
-    public IGuiElement getTimeOutDIV() {
+    public GuiElement getTimeOutDIV() {
         return getGuiElementBy(By.id("waiterDIV"));
     }
 
-    public IGuiElement getAddAttributeWithTimeOutButton() {
+    public GuiElement getAddAttributeWithTimeOutButton() {
         return getGuiElementBy(By.id("addAttributeToRDButton"));
     }
 
-    public IGuiElement getDisableRDButton() {
+    public GuiElement getDisableRDButton() {
         return getGuiElementBy(By.id("disableRDButton"));
     }
 
-    public IGuiElement getRadio() {
+    public GuiElement getRadio() {
         return getGuiElementBy(By.id("enabledSwitchRDButton"));
     }
 
-    public IGuiElement getCheckBox() {
+    public GuiElement getCheckBox() {
         return getGuiElementBy(By.id("9"));
     }
 
-    public IGuiElement getSelectRadioButtonMitVerzoegerungButton() {
+    public GuiElement getSelectRadioButtonMitVerzoegerungButton() {
         return getGuiElementBy(By.id("SelectRDButton"));
     }
 
-    public IGuiElement getDeselectRadioButtonMitVerzoegerungButton() {
+    public GuiElement getDeselectRadioButtonMitVerzoegerungButton() {
         return getGuiElementBy(By.id("DeselectRDButton"));
     }
 
-    public abstract IGuiElement getGuiElementBy(By locator);
+    public abstract GuiElement getGuiElementBy(By locator);
 
     public TestPageObject getPageObject() {
         return new TestPageObject(WebDriverManager.getWebDriver());

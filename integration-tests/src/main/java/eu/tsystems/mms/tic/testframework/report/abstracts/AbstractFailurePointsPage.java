@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.abstracts;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
@@ -54,8 +55,8 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
      * @param entry the entry to get the header information from
      * @return a GuiElemet representing the header of the given entry
      */
-    public IGuiElement getHeaderInformationElementForFailurePoint(AbstractResultTableFailureEntry entry) {
-        IGuiElement headerElement = new GuiElement(driver, By.xpath(String.format(
+    public GuiElement getHeaderInformationElementForFailurePoint(AbstractResultTableFailureEntry entry) {
+        GuiElement headerElement = new GuiElement(driver, By.xpath(String.format(
                 LOCATOR_FAILUREPOINT_HEADER,
                 failurePointType.getLabel(),
                 entry.getEntryNumber(),
@@ -178,8 +179,8 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
      * @param entry the result table failure entry
      * @return a IGuiElement representing the description element of a row entry
      */
-    public IGuiElement getDescriptionElementByFailurePoint(AbstractResultTableFailureEntry entry) {
-        IGuiElement descriptionElement = new GuiElement(driver, By.xpath(String.format(
+    public GuiElement getDescriptionElementByFailurePoint(AbstractResultTableFailureEntry entry) {
+        GuiElement descriptionElement = new GuiElement(driver, By.xpath(String.format(
                 LOCATOR_FAILUREPOINT_DESCRIPTION,
                 // HEADER
                 failurePointType.getLabel(),

@@ -57,101 +57,115 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public void scrollToElement() {
+    public GuiElementCore scrollToElement() {
         beforeDelegation();
         decoratedGuiElementCore.scrollToElement();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void scrollToElement(int yOffset) {
+    public GuiElementCore scrollToElement(int yOffset) {
         beforeDelegation();
         decoratedGuiElementCore.scrollToElement(yOffset);
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void select() {
+    public GuiElementCore select() {
         beforeDelegation();
         decoratedGuiElementCore.select();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void deselect() {
+    public GuiElementCore deselect() {
         beforeDelegation();
         decoratedGuiElementCore.deselect();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void type(String text) {
+    public GuiElementCore type(String text) {
         beforeDelegation();
         decoratedGuiElementCore.type(text);
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void click() {
+    public GuiElementCore click() {
         beforeDelegation();
         decoratedGuiElementCore.click();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void clickJS() {
+    public GuiElementCore clickJS() {
         beforeDelegation();
         decoratedGuiElementCore.clickJS();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void rightClick() {
+    public GuiElementCore rightClick() {
         beforeDelegation();
         decoratedGuiElementCore.rightClick();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void rightClickJS() {
+    public GuiElementCore rightClickJS() {
         beforeDelegation();
         decoratedGuiElementCore.rightClickJS();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void clickAbsolute() {
+    public GuiElementCore clickAbsolute() {
         beforeDelegation();
         decoratedGuiElementCore.clickAbsolute();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void mouseOverAbsolute2Axis() {
+    public GuiElementCore mouseOverAbsolute2Axis() {
         beforeDelegation();
         decoratedGuiElementCore.mouseOverAbsolute2Axis();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void submit() {
+    public GuiElementCore submit() {
         beforeDelegation();
         decoratedGuiElementCore.submit();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void sendKeys(CharSequence... charSequences) {
+    public GuiElementCore sendKeys(CharSequence... charSequences) {
         beforeDelegation();
         decoratedGuiElementCore.sendKeys(charSequences);
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void clear() {
+    public GuiElementCore clear() {
         beforeDelegation();
         decoratedGuiElementCore.clear();
         afterDelegation();
+        return this;
     }
 
     @Override
@@ -202,17 +216,19 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public void mouseOver() {
+    public GuiElementCore mouseOver() {
         beforeDelegation();
         decoratedGuiElementCore.mouseOver();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void mouseOverJS() {
+    public GuiElementCore mouseOverJS() {
         beforeDelegation();
         decoratedGuiElementCore.mouseOverJS();
         afterDelegation();
+        return this;
     }
 
     @Override
@@ -232,24 +248,27 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public void doubleClick() {
+    public GuiElementCore doubleClick() {
         beforeDelegation();
         decoratedGuiElementCore.doubleClick();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void doubleClickJS() {
+    public GuiElementCore doubleClickJS() {
         beforeDelegation();
         decoratedGuiElementCore.doubleClickJS();
         afterDelegation();
+        return this;
     }
 
     @Override
-    public void highlight() {
+    public GuiElementCore highlight() {
         beforeDelegation();
         decoratedGuiElementCore.highlight();
         afterDelegation();
+        return this;
     }
 
     @Override
@@ -261,10 +280,11 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public void swipe(int offsetX, int offSetY) {
+    public GuiElementCore swipe(int offsetX, int offSetY) {
         beforeDelegation();
         decoratedGuiElementCore.swipe(offsetX, offSetY);
         afterDelegation();
+        return this;
     }
 
     @Override

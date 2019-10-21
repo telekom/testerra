@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -39,8 +39,8 @@ public class GuiElementExceptionsTest extends AbstractTestSitesTest {
     @Test
     public void testT01N_GuiElement_notExistingFrame() {
         WebDriver driver = WebDriverManager.getWebDriver();
-        IGuiElement notExistingFrame = new GuiElement(driver, By.xpath("meNoExist"));
-        IGuiElement elementToSearch = new GuiElement(driver, By.xpath("thisDoesNotMatter"), notExistingFrame);
+        GuiElement notExistingFrame = new GuiElement(driver, By.xpath("meNoExist"));
+        GuiElement elementToSearch = new GuiElement(driver, By.xpath("thisDoesNotMatter"), notExistingFrame);
 
         try {
             elementToSearch.isPresent();

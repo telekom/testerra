@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.By;
@@ -110,121 +111,133 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public void scrollToElement() {
+    public GuiElementCore scrollToElement() {
         beforeActionDelegation("scrollToElement");
         beforeDelegation("scrollToElement");
         decoratedFacade.scrollToElement();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void scrollToElement(int yOffset) {
+    public GuiElementCore scrollToElement(int yOffset) {
         beforeActionDelegation("scrollToElement");
         beforeDelegation("scrollToElement");
         decoratedFacade.scrollToElement(yOffset);
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void select() {
+    public GuiElementCore select() {
         beforeActionDelegation("select");
         beforeDelegation("select");
         decoratedFacade.select();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void deselect() {
+    public GuiElementCore deselect() {
         beforeActionDelegation("deselect");
         beforeDelegation("deselect");
         decoratedFacade.deselect();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void type(String text) {
+    public GuiElementCore type(String text) {
         final String msg = "\"" + obfuscateIfSensible(text) + "\"";
         beforeActionDelegation("type " + msg);
         beforeDelegation("type", msg);
         decoratedFacade.type(text);
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void click() {
+    public GuiElementCore click() {
         beforeActionDelegation("click");
         beforeDelegation("click");
         decoratedFacade.click();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void clickJS() {
+    public GuiElementCore clickJS() {
         beforeActionDelegation("clickJS");
         beforeDelegation("clickJS");
         decoratedFacade.clickJS();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
 
     @Override
-    public void rightClick() {
+    public GuiElementCore rightClick() {
         beforeActionDelegation("rightClick");
         beforeDelegation("rightClick");
         decoratedFacade.rightClick();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void rightClickJS() {
+    public GuiElementCore rightClickJS() {
         beforeActionDelegation("rightClickJS");
         beforeDelegation("rightClickJS");
         decoratedFacade.rightClickJS();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void clickAbsolute() {
+    public GuiElementCore clickAbsolute() {
         beforeActionDelegation("clickAbsolute");
         beforeDelegation("clickAbsolute");
         decoratedFacade.clickAbsolute();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void mouseOverAbsolute2Axis() {
+    public GuiElementCore mouseOverAbsolute2Axis() {
         beforeActionDelegation("mouseOverAbsolute2Axis");
         beforeDelegation("mouseOverAbsolute2Axis");
         decoratedFacade.mouseOverAbsolute2Axis();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void submit() {
+    public GuiElementCore submit() {
         beforeActionDelegation("submit");
         beforeDelegation("submit");
         decoratedFacade.submit();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void sendKeys(CharSequence... charSequences) {
+    public GuiElementCore sendKeys(CharSequence... charSequences) {
         String chars = "";
 
         if (charSequences == null) {
-            return;
+            return this;
         }
 
         if (charSequences.length > 1) {
@@ -242,15 +255,17 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         decoratedFacade.sendKeys(charSequences);
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void clear() {
+    public GuiElementCore clear() {
         beforeActionDelegation("clear");
         beforeDelegation("clear");
         decoratedFacade.clear();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
@@ -368,21 +383,23 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public void mouseOver() {
+    public GuiElementCore mouseOver() {
         beforeActionDelegation("mouseOver");
         beforeDelegation("mouseOver", "mouseOver");
         decoratedFacade.mouseOver();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void mouseOverJS() {
+    public GuiElementCore mouseOverJS() {
         beforeActionDelegation("mouseOverJS");
         beforeDelegation("mouseOverJS");
         decoratedFacade.mouseOverJS();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
@@ -418,28 +435,31 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public void doubleClick() {
+    public GuiElementCore doubleClick() {
         beforeActionDelegation("doubleClick");
         beforeDelegation("doubleClick");
         decoratedFacade.doubleClick();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void doubleClickJS() {
+    public GuiElementCore doubleClickJS() {
         beforeActionDelegation("doubleClickJS");
         beforeDelegation("doubleClickJS");
         decoratedFacade.doubleClickJS();
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
-    public void highlight() {
+    public GuiElementCore highlight() {
         beforeDelegation("highlight");
         decoratedFacade.highlight();
         afterDelegation();
+        return this;
     }
 
     @Override
@@ -657,10 +677,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public void swipe(int offsetX, int offSetY) {
+    public GuiElementCore swipe(int offsetX, int offSetY) {
         decoratedFacade.swipe(offsetX, offSetY);
+        return this;
     }
-
 
     @Override
     public File takeScreenshot() {

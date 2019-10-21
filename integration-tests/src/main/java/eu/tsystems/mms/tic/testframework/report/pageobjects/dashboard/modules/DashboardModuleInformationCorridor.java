@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFramePage;
 import org.openqa.selenium.By;

@@ -39,6 +39,44 @@ public abstract class Layout implements ILayout {
         this.innerBorders = innerBorders;
     }
 
+    public static ILayout inner() {
+        /*
+        Dummy impl.
+         */
+        ILayout layout = new Layout(true) {
+            @Override
+            public void checkOn(IGuiElement actualGE, IConfiguredAssert configuredAssert) {
+                //dummy
+            }
+
+            @Override
+            public String toStringText() {
+                return null;
+            }
+        };
+
+        return layout;
+    }
+
+    public static ILayout outer() {
+        /*
+        Dummy impl.
+         */
+        ILayout layout = new Layout(false) {
+            @Override
+            public void checkOn(IGuiElement actualGE, IConfiguredAssert configuredAssert) {
+                //dummy
+            }
+
+            @Override
+            public String toStringText() {
+                return null;
+            }
+        };
+
+        return layout;
+    }
+
     @Fails(validFor = "unsupportedBrowser", description = "Unsupported Browser")
     public LayoutBorders getElementLayoutBorders(IGuiElement IGuiElement) {
         if (innerBorders) {
@@ -58,7 +96,7 @@ public abstract class Layout implements ILayout {
         }
     }
 
-    public Layout leftOf(final IGuiElement distanceGE) {
+    public ILayout leftOf(final IGuiElement distanceGE) {
         return new Layout(this.innerBorders) {
             @Override
             public void checkOn(IGuiElement actualGE, IConfiguredAssert IConfiguredAssert) {
@@ -80,7 +118,7 @@ public abstract class Layout implements ILayout {
         return toStringText();
     }
 
-    public Layout above(final IGuiElement distanceGE) {
+    public ILayout above(final IGuiElement distanceGE) {
         return new Layout(this.innerBorders) {
             @Override
             public void checkOn(IGuiElement actualGE, IConfiguredAssert IConfiguredAssert) {
@@ -99,7 +137,7 @@ public abstract class Layout implements ILayout {
     }
 
     @Override
-    public Layout rightOf(final IGuiElement distanceGE) {
+    public ILayout rightOf(final IGuiElement distanceGE) {
         return new Layout(this.innerBorders) {
             @Override
             public void checkOn(IGuiElement actualGE, IConfiguredAssert IConfiguredAssert) {
@@ -117,7 +155,7 @@ public abstract class Layout implements ILayout {
         };
     }
 
-    public Layout below(final IGuiElement distanceGE) {
+    public ILayout below(final IGuiElement distanceGE) {
         return new Layout(this.innerBorders) {
             @Override
             public void checkOn(IGuiElement actualGE, IConfiguredAssert IConfiguredAssert) {
@@ -136,7 +174,7 @@ public abstract class Layout implements ILayout {
     }
 
     @Override
-    public Layout sameTop(final IGuiElement distanceGE, final int delta) {
+    public ILayout sameTop(final IGuiElement distanceGE, final int delta) {
         return new Layout(this.innerBorders) {
             @Override
             public void checkOn(IGuiElement actualGE, IConfiguredAssert IConfiguredAssert) {
@@ -158,7 +196,7 @@ public abstract class Layout implements ILayout {
     }
 
     @Override
-    public Layout sameBottom(final IGuiElement distanceGE, final int delta) {
+    public ILayout sameBottom(final IGuiElement distanceGE, final int delta) {
         return new Layout(this.innerBorders) {
             @Override
             public void checkOn(IGuiElement actualGE, IConfiguredAssert IConfiguredAssert) {
@@ -180,7 +218,7 @@ public abstract class Layout implements ILayout {
     }
 
     @Override
-    public Layout sameLeft(final IGuiElement distanceGE, final int delta) {
+    public ILayout sameLeft(final IGuiElement distanceGE, final int delta) {
         return new Layout(this.innerBorders) {
             @Override
             public void checkOn(IGuiElement actualGE, IConfiguredAssert IConfiguredAssert) {
@@ -202,7 +240,7 @@ public abstract class Layout implements ILayout {
     }
 
     @Override
-    public Layout sameRight(final IGuiElement distanceGE, final int delta) {
+    public ILayout sameRight(final IGuiElement distanceGE, final int delta) {
         return new Layout(this.innerBorders) {
             @Override
             public void checkOn(IGuiElement actualGE, IConfiguredAssert IConfiguredAssert) {

@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -52,7 +52,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
     }
 
     private void openPopUpWindow(WebDriver driver) {
-        IGuiElement IGuiElement = new GuiElement(driver, By.linkText("Open pop up"));
+        GuiElement IGuiElement = new GuiElement(driver, By.linkText("Open pop up"));
         IGuiElement.click();
     }
 

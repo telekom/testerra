@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.abstracts;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 public abstract class AbstractFramePage extends Page {
 
     //field for IGuiElement creation (as a parameter), therefore specifiying other gui elements
-    public final IGuiElement mainFrame;
+    public final GuiElement mainFrame;
 
     /**
      * Constructor called bei PageFactory

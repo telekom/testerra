@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractReportPage;
@@ -102,9 +103,9 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
      * @param testResult the result category (Passed, Failed, Failed Inherited, ...)
      * @return the table header IGuiElement
      */
-    public IGuiElement getResultTableHeaderForTestResult(TestResultHelper.TestResult testResult) {
+    public GuiElement getResultTableHeaderForTestResult(TestResultHelper.TestResult testResult) {
         String testState = testResult.getTestState();
-        IGuiElement testResultTableHeader = new GuiElement(driver, By.xpath("(//*[@class='header']/../tr[@class='test testbar"+testState+" filterMethods filter"+testState+"'])[1]"), mainFrame);
+        GuiElement testResultTableHeader = new GuiElement(driver, By.xpath("(//*[@class='header']/../tr[@class='test testbar"+testState+" filterMethods filter"+testState+"'])[1]"), mainFrame);
         testResultTableHeader.setName("testResultTableHeader");
 
         return testResultTableHeader;

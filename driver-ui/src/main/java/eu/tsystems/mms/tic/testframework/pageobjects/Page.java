@@ -423,8 +423,11 @@ public abstract class Page extends AbstractPage implements IPage {
 
         return simpleClassName + " -> " + actionName;
     }
-    public IGuiElement by(final String cssSelector) {
-        return new GuiElement(driver, By.cssSelector(cssSelector));
+    public IGuiElement byId(final String id) {
+        return by(Locate.by().id(id));
+    }
+    public IGuiElement byQa(final String qa) {
+        return by(Locate.by().qa(qa));
     }
     public IGuiElement by(final Locate locator) {
         return new GuiElement(driver, locator);

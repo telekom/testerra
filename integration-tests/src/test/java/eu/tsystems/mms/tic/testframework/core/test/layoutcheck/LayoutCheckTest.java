@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
@@ -40,7 +41,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
         return TestPage.LAYOUT;
     }
 
-    private IGuiElement getGuiElementQa(final String qaTag) {
+    private GuiElement getGuiElementQa(final String qaTag) {
         return new GuiElement(WebDriverManager.getWebDriver(), Locate.by().qa(qaTag));
     }
 

@@ -17,9 +17,10 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement.variations;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -28,7 +29,7 @@ import org.openqa.selenium.WebDriver;
 public class DeepFrameAwareGuiElementTest extends GuiElementTestCollector {
 
     @Override
-    public IGuiElement getGuiElementBy(By locator) {
+    public GuiElement getGuiElementBy(By locator) {
         final WebDriver driver = WebDriverManager.getWebDriver();
         IGuiElement frame1 = new GuiElement(driver, By.name("frame1")).setDescription("frame1");
         IGuiElement frame12 = new GuiElement(driver, By.name("frame12"), frame1).setDescription("frame2");

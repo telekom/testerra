@@ -9,6 +9,7 @@ dependencies {
     implementation 'colt:colt:1.2.0'
     compile 'org.testng:testng:6.14.3'
     implementation 'org.reflections:reflections:0.9.11'
+    implementation 'com.google.guava:guava:25.1-jre' // Required for reflections
 }
 
 test {

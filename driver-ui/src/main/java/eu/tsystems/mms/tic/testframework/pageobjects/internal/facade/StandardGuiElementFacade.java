@@ -36,6 +36,7 @@ import java.util.List;
 /**
  * Created by rnhb on 12.08.2015.
  */
+@Deprecated
 public class StandardGuiElementFacade implements GuiElementFacade {
 
     private GuiElementWait guiElementWait;

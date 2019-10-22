@@ -27,32 +27,24 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementAssertFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementCoreFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableBinaryValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableQuantifiedValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ConfigurableGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertExecutionLogDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableBinaryValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableQuantifiedValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PerformanceTestGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheckFrameAwareDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.creation.GuiElementCoreFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacadeLoggingDecorator;
@@ -60,9 +52,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementF
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
-import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
@@ -78,9 +68,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * GuiElement is the access point for most tests and is an extension of WebElement.
@@ -88,17 +76,6 @@ import java.util.Map;
  * Authors: pele, rnhb
  */
 public class GuiElement implements IGuiElement {
-
-    private static final Map<String, GuiElementCoreFactory> coreFactories = new HashMap<>();
-
-    public static void registerGuiElementCoreFactory(GuiElementCoreFactory guiElementCoreFactory, String... browsers) {
-        LOGGER.info("Registering " + guiElementCoreFactory.getClass().getSimpleName() + " for browsers " + ArrayUtils.join(browsers, ","));
-
-        for (String browser : browsers) {
-            coreFactories.put(browser, guiElementCoreFactory);
-        }
-    }
-
     /**
      * logger. What a surprise. Glad this JavaDoc is here.
      */
@@ -188,33 +165,16 @@ public class GuiElement implements IGuiElement {
         String currentBrowser = webDriverRequest.browser;
         guiElementData.browser = currentBrowser;
 
-        if (coreFactories.containsKey(currentBrowser)) {
-            GuiElementCoreFactory guiElementCoreFactory = coreFactories.get(currentBrowser);
-            guiElementCore = guiElementCoreFactory.create(by, driver, this.guiElementData);
-        } else {
-            throw new TesterraSystemException("No GuiElementCoreFactory registered for " + currentBrowser);
-        }
-        GuiElementStatusCheck guiElementStatusCheck = guiElementCore;
+        GuiElementCoreFactory coreFactory = TesterraCommons.ioc().getInstance(GuiElementCoreFactory.class);
+        guiElementCore = coreFactory.create(currentBrowser, by, driver, guiElementData, null);
 
-        if (this.guiElementData.hasFrameLogic()) {
-            // if frames are set, the waiter should use frame switches when executing its sequences
-            guiElementStatusCheck = new GuiElementStatusCheckFrameAwareDecorator(guiElementStatusCheck, this.guiElementData);
-            guiElementCore = new GuiElementCoreFrameAwareDecorator(guiElementCore, this.guiElementData);
-        }
+        GuiElementWaitFactory waitFactory = TesterraCommons.ioc().getInstance(GuiElementWaitFactory.class);
+        guiElementWait = waitFactory.create(guiElementCore, this.guiElementData);
 
-        //IGuiElementWaitFactory waitFactory = TesterraCommons.ioc().getInstance(IGuiElementWaitFactory.class);
-        //guiElementWait = waitFactory.create(guiElementStatusCheck, this.guiElementData);
-
-        // guielement wait uses the core and not the facade
-        guiElementWait = new StandardGuiElementWait(guiElementStatusCheck, this.guiElementData);
-
-        // Wrap the core with sequence decorator, such that its methods are executed with sequence
-        guiElementCore = new GuiElementCoreSequenceDecorator(guiElementCore, this.guiElementData);
-
-        functionalStandardAssert = getGuiElementAssert(true, false, guiElementCore, guiElementWait, this.guiElementData);
-        functionalAssertCollector = getGuiElementAssert(true, true, guiElementCore, guiElementWait, this.guiElementData);
-
-        nonFunctionalAssert = getGuiElementAssert(false, false, guiElementCore, guiElementWait, this.guiElementData);
+        GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
+        functionalStandardAssert = assertFactory.create(true, false, guiElementCore, guiElementWait, this.guiElementData);
+        functionalAssertCollector = assertFactory.create(true, true, guiElementCore, guiElementWait, this.guiElementData);
+        nonFunctionalAssert = assertFactory.create(false, false, guiElementCore, guiElementWait, this.guiElementData);
         nonFunctionalAssertReplacement = nonFunctionalAssert;
 
         initDefaultAssert();
@@ -240,25 +200,7 @@ public class GuiElement implements IGuiElement {
         initDefaultAssert();
     }
 
-    private GuiElementAssert getGuiElementAssert(boolean functional, boolean collected,
-                                                 GuiElementCore guiElementCore,
-                                                 GuiElementWait guiElementWait,
-                                                 GuiElementData guiElementData) {
-        GuiElementType guiElementType = GuiElementType.sequence;
-        GuiElementAssert guiElementAssert;
-        switch (guiElementType) {
-            case perf:
-                guiElementAssert = new PerformanceTestGuiElementAssert();
-                break;
-            default:
-                ConfiguredAssert configuredAssert = new ConfiguredAssert(functional, collected);
-                guiElementAssert = new ConfigurableGuiElementAssert(guiElementCore, guiElementWait, configuredAssert, guiElementData);
-                guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, guiElementData);
-                guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, guiElementData);
-        }
-        return guiElementAssert;
-    }
-
+    @Deprecated
     private GuiElementFacade getFacade(GuiElementCore guiElementCore, GuiElementWait guiElementWait, GuiElementAssert guiElementAssert) {
         GuiElementFacade guiElementFacade;
         guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
@@ -401,7 +343,7 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public GuiElementCore click() {
+    public IGuiElement click() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.click();
         guiElementData.resetLogLevel();

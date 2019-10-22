@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 /**
  * Created by rnhb on 11.08.2015.
  */
+@Deprecated
 public interface GuiElementFacade extends
     GuiElementCore,
     GuiElementWait

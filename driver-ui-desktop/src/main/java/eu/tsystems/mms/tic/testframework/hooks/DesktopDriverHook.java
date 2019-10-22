@@ -20,8 +20,6 @@
 package eu.tsystems.mms.tic.testframework.hooks;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCoreFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
@@ -40,7 +38,7 @@ public class DesktopDriverHook implements ModuleHook {
     @Override
     public void init() {
         WebDriverManager.registerWebDriverFactory(new DesktopWebDriverFactory(), browsers);
-        GuiElement.registerGuiElementCoreFactory(new DesktopGuiElementCoreFactory(), browsers);
+        //GuiElement.registerGuiElementCoreFactory(new DesktopGuiElementCoreFactory(), browsers);
     }
 
     @Override

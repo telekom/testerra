@@ -198,7 +198,8 @@ public class TesterraCommons {
             }
             ioc = Guice.createInjector(modules);
         } catch (Exception e) {
-            LOGGER.error("Unable to initialize IoC modules", e);
+            e.printStackTrace();
+            //LOGGER.error("Unable to initialize IoC modules", e);
         }
     }
 

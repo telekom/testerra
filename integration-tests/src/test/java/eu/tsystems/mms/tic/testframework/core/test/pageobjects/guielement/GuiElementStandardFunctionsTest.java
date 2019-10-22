@@ -56,7 +56,8 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void test_NewApi_GuiElement_assertTextContains() {
-        page().byId("11").text().contains("affe");
+        IGuiElement iGuiElement = page().byId("11");
+        iGuiElement.text().contains("affe");
     }
 
     /**

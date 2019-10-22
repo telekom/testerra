@@ -31,21 +31,20 @@ import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableBinaryValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableQuantifiedValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableBinaryValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableQuantifiedValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableBinaryValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableQuantifiedValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ConfigurableGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertExecutionLogDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableBinaryValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableQuantifiedValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PerformanceTestGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
@@ -62,6 +61,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGui
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -201,6 +201,9 @@ public class GuiElement implements IGuiElement {
             guiElementStatusCheck = new GuiElementStatusCheckFrameAwareDecorator(guiElementStatusCheck, this.guiElementData);
             guiElementCore = new GuiElementCoreFrameAwareDecorator(guiElementCore, this.guiElementData);
         }
+
+        //IGuiElementWaitFactory waitFactory = TesterraCommons.ioc().getInstance(IGuiElementWaitFactory.class);
+        //guiElementWait = waitFactory.create(guiElementStatusCheck, this.guiElementData);
 
         // guielement wait uses the core and not the facade
         guiElementWait = new StandardGuiElementWait(guiElementStatusCheck, this.guiElementData);

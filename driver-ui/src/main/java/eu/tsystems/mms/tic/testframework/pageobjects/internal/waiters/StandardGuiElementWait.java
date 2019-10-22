@@ -19,6 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
@@ -37,7 +39,11 @@ public class StandardGuiElementWait implements GuiElementWait {
     private final GuiElementStatusCheck guiElementStatusCheck;
     private final TimerWrapper timerWrapper;
 
-    public StandardGuiElementWait(GuiElementStatusCheck guiElementStatusCheck, GuiElementData guiElementData) {
+    @Inject
+    public StandardGuiElementWait(
+        @Assisted GuiElementStatusCheck guiElementStatusCheck,
+        @Assisted GuiElementData guiElementData
+    ) {
         this.guiElementStatusCheck = guiElementStatusCheck;
         this.timerWrapper = guiElementData.timerWrapper;
     }

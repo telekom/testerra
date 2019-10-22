@@ -89,8 +89,15 @@ import java.util.List;
  *
  * @author mrgi, mibu, pele, sepr
  */
-public class TesterraListener implements IInvokedMethodListener2, IReporter,
-        IHookable, IConfigurable, IMethodInterceptor, ITestListener, ISuiteListener {
+public class TesterraListener implements
+    IInvokedMethodListener2,
+    IReporter,
+    IHookable,
+    IConfigurable,
+    IMethodInterceptor,
+    ITestListener,
+    ISuiteListener
+{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TesterraListener.class);
 

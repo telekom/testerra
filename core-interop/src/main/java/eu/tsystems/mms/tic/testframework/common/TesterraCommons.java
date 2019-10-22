@@ -19,18 +19,27 @@
  */
 package eu.tsystems.mms.tic.testframework.common;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * Created by pele on 05.02.2015.
@@ -47,6 +56,7 @@ public class TesterraCommons {
     public static final String DEFAULT_PACKAGE_NAME = "eu.tsystems.mms.tic";
 
     private static final String SYSTEM_PROPERTIES_FILE = "system.properties";
+    private static Injector ioc;
 
     private TesterraCommons() {}
 
@@ -172,12 +182,34 @@ public class TesterraCommons {
         }
     }
 
+    public static Injector ioc() {
+        return ioc;
+    }
+
+    public static void initIoc() {
+        Reflections reflections = new Reflections(p);
+        Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
+        List<Module> modules = new ArrayList<>();
+        LOGGER.info("Register IoC modules: " + classes);
+        try {
+            for (Class<? extends Module> moduleClass : classes) {
+                Constructor<?> ctor = moduleClass.getConstructor();
+                modules.add((Module) ctor.newInstance());
+            }
+            ioc = Guice.createInjector(modules);
+        } catch (Exception e) {
+            LOGGER.error("Unable to initialize IoC modules", e);
+        }
+    }
+
     public static void init() {
 
         TesterraCommons.initializeLogging(true);
 
         // implicit calls PropertyManager static block - init all the properties, load property file as well!
         TesterraCommons.setTesterraLogLevel();
+
+        TesterraCommons.initIoc();
 
         // calls LOGGING - Ensure we have Logging initialized before calling!
         TesterraCommons.initializeSystemProperties();

@@ -17,7 +17,7 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.GuiElement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 public class GuiElementExceptionsTest extends AbstractTestSitesTest {
 
     /**
-     * created because isPresent threw an exception when the IGuiElement had a not existing frame
+     * created because isPresent threw an exception when the GuiElement had a not existing frame
      * thanks at maco for finding!
      */
     @Test

@@ -2,7 +2,7 @@ package eu.tsystems.mms.tic.testframework.report.test.dashboard;
 
 import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractTestReportNumbers;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTestDashboard;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
@@ -40,7 +40,7 @@ public class DashboardModuleFailureCorridorTest extends AbstractTestDashboard {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testResultNumbers")
     public void testT01_checkFailureCorridorMatchingForColor(ReportDirectory report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = getDashboardPage(report);
-        IGuiElement corridorMatch = dashboardPage.dashboardModuleFailureCorridor.failureCorridorDescription;
+        GuiElement corridorMatch = dashboardPage.dashboardModuleFailureCorridor.failureCorridorDescription;
         String style = numbers.getFailureCorridorMatched();
         Assert.assertTrue(corridorMatch.getAttribute("style").contains(style), "The failure corridor matches. The style in the reportFilter " + report + " is " + style + ".");
     }

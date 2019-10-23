@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -47,33 +47,33 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void testCheckElementLayout() {
-        IGuiElement IGuiElement = getGuiElementQa("section/layoutTestArticle");
-        IGuiElement.asserts().assertScreenshot("TestArticle", 1.3);
+        GuiElement GuiElement = getGuiElementQa("section/layoutTestArticle");
+        GuiElement.asserts().assertScreenshot("TestArticle", 1.3);
 
-        IGuiElement = getGuiElementQa("section/invisibleTestArticle");
-        IGuiElement.asserts().assertScreenshot("InvisibleTestArticle", 1.3);
+        GuiElement = getGuiElementQa("section/invisibleTestArticle");
+        GuiElement.asserts().assertScreenshot("InvisibleTestArticle", 1.3);
     }
 
     @Test
     public void testCheckElementVisibility() {
-        IGuiElement IGuiElement = getGuiElementQa("section/layoutTestArticle");
-        IGuiElement.asserts().assertVisible(true);
+        GuiElement GuiElement = getGuiElementQa("section/layoutTestArticle");
+        GuiElement.asserts().assertVisible(true);
 
-        IGuiElement = getGuiElementQa("section/invisibleTestArticle");
-        IGuiElement.asserts().assertNotVisible();
+        GuiElement = getGuiElementQa("section/invisibleTestArticle");
+        GuiElement.asserts().assertNotVisible();
 
         // Scroll to offset doesn't work
-        //IGuiElement.scrollToElement(300);
-        //Assert.assertFalse(IGuiElement.isVisible(true));
+        //GuiElement.scrollToElement(300);
+        //Assert.assertFalse(GuiElement.isVisible(true));
 
-        IGuiElement.scrollToElement();
-        IGuiElement.asserts().assertVisible(true);
+        GuiElement.scrollToElement();
+        GuiElement.asserts().assertVisible(true);
     }
 
     @Test(expectedExceptions = TimeoutException.class)
     public void testCheckElementLayoutDistance() {
-        IGuiElement IGuiElement = getGuiElementQa("section/layoutTestArticle");
-        IGuiElement.asserts().assertScreenshot("TestArticleChrome", 10);
+        GuiElement GuiElement = getGuiElementQa("section/layoutTestArticle");
+        GuiElement.asserts().assertScreenshot("TestArticleChrome", 10);
     }
 
     @Test

@@ -27,7 +27,7 @@ import org.openqa.selenium.WebDriver;
 public class PageWithNullElement extends Page {
 
     @Check
-    private IGuiElement nullElement;
+    private GuiElement nullElement;
 
     /**
      * Constructor for existing sessions.

@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
@@ -30,7 +29,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -309,20 +307,20 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public IGuiElement getSubElement(By byLocator, String description) {
+    public GuiElementFacade getSubElement(By byLocator, String description) {
         beforeDelegation("getSubElement", ">" + description + "< " + byLocator);
-        IGuiElement subElement = decoratedFacade.getSubElement(byLocator, description);
+        GuiElementFacade subElement = decoratedFacade.getSubElement(byLocator, description);
         afterDelegation("getSubElement(" + byLocator + ", " + description + ") = " + subElement);
         return subElement;
     }
 
     @Override
-    public IGuiElement getSubElement(Locate locator) {
+    public GuiElementFacade getSubElement(Locate locator) {
         return decoratedFacade.getSubElement(locator);
     }
 
     @Override
-    public IGuiElement getSubElement(By by) {
+    public GuiElementFacade getSubElement(By by) {
         return decoratedFacade.getSubElement(by);
     }
 
@@ -470,197 +468,197 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         return lengthOfValueAfterSendKeys;
     }
 
-    @Override
-    public boolean waitForIsPresent() {
-        beforeDelegation("waitForIsPresent");
-        boolean b = decoratedFacade.waitForIsPresent();
-        afterDelegation("waitForIsPresent() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsNotPresent() {
-        beforeDelegation("waitForIsNotPresent");
-        boolean b = decoratedFacade.waitForIsNotPresent();
-        afterDelegation("waitForIsNotPresent() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsEnabled() {
-        beforeDelegation("waitForIsEnabled");
-        boolean b = decoratedFacade.waitForIsEnabled();
-        afterDelegation("waitForIsEnabled() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsDisabled() {
-        beforeDelegation("waitForIsDisabled");
-        boolean b = decoratedFacade.waitForIsDisabled();
-        afterDelegation("waitForIsDisabled() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForAnyFollowingTextNodeContains(String contains) {
-        beforeDelegation("waitForAnyFollowingTextNodeContains", "\"" + contains + "\"");
-        boolean b = decoratedFacade.waitForAnyFollowingTextNodeContains(contains);
-        afterDelegation("waitForAnyFollowingTextNodeContains(" + contains + ") = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsDisplayed() {
-        beforeDelegation("waitForIsDisplayed");
-        boolean b = decoratedFacade.waitForIsDisplayed();
-        afterDelegation("waitForIsDisplayed() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsNotDisplayed() {
-        beforeDelegation("waitForIsNotDisplayed");
-        boolean b = decoratedFacade.waitForIsNotDisplayed();
-        afterDelegation("waitForIsNotDisplayed() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsVisible(boolean complete) {
-        beforeDelegation("waitForIsVisible");
-        boolean b = decoratedFacade.waitForIsVisible(complete);
-        afterDelegation("waitForIsVisible() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsNotVisible() {
-        beforeDelegation("waitForIsNotVisible");
-        boolean b = decoratedFacade.waitForIsNotVisible();
-        afterDelegation("waitForIsNotVisible() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsDisplayedFromWebElement() {
-        beforeDelegation("waitForIsDisplayedFromWebElement");
-        boolean b = decoratedFacade.waitForIsDisplayedFromWebElement();
-        afterDelegation("waitForIsDisplayedFromWebElement() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsNotDisplayedFromWebElement() {
-        beforeDelegation("waitForIsNotDisplayedFromWebElement");
-        boolean b = decoratedFacade.waitForIsNotDisplayedFromWebElement();
-        afterDelegation("waitForIsNotDisplayedFromWebElement() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsSelected() {
-        beforeDelegation("waitForIsSelected");
-        boolean b = decoratedFacade.waitForIsSelected();
-        afterDelegation("waitForIsSelected() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsNotSelected() {
-        beforeDelegation("waitForIsNotSelected");
-        boolean b = decoratedFacade.waitForIsNotSelected();
-        afterDelegation("waitForIsNotSelected() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForText(String text) {
-        beforeDelegation("waitForText", "\"" + text + "\"");
-        boolean b = decoratedFacade.waitForText(text);
-        afterDelegation("waitForIsPresent(" + text + ") = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForTextContains(String... text) {
-        beforeDelegation("waitForTextContains", "\"" + Arrays.toString(text) + "\"");
-        boolean b = decoratedFacade.waitForTextContains(text);
-        afterDelegation("waitForIsPresent(" + Arrays.toString(text) + ") = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForTextContainsNot(String... text) {
-        beforeDelegation("waitForTextContainsNot", "\"" + Arrays.toString(text) + "\"");
-        boolean b = decoratedFacade.waitForTextContainsNot(text);
-        afterDelegation("waitForIsGone(" + Arrays.toString(text) + ") = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForAttribute(String attributeName) {
-        beforeDelegation("waitForAttribute", "\"" + attributeName + "\"");
-        boolean b = decoratedFacade.waitForAttribute(attributeName);
-        afterDelegation("waitForIsPresent(" + attributeName + ") = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForAttribute(String attributeName, String value) {
-        beforeDelegation("waitForAttribute", "\"" + attributeName + "\" = \"" + value + "\"");
-        boolean b = decoratedFacade.waitForAttribute(attributeName, value);
-        afterDelegation("waitForAttribute(" + attributeName + ", " + value + ") = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForAttributeContains(String attributeName, String value) {
-        beforeDelegation("waitForAttributeContains", "\"" + attributeName + "\" = \"" + value + "\"");
-        boolean b = decoratedFacade.waitForAttributeContains(attributeName, value);
-        afterDelegation("waitForAttributeContains(" + attributeName + ", " + value + ") = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsSelectable() {
-        beforeDelegation("waitForIsSelectable");
-        boolean b = decoratedFacade.waitForIsSelectable();
-        afterDelegation("waitForIsSelectable() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForIsNotSelectable() {
-        beforeDelegation("waitForIsNotSelectable");
-        boolean b = decoratedFacade.waitForIsNotSelectable();
-        afterDelegation("waitForIsNotSelectable() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForAttributeContainsNot(final String attributeName, final String value) {
-        beforeDelegation("waitForAttributeContainsNot");
-        boolean b = decoratedFacade.waitForAttributeContainsNot(attributeName, value);
-        afterDelegation("waitForAttributeContainsNot() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForCssClassIsPresent(final String className) {
-        beforeDelegation("waitForCssClassIsPresent");
-        boolean b = decoratedFacade.waitForCssClassIsPresent(className);
-        afterDelegation("waitForCssClassIsPresent() = " + b);
-        return b;
-    }
-
-    @Override
-    public boolean waitForCssClassIsNotPresent(final String className) {
-        beforeDelegation("waitForCssClassIsNotPresent");
-        boolean b = decoratedFacade.waitForCssClassIsNotPresent(className);
-        afterDelegation("waitForCssClassIsNotPresent() = " + b);
-        return b;
-    }
+//    @Override
+//    public boolean waitForIsPresent() {
+//        beforeDelegation("waitForIsPresent");
+//        boolean b = decoratedFacade.waits().waitForIsPresent();
+//        afterDelegation("waitForIsPresent() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsNotPresent() {
+//        beforeDelegation("waitForIsNotPresent");
+//        boolean b = decoratedFacade.waits().waitForIsNotPresent();
+//        afterDelegation("waitForIsNotPresent() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsEnabled() {
+//        beforeDelegation("waitForIsEnabled");
+//        boolean b = decoratedFacade.waits().waitForIsEnabled();
+//        afterDelegation("waitForIsEnabled() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsDisabled() {
+//        beforeDelegation("waitForIsDisabled");
+//        boolean b = decoratedFacade.waits().waitForIsDisabled();
+//        afterDelegation("waitForIsDisabled() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForAnyFollowingTextNodeContains(String contains) {
+//        beforeDelegation("waitForAnyFollowingTextNodeContains", "\"" + contains + "\"");
+//        boolean b = decoratedFacade.waits().waitForAnyFollowingTextNodeContains(contains);
+//        afterDelegation("waitForAnyFollowingTextNodeContains(" + contains + ") = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsDisplayed() {
+//        beforeDelegation("waitForIsDisplayed");
+//        boolean b = decoratedFacade.waits().waitForIsDisplayed();
+//        afterDelegation("waitForIsDisplayed() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsNotDisplayed() {
+//        beforeDelegation("waitForIsNotDisplayed");
+//        boolean b = decoratedFacade.waits().waitForIsNotDisplayed();
+//        afterDelegation("waitForIsNotDisplayed() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsVisible(boolean complete) {
+//        beforeDelegation("waitForIsVisible");
+//        boolean b = decoratedFacade.waits().waitForIsVisible(complete);
+//        afterDelegation("waitForIsVisible() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsNotVisible() {
+//        beforeDelegation("waitForIsNotVisible");
+//        boolean b = decoratedFacade.waits().waitForIsNotVisible();
+//        afterDelegation("waitForIsNotVisible() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsDisplayedFromWebElement() {
+//        beforeDelegation("waitForIsDisplayedFromWebElement");
+//        boolean b = decoratedFacade.waits().waitForIsDisplayedFromWebElement();
+//        afterDelegation("waitForIsDisplayedFromWebElement() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsNotDisplayedFromWebElement() {
+//        beforeDelegation("waitForIsNotDisplayedFromWebElement");
+//        boolean b = decoratedFacade.waits().waitForIsNotDisplayedFromWebElement();
+//        afterDelegation("waitForIsNotDisplayedFromWebElement() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsSelected() {
+//        beforeDelegation("waitForIsSelected");
+//        boolean b = decoratedFacade.waits().waitForIsSelected();
+//        afterDelegation("waitForIsSelected() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsNotSelected() {
+//        beforeDelegation("waitForIsNotSelected");
+//        boolean b = decoratedFacade.waits().waitForIsNotSelected();
+//        afterDelegation("waitForIsNotSelected() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForText(String text) {
+//        beforeDelegation("waitForText", "\"" + text + "\"");
+//        boolean b = decoratedFacade.waits().waitForText(text);
+//        afterDelegation("waitForIsPresent(" + text + ") = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForTextContains(String... text) {
+//        beforeDelegation("waitForTextContains", "\"" + Arrays.toString(text) + "\"");
+//        boolean b = decoratedFacade.waits().waitForTextContains(text);
+//        afterDelegation("waitForIsPresent(" + Arrays.toString(text) + ") = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForTextContainsNot(String... text) {
+//        beforeDelegation("waitForTextContainsNot", "\"" + Arrays.toString(text) + "\"");
+//        boolean b = decoratedFacade.waits().waitForTextContainsNot(text);
+//        afterDelegation("waitForIsGone(" + Arrays.toString(text) + ") = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForAttribute(String attributeName) {
+//        beforeDelegation("waitForAttribute", "\"" + attributeName + "\"");
+//        boolean b = decoratedFacade.waits().waitForAttribute(attributeName);
+//        afterDelegation("waitForIsPresent(" + attributeName + ") = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForAttribute(String attributeName, String value) {
+//        beforeDelegation("waitForAttribute", "\"" + attributeName + "\" = \"" + value + "\"");
+//        boolean b = decoratedFacade.waits().waitForAttribute(attributeName, value);
+//        afterDelegation("waitForAttribute(" + attributeName + ", " + value + ") = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForAttributeContains(String attributeName, String value) {
+//        beforeDelegation("waitForAttributeContains", "\"" + attributeName + "\" = \"" + value + "\"");
+//        boolean b = decoratedFacade.waits().waitForAttributeContains(attributeName, value);
+//        afterDelegation("waitForAttributeContains(" + attributeName + ", " + value + ") = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsSelectable() {
+//        beforeDelegation("waitForIsSelectable");
+//        boolean b = decoratedFacade.waits().waitForIsSelectable();
+//        afterDelegation("waitForIsSelectable() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForIsNotSelectable() {
+//        beforeDelegation("waitForIsNotSelectable");
+//        boolean b = decoratedFacade.waits().waitForIsNotSelectable();
+//        afterDelegation("waitForIsNotSelectable() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForAttributeContainsNot(final String attributeName, final String value) {
+//        beforeDelegation("waitForAttributeContainsNot");
+//        boolean b = decoratedFacade.waits().waitForAttributeContainsNot(attributeName, value);
+//        afterDelegation("waitForAttributeContainsNot() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForCssClassIsPresent(final String className) {
+//        beforeDelegation("waitForCssClassIsPresent");
+//        boolean b = decoratedFacade.waits().waitForCssClassIsPresent(className);
+//        afterDelegation("waitForCssClassIsPresent() = " + b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean waitForCssClassIsNotPresent(final String className) {
+//        beforeDelegation("waitForCssClassIsNotPresent");
+//        boolean b = decoratedFacade.waits().waitForCssClassIsNotPresent(className);
+//        afterDelegation("waitForCssClassIsNotPresent() = " + b);
+//        return b;
+//    }
 
 
     @Override

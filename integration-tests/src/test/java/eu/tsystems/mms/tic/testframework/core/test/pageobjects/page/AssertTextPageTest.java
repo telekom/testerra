@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestFramedPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -129,7 +129,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest {
 
         WebTestPage page = new WebTestPage(driver);
 
-        IGuiElement input = new GuiElement(driver, By.xpath("//label[@for='inputMillis']"));
+        GuiElement input = new GuiElement(driver, By.xpath("//label[@for='inputMillis']"));
         WebElement webElement = input.getWebElement();
 
         page.assertIsTextDisplayed("in Millis");

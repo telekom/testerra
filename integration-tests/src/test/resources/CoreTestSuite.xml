@@ -31,15 +31,15 @@
         </classes>
     </test>
 
-    <test name="03 IGuiElement tests parallel" parallel="methods">
+    <test name="03 GuiElement tests parallel" parallel="methods">
         <groups>
             <run>
                 <exclude name="SEQUENTIAL"/>
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement"/>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement.variations"/>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.GuiElement"/>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.GuiElement.variations"/>
             <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.page"/>
         </packages>
     </test>
@@ -51,8 +51,8 @@
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement"/>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.IGuiElement.variations"/>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.GuiElement"/>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.GuiElement.variations"/>
             <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.page"/>
         </packages>
     </test>

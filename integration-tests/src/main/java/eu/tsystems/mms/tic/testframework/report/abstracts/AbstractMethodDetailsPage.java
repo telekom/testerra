@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.abstracts;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
@@ -15,15 +15,15 @@ import org.openqa.selenium.WebDriver;
  */
 public abstract class AbstractMethodDetailsPage extends AbstractReportPage {
 
-    protected IGuiElement mainFrame = new GuiElement(driver, By.cssSelector("frame[name='main']"));
+    protected GuiElement mainFrame = new GuiElement(driver, By.cssSelector("frame[name='main']"));
     /**
      * Buttons on Top
      */
-    protected IGuiElement backButton = new GuiElement(this.driver, By.xpath("//div[@class='detailsmenu']"), mainFrame);
-    protected IGuiElement detailsButton = new GuiElement(this.driver, By.id("buttondetails"), mainFrame);
-    protected IGuiElement stepsButton = new GuiElement(this.driver, By.id("buttondlogs"), mainFrame);
-    protected IGuiElement stackButton = new GuiElement(this.driver, By.id("buttondstack"), mainFrame);
-    protected IGuiElement minorErrorButton = new GuiElement(this.driver, By.id("buttonminor"), mainFrame);
+    protected GuiElement backButton = new GuiElement(this.driver, By.xpath("//div[@class='detailsmenu']"), mainFrame);
+    protected GuiElement detailsButton = new GuiElement(this.driver, By.id("buttondetails"), mainFrame);
+    protected GuiElement stepsButton = new GuiElement(this.driver, By.id("buttondlogs"), mainFrame);
+    protected GuiElement stackButton = new GuiElement(this.driver, By.id("buttondstack"), mainFrame);
+    protected GuiElement minorErrorButton = new GuiElement(this.driver, By.id("buttonminor"), mainFrame);
 
     /**
      * Constructor called bei PageFactory

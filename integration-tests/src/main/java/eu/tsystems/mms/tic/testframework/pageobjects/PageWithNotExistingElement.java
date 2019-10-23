@@ -28,7 +28,7 @@ import org.openqa.selenium.WebDriver;
 public class PageWithNotExistingElement extends Page {
 
     @Check
-    private IGuiElement notExistingElement = new GuiElement(driver, By.id("NOT_EXISTING_WUWUWUWU"));
+    private GuiElement notExistingElement = new GuiElement(driver, By.id("NOT_EXISTING_WUWUWUWU"));
 
     /**
      * Constructor for existing sessions.

@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.varia
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -34,8 +34,8 @@ public class FrameAwareSubElementGuiElementTest extends GuiElementTestCollector 
     @Override
     public GuiElement getGuiElementBy(By locator) {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        IGuiElement frame = new GuiElement(driver, By.name("InputFrame1"));
-        IGuiElement parentElement = new GuiElement(driver, By.xpath("//body"), frame);
+        GuiElement frame = new GuiElement(driver, By.name("InputFrame1"));
+        GuiElement parentElement = new GuiElement(driver, By.xpath("//body"), frame);
         return (GuiElement) parentElement.getSubElement(locator);
     }
 

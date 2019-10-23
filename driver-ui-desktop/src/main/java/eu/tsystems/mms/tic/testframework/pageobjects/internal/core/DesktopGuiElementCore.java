@@ -28,9 +28,9 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
@@ -482,13 +482,15 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public GuiElement getSubElement(By by, String description) {
-        return getSubElement(by).setName(description);
+    public GuiElementFacade getSubElement(By by, String description) {
+        GuiElementFacade subElement = getSubElement(by);
+        subElement.setName(description);
+        return subElement;
     }
 
-    public GuiElement getSubElement(Locate locate) {
+    public GuiElementFacade getSubElement(Locate locate) {
         FrameLogic frameLogic = guiElementData.frameLogic;
-        IGuiElement[] frames = null;
+        GuiElementFacade[] frames = null;
         if (frameLogic != null) {
             frames = frameLogic.getFrames();
         }
@@ -514,7 +516,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public GuiElement getSubElement(By by) {
+    public GuiElementFacade getSubElement(By by) {
         return getSubElement(Locate.by(by));
     }
 
@@ -751,7 +753,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     @Override
     public boolean anyFollowingTextNodeContains(String contains) {
         By byStringContain = By.xpath(String.format(".//*[contains(text(),\"%s\")]", contains));
-        GuiElement subElement = getSubElement(byStringContain, null);
+        GuiElementFacade subElement = getSubElement(byStringContain, null);
         return subElement.isPresent();
     }
 

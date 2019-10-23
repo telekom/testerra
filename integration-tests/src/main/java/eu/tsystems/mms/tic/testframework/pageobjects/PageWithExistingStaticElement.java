@@ -29,7 +29,7 @@ import org.openqa.selenium.WebDriver;
 public class PageWithExistingStaticElement extends Page {
 
     @Check
-    private static IGuiElement staticElement = new GuiElement(WebDriverManager.getWebDriver(), By.id("1"));
+    private static GuiElement staticElement = new GuiElement(WebDriverManager.getWebDriver(), By.id("1"));
 
     /**
      * Constructor for existing sessions.

@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -177,17 +177,17 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public IGuiElement getSubElement(By byLocator, String description) {
+    public GuiElementFacade getSubElement(By byLocator, String description) {
         return decoratedGuiElementCore.getSubElement(byLocator, description);
     }
 
     @Override
-    public IGuiElement getSubElement(Locate locator) {
+    public GuiElementFacade getSubElement(Locate locator) {
         return decoratedGuiElementCore.getSubElement(locator);
     }
 
     @Override
-    public IGuiElement getSubElement(By by) {
+    public GuiElementFacade getSubElement(By by) {
         return decoratedGuiElementCore.getSubElement(by);
     }
 

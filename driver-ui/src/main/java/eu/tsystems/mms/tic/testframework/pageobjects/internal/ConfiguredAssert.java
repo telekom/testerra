@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 import org.testng.Assert;
 
@@ -69,7 +69,7 @@ public class ConfiguredAssert implements IConfiguredAssert {
     }
 
     @Override
-    public void assertLayout(IGuiElement guiElement, ILayout layout) {
+    public void assertLayout(GuiElementFacade guiElement, ILayout layout) {
         layout.checkOn(guiElement, this);
     }
 }

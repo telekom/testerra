@@ -35,17 +35,17 @@ import org.openqa.selenium.WebDriver;
  */
 public class WebTestPage extends AbstractWebTestPage {
 
-    private final IGuiElement input1 = new GuiElement(driver, By.id("1"));
+    private final GuiElement input1 = new GuiElement(driver, By.id("1"));
     /** A button on the page. */
     @Check(nonFunctional = true)
-    private final IGuiElement button1 = new GuiElement(driver, By.id("4"));
+    private final GuiElement button1 = new GuiElement(driver, By.id("4"));
 
     @Check
-    private IGuiElement specialElementFromVariable;
+    private GuiElement specialElementFromVariable;
 
     /** The output text field. */
     @Check
-    private final IGuiElement textOutputField = new GuiElement(driver, By.id("99"));
+    private final GuiElement textOutputField = new GuiElement(driver, By.id("99"));
 
     public static class MyVariables implements PageVariables {
 
@@ -93,8 +93,8 @@ public class WebTestPage extends AbstractWebTestPage {
      *
      */
     public void gotoHell() {
-        IGuiElement IGuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
-        IGuiElement.click();
+        GuiElement GuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
+        GuiElement.click();
     }
 
     /**
@@ -102,8 +102,8 @@ public class WebTestPage extends AbstractWebTestPage {
      *
      */
     public void nonfunctionalAssert() {
-        GuiElement IGuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
-        IGuiElement.nonFunctionalAssert.assertIsPresent();
+        GuiElement GuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
+        GuiElement.nonFunctionalAssert.assertIsPresent();
     }
 
 }

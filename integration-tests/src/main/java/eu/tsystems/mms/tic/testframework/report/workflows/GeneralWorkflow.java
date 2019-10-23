@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.workflows;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesPage;
@@ -89,7 +89,7 @@ public class GeneralWorkflow {
         return exitPointsPage;
     }
 
-    public static MethodDetailsPage doOpenReportMethodDetailsPage(DashboardPage dashboardPage, IGuiElement method) {
+    public static MethodDetailsPage doOpenReportMethodDetailsPage(DashboardPage dashboardPage, GuiElement method) {
         return dashboardPage.clickMethodDetail(method);
     }
 

@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.enums.DragAndDropOption;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import org.openqa.selenium.WebDriver;
 
@@ -30,7 +30,7 @@ import org.openqa.selenium.WebDriver;
 public class DragAndDropCoordinatesTest extends AbstractDragAndDropTest {
 
     @Override
-    protected void execute(WebDriver driver, IGuiElement sourceGuiElement, IGuiElement destinationGuiElement) {
+    protected void execute(WebDriver driver, GuiElement sourceGuiElement, GuiElement destinationGuiElement) {
         MouseActions.dragAndDrop(sourceGuiElement, destinationGuiElement, DragAndDropOption.DRAG_FROM_X_Y, DragAndDropOption.DROP_BY_RELATIVE_X_Y);
     }
 

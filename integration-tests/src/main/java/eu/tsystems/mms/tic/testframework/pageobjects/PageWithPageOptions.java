@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 public class PageWithPageOptions extends Page {
 
     @Check
-    public IGuiElement existingElement = new GuiElement(driver, By.id("1"));
+    public GuiElement existingElement = new GuiElement(driver, By.id("1"));
 
     /**
      * Constructor for existing sessions.

@@ -32,13 +32,13 @@ public class PageWithGuiElementGroups extends Page {
     public static final String GROUP_3 = "group3";
 
     @Groups(groupNames = GROUP_1)
-    IGuiElement g1 = new GuiElement(driver, By.xpath(""));
+    GuiElement g1 = new GuiElement(driver, By.xpath(""));
 
     @Groups(groupNames = GROUP_3)
-    IGuiElement g2 = new GuiElement(driver, By.xpath(""));
+    GuiElement g2 = new GuiElement(driver, By.xpath(""));
 
     @Groups(groupNames = {GROUP_1, GROUP_2})
-    IGuiElement g3 = new GuiElement(driver, By.xpath(""));
+    GuiElement g3 = new GuiElement(driver, By.xpath(""));
 
     /**
      * Constructor for existing sessions.

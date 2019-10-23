@@ -28,7 +28,7 @@ import org.openqa.selenium.WebDriver;
 public class SuperPageWithCheck extends Page {
 
     @Check
-    private IGuiElement notExistingElement = new GuiElement(driver, By.xpath("iDontExistHueHueHue"));
+    private GuiElement notExistingElement = new GuiElement(driver, By.xpath("iDontExistHueHueHue"));
 
     public SuperPageWithCheck(WebDriver driver) {
         super(driver);

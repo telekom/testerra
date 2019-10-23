@@ -75,7 +75,7 @@ import java.util.List;
  * <p>
  * Authors: pele, rnhb
  */
-public class GuiElement implements IGuiElement {
+public class GuiElement implements GuiElementFacade {
     /**
      * logger. What a surprise. Glad this JavaDoc is here.
      */
@@ -135,7 +135,7 @@ public class GuiElement implements IGuiElement {
     public GuiElement(
         final WebDriver driver,
         final Locate locator,
-        final IGuiElement... frames
+        final GuiElementFacade... frames
     ) {
         this(driver, locator.getBy(), frames);
         this.locator = locator;
@@ -144,7 +144,7 @@ public class GuiElement implements IGuiElement {
     public GuiElement(
         final WebDriver driver,
         final By by,
-        final IGuiElement... frames
+        final GuiElementFacade... frames
     ) {
         FrameLogic frameLogic = null;
         if (frames != null && frames.length > 0) {
@@ -203,7 +203,7 @@ public class GuiElement implements IGuiElement {
     @Deprecated
     private GuiElementFacade getFacade(GuiElementCore guiElementCore, GuiElementWait guiElementWait, GuiElementAssert guiElementAssert) {
         GuiElementFacade guiElementFacade;
-        guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
+        //guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
         guiElementFacade = new GuiElementFace(guiElementFacade, guiElementData);
 
@@ -253,7 +253,7 @@ public class GuiElement implements IGuiElement {
      *
      * @return GuiElement
      */
-    public IGuiElement getSubElement(By by) {
+    public GuiElementFacade getSubElement(By by) {
         return getSubElement(by, null);
     }
 
@@ -267,28 +267,28 @@ public class GuiElement implements IGuiElement {
      * @return GuiElement
      */
     @Deprecated
-    public IGuiElement getSubElement(By by, String description) {
-        return guiElementFacade.getSubElement(by, description);
+    public GuiElementFacade getSubElement(By by, String description) {
+        return guiElementCore.getSubElement(by, description);
     }
 
     @Override
-    public IGuiElement getSubElement(Locate locator) {
-        return guiElementFacade.getSubElement(locator);
+    public GuiElementFacade getSubElement(Locate locator) {
+        return guiElementCore.getSubElement(locator);
     }
 
     @Override
     public WebElement getWebElement() {
-        return guiElementFacade.getWebElement();
+        return guiElementCore.getWebElement();
     }
 
     @Override
     public By getBy() {
-        return guiElementFacade.getBy();
+        return guiElementCore.getBy();
     }
 
     @Override
     public GuiElement scrollToElement() {
-        guiElementFacade.scrollToElement();
+        guiElementCore.scrollToElement();
         return this;
     }
 
@@ -299,7 +299,7 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public IGuiElement select() {
+    public GuiElement select() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.select();
         guiElementData.resetLogLevel();
@@ -327,7 +327,7 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public IGuiElement deselect() {
+    public GuiElement deselect() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.deselect();
         guiElementData.resetLogLevel();
@@ -335,7 +335,7 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public IGuiElement type(String text) {
+    public GuiElement type(String text) {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.type(text);
         guiElementData.resetLogLevel();
@@ -343,7 +343,7 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public IGuiElement click() {
+    public GuiElement click() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.click();
         guiElementData.resetLogLevel();
@@ -351,7 +351,7 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public IGuiElement clickJS() {
+    public GuiElement clickJS() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickJS();
         guiElementData.resetLogLevel();
@@ -359,7 +359,7 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public IGuiElement clickAbsolute() {
+    public GuiElement clickAbsolute() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickAbsolute();
         guiElementData.resetLogLevel();
@@ -367,19 +367,19 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public IGuiElement mouseOverAbsolute2Axis() {
+    public GuiElement mouseOverAbsolute2Axis() {
         guiElementFacade.mouseOverAbsolute2Axis();
         return this;
     }
 
     @Override
-    public IGuiElement submit() {
+    public GuiElement submit() {
         guiElementFacade.submit();
         return this;
     }
 
     @Override
-    public IGuiElement sendKeys(CharSequence... charSequences) {
+    public GuiElement sendKeys(CharSequence... charSequences) {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.sendKeys(charSequences);
         guiElementData.resetLogLevel();
@@ -387,7 +387,7 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public IGuiElement clear() {
+    public GuiElement clear() {
         guiElementFacade.clear();
         return this;
     }
@@ -461,13 +461,13 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public IGuiElement mouseOver() {
+    public GuiElement mouseOver() {
         guiElementFacade.mouseOver();
         return this;
     }
 
     @Override
-    public IGuiElement mouseOverJS() {
+    public GuiElement mouseOverJS() {
         guiElementFacade.mouseOverJS();
         return this;
     }
@@ -538,19 +538,19 @@ public class GuiElement implements IGuiElement {
     }
 
     @Override
-    public IGuiElement rightClick() {
+    public GuiElement rightClick() {
         guiElementFacade.rightClick();
         return this;
     }
 
     @Override
-    public IGuiElement rightClickJS() {
+    public GuiElement rightClickJS() {
         guiElementFacade.rightClickJS();
         return this;
     }
 
     @Override
-    public IGuiElement doubleClickJS() {
+    public GuiElement doubleClickJS() {
         guiElementFacade.doubleClickJS();
         return this;
     }
@@ -692,11 +692,12 @@ public class GuiElement implements IGuiElement {
         return guiElementAssertDescriptionDecorator;
     }
 
-    public List<IGuiElement> getList() {
+    @Override
+    public List<GuiElementFacade> getList() {
         int numberOfFoundElements = getNumberOfFoundElements();
-        List<IGuiElement> guiElements = new ArrayList<>(numberOfFoundElements);
+        List<GuiElementFacade> guiElements = new ArrayList<>(numberOfFoundElements);
         for (int i = 0; i < numberOfFoundElements; i++) {
-            IGuiElement guiElement = new GuiElement(guiElementData, i);
+            GuiElementFacade guiElement = new GuiElement(guiElementData, i);
             guiElements.add(guiElement);
         }
         return guiElements;

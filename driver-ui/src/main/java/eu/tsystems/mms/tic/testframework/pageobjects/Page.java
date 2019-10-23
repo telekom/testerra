@@ -29,8 +29,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
@@ -42,11 +42,16 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiE
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
-import eu.tsystems.mms.tic.testframework.utils.*;
+import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import eu.tsystems.mms.tic.testframework.utils.Timer;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
@@ -423,16 +428,16 @@ public abstract class Page extends AbstractPage implements IPage {
 
         return simpleClassName + " -> " + actionName;
     }
-    public IGuiElement byId(final String id) {
+    public GuiElementFacade byId(final String id) {
         return by(Locate.by().id(id));
     }
-    public IGuiElement byQa(final String qa) {
+    public GuiElementFacade byQa(final String qa) {
         return by(Locate.by().qa(qa));
     }
-    public IGuiElement by(final Locate locator) {
+    public GuiElementFacade by(final Locate locator) {
         return new GuiElement(driver, locator);
     }
-    public IGuiElement by(final By by) {
+    public GuiElementFacade by(final By by) {
         return new GuiElement(driver, by);
     }
     public IAssertableValue title() {

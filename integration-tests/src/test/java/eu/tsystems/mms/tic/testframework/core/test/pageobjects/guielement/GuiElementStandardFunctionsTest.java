@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
@@ -47,7 +47,7 @@ import java.util.List;
 public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElementTest {
 
     /**
-     * Test if IGuiElement.asserts().assertContainsText works for one string that is contained
+     * Test if GuiElement.asserts().assertContainsText works for one string that is contained
      */
     @Test
     public void testT01_GuiElement_assertContainsText() {
@@ -56,12 +56,12 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void test_NewApi_GuiElement_assertTextContains() {
-        IGuiElement iGuiElement = page().byId("11");
-        iGuiElement.text().contains("affe");
+        GuiElement GuiElement = page().byId("11");
+        GuiElement.text().contains("affe");
     }
 
     /**
-     * Test if IGuiElement.asserts().assertContainsText works for one string that is contained
+     * Test if GuiElement.asserts().assertContainsText works for one string that is contained
      */
     @Test
     public void testT01_GuiElement_assertTextContains() {
@@ -69,7 +69,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Negative test if IGuiElement.asserts().assertContainsText works for one string that is not contained
+     * Negative test if GuiElement.asserts().assertContainsText works for one string that is not contained
      */
     @Test(expectedExceptions = {AssertionError.class, TimeoutException.class})
     public void testT02N_GuiElement_assertContainsText() {
@@ -77,19 +77,19 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertContainsText works for a string array, whose elements are contained
+     * Test if GuiElement.asserts().assertContainsText works for a string array, whose elements are contained
      */
     @Test
     public void testT03_GuiElement_assertContainsText() {
         String[] elementTextArray = testPage.getElementTextArray();
-        IGuiElement elementWithText = getElementWithText();
+        GuiElement elementWithText = getElementWithText();
         for (String s : elementTextArray) {
             elementWithText.asserts().assertContainsText(s);
         }
     }
 
     /**
-     * Test if IGuiElement.asserts().assertContainsText works for a string array, whose elements are not contained except for 1
+     * Test if GuiElement.asserts().assertContainsText works for a string array, whose elements are not contained except for 1
      */
     @Test(expectedExceptions = {AssertionError.class, TimeoutException.class})
     public void testT04N_GuiElement_assertContainsText() {
@@ -100,7 +100,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertText works for a string that is its text
+     * Test if GuiElement.asserts().assertText works for a string that is its text
      */
     @Test
     public void testT05_GuiElement_assertText() {
@@ -108,7 +108,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertText works for a string that is not its text
+     * Test if GuiElement.asserts().assertText works for a string that is not its text
      */
     @Test(expectedExceptions = {AssertionError.class, TimeoutException.class})
     public void testT06N_GuiElement_assertText() {
@@ -116,7 +116,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertAttributeText works for an attribute that has the specified value
+     * Test if GuiElement.asserts().assertAttributeText works for an attribute that has the specified value
      */
     @Test
     public void testT07_GuiElement_assertAttributeText() {
@@ -124,7 +124,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertAttributeText works for an attribute that has not specified value
+     * Test if GuiElement.asserts().assertAttributeText works for an attribute that has not specified value
      */
     @Test(expectedExceptions = {AssertionError.class})
     public void testT08N_GuiElement_assertAttributeText() {
@@ -132,7 +132,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertAttributeText works for an attribute that contains the specified part
+     * Test if GuiElement.asserts().assertAttributeText works for an attribute that contains the specified part
      */
     @Test
     public void testT09_GuiElement_assertAttributeContains() {
@@ -140,7 +140,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertAttributeText works for an attribute that contains the specified part
+     * Test if GuiElement.asserts().assertAttributeText works for an attribute that contains the specified part
      */
     @Test
     public void testT09_GuiElement_assertAttributeContainsNot() {
@@ -148,7 +148,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertAttributeText works for an attribute that does not contain the specified part
+     * Test if GuiElement.asserts().assertAttributeText works for an attribute that does not contain the specified part
      */
     @Test(expectedExceptions = {AssertionError.class})
     public void testT10N_GuiElement_assertAttributeContains() {
@@ -156,27 +156,27 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsSelected works for a a selected element
+     * Test if GuiElement.asserts().assertIsSelected works for a a selected element
      */
     @Test
     public void testT11_GuiElement_assertIsSelected() {
-        IGuiElement selectableElement = getSelectableElement();
+        GuiElement selectableElement = getSelectableElement();
         selectableElement.select();
         selectableElement.asserts().assertIsSelected();
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsSelected works for an unselected element
+     * Test if GuiElement.asserts().assertIsSelected works for an unselected element
      */
     @Test(expectedExceptions = {AssertionError.class})
     public void testT12N_GuiElement_assertIsSelected() {
-        IGuiElement selectableElement = getSelectableElement();
+        GuiElement selectableElement = getSelectableElement();
         selectableElement.deselect();
         selectableElement.asserts().assertIsSelected();
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsNotSelectable works for an unselectable element
+     * Test if GuiElement.asserts().assertIsNotSelectable works for an unselectable element
      */
     @Test
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
@@ -185,7 +185,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsNotSelectable works for a selectable element
+     * Test if GuiElement.asserts().assertIsNotSelectable works for a selectable element
      */
     @Test(expectedExceptions = {AssertionError.class})
     public void testT14N_GuiElement_assertIsNotSelectable() {
@@ -193,7 +193,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsDisplayed works for a displayed element
+     * Test if GuiElement.asserts().assertIsDisplayed works for a displayed element
      */
     @Test
     public void testT15_GuiElement_assertIsDisplayed() {
@@ -206,7 +206,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsDisplayed works for a not displayed element
+     * Test if GuiElement.asserts().assertIsDisplayed works for a not displayed element
      */
     @Test(expectedExceptions = {AssertionError.class})
     public void testT17N_GuiElement_assertIsDisplayed() {
@@ -214,7 +214,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsDisplayedFromWebElement works for a not displayed element
+     * Test if GuiElement.asserts().assertIsDisplayedFromWebElement works for a not displayed element
      */
     @Test(expectedExceptions = {AssertionError.class})
     public void testT18N_GuiElement_assertIsDisplayedFromWebElement() {
@@ -222,7 +222,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsPresent works for a displayed element
+     * Test if GuiElement.asserts().assertIsPresent works for a displayed element
      */
     @Test
     public void testT19_GuiElement_assertIsPresent() {
@@ -230,7 +230,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsPresent works for a non existing element
+     * Test if GuiElement.asserts().assertIsPresent works for a non existing element
      */
     @Test
     public void testT20N_GuiElement_assertIsPresent() {
@@ -240,7 +240,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
 
     /**
-     * Test if IGuiElement.asserts().assertAnyFollowingTextNodeContains works for an element that contains the text in any
+     * Test if GuiElement.asserts().assertAnyFollowingTextNodeContains works for an element that contains the text in any
      * following node
      */
     @Test
@@ -249,7 +249,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertAnyFollowingTextNodeContains works for an element that doesn't contain the text in any
+     * Test if GuiElement.asserts().assertAnyFollowingTextNodeContains works for an element that doesn't contain the text in any
      * following node
      */
     @Test(expectedExceptions = {AssertionError.class})
@@ -258,7 +258,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.find() works for an existing element found by its ID
+     * Test if GuiElement.find() works for an existing element found by its ID
      */
     @Test
     public void testT23_GuiElement_findByID() {
@@ -269,20 +269,20 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Test
     public void testT23_GuiElement_findByIDUnique() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        IGuiElement IGuiElement = new GuiElement(driver, Locate.by().unique().id("11"));
-        WebElement webElement = IGuiElement.getWebElement();
+        GuiElement GuiElement = new GuiElement(driver, Locate.by().unique().id("11"));
+        WebElement webElement = GuiElement.getWebElement();
         Assert.assertNotNull(webElement);
     }
 
     @Test
     public void test_GuiElement_findNonUnique() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        IGuiElement IGuiElement = new GuiElement(driver, Locate.by().unique().xpath("//div"));
+        GuiElement GuiElement = new GuiElement(driver, Locate.by().unique().xpath("//div"));
         try {
-            WebElement webElement = IGuiElement.getWebElement();
+            WebElement webElement = GuiElement.getWebElement();
         } catch (TimeoutException e) {
 
-            AssertUtils.assertContains(e.getCause().getMessage(), "IGuiElement not found: "+ IGuiElement.getLocator());
+            AssertUtils.assertContains(e.getCause().getMessage(), "GuiElement not found: "+ GuiElement.getLocator());
         }
     }
 
@@ -290,12 +290,12 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     public void test_GuiElement_findPrepared() {
         final Locate locator = Locate.prepare("//*[@id='%s']");
         final WebDriver driver = WebDriverManager.getWebDriver();
-        IGuiElement IGuiElement = new GuiElement(driver, locator.with("11"));
-        Assert.assertNotNull(IGuiElement.getWebElement());
+        GuiElement GuiElement = new GuiElement(driver, locator.with("11"));
+        Assert.assertNotNull(GuiElement.getWebElement());
     }
 
     /**
-     * Test if IGuiElement.find() works for an existing element found by a Xpath
+     * Test if GuiElement.find() works for an existing element found by a Xpath
      */
     @Test
     public void testT24_GuiElement_findByXpath() {
@@ -304,7 +304,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.find() works for an existing element found by its class name
+     * Test if GuiElement.find() works for an existing element found by its class name
      */
     @Test
     public void testT25_GuiElement_findByClassName() {
@@ -313,7 +313,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.find() works for an existing link found by its link text
+     * Test if GuiElement.find() works for an existing link found by its link text
      */
     @Test
     public void testT26_GuiElement_findByLinkText() {
@@ -322,7 +322,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.find() works for an existing link found by its link text
+     * Test if GuiElement.find() works for an existing link found by its link text
      */
     @Test
     public void testT27_GuiElement_findByPartialLinkText() {
@@ -331,7 +331,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.find() works for a named element
+     * Test if GuiElement.find() works for a named element
      */
     @Test
     public void testT28_GuiElement_findByName() {
@@ -360,7 +360,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsNotDisplayed works for a not displayed element
+     * Test if GuiElement.asserts().assertIsNotDisplayed works for a not displayed element
      */
     @Test
     public void testT31_GuiElement_assertIsNotDisplayed() {
@@ -368,7 +368,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsNotDisplayed works for a not displayed WebElement
+     * Test if GuiElement.asserts().assertIsNotDisplayed works for a not displayed WebElement
      */
     @Test
     public void testT32_GuiElement_assertIsNotDisplayedFromWebElement() {
@@ -376,7 +376,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsNotDisplayed works for a displayed element
+     * Test if GuiElement.asserts().assertIsNotDisplayed works for a displayed element
      */
     @Test(expectedExceptions = {AssertionError.class})
     public void testT33N_GuiElement_assertIsNotDisplayed() {
@@ -384,7 +384,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsNotDisplayed works for a displayed WebElement
+     * Test if GuiElement.asserts().assertIsNotDisplayed works for a displayed WebElement
      */
     @Test(expectedExceptions = {AssertionError.class})
     public void testT34N_GuiElement_assertIsNotDisplayedFromWebElement() {
@@ -392,7 +392,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsNotPresent works for a not displayed element
+     * Test if GuiElement.asserts().assertIsNotPresent works for a not displayed element
      */
     @Test
     public void testT35_GuiElement_assertIsNotPresent() {
@@ -400,7 +400,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if IGuiElement.asserts().assertIsNotPresent works for a displayed element
+     * Test if GuiElement.asserts().assertIsNotPresent works for a displayed element
      */
     @Test
     public void testT36N_GuiElement_assertIsNotPresent() {
@@ -414,42 +414,42 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if mouseclick on IGuiElement was performed
+     * Test if mouseclick on GuiElement was performed
      */
     @Test
     public void testT37_GuiElement_clickWithPriorMouseOverActions() {
-        IGuiElement element = getClickableElement();
-        IGuiElement out = getLoggerTableElement();
+        GuiElement element = getClickableElement();
+        GuiElement out = getLoggerTableElement();
         element.mouseOver();
         element.click();
         out.asserts().assertContainsText("Form 16 submit");
     }
 
     /**
-     * Test if mouseclickOverSeleniumXPath on IGuiElement was performed
+     * Test if mouseclickOverSeleniumXPath on GuiElement was performed
      */
     @Test
     public void testT39_GuiElement_classNameNavigation() {
-        IGuiElement textBox = getTextBoxElement();
+        GuiElement textBox = getTextBoxElement();
         textBox.type("TestString");
 
-        IGuiElement checkBox = getSelectableElement();
+        GuiElement checkBox = getSelectableElement();
         checkBox.select();
         checkBox.deselect();
         checkBox.select();
 
-        IGuiElement list = getLoggerTableElement();
-        IGuiElement textfield2 = getTextBoxElement();
+        GuiElement list = getLoggerTableElement();
+        GuiElement textfield2 = getTextBoxElement();
         textfield2.mouseOver();
     }
 
     /**
-     * Test if submit on IGuiElement was performed
+     * Test if submit on GuiElement was performed
      */
     @Test
     public void testT40_GuiElement_submit() {
-        IGuiElement submitBtn = getClickableElement();
-        IGuiElement out = getLoggerTableElement();
+        GuiElement submitBtn = getClickableElement();
+        GuiElement out = getLoggerTableElement();
         submitBtn.submit();
         out.asserts().assertContainsText("Form 16 submit");
     }
@@ -459,9 +459,9 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
      */
     @Test
     public void testT41_GuiElement_getTextFromChildren() {
-        IGuiElement IGuiElement = getParent2();
+        GuiElement GuiElement = getParent2();
 
-        List<String> textsFromChildren = IGuiElement.getTextsFromChildren();
+        List<String> textsFromChildren = GuiElement.getTextsFromChildren();
         Assert.assertEquals(textsFromChildren.size(), 5, "Correct amount of texts contained. Texts: " + textsFromChildren);
 
         List<String> stringsManual = new ArrayList<String>();
@@ -510,12 +510,12 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if clickJS on IGuiElement was performed
+     * Test if clickJS on GuiElement was performed
      */
     @Test
     public void testT46_GuiElement_clickJS_WithPriorMouseOverActions() {
-        IGuiElement element = getClickableElement();
-        IGuiElement out = getLoggerTableElement();
+        GuiElement element = getClickableElement();
+        GuiElement out = getLoggerTableElement();
 
         element.mouseOver();
         element.clickJS();
@@ -523,13 +523,13 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if clickAbsolute on IGuiElement was performed
+     * Test if clickAbsolute on GuiElement was performed
      */
     @Test
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT47_GuiElement_clickAbsolute_WithPriorMouseOverActions() {
-        IGuiElement element = getClickableElement();
-        IGuiElement out = getLoggerTableElement();
+        GuiElement element = getClickableElement();
+        GuiElement out = getLoggerTableElement();
 
         element.mouseOver();
         element.clickAbsolute();
@@ -537,23 +537,23 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     /**
-     * Test if mouseOverAbsolute2Axis on IGuiElement was performed
+     * Test if mouseOverAbsolute2Axis on GuiElement was performed
      */
     @Test
     public void testT48_GuiElement_mouseOverAbsolute2Axis() {
-        IGuiElement element = getTextBoxElement();
-        IGuiElement out = getLoggerTableElement();
+        GuiElement element = getTextBoxElement();
+        GuiElement out = getLoggerTableElement();
 
         element.mouseOverAbsolute2Axis();
     }
 
     /**
-     * Test if mouseOverJS on IGuiElement was performed
+     * Test if mouseOverJS on GuiElement was performed
      */
     @Test
     public void testT49_GuiElement_mouseOverJS() {
-        IGuiElement element = getTextBoxElement();
-        IGuiElement out = getLoggerTableElement();
+        GuiElement element = getTextBoxElement();
+        GuiElement out = getLoggerTableElement();
 
         element.mouseOverJS();
         out.asserts().assertContainsText("Input 5 Mouse over");
@@ -561,50 +561,50 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
 
     /**
-     * Test if IGuiElement.asserts().assertInputFieldLength returns right length of input field
+     * Test if GuiElement.asserts().assertInputFieldLength returns right length of input field
      */
 //    @Test
     public void testT50_GuiElement_assertInputFieldLength() {
-        IGuiElement element = getTextBoxElement();
+        GuiElement element = getTextBoxElement();
         element.asserts().assertInputFieldLength(5);
     }
 
 
     @Test
     public void testT53_GuiElement_anyFollowingTextNodeContains() {
-        IGuiElement element = getParent2();
+        GuiElement element = getParent2();
         boolean ret = element.anyFollowingTextNodeContains("Show alert");
         Assert.assertTrue(ret, "Element mit Text gefunden");
     }
 
     @Test(expectedExceptions = {AssertionError.class})
     public void testT54N_GuiElement_anyFollowingTextNodeContains() {
-        IGuiElement element = getParent2();
+        GuiElement element = getParent2();
         boolean ret = element.anyFollowingTextNodeContains("42");
         Assert.assertTrue(ret, "Element mit Text gefunden");
     }
 
     @Test
     public void testT55_GuiElement_assertAttributIsPresent() {
-        IGuiElement element = getDisplayedElement();
+        GuiElement element = getDisplayedElement();
         element.asserts().assertAttributeIsPresent("href");
     }
 
     @Test(expectedExceptions = {AssertionError.class})
     public void testT56N_GuiElement_assertAttributIsPresent() {
-        IGuiElement element = getDisplayedElement();
+        GuiElement element = getDisplayedElement();
         element.asserts().assertAttributeIsPresent("label");
     }
 
     @Test
     public void testT57_GuiElement_assertIsDisabled() {
-        IGuiElement element = getDisabledElement();
+        GuiElement element = getDisabledElement();
         element.asserts().assertIsDisabled();
     }
 
     @Test(expectedExceptions = {AssertionError.class})
     public void testT58N_GuiElement_assertIsDisabled() {
-        IGuiElement element = getDisplayedElement();
+        GuiElement element = getDisplayedElement();
         element.asserts().assertIsDisabled();
     }
 
@@ -620,14 +620,14 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT61_GuiElement_assertIsNotSelected() {
-        IGuiElement selectableElement = getSelectableElement();
+        GuiElement selectableElement = getSelectableElement();
         selectableElement.deselect();
         selectableElement.asserts().assertIsNotSelected();
     }
 
     @Test(expectedExceptions = {AssertionError.class})
     public void testT61N_GuiElement_assertIsNotSelected() {
-        IGuiElement selectableElement = getSelectableElement();
+        GuiElement selectableElement = getSelectableElement();
         selectableElement.select();
         selectableElement.asserts().assertIsNotSelected();
     }
@@ -644,7 +644,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT65_GuiElement_clear() {
-        IGuiElement element = getTextBoxElement();
+        GuiElement element = getTextBoxElement();
         element.sendKeys("Test");
         element.clear();
         Assert.assertEquals(element.getText(), "", "Textboxelement is empty");
@@ -652,83 +652,83 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test(enabled = false)
     public void testT66_GuiElement_doubleClick() {
-        IGuiElement element = getSelectableElement();
+        GuiElement element = getSelectableElement();
         element.doubleClick();
         getLoggerTableElement().asserts().assertContainsText("Input 3 Double clicked");
     }
 
     @Test
     public void testT67_GuiElement_findElement() {
-        IGuiElement element = getSelectableElement();
+        GuiElement element = getSelectableElement();
         WebElement webElement = element.getWebElement().findElement(By.xpath("//div[1]"));
         Assert.assertNotNull(webElement, "Found Element");
     }
 
     @Test
     public void testT68N_GuiElement_findElement() {
-        IGuiElement element = getSelectableElement();
+        GuiElement element = getSelectableElement();
         ThrowableUtils.expectThrowable(NoSuchElementException.class, () -> element.getWebElement().findElement(By.xpath("//div[text()=\'\']")));
     }
 
     @Test
     public void testT69_GuiElement_findElements() {
-        IGuiElement element = getSelectableElement();
+        GuiElement element = getSelectableElement();
         List<WebElement> webElements = element.getWebElement().findElements(By.xpath("//div"));
         Assert.assertNotEquals(webElements.size(), 0, "List is not empty");
     }
 
     @Test
     public void testT70N_GuiElement_findElements() {
-        IGuiElement element = getSelectableElement();
+        GuiElement element = getSelectableElement();
         List<WebElement> webElements = element.getWebElement().findElements(By.xpath("//div[text()=\'\']"));
         Assert.assertEquals(webElements.size(), 0, "List is empty");
     }
 
     @Test
     public void testT71_GuiElement_getAttribute() {
-        IGuiElement element = getElementWithAttribute();
+        GuiElement element = getElementWithAttribute();
         String attribute = element.getAttribute("value");
         Assert.assertEquals(attribute, "Button2", "Attribute is equal");
     }
 
     @Test
     public void testT72N_GuiElement_getAttribute() {
-        IGuiElement element = getElementWithAttribute();
+        GuiElement element = getElementWithAttribute();
         String attribute = element.getAttribute("href");
         Assert.assertEquals(attribute, null, "Attribute is equal");
     }
 
     @Test
     public void testT73_GuiElement_getBy() {
-        IGuiElement element = getElementWithAttribute();
+        GuiElement element = getElementWithAttribute();
         By by = element.getBy();
         Assert.assertNotNull(by, "By is not null");
     }
 
     @Test
     public void testT74_GuiElement_getCSSValue() {
-        IGuiElement element = getTableElement();
+        GuiElement element = getTableElement();
         String cssValue = element.getCssValue("visibility");
         Assert.assertEquals(cssValue, "hidden", "CSS Value is equal");
     }
 
     @Test
     public void testT75_GuiElement_getDriver() {
-        IGuiElement element = getTableElement();
+        GuiElement element = getTableElement();
         WebDriver driver = element.getWebDriver();
         Assert.assertNotNull(driver, "Driver is not null");
     }
 
     @Test
     public void testT76_GuiElement_getLengthOfInputAfterSendKeys() {
-        IGuiElement element = getTextBoxElement();
+        GuiElement element = getTextBoxElement();
         int lengthOfInput = element.getLengthOfValueAfterSendKeys("Hurry you fools");
         Assert.assertEquals(lengthOfInput, 5, "Text has length of 5");
     }
 
     @Test
     public void testT77_GuiElement_getLocation() {
-        IGuiElement element = getTextBoxElement();
+        GuiElement element = getTextBoxElement();
         Point location = element.getLocation();
         int x = location.getX();
         int y = location.getY();
@@ -737,7 +737,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT78_GuiElement_getSelectElement() {
-        IGuiElement element = getSingleSelect();
+        GuiElement element = getSingleSelect();
         Select selectElement = element.getSelectElement();
         List<WebElement> selectOptions = selectElement.getOptions();
         Assert.assertEquals(selectOptions.size(), 5, "Select Item Count is right");
@@ -745,7 +745,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT79_GuiElement_getSize() {
-        IGuiElement element = getTextBoxElement();
+        GuiElement element = getTextBoxElement();
         Dimension sizeGuiElement = element.getSize();
         int height = sizeGuiElement.getHeight();
         int width = sizeGuiElement.getWidth();
@@ -755,7 +755,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT80_GuiElement_IsEnabled() {
-        IGuiElement element = getEnabledElement();
+        GuiElement element = getEnabledElement();
 
         boolean found = element.isEnabled();
         Assert.assertTrue(found, "The Element is enabled.");
@@ -763,7 +763,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT81N_GuiElement_IsEnabled() {
-        IGuiElement element = getDisabledElement();
+        GuiElement element = getDisabledElement();
 
         boolean found = element.isEnabled();
         Assert.assertFalse(found, "The Element is enabled.");
@@ -771,7 +771,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT82_GuiElement_IsDisplayed() {
-        IGuiElement element = getDisplayedElement();
+        GuiElement element = getDisplayedElement();
 
         boolean found = element.isDisplayed();
         Assert.assertTrue(found, "The Element is displayed.");
@@ -779,25 +779,25 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT83N_GuiElement_IsDisplayed() {
-        IGuiElement element = getNotDisplayedElement();
+        GuiElement element = getNotDisplayedElement();
         Assert.assertFalse(element.isDisplayed(), "The Element is displayed.");
     }
 
     @Test
     public void test_GuiElement_NotExisting_IsDisplayed() {
-        IGuiElement element = getNotExistingElement();
+        GuiElement element = getNotExistingElement();
         Assert.assertFalse(element.isDisplayed(), "The Element is displayed.");
     }
 
     @Test
     public void test_GuiElement_NotVisible_IsDisplayed() {
-        IGuiElement element =  getGuiElementBy(By.id("notVisibleElement"));;
+        GuiElement element =  getGuiElementBy(By.id("notVisibleElement"));;
         Assert.assertFalse(element.isDisplayed(), "The Element is displayed.");
     }
 
     @Test
     public void testT85_GuiElement_getTagName() {
-        IGuiElement element = getDisplayedElement();
+        GuiElement element = getDisplayedElement();
         String tagName = element.getTagName();
 
         Assert.assertEquals(tagName, "a", "Expected Tagname was found");
@@ -805,14 +805,14 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT86_GuiElement_isSelectable() {
-        IGuiElement element = getSelectableElement();
+        GuiElement element = getSelectableElement();
         boolean found = element.isSelectable();
         Assert.assertTrue(found, "The Element is selectable");
     }
 
     @Test
     public void testT87N_GuiElement_isSelectable() {
-        IGuiElement element = getNotSelectableElement();
+        GuiElement element = getNotSelectableElement();
         boolean found = element.isSelectable();
         Assert.assertFalse(found, "The Element is selectable");
     }
@@ -820,7 +820,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT88_GuiElement_getBy() {
-        IGuiElement g = getEnabledElement();
+        GuiElement g = getEnabledElement();
         By by = g.getBy();
         Assert.assertEquals(by.toString(), "By.id: 16", "By Identifier is equal");
     }
@@ -839,7 +839,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT92_GuiElement_restoreDefaultTimeOut() {
-        IGuiElement element = getTableElement();
+        GuiElement element = getTableElement();
         int timeOutInSeconds = element.getTimeoutInSeconds();
         element.setTimeoutInSeconds(50000);
         element.restoreDefaultTimeout();
@@ -848,7 +848,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void TestT94_GuiElement_highlight() {
-        IGuiElement element = getClickableElement();
+        GuiElement element = getClickableElement();
         element.highlight();
         element.asserts().assertIsDisplayed();
         // no idea how to test highlighted element
@@ -856,7 +856,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT95_GuiElement_selectDeselect() {
-        IGuiElement element = getSelectableElement();
+        GuiElement element = getSelectableElement();
         element.select(true);
         element.asserts().assertIsSelected();
         element.select(false);
@@ -865,19 +865,19 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT96_GuiElement_rightClick() {
-        IGuiElement element = getClickableElement();
+        GuiElement element = getClickableElement();
         element.rightClick();
     }
 
     @Test
     public void testT97_GuiElement_rightClickJS() {
-        IGuiElement element = getClickableElement();
+        GuiElement element = getClickableElement();
         element.rightClickJS();
     }
 
     @Test
     public void testT98_GuiElement_assertClassIsPresent() {
-        IGuiElement element = getGuiElementBy(By.xpath(String.format("//*[@data-qa='%s']", "action/toggleClass")));
+        GuiElement element = getGuiElementBy(By.xpath(String.format("//*[@data-qa='%s']", "action/toggleClass")));
         element.asserts().assertCssClassIsNotPresent("active");
         element.click();
         element.asserts().assertCssClassIsPresent("active");

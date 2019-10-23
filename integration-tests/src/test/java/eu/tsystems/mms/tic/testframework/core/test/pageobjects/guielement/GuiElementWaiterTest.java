@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -51,7 +51,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     public void testT1_GuiElement_waitForIsDisplayedFromWebElement() {
         pre_hideText(true);
 
-        IGuiElement g = getDynamicTextElement();
+        GuiElement g = getDynamicTextElement();
         g.asserts().assertIsNotDisplayed();
 
 
@@ -68,7 +68,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     @Test
     public void testT2N_GuiElement_waitForIsDisplayedFromWebElement() {
         pre_hideText(true);
-        IGuiElement g = getDynamicTextElement();
+        GuiElement g = getDynamicTextElement();
         g.setTimeoutInSeconds(3);
 
         boolean result = g.waits().waitForIsDisplayedFromWebElement();
@@ -81,7 +81,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         pre_hideText(false);
 
         //test if after 3s text is displayed
-        IGuiElement g = getDynamicTextElement();
+        GuiElement g = getDynamicTextElement();
         g.asserts().assertIsDisplayed();
 
         //hide message after one second
@@ -99,7 +99,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         pre_hideText(false);
 
         //test if after 3s text is displayed
-        IGuiElement g = getDynamicTextElement();
+        GuiElement g = getDynamicTextElement();
         g.setTimeoutInSeconds(3);
         g.asserts().assertIsDisplayed();
         boolean result = g.waits().waitForIsNotDisplayedFromWebElement();
@@ -109,7 +109,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
     @Test
     public void testT5_GuiElement_waitForAnyFollowingTextNodeContains() {
-        IGuiElement element = getParent2();
+        GuiElement element = getParent2();
         boolean ret = element.waits().waitForAnyFollowingTextNodeContains("Show alert");
         Assert.assertTrue(ret, "Found Node with given Text");
 
@@ -119,7 +119,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     public void testT6_GuiElement_waitForAnyFollowingTextNodeContains() {
 
         getTimeOutInput().type("3000");
-        IGuiElement parent = getTimeOutDIV();
+        GuiElement parent = getTimeOutDIV();
         parent.setTimeoutInSeconds(4);
 
         getInsertTextByJSButton().click();
@@ -130,21 +130,21 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
     @Test(expectedExceptions = {AssertionError.class})
     public void testT7N_GuiElement_waitForAnyFollowingTextNodeContains() {
-        IGuiElement element = getParent2();
+        GuiElement element = getParent2();
         boolean ret = element.waits().waitForAnyFollowingTextNodeContains("42");
         Assert.assertTrue(ret, "Found Node with given Text");
     }
 
     @Test
     public void testT8_GuiElement_waitForAttribute() {
-        IGuiElement element = getElementWithAttribute();
+        GuiElement element = getElementWithAttribute();
         boolean isAttribute = element.waits().waitForAttribute("value");
         Assert.assertEquals(isAttribute, true, "Attribute is present");
     }
 
     @Test
     public void testT9_GuiElement_waitForAttribute() {
-        IGuiElement rdButton = getRadio();
+        GuiElement rdButton = getRadio();
         getTimeOutInput().type("3000");
 
         rdButton.setTimeoutInSeconds(4);
@@ -156,21 +156,21 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
     @Test
     public void testT10_GuiElement_waitForAttribute() {
-        IGuiElement element = getElementWithAttribute();
+        GuiElement element = getElementWithAttribute();
         boolean isAttribute = element.waits().waitForAttribute("href");
         Assert.assertEquals(isAttribute, false, "Attribute is present");
     }
 
     @Test
     public void testT11_GuiElement_waitForAttribute() {
-        IGuiElement element = getElementWithAttribute();
+        GuiElement element = getElementWithAttribute();
         boolean isAttribute = element.waits().waitForAttribute("value", "Button2");
         Assert.assertEquals(isAttribute, true, "Attribute with value is present");
     }
 
     @Test
     public void testT12_GuiElement_waitForAttribute() {
-        IGuiElement rdButton = getRadio();
+        GuiElement rdButton = getRadio();
         getTimeOutInput().type("3000");
 
         rdButton.setTimeoutInSeconds(4);
@@ -182,21 +182,21 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
     @Test
     public void testT13_GuiElement_waitForAttribute() {
-        IGuiElement element = getElementWithAttribute();
+        GuiElement element = getElementWithAttribute();
         boolean isAttribute = element.waits().waitForAttribute("value", "Button3");
         Assert.assertEquals(isAttribute, false, "Attribute with value is present");
     }
 
     @Test
     public void testT14_GuiElement_waitForAttributeContains() {
-        IGuiElement element = getElementWithAttribute();
+        GuiElement element = getElementWithAttribute();
         boolean isAttribute = element.waits().waitForAttributeContains("value", "Butt");
         Assert.assertEquals(isAttribute, true, "Attribute with value is present");
     }
 
     @Test
     public void testT15_GuiElement_waitForAttributeContains() {
-        IGuiElement rdButton = getRadio();
+        GuiElement rdButton = getRadio();
         getTimeOutInput().type("3000");
 
         rdButton.setTimeoutInSeconds(4);
@@ -208,7 +208,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
     @Test
     public void testT16_GuiElement_waitForAttributeContains() {
-        IGuiElement element = getElementWithAttribute();
+        GuiElement element = getElementWithAttribute();
         boolean isAttribute = element.waits().waitForAttributeContains("value", "Gandalf");
         Assert.assertEquals(isAttribute, false, "Attribute with value is present");
     }
@@ -225,7 +225,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         getTimeOutInput().type("3000");
         getDisableRDButton().click();
 
-        IGuiElement g = getRadio();
+        GuiElement g = getRadio();
         g.setTimeoutInSeconds(4);
 
         boolean result = g.waits().waitForIsDisabled();
@@ -240,7 +240,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
 
     /**
-     * Test if IGuiElement.waits().waitForIsNotPresent works for a not displayed element
+     * Test if GuiElement.waits().waitForIsNotPresent works for a not displayed element
      */
     @Test
     public void testT20_GuiElement_waitForIsNotPresent() {
@@ -249,7 +249,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForIsNotPresent works for a displayed element
+     * Test if GuiElement.waits().waitForIsNotPresent works for a displayed element
      */
     @Test
     public void testT21N_GuiElement_waitForIsNotPresent() {
@@ -259,7 +259,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
 
     /**
-     * Test if IGuiElement.waits().waitForText works for text that is there already
+     * Test if GuiElement.waits().waitForText works for text that is there already
      */
     @Test
     public void testT22_GuiElement_waitForText() {
@@ -268,14 +268,14 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForText works for text that is created by JavaScript after Timeout
+     * Test if GuiElement.waits().waitForText works for text that is created by JavaScript after Timeout
      */
     @Test
     public void testT23_GuiElement_waitForText() {
 
         getTimeOutInput().type("2000");
 
-        IGuiElement g = getDynamicTextElement();
+        GuiElement g = getDynamicTextElement();
         g.setTimeoutInSeconds(3);
 
         getChangeTextByJSButton().click();
@@ -285,7 +285,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForText works for text that is not there
+     * Test if GuiElement.waits().waitForText works for text that is not there
      */
     @Test
     public void testT24N_GuiElement_waitForText() {
@@ -294,7 +294,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForTextContains works for a text-fragment that is there already
+     * Test if GuiElement.waits().waitForTextContains works for a text-fragment that is there already
      */
     @Test
     public void testT25_GuiElement_waitForTextContains() {
@@ -303,14 +303,14 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForTextContains works for text that is created by JavaScript after Timeout
+     * Test if GuiElement.waits().waitForTextContains works for text that is created by JavaScript after Timeout
      */
     @Test
     public void testT26_GuiElement_waitForTextContains() {
 
         getTimeOutInput().type("2000");
 
-        IGuiElement g = getDynamicTextElement();
+        GuiElement g = getDynamicTextElement();
         g.setTimeoutInSeconds(3);
 
         getChangeTextByJSButton().click();
@@ -320,7 +320,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForTextContains works for a text-fragment that is not there
+     * Test if GuiElement.waits().waitForTextContains works for a text-fragment that is not there
      */
     @Test
     public void testT27N_GuiElement_waitForTextContains() {
@@ -329,7 +329,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForIsDisplayed works for a displayed element
+     * Test if GuiElement.waits().waitForIsDisplayed works for a displayed element
      */
     @Test
     public void testT28_GuiElement_waitForIsDisplayed() {
@@ -338,7 +338,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForIsDisplayed works for text that is created by JavaScript after Timeout
+     * Test if GuiElement.waits().waitForIsDisplayed works for text that is created by JavaScript after Timeout
      */
     @Test
     public void testT29_GuiElement_waitForIsDisplayed() {
@@ -347,7 +347,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
         getShowWithTimeOutButton().click();
 
-        IGuiElement g = getDynamicTextElement();
+        GuiElement g = getDynamicTextElement();
         g.setTimeoutInSeconds(3);
 
         boolean result = g.waits().waitForIsDisplayed();
@@ -355,7 +355,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForIsDisplayed works for a not displayed element
+     * Test if GuiElement.waits().waitForIsDisplayed works for a not displayed element
      */
     @Test
     public void testT30N_GuiElement_waitForIsDisplayed() {
@@ -371,7 +371,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
         getHideWithTimeOutButton().click();
 
-        IGuiElement g = getDynamicTextElement();
+        GuiElement g = getDynamicTextElement();
         g.setTimeoutInSeconds(3);
 
         boolean result = g.waits().waitForIsNotDisplayed();
@@ -379,7 +379,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForIsNotDisplayed works for a displayed element
+     * Test if GuiElement.waits().waitForIsNotDisplayed works for a displayed element
      */
     @Test
     public void testT32N_GuiElement_waitForIsNotDisplayed() {
@@ -388,7 +388,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForIsPresent works for a displayed element
+     * Test if GuiElement.waits().waitForIsPresent works for a displayed element
      */
     @Test
     public void testT33_GuiElement_waitForIsPresent() {
@@ -398,7 +398,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForIsPresent works for text that is created by JavaScript after Timeout
+     * Test if GuiElement.waits().waitForIsPresent works for text that is created by JavaScript after Timeout
      */
     @Test
     public void testT34_GuiElement_waitForIsPresent() {
@@ -406,7 +406,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
 
         getInsertTextByJSButton().click();
 
-        IGuiElement g = getInsertedTextElement();
+        GuiElement g = getInsertedTextElement();
         g.setTimeoutInSeconds(3);
 
         boolean result = g.waits().waitForIsPresent();
@@ -414,7 +414,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForIsPresent works for a non existing element
+     * Test if GuiElement.waits().waitForIsPresent works for a non existing element
      */
     @Test
     public void testT35N_GuiElement_waitForIsPresent() {
@@ -423,7 +423,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForIsEnabled works for an enabled element
+     * Test if GuiElement.waits().waitForIsEnabled works for an enabled element
      */
     @Test
     public void testT36_GuiElement_waitForIsEnabled() {
@@ -432,13 +432,13 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForIsEnabled works for an Element that is Enabled with Timeout by Javascript
+     * Test if GuiElement.waits().waitForIsEnabled works for an Element that is Enabled with Timeout by Javascript
      */
     @Test
     public void testT37_GuiElement_waitForIsEnabled() {
         pre_setDisableAttributeOnRadioButton(true);
 
-        IGuiElement g = getRadio();
+        GuiElement g = getRadio();
         g.asserts().assertIsDisabled();
 
         getTimeOutInput().type("3000");
@@ -450,7 +450,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
     }
 
     /**
-     * Test if IGuiElement.waits().waitForIsEnabled works for a disabled element
+     * Test if GuiElement.waits().waitForIsEnabled works for a disabled element
      */
     @Test
     public void testT38N_GuiElement_waitForIsEnabled() {
@@ -465,7 +465,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         getTimeOutInput().type("1");
         getDeselectRadioButtonMitVerzoegerungButton().click();
 
-        IGuiElement radio = getRadio();
+        GuiElement radio = getRadio();
         radio.asserts().assertIsNotSelected();
 
         getTimeOutInput().type("4000");
@@ -483,7 +483,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
         getTimeOutInput().type("1");
         getSelectRadioButtonMitVerzoegerungButton().click();
 
-        IGuiElement g = getRadio();
+        GuiElement g = getRadio();
         g.asserts().assertIsSelected();
 
         getTimeOutInput().type("4000");

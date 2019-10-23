@@ -3,7 +3,7 @@ package eu.tsystems.mms.tic.testframework.report.pageobjects;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractMethodDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.model.IReportAnnotationVerifier;
@@ -24,53 +24,53 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
     private String HISTORY_DATE_LOCATOR = ("");
 
     @Check
-    private IGuiElement backTab = new GuiElement(this.driver, By.xpath("//div[@class='detailsmenu']"), mainFrame);
-    private IGuiElement detailsTab = new GuiElement(this.driver, By.id("buttondetails"), mainFrame);
-    private IGuiElement stepsTab = new GuiElement(this.driver, By.id("buttonlogs"), mainFrame);
-    private IGuiElement stackTab = new GuiElement(this.driver, By.id("buttonstack"), mainFrame);
-    private IGuiElement screenShotTab = new GuiElement(this.driver, By.id("buttonscreen"), mainFrame);
-    private IGuiElement minorErrorTab = new GuiElement(this.driver, By.id("buttonminor"), mainFrame);
-    private IGuiElement dependenciesTab = new GuiElement(this.driver, By.id("buttondeps"), mainFrame);
-    private IGuiElement evolutionTab = new GuiElement(this.driver, By.id("buttonhistory"), mainFrame);
+    private GuiElement backTab = new GuiElement(this.driver, By.xpath("//div[@class='detailsmenu']"), mainFrame);
+    private GuiElement detailsTab = new GuiElement(this.driver, By.id("buttondetails"), mainFrame);
+    private GuiElement stepsTab = new GuiElement(this.driver, By.id("buttonlogs"), mainFrame);
+    private GuiElement stackTab = new GuiElement(this.driver, By.id("buttonstack"), mainFrame);
+    private GuiElement screenShotTab = new GuiElement(this.driver, By.id("buttonscreen"), mainFrame);
+    private GuiElement minorErrorTab = new GuiElement(this.driver, By.id("buttonminor"), mainFrame);
+    private GuiElement dependenciesTab = new GuiElement(this.driver, By.id("buttondeps"), mainFrame);
+    private GuiElement evolutionTab = new GuiElement(this.driver, By.id("buttonhistory"), mainFrame);
 
-    private IGuiElement historyElementsGraph = new GuiElement(this.driver, By.id("gitGraph"), mainFrame);
+    private GuiElement historyElementsGraph = new GuiElement(this.driver, By.id("gitGraph"), mainFrame);
 
     /**
      * Method
      */
     //TODO  IDs einfügen -> Jira-Ticket: XETA-524
-    private IGuiElement methodNameString = new GuiElement(this.driver, By.xpath("(//*[@class='dashboardTextSmall'])[1]"), mainFrame);
-    private IGuiElement classNameString = new GuiElement(this.driver, By.xpath("//tbody/tr[1]/td[3]/*[4]"), mainFrame);
-    private IGuiElement methodResultString = new GuiElement(this.driver, By.xpath("//tbody/tr[1]/td[3]/*[5]/*[1]"), mainFrame);
-    private IGuiElement stepString = new GuiElement(this.driver, By.xpath("//tbody/tr[1]/td[3]/*[5]/*[2]"), mainFrame);
+    private GuiElement methodNameString = new GuiElement(this.driver, By.xpath("(//*[@class='dashboardTextSmall'])[1]"), mainFrame);
+    private GuiElement classNameString = new GuiElement(this.driver, By.xpath("//tbody/tr[1]/td[3]/*[4]"), mainFrame);
+    private GuiElement methodResultString = new GuiElement(this.driver, By.xpath("//tbody/tr[1]/td[3]/*[5]/*[1]"), mainFrame);
+    private GuiElement stepString = new GuiElement(this.driver, By.xpath("//tbody/tr[1]/td[3]/*[5]/*[2]"), mainFrame);
 
     /**
      * Context
      */
-    private IGuiElement contextButton = new GuiElement(this.driver, By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('context');\"]"), mainFrame);
-    private IGuiElement context = new GuiElement(this.driver, By.id("context"), mainFrame);
+    private GuiElement contextButton = new GuiElement(this.driver, By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('context');\"]"), mainFrame);
+    private GuiElement context = new GuiElement(this.driver, By.id("context"), mainFrame);
 
-    private IGuiElement repairedFailsIndication = new GuiElement(this.driver, By.xpath("//div[@class='skipped']"), mainFrame);
+    private GuiElement repairedFailsIndication = new GuiElement(this.driver, By.xpath("//div[@class='skipped']"), mainFrame);
 
     //TODO  IDs einfügen -> Jira-Ticket: XETA-524
     public String durationLocator = "//*[@class='cellTop']//*[contains(text(), 'Duration')]/..";
-    private IGuiElement duration = new GuiElement(this.driver, By.id("actualRunDuration"), mainFrame);
-    private IGuiElement startTime = new GuiElement(this.driver, By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][1]"), mainFrame);
-    private IGuiElement finishTime = new GuiElement(this.driver, By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][2]"), mainFrame);
+    private GuiElement duration = new GuiElement(this.driver, By.id("actualRunDuration"), mainFrame);
+    private GuiElement startTime = new GuiElement(this.driver, By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][1]"), mainFrame);
+    private GuiElement finishTime = new GuiElement(this.driver, By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][2]"), mainFrame);
 
     //TODO  IDs einfügen -> Jira-Ticket: XETA-524
-    private IGuiElement evolutionEntry1 = new GuiElement(this.driver, By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[1]"), mainFrame);
-    private IGuiElement evolutionEntry2 = new GuiElement(this.driver, By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[2]"), mainFrame);
+    private GuiElement evolutionEntry1 = new GuiElement(this.driver, By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[1]"), mainFrame);
+    private GuiElement evolutionEntry2 = new GuiElement(this.driver, By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[2]"), mainFrame);
 
     //TODO  IDs einfügen
-    private IGuiElement minorCount = new GuiElement(this.driver, By.xpath("//td[@class='cellTop']//div[@class='error clickable']"), mainFrame);
+    private GuiElement minorCount = new GuiElement(this.driver, By.xpath("//td[@class='cellTop']//div[@class='error clickable']"), mainFrame);
 
     //TODO  IDs einfügen
-    private IGuiElement errorMessageString = new GuiElement(this.driver, By.xpath("//div[@style='color: red; font-size: 30px; padding: 25px; line-height: 40px;']"), mainFrame);
-    private IGuiElement fingerprintButton = new GuiElement(this.driver, By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('fingerprint');\"]"), mainFrame);
-    private IGuiElement fingerprintString = new GuiElement(this.driver, By.xpath("//div[@id='fingerprint']//div[@class='error']"), mainFrame);
+    private GuiElement errorMessageString = new GuiElement(this.driver, By.xpath("//div[@style='color: red; font-size: 30px; padding: 25px; line-height: 40px;']"), mainFrame);
+    private GuiElement fingerprintButton = new GuiElement(this.driver, By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('fingerprint');\"]"), mainFrame);
+    private GuiElement fingerprintString = new GuiElement(this.driver, By.xpath("//div[@id='fingerprint']//div[@class='error']"), mainFrame);
 
-    public IGuiElement durationEvo = new GuiElement(this.driver, By.xpath("//*[@class=' highcharts-background']"), mainFrame);
+    public GuiElement durationEvo = new GuiElement(this.driver, By.xpath("//*[@class=' highcharts-background']"), mainFrame);
     public String DurEvoPoint_LOCATOR = ("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']//*[%d]");
 
     public MethodDetailsPage(WebDriver driver) {
@@ -78,35 +78,35 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
         super(driver);
     }
 
-    public IGuiElement getBackTab() {
+    public GuiElement getBackTab() {
         return backTab;
     }
 
-    public IGuiElement getDetailsTab() {
+    public GuiElement getDetailsTab() {
         return detailsTab;
     }
 
-    public IGuiElement getStepsTab() {
+    public GuiElement getStepsTab() {
         return stepsTab;
     }
 
-    public IGuiElement getStackTab() {
+    public GuiElement getStackTab() {
         return stackTab;
     }
 
-    public IGuiElement getScreenShotTab() {
+    public GuiElement getScreenShotTab() {
         return screenShotTab;
     }
 
-    public IGuiElement getMinorErrorTab() {
+    public GuiElement getMinorErrorTab() {
         return minorErrorTab;
     }
 
-    public IGuiElement getDependenciesTab() {
+    public GuiElement getDependenciesTab() {
         return dependenciesTab;
     }
 
-    public IGuiElement getEvolutionTab() {
+    public GuiElement getEvolutionTab() {
         return evolutionTab;
     }
 
@@ -130,7 +130,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
         return testString;
     }
 
-    public IGuiElement getRepairedFailsIndication() {
+    public GuiElement getRepairedFailsIndication() {
         return repairedFailsIndication;
     }
 
@@ -146,23 +146,23 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
         return finishTime.getText().toString();
     }
 
-    public IGuiElement getEvolutionEntry1() {
+    public GuiElement getEvolutionEntry1() {
         return evolutionEntry1;
     }
 
-    public IGuiElement getEvolutionEntry2() {
+    public GuiElement getEvolutionEntry2() {
         return evolutionEntry2;
     }
 
-    public IGuiElement getMinorCount() {
+    public GuiElement getMinorCount() {
         return minorCount;
     }
 
-    public IGuiElement getErrorMessageString() {
+    public GuiElement getErrorMessageString() {
         return errorMessageString;
     }
 
-    public IGuiElement getFingerprintString() {
+    public GuiElement getFingerprintString() {
         return fingerprintString;
     }
 
@@ -192,7 +192,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     public String getDateforHistoryElementByPosition(int position) {
         String dateLocator = String.format(HISTORY_DATE_LOCATOR, position + 1);
-        IGuiElement historyDateElement = new GuiElement(this.driver, By.xpath(dateLocator), mainFrame);
+        GuiElement historyDateElement = new GuiElement(this.driver, By.xpath(dateLocator), mainFrame);
         return historyDateElement.getText();
     }
 
@@ -222,7 +222,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     public MethodDetailsPage mouseOverDurEvoPoint(int parameter) {
         String LOCATOR = String.format(DurEvoPoint_LOCATOR, parameter);
-        IGuiElement DurEvoPoint = new GuiElement(this.driver, By.xpath(LOCATOR));
+        GuiElement DurEvoPoint = new GuiElement(this.driver, By.xpath(LOCATOR));
         DurEvoPoint.mouseOver();
         return PageFactory.create(MethodDetailsPage.class, driver);
     }
@@ -231,7 +231,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
         return methodNameString.getText();
     }
 
-    public IGuiElement getMethodNameElement() {
+    public GuiElement getMethodNameElement() {
         return methodNameString;
     }
 
@@ -247,11 +247,11 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
         return stepString.getText();
     }
 
-    public IGuiElement getDurEvo() {
+    public GuiElement getDurEvo() {
         return durationEvo;
     }
 
-    public IGuiElement getMinorErrors() {
+    public GuiElement getMinorErrors() {
         return minorErrorButton;
     }
 
@@ -297,8 +297,8 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     @Override
     public void assertAnnotationMarkIsDisplayed(ReportAnnotationType annotationType, String methodName) {
-        IGuiElement methodNameElement = getMethodNameElement();
-        IGuiElement annotationElement = methodNameElement.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, annotationType.getAnnotationDisplayedName())));
+        GuiElement methodNameElement = getMethodNameElement();
+        GuiElement annotationElement = methodNameElement.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, annotationType.getAnnotationDisplayedName())));
         annotationElement.setName("annotationElementFor" + annotationType);
         annotationElement.asserts().assertIsDisplayed();
     }
@@ -312,8 +312,8 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     //@Override
     /*public void assertRetryMarkerIsDisplayed(String methodName) {
-        IGuiElement methodNameElement = getMethodNameElement();
-        IGuiElement annotationElement = methodNameElement.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, RETRIED_NAME)));
+        GuiElement methodNameElement = getMethodNameElement();
+        GuiElement annotationElement = methodNameElement.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, RETRIED_NAME)));
         annotationElement.setName("annotationElementFor" + RETRIED_NAME);
         annotationElement.asserts().assertIsDisplayed();
     }*/

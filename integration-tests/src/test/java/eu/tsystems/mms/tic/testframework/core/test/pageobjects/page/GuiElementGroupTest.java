@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 public class GuiElementGroupTest extends AbstractTestSitesTest {
 
     /**
-     * Test basic behaviour of IGuiElement Groups. No WebDriver necessary.
+     * Test basic behaviour of GuiElement Groups. No WebDriver necessary.
      *
      * @throws Exception
      */
@@ -52,7 +52,7 @@ public class GuiElementGroupTest extends AbstractTestSitesTest {
         Assert.assertTrue(group2.elements().size() == 1, message);
         Assert.assertTrue(group3.elements().size() == 1, message);
 
-        message = "Group contains correct IGuiElement";
+        message = "Group contains correct GuiElement";
         Assert.assertEquals(group1.elements().get(0).getName(), "g1", message);
         Assert.assertEquals(group1.elements().get(1).getName(), "g3", message);
         Assert.assertEquals(group2.elements().get(0).getName(), "g3", message);

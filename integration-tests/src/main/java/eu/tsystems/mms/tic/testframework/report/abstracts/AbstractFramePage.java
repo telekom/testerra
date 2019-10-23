@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 
 public abstract class AbstractFramePage extends Page {
 
-    //field for IGuiElement creation (as a parameter), therefore specifiying other gui elements
+    //field for GuiElement creation (as a parameter), therefore specifiying other gui elements
     public final GuiElement mainFrame;
 
     /**

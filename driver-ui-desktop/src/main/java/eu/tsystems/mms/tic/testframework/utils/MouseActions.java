@@ -20,8 +20,8 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.enums.DragAndDropOption;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -69,17 +69,17 @@ public final class MouseActions {
         }
     }
 
-    public static void dragAndDrop(IGuiElement drag, IGuiElement drop) {
+    public static void dragAndDrop(GuiElement drag, GuiElement drop) {
         dragAndDrop(drag, drop, new DragAndDropOption[0]);
     }
 
-    public static void dragAndDropJS(IGuiElement drag, IGuiElement drop) {
-        final IFrameLogic dragFrameLogic = drag.getFrameLogic();
+    public static void dragAndDropJS(GuiElement drag, GuiElement drop) {
+        final FrameLogic dragFrameLogic = drag.getFrameLogic();
         final WebElement dragWebElement = drag.getWebElement();
         final Point dragLocation = drag.getLocation();
         final Dimension dragSize = drag.getSize();
 
-        final IFrameLogic dropFrameLogic = drop.getFrameLogic();
+        final FrameLogic dropFrameLogic = drop.getFrameLogic();
         final WebElement dropWebElement = drop.getWebElement();
         final Point dropLocation = drop.getLocation();
         final Dimension dropSize = drop.getSize();
@@ -116,8 +116,8 @@ public final class MouseActions {
      */
     private static void dragAndDropOverFrames(
         final WebDriver driver,
-        IGuiElement drag,
-        IGuiElement drop,
+        GuiElement drag,
+        GuiElement drop,
         int fromX,
         int fromY,
         int toX,
@@ -143,7 +143,7 @@ public final class MouseActions {
         JSUtils.executeScript(driver, script, drag, drop, fromX, fromY, toX, toY);
     }
 
-    public static void swipeElement(final IGuiElement elementToSwipe, int offsetX, int offsetY) {
+    public static void swipeElement(final GuiElement elementToSwipe, int offsetX, int offsetY) {
 
         WebDriver driver = elementToSwipe.getWebDriver();
         Point location = elementToSwipe.getLocation();
@@ -170,8 +170,8 @@ public final class MouseActions {
      * @param dragAndDropOptions .
      */
     public static void dragAndDrop(
-        IGuiElement source,
-        IGuiElement target,
+        GuiElement source,
+        GuiElement target,
         DragAndDropOption... dragAndDropOptions
     ) {
         // assert that they are displayed
@@ -209,9 +209,9 @@ public final class MouseActions {
         Get elements and frames
          */
         final WebElement sourceWebElement = source.getWebElement();
-        final IFrameLogic sourceFrameLogic = source.getFrameLogic();
+        final FrameLogic sourceFrameLogic = source.getFrameLogic();
         final WebElement destinationWebElement = target.getWebElement();
-        final IFrameLogic destinationFrameLogic = target.getFrameLogic();
+        final FrameLogic destinationFrameLogic = target.getFrameLogic();
 
         final IntRef sleepMS = new IntRef();
         sleepMS.setI(0);

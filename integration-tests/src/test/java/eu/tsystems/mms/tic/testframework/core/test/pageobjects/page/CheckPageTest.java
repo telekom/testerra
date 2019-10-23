@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingStaticElement;
@@ -83,7 +83,7 @@ public class CheckPageTest extends AbstractTestSitesTest {
 
         Page page = new Page(webDriver) {
             @Check
-            IGuiElement testElement = new GuiElement(driver, By.xpath("not existing"));
+            GuiElement testElement = new GuiElement(driver, By.xpath("not existing"));
         };
 
         boolean exceptionWasThrown = false;
@@ -103,7 +103,7 @@ public class CheckPageTest extends AbstractTestSitesTest {
 
         class ParentPage extends Page {
             @Check
-            IGuiElement testElement = new GuiElement(driver, By.xpath("not existing"));
+            GuiElement testElement = new GuiElement(driver, By.xpath("not existing"));
 
             public ParentPage(WebDriver driver) {
                 super(driver);

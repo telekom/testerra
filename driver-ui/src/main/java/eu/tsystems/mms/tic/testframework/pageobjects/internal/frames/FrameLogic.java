@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -43,7 +43,7 @@ public class FrameLogic implements IFrameLogic {
     private static final Logger LOGGER = LoggerFactory.getLogger(FrameLogic.class);
 
     private final WebDriver driver;
-    private final IGuiElement[] frames;
+    private final GuiElementFacade[] frames;
 
     private int xOffset = 0;
     private int yOffset = 0;
@@ -54,17 +54,16 @@ public class FrameLogic implements IFrameLogic {
      * @param driver .
      * @param frames .
      */
-    public FrameLogic(WebDriver driver, IGuiElement[] frames) {
+    public FrameLogic(WebDriver driver, GuiElementFacade[] frames) {
         this.driver = driver;
         this.frames = frames;
     }
 
-    @Override
-    public List<IGuiElement> getAllFramesInOrder() {
-        List<IGuiElement> frameList = new LinkedList<>();
-        IGuiElement[] framesToAdd = frames;
+    public List<GuiElementFacade> getAllFramesInOrder() {
+        List<GuiElementFacade> frameList = new LinkedList<>();
+        GuiElementFacade[] framesToAdd = frames;
         while (framesToAdd != null) {
-            IGuiElement frameToAdd = framesToAdd[framesToAdd.length - 1];
+            GuiElementFacade frameToAdd = framesToAdd[framesToAdd.length - 1];
             if (frameToAdd == null) {
                 throw new TesterraSystemException("Error when retrieving the frame hierarchy. This means, the GuiElement or one" +
                         " of its frames was not correctly constructed inside of testerra.");
@@ -81,13 +80,12 @@ public class FrameLogic implements IFrameLogic {
         return frameList;
     }
 
-    @Override
     public void switchToCorrectFrame() {
-        List<IGuiElement> allFrames = getAllFramesInOrder();
+        List<GuiElementFacade> allFrames = getAllFramesInOrder();
 
         driver.switchTo().defaultContent();
         ArrayList<WebElement> frameWebElementList = new ArrayList<WebElement>();
-        for (IGuiElement frameGuiElement : allFrames) {
+        for (GuiElementFacade frameGuiElement : allFrames) {
             // do not switch to the webElement that was recovered last, as this will be done by getWebElement of 'frameGuiElement'
             for (int i = 0; i < frameWebElementList.size() - 1; i++) {
                 // get webelement
@@ -113,7 +111,6 @@ public class FrameLogic implements IFrameLogic {
         }
     }
 
-    @Override
     public void switchToDefaultFrame() {
         LOGGER.debug("Switching to DefaultContent");
         driver.switchTo().defaultContent();
@@ -122,8 +119,7 @@ public class FrameLogic implements IFrameLogic {
         yOffset = 0;
     }
 
-    @Override
-    public IGuiElement[] getFrames() {
+    public GuiElementFacade[] getFrames() {
         return frames;
     }
 
@@ -132,7 +128,7 @@ public class FrameLogic implements IFrameLogic {
         String string = "FrameLogic = {";
         int i = 1;
         if (hasFrames()) {
-            for (IGuiElement frame : frames) {
+            for (GuiElementFacade frame : frames) {
                 string += "\n" + i + ". :" + frame;
             }
         } else {
@@ -141,7 +137,6 @@ public class FrameLogic implements IFrameLogic {
         return string + "}";
     }
 
-    @Override
     public boolean hasFrames() {
         return getFrames() != null && getFrames().length > 0;
     }

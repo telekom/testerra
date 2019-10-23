@@ -21,7 +21,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +32,7 @@ public class GuiElementFace extends GuiElementFacadeDecorator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);
 
-    public static final ThreadLocal<IGuiElement> guiElement = new ThreadLocal<>();
+    public static final ThreadLocal<GuiElementFacade> guiElement = new ThreadLocal<>();
 
     private final ExecutionLog executionLog;
     private final GuiElementData guiElementData;

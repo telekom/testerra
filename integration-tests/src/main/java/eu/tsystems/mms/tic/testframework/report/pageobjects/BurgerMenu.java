@@ -2,7 +2,7 @@ package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractReportPage;
 import org.openqa.selenium.By;
@@ -14,12 +14,12 @@ import org.openqa.selenium.WebDriver;
 public class BurgerMenu extends AbstractReportPage {
 
     @Check
-    private IGuiElement exitPointsLink = new GuiElement(this.driver, By.id("ExitPoints"), mainFrame);
-    private IGuiElement logsLink = new GuiElement(this.driver, By.id("Logs"), mainFrame);
-    private IGuiElement timingsLink = new GuiElement(this.driver, By.id("Timings"), mainFrame);
-    private IGuiElement memoryLink = new GuiElement(this.driver, By.id("Memory"), mainFrame);
-    private IGuiElement exportLink = new GuiElement(this.driver, By.id("Export"), mainFrame);
-    private IGuiElement metricsLink = new GuiElement(this.driver, By.id("Metrics"), mainFrame);
+    private GuiElement exitPointsLink = new GuiElement(this.driver, By.id("ExitPoints"), mainFrame);
+    private GuiElement logsLink = new GuiElement(this.driver, By.id("Logs"), mainFrame);
+    private GuiElement timingsLink = new GuiElement(this.driver, By.id("Timings"), mainFrame);
+    private GuiElement memoryLink = new GuiElement(this.driver, By.id("Memory"), mainFrame);
+    private GuiElement exportLink = new GuiElement(this.driver, By.id("Export"), mainFrame);
+    private GuiElement metricsLink = new GuiElement(this.driver, By.id("Metrics"), mainFrame);
 
     /**
      * Constructor called bei PageFactory

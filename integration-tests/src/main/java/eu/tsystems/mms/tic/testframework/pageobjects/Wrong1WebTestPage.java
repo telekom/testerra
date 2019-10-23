@@ -43,16 +43,16 @@ public class Wrong1WebTestPage extends Page {
 
     /** First text field on page. */
     @Check
-    private final IGuiElement input1 = new GuiElement(driver, By.id("aaaaa1"));
+    private final GuiElement input1 = new GuiElement(driver, By.id("aaaaa1"));
     /** A button on the page. */
     @Check
-    private final IGuiElement button1 = new GuiElement(driver, By.id("sssssss4"));
+    private final GuiElement button1 = new GuiElement(driver, By.id("sssssss4"));
     /** The output text field. */
     @Check
-    private final IGuiElement textOutputField = new GuiElement(driver, By.xpath("//p[@id='ssssssss99']"));
+    private final GuiElement textOutputField = new GuiElement(driver, By.xpath("//p[@id='ssssssss99']"));
     /** Link to open site again. */
     @Check
-    private final IGuiElement openAgainLink = new GuiElement(driver, By.id("cccccc11"));
+    private final GuiElement openAgainLink = new GuiElement(driver, By.id("cccccc11"));
 
     /**
      * Default Page constructor.
@@ -92,8 +92,8 @@ public class Wrong1WebTestPage extends Page {
      *
      */
     public void gotoHell() {
-        IGuiElement IGuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
-        IGuiElement.click();
+        GuiElement GuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
+        GuiElement.click();
     }
 
     /**
@@ -101,8 +101,8 @@ public class Wrong1WebTestPage extends Page {
      *
      */
     public void nonfunctionalAssert() {
-        GuiElement IGuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
-        IGuiElement.nonFunctionalAssert.assertIsPresent();
+        GuiElement GuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
+        GuiElement.nonFunctionalAssert.assertIsPresent();
     }
 
 }

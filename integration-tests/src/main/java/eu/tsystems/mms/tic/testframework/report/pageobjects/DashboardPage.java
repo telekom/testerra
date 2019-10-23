@@ -2,7 +2,7 @@ package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractReportPage;
 import eu.tsystems.mms.tic.testframework.report.model.IReportAnnotationVerifier;
@@ -24,13 +24,13 @@ import org.testng.Assert;
  */
 public class DashboardPage extends AbstractReportPage implements IReportAnnotationVerifier {
     @Check
-    public final IGuiElement testerraLogo = new GuiElement(this.driver, By.cssSelector("img[alt='testerra']"), mainFrame);
+    public final GuiElement testerraLogo = new GuiElement(this.driver, By.cssSelector("img[alt='testerra']"), mainFrame);
     public final DashboardModuleTestResultPieChart dashboardModuleTestResultPieChart = PageFactory.create(DashboardModuleTestResultPieChart.class, driver);
     public final DashboardModuleTestResultNumberBreakdown dashboardModuleTestResultNumberBreakdown = PageFactory.create(DashboardModuleTestResultNumberBreakdown.class, driver);
     public final DashboardModuleFailureCorridor dashboardModuleFailureCorridor = PageFactory.create(DashboardModuleFailureCorridor.class, driver);
     public final DashboardModuleInformationCorridor dashboardModuleInformationCorridor = PageFactory.create(DashboardModuleInformationCorridor.class, driver);
     public final DashboardModuleClassBarChart dashboardModuleClassBarChart = PageFactory.create(DashboardModuleClassBarChart.class, driver);
-    public final IGuiElement screenShotInfoButton = new GuiElement(this.driver, By.xpath("//*[contains(text(),'test_testMidCorridorFailed1')]"), mainFrame);
+    public final GuiElement screenShotInfoButton = new GuiElement(this.driver, By.xpath("//*[contains(text(),'test_testMidCorridorFailed1')]"), mainFrame);
 
     public DashboardPage(WebDriver driver) {
         super(driver);
@@ -56,12 +56,12 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
     }
 
     /**
-     * Performs the click action on a given IGuiElement.
+     * Performs the click action on a given GuiElement.
      *
-     * @param element a specific IGuiElement
+     * @param element a specific GuiElement
      * @return an updated DashboardPage Object
      */
-    public DashboardPage click(IGuiElement element) {
+    public DashboardPage click(GuiElement element) {
         element.click();
         return PageFactory.create(DashboardPage.class, this.driver);
     }
@@ -76,7 +76,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
         // declaration doesnt work, location of element fails
 
 
-        IGuiElement knownElement;
+        GuiElement knownElement;
         Actions builder = new Actions(driver);
 
         knownElement = new GuiElement(driver, By.xpath("//*[@id='methodsPie']"), mainFrame);
@@ -87,21 +87,21 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
     */
 
     /**
-     * Performs the click action on a given IGuiElement.
+     * Performs the click action on a given GuiElement.
      *
-     * @param methodDetail a specific IGuiElement
+     * @param methodDetail a specific GuiElement
      * @return a new TesterraReportMethodDetailPage
      */
-    public MethodDetailsPage clickMethodDetail(IGuiElement methodDetail) {
+    public MethodDetailsPage clickMethodDetail(GuiElement methodDetail) {
         methodDetail.click();
         return PageFactory.create(MethodDetailsPage.class, this.driver);
     }
 
     /**
-     * Returns the test result table header IGuiElement for a given test result category.
+     * Returns the test result table header GuiElement for a given test result category.
      *
      * @param testResult the result category (Passed, Failed, Failed Inherited, ...)
-     * @return the table header IGuiElement
+     * @return the table header GuiElement
      */
     public GuiElement getResultTableHeaderForTestResult(TestResultHelper.TestResult testResult) {
         String testState = testResult.getTestState();
@@ -125,7 +125,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
      */
     @Override
     public void assertAnnotationMarkIsDisplayed(ReportAnnotationType annotationType, String methodName) {
-        IGuiElement annotationRow = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
+        GuiElement annotationRow = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
         annotationRow.asserts().assertIsDisplayed();
         annotationRow.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, annotationType.getAnnotationDisplayedName()))).asserts().assertIsDisplayed();
     }
@@ -144,25 +144,25 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
 
     //@Override
     /*public void assertRetryMarkerIsDisplayed(String methodName) {
-        IGuiElement annotationRow = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
+        GuiElement annotationRow = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
         annotationRow.asserts().assertIsDisplayed();
         annotationRow.getSubElement(By.xpath(String.format(LOCATOR_FONT_ANNOTATION, RETRIED_NAME))).asserts().assertIsDisplayed();
     }*/
 
     public MethodDetailsPage goToMethodDetailsPageUsingPieChartFilter(TestResultHelper.TestResult testResult, String className, String methodName) throws Exception {
         dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);
-        IGuiElement barChartElement = dashboardModuleClassBarChart.getBarChartElementByClassName(className);
+        GuiElement barChartElement = dashboardModuleClassBarChart.getBarChartElementByClassName(className);
         barChartElement.click();
-        IGuiElement methodChartElement = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
+        GuiElement methodChartElement = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
         methodChartElement.click();
         return PageFactory.create(MethodDetailsPage.class, this.driver);
     }
 
     public MethodDetailsPage goToMethodDetailsPageUsingTestNumberFilter(TestResultHelper.TestResult testResult, String className, String methodName) throws Exception{
         dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);
-        IGuiElement barChartElement = dashboardModuleClassBarChart.getBarChartElementByClassName(className);
+        GuiElement barChartElement = dashboardModuleClassBarChart.getBarChartElementByClassName(className);
         barChartElement.click();
-        IGuiElement methodChartElement = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
+        GuiElement methodChartElement = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
         methodChartElement.click();
         return PageFactory.create(MethodDetailsPage.class, this.driver);
     }

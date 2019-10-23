@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
@@ -39,7 +39,7 @@ public class FrameAwareWebElementDecorator implements WebElement {
     private WebElement webElement;
     private IFrameLogic frameLogic;
 
-    public FrameAwareWebElementDecorator(WebElement element, IGuiElement[] frames, WebDriver driver) {
+    public FrameAwareWebElementDecorator(WebElement element, GuiElementFacade[] frames, WebDriver driver) {
         this.webElement = element;
         frameLogic = new FrameLogic(driver, frames);
     }

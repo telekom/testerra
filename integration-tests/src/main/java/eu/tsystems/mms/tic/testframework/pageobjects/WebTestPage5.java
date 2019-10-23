@@ -43,13 +43,13 @@ public class WebTestPage5 extends Page {
 
     /** First text field on page. */
     @Check(prioritizedErrorMessage = "My new error msg")
-    private final IGuiElement input1 = new GuiElement(driver, By.id("notexisting"));
+    private final GuiElement input1 = new GuiElement(driver, By.id("notexisting"));
     /** A button on the page. */
     @Check(nonFunctional = true)
-    private final IGuiElement button1 = new GuiElement(driver, By.id("4"));
+    private final GuiElement button1 = new GuiElement(driver, By.id("4"));
     /** The output text field. */
-    private final IGuiElement textOutputField = new GuiElement(driver, By.xpath("//p[@id='99']"));
-    private final IGuiElement textOutputFieldNotExisting = new GuiElement(driver, By.xpath("//p[@id='notthere']"));
+    private final GuiElement textOutputField = new GuiElement(driver, By.xpath("//p[@id='99']"));
+    private final GuiElement textOutputFieldNotExisting = new GuiElement(driver, By.xpath("//p[@id='notthere']"));
 
     /**
      * Default Page constructor.

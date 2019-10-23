@@ -20,8 +20,8 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.internal.Flags;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
@@ -305,35 +305,35 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public IGuiElement getSubElement(final By byLocator, final String description) {
-        Timer.Sequence<IGuiElement> sequence = new Timer.Sequence<IGuiElement>() {
+    public GuiElementFacade getSubElement(final By byLocator, final String description) {
+        Timer.Sequence<GuiElementFacade> sequence = new Timer.Sequence<GuiElementFacade>() {
             @Override
             public void run() {
-                IGuiElement guiElement = guiElementCore.getSubElement(byLocator, description);
+                GuiElementFacade guiElement = guiElementCore.getSubElement(byLocator, description);
                 setReturningObject(guiElement);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<IGuiElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<GuiElementFacade> throwablePackedResponse = timerWrapper.executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
     @Override
-    public IGuiElement getSubElement(Locate locator) {
-        Timer.Sequence<IGuiElement> sequence = new Timer.Sequence<IGuiElement>() {
+    public GuiElementFacade getSubElement(Locate locator) {
+        Timer.Sequence<GuiElementFacade> sequence = new Timer.Sequence<GuiElementFacade>() {
             @Override
             public void run() {
-                IGuiElement guiElement = guiElementCore.getSubElement(locator);
+                GuiElementFacade guiElement = guiElementCore.getSubElement(locator);
                 setReturningObject(guiElement);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<IGuiElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<GuiElementFacade> throwablePackedResponse = timerWrapper.executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
     @Override
-    public IGuiElement getSubElement(By by) {
+    public GuiElementFacade getSubElement(By by) {
         return getSubElement(by, "");
     }
 

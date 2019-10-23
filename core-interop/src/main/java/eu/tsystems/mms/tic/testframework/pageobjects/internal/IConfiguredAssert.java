@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 
 public interface IConfiguredAssert {
@@ -8,5 +8,5 @@ public interface IConfiguredAssert {
 
     void assertFalse(boolean value, String assertionMessage);
 
-    void assertLayout(IGuiElement guiElement, ILayout layout);
+    void assertLayout(GuiElementFacade guiElement, ILayout layout);
 }

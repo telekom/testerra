@@ -3,7 +3,7 @@ package eu.tsystems.mms.tic.testframework.report.abstracts;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.BurgerMenu;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesPage;
@@ -19,13 +19,13 @@ import org.openqa.selenium.WebDriver;
 public abstract class AbstractReportPage extends AbstractFramePage {
 
     @Check
-    private IGuiElement burgerMenu = new GuiElement(this.driver, By.id("menuToggle"), mainFrame);
+    private GuiElement burgerMenu = new GuiElement(this.driver, By.id("menuToggle"), mainFrame);
 
-    private IGuiElement dashBoardLink = new GuiElement(this.driver, By.linkText("DASHBOARD"), mainFrame);
-    private IGuiElement classesLink = new GuiElement(this.driver, By.partialLinkText("CLASSES"), mainFrame);
-    private IGuiElement failureAspectsLink = new GuiElement(this.driver, By.partialLinkText("FAILURE ASPECTS"), mainFrame);
-    private IGuiElement threadsLink = new GuiElement(this.driver, By.partialLinkText("THREADS"), mainFrame);
-    private IGuiElement stateChangesLink = new GuiElement(this.driver, By.partialLinkText("STATE CHANGES"), mainFrame);
+    private GuiElement dashBoardLink = new GuiElement(this.driver, By.linkText("DASHBOARD"), mainFrame);
+    private GuiElement classesLink = new GuiElement(this.driver, By.partialLinkText("CLASSES"), mainFrame);
+    private GuiElement failureAspectsLink = new GuiElement(this.driver, By.partialLinkText("FAILURE ASPECTS"), mainFrame);
+    private GuiElement threadsLink = new GuiElement(this.driver, By.partialLinkText("THREADS"), mainFrame);
+    private GuiElement stateChangesLink = new GuiElement(this.driver, By.partialLinkText("STATE CHANGES"), mainFrame);
 
     /**
      * Constructor called bei PageFactory
@@ -56,7 +56,7 @@ public abstract class AbstractReportPage extends AbstractFramePage {
     }
 
     public BurgerMenu openBurgerMenu() {
-        IGuiElement burgerMenuButton = burgerMenu.getSubElement(By.xpath(".//input"));
+        GuiElement burgerMenuButton = burgerMenu.getSubElement(By.xpath(".//input"));
         burgerMenuButton.setName("burgerMenuButton");
         burgerMenuButton.click();
         return PageFactory.create(BurgerMenu.class, this.driver);

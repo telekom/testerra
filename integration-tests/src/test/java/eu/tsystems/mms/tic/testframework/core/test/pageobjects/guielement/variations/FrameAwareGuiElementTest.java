@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.varia
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -35,18 +35,18 @@ public class FrameAwareGuiElementTest extends GuiElementTestCollector {
     @Test
     public void testTFA01_GuiElement_FrameLogic_AllFrames() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        IGuiElement frame1 = new GuiElement(driver, By.name("frame1"));
-        IGuiElement frame12 = new GuiElement(driver, By.name("frame12"), frame1);
-        IGuiElement frame123 = new GuiElement(driver, By.name("frame123"), frame1, frame12);
-        IGuiElement frame1234 = new GuiElement(driver, By.name("InputFrame1234"), frame1, frame12, frame123);
-        IGuiElement element = new GuiElement(driver, By.id("16"), frame1, frame12, frame123, frame1234);
+        GuiElement frame1 = new GuiElement(driver, By.name("frame1"));
+        GuiElement frame12 = new GuiElement(driver, By.name("frame12"), frame1);
+        GuiElement frame123 = new GuiElement(driver, By.name("frame123"), frame1, frame12);
+        GuiElement frame1234 = new GuiElement(driver, By.name("InputFrame1234"), frame1, frame12, frame123);
+        GuiElement element = new GuiElement(driver, By.id("16"), frame1, frame12, frame123, frame1234);
         element.asserts().assertIsPresent();
     }
 
     @Override
     public GuiElement getGuiElementBy(By locator) {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        IGuiElement frame = new GuiElement(driver, By.name("InputFrame1"));
+        GuiElement frame = new GuiElement(driver, By.name("InputFrame1"));
         return new GuiElement(driver, locator, frame);
     }
 

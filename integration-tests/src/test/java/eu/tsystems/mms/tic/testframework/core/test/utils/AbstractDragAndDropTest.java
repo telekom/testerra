@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -54,27 +54,27 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
         return new GuiElement[] { sourceGuiElement, destinationGuiElement };
     }
 
-    private IGuiElement[] beforeDragAndDropFrames() {
+    private GuiElement[] beforeDragAndDropFrames() {
         final WebDriver driver = getDriver();
 
         String url = TestPage.DRAG_AND_DROP_OVER_FRAMES.getUrl();
         driver.get(url);
 
-        IGuiElement leftFrame = new GuiElement(driver, By.id("draggableNodes"));
-        IGuiElement rightFrame = new GuiElement(driver, By.id("dropTargets"));
+        GuiElement leftFrame = new GuiElement(driver, By.id("draggableNodes"));
+        GuiElement rightFrame = new GuiElement(driver, By.id("dropTargets"));
 
         GuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorFrames, leftFrame);
         GuiElement destinationGuiElement = new GuiElement(driver, By.id("dropTarget"), rightFrame);
         return new GuiElement[] { sourceGuiElement, destinationGuiElement };
     }
 
-    private void checkResultSimple(IGuiElement destinationGuiElement) {
-        final IGuiElement subElement = destinationGuiElement.getSubElement(sourceLocatorSimple);
+    private void checkResultSimple(GuiElement destinationGuiElement) {
+        final GuiElement subElement = destinationGuiElement.getSubElement(sourceLocatorSimple);
         subElement.asserts().assertIsDisplayed();
     }
 
-    private void checkResultFrames(IGuiElement destinationGuiElement) {
-        final IGuiElement subElement = destinationGuiElement.getSubElement(sourceLocatorFrames);
+    private void checkResultFrames(GuiElement destinationGuiElement) {
+        final GuiElement subElement = destinationGuiElement.getSubElement(sourceLocatorFrames);
         subElement.asserts().assertIsDisplayed();
     }
 
@@ -85,10 +85,10 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
             throw new SkipException("Skipped. Would end up in a watchdog bite while mouseMove");
         }
 
-        final IGuiElement[] guiElements = beforeDragAndDropSimple();
+        final GuiElement[] guiElements = beforeDragAndDropSimple();
 
-        IGuiElement sourceGuiElement = guiElements[0];
-        IGuiElement destinationGuiElement = guiElements[1];
+        GuiElement sourceGuiElement = guiElements[0];
+        GuiElement destinationGuiElement = guiElements[1];
 
         WebDriver driver = getDriver();
 
@@ -104,10 +104,10 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
             throw new SkipException("Skipped. Would end up in a watchdog bite while mouseMove");
         }
 
-        final IGuiElement[] guiElements = beforeDragAndDropFrames();
+        final GuiElement[] guiElements = beforeDragAndDropFrames();
 
-        IGuiElement sourceGuiElement = guiElements[0];
-        IGuiElement destinationGuiElement = guiElements[1];
+        GuiElement sourceGuiElement = guiElements[0];
+        GuiElement destinationGuiElement = guiElements[1];
 
         WebDriver driver = getDriver();
         execute(driver, sourceGuiElement, destinationGuiElement);
@@ -115,6 +115,6 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
         checkResultFrames(destinationGuiElement);
     }
 
-    protected abstract void execute(WebDriver driver, IGuiElement sourceGuiElement, IGuiElement destinationGuiElement);
+    protected abstract void execute(WebDriver driver, GuiElement sourceGuiElement, GuiElement destinationGuiElement);
 
 }

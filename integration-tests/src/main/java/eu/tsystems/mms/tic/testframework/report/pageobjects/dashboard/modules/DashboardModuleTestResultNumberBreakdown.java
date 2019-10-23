@@ -4,7 +4,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFramePage;
 import eu.tsystems.mms.tic.testframework.report.model.MouseAction;
@@ -18,35 +18,35 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
 
     // Test Numbers
     @Check
-    public final IGuiElement numberAllTests = new GuiElement(this.driver, By.id("totalNumberOfTestMethods"), mainFrame);
+    public final GuiElement numberAllTests = new GuiElement(this.driver, By.id("totalNumberOfTestMethods"), mainFrame);
 
-    public final IGuiElement numberOfAllSuccessfulTests = new GuiElement(this.driver, By.id("totalNumberOfSuccessfulMethods"), mainFrame);
-    public final IGuiElement numberPassedTests = new GuiElement(this.driver, By.id("numberOfPASSED"), mainFrame);
-    public final IGuiElement numberPassedMinorTests = new GuiElement(this.driver, By.id("numberOfMINOR"), mainFrame);
+    public final GuiElement numberOfAllSuccessfulTests = new GuiElement(this.driver, By.id("totalNumberOfSuccessfulMethods"), mainFrame);
+    public final GuiElement numberPassedTests = new GuiElement(this.driver, By.id("numberOfPASSED"), mainFrame);
+    public final GuiElement numberPassedMinorTests = new GuiElement(this.driver, By.id("numberOfMINOR"), mainFrame);
 
-    public final IGuiElement numberAllSkippedTests = new GuiElement(this.driver, By.id("totalNumberOfSkippedMethods"), mainFrame);
-    public final IGuiElement numberSkippedTests = new GuiElement(this.driver, By.id("numberOfSKIPPED"), mainFrame);
+    public final GuiElement numberAllSkippedTests = new GuiElement(this.driver, By.id("totalNumberOfSkippedMethods"), mainFrame);
+    public final GuiElement numberSkippedTests = new GuiElement(this.driver, By.id("numberOfSKIPPED"), mainFrame);
 
-    public final IGuiElement numberOfAllBrokenTests = new GuiElement(this.driver, By.id("totalNumberOfFailedMethods"), mainFrame);
-    public final IGuiElement numberFailedTests = new GuiElement(this.driver, By.id("numberOfFAILED"), mainFrame);
-    public final IGuiElement numberFailedMinorTests = new GuiElement(this.driver, By.id("numberOfFAILED_MINOR"), mainFrame);
-    public final IGuiElement numberFailedRetriedTests = new GuiElement(this.driver, By.id("numberOfFAILED_RETRIED"), mainFrame);
-    public final IGuiElement numberFailedExpectedTests = new GuiElement(this.driver, By.id("numberOfFAILED_EXPECTED"), mainFrame);
+    public final GuiElement numberOfAllBrokenTests = new GuiElement(this.driver, By.id("totalNumberOfFailedMethods"), mainFrame);
+    public final GuiElement numberFailedTests = new GuiElement(this.driver, By.id("numberOfFAILED"), mainFrame);
+    public final GuiElement numberFailedMinorTests = new GuiElement(this.driver, By.id("numberOfFAILED_MINOR"), mainFrame);
+    public final GuiElement numberFailedRetriedTests = new GuiElement(this.driver, By.id("numberOfFAILED_RETRIED"), mainFrame);
+    public final GuiElement numberFailedExpectedTests = new GuiElement(this.driver, By.id("numberOfFAILED_EXPECTED"), mainFrame);
 
 
-    public final IGuiElement numberExitPoints = new GuiElement(this.driver, By.xpath("//*[@id='exitPointsLink']/a"), mainFrame);
-    public final IGuiElement numberFailureAspects = new GuiElement(this.driver, By.xpath("//*[@id='failureAspectsLink']/a"), mainFrame);
+    public final GuiElement numberExitPoints = new GuiElement(this.driver, By.xpath("//*[@id='exitPointsLink']/a"), mainFrame);
+    public final GuiElement numberFailureAspects = new GuiElement(this.driver, By.xpath("//*[@id='failureAspectsLink']/a"), mainFrame);
 
     // Test time-data
     @Check
-    public final IGuiElement testDurationString = new GuiElement(this.driver, By.id("actualRunDuration"), mainFrame);
+    public final GuiElement testDurationString = new GuiElement(this.driver, By.id("actualRunDuration"), mainFrame);
     @Check
-    public final IGuiElement testStartTimeString = new GuiElement(this.driver, By.id("actualRunStartTime"), mainFrame);
+    public final GuiElement testStartTimeString = new GuiElement(this.driver, By.id("actualRunStartTime"), mainFrame);
     @Check
-    public final IGuiElement testEndTimeString = new GuiElement(this.driver, By.id("actualRunEndTime"), mainFrame);
+    public final GuiElement testEndTimeString = new GuiElement(this.driver, By.id("actualRunEndTime"), mainFrame);
 
     // Percentages
-    public final IGuiElement testPercentageString = new GuiElement(this.driver, By.id("actualRunPassRate"), mainFrame);
+    public final GuiElement testPercentageString = new GuiElement(this.driver, By.id("actualRunPassRate"), mainFrame);
 
     public DashboardModuleTestResultNumberBreakdown(WebDriver driver) {
         super(driver);
@@ -120,7 +120,7 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
      * @throws
      */
     public DashboardPage triggerNumber(TestResultHelper.TestResult testResult, MouseAction mouseAction) throws Exception {
-        IGuiElement counter;
+        GuiElement counter;
         switch (testResult) {
             case PASSED:
                 counter = numberPassedTests;

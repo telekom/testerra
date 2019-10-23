@@ -29,14 +29,15 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertabl
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locator;
 
 import java.util.List;
 
 public interface GuiElementFacade extends
     GuiElementCore,
     Nameable,
-    IWebDriverRetainer
+    IWebDriverRetainer,
+    Locator
 {
     IFrameLogic getFrameLogic();
     GuiElementAssert asserts();
@@ -45,19 +46,63 @@ public interface GuiElementFacade extends
     IAssertableValue text();
     IAssertableValue value();
     IAssertableValue value(final Attribute attribute);
-    GuiElementFacade select(final Boolean select);
     IAssertableBinaryValue<Boolean> present();
     IAssertableBinaryValue<Boolean> visible(final boolean complete);
     IAssertableBinaryValue<Boolean> displayed();
     IAssertableBinaryValue<Boolean> enabled();
     IAssertableBinaryValue<Boolean> selected();
     IAssertableQuantifiedValue<Boolean> layout();
-    Locate getLocator();
+    GuiElementFacade scrollTo();
+    GuiElementFacade scrollTo(final int yOffset);
+
+    GuiElementFacade select(final Boolean select);
 
     int getTimeoutInSeconds();
-    void setTimeoutInSeconds(int timeoutInSeconds);
-    void restoreDefaultTimeout();
+    GuiElementFacade setTimeoutInSeconds(int timeoutInSeconds);
+    GuiElementFacade restoreDefaultTimeout();
 
     @Deprecated
     List<GuiElementFacade> getList();
+
+    /**
+     * GuiElementCore to GuiElementFacade overrides
+     */
+    @Override
+    GuiElementFacade click();
+
+    @Override
+    GuiElementFacade clickJS();
+
+    @Override
+    GuiElementFacade doubleClick();
+
+    @Override
+    GuiElementFacade doubleClickJS();
+
+    @Override
+    GuiElementFacade rightClick();
+
+    @Override
+    GuiElementFacade rightClickJS();
+
+    @Override
+    GuiElementFacade setName(String name);
+
+    @Override
+    GuiElementFacade highlight();
+
+    @Override
+    GuiElementFacade swipe(final int offsetX, final int offSetY);
+
+    @Override
+    GuiElementFacade select();
+
+    @Override
+    GuiElementFacade deselect();
+
+    @Override
+    GuiElementFacade type(final String text);
+
+    @Override
+    GuiElementFacade sendKeys(final CharSequence... charSequences);
 }

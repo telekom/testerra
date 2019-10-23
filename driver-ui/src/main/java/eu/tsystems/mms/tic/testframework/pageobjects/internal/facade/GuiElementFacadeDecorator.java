@@ -19,12 +19,19 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
+import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableBinaryValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableQuantifiedValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -53,25 +60,25 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     /**
      * called before any delegation.
      */
-    private void beforeDelegation(String methodName) {
+    private void beforeDelegation(final String methodName) {
         beforeDelegation(methodName, "");
     }
 
-    protected abstract void beforeDelegation(String methodName, String parameterInfo);
+    protected abstract void beforeDelegation(final String methodName, final String parameterInfo);
 
     /**
      * called after any delegation.
      *
      * @param result Result of delegation or null
      */
-    protected abstract void afterDelegation(String result);
+    protected abstract void afterDelegation(final String result);
 
     /**
      * called only before methods that perform an action
      *
      * @param message description of method to delegate
      */
-    protected void beforeActionDelegation(String message) {
+    protected void beforeActionDelegation(final String message) {
 
     }
 
@@ -88,15 +95,17 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
 
     @Override
     public int getNumberOfFoundElements() {
-        beforeDelegation("getNumberOfFoundElements");
-        int numberOfFoundElements = decoratedFacade.getNumberOfFoundElements();
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        final int numberOfFoundElements = decoratedFacade.getNumberOfFoundElements();
         afterDelegation();
         return numberOfFoundElements;
     }
 
     @Override
     public WebElement getWebElement() {
-        beforeDelegation("getWebElement");
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
         WebElement webElement = decoratedFacade.getWebElement();
         afterDelegation();
         return webElement;
@@ -109,19 +118,15 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore scrollToElement() {
-        beforeActionDelegation("scrollToElement");
-        beforeDelegation("scrollToElement");
-        decoratedFacade.scrollToElement();
-        afterDelegation();
-        afterActionDelegation();
-        return this;
+    public GuiElementFacade scrollToElement() {
+        return scrollToElement(0);
     }
 
     @Override
-    public GuiElementCore scrollToElement(int yOffset) {
-        beforeActionDelegation("scrollToElement");
-        beforeDelegation("scrollToElement");
+    public GuiElementFacade scrollToElement(int yOffset) {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.scrollToElement(yOffset);
         afterDelegation();
         afterActionDelegation();
@@ -129,9 +134,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore select() {
-        beforeActionDelegation("select");
-        beforeDelegation("select");
+    public GuiElementFacade select() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.select();
         afterDelegation();
         afterActionDelegation();
@@ -139,9 +145,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore deselect() {
-        beforeActionDelegation("deselect");
-        beforeDelegation("deselect");
+    public GuiElementFacade deselect() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.deselect();
         afterDelegation();
         afterActionDelegation();
@@ -149,10 +156,11 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore type(String text) {
+    public GuiElementFacade type(String text) {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         final String msg = "\"" + obfuscateIfSensible(text) + "\"";
-        beforeActionDelegation("type " + msg);
-        beforeDelegation("type", msg);
+        beforeActionDelegation(methodName + " " + msg);
+        beforeDelegation(methodName, msg);
         decoratedFacade.type(text);
         afterDelegation();
         afterActionDelegation();
@@ -160,9 +168,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore click() {
-        beforeActionDelegation("click");
-        beforeDelegation("click");
+    public GuiElementFacade click() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.click();
         afterDelegation();
         afterActionDelegation();
@@ -170,9 +179,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore clickJS() {
-        beforeActionDelegation("clickJS");
-        beforeDelegation("clickJS");
+    public GuiElementFacade clickJS() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.clickJS();
         afterDelegation();
         afterActionDelegation();
@@ -181,9 +191,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
 
 
     @Override
-    public GuiElementCore rightClick() {
-        beforeActionDelegation("rightClick");
-        beforeDelegation("rightClick");
+    public GuiElementFacade rightClick() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.rightClick();
         afterDelegation();
         afterActionDelegation();
@@ -191,9 +202,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore rightClickJS() {
-        beforeActionDelegation("rightClickJS");
-        beforeDelegation("rightClickJS");
+    public GuiElementFacade rightClickJS() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.rightClickJS();
         afterDelegation();
         afterActionDelegation();
@@ -201,9 +213,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore clickAbsolute() {
-        beforeActionDelegation("clickAbsolute");
-        beforeDelegation("clickAbsolute");
+    public GuiElementFacade clickAbsolute() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.clickAbsolute();
         afterDelegation();
         afterActionDelegation();
@@ -211,9 +224,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore mouseOverAbsolute2Axis() {
-        beforeActionDelegation("mouseOverAbsolute2Axis");
-        beforeDelegation("mouseOverAbsolute2Axis");
+    public GuiElementFacade mouseOverAbsolute2Axis() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.mouseOverAbsolute2Axis();
         afterDelegation();
         afterActionDelegation();
@@ -221,9 +235,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore submit() {
-        beforeActionDelegation("submit");
-        beforeDelegation("submit");
+    public GuiElementFacade submit() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.submit();
         afterDelegation();
         afterActionDelegation();
@@ -231,7 +246,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore sendKeys(CharSequence... charSequences) {
+    public GuiElementFacade sendKeys(CharSequence... charSequences) {
         String chars = "";
 
         if (charSequences == null) {
@@ -247,9 +262,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
             chars += charSequences[0];
         }
 
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         final String message = "\"" + obfuscateIfSensible(chars) + "\"";
-        beforeActionDelegation("sendKeys " + message);
-        beforeDelegation("sendKeys", message);
+        beforeActionDelegation(methodName + " " + message);
+        beforeDelegation(methodName, message);
         decoratedFacade.sendKeys(charSequences);
         afterDelegation();
         afterActionDelegation();
@@ -257,9 +273,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore clear() {
-        beforeActionDelegation("clear");
-        beforeDelegation("clear");
+    public GuiElementFacade clear() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.clear();
         afterDelegation();
         afterActionDelegation();
@@ -268,23 +285,26 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
 
     @Override
     public String getTagName() {
-        beforeDelegation("getTagName");
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
         String tagName = decoratedFacade.getTagName();
-        afterDelegation("getTagName() = " + tagName);
+        afterDelegation(String.format("%s() = %s,", methodName, tagName));
         return tagName;
     }
 
     @Override
     public String getAttribute(String attributeName) {
-        beforeDelegation("getAttribute", "\"" + attributeName + "\"");
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName, "\"" + attributeName + "\"");
         String attribute = decoratedFacade.getAttribute(attributeName);
-        afterDelegation("getAttribute(" + attributeName + ") = " + attribute);
+        afterDelegation(String.format("%s(%s) = %s,", methodName, attributeName, attribute));
         return attribute;
     }
 
     @Override
     public boolean isSelected() {
-        beforeDelegation("isSelected");
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
         boolean selected = decoratedFacade.isSelected();
         afterDelegation();
         return selected;
@@ -292,7 +312,8 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
 
     @Override
     public boolean isEnabled() {
-        beforeDelegation("isEnabled");
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
         boolean enabled = decoratedFacade.isEnabled();
         afterDelegation();
         return enabled;
@@ -300,90 +321,104 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
 
     @Override
     public String getText() {
-        beforeDelegation("getText");
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
         String text = decoratedFacade.getText();
-        afterDelegation("getText() = " + text);
+        afterDelegation(String.format("%s() = %s,", methodName, text));
         return text;
     }
 
     @Override
-    public GuiElementFacade getSubElement(By byLocator, String description) {
-        beforeDelegation("getSubElement", ">" + description + "< " + byLocator);
-        GuiElementFacade subElement = decoratedFacade.getSubElement(byLocator, description);
-        afterDelegation("getSubElement(" + byLocator + ", " + description + ") = " + subElement);
-        return subElement;
+    public GuiElementFacade getSubElement(By by, String description) {
+        return getSubElement(by);
     }
 
     @Override
     public GuiElementFacade getSubElement(Locate locator) {
-        return decoratedFacade.getSubElement(locator);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName, locator.toString());
+        GuiElementFacade subElement = decoratedFacade.getSubElement(locator);
+        afterDelegation(String.format("%s(%s) = %s", methodName, locator.toString(), subElement));
+        return subElement;
     }
 
     @Override
     public GuiElementFacade getSubElement(By by) {
-        return decoratedFacade.getSubElement(by);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName, by.toString());
+        GuiElementFacade subElement = decoratedFacade.getSubElement(by);
+        afterDelegation(String.format("%s(%s) = %s", methodName, by.toString(), subElement));
+        return subElement;
     }
 
     @Override
     public boolean isDisplayed() {
-        beforeDelegation("isDisplayed");
-        boolean displayed = decoratedFacade.isDisplayed();
-        afterDelegation("isDisplayed() = " + displayed);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        final boolean displayed = decoratedFacade.isDisplayed();
+        afterDelegation(String.format("%s() = %s,", methodName, displayed));
         return displayed;
     }
 
     @Override
     public boolean isVisible(boolean complete) {
-        beforeDelegation("isVisible");
-        boolean visible = decoratedFacade.isVisible(complete);
-        afterDelegation("isVisible() = " + visible);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        final boolean visible = decoratedFacade.isVisible(complete);
+        afterDelegation(String.format("%s() = %s,", methodName, visible));
         return visible;
     }
 
     @Override
     public boolean isDisplayedFromWebElement() {
-        beforeDelegation("isDisplayedFromWebElement");
-        boolean displayedFromWebElement = decoratedFacade.isDisplayedFromWebElement();
-        afterDelegation("isDisplayedFromWebElement() = " + displayedFromWebElement);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        final boolean displayedFromWebElement = decoratedFacade.isDisplayedFromWebElement();
+        afterDelegation(String.format("%s() = %s,", methodName, displayedFromWebElement));
         return displayedFromWebElement;
     }
 
     @Override
     public boolean isSelectable() {
-        beforeDelegation("isSelectable");
-        boolean selectable = decoratedFacade.isSelectable();
-        afterDelegation("isSelectable() = " + selectable);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        final boolean selectable = decoratedFacade.isSelectable();
+        afterDelegation(String.format("%s() = %s,", methodName, selectable));
         return selectable;
     }
 
     @Override
     public Point getLocation() {
-        beforeDelegation("getLocation");
-        Point location = decoratedFacade.getLocation();
-        afterDelegation("getLocation() = " + location);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        final Point location = decoratedFacade.getLocation();
+        afterDelegation(String.format("%s() = %s,", methodName, location));
         return location;
     }
 
     @Override
     public Dimension getSize() {
-        beforeDelegation("getSize");
-        Dimension size = decoratedFacade.getSize();
-        afterDelegation("getSize() = " + size);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        final Dimension size = decoratedFacade.getSize();
+        afterDelegation(String.format("%s() = %s,", methodName, size));
         return size;
     }
 
     @Override
     public String getCssValue(String cssIdentifier) {
-        beforeDelegation("getCssValue", "\"" + cssIdentifier + "\"");
-        String cssValue = decoratedFacade.getCssValue(cssIdentifier);
-        afterDelegation("getCssValue(" + cssIdentifier + ") = " + cssValue);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName, "\"" + cssIdentifier + "\"");
+        final String cssValue = decoratedFacade.getCssValue(cssIdentifier);
+        afterDelegation(String.format("%s(%s) = %s,", methodName, cssIdentifier, cssValue));
         return cssValue;
     }
 
     @Override
-    public GuiElementCore mouseOver() {
-        beforeActionDelegation("mouseOver");
-        beforeDelegation("mouseOver", "mouseOver");
+    public GuiElementFacade mouseOver() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.mouseOver();
         afterDelegation();
         afterActionDelegation();
@@ -391,9 +426,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore mouseOverJS() {
-        beforeActionDelegation("mouseOverJS");
-        beforeDelegation("mouseOverJS");
+    public GuiElementFacade mouseOverJS() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.mouseOverJS();
         afterDelegation();
         afterActionDelegation();
@@ -402,22 +438,25 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
 
     @Override
     public boolean isPresent() {
-        beforeDelegation("isPresent");
-        boolean present = decoratedFacade.isPresent();
-        afterDelegation("isPresent() = " + present);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        final boolean present = decoratedFacade.isPresent();
+        afterDelegation(String.format("%s(%s) = %s,", methodName, present));
         return present;
     }
 
     @Override
     public Select getSelectElement() {
-        beforeDelegation("getSelectElement");
-        Select selectElement = decoratedFacade.getSelectElement();
-        afterDelegation("getSelectElement() = " + selectElement);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        final Select selectElement = decoratedFacade.getSelectElement();
+        afterDelegation(String.format("%s(%s) = %s,", methodName, selectElement));
         return selectElement;
     }
 
     @Override
     public List<String> getTextsFromChildren() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation("getTextsFromChildren");
         List<String> textsFromChildren = decoratedFacade.getTextsFromChildren();
         afterDelegation("getTextsFromChildren() = " + textsFromChildren);
@@ -426,16 +465,18 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
 
     @Override
     public boolean anyFollowingTextNodeContains(String contains) {
-        beforeDelegation("anyFollowingTextNodeContains", "\"" + contains + "\"");
-        boolean b = decoratedFacade.anyFollowingTextNodeContains(contains);
-        afterDelegation("anyFollowingTextNodeContains(" + contains + ") = " + b);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName, "\"" + contains + "\"");
+        final boolean b = decoratedFacade.anyFollowingTextNodeContains(contains);
+        afterDelegation(String.format("%s(%s) = %s,", methodName, contains, b));
         return b;
     }
 
     @Override
-    public GuiElementCore doubleClick() {
-        beforeActionDelegation("doubleClick");
-        beforeDelegation("doubleClick");
+    public GuiElementFacade doubleClick() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.doubleClick();
         afterDelegation();
         afterActionDelegation();
@@ -443,9 +484,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore doubleClickJS() {
-        beforeActionDelegation("doubleClickJS");
-        beforeDelegation("doubleClickJS");
+    public GuiElementFacade doubleClickJS() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.doubleClickJS();
         afterDelegation();
         afterActionDelegation();
@@ -453,8 +495,9 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore highlight() {
-        beforeDelegation("highlight");
+    public GuiElementFacade highlight() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
         decoratedFacade.highlight();
         afterDelegation();
         return this;
@@ -462,9 +505,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
 
     @Override
     public int getLengthOfValueAfterSendKeys(String textToInput) {
-        beforeDelegation("getLengthOfValueAfterSendKeys", "\"" + textToInput + "\"");
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName, "\"" + textToInput + "\"");
         int lengthOfValueAfterSendKeys = decoratedFacade.getLengthOfValueAfterSendKeys(textToInput);
-        afterDelegation("getLengthOfValueAfterSendKeys(" + textToInput + ") = " + lengthOfValueAfterSendKeys);
+        afterDelegation(String.format("%s(%s) = %s,", methodName, textToInput, lengthOfValueAfterSendKeys));
         return lengthOfValueAfterSendKeys;
     }
 
@@ -663,8 +707,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
 
     @Override
     public String toString() {
-        String s = decoratedFacade.toString();
-        return s;
+        return decoratedFacade.toString();
     }
 
     private String obfuscateIfSensible(final String data) {
@@ -675,13 +718,132 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore swipe(int offsetX, int offSetY) {
+    public GuiElementFacade swipe(int offsetX, int offSetY) {
         decoratedFacade.swipe(offsetX, offSetY);
         return this;
     }
 
     @Override
     public File takeScreenshot() {
-        return decoratedFacade.takeScreenshot();
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        final File screenshot = decoratedFacade.takeScreenshot();
+        afterDelegation();
+        return screenshot;
+    }
+
+    @Override
+    public IFrameLogic getFrameLogic() {
+        return decoratedFacade.getFrameLogic();
+    }
+
+    @Override
+    public GuiElementAssert asserts() {
+        return asserts("");
+    }
+
+    @Override
+    public GuiElementAssert asserts(final String errorMessage) {
+        return decoratedFacade.asserts(errorMessage);
+    }
+
+    @Override
+    public GuiElementWait waits() {
+        return decoratedFacade.waits();
+    }
+
+    @Override
+    public IAssertableValue text() {
+        return decoratedFacade.text();
+    }
+
+    @Override
+    public IAssertableValue value() {
+        return decoratedFacade.value();
+    }
+
+    @Override
+    public IAssertableValue value(final Attribute attribute) {
+        return decoratedFacade.value(attribute);
+    }
+
+    @Override
+    public GuiElementFacade select(final Boolean select) {
+        return decoratedFacade.select(select);
+    }
+
+    @Override
+    public IAssertableBinaryValue<Boolean> present() {
+        return decoratedFacade.present();
+    }
+
+    @Override
+    public IAssertableBinaryValue<Boolean> visible(final boolean complete) {
+        return decoratedFacade.visible(complete);
+    }
+
+    @Override
+    public IAssertableBinaryValue<Boolean> displayed() {
+        return decoratedFacade.displayed();
+    }
+
+    @Override
+    public IAssertableBinaryValue<Boolean> enabled() {
+        return decoratedFacade.enabled();
+    }
+
+    @Override
+    public IAssertableBinaryValue<Boolean> selected() {
+        return decoratedFacade.selected();
+    }
+
+    @Override
+    public IAssertableQuantifiedValue<Boolean> layout() {
+        return decoratedFacade.layout();
+    }
+
+    @Override
+    public GuiElementFacade find(Locate locator) {
+        return decoratedFacade.find(locator);
+    }
+
+    @Override
+    public GuiElementFacade find(By by) {
+        return decoratedFacade.find(by);
+    }
+
+    @Override
+    public int getTimeoutInSeconds() {
+        return decoratedFacade.getTimeoutInSeconds();
+    }
+
+    @Override
+    public GuiElementFacade setTimeoutInSeconds(int timeoutInSeconds) {
+        return decoratedFacade.setTimeoutInSeconds(timeoutInSeconds);
+    }
+
+    @Override
+    public GuiElementFacade restoreDefaultTimeout() {
+         return decoratedFacade.restoreDefaultTimeout();
+    }
+
+    @Override
+    public List<GuiElementFacade> getList() {
+        return decoratedFacade.getList();
+    }
+
+    @Override
+    public WebDriver getWebDriver() {
+        return decoratedFacade.getWebDriver();
+    }
+
+    @Override
+    public GuiElementFacade setName(String name) {
+        return decoratedFacade.setName(name);
+    }
+
+    @Override
+    public String getName() {
+        return decoratedFacade.getName();
     }
 }

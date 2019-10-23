@@ -102,7 +102,7 @@ public class Wrong2WebTestPage extends Page {
      */
     public void nonfunctionalAssert() {
         GuiElement GuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
-        GuiElement.nonFunctionalAssert.assertIsPresent();
+        GuiElement.nonFunctionalAsserts().assertIsPresent();
     }
 
 }

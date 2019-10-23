@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 /**
- * Created by rnhb on 02.02.2016.
+ * @todo Make Generic
  */
 public interface Nameable {
 

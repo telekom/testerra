@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
@@ -56,8 +56,9 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void test_NewApi_GuiElement_assertTextContains() {
-        GuiElement GuiElement = page().byId("11");
-        GuiElement.text().contains("affe");
+        GuiElementFacade guiElement = page().findById("11");
+        guiElement.text().contains("affe");
+        guiElement.findByQa("action/submit").scrollTo().visible(false).isTrue("not visible");
     }
 
     /**

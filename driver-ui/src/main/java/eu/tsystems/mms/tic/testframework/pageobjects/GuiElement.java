@@ -48,9 +48,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacadeLoggingDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFace;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -83,19 +82,15 @@ public class GuiElement implements GuiElementFacade {
 
     private boolean forcedStandardAsserts = false;
 
-    @Deprecated
-    public GuiElementAssert nonFunctionalAssert;
-
     private GuiElementAssert functionalAssert;
-
     private GuiElementAssert functionalStandardAssert;
     private GuiElementAssert functionalAssertCollector;
     private GuiElementAssert nonFunctionalAssertReplacement;
+
     /**
      * Facade for all parts of the lowest GuiElement
      */
     private GuiElementFacade guiElementFacade;
-
     private GuiElementCore guiElementCore;
     private GuiElementWait guiElementWait;
     private Locate locator;
@@ -169,13 +164,12 @@ public class GuiElement implements GuiElementFacade {
         guiElementCore = coreFactory.create(currentBrowser, by, driver, guiElementData, null);
 
         GuiElementWaitFactory waitFactory = TesterraCommons.ioc().getInstance(GuiElementWaitFactory.class);
-        guiElementWait = waitFactory.create(guiElementCore, this.guiElementData);
+        guiElementWait = waitFactory.create(guiElementCore, guiElementData);
 
         GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
-        functionalStandardAssert = assertFactory.create(true, false, guiElementCore, guiElementWait, this.guiElementData);
-        functionalAssertCollector = assertFactory.create(true, true, guiElementCore, guiElementWait, this.guiElementData);
-        nonFunctionalAssert = assertFactory.create(false, false, guiElementCore, guiElementWait, this.guiElementData);
-        nonFunctionalAssertReplacement = nonFunctionalAssert;
+        functionalStandardAssert = assertFactory.create(true, false, guiElementCore, guiElementWait, guiElementData);
+        functionalAssertCollector = assertFactory.create(true, true, guiElementCore, guiElementWait, guiElementData);
+        nonFunctionalAssertReplacement = assertFactory.create(false, false, guiElementCore, guiElementWait, guiElementData);;
 
         initDefaultAssert();
     }
@@ -204,8 +198,8 @@ public class GuiElement implements GuiElementFacade {
     private GuiElementFacade getFacade(GuiElementCore guiElementCore, GuiElementWait guiElementWait, GuiElementAssert guiElementAssert) {
         GuiElementFacade guiElementFacade;
         //guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
-        guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
-        guiElementFacade = new GuiElementFace(guiElementFacade, guiElementData);
+        guiElementFacade = new GuiElementFacadeLoggingDecorator(this, guiElementData);
+        //guiElementFacade = new GuiElementFace(guiElementFacade, guiElementData);
 
         int delayAfterAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_AFTER_GUIELEMENT_ACTION_MILLIS);
         int delayBeforeAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS);
@@ -225,7 +219,7 @@ public class GuiElement implements GuiElementFacade {
      * @deprecated Use TesterraBy instead
      */
     @Deprecated
-    public GuiElement withWebElementFilter(WebElementFilter... filters) {
+    public GuiElementFacade withWebElementFilter(WebElementFilter... filters) {
         if (filters != null) {
             Collections.addAll(locator.getFilters(), filters);
         }
@@ -240,7 +234,7 @@ public class GuiElement implements GuiElementFacade {
      * @deprecated use setName() instead.
      */
     @Deprecated
-    public GuiElement setDescription(String description) {
+    public GuiElementFacade setDescription(String description) {
         guiElementData.name = description;
         return this;
     }
@@ -273,33 +267,33 @@ public class GuiElement implements GuiElementFacade {
 
     @Override
     public GuiElementFacade getSubElement(Locate locator) {
-        return guiElementCore.getSubElement(locator);
+        return guiElementFacade.getSubElement(locator);
     }
 
     @Override
     public WebElement getWebElement() {
-        return guiElementCore.getWebElement();
+        return guiElementFacade.getWebElement();
     }
 
     @Override
     public By getBy() {
-        return guiElementCore.getBy();
+        return guiElementFacade.getBy();
     }
 
     @Override
-    public GuiElement scrollToElement() {
-        guiElementCore.scrollToElement();
+    public GuiElementFacade scrollToElement() {
+        guiElementFacade.scrollToElement();
         return this;
     }
 
     @Override
-    public GuiElement scrollToElement(int yOffset) {
+    public GuiElementFacade scrollToElement(int yOffset) {
         guiElementFacade.scrollToElement(yOffset);
         return this;
     }
 
     @Override
-    public GuiElement select() {
+    public GuiElementFacade select() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.select();
         guiElementData.resetLogLevel();
@@ -312,7 +306,7 @@ public class GuiElement implements GuiElementFacade {
      * @param select true/false/null.
      */
     @Override
-    public GuiElement select(Boolean select) {
+    public GuiElementFacade select(final Boolean select) {
         guiElementData.setLogLevel(LogLevel.INFO);
         if (select == null) {
             LOGGER.info("Select option is null. Selecting/Deselecting nothing.");
@@ -327,7 +321,7 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public GuiElement deselect() {
+    public GuiElementFacade deselect() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.deselect();
         guiElementData.resetLogLevel();
@@ -335,15 +329,15 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public GuiElement type(String text) {
+    public GuiElementFacade type(String text) {
         guiElementData.setLogLevel(LogLevel.INFO);
-        guiElementFacade.type(text);
+        guiElementCore.type(text);
         guiElementData.resetLogLevel();
         return this;
     }
 
     @Override
-    public GuiElement click() {
+    public GuiElementFacade click() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.click();
         guiElementData.resetLogLevel();
@@ -351,7 +345,7 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public GuiElement clickJS() {
+    public GuiElementFacade clickJS() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickJS();
         guiElementData.resetLogLevel();
@@ -359,7 +353,7 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public GuiElement clickAbsolute() {
+    public GuiElementFacade clickAbsolute() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickAbsolute();
         guiElementData.resetLogLevel();
@@ -367,19 +361,19 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public GuiElement mouseOverAbsolute2Axis() {
+    public GuiElementFacade mouseOverAbsolute2Axis() {
         guiElementFacade.mouseOverAbsolute2Axis();
         return this;
     }
 
     @Override
-    public GuiElement submit() {
+    public GuiElementFacade submit() {
         guiElementFacade.submit();
         return this;
     }
 
     @Override
-    public GuiElement sendKeys(CharSequence... charSequences) {
+    public GuiElementFacade sendKeys(CharSequence... charSequences) {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.sendKeys(charSequences);
         guiElementData.resetLogLevel();
@@ -387,7 +381,7 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public GuiElement clear() {
+    public GuiElementFacade clear() {
         guiElementFacade.clear();
         return this;
     }
@@ -461,13 +455,13 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public GuiElement mouseOver() {
+    public GuiElementFacade mouseOver() {
         guiElementFacade.mouseOver();
         return this;
     }
 
     @Override
-    public GuiElement mouseOverJS() {
+    public GuiElementFacade mouseOverJS() {
         guiElementFacade.mouseOverJS();
         return this;
     }
@@ -497,7 +491,7 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementCore doubleClick() {
+    public GuiElementFacade doubleClick() {
         guiElementFacade.doubleClick();
         return this;
     }
@@ -506,23 +500,25 @@ public class GuiElement implements GuiElementFacade {
         return guiElementData.getTimeoutInSeconds();
     }
 
-    public void setTimeoutInSeconds(int timeoutInSeconds) {
+    public GuiElementFacade setTimeoutInSeconds(int timeoutInSeconds) {
         guiElementData.setTimeoutInSeconds(timeoutInSeconds);
+        return this;
     }
 
-    public void restoreDefaultTimeout() {
+    public GuiElementFacade restoreDefaultTimeout() {
         int timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
         guiElementData.setTimeoutInSeconds(timeoutInSeconds);
+        return this;
     }
 
     @Override
-    public GuiElementCore highlight() {
+    public GuiElementFacade highlight() {
         guiElementFacade.highlight();
         return this;
     }
 
     @Override
-    public GuiElementCore swipe(int offsetX, int offSetY) {
+    public GuiElementFacade swipe(int offsetX, int offSetY) {
         guiElementFacade.swipe(offsetX, offSetY);
         return this;
     }
@@ -538,19 +534,19 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public GuiElement rightClick() {
+    public GuiElementFacade rightClick() {
         guiElementFacade.rightClick();
         return this;
     }
 
     @Override
-    public GuiElement rightClickJS() {
+    public GuiElementFacade rightClickJS() {
         guiElementFacade.rightClickJS();
         return this;
     }
 
     @Override
-    public GuiElement doubleClickJS() {
+    public GuiElementFacade doubleClickJS() {
         guiElementFacade.doubleClickJS();
         return this;
     }
@@ -565,7 +561,8 @@ public class GuiElement implements GuiElementFacade {
      *
      * @return Frame Logic object or null.
      */
-    public FrameLogic getFrameLogic() {
+    @Override
+    public IFrameLogic getFrameLogic() {
         return guiElementData.frameLogic;
     }
 
@@ -583,7 +580,7 @@ public class GuiElement implements GuiElementFacade {
      *
      * @param parent Object that should act as parent.
      */
-    public GuiElement setParent(GuiElementCore parent) {
+    public GuiElementFacade setParent(GuiElementCore parent) {
         guiElementData.parent = parent;
         return this;
     }
@@ -613,7 +610,7 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public GuiElement setName(String name) {
+    public GuiElementFacade setName(String name) {
         guiElementData.name = name;
         return this;
     }
@@ -711,7 +708,7 @@ public class GuiElement implements GuiElementFacade {
         guiElementData.setLogLevel(logLevel);
     }
 
-    public GuiElement shadowRoot() {
+    public GuiElementFacade shadowRoot() {
         guiElementData.shadowRoot = true;
         return this;
     }
@@ -766,5 +763,35 @@ public class GuiElement implements GuiElementFacade {
     @Override
     public IAssertableQuantifiedValue<Boolean> layout() {
         return new AssertableQuantifiedValue<>(1, Property.LAYOUT.toString(), this);
+    }
+
+    @Override
+    public GuiElementFacade scrollTo() {
+        return scrollToElement();
+    }
+
+    @Override
+    public GuiElementFacade scrollTo(final int yOffset) {
+        return scrollToElement(yOffset);
+    }
+
+    @Override
+    public GuiElementFacade findById(final String id) {
+        return getSubElement(Locate.by().id(id));
+    }
+
+    @Override
+    public GuiElementFacade findByQa(final String qa) {
+        return getSubElement(Locate.by().qa(qa));
+    }
+
+    @Override
+    public GuiElementFacade find(final Locate locator) {
+        return getSubElement(locator);
+    }
+
+    @Override
+    public GuiElementFacade find(final By by) {
+        return getSubElement(by);
     }
 }

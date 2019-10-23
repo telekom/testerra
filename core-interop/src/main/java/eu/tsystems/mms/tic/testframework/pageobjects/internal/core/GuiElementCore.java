@@ -56,7 +56,7 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @return this.
      */
     GuiElementCore scrollToElement();
-    GuiElementCore scrollToElement(int yOffset);
+    GuiElementCore scrollToElement(final int yOffset);
 
     /**
      * Select a selectable element.
@@ -78,7 +78,7 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @param text The text to type.
      * @return this.
      */
-    GuiElementCore type(String text);
+    GuiElementCore type(final String text);
 
     /**
      * Click on element with prior mouseover.
@@ -121,7 +121,7 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @param charSequences .
      * @return send Keys
      */
-    GuiElementCore sendKeys(CharSequence... charSequences);
+    GuiElementCore sendKeys(final CharSequence... charSequences);
 
     /**
      * WebElement.clear.
@@ -145,21 +145,21 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @return GuiElement
      */
     @Deprecated
-    GuiElementFacade getSubElement(By byLocator, String description);
+    GuiElementFacade getSubElement(final By byLocator, String description);
 
     /**
      * Get sub element by new locator
      * @param locator
      * @return
      */
-    GuiElementFacade getSubElement(Locate locator);
+    GuiElementFacade getSubElement(final Locate locator);
 
     /**
      * Get sub element by Selenium By
      * @param by
      * @return
      */
-    GuiElementFacade getSubElement(By by);
+    GuiElementFacade getSubElement(final By by);
 
     /**
      * WebElement.getLocation.
@@ -181,7 +181,7 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @param cssIdentifier .
      * @return Css value of the webelement.
      */
-    String getCssValue(String cssIdentifier);
+    String getCssValue(final String cssIdentifier);
 
     /**
      * Mouseover using WebDriver.
@@ -231,7 +231,7 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @param offsetX horizontal offset in pixel.
      * @param offSetY vertical offset in pixel.
      */
-    GuiElementCore swipe(int offsetX, int offSetY);
+    GuiElementCore swipe(final int offsetX, final int offSetY);
 
     /**
      * Types your text and returns the length of the attribute 'value' afterwards.
@@ -241,7 +241,7 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @param textToInput text to check
      * @return Length of the attribute 'value'
      */
-    int getLengthOfValueAfterSendKeys(String textToInput);
+    int getLengthOfValueAfterSendKeys(final String textToInput);
 
     /**
      * A given location strategy (Locator + WebElementFilter) can match to many elements in a Website. This method returns that number.

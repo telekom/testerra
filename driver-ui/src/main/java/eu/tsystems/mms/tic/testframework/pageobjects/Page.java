@@ -428,25 +428,32 @@ public abstract class Page extends AbstractPage implements IPage {
 
         return simpleClassName + " -> " + actionName;
     }
-    public GuiElementFacade byId(final String id) {
-        return by(Locate.by().id(id));
+    @Override
+    public GuiElementFacade findById(final String id) {
+        return find(Locate.by().id(id));
     }
-    public GuiElementFacade byQa(final String qa) {
-        return by(Locate.by().qa(qa));
+    @Override
+    public GuiElementFacade findByQa(final String qa) {
+        return find(Locate.by().qa(qa));
     }
-    public GuiElementFacade by(final Locate locator) {
+    @Override
+    public GuiElementFacade find(final Locate locator) {
         return new GuiElement(driver, locator);
     }
-    public GuiElementFacade by(final By by) {
+    @Override
+    public GuiElementFacade find(final By by) {
         return new GuiElement(driver, by);
     }
+    @Override
     public IAssertableValue title() {
         return new AssertableValue(driver.getTitle(), Property.TITLE.toString(), this);
     }
+    @Override
     public IAssertableValue url() {
         return new AssertableValue(driver.getCurrentUrl(), Property.URL.toString(), this);
     }
-    public IPage navigate(final String to) {
+    @Override
+    public IPage navigateTo(final String to) {
         driver.navigate().to(to);
         return this;
     }

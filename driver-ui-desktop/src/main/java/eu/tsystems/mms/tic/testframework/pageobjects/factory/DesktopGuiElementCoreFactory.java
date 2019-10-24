@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class DesktopGuiElementCoreFactory extends DefaultGuiElementCoreFactory {
+public class DesktopGuiElementCoreFactory extends AbstractDefaultGuiElementCoreFactory {
 
     @Override
     public GuiElementCore create(
@@ -35,7 +35,7 @@ public class DesktopGuiElementCoreFactory extends DefaultGuiElementCoreFactory {
         By by,
         WebDriver webDriver,
         GuiElementData guiElementData,
-        GuiElementCore parentCore
+        GuiElementCore decoratedCore
     ) {
         switch (browser) {
             case Browsers.safari:
@@ -45,11 +45,11 @@ public class DesktopGuiElementCoreFactory extends DefaultGuiElementCoreFactory {
             case Browsers.edge:
             case Browsers.firefox:
             case Browsers.phantomjs:
-                parentCore = new DesktopGuiElementCore(by, webDriver, guiElementData);
+                decoratedCore = new DesktopGuiElementCore(by, webDriver, guiElementData);
                 break;
             default: throw new TesterraSystemException("No factory for browser: " + browser);
         }
 
-        return super.create(browser, by, webDriver, guiElementData, parentCore);
+        return super.create(browser, by, webDriver, guiElementData, decoratedCore);
     }
 }

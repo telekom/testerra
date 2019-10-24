@@ -26,6 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
@@ -33,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
@@ -79,6 +81,9 @@ public abstract class Page extends AbstractPage implements IPage {
     public static void registerPageLoadHandler(PageLoadHandler h) {
         pageLoadHandlers.add(h);
     }
+
+    @Inject
+    private GuiElementFactory guiElementFactory;
 
     /**
      * Constructor for existing sessions.
@@ -434,20 +439,36 @@ public abstract class Page extends AbstractPage implements IPage {
     protected GuiElementFacade findByQa(final String qa) {
         return find(Locate.by().qa(qa));
     }
+    protected GuiElementFacade findByQa(final String qa, final GuiElementFacade parent) {
+        return find(Locate.by().qa(qa), parent);
+    }
     protected GuiElementFacade find(final Locate locator) {
-        return new GuiElement(driver, locator);
+        return guiElementFactory.create(locator, driver);
+    }
+    protected GuiElementFacade find(final Locate locator, final GuiElementFacade parent) {
+        return guiElementFactory.create(locator, driver, parent);
     }
     protected GuiElementFacade find(final By by) {
-        return new GuiElement(driver, by);
+        return find(Locate.by(by));
     }
+    protected GuiElementFacade find(final By by, final GuiElementFacade parent) {
+        return find(Locate.by(by), parent);
+    }
+
+    /**
+     * @Todo We need a self type here
+     * @return
+     */
     @Override
     public IAssertableValue title() {
         return new AssertableValue(driver.getTitle(), Property.TITLE.toString(), this);
     }
+
     @Override
     public IAssertableValue url() {
         return new AssertableValue(driver.getCurrentUrl(), Property.URL.toString(), this);
     }
+
     @Override
     public IPage navigateTo(final String to) {
         driver.navigate().to(to);

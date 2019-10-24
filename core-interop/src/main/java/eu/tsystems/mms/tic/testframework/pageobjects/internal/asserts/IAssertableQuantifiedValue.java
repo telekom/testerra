@@ -2,19 +2,19 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import java.math.BigDecimal;
 
-public interface IAssertableQuantifiedValue<T> extends IAssertableBinaryValue {
+public interface IAssertableQuantifiedValue<T, E> extends IAssertableBinaryValue<T, E> {
     T actual();
-    IAssertableQuantifiedValue equals(final String expected);
-    IAssertableQuantifiedValue greaterThan(final long expected);
-    IAssertableQuantifiedValue greaterThan(final double expected);
-    IAssertableQuantifiedValue greaterThan(final BigDecimal expected);
-    IAssertableQuantifiedValue lowerThan(final long expected);
-    IAssertableQuantifiedValue lowerThan(final double expected);
-    IAssertableQuantifiedValue lowerThan(final BigDecimal expected);
-    IAssertableQuantifiedValue greaterEqualThan(final long expected);
-    IAssertableQuantifiedValue greaterEqualThan(final double expected);
-    IAssertableQuantifiedValue greaterEqualThan(final BigDecimal expected);
-    IAssertableQuantifiedValue lowerEqualThan(final long expected);
-    IAssertableQuantifiedValue lowerEqualThan(final double expected);
-    IAssertableQuantifiedValue lowerEqualThan(final BigDecimal expected);
+    E equals(final String expected);
+    E greaterThan(final long expected);
+    E greaterThan(final double expected);
+    E greaterThan(final BigDecimal expected);
+    E lowerThan(final long expected);
+    E lowerThan(final double expected);
+    E lowerThan(final BigDecimal expected);
+    E greaterEqualThan(final long expected);
+    E greaterEqualThan(final double expected);
+    E greaterEqualThan(final BigDecimal expected);
+    E lowerEqualThan(final long expected);
+    E lowerEqualThan(final double expected);
+    E lowerEqualThan(final BigDecimal expected);
 }

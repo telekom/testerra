@@ -2,16 +2,16 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import org.testng.Assert;
 
-public class AssertableBinaryValue<T> implements IAssertableBinaryValue {
+public class AssertableBinaryValue<T, E> implements IAssertableBinaryValue<T, E> {
 
     protected final T actual;
     protected final String property;
-    protected final Object object;
+    protected final E subject;
 
-    public AssertableBinaryValue(final T actual, String propertyName, Object object) {
+    public AssertableBinaryValue(final T actual, String propertyName, final E subject) {
         this.actual = actual;
         this.property = propertyName;
-        this.object = object;
+        this.subject = subject;
     }
 
     public T actual() {
@@ -19,17 +19,17 @@ public class AssertableBinaryValue<T> implements IAssertableBinaryValue {
     }
 
     @Override
-    public IAssertableBinaryValue isTrue() {
+    public E isTrue() {
         return isTrue(null);
     }
 
     @Override
-    public IAssertableBinaryValue isFalse() {
+    public E isFalse() {
         return isFalse(null);
     }
 
     @Override
-    public IAssertableBinaryValue isTrue(String errorMessage) {
+    public E isTrue(String errorMessage) {
         final String actualString = (String)actual;
         if (!(
             !(boolean) actual
@@ -40,13 +40,13 @@ public class AssertableBinaryValue<T> implements IAssertableBinaryValue {
             if (errorMessage == null || errorMessage.isEmpty()) {
                 errorMessage = String.format("[%s] is true", actual);
             }
-            Assert.fail(String.format("%s %s %s", object, property, errorMessage));
+            Assert.fail(String.format("%s %s %s", subject, property, errorMessage));
         }
-        return this;
+        return subject;
     }
 
     @Override
-    public IAssertableBinaryValue isFalse(String errorMessage) {
+    public E isFalse(String errorMessage) {
         final String actualString = (String)actual;
         if (!(
             (boolean) actual
@@ -57,8 +57,8 @@ public class AssertableBinaryValue<T> implements IAssertableBinaryValue {
             if (errorMessage == null || errorMessage.isEmpty()) {
                 errorMessage = String.format("[%s] is false", actual);
             }
-            Assert.fail(String.format("%s %s %s", object, property, errorMessage));
+            Assert.fail(String.format("%s %s %s", subject, property, errorMessage));
         }
-        return this;
+        return subject;
     }
 }

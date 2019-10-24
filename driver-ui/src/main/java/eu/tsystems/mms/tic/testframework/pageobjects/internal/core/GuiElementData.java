@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -48,7 +49,7 @@ public class GuiElementData {
     public int timeoutInSeconds;
     public final TimerWrapper timerWrapper;
     public WebElement webElement;
-    public final FrameLogic frameLogic;
+    public final IFrameLogic frameLogic;
     public final int timerSleepTimeInMs = 500;
     public boolean sensibleData = false;
     public GuiElementCore parent;
@@ -61,7 +62,7 @@ public class GuiElementData {
     public GuiElementData(
         WebDriver webDriver,
         String name,
-        FrameLogic frameLogic,
+        IFrameLogic frameLogic,
         By by,
         GuiElement guiElement
     ) {
@@ -124,7 +125,7 @@ public class GuiElementData {
     }
 
     public GuiElementData copy() {
-        FrameLogic frameLogic = null;
+        IFrameLogic frameLogic = null;
         if (this.frameLogic != null) {
             frameLogic = new FrameLogic(webDriver, this.frameLogic.getFrames());
         }

@@ -5,79 +5,79 @@ import org.testng.Assert;
 
 import java.math.BigDecimal;
 
-public class AssertableQuantifiedValue<T> extends AssertableBinaryValue implements IAssertableQuantifiedValue {
+public class AssertableQuantifiedValue<T, E> extends AssertableBinaryValue<T, E> implements IAssertableQuantifiedValue<T, E> {
 
-    public AssertableQuantifiedValue(final T actual, String propertyName, Object object) {
-        super(actual, propertyName, object);
+    public AssertableQuantifiedValue(final T actual, String propertyName, final E subject) {
+        super(actual, propertyName, subject);
     }
 
     @Override
-    public IAssertableQuantifiedValue equals(final String expected) {
-        Assert.assertEquals(actual, expected, String.format("%s %s", object, property));
-        return this;
+    public E equals(final String expected) {
+        Assert.assertEquals(actual, expected, String.format("%s %s", subject, property));
+        return subject;
     }
 
     @Override
-    public AssertableQuantifiedValue greaterThan(final long expected) {
+    public E greaterThan(final long expected) {
         return greaterThan(new BigDecimal(expected));
     }
 
     @Override
-    public AssertableQuantifiedValue greaterThan(final double expected) {
+    public E greaterThan(final double expected) {
         return greaterThan(new BigDecimal(expected));
     }
 
     @Override
-    public AssertableQuantifiedValue greaterThan(final BigDecimal expected) {
-        AssertUtils.assertGreaterThan(new BigDecimal((String)actual), expected, String.format("%s %s", object, property));
-        return this;
+    public E greaterThan(final BigDecimal expected) {
+        AssertUtils.assertGreaterThan(new BigDecimal((String)actual), expected, String.format("%s %s", subject, property));
+        return subject;
     }
 
     @Override
-    public AssertableQuantifiedValue lowerThan(final long expected) {
+    public E lowerThan(final long expected) {
         return lowerThan(new BigDecimal(expected));
     }
 
     @Override
-    public AssertableQuantifiedValue lowerThan(final double expected) {
+    public E lowerThan(final double expected) {
         return lowerThan(new BigDecimal(expected));
     }
 
     @Override
-    public AssertableQuantifiedValue lowerThan(final BigDecimal expected) {
+    public E lowerThan(final BigDecimal expected) {
         AssertUtils.assertLowerThan(new BigDecimal((String)actual), expected);
-        return this;
+        return subject;
     }
 
     @Override
-    public AssertableQuantifiedValue greaterEqualThan(final long expected) {
+    public E greaterEqualThan(final long expected) {
         return greaterThan(new BigDecimal(expected));
     }
 
     @Override
-    public AssertableQuantifiedValue greaterEqualThan(final double expected) {
+    public E greaterEqualThan(final double expected) {
         return greaterThan(new BigDecimal(expected));
     }
 
     @Override
-    public AssertableQuantifiedValue greaterEqualThan(final BigDecimal expected) {
-        AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected, String.format("%s %s", object, property));
-        return this;
+    public E greaterEqualThan(final BigDecimal expected) {
+        AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected, String.format("%s %s", subject, property));
+        return subject;
     }
 
     @Override
-    public AssertableQuantifiedValue lowerEqualThan(final long expected) {
+    public E lowerEqualThan(final long expected) {
         return lowerThan(new BigDecimal(expected));
     }
 
     @Override
-    public AssertableQuantifiedValue lowerEqualThan(final double expected) {
+    public E lowerEqualThan(final double expected) {
         return lowerThan(new BigDecimal(expected));
     }
 
     @Override
-    public AssertableQuantifiedValue lowerEqualThan(final BigDecimal expected) {
-        AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected, String.format("%s %s", object, property));
-        return this;
+    public E lowerEqualThan(final BigDecimal expected) {
+        AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected, String.format("%s %s", subject, property));
+        return subject;
     }
 }

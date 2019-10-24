@@ -11,6 +11,6 @@ public interface GuiElementCoreFactory {
         By by,
         WebDriver webDriver,
         GuiElementData guiElementData,
-        GuiElementCore parentCore
+        GuiElementCore decoratedCore
     );
 }

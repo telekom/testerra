@@ -1,9 +1,9 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-public interface IAssertableBinaryValue<T> {
+public interface IAssertableBinaryValue<T, E> {
     T actual();
-    IAssertableBinaryValue isTrue();
-    IAssertableBinaryValue isFalse();
-    IAssertableBinaryValue isTrue(final String errorMessage);
-    IAssertableBinaryValue isFalse(final String errorMessage);
+    E isTrue();
+    E isFalse();
+    E isTrue(final String errorMessage);
+    E isFalse(final String errorMessage);
 }

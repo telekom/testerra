@@ -10,6 +10,9 @@ public class TestPageObject extends Page {
     @Check
     private GuiElementFacade visibleElement = findById("11");
 
+    @Check
+    private GuiElementFacade subElement = findByQa("action/submit", visibleElement);
+
     /**
      * Constructor for existing sessions.
      *
@@ -20,6 +23,10 @@ public class TestPageObject extends Page {
     }
 
     public GuiElementFacade visibleElement() {
-        return this.visibleElement;
+        return visibleElement;
+    }
+    
+    public GuiElementFacade submitButton() {
+        return subElement;
     }
 }

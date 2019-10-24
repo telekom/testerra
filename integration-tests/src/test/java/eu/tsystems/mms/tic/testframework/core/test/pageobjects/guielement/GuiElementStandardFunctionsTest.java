@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
@@ -54,11 +55,31 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     @Test
-    public void test_NewApi_GuiElement_assertTextContains() {
-        page().visibleElement().text().contains("affe");
-        page().visibleElement().click();
-        page().visibleElement().type("affe").clear();
-        //guiElement.findByQa("action/submit").scrollTo().visible(false).isTrue("not visible");
+    public void test_NewApi_GuiElement() {
+        page().visibleElement()
+            .sendKeys("affe")
+            .text().contains("affe");       // Expect TestPageObject.GuiElement(By.id("11")).text [Haus] contains [Affe]
+        page().submitButton()
+            .scrollTo()
+            .visible(false).isTrue()    // Expect TestPageObject.GuiElement(By.qa("action/submit")).visible(false) [false] is true
+            .value(Attribute.STYLE).equals("display:block")   // Expect TestPageObject.GuiElement(By.qa("action/submit")).value("css") [display:none] equals [display:block]
+            .click();                       // Expect TestPageObject.GuiElement(By.qa("action/submit")).displayed [false] is true
+        page().visibleElement().clear();
+        page().title().contains("Form");    // Expect TestPageObject.title [SomePageTitle] contains [Form]
+        page().title().endsWith("Page");    // Expect TestPageObject.title [SomePageTitle] endsWith [Page]
+        ;
+    }
+
+    public void test_OldApi_GuiElement() {
+        page().visibleElement().sendKeys("affe");
+        page().visibleElement().asserts().assertTextContains("affe");
+        page().submitButton().scrollToElement();
+        page().submitButton().asserts().assertVisible(false);
+        page().submitButton().asserts().assertAttributeValue("style", "display:block");
+        page().submitButton().click();
+        page().visibleElement().clear();
+        AssertUtils.assertContains("Form", page().getWebDriver().getTitle());   // Expected [SomePageTitle] contains [Form]
+        Assert.assertTrue(page().getWebDriver().getTitle().endsWith("Page"));   // Expected [true] is false
     }
 
     /**

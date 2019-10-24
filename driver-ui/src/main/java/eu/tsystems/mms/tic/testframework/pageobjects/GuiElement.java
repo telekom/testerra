@@ -29,6 +29,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementAssertFactory;
@@ -132,8 +133,7 @@ public class GuiElement implements GuiElementFacade {
         final Locate locator,
         final GuiElementFacade... frames
     ) {
-        this(driver, locator.getBy(), frames);
-        this.locator = locator;
+        this(locator, driver, frames);
     }
 
     public GuiElement(
@@ -141,13 +141,45 @@ public class GuiElement implements GuiElementFacade {
         final By by,
         final GuiElementFacade... frames
     ) {
-        FrameLogic frameLogic = null;
+        this(Locate.by(by), driver, frames);
+    }
+
+    public GuiElement(
+        final Locate locator,
+        final WebDriver driver,
+        final GuiElementFacade... frames
+    ) {
+        IFrameLogic frameLogic = null;
         if (frames != null && frames.length > 0) {
             frameLogic = new FrameLogic(driver, frames);
         }
+        final By by = locator.getBy();
         guiElementData = new GuiElementData(driver, "", frameLogic, by, this);
         buildInternals(driver, by);
-        this.locator = Locate.by(by);
+        this.locator = locator;
+    }
+
+    public GuiElement(
+        final Locate locator,
+        final WebDriver driver,
+        final GuiElementFacade parent
+    ) {
+        if (!(parent instanceof GuiElement)) {
+            throw new TesterraSystemException(String.format("Parent element is no implementation of %s", GuiElement.class));
+        }
+
+        // Use FrameLogic from parent
+        GuiElement parentGuiElement = (GuiElement)parent;
+        IFrameLogic frameLogic = null;
+        if (parentGuiElement.guiElementData.frameLogic != null) {
+            frameLogic = parentGuiElement.guiElementData.frameLogic;
+        }
+
+        final By by = locator.getBy();
+        guiElementData = new GuiElementData(driver, "", frameLogic, by, this);
+        guiElementData.parent = parentGuiElement.guiElementCore;
+        buildInternals(driver, by);
+        this.locator = locator;
     }
 
     public Locate getLocator() {
@@ -571,6 +603,7 @@ public class GuiElement implements GuiElementFacade {
      *
      * @return parent object or null if this element has no parent
      */
+    @Deprecated
     public GuiElementCore getParent() {
         return guiElementData.parent;
     }
@@ -580,6 +613,7 @@ public class GuiElement implements GuiElementFacade {
      *
      * @param parent Object that should act as parent.
      */
+    @Deprecated
     public GuiElementFacade setParent(GuiElementCore parent) {
         guiElementData.parent = parent;
         return this;
@@ -741,7 +775,7 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public IAssertableBinaryValue<Boolean> visible(boolean complete) {
+    public IAssertableBinaryValue visible(boolean complete) {
         return new AssertableBinaryValue(isVisible(true), Property.VISIBLE.toString(), this);
     }
 
@@ -751,17 +785,17 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public IAssertableBinaryValue<Boolean> enabled() {
+    public IAssertableBinaryValue enabled() {
         return new AssertableBinaryValue(isDisplayed(), Property.DISPLAYED.toString(), this);
     }
 
     @Override
-    public IAssertableBinaryValue<Boolean> selected() {
+    public IAssertableBinaryValue selected() {
         return new AssertableBinaryValue<>(isSelected(), Property.SELECTED.toString(), this);
     }
 
     @Override
-    public IAssertableQuantifiedValue<Boolean> layout() {
+    public IAssertableQuantifiedValue layout() {
         return new AssertableQuantifiedValue<>(1, Property.LAYOUT.toString(), this);
     }
 

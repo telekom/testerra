@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
@@ -29,18 +30,33 @@ import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.*;
+import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import eu.tsystems.mms.tic.testframework.utils.MouseActions;
+import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
@@ -489,30 +505,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     public GuiElementFacade getSubElement(Locate locate) {
-        FrameLogic frameLogic = guiElementData.frameLogic;
-        GuiElementFacade[] frames = null;
-        if (frameLogic != null) {
-            frames = frameLogic.getFrames();
-        }
-
-        String locatorToString = locate.getBy().toString();
-        if (locatorToString.toLowerCase().contains("xpath")) {
-            int i = locatorToString.indexOf(":") + 1;
-            String locator = locatorToString.substring(i).trim();
-            // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
-            if (locator.startsWith("/")) {
-                LOGGER.warn("GetSubElement: Forced replacement of / to ./ at startTime of By.xpath locator, because / would not be relative: " + locator);
-                locate = Locate.by(By.xpath(locator));
-            } else if (!locator.startsWith(".") && !(locator.length() >= 2 && locator.startsWith("(") && locator.substring(1, 2).equals("."))) {
-                LOGGER.warn("Apparently, getSubElement is called with an By.xpath locator that does not startTime with a dot. " +
-                    "This will most likely lead to unexpected and potentially quiet errors. Locator is \"" +
-                    locatorToString + "\".");
-            }
-        }
-
-        GuiElement subElement = new GuiElement(webDriver, locate, frames);
-        subElement.setParent(this);
-        return subElement;
+        GuiElementFactory factory = TesterraCommons.ioc().getInstance(GuiElementFactory.class);
+        return factory.create(locate, webDriver, guiElementData.guiElement);
     }
 
     @Override

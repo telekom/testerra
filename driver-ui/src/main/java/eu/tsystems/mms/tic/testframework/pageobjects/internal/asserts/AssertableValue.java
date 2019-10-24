@@ -3,39 +3,39 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import org.testng.Assert;
 
-public class AssertableValue<T> extends AssertableQuantifiedValue implements IAssertableValue {
+public class AssertableValue<T,E> extends AssertableQuantifiedValue<T, E> implements IAssertableValue<T, E> {
 
-    public AssertableValue (final T actual, String propertyName, Object object) {
-        super(actual, propertyName, object);
+    public AssertableValue (final T actual, String propertyName, final E subject) {
+        super(actual, propertyName, subject);
     }
 
     @Override
-    public AssertableValue contains(final String expected) {
-        AssertUtils.assertContains((String)actual, expected, String.format("%s %s", object, property));
-        return this;
+    public E contains(final String expected) {
+        AssertUtils.assertContains((String)actual, expected, String.format("%s %s", subject, property));
+        return subject;
     }
 
     @Override
-    public AssertableValue containsNot(final String expected) {
-        AssertUtils.assertContainsNot((String)actual, expected, String.format("%s %s", object, property));
-        return this;
+    public E containsNot(final String expected) {
+        AssertUtils.assertContainsNot((String)actual, expected, String.format("%s %s", subject, property));
+        return subject;
     }
 
     @Override
-    public AssertableValue beginsWith(String expected) {
+    public E beginsWith(String expected) {
         final String actualString = (String)actual;
         if (!actualString.startsWith(expected)) {
-            Assert.fail(String.format("%s %s [%s] begins with [%s]", object, property, actual, expected));
+            Assert.fail(String.format("%s %s [%s] begins with [%s]", subject, property, actual, expected));
         }
-        return this;
+        return subject;
     }
 
     @Override
-    public AssertableValue endsWith(String expected) {
+    public E endsWith(String expected) {
         final String actualString = (String)actual;
         if (!actualString.endsWith(expected)) {
-            Assert.fail(String.format("%s %s [%s] ends with [%s]", object, property, actual, expected));
+            Assert.fail(String.format("%s %s [%s] ends with [%s]", subject, property, actual, expected));
         }
-        return this;
+        return subject;
     }
 }

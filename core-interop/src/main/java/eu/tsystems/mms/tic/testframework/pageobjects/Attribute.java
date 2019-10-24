@@ -6,7 +6,8 @@ public enum Attribute {
     NAME("name"),
     HREF("href"),
     TITLE("title"),
-    VALUE("value")
+    VALUE("value"),
+    STYLE("style")
     ;
 
     private final String attrib;

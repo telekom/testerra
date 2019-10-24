@@ -26,7 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class DefaultGuiElementCoreFactory implements GuiElementCoreFactory {
+public abstract class AbstractDefaultGuiElementCoreFactory implements GuiElementCoreFactory {
 
     @Override
     public GuiElementCore create(
@@ -34,14 +34,14 @@ public class DefaultGuiElementCoreFactory implements GuiElementCoreFactory {
         By by,
         WebDriver webDriver,
         GuiElementData guiElementData,
-        GuiElementCore parentCore
+        GuiElementCore decoratedCore
     ) {
         if (guiElementData.hasFrameLogic()) {
 
             // if frames are set, the waiter should use frame switches when executing its sequences
-            parentCore = new GuiElementCoreFrameAwareDecorator(parentCore, guiElementData);
+            decoratedCore = new GuiElementCoreFrameAwareDecorator(decoratedCore, guiElementData);
         }
         // Wrap the core with sequence decorator, such that its methods are executed with sequence
-        return new GuiElementCoreSequenceDecorator(parentCore, guiElementData);
+        return new GuiElementCoreSequenceDecorator(decoratedCore, guiElementData);
     }
 }

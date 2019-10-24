@@ -43,15 +43,15 @@ public interface GuiElementFacade extends
     GuiElementAssert asserts();
     GuiElementAssert asserts(String errorMessage);
     GuiElementWait waits();
-    IAssertableValue text();
-    IAssertableValue value();
-    IAssertableValue value(final Attribute attribute);
-    IAssertableBinaryValue<Boolean> present();
-    IAssertableBinaryValue<Boolean> visible(final boolean complete);
-    IAssertableBinaryValue<Boolean> displayed();
-    IAssertableBinaryValue<Boolean> enabled();
-    IAssertableBinaryValue<Boolean> selected();
-    IAssertableQuantifiedValue<Boolean> layout();
+    IAssertableValue<String, GuiElementFacade> text();
+    IAssertableValue<String, GuiElementFacade> value();
+    IAssertableValue<String, GuiElementFacade> value(final Attribute attribute);
+    IAssertableBinaryValue<Boolean, GuiElementFacade> present();
+    IAssertableBinaryValue<Boolean, GuiElementFacade> visible(final boolean complete);
+    IAssertableBinaryValue<Boolean, GuiElementFacade> displayed();
+    IAssertableBinaryValue<Boolean, GuiElementFacade> enabled();
+    IAssertableBinaryValue<Boolean, GuiElementFacade> selected();
+    IAssertableQuantifiedValue<Boolean, GuiElementFacade> layout();
     GuiElementFacade scrollTo();
     GuiElementFacade scrollTo(final int yOffset);
 

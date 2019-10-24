@@ -29,15 +29,15 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertabl
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.Locator;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
+import org.openqa.selenium.By;
 
 import java.util.List;
 
 public interface GuiElementFacade extends
     GuiElementCore,
     Nameable,
-    IWebDriverRetainer,
-    Locator
+    IWebDriverRetainer
 {
     IFrameLogic getFrameLogic();
     GuiElementAssert asserts();
@@ -61,8 +61,31 @@ public interface GuiElementFacade extends
     GuiElementFacade setTimeoutInSeconds(int timeoutInSeconds);
     GuiElementFacade restoreDefaultTimeout();
 
+    /**
+     * Deprecated APIs
+     */
     @Deprecated
     List<GuiElementFacade> getList();
+
+    @Override
+    @Deprecated
+    GuiElementFacade getSubElement(final By by);
+
+    @Override
+    @Deprecated
+    GuiElementFacade getSubElement(final Locate locator);
+
+    @Override
+    @Deprecated
+    GuiElementCore scrollToElement(final int yOffset);
+
+    @Override
+    @Deprecated
+    GuiElementCore scrollToElement();
+
+    @Override
+    @Deprecated
+    String getCssValue(final String cssIdentifier);
 
     /**
      * GuiElementCore to GuiElementFacade overrides
@@ -105,4 +128,7 @@ public interface GuiElementFacade extends
 
     @Override
     GuiElementFacade sendKeys(final CharSequence... charSequences);
+
+    @Override
+    GuiElementFacade clear();
 }

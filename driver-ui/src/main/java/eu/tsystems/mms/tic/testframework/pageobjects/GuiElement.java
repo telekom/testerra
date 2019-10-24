@@ -774,24 +774,4 @@ public class GuiElement implements GuiElementFacade {
     public GuiElementFacade scrollTo(final int yOffset) {
         return scrollToElement(yOffset);
     }
-
-    @Override
-    public GuiElementFacade findById(final String id) {
-        return getSubElement(Locate.by().id(id));
-    }
-
-    @Override
-    public GuiElementFacade findByQa(final String qa) {
-        return getSubElement(Locate.by().qa(qa));
-    }
-
-    @Override
-    public GuiElementFacade find(final Locate locator) {
-        return getSubElement(locator);
-    }
-
-    @Override
-    public GuiElementFacade find(final By by) {
-        return getSubElement(by);
-    }
 }

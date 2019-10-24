@@ -34,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
@@ -345,7 +344,7 @@ public final class JSUtils {
         String hierarchyFrameSelector = "document";
 
         // Run through hierarchy
-        final FrameLogic frameLogic = element.getFrameLogic();
+        final IFrameLogic frameLogic = element.getFrameLogic();
 
         if (frameLogic != null) {
             List<GuiElementFacade> allFramesInOrder = frameLogic.getAllFramesInOrder();

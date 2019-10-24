@@ -5,7 +5,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.FluentPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import org.openqa.selenium.WebDriver;
 
-public class TestPageObject extends FluentPage<TestPageObject> {
+public class FluentTestPage extends FluentPage<FluentTestPage> {
 
     @Check
     private GuiElementFacade visibleElement = findById("11");
@@ -18,7 +18,7 @@ public class TestPageObject extends FluentPage<TestPageObject> {
      *
      * @param driver .
      */
-    public TestPageObject(WebDriver driver) {
+    public FluentTestPage(WebDriver driver) {
         super(driver);
     }
 
@@ -31,7 +31,7 @@ public class TestPageObject extends FluentPage<TestPageObject> {
     }
 
     @Override
-    protected TestPageObject self() {
+    protected FluentTestPage self() {
         return this;
     }
 }

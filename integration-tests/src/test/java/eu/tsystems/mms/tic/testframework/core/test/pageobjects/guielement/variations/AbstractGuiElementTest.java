@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.core.test.TestPageObject;
+import eu.tsystems.mms.tic.testframework.core.test.FluentTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
@@ -235,8 +235,8 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
     public abstract GuiElement getGuiElementBy(By locator);
 
-    public TestPageObject page() {
-        return PageFactory.create(TestPageObject.class, WebDriverManager.getWebDriver());
+    public FluentTestPage page() {
+        return PageFactory.create(FluentTestPage.class, WebDriverManager.getWebDriver());
     }
 
     protected abstract TestPage getTestPage();

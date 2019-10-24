@@ -9,4 +9,7 @@ public interface IAssertableValue<T, E> extends
     E containsNot(final String expected);
     E beginsWith(final String expected);
     E endsWith(final String expected);
+
+    @Override
+    IAssertableValue<T, E> nonFunctional();
 }

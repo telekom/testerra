@@ -798,8 +798,8 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public IAssertableQuantifiedValue<Boolean> layout() {
-        return decoratedFacade.layout();
+    public IAssertableQuantifiedValue<Boolean> screenshot() {
+        return decoratedFacade.screenshot();
     }
 
     @Override

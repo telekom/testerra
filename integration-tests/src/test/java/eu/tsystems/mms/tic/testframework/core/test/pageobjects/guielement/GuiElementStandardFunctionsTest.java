@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
@@ -38,6 +39,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +61,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         page().call("https://www.google.de");
         page().input()
             .sendKeys("affe")
-            .text().contains("affe");       // Expect TestPageObject.GuiElement(By.id("11")).text [Haus] contains [Affe]
+            .text().nonFunctional().contains("affe");       // Expect TestPageObject.GuiElement(By.id("11")).text [Haus] contains [Affe]
         page().submit()
             .scrollTo()
             .visible(false).isTrue()    // Expect TestPageObject.GuiElement(By.qa("action/submit")).visible(false) [false] is true
@@ -68,13 +70,14 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         page().input().clear();
         page()
             .title().contains("Form")       // Expect TestPageObject.title [SomePageTitle] contains [Form]
-            .title().contains("Page");      // Expect TestPageObject.title [SomePageTitle] endsWith [Page]
+            .title().contains("Page")      // Expect TestPageObject.title [SomePageTitle] endsWith [Page]
+            .imageReference("Google").lowerThan(5);       // Expect TestPageObject.imageReference("Google") [10] lower than [5]
     }
 
     public void test_OldApi_GuiElement() {
         page().getWebDriver().navigate().to("http://www.google.de");
         page().input().sendKeys("affe");
-        page().input().asserts().assertTextContains("affe");
+        page().input().nonFunctionalAsserts().assertTextContains("affe");
         page().submit().scrollToElement();
         page().submit().asserts().assertVisible(false);
         page().submit().asserts().assertAttributeValue("style", "display:block");
@@ -82,6 +85,13 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         page().input().clear();
         AssertUtils.assertContains("Form", page().getWebDriver().getTitle());   // Expected [SomePageTitle] contains [Form]
         Assert.assertTrue(page().getWebDriver().getTitle().endsWith("Page"));   // Expected [true] is false
+
+        double dist = LayoutCheck.run(page().getWebDriver(), "Google");
+        AssertUtils.assertLowerThan(
+            new BigDecimal(dist),
+            new BigDecimal(5),
+            String.format("Pixel distance of page %s", "Google")
+        );
     }
 
     /**

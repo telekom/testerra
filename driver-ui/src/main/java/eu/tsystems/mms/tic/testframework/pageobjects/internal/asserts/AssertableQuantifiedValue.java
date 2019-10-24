@@ -80,4 +80,10 @@ public class AssertableQuantifiedValue<T, E> extends AssertableBinaryValue<T, E>
         AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected, String.format("%s %s", subject, property));
         return subject;
     }
+
+    @Override
+    public IAssertableQuantifiedValue<T, E> nonFunctional() {
+        super.nonFunctional();
+        return this;
+    }
 }

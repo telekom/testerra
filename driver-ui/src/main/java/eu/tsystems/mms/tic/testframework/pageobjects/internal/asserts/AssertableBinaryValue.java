@@ -7,6 +7,7 @@ public class AssertableBinaryValue<T, E> implements IAssertableBinaryValue<T, E>
     protected final T actual;
     protected final String property;
     protected final E subject;
+    protected boolean nonFunctional=false;
 
     public AssertableBinaryValue(final T actual, String propertyName, final E subject) {
         this.actual = actual;
@@ -60,5 +61,11 @@ public class AssertableBinaryValue<T, E> implements IAssertableBinaryValue<T, E>
             Assert.fail(String.format("%s %s %s", subject, property, errorMessage));
         }
         return subject;
+    }
+
+    @Override
+    public INonFunctionalAssertableValue nonFunctional() {
+        nonFunctional = true;
+        return this;
     }
 }

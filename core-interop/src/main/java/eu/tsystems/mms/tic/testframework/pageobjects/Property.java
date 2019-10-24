@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+@Deprecated
 public enum Property {
     DISPLAYED("displayed"),
     PRESENT("present"),

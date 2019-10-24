@@ -40,9 +40,6 @@ public interface GuiElementFacade extends
     IWebDriverRetainer
 {
     IFrameLogic getFrameLogic();
-    GuiElementAssert asserts();
-    GuiElementAssert asserts(String errorMessage);
-    GuiElementWait waits();
     IAssertableValue<String, GuiElementFacade> text();
     IAssertableValue<String, GuiElementFacade> value();
     IAssertableValue<String, GuiElementFacade> value(final Attribute attribute);
@@ -51,7 +48,7 @@ public interface GuiElementFacade extends
     IAssertableBinaryValue<Boolean, GuiElementFacade> displayed();
     IAssertableBinaryValue<Boolean, GuiElementFacade> enabled();
     IAssertableBinaryValue<Boolean, GuiElementFacade> selected();
-    IAssertableQuantifiedValue<Boolean, GuiElementFacade> layout();
+    IAssertableQuantifiedValue<Double, GuiElementFacade> screenshot(final String imageName);
     GuiElementFacade scrollTo();
     GuiElementFacade scrollTo(final int yOffset);
 
@@ -77,15 +74,28 @@ public interface GuiElementFacade extends
 
     @Override
     @Deprecated
-    GuiElementCore scrollToElement(final int yOffset);
+    GuiElementFacade scrollToElement(final int yOffset);
 
     @Override
     @Deprecated
-    GuiElementCore scrollToElement();
+    GuiElementFacade scrollToElement();
 
     @Override
     @Deprecated
     String getCssValue(final String cssIdentifier);
+
+    @Deprecated
+    GuiElementAssert asserts();
+    @Deprecated
+    GuiElementAssert asserts(String errorMessage);
+    @Deprecated
+    GuiElementWait waits();
+
+    @Deprecated
+    GuiElementAssert nonFunctionalAsserts();
+
+    @Deprecated
+    GuiElementAssert nonFunctionalAsserts(String errorMessage);
 
     /**
      * GuiElementCore to GuiElementFacade overrides

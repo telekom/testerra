@@ -38,4 +38,10 @@ public class AssertableValue<T,E> extends AssertableQuantifiedValue<T, E> implem
         }
         return subject;
     }
+
+    @Override
+    public IAssertableValue<T, E> nonFunctional() {
+        super.nonFunctional();
+        return this;
+    }
 }

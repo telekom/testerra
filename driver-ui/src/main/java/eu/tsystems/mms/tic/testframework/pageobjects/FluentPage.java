@@ -26,7 +26,9 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableQuantifiedValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableQuantifiedValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
 import org.openqa.selenium.WebDriver;
 
@@ -84,6 +86,10 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
     public SELF takeScreenshot() {
         super.takeScreenshot();
         return self();
+    }
+
+    public IAssertableQuantifiedValue<Double, SELF> imageReference(final String imageName) {
+        return new AssertableQuantifiedValue(0,"screenshot", this);
     }
 
     /**

@@ -795,7 +795,7 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public IAssertableQuantifiedValue layout() {
+    public IAssertableQuantifiedValue screenshot(final String imageName) {
         return new AssertableQuantifiedValue<>(1, Property.LAYOUT.toString(), this);
     }
 

@@ -56,28 +56,30 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void test_NewApi_GuiElement() {
-        page().visibleElement()
+        page().call("https://www.google.de");
+        page().input()
             .sendKeys("affe")
             .text().contains("affe");       // Expect TestPageObject.GuiElement(By.id("11")).text [Haus] contains [Affe]
-        page().submitButton()
+        page().submit()
             .scrollTo()
             .visible(false).isTrue()    // Expect TestPageObject.GuiElement(By.qa("action/submit")).visible(false) [false] is true
             .value(Attribute.STYLE).equals("display:block")   // Expect TestPageObject.GuiElement(By.qa("action/submit")).value("css") [display:none] equals [display:block]
             .click();                       // Expect TestPageObject.GuiElement(By.qa("action/submit")).displayed [false] is true
-        page().visibleElement().clear();
-        page().title().contains("Form");    // Expect TestPageObject.title [SomePageTitle] contains [Form]
-        page().title().endsWith("Page");    // Expect TestPageObject.title [SomePageTitle] endsWith [Page]
-        ;
+        page().input().clear();
+        page()
+            .title().contains("Form")       // Expect TestPageObject.title [SomePageTitle] contains [Form]
+            .title().contains("Page");      // Expect TestPageObject.title [SomePageTitle] endsWith [Page]
     }
 
     public void test_OldApi_GuiElement() {
-        page().visibleElement().sendKeys("affe");
-        page().visibleElement().asserts().assertTextContains("affe");
-        page().submitButton().scrollToElement();
-        page().submitButton().asserts().assertVisible(false);
-        page().submitButton().asserts().assertAttributeValue("style", "display:block");
-        page().submitButton().click();
-        page().visibleElement().clear();
+        page().getWebDriver().navigate().to("http://www.google.de");
+        page().input().sendKeys("affe");
+        page().input().asserts().assertTextContains("affe");
+        page().submit().scrollToElement();
+        page().submit().asserts().assertVisible(false);
+        page().submit().asserts().assertAttributeValue("style", "display:block");
+        page().submit().click();
+        page().input().clear();
         AssertUtils.assertContains("Form", page().getWebDriver().getTitle());   // Expected [SomePageTitle] contains [Form]
         Assert.assertTrue(page().getWebDriver().getTitle().endsWith("Page"));   // Expected [true] is false
     }

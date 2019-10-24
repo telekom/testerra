@@ -1,11 +1,11 @@
 package eu.tsystems.mms.tic.testframework.core.test;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.pageobjects.FluentPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import org.openqa.selenium.WebDriver;
 
-public class TestPageObject extends Page {
+public class TestPageObject extends FluentPage<TestPageObject> {
 
     @Check
     private GuiElementFacade visibleElement = findById("11");
@@ -22,11 +22,16 @@ public class TestPageObject extends Page {
         super(driver);
     }
 
-    public GuiElementFacade visibleElement() {
+    public GuiElementFacade input() {
         return visibleElement;
     }
-    
-    public GuiElementFacade submitButton() {
+
+    public GuiElementFacade submit() {
         return subElement;
+    }
+
+    @Override
+    protected TestPageObject self() {
+        return this;
     }
 }

@@ -38,8 +38,10 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- * Created by rnhb on 24.02.2015.
+ * @deprecated This class can be merged with Page
+ *
  */
+@Deprecated()
 public abstract class AbstractPage implements IWebDriverRetainer {
 
     /**
@@ -401,8 +403,9 @@ public abstract class AbstractPage implements IWebDriverRetainer {
     /**
      * taking screenshot from all open windows
      */
-    public void takeScreenshot() {
+    public AbstractPage takeScreenshot() {
         UITestUtils.takeScreenshot(driver, true);
+        return this;
     }
 
     public abstract void waitForPageToLoad();

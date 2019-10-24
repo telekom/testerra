@@ -88,7 +88,7 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
         return self();
     }
 
-    public IAssertableQuantifiedValue<Double, SELF> imageReference(final String imageName) {
+    public IAssertableQuantifiedValue<Double, SELF> screenshotReference(final String imageName) {
         return new AssertableQuantifiedValue(0,"screenshot", this);
     }
 

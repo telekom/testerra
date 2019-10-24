@@ -71,7 +71,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         page()
             .title().contains("Form")       // Expect TestPageObject.title [SomePageTitle] contains [Form]
             .title().contains("Page")      // Expect TestPageObject.title [SomePageTitle] endsWith [Page]
-            .imageReference("Google").lowerThan(5);       // Expect TestPageObject.imageReference("Google") [10] lower than [5]
+            .screenshotReference("Google").lowerThan(5);       // Expect TestPageObject.imageReference("Google") [10] lower than [5]
     }
 
     public void test_OldApi_GuiElement() {

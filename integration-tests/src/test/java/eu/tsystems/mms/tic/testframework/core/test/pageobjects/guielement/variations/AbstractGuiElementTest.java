@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.core.test.TestPageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -235,7 +236,7 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
     public abstract GuiElement getGuiElementBy(By locator);
 
     public TestPageObject page() {
-        return new TestPageObject(WebDriverManager.getWebDriver());
+        return PageFactory.create(TestPageObject.class, WebDriverManager.getWebDriver());
     }
 
     protected abstract TestPage getTestPage();

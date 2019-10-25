@@ -755,7 +755,8 @@ public class GuiElement implements GuiElementFacade, Loggable {
 
     @Override
     public IAssertableValue text() {
-        return new AssertableValue(getText(), Property.TEXT.toString(), this);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new AssertableValue( this, getText(), methodName);
     }
 
     @Override
@@ -765,37 +766,56 @@ public class GuiElement implements GuiElementFacade, Loggable {
 
     @Override
     public IAssertableValue value(Attribute attribute) {
-        return new AssertableValue(getAttribute(attribute.toString()), String.format("@%s", Property.ATTRIBUTE), this);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new AssertableValue(this, getAttribute(attribute.toString()), methodName);
     }
 
     @Override
     public IAssertableBinaryValue present() {
-        return new AssertableBinaryValue(waits().waitForIsPresent(), Property.PRESENT.toString(), this);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new AssertableBinaryValue(this,waits().waitForIsPresent(), methodName);
     }
 
     @Override
     public IAssertableBinaryValue visible(boolean complete) {
-        return new AssertableBinaryValue(isVisible(true), Property.VISIBLE.toString(), this);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new AssertableBinaryValue(this,isVisible(true), String.format("%s(complete: %s)", methodName, complete));
     }
 
     @Override
     public IAssertableBinaryValue displayed() {
-        return new AssertableBinaryValue(isDisplayed(), Property.DISPLAYED.toString(), this);
+        /*Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
+            @Override
+            public void run() {
+                setReturningObject(!checkForEnabled); // in case of an error while executing webelement method -> no exception has to be thrown
+                setSkipThrowingException(true);
+
+                boolean isEnabled = guiElementStatusCheck.isEnabled();
+                boolean sequenceStatus = isEnabled == checkForEnabled;
+                setPassState(sequenceStatus);
+                setReturningObject(sequenceStatus);
+            }
+        };*/
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new AssertableBinaryValue(this, isDisplayed(), methodName);
     }
 
     @Override
     public IAssertableBinaryValue enabled() {
-        return new AssertableBinaryValue(isDisplayed(), Property.DISPLAYED.toString(), this);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new AssertableBinaryValue(this,isEnabled(), methodName);
     }
 
     @Override
     public IAssertableBinaryValue selected() {
-        return new AssertableBinaryValue<>(isSelected(), Property.SELECTED.toString(), this);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new AssertableBinaryValue(this, isSelected(), methodName);
     }
 
     @Override
     public IAssertableQuantifiedValue screenshot(final String imageName) {
-        return new AssertableQuantifiedValue<>(1, Property.LAYOUT.toString(), this);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new AssertableQuantifiedValue(this, 1, methodName);
     }
 
     @Override

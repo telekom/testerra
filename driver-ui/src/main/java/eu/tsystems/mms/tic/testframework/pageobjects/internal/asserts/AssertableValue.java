@@ -5,8 +5,8 @@ import org.testng.Assert;
 
 public class AssertableValue<T,E> extends AssertableQuantifiedValue<T, E> implements IAssertableValue<T, E> {
 
-    public AssertableValue (final T actual, String propertyName, final E subject) {
-        super(actual, propertyName, subject);
+    public AssertableValue (final E subject, final T actual, final String propertyName) {
+        super(subject, actual, propertyName);
     }
 
     @Override

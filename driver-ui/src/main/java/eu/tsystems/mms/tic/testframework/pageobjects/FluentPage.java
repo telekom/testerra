@@ -54,11 +54,13 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
      * @return
      */
     public IAssertableValue<String, SELF> title() {
-        return new AssertableValue(driver.getTitle(), Property.TITLE.toString(), this);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new AssertableValue(this, driver.getTitle(), methodName);
     }
 
     public IAssertableValue<String, SELF> url() {
-        return new AssertableValue(driver.getCurrentUrl(), Property.URL.toString(), this);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new AssertableValue(this, driver.getCurrentUrl(), methodName);
     }
 
     public SELF call(final String urlString) {
@@ -89,7 +91,8 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
     }
 
     public IAssertableQuantifiedValue<Double, SELF> screenshotReference(final String imageName) {
-        return new AssertableQuantifiedValue(0,"screenshot", this);
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new AssertableQuantifiedValue(this, 0, String.format("%s(%s)", methodName, imageName));
     }
 
     /**

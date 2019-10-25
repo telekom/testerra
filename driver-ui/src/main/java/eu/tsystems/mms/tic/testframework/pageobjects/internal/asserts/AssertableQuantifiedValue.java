@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 
 public class AssertableQuantifiedValue<T, E> extends AssertableBinaryValue<T, E> implements IAssertableQuantifiedValue<T, E> {
 
-    public AssertableQuantifiedValue(final T actual, String propertyName, final E subject) {
-        super(actual, propertyName, subject);
+    public AssertableQuantifiedValue(final E subject, final T actual, final String propertyName) {
+        super(subject, actual, propertyName);
     }
 
     @Override

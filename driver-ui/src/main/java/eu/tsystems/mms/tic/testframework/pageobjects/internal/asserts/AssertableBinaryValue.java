@@ -9,7 +9,7 @@ public class AssertableBinaryValue<T, E> implements IAssertableBinaryValue<T, E>
     protected final E subject;
     protected boolean nonFunctional=false;
 
-    public AssertableBinaryValue(final T actual, String propertyName, final E subject) {
+    public AssertableBinaryValue(final E subject, final T actual, final String propertyName) {
         this.actual = actual;
         this.property = propertyName;
         this.subject = subject;

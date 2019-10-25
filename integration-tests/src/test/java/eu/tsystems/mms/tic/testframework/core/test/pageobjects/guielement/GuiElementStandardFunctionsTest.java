@@ -20,6 +20,8 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.core.test.ClassicTestPage;
+import eu.tsystems.mms.tic.testframework.core.test.FluentTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
@@ -58,37 +60,39 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void test_NewApi_GuiElement() {
-        page().call("https://www.google.de");
-        page().input()
+        FluentTestPage page = page();
+        page.call("https://www.google.de");
+        page.input()
             .sendKeys("affe")
-            .text().nonFunctional().contains("affe");       // Expect TestPageObject.GuiElement(By.id("11")).text [Haus] contains [Affe]
-        page().submit()
+            .text().nonFunctional().contains("affe");       // Expect GuiElement(By.id("11")).text [Haus] contains [Affe]
+        page.submit()
             .scrollTo()
-            .visible(false).isTrue()    // Expect TestPageObject.GuiElement(By.qa("action/submit")).visible(false) [false] is true
-            .value(Attribute.STYLE).equals("display:block")   // Expect TestPageObject.GuiElement(By.qa("action/submit")).value("css") [display:none] equals [display:block]
-            .click();                       // Expect TestPageObject.GuiElement(By.qa("action/submit")).displayed [false] is true
-        page().input().clear();
+            .visible(false).isTrue()    // Expect GuiElement(By.qa("action/submit")).visible(complete: false) [false] is true
+            .value(Attribute.STYLE).equals("display:block")   // Expect GuiElement(By.qa("action/submit")).value("css") [display:none] equals [display:block]
+            .click();                       // Expect GuiElement(By.qa("action/submit")).displayed [false] is true
+        page.input().clear();
 
-        page()
+        page
             .title().contains("Form")       // Expect TestPageObject.title [SomePageTitle] contains [Form]
             .title().contains("Page")      // Expect TestPageObject.title [SomePageTitle] endsWith [Page]
             .screenshotReference("Google").lowerThan(5);       // Expect TestPageObject.imageReference("Google") [10] lower than [5]
     }
 
     public void test_OldApi_GuiElement() {
-        page().getWebDriver().navigate().to("http://www.google.de");
-        page().input().sendKeys("affe");
-        page().input().nonFunctionalAsserts().assertTextContains("affe");
-        page().submit().scrollToElement();
-        page().submit().asserts().assertVisible(false);
-        page().submit().asserts().assertAttributeValue("style", "display:block");
-        page().submit().click();
-        page().input().clear();
+        ClassicTestPage page = classicPage();
+        page.getWebDriver().navigate().to("http://www.google.de");
+        page.input().sendKeys("affe");
+        page.input().nonFunctionalAsserts().assertTextContains("affe");
+        page.submit().scrollToElement();
+        page.submit().asserts().assertVisible(false);
+        page.submit().asserts().assertAttributeValue("style", "display:block");
+        page.submit().click();
+        page.input().clear();
 
-        AssertUtils.assertContains("Form", page().getWebDriver().getTitle());   // Expected [SomePageTitle] contains [Form]
-        Assert.assertTrue(page().getWebDriver().getTitle().endsWith("Page"));   // Expected [true] is false
+        AssertUtils.assertContains("Form", page.getWebDriver().getTitle());   // Expected [SomePageTitle] contains [Form]
+        Assert.assertTrue(page.getWebDriver().getTitle().endsWith("Page"));   // Expected [true] is false
 
-        double dist = LayoutCheck.run(page().getWebDriver(), "Google");
+        double dist = LayoutCheck.run(page.getWebDriver(), "Google");
         AssertUtils.assertLowerThan(
             new BigDecimal(dist),
             new BigDecimal(5),

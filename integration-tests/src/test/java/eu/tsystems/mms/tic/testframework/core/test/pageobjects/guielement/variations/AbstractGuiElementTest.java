@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.varia
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.core.test.ClassicTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.core.test.FluentTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -237,6 +238,10 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
     public FluentTestPage page() {
         return PageFactory.create(FluentTestPage.class, WebDriverManager.getWebDriver());
+    }
+
+    public ClassicTestPage classicPage() {
+        return PageFactory.create(ClassicTestPage.class, WebDriverManager.getWebDriver());
     }
 
     protected abstract TestPage getTestPage();

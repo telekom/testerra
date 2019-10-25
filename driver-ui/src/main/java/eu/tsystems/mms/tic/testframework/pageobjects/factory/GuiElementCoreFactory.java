@@ -10,7 +10,6 @@ public interface GuiElementCoreFactory {
         String browser,
         By by,
         WebDriver webDriver,
-        GuiElementData guiElementData,
-        GuiElementCore decoratedCore
+        GuiElementData guiElementData
     );
 }

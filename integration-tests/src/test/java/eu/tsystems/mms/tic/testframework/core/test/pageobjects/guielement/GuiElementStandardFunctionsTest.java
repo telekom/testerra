@@ -68,6 +68,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
             .value(Attribute.STYLE).equals("display:block")   // Expect TestPageObject.GuiElement(By.qa("action/submit")).value("css") [display:none] equals [display:block]
             .click();                       // Expect TestPageObject.GuiElement(By.qa("action/submit")).displayed [false] is true
         page().input().clear();
+
         page()
             .title().contains("Form")       // Expect TestPageObject.title [SomePageTitle] contains [Form]
             .title().contains("Page")      // Expect TestPageObject.title [SomePageTitle] endsWith [Page]
@@ -83,6 +84,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         page().submit().asserts().assertAttributeValue("style", "display:block");
         page().submit().click();
         page().input().clear();
+
         AssertUtils.assertContains("Form", page().getWebDriver().getTitle());   // Expected [SomePageTitle] contains [Form]
         Assert.assertTrue(page().getWebDriver().getTitle().endsWith("Page"));   // Expected [true] is false
 

@@ -29,7 +29,7 @@ import org.openqa.selenium.Point;
 import java.util.Map;
 
 /**
- * Created by pele on 31.08.2015.
+ * @todo Allow access to distance values (required for new assert interface)
  */
 public abstract class Layout implements ILayout {
 

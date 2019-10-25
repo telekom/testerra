@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
@@ -39,16 +40,6 @@ import java.util.List;
  * Created by pele on 29.11.2016.
  */
 public final class PageFactory {
-
-    /*
-    TODO:
-    RhjghPfghfh_Min_299px
-    PfgfPage_500px_999px
-    RhjghPfghfh_500px_Max
-
-    Pnsns_Res_dklsk
-
-     */
 
     private static String GLOBAL_PAGES_PREFIX = null;
     private static ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
@@ -84,6 +75,10 @@ public final class PageFactory {
         return loadPO(pageClass, driver, null, false);
     }
 
+    /**
+     * @deprecated Passing page variables is deprecated
+     */
+    @Deprecated
     public static <T extends Page, U extends PageVariables> T checkNot(Class<T> pageClass, WebDriver driver, U pageVariables) {
         return loadPO(pageClass, driver, pageVariables, false);
     }
@@ -92,6 +87,10 @@ public final class PageFactory {
         return loadPO(pageClass, driver, null, true);
     }
 
+    /**
+     * @deprecated Passing page variables is deprecated
+     */
+    @Deprecated
     public static <T extends Page, U extends PageVariables> T create(Class<T> pageClass, WebDriver driver, U pageVariables) {
         return loadPO(pageClass, driver, pageVariables, true);
     }
@@ -124,8 +123,8 @@ public final class PageFactory {
                     constructor = pageClass.getConstructor(WebDriver.class, pageVariables.getClass());
                     t = constructor.newInstance(driver, pageVariables);
                 } else {
-                    constructor = pageClass.getConstructor(WebDriver.class);
-                    t = constructor.newInstance(driver);
+                    IPageFactory pageFactory = TesterraCommons.ioc().getInstance(IPageFactory.class);
+                    t = pageFactory.create(pageClass, driver);
                 }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new TesterraRuntimeException(msg + pageClass.getSimpleName(), e);

@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementAssertFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementCoreFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementWaitFactory;
@@ -62,8 +63,6 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -75,12 +74,7 @@ import java.util.List;
  * <p>
  * Authors: pele, rnhb
  */
-public class GuiElement implements GuiElementFacade {
-    /**
-     * logger. What a surprise. Glad this JavaDoc is here.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);
-
+public class GuiElement implements GuiElementFacade, Loggable {
     private boolean forcedStandardAsserts = false;
 
     private GuiElementAssert functionalAssert;
@@ -193,7 +187,7 @@ public class GuiElement implements GuiElementFacade {
         guiElementData.browser = currentBrowser;
 
         GuiElementCoreFactory coreFactory = TesterraCommons.ioc().getInstance(GuiElementCoreFactory.class);
-        guiElementCore = coreFactory.create(currentBrowser, by, driver, guiElementData, null);
+        guiElementCore = coreFactory.create(currentBrowser, by, driver, guiElementData);
 
         GuiElementWaitFactory waitFactory = TesterraCommons.ioc().getInstance(GuiElementWaitFactory.class);
         guiElementWait = waitFactory.create(guiElementCore, guiElementData);
@@ -226,7 +220,12 @@ public class GuiElement implements GuiElementFacade {
         initDefaultAssert();
     }
 
-    @Deprecated
+    /**
+     * We cannot use the GuiElementFactory for decorating the facade here,
+     * since GuiElement is not always created by it's according factory.
+     * You can move this code to DefaultGuiElementFactory when no more 'new GuiElement()' calls exists.
+     * But this may not happen before 2119.
+     */
     private GuiElementFacade getFacade(GuiElementCore guiElementCore, GuiElementWait guiElementWait, GuiElementAssert guiElementAssert) {
         GuiElementFacade guiElementFacade;
         //guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
@@ -279,7 +278,7 @@ public class GuiElement implements GuiElementFacade {
      *
      * @return GuiElement
      */
-    public GuiElementFacade getSubElement(By by) {
+    public GuiElement getSubElement(By by) {
         return getSubElement(by, null);
     }
 
@@ -293,13 +292,13 @@ public class GuiElement implements GuiElementFacade {
      * @return GuiElement
      */
     @Deprecated
-    public GuiElementFacade getSubElement(By by, String description) {
-        return guiElementCore.getSubElement(by, description);
+    public GuiElement getSubElement(By by, String description) {
+        return (GuiElement)guiElementCore.getSubElement(by, description);
     }
 
     @Override
-    public GuiElementFacade getSubElement(Locate locator) {
-        return guiElementFacade.getSubElement(locator);
+    public GuiElement getSubElement(Locate locator) {
+        return (GuiElement)guiElementFacade.getSubElement(locator);
     }
 
     @Override
@@ -313,7 +312,7 @@ public class GuiElement implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementFacade scrollToElement() {
+    public GuiElement scrollToElement() {
         guiElementFacade.scrollToElement();
         return this;
     }
@@ -341,7 +340,7 @@ public class GuiElement implements GuiElementFacade {
     public GuiElementFacade select(final Boolean select) {
         guiElementData.setLogLevel(LogLevel.INFO);
         if (select == null) {
-            LOGGER.info("Select option is null. Selecting/Deselecting nothing.");
+            log().info("Select option is null. Selecting/Deselecting nothing.");
         }
         if (select) {
             guiElementFacade.select();

@@ -26,15 +26,16 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.IPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
@@ -80,8 +81,14 @@ public abstract class Page extends AbstractPage {
         pageLoadHandlers.add(h);
     }
 
-    @Inject
-    private GuiElementFactory guiElementFactory;
+    /**
+     * @todo You can mark this with @Inject when all pages are created by PageFactory
+     */
+    protected final GuiElementFactory guiElementFactory = TesterraCommons.ioc().getInstance(GuiElementFactory.class);
+    /**
+     * @todo You can mark this with @Inject when all pages are created by PageFactory
+     */
+    protected final IPageFactory pageFactory = TesterraCommons.ioc().getInstance(IPageFactory.class);
 
     /**
      * Constructor for existing sessions.

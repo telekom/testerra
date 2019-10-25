@@ -26,15 +26,14 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public abstract class AbstractDefaultGuiElementCoreFactory implements GuiElementCoreFactory {
+public abstract class AbstractGuiElementCoreFactory {
 
-    @Override
-    public GuiElementCore create(
+    public GuiElementCore decorate(
+        GuiElementCore decoratedCore,
         String browser,
         By by,
         WebDriver webDriver,
-        GuiElementData guiElementData,
-        GuiElementCore decoratedCore
+        GuiElementData guiElementData
     ) {
         if (guiElementData.hasFrameLogic()) {
 

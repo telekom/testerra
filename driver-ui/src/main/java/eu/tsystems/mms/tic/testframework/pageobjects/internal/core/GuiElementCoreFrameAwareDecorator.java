@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameAwareSelect;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -44,7 +44,7 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
     @Override
     protected void beforeDelegation() {
         if (guiElementData.hasFrameLogic()) {
-            FrameLogic frameLogic = guiElementData.frameLogic;
+            IFrameLogic frameLogic = guiElementData.frameLogic;
             ExecutionLog executionLog = guiElementData.executionLog;
             executionLog.addMessage("Switching to frames " + frameLogic);
             frameLogic.switchToCorrectFrame();
@@ -73,7 +73,7 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
 
     @Override
     public Select getSelectElement() {
-        FrameLogic frameLogic = guiElementData.frameLogic;
+        IFrameLogic frameLogic = guiElementData.frameLogic;
         beforeDelegation();
         WebElement webElement = decoratedGuiElementCore.getWebElement();
         Select select = new Select(webElement);

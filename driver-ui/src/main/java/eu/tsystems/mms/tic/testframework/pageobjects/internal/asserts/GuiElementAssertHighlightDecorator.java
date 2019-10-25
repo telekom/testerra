@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -33,7 +33,7 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
 
     private final GuiElementData guiElementData;
     private final WebDriver webDriver;
-    private final FrameLogic frameLogic;
+    private final IFrameLogic frameLogic;
 
     public GuiElementAssertHighlightDecorator(GuiElementAssert decoratedAssert, GuiElementData guiElementData) {
         super(decoratedAssert);

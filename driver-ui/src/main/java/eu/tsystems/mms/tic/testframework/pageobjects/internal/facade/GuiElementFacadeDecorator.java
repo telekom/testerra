@@ -22,7 +22,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableBinaryValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableQuantifiedValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
@@ -773,43 +772,28 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public IAssertableBinaryValue<Boolean> present() {
+    public IAssertableBinaryValue present() {
         return decoratedFacade.present();
     }
 
     @Override
-    public IAssertableBinaryValue<Boolean> visible(final boolean complete) {
+    public IAssertableBinaryValue visible(final boolean complete) {
         return decoratedFacade.visible(complete);
     }
 
     @Override
-    public IAssertableBinaryValue<Boolean> displayed() {
+    public IAssertableBinaryValue displayed() {
         return decoratedFacade.displayed();
     }
 
     @Override
-    public IAssertableBinaryValue<Boolean> enabled() {
+    public IAssertableBinaryValue enabled() {
         return decoratedFacade.enabled();
     }
 
     @Override
-    public IAssertableBinaryValue<Boolean> selected() {
+    public IAssertableBinaryValue selected() {
         return decoratedFacade.selected();
-    }
-
-    @Override
-    public IAssertableQuantifiedValue<Boolean> screenshot() {
-        return decoratedFacade.screenshot();
-    }
-
-    @Override
-    public GuiElementFacade find(Locate locator) {
-        return decoratedFacade.find(locator);
-    }
-
-    @Override
-    public GuiElementFacade find(By by) {
-        return decoratedFacade.find(by);
     }
 
     @Override

@@ -26,10 +26,10 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableQuantifiedValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.image.IShot;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableQuantifiedValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
+import eu.tsystems.mms.tic.testframework.report.Shot;
 import org.openqa.selenium.WebDriver;
 
 import java.net.URL;
@@ -85,14 +85,14 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
     }
 
     @Override
+    @Deprecated
     public SELF takeScreenshot() {
         super.takeScreenshot();
         return self();
     }
 
-    public IAssertableQuantifiedValue<Double, SELF> screenshotReference(final String imageName) {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        return new AssertableQuantifiedValue(this, 0, String.format("%s(%s)", methodName, imageName));
+    public IShot<SELF> screenshot() {
+        return new Shot(this);
     }
 
     /**

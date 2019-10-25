@@ -17,14 +17,14 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-/* 
+/*
  * Created on 14.11.2012
- * 
+ *
  * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
  */
-package eu.tsystems.mms.tic.testframework.report;
+package eu.tsystems.mms.tic.testframework.pageobjects.image;
 
 /**
  * Enum for Screenshot cause.

@@ -41,6 +41,7 @@ import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
@@ -74,7 +75,10 @@ import java.util.List;
 /**
  * Created by rnhb on 12.08.2015.
  */
-public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives {
+public class DesktopGuiElementCore implements
+    GuiElementCore,
+    UseJSAlternatives
+{
 
     private By by;
 
@@ -867,11 +871,16 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     @Override
     public File takeScreenshot() {
+        return getScreenshotAs(OutputType.FILE);
+    }
+
+    @Override
+    public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
         final WebElement element = getWebElement();
         final boolean isSelenium4 = false;
 
         if (isSelenium4) {
-            return element.getScreenshotAs(OutputType.FILE);
+            return element.getScreenshotAs(outputType);
         } else {
             if (!isVisible(false)) {
                 this.scrollToElement();
@@ -894,12 +903,11 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
                     eleHeight
                 );
                 ImageIO.write(eleScreenshot, "png", screenshot);
-                return screenshot;
+                return UITestUtils.fileToOutputType(screenshot, outputType);
             } catch (IOException e) {
                 LOGGER.error(String.format("%s unable to take screenshot: %s ", this.guiElementData, e));
             }
         }
-
         return null;
     }
 }

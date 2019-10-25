@@ -37,13 +37,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementAssertFac
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementCoreFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
+import eu.tsystems.mms.tic.testframework.pageobjects.image.IShot;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableBinaryValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableQuantifiedValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableBinaryValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableQuantifiedValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
@@ -54,11 +53,13 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
+import eu.tsystems.mms.tic.testframework.report.Shot;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -813,9 +814,8 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public IAssertableQuantifiedValue screenshot(final String imageName) {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        return new AssertableQuantifiedValue(this, 1, methodName);
+    public IShot<GuiElementFacade> screenshot() {
+        return new Shot<>(this);
     }
 
     @Override
@@ -826,5 +826,10 @@ public class GuiElement implements GuiElementFacade, Loggable {
     @Override
     public GuiElementFacade scrollTo(final int yOffset) {
         return scrollToElement(yOffset);
+    }
+
+    @Override
+    public <X> X getScreenshotAs(OutputType<X> outputType) {
+        return guiElementCore.getScreenshotAs(outputType);
     }
 }

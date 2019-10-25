@@ -36,8 +36,6 @@ import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.remote.RemoteDownloadPath;
-import eu.tsystems.mms.tic.testframework.report.Shot;
-import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
@@ -45,7 +43,11 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.sikuli.api.ScreenLocation;
 import org.sikuli.api.ScreenRegion;
@@ -55,6 +57,7 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -207,6 +210,31 @@ public class UITestUtils {
         return null;
     }
 
+    public static <X> X fileToOutputType(final File file, OutputType<X> outputType) {
+        if (outputType == OutputType.FILE) {
+            return (X)file;
+        } else {
+            final byte[] bytes;
+            try {
+                bytes = IOUtils.toByteArray(new FileInputStream(file));
+                if (outputType == OutputType.BASE64) {
+                    return (X)Base64.encodeBase64(bytes);
+                } else {
+                    return (X) bytes;
+                }
+            } catch (IOException e) {
+                LOGGER.error("Unable convert file", e);
+            }
+        }
+        return null;
+    }
+
+    public static <X> X takeScreenshotAs(WebDriver webDriver, OutputType<X> outputType) {
+        final File screenShotTargetFile = FileUtils.createTempFileName("screenshot.png");
+        takeWebDriverScreenshotToFile(webDriver, screenShotTargetFile);
+        return fileToOutputType(screenShotTargetFile, outputType);
+    }
+
     /**
      * Publish the screenshots to the report into the current errorContext.
      *
@@ -272,13 +300,15 @@ public class UITestUtils {
     }
 
     private static void makeSimpleScreenshot(WebDriver driver, File screenShotTargetFile) {
-        File file = Shot.takeScreenshot(driver);
-        if (file != null) {
-            try {
+        try {
+            File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            if (file != null) {
                 FileUtils.moveFile(file, screenShotTargetFile);
-            } catch (IOException e) {
-                LOGGER.error("Error moving screenshot: " + e.getLocalizedMessage());
             }
+        } catch (WebDriverException e) {
+            LOGGER.error("Could not get screenshot: "+ e.getLocalizedMessage());
+        } catch (IOException e) {
+            LOGGER.error("Error moving screenshot: " + e.getLocalizedMessage());
         }
     }
 

@@ -4,6 +4,4 @@ public interface IAssertableBinaryValue<T, E> extends INonFunctionalAssertableVa
     T actual();
     E isTrue();
     E isFalse();
-    E isTrue(final String errorMessage);
-    E isFalse(final String errorMessage);
 }

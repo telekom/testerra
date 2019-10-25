@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -34,7 +35,7 @@ import java.util.List;
 /**
  * Created by rnhb on 12.08.2015.
  */
-public interface GuiElementCore extends GuiElementStatusCheck {
+public interface GuiElementCore extends GuiElementStatusCheck, TakesScreenshot {
 
     /**
      * Returns the Webelement.
@@ -260,5 +261,6 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * Takes a screenshot of the GuiElement
      * @return File object of the screenshot or NULL on error
      */
+    @Deprecated
     File takeScreenshot();
 }

@@ -69,13 +69,14 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
             .scrollTo()
             .visible(false).isTrue()    // Expect GuiElement(By.qa("action/submit")).visible(complete: false) [false] is true
             .value(Attribute.STYLE).equals("display:block")   // Expect GuiElement(By.qa("action/submit")).value("css") [display:none] equals [display:block]
+            .screenshot().distance("SubmitButton").between(3,5)   // Expect GuiElement(By.qa("action/submit")).confidence(referenceImageName: "SubmitButton") [10] between [3] and [5]
             .click();                       // Expect GuiElement(By.qa("action/submit")).displayed [false] is true
         page.input().clear();
 
         page
             .title().contains("Form")       // Expect TestPageObject.title [SomePageTitle] contains [Form]
             .title().contains("Page")      // Expect TestPageObject.title [SomePageTitle] endsWith [Page]
-            .screenshotReference("Google").lowerThan(5);       // Expect TestPageObject.imageReference("Google") [10] lower than [5]
+            .screenshot().distance("Google").lowerThan(5);       // Expect TestPageObject.confidence(referenceImageName: "Google") [10] lower than [5]
     }
 
     public void test_OldApi_GuiElement() {
@@ -86,6 +87,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         page.submit().scrollToElement();
         page.submit().asserts().assertVisible(false);
         page.submit().asserts().assertAttributeValue("style", "display:block");
+        page.submit().asserts().assertScreenshot("SubmitButton", 5);    // Not possible
         page.submit().click();
         page.input().clear();
 

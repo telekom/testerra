@@ -26,55 +26,61 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.image.IShot;
+import eu.tsystems.mms.tic.testframework.pageobjects.image.ScreenshotCause;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableQuantifiedValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableQuantifiedValue;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Date;
 
 /**
  * Abstract class containing informations about a screenshot.
  */
-public abstract class Shot {
+public class Shot<T extends TakesScreenshot> implements Loggable, IShot<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Shot.class);
+    private Date date;
 
-    /** Timestamp, indicates when screenshot is taken. */
-    private long timestamp;
+    private T takesScreenShot;
 
     /** The cause of the screenshot. */
-    private ScreenshotCause screenshotCause;
+    private ScreenshotCause cause;
 
+    public Shot(T takesScreenShot) {
+        this.takesScreenShot = takesScreenShot;
+    }
+
+    @Deprecated
     public long getTimestamp() {
-        return timestamp;
+        return date.getTime();
     }
 
+    @Deprecated
     public void setTimestamp(final long timestamp) {
-        this.timestamp = timestamp;
+        date = new Date(timestamp);
     }
 
+    @Deprecated
     public ScreenshotCause getScreenshotCause() {
-        return screenshotCause;
+        return cause;
     }
 
+    @Deprecated
     public void setScreenshotCause(final ScreenshotCause screenshotCause) {
-        this.screenshotCause = screenshotCause;
+        this.cause = screenshotCause;
     }
 
-    /**
-     *
-     * @param driver
-     * @return File or NULL if no screenshot could be taken
-     */
+    @Deprecated
     public static File takeScreenshot(WebDriver driver) {
-        try {
-            return ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        } catch (WebDriverException e) {
-            LOGGER.error("Could not get screenshot: "+ e.getLocalizedMessage());
-        }
-        return null;
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+    }
+
+    public IAssertableQuantifiedValue distance(final String referenceImageName) {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new AssertableQuantifiedValue(takesScreenShot, 0, String.format("%s(referenceImageName: %s)", methodName, referenceImageName));
     }
 }

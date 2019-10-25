@@ -21,10 +21,10 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.IWebDriverRetainer;
+import eu.tsystems.mms.tic.testframework.pageobjects.image.IShot;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableBinaryValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableQuantifiedValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
@@ -48,7 +48,7 @@ public interface GuiElementFacade extends
     IAssertableBinaryValue<Boolean, GuiElementFacade> displayed();
     IAssertableBinaryValue<Boolean, GuiElementFacade> enabled();
     IAssertableBinaryValue<Boolean, GuiElementFacade> selected();
-    IAssertableQuantifiedValue<Double, GuiElementFacade> screenshot(final String imageName);
+    IShot<GuiElementFacade> screenshot();
     GuiElementFacade scrollTo();
     GuiElementFacade scrollTo(final int yOffset);
 

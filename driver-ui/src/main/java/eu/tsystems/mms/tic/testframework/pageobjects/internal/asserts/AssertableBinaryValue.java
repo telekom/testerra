@@ -21,16 +21,6 @@ public class AssertableBinaryValue<T, E> implements IAssertableBinaryValue<T, E>
 
     @Override
     public E isTrue() {
-        return isTrue(null);
-    }
-
-    @Override
-    public E isFalse() {
-        return isFalse(null);
-    }
-
-    @Override
-    public E isTrue(String errorMessage) {
         final String actualString = (String)actual;
         if (!(
             !(boolean) actual
@@ -38,16 +28,13 @@ public class AssertableBinaryValue<T, E> implements IAssertableBinaryValue<T, E>
             || actualString.equalsIgnoreCase("on")
             || actualString.equalsIgnoreCase("1")
         )) {
-            if (errorMessage == null || errorMessage.isEmpty()) {
-                errorMessage = String.format("[%s] is true", actual);
-            }
-            Assert.fail(String.format("%s %s %s", subject, property, errorMessage));
+            Assert.fail(String.format("%s.%s [%s] is true", subject, property, actual));
         }
         return subject;
     }
 
     @Override
-    public E isFalse(String errorMessage) {
+    public E isFalse() {
         final String actualString = (String)actual;
         if (!(
             (boolean) actual
@@ -55,10 +42,7 @@ public class AssertableBinaryValue<T, E> implements IAssertableBinaryValue<T, E>
             || actualString.equalsIgnoreCase("off")
             || actualString.equalsIgnoreCase("0")
         )) {
-            if (errorMessage == null || errorMessage.isEmpty()) {
-                errorMessage = String.format("[%s] is false", actual);
-            }
-            Assert.fail(String.format("%s %s %s", subject, property, errorMessage));
+            Assert.fail(String.format("%s.%s [%s] is false", subject, property, actual));
         }
         return subject;
     }

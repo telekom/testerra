@@ -29,7 +29,7 @@ public class AssertableQuantifiedValue<T, E> extends AssertableBinaryValue<T, E>
 
     @Override
     public E greaterThan(final BigDecimal expected) {
-        AssertUtils.assertGreaterThan(new BigDecimal((String)actual), expected, String.format("%s %s", subject, property));
+        AssertUtils.assertGreaterThan(new BigDecimal((String)actual), expected, String.format("%s.%s", subject, property));
         return subject;
     }
 
@@ -61,7 +61,7 @@ public class AssertableQuantifiedValue<T, E> extends AssertableBinaryValue<T, E>
 
     @Override
     public E greaterEqualThan(final BigDecimal expected) {
-        AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected, String.format("%s %s", subject, property));
+        AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected, String.format("%s.%s", subject, property));
         return subject;
     }
 
@@ -77,7 +77,23 @@ public class AssertableQuantifiedValue<T, E> extends AssertableBinaryValue<T, E>
 
     @Override
     public E lowerEqualThan(final BigDecimal expected) {
-        AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected, String.format("%s %s", subject, property));
+        AssertUtils.assertGreaterEqualThan(new BigDecimal((String)actual), expected, String.format("%s.%s", subject, property));
+        return subject;
+    }
+
+    @Override
+    public E between(long lower, long higher) {
+        return between(new BigDecimal(lower), new BigDecimal(higher));
+    }
+
+    @Override
+    public E between(double lower, double higher) {
+        return between(new BigDecimal(lower), new BigDecimal(higher));
+    }
+
+    @Override
+    public E between(BigDecimal lower, BigDecimal higher) {
+        AssertUtils.assertBetween(new BigDecimal((String)actual), lower, higher, String.format("%s.%s", subject, property));
         return subject;
     }
 

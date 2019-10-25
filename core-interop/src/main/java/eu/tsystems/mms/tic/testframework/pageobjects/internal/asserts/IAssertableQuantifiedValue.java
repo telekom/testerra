@@ -17,6 +17,9 @@ public interface IAssertableQuantifiedValue<T, E> extends IAssertableBinaryValue
     E lowerEqualThan(final long expected);
     E lowerEqualThan(final double expected);
     E lowerEqualThan(final BigDecimal expected);
+    E between(final long lower, final long higher);
+    E between(final double lower, final double higher);
+    E between(final BigDecimal lower, final BigDecimal higher);
 
     @Override
     IAssertableQuantifiedValue<T, E> nonFunctional();

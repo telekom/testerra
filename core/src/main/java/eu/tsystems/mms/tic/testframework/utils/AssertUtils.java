@@ -87,4 +87,10 @@ public final class AssertUtils {
             Assert.fail(String.format("%s [%s] is lower or equal than [%s]", description, actual, expected));
         }
     }
+
+    public static void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, String description) {
+        if (actual.compareTo(lower) > 0 || actual.compareTo(higher) < 0) {
+            Assert.fail(String.format("%s [%s] is between [%s] and [%s]", description, actual, lower, higher));
+        }
+    }
 }

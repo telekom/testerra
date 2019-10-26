@@ -37,7 +37,7 @@ import static org.testng.internal.EclipseInterface.ASSERT_RIGHT;
 @Deprecated
 public class AssertCollector {
 
-    private static final IAssert realAssert;
+    protected static IAssert realAssert;
 
     /**
      * Protect constructor since it is a static only class

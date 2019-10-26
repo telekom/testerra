@@ -756,7 +756,6 @@ public class GuiElement implements GuiElementFacade, Loggable {
 
     @Override
     public IValueAssertion<String> text() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         return new ValueAssertion<>(new AssertionProvider<String>() {
             @Override
             public String actual() {
@@ -765,7 +764,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
 
             @Override
             public String subject() {
-                return "text";
+                return String.format("%s.text", this);
             }
         });
     }
@@ -785,7 +784,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
 
             @Override
             public String subject() {
-                return String.format("value(%s)", attribute);
+                return String.format("%s.value(attribute: %s)", this, attribute);
             }
         });
     }
@@ -800,7 +799,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
 
             @Override
             public String subject() {
-                return "present";
+                return String.format("%s.present", this);
             }
         });
     }
@@ -815,14 +814,13 @@ public class GuiElement implements GuiElementFacade, Loggable {
 
             @Override
             public String subject() {
-                return String.format("visible(complete: %s)", complete);
+                return String.format("%s.visible(complete: %s)", this, complete);
             }
         });
     }
 
     @Override
     public IBinaryAssertion<Boolean> displayed() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         return new BinaryAssertion<>(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
@@ -831,7 +829,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
 
             @Override
             public String subject() {
-                return methodName;
+                return String.format("%s.displayed", this);
             }
         });
     }
@@ -846,7 +844,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
 
             @Override
             public String subject() {
-                return "enabled";
+                return String.format("%s.enabled", this);
             }
         });
     }
@@ -861,7 +859,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
 
             @Override
             public String subject() {
-                return "selected";
+                return String.format("%s.selected", this);
             }
         });
     }
@@ -876,7 +874,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
 
             @Override
             public Object subject() {
-                return "screenshot";
+                return String.format("%s.screenshot", this);
             }
         });
     }

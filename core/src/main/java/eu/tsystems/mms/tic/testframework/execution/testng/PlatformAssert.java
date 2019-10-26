@@ -1,11 +1,13 @@
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-public class ThrowAssertCollector implements IAssertCollector {
+import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
+
+public class PlatformAssert implements IAssert {
     @Override
     public void fail(String message, Throwable realCause) {
         AssertionError ae = new AssertionError(message);
         ae.initCause(realCause);
-        throw ae;
+        CollectedAssertions.store(ae);
     }
 
     @Override

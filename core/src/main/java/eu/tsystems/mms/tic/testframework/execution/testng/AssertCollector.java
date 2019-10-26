@@ -42,7 +42,7 @@ import static org.testng.internal.EclipseInterface.ASSERT_RIGHT;
 @Deprecated
 public class AssertCollector {
 
-    private static final IAssertCollector realCollector;
+    private static final IAssert realAssert;
 
     /**
      * Protect constructor since it is a static only class
@@ -52,8 +52,8 @@ public class AssertCollector {
     }
 
     static {
-        final AssertCollectorFactory factory = TesterraCommons.ioc().getInstance(AssertCollectorFactory.class);
-        realCollector = factory.create();
+        final FunctionalAssertFactory factory = TesterraCommons.ioc().getInstance(FunctionalAssertFactory.class);
+        realAssert = factory.create();
     }
 
     /**
@@ -109,7 +109,7 @@ public class AssertCollector {
      * @param realCause the original exception
      */
     static public void fail(String message, Throwable realCause) {
-        realCollector.fail(message, realCause);
+        realAssert.fail(message, realCause);
     }
 
     /**
@@ -118,7 +118,7 @@ public class AssertCollector {
      * @param message the assertion error message
      */
     static public void fail(String message) {
-        realCollector.fail(message);
+        realAssert.fail(message);
     }
 
     /**

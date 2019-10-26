@@ -19,14 +19,22 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import eu.tsystems.mms.tic.testframework.internal.AssertionChecker;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import org.testng.Assert;
 import org.testng.collections.Lists;
 
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static org.testng.internal.EclipseInterface.*;
+import static org.testng.internal.EclipseInterface.ASSERT_LEFT;
+import static org.testng.internal.EclipseInterface.ASSERT_LEFT2;
+import static org.testng.internal.EclipseInterface.ASSERT_MIDDLE;
+import static org.testng.internal.EclipseInterface.ASSERT_RIGHT;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +43,14 @@ import static org.testng.internal.EclipseInterface.*;
  * Time: 15:15
  * To change this template use File | Settings | File Templates.
  */
+@Deprecated
 public class NonFunctionalAssert {
+
+    private static final INonFunctionalAssert realAssert;
+
+    static {
+        realAssert = TesterraCommons.ioc().getInstance(INonFunctionalAssert.class);
+    }
 
     /**
      * Protect constructor since it is a static only class
@@ -97,10 +112,7 @@ public class NonFunctionalAssert {
      * @param realCause the original exception
      */
     static public void fail(String message, Throwable realCause) {
-        AssertionError ae = new AssertionError(message);
-        ae.initCause(realCause);
-
-        AssertionChecker.storeNonFunctionalInfo(ae);
+        realAssert.fail(message, realCause);
     }
 
     /**
@@ -109,9 +121,7 @@ public class NonFunctionalAssert {
      * @param message the assertion error message
      */
     static public void fail(String message) {
-        AssertionError assertionError = new AssertionError(message);
-
-        AssertionChecker.storeNonFunctionalInfo(assertionError);
+        realAssert.fail(message);
     }
 
     /**

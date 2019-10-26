@@ -64,7 +64,8 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         FluentTestPage page = page();
         page.call("https://www.google.de");
         // Expect GuiElement(By.id("11")).value(attribute: value) [Hausmaus] contains not [maus]
-        page.input().sendKeys("affe").value().nonFunctional().contains("affe").containsNot("maus");
+        // given    | when           | then
+        page.input().sendKeys("affe").value().contains("affe").nonFunctional().containsNot("maus");
         // Expect GuiElement(By.qa("action/submit")).visible(complete: false) [false] is true
         page.submit().scrollTo().visible(false).isTrue();
         // Expect GuiElement(By.qa("action/submit")).value(attribute: style) [display:none] equals [display:block]

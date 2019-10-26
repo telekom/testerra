@@ -873,7 +873,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
             }
 
             @Override
-            public Object subject() {
+            public String subject() {
                 return String.format("%s.screenshot", this);
             }
         });

@@ -1,5 +1,9 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public abstract class AssertionProvider<T> implements IAssertionProvider<T> {
     protected final AbstractAssertion parent;
 
@@ -17,7 +21,18 @@ public abstract class AssertionProvider<T> implements IAssertionProvider<T> {
     abstract public Object subject();
 
     public String traceSubjectString() {
-        return subject().toString();
+        final List<String> subjects = new ArrayList<>();
+        Object subject = subject();
+        if (subject!=null) subjects.add(subject.toString());
+
+        AbstractAssertion assertion = parent;
+        while (assertion != null) {
+            subject = assertion.provider.subject();
+            if (subject!=null) subjects.add(subject.toString());
+            assertion = assertion.provider.parent;
+        }
+        Collections.reverse(subjects);
+        return String.join(".", subjects);
     }
 
     @Override

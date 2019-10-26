@@ -26,7 +26,7 @@ public class BinaryAssertion<T> extends AbstractTestAssertion<T> implements IBin
             }
         });
         if (!throwablePackedResponse.isSuccessful()) {
-            Assert.fail(String.format("%s [%s] is true", provider.subject(), provider.actual()));
+            Assert.fail(String.format("%s [%s] is true", provider.traceSubjectString(), provider.actual()));
         }
         return this;
     }
@@ -47,7 +47,7 @@ public class BinaryAssertion<T> extends AbstractTestAssertion<T> implements IBin
             }
         });
         if (!throwablePackedResponse.isSuccessful()) {
-            Assert.fail(String.format("%s [%s] is false", provider.subject(), provider.actual()));
+            Assert.fail(String.format("%s [%s] is false", provider.traceSubjectString(), provider.actual()));
         }
         return this;
     }

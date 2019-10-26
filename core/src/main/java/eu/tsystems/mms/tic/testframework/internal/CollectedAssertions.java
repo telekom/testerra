@@ -25,8 +25,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +34,6 @@ import java.util.List;
  */
 public final class CollectedAssertions {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger("AssertCollector");
     private static final ThreadLocal<List<AssertionInfo>> ASSERTION_INFOS = new ThreadLocal<>();
 
     public synchronized static void store(Throwable throwable) {

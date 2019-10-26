@@ -19,26 +19,41 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import org.testng.Assert;
 import org.testng.collections.Lists;
 
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static org.testng.internal.EclipseInterface.*;
+import static org.testng.internal.EclipseInterface.ASSERT_LEFT;
+import static org.testng.internal.EclipseInterface.ASSERT_LEFT2;
+import static org.testng.internal.EclipseInterface.ASSERT_MIDDLE;
+import static org.testng.internal.EclipseInterface.ASSERT_RIGHT;
 
 /**
  * A dummy class for collecting asserts.
  */
+@Deprecated
 public class AssertCollector {
+
+    private static final IAssertCollector realCollector;
 
     /**
      * Protect constructor since it is a static only class
      */
     protected AssertCollector() {
         // hide constructor
+    }
+
+    static {
+        final AssertCollectorFactory factory = TesterraCommons.ioc().getInstance(AssertCollectorFactory.class);
+        realCollector = factory.create();
     }
 
     /**
@@ -94,10 +109,7 @@ public class AssertCollector {
      * @param realCause the original exception
      */
     static public void fail(String message, Throwable realCause) {
-        AssertionError ae = new AssertionError(message);
-        ae.initCause(realCause);
-
-        CollectedAssertions.store(ae);
+        realCollector.fail(message, realCause);
     }
 
     /**
@@ -106,13 +118,7 @@ public class AssertCollector {
      * @param message the assertion error message
      */
     static public void fail(String message) {
-        AssertionError assertionError = new AssertionError(message);
-        if (TesterraListener.isActive()) {
-            CollectedAssertions.store(assertionError);
-        }
-        else {
-            throw new AssertionError(message);
-        }
+        realCollector.fail(message);
     }
 
     /**

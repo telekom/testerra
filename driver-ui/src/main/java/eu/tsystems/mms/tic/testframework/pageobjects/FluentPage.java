@@ -39,9 +39,7 @@ import java.io.File;
 import java.net.URL;
 
 /**
- * tt. page objects base class.
- *
- * @author pele
+ * Page with fluent interface support.
  */
 public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
     /**
@@ -53,10 +51,6 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
         super(driver);
     }
 
-    /**
-     * @Todo We need a self type here
-     * @return
-     */
     public IValueAssertion<String> title() {
         return new ValueAssertion<>(new AssertionProvider<String>() {
             @Override
@@ -122,7 +116,7 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
 
             @Override
             public Object subject() {
-                return String.format("%s.url", this);
+                return String.format("%s.screenshot", this);
             }
         });
     }

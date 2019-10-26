@@ -35,11 +35,16 @@ public abstract class AssertionProvider<T> implements IAssertionProvider<T> {
         return String.join(".", subjects);
     }
 
-    @Override
-    public void failed() {
+    public void failedRecursive() {
+        failed();
+        AbstractAssertion assertion = parent;
+        while (assertion != null) {
+            assertion.provider.failed();
+            assertion = assertion.provider.parent;
+        }
     }
 
     @Override
-    public void passed() {
+    public void failed() {
     }
 }

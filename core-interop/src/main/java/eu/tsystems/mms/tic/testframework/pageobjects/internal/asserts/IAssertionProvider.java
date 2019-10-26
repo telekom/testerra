@@ -4,5 +4,4 @@ public interface IAssertionProvider<T> {
     T actual();
     Object subject();
     void failed();
-    void passed();
 }

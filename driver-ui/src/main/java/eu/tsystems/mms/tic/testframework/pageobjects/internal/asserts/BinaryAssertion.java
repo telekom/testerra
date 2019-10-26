@@ -4,7 +4,6 @@ import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import org.testng.Assert;
 
 public class BinaryAssertion<T> extends AbstractTestAssertion<T> implements IBinaryAssertion<T> {
-    protected boolean nonFunctional = false;
 
     public BinaryAssertion(AssertionProvider<T> provider) {
         super(provider);
@@ -53,8 +52,8 @@ public class BinaryAssertion<T> extends AbstractTestAssertion<T> implements IBin
     }
 
     @Override
-    public INonFunctionalAssertion nonFunctional() {
-        nonFunctional = true;
+    public IBinaryAssertion<T> nonFunctional() {
+        super.nonFunctional();
         return this;
     }
 }

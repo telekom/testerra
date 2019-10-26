@@ -1,12 +1,14 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.internal.AssertionChecker;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
+import org.testng.Assert;
 
 import java.util.function.Function;
 
-public abstract class AbstractTestAssertion<T> extends AbstractAssertion<T> {
-
+public abstract class AbstractTestAssertion<T> extends AbstractAssertion<T> implements INonFunctionalAssertion {
+    protected boolean nonFunctional = false;
     private final int sleepTimeInMsShortInterval = 200;
     private final int timeoutInSecondsShortInterval = 1;
 
@@ -26,11 +28,25 @@ public abstract class AbstractTestAssertion<T> extends AbstractAssertion<T> {
                 setPassState(testFunction.apply(null));
             }
         });
-        if (throwablePackedResponse.isSuccessful()) {
-            provider.passed();
-        } else {
-            provider.failed();
+        if (!throwablePackedResponse.isSuccessful()) {
+            provider.failedRecursive();
         }
         return throwablePackedResponse;
+    }
+
+    protected void fail(final String assertionSuffix) {
+        final String message = String.format("%s [%s] %s", provider.traceSubjectString(), provider.actual(), assertionSuffix);
+        if (nonFunctional) {
+            AssertionError assertionError = new AssertionError(message);
+            AssertionChecker.storeNonFunctionalInfo(assertionError);
+        } else {
+            Assert.fail(message);
+        }
+    }
+
+    @Override
+    public INonFunctionalAssertion nonFunctional() {
+        nonFunctional = true;
+        return this;
     }
 }

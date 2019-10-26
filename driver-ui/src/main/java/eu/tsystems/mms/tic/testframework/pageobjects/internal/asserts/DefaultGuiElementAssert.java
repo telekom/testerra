@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
+import eu.tsystems.mms.tic.testframework.execution.testng.IAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
@@ -30,17 +30,17 @@ import java.util.Arrays;
 /**
  * Created by rnhb on 11.08.2015.
  */
-public class ConfigurableGuiElementAssert implements GuiElementAssert {
+public class DefaultGuiElementAssert implements GuiElementAssert {
 
     private final GuiElementWait guiElementWait;
     private final GuiElementCore guiElementCore;
-    private final ConfiguredAssert configuredAssert;
+    private final IAssert configuredAssert;
     private final GuiElementData guiElementData;
 
-    public ConfigurableGuiElementAssert(
+    public DefaultGuiElementAssert(
         GuiElementCore guiElementCore,
         GuiElementWait guiElementWait,
-        ConfiguredAssert configuredAssert,
+        IAssert configuredAssert,
         GuiElementData guiElementData
     ) {
         this.guiElementWait = guiElementWait;
@@ -219,7 +219,7 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertLayout(ILayout layout) {
-        configuredAssert.assertLayout(guiElementData.guiElement, layout);
+        layout.checkOn(guiElementData.guiElement, configuredAssert);
     }
 
     @Override

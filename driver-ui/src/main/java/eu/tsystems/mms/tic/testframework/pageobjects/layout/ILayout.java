@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.layout;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IConfiguredAssert;
+import eu.tsystems.mms.tic.testframework.execution.testng.IAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 
 public interface ILayout {
@@ -8,7 +8,7 @@ public interface ILayout {
 
     ILayout leftOf(GuiElementFacade distanceGE);
 
-    void checkOn(GuiElementFacade actualGE, IConfiguredAssert configuredAssert);
+    void checkOn(GuiElementFacade actualGE, IAssert configuredAssert);
 
     String toStringText();
 

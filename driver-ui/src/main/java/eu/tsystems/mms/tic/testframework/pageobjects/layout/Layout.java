@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.layout;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IConfiguredAssert;
+import eu.tsystems.mms.tic.testframework.execution.testng.IAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import org.openqa.selenium.Dimension;
@@ -45,7 +45,7 @@ public abstract class Layout implements ILayout {
          */
         ILayout layout = new Layout(true) {
             @Override
-            public void checkOn(GuiElementFacade actualGE, IConfiguredAssert configuredAssert) {
+            public void checkOn(GuiElementFacade actualGE, IAssert configuredAssert) {
                 //dummy
             }
 
@@ -64,7 +64,7 @@ public abstract class Layout implements ILayout {
          */
         ILayout layout = new Layout(false) {
             @Override
-            public void checkOn(GuiElementFacade actualGE, IConfiguredAssert configuredAssert) {
+            public void checkOn(GuiElementFacade actualGE, IAssert configuredAssert) {
                 //dummy
             }
 
@@ -99,12 +99,12 @@ public abstract class Layout implements ILayout {
     public ILayout leftOf(final GuiElementFacade distanceGE) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(GuiElementFacade actualGE, IConfiguredAssert IConfiguredAssert) {
+            public void checkOn(GuiElementFacade actualGE, IAssert configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.left;
                 long reference = distLB.left;
-                IConfiguredAssert.assertTrue(actual < reference, ">" + actualGE + "< is left of >" + distanceGE + "< (" + actual + "<" + reference + ")");
+                configuredAssert.assertTrue(actual < reference, ">" + actualGE + "< is left of >" + distanceGE + "< (" + actual + "<" + reference + ")");
             }
 
             @Override
@@ -121,12 +121,12 @@ public abstract class Layout implements ILayout {
     public ILayout above(final GuiElementFacade distanceGE) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(GuiElementFacade actualGE, IConfiguredAssert IConfiguredAssert) {
+            public void checkOn(GuiElementFacade actualGE, IAssert configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.top;
                 long reference = distLB.top;
-                IConfiguredAssert.assertTrue(actual < reference, ">" + actualGE + "< is above >" + distanceGE + "< (" + actual + "<" + reference + ")");
+                configuredAssert.assertTrue(actual < reference, ">" + actualGE + "< is above >" + distanceGE + "< (" + actual + "<" + reference + ")");
             }
 
             @Override
@@ -140,12 +140,12 @@ public abstract class Layout implements ILayout {
     public ILayout rightOf(final GuiElementFacade distanceGE) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(GuiElementFacade actualGE, IConfiguredAssert IConfiguredAssert) {
+            public void checkOn(GuiElementFacade actualGE, IAssert configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.right;
                 long reference = distLB.right;
-                IConfiguredAssert.assertTrue(actual > reference, ">" + actualGE + "< is right of >" + distanceGE + "< (" + actual + ">" + reference + ")");
+                configuredAssert.assertTrue(actual > reference, ">" + actualGE + "< is right of >" + distanceGE + "< (" + actual + ">" + reference + ")");
             }
 
             @Override
@@ -158,12 +158,12 @@ public abstract class Layout implements ILayout {
     public ILayout below(final GuiElementFacade distanceGE) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(GuiElementFacade actualGE, IConfiguredAssert IConfiguredAssert) {
+            public void checkOn(GuiElementFacade actualGE, IAssert configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.bottom;
                 long reference = distLB.bottom;
-                IConfiguredAssert.assertTrue(actual > reference, ">" + actualGE + "< is below >" + distanceGE + "< (" + actual + ">" + reference + ")");
+                configuredAssert.assertTrue(actual > reference, ">" + actualGE + "< is below >" + distanceGE + "< (" + actual + ">" + reference + ")");
             }
 
             @Override
@@ -177,7 +177,7 @@ public abstract class Layout implements ILayout {
     public ILayout sameTop(final GuiElementFacade distanceGE, final int delta) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(GuiElementFacade actualGE, IConfiguredAssert IConfiguredAssert) {
+            public void checkOn(GuiElementFacade actualGE, IAssert configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.top;
@@ -185,7 +185,7 @@ public abstract class Layout implements ILayout {
 
                 long max = reference + delta;
                 long min = reference - delta;
-                IConfiguredAssert.assertTrue(actual <= max && actual >= min, ">" + actualGE + "< has same top coords as >" + distanceGE + "< (" + actual + "==" + reference + " +-" + delta + ")");
+                configuredAssert.assertTrue(actual <= max && actual >= min, ">" + actualGE + "< has same top coords as >" + distanceGE + "< (" + actual + "==" + reference + " +-" + delta + ")");
             }
 
             @Override
@@ -199,7 +199,7 @@ public abstract class Layout implements ILayout {
     public ILayout sameBottom(final GuiElementFacade distanceGE, final int delta) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(GuiElementFacade actualGE, IConfiguredAssert IConfiguredAssert) {
+            public void checkOn(GuiElementFacade actualGE, IAssert configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.bottom;
@@ -207,7 +207,7 @@ public abstract class Layout implements ILayout {
 
                 long max = reference + delta;
                 long min = reference - delta;
-                IConfiguredAssert.assertTrue(actual <= max && actual >= min, ">" + actualGE + "< has same bottom coords as >" + distanceGE + "< (" + actual + "==" + reference + " +-" + delta + ")");
+                configuredAssert.assertTrue(actual <= max && actual >= min, ">" + actualGE + "< has same bottom coords as >" + distanceGE + "< (" + actual + "==" + reference + " +-" + delta + ")");
             }
 
             @Override
@@ -221,7 +221,7 @@ public abstract class Layout implements ILayout {
     public ILayout sameLeft(final GuiElementFacade distanceGE, final int delta) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(GuiElementFacade actualGE, IConfiguredAssert IConfiguredAssert) {
+            public void checkOn(GuiElementFacade actualGE, IAssert configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.left;
@@ -229,7 +229,7 @@ public abstract class Layout implements ILayout {
 
                 long max = reference + delta;
                 long min = reference - delta;
-                IConfiguredAssert.assertTrue(actual <= max && actual >= min, ">" + actualGE + "< has same left coords as >" + distanceGE + "< (" + actual + "==" + reference + " +-" + delta + ")");
+                configuredAssert.assertTrue(actual <= max && actual >= min, ">" + actualGE + "< has same left coords as >" + distanceGE + "< (" + actual + "==" + reference + " +-" + delta + ")");
             }
 
             @Override
@@ -243,7 +243,7 @@ public abstract class Layout implements ILayout {
     public ILayout sameRight(final GuiElementFacade distanceGE, final int delta) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(GuiElementFacade actualGE, IConfiguredAssert IConfiguredAssert) {
+            public void checkOn(GuiElementFacade actualGE, IAssert configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.right;
@@ -251,7 +251,7 @@ public abstract class Layout implements ILayout {
 
                 long max = reference + delta;
                 long min = reference - delta;
-                IConfiguredAssert.assertTrue(actual <= max && actual >= min, ">" + actualGE + "< has same right coords as >" + distanceGE + "< (" + actual + "==" + reference + " +-" + delta + ")");
+                configuredAssert.assertTrue(actual <= max && actual >= min, ">" + actualGE + "< has same right coords as >" + distanceGE + "< (" + actual + "==" + reference + " +-" + delta + ")");
             }
 
             @Override

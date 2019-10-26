@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.testng.internal.EclipseInterface.ASSERT_LEFT;
-import static org.testng.internal.EclipseInterface.ASSERT_LEFT2;
 import static org.testng.internal.EclipseInterface.ASSERT_MIDDLE;
 import static org.testng.internal.EclipseInterface.ASSERT_RIGHT;
 
@@ -67,9 +66,7 @@ public class NonFunctionalAssert {
      * @param message   the assertion error message
      */
     static public void assertTrue(boolean condition, String message) {
-        if (!condition) {
-            failNotEquals(condition, Boolean.TRUE, message);
-        }
+        realAssert.assertTrue(condition, message);
     }
 
     /**
@@ -90,9 +87,7 @@ public class NonFunctionalAssert {
      * @param message   the assertion error message
      */
     static public void assertFalse(boolean condition, String message) {
-        if (condition) {
-            failNotEquals(condition, Boolean.FALSE, message); // TESTNG-81
-        }
+        realAssert.assertFalse(condition, message);
     }
 
     /**
@@ -464,14 +459,7 @@ public class NonFunctionalAssert {
      * @param message the assertion error message
      */
     static public void assertNotNull(Object object, String message) {
-        if (object == null) {
-            String formatted = "";
-            if (message != null) {
-                formatted = message + " ";
-            }
-            fail(formatted + "expected object to not be null");
-        }
-        assertTrue(object != null, message);
+        realAssert.assertNotNull(object, message);
     }
 
     /**
@@ -492,9 +480,7 @@ public class NonFunctionalAssert {
      * @param message the assertion error message
      */
     static public void assertNull(Object object, String message) {
-        if (object != null) {
-            failNotSame(object, null, message);
-        }
+        realAssert.assertNull(object, message);
     }
 
     /**
@@ -506,10 +492,7 @@ public class NonFunctionalAssert {
      * @param message  the assertion error message
      */
     static public void assertSame(Object actual, Object expected, String message) {
-        if (expected == actual) {
-            return;
-        }
-        failNotSame(actual, expected, message);
+        realAssert.assertSame(actual, expected, message);
     }
 
     /**
@@ -532,9 +515,7 @@ public class NonFunctionalAssert {
      * @param message  the assertion error message
      */
     static public void assertNotSame(Object actual, Object expected, String message) {
-        if (expected == actual) {
-            failSame(actual, expected, message);
-        }
+        realAssert.assertNotSame(actual, expected, message);
     }
 
     /**
@@ -546,22 +527,6 @@ public class NonFunctionalAssert {
      */
     static public void assertNotSame(Object actual, Object expected) {
         assertNotSame(actual, expected, null);
-    }
-
-    static private void failSame(Object actual, Object expected, String message) {
-        String formatted = "";
-        if (message != null) {
-            formatted = message + " ";
-        }
-        fail(formatted + ASSERT_LEFT2 + expected + ASSERT_MIDDLE + actual + ASSERT_RIGHT);
-    }
-
-    static private void failNotSame(Object actual, Object expected, String message) {
-        String formatted = "";
-        if (message != null) {
-            formatted = message + " ";
-        }
-        fail(formatted + ASSERT_LEFT + expected + ASSERT_MIDDLE + actual + ASSERT_RIGHT);
     }
 
     static private void failNotEquals(Object actual, Object expected, String message) {

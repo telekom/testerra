@@ -19,8 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ConfigurableGuiElementAssert;
+import com.google.inject.Inject;
+import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssertFactory;
+import eu.tsystems.mms.tic.testframework.execution.testng.IAssert;
+import eu.tsystems.mms.tic.testframework.execution.testng.INonFunctionalAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertExecutionLogDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
@@ -30,6 +33,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 
 public class DefaultGuiElementAssertFactory implements GuiElementAssertFactory {
 
+    @Inject
+    private FunctionalAssertFactory functionalAssertFactory;
+
+    @Inject
+    private INonFunctionalAssert nonFunctionalAssert;
+
     @Override
     public GuiElementAssert create(
         boolean functional,
@@ -38,8 +47,13 @@ public class DefaultGuiElementAssertFactory implements GuiElementAssertFactory {
         GuiElementWait guiElementWait,
         GuiElementData guiElementData
     ) {
-        ConfiguredAssert configuredAssert = new ConfiguredAssert(functional, collected);
-        GuiElementAssert guiElementAssert = new ConfigurableGuiElementAssert(guiElementCore, guiElementWait, configuredAssert, guiElementData);
+        IAssert configuredAssert;
+        if (functional) {
+            configuredAssert = functionalAssertFactory.create(collected);
+        } else {
+            configuredAssert = nonFunctionalAssert;
+        }
+        GuiElementAssert guiElementAssert = new DefaultGuiElementAssert(guiElementCore, guiElementWait, configuredAssert, guiElementData);
         guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, guiElementData);
         guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, guiElementData);
         return guiElementAssert;

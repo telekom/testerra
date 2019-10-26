@@ -21,11 +21,11 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.IWebDriverRetainer;
-import eu.tsystems.mms.tic.testframework.pageobjects.image.IShot;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableBinaryValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IValueAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
@@ -40,15 +40,15 @@ public interface GuiElementFacade extends
     IWebDriverRetainer
 {
     IFrameLogic getFrameLogic();
-    IAssertableValue<String, GuiElementFacade> text();
-    IAssertableValue<String, GuiElementFacade> value();
-    IAssertableValue<String, GuiElementFacade> value(final Attribute attribute);
-    IAssertableBinaryValue<Boolean, GuiElementFacade> present();
-    IAssertableBinaryValue<Boolean, GuiElementFacade> visible(final boolean complete);
-    IAssertableBinaryValue<Boolean, GuiElementFacade> displayed();
-    IAssertableBinaryValue<Boolean, GuiElementFacade> enabled();
-    IAssertableBinaryValue<Boolean, GuiElementFacade> selected();
-    IShot<GuiElementFacade> screenshot();
+    IValueAssertion<String> text();
+    IValueAssertion<String> value();
+    IValueAssertion<String> value(final Attribute attribute);
+    IBinaryAssertion<Boolean> present();
+    IBinaryAssertion<Boolean> visible(final boolean complete);
+    IBinaryAssertion<Boolean> displayed();
+    IBinaryAssertion<Boolean> enabled();
+    IBinaryAssertion<Boolean> selected();
+    IImageAssertion screenshot();
     GuiElementFacade scrollTo();
     GuiElementFacade scrollTo(final int yOffset);
 

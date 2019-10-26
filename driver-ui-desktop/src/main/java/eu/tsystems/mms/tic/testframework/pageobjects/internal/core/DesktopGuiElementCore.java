@@ -41,7 +41,6 @@ import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
@@ -871,16 +870,11 @@ public class DesktopGuiElementCore implements
 
     @Override
     public File takeScreenshot() {
-        return getScreenshotAs(OutputType.FILE);
-    }
-
-    @Override
-    public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
         final WebElement element = getWebElement();
         final boolean isSelenium4 = false;
 
         if (isSelenium4) {
-            return element.getScreenshotAs(outputType);
+            return element.getScreenshotAs(OutputType.FILE);
         } else {
             if (!isVisible(false)) {
                 this.scrollToElement();
@@ -903,7 +897,7 @@ public class DesktopGuiElementCore implements
                     eleHeight
                 );
                 ImageIO.write(eleScreenshot, "png", screenshot);
-                return UITestUtils.fileToOutputType(screenshot, outputType);
+                return screenshot;
             } catch (IOException e) {
                 LOGGER.error(String.format("%s unable to take screenshot: %s ", this.guiElementData, e));
             }

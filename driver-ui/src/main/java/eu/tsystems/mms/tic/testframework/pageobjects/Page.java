@@ -56,10 +56,7 @@ import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
@@ -73,7 +70,7 @@ import java.util.Random;
  *
  * @author pele
  */
-public abstract class Page extends AbstractPage implements TakesScreenshot {
+public abstract class Page extends AbstractPage {
 
     public static final String CHECKPAGE_METHOD_NAME = "checkPage";
     private final GuiElementGroups guiElementGroups;
@@ -462,10 +459,5 @@ public abstract class Page extends AbstractPage implements TakesScreenshot {
     }
     protected GuiElementFacade find(final By by, final GuiElementFacade parent) {
         return find(Locate.by(by), parent);
-    }
-
-    @Override
-    public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
-        return UITestUtils.takeScreenshotAs(driver, outputType);
     }
 }

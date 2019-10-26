@@ -26,12 +26,16 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.image.IShot;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
-import eu.tsystems.mms.tic.testframework.report.Shot;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IValueAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ValueAssertion;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 
+import java.io.File;
 import java.net.URL;
 
 /**
@@ -53,14 +57,32 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
      * @Todo We need a self type here
      * @return
      */
-    public IAssertableValue<String, SELF> title() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        return new AssertableValue(this, driver.getTitle(), methodName);
+    public IValueAssertion<String> title() {
+        return new ValueAssertion<>(new AssertionProvider<String>() {
+            @Override
+            public String actual() {
+                return driver.getTitle();
+            }
+
+            @Override
+            public Object subject() {
+                return String.format("%s.title", this);
+            }
+        });
     }
 
-    public IAssertableValue<String, SELF> url() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        return new AssertableValue(this, driver.getCurrentUrl(), methodName);
+    public IValueAssertion<String> url() {
+        return new ValueAssertion<>(new AssertionProvider<String>() {
+            @Override
+            public String actual() {
+                return driver.getCurrentUrl();
+            }
+
+            @Override
+            public Object subject() {
+                return String.format("%s.url", this);
+            }
+        });
     }
 
     public SELF call(final String urlString) {
@@ -91,8 +113,18 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
         return self();
     }
 
-    public IShot<SELF> screenshot() {
-        return new Shot(this);
+    public IImageAssertion screenshot() {
+        return new ImageAssertion(new AssertionProvider<File>() {
+            @Override
+            public File actual() {
+                return UITestUtils.takeScreenshotAs(driver, OutputType.FILE);
+            }
+
+            @Override
+            public Object subject() {
+                return String.format("%s.url", this);
+            }
+        });
     }
 
     /**

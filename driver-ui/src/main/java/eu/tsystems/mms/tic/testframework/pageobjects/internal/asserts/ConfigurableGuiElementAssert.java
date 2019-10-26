@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
+import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 
@@ -241,11 +242,11 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
         final int LAYOUT_CHECK_UI_WAIT = 300;
         final int LAYOUT_CHECK_MAX_TRIES = 3;
-        Timer timer = new Timer(LAYOUT_CHECK_UI_WAIT,LAYOUT_CHECK_UI_WAIT*LAYOUT_CHECK_MAX_TRIES);
         final BigDecimal expectedDistanceThreshold = new BigDecimal(confidenceThreshold);
         final String assertMessage = String.format("%s image '%s' pixel distance percent", guiElementData, targetImageName);
         final AtomicReference<LayoutCheck.MatchStep> atomicMatchStep = new AtomicReference<>();
-        timer.executeSequence(new Timer.Sequence() {
+        Timer timer = new Timer(LAYOUT_CHECK_UI_WAIT,LAYOUT_CHECK_UI_WAIT*LAYOUT_CHECK_MAX_TRIES);
+        final ThrowablePackedResponse throwablePackedResponse = timer.executeSequence(new Timer.Sequence() {
             @Override
             public void run() {
                 LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(guiElementCore.takeScreenshot(), targetImageName);
@@ -253,10 +254,12 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
                 atomicMatchStep.set(matchStep);
             }
         });
-
-        LayoutCheck.MatchStep matchStep = atomicMatchStep.get();
-        if (matchStep!=null && matchStep.takeReferenceOnly == false) {
-            LayoutCheck.toReport(matchStep);
+        if (!throwablePackedResponse.isSuccessful()) {
+            LayoutCheck.MatchStep matchStep = atomicMatchStep.get();
+            atomicMatchStep.get();
+            if (matchStep!=null && matchStep.takeReferenceOnly == false) {
+                LayoutCheck.toReport(matchStep);
+            }
         }
     }
 

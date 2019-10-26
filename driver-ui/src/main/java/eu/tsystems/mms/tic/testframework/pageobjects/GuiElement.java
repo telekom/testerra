@@ -37,13 +37,15 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementAssertFac
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementCoreFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import eu.tsystems.mms.tic.testframework.pageobjects.image.IShot;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableBinaryValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableBinaryValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IValueAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ValueAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
@@ -53,13 +55,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
-import eu.tsystems.mms.tic.testframework.report.Shot;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -755,67 +755,130 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public IAssertableValue text() {
+    public IValueAssertion<String> text() {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        return new AssertableValue( this, getText(), methodName);
+        return new ValueAssertion<>(new AssertionProvider<String>() {
+            @Override
+            public String actual() {
+                return getText();
+            }
+
+            @Override
+            public String subject() {
+                return "text";
+            }
+        });
     }
 
     @Override
-    public IAssertableValue value() {
+    public IValueAssertion<String> value() {
         return value(Attribute.VALUE);
     }
 
     @Override
-    public IAssertableValue value(Attribute attribute) {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        return new AssertableValue(this, getAttribute(attribute.toString()), methodName);
-    }
-
-    @Override
-    public IAssertableBinaryValue present() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        return new AssertableBinaryValue(this,waits().waitForIsPresent(), methodName);
-    }
-
-    @Override
-    public IAssertableBinaryValue visible(boolean complete) {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        return new AssertableBinaryValue(this,isVisible(true), String.format("%s(complete: %s)", methodName, complete));
-    }
-
-    @Override
-    public IAssertableBinaryValue displayed() {
-        /*Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
+    public IValueAssertion<String> value(final Attribute attribute) {
+        return new ValueAssertion<>(new AssertionProvider<String>() {
             @Override
-            public void run() {
-                setReturningObject(!checkForEnabled); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                boolean isEnabled = guiElementStatusCheck.isEnabled();
-                boolean sequenceStatus = isEnabled == checkForEnabled;
-                setPassState(sequenceStatus);
-                setReturningObject(sequenceStatus);
+            public String actual() {
+                return getAttribute(attribute.toString());
             }
-        };*/
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        return new AssertableBinaryValue(this, isDisplayed(), methodName);
+
+            @Override
+            public String subject() {
+                return String.format("value(%s)", attribute);
+            }
+        });
     }
 
     @Override
-    public IAssertableBinaryValue enabled() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        return new AssertableBinaryValue(this,isEnabled(), methodName);
+    public IBinaryAssertion<Boolean> present() {
+        return new BinaryAssertion<>(new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean actual() {
+                return isPresent();
+            }
+
+            @Override
+            public String subject() {
+                return "present";
+            }
+        });
     }
 
     @Override
-    public IAssertableBinaryValue selected() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        return new AssertableBinaryValue(this, isSelected(), methodName);
+    public IBinaryAssertion<Boolean> visible(boolean complete) {
+        return new BinaryAssertion<>(new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean actual() {
+                return isVisible(complete);
+            }
+
+            @Override
+            public String subject() {
+                return String.format("visible(complete: %s)", complete);
+            }
+        });
     }
 
     @Override
-    public IShot<GuiElementFacade> screenshot() {
-        return new Shot<>(this);
+    public IBinaryAssertion<Boolean> displayed() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        return new BinaryAssertion<>(new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean actual() {
+                return isDisplayed();
+            }
+
+            @Override
+            public String subject() {
+                return methodName;
+            }
+        });
+    }
+
+    @Override
+    public IBinaryAssertion<Boolean> enabled() {
+        return new BinaryAssertion<>(new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean actual() {
+                return isEnabled();
+            }
+
+            @Override
+            public String subject() {
+                return "enabled";
+            }
+        });
+    }
+
+    @Override
+    public IBinaryAssertion<Boolean> selected() {
+        return new BinaryAssertion<>(new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean actual() {
+                return isSelected();
+            }
+
+            @Override
+            public String subject() {
+                return "selected";
+            }
+        });
+    }
+
+    @Override
+    public IImageAssertion screenshot() {
+        return new ImageAssertion(new AssertionProvider<File>() {
+            @Override
+            public File actual() {
+                return guiElementCore.takeScreenshot();
+            }
+
+            @Override
+            public Object subject() {
+                return "screenshot";
+            }
+        });
     }
 
     @Override
@@ -826,10 +889,5 @@ public class GuiElement implements GuiElementFacade, Loggable {
     @Override
     public GuiElementFacade scrollTo(final int yOffset) {
         return scrollToElement(yOffset);
-    }
-
-    @Override
-    public <X> X getScreenshotAs(OutputType<X> outputType) {
-        return guiElementCore.getScreenshotAs(outputType);
     }
 }

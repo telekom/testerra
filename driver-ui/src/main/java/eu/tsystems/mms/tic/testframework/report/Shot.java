@@ -27,10 +27,7 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.image.IShot;
 import eu.tsystems.mms.tic.testframework.pageobjects.image.ScreenshotCause;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertableQuantifiedValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableQuantifiedValue;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -41,16 +38,16 @@ import java.util.Date;
 /**
  * Abstract class containing informations about a screenshot.
  */
-public class Shot<T extends TakesScreenshot> implements Loggable, IShot<T> {
+public class Shot<S extends TakesScreenshot> implements Loggable {
 
     private Date date;
 
-    private T takesScreenShot;
+    private S takesScreenShot;
 
     /** The cause of the screenshot. */
     private ScreenshotCause cause;
 
-    public Shot(T takesScreenShot) {
+    public Shot(S takesScreenShot) {
         this.takesScreenShot = takesScreenShot;
     }
 
@@ -77,10 +74,5 @@ public class Shot<T extends TakesScreenshot> implements Loggable, IShot<T> {
     @Deprecated
     public static File takeScreenshot(WebDriver driver) {
         return ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-    }
-
-    public IAssertableQuantifiedValue distance(final String referenceImageName) {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        return new AssertableQuantifiedValue(takesScreenShot, 0, String.format("%s(referenceImageName: %s)", methodName, referenceImageName));
     }
 }

@@ -21,8 +21,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableBinaryValue;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IAssertableValue;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IValueAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
@@ -752,17 +752,17 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public IAssertableValue text() {
+    public IValueAssertion text() {
         return decoratedFacade.text();
     }
 
     @Override
-    public IAssertableValue value() {
+    public IValueAssertion value() {
         return decoratedFacade.value();
     }
 
     @Override
-    public IAssertableValue value(final Attribute attribute) {
+    public IValueAssertion value(final Attribute attribute) {
         return decoratedFacade.value(attribute);
     }
 
@@ -772,27 +772,27 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public IAssertableBinaryValue present() {
+    public IBinaryAssertion present() {
         return decoratedFacade.present();
     }
 
     @Override
-    public IAssertableBinaryValue visible(final boolean complete) {
+    public IBinaryAssertion visible(final boolean complete) {
         return decoratedFacade.visible(complete);
     }
 
     @Override
-    public IAssertableBinaryValue displayed() {
+    public IBinaryAssertion displayed() {
         return decoratedFacade.displayed();
     }
 
     @Override
-    public IAssertableBinaryValue enabled() {
+    public IBinaryAssertion enabled() {
         return decoratedFacade.enabled();
     }
 
     @Override
-    public IAssertableBinaryValue selected() {
+    public IBinaryAssertion selected() {
         return decoratedFacade.selected();
     }
 

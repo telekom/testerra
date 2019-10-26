@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
@@ -62,21 +63,33 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     public void test_NewApi_GuiElement() {
         FluentTestPage page = page();
         page.call("https://www.google.de");
-        page.input()
-            .sendKeys("affe")
-            .text().nonFunctional().contains("affe");       // Expect GuiElement(By.id("11")).text [Haus] contains [Affe]
-        page.submit()
-            .scrollTo()
-            .visible(false).isTrue()    // Expect GuiElement(By.qa("action/submit")).visible(complete: false) [false] is true
-            .value(Attribute.STYLE).equals("display:block")   // Expect GuiElement(By.qa("action/submit")).value("css") [display:none] equals [display:block]
-            .screenshot().distance("SubmitButton").between(3,5)   // Expect GuiElement(By.qa("action/submit")).confidence(referenceImageName: "SubmitButton") [10] between [3] and [5]
-            .click();                       // Expect GuiElement(By.qa("action/submit")).displayed [false] is true
-        page.input().clear();
+        // Expect GuiElement(By.id("11")).value(attribute: value) [Hausmaus] contains not [maus]
+        page.input().sendKeys("affe").value().nonFunctional().contains("affe").containsNot("maus");
+        // Expect GuiElement(By.qa("action/submit")).visible(complete: false) [false] is true
+        page.submit().scrollTo().visible(false).isTrue();
+        // Expect GuiElement(By.qa("action/submit")).value(attribute: style) [display:none] equals [display:block]
+        page.submit().value(Attribute.STYLE).equals("display:block");
 
-        page
-            .title().contains("Form")       // Expect TestPageObject.title [SomePageTitle] contains [Form]
-            .title().contains("Page")      // Expect TestPageObject.title [SomePageTitle] endsWith [Page]
-            .screenshot().distance("Google").lowerThan(5);       // Expect TestPageObject.confidence(referenceImageName: "Google") [10] lower than [5]
+        final IImageAssertion screenshot = page.submit().screenshot();
+        // Expect GuiElement(By.qa("action/submit")).screenshot.pixelDistance(referenceImageName: "SubmitButton") [10] between [3] and [5]
+        screenshot.pixelDistance("SubmitButton").between(3,5);
+        // Expect GuiElement(By.qa("action/submit")).screenshot.file.name [SomeImage] contains [screenshot]
+        screenshot.file().name().contains("screenshot");
+        // Expect GuiElement(By.qa("action/submit")).screenshot.file.extension [jpg] equals [png]
+        screenshot.file().extension().equals("png");
+
+        // Expect GuiElement(By.qa("action/submit")).present [false] is true
+        page.input().mouseOver().clear();
+
+        // Expect TestPageObject.title [SomePageTitle] contains [Form]
+        page.title().contains("Form").endsWith("Page");
+
+        // Expect TestPageObject.screenshot.pixelDistance(referenceImageName: "Google") [10] lower than [5]
+        page.screenshot().pixelDistance("Google").lowerThan(5);
+
+        page.input().type("maus");
+        page.input().click();
+        page.submit().text().contains("Done");
     }
 
     public void test_OldApi_GuiElement() {
@@ -88,7 +101,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         page.submit().asserts().assertVisible(false);
         page.submit().asserts().assertAttributeValue("style", "display:block");
         page.submit().asserts().assertScreenshot("SubmitButton", 5);    // Not possible
-        page.submit().click();
+        page.input().mouseOver();
         page.input().clear();
 
         AssertUtils.assertContains("Form", page.getWebDriver().getTitle());   // Expected [SomePageTitle] contains [Form]

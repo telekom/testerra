@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
@@ -334,19 +335,19 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementFacade getSubElement(Locate locator) {
+    public GuiElement getSubElement(Locate locator) {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName, locator.toString());
-        GuiElementFacade subElement = decoratedFacade.getSubElement(locator);
+        GuiElement subElement = decoratedFacade.getSubElement(locator);
         afterDelegation(String.format("%s(%s) = %s", methodName, locator.toString(), subElement));
         return subElement;
     }
 
     @Override
-    public GuiElementFacade getSubElement(By by) {
+    public GuiElement getSubElement(By by) {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName, by.toString());
-        GuiElementFacade subElement = decoratedFacade.getSubElement(by);
+        GuiElement subElement = decoratedFacade.getSubElement(by);
         afterDelegation(String.format("%s(%s) = %s", methodName, by.toString(), subElement));
         return subElement;
     }
@@ -838,7 +839,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public List<GuiElementFacade> getList() {
+    public List<GuiElement> getList() {
         return decoratedFacade.getList();
     }
 

@@ -77,6 +77,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         screenshot.file().name().contains("screenshot");
         // Expect GuiElement(By.qa("action/submit")).screenshot.file.extension [jpg] equals [png]
         screenshot.file().extension().equals("png");
+        screenshot.file().bytes().greaterThan(5000);
 
         // Expect GuiElement(By.qa("action/submit")).present [false] is true
         page.input().mouseOver().clear();

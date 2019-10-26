@@ -1,6 +1,10 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 public class FileAssertion extends AbstractAssertion<File> implements IFileAssertion {
 
@@ -9,23 +13,67 @@ public class FileAssertion extends AbstractAssertion<File> implements IFileAsser
     }
 
     @Override
-    public IQuantifiedAssertion<Long> size() {
-        return null;
+    public IQuantifiedAssertion<Long> bytes() {
+        return new QuantifiedAssertion<>(new AssertionProvider<Long>(this) {
+            @Override
+            public Long actual() {
+                return provider.actual().length();
+            }
+
+            @Override
+            public Object subject() {
+                return "bytes";
+            }
+        });
     }
 
     @Override
     public IValueAssertion<String> name() {
-        return null;
+        return new ValueAssertion<>(new AssertionProvider<String>(this) {
+            @Override
+            public String actual() {
+                return provider.actual().getName();
+            }
+
+            @Override
+            public Object subject() {
+                return "name";
+            }
+        });
     }
 
     @Override
     public IValueAssertion<String> extension() {
-        return null;
+        return new ValueAssertion<>(new AssertionProvider<String>(this) {
+            @Override
+            public String actual() {
+                return FilenameUtils.getExtension(provider.actual().getName());
+            }
+
+            @Override
+            public Object subject() {
+                return "extension";
+            }
+        });
     }
 
     @Override
     public IValueAssertion<String> mimetype() {
-        return null;
+        return new ValueAssertion<>(new AssertionProvider<String>(this) {
+            @Override
+            public String actual() {
+                try {
+                    return Files.probeContentType(provider.actual().toPath());
+                } catch (IOException e) {
+                    return e.getMessage();
+                }
+            }
+
+            @Override
+            public Object subject() {
+                return "mimetype";
+            }
+        });
     }
 
     @Override

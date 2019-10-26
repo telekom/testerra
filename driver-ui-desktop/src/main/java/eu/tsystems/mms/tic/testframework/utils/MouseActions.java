@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.enums.DragAndDropOption;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -74,12 +74,12 @@ public final class MouseActions {
     }
 
     public static void dragAndDropJS(GuiElement drag, GuiElement drop) {
-        final FrameLogic dragFrameLogic = drag.getFrameLogic();
+        final IFrameLogic dragFrameLogic = drag.getFrameLogic();
         final WebElement dragWebElement = drag.getWebElement();
         final Point dragLocation = drag.getLocation();
         final Dimension dragSize = drag.getSize();
 
-        final FrameLogic dropFrameLogic = drop.getFrameLogic();
+        final IFrameLogic dropFrameLogic = drop.getFrameLogic();
         final WebElement dropWebElement = drop.getWebElement();
         final Point dropLocation = drop.getLocation();
         final Dimension dropSize = drop.getSize();
@@ -209,9 +209,9 @@ public final class MouseActions {
         Get elements and frames
          */
         final WebElement sourceWebElement = source.getWebElement();
-        final FrameLogic sourceFrameLogic = source.getFrameLogic();
+        final IFrameLogic sourceFrameLogic = source.getFrameLogic();
         final WebElement destinationWebElement = target.getWebElement();
-        final FrameLogic destinationFrameLogic = target.getFrameLogic();
+        final IFrameLogic destinationFrameLogic = target.getFrameLogic();
 
         final IntRef sleepMS = new IntRef();
         sleepMS.setI(0);

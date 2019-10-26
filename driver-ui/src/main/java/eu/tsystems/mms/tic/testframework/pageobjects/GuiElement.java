@@ -81,7 +81,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
     private GuiElementAssert functionalAssert;
     private GuiElementAssert functionalStandardAssert;
     private GuiElementAssert functionalAssertCollector;
-    private GuiElementAssert nonFunctionalAssertReplacement;
+    private GuiElementAssert nonFunctionalAssert;
 
     /**
      * Facade for all parts of the lowest GuiElement
@@ -196,7 +196,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
         GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
         functionalStandardAssert = assertFactory.create(true, false, guiElementCore, guiElementWait, guiElementData);
         functionalAssertCollector = assertFactory.create(true, true, guiElementCore, guiElementWait, guiElementData);
-        nonFunctionalAssertReplacement = assertFactory.create(false, false, guiElementCore, guiElementWait, guiElementData);;
+        nonFunctionalAssert = assertFactory.create(false, false, guiElementCore, guiElementWait, guiElementData);
 
         initDefaultAssert();
     }
@@ -251,7 +251,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
      * @deprecated Use TesterraBy instead
      */
     @Deprecated
-    public GuiElementFacade withWebElementFilter(WebElementFilter... filters) {
+    public GuiElement withWebElementFilter(WebElementFilter... filters) {
         if (filters != null) {
             Collections.addAll(locator.getFilters(), filters);
         }
@@ -266,7 +266,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
      * @deprecated use setName() instead.
      */
     @Deprecated
-    public GuiElementFacade setDescription(String description) {
+    public GuiElement setDescription(String description) {
         guiElementData.name = description;
         return this;
     }
@@ -683,7 +683,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
      * @return GuiElementAssert object for non-functional assertions
      */
     public GuiElementAssert nonFunctionalAsserts() {
-        return nonFunctionalAssertReplacement;
+        return nonFunctionalAssert;
     }
 
     /**
@@ -696,7 +696,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
      */
     public GuiElementAssert nonFunctionalAsserts(String errorMessage) {
         GuiElementAssertDescriptionDecorator guiElementAssertDescriptionDecorator
-                = new GuiElementAssertDescriptionDecorator(errorMessage, nonFunctionalAssertReplacement);
+                = new GuiElementAssertDescriptionDecorator(errorMessage, nonFunctionalAssert);
         return guiElementAssertDescriptionDecorator;
     }
 
@@ -723,12 +723,11 @@ public class GuiElement implements GuiElementFacade, Loggable {
         return guiElementAssertDescriptionDecorator;
     }
 
-    @Override
-    public List<GuiElementFacade> getList() {
+    public List<GuiElement> getList() {
         int numberOfFoundElements = getNumberOfFoundElements();
-        List<GuiElementFacade> guiElements = new ArrayList<>(numberOfFoundElements);
+        List<GuiElement> guiElements = new ArrayList<>(numberOfFoundElements);
         for (int i = 0; i < numberOfFoundElements; i++) {
-            GuiElementFacade guiElement = new GuiElement(guiElementData, i);
+            GuiElement guiElement = new GuiElement(guiElementData, i);
             guiElements.add(guiElement);
         }
         return guiElements;

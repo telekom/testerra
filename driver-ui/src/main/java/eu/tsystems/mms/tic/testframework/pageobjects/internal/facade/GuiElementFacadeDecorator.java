@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IValueAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
@@ -752,6 +753,16 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
+    public GuiElementAssert nonFunctionalAsserts() {
+        return null;
+    }
+
+    @Override
+    public GuiElementAssert nonFunctionalAsserts(String errorMessage) {
+        return null;
+    }
+
+    @Override
     public IValueAssertion text() {
         return decoratedFacade.text();
     }
@@ -794,6 +805,21 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     @Override
     public IBinaryAssertion selected() {
         return decoratedFacade.selected();
+    }
+
+    @Override
+    public IImageAssertion screenshot() {
+        return decoratedFacade.screenshot();
+    }
+
+    @Override
+    public GuiElementFacade scrollTo() {
+        return decoratedFacade.scrollTo();
+    }
+
+    @Override
+    public GuiElementFacade scrollTo(int yOffset) {
+        return decoratedFacade.scrollTo(yOffset);
     }
 
     @Override

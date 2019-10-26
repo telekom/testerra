@@ -96,17 +96,19 @@ public class GuiElementData {
 
     @Override
     public String toString() {
-        String toString = guiElement.getLocator().toString();
+        String toString = "";
         if (parent != null) {
-            toString += " child of " + parent;
+            toString = parent + " -> ";
         }
-
         if (hasName()) {
-            toString = ">" + name + "< (" + toString + ")";
+            toString += name;
+        } else {
+            toString += "Guielement";
         }
+        toString+="("+guiElement.getLocator().toString();
 
         if (hasFrameLogic()) {
-            String frameString = " inside Frames={";
+            String frameString = ", frames={";
             if (frameLogic.hasFrames()) {
                 for (GuiElementFacade frame : frameLogic.getFrames()) {
                     frameString += frame.toString() + ", ";
@@ -117,7 +119,7 @@ public class GuiElementData {
             frameString = frameString.substring(0, frameString.length() - 2);
             toString = toString + frameString + "}";
         }
-        return toString;
+        return toString+")";
     }
 
     public boolean hasFrameLogic() {

@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.layout;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.IConfiguredAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 
 public interface ILayout {

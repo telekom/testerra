@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IWebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
@@ -62,15 +63,15 @@ public interface GuiElementFacade extends
      * Deprecated APIs
      */
     @Deprecated
-    List<GuiElementFacade> getList();
+    List<GuiElement> getList();
 
     @Override
     @Deprecated
-    GuiElementFacade getSubElement(final By by);
+    GuiElement getSubElement(final By by);
 
     @Override
     @Deprecated
-    GuiElementFacade getSubElement(final Locate locator);
+    GuiElement getSubElement(final Locate locator);
 
     @Override
     @Deprecated
@@ -86,8 +87,10 @@ public interface GuiElementFacade extends
 
     @Deprecated
     GuiElementAssert asserts();
+
     @Deprecated
     GuiElementAssert asserts(String errorMessage);
+
     @Deprecated
     GuiElementWait waits();
 

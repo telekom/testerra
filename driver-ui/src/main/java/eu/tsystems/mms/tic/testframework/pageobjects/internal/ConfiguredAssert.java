@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 import org.testng.Assert;
@@ -32,12 +33,10 @@ public class ConfiguredAssert implements IConfiguredAssert {
 
     private final boolean functionalAssertions;
     private final boolean collected;
-    private final String prefix;
 
     public ConfiguredAssert(boolean functionalAssertions, boolean collected) {
         this.functionalAssertions = functionalAssertions;
         this.collected = collected;
-        prefix = functionalAssertions ? "" : "Nonfunctional: ";
     }
 
     @Override

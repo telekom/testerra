@@ -20,14 +20,14 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 
 /**
  * Created by rnhb on 13.08.2015.
  */
 public class GuiElementStatusCheckFrameAwareDecorator extends GuiElementStatusCheckDecorator {
 
-    private final FrameLogic frameLogic;
+    private final IFrameLogic frameLogic;
     private final ExecutionLog executionLog;
 
     public GuiElementStatusCheckFrameAwareDecorator(GuiElementStatusCheck decoratedGuiElementStatusCheck, GuiElementData guiElementData) {

@@ -21,13 +21,9 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import org.testng.Assert;
-import org.testng.collections.Lists;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -132,64 +128,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     public static void assertEquals(Object actual, Object expected, String message) {
-        if (expected != null && expected.getClass().isArray()) {
-            assertArrayEquals(actual, expected, message);
-            return;
-        }
-        assertEqualsImpl(actual, expected, message);
-    }
-
-    /**
-     * Differs from {@link #assertEquals(Object, Object, String)} by not taking arrays into
-     * special consideration hence comparing them by reference. Intended to be called directly
-     * to test equality of collections content.
-     */
-    private static void assertEqualsImpl(Object actual, Object expected,
-                                         String message) {
-        if ((expected == null) && (actual == null)) {
-            return;
-        }
-        if (expected == null ^ actual == null) {
-            failNotEquals(actual, expected, message);
-        }
-        if (expected.equals(actual) && actual.equals(expected)) {
-            return;
-        }
-        failNotEquals(actual, expected, message);
-    }
-
-    private static void assertArrayEquals(Object actual, Object expected, String message) {
-        if (expected == actual) {
-            return;
-        }
-        if (null == expected) {
-            fail("expected a null array, but not null found. " + message);
-        }
-        if (null == actual) {
-            fail("expected not null array, but null found. " + message);
-        }
-        //is called only when expected is an array
-        if (actual.getClass().isArray()) {
-            int expectedLength = Array.getLength(expected);
-            if (expectedLength == Array.getLength(actual)) {
-                for (int i = 0; i < expectedLength; i++) {
-                    Object _actual = Array.get(actual, i);
-                    Object _expected = Array.get(expected, i);
-                    try {
-                        assertEquals(_actual, _expected);
-                    } catch (AssertionError ae) {
-                        failNotEquals(actual, expected, message == null ? "" : message
-                                + " (values at index " + i + " are not the same)");
-                    }
-                }
-                //array values matched
-                return;
-            } else {
-                failNotEquals(Array.getLength(actual), expectedLength, message == null ? "" : message
-                        + " (Array lengths are not the same)");
-            }
-        }
-        failNotEquals(actual, expected, message);
+        realAssert.assertEquals(actual, expected, message);
     }
 
     /**
@@ -559,32 +498,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     static public void assertEquals(Collection<?> actual, Collection<?> expected, String message) {
-        if (actual == expected) {
-            return;
-        }
-
-        if (actual == null || expected == null) {
-            if (message != null) {
-                fail(message);
-            } else {
-                fail("Collections not equal: expected: " + expected + " and actual: " + actual);
-            }
-        }
-
-        assertEquals(actual.size(), expected.size(), (message == null ? "" : message + ": ") + "lists don't have the same size");
-
-        Iterator<?> actIt = actual.iterator();
-        Iterator<?> expIt = expected.iterator();
-        int i = -1;
-        while (actIt.hasNext() && expIt.hasNext()) {
-            i++;
-            Object e = expIt.next();
-            Object a = actIt.next();
-            String explanation = "Lists differ at element [" + i + "]: " + e + " != " + a;
-            String errorMessage = message == null ? explanation : message + ": " + explanation;
-
-            assertEqualsImpl(a, e, errorMessage);
-        }
+        realAssert.assertEquals(actual, expected, message);
     }
 
     /**
@@ -609,45 +523,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     static public void assertEquals(Iterator<?> actual, Iterator<?> expected, String message) {
-        if (actual == expected) {
-            return;
-        }
-
-        if (actual == null || expected == null) {
-            if (message != null) {
-                fail(message);
-            } else {
-                fail("Iterators not equal: expected: " + expected + " and actual: " + actual);
-            }
-        }
-
-        int i = -1;
-        while (actual.hasNext() && expected.hasNext()) {
-
-            i++;
-            Object e = expected.next();
-            Object a = actual.next();
-            String explanation = "Iterators differ at element [" + i + "]: " + e + " != " + a;
-            String errorMessage = message == null ? explanation : message + ": " + explanation;
-
-            assertEqualsImpl(a, e, errorMessage);
-
-        }
-
-        if (actual.hasNext()) {
-
-            String explanation = "Actual iterator returned more elements than the expected iterator.";
-            String errorMessage = message == null ? explanation : message + ": " + explanation;
-            fail(errorMessage);
-
-        } else if (expected.hasNext()) {
-
-            String explanation = "Expected iterator returned more elements than the actual iterator.";
-            String errorMessage = message == null ? explanation : message + ": " + explanation;
-            fail(errorMessage);
-
-        }
-
+        realAssert.assertEquals(actual, expected, message);
     }
 
     /**
@@ -670,22 +546,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     static public void assertEquals(Iterable<?> actual, Iterable<?> expected, String message) {
-        if (actual == expected) {
-            return;
-        }
-
-        if (actual == null || expected == null) {
-            if (message != null) {
-                fail(message);
-            } else {
-                fail("Iterables not equal: expected: " + expected + " and actual: " + actual);
-            }
-        }
-
-        Iterator<?> actIt = actual.iterator();
-        Iterator<?> expIt = expected.iterator();
-
-        assertEquals(actIt, expIt, message);
+        realAssert.assertEquals(actual, expected, message);
     }
 
 
@@ -698,18 +559,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     static public void assertEquals(Object[] actual, Object[] expected, String message) {
-        if (actual == expected) {
-            return;
-        }
-
-        if ((actual == null && expected != null) || (actual != null && expected == null)) {
-            if (message != null) {
-                fail(message);
-            } else {
-                fail("Arrays not equal: " + Arrays.toString(expected) + " and " + Arrays.toString(actual));
-            }
-        }
-        assertEquals(Arrays.asList(actual), Arrays.asList(expected), message);
+        realAssert.assertEquals(actual, expected, message);
     }
 
     /**
@@ -721,42 +571,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     static public void assertEqualsNoOrder(Object[] actual, Object[] expected, String message) {
-        if (actual == expected) {
-            return;
-        }
-
-        if ((actual == null && expected != null) || (actual != null && expected == null)) {
-            failAssertNoEqual(
-                    "Arrays not equal: " + Arrays.toString(expected) + " and " + Arrays.toString(actual),
-                    message);
-        }
-
-        if (actual.length != expected.length) {
-            failAssertNoEqual(
-                    "Arrays do not have the same size:" + actual.length + " != " + expected.length,
-                    message);
-        }
-
-        List<Object> actualCollection = Lists.newArrayList();
-        for (Object a : actual) {
-            actualCollection.add(a);
-        }
-        for (Object o : expected) {
-            actualCollection.remove(o);
-        }
-        if (actualCollection.size() != 0) {
-            failAssertNoEqual(
-                    "Arrays not equal: " + Arrays.toString(expected) + " and " + Arrays.toString(actual),
-                    message);
-        }
-    }
-
-    private static void failAssertNoEqual(String defaultMessage, String message) {
-        if (message != null) {
-            fail(message);
-        } else {
-            fail(defaultMessage);
-        }
+        realAssert.assertEqualsNoOrder(actual, expected, message);
     }
 
     /**
@@ -792,85 +607,18 @@ public class AssertCollector {
      * Assert set equals
      */
     public static void assertEquals(Set<?> actual, Set<?> expected, String message) {
-        if (actual == expected) {
-            return;
-        }
-
-        if (actual == null || expected == null) {
-            // Keep the back compatible
-            if (message == null) {
-                fail("Sets not equal: expected: " + expected + " and actual: " + actual);
-            } else {
-                failNotEquals(actual, expected, message);
-            }
-        }
-
-        if (!actual.equals(expected)) {
-            if (message == null) {
-                fail("Sets differ: expected " + expected + " but got " + actual);
-            } else {
-                failNotEquals(actual, expected, message);
-            }
-        }
+        realAssert.assertEquals(actual, expected, message);
     }
 
     public static void assertEqualsDeep(Set<?> actual, Set<?> expected, String message) {
-        if (actual == expected) {
-            return;
-        }
-
-        if (actual == null || expected == null) {
-            // Keep the back compatible
-            if (message == null) {
-                fail("Sets not equal: expected: " + expected + " and actual: " + actual);
-            } else {
-                failNotEquals(actual, expected, message);
-            }
-        }
-
-        Iterator<?> actualIterator = actual.iterator();
-        Iterator<?> expectedIterator = expected.iterator();
-        while (expectedIterator.hasNext()) {
-            Object expectedValue = expectedIterator.next();
-            if (!actualIterator.hasNext()) {
-                fail("Sets not equal: expected: " + expected + " and actual: " + actual);
-            }
-            Object value = actualIterator.next();
-            if (expectedValue.getClass().isArray()) {
-                assertArrayEquals(value, expectedValue, message);
-            } else {
-                assertEqualsImpl(value, expectedValue, message);
-            }
-        }
+        realAssert.assertEqualsDeep(actual, expected, message);
     }
 
     /**
      * Asserts that two maps are equal.
      */
     public static void assertEquals(Map<?, ?> actual, Map<?, ?> expected, String message) {
-        if (actual == expected) {
-            return;
-        }
-
-        if (actual == null || expected == null) {
-            fail("Maps not equal: expected: " + expected + " and actual: " + actual);
-        }
-
-        if (actual.size() != expected.size()) {
-            fail("Maps do not have the same size:" + actual.size() + " != " + expected.size());
-        }
-
-        Set<?> entrySet = actual.entrySet();
-        for (Object anEntrySet : entrySet) {
-            Map.Entry<?, ?> entry = (Map.Entry<?, ?>) anEntrySet;
-            Object key = entry.getKey();
-            Object value = entry.getValue();
-            Object expectedValue = expected.get(key);
-            String assertMessage = message != null ? message : "Maps do not match for key:"
-                    + key + " actual:" + value + " expected:" + expectedValue;
-            assertEqualsImpl(value, expectedValue, assertMessage);
-        }
-
+        realAssert.assertEquals(actual, expected, message);
     }
 
     public static void assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected) {
@@ -879,33 +627,7 @@ public class AssertCollector {
 
 
     public static void assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected, String message) {
-        if (actual == expected) {
-            return;
-        }
-
-        if (actual == null || expected == null) {
-            fail("Maps not equal: expected: " + expected + " and actual: " + actual);
-        }
-
-        if (actual.size() != expected.size()) {
-            fail("Maps do not have the same size:" + actual.size() + " != " + expected.size());
-        }
-
-        Set<?> entrySet = actual.entrySet();
-        for (Object anEntrySet : entrySet) {
-            Map.Entry<?, ?> entry = (Map.Entry<?, ?>) anEntrySet;
-            Object key = entry.getKey();
-            Object value = entry.getValue();
-            Object expectedValue = expected.get(key);
-            String assertMessage = message != null ? message : "Maps do not match for key:"
-                    + key + " actual:" + value + " expected:" + expectedValue;
-            if (expectedValue.getClass().isArray()) {
-                assertArrayEquals(value, expectedValue, assertMessage);
-            } else {
-                assertEqualsImpl(value, expectedValue, assertMessage);
-            }
-        }
-
+        realAssert.assertEqualsDeep(actual, expected, message);
     }
 
     /////
@@ -913,17 +635,7 @@ public class AssertCollector {
     //
 
     public static void assertNotEquals(Object actual1, Object actual2, String message) {
-        boolean fail;
-        try {
-            Assert.assertEquals(actual1, actual2);
-            fail = true;
-        } catch (AssertionError e) {
-            fail = false;
-        }
-
-        if (fail) {
-            Assert.fail(message);
-        }
+        realAssert.assertNotEquals(actual1, actual2, message);
     }
 
     public static void assertNotEquals(Object actual1, Object actual2) {
@@ -1023,17 +735,7 @@ public class AssertCollector {
     }
 
     public static void assertNotEquals(Set<?> actual, Set<?> expected, String message) {
-        boolean fail;
-        try {
-            Assert.assertEquals(actual, expected, message);
-            fail = true;
-        } catch (AssertionError e) {
-            fail = false;
-        }
-
-        if (fail) {
-            Assert.fail(message);
-        }
+        realAssert.assertNotEquals(actual, expected, message);
     }
 
     public static void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected) {
@@ -1041,17 +743,7 @@ public class AssertCollector {
     }
 
     public static void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected, String message) {
-        boolean fail;
-        try {
-            Assert.assertEquals(actual, expected, message);
-            fail = true;
-        } catch (AssertionError e) {
-            fail = false;
-        }
-
-        if (fail) {
-            Assert.fail(message);
-        }
+        realAssert.assertNotEquals(actual, expected, message);
     }
 
     static public void assertNotEquals(double actual1, double actual2, double delta) {

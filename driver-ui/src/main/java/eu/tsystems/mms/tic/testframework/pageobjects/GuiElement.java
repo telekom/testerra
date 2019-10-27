@@ -31,8 +31,8 @@ import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultFunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultInstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultNonFunctionalAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -58,7 +58,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
@@ -82,14 +81,13 @@ import java.util.List;
 public class GuiElement implements GuiElementFacade, Loggable {
     /**
      * This is the default functional assertion for GuiElements,
-     * in all cases where the {@link TesterraListener} is active, it contains a {@link DefaultFunctionalAssertion}
-     * otherwise it contains an {@link InstantAssertion}.
+     * which always contains a {@link DefaultFunctionalAssertion}.
      * See {@link GuiElementAssertFactory} for details.
      */
     private GuiElementAssert functionalAssert;
 
     /**
-     * This contains always an {@link InstantAssertion}
+     * This contains always an {@link DefaultInstantAssertion}
      */
     private GuiElementAssert instantAssert;
 

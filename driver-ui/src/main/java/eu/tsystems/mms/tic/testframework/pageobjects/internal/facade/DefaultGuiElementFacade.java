@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.By;
@@ -32,7 +31,9 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Created by rnhb on 12.08.2015.
+ * This class only facades {@link GuiElementCore} at the moment.
+ * See {@link GuiElementFacade} for details.
+ * Was formerly known as StandardGuiElementFacade.
  */
 public class DefaultGuiElementFacade implements GuiElementFacade {
 
@@ -155,17 +156,17 @@ public class DefaultGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public GuiElement getSubElement(By byLocator, String description) {
+    public IGuiElement getSubElement(By byLocator, String description) {
         return guiElementCore.getSubElement(byLocator, description);
     }
 
     @Override
-    public GuiElement getSubElement(Locate locator) {
+    public IGuiElement getSubElement(Locate locator) {
         return guiElementCore.getSubElement(locator);
     }
 
     @Override
-    public GuiElement getSubElement(By by) {
+    public IGuiElement getSubElement(By by) {
         return guiElementCore.getSubElement(by);
     }
 

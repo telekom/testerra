@@ -2,19 +2,19 @@ package eu.tsystems.mms.tic.testframework.core.test;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.FluentPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class FluentTestPage extends FluentPage<FluentTestPage> {
 
     @Check
-    private GuiElementFacade input = findById("11");
+    private IGuiElement input = findById("11");
 
     @Check
-    private GuiElementFacade button = findByQa("action/submit", input);
+    private IGuiElement button = findByQa("action/submit", input);
 
-    private GuiElementFacade text = find(By.className("affe"));
+    private IGuiElement text = find(By.className("affe"));
 
     /**
      * Constructor for existing sessions.
@@ -25,11 +25,11 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
         super(driver);
     }
 
-    public GuiElementFacade input() {
+    public IGuiElement input() {
         return input;
     }
 
-    public GuiElementFacade submit() {
+    public IGuiElement submit() {
         return button;
     }
 

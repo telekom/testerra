@@ -128,7 +128,7 @@ public class GuiElement implements IGuiElement, Loggable {
     public GuiElement(
         final WebDriver driver,
         final Locate locator,
-        final GuiElementFacade... frames
+        final IGuiElement... frames
     ) {
         this(locator, driver, frames);
     }
@@ -136,7 +136,7 @@ public class GuiElement implements IGuiElement, Loggable {
     public GuiElement(
         final WebDriver driver,
         final By by,
-        final GuiElementFacade... frames
+        final IGuiElement... frames
     ) {
         this(Locate.by(by), driver, frames);
     }
@@ -144,7 +144,7 @@ public class GuiElement implements IGuiElement, Loggable {
     public GuiElement(
         final Locate locator,
         final WebDriver driver,
-        final GuiElementFacade... frames
+        final IGuiElement... frames
     ) {
         IFrameLogic frameLogic = null;
         if (frames != null && frames.length > 0) {
@@ -756,6 +756,21 @@ public class GuiElement implements IGuiElement, Loggable {
     }
 
     @Override
+    public IValueAssertion<String> tagName() {
+        return new ValueAssertion<>(new AssertionProvider<String>() {
+            @Override
+            public String actual() {
+                return getTagName();
+            }
+
+            @Override
+            public String subject() {
+                return String.format("%s.tagName", this);
+            }
+        });
+    }
+
+    @Override
     public IValueAssertion<String> text() {
         return new ValueAssertion<>(new AssertionProvider<String>() {
             @Override
@@ -887,6 +902,10 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IGuiElement scrollTo(final int yOffset) {
-        return scrollToElement(yOffset);
+        /**
+         * We have to negate the yOffset here
+         * because {@link #scrollToElement(int)} substracts the offset
+         */
+        return scrollToElement(yOffset*-1);
     }
 }

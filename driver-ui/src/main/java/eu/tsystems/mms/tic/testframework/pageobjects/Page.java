@@ -43,7 +43,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiEleme
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroupAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -439,25 +439,25 @@ public abstract class Page extends AbstractPage {
 
         return simpleClassName + " -> " + actionName;
     }
-    protected GuiElementFacade findById(final String id) {
+    protected IGuiElement findById(final String id) {
         return find(Locate.by().id(id));
     }
-    protected GuiElementFacade findByQa(final String qa) {
+    protected IGuiElement findByQa(final String qa) {
         return find(Locate.by().qa(qa));
     }
-    protected GuiElementFacade findByQa(final String qa, final GuiElementFacade parent) {
+    protected IGuiElement findByQa(final String qa, final IGuiElement parent) {
         return find(Locate.by().qa(qa), parent);
     }
-    protected GuiElementFacade find(final Locate locator) {
+    protected IGuiElement find(final Locate locator) {
         return guiElementFactory.create(locator, driver);
     }
-    protected GuiElementFacade find(final Locate locator, final GuiElementFacade parent) {
+    protected IGuiElement find(final Locate locator, final IGuiElement parent) {
         return guiElementFactory.create(locator, driver, parent);
     }
-    protected GuiElementFacade find(final By by) {
+    protected IGuiElement find(final By by) {
         return find(Locate.by(by));
     }
-    protected GuiElementFacade find(final By by, final GuiElementFacade parent) {
+    protected IGuiElement find(final By by, final IGuiElement parent) {
         return find(Locate.by(by), parent);
     }
 }

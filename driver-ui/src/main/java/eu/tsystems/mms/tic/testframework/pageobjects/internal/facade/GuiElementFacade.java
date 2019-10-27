@@ -19,10 +19,13 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 
 /**
- * A Facade for GuiElementCore
+ * A Facade for {@link GuiElement}
+ * It should also extend {@link IGuiElement} in the future,
+ * when all of it's features should be decorated.
  */
 public interface GuiElementFacade extends GuiElementCore {
     /**

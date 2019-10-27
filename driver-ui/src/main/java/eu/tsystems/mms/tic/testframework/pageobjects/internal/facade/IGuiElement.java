@@ -23,13 +23,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IWebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IValueAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.By;
 
@@ -43,6 +41,7 @@ public interface IGuiElement extends
     /**
      * New Features
      */
+    IValueAssertion<String> tagName();
     IValueAssertion<String> text();
     IValueAssertion<String> value();
     IValueAssertion<String> value(final Attribute attribute);
@@ -53,15 +52,12 @@ public interface IGuiElement extends
     IBinaryAssertion<Boolean> selected();
     IImageAssertion screenshot();
     IGuiElement scrollTo();
-    IGuiElement scrollTo(final int yOffset);
 
     /**
-     * Unknown Features
+     * This method scrolls to the element with an given offset.
+     * In difference to {@link #scrollToElement(int)} it adds the offset, not substracts it.
      */
-    int getTimeoutInSeconds();
-    IGuiElement setTimeoutInSeconds(int timeoutInSeconds);
-    IGuiElement restoreDefaultTimeout();
-
+    IGuiElement scrollTo(final int yOffset);
     IFrameLogic getFrameLogic();
 
     /**
@@ -90,21 +86,6 @@ public interface IGuiElement extends
     @Deprecated
     String getCssValue(final String cssIdentifier);
 
-    @Deprecated
-    GuiElementAssert asserts();
-
-    @Deprecated
-    GuiElementAssert asserts(String errorMessage);
-
-    @Deprecated
-    GuiElementWait waits();
-
-    @Deprecated
-    GuiElementAssert nonFunctionalAsserts();
-
-    @Deprecated
-    GuiElementAssert nonFunctionalAsserts(String errorMessage);
-
     @Override
     @Deprecated
     boolean isDisplayed();
@@ -116,6 +97,42 @@ public interface IGuiElement extends
     @Override
     @Deprecated
     boolean isEnabled();
+
+    @Override
+    @Deprecated
+    boolean isSelected();
+
+    @Override
+    @Deprecated
+    boolean anyFollowingTextNodeContains(String contains);
+
+    @Override
+    @Deprecated
+    String getAttribute(String attributeName);
+
+    @Override
+    @Deprecated
+    By getBy();
+
+    @Override
+    @Deprecated
+    int getLengthOfValueAfterSendKeys(final String textToInput);
+
+    @Override
+    @Deprecated
+    int getNumberOfFoundElements();
+
+    @Override
+    @Deprecated
+    boolean isVisible(final boolean complete);
+
+    @Override
+    @Deprecated
+    String getTagName();
+
+    @Override
+    @Deprecated
+    String getText();
 
     /**
      * Fluent {@link IGuiElement} overrides
@@ -163,4 +180,10 @@ public interface IGuiElement extends
 
     @Override
     IGuiElement clear();
+
+    @Override
+    IGuiElement mouseOver();
+
+    @Override
+    GuiElementCore mouseOverJS();
 }

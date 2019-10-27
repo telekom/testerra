@@ -208,7 +208,7 @@ public class GuiElement implements IGuiElement, Loggable {
         GuiElementWaitFactory waitFactory = TesterraCommons.ioc().getInstance(GuiElementWaitFactory.class);
         guiElementWait = waitFactory.create(guiElementCore, guiElementData);
 
-        guiElementFacade = initFacade();
+        guiElementFacade = createFacade(guiElementCore);
     }
 
     /**
@@ -218,7 +218,7 @@ public class GuiElement implements IGuiElement, Loggable {
      * You can move this code to DefaultGuiElementFactory when no more 'new GuiElement()' calls exists.
      * But this may not happen before 2119.
      */
-    private GuiElementFacade getFacade(GuiElementCore guiElementCore) {
+    private GuiElementFacade createFacade(GuiElementCore guiElementCore) {
         GuiElementFacade guiElementFacade;
         guiElementFacade = new DefaultGuiElementFacade(guiElementCore);
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
@@ -770,8 +770,8 @@ public class GuiElement implements IGuiElement, Loggable {
     }
 
     @Override
-    public IValueAssertion<String> tagName() {
-        return new ValueAssertion<>(new AssertionProvider<String>() {
+    public IStringPropertyAssertion<String> tagName() {
+        return new StringPropertyAssertion<>(new AssertionProvider<String>() {
             @Override
             public String actual() {
                 return getTagName();

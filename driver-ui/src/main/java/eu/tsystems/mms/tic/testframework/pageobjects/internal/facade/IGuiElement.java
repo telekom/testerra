@@ -23,9 +23,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IWebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IValueAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
@@ -41,16 +41,16 @@ public interface IGuiElement extends
     /**
      * New Features
      */
-    IValueAssertion<String> tagName();
-    IValueAssertion<String> text();
-    IValueAssertion<String> value();
-    IValueAssertion<String> value(final Attribute attribute);
-    IBinaryAssertion<Boolean> present();
-    IBinaryAssertion<Boolean> visible(final boolean complete);
-    IBinaryAssertion<Boolean> displayed();
-    IBinaryAssertion<Boolean> enabled();
-    IBinaryAssertion<Boolean> selected();
-    IImageAssertion screenshot();
+    IStringPropertyAssertion<String> tagName();
+    IStringPropertyAssertion<String> text();
+    IStringPropertyAssertion<String> value();
+    IStringPropertyAssertion<String> value(final Attribute attribute);
+    IBinaryPropertyAssertion<Boolean> present();
+    IBinaryPropertyAssertion<Boolean> visible(final boolean complete);
+    IBinaryPropertyAssertion<Boolean> displayed();
+    IBinaryPropertyAssertion<Boolean> enabled();
+    IBinaryPropertyAssertion<Boolean> selected();
+    IImagePropertyAssertion screenshot();
     IGuiElement scrollTo();
 
     /**

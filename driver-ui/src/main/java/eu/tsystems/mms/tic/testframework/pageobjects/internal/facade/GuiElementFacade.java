@@ -100,6 +100,18 @@ public interface GuiElementFacade extends
     @Deprecated
     GuiElementAssert nonFunctionalAsserts(String errorMessage);
 
+    @Override
+    @Deprecated
+    boolean isDisplayed();
+
+    @Override
+    @Deprecated
+    boolean isPresent();
+
+    @Override
+    @Deprecated
+    boolean isEnabled();
+
     /**
      * GuiElementCore to GuiElementFacade overrides
      */

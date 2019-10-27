@@ -1,30 +1,30 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.layout;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IConfiguredAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
 
 public interface ILayout {
-    LayoutBorders getElementLayoutBorders(GuiElementFacade GuiElementFacade);
+    LayoutBorders getElementLayoutBorders(IGuiElement GuiElementFacade);
 
-    ILayout leftOf(GuiElementFacade distanceGE);
+    ILayout leftOf(IGuiElement distanceGE);
 
-    void checkOn(GuiElementFacade actualGE, IConfiguredAssert configuredAssert);
+    void checkOn(IGuiElement actualGE, IConfiguredAssert configuredAssert);
 
     String toStringText();
 
-    ILayout above(GuiElementFacade distanceGE);
+    ILayout above(IGuiElement distanceGE);
 
-    ILayout rightOf(GuiElementFacade distanceGE);
+    ILayout rightOf(IGuiElement distanceGE);
 
-    ILayout below(GuiElementFacade distanceGE);
+    ILayout below(IGuiElement distanceGE);
 
-    ILayout sameTop(GuiElementFacade distanceGE, int delta);
+    ILayout sameTop(IGuiElement distanceGE, int delta);
 
-    ILayout sameBottom(GuiElementFacade distanceGE, int delta);
+    ILayout sameBottom(IGuiElement distanceGE, int delta);
 
-    ILayout sameLeft(GuiElementFacade distanceGE, int delta);
+    ILayout sameLeft(IGuiElement distanceGE, int delta);
 
-    ILayout sameRight(GuiElementFacade distanceGE, int delta);
+    ILayout sameRight(IGuiElement distanceGE, int delta);
 
     public static class LayoutBorders {
         long left = -1;

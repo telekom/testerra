@@ -24,7 +24,7 @@ import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -110,7 +110,7 @@ public class GuiElementData {
         if (hasFrameLogic()) {
             String frameString = ", frames={";
             if (frameLogic.hasFrames()) {
-                for (GuiElementFacade frame : frameLogic.getFrames()) {
+                for (IGuiElement frame : frameLogic.getFrames()) {
                     frameString += frame.toString() + ", ";
                 }
             } else {

@@ -194,9 +194,9 @@ public class GuiElement implements GuiElementFacade, Loggable {
         guiElementWait = waitFactory.create(guiElementCore, guiElementData);
 
         GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
-        functionalStandardAssert = assertFactory.create(true, false, guiElementCore, guiElementWait, guiElementData);
-        functionalAssertCollector = assertFactory.create(true, true, guiElementCore, guiElementWait, guiElementData);
-        nonFunctionalAssert = assertFactory.create(false, false, guiElementCore, guiElementWait, guiElementData);
+        functionalStandardAssert = assertFactory.create(true, guiElementCore, guiElementWait, guiElementData);
+        //functionalAssertCollector = assertFactory.create(true, guiElementCore, guiElementWait, guiElementData);
+        nonFunctionalAssert = assertFactory.create(false, guiElementCore, guiElementWait, guiElementData);
 
         initDefaultAssert();
     }

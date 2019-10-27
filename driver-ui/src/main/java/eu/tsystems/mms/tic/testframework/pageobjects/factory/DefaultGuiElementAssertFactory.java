@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
 import com.google.inject.Inject;
-import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssertFactory;
+import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssert;
 import eu.tsystems.mms.tic.testframework.execution.testng.IAssert;
 import eu.tsystems.mms.tic.testframework.execution.testng.INonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementAssert;
@@ -34,7 +34,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 public class DefaultGuiElementAssertFactory implements GuiElementAssertFactory {
 
     @Inject
-    private FunctionalAssertFactory functionalAssertFactory;
+    private FunctionalAssert functionalAssert;
 
     @Inject
     private INonFunctionalAssert nonFunctionalAssert;
@@ -42,14 +42,13 @@ public class DefaultGuiElementAssertFactory implements GuiElementAssertFactory {
     @Override
     public GuiElementAssert create(
         boolean functional,
-        boolean collected,
         GuiElementCore guiElementCore,
         GuiElementWait guiElementWait,
         GuiElementData guiElementData
     ) {
         IAssert configuredAssert;
         if (functional) {
-            configuredAssert = functionalAssertFactory.create(collected);
+            configuredAssert = functionalAssert;
         } else {
             configuredAssert = nonFunctionalAssert;
         }

@@ -47,8 +47,7 @@ public class AssertCollector {
     }
 
     static {
-        final FunctionalAssertFactory factory = TesterraCommons.ioc().getInstance(FunctionalAssertFactory.class);
-        realAssert = factory.create();
+        realAssert = TesterraCommons.ioc().getInstance(FunctionalAssert.class);
     }
 
     /**

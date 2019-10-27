@@ -8,7 +8,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 public interface GuiElementAssertFactory {
     GuiElementAssert create(
         boolean functional,
-        boolean collected,
         GuiElementCore guiElementCore,
         GuiElementWait guiElementWait,
         GuiElementData guiElementData

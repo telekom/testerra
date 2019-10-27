@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
-import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssertFactory;
+import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssert;
 import eu.tsystems.mms.tic.testframework.execution.testng.IAssert;
 
 import java.math.BigDecimal;
@@ -31,8 +31,7 @@ public final class AssertUtils {
     protected static IAssert realAssert;
 
     static {
-        final FunctionalAssertFactory factory = TesterraCommons.ioc().getInstance(FunctionalAssertFactory.class);
-        realAssert = factory.create();
+        realAssert = TesterraCommons.ioc().getInstance(FunctionalAssert.class);
     }
 
     public static void assertContains(String actual, String expected) {

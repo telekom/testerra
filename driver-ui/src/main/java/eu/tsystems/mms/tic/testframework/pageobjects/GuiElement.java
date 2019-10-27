@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementAssertFactory;
@@ -76,10 +75,13 @@ import java.util.List;
  * Authors: pele, rnhb
  */
 public class GuiElement implements GuiElementFacade, Loggable {
+    @Deprecated
     private boolean forcedStandardAsserts = false;
 
     private GuiElementAssert functionalAssert;
+    @Deprecated
     private GuiElementAssert functionalStandardAssert;
+    @Deprecated
     private GuiElementAssert functionalAssertCollector;
     private GuiElementAssert nonFunctionalAssert;
 
@@ -194,31 +196,32 @@ public class GuiElement implements GuiElementFacade, Loggable {
         guiElementWait = waitFactory.create(guiElementCore, guiElementData);
 
         GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
-        functionalStandardAssert = assertFactory.create(true, guiElementCore, guiElementWait, guiElementData);
         //functionalAssertCollector = assertFactory.create(true, guiElementCore, guiElementWait, guiElementData);
         nonFunctionalAssert = assertFactory.create(false, guiElementCore, guiElementWait, guiElementData);
-
-        initDefaultAssert();
+        functionalAssert = assertFactory.create(true, guiElementCore, guiElementWait, guiElementData);
+        guiElementFacade = getFacade(guiElementCore, guiElementWait, functionalAssert);
+        //initDefaultAssert();
     }
 
+    @Deprecated
     private void initDefaultAssert() {
-        if (!forcedStandardAsserts && Flags.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR) {
-            functionalAssert = functionalAssertCollector;
-        } else {
-            functionalAssert = functionalStandardAssert;
-        }
-
-        guiElementFacade = getFacade(guiElementCore, guiElementWait, functionalAssert);
+//        if (!forcedStandardAsserts && Flags.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR) {
+//            functionalAssert = functionalAssertCollector;
+//        } else {
+//            functionalAssert = functionalStandardAssert;
+//        }
+//
+//        guiElementFacade = getFacade(guiElementCore, guiElementWait, functionalAssert);
     }
 
     public void forceStandardAsserts() {
-        forcedStandardAsserts = true;
-        initDefaultAssert();
+        //forcedStandardAsserts = true;
+        //initDefaultAssert();
     }
 
     public void resetDefaultAsserts() {
-        forcedStandardAsserts = false;
-        initDefaultAssert();
+        //forcedStandardAsserts = false;
+        //initDefaultAssert();
     }
 
     /**

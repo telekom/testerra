@@ -32,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -501,19 +501,19 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public GuiElementFacade getSubElement(By by, String description) {
-        GuiElementFacade subElement = getSubElement(by);
+    public IGuiElement getSubElement(By by, String description) {
+        IGuiElement subElement = getSubElement(by);
         subElement.setName(description);
         return subElement;
     }
 
-    public GuiElementFacade getSubElement(Locate locate) {
-        GuiElementFactory factory = TesterraCommons.ioc().getInstance(GuiElementFactory.class);
+    public IGuiElement getSubElement(Locate locate) {
+        final GuiElementFactory factory = TesterraCommons.ioc().getInstance(GuiElementFactory.class);
         return factory.create(locate, webDriver, guiElementData.guiElement);
     }
 
     @Override
-    public GuiElementFacade getSubElement(By by) {
+    public IGuiElement getSubElement(By by) {
         return getSubElement(Locate.by(by));
     }
 
@@ -750,7 +750,7 @@ public class DesktopGuiElementCore implements
     @Override
     public boolean anyFollowingTextNodeContains(String contains) {
         By byStringContain = By.xpath(String.format(".//*[contains(text(),\"%s\")]", contains));
-        GuiElementFacade subElement = getSubElement(byStringContain, null);
+        IGuiElement subElement = getSubElement(byStringContain, null);
         return subElement.isPresent();
     }
 

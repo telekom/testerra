@@ -19,20 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -330,24 +321,24 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementFacade getSubElement(By by, String description) {
+    public IGuiElement getSubElement(By by, String description) {
         return getSubElement(by);
     }
 
     @Override
-    public GuiElement getSubElement(Locate locator) {
+    public IGuiElement getSubElement(Locate locator) {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName, locator.toString());
-        GuiElement subElement = decoratedFacade.getSubElement(locator);
+        IGuiElement subElement = decoratedFacade.getSubElement(locator);
         afterDelegation(String.format("%s(%s) = %s", methodName, locator.toString(), subElement));
         return subElement;
     }
 
     @Override
-    public GuiElement getSubElement(By by) {
+    public IGuiElement getSubElement(By by) {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName, by.toString());
-        GuiElement subElement = decoratedFacade.getSubElement(by);
+        IGuiElement subElement = decoratedFacade.getSubElement(by);
         afterDelegation(String.format("%s(%s) = %s", methodName, by.toString(), subElement));
         return subElement;
     }
@@ -513,199 +504,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         return lengthOfValueAfterSendKeys;
     }
 
-//    @Override
-//    public boolean waitForIsPresent() {
-//        beforeDelegation("waitForIsPresent");
-//        boolean b = decoratedFacade.waits().waitForIsPresent();
-//        afterDelegation("waitForIsPresent() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsNotPresent() {
-//        beforeDelegation("waitForIsNotPresent");
-//        boolean b = decoratedFacade.waits().waitForIsNotPresent();
-//        afterDelegation("waitForIsNotPresent() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsEnabled() {
-//        beforeDelegation("waitForIsEnabled");
-//        boolean b = decoratedFacade.waits().waitForIsEnabled();
-//        afterDelegation("waitForIsEnabled() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsDisabled() {
-//        beforeDelegation("waitForIsDisabled");
-//        boolean b = decoratedFacade.waits().waitForIsDisabled();
-//        afterDelegation("waitForIsDisabled() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForAnyFollowingTextNodeContains(String contains) {
-//        beforeDelegation("waitForAnyFollowingTextNodeContains", "\"" + contains + "\"");
-//        boolean b = decoratedFacade.waits().waitForAnyFollowingTextNodeContains(contains);
-//        afterDelegation("waitForAnyFollowingTextNodeContains(" + contains + ") = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsDisplayed() {
-//        beforeDelegation("waitForIsDisplayed");
-//        boolean b = decoratedFacade.waits().waitForIsDisplayed();
-//        afterDelegation("waitForIsDisplayed() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsNotDisplayed() {
-//        beforeDelegation("waitForIsNotDisplayed");
-//        boolean b = decoratedFacade.waits().waitForIsNotDisplayed();
-//        afterDelegation("waitForIsNotDisplayed() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsVisible(boolean complete) {
-//        beforeDelegation("waitForIsVisible");
-//        boolean b = decoratedFacade.waits().waitForIsVisible(complete);
-//        afterDelegation("waitForIsVisible() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsNotVisible() {
-//        beforeDelegation("waitForIsNotVisible");
-//        boolean b = decoratedFacade.waits().waitForIsNotVisible();
-//        afterDelegation("waitForIsNotVisible() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsDisplayedFromWebElement() {
-//        beforeDelegation("waitForIsDisplayedFromWebElement");
-//        boolean b = decoratedFacade.waits().waitForIsDisplayedFromWebElement();
-//        afterDelegation("waitForIsDisplayedFromWebElement() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsNotDisplayedFromWebElement() {
-//        beforeDelegation("waitForIsNotDisplayedFromWebElement");
-//        boolean b = decoratedFacade.waits().waitForIsNotDisplayedFromWebElement();
-//        afterDelegation("waitForIsNotDisplayedFromWebElement() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsSelected() {
-//        beforeDelegation("waitForIsSelected");
-//        boolean b = decoratedFacade.waits().waitForIsSelected();
-//        afterDelegation("waitForIsSelected() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsNotSelected() {
-//        beforeDelegation("waitForIsNotSelected");
-//        boolean b = decoratedFacade.waits().waitForIsNotSelected();
-//        afterDelegation("waitForIsNotSelected() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForText(String text) {
-//        beforeDelegation("waitForText", "\"" + text + "\"");
-//        boolean b = decoratedFacade.waits().waitForText(text);
-//        afterDelegation("waitForIsPresent(" + text + ") = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForTextContains(String... text) {
-//        beforeDelegation("waitForTextContains", "\"" + Arrays.toString(text) + "\"");
-//        boolean b = decoratedFacade.waits().waitForTextContains(text);
-//        afterDelegation("waitForIsPresent(" + Arrays.toString(text) + ") = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForTextContainsNot(String... text) {
-//        beforeDelegation("waitForTextContainsNot", "\"" + Arrays.toString(text) + "\"");
-//        boolean b = decoratedFacade.waits().waitForTextContainsNot(text);
-//        afterDelegation("waitForIsGone(" + Arrays.toString(text) + ") = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForAttribute(String attributeName) {
-//        beforeDelegation("waitForAttribute", "\"" + attributeName + "\"");
-//        boolean b = decoratedFacade.waits().waitForAttribute(attributeName);
-//        afterDelegation("waitForIsPresent(" + attributeName + ") = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForAttribute(String attributeName, String value) {
-//        beforeDelegation("waitForAttribute", "\"" + attributeName + "\" = \"" + value + "\"");
-//        boolean b = decoratedFacade.waits().waitForAttribute(attributeName, value);
-//        afterDelegation("waitForAttribute(" + attributeName + ", " + value + ") = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForAttributeContains(String attributeName, String value) {
-//        beforeDelegation("waitForAttributeContains", "\"" + attributeName + "\" = \"" + value + "\"");
-//        boolean b = decoratedFacade.waits().waitForAttributeContains(attributeName, value);
-//        afterDelegation("waitForAttributeContains(" + attributeName + ", " + value + ") = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsSelectable() {
-//        beforeDelegation("waitForIsSelectable");
-//        boolean b = decoratedFacade.waits().waitForIsSelectable();
-//        afterDelegation("waitForIsSelectable() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForIsNotSelectable() {
-//        beforeDelegation("waitForIsNotSelectable");
-//        boolean b = decoratedFacade.waits().waitForIsNotSelectable();
-//        afterDelegation("waitForIsNotSelectable() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForAttributeContainsNot(final String attributeName, final String value) {
-//        beforeDelegation("waitForAttributeContainsNot");
-//        boolean b = decoratedFacade.waits().waitForAttributeContainsNot(attributeName, value);
-//        afterDelegation("waitForAttributeContainsNot() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForCssClassIsPresent(final String className) {
-//        beforeDelegation("waitForCssClassIsPresent");
-//        boolean b = decoratedFacade.waits().waitForCssClassIsPresent(className);
-//        afterDelegation("waitForCssClassIsPresent() = " + b);
-//        return b;
-//    }
-//
-//    @Override
-//    public boolean waitForCssClassIsNotPresent(final String className) {
-//        beforeDelegation("waitForCssClassIsNotPresent");
-//        boolean b = decoratedFacade.waits().waitForCssClassIsNotPresent(className);
-//        afterDelegation("waitForCssClassIsNotPresent() = " + b);
-//        return b;
-//    }
-
-
     @Override
     public String toString() {
         return decoratedFacade.toString();
@@ -731,130 +529,5 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final File screenshot = decoratedFacade.takeScreenshot();
         afterDelegation();
         return screenshot;
-    }
-
-    @Override
-    public IFrameLogic getFrameLogic() {
-        return decoratedFacade.getFrameLogic();
-    }
-
-    @Override
-    public GuiElementAssert asserts() {
-        return asserts("");
-    }
-
-    @Override
-    public GuiElementAssert asserts(final String errorMessage) {
-        return decoratedFacade.asserts(errorMessage);
-    }
-
-    @Override
-    public GuiElementWait waits() {
-        return decoratedFacade.waits();
-    }
-
-    @Override
-    public GuiElementAssert nonFunctionalAsserts() {
-        return null;
-    }
-
-    @Override
-    public GuiElementAssert nonFunctionalAsserts(String errorMessage) {
-        return null;
-    }
-
-    @Override
-    public IStringPropertyAssertion text() {
-        return decoratedFacade.text();
-    }
-
-    @Override
-    public IStringPropertyAssertion value() {
-        return decoratedFacade.value();
-    }
-
-    @Override
-    public IStringPropertyAssertion value(final Attribute attribute) {
-        return decoratedFacade.value(attribute);
-    }
-
-    @Override
-    public GuiElementFacade select(final Boolean select) {
-        return decoratedFacade.select(select);
-    }
-
-    @Override
-    public IBinaryPropertyAssertion present() {
-        return decoratedFacade.present();
-    }
-
-    @Override
-    public IBinaryPropertyAssertion visible(final boolean complete) {
-        return decoratedFacade.visible(complete);
-    }
-
-    @Override
-    public IBinaryPropertyAssertion displayed() {
-        return decoratedFacade.displayed();
-    }
-
-    @Override
-    public IBinaryPropertyAssertion enabled() {
-        return decoratedFacade.enabled();
-    }
-
-    @Override
-    public IBinaryPropertyAssertion selected() {
-        return decoratedFacade.selected();
-    }
-
-    @Override
-    public IImagePropertyAssertion screenshot() {
-        return decoratedFacade.screenshot();
-    }
-
-    @Override
-    public GuiElementFacade scrollTo() {
-        return decoratedFacade.scrollTo();
-    }
-
-    @Override
-    public GuiElementFacade scrollTo(int yOffset) {
-        return decoratedFacade.scrollTo(yOffset);
-    }
-
-    @Override
-    public int getTimeoutInSeconds() {
-        return decoratedFacade.getTimeoutInSeconds();
-    }
-
-    @Override
-    public GuiElementFacade setTimeoutInSeconds(int timeoutInSeconds) {
-        return decoratedFacade.setTimeoutInSeconds(timeoutInSeconds);
-    }
-
-    @Override
-    public GuiElementFacade restoreDefaultTimeout() {
-         return decoratedFacade.restoreDefaultTimeout();
-    }
-
-    @Override
-    public List<GuiElement> getList() {
-        return decoratedFacade.getList();
-    }
-
-    @Override
-    public WebDriver getWebDriver() {
-        return decoratedFacade.getWebDriver();
-    }
-
-    @Override
-    public GuiElementFacade setName(String name) {
-        return decoratedFacade.setName(name);
-    }
-
-    @Override
-    public String getName() {
-        return decoratedFacade.getName();
     }
 }

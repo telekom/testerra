@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -31,10 +32,10 @@ public class DefaultGuiElementFactory implements
     Loggable
 {
     @Override
-    public GuiElementFacade create(
+    public IGuiElement create(
         Locate locate,
         WebDriver webDriver,
-        GuiElementFacade parent
+        IGuiElement parent
     ) {
         String locatorToString = locate.getBy().toString();
         if (locatorToString.toLowerCase().contains("xpath")) {
@@ -55,7 +56,7 @@ public class DefaultGuiElementFactory implements
     }
 
     @Override
-    public GuiElementFacade create(Locate locator, WebDriver webDriver) {
+    public IGuiElement create(Locate locator, WebDriver webDriver) {
         return new GuiElement(webDriver, locator);
     }
 }

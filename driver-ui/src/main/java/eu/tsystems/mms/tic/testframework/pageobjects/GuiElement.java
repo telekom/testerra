@@ -51,9 +51,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImagePrope
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DefaultGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacadeLoggingDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
@@ -78,7 +80,7 @@ import java.util.List;
  * <p>
  * Authors: pele, rnhb
  */
-public class GuiElement implements GuiElementFacade, Loggable {
+public class GuiElement implements IGuiElement, Loggable {
     /**
      * This is the default functional assertion for GuiElements,
      * which always contains a {@link DefaultFunctionalAssertion}.
@@ -139,7 +141,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
     public GuiElement(
         final WebDriver driver,
         final Locate locator,
-        final GuiElementFacade... frames
+        final IGuiElement... frames
     ) {
         this(locator, driver, frames);
     }
@@ -147,7 +149,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
     public GuiElement(
         final WebDriver driver,
         final By by,
-        final GuiElementFacade... frames
+        final IGuiElement... frames
     ) {
         this(Locate.by(by), driver, frames);
     }
@@ -155,7 +157,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
     public GuiElement(
         final Locate locator,
         final WebDriver driver,
-        final GuiElementFacade... frames
+        final IGuiElement... frames
     ) {
         IFrameLogic frameLogic = null;
         if (frames != null && frames.length > 0) {
@@ -216,10 +218,10 @@ public class GuiElement implements GuiElementFacade, Loggable {
      * You can move this code to DefaultGuiElementFactory when no more 'new GuiElement()' calls exists.
      * But this may not happen before 2119.
      */
-    private GuiElementFacade initFacade() {
+    private GuiElementFacade getFacade(GuiElementCore guiElementCore) {
         GuiElementFacade guiElementFacade;
-        //guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
-        guiElementFacade = new GuiElementFacadeLoggingDecorator(this, guiElementData);
+        guiElementFacade = new DefaultGuiElementFacade(guiElementCore);
+        guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
         //guiElementFacade = new GuiElementFace(guiElementFacade, guiElementData);
 
         int delayAfterAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_AFTER_GUIELEMENT_ACTION_MILLIS);
@@ -308,13 +310,13 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade scrollToElement(int yOffset) {
+    public IGuiElement scrollToElement(int yOffset) {
         guiElementFacade.scrollToElement(yOffset);
         return this;
     }
 
     @Override
-    public GuiElementFacade select() {
+    public IGuiElement select() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.select();
         guiElementData.resetLogLevel();
@@ -327,7 +329,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
      * @param select true/false/null.
      */
     @Override
-    public GuiElementFacade select(final Boolean select) {
+    public IGuiElement select(final Boolean select) {
         guiElementData.setLogLevel(LogLevel.INFO);
         if (select == null) {
             log().info("Select option is null. Selecting/Deselecting nothing.");
@@ -342,7 +344,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade deselect() {
+    public IGuiElement deselect() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.deselect();
         guiElementData.resetLogLevel();
@@ -350,7 +352,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade type(String text) {
+    public IGuiElement type(String text) {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementCore.type(text);
         guiElementData.resetLogLevel();
@@ -358,7 +360,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade click() {
+    public IGuiElement click() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.click();
         guiElementData.resetLogLevel();
@@ -366,7 +368,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade clickJS() {
+    public IGuiElement clickJS() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickJS();
         guiElementData.resetLogLevel();
@@ -374,7 +376,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade clickAbsolute() {
+    public IGuiElement clickAbsolute() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickAbsolute();
         guiElementData.resetLogLevel();
@@ -382,19 +384,19 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade mouseOverAbsolute2Axis() {
+    public IGuiElement mouseOverAbsolute2Axis() {
         guiElementFacade.mouseOverAbsolute2Axis();
         return this;
     }
 
     @Override
-    public GuiElementFacade submit() {
+    public IGuiElement submit() {
         guiElementFacade.submit();
         return this;
     }
 
     @Override
-    public GuiElementFacade sendKeys(CharSequence... charSequences) {
+    public IGuiElement sendKeys(CharSequence... charSequences) {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.sendKeys(charSequences);
         guiElementData.resetLogLevel();
@@ -402,7 +404,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade clear() {
+    public IGuiElement clear() {
         guiElementFacade.clear();
         return this;
     }
@@ -476,13 +478,13 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade mouseOver() {
+    public IGuiElement mouseOver() {
         guiElementFacade.mouseOver();
         return this;
     }
 
     @Override
-    public GuiElementFacade mouseOverJS() {
+    public IGuiElement mouseOverJS() {
         guiElementFacade.mouseOverJS();
         return this;
     }
@@ -512,7 +514,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade doubleClick() {
+    public IGuiElement doubleClick() {
         guiElementFacade.doubleClick();
         return this;
     }
@@ -521,25 +523,25 @@ public class GuiElement implements GuiElementFacade, Loggable {
         return guiElementData.getTimeoutInSeconds();
     }
 
-    public GuiElementFacade setTimeoutInSeconds(int timeoutInSeconds) {
+    public IGuiElement setTimeoutInSeconds(int timeoutInSeconds) {
         guiElementData.setTimeoutInSeconds(timeoutInSeconds);
         return this;
     }
 
-    public GuiElementFacade restoreDefaultTimeout() {
+    public IGuiElement restoreDefaultTimeout() {
         int timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
         guiElementData.setTimeoutInSeconds(timeoutInSeconds);
         return this;
     }
 
     @Override
-    public GuiElementFacade highlight() {
+    public IGuiElement highlight() {
         guiElementFacade.highlight();
         return this;
     }
 
     @Override
-    public GuiElementFacade swipe(int offsetX, int offSetY) {
+    public IGuiElement swipe(int offsetX, int offSetY) {
         guiElementFacade.swipe(offsetX, offSetY);
         return this;
     }
@@ -555,19 +557,19 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade rightClick() {
+    public IGuiElement rightClick() {
         guiElementFacade.rightClick();
         return this;
     }
 
     @Override
-    public GuiElementFacade rightClickJS() {
+    public IGuiElement rightClickJS() {
         guiElementFacade.rightClickJS();
         return this;
     }
 
     @Override
-    public GuiElementFacade doubleClickJS() {
+    public IGuiElement doubleClickJS() {
         guiElementFacade.doubleClickJS();
         return this;
     }
@@ -603,7 +605,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
      * @param parent Object that should act as parent.
      */
     @Deprecated
-    public GuiElementFacade setParent(GuiElementCore parent) {
+    public IGuiElement setParent(GuiElementCore parent) {
         guiElementData.parent = parent;
         return this;
     }
@@ -633,7 +635,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade setName(String name) {
+    public IGuiElement setName(String name) {
         guiElementData.name = name;
         return this;
     }
@@ -755,7 +757,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
         guiElementData.setLogLevel(logLevel);
     }
 
-    public GuiElementFacade shadowRoot() {
+    public IGuiElement shadowRoot() {
         guiElementData.shadowRoot = true;
         return this;
     }
@@ -765,6 +767,21 @@ public class GuiElement implements GuiElementFacade, Loggable {
      */
     public GuiElementWait waits() {
         return guiElementWait;
+    }
+
+    @Override
+    public IValueAssertion<String> tagName() {
+        return new ValueAssertion<>(new AssertionProvider<String>() {
+            @Override
+            public String actual() {
+                return getTagName();
+            }
+
+            @Override
+            public String subject() {
+                return String.format("%s.tagName", this);
+            }
+        });
     }
 
     @Override
@@ -893,12 +910,16 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public GuiElementFacade scrollTo() {
+    public IGuiElement scrollTo() {
         return scrollToElement();
     }
 
     @Override
-    public GuiElementFacade scrollTo(final int yOffset) {
-        return scrollToElement(yOffset);
+    public IGuiElement scrollTo(final int yOffset) {
+        /**
+         * We have to negate the yOffset here
+         * because {@link #scrollToElement(int)} substracts the offset
+         */
+        return scrollToElement(yOffset*-1);
     }
 }

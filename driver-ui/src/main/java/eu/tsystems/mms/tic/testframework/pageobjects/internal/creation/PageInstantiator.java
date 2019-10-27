@@ -32,6 +32,7 @@ import java.util.Arrays;
 /**
  * Encapsulates a constructor of a page class.
  */
+@Deprecated
 public class PageInstantiator<T extends Page> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PageInstantiator.class);

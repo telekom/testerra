@@ -19,87 +19,15 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IWebDriverRetainer;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
-import org.openqa.selenium.By;
 
-import java.util.List;
-
-public interface GuiElementFacade extends
-    GuiElementCore,
-    Nameable,
-    IWebDriverRetainer
-{
-    IFrameLogic getFrameLogic();
-    IStringPropertyAssertion<String> text();
-    IStringPropertyAssertion<String> value();
-    IStringPropertyAssertion<String> value(final Attribute attribute);
-    IBinaryPropertyAssertion<Boolean> present();
-    IBinaryPropertyAssertion<Boolean> visible(final boolean complete);
-    IBinaryPropertyAssertion<Boolean> displayed();
-    IBinaryPropertyAssertion<Boolean> enabled();
-    IBinaryPropertyAssertion<Boolean> selected();
-    IImagePropertyAssertion screenshot();
-    GuiElementFacade scrollTo();
-    GuiElementFacade scrollTo(final int yOffset);
-
-    GuiElementFacade select(final Boolean select);
-
-    int getTimeoutInSeconds();
-    GuiElementFacade setTimeoutInSeconds(int timeoutInSeconds);
-    GuiElementFacade restoreDefaultTimeout();
-
-    /**
-     * Deprecated APIs
-     */
-    @Deprecated
-    List<GuiElement> getList();
-
-    @Override
-    @Deprecated
-    GuiElement getSubElement(final By by);
-
-    @Override
-    @Deprecated
-    GuiElement getSubElement(final Locate locator);
-
-    @Override
-    @Deprecated
-    GuiElementFacade scrollToElement(final int yOffset);
-
-    @Override
-    @Deprecated
-    GuiElementFacade scrollToElement();
-
-    @Override
-    @Deprecated
-    String getCssValue(final String cssIdentifier);
-
-    @Deprecated
-    GuiElementAssert asserts();
-
-    @Deprecated
-    GuiElementAssert asserts(String errorMessage);
-
-    @Deprecated
-    GuiElementWait waits();
-
-    @Deprecated
-    GuiElementAssert nonFunctionalAsserts();
-
-    @Deprecated
-    GuiElementAssert nonFunctionalAsserts(String errorMessage);
-
+/**
+ * A Facade for {@link GuiElement}
+ * It should also extend {@link IGuiElement} in the future,
+ * when all of it's features should be decorated.
+ */
+public interface GuiElementFacade extends GuiElementCore {
     /**
      * GuiElementCore to GuiElementFacade overrides
      */
@@ -120,9 +48,6 @@ public interface GuiElementFacade extends
 
     @Override
     GuiElementFacade rightClickJS();
-
-    @Override
-    GuiElementFacade setName(String name);
 
     @Override
     GuiElementFacade highlight();

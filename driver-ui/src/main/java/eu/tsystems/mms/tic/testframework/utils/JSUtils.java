@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
@@ -347,8 +348,8 @@ public final class JSUtils {
         final IFrameLogic frameLogic = element.getFrameLogic();
 
         if (frameLogic != null) {
-            List<GuiElementFacade> allFramesInOrder = frameLogic.getAllFramesInOrder();
-            for (GuiElementFacade guiElement : allFramesInOrder) {
+            List<IGuiElement> allFramesInOrder = frameLogic.getAllFramesInOrder();
+            for (IGuiElement guiElement : allFramesInOrder) {
                 hierarchyFrameSelector = pGetSimpleJsSelector(guiElement, hierarchyFrameSelector) + jsFrameExpander;
             }
         }
@@ -366,7 +367,7 @@ public final class JSUtils {
      * @param documentSelector String Current Selector
      * @return String
      */
-    private static String pGetSimpleJsSelector(final GuiElementFacade element, final String documentSelector) {
+    private static String pGetSimpleJsSelector(final IGuiElement element, final String documentSelector) {
 
         final String jsById = documentSelector + ".getElementById(\"###\")";
         final String jsByClassName = documentSelector + ".getElementsByClassName(\"###\")[0]";

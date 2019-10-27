@@ -103,7 +103,7 @@ public class GuiElementData {
         if (hasName()) {
             toString += name;
         } else {
-            toString += "Guielement";
+            toString += "GuiElement";
         }
         toString+="("+guiElement.getLocator().toString();
 

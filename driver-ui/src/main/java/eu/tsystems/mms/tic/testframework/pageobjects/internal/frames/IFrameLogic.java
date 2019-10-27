@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public interface IFrameLogic {
      *
      * @return List of frames as GuiElement in switching order
      */
-    List<GuiElementFacade> getAllFramesInOrder();
+    List<IGuiElement> getAllFramesInOrder();
 
     /**
      * Switches to the frame the GuiElement is inside in.
@@ -22,7 +22,7 @@ public interface IFrameLogic {
      */
     void switchToDefaultFrame();
 
-    GuiElementFacade[] getFrames();
+    IGuiElement[] getFrames();
 
     boolean hasFrames();
 }

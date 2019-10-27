@@ -186,7 +186,7 @@ public class TesterraCommons {
         return ioc;
     }
 
-    public static void initIoc() {
+    private static void initIoc() {
         Reflections reflections = new Reflections(p);
         Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
         List<Module> modules = new ArrayList<>();

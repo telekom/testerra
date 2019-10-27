@@ -31,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
@@ -338,7 +337,7 @@ public final class JSUtils {
      * @param element GuiElement
      * @return String
      */
-    public static String getJavaScriptSelector(final GuiElement element) {
+    public static String getJavaScriptSelector(final IGuiElement element) {
 
         final String jsFrameExpander = ".contentDocument";
         String hierarchyFrameSelector = "document";
@@ -565,7 +564,7 @@ public final class JSUtils {
         return 0;
     }
 
-    public static Point getElementLocationInViewPort(GuiElement guiElement) {
+    public static Point getElementLocationInViewPort(IGuiElement guiElement) {
         int x = 0;
         int y = 0;
 
@@ -631,7 +630,7 @@ public final class JSUtils {
         }
     }
 
-    public static Point getRelativePositionVector(GuiElement from, GuiElement to) {
+    public static Point getRelativePositionVector(IGuiElement from, IGuiElement to) {
         Point start = getElementLocationInViewPort(from);
         Point end = getElementLocationInViewPort(to);
 

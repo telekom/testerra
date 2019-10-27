@@ -5,7 +5,7 @@ import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 /**
  * Collects assertions without throwing them
  */
-public class PlatformAssert extends DefaultAssert implements IAssert {
+public class PlatformAssert extends AbstractAssert implements IAssert {
     @Override
     public void fail(String message, Throwable realCause) {
         AssertionError ae = new AssertionError(message);

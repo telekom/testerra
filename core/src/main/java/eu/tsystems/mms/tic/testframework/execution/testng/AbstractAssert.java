@@ -17,7 +17,7 @@ import static org.testng.internal.EclipseInterface.ASSERT_LEFT2;
 import static org.testng.internal.EclipseInterface.ASSERT_MIDDLE;
 import static org.testng.internal.EclipseInterface.ASSERT_RIGHT;
 
-public abstract class DefaultAssert implements IAssert {
+public abstract class AbstractAssert implements IAssert {
     public void failSame(Object actual, Object expected, String subject) {
         String formatted = "";
         if (subject != null) {

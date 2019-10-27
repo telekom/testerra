@@ -84,11 +84,11 @@ public abstract class Page extends AbstractPage {
     /**
      * @todo You can mark this with @Inject when all pages are created by PageFactory
      */
-    protected final GuiElementFactory guiElementFactory = TesterraCommons.ioc().getInstance(GuiElementFactory.class);
+    protected static final GuiElementFactory guiElementFactory = TesterraCommons.ioc().getInstance(GuiElementFactory.class);
     /**
      * @todo You can mark this with @Inject when all pages are created by PageFactory
      */
-    protected final IPageFactory pageFactory = TesterraCommons.ioc().getInstance(IPageFactory.class);
+    protected static final IPageFactory pageFactory = TesterraCommons.ioc().getInstance(IPageFactory.class);
 
     /**
      * Constructor for existing sessions.

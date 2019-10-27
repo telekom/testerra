@@ -1,15 +1,13 @@
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
-
 /**
- * Collects assertions without throwing them
+ * Throws exceptions
  */
-public class PlatformAssert extends AbstractAssert implements IAssert {
+public class ThrowedAssertion extends AbstractAssertion implements InstantAssertion {
     @Override
     public void fail(String message, Throwable realCause) {
         AssertionError ae = new AssertionError(message);
         ae.initCause(realCause);
-        CollectedAssertions.store(ae);
+        throw ae;
     }
 }

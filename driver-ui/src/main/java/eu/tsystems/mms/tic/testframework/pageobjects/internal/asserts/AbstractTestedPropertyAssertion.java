@@ -1,20 +1,20 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
-import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssert;
-import eu.tsystems.mms.tic.testframework.execution.testng.IAssert;
-import eu.tsystems.mms.tic.testframework.execution.testng.INonFunctionalAssert;
+import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 
 import java.util.function.Function;
 
-public abstract class AbstractTestedAssertion<T> extends AbstractAssertion<T> implements INonFunctionalAssertion {
+public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropertyAssertion<T> implements INonFunctionalPropertyAssertion {
     private final int sleepTimeInMsShortInterval = 200;
     private final int timeoutInSecondsShortInterval = 1;
-    protected IAssert configuredAssert = TesterraCommons.ioc().getInstance(FunctionalAssert.class);
+    protected IAssertion configuredAssert = TesterraCommons.ioc().getInstance(FunctionalAssertion.class);
 
-    public AbstractTestedAssertion(AssertionProvider<T> provider) {
+    public AbstractTestedPropertyAssertion(AssertionProvider<T> provider) {
         super(provider);
     }
 
@@ -42,8 +42,8 @@ public abstract class AbstractTestedAssertion<T> extends AbstractAssertion<T> im
     }
 
     @Override
-    public INonFunctionalAssertion nonFunctional() {
-        configuredAssert = TesterraCommons.ioc().getInstance(INonFunctionalAssert.class);
+    public INonFunctionalPropertyAssertion nonFunctional() {
+        configuredAssert = TesterraCommons.ioc().getInstance(NonFunctionalAssertion.class);
         return this;
     }
 }

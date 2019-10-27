@@ -2,14 +2,14 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 
-public class ValueAssertion<T> extends QuantifiedAssertion<T> implements IValueAssertion<T> {
+public class StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T> implements IStringPropertyAssertion<T> {
 
-    public ValueAssertion(AssertionProvider<T> provider) {
+    public StringPropertyAssertion(AssertionProvider<T> provider) {
         super( provider);
     }
 
     @Override
-    public ValueAssertion<T> contains(final String expected) {
+    public StringPropertyAssertion<T> contains(final String expected) {
         testTimer(t -> {
             configuredAssert.assertContains((String)provider.actual(), expected, provider.traceSubjectString());
             return true;
@@ -18,7 +18,7 @@ public class ValueAssertion<T> extends QuantifiedAssertion<T> implements IValueA
     }
 
     @Override
-    public ValueAssertion<T> containsNot(final String expected) {
+    public StringPropertyAssertion<T> containsNot(final String expected) {
         testTimer(t -> {
             configuredAssert.assertContainsNot((String)provider.actual(), expected, provider.traceSubjectString());
             return true;
@@ -27,7 +27,7 @@ public class ValueAssertion<T> extends QuantifiedAssertion<T> implements IValueA
     }
 
     @Override
-    public ValueAssertion<T> beginsWith(String expected) {
+    public StringPropertyAssertion<T> beginsWith(String expected) {
         final ThrowablePackedResponse throwablePackedResponse = testTimer(t -> {
             final String actualString = (String) provider.actual();
             return actualString.startsWith(expected);
@@ -39,7 +39,7 @@ public class ValueAssertion<T> extends QuantifiedAssertion<T> implements IValueA
     }
 
     @Override
-    public ValueAssertion<T> endsWith(String expected) {
+    public StringPropertyAssertion<T> endsWith(String expected) {
         final ThrowablePackedResponse throwablePackedResponse = testTimer(t -> {
             final String actualString = (String) provider.actual();
             return actualString.endsWith(expected);
@@ -51,7 +51,7 @@ public class ValueAssertion<T> extends QuantifiedAssertion<T> implements IValueA
     }
 
     @Override
-    public IValueAssertion<T> nonFunctional() {
+    public IStringPropertyAssertion<T> nonFunctional() {
         super.nonFunctional();
         return this;
     }

@@ -27,10 +27,10 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IValueAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ValueAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImagePropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
@@ -51,8 +51,8 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
         super(driver);
     }
 
-    public IValueAssertion<String> title() {
-        return new ValueAssertion<>(new AssertionProvider<String>() {
+    public IStringPropertyAssertion<String> title() {
+        return new StringPropertyAssertion<>(new AssertionProvider<String>() {
             @Override
             public String actual() {
                 return driver.getTitle();
@@ -65,8 +65,8 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
         });
     }
 
-    public IValueAssertion<String> url() {
-        return new ValueAssertion<>(new AssertionProvider<String>() {
+    public IStringPropertyAssertion<String> url() {
+        return new StringPropertyAssertion<>(new AssertionProvider<String>() {
             @Override
             public String actual() {
                 return driver.getCurrentUrl();
@@ -107,8 +107,8 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
         return self();
     }
 
-    public IImageAssertion screenshot() {
-        return new ImageAssertion(new AssertionProvider<File>() {
+    public IImagePropertyAssertion screenshot() {
+        return new ImagePropertyAssertion(new AssertionProvider<File>() {
             @Override
             public File actual() {
                 return UITestUtils.takeScreenshotAs(driver, OutputType.FILE);

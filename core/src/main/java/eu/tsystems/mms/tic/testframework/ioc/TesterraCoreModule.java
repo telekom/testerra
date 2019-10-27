@@ -2,15 +2,18 @@ package eu.tsystems.mms.tic.testframework.ioc;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
-import eu.tsystems.mms.tic.testframework.execution.testng.DefaultFunctionalAssert;
-import eu.tsystems.mms.tic.testframework.execution.testng.DefaultNonFunctionalAssert;
-import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssert;
-import eu.tsystems.mms.tic.testframework.execution.testng.INonFunctionalAssert;
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultFunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultNonFunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.ThrowedAssertion;
 
 public class TesterraCoreModule extends AbstractModule {
 
     protected void configure() {
-        bind(INonFunctionalAssert.class).to(DefaultNonFunctionalAssert.class).in(Scopes.SINGLETON);
-        bind(FunctionalAssert.class).to(DefaultFunctionalAssert.class).in(Scopes.SINGLETON);
+        bind(NonFunctionalAssertion.class).to(DefaultNonFunctionalAssertion.class).in(Scopes.SINGLETON);
+        bind(FunctionalAssertion.class).to(DefaultFunctionalAssertion.class).in(Scopes.SINGLETON);
+        bind(InstantAssertion.class).to(ThrowedAssertion.class).in(Scopes.SINGLETON);
     }
 }

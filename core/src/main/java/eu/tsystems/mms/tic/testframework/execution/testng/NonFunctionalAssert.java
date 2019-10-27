@@ -32,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 public class NonFunctionalAssert extends AssertCollector {
 
     static {
-        realAssert = TesterraCommons.ioc().getInstance(INonFunctionalAssert.class);
+        realAssert = TesterraCommons.ioc().getInstance(NonFunctionalAssertion.class);
     }
 
     /**

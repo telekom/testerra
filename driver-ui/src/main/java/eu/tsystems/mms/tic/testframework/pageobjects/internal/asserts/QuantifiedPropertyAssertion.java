@@ -2,14 +2,14 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import java.math.BigDecimal;
 
-public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuantifiedAssertion<T> {
+public class QuantifiedPropertyAssertion<T> extends BinaryPropertyAssertion<T> implements IQuantifiedPropertyAssertion<T> {
 
-    public QuantifiedAssertion(AssertionProvider<T> provider) {
+    public QuantifiedPropertyAssertion(AssertionProvider<T> provider) {
         super(provider);
     }
 
     @Override
-    public IQuantifiedAssertion<T> equals(final String expected) {
+    public IQuantifiedPropertyAssertion<T> equals(final String expected) {
         testTimer(t -> {
             configuredAssert.assertEquals(provider.actual(), expected, provider.traceSubjectString());
             return true;
@@ -18,17 +18,17 @@ public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuant
     }
 
     @Override
-    public IQuantifiedAssertion<T> greaterThan(final long expected) {
+    public IQuantifiedPropertyAssertion<T> greaterThan(final long expected) {
         return greaterThan(new BigDecimal(expected));
     }
 
     @Override
-    public IQuantifiedAssertion<T> greaterThan(final double expected) {
+    public IQuantifiedPropertyAssertion<T> greaterThan(final double expected) {
         return greaterThan(new BigDecimal(expected));
     }
 
     @Override
-    public IQuantifiedAssertion<T> greaterThan(final BigDecimal expected) {
+    public IQuantifiedPropertyAssertion<T> greaterThan(final BigDecimal expected) {
         testTimer(t -> {
             configuredAssert.assertGreaterThan(new BigDecimal((String) provider.actual()), expected, provider.traceSubjectString());
             return true;
@@ -37,17 +37,17 @@ public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuant
     }
 
     @Override
-    public IQuantifiedAssertion<T> lowerThan(final long expected) {
+    public IQuantifiedPropertyAssertion<T> lowerThan(final long expected) {
         return lowerThan(new BigDecimal(expected));
     }
 
     @Override
-    public IQuantifiedAssertion<T> lowerThan(final double expected) {
+    public IQuantifiedPropertyAssertion<T> lowerThan(final double expected) {
         return lowerThan(new BigDecimal(expected));
     }
 
     @Override
-    public IQuantifiedAssertion<T> lowerThan(final BigDecimal expected) {
+    public IQuantifiedPropertyAssertion<T> lowerThan(final BigDecimal expected) {
         testTimer(t -> {
             configuredAssert.assertLowerThan(new BigDecimal((String) provider.actual()), expected, provider.traceSubjectString());
             return true;
@@ -56,17 +56,17 @@ public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuant
     }
 
     @Override
-    public IQuantifiedAssertion<T> greaterEqualThan(final long expected) {
+    public IQuantifiedPropertyAssertion<T> greaterEqualThan(final long expected) {
         return greaterThan(new BigDecimal(expected));
     }
 
     @Override
-    public IQuantifiedAssertion<T> greaterEqualThan(final double expected) {
+    public IQuantifiedPropertyAssertion<T> greaterEqualThan(final double expected) {
         return greaterThan(new BigDecimal(expected));
     }
 
     @Override
-    public IQuantifiedAssertion<T> greaterEqualThan(final BigDecimal expected) {
+    public IQuantifiedPropertyAssertion<T> greaterEqualThan(final BigDecimal expected) {
         testTimer(t -> {
             configuredAssert.assertGreaterEqualThan(new BigDecimal((String) provider.actual()), expected, provider.traceSubjectString());
             return true;
@@ -75,17 +75,17 @@ public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuant
     }
 
     @Override
-    public IQuantifiedAssertion<T> lowerEqualThan(final long expected) {
+    public IQuantifiedPropertyAssertion<T> lowerEqualThan(final long expected) {
         return lowerThan(new BigDecimal(expected));
     }
 
     @Override
-    public IQuantifiedAssertion<T> lowerEqualThan(final double expected) {
+    public IQuantifiedPropertyAssertion<T> lowerEqualThan(final double expected) {
         return lowerThan(new BigDecimal(expected));
     }
 
     @Override
-    public IQuantifiedAssertion<T> lowerEqualThan(final BigDecimal expected) {
+    public IQuantifiedPropertyAssertion<T> lowerEqualThan(final BigDecimal expected) {
         testTimer(t -> {
             configuredAssert.assertGreaterEqualThan(new BigDecimal((String) provider.actual()), expected, provider.traceSubjectString());
             return true;
@@ -94,17 +94,17 @@ public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuant
     }
 
     @Override
-    public IQuantifiedAssertion<T> between(long lower, long higher) {
+    public IQuantifiedPropertyAssertion<T> between(long lower, long higher) {
         return between(new BigDecimal(lower), new BigDecimal(higher));
     }
 
     @Override
-    public IQuantifiedAssertion<T> between(double lower, double higher) {
+    public IQuantifiedPropertyAssertion<T> between(double lower, double higher) {
         return between(new BigDecimal(lower), new BigDecimal(higher));
     }
 
     @Override
-    public IQuantifiedAssertion<T> between(BigDecimal lower, BigDecimal higher) {
+    public IQuantifiedPropertyAssertion<T> between(BigDecimal lower, BigDecimal higher) {
         testTimer(t -> {
             configuredAssert.assertBetween(new BigDecimal((String) provider.actual()), lower, higher, provider.traceSubjectString());
             return true;
@@ -113,7 +113,7 @@ public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuant
     }
 
     @Override
-    public IQuantifiedAssertion<T> nonFunctional() {
+    public IQuantifiedPropertyAssertion<T> nonFunctional() {
         super.nonFunctional();
         return this;
     }

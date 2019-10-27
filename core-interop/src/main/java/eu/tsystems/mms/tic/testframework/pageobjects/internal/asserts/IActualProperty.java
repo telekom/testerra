@@ -1,5 +1,5 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-public interface IAssertion<T> {
+public interface IActualProperty<T> {
     T actual();
 }

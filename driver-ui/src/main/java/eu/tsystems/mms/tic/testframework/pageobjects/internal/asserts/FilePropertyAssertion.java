@@ -6,15 +6,15 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class FileAssertion extends AbstractAssertion<File> implements IFileAssertion {
+public class FilePropertyAssertion extends AbstractPropertyAssertion<File> implements IFilePropertyAssertion {
 
-    public FileAssertion(AssertionProvider<File> provider) {
+    public FilePropertyAssertion(AssertionProvider<File> provider) {
         super(provider);
     }
 
     @Override
-    public IQuantifiedAssertion<Long> bytes() {
-        return new QuantifiedAssertion<>(new AssertionProvider<Long>(this) {
+    public IQuantifiedPropertyAssertion<Long> bytes() {
+        return new QuantifiedPropertyAssertion<>(new AssertionProvider<Long>(this) {
             @Override
             public Long actual() {
                 return provider.actual().length();
@@ -28,8 +28,8 @@ public class FileAssertion extends AbstractAssertion<File> implements IFileAsser
     }
 
     @Override
-    public IValueAssertion<String> name() {
-        return new ValueAssertion<>(new AssertionProvider<String>(this) {
+    public IStringPropertyAssertion<String> name() {
+        return new StringPropertyAssertion<>(new AssertionProvider<String>(this) {
             @Override
             public String actual() {
                 return provider.actual().getName();
@@ -43,8 +43,8 @@ public class FileAssertion extends AbstractAssertion<File> implements IFileAsser
     }
 
     @Override
-    public IValueAssertion<String> extension() {
-        return new ValueAssertion<>(new AssertionProvider<String>(this) {
+    public IStringPropertyAssertion<String> extension() {
+        return new StringPropertyAssertion<>(new AssertionProvider<String>(this) {
             @Override
             public String actual() {
                 return FilenameUtils.getExtension(provider.actual().getName());
@@ -58,8 +58,8 @@ public class FileAssertion extends AbstractAssertion<File> implements IFileAsser
     }
 
     @Override
-    public IValueAssertion<String> mimetype() {
-        return new ValueAssertion<>(new AssertionProvider<String>(this) {
+    public IStringPropertyAssertion<String> mimetype() {
+        return new StringPropertyAssertion<>(new AssertionProvider<String>(this) {
             @Override
             public String actual() {
                 try {
@@ -77,8 +77,8 @@ public class FileAssertion extends AbstractAssertion<File> implements IFileAsser
     }
 
     @Override
-    public IBinaryAssertion<Boolean> exists() {
-        return new BinaryAssertion(new AssertionProvider<Boolean>(this) {
+    public IBinaryPropertyAssertion<Boolean> exists() {
+        return new BinaryPropertyAssertion(new AssertionProvider<Boolean>(this) {
             @Override
             public Boolean actual() {
                 return provider.actual().exists();

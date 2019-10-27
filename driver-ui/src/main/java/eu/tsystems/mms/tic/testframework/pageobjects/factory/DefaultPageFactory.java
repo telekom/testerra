@@ -19,19 +19,19 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.pageobjects.IWebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 
 public class DefaultPageFactory implements IPageFactory {
 
     @Override
-    public <T extends Page> T create(Class<T> pageClass) {
+    public <T extends IWebDriverRetainer> T create(Class<T> pageClass) {
         return create(pageClass, WebDriverManager.getWebDriver());
     }
 
     @Override
-    public <T extends Page> T create(Class<T> pageClass, WebDriver driver) {
+    public <T extends IWebDriverRetainer> T create(Class<T> pageClass, WebDriver driver) {
         return null;
     }
 }

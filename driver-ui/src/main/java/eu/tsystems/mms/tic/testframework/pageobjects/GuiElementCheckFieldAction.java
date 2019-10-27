@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
+import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.CheckFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
@@ -149,13 +150,19 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             pCheckField(guiElement, guiElement.nonFunctionalAsserts(), checkRule, findNot, fast);
         } else {
 
-            // force standard asserts if commanded so
+            GuiElementAssert guiElementAssert;
+            /**
+             * A standard assert means, that a throwed exception is expected.
+             * This is covered by a {@link GuiElementAssert} that contains an {@link InstantAssertion}
+             */
             if (forceStandardAssert) {
-                guiElement.forceStandardAsserts();
+                guiElementAssert = guiElement.instantAsserts();
+            } else {
+                guiElementAssert = guiElement.asserts();
             }
 
             try {
-                pCheckField(guiElement, guiElement.asserts(), checkRule, findNot, fast);
+                pCheckField(guiElement, guiElementAssert, checkRule, findNot, fast);
             } catch (AssertionError e) {
                 final PageNotFoundException pageNotFoundException = new PageNotFoundException(readableMessage, e);
 
@@ -170,13 +177,6 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                     throw pageNotFoundException;
                 }
             }
-            finally {
-                // reset standard asserts setting
-                if (forceStandardAssert) {
-                    guiElement.resetDefaultAsserts();
-                }
-            }
-
         }
     }
 
@@ -187,7 +187,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             if (checkableInstance != null && checkableInstance instanceof GuiElement) {
                 // get the web driver session
                 GuiElement guiElement = (GuiElement) checkableInstance;
-                WebDriver driver = guiElement.getDriver();
+                WebDriver driver = guiElement.getWebDriver();
                 String sessionId = WebDriverManagerUtils.getSessionId(driver);
 
                 if (!StringUtils.isStringEmpty(sessionId)) {

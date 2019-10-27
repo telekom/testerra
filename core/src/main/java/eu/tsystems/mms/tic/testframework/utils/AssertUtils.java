@@ -20,18 +20,18 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
-import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssert;
-import eu.tsystems.mms.tic.testframework.execution.testng.IAssert;
+import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
 
 import java.math.BigDecimal;
 
 @Deprecated
 public final class AssertUtils {
 
-    protected static IAssert realAssert;
+    protected static IAssertion realAssert;
 
     static {
-        realAssert = TesterraCommons.ioc().getInstance(FunctionalAssert.class);
+        realAssert = TesterraCommons.ioc().getInstance(FunctionalAssertion.class);
     }
 
     public static void assertContains(String actual, String expected) {

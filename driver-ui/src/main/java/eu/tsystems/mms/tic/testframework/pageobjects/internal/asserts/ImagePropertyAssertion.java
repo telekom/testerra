@@ -5,15 +5,15 @@ import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ImageAssertion extends AbstractAssertion<File> implements IImageAssertion {
-    public ImageAssertion(AssertionProvider<File> provider) {
+public class ImagePropertyAssertion extends AbstractPropertyAssertion<File> implements IImagePropertyAssertion {
+    public ImagePropertyAssertion(AssertionProvider<File> provider) {
         super(provider);
     }
 
     @Override
-    public IQuantifiedAssertion<Double> pixelDistance(final String referenceImageName) {
+    public IQuantifiedPropertyAssertion<Double> pixelDistance(final String referenceImageName) {
         final AtomicReference<LayoutCheck.MatchStep> atomicMatchStep = new AtomicReference<>();
-        return new QuantifiedAssertion<>(new AssertionProvider<Double>(this) {
+        return new QuantifiedPropertyAssertion<>(new AssertionProvider<Double>(this) {
             @Override
             public Double actual() {
                 LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(provider.actual(), referenceImageName);
@@ -38,8 +38,8 @@ public class ImageAssertion extends AbstractAssertion<File> implements IImageAss
     }
 
     @Override
-    public IFileAssertion file() {
-        return new FileAssertion(new AssertionProvider<File>() {
+    public IFilePropertyAssertion file() {
+        return new FilePropertyAssertion(new AssertionProvider<File>() {
             @Override
             public File actual() {
                 return provider.actual();

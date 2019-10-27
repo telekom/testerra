@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.ioc;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.DefaultGuiElementAssertFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.DefaultGuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.DefaultGuiElementWaitFactory;
@@ -13,9 +14,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.IPageFactory;
 public class TesterraDriverUiModule extends AbstractModule {
 
     protected void configure() {
-        bind(GuiElementAssertFactory.class).to(DefaultGuiElementAssertFactory.class);
-        bind(GuiElementWaitFactory.class).to(DefaultGuiElementWaitFactory.class);
-        bind(GuiElementFactory.class).to(DefaultGuiElementFactory.class);
-        bind(IPageFactory.class).to(DefaultPageFactory.class);
+        bind(GuiElementAssertFactory.class).to(DefaultGuiElementAssertFactory.class).in(Scopes.SINGLETON);
+        bind(GuiElementWaitFactory.class).to(DefaultGuiElementWaitFactory.class).in(Scopes.SINGLETON);
+        bind(GuiElementFactory.class).to(DefaultGuiElementFactory.class).in(Scopes.SINGLETON);
+        bind(IPageFactory.class).to(DefaultPageFactory.class).in(Scopes.SINGLETON);
     }
 }

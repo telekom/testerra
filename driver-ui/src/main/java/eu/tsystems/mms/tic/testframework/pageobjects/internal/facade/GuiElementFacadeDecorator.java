@@ -22,9 +22,9 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IValueAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
@@ -764,17 +764,17 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public IValueAssertion text() {
+    public IStringPropertyAssertion text() {
         return decoratedFacade.text();
     }
 
     @Override
-    public IValueAssertion value() {
+    public IStringPropertyAssertion value() {
         return decoratedFacade.value();
     }
 
     @Override
-    public IValueAssertion value(final Attribute attribute) {
+    public IStringPropertyAssertion value(final Attribute attribute) {
         return decoratedFacade.value(attribute);
     }
 
@@ -784,32 +784,32 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public IBinaryAssertion present() {
+    public IBinaryPropertyAssertion present() {
         return decoratedFacade.present();
     }
 
     @Override
-    public IBinaryAssertion visible(final boolean complete) {
+    public IBinaryPropertyAssertion visible(final boolean complete) {
         return decoratedFacade.visible(complete);
     }
 
     @Override
-    public IBinaryAssertion displayed() {
+    public IBinaryPropertyAssertion displayed() {
         return decoratedFacade.displayed();
     }
 
     @Override
-    public IBinaryAssertion enabled() {
+    public IBinaryPropertyAssertion enabled() {
         return decoratedFacade.enabled();
     }
 
     @Override
-    public IBinaryAssertion selected() {
+    public IBinaryPropertyAssertion selected() {
         return decoratedFacade.selected();
     }
 
     @Override
-    public IImageAssertion screenshot() {
+    public IImagePropertyAssertion screenshot() {
         return decoratedFacade.screenshot();
     }
 

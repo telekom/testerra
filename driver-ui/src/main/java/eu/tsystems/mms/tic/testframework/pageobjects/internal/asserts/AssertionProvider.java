@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class AssertionProvider<T> implements IAssertionProvider<T> {
-    protected final AbstractAssertion parent;
+    protected final AbstractPropertyAssertion parent;
 
     public AssertionProvider() {
         this.parent = null;
     }
-    public AssertionProvider(AbstractAssertion parentAssertion) {
+    public AssertionProvider(AbstractPropertyAssertion parentAssertion) {
         this.parent = parentAssertion;
     }
 
@@ -25,7 +25,7 @@ public abstract class AssertionProvider<T> implements IAssertionProvider<T> {
         Object subject = subject();
         if (subject!=null) subjects.add(subject.toString());
 
-        AbstractAssertion assertion = parent;
+        AbstractPropertyAssertion assertion = parent;
         while (assertion != null) {
             subject = assertion.provider.subject();
             if (subject!=null) subjects.add(subject.toString());
@@ -37,7 +37,7 @@ public abstract class AssertionProvider<T> implements IAssertionProvider<T> {
 
     public void failedRecursive() {
         failed();
-        AbstractAssertion assertion = parent;
+        AbstractPropertyAssertion assertion = parent;
         while (assertion != null) {
             assertion.provider.failed();
             assertion = assertion.provider.parent;

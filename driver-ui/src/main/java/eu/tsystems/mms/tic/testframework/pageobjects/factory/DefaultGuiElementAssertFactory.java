@@ -20,9 +20,10 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
 import com.google.inject.Inject;
-import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssert;
-import eu.tsystems.mms.tic.testframework.execution.testng.IAssert;
-import eu.tsystems.mms.tic.testframework.execution.testng.INonFunctionalAssert;
+import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertExecutionLogDecorator;
@@ -34,21 +35,29 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 public class DefaultGuiElementAssertFactory implements GuiElementAssertFactory {
 
     @Inject
-    private FunctionalAssert functionalAssert;
+    private FunctionalAssertion functionalAssert;
 
     @Inject
-    private INonFunctionalAssert nonFunctionalAssert;
+    private NonFunctionalAssertion nonFunctionalAssert;
+
+    @Inject
+    private InstantAssertion instantAssertion;
 
     @Override
     public GuiElementAssert create(
         boolean functional,
+        boolean instant,
         GuiElementCore guiElementCore,
         GuiElementWait guiElementWait,
         GuiElementData guiElementData
     ) {
-        IAssert configuredAssert;
+        IAssertion configuredAssert;
         if (functional) {
-            configuredAssert = functionalAssert;
+            if (instant) {
+                configuredAssert = instantAssertion;
+            } else {
+                configuredAssert = functionalAssert;
+            }
         } else {
             configuredAssert = nonFunctionalAssert;
         }

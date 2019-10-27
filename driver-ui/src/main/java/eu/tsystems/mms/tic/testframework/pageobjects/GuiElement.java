@@ -30,6 +30,10 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultFunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultNonFunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
+import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementAssertFactory;
@@ -37,14 +41,14 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementCoreFacto
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IValueAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ValueAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImagePropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
@@ -54,6 +58,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
@@ -75,14 +80,22 @@ import java.util.List;
  * Authors: pele, rnhb
  */
 public class GuiElement implements GuiElementFacade, Loggable {
-    @Deprecated
-    private boolean forcedStandardAsserts = false;
-
+    /**
+     * This is the default functional assertion for GuiElements,
+     * in all cases where the {@link TesterraListener} is active, it contains a {@link DefaultFunctionalAssertion}
+     * otherwise it contains an {@link InstantAssertion}.
+     * See {@link GuiElementAssertFactory} for details.
+     */
     private GuiElementAssert functionalAssert;
-    @Deprecated
-    private GuiElementAssert functionalStandardAssert;
-    @Deprecated
-    private GuiElementAssert functionalAssertCollector;
+
+    /**
+     * This contains always an {@link InstantAssertion}
+     */
+    private GuiElementAssert instantAssert;
+
+    /**
+     * This contains always an {@link DefaultNonFunctionalAssertion}
+     */
     private GuiElementAssert nonFunctionalAssert;
 
     /**
@@ -195,42 +208,17 @@ public class GuiElement implements GuiElementFacade, Loggable {
         GuiElementWaitFactory waitFactory = TesterraCommons.ioc().getInstance(GuiElementWaitFactory.class);
         guiElementWait = waitFactory.create(guiElementCore, guiElementData);
 
-        GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
-        //functionalAssertCollector = assertFactory.create(true, guiElementCore, guiElementWait, guiElementData);
-        nonFunctionalAssert = assertFactory.create(false, guiElementCore, guiElementWait, guiElementData);
-        functionalAssert = assertFactory.create(true, guiElementCore, guiElementWait, guiElementData);
-        guiElementFacade = getFacade(guiElementCore, guiElementWait, functionalAssert);
-        //initDefaultAssert();
-    }
-
-    @Deprecated
-    private void initDefaultAssert() {
-//        if (!forcedStandardAsserts && Flags.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR) {
-//            functionalAssert = functionalAssertCollector;
-//        } else {
-//            functionalAssert = functionalStandardAssert;
-//        }
-//
-//        guiElementFacade = getFacade(guiElementCore, guiElementWait, functionalAssert);
-    }
-
-    public void forceStandardAsserts() {
-        //forcedStandardAsserts = true;
-        //initDefaultAssert();
-    }
-
-    public void resetDefaultAsserts() {
-        //forcedStandardAsserts = false;
-        //initDefaultAssert();
+        guiElementFacade = initFacade();
     }
 
     /**
      * We cannot use the GuiElementFactory for decorating the facade here,
-     * since GuiElement is not always created by it's according factory.
+     * since GuiElement is not always created by it's according factory
+     * and implementing a GuiElementFacadeFactory is useless.
      * You can move this code to DefaultGuiElementFactory when no more 'new GuiElement()' calls exists.
      * But this may not happen before 2119.
      */
-    private GuiElementFacade getFacade(GuiElementCore guiElementCore, GuiElementWait guiElementWait, GuiElementAssert guiElementAssert) {
+    private GuiElementFacade initFacade() {
         GuiElementFacade guiElementFacade;
         //guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
         guiElementFacade = new GuiElementFacadeLoggingDecorator(this, guiElementData);
@@ -663,6 +651,15 @@ public class GuiElement implements GuiElementFacade, Loggable {
      * @return GuiElementAssert object for functional assertions
      */
     public GuiElementAssert asserts() {
+        if (functionalAssert==null) {
+            // Use instant GuiElementAssert when Flags.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR != true
+            if (!Flags.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR) {
+                functionalAssert = instantAsserts();
+            } else {
+                final GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
+                functionalAssert = assertFactory.create(true, false, guiElementCore, guiElementWait, guiElementData);
+            }
+        }
         return functionalAssert;
     }
 
@@ -676,7 +673,7 @@ public class GuiElement implements GuiElementFacade, Loggable {
      */
     public GuiElementAssert asserts(String errorMessage) {
         GuiElementAssertDescriptionDecorator guiElementAssertDescriptionDecorator
-                = new GuiElementAssertDescriptionDecorator(errorMessage, functionalAssert);
+                = new GuiElementAssertDescriptionDecorator(errorMessage, asserts());
         return guiElementAssertDescriptionDecorator;
     }
 
@@ -686,6 +683,10 @@ public class GuiElement implements GuiElementFacade, Loggable {
      * @return GuiElementAssert object for non-functional assertions
      */
     public GuiElementAssert nonFunctionalAsserts() {
+        if (nonFunctionalAssert==null) {
+            final GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
+            nonFunctionalAssert = assertFactory.create(false, false, guiElementCore, guiElementWait, guiElementData);
+        }
         return nonFunctionalAssert;
     }
 
@@ -699,17 +700,27 @@ public class GuiElement implements GuiElementFacade, Loggable {
      */
     public GuiElementAssert nonFunctionalAsserts(String errorMessage) {
         GuiElementAssertDescriptionDecorator guiElementAssertDescriptionDecorator
-                = new GuiElementAssertDescriptionDecorator(errorMessage, nonFunctionalAssert);
+                = new GuiElementAssertDescriptionDecorator(errorMessage, nonFunctionalAsserts());
         return guiElementAssertDescriptionDecorator;
+    }
+
+    public GuiElementAssert instantAsserts() {
+        if (instantAssert == null) {
+            final GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
+            instantAssert = assertFactory.create(true, true, guiElementCore, guiElementWait, guiElementData);
+        }
+        return instantAssert;
     }
 
     /**
      * Provides access to all functional assert methods.
      *
      * @return GuiElementAssert object for functional assertions
+     * @deprecated Use {@link #asserts()} instead
      */
+    @Deprecated
     public GuiElementAssert assertCollector() {
-        return functionalAssertCollector;
+        return asserts();
     }
 
     /**
@@ -719,10 +730,12 @@ public class GuiElement implements GuiElementFacade, Loggable {
      * @param errorMessage Cause returned on assertion error.
      *
      * @return GuiElementAssert object for functional assertions
+     * @deprecated Use {@link #asserts()} instead
      */
+    @Deprecated
     public GuiElementAssert assertCollector(String errorMessage) {
         GuiElementAssertDescriptionDecorator guiElementAssertDescriptionDecorator
-                = new GuiElementAssertDescriptionDecorator(errorMessage, functionalAssertCollector);
+                = new GuiElementAssertDescriptionDecorator(errorMessage, asserts());
         return guiElementAssertDescriptionDecorator;
     }
 
@@ -757,8 +770,8 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public IValueAssertion<String> text() {
-        return new ValueAssertion<>(new AssertionProvider<String>() {
+    public IStringPropertyAssertion<String> text() {
+        return new StringPropertyAssertion<>(new AssertionProvider<String>() {
             @Override
             public String actual() {
                 return getText();
@@ -772,13 +785,13 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public IValueAssertion<String> value() {
+    public IStringPropertyAssertion<String> value() {
         return value(Attribute.VALUE);
     }
 
     @Override
-    public IValueAssertion<String> value(final Attribute attribute) {
-        return new ValueAssertion<>(new AssertionProvider<String>() {
+    public IStringPropertyAssertion<String> value(final Attribute attribute) {
+        return new StringPropertyAssertion<>(new AssertionProvider<String>() {
             @Override
             public String actual() {
                 return getAttribute(attribute.toString());
@@ -792,8 +805,8 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public IBinaryAssertion<Boolean> present() {
-        return new BinaryAssertion<>(new AssertionProvider<Boolean>() {
+    public IBinaryPropertyAssertion<Boolean> present() {
+        return new BinaryPropertyAssertion<>(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
                 return isPresent();
@@ -807,8 +820,8 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public IBinaryAssertion<Boolean> visible(boolean complete) {
-        return new BinaryAssertion<>(new AssertionProvider<Boolean>() {
+    public IBinaryPropertyAssertion<Boolean> visible(boolean complete) {
+        return new BinaryPropertyAssertion<>(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
                 return isVisible(complete);
@@ -822,8 +835,8 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public IBinaryAssertion<Boolean> displayed() {
-        return new BinaryAssertion<>(new AssertionProvider<Boolean>() {
+    public IBinaryPropertyAssertion<Boolean> displayed() {
+        return new BinaryPropertyAssertion<>(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
                 return isDisplayed();
@@ -837,8 +850,8 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public IBinaryAssertion<Boolean> enabled() {
-        return new BinaryAssertion<>(new AssertionProvider<Boolean>() {
+    public IBinaryPropertyAssertion<Boolean> enabled() {
+        return new BinaryPropertyAssertion<>(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
                 return isEnabled();
@@ -852,8 +865,8 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public IBinaryAssertion<Boolean> selected() {
-        return new BinaryAssertion<>(new AssertionProvider<Boolean>() {
+    public IBinaryPropertyAssertion<Boolean> selected() {
+        return new BinaryPropertyAssertion<>(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
                 return isSelected();
@@ -867,8 +880,8 @@ public class GuiElement implements GuiElementFacade, Loggable {
     }
 
     @Override
-    public IImageAssertion screenshot() {
-        return new ImageAssertion(new AssertionProvider<File>() {
+    public IImagePropertyAssertion screenshot() {
+        return new ImagePropertyAssertion(new AssertionProvider<File>() {
             @Override
             public File actual() {
                 return guiElementCore.takeScreenshot();

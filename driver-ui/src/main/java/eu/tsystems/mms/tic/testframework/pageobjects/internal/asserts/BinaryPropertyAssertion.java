@@ -2,14 +2,14 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 
-public class BinaryAssertion<T> extends AbstractTestedAssertion<T> implements IBinaryAssertion<T> {
+public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<T> implements IBinaryPropertyAssertion<T> {
 
-    public BinaryAssertion(AssertionProvider<T> provider) {
+    public BinaryPropertyAssertion(AssertionProvider<T> provider) {
         super(provider);
     }
 
     @Override
-    public IBinaryAssertion isTrue() {
+    public IBinaryPropertyAssertion isTrue() {
         final ThrowablePackedResponse throwablePackedResponse = testTimer(t -> {
             if ((boolean) actual()) {
                 return true;
@@ -30,7 +30,7 @@ public class BinaryAssertion<T> extends AbstractTestedAssertion<T> implements IB
     }
 
     @Override
-    public IBinaryAssertion isFalse() {
+    public IBinaryPropertyAssertion isFalse() {
         final ThrowablePackedResponse throwablePackedResponse = testTimer(t -> {
             if (!(boolean) actual()) {
                 return true;
@@ -51,7 +51,7 @@ public class BinaryAssertion<T> extends AbstractTestedAssertion<T> implements IB
     }
 
     @Override
-    public IBinaryAssertion<T> nonFunctional() {
+    public IBinaryPropertyAssertion<T> nonFunctional() {
         super.nonFunctional();
         return this;
     }

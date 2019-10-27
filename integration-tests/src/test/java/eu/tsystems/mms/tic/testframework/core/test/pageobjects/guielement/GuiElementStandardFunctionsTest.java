@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
@@ -71,7 +71,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         // Expect GuiElement(By.qa("action/submit")).value(attribute: style) [display:none] equals [display:block]
         page.submit().value(Attribute.STYLE).equals("display:block");
 
-        final IImageAssertion screenshot = page.submit().screenshot();
+        final IImagePropertyAssertion screenshot = page.submit().screenshot();
         // Expect GuiElement(By.qa("action/submit")).screenshot.pixelDistance(referenceImageName: "SubmitButton") [10] between [3] and [5]
         screenshot.pixelDistance("SubmitButton").between(3,5);
         // Expect GuiElement(By.qa("action/submit")).screenshot.file.name [SomeImage] contains [screenshot]

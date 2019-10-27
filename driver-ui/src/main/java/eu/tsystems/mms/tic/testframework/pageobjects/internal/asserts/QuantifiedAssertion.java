@@ -1,8 +1,5 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
-import org.testng.Assert;
-
 import java.math.BigDecimal;
 
 public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuantifiedAssertion<T> {
@@ -14,7 +11,7 @@ public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuant
     @Override
     public IQuantifiedAssertion<T> equals(final String expected) {
         testTimer(t -> {
-            Assert.assertEquals(provider.actual(), expected, provider.traceSubjectString());
+            configuredAssert.assertEquals(provider.actual(), expected, provider.traceSubjectString());
             return true;
         });
         return this;
@@ -33,7 +30,7 @@ public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuant
     @Override
     public IQuantifiedAssertion<T> greaterThan(final BigDecimal expected) {
         testTimer(t -> {
-            AssertUtils.assertGreaterThan(new BigDecimal((String) provider.actual()), expected, provider.traceSubjectString());
+            configuredAssert.assertGreaterThan(new BigDecimal((String) provider.actual()), expected, provider.traceSubjectString());
             return true;
         });
         return this;
@@ -52,7 +49,7 @@ public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuant
     @Override
     public IQuantifiedAssertion<T> lowerThan(final BigDecimal expected) {
         testTimer(t -> {
-            AssertUtils.assertLowerThan(new BigDecimal((String) provider.actual()), expected);
+            configuredAssert.assertLowerThan(new BigDecimal((String) provider.actual()), expected, provider.traceSubjectString());
             return true;
         });
         return this;
@@ -71,7 +68,7 @@ public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuant
     @Override
     public IQuantifiedAssertion<T> greaterEqualThan(final BigDecimal expected) {
         testTimer(t -> {
-            AssertUtils.assertGreaterEqualThan(new BigDecimal((String) provider.actual()), expected, provider.traceSubjectString());
+            configuredAssert.assertGreaterEqualThan(new BigDecimal((String) provider.actual()), expected, provider.traceSubjectString());
             return true;
         });
         return this;
@@ -90,7 +87,7 @@ public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuant
     @Override
     public IQuantifiedAssertion<T> lowerEqualThan(final BigDecimal expected) {
         testTimer(t -> {
-            AssertUtils.assertGreaterEqualThan(new BigDecimal((String) provider.actual()), expected, provider.traceSubjectString());
+            configuredAssert.assertGreaterEqualThan(new BigDecimal((String) provider.actual()), expected, provider.traceSubjectString());
             return true;
         });
         return this;
@@ -109,7 +106,7 @@ public class QuantifiedAssertion<T> extends BinaryAssertion<T> implements IQuant
     @Override
     public IQuantifiedAssertion<T> between(BigDecimal lower, BigDecimal higher) {
         testTimer(t -> {
-            AssertUtils.assertBetween(new BigDecimal((String) provider.actual()), lower, higher, provider.traceSubjectString());
+            configuredAssert.assertBetween(new BigDecimal((String) provider.actual()), lower, higher, provider.traceSubjectString());
             return true;
         });
         return this;

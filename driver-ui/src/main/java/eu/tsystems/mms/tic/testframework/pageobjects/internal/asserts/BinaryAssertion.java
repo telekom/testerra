@@ -1,9 +1,8 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
-import org.testng.Assert;
 
-public class BinaryAssertion<T> extends AbstractTestAssertion<T> implements IBinaryAssertion<T> {
+public class BinaryAssertion<T> extends AbstractTestedAssertion<T> implements IBinaryAssertion<T> {
 
     public BinaryAssertion(AssertionProvider<T> provider) {
         super(provider);
@@ -25,7 +24,7 @@ public class BinaryAssertion<T> extends AbstractTestAssertion<T> implements IBin
             }
         });
         if (!throwablePackedResponse.isSuccessful()) {
-            Assert.fail(String.format("%s [%s] is true", provider.traceSubjectString(), provider.actual()));
+            fail("is one of [true, 'true', 'on', '1', 'yes']");
         }
         return this;
     }
@@ -46,7 +45,7 @@ public class BinaryAssertion<T> extends AbstractTestAssertion<T> implements IBin
             }
         });
         if (!throwablePackedResponse.isSuccessful()) {
-            Assert.fail(String.format("%s [%s] is false", provider.traceSubjectString(), provider.actual()));
+            fail("is one of [false, 'false', 'off', '0', 'no']");
         }
         return this;
     }

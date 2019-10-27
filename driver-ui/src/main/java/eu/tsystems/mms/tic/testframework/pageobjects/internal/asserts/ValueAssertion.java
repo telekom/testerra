@@ -1,8 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
-import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
-import org.testng.Assert;
 
 public class ValueAssertion<T> extends QuantifiedAssertion<T> implements IValueAssertion<T> {
 
@@ -13,7 +11,7 @@ public class ValueAssertion<T> extends QuantifiedAssertion<T> implements IValueA
     @Override
     public ValueAssertion<T> contains(final String expected) {
         testTimer(t -> {
-            AssertUtils.assertContains((String)provider.actual(), expected, provider.traceSubjectString());
+            configuredAssert.assertContains((String)provider.actual(), expected, provider.traceSubjectString());
             return true;
         });
         return this;
@@ -22,7 +20,7 @@ public class ValueAssertion<T> extends QuantifiedAssertion<T> implements IValueA
     @Override
     public ValueAssertion<T> containsNot(final String expected) {
         testTimer(t -> {
-            AssertUtils.assertContainsNot((String)provider.actual(), expected, provider.traceSubjectString());
+            configuredAssert.assertContainsNot((String)provider.actual(), expected, provider.traceSubjectString());
             return true;
         });
         return this;
@@ -35,7 +33,7 @@ public class ValueAssertion<T> extends QuantifiedAssertion<T> implements IValueA
             return actualString.startsWith(expected);
         });
         if (!throwablePackedResponse.isSuccessful()) {
-            Assert.fail(String.format("%s [%s] begins with [%s]", provider.traceSubjectString(), provider.actual(), expected));
+            fail(String.format("begins with [%s]", expected));
         }
         return this;
     }
@@ -47,7 +45,7 @@ public class ValueAssertion<T> extends QuantifiedAssertion<T> implements IValueA
             return actualString.endsWith(expected);
         });
         if (!throwablePackedResponse.isSuccessful()) {
-            Assert.fail(String.format("%s [%s] ends with [%s]", provider.traceSubjectString(), provider.actual(), expected));
+            fail(String.format("ends with [%s]", expected));
         }
         return this;
     }

@@ -2,6 +2,9 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 
+/**
+ * Collects assertions without throwing them
+ */
 public class PlatformAssert extends DefaultAssert implements IAssert {
     @Override
     public void fail(String message, Throwable realCause) {

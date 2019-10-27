@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.collections.Lists;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -62,6 +63,75 @@ public class DefaultAssert implements IAssert {
     @Override
     public void fail(String message) {
         fail(message, null);
+    }
+
+    @Override
+    public void assertContains(String actual, String expected, String message) {
+        if (!actual.contains(expected)) {
+            fail(String.format("%s [%s] contains [%s]", message, actual, expected));
+        }
+    }
+
+    @Override
+    public void assertContainsNot(String actual, String expected, String message) {
+        if (actual.contains(expected)) {
+            fail(String.format("%s [%s] contains not [%s]", message, actual, expected));
+        }
+    }
+
+    @Override
+    public void assertGreaterThan(BigDecimal actual, BigDecimal expected) {
+        assertGreaterThan(actual, expected, "expected");
+    }
+
+    @Override
+    public void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected) {
+        assertGreaterEqualThan(actual, expected, "expected");
+    }
+
+    @Override
+    public void assertLowerThan(BigDecimal actual, BigDecimal expected) {
+        assertLowerThan(actual, expected, "expected");
+    }
+
+    @Override
+    public void assertLowerEqualThan(BigDecimal actual, BigDecimal expected) {
+        assertLowerEqualThan(actual, expected, "expected");
+    }
+
+    @Override
+    public void assertGreaterThan(BigDecimal actual, BigDecimal expected, String message) {
+        if (actual.compareTo(expected)!=1) {
+            fail(String.format("%s [%s] is greater than [%s]", message, actual, expected));
+        }
+    }
+
+    @Override
+    public void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, String message) {
+        if (actual.compareTo(expected) < 0) {
+            fail(String.format("%s [%s] is greater or equal than [%s]", message, actual, expected));
+        }
+    }
+
+    @Override
+    public void assertLowerThan(BigDecimal actual, BigDecimal expected, String message) {
+        if (actual.compareTo(expected)!=-1) {
+            fail(String.format("%s [%s] is lower than [%s]", message, actual, expected));
+        }
+    }
+
+    @Override
+    public void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, String message) {
+        if (actual.compareTo(expected) > 0) {
+            fail(String.format("%s [%s] is lower or equal than [%s]", message, actual, expected));
+        }
+    }
+
+    @Override
+    public void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, String message) {
+        if (actual.compareTo(lower) > 0 || actual.compareTo(higher) < 0) {
+            fail(String.format("%s [%s] is between [%s] and [%s]", message, actual, lower, higher));
+        }
     }
 
     @Override
@@ -380,7 +450,7 @@ public class DefaultAssert implements IAssert {
         }
 
         if (fail) {
-            Assert.fail(message);
+            fail(message);
         }
     }
 
@@ -395,7 +465,7 @@ public class DefaultAssert implements IAssert {
         }
 
         if (fail) {
-            Assert.fail(message);
+            fail(message);
         }
     }
 
@@ -410,7 +480,7 @@ public class DefaultAssert implements IAssert {
         }
 
         if (fail) {
-            Assert.fail(message);
+            fail(message);
         }
     }
 

@@ -19,14 +19,21 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import org.testng.Assert;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssertFactory;
+import eu.tsystems.mms.tic.testframework.execution.testng.IAssert;
 
 import java.math.BigDecimal;
 
-/**
- * Created by pele on 05.01.2015.
- */
+@Deprecated
 public final class AssertUtils {
+
+    protected static IAssert realAssert;
+
+    static {
+        final FunctionalAssertFactory factory = TesterraCommons.ioc().getInstance(FunctionalAssertFactory.class);
+        realAssert = factory.create();
+    }
 
     public static void assertContains(String actual, String expected) {
         assertContains(actual, expected, "expected");
@@ -37,15 +44,11 @@ public final class AssertUtils {
     }
 
     public static void assertContains(String actual, String expected, String description) {
-        if (!actual.contains(expected)) {
-            Assert.fail(String.format("%s [%s] contains [%s]", description, actual, expected));
-        }
+        realAssert.assertContains(actual, expected, description);
     }
 
     public static void assertContainsNot(String actual, String expected, String description) {
-        if (actual.contains(expected)) {
-            Assert.fail(String.format("%s [%s] contains not [%s]", description, actual, expected));
-        }
+        realAssert.assertContainsNot(actual, expected, description);
     }
 
     public static void assertGreaterThan(BigDecimal actual, BigDecimal expected) {
@@ -65,32 +68,22 @@ public final class AssertUtils {
     }
 
     public static void assertGreaterThan(BigDecimal actual, BigDecimal expected, String description) {
-        if (actual.compareTo(expected)!=1) {
-            Assert.fail(String.format("%s [%s] is greater than [%s]", description, actual, expected));
-        }
+        realAssert.assertGreaterThan(actual, expected, description);
     }
 
     public static void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, String description) {
-        if (actual.compareTo(expected) < 0) {
-            Assert.fail(String.format("%s [%s] is greater or equal than [%s]", description, actual, expected));
-        }
+        realAssert.assertGreaterEqualThan(actual, expected, description);
     }
 
     public static void assertLowerThan(BigDecimal actual, BigDecimal expected, String description) {
-        if (actual.compareTo(expected)!=-1) {
-            Assert.fail(String.format("%s [%s] is lower than [%s]", description, actual, expected));
-        }
+        realAssert.assertLowerThan(actual, expected, description);
     }
 
     public static void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, String description) {
-        if (actual.compareTo(expected) > 0) {
-            Assert.fail(String.format("%s [%s] is lower or equal than [%s]", description, actual, expected));
-        }
+        realAssert.assertLowerThan(actual, expected, description);
     }
 
     public static void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, String description) {
-        if (actual.compareTo(lower) > 0 || actual.compareTo(higher) < 0) {
-            Assert.fail(String.format("%s [%s] is between [%s] and [%s]", description, actual, lower, higher));
-        }
+        realAssert.assertBetween(actual, lower, higher, description);
     }
 }

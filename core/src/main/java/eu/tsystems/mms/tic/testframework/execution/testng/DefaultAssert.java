@@ -18,24 +18,24 @@ import static org.testng.internal.EclipseInterface.ASSERT_MIDDLE;
 import static org.testng.internal.EclipseInterface.ASSERT_RIGHT;
 
 public class DefaultAssert implements IAssert {
-    public void failSame(Object actual, Object expected, String message) {
+    public void failSame(Object actual, Object expected, String subject) {
         String formatted = "";
-        if (message != null) {
-            formatted = message + " ";
+        if (subject != null) {
+            formatted = subject + " ";
         }
         fail(formatted + ASSERT_LEFT2 + expected + ASSERT_MIDDLE + actual + ASSERT_RIGHT);
     }
 
-    public void failNotSame(Object actual, Object expected, String message) {
+    public void failNotSame(Object actual, Object expected, String subject) {
         String formatted = "";
-        if (message != null) {
-            formatted = message + " ";
+        if (subject != null) {
+            formatted = subject + " ";
         }
         fail(formatted + ASSERT_LEFT + expected + ASSERT_MIDDLE + actual + ASSERT_RIGHT);
     }
 
-    public void failNotEquals(Object actual, Object expected, String message) {
-        fail(format(actual, expected, message));
+    public void failNotEquals(Object actual, Object expected, String subject) {
+        fail(format(actual, expected, subject));
     }
 
     private void failAssertNoEqual(String defaultMessage, String message) {
@@ -46,10 +46,10 @@ public class DefaultAssert implements IAssert {
         }
     }
 
-    protected String format(Object actual, Object expected, String message) {
+    protected String format(Object actual, Object expected, String subject) {
         String formatted = "";
-        if (null != message) {
-            formatted = message + " ";
+        if (null != subject) {
+            formatted = subject + " ";
         }
 
         return formatted + ASSERT_LEFT + expected + ASSERT_MIDDLE + actual + ASSERT_RIGHT;
@@ -66,143 +66,123 @@ public class DefaultAssert implements IAssert {
     }
 
     @Override
-    public void assertContains(String actual, String expected, String message) {
+    public void assertContains(String actual, String expected, String subject) {
         if (!actual.contains(expected)) {
-            fail(String.format("%s [%s] contains [%s]", message, actual, expected));
+            fail(String.format("%s [%s] contains [%s]", subject, actual, expected));
         }
     }
 
     @Override
-    public void assertContainsNot(String actual, String expected, String message) {
+    public void assertContainsNot(String actual, String expected, String subject) {
         if (actual.contains(expected)) {
-            fail(String.format("%s [%s] contains not [%s]", message, actual, expected));
+            fail(String.format("%s [%s] contains not [%s]", subject, actual, expected));
         }
     }
 
     @Override
-    public void assertGreaterThan(BigDecimal actual, BigDecimal expected) {
-        assertGreaterThan(actual, expected, "expected");
-    }
-
-    @Override
-    public void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected) {
-        assertGreaterEqualThan(actual, expected, "expected");
-    }
-
-    @Override
-    public void assertLowerThan(BigDecimal actual, BigDecimal expected) {
-        assertLowerThan(actual, expected, "expected");
-    }
-
-    @Override
-    public void assertLowerEqualThan(BigDecimal actual, BigDecimal expected) {
-        assertLowerEqualThan(actual, expected, "expected");
-    }
-
-    @Override
-    public void assertGreaterThan(BigDecimal actual, BigDecimal expected, String message) {
+    public void assertGreaterThan(BigDecimal actual, BigDecimal expected, String subject) {
         if (actual.compareTo(expected)!=1) {
-            fail(String.format("%s [%s] is greater than [%s]", message, actual, expected));
+            fail(String.format("%s [%s] is greater than [%s]", subject, actual, expected));
         }
     }
 
     @Override
-    public void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, String message) {
+    public void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, String subject) {
         if (actual.compareTo(expected) < 0) {
-            fail(String.format("%s [%s] is greater or equal than [%s]", message, actual, expected));
+            fail(String.format("%s [%s] is greater or equal than [%s]", subject, actual, expected));
         }
     }
 
     @Override
-    public void assertLowerThan(BigDecimal actual, BigDecimal expected, String message) {
+    public void assertLowerThan(BigDecimal actual, BigDecimal expected, String subject) {
         if (actual.compareTo(expected)!=-1) {
-            fail(String.format("%s [%s] is lower than [%s]", message, actual, expected));
+            fail(String.format("%s [%s] is lower than [%s]", subject, actual, expected));
         }
     }
 
     @Override
-    public void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, String message) {
+    public void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, String subject) {
         if (actual.compareTo(expected) > 0) {
-            fail(String.format("%s [%s] is lower or equal than [%s]", message, actual, expected));
+            fail(String.format("%s [%s] is lower or equal than [%s]", subject, actual, expected));
         }
     }
 
     @Override
-    public void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, String message) {
+    public void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, String subject) {
         if (actual.compareTo(lower) > 0 || actual.compareTo(higher) < 0) {
-            fail(String.format("%s [%s] is between [%s] and [%s]", message, actual, lower, higher));
+            fail(String.format("%s [%s] is between [%s] and [%s]", subject, actual, lower, higher));
         }
     }
 
     @Override
-    public void assertTrue(boolean condition, String message) {
+    public void assertTrue(boolean condition, String subject) {
         if (!condition) {
-            failNotEquals(condition, Boolean.TRUE, message);
+            failNotEquals(condition, Boolean.TRUE, subject);
         }
     }
 
     @Override
-    public void assertFalse(boolean condition, String message) {
+    public void assertFalse(boolean condition, String subject) {
         if (condition) {
-            failNotEquals(condition, Boolean.FALSE, message); // TESTNG-81
+            failNotEquals(condition, Boolean.FALSE, subject); // TESTNG-81
         }
     }
     @Override
-    public void assertSame(Object actual, Object expected, String message) {
+    public void assertSame(Object actual, Object expected, String subject) {
         if (expected == actual) {
             return;
         }
-        failNotSame(actual, expected, message);
+        failNotSame(actual, expected, subject);
     }
     @Override
-    public void assertNotSame(Object actual, Object expected, String message) {
+    public void assertNotSame(Object actual, Object expected, String subject) {
         if (expected == actual) {
-            failSame(actual, expected, message);
+            failSame(actual, expected, subject);
         }
     }
 
     @Override
-    public void assertNull(Object object, String message) {
+    public void assertNull(Object object, String subject) {
         if (object != null) {
-            failNotSame(object, null, message);
+            failNotSame(object, null, subject);
         }
     }
 
     @Override
-    public void assertNotNull(Object object, String message) {
+    public void assertNotNull(Object object, String subject) {
         if (object == null) {
             String formatted = "";
-            if (message != null) {
-                formatted = message + " ";
+            if (subject != null) {
+                formatted = subject + " ";
             }
-            fail(formatted + "expected object to not be null");
+            fail(formatted + "to not be null");
         }
     }
 
     @Override
-    public void assertEquals(Object actual, Object expected, String message) {
+    public void assertEquals(Object actual, Object expected, String subject) {
         if (expected != null && expected.getClass().isArray()) {
-            assertArrayEquals(actual, expected, message);
+            assertArrayEquals(actual, expected, subject);
             return;
         }
-        assertEqualsImpl(actual, expected, message);
+        assertEqualsImpl(actual, expected, subject);
     }
 
     @Override
-    public void assertEquals(Collection<?> actual, Collection<?> expected, String message) {
+    public void assertEquals(Collection<?> actual, Collection<?> expected, String subject) {
         if (actual == expected) {
             return;
         }
 
         if (actual == null || expected == null) {
-            if (message != null) {
-                fail(message);
+            if (subject != null) {
+                fail(subject);
             } else {
                 fail("Collections not equal: expected: " + expected + " and actual: " + actual);
             }
         }
 
-        assertEquals(actual.size(), expected.size(), (message == null ? "" : message + ": ") + "lists don't have the same size");
+        assertEquals(actual.size(), expected.size(), (subject == null ? "" : subject + ": ") + "lists don't have the same size");
 
         Iterator<?> actIt = actual.iterator();
         Iterator<?> expIt = expected.iterator();
@@ -212,21 +192,21 @@ public class DefaultAssert implements IAssert {
             Object e = expIt.next();
             Object a = actIt.next();
             String explanation = "Lists differ at element [" + i + "]: " + e + " != " + a;
-            String errorMessage = message == null ? explanation : message + ": " + explanation;
+            String errorMessage = subject == null ? explanation : subject + ": " + explanation;
 
             assertEqualsImpl(a, e, errorMessage);
         }
     }
 
     @Override
-    public void assertEquals(Iterator<?> actual, Iterator<?> expected, String message) {
+    public void assertEquals(Iterator<?> actual, Iterator<?> expected, String subject) {
         if (actual == expected) {
             return;
         }
 
         if (actual == null || expected == null) {
-            if (message != null) {
-                fail(message);
+            if (subject != null) {
+                fail(subject);
             } else {
                 fail("Iterators not equal: expected: " + expected + " and actual: " + actual);
             }
@@ -239,7 +219,7 @@ public class DefaultAssert implements IAssert {
             Object e = expected.next();
             Object a = actual.next();
             String explanation = "Iterators differ at element [" + i + "]: " + e + " != " + a;
-            String errorMessage = message == null ? explanation : message + ": " + explanation;
+            String errorMessage = subject == null ? explanation : subject + ": " + explanation;
 
             assertEqualsImpl(a, e, errorMessage);
 
@@ -248,27 +228,27 @@ public class DefaultAssert implements IAssert {
         if (actual.hasNext()) {
 
             String explanation = "Actual iterator returned more elements than the expected iterator.";
-            String errorMessage = message == null ? explanation : message + ": " + explanation;
+            String errorMessage = subject == null ? explanation : subject + ": " + explanation;
             fail(errorMessage);
 
         } else if (expected.hasNext()) {
 
             String explanation = "Expected iterator returned more elements than the actual iterator.";
-            String errorMessage = message == null ? explanation : message + ": " + explanation;
+            String errorMessage = subject == null ? explanation : subject + ": " + explanation;
             fail(errorMessage);
 
         }
     }
 
     @Override
-    public void assertEquals(Iterable<?> actual, Iterable<?> expected, String message) {
+    public void assertEquals(Iterable<?> actual, Iterable<?> expected, String subject) {
         if (actual == expected) {
             return;
         }
 
         if (actual == null || expected == null) {
-            if (message != null) {
-                fail(message);
+            if (subject != null) {
+                fail(subject);
             } else {
                 fail("Iterables not equal: expected: " + expected + " and actual: " + actual);
             }
@@ -277,27 +257,27 @@ public class DefaultAssert implements IAssert {
         Iterator<?> actIt = actual.iterator();
         Iterator<?> expIt = expected.iterator();
 
-        assertEquals(actIt, expIt, message);
+        assertEquals(actIt, expIt, subject);
     }
 
     @Override
-    public void assertEquals(Object[] actual, Object[] expected, String message) {
+    public void assertEquals(Object[] actual, Object[] expected, String subject) {
         if (actual == expected) {
             return;
         }
 
         if ((actual == null && expected != null) || (actual != null && expected == null)) {
-            if (message != null) {
-                fail(message);
+            if (subject != null) {
+                fail(subject);
             } else {
                 fail("Arrays not equal: " + Arrays.toString(expected) + " and " + Arrays.toString(actual));
             }
         }
-        assertEquals(Arrays.asList(actual), Arrays.asList(expected), message);
+        assertEquals(Arrays.asList(actual), Arrays.asList(expected), subject);
     }
 
     @Override
-    public void assertEqualsNoOrder(Object[] actual, Object[] expected, String message) {
+    public void assertEqualsNoOrder(Object[] actual, Object[] expected, String subject) {
         if (actual == expected) {
             return;
         }
@@ -305,13 +285,13 @@ public class DefaultAssert implements IAssert {
         if ((actual == null && expected != null) || (actual != null && expected == null)) {
             failAssertNoEqual(
                 "Arrays not equal: " + Arrays.toString(expected) + " and " + Arrays.toString(actual),
-                message);
+                subject);
         }
 
         if (actual.length != expected.length) {
             failAssertNoEqual(
                 "Arrays do not have the same size:" + actual.length + " != " + expected.length,
-                message);
+                subject);
         }
 
         List<Object> actualCollection = Lists.newArrayList();
@@ -324,46 +304,46 @@ public class DefaultAssert implements IAssert {
         if (actualCollection.size() != 0) {
             failAssertNoEqual(
                 "Arrays not equal: " + Arrays.toString(expected) + " and " + Arrays.toString(actual),
-                message);
+                subject);
         }
     }
 
     @Override
-    public void assertEquals(Set<?> actual, Set<?> expected, String message) {
+    public void assertEquals(Set<?> actual, Set<?> expected, String subject) {
         if (actual == expected) {
             return;
         }
 
         if (actual == null || expected == null) {
             // Keep the back compatible
-            if (message == null) {
+            if (subject == null) {
                 fail("Sets not equal: expected: " + expected + " and actual: " + actual);
             } else {
-                failNotEquals(actual, expected, message);
+                failNotEquals(actual, expected, subject);
             }
         }
 
         if (!actual.equals(expected)) {
-            if (message == null) {
+            if (subject == null) {
                 fail("Sets differ: expected " + expected + " but got " + actual);
             } else {
-                failNotEquals(actual, expected, message);
+                failNotEquals(actual, expected, subject);
             }
         }
     }
 
     @Override
-    public void assertEqualsDeep(Set<?> actual, Set<?> expected, String message) {
+    public void assertEqualsDeep(Set<?> actual, Set<?> expected, String subject) {
         if (actual == expected) {
             return;
         }
 
         if (actual == null || expected == null) {
             // Keep the back compatible
-            if (message == null) {
+            if (subject == null) {
                 fail("Sets not equal: expected: " + expected + " and actual: " + actual);
             } else {
-                failNotEquals(actual, expected, message);
+                failNotEquals(actual, expected, subject);
             }
         }
 
@@ -376,15 +356,15 @@ public class DefaultAssert implements IAssert {
             }
             Object value = actualIterator.next();
             if (expectedValue.getClass().isArray()) {
-                assertArrayEquals(value, expectedValue, message);
+                assertArrayEquals(value, expectedValue, subject);
             } else {
-                assertEqualsImpl(value, expectedValue, message);
+                assertEqualsImpl(value, expectedValue, subject);
             }
         }
     }
 
     @Override
-    public void assertEquals(Map<?, ?> actual, Map<?, ?> expected, String message) {
+    public void assertEquals(Map<?, ?> actual, Map<?, ?> expected, String subject) {
         if (actual == expected) {
             return;
         }
@@ -403,14 +383,14 @@ public class DefaultAssert implements IAssert {
             Object key = entry.getKey();
             Object value = entry.getValue();
             Object expectedValue = expected.get(key);
-            String assertMessage = message != null ? message : "Maps do not match for key:"
+            String assertMessage = subject != null ? subject : "Maps do not match for key:"
                 + key + " actual:" + value + " expected:" + expectedValue;
             assertEqualsImpl(value, expectedValue, assertMessage);
         }
     }
 
     @Override
-    public void assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected, String message) {
+    public void assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected, String subject) {
         if (actual == expected) {
             return;
         }
@@ -429,7 +409,7 @@ public class DefaultAssert implements IAssert {
             Object key = entry.getKey();
             Object value = entry.getValue();
             Object expectedValue = expected.get(key);
-            String assertMessage = message != null ? message : "Maps do not match for key:"
+            String assertMessage = subject != null ? subject : "Maps do not match for key:"
                 + key + " actual:" + value + " expected:" + expectedValue;
             if (expectedValue.getClass().isArray()) {
                 assertArrayEquals(value, expectedValue, assertMessage);
@@ -440,7 +420,7 @@ public class DefaultAssert implements IAssert {
     }
 
     @Override
-    public void assertNotEquals(Object actual1, Object actual2, String message) {
+    public void assertNotEquals(Object actual1, Object actual2, String subject) {
         boolean fail;
         try {
             Assert.assertEquals(actual1, actual2);
@@ -450,37 +430,37 @@ public class DefaultAssert implements IAssert {
         }
 
         if (fail) {
-            fail(message);
+            fail(subject);
         }
     }
 
     @Override
-    public void assertNotEquals(Set<?> actual, Set<?> expected, String message) {
+    public void assertNotEquals(Set<?> actual, Set<?> expected, String subject) {
         boolean fail;
         try {
-            Assert.assertEquals(actual, expected, message);
+            Assert.assertEquals(actual, expected, subject);
             fail = true;
         } catch (AssertionError e) {
             fail = false;
         }
 
         if (fail) {
-            fail(message);
+            fail(subject);
         }
     }
 
     @Override
-    public void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected, String message) {
+    public void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected, String subject) {
         boolean fail;
         try {
-            Assert.assertEquals(actual, expected, message);
+            Assert.assertEquals(actual, expected, subject);
             fail = true;
         } catch (AssertionError e) {
             fail = false;
         }
 
         if (fail) {
-            fail(message);
+            fail(subject);
         }
     }
 
@@ -489,28 +469,28 @@ public class DefaultAssert implements IAssert {
      * special consideration hence comparing them by reference. Intended to be called directly
      * to test equality of collections content.
      */
-    private void assertEqualsImpl(Object actual, Object expected, String message) {
+    private void assertEqualsImpl(Object actual, Object expected, String subject) {
         if ((expected == null) && (actual == null)) {
             return;
         }
         if (expected == null ^ actual == null) {
-            failNotEquals(actual, expected, message);
+            failNotEquals(actual, expected, subject);
         }
         if (expected.equals(actual) && actual.equals(expected)) {
             return;
         }
-        failNotEquals(actual, expected, message);
+        failNotEquals(actual, expected, subject);
     }
 
-    private void assertArrayEquals(Object actual, Object expected, String message) {
+    private void assertArrayEquals(Object actual, Object expected, String subject) {
         if (expected == actual) {
             return;
         }
         if (null == expected) {
-            fail("expected a null array, but not null found. " + message);
+            fail("expected a null array, but not null found. " + subject);
         }
         if (null == actual) {
-            fail("expected not null array, but null found. " + message);
+            fail("expected not null array, but null found. " + subject);
         }
         //is called only when expected is an array
         if (actual.getClass().isArray()) {
@@ -520,19 +500,19 @@ public class DefaultAssert implements IAssert {
                     Object _actual = Array.get(actual, i);
                     Object _expected = Array.get(expected, i);
                     try {
-                        assertEquals(_actual, _expected, message);
+                        assertEquals(_actual, _expected, subject);
                     } catch (AssertionError ae) {
-                        failNotEquals(actual, expected, message == null ? "" : message
+                        failNotEquals(actual, expected, subject == null ? "" : subject
                             + " (values at index " + i + " are not the same)");
                     }
                 }
                 //array values matched
                 return;
             } else {
-                failNotEquals(Array.getLength(actual), expectedLength, message == null ? "" : message
+                failNotEquals(Array.getLength(actual), expectedLength, subject == null ? "" : subject
                     + " (Array lengths are not the same)");
             }
         }
-        failNotEquals(actual, expected, message);
+        failNotEquals(actual, expected, subject);
     }
 }

@@ -34,6 +34,6 @@ public class DefaultGuiElementWaitFactory implements GuiElementWaitFactory {
             // if frames are set, the waiter should use frame switches when executing its sequences
             guiElementStatusCheck = new GuiElementStatusCheckFrameAwareDecorator(guiElementStatusCheck, guiElementData);
         }
-        return new StandardGuiElementWait(guiElementStatusCheck, guiElementData);
+        return new DefaultGuiElementWait(guiElementStatusCheck, guiElementData);
     }
 }

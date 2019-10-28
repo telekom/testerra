@@ -62,8 +62,8 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
         guiElement.asserts().assertNotVisible();
 
         // Scroll to offset doesn't work
-        //GuiElement.scrollToElement(300);
-        //Assert.assertFalse(GuiElement.isVisible(true));
+        //guiElement.scrollToElement(300);
+        //Assert.assertFalse(guiElement.isVisible(true));
 
         guiElement.scrollToElement();
         guiElement.asserts().assertVisible(true);

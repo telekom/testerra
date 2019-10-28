@@ -262,20 +262,20 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Test
     public void testT23_GuiElement_findByIDUnique() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement GuiElement = new GuiElement(driver, Locate.by().unique().id("11"));
-        WebElement webElement = GuiElement.getWebElement();
+        GuiElement guiElement = new GuiElement(driver, Locate.by().unique().id("11"));
+        WebElement webElement = guiElement.getWebElement();
         Assert.assertNotNull(webElement);
     }
 
     @Test
     public void test_GuiElement_findNonUnique() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement GuiElement = new GuiElement(driver, Locate.by().unique().xpath("//div"));
+        GuiElement guiElement = new GuiElement(driver, Locate.by().unique().xpath("//div"));
         try {
-            WebElement webElement = GuiElement.getWebElement();
+            WebElement webElement = guiElement.getWebElement();
         } catch (TimeoutException e) {
 
-            AssertUtils.assertContains(e.getCause().getMessage(), "GuiElement not found: "+ GuiElement.getLocator());
+            AssertUtils.assertContains(e.getCause().getMessage(), "GuiElement not found: "+ guiElement.getLocator());
         }
     }
 
@@ -283,8 +283,8 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     public void test_GuiElement_findPrepared() {
         final Locate locator = Locate.prepare("//*[@id='%s']");
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement GuiElement = new GuiElement(driver, locator.with("11"));
-        Assert.assertNotNull(GuiElement.getWebElement());
+        GuiElement guiElement = new GuiElement(driver, locator.with("11"));
+        Assert.assertNotNull(guiElement.getWebElement());
     }
 
     /**
@@ -452,9 +452,9 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
      */
     @Test
     public void testT41_GuiElement_getTextFromChildren() {
-        GuiElement GuiElement = getParent2();
+        GuiElement guiElement = getParent2();
 
-        List<String> textsFromChildren = GuiElement.getTextsFromChildren();
+        List<String> textsFromChildren = guiElement.getTextsFromChildren();
         Assert.assertEquals(textsFromChildren.size(), 5, "Correct amount of texts contained. Texts: " + textsFromChildren);
 
         List<String> stringsManual = new ArrayList<String>();

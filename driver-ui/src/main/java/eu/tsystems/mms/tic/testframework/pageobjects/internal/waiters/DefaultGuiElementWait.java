@@ -21,26 +21,20 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-/**
- * Created by rnhb on 12.08.2015.
- */
-public class StandardGuiElementWait implements GuiElementWait {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(StandardGuiElementWait.class);
+public class DefaultGuiElementWait implements GuiElementWait, Loggable {
 
     private final GuiElementStatusCheck guiElementStatusCheck;
     private final TimerWrapper timerWrapper;
 
     @Inject
-    public StandardGuiElementWait(
+    public DefaultGuiElementWait(
         @Assisted GuiElementStatusCheck guiElementStatusCheck,
         @Assisted GuiElementData guiElementData
     ) {
@@ -142,7 +136,7 @@ public class StandardGuiElementWait implements GuiElementWait {
                 setReturningObject(sequenceStatus);
             }
         };
-        LOGGER.debug("Executing pWaitForDisplayedStatus=" + checkForDisplayed + " with Sequence.");
+        log().debug("Executing pWaitForDisplayedStatus=" + checkForDisplayed + " with Sequence.");
         ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
@@ -170,7 +164,7 @@ public class StandardGuiElementWait implements GuiElementWait {
                 setReturningObject(sequenceStatus);
             }
         };
-        LOGGER.debug("Executing pWaitForVisibleStatus=" + visible + " with Sequence.");
+        log().debug("Executing pWaitForVisibleStatus=" + visible + " with Sequence.");
         ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }

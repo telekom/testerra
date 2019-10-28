@@ -52,7 +52,7 @@ public class GuiElementGroupTest extends AbstractTestSitesTest {
         Assert.assertTrue(group2.elements().size() == 1, message);
         Assert.assertTrue(group3.elements().size() == 1, message);
 
-        message = "Group contains correct GuiElement";
+        message = "Group contains correct guiElement";
         Assert.assertEquals(group1.elements().get(0).getName(), "g1", message);
         Assert.assertEquals(group1.elements().get(1).getName(), "g3", message);
         Assert.assertEquals(group2.elements().get(0).getName(), "g3", message);

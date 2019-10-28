@@ -39,7 +39,7 @@ public class ImagePropertyAssertion extends AbstractPropertyAssertion<File> impl
 
     @Override
     public IFilePropertyAssertion file() {
-        return propertyAssertionFactory.file(new AssertionProvider<File>() {
+        return propertyAssertionFactory.file(new AssertionProvider<File>(this) {
             @Override
             public File actual() {
                 return provider.actual();
@@ -47,7 +47,7 @@ public class ImagePropertyAssertion extends AbstractPropertyAssertion<File> impl
 
             @Override
             public Object subject() {
-                return "file";
+                return String.format("\"%s\"", provider.actual().getAbsolutePath());
             }
         });
     }

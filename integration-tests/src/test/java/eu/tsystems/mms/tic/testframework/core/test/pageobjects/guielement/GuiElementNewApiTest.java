@@ -84,6 +84,12 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
         page.notVisibleElement().visible(true).isTrue();
     }
 
+    @Test
+    public void test_NewApi_GuiElement_screenshot() {
+        FluentTestPage page = prepareTestPage();
+        page.notVisibleElement().screenshot().file().bytes().lowerThan(40);
+    }
+
     public void test_NewApi_GuiElement() {
         FluentTestPage page = pageFactory.create(FluentTestPage.class);
         page.call("https://www.google.de");

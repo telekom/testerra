@@ -17,25 +17,26 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.pageobjects.factory;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheckFrameAwareDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 
-public class DefaultGuiElementWaitFactory implements GuiElementWaitFactory {
+public abstract class AbstractGuiElementCoreFactory {
 
-    @Override
-    public GuiElementWait create(
-        GuiElementStatusCheck guiElementStatusCheck,
+    public GuiElementCore decorate(
+        GuiElementCore decoratedCore,
+        String browser,
+        By by,
+        WebDriver webDriver,
         GuiElementData guiElementData
     ) {
         if (guiElementData.hasFrameLogic()) {
+
             // if frames are set, the waiter should use frame switches when executing its sequences
-            guiElementStatusCheck = new GuiElementStatusCheckFrameAwareDecorator(guiElementStatusCheck, guiElementData);
+            decoratedCore = new GuiElementCoreFrameAwareDecorator(decoratedCore, guiElementData);
         }
-        return new StandardGuiElementWait(guiElementStatusCheck, guiElementData);
+        // Wrap the core with sequence decorator, such that its methods are executed with sequence
+        return new GuiElementCoreSequenceDecorator(decoratedCore, guiElementData);
     }
 }

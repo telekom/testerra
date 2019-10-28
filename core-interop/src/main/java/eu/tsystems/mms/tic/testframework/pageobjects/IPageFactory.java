@@ -1,6 +1,5 @@
-package eu.tsystems.mms.tic.testframework.pageobjects.factory;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import org.openqa.selenium.WebDriver;
 
 /**

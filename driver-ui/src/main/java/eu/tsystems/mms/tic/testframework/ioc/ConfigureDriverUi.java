@@ -2,14 +2,14 @@ package eu.tsystems.mms.tic.testframework.ioc;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.DefaultGuiElementAssertFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.DefaultGuiElementFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.DefaultGuiElementWaitFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.DefaultPageFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementAssertFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementAssertFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementWaitFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.DefaultPageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElementFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementWaitFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.IPageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementWaitFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 

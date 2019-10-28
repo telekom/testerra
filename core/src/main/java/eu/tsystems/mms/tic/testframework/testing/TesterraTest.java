@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.IPageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.testng.annotations.Listeners;
 

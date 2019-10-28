@@ -23,6 +23,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;

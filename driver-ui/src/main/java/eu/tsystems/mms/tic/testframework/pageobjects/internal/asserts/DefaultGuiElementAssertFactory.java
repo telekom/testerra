@@ -17,17 +17,13 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.pageobjects.factory;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertExecutionLogDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;

@@ -17,13 +17,11 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.pageobjects.factory;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementCoreFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

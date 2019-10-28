@@ -1,4 +1,4 @@
-package eu.tsystems.mms.tic.testframework.pageobjects.factory;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;

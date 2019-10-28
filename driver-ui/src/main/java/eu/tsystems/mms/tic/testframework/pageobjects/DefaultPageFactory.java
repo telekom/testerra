@@ -17,10 +17,9 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.pageobjects.factory;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 

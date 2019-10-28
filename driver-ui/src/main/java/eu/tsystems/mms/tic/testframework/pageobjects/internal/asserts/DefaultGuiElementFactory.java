@@ -17,7 +17,7 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.pageobjects.factory;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;

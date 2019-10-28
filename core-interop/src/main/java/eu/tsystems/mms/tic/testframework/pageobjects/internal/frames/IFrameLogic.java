@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 
 import java.util.List;
 

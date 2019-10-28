@@ -17,11 +17,8 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IWebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
@@ -30,8 +27,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.By;
-
-import java.util.List;
 
 public interface IGuiElement extends
     GuiElementCore,
@@ -63,16 +58,13 @@ public interface IGuiElement extends
     /**
      * Deprecated APIs
      */
+    @Override
     @Deprecated
-    List<GuiElement> getList();
+    IGuiElement getSubElement(final By by);
 
     @Override
     @Deprecated
-    GuiElement getSubElement(final By by);
-
-    @Override
-    @Deprecated
-    GuiElement getSubElement(final Locate locator);
+    IGuiElement getSubElement(final Locate locator);
 
     @Override
     @Deprecated

@@ -20,7 +20,8 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -38,9 +39,7 @@ import java.util.List;
  * <p>
  * Created by rnhb on 25.03.2015.
  */
-public class FrameLogic implements IFrameLogic {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(FrameLogic.class);
+public class FrameLogic implements IFrameLogic, Loggable {
 
     private final WebDriver driver;
     private final IGuiElement[] frames;
@@ -106,13 +105,13 @@ public class FrameLogic implements IFrameLogic {
         }
 
         for (WebElement webElement : frameWebElementList) {
-            LOGGER.debug("Switching to Frame " + webElement);
+            log().debug("Switching to Frame " + webElement);
             driver.switchTo().frame(webElement);
         }
     }
 
     public void switchToDefaultFrame() {
-        LOGGER.debug("Switching to DefaultContent");
+        log().debug("Switching to DefaultContent");
         driver.switchTo().defaultContent();
 
         xOffset = 0;

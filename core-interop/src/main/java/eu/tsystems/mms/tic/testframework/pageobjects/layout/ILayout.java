@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.layout;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 
 public interface ILayout {
     LayoutBorders getElementLayoutBorders(IGuiElement GuiElementFacade);

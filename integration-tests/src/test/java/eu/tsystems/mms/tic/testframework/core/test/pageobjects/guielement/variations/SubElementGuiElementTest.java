@@ -35,7 +35,7 @@ public class SubElementGuiElementTest extends GuiElementTestCollector {
     public GuiElement getGuiElementBy(By locator) {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement parentElement = new GuiElement(driver, By.xpath("//body"));
-        return (GuiElement) parentElement.getSubElement(locator);
+        return parentElement.getSubElement(locator);
     }
 
     @Override

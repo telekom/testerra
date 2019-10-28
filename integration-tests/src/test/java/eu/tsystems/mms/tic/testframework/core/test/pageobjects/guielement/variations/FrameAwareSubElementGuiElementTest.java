@@ -35,7 +35,7 @@ public class FrameAwareSubElementGuiElementTest extends GuiElementTestCollector 
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement frame = new GuiElement(driver, By.name("InputFrame1"));
         GuiElement parentElement = new GuiElement(driver, By.xpath("//body"), frame);
-        return (GuiElement) parentElement.getSubElement(locator);
+        return parentElement.getSubElement(locator);
     }
 
     @Override

@@ -20,9 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import org.openqa.selenium.By;
 
 /**
  * Created by rnhb on 09.02.2016.

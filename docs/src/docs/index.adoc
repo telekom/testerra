@@ -20,6 +20,7 @@ include::webdriver-manager.adoc[leveloffset=+1]
 include::browser-caps.adoc[leveloffset=+1]
 include::guielement.adoc[leveloffset=+1]
 include::pageobjects.adoc[leveloffset=+1]
+include::tests.adoc[leveloffset=+1]
 
 '''
 = Testerra Features

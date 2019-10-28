@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;

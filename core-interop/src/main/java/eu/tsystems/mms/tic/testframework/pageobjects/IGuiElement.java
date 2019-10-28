@@ -25,7 +25,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageProp
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.By;
 
 public interface IGuiElement extends

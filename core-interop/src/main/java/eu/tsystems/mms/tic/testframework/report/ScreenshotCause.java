@@ -24,7 +24,7 @@
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
  */
-package eu.tsystems.mms.tic.testframework.pageobjects.image;
+package eu.tsystems.mms.tic.testframework.report;
 
 /**
  * Enum for Screenshot cause.

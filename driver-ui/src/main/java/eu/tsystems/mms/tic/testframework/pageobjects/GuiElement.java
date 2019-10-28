@@ -34,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.DefaultFunctionalAsser
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultInstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultNonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
@@ -653,9 +652,9 @@ public class GuiElement implements IGuiElement, Loggable {
     public GuiElementAssert asserts() {
         if (functionalAssert==null) {
             /**
-             * Configure {@link GuiElementAssert} with {@link InstantAssertion} when {@link Flags.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR} != true
+             * Configure {@link GuiElementAssert} with {@link InstantAssertion} when {@link TesterraProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR} != true
              */
-            if (!Flags.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR) {
+            if (!PropertyManager.getBooleanProperty(TesterraProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false)) {
                 functionalAssert = instantAsserts();
             } else {
                 final GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);

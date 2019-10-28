@@ -52,7 +52,6 @@ public final class Flags {
     public static boolean WEB_TAKE_ACTION_SCREENSHOTS = p(TesterraProperties.WEB_TAKE_ACTION_SCREENSHOTS, false);
     public static boolean FAILURE_CORRIDOR_ACTIVE = p(TesterraProperties.FAILURE_CORRIDOR_ACTIVE, false);
     public static boolean EXECUTION_OMIT_IN_DEVELOPMENT = p(TesterraProperties.EXECUTION_OMIT_IN_DEVELOPMENT, false);
-    public static boolean GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = p(TesterraProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false);
     public static boolean GUIELEMENT_USE_JS_ALTERNATIVES = p(TesterraProperties.GUIELEMENT_USE_JS_ALTERNATIVES, true);
 
     public static boolean SCREENSHOTTER_ACTIVE = p(TesterraProperties.SCREENSHOTTER_ACTIVE, true);

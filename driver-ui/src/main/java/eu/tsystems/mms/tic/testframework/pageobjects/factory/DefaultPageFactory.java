@@ -19,9 +19,13 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.IWebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public class DefaultPageFactory implements IPageFactory {
 
@@ -32,6 +36,12 @@ public class DefaultPageFactory implements IPageFactory {
 
     @Override
     public <T extends IWebDriverRetainer> T create(Class<T> pageClass, WebDriver driver) {
-        return null;
+        try {
+            final Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
+            return constructor.newInstance(driver);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            final String msg = "Could not create instance of page class ";
+            throw new TesterraRuntimeException(msg + pageClass.getSimpleName(), e);
+        }
     }
 }

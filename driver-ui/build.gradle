@@ -1,11 +1,20 @@
 dependencies {
     compile core
-    compile selenium
-    compile datatypes
     compile image_processing
-    compile sikuli
-    //compile group: 'com.google.inject', name: 'guice', version: '4.0'
-    //compile 'com.google.inject:guice-parent:4.2.3-SNAPSHOT'
+
+    // <UITestUtils>
+    compile 'org.sikuli:sikuli-api:1.2.0'
+    // </UITestUtils>
+
+    // <PageFactory>
+    implementation 'org.glassfish.jersey.core:jersey-common:2.22.2'
+    // </PageFactory>
+
+    implementation 'com.sun.jersey:jersey-client:1.19.3'
+    implementation 'org.json:json:20140107'
+    implementation 'commons-codec:commons-codec:1.13'
+    implementation 'commons-collections:commons-collections:3.2.2'
+    implementation 'org.reflections:reflections:0.9.11'
 }
 
 test {

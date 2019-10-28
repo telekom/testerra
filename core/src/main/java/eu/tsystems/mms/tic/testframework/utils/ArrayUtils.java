@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.utils;
 /**
  * Created by pele on 31.05.2016.
  */
-public class ArrayUtils extends org.apache.commons.lang.ArrayUtils {
+public class ArrayUtils extends  org.apache.commons.lang3.ArrayUtils {
 
     public static String join(final Object[] objects, String seperator) {
         if (objects == null || objects.length == 0) {

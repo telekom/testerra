@@ -27,7 +27,11 @@
 package eu.tsystems.mms.tic.testframework.bmp;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import org.xbill.DNS.*;
+import org.xbill.DNS.Lookup;
+import org.xbill.DNS.Record;
+import org.xbill.DNS.SimpleResolver;
+import org.xbill.DNS.TextParseException;
+import org.xbill.DNS.Type;
 
 import java.net.UnknownHostException;
 
@@ -78,6 +82,6 @@ public final class DNSLookup {
             }
             throw new TesterraSystemException(msg);
         }
-        
+
     }
 }

@@ -3,6 +3,8 @@ plugins {
     id "jp.classmethod.aws.s3" version "0.40"
 }
 
+doNotPublish(this)
+
 import com.amazonaws.services.s3.model.ObjectMetadata
 import jp.classmethod.aws.gradle.s3.AmazonS3FileUploadTask
 import jp.classmethod.aws.gradle.s3.SyncTask

@@ -52,8 +52,8 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
     }
 
     private void openPopUpWindow(WebDriver driver) {
-        GuiElement GuiElement = new GuiElement(driver, By.linkText("Open pop up"));
-        GuiElement.click();
+        GuiElement guiElement = new GuiElement(driver, By.linkText("Open pop up"));
+        guiElement.click();
     }
 
     @Test

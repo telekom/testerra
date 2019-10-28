@@ -3,7 +3,6 @@ package eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFramePage;
 import eu.tsystems.mms.tic.testframework.report.model.MouseAction;
@@ -91,20 +90,20 @@ public class DashboardModuleTestResultPieChart extends AbstractFramePage {
     /**
      * Triggers a given event on a given GuiElement.
      *
-     * @param GuiElement the element to be triggered depending on MouseAction
+     * @param guiElement the element to be triggered depending on MouseAction
      * @param mouseAction     the mouseAction to be performed
      * @throws Exception
      */
-    public void triggerGuiElement(GuiElement GuiElement, MouseAction mouseAction) throws Exception {
+    public void triggerGuiElement(GuiElement guiElement, MouseAction mouseAction) throws Exception {
         switch (mouseAction) {
             case CLICK:
-                GuiElement.click();
+                guiElement.click();
                 break;
             case MOUSE_OVER:
-                GuiElement.mouseOver();
+                guiElement.mouseOver();
                 break;
             default:
-                throw new TesterraRuntimeException("Unsupported mouseAction for GuiElement " + GuiElement.getName());
+                throw new TesterraRuntimeException("Unsupported mouseAction for GuiElement " + guiElement.getName());
         }
     }
 }

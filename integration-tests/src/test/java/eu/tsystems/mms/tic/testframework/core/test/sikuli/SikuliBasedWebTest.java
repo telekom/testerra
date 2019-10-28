@@ -22,7 +22,6 @@ package eu.tsystems.mms.tic.testframework.core.test.sikuli;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.sikuli.ImageElement;
 import eu.tsystems.mms.tic.testframework.sikuli.SikuliBy;
 import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
@@ -44,9 +43,9 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
         WebDriver driver = WebDriverManager.getWebDriver();
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/testimage.png");
-        GuiElement GuiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
+        GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
 
-        GuiElement.click();
+        guiElement.click();
     }
 
 //    @Test
@@ -67,10 +66,10 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
         driver.get(url);
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
-        GuiElement GuiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
+        GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
 
-        GuiElement.asserts().assertIsDisplayed();
-        GuiElement.asserts().assertAttributeContains("src", "ringo");
+        guiElement.asserts().assertIsDisplayed();
+        guiElement.asserts().assertAttributeContains("src", "ringo");
     }
 
 //    @Test
@@ -82,10 +81,10 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
         GuiElement frame = new GuiElement(driver, By.id("draggableNodes"));
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
-        GuiElement GuiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL), frame);
+        GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL), frame);
 
-        GuiElement.asserts().assertIsDisplayed();
-        GuiElement.asserts().assertAttributeContains("src", "ringo");
+        guiElement.asserts().assertIsDisplayed();
+        guiElement.asserts().assertAttributeContains("src", "ringo");
     }
 
 }

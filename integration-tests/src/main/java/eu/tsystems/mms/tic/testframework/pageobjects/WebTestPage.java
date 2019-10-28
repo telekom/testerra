@@ -93,8 +93,8 @@ public class WebTestPage extends AbstractWebTestPage {
      *
      */
     public void gotoHell() {
-        GuiElement GuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
-        GuiElement.click();
+        GuiElement guiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
+        guiElement.click();
     }
 
     /**
@@ -102,8 +102,8 @@ public class WebTestPage extends AbstractWebTestPage {
      *
      */
     public void nonfunctionalAssert() {
-        GuiElement GuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
-        GuiElement.nonFunctionalAsserts().assertIsPresent();
+        GuiElement guiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
+        guiElement.nonFunctionalAsserts().assertIsPresent();
     }
 
 }

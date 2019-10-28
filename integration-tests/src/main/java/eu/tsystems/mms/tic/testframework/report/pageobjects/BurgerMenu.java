@@ -2,7 +2,6 @@ package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractReportPage;
 import org.openqa.selenium.By;

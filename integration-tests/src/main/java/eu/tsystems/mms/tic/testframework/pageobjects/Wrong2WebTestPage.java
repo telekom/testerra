@@ -92,8 +92,8 @@ public class Wrong2WebTestPage extends Page {
      *
      */
     public void gotoHell() {
-        GuiElement GuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
-        GuiElement.click();
+        GuiElement guiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
+        guiElement.click();
     }
 
     /**
@@ -101,8 +101,8 @@ public class Wrong2WebTestPage extends Page {
      *
      */
     public void nonfunctionalAssert() {
-        GuiElement GuiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
-        GuiElement.nonFunctionalAsserts().assertIsPresent();
+        GuiElement guiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
+        guiElement.nonFunctionalAsserts().assertIsPresent();
     }
 
 }

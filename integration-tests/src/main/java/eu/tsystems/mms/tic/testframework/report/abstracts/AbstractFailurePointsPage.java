@@ -2,7 +2,6 @@ package eu.tsystems.mms.tic.testframework.report.abstracts;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;

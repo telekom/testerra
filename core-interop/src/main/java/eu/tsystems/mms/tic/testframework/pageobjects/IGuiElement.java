@@ -30,7 +30,7 @@ import org.openqa.selenium.By;
 
 public interface IGuiElement extends
     GuiElementCore,
-    Nameable,
+    Nameable<IGuiElement>,
     WebDriverRetainer
 {
     /**
@@ -148,9 +148,6 @@ public interface IGuiElement extends
 
     @Override
     IGuiElement rightClickJS();
-
-    @Override
-    IGuiElement setName(String name);
 
     @Override
     IGuiElement highlight();

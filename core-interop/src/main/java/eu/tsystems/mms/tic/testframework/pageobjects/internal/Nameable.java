@@ -19,11 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-/**
- * @todo Make Generic
- */
-public interface Nameable {
+public interface Nameable<SELF> {
 
-    Object setName(String name);
+    SELF setName(String name);
     String getName();
 }

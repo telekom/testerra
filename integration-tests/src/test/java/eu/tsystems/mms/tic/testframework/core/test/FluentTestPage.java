@@ -37,4 +37,8 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
     protected FluentTestPage self() {
         return this;
     }
+
+    public FluentTestPage navigateToSomeWhere() {
+        return pageFactory.create(FluentTestPage.class);
+    }
 }

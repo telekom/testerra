@@ -237,7 +237,7 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
     public abstract GuiElement getGuiElementBy(By locator);
 
     public FluentTestPage page() {
-        return PageFactory.create(FluentTestPage.class, WebDriverManager.getWebDriver());
+        return pageFactory.create(FluentTestPage.class, WebDriverManager.getWebDriver());
     }
 
     public ClassicTestPage classicPage() {

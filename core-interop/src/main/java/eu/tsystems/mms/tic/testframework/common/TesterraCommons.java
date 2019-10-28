@@ -186,35 +186,34 @@ public class TesterraCommons {
         }
     }
 
-    public static Injector ioc() {
-        return ioc;
-    }
-
     /**
      * We initialize the IoC modules in a reverse sorted class name order,
      * to be able to override module configures.
      * This is not best practice, bad currently the only way to override module bindings.
      * Because {@link Modules#override(Module...)} doesn't work in the way we need it.
      */
-    private static void initIoc() {
-        final Reflections reflections = new Reflections(p);
-        final Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
-        final Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
-        final TreeMap<String, Module> sortedModules = new TreeMap<>();
-        try {
-            while (iterator.hasNext()) {
-                final Class<? extends AbstractModule> moduleClass = iterator.next();
-                final Constructor<?> ctor = moduleClass.getConstructor();
-                sortedModules.put(moduleClass.getName(), (Module)ctor.newInstance());
+    public static Injector ioc() {
+        if (ioc==null) {
+            final Reflections reflections = new Reflections(p);
+            final Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
+            final Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
+            final TreeMap<String, Module> sortedModules = new TreeMap<>();
+            try {
+                while (iterator.hasNext()) {
+                    final Class<? extends AbstractModule> moduleClass = iterator.next();
+                    final Constructor<?> ctor = moduleClass.getConstructor();
+                    sortedModules.put(moduleClass.getSimpleName(), (Module) ctor.newInstance());
+                }
+                final List<Module> reverseSortedModules = new ArrayList<>(sortedModules.values());
+                Collections.reverse(reverseSortedModules);
+                System.out.println(String.format("%s - Register IoC modules: %s", TesterraCommons.class.getCanonicalName(), reverseSortedModules));
+                ioc = Guice.createInjector(reverseSortedModules);
+            } catch (Exception e) {
+                e.printStackTrace();
+                //LOGGER.error("Unable to initialize IoC modules", e);
             }
-            final List<Module> reverseSortedModules = new ArrayList<>(sortedModules.values());
-            Collections.reverse(reverseSortedModules);
-            LOGGER.info("Register IoC modules: " + reverseSortedModules);
-            ioc = Guice.createInjector(reverseSortedModules);
-        } catch (Exception e) {
-            e.printStackTrace();
-            //LOGGER.error("Unable to initialize IoC modules", e);
         }
+        return ioc;
     }
 
     public static void init() {
@@ -223,8 +222,6 @@ public class TesterraCommons {
 
         // implicit calls PropertyManager static block - init all the properties, load property file as well!
         TesterraCommons.setTesterraLogLevel();
-
-        TesterraCommons.initIoc();
 
         // calls LOGGING - Ensure we have Logging initialized before calling!
         TesterraCommons.initializeSystemProperties();

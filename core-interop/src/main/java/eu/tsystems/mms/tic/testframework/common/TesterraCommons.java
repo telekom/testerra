@@ -37,12 +37,9 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.TreeMap;
 
 /**
  * Created by pele on 05.02.2015.
@@ -193,17 +190,15 @@ public class TesterraCommons {
         final Reflections reflections = new Reflections(p);
         final Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
         final Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
-        final TreeMap<String, Module> sortedModules = new TreeMap<>();
+        final ArrayList<Module> modules = new ArrayList<>();
         try {
             while (iterator.hasNext()) {
                 final Class<? extends AbstractModule> moduleClass = iterator.next();
                 final Constructor<?> ctor = moduleClass.getConstructor();
-                sortedModules.put(moduleClass.getName(), (Module)ctor.newInstance());
+                modules.add((Module)ctor.newInstance());
             }
-            final List<Module> reverseSortedModules = new ArrayList<>(sortedModules.values());
-            Collections.reverse(reverseSortedModules);
-            LOGGER.info("Register IoC modules: " + reverseSortedModules);
-            ioc = Guice.createInjector(reverseSortedModules);
+            LOGGER.info("Register IoC modules: " + modules);
+            ioc = Guice.createInjector(modules);
         } catch (Exception e) {
             e.printStackTrace();
             //LOGGER.error("Unable to initialize IoC modules", e);

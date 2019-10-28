@@ -81,8 +81,4 @@ public final class AssertUtils {
     public static void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, String description) {
         realAssert.assertLowerThan(actual, expected, description);
     }
-
-    public static void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, String description) {
-        realAssert.assertBetween(actual, lower, higher, description);
-    }
 }

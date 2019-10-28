@@ -1,6 +1,8 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-public class StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T> implements IStringPropertyAssertion<T> {
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+
+public class StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T> implements IStringPropertyAssertion<T>, Loggable {
 
     public StringPropertyAssertion(AssertionProvider<T> provider) {
         super( provider);
@@ -8,37 +10,25 @@ public class StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T> i
 
     @Override
     public StringPropertyAssertion<T> contains(final String expected) {
-        testTimer(t -> {
-            configuredAssert.assertContains((String)provider.actual(), expected, provider.traceSubjectString());
-            return true;
-        });
+        testTimer(t -> configuredAssert.assertContains((String)provider.actual(), expected, provider.traceSubjectString()));
         return this;
     }
 
     @Override
     public StringPropertyAssertion<T> containsNot(final String expected) {
-        testTimer(t -> {
-            configuredAssert.assertContainsNot((String)provider.actual(), expected, provider.traceSubjectString());
-            return true;
-        });
+        testTimer(t -> configuredAssert.assertContainsNot((String)provider.actual(), expected, provider.traceSubjectString()));
         return this;
     }
 
     @Override
     public StringPropertyAssertion<T> beginsWith(String expected) {
-        testTimer(t -> {
-            configuredAssert.assertBeginsWith(provider.actual(), expected, provider.subject().toString());
-            return true;
-        });
+        testTimer(t -> configuredAssert.assertBeginsWith(provider.actual(), expected, provider.traceSubjectString()));
         return this;
     }
 
     @Override
     public StringPropertyAssertion<T> endsWith(String expected) {
-        testTimer(t -> {
-            configuredAssert.assertEndsWith(provider.actual(), expected, provider.subject().toString());
-            return true;
-        });
+        testTimer(t -> configuredAssert.assertEndsWith(provider.actual(), expected, provider.traceSubjectString()));
         return this;
     }
 

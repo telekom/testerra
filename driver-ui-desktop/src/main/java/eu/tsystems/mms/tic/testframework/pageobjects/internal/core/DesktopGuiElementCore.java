@@ -583,7 +583,7 @@ public class DesktopGuiElementCore implements
 
     @Override
     public boolean isVisible(final boolean complete) {
-        if (!isDisplayed()) return false;
+        if (!isDisplayedFromWebElement()) return false;
         Rectangle viewport = WebDriverUtils.getViewport(webDriver);
         final WebElement webElement = getWebElement();
         // getRect doesn't work

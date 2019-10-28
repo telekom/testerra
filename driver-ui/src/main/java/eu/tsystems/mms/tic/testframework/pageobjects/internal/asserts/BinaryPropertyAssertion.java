@@ -1,8 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
-
-public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<T> implements IBinaryPropertyAssertion<T>, Loggable {
+public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<T> implements IBinaryPropertyAssertion<T> {
 
     public BinaryPropertyAssertion(AssertionProvider<T> provider) {
         super(provider);
@@ -12,7 +10,6 @@ public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<
     public IBinaryPropertyAssertion<T> isTrue() {
         testTimer(t -> {
             final String actualString = actual().toString();
-            log().info("Test: " + actualString);
             if (!(
                     actualString.equalsIgnoreCase("true")
                     || actualString.equalsIgnoreCase("on")
@@ -21,6 +18,7 @@ public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<
                 )
             ) {
                 configuredAssert.fail(configuredAssert.format(actualString, "is one of [true, 'on', '1', 'yes']", provider.traceSubjectString()));
+                return false;
             }
             return true;
         });
@@ -39,6 +37,7 @@ public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<
                 )
             ) {
                 configuredAssert.fail(configuredAssert.format(actualString, "is one of [false, 'off', '0', 'no']", provider.traceSubjectString()));
+                return false;
             }
             return true;
         });

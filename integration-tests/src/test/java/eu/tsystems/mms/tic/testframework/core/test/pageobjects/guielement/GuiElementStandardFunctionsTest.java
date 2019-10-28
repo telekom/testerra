@@ -20,14 +20,9 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.core.test.ClassicTestPage;
-import eu.tsystems.mms.tic.testframework.core.test.FluentTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
-import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
-import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
@@ -42,7 +37,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,64 +51,6 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Test
     public void testT01_GuiElement_assertContainsText() {
         getElementWithText().asserts().assertContainsText(testPage.getElementText());
-    }
-
-    @Test
-    public void test_NewApi_GuiElement() {
-        FluentTestPage page = page();
-        page.call("https://www.google.de");
-        // Expect GuiElement(By.id("11")).value(attribute: value) [Hausmaus] contains not [maus]
-        // given    | when           | then
-        page.input().sendKeys("affe").value().contains("affe").nonFunctional().containsNot("maus");
-        // Expect GuiElement(By.qa("action/submit")).visible(complete: false) [false] is true
-        page.submit().scrollTo().visible(false).isTrue();
-        // Expect GuiElement(By.qa("action/submit")).value(attribute: style) [display:none] equals [display:block]
-        page.submit().value(Attribute.STYLE).equals("display:block");
-
-        final IImagePropertyAssertion screenshot = page.submit().screenshot();
-        // Expect GuiElement(By.qa("action/submit")).screenshot.pixelDistance(referenceImageName: "SubmitButton") [10] between [3] and [5]
-        screenshot.pixelDistance("SubmitButton").between(3,5);
-        // Expect GuiElement(By.qa("action/submit")).screenshot.file.name [SomeImage] contains [screenshot]
-        screenshot.file().name().contains("screenshot");
-        // Expect GuiElement(By.qa("action/submit")).screenshot.file.extension [jpg] equals [png]
-        screenshot.file().extension().equals("png");
-        screenshot.file().bytes().greaterThan(5000);
-
-        // Expect GuiElement(By.qa("action/submit")).present [false] is true
-        page.input().mouseOver().clear();
-
-        // Expect TestPageObject.title [SomePageTitle] contains [Form]
-        page.title().contains("Form").endsWith("Page");
-
-        // Expect TestPageObject.screenshot.pixelDistance(referenceImageName: "Google") [10] lower than [5]
-        page.screenshot().pixelDistance("Google").lowerThan(5);
-
-        page.input().type("maus");
-        page.input().click();
-        page.submit().text().contains("Done");
-    }
-
-    public void test_OldApi_GuiElement() {
-        ClassicTestPage page = classicPage();
-        page.getWebDriver().navigate().to("http://www.google.de");
-        page.input().sendKeys("affe");
-        page.input().nonFunctionalAsserts().assertTextContains("affe");
-        page.submit().scrollToElement();
-        page.submit().asserts().assertVisible(false);
-        page.submit().asserts().assertAttributeValue("style", "display:block");
-        page.submit().asserts().assertScreenshot("SubmitButton", 5);    // Not possible
-        page.input().mouseOver();
-        page.input().clear();
-
-        AssertUtils.assertContains("Form", page.getWebDriver().getTitle());   // Expected [SomePageTitle] contains [Form]
-        Assert.assertTrue(page.getWebDriver().getTitle().endsWith("Page"));   // Expected [true] is false
-
-        double dist = LayoutCheck.run(page.getWebDriver(), "Google");
-        AssertUtils.assertLowerThan(
-            new BigDecimal(dist),
-            new BigDecimal(5),
-            String.format("Pixel distance of page %s", "Google")
-        );
     }
 
     /**

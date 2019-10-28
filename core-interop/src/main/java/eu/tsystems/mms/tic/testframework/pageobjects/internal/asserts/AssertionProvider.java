@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class AssertionProvider<T> implements IAssertionProvider<T> {
+public abstract class AssertionProvider<T> implements IActualProperty<T> {
     protected final AbstractPropertyAssertion parent;
 
     public AssertionProvider() {
@@ -17,7 +17,6 @@ public abstract class AssertionProvider<T> implements IAssertionProvider<T> {
     @Override
     abstract public T actual();
 
-    @Override
     abstract public Object subject();
 
     public String traceSubjectString() {
@@ -44,7 +43,6 @@ public abstract class AssertionProvider<T> implements IAssertionProvider<T> {
         }
     }
 
-    @Override
     public void failed() {
     }
 }

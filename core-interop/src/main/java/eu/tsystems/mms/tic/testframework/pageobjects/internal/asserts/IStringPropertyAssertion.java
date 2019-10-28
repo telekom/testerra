@@ -7,6 +7,7 @@ public interface IStringPropertyAssertion<T> extends IQuantifiedPropertyAssertio
     IStringPropertyAssertion<T> containsNot(final String expected);
     IStringPropertyAssertion<T> beginsWith(final String expected);
     IStringPropertyAssertion<T> endsWith(final String expected);
+    IQuantifiedPropertyAssertion<T> length();
 
     @Override
     IStringPropertyAssertion<T> nonFunctional();

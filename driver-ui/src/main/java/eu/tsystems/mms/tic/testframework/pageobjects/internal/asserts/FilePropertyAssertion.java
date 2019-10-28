@@ -14,7 +14,7 @@ public class FilePropertyAssertion extends AbstractPropertyAssertion<File> imple
 
     @Override
     public IQuantifiedPropertyAssertion<Long> bytes() {
-        return new QuantifiedPropertyAssertion<>(new AssertionProvider<Long>(this) {
+        return propertyAssertionFactory.quantified(new AssertionProvider<Long>(this) {
             @Override
             public Long actual() {
                 return provider.actual().length();
@@ -29,7 +29,7 @@ public class FilePropertyAssertion extends AbstractPropertyAssertion<File> imple
 
     @Override
     public IStringPropertyAssertion<String> name() {
-        return new StringPropertyAssertion<>(new AssertionProvider<String>(this) {
+        return propertyAssertionFactory.string(new AssertionProvider<String>(this) {
             @Override
             public String actual() {
                 return provider.actual().getName();
@@ -44,7 +44,7 @@ public class FilePropertyAssertion extends AbstractPropertyAssertion<File> imple
 
     @Override
     public IStringPropertyAssertion<String> extension() {
-        return new StringPropertyAssertion<>(new AssertionProvider<String>(this) {
+        return propertyAssertionFactory.string(new AssertionProvider<String>(this) {
             @Override
             public String actual() {
                 return FilenameUtils.getExtension(provider.actual().getName());
@@ -59,7 +59,7 @@ public class FilePropertyAssertion extends AbstractPropertyAssertion<File> imple
 
     @Override
     public IStringPropertyAssertion<String> mimetype() {
-        return new StringPropertyAssertion<>(new AssertionProvider<String>(this) {
+        return propertyAssertionFactory.string(new AssertionProvider<String>(this) {
             @Override
             public String actual() {
                 try {
@@ -78,7 +78,7 @@ public class FilePropertyAssertion extends AbstractPropertyAssertion<File> imple
 
     @Override
     public IBinaryPropertyAssertion<Boolean> exists() {
-        return new BinaryPropertyAssertion(new AssertionProvider<Boolean>(this) {
+        return propertyAssertionFactory.binary(new AssertionProvider<Boolean>(this) {
             @Override
             public Boolean actual() {
                 return provider.actual().exists();

@@ -10,6 +10,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementAssertFac
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.IPageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPropertyAssertionFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 
 public class ConfigureDriverUi extends AbstractModule {
 
@@ -19,6 +21,8 @@ public class ConfigureDriverUi extends AbstractModule {
     protected void configure() {
         if (!pageObjectsConfigured) configurePageObjects();
         if (!webDriverConfigured) configureWebDriver();
+        bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class).in(Scopes.SINGLETON);
+
     }
 
     protected void configurePageObjects() {

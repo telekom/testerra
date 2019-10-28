@@ -33,6 +33,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultInstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultNonFunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -41,14 +42,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementCoreFacto
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImagePropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DefaultGuiElementFacade;
@@ -80,6 +79,9 @@ import java.util.List;
  * Authors: pele, rnhb
  */
 public class GuiElement implements IGuiElement, Loggable {
+
+    protected static final PropertyAssertionFactory propertyAssertionFactory = TesterraCommons.ioc().getInstance(PropertyAssertionFactory.class);
+
     /**
      * This is the default functional assertion for GuiElements,
      * which always contains a {@link DefaultFunctionalAssertion}.
@@ -651,7 +653,9 @@ public class GuiElement implements IGuiElement, Loggable {
      */
     public GuiElementAssert asserts() {
         if (functionalAssert==null) {
-            // Use instant GuiElementAssert when Flags.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR != true
+            /**
+             * Configure {@link GuiElementAssert} with {@link InstantAssertion} when {@link Flags.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR} != true
+             */
             if (!Flags.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR) {
                 functionalAssert = instantAsserts();
             } else {
@@ -770,7 +774,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IStringPropertyAssertion<String> tagName() {
-        return new StringPropertyAssertion<>(new AssertionProvider<String>() {
+        return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String actual() {
                 return getTagName();
@@ -785,7 +789,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IStringPropertyAssertion<String> text() {
-        return new StringPropertyAssertion<>(new AssertionProvider<String>() {
+        return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String actual() {
                 return getText();
@@ -805,7 +809,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IStringPropertyAssertion<String> value(final Attribute attribute) {
-        return new StringPropertyAssertion<>(new AssertionProvider<String>() {
+        return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String actual() {
                 return getAttribute(attribute.toString());
@@ -820,7 +824,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IBinaryPropertyAssertion<Boolean> present() {
-        return new BinaryPropertyAssertion<>(new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
                 return isPresent();
@@ -835,7 +839,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IBinaryPropertyAssertion<Boolean> visible(boolean complete) {
-        return new BinaryPropertyAssertion<>(new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
                 return isVisible(complete);
@@ -850,7 +854,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IBinaryPropertyAssertion<Boolean> displayed() {
-        return new BinaryPropertyAssertion<>(new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
                 return isDisplayed();
@@ -865,7 +869,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IBinaryPropertyAssertion<Boolean> enabled() {
-        return new BinaryPropertyAssertion<>(new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
                 return isEnabled();
@@ -880,7 +884,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IBinaryPropertyAssertion<Boolean> selected() {
-        return new BinaryPropertyAssertion<>(new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
                 return isSelected();
@@ -895,7 +899,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IImagePropertyAssertion screenshot() {
-        return new ImagePropertyAssertion(new AssertionProvider<File>() {
+        return propertyAssertionFactory.image(new AssertionProvider<File>() {
             @Override
             public File actual() {
                 return guiElementCore.takeScreenshot();

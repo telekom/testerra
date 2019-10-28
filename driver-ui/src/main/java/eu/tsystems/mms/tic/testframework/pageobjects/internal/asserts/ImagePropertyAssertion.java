@@ -13,7 +13,7 @@ public class ImagePropertyAssertion extends AbstractPropertyAssertion<File> impl
     @Override
     public IQuantifiedPropertyAssertion<Double> pixelDistance(final String referenceImageName) {
         final AtomicReference<LayoutCheck.MatchStep> atomicMatchStep = new AtomicReference<>();
-        return new QuantifiedPropertyAssertion<>(new AssertionProvider<Double>(this) {
+        return propertyAssertionFactory.quantified(new AssertionProvider<Double>(this) {
             @Override
             public Double actual() {
                 LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(provider.actual(), referenceImageName);
@@ -39,7 +39,7 @@ public class ImagePropertyAssertion extends AbstractPropertyAssertion<File> impl
 
     @Override
     public IFilePropertyAssertion file() {
-        return new FilePropertyAssertion(new AssertionProvider<File>() {
+        return propertyAssertionFactory.file(new AssertionProvider<File>() {
             @Override
             public File actual() {
                 return provider.actual();

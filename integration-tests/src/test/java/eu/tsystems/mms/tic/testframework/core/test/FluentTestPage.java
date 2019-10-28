@@ -9,12 +9,12 @@ import org.openqa.selenium.WebDriver;
 public class FluentTestPage extends FluentPage<FluentTestPage> {
 
     @Check
-    private IGuiElement input = findById("11");
+    private IGuiElement input = findOneById("11");
 
     @Check
-    private IGuiElement button = findByQa("action/submit", input);
+    private IGuiElement button = findOneByQa("action/submit", input);
 
-    private IGuiElement text = find(By.className("affe"));
+    private IGuiElement text = findOne(By.className("affe"));
 
     /**
      * Constructor for existing sessions.

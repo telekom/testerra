@@ -439,25 +439,25 @@ public abstract class Page extends AbstractPage {
 
         return simpleClassName + " -> " + actionName;
     }
-    protected IGuiElement findById(final String id) {
-        return find(Locate.by().id(id));
+    protected IGuiElement findOneById(final String id) {
+        return findOne(Locate.by().id(id));
     }
-    protected IGuiElement findByQa(final String qa) {
-        return find(Locate.by().qa(qa));
+    protected IGuiElement findOneByQa(final String qa) {
+        return findOne(Locate.by().qa(qa));
     }
-    protected IGuiElement findByQa(final String qa, final IGuiElement parent) {
-        return find(Locate.by().qa(qa), parent);
+    protected IGuiElement findOneByQa(final String qa, final IGuiElement parent) {
+        return findOne(Locate.by().qa(qa), parent);
     }
-    protected IGuiElement find(final Locate locator) {
+    protected IGuiElement findOne(final Locate locator) {
         return guiElementFactory.create(locator, driver);
     }
-    protected IGuiElement find(final Locate locator, final IGuiElement parent) {
+    protected IGuiElement findOne(final Locate locator, final IGuiElement parent) {
         return guiElementFactory.create(locator, driver, parent);
     }
-    protected IGuiElement find(final By by) {
-        return find(Locate.by(by));
+    protected IGuiElement findOne(final By by) {
+        return findOne(Locate.by(by));
     }
-    protected IGuiElement find(final By by, final IGuiElement parent) {
-        return find(Locate.by(by), parent);
+    protected IGuiElement findOne(final By by, final IGuiElement parent) {
+        return findOne(Locate.by(by), parent);
     }
 }

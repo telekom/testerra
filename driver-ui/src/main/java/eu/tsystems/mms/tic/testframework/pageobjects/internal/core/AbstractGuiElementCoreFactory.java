@@ -24,7 +24,7 @@ import org.openqa.selenium.WebDriver;
 
 public abstract class AbstractGuiElementCoreFactory {
 
-    public GuiElementCore decorate(
+    protected GuiElementCore decorate(
         GuiElementCore decoratedCore,
         String browser,
         By by,

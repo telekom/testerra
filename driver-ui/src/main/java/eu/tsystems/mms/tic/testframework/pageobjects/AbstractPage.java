@@ -42,7 +42,7 @@ import java.util.*;
  *
  */
 @Deprecated()
-public abstract class AbstractPage implements IWebDriverRetainer {
+public abstract class AbstractPage implements WebDriverRetainer {
 
     /**
      * The webdriver object.

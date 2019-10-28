@@ -31,7 +31,7 @@ import org.openqa.selenium.By;
 public interface IGuiElement extends
     GuiElementCore,
     Nameable,
-    IWebDriverRetainer
+    WebDriverRetainer
 {
     /**
      * New Features

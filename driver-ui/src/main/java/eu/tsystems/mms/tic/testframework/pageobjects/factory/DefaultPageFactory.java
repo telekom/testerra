@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.pageobjects.IWebDriverRetainer;
+import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 
@@ -30,12 +30,12 @@ import java.lang.reflect.InvocationTargetException;
 public class DefaultPageFactory implements IPageFactory {
 
     @Override
-    public <T extends IWebDriverRetainer> T create(Class<T> pageClass) {
+    public <T extends WebDriverRetainer> T create(Class<T> pageClass) {
         return create(pageClass, WebDriverManager.getWebDriver());
     }
 
     @Override
-    public <T extends IWebDriverRetainer> T create(Class<T> pageClass, WebDriver driver) {
+    public <T extends WebDriverRetainer> T create(Class<T> pageClass, WebDriver driver) {
         try {
             final Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
             return constructor.newInstance(driver);

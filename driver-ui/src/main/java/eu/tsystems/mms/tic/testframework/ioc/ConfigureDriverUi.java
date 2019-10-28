@@ -7,7 +7,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.DefaultGuiElementFa
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.DefaultGuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.DefaultPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementAssertFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.IPageFactory;
 

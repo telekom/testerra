@@ -34,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.IPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;

@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import org.openqa.selenium.By;

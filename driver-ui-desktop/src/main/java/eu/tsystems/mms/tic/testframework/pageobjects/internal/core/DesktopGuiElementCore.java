@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.GuiElementFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;

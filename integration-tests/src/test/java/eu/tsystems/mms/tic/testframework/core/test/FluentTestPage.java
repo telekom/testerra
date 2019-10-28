@@ -39,6 +39,6 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
     }
 
     public FluentTestPage navigateToSomeWhere() {
-        return pageFactory.create(FluentTestPage.class);
+        return createPage(FluentTestPage.class);
     }
 }

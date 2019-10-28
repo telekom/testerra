@@ -27,6 +27,9 @@ import org.openqa.selenium.WebDriver;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * @todo Implement Page Checks
+ */
 public class DefaultPageFactory implements IPageFactory {
 
     @Override

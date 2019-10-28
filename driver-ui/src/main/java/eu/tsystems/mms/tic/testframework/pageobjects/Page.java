@@ -82,11 +82,11 @@ public abstract class Page extends AbstractPage {
     /**
      * @todo You can mark this with @Inject when all pages are created by PageFactory
      */
-    protected static final GuiElementFactory guiElementFactory = TesterraCommons.ioc().getInstance(GuiElementFactory.class);
+    private static final GuiElementFactory guiElementFactory = TesterraCommons.ioc().getInstance(GuiElementFactory.class);
     /**
      * @todo You can mark this with @Inject when all pages are created by PageFactory
      */
-    protected static final IPageFactory pageFactory = TesterraCommons.ioc().getInstance(IPageFactory.class);
+    private static final IPageFactory pageFactory = TesterraCommons.ioc().getInstance(IPageFactory.class);
 
     /**
      * Constructor for existing sessions.
@@ -457,5 +457,8 @@ public abstract class Page extends AbstractPage {
     }
     protected IGuiElement findOne(final By by, final IGuiElement parent) {
         return findOne(Locate.by(by), parent);
+    }
+    protected <T extends WebDriverRetainer> T createPage(final Class<T> pageClass) {
+        return pageFactory.create(pageClass, driver);
     }
 }

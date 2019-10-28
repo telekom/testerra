@@ -1,19 +1,23 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
-import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
-import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
+import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 
 import java.util.function.Function;
 
 public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropertyAssertion<T> implements INonFunctionalPropertyAssertion {
-    private final int sleepTimeInMsShortInterval = 200;
-    private final int timeoutInSecondsShortInterval = 1;
+
+    private static final int sleepTimeInMsShortInterval = 200;
+    private static final int timeoutInSecondsShortInterval = 1;
+
+    private static AssertionsCollector assertionsCollector = TesterraCommons.ioc().getInstance(AssertionsCollector.class);
+
     protected IAssertion assertion = TesterraCommons.ioc().getInstance(InstantAssertion.class);
 
     public AbstractTestedPropertyAssertion(AssertionProvider<T> provider) {
@@ -34,11 +38,11 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
             }
         });
         if (!throwablePackedResponse.isSuccessful()) {
+            final TimeoutException timeoutException = throwablePackedResponse.getTimeoutException();
             provider.failedRecursive();
-            /**
-             * This should probably be better a {@link FunctionalAssertion}
-             */
-            CollectedAssertions.store(throwablePackedResponse.getTimeoutException());
+            if (!assertionsCollector.store(timeoutException)) {
+                throw timeoutException;
+            }
         }
     }
 

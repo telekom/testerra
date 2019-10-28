@@ -29,14 +29,11 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @todo Create interface and refactor it to non static context to be injectable
- */
-public final class CollectedAssertions {
+public final class CollectedAssertions implements AssertionsCollector {
 
-    private static final ThreadLocal<List<AssertionInfo>> ASSERTION_INFOS = new ThreadLocal<>();
+    private final ThreadLocal<List<AssertionInfo>> ASSERTION_INFOS = new ThreadLocal<>();
 
-    public synchronized static void store(Throwable throwable) {
+    public synchronized boolean store(Throwable throwable) {
         if (ASSERTION_INFOS.get() == null) {
             ASSERTION_INFOS.set(new LinkedList<>());
         }
@@ -63,14 +60,13 @@ public final class CollectedAssertions {
         customContexts.clear();
 
         // and store
-        assertionInfos.add(assertionInfo);
+        return assertionInfos.add(assertionInfo);
     }
 
-    public static void clear() {
+    public void clear() {
         ASSERTION_INFOS.remove();
     }
-
-    public static boolean hasEntries() {
+    public boolean hasEntries() {
         if (ASSERTION_INFOS.get() == null) {
             return false;
         }
@@ -79,9 +75,7 @@ public final class CollectedAssertions {
         }
         return false;
     }
-
-    public static List<AssertionInfo> getEntries() {
+    public List<AssertionInfo> getEntries() {
         return ASSERTION_INFOS.get();
     }
-
 }

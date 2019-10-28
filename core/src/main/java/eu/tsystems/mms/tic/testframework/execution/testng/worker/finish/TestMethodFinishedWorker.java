@@ -20,15 +20,19 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventUserDataManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
-import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
+import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 
 /**
  * Created by pele on 19.01.2017.
  */
 public class TestMethodFinishedWorker extends MethodWorker {
+
+    final AssertionsCollector assertionsCollector = TesterraCommons.ioc().getInstance(AssertionsCollector.class);
+
     @Override
     public void run() {
         String msg = "";
@@ -84,7 +88,7 @@ public class TestMethodFinishedWorker extends MethodWorker {
             PropertyManager.clearThreadlocalProperties();
 
             // cleanup collected assertions
-            CollectedAssertions.clear();
+            assertionsCollector.clear();
         }
     }
 }

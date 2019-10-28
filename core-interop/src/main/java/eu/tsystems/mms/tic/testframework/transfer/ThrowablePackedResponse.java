@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by pele on 02.06.2015.
+ * @todo This is not {@link Throwable}, so rename it
  */
 public class ThrowablePackedResponse<T> {
 

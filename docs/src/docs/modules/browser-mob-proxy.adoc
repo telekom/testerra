@@ -61,6 +61,20 @@ public abstract class AbstractTest extends TesterraTest {
 }
 ----
 
+BMP creates a new proxy server at the next free port beginning with port 8081 (BMP default).
+
+If you need a dedicated port, use `startServer` with a port number. If the port already used, BMP client only returns the port number.
+
+[source,java]
+----
+...
+int customPort = 8085;
+final int proxyPort = bmpClient.startServer(customPort);
+...
+----
+
+
+
 == Basic Auth
 
 If your SUT is located behind a restricted are, protected by HTTP basic auth, you can setup these credentials as following.
@@ -91,6 +105,12 @@ bmpClient.setUpstreamProxy(ProxyUtils.getSystemHttpProxyUrl());
 
 [source,java]
 ----
+/*
+ Checks if a proxy server is available by a custom port.
+ */
+int port = 8085;
+boolean isUsed = bmpClient.checkIfProxyRunsAtPort(port);
+
 /*
  Maps specifc host names to another host names or IP adresses
  */

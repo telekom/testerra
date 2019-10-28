@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.bmp;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
@@ -56,6 +57,7 @@ public class BmpRestClient {
 
     /**
      * Hide Default constructor.
+     *
      * @param restPort
      */
     public BmpRestClient(String host, int restPort) {
@@ -99,10 +101,34 @@ public class BmpRestClient {
      * @return portnumber of proxy server
      */
     public int startServer() {
+        return this.startServer(null);
+    }
+
+    /**
+     * Start the proxy server on the remote machine wiht a custom port.
+     *
+     * @param customPort
+     * @return portnumber of proxy server
+     */
+    public int startServer(Integer customPort) {
         String path = "proxy?trustAllServers=true";
 
-        if (upstreamProxy!=null) {
+        if (upstreamProxy != null) {
             path += String.format("&httpProxy=%s:%d", upstreamProxy.getHost(), upstreamProxy.getPort());
+        }
+
+        // Cannot create a new proxy server on an used port,
+        // so I need to check it before
+        if (customPort != null) {
+            boolean runsAtPort = checkIfProxyRunsAtPort(customPort);
+            if (runsAtPort) {
+                proxyPort = customPort;
+                url = url + "proxy/" + proxyPort + "/";
+                LOGGER.info("BMP proxy port " + customPort + " already active.");
+                LOGGER.info("Using proxy server at " + url);
+                return proxyPort;
+            }
+            path += String.format("&port=%s", customPort);
         }
 
         try {
@@ -115,6 +141,7 @@ public class BmpRestClient {
                 throw new TesterraRuntimeException("Error executing http request");
             }
             url = url + "proxy/" + proxyPort + "/";
+            LOGGER.info("Created new proxy server at " + url);
             return proxyPort;
         } catch (Exception e) {
             throw new RuntimeException("error starting proxy", e);
@@ -174,6 +201,31 @@ public class BmpRestClient {
         }
     }
 
+    /**
+     * Checks if Port is already used
+     *
+     * @param portToCheck
+     * @return bool if port is already used.
+     */
+    public boolean checkIfProxyRunsAtPort(int portToCheck) {
+        String path = "proxy";
+        try {
+            String response = sendGet(path);
+            JsonElement jsonElement = new JsonParser().parse(response);
+
+            JsonArray portArray = jsonElement.getAsJsonObject().getAsJsonArray("proxyList");
+            for (JsonElement element : portArray) {
+                int actualPort = element.getAsJsonObject().get("port").getAsInt();
+                if (actualPort == portToCheck) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error executing http get request to get proxy information.", e);
+        }
+        return false;
+    }
+
     // HTTP POST request
     private String sendPost(String path, String content) throws Exception {
         HttpClient httpclient = HttpClients.createDefault();
@@ -194,7 +246,6 @@ public class BmpRestClient {
             throw new TesterraRuntimeException("Error posting to BMPServer: " + statusCode + " > " + reasonPhrase + " R: " + response);
         }
         HttpEntity entity = response.getEntity();
-
 
         StringWriter writer = new StringWriter();
         if (entity != null) {

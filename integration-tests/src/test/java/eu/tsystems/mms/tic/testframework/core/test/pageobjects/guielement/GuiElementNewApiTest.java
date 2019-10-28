@@ -87,7 +87,9 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     @Test
     public void test_NewApi_GuiElement_screenshot() {
         FluentTestPage page = prepareTestPage();
-        page.notVisibleElement().screenshot().file().bytes().lowerThan(40);
+        final IImagePropertyAssertion screenshot = page.notVisibleElement().screenshot();
+        screenshot.file().exists().isTrue();
+        screenshot.file().bytes().nonFunctional().lowerThan(40);
     }
 
     public void test_NewApi_GuiElement() {

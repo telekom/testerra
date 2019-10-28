@@ -47,12 +47,8 @@ public abstract class AbstractAssertion implements IAssertion {
     }
 
     protected String format(Object actual, Object expected, String subject) {
-        String formatted = "";
-        if (null != subject) {
-            formatted = subject + " ";
-        }
-
-        return formatted + ASSERT_LEFT + expected + ASSERT_MIDDLE + actual + ASSERT_RIGHT;
+        return String.format("Expected that %s [%s] %s", subject, actual, expected);
+        //return formatted + ASSERT_LEFT + expected + ASSERT_MIDDLE + actual + ASSERT_RIGHT;
     }
 
     @Override
@@ -66,49 +62,49 @@ public abstract class AbstractAssertion implements IAssertion {
     @Override
     public void assertContains(String actual, String expected, String subject) {
         if (!actual.contains(expected)) {
-            fail(String.format("%s [%s] contains [%s]", subject, actual, expected));
+            fail(format(actual, String.format("contains [%s]", expected), subject));
         }
     }
 
     @Override
     public void assertContainsNot(String actual, String expected, String subject) {
         if (actual.contains(expected)) {
-            fail(String.format("%s [%s] contains not [%s]", subject, actual, expected));
+            fail(format(actual, String.format("contains not [%s]", expected), subject));
         }
     }
 
     @Override
     public void assertGreaterThan(BigDecimal actual, BigDecimal expected, String subject) {
         if (actual.compareTo(expected)!=1) {
-            fail(String.format("%s [%s] is greater than [%s]", subject, actual, expected));
+            fail(format(actual, String.format("is greater than [%s]", expected), subject));
         }
     }
 
     @Override
     public void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, String subject) {
         if (actual.compareTo(expected) < 0) {
-            fail(String.format("%s [%s] is greater or equal than [%s]", subject, actual, expected));
+            fail(format(actual, String.format("is greater or equal than [%s]", expected), subject));
         }
     }
 
     @Override
     public void assertLowerThan(BigDecimal actual, BigDecimal expected, String subject) {
         if (actual.compareTo(expected)!=-1) {
-            fail(String.format("%s [%s] is lower than [%s]", subject, actual, expected));
+            fail(format(actual, String.format("is lower than [%s]", expected), subject));
         }
     }
 
     @Override
     public void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, String subject) {
         if (actual.compareTo(expected) > 0) {
-            fail(String.format("%s [%s] is lower or equal than [%s]", subject, actual, expected));
+            fail(format(actual, String.format("is lower or equal than [%s]", expected), subject));
         }
     }
 
     @Override
     public void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, String subject) {
         if (actual.compareTo(lower) > 0 || actual.compareTo(higher) < 0) {
-            fail(String.format("%s [%s] is between [%s] and [%s]", subject, actual, lower, higher));
+            fail(format(actual, String.format("is between [%s] and [%s]", lower, higher), subject));
         }
     }
 
@@ -459,6 +455,20 @@ public abstract class AbstractAssertion implements IAssertion {
 
         if (fail) {
             fail(subject);
+        }
+    }
+
+    @Override
+    public void assertBeginsWith(final Object actual, final Object expected, final String subject) {
+        if (!actual.toString().startsWith(expected.toString())) {
+            fail(format(actual, String.format("begins with [%s]", expected), subject));
+        }
+    }
+
+    @Override
+    public void assertEndsWith(final Object actual, final Object expected, final String subject) {
+        if (!actual.toString().endsWith(expected.toString())) {
+            fail(format(actual, String.format("ends with [%s]", expected), subject));
         }
     }
 

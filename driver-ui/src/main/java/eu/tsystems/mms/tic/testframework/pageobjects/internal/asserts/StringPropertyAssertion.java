@@ -1,7 +1,5 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
-
 public class StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T> implements IStringPropertyAssertion<T> {
 
     public StringPropertyAssertion(AssertionProvider<T> provider) {
@@ -28,26 +26,35 @@ public class StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T> i
 
     @Override
     public StringPropertyAssertion<T> beginsWith(String expected) {
-        final ThrowablePackedResponse throwablePackedResponse = testTimer(t -> {
-            final String actualString = (String) provider.actual();
-            return actualString.startsWith(expected);
+        testTimer(t -> {
+            configuredAssert.assertBeginsWith(provider.actual(), expected, provider.subject().toString());
+            return true;
         });
-        if (!throwablePackedResponse.isSuccessful()) {
-            fail(String.format("begins with [%s]", expected));
-        }
         return this;
     }
 
     @Override
     public StringPropertyAssertion<T> endsWith(String expected) {
-        final ThrowablePackedResponse throwablePackedResponse = testTimer(t -> {
-            final String actualString = (String) provider.actual();
-            return actualString.endsWith(expected);
+        testTimer(t -> {
+            configuredAssert.assertEndsWith(provider.actual(), expected, provider.subject().toString());
+            return true;
         });
-        if (!throwablePackedResponse.isSuccessful()) {
-            fail(String.format("ends with [%s]", expected));
-        }
         return this;
+    }
+
+    @Override
+    public IQuantifiedPropertyAssertion<Integer> length() {
+        return propertyAssertionFactory.quantified(new AssertionProvider<Integer>(this) {
+            @Override
+            public Integer actual() {
+                return provider.actual().toString().length();
+            }
+
+            @Override
+            public Object subject() {
+                return String.format("\"%s\".length",provider.actual().toString());
+            }
+        });
     }
 
     @Override

@@ -49,7 +49,7 @@ public class QuantifiedPropertyAssertion<T> extends BinaryPropertyAssertion<T> i
     @Override
     public IQuantifiedPropertyAssertion<T> lowerThan(final BigDecimal expected) {
         testTimer(t -> {
-            configuredAssert.assertLowerThan(new BigDecimal((String) provider.actual()), expected, provider.traceSubjectString());
+            configuredAssert.assertLowerThan(new BigDecimal(provider.actual().toString()), expected, provider.traceSubjectString());
             return true;
         });
         return this;

@@ -774,6 +774,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IStringPropertyAssertion<String> tagName() {
+        final IGuiElement self = this;
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String actual() {
@@ -782,13 +783,14 @@ public class GuiElement implements IGuiElement, Loggable {
 
             @Override
             public String subject() {
-                return String.format("%s.tagName", this);
+                return String.format("%s.tagName", self);
             }
         });
     }
 
     @Override
     public IStringPropertyAssertion<String> text() {
+        final IGuiElement self = this;
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String actual() {
@@ -797,7 +799,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
             @Override
             public String subject() {
-                return String.format("%s.text", this);
+                return String.format("%s.text", self);
             }
         });
     }
@@ -809,6 +811,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IStringPropertyAssertion<String> value(final Attribute attribute) {
+        final IGuiElement self = this;
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String actual() {
@@ -817,13 +820,14 @@ public class GuiElement implements IGuiElement, Loggable {
 
             @Override
             public String subject() {
-                return String.format("%s.value(attribute: %s)", this, attribute);
+                return String.format("%s.value(attribute: %s)", self, attribute);
             }
         });
     }
 
     @Override
     public IBinaryPropertyAssertion<Boolean> present() {
+        final IGuiElement self = this;
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
@@ -832,13 +836,14 @@ public class GuiElement implements IGuiElement, Loggable {
 
             @Override
             public String subject() {
-                return String.format("%s.present", this);
+                return String.format("%s.present", self);
             }
         });
     }
 
     @Override
     public IBinaryPropertyAssertion<Boolean> visible(boolean complete) {
+        final IGuiElement self = this;
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
@@ -847,13 +852,14 @@ public class GuiElement implements IGuiElement, Loggable {
 
             @Override
             public String subject() {
-                return String.format("%s.visible(complete: %s)", this, complete);
+                return String.format("%s.visible(complete: %s)", self, complete);
             }
         });
     }
 
     @Override
     public IBinaryPropertyAssertion<Boolean> displayed() {
+        final IGuiElement self = this;
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
@@ -862,13 +868,14 @@ public class GuiElement implements IGuiElement, Loggable {
 
             @Override
             public String subject() {
-                return String.format("%s.displayed", this);
+                return String.format("%s.displayed", self);
             }
         });
     }
 
     @Override
     public IBinaryPropertyAssertion<Boolean> enabled() {
+        final IGuiElement self = this;
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
@@ -877,13 +884,14 @@ public class GuiElement implements IGuiElement, Loggable {
 
             @Override
             public String subject() {
-                return String.format("%s.enabled", this);
+                return String.format("%s.enabled", self);
             }
         });
     }
 
     @Override
     public IBinaryPropertyAssertion<Boolean> selected() {
+        final IGuiElement self = this;
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
@@ -892,13 +900,14 @@ public class GuiElement implements IGuiElement, Loggable {
 
             @Override
             public String subject() {
-                return String.format("%s.selected", this);
+                return String.format("%s.selected", self);
             }
         });
     }
 
     @Override
     public IImagePropertyAssertion screenshot() {
+        final IGuiElement self = this;
         return propertyAssertionFactory.image(new AssertionProvider<File>() {
             @Override
             public File actual() {
@@ -907,7 +916,7 @@ public class GuiElement implements IGuiElement, Loggable {
 
             @Override
             public String subject() {
-                return String.format("%s.screenshot", this);
+                return String.format("%s.screenshot", self);
             }
         });
     }

@@ -33,6 +33,14 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
         return button;
     }
 
+    public IGuiElement notDisplayedElement() {
+        return findOneById("notDisplayedElement");
+    }
+
+    public IGuiElement notVisibleElement() {
+        return findOneById("notVisibleElement");
+    }
+
     @Override
     protected FluentTestPage self() {
         return this;

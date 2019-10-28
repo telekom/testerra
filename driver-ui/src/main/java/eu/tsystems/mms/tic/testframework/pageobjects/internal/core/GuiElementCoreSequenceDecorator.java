@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
@@ -42,7 +43,7 @@ import java.util.List;
  * <p>
  * Created by rnhb on 12.08.2015.
  */
-public class GuiElementCoreSequenceDecorator implements GuiElementCore {
+public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable {
 
     private final GuiElementCore guiElementCore;
     private final GuiElementData guiElementData;
@@ -197,7 +198,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
                     ||
                     message.contains("not clickable at point") // another chrome message (maybe FF with native events (emulation), too)
                     ) {
-                guiElementData.getLogger().warn(action + "() failed on " + guiElementCore + ". Trying fallback " + action + "JS().");
+                log().warn(action + "() failed on " + guiElementCore + ". Trying fallback " + action + "JS().");
                 runnable.run();
                 return;
             }

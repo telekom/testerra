@@ -26,11 +26,12 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImagePropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
@@ -42,6 +43,9 @@ import java.net.URL;
  * Page with fluent interface support.
  */
 public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
+
+    protected static final PropertyAssertionFactory propertyAssertionFactory = TesterraCommons.ioc().getInstance(PropertyAssertionFactory.class);
+
     /**
      * Constructor for existing sessions.
      *
@@ -52,7 +56,8 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
     }
 
     public IStringPropertyAssertion<String> title() {
-        return new StringPropertyAssertion<>(new AssertionProvider<String>() {
+        final Page self = this;
+        return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String actual() {
                 return driver.getTitle();
@@ -60,13 +65,14 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
 
             @Override
             public Object subject() {
-                return String.format("%s.title", this);
+                return String.format("%s.title", self);
             }
         });
     }
 
     public IStringPropertyAssertion<String> url() {
-        return new StringPropertyAssertion<>(new AssertionProvider<String>() {
+        final Page self = this;
+        return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String actual() {
                 return driver.getCurrentUrl();
@@ -74,7 +80,7 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
 
             @Override
             public Object subject() {
-                return String.format("%s.url", this);
+                return String.format("%s.url", self);
             }
         });
     }

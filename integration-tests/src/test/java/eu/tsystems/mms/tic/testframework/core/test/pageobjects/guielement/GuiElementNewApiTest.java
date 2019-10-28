@@ -40,19 +40,48 @@ import java.math.BigDecimal;
  */
 public class GuiElementNewApiTest extends AbstractTestSitesTest {
 
-    @Test
-    public void test_NewApi_Page_call_url_endsWith() {
+    private FluentTestPage prepareTestPage() {
         FluentTestPage page = pageFactory.create(FluentTestPage.class);
-        page.call(TestPage.INPUT_TEST_PAGE.getUrl());
+        return page.call(TestPage.INPUT_TEST_PAGE.getUrl());
+    }
+
+    @Test
+    public void test_NewApi_Page_url_endsWith() {
+        FluentTestPage page = prepareTestPage();
         page.url().endsWith("input.html");
     }
 
     @Test(expectedExceptions = TimeoutException.class)
-    public void test_NewApi_Page_call_url_endsWith_failed() {
-        FluentTestPage page = pageFactory.create(FluentTestPage.class);
-        page.call(TestPage.INPUT_TEST_PAGE.getUrl());
+    public void test_NewApi_Page_url_endsWith_failed() {
+        FluentTestPage page = prepareTestPage();
         page.url().endsWith("nonexistingfile.html");
-        //page.url().endsWith("input.html");
+    }
+
+    @Test
+    public void test_NewApi_GuiElement_displayed_false() {
+        FluentTestPage page = prepareTestPage();
+        page.notDisplayedElement().value(Attribute.STYLE).contains("display: none");
+        page.notDisplayedElement().displayed().isFalse();
+    }
+
+    @Test(expectedExceptions = TimeoutException.class)
+    public void test_NewApi_GuiElement_displayed_false_failed() {
+        FluentTestPage page = prepareTestPage();
+        page.notDisplayedElement().displayed().isTrue();
+    }
+
+    @Test
+    public void test_NewApi_GuiElement_visible_false() {
+        FluentTestPage page = prepareTestPage();
+        page.notVisibleElement().value(Attribute.STYLE).contains("hidden");
+        page.notVisibleElement().visible(true).isFalse();
+        page.notVisibleElement().visible(false).isFalse();
+    }
+
+    @Test(expectedExceptions = TimeoutException.class)
+    public void test_NewApi_GuiElement_visible_false_failed() {
+        FluentTestPage page = prepareTestPage();
+        page.notVisibleElement().visible(true).isTrue();
     }
 
     public void test_NewApi_GuiElement() {

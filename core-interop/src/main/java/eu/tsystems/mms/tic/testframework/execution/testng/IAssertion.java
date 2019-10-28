@@ -35,4 +35,6 @@ public interface IAssertion {
     void assertNotEquals(Object actual1, Object actual2, String subject);
     void assertNotEquals(Set<?> actual, Set<?> expected, String subject);
     void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected, String subject);
+    void assertBeginsWith(final Object actual, final Object expected, final String subject);
+    void assertEndsWith(final Object actual, final Object expected, final String subject);
 }

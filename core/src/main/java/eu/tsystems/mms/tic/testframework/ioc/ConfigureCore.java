@@ -9,7 +9,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 
-public class TesterraCoreModule extends AbstractModule {
+public class ConfigureCore extends AbstractModule {
     protected void configure() {
         bind(FunctionalAssertion.class).to(DefaultFunctionalAssertion.class).in(Scopes.SINGLETON);
         bind(NonFunctionalAssertion.class).to(DefaultNonFunctionalAssertion.class).in(Scopes.SINGLETON);

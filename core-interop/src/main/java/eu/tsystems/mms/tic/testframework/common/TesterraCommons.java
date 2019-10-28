@@ -23,6 +23,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.util.Modules;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -37,9 +38,12 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Created by pele on 05.02.2015.
@@ -186,19 +190,27 @@ public class TesterraCommons {
         return ioc;
     }
 
+    /**
+     * We initialize the IoC modules in a reverse sorted class name order,
+     * to be able to override module configures.
+     * This is not best practice, bad currently the only way to override module bindings.
+     * Because {@link Modules#override(Module...)} doesn't work in the way we need it.
+     */
     private static void initIoc() {
         final Reflections reflections = new Reflections(p);
         final Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
         final Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
-        final ArrayList<Module> modules = new ArrayList<>();
+        final TreeMap<String, Module> sortedModules = new TreeMap<>();
         try {
             while (iterator.hasNext()) {
                 final Class<? extends AbstractModule> moduleClass = iterator.next();
                 final Constructor<?> ctor = moduleClass.getConstructor();
-                modules.add((Module)ctor.newInstance());
+                sortedModules.put(moduleClass.getName(), (Module)ctor.newInstance());
             }
-            LOGGER.info("Register IoC modules: " + modules);
-            ioc = Guice.createInjector(modules);
+            final List<Module> reverseSortedModules = new ArrayList<>(sortedModules.values());
+            Collections.reverse(reverseSortedModules);
+            LOGGER.info("Register IoC modules: " + reverseSortedModules);
+            ioc = Guice.createInjector(reverseSortedModules);
         } catch (Exception e) {
             e.printStackTrace();
             //LOGGER.error("Unable to initialize IoC modules", e);

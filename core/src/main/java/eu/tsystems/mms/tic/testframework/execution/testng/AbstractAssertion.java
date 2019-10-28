@@ -35,7 +35,7 @@ public abstract class AbstractAssertion implements IAssertion {
     }
 
     public void failNotEquals(Object actual, Object expected, String subject) {
-        fail(format(actual, expected, subject));
+        fail(format(actual, String.format("equals [%s]", expected), subject));
     }
 
     private void failAssertNoEqual(String defaultMessage, String message) {

@@ -9,7 +9,7 @@ public class QuantifiedPropertyAssertion<T> extends BinaryPropertyAssertion<T> i
     }
 
     @Override
-    public IQuantifiedPropertyAssertion<T> equals(final String expected) {
+    public IQuantifiedPropertyAssertion<T> is(final Object expected) {
         testTimer(t -> {
             configuredAssert.assertEquals(provider.actual(), expected, provider.traceSubjectString());
             return true;

@@ -46,6 +46,13 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     }
 
     @Test
+    public void test_NewApi_Page_title_equals() {
+        FluentTestPage page = prepareTestPage();
+        page.title().is("Input test");
+        page.title().length().is(20);
+    }
+
+    @Test
     public void test_NewApi_Page_url_endsWith() {
         FluentTestPage page = prepareTestPage();
         page.url().endsWith("input.html");
@@ -89,7 +96,7 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
         FluentTestPage page = prepareTestPage();
         final IImagePropertyAssertion screenshot = page.notVisibleElement().screenshot();
         screenshot.file().exists().isTrue();
-        screenshot.file().bytes().nonFunctional().lowerThan(40);
+        screenshot.file().bytes().lowerThan(40);
     }
 
     public void test_NewApi_GuiElement() {
@@ -108,7 +115,7 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
         // Expect GuiElement(By.qa("action/submit")).visible(complete: false) [false] is true
         page.submit().scrollTo().visible(false).isTrue();
         // Expect GuiElement(By.qa("action/submit")).value(attribute: style) [display:none] equals [display:block]
-        page.submit().value(Attribute.STYLE).equals("display:block");
+        page.submit().value(Attribute.STYLE).is("display:block");
 
         final IImagePropertyAssertion screenshot = page.submit().screenshot();
         // Expect GuiElement(By.qa("action/submit")).screenshot.pixelDistance(referenceImageName: "SubmitButton") [10] between [3] and [5]
@@ -116,7 +123,7 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
         // Expect GuiElement(By.qa("action/submit")).screenshot.file.name [SomeImage] contains [screenshot]
         screenshot.file().name().contains("screenshot");
         // Expect GuiElement(By.qa("action/submit")).screenshot.file.extension [jpg] equals [png]
-        screenshot.file().extension().equals("png");
+        screenshot.file().extension().is("png");
         screenshot.file().bytes().greaterThan(5000);
 
         // Expect GuiElement(By.qa("action/submit")).present [false] is true

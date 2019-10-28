@@ -37,13 +37,22 @@ public class DefaultPageFactory implements IPageFactory {
     }
 
     @Override
-    public <T extends WebDriverRetainer> T create(Class<T> pageClass, WebDriver driver) {
+    public <T extends WebDriverRetainer> T create(Class<T> pageClass, WebDriver webDriver) {
         try {
             final Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
-            return constructor.newInstance(driver);
+            return constructor.newInstance(webDriver);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            final String msg = "Could not create instance of page class ";
-            throw new TesterraRuntimeException(msg + pageClass.getSimpleName(), e);
+            throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", pageClass, webDriver), e);
+        }
+    }
+
+    @Override
+    public <T extends WebDriverRetainer> T create(Class<T> pageClass, IGuiElement guiElement) {
+        try {
+            final Constructor<T> constructor = pageClass.getConstructor(IGuiElement.class);
+            return constructor.newInstance(guiElement);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", pageClass, guiElement), e);
         }
     }
 }

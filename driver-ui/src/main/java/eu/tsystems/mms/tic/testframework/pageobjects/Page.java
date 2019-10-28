@@ -77,25 +77,31 @@ public abstract class Page extends AbstractPage {
         pageLoadHandlers.add(h);
     }
 
-    /**
-     * @todo You can mark this with @Inject when all pages are created by PageFactory
-     */
     private static final GuiElementFactory guiElementFactory = TesterraCommons.ioc().getInstance(GuiElementFactory.class);
-    /**
-     * @todo You can mark this with @Inject when all pages are created by PageFactory
-     */
     private static final IPageFactory pageFactory = TesterraCommons.ioc().getInstance(IPageFactory.class);
+
+    protected final IGuiElement guiElement;
+
+    /**
+     * Constructor for GuiElement based components
+     */
+    public Page(final IGuiElement guiElement) {
+        this(guiElement.getWebDriver(), guiElement);
+    }
 
     /**
      * Constructor for existing sessions.
-     *
-     * @param driver .
      */
-    public Page(final WebDriver driver) {
+    public Page(final WebDriver webDriver) {
+        this(webDriver, null);
+    }
+
+    private Page(final WebDriver driver, final IGuiElement guiElement) {
         if (driver == null) {
             throw new IllegalArgumentException("The driver object must not be null");
         }
         this.driver = driver;
+        this.guiElement = guiElement;
 
         // webdriver based waitForPageToLoad
         waitForPageToLoad();
@@ -458,5 +464,8 @@ public abstract class Page extends AbstractPage {
     }
     protected <T extends WebDriverRetainer> T createPage(final Class<T> pageClass) {
         return pageFactory.create(pageClass, driver);
+    }
+    protected <T extends WebDriverRetainer> T createComponent(final Class<T> pageClass, final IGuiElement guiElement) {
+        return pageFactory.create(pageClass, guiElement);
     }
 }

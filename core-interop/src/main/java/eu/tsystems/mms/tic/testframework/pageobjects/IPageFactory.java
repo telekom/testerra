@@ -9,5 +9,6 @@ import org.openqa.selenium.WebDriver;
  */
 public interface IPageFactory {
     <T extends WebDriverRetainer> T create(Class<T> pageClass);
-    <T extends WebDriverRetainer> T create(Class<T> pageClass, WebDriver driver);
+    <T extends WebDriverRetainer> T create(Class<T> pageClass, final WebDriver webDriver);
+    <T extends WebDriverRetainer> T create(Class<T> pageClass, final IGuiElement guiElement);
 }

@@ -51,8 +51,8 @@
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.GuiElement"/>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.GuiElement.variations"/>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement"/>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations"/>
             <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.page"/>
         </packages>
     </test>

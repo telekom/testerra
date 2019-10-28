@@ -10,25 +10,25 @@ public class StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T> i
 
     @Override
     public StringPropertyAssertion<T> contains(final String expected) {
-        testTimer(t -> configuredAssert.assertContains((String)provider.actual(), expected, provider.traceSubjectString()));
+        testTimer(t -> assertion.assertContains((String)provider.actual(), expected, provider.traceSubjectString()));
         return this;
     }
 
     @Override
     public StringPropertyAssertion<T> containsNot(final String expected) {
-        testTimer(t -> configuredAssert.assertContainsNot((String)provider.actual(), expected, provider.traceSubjectString()));
+        testTimer(t -> assertion.assertContainsNot((String)provider.actual(), expected, provider.traceSubjectString()));
         return this;
     }
 
     @Override
     public StringPropertyAssertion<T> beginsWith(String expected) {
-        testTimer(t -> configuredAssert.assertBeginsWith(provider.actual(), expected, provider.traceSubjectString()));
+        testTimer(t -> assertion.assertBeginsWith(provider.actual(), expected, provider.traceSubjectString()));
         return this;
     }
 
     @Override
     public StringPropertyAssertion<T> endsWith(String expected) {
-        testTimer(t -> configuredAssert.assertEndsWith(provider.actual(), expected, provider.traceSubjectString()));
+        testTimer(t -> assertion.assertEndsWith(provider.actual(), expected, provider.traceSubjectString()));
         return this;
     }
 

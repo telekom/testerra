@@ -30,7 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by pele on 17.10.2016.
+ * @todo Create interface and refactor it to non static context to be injectable
  */
 public final class CollectedAssertions {
 

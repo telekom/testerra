@@ -1,9 +1,9 @@
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
 /**
- * Throws assertion exceptions
+ * Throws {@link AssertionError} on failed assertion
  */
-public class ThrowedAssertion extends AbstractAssertion implements IAssertion {
+public class ThrowingAssertion extends AbstractAssertion implements IAssertion {
     @Override
     public void fail(String message, Throwable realCause) {
         AssertionError ae = new AssertionError(message);

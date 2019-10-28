@@ -71,7 +71,7 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
         page.notDisplayedElement().displayed().isFalse();
     }
 
-    @Test(expectedExceptions = TimeoutException.class)
+    @Test(expectedExceptions = AssertionError.class)
     public void test_NewApi_GuiElement_displayed_false_failed() {
         FluentTestPage page = prepareTestPage();
         page.notDisplayedElement().displayed().isTrue();

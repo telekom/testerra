@@ -17,7 +17,7 @@ public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<
                     || actualString.equalsIgnoreCase("yes")
                 )
             ) {
-                configuredAssert.fail(configuredAssert.format(actualString, "is one of [true, 'on', '1', 'yes']", provider.traceSubjectString()));
+                assertion.fail(assertion.format(actualString, "is one of [true, 'on', '1', 'yes']", provider.traceSubjectString()));
                 return false;
             }
             return true;
@@ -36,7 +36,7 @@ public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<
                     || actualString.equalsIgnoreCase("no")
                 )
             ) {
-                configuredAssert.fail(configuredAssert.format(actualString, "is one of [false, 'off', '0', 'no']", provider.traceSubjectString()));
+                assertion.fail(assertion.format(actualString, "is one of [false, 'off', '0', 'no']", provider.traceSubjectString()));
                 return false;
             }
             return true;

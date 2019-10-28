@@ -862,7 +862,7 @@ public class GuiElement implements IGuiElement, Loggable {
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
-                return isDisplayedFromWebElement();
+                return getWebElement().isDisplayed();
             }
 
             @Override

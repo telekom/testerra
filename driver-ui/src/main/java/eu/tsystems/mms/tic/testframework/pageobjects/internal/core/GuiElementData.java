@@ -33,7 +33,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
- * Created by rnhb on 21.12.2016.
+ * @todo Create interface
  */
 public class GuiElementData {
 

@@ -21,7 +21,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementCoreFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

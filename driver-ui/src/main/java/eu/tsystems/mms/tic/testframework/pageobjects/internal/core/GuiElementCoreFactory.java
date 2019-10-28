@@ -1,10 +1,11 @@
-package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+/**
+ * Move this interface to core-interop when {@link GuiElementData} has an interface
+ */
 public interface GuiElementCoreFactory {
     GuiElementCore create(
         String browser,

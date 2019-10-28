@@ -1,9 +1,11 @@
-package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 
+/**
+ * Move this interface to core-interop when {@link GuiElementData} has an interface
+ */
 public interface GuiElementWaitFactory {
     GuiElementWait create(
         GuiElementStatusCheck guiElementStatusCheck,

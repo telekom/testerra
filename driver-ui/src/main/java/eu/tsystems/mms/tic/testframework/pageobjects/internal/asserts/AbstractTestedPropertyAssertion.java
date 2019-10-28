@@ -36,11 +36,6 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
         return throwablePackedResponse;
     }
 
-    protected void fail(final String assertionSuffix) {
-        final String message = String.format("%s [%s] %s", provider.traceSubjectString(), provider.actual(), assertionSuffix);
-        configuredAssert.fail(message);
-    }
-
     @Override
     public INonFunctionalPropertyAssertion nonFunctional() {
         configuredAssert = TesterraCommons.ioc().getInstance(NonFunctionalAssertion.class);

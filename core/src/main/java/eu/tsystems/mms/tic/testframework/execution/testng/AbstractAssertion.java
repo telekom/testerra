@@ -46,7 +46,7 @@ public abstract class AbstractAssertion implements IAssertion {
         }
     }
 
-    protected String format(Object actual, Object expected, String subject) {
+    public String format(Object actual, Object expected, String subject) {
         return String.format("Expected that %s [%s] %s", subject, actual, expected);
         //return formatted + ASSERT_LEFT + expected + ASSERT_MIDDLE + actual + ASSERT_RIGHT;
     }

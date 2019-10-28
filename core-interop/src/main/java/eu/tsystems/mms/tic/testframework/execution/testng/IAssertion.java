@@ -9,6 +9,7 @@ import java.util.Set;
 public interface IAssertion {
     void fail(final String message, final Throwable realCause);
     void fail(final String message);
+    String format(Object actual, Object expected, String subject);
     void assertTrue(final boolean condition, final String subject);
     void assertFalse(final boolean condition, final String subject);
     void assertSame(final Object actual, final Object expected, final String subject);

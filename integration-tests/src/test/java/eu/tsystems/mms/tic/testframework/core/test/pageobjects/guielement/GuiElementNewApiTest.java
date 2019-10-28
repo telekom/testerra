@@ -49,7 +49,7 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     public void test_NewApi_Page_title_equals() {
         FluentTestPage page = prepareTestPage();
         page.title().is("Input test");
-        page.title().length().is(20);
+        page.title().length().is(10);
     }
 
     @Test

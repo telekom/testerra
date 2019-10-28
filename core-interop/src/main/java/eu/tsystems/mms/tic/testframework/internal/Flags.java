@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 
 /**
- * @deprecated These properties should be used where needed, not initialized by default
+ * @deprecated These flags should be used where needed, not initialized by default
  */
 @Deprecated
 public final class Flags {

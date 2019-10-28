@@ -124,18 +124,19 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertContainsText(String... text) {
-        configuredAssert.assertTrue(guiElementWait.waitForTextContains(text), guiElementData + " text does not contain the requested text\n " +
-                "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
+        assertTextContains(text);
     }
 
     @Override
     public void assertTextContains(String... text) {
-
+        configuredAssert.assertTrue(guiElementWait.waitForTextContains(text), guiElementData + " text does not contain the requested text\n " +
+            "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
     }
 
     @Override
     public void assertTextContainsNot(String... text) {
-
+        configuredAssert.assertTrue(guiElementWait.waitForTextContainsNot(text), guiElementData + " text does contain the requested text\n " +
+            "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
     }
 
     @Override

@@ -24,7 +24,6 @@ import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.core.test.ClassicTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.FluentTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
@@ -33,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageProp
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
@@ -43,29 +43,29 @@ import java.math.BigDecimal;
 public class GuiElementNewApiTest extends AbstractTestSitesTest {
 
     private final static InstantAssertion instantAssertion = TesterraCommons.ioc().getInstance(InstantAssertion.class);
+    private FluentTestPage page;
 
+    @BeforeClass
     private FluentTestPage prepareTestPage() {
-        FluentTestPage page = pageFactory.create(FluentTestPage.class);
+        page = pageFactory.create(FluentTestPage.class);
         return page.call(TestPage.INPUT_TEST_PAGE.getUrl());
     }
 
     @Test
     public void test_NewApi_Page_title_equals() {
-        FluentTestPage page = prepareTestPage();
         page.title().is("Input test");
         page.title().length()
             .is(10)
             .lowerThan(100)
             .greaterThan(5)
             .between(1,11)
-            .greaterEqualThan(10)
+            .greaterEqualThan(-10)
             .lowerEqualThan(10);
     }
 
     @Test
     public void test_NewApi_Page_title_length_fails() {
         try {
-            FluentTestPage page = prepareTestPage();
             page.title().length().greaterThan(10);
         } catch (AssertionError e) {
             instantAssertion.assertEndsWith(e.getCause().getMessage(), "[10] is greater than [10]", e.getCause().getMessage());
@@ -74,7 +74,6 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
 
     @Test
     public void test_NewApi_Page_title_length_fails_collected() {
-        FluentTestPage page = prepareTestPage();
         collectAssertions(()->{
             page.title().length().greaterThan(10);
         });
@@ -82,7 +81,6 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
 
     @Test
     public void test_NewApi_Page_title_length_fails_nonFunctional() {
-        FluentTestPage page = prepareTestPage();
         nonFunctionalAssertions(()->{
             page.title().length().greaterThan(10);
         });
@@ -90,14 +88,12 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
 
     @Test
     public void test_NewApi_Page_url_endsWith() {
-        FluentTestPage page = prepareTestPage();
         page.url().endsWith("input.html");
     }
 
     @Test()
     public void test_NewApi_Page_url_endsWith_failed() {
         try {
-            FluentTestPage page = prepareTestPage();
             page.url().endsWith("nonexistingfile.html");
         } catch (AssertionError e) {
             instantAssertion.assertEndsWith(e.getCause().getMessage(), "ends with [nonexistingfile.html]", e.getCause().getMessage());
@@ -106,34 +102,49 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
 
     @Test
     public void test_NewApi_GuiElement_displayed_false() {
-        FluentTestPage page = prepareTestPage();
         page.notDisplayedElement().value(Attribute.STYLE).contains("display: none");
         page.notDisplayedElement().displayed().isFalse();
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_NewApi_GuiElement_displayed_false_failed() {
-        FluentTestPage page = prepareTestPage();
         page.notDisplayedElement().displayed().isTrue();
     }
 
     @Test
     public void test_NewApi_GuiElement_visible_false() {
-        FluentTestPage page = prepareTestPage();
         page.notVisibleElement().value(Attribute.STYLE).contains("hidden");
         page.notVisibleElement().visible(true).isFalse();
         page.notVisibleElement().visible(false).isFalse();
     }
 
-    @Test(expectedExceptions = TimeoutException.class)
+    @Test(expectedExceptions = AssertionError.class)
     public void test_NewApi_GuiElement_visible_false_failed() {
-        FluentTestPage page = prepareTestPage();
         page.notVisibleElement().visible(true).isTrue();
     }
 
     @Test
+    public void test_NewApi_NonExistent_GuiElement_present() {
+        page.nonExistentElement().present().isFalse();
+    }
+
+    @Test
+    public void test_NewApi_NonExistent_GuiElement_failed() {
+        page.nonExistentElement().present().isTrue();
+    }
+
+    @Test
+    public void test_NewApi_NonExistent_GuiElement_displayed() {
+        page.nonExistentElement().displayed().isFalse();
+    }
+
+    @Test
+    public void test_NewApi_NonExistent_GuiElement_displayed_failed() {
+        page.nonExistentElement().displayed().isTrue();
+    }
+
+    @Test
     public void test_NewApi_GuiElement_screenshot() {
-        FluentTestPage page = prepareTestPage();
         final IImagePropertyAssertion screenshot = page.notVisibleElement().screenshot();
         screenshot.file().exists().isTrue();
         screenshot.file().bytes().lowerThan(40);

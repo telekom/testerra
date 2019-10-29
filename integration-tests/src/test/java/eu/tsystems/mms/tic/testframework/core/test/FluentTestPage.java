@@ -41,6 +41,10 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
         return findOneById("notVisibleElement");
     }
 
+    public IGuiElement nonExistentElement() {
+        return findOneById("schnullifacks");
+    }
+
     @Override
     protected FluentTestPage self() {
         return this;

@@ -349,7 +349,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);
         final boolean displayed = decoratedFacade.isDisplayed();
-        afterDelegation(String.format("%s() = %s,", methodName, displayed));
+        afterDelegation(String.format("%s() = %s", methodName, displayed));
         return displayed;
     }
 
@@ -358,7 +358,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);
         final boolean visible = decoratedFacade.isVisible(complete);
-        afterDelegation(String.format("%s() = %s,", methodName, visible));
+        afterDelegation(String.format("%s() = %s", methodName, visible));
         return visible;
     }
 
@@ -367,7 +367,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);
         final boolean displayedFromWebElement = decoratedFacade.isDisplayedFromWebElement();
-        afterDelegation(String.format("%s() = %s,", methodName, displayedFromWebElement));
+        afterDelegation(String.format("%s() = %s", methodName, displayedFromWebElement));
         return displayedFromWebElement;
     }
 
@@ -376,7 +376,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);
         final boolean selectable = decoratedFacade.isSelectable();
-        afterDelegation(String.format("%s() = %s,", methodName, selectable));
+        afterDelegation(String.format("%s() = %s", methodName, selectable));
         return selectable;
     }
 
@@ -385,7 +385,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);
         final Point location = decoratedFacade.getLocation();
-        afterDelegation(String.format("%s() = %s,", methodName, location));
+        afterDelegation(String.format("%s() = %s", methodName, location));
         return location;
     }
 
@@ -394,7 +394,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);
         final Dimension size = decoratedFacade.getSize();
-        afterDelegation(String.format("%s() = %s,", methodName, size));
+        afterDelegation(String.format("%s() = %s", methodName, size));
         return size;
     }
 
@@ -403,7 +403,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName, "\"" + cssIdentifier + "\"");
         final String cssValue = decoratedFacade.getCssValue(cssIdentifier);
-        afterDelegation(String.format("%s(%s) = %s,", methodName, cssIdentifier, cssValue));
+        afterDelegation(String.format("%s(%s) = %s", methodName, cssIdentifier, cssValue));
         return cssValue;
     }
 
@@ -434,7 +434,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);
         final boolean present = decoratedFacade.isPresent();
-        afterDelegation(String.format("%s(%s) = %s,", methodName, present));
+        afterDelegation(String.format("%s = %s", methodName, present));
         return present;
     }
 
@@ -443,7 +443,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);
         final Select selectElement = decoratedFacade.getSelectElement();
-        afterDelegation(String.format("%s(%s) = %s,", methodName, selectElement));
+        afterDelegation(String.format("%s = %s", methodName, selectElement));
         return selectElement;
     }
 
@@ -461,7 +461,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName, "\"" + contains + "\"");
         final boolean b = decoratedFacade.anyFollowingTextNodeContains(contains);
-        afterDelegation(String.format("%s(%s) = %s,", methodName, contains, b));
+        afterDelegation(String.format("%s(%s) = %s", methodName, contains, b));
         return b;
     }
 
@@ -501,7 +501,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName, "\"" + textToInput + "\"");
         int lengthOfValueAfterSendKeys = decoratedFacade.getLengthOfValueAfterSendKeys(textToInput);
-        afterDelegation(String.format("%s(%s) = %s,", methodName, textToInput, lengthOfValueAfterSendKeys));
+        afterDelegation(String.format("%s(%s) = %s", methodName, textToInput, lengthOfValueAfterSendKeys));
         return lengthOfValueAfterSendKeys;
     }
 

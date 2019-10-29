@@ -37,10 +37,7 @@ import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 
-/**
- * Created by pele on 31.08.2015.
- */
-public class GuiElementNewApiTest extends AbstractTestSitesTest {
+public class NewApiTests extends AbstractTestSitesTest {
 
     private final static InstantAssertion instantAssertion = TesterraCommons.ioc().getInstance(InstantAssertion.class);
     private FluentTestPage page;
@@ -52,7 +49,7 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     }
 
     @Test
-    public void test_NewApi_Page_title() {
+    public void test_Page_title() {
         page.title()
             .is("Input test")
             .contains("Input")
@@ -68,7 +65,7 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     }
 
     @Test
-    public void test_NewApi_Page_title_length_fails() {
+    public void test_Page_title_length_fails() {
         try {
             page.title().length().greaterThan(10);
         } catch (AssertionError e) {
@@ -77,28 +74,28 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     }
 
     @Test
-    public void test_NewApi_Page_title_length_fails_collected() {
+    public void test_Page_title_length_fails_collected() {
         collectAssertions(()->{
             page.title().length().greaterThan(10);
         });
     }
 
     @Test
-    public void test_NewApi_Page_title_length_fails_nonFunctional() {
+    public void test_Page_title_length_fails_nonFunctional() {
         nonFunctionalAssertions(()->{
             page.title().length().greaterThan(10);
         });
     }
 
     @Test
-    public void test_NewApi_Page_url() {
+    public void test_Page_url() {
         page.url()
             .beginsWith("http")
             .endsWith("input.html");
     }
 
     @Test()
-    public void test_NewApi_Page_url_endsWith_failed() {
+    public void test_Page_url_endsWith_fails() {
         try {
             page.url().endsWith("nonexistingfile.html");
         } catch (AssertionError e) {
@@ -107,18 +104,18 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     }
 
     @Test
-    public void test_NewApi_GuiElement_displayed_false() {
+    public void test_GuiElement_displayed_false() {
         page.notDisplayedElement().value(Attribute.STYLE).contains("display: none");
         page.notDisplayedElement().displayed().isFalse();
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void test_NewApi_GuiElement_displayed_false_failed() {
+    public void test_GuiElement_displayed_false_fails() {
         page.notDisplayedElement().displayed().isTrue();
     }
 
     @Test
-    public void test_NewApi_GuiElement_visible_false() {
+    public void test_GuiElement_visible_false() {
         page.notVisibleElement().value(Attribute.STYLE).contains("hidden");
         page.notVisibleElement().value("style").contains("hidden");
         page.notVisibleElement().visible(true).isFalse();
@@ -126,41 +123,50 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void test_NewApi_GuiElement_visible_false_failed() {
+    public void test_GuiElement_visible_false_fails() {
         page.notVisibleElement().visible(true).isTrue();
     }
 
     @Test
-    public void test_NewApi_NonExistent_GuiElement_present() {
+    public void test_NonExistent_GuiElement_present() {
         page.nonExistentElement().present().isFalse();
     }
 
     @Test
-    public void test_NewApi_NonExistent_GuiElement_failed() {
+    public void test_NonExistent_GuiElement_fails() {
         try {
             page.nonExistentElement().present().isTrue();
         } catch (AssertionError e) {
-            instantAssertion.assertEndsWith(e.getMessage(), "is one of [true, 'on', '1', 'yes']", e.getMessage());
+            instantAssertion.assertEndsWith(e.getMessage(), "is one of [true, 'on', '1', 'yes']", e.getClass().toString());
         }
     }
 
     @Test
-    public void test_NewApi_NonExistent_GuiElement_displayed_failed() {
+    public void test_NonExistent_GuiElement_displayed_fails() {
         try {
             page.nonExistentElement().displayed().isFalse();
         } catch (AssertionError e) {
-            instantAssertion.assertEndsWith(e.getMessage(), "not found", e.getMessage());
+            instantAssertion.assertEndsWith(e.getMessage(), "not found", e.getClass().toString());
         }
     }
 
     @Test
-    public void test_NewApi_GuiElement_screenshot() {
-        final IImagePropertyAssertion screenshot = page.notVisibleElement().screenshot();
+    public void test_GuiElement_screenshot() {
+        IImagePropertyAssertion screenshot = page.notVisibleElement().screenshot();
         screenshot.file().exists().isTrue();
-        screenshot.file().bytes().lowerThan(40);
     }
 
-    public void test_NewApi_GuiElement() {
+    @Test
+    public void test_NonExistent_GuiElement_screenshot_fails() {
+        try {
+            IImagePropertyAssertion screenshot = page.nonExistentElement().screenshot();
+            screenshot.file().exists().isTrue();
+        } catch (AssertionError e) {
+            instantAssertion.assertEndsWith(e.getMessage(), "not found", e.getClass().toString());
+        }
+    }
+
+    public void test_GuiElement() {
         FluentTestPage page = pageFactory.create(FluentTestPage.class);
         page.call("https://www.google.de");
         // Expect GuiElement(By.id("11")).value(attribute: value) [Hausmaus] contains not [maus]

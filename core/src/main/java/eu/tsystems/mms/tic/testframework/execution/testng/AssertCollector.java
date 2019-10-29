@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import org.testng.Assert;
 
 import java.util.Collection;
@@ -47,7 +47,7 @@ public class AssertCollector {
     }
 
     static {
-        assertion = TesterraCommons.ioc().getInstance(CollectedAssertion.class);
+        assertion = Testerra.ioc().getInstance(CollectedAssertion.class);
     }
 
     /**

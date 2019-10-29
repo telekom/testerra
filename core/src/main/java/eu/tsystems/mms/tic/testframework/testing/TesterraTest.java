@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
@@ -32,8 +32,8 @@ import org.testng.annotations.Listeners;
 @Listeners(TesterraListener.class)
 public abstract class TesterraTest {
 
-    protected static final IPageFactory pageFactory = TesterraCommons.ioc().getInstance(IPageFactory.class);
-    private static final AssertionFactory assertionFactory = TesterraCommons.ioc().getInstance(AssertionFactory.class);
+    protected static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
+    private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
 
     static {
         Booter.bootOnce();

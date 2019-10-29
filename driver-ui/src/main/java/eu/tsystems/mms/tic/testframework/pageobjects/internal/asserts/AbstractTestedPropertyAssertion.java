@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
@@ -17,8 +17,8 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
     private static final int sleepTimeInMsShortInterval = 200;
     private static final int timeoutInSecondsShortInterval = 1;
 
-    private static final AssertionFactory assertionFactory = TesterraCommons.ioc().getInstance(AssertionFactory.class);
-    protected final IAssertion assertion = TesterraCommons.ioc().getInstance(InstantAssertion.class);
+    private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
+    protected final IAssertion assertion = Testerra.ioc().getInstance(InstantAssertion.class);
 
     public AbstractTestedPropertyAssertion(AssertionProvider<T> provider) {
         super(provider);

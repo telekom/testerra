@@ -20,13 +20,13 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -491,7 +491,7 @@ public class DesktopGuiElementCore implements
     }
 
     public IGuiElement getSubElement(Locate locate) {
-        final GuiElementFactory factory = TesterraCommons.ioc().getInstance(GuiElementFactory.class);
+        final GuiElementFactory factory = Testerra.ioc().getInstance(GuiElementFactory.class);
         return factory.create(locate, webDriver, guiElementData.guiElement);
     }
 

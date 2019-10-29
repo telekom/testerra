@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 public class NonFunctionalAssert extends AssertCollector {
 
     static {
-        assertion = TesterraCommons.ioc().getInstance(NonFunctionalAssertion.class);
+        assertion = Testerra.ioc().getInstance(NonFunctionalAssertion.class);
     }
 
     /**

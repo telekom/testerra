@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.test.ClassicTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.FluentTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
@@ -39,7 +39,7 @@ import java.math.BigDecimal;
 
 public class NewApiTests extends AbstractTestSitesTest {
 
-    private final static InstantAssertion instantAssertion = TesterraCommons.ioc().getInstance(InstantAssertion.class);
+    private final static InstantAssertion instantAssertion = Testerra.ioc().getInstance(InstantAssertion.class);
     private FluentTestPage page;
 
     @BeforeClass

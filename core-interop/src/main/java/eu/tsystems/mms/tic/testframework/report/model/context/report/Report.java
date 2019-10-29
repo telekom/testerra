@@ -19,8 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context.report;
 
+import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -32,14 +32,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 public class Report {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Report.class);
 
-    private static final String DEFAULT_REPORTDIR = "testerra-report";
     public static final File REPORT_DIRECTORY;
 
     public static final String FRAMES_FOLDER_NAME = "frames";
@@ -48,11 +46,49 @@ public class Report {
     public static final String VIDEO_FOLDER_NAME = "videos";
     public static final String XML_FOLDER_NAME = "xml";
 
+    public enum Properties implements IProperties {
+        BASE_DIR("tt.reportdir", "testerra-report"),
+        SCREENSHOTS_PREVIEW("tt.report.screenshots.preview", true)
+        ;
+        private final String property;
+        private Object defaultValue;
+
+        Properties(String property, Object defaultValue) {
+            this.property = property;
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public String toString() {
+            return property;
+        }
+        public IProperties useDefault(Object defaultValue) {
+            this.defaultValue = defaultValue;
+            return this;
+        }
+
+        public Double asDouble() {
+            return PropertyManager.getDoubleProperty(property, (Double) defaultValue);
+        }
+
+        public Long asLong() {
+            return PropertyManager.getLongProperty(property, (Long)defaultValue);
+        }
+
+        public String asString() {
+            return PropertyManager.getProperty(property, defaultValue.toString());
+        }
+
+        public Boolean asBool() {
+            return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue);
+        }
+    }
+
     static {
         /*
         Initialize report directory
          */
-        final String relativeReportDir = PropertyManager.getProperty(TesterraProperties.REPORTDIR, DEFAULT_REPORTDIR);
+        final String relativeReportDir = Report.Properties.BASE_DIR.toString();
         REPORT_DIRECTORY = new File(relativeReportDir);
 
         // cleanup

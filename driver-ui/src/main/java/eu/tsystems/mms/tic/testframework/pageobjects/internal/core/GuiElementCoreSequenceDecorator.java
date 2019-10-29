@@ -19,11 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import org.openqa.selenium.By;
@@ -175,7 +175,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
     private void checkForClickingJSAlternativeOrExit(ThrowablePackedResponse throwablePackedResponse, String action, Runnable runnable) {
         if (throwablePackedResponse.hasTimeoutException()) {
 
-            if (!UseJSAlternatives.class.isAssignableFrom(guiElementCore.getClass()) || !Flags.GUIELEMENT_USE_JS_ALTERNATIVES) {
+            if (!UseJSAlternatives.class.isAssignableFrom(guiElementCore.getClass()) || !Testerra.Properties.GUIELEMENT_USE_JS_ALTERNATIVES.asBool()) {
                 // we cannot use clickJS()
                 throwablePackedResponse.finalizeTimer();
                 return;

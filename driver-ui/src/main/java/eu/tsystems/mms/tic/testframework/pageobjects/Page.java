@@ -28,7 +28,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
@@ -77,8 +77,8 @@ public abstract class Page extends AbstractPage {
         pageLoadHandlers.add(h);
     }
 
-    private static final GuiElementFactory guiElementFactory = TesterraCommons.ioc().getInstance(GuiElementFactory.class);
-    private static final IPageFactory pageFactory = TesterraCommons.ioc().getInstance(IPageFactory.class);
+    private static final GuiElementFactory guiElementFactory = Testerra.ioc().getInstance(GuiElementFactory.class);
+    private static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
 
     protected final IGuiElement guiElement;
 

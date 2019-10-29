@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
@@ -44,7 +44,7 @@ import java.net.URL;
  */
 public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
 
-    protected static final PropertyAssertionFactory propertyAssertionFactory = TesterraCommons.ioc().getInstance(PropertyAssertionFactory.class);
+    protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.ioc().getInstance(PropertyAssertionFactory.class);
 
     /**
      * Constructor for existing sessions.

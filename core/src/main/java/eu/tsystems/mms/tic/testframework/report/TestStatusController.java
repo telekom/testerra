@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
@@ -70,7 +71,7 @@ public class TestStatusController {
         statusMap.put("TestsFailed", testsFailed);
 
         statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
-        statusMap.put("DryRun", Flags.DRY_RUN);
+        statusMap.put("DryRun", Testerra.Properties.DRY_RUN);
 
         statusMap.put("Status", EXECUTION_CONTEXT.getStatus());
         statusMap.put("StatusBool", EXECUTION_CONTEXT.getStatus() == Status.PASSED);

@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
@@ -138,7 +139,7 @@ public class TesterraListener implements
         JVMMonitor.label("Start");
 
         // loading flags, the latest
-        if (Flags.MONITOR_MEMORY) {
+        if (Testerra.Properties.MONITOR_MEMORY.asBool()) {
             TesterraEventService.addListener(new JVMMonitor());
         }
 

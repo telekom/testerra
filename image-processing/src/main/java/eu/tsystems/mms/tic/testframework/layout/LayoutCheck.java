@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.layout;
 
+import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
@@ -35,6 +36,44 @@ import java.util.List;
  * @author mibu
  */
 public final class LayoutCheck {
+
+    public enum Properties implements IProperties {
+        MODE("tt.layoutcheck.mode", "pixel"),
+        TAKEREFERENCE("tt.layoutcheck.takereference", false)
+        ;
+        private final String property;
+        private Object defaultValue;
+
+        Properties(String property, Object defaultValue) {
+            this.property = property;
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public String toString() {
+            return property;
+        }
+        public IProperties useDefault(Object defaultValue) {
+            this.defaultValue = defaultValue;
+            return this;
+        }
+
+        public Double asDouble() {
+            return PropertyManager.getDoubleProperty(property, (Double) defaultValue);
+        }
+
+        public Long asLong() {
+            return PropertyManager.getLongProperty(property, (Long)defaultValue);
+        }
+
+        public String asString() {
+            return PropertyManager.getProperty(property, defaultValue.toString());
+        }
+
+        public Boolean asBool() {
+            return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue);
+        }
+    }
 
     public static class MatchStep {
         public Mode mode;
@@ -93,8 +132,7 @@ public final class LayoutCheck {
      * @return Percents of pixels that are different
      */
     public static double run(WebDriver webDriver, String targetImageName) {
-        String modeString = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_MODE, "pixel").trim()
-                .toUpperCase();
+        String modeString = Properties.MODE.toString().trim().toUpperCase();
         Mode mode = Mode.valueOf(modeString);
 
         return run(webDriver, targetImageName, mode);
@@ -129,8 +167,7 @@ public final class LayoutCheck {
      */
     @Deprecated
     public static double run(final TakesScreenshot driver, final String targetImageName) {
-        String modeString = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_MODE, "pixel").trim()
-                .toUpperCase();
+        String modeString = Properties.MODE.toString().trim().toUpperCase();
         Mode mode = Mode.valueOf(modeString);
 
         return pRun(driver, targetImageName, mode).distance;
@@ -235,7 +272,7 @@ public final class LayoutCheck {
             runCountModifier = newCount.toString();
         }
 
-        step.takeReferenceOnly = PropertyManager.getBooleanProperty(TesterraProperties.LAYOUTCHECK_TAKEREFERENCE, false);
+        step.takeReferenceOnly = Properties.TAKEREFERENCE.asBool();
         if (step.takeReferenceOnly) {
             // take reference screenshot
             try {

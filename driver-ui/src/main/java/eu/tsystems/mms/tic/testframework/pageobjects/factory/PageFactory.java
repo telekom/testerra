@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
@@ -124,7 +124,7 @@ public final class PageFactory {
                     constructor = pageClass.getConstructor(WebDriver.class, pageVariables.getClass());
                     t = constructor.newInstance(driver, pageVariables);
                 } else {
-                    IPageFactory pageFactory = TesterraCommons.ioc().getInstance(IPageFactory.class);
+                    IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
                     t = pageFactory.create(pageClass, driver);
                 }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

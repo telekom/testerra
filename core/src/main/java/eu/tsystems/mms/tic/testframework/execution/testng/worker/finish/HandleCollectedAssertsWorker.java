@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class HandleCollectedAssertsWorker extends MethodWorker {
 
-    final AssertionsCollector assertionsCollector = TesterraCommons.ioc().getInstance(AssertionsCollector.class);
+    final AssertionsCollector assertionsCollector = Testerra.ioc().getInstance(AssertionsCollector.class);
 
     @Override
     public void run() {

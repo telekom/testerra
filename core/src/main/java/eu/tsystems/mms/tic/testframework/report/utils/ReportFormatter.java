@@ -26,9 +26,10 @@
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
-import eu.tsystems.mms.tic.testframework.internal.TesterraBuildInformation;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.internal.TesterraBuildInformation;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
@@ -37,6 +38,7 @@ import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.velocity.PublicFieldUberspect;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -44,7 +46,11 @@ import org.apache.velocity.app.Velocity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -273,7 +279,7 @@ public class ReportFormatter {
         if (testClass != null) {
             context.put("testClass", testClass);
         }
-        context.put("reportScreenshotsPreview", Flags.REPORT_SCREENSHOTS_PREVIEW);
+        context.put("reportScreenshotsPreview", Report.Properties.SCREENSHOTS_PREVIEW.asBool());
 
         writeHtml(logFile, htmlLogTemplate, context);
     }
@@ -362,9 +368,9 @@ public class ReportFormatter {
         VelocityContext context = new VelocityContext();
         context.put("executionContext", ExecutionContextController.EXECUTION_CONTEXT);
         context.put("TesterraBuildInformation", TesterraBuildInformation.getInstance());
-        context.put("reportScreenshotsPreview", Flags.REPORT_SCREENSHOTS_PREVIEW);
+        context.put("reportScreenshotsPreview", Report.Properties.SCREENSHOTS_PREVIEW.asBool());
         context.put("reportName", ReportUtils.getReportName());
-        context.put("dryrun", Flags.DRY_RUN);
+        context.put("dryrun", Testerra.Properties.DRY_RUN.asBool());
 
         context.put("filter", FilterUtils.getInstance());
         context.put("fcActive", Flags.FAILURE_CORRIDOR_ACTIVE);

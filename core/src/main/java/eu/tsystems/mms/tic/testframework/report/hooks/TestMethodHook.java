@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.hooks;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.slf4j.Logger;
@@ -48,7 +49,7 @@ public final class TestMethodHook extends Hook {
             // no sleep
             return;
         }
-        else if (Flags.DRY_RUN) {
+        else if (Testerra.Properties.DRY_RUN.asBool()) {
             if (dryRun(testNGMethod)) {
                 return;
             }

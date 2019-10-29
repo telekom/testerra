@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 
@@ -31,7 +31,7 @@ public final class AssertUtils {
     private static final IAssertion assertion;
 
     static {
-        assertion = TesterraCommons.ioc().getInstance(InstantAssertion.class);
+        assertion = Testerra.ioc().getInstance(InstantAssertion.class);
     }
 
     public static void assertContains(String actual, String expected) {

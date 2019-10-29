@@ -32,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra.Properties;
 /**
  * Class holding keys of all properties.
  *
- * @todo Move this Properties to {@link Properties}
+ * @todo Move these Properties to {@link Properties}
  */
 public final class TesterraProperties {
     /**
@@ -81,7 +81,6 @@ public final class TesterraProperties {
     /**
      * Key of reportDir Property.
      */
-    public static final String REPORTDIR = "tt.reportdir";
     public static final String REPORTNAME = "tt.reportname";
 
     public static final String LOG_LEVEL ="tt.loglevel";
@@ -136,8 +135,6 @@ public final class TesterraProperties {
      */
     public static final String ON_STATE_TESTFAILED_SKIP_SHUTDOWN = "tt.on.state.testfailed.skip.shutdown";
 
-    public static final String REPORT_SCREENSHOTS_PREVIEW = "tt.report.screenshots.preview";
-
     /**
      * Module source root
      */
@@ -155,7 +152,6 @@ public final class TesterraProperties {
      * Guielement easy mode.
      */
     public static final String GUIELEMENT_TYPE = "tt.guielement.type";
-    public static final String GUIELEMENT_USE_JS_ALTERNATIVES = "tt.guielement.use.js.alternatives";
 
     /*
      * Package the project is located in.
@@ -181,10 +177,6 @@ public final class TesterraProperties {
     public static final String SCREENSHOT_ON_PAGELOAD = "tt.screenshot.on.pageload";
 
     public static final String DB_TIMEOUT = "tt.db.timeout";
-
-    public static final String MONITOR_MEMORY = "tt.monitor.memory";
-
-    public static final String DRY_RUN = "tt.dryrun";
 
     public static final String GUIELEMENT_CHECK_RULE = "tt.guielement.checkrule";
 
@@ -236,11 +228,8 @@ public final class TesterraProperties {
     /*
      * The mode for the screenreferencer. Values are pixel (default) or annotated.
      */
-    public static final String LAYOUTCHECK_MODE = "tt.layoutcheck.mode";
     // if true, will use non-functional asserts
     public static final String LAYOUTCHECK_ASSERT_INFO_MODE = "tt.layoutcheck.assert.info.mode";
-
-    public static final String LAYOUTCHECK_TAKEREFERENCE = "tt.layoutcheck.takereference";
     public static final String LAYOUTCHECK_REFERENCE_NAMETEMPLATE = "tt.layoutcheck.reference.nametemplate";
     public static final String LAYOUTCHECK_ANNOTATED_NAMETEMPLATE = "tt.layoutcheck.annotated.nametemplate";
     public static final String LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE = "tt.layoutcheck.annotationdata.nametemplate";

@@ -19,31 +19,18 @@
  */
 package eu.tsystems.mms.tic.testframework.common;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import com.google.inject.util.Modules;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.xml.DOMConfigurator;
-import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Properties;
-import java.util.Set;
-import java.util.TreeMap;
 
 /**
  * Created by pele on 05.02.2015.
@@ -60,7 +47,6 @@ public class TesterraCommons {
     public static final String DEFAULT_PACKAGE_NAME = "eu.tsystems.mms.tic";
 
     private static final String SYSTEM_PROPERTIES_FILE = "system.properties";
-    private static Injector ioc;
 
     private TesterraCommons() {}
 
@@ -186,35 +172,7 @@ public class TesterraCommons {
         }
     }
 
-    /**
-     * We initialize the IoC modules in a reverse sorted class name order,
-     * to be able to override module configures.
-     * This is not best practice, bad currently the only way to override module bindings.
-     * Because {@link Modules#override(Module...)} doesn't work in the way we need it.
-     */
-    public static Injector ioc() {
-        if (ioc==null) {
-            final Reflections reflections = new Reflections(p);
-            final Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
-            final Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
-            final TreeMap<String, Module> sortedModules = new TreeMap<>();
-            try {
-                while (iterator.hasNext()) {
-                    final Class<? extends AbstractModule> moduleClass = iterator.next();
-                    final Constructor<?> ctor = moduleClass.getConstructor();
-                    sortedModules.put(moduleClass.getSimpleName(), (Module) ctor.newInstance());
-                }
-                final List<Module> reverseSortedModules = new ArrayList<>(sortedModules.values());
-                Collections.reverse(reverseSortedModules);
-                System.out.println(String.format("%s - Register IoC modules: %s", TesterraCommons.class.getCanonicalName(), reverseSortedModules));
-                ioc = Guice.createInjector(reverseSortedModules);
-            } catch (Exception e) {
-                e.printStackTrace();
-                //LOGGER.error("Unable to initialize IoC modules", e);
-            }
-        }
-        return ioc;
-    }
+
 
     public static void init() {
 

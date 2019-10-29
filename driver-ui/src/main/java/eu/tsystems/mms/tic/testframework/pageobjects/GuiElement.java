@@ -28,7 +28,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
@@ -79,7 +78,7 @@ import java.util.List;
  */
 public class GuiElement implements IGuiElement, Loggable {
 
-    protected static final PropertyAssertionFactory propertyAssertionFactory = TesterraCommons.ioc().getInstance(PropertyAssertionFactory.class);
+    protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.ioc().getInstance(PropertyAssertionFactory.class);
 
     private GuiElementAssert defaultAssert;
     private GuiElementAssert instantAssert;
@@ -191,10 +190,10 @@ public class GuiElement implements IGuiElement, Loggable {
         String currentBrowser = webDriverRequest.browser;
         guiElementData.browser = currentBrowser;
 
-        GuiElementCoreFactory coreFactory = TesterraCommons.ioc().getInstance(GuiElementCoreFactory.class);
+        GuiElementCoreFactory coreFactory = Testerra.ioc().getInstance(GuiElementCoreFactory.class);
         guiElementCore = coreFactory.create(currentBrowser, by, driver, guiElementData);
 
-        GuiElementWaitFactory waitFactory = TesterraCommons.ioc().getInstance(GuiElementWaitFactory.class);
+        GuiElementWaitFactory waitFactory = Testerra.ioc().getInstance(GuiElementWaitFactory.class);
         guiElementWait = waitFactory.create(guiElementCore, guiElementData);
 
         guiElementFacade = createFacade(guiElementCore);
@@ -646,8 +645,8 @@ public class GuiElement implements IGuiElement, Loggable {
      */
     public GuiElementAssert nonFunctionalAsserts() {
         if (nonFunctionalAssert==null) {
-            GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
-            NonFunctionalAssertion assertion = TesterraCommons.ioc().getInstance(NonFunctionalAssertion.class);
+            GuiElementAssertFactory assertFactory = Testerra.ioc().getInstance(GuiElementAssertFactory.class);
+            NonFunctionalAssertion assertion = Testerra.ioc().getInstance(NonFunctionalAssertion.class);
             nonFunctionalAssert = assertFactory.create(assertion, guiElementCore, guiElementWait, guiElementData);
         }
         return nonFunctionalAssert;
@@ -669,8 +668,8 @@ public class GuiElement implements IGuiElement, Loggable {
 
     public GuiElementAssert instantAsserts() {
         if (instantAssert == null) {
-            GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
-            InstantAssertion assertion = TesterraCommons.ioc().getInstance(InstantAssertion.class);
+            GuiElementAssertFactory assertFactory = Testerra.ioc().getInstance(GuiElementAssertFactory.class);
+            InstantAssertion assertion = Testerra.ioc().getInstance(InstantAssertion.class);
             instantAssert = assertFactory.create(assertion, guiElementCore, guiElementWait, guiElementData);
         }
         return instantAssert;
@@ -684,8 +683,8 @@ public class GuiElement implements IGuiElement, Loggable {
      */
     public GuiElementAssert assertCollector() {
         if (collectableAssert==null) {
-            GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
-            CollectedAssertion assertion = TesterraCommons.ioc().getInstance(CollectedAssertion.class);
+            GuiElementAssertFactory assertFactory = Testerra.ioc().getInstance(GuiElementAssertFactory.class);
+            CollectedAssertion assertion = Testerra.ioc().getInstance(CollectedAssertion.class);
             collectableAssert = assertFactory.create(assertion, guiElementCore, guiElementWait, guiElementData);
         }
         return collectableAssert;

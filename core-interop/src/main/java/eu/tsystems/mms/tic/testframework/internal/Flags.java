@@ -42,17 +42,13 @@ public final class Flags {
         return PropertyManager.getBooleanProperty(property, defaultValue);
     }
 
-    public static boolean REPORT_SCREENSHOTS_PREVIEW = p(TesterraProperties.REPORT_SCREENSHOTS_PREVIEW, true);
     public static boolean GENERATE_PERF_STATISTICS = p(TesterraProperties.PERF_GENERATE_STATISTICS, false);
     public static boolean PERF_STOP_WATCH_ACTIVE = false;
     public static boolean REUSE_DATAPROVIDER_DRIVER_BY_THREAD = p(TesterraProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, false);
-    public static boolean MONITOR_MEMORY = p(TesterraProperties.MONITOR_MEMORY, true);
-    public static boolean DRY_RUN = p(TesterraProperties.DRY_RUN, false);
     public static boolean LIST_TESTS = p(TesterraProperties.LIST_TESTS, false);
     public static boolean WEB_TAKE_ACTION_SCREENSHOTS = p(TesterraProperties.WEB_TAKE_ACTION_SCREENSHOTS, false);
     public static boolean FAILURE_CORRIDOR_ACTIVE = p(TesterraProperties.FAILURE_CORRIDOR_ACTIVE, false);
     public static boolean EXECUTION_OMIT_IN_DEVELOPMENT = p(TesterraProperties.EXECUTION_OMIT_IN_DEVELOPMENT, false);
-    public static boolean GUIELEMENT_USE_JS_ALTERNATIVES = p(TesterraProperties.GUIELEMENT_USE_JS_ALTERNATIVES, true);
 
     public static boolean SCREENSHOTTER_ACTIVE = p(TesterraProperties.SCREENSHOTTER_ACTIVE, true);
     public static boolean SCREENCASTER_ACTIVE = p(TesterraProperties.SCREENCASTER_ACTIVE, true);

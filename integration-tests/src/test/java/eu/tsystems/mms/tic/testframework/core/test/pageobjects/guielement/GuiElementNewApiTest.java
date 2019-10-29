@@ -120,6 +120,7 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     @Test
     public void test_NewApi_GuiElement_visible_false() {
         page.notVisibleElement().value(Attribute.STYLE).contains("hidden");
+        page.notVisibleElement().value("style").contains("hidden");
         page.notVisibleElement().visible(true).isFalse();
         page.notVisibleElement().visible(false).isFalse();
     }

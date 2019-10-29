@@ -39,6 +39,7 @@ public interface IGuiElement extends
     IStringPropertyAssertion<String> text();
     IStringPropertyAssertion<String> value();
     IStringPropertyAssertion<String> value(Attribute attribute);
+    IStringPropertyAssertion<String> value(String attribute);
     IBinaryPropertyAssertion<Boolean> present();
     IBinaryPropertyAssertion<Boolean> visible(boolean complete);
     IBinaryPropertyAssertion<Boolean> displayed();

@@ -797,11 +797,16 @@ public class GuiElement implements IGuiElement, Loggable {
 
     @Override
     public IStringPropertyAssertion<String> value(final Attribute attribute) {
+        return value(attribute.toString());
+    }
+
+    @Override
+    public IStringPropertyAssertion<String> value(String attribute) {
         final IGuiElement self = this;
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String actual() {
-                return getAttribute(attribute.toString());
+                return getAttribute(attribute);
             }
 
             @Override

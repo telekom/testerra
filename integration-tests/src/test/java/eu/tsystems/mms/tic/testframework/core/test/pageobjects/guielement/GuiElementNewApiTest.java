@@ -52,8 +52,12 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     }
 
     @Test
-    public void test_NewApi_Page_title_equals() {
-        page.title().is("Input test");
+    public void test_NewApi_Page_title() {
+        page.title()
+            .is("Input test")
+            .contains("Input")
+            .containsNot("SuperTestPage");
+
         page.title().length()
             .is(10)
             .lowerThan(100)
@@ -87,8 +91,10 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     }
 
     @Test
-    public void test_NewApi_Page_url_endsWith() {
-        page.url().endsWith("input.html");
+    public void test_NewApi_Page_url() {
+        page.url()
+            .beginsWith("http")
+            .endsWith("input.html");
     }
 
     @Test()

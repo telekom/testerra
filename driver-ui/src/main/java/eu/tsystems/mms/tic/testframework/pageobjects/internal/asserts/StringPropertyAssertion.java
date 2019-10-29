@@ -9,6 +9,12 @@ public class StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T> i
     }
 
     @Override
+    public IStringPropertyAssertion<T> is(String expected) {
+        super.is(expected);
+        return this;
+    }
+
+    @Override
     public StringPropertyAssertion<T> contains(final String expected) {
         testTimer(t -> assertion.assertContains((String)provider.actual(), expected, provider.traceSubjectString()));
         return this;

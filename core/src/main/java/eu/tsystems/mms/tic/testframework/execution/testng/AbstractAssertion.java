@@ -14,7 +14,7 @@ public abstract class AbstractAssertion implements IAssertion {
     }
 
     public String format(Object actual, Object expected, String subject) {
-        return String.format("Expected that %s [%s] %s", subject, actual, expected);
+        return String.format("Expected that {%s} [%s] %s", subject, actual, expected);
     }
 
     @Override

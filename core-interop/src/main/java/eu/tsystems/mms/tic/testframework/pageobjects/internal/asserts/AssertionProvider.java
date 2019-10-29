@@ -43,6 +43,9 @@ public abstract class AssertionProvider<T> implements IActualProperty<T> {
         }
     }
 
+    /**
+     * Override this method if you want to finalize something on failed assertion
+     */
     public void failed() {
     }
 }

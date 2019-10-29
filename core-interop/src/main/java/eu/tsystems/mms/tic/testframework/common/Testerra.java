@@ -40,21 +40,16 @@ public class Testerra {
             return this;
         }
 
+        @Override
         public Double asDouble() {
             return PropertyManager.getDoubleProperty(property, (Double) defaultValue);
         }
-
-        public Long asLong() {
-            return PropertyManager.getLongProperty(property, (Long)defaultValue);
-        }
-
-        public String asString() {
-            return PropertyManager.getProperty(property, defaultValue.toString());
-        }
-
-        public Boolean asBool() {
-            return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue);
-        }
+        @Override
+        public Long asLong() { return PropertyManager.getLongProperty(property, (Long)defaultValue); }
+        @Override
+        public Integer asInt() { return PropertyManager.getIntProperty(property, (Integer) defaultValue); }
+        @Override
+        public Boolean asBool() { return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue); }
     }
 
     /**

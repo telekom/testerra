@@ -38,6 +38,9 @@ public interface IGuiElement extends
     enum Properties implements IProperties {
         DEFAULT_ASSERT_IS_COLLECTOR("tt.guielement.default.assertcollector", false),
         USE_JS_ALTERNATIVES("tt.guielement.use.js.alternatives", true),
+        DELAY_AFTER_FIND_MILLIS("tt.delay.after.guielement.find.millis", 0),
+        DELAY_BEFORE_ACTION_MILLIS("tt.delay.before.guielement.action.millis",0),
+        DELAY_AFTER_ACTION_MILLIS("tt.delay.after.guielement.action.millis", 0),
         ;
         private final String property;
         private Object defaultValue;
@@ -55,22 +58,16 @@ public interface IGuiElement extends
             this.defaultValue = defaultValue;
             return this;
         }
-
+        @Override
         public Double asDouble() {
             return PropertyManager.getDoubleProperty(property, (Double) defaultValue);
         }
-
-        public Long asLong() {
-            return PropertyManager.getLongProperty(property, (Long)defaultValue);
-        }
-
-        public String asString() {
-            return PropertyManager.getProperty(property, defaultValue.toString());
-        }
-
-        public Boolean asBool() {
-            return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue);
-        }
+        @Override
+        public Long asLong() { return PropertyManager.getLongProperty(property, (Long)defaultValue); }
+        @Override
+        public Integer asInt() { return PropertyManager.getIntProperty(property, (Integer) defaultValue); }
+        @Override
+        public Boolean asBool() { return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue); }
     }
     /**
      * New Features

@@ -4,6 +4,6 @@ public interface IProperties {
     IProperties useDefault(Object defaultValue);
     Double asDouble();
     Long asLong();
-    String asString();
+    Integer asInt();
     Boolean asBool();
 }

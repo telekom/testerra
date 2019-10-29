@@ -57,19 +57,17 @@ public final class LayoutCheck {
             this.defaultValue = defaultValue;
             return this;
         }
-
+        @Override
         public Double asDouble() {
             return PropertyManager.getDoubleProperty(property, (Double) defaultValue);
         }
-
+        @Override
         public Long asLong() {
             return PropertyManager.getLongProperty(property, (Long)defaultValue);
         }
-
-        public String asString() {
-            return PropertyManager.getProperty(property, defaultValue.toString());
-        }
-
+        @Override
+        public Integer asInt() { return PropertyManager.getIntProperty(property, (Integer)defaultValue); }
+        @Override
         public Boolean asBool() {
             return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue);
         }

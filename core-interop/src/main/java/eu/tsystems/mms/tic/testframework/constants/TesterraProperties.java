@@ -52,17 +52,6 @@ public final class TesterraProperties {
     public static final String BROWSER_SETTING = "tt.browser.setting";
 
     /**
-     * Property to set the host of the remote selenium server.
-     */
-    public static final String SELENIUM_SERVER_URL = "tt.selenium.server.url";
-    public static final String SELENIUM_SERVER_HOST = "tt.selenium.server.host";
-
-    /**
-     * Property to set the port of the remote selenium server.
-     */
-    public static final String SELENIUM_SERVER_PORT = "tt.selenium.server.port";
-
-    /**
      * Property Key for webdriver mode remote|local
      */
     public static final String WEBDRIVERMODE = "tt.webdriver.mode";
@@ -193,10 +182,6 @@ public final class TesterraProperties {
     public static final String REPORT_DATAPROVIDER_INFOS = "tt.report.dataprovider.infos";
 
     public static final String LIST_TESTS = "tt.list.tests";
-
-    public static final String DELAY_AFTER_GUIELEMENT_FIND_MILLIS = "tt.delay.after.guielement.find.millis";
-    public static final String DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS = "tt.delay.before.guielement.action.millis";
-    public static final String DELAY_AFTER_GUIELEMENT_ACTION_MILLIS = "tt.delay.after.guielement.action.millis";
 
     public static final String WEB_TAKE_ACTION_SCREENSHOTS = "tt.web.take.action.screenshots";
 

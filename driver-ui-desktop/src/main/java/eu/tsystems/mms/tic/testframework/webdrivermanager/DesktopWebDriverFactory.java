@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.Constants;
@@ -74,6 +75,43 @@ import java.util.concurrent.TimeUnit;
  */
 public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> {
 
+    public enum Properties implements IProperties {
+        SELENIUM_SERVER_HOST("tt.selenium.server.host", "localhost"),
+        SELENIUM_SERVER_PORT("tt.selenium.server.port", 4444),
+        SELENIUM_SERVER_URL("tt.selenium.server.url", String.format("http://%s:%s/wd/hub", SELENIUM_SERVER_HOST, SELENIUM_SERVER_PORT)),
+        ;
+        private final String property;
+        private Object defaultValue;
+
+        Properties(String property, Object defaultValue) {
+            this.property = property;
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public String toString() {
+            return property;
+        }
+        public IProperties useDefault(Object defaultValue) {
+            this.defaultValue = defaultValue;
+            return this;
+        }
+        @Override
+        public Double asDouble() {
+            return PropertyManager.getDoubleProperty(property, (Double) defaultValue);
+        }
+        @Override
+        public Long asLong() {
+            return PropertyManager.getLongProperty(property, (Long)defaultValue);
+        }
+        @Override
+        public Integer asInt() { return PropertyManager.getIntProperty(property, (Integer)defaultValue); }
+        @Override
+        public Boolean asBool() {
+            return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue);
+        }
+    }
+
     private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverFactory.class);
 
     @Override
@@ -100,9 +138,9 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         /*
         build endpoint stuff
          */
-        String host = StringUtils.getFirstValidString(r.seleniumServerHost, PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_HOST), "localhost");
-        String port = StringUtils.getFirstValidString(r.seleniumServerPort, PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_PORT), "4444");
-        String url = StringUtils.getFirstValidString(r.seleniumServerURL, PropertyManager.getProperty(TesterraProperties.SELENIUM_SERVER_URL), "http://" + host + ":" + port + "/wd/hub");
+        String host = StringUtils.getFirstValidString(r.seleniumServerHost, Properties.SELENIUM_SERVER_HOST.toString());
+        String port = StringUtils.getFirstValidString(r.seleniumServerPort, Properties.SELENIUM_SERVER_PORT.toString());
+        String url = StringUtils.getFirstValidString(r.seleniumServerURL, Properties.SELENIUM_SERVER_URL.toString());
 
         // set backwards
         try {

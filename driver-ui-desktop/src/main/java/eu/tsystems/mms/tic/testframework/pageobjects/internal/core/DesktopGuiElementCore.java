@@ -19,11 +19,9 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
@@ -83,8 +81,6 @@ public class DesktopGuiElementCore implements
     private By by;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);
-
-    private static final int delayAfterFindInMilliSeconds = PropertyManager.getIntProperty(TesterraProperties.DELAY_AFTER_GUIELEMENT_FIND_MILLIS);
 
     private final WebDriver webDriver;
 
@@ -149,8 +145,8 @@ public class DesktopGuiElementCore implements
         long start = System.currentTimeMillis();
         List<WebElement> elements = findWebElements();
         logTimings(start, Timings.getFindCounter());
-        if (delayAfterFindInMilliSeconds > 0) {
-            TimerUtils.sleep(delayAfterFindInMilliSeconds);
+        if (IGuiElement.Properties.DELAY_AFTER_FIND_MILLIS.asInt() > 0) {
+            TimerUtils.sleep(IGuiElement.Properties.DELAY_AFTER_FIND_MILLIS.asInt());
         }
         return elements.size();
     }

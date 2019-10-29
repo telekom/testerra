@@ -26,9 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
@@ -212,8 +210,8 @@ public class GuiElement implements IGuiElement, Loggable {
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
         //guiElementFacade = new GuiElementFace(guiElementFacade, guiElementData);
 
-        int delayAfterAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_AFTER_GUIELEMENT_ACTION_MILLIS);
-        int delayBeforeAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS);
+        int delayAfterAction = Properties.DELAY_AFTER_ACTION_MILLIS.asInt();
+        int delayBeforeAction = Properties.DELAY_BEFORE_ACTION_MILLIS.asInt();
         if (delayAfterAction > 0 || delayBeforeAction > 0) {
             guiElementFacade = new DelayActionsGuiElementFacade(guiElementFacade, delayBeforeAction, delayAfterAction, guiElementData);
         }

@@ -19,6 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.hooks;
 
+/**
+ * @deprecated Should be replaced by Configuration {@link com.google.inject.Module}
+ */
+@Deprecated
 public interface ModuleHook {
 
     void init();

@@ -10,7 +10,7 @@ public class QuantifiedPropertyAssertion<T> extends BinaryPropertyAssertion<T> i
 
     @Override
     public IQuantifiedPropertyAssertion<T> is(final Object expected) {
-        testTimer(t -> assertion.assertEquals(provider.actual().toString(), expected, provider.traceSubjectString()));
+        testTimer(t -> assertion.assertEquals(provider.actual(), expected, provider.traceSubjectString()));
         return this;
     }
 
@@ -48,12 +48,12 @@ public class QuantifiedPropertyAssertion<T> extends BinaryPropertyAssertion<T> i
 
     @Override
     public IQuantifiedPropertyAssertion<T> greaterEqualThan(final long expected) {
-        return greaterThan(new BigDecimal(expected));
+        return greaterEqualThan(new BigDecimal(expected));
     }
 
     @Override
     public IQuantifiedPropertyAssertion<T> greaterEqualThan(final double expected) {
-        return greaterThan(new BigDecimal(expected));
+        return greaterEqualThan(new BigDecimal(expected));
     }
 
     @Override
@@ -64,17 +64,17 @@ public class QuantifiedPropertyAssertion<T> extends BinaryPropertyAssertion<T> i
 
     @Override
     public IQuantifiedPropertyAssertion<T> lowerEqualThan(final long expected) {
-        return lowerThan(new BigDecimal(expected));
+        return lowerEqualThan(new BigDecimal(expected));
     }
 
     @Override
     public IQuantifiedPropertyAssertion<T> lowerEqualThan(final double expected) {
-        return lowerThan(new BigDecimal(expected));
+        return lowerEqualThan(new BigDecimal(expected));
     }
 
     @Override
     public IQuantifiedPropertyAssertion<T> lowerEqualThan(final BigDecimal expected) {
-        testTimer(t -> assertion.assertGreaterEqualThan(new BigDecimal(provider.actual().toString()), expected, provider.traceSubjectString()));
+        testTimer(t -> assertion.assertLowerEqualThan(new BigDecimal(provider.actual().toString()), expected, provider.traceSubjectString()));
         return this;
     }
 

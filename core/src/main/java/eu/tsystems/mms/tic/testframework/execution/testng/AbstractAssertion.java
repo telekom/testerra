@@ -92,7 +92,7 @@ public abstract class AbstractAssertion implements IAssertion {
 
     @Override
     public boolean assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, String subject) {
-        if (actual.compareTo(lower) > 0 || actual.compareTo(higher) < 0) {
+        if (actual.compareTo(lower) == -1 || actual.compareTo(higher) != -1) {
             fail(format(actual, String.format("is between [%s] and [%s]", lower, higher), subject));
             return false;
         } else {

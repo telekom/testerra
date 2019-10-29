@@ -42,7 +42,7 @@ import java.math.BigDecimal;
  */
 public class GuiElementNewApiTest extends AbstractTestSitesTest {
 
-    final static InstantAssertion instantAssertion = TesterraCommons.ioc().getInstance(InstantAssertion.class);
+    private final static InstantAssertion instantAssertion = TesterraCommons.ioc().getInstance(InstantAssertion.class);
 
     private FluentTestPage prepareTestPage() {
         FluentTestPage page = pageFactory.create(FluentTestPage.class);
@@ -53,7 +53,13 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     public void test_NewApi_Page_title_equals() {
         FluentTestPage page = prepareTestPage();
         page.title().is("Input test");
-        page.title().length().is(10);
+        page.title().length()
+            .is(10)
+            .lowerThan(100)
+            .greaterThan(5)
+            .between(1,11)
+            .greaterEqualThan(10)
+            .lowerEqualThan(10);
     }
 
     @Test

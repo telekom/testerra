@@ -35,11 +35,11 @@ public final class AssertUtils {
     }
 
     public static void assertContains(String actual, String expected) {
-        assertContains(actual, expected, "expected");
+        assertContains(actual, expected, null);
     }
 
     public static void assertContainsNot(String actual, String expected) {
-        assertContainsNot(actual, expected, "expected");
+        assertContainsNot(actual, expected, null);
     }
 
     public static void assertContains(String actual, String expected, String description) {
@@ -51,19 +51,19 @@ public final class AssertUtils {
     }
 
     public static void assertGreaterThan(BigDecimal actual, BigDecimal expected) {
-        assertGreaterThan(actual, expected, "expected");
+        assertGreaterThan(actual, expected, null);
     }
 
     public static void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected) {
-        assertGreaterEqualThan(actual, expected, "expected");
+        assertGreaterEqualThan(actual, expected, null);
     }
 
     public static void assertLowerThan(BigDecimal actual, BigDecimal expected) {
-        assertLowerThan(actual, expected, "expected");
+        assertLowerThan(actual, expected, null);
     }
 
     public static void assertLowerEqualThan(BigDecimal actual, BigDecimal expected) {
-        assertLowerEqualThan(actual, expected, "expected");
+        assertLowerEqualThan(actual, expected, null);
     }
 
     public static void assertGreaterThan(BigDecimal actual, BigDecimal expected, String description) {

@@ -39,13 +39,13 @@ public abstract class TesterraTest {
         Booter.bootOnce();
     }
 
-    protected void collect(final Runnable runnable) {
+    protected void collectAssertions(final Runnable runnable) {
         Class<? extends IAssertion> prevClass = assertionFactory.setDefault(CollectedAssertion.class);
         runnable.run();
         assertionFactory.setDefault(prevClass);
     }
 
-    protected void nonFunctional(final Runnable runnable) {
+    protected void nonFunctionalAssertions(final Runnable runnable) {
         Class<? extends IAssertion> prevClass = assertionFactory.setDefault(NonFunctionalAssertion.class);
         runnable.run();
         assertionFactory.setDefault(prevClass);

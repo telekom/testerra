@@ -60,21 +60,26 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     public void test_NewApi_Page_title_length_fails() {
         try {
             FluentTestPage page = prepareTestPage();
-
-            collect(() -> {
-                page.title().length().greaterThan(10);
-                page.title().length().greaterThan(10);
-                page.title().length().greaterThan(10);
-            });
-
-            nonFunctional(() -> {
-                page.title().length().greaterEqualThan(5);
-            });
-
             page.title().length().greaterThan(10);
-        } catch (TimeoutException e) {
+        } catch (AssertionError e) {
             instantAssertion.assertEndsWith(e.getCause().getMessage(), "[10] is greater than [10]", e.getCause().getMessage());
         }
+    }
+
+    @Test
+    public void test_NewApi_Page_title_length_fails_collected() {
+        FluentTestPage page = prepareTestPage();
+        collectAssertions(()->{
+            page.title().length().greaterThan(10);
+        });
+    }
+
+    @Test
+    public void test_NewApi_Page_title_length_fails_nonFunctional() {
+        FluentTestPage page = prepareTestPage();
+        nonFunctionalAssertions(()->{
+            page.title().length().greaterThan(10);
+        });
     }
 
     @Test
@@ -88,7 +93,7 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
         try {
             FluentTestPage page = prepareTestPage();
             page.url().endsWith("nonexistingfile.html");
-        } catch (TimeoutException e) {
+        } catch (AssertionError e) {
             instantAssertion.assertEndsWith(e.getCause().getMessage(), "ends with [nonexistingfile.html]", e.getCause().getMessage());
         }
     }
@@ -100,7 +105,7 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
         page.notDisplayedElement().displayed().isFalse();
     }
 
-    @Test(expectedExceptions = TimeoutException.class)
+    @Test(expectedExceptions = AssertionError.class)
     public void test_NewApi_GuiElement_displayed_false_failed() {
         FluentTestPage page = prepareTestPage();
         page.notDisplayedElement().displayed().isTrue();
@@ -133,7 +138,7 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
         page.call("https://www.google.de");
         // Expect GuiElement(By.id("11")).value(attribute: value) [Hausmaus] contains not [maus]
 
-        nonFunctional(() -> {
+        nonFunctionalAssertions(() -> {
             page.input().sendKeys("affe").text().contains("affe").containsNot("maus");
         });
 

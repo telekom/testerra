@@ -26,15 +26,16 @@ import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElementFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
+import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -99,57 +100,59 @@ public class DesktopGuiElementCore implements
         this.guiElementData = guiElementData;
     }
 
-    /**
-     * Executes a search without a timeout (instantaneously). This method should be called inside a sequence to provide the timeout.
-     *
-     * @return the WebElement located by by-locator.
-     */
-    private int find() {
-        return find(false);
+    @Override
+    public List<WebElement> findWebElements() {
+        guiElementData.executionLog.addMessage("Executing find().");
+        guiElementData.webElement = null;
+
+        List<WebElement> elements = null;
+        GuiElementCore parent = guiElementData.parent;
+        Locate locate = guiElementData.guiElement.getLocator();
+        Exception cause = null;
+        try {
+            if (parent != null) {
+                elements = parent.findFirstWebElement().findElements(locate.getBy());
+            } else {
+                elements = webDriver.findElements(locate.getBy());
+            }
+        } catch(Exception e) {
+            cause = e;
+        }
+
+        if (elements != null) {
+            guiElementData.executionLog.addMessage("Found " + elements.size() + " WebElements for the locator " + locate.getBy());
+            if (locate.isUnique() && elements.size() > 1) {
+                throw new NonUniqueElementException(String.format("Locator(%s) found more than one WebElement [%d]", locate, elements.size()));
+            }
+            elements = applyFilters(elements, locate.getFilters());
+            setWebElement(elements);
+        }
+
+        if (guiElementData.webElement == null) {
+            String message = String.format("%s not found", toString());
+            MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+            if (currentMethodContext != null) {
+                currentMethodContext.errorContext().setThrowable(message, cause);
+            }
+            throw new ElementNotFoundException(message, cause);
+        }
+        return elements;
     }
 
-    private int find(final boolean enableHighlight) {
-        guiElementData.executionLog.addMessage("Executing find().");
-        int findCounter = -1;
-        int numberOfFoundElements = 0;
+    @Override
+    public WebElement findFirstWebElement() {
+        findWebElements();
+        return guiElementData.webElement;
+    }
+
+    private int find() {
         long start = System.currentTimeMillis();
-        guiElementData.webElement = null;
-        GuiElementCore parent = guiElementData.parent;
-        Exception notFoundCause = null;
-        try {
-            List<WebElement> elements;
-            if (parent != null) {
-                elements = parent.getWebElement().findElements(by);
-            } else {
-                elements = webDriver.findElements(by);
-            }
-            if (elements != null) {
-                guiElementData.executionLog.addMessage("Found " + elements.size() + " WebElements for the locator " + by);
-                final Locate selector = guiElementData.guiElement.getLocator();
-                if (selector.isUnique() && elements.size() > 1) {
-                    throw new Exception("To many WebElements found (" + elements.size() + ")");
-                }
-                elements = applyFilters(elements, selector.getFilters());
-                numberOfFoundElements = elements.size();
-
-                findCounter = setWebElement(elements);
-            }
-        } catch (Exception e) {
-            //guiElementData.executionLog.addMessage("WebElement was not found:" + e.toString());
-            notFoundCause = e;
-        }
-        throwExceptionIfWebElementIsNull(notFoundCause);
-
-        logTimings(start, findCounter);
-
-        if (enableHighlight) {
-            highlightWebElement();
-        }
-
+        List<WebElement> elements = findWebElements();
+        logTimings(start, Timings.getFindCounter());
         if (delayAfterFindInMilliSeconds > 0) {
             TimerUtils.sleep(delayAfterFindInMilliSeconds);
         }
-        return numberOfFoundElements;
+        return elements.size();
     }
 
     private int setWebElement(List<WebElement> elements) {
@@ -223,27 +226,6 @@ public class DesktopGuiElementCore implements
         }
     }
 
-    private void throwExceptionIfWebElementIsNull(Exception cause) {
-        if (guiElementData.webElement == null) {
-            String message = "GuiElement not found: " + toString();
-
-            MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-            if (currentMethodContext != null) {
-                currentMethodContext.errorContext().setThrowable(message, cause);
-            }
-
-            throw new ElementNotFoundException(message, cause);
-        }
-    }
-
-    private void highlightWebElement() {
-        if (POConfig.isDemoMode()) {
-            LOGGER.debug("find(): Highlighting WebElement");
-            JSUtils.highlightWebElement(webDriver, guiElementData.webElement, 0, 0, 255); // blue
-            LOGGER.debug("find(): Done highlighting WebElement");
-        }
-    }
-
     private void logTimings(long start, int findCounter) {
         if (findCounter != -1) {
             GuiElementCore parent = guiElementData.parent;
@@ -263,8 +245,9 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
+    @Deprecated
     public WebElement getWebElement() {
-        find(false);
+        find();
         return guiElementData.webElement;
     }
 
@@ -583,7 +566,7 @@ public class DesktopGuiElementCore implements
 
     @Override
     public boolean isVisible(final boolean complete) {
-        final WebElement webElement = getWebElement();
+        final WebElement webElement = findFirstWebElement();
         if (!webElement.isDisplayed()) return false;
         Rectangle viewport = WebDriverUtils.getViewport(webDriver);
         // getRect doesn't work
@@ -751,7 +734,7 @@ public class DesktopGuiElementCore implements
     public boolean anyFollowingTextNodeContains(String contains) {
         By byStringContain = By.xpath(String.format(".//*[contains(text(),\"%s\")]", contains));
         IGuiElement subElement = getSubElement(byStringContain, null);
-        return subElement.isPresent();
+        return subElement.present().actual();
     }
 
     @Override

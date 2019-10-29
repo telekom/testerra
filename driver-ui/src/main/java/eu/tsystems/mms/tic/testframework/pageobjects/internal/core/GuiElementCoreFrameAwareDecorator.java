@@ -27,6 +27,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.List;
+
 /**
  * Created by rnhb on 13.08.2015.
  */
@@ -58,6 +60,16 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
         executionLog.addMessage("Switching to DefaultFrame.");
         guiElementData.frameLogic.switchToDefaultFrame();
         executionLog.addMessage("Switching to DefaultFrame successful.");
+    }
+
+    @Override
+    public List<WebElement> findWebElements() {
+        return decoratedGuiElementCore.findWebElements();
+    }
+
+    @Override
+    public WebElement findFirstWebElement() {
+        return decoratedGuiElementCore.findFirstWebElement();
     }
 
     @Override

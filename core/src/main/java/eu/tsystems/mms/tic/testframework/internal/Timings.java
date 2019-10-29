@@ -50,6 +50,10 @@ public final class Timings {
         return findCounter;
     }
 
+    public static int getFindCounter() {
+        return findCounter;
+    }
+
     private static File createGraph(String title, String filename, Map<Integer, Long> map) {
         try {
             XYSeriesCollection collection = new XYSeriesCollection();

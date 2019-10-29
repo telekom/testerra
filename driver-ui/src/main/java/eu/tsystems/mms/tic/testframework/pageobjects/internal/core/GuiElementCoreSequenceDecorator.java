@@ -43,6 +43,7 @@ import java.util.List;
  * <p>
  * Created by rnhb on 12.08.2015.
  */
+@Deprecated
 public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable {
 
     private final GuiElementCore guiElementCore;
@@ -67,6 +68,16 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse<WebElement> throwablePackedResponse = timerWrapper.executeShortIntervalSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
+    }
+
+    @Override
+    public List<WebElement> findWebElements() {
+        return guiElementCore.findWebElements();
+    }
+
+    @Override
+    public WebElement findFirstWebElement() {
+        return guiElementCore.findFirstWebElement();
     }
 
     @Override

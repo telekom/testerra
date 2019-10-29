@@ -55,6 +55,16 @@ public class DefaultGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
+    public List<WebElement> findWebElements() {
+        return guiElementCore.findWebElements();
+    }
+
+    @Override
+    public WebElement findFirstWebElement() {
+        return guiElementCore.findFirstWebElement();
+    }
+
+    @Override
     public By getBy() {
         return guiElementCore.getBy();
     }

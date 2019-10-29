@@ -32,6 +32,7 @@ import org.openqa.selenium.By;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Advanced selector for elements as replacement for By
@@ -179,14 +180,9 @@ public class Locate {
 
     @Override
     public String toString() {
-        String toString = by.toString() + (unique ? " (unique)" : "");
+        String toString = (unique ? "unique " : "") + by.toString();
         if (filters != null && !filters.isEmpty()) {
-            toString += " with WebElementFilter" + (filters.size() > 1 ? "s" : "") + " { ";
-            for (WebElementFilter webElementFilter : filters) {
-                toString += webElementFilter.toString() + ", ";
-            }
-            // cut the last comma with space
-            toString = toString.substring(0, toString.length() - 2) + " }";
+            toString += String.format("with filters %s", filters.stream().map(WebElementFilter::toString).collect(Collectors.joining(", ")));
         }
         return toString;
     }

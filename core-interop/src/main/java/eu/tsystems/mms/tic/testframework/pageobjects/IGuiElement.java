@@ -24,6 +24,10 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPro
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 
 public interface IGuiElement extends
     Nameable<IGuiElement>,
@@ -44,6 +48,20 @@ public interface IGuiElement extends
     IBinaryPropertyAssertion<Boolean> selected();
     IImagePropertyAssertion screenshot();
     IGuiElement scrollTo();
+    Locate getLocator();
+    WebElement getWebElement();
+
+    /**
+     * Deprecated API
+     */
+    @Deprecated
+    By getBy();
+
+    @Deprecated
+    Point getLocation();
+
+    @Deprecated
+    Dimension getSize();
 
     /**
      * This method scrolls to the element with an given offset.

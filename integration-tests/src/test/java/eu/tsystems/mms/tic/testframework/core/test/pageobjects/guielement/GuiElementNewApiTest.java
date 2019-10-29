@@ -137,17 +137,20 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
 
     @Test
     public void test_NewApi_NonExistent_GuiElement_failed() {
-        page.nonExistentElement().present().isTrue();
-    }
-
-    @Test
-    public void test_NewApi_NonExistent_GuiElement_displayed() {
-        page.nonExistentElement().displayed().isFalse();
+        try {
+            page.nonExistentElement().present().isTrue();
+        } catch (AssertionError e) {
+            instantAssertion.assertEndsWith(e.getMessage(), "is one of [true, 'on', '1', 'yes']", e.getMessage());
+        }
     }
 
     @Test
     public void test_NewApi_NonExistent_GuiElement_displayed_failed() {
-        page.nonExistentElement().displayed().isTrue();
+        try {
+            page.nonExistentElement().displayed().isFalse();
+        } catch (AssertionError e) {
+            instantAssertion.assertEndsWith(e.getMessage(), "not found", e.getMessage());
+        }
     }
 
     @Test

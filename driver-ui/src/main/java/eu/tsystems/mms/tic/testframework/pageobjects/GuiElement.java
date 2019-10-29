@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
@@ -179,6 +180,7 @@ public class GuiElement implements IGuiElement, Loggable {
         this.locator = locator;
     }
 
+    @Override
     public Locate getLocator() {
         return locator;
     }
@@ -432,10 +434,12 @@ public class GuiElement implements IGuiElement, Loggable {
         return guiElementFacade.isSelectable();
     }
 
+    @Override
     public Point getLocation() {
         return guiElementFacade.getLocation();
     }
 
+    @Override
     public Dimension getSize() {
         return guiElementFacade.getSize();
     }
@@ -737,7 +741,7 @@ public class GuiElement implements IGuiElement, Loggable {
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String actual() {
-                return getTagName();
+                return guiElementCore.findFirstWebElement().getTagName();
             }
 
             @Override
@@ -753,7 +757,7 @@ public class GuiElement implements IGuiElement, Loggable {
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String actual() {
-                return getText();
+                return guiElementCore.findFirstWebElement().getText();
             }
 
             @Override
@@ -779,7 +783,7 @@ public class GuiElement implements IGuiElement, Loggable {
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String actual() {
-                return getAttribute(attribute);
+                return guiElementCore.findFirstWebElement().getAttribute(attribute);
             }
 
             @Override
@@ -795,7 +799,11 @@ public class GuiElement implements IGuiElement, Loggable {
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
-                return guiElementCore.findFirstWebElement()!=null;
+                try {
+                    return guiElementCore.findFirstWebElement()!=null;
+                } catch (ElementNotFoundException e) {
+                    return false;
+                }
             }
 
             @Override
@@ -811,7 +819,7 @@ public class GuiElement implements IGuiElement, Loggable {
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
-                return isVisible(complete);
+                return guiElementCore.isVisible(complete);
             }
 
             @Override
@@ -843,7 +851,7 @@ public class GuiElement implements IGuiElement, Loggable {
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
-                return isEnabled();
+                return guiElementCore.findFirstWebElement().isEnabled();
             }
 
             @Override
@@ -859,7 +867,7 @@ public class GuiElement implements IGuiElement, Loggable {
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
-                return isSelected();
+                return guiElementCore.findFirstWebElement().isSelected();
             }
 
             @Override

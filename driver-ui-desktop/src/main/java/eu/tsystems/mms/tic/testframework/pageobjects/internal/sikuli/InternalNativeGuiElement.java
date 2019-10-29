@@ -341,7 +341,7 @@ public final class InternalNativeGuiElement implements IInternalNativeGuiElement
             if (elementRegion != null) {
                 handlePoint = elementRegion.getCenter();
             } else {
-                throw new ElementNotFoundException("Element not found: " + target.toString());
+                throw new ElementNotFoundException(String.format("%s not found", target.toString()));
             }
         } else {
             handlePoint = elementRegion.getCenter();

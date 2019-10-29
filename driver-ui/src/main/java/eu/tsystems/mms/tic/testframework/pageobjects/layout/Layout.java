@@ -78,16 +78,16 @@ public abstract class Layout implements ILayout {
     }
 
     @Fails(validFor = "unsupportedBrowser", description = "Unsupported Browser")
-    public LayoutBorders getElementLayoutBorders(IGuiElement GuiElementFacade) {
+    public LayoutBorders getElementLayoutBorders(IGuiElement guiElement) {
         if (innerBorders) {
-            Map<String, Long> borders = JSUtils.getElementInnerBorders(GuiElementFacade);
+            Map<String, Long> borders = JSUtils.getElementInnerBorders(guiElement);
             if (borders != null) {
                 return new LayoutBorders(borders.get("left"), borders.get("right"), borders.get("top"), borders.get("bottom"));
             }
             return new LayoutBorders(0, 0, 0, 0);
         } else {
-            Point location = GuiElementFacade.getLocation();
-            Dimension size = GuiElementFacade.getSize();
+            Point location = guiElement.getLocation();
+            Dimension size = guiElement.getSize();
             int left = location.getX();
             int right = left + size.getWidth();
             int top = location.getY();

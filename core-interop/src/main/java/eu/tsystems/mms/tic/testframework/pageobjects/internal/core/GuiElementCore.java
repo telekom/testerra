@@ -19,9 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
+import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
+import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -40,8 +42,24 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * Returns the Webelement.
      *
      * @return webElement
+     * @throws ElementNotFoundException If non found
      */
+    @Deprecated
     WebElement getWebElement();
+
+    /**
+     * @return All found filtered WebElements
+     * @throws ElementNotFoundException If non found
+     * @throws NonUniqueElementException If more than one WebElement has been found according to given {@link Locate}
+     */
+    List<WebElement> findWebElements();
+
+    /**
+     * @return The first found filtered WebElement
+     * @throws ElementNotFoundException If none found
+     * @throws NonUniqueElementException If more than one WebElement has been found according to given {@link Locate}
+     */
+    WebElement findFirstWebElement();
 
     /**
      * Returns by locator element.

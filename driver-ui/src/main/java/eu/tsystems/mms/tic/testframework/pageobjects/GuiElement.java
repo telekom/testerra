@@ -275,28 +275,23 @@ public class GuiElement implements IGuiElement, Loggable {
         return (GuiElement)guiElementCore.getSubElement(by, description);
     }
 
-    @Override
     public GuiElement getSubElement(Locate locator) {
         return (GuiElement)guiElementFacade.getSubElement(locator);
     }
 
-    @Override
     public WebElement getWebElement() {
         return guiElementFacade.getWebElement();
     }
 
-    @Override
     public By getBy() {
         return guiElementFacade.getBy();
     }
 
-    @Override
     public GuiElement scrollToElement() {
         guiElementFacade.scrollToElement();
         return this;
     }
 
-    @Override
     public IGuiElement scrollToElement(int yOffset) {
         guiElementFacade.scrollToElement(yOffset);
         return this;
@@ -362,7 +357,6 @@ public class GuiElement implements IGuiElement, Loggable {
         return this;
     }
 
-    @Override
     public IGuiElement clickAbsolute() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickAbsolute();
@@ -370,13 +364,11 @@ public class GuiElement implements IGuiElement, Loggable {
         return this;
     }
 
-    @Override
     public IGuiElement mouseOverAbsolute2Axis() {
         guiElementFacade.mouseOverAbsolute2Axis();
         return this;
     }
 
-    @Override
     public IGuiElement submit() {
         guiElementFacade.submit();
         return this;
@@ -396,42 +388,34 @@ public class GuiElement implements IGuiElement, Loggable {
         return this;
     }
 
-    @Override
     public String getTagName() {
         return guiElementFacade.getTagName();
     }
 
-    @Override
     public String getAttribute(String attributeName) {
         return guiElementFacade.getAttribute(attributeName);
     }
 
-    @Override
     public boolean isSelected() {
         return guiElementFacade.isSelected();
     }
 
-    @Override
     public boolean isEnabled() {
         return guiElementFacade.isEnabled();
     }
 
-    @Override
     public String getText() {
         return guiElementFacade.getText();
     }
 
-    @Override
     public boolean isDisplayed() {
         return guiElementFacade.isDisplayed();
     }
 
-    @Override
     public boolean isVisible(final boolean complete) {
         return guiElementFacade.isVisible(complete);
     }
 
-    @Override
     public boolean isDisplayedFromWebElement() {
         return guiElementFacade.isDisplayedFromWebElement();
     }
@@ -444,22 +428,18 @@ public class GuiElement implements IGuiElement, Loggable {
      *
      * @return true, if the element is selectable.
      */
-    @Override
     public boolean isSelectable() {
         return guiElementFacade.isSelectable();
     }
 
-    @Override
     public Point getLocation() {
         return guiElementFacade.getLocation();
     }
 
-    @Override
     public Dimension getSize() {
         return guiElementFacade.getSize();
     }
 
-    @Override
     public String getCssValue(String cssIdentifier) {
         return guiElementFacade.getCssValue(cssIdentifier);
     }
@@ -476,22 +456,18 @@ public class GuiElement implements IGuiElement, Loggable {
         return this;
     }
 
-    @Override
     public boolean isPresent() {
         return guiElementFacade.isPresent();
     }
 
-    @Override
     public Select getSelectElement() {
         return guiElementFacade.getSelectElement();
     }
 
-    @Override
     public List<String> getTextsFromChildren() {
         return guiElementFacade.getTextsFromChildren();
     }
 
-    @Override
     public boolean anyFollowingTextNodeContains(String contains) {
         return guiElementFacade.anyFollowingTextNodeContains(contains);
     }
@@ -533,12 +509,10 @@ public class GuiElement implements IGuiElement, Loggable {
         return this;
     }
 
-    @Override
     public int getLengthOfValueAfterSendKeys(String textToInput) {
         return guiElementFacade.getLengthOfValueAfterSendKeys(textToInput);
     }
 
-    @Override
     public int getNumberOfFoundElements() {
         return guiElementFacade.getNumberOfFoundElements();
     }
@@ -561,7 +535,6 @@ public class GuiElement implements IGuiElement, Loggable {
         return this;
     }
 
-    @Override
     public File takeScreenshot() {
         return guiElementFacade.takeScreenshot();
     }
@@ -822,7 +795,7 @@ public class GuiElement implements IGuiElement, Loggable {
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
-                return isPresent();
+                return guiElementCore.findFirstWebElement()!=null;
             }
 
             @Override
@@ -854,7 +827,7 @@ public class GuiElement implements IGuiElement, Loggable {
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
-                return getWebElement().isDisplayed();
+                return guiElementCore.findFirstWebElement().isDisplayed();
             }
 
             @Override

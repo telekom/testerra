@@ -23,12 +23,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
-import org.openqa.selenium.By;
 
 public interface IGuiElement extends
-    GuiElementCore,
     Nameable<IGuiElement>,
     WebDriverRetainer
 {
@@ -50,129 +47,42 @@ public interface IGuiElement extends
 
     /**
      * This method scrolls to the element with an given offset.
-     * In difference to {@link #scrollToElement(int)} it adds the offset, not substracts it.
      */
     IGuiElement scrollTo(int yOffset);
     IFrameLogic getFrameLogic();
-
-    /**
-     * Deprecated APIs
-     */
-    @Override
-    @Deprecated
-    IGuiElement getSubElement(By by);
-
-    @Override
-    @Deprecated
-    IGuiElement getSubElement(Locate locator);
-
-    @Override
-    @Deprecated
-    IGuiElement scrollToElement(int yOffset);
-
-    @Override
-    @Deprecated
-    IGuiElement scrollToElement();
-
-    @Override
-    @Deprecated
-    String getCssValue(String cssIdentifier);
-
-    @Override
-    @Deprecated
-    boolean isDisplayed();
-
-    @Override
-    @Deprecated
-    boolean isPresent();
-
-    @Override
-    @Deprecated
-    boolean isEnabled();
-
-    @Override
-    @Deprecated
-    boolean isSelected();
-
-    @Override
-    @Deprecated
-    boolean anyFollowingTextNodeContains(String contains);
-
-    @Override
-    @Deprecated
-    String getAttribute(String attributeName);
-
-    @Override
-    @Deprecated
-    By getBy();
-
-    @Override
-    @Deprecated
-    int getLengthOfValueAfterSendKeys(String textToInput);
-
-    @Override
-    @Deprecated
-    int getNumberOfFoundElements();
-
-    @Override
-    @Deprecated
-    boolean isVisible(boolean complete);
-
-    @Override
-    @Deprecated
-    String getTagName();
-
-    @Override
-    @Deprecated
-    String getText();
 
     /**
      * Fluent {@link IGuiElement} overrides
      */
     IGuiElement select(Boolean select);
 
-    @Override
     IGuiElement click();
 
-    @Override
     IGuiElement clickJS();
 
-    @Override
     IGuiElement doubleClick();
 
-    @Override
     IGuiElement doubleClickJS();
 
-    @Override
     IGuiElement rightClick();
 
-    @Override
     IGuiElement rightClickJS();
 
-    @Override
     IGuiElement highlight();
 
-    @Override
     IGuiElement swipe(int offsetX, int offSetY);
 
-    @Override
     IGuiElement select();
 
-    @Override
     IGuiElement deselect();
 
-    @Override
     IGuiElement type(String text);
 
-    @Override
     IGuiElement sendKeys(CharSequence... charSequences);
 
-    @Override
     IGuiElement clear();
 
-    @Override
     IGuiElement mouseOver();
 
-    @Override
-    GuiElementCore mouseOverJS();
+    IGuiElement mouseOverJS();
 }

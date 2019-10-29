@@ -47,7 +47,7 @@ public class AssertCollector {
     }
 
     static {
-        realAssert = TesterraCommons.ioc().getInstance(FunctionalAssertion.class);
+        realAssert = TesterraCommons.ioc().getInstance(CollectedAssertion.class);
     }
 
     /**

@@ -34,4 +34,11 @@ public abstract class TesterraTest {
         Booter.bootOnce();
     }
 
+    protected void collect(final Runnable runnable) {
+        runnable.run();
+    }
+
+    protected void nonFunctional(final Runnable runnable) {
+        runnable.run();
+    }
 }

@@ -30,10 +30,9 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.execution.testng.DefaultFunctionalAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.DefaultInstantAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.DefaultNonFunctionalAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
@@ -80,21 +79,9 @@ public class GuiElement implements IGuiElement, Loggable {
 
     protected static final PropertyAssertionFactory propertyAssertionFactory = TesterraCommons.ioc().getInstance(PropertyAssertionFactory.class);
 
-    /**
-     * This is the default functional assertion for GuiElements,
-     * which always contains a {@link DefaultFunctionalAssertion}.
-     * See {@link GuiElementAssertFactory} for details.
-     */
-    private GuiElementAssert functionalAssert;
-
-    /**
-     * This contains always an {@link DefaultInstantAssertion}
-     */
+    private GuiElementAssert defaultAssert;
     private GuiElementAssert instantAssert;
-
-    /**
-     * This contains always an {@link DefaultNonFunctionalAssertion}
-     */
+    private GuiElementAssert collectableAssert;
     private GuiElementAssert nonFunctionalAssert;
 
     /**
@@ -650,18 +637,14 @@ public class GuiElement implements IGuiElement, Loggable {
      * @return GuiElementAssert object for functional assertions
      */
     public GuiElementAssert asserts() {
-        if (functionalAssert==null) {
-            /**
-             * Configure {@link GuiElementAssert} with {@link InstantAssertion} when {@link TesterraProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR} != true
-             */
-            if (!PropertyManager.getBooleanProperty(TesterraProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false)) {
-                functionalAssert = instantAsserts();
+        if (defaultAssert == null) {
+            if (PropertyManager.getBooleanProperty(TesterraProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false)) {
+                defaultAssert = assertCollector();
             } else {
-                final GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
-                functionalAssert = assertFactory.create(true, false, guiElementCore, guiElementWait, guiElementData);
+                defaultAssert = instantAsserts();
             }
         }
-        return functionalAssert;
+        return defaultAssert;
     }
 
     /**
@@ -685,8 +668,9 @@ public class GuiElement implements IGuiElement, Loggable {
      */
     public GuiElementAssert nonFunctionalAsserts() {
         if (nonFunctionalAssert==null) {
-            final GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
-            nonFunctionalAssert = assertFactory.create(false, false, guiElementCore, guiElementWait, guiElementData);
+            GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
+            NonFunctionalAssertion assertion = TesterraCommons.ioc().getInstance(NonFunctionalAssertion.class);
+            nonFunctionalAssert = assertFactory.create(assertion, guiElementCore, guiElementWait, guiElementData);
         }
         return nonFunctionalAssert;
     }
@@ -707,8 +691,9 @@ public class GuiElement implements IGuiElement, Loggable {
 
     public GuiElementAssert instantAsserts() {
         if (instantAssert == null) {
-            final GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
-            instantAssert = assertFactory.create(true, true, guiElementCore, guiElementWait, guiElementData);
+            GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
+            InstantAssertion assertion = TesterraCommons.ioc().getInstance(InstantAssertion.class);
+            instantAssert = assertFactory.create(assertion, guiElementCore, guiElementWait, guiElementData);
         }
         return instantAssert;
     }
@@ -719,9 +704,13 @@ public class GuiElement implements IGuiElement, Loggable {
      * @return GuiElementAssert object for functional assertions
      * @deprecated Use {@link #asserts()} instead
      */
-    @Deprecated
     public GuiElementAssert assertCollector() {
-        return asserts();
+        if (collectableAssert==null) {
+            GuiElementAssertFactory assertFactory = TesterraCommons.ioc().getInstance(GuiElementAssertFactory.class);
+            CollectedAssertion assertion = TesterraCommons.ioc().getInstance(CollectedAssertion.class);
+            collectableAssert = assertFactory.create(assertion, guiElementCore, guiElementWait, guiElementData);
+        }
+        return collectableAssert;
     }
 
     /**
@@ -731,12 +720,10 @@ public class GuiElement implements IGuiElement, Loggable {
      * @param errorMessage Cause returned on assertion error.
      *
      * @return GuiElementAssert object for functional assertions
-     * @deprecated Use {@link #asserts()} instead
      */
-    @Deprecated
     public GuiElementAssert assertCollector(String errorMessage) {
         GuiElementAssertDescriptionDecorator guiElementAssertDescriptionDecorator
-                = new GuiElementAssertDescriptionDecorator(errorMessage, asserts());
+                = new GuiElementAssertDescriptionDecorator(errorMessage, assertCollector());
         return guiElementAssertDescriptionDecorator;
     }
 

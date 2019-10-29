@@ -19,45 +19,21 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import com.google.inject.Inject;
-import eu.tsystems.mms.tic.testframework.execution.testng.FunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 
 public class DefaultGuiElementAssertFactory implements GuiElementAssertFactory {
 
-    @Inject
-    private FunctionalAssertion functionalAssert;
-
-    @Inject
-    private NonFunctionalAssertion nonFunctionalAssert;
-
-    @Inject
-    private InstantAssertion instantAssertion;
-
     @Override
     public GuiElementAssert create(
-        boolean functional,
-        boolean instant,
+        IAssertion assertion,
         GuiElementCore guiElementCore,
         GuiElementWait guiElementWait,
         GuiElementData guiElementData
     ) {
-        IAssertion configuredAssert;
-        if (functional) {
-            if (instant) {
-                configuredAssert = instantAssertion;
-            } else {
-                configuredAssert = functionalAssert;
-            }
-        } else {
-            configuredAssert = nonFunctionalAssert;
-        }
-        GuiElementAssert guiElementAssert = new DefaultGuiElementAssert(guiElementCore, guiElementWait, configuredAssert, guiElementData);
+        GuiElementAssert guiElementAssert = new DefaultGuiElementAssert(guiElementCore, guiElementWait, assertion, guiElementData);
         guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, guiElementData);
         guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, guiElementData);
         return guiElementAssert;

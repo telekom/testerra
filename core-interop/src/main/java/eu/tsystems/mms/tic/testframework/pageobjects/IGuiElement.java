@@ -19,6 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.common.IProperties;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
@@ -33,6 +35,43 @@ public interface IGuiElement extends
     Nameable<IGuiElement>,
     WebDriverRetainer
 {
+    enum Properties implements IProperties {
+        DEFAULT_ASSERT_IS_COLLECTOR("tt.guielement.default.assertcollector", false),
+        USE_JS_ALTERNATIVES("tt.guielement.use.js.alternatives", true),
+        ;
+        private final String property;
+        private Object defaultValue;
+
+        Properties(String property, Object defaultValue) {
+            this.property = property;
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public String toString() {
+            return property;
+        }
+        public IProperties useDefault(Object defaultValue) {
+            this.defaultValue = defaultValue;
+            return this;
+        }
+
+        public Double asDouble() {
+            return PropertyManager.getDoubleProperty(property, (Double) defaultValue);
+        }
+
+        public Long asLong() {
+            return PropertyManager.getLongProperty(property, (Long)defaultValue);
+        }
+
+        public String asString() {
+            return PropertyManager.getProperty(property, defaultValue.toString());
+        }
+
+        public Boolean asBool() {
+            return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue);
+        }
+    }
     /**
      * New Features
      */

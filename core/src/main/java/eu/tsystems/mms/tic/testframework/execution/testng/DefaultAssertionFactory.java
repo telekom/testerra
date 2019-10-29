@@ -2,7 +2,7 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 
 public class DefaultAssertionFactory implements AssertionFactory {
 
@@ -13,7 +13,7 @@ public class DefaultAssertionFactory implements AssertionFactory {
     @Inject
     DefaultAssertionFactory(Injector injector) {
         this.injector = injector;
-        if (Testerra.Properties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
+        if (IGuiElement.Properties.DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
             currentAssertionClass = CollectedAssertion.class;
         } else {
             currentAssertionClass = InstantAssertion.class;

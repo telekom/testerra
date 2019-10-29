@@ -20,8 +20,6 @@ public class Testerra {
     private static Injector ioc;
 
     public enum Properties implements IProperties {
-        GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR("tt.guielement.default.assertcollector", false),
-        GUIELEMENT_USE_JS_ALTERNATIVES("tt.guielement.use.js.alternatives", true),
         DRY_RUN("tt.dryrun", false),
         MONITOR_MEMORY("tt.monitor.memory", true),
         ;

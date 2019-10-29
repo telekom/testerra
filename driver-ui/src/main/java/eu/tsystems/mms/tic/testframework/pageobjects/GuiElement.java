@@ -615,7 +615,7 @@ public class GuiElement implements IGuiElement, Loggable {
      */
     public GuiElementAssert asserts() {
         if (defaultAssert == null) {
-            if (Testerra.Properties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
+            if (IGuiElement.Properties.DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
                 defaultAssert = assertCollector();
             } else {
                 defaultAssert = instantAsserts();

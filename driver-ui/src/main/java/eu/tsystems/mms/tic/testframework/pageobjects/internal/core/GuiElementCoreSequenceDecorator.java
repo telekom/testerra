@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
@@ -175,7 +174,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
     private void checkForClickingJSAlternativeOrExit(ThrowablePackedResponse throwablePackedResponse, String action, Runnable runnable) {
         if (throwablePackedResponse.hasTimeoutException()) {
 
-            if (!UseJSAlternatives.class.isAssignableFrom(guiElementCore.getClass()) || !Testerra.Properties.GUIELEMENT_USE_JS_ALTERNATIVES.asBool()) {
+            if (!UseJSAlternatives.class.isAssignableFrom(guiElementCore.getClass()) || !IGuiElement.Properties.USE_JS_ALTERNATIVES.asBool()) {
                 // we cannot use clickJS()
                 throwablePackedResponse.finalizeTimer();
                 return;

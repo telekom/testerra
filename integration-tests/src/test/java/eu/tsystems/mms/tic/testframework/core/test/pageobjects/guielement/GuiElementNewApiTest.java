@@ -20,10 +20,12 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.core.test.ClassicTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.FluentTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
@@ -40,6 +42,8 @@ import java.math.BigDecimal;
  */
 public class GuiElementNewApiTest extends AbstractTestSitesTest {
 
+    final static InstantAssertion instantAssertion = TesterraCommons.ioc().getInstance(InstantAssertion.class);
+
     private FluentTestPage prepareTestPage() {
         FluentTestPage page = pageFactory.create(FluentTestPage.class);
         return page.call(TestPage.INPUT_TEST_PAGE.getUrl());
@@ -53,15 +57,29 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     }
 
     @Test
+    public void test_NewApi_Page_title_length_fails() {
+        try {
+            FluentTestPage page = prepareTestPage();
+            page.title().length().greaterThan(10);
+        } catch (TimeoutException e) {
+            instantAssertion.assertEndsWith(e.getCause().getMessage(), "[10] is greater than [10]", e.getCause().getMessage());
+        }
+    }
+
+    @Test
     public void test_NewApi_Page_url_endsWith() {
         FluentTestPage page = prepareTestPage();
         page.url().endsWith("input.html");
     }
 
-    @Test(expectedExceptions = TimeoutException.class)
+    @Test()
     public void test_NewApi_Page_url_endsWith_failed() {
-        FluentTestPage page = prepareTestPage();
-        page.url().endsWith("nonexistingfile.html");
+        try {
+            FluentTestPage page = prepareTestPage();
+            page.url().endsWith("nonexistingfile.html");
+        } catch (TimeoutException e) {
+            instantAssertion.assertEndsWith(e.getCause().getMessage(), "ends with [nonexistingfile.html]", e.getCause().getMessage());
+        }
     }
 
     @Test
@@ -145,6 +163,7 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
         page.getWebDriver().navigate().to("http://www.google.de");
         page.input().sendKeys("affe");
         page.input().nonFunctionalAsserts().assertTextContains("affe");
+        page.input().nonFunctionalAsserts().assertAttributeContains("style", "affe");
         page.submit().scrollToElement();
         page.submit().asserts().assertVisible(false);
         page.submit().asserts().assertAttributeValue("style", "display:block");

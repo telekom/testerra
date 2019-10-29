@@ -18,12 +18,17 @@ public abstract class AbstractAssertion implements IAssertion {
     }
 
     @Override
-    abstract public void fail(String message, Throwable realCause);
+    public void fail(String message, Throwable cause) {
+        fail(new AssertionError(message, cause));
+    }
 
     @Override
     public void fail(String message) {
         fail(message, null);
     }
+
+    @Override
+    abstract public void fail(Throwable cause);
 
     @Override
     public boolean assertContains(String actual, String expected, String subject) {

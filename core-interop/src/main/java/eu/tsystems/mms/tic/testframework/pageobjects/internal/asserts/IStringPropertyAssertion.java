@@ -8,7 +8,4 @@ public interface IStringPropertyAssertion<T> extends IQuantifiedPropertyAssertio
     IStringPropertyAssertion<T> beginsWith(final String expected);
     IStringPropertyAssertion<T> endsWith(final String expected);
     IQuantifiedPropertyAssertion<Integer> length();
-
-    @Override
-    IStringPropertyAssertion<T> nonFunctional();
 }

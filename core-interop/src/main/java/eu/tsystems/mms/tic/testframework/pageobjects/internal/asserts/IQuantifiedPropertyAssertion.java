@@ -20,7 +20,4 @@ public interface IQuantifiedPropertyAssertion<T> extends IBinaryPropertyAssertio
     IQuantifiedPropertyAssertion<T> between(final long lower, final long higher);
     IQuantifiedPropertyAssertion<T> between(final double lower, final double higher);
     IQuantifiedPropertyAssertion<T> between(final BigDecimal lower, final BigDecimal higher);
-
-    @Override
-    IQuantifiedPropertyAssertion<T> nonFunctional();
 }

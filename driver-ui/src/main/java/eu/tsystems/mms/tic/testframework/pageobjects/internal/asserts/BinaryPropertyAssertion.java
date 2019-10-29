@@ -43,10 +43,4 @@ public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<
         });
         return this;
     }
-
-    @Override
-    public IBinaryPropertyAssertion<T> nonFunctional() {
-        super.nonFunctional();
-        return this;
-    }
 }

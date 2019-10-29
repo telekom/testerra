@@ -27,13 +27,14 @@
  */
 package eu.tsystems.mms.tic.testframework.constants;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra.Properties;
+
 /**
  * Class holding keys of all properties.
  *
- * @author sepr
+ * @todo Move this Properties to {@link Properties}
  */
 public final class TesterraProperties {
-
     /**
      * Hide default constructor.
      */
@@ -154,7 +155,6 @@ public final class TesterraProperties {
      * Guielement easy mode.
      */
     public static final String GUIELEMENT_TYPE = "tt.guielement.type";
-    public static final String GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = "tt.guielement.default.assertcollector";
     public static final String GUIELEMENT_USE_JS_ALTERNATIVES = "tt.guielement.use.js.alternatives";
 
     /*

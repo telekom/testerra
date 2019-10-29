@@ -28,10 +28,10 @@ import java.math.BigDecimal;
 @Deprecated
 public final class AssertUtils {
 
-    private static final IAssertion realAssert;
+    private static final IAssertion assertion;
 
     static {
-        realAssert = TesterraCommons.ioc().getInstance(InstantAssertion.class);
+        assertion = TesterraCommons.ioc().getInstance(InstantAssertion.class);
     }
 
     public static void assertContains(String actual, String expected) {
@@ -43,11 +43,11 @@ public final class AssertUtils {
     }
 
     public static void assertContains(String actual, String expected, String description) {
-        realAssert.assertContains(actual, expected, description);
+        assertion.assertContains(actual, expected, description);
     }
 
     public static void assertContainsNot(String actual, String expected, String description) {
-        realAssert.assertContainsNot(actual, expected, description);
+        assertion.assertContainsNot(actual, expected, description);
     }
 
     public static void assertGreaterThan(BigDecimal actual, BigDecimal expected) {
@@ -67,18 +67,18 @@ public final class AssertUtils {
     }
 
     public static void assertGreaterThan(BigDecimal actual, BigDecimal expected, String description) {
-        realAssert.assertGreaterThan(actual, expected, description);
+        assertion.assertGreaterThan(actual, expected, description);
     }
 
     public static void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, String description) {
-        realAssert.assertGreaterEqualThan(actual, expected, description);
+        assertion.assertGreaterEqualThan(actual, expected, description);
     }
 
     public static void assertLowerThan(BigDecimal actual, BigDecimal expected, String description) {
-        realAssert.assertLowerThan(actual, expected, description);
+        assertion.assertLowerThan(actual, expected, description);
     }
 
     public static void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, String description) {
-        realAssert.assertLowerThan(actual, expected, description);
+        assertion.assertLowerThan(actual, expected, description);
     }
 }

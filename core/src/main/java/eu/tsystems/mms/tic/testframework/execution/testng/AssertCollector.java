@@ -37,7 +37,7 @@ import static org.testng.internal.EclipseInterface.ASSERT_RIGHT;
 @Deprecated
 public class AssertCollector {
 
-    protected static IAssertion realAssert;
+    protected static IAssertion assertion;
 
     /**
      * Protect constructor since it is a static only class
@@ -47,7 +47,7 @@ public class AssertCollector {
     }
 
     static {
-        realAssert = TesterraCommons.ioc().getInstance(CollectedAssertion.class);
+        assertion = TesterraCommons.ioc().getInstance(CollectedAssertion.class);
     }
 
     /**
@@ -58,7 +58,7 @@ public class AssertCollector {
      * @param message   the assertion error message
      */
     static public void assertTrue(boolean condition, String message) {
-        realAssert.assertTrue(condition,null);
+        assertion.assertTrue(condition,null);
     }
 
     /**
@@ -68,7 +68,7 @@ public class AssertCollector {
      * @param condition the condition to evaluate
      */
     static public void assertTrue(boolean condition) {
-        realAssert.assertTrue(condition,null);
+        assertion.assertTrue(condition,null);
     }
 
     /**
@@ -79,7 +79,7 @@ public class AssertCollector {
      * @param message   the assertion error message
      */
     static public void assertFalse(boolean condition, String message) {
-        realAssert.assertFalse(condition, message);
+        assertion.assertFalse(condition, message);
     }
 
     /**
@@ -89,7 +89,7 @@ public class AssertCollector {
      * @param condition the condition to evaluate
      */
     static public void assertFalse(boolean condition) {
-        realAssert.assertFalse(condition,null);
+        assertion.assertFalse(condition,null);
     }
 
     /**
@@ -99,7 +99,7 @@ public class AssertCollector {
      * @param realCause the original exception
      */
     static public void fail(String message, Throwable realCause) {
-        realAssert.fail(message, realCause);
+        assertion.fail(message, realCause);
     }
 
     /**
@@ -108,7 +108,7 @@ public class AssertCollector {
      * @param message the assertion error message
      */
     static public void fail(String message) {
-        realAssert.fail(message);
+        assertion.fail(message);
     }
 
     /**
@@ -127,7 +127,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     public static void assertEquals(Object actual, Object expected, String message) {
-        realAssert.assertEquals(actual, expected, message);
+        assertion.assertEquals(actual, expected, message);
     }
 
     /**
@@ -394,7 +394,7 @@ public class AssertCollector {
      * @param message the assertion error message
      */
     static public void assertNotNull(Object object, String message) {
-        realAssert.assertNotNull(object, message);
+        assertion.assertNotNull(object, message);
     }
 
     /**
@@ -415,7 +415,7 @@ public class AssertCollector {
      * @param message the assertion error message
      */
     static public void assertNull(Object object, String message) {
-        realAssert.assertNull(object, message);
+        assertion.assertNull(object, message);
     }
 
     /**
@@ -427,7 +427,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     static public void assertSame(Object actual, Object expected, String message) {
-        realAssert.assertSame(actual, expected, message);
+        assertion.assertSame(actual, expected, message);
     }
 
     /**
@@ -450,7 +450,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     static public void assertNotSame(Object actual, Object expected, String message) {
-        realAssert.assertNotSame(actual, expected, message);
+        assertion.assertNotSame(actual, expected, message);
     }
 
     /**
@@ -497,7 +497,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     static public void assertEquals(Collection<?> actual, Collection<?> expected, String message) {
-        realAssert.assertEquals(actual, expected, message);
+        assertion.assertEquals(actual, expected, message);
     }
 
     /**
@@ -522,7 +522,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     static public void assertEquals(Iterator<?> actual, Iterator<?> expected, String message) {
-        realAssert.assertEquals(actual, expected, message);
+        assertion.assertEquals(actual, expected, message);
     }
 
     /**
@@ -545,7 +545,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     static public void assertEquals(Iterable<?> actual, Iterable<?> expected, String message) {
-        realAssert.assertEquals(actual, expected, message);
+        assertion.assertEquals(actual, expected, message);
     }
 
 
@@ -558,7 +558,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     static public void assertEquals(Object[] actual, Object[] expected, String message) {
-        realAssert.assertEquals(actual, expected, message);
+        assertion.assertEquals(actual, expected, message);
     }
 
     /**
@@ -570,7 +570,7 @@ public class AssertCollector {
      * @param message  the assertion error message
      */
     static public void assertEqualsNoOrder(Object[] actual, Object[] expected, String message) {
-        realAssert.assertEqualsNoOrder(actual, expected, message);
+        assertion.assertEqualsNoOrder(actual, expected, message);
     }
 
     /**
@@ -606,18 +606,18 @@ public class AssertCollector {
      * Assert set equals
      */
     public static void assertEquals(Set<?> actual, Set<?> expected, String message) {
-        realAssert.assertEquals(actual, expected, message);
+        assertion.assertEquals(actual, expected, message);
     }
 
     public static void assertEqualsDeep(Set<?> actual, Set<?> expected, String message) {
-        realAssert.assertEqualsDeep(actual, expected, message);
+        assertion.assertEqualsDeep(actual, expected, message);
     }
 
     /**
      * Asserts that two maps are equal.
      */
     public static void assertEquals(Map<?, ?> actual, Map<?, ?> expected, String message) {
-        realAssert.assertEquals(actual, expected, message);
+        assertion.assertEquals(actual, expected, message);
     }
 
     public static void assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected) {
@@ -626,7 +626,7 @@ public class AssertCollector {
 
 
     public static void assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected, String message) {
-        realAssert.assertEqualsDeep(actual, expected, message);
+        assertion.assertEqualsDeep(actual, expected, message);
     }
 
     /////
@@ -634,7 +634,7 @@ public class AssertCollector {
     //
 
     public static void assertNotEquals(Object actual1, Object actual2, String message) {
-        realAssert.assertNotEquals(actual1, actual2, message);
+        assertion.assertNotEquals(actual1, actual2, message);
     }
 
     public static void assertNotEquals(Object actual1, Object actual2) {
@@ -734,7 +734,7 @@ public class AssertCollector {
     }
 
     public static void assertNotEquals(Set<?> actual, Set<?> expected, String message) {
-        realAssert.assertNotEquals(actual, expected, message);
+        assertion.assertNotEquals(actual, expected, message);
     }
 
     public static void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected) {
@@ -742,7 +742,7 @@ public class AssertCollector {
     }
 
     public static void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected, String message) {
-        realAssert.assertNotEquals(actual, expected, message);
+        assertion.assertNotEquals(actual, expected, message);
     }
 
     static public void assertNotEquals(double actual1, double actual2, double delta) {

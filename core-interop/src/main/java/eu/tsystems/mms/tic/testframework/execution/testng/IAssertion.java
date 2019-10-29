@@ -7,12 +7,13 @@ import java.util.Map;
 import java.util.Set;
 
 public interface IAssertion {
-    void fail(final String message, final Throwable realCause);
-    void fail(final String message);
+    void fail(String message, Throwable realCause);
+    void fail(String message);
+    void fail(Throwable throwable);
     String format(Object actual, Object expected, String subject);
-    boolean assertTrue(final boolean condition, final String subject);
-    boolean assertFalse(final boolean condition, final String subject);
-    boolean assertSame(final Object actual, final Object expected, final String subject);
+    boolean assertTrue(boolean condition, String subject);
+    boolean assertFalse(boolean condition, String subject);
+    boolean assertSame(Object actual, Object expected, String subject);
     boolean assertNotSame(Object actual, Object expected, String subject);
     boolean assertNull(Object object, String subject);
     boolean assertNotNull(Object object, String subject);
@@ -36,6 +37,6 @@ public interface IAssertion {
     boolean assertNotEquals(Object actual1, Object actual2, String subject);
     boolean assertNotEquals(Set<?> actual, Set<?> expected, String subject);
     boolean assertNotEquals(Map<?, ?> actual, Map<?, ?> expected, String subject);
-    boolean assertBeginsWith(final Object actual, final Object expected, final String subject);
-    boolean assertEndsWith(final Object actual, final Object expected, final String subject);
+    boolean assertBeginsWith(Object actual, Object expected, String subject);
+    boolean assertEndsWith(Object actual, Object expected, String subject);
 }

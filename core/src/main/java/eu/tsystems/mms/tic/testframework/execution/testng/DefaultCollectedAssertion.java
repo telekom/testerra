@@ -16,9 +16,7 @@ public class DefaultCollectedAssertion extends AbstractAssertion implements Coll
     }
 
     @Override
-    public void fail(String message, Throwable realCause) {
-        AssertionError ae = new AssertionError(message);
-        ae.initCause(realCause);
-        collector.store(ae);
+    public void fail(Throwable cause) {
+        collector.store(cause);
     }
 }

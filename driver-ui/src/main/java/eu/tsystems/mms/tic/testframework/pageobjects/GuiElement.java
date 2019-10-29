@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
@@ -638,7 +639,7 @@ public class GuiElement implements IGuiElement, Loggable {
      */
     public GuiElementAssert asserts() {
         if (defaultAssert == null) {
-            if (PropertyManager.getBooleanProperty(TesterraProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false)) {
+            if (Testerra.Properties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
                 defaultAssert = assertCollector();
             } else {
                 defaultAssert = instantAsserts();

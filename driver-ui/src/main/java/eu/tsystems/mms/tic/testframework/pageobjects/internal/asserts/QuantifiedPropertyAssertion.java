@@ -93,10 +93,4 @@ public class QuantifiedPropertyAssertion<T> extends BinaryPropertyAssertion<T> i
         testTimer(t -> assertion.assertBetween(new BigDecimal(provider.actual().toString()), lower, higher, provider.traceSubjectString()));
         return this;
     }
-
-    @Override
-    public IQuantifiedPropertyAssertion<T> nonFunctional() {
-        super.nonFunctional();
-        return this;
-    }
 }

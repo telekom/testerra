@@ -133,9 +133,9 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
         page.call("https://www.google.de");
         // Expect GuiElement(By.id("11")).value(attribute: value) [Hausmaus] contains not [maus]
 
-
-        // given    | when           | then
-        page.input().sendKeys("affe").text().contains("affe").nonFunctional().containsNot("maus");
+        nonFunctional(() -> {
+            page.input().sendKeys("affe").text().contains("affe").containsNot("maus");
+        });
 
         // Expect GuiElement(By.id("11")).text.length [20] lower than 5
         page.input().text().length().lowerThan(5);

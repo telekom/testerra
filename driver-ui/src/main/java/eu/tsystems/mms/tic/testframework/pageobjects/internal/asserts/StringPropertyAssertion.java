@@ -46,10 +46,4 @@ public class StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T> i
             }
         });
     }
-
-    @Override
-    public IStringPropertyAssertion<T> nonFunctional() {
-        super.nonFunctional();
-        return this;
-    }
 }

@@ -21,6 +21,10 @@ package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
+import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.testng.annotations.Listeners;
@@ -29,16 +33,21 @@ import org.testng.annotations.Listeners;
 public abstract class TesterraTest {
 
     protected static final IPageFactory pageFactory = TesterraCommons.ioc().getInstance(IPageFactory.class);
+    private static final AssertionFactory assertionFactory = TesterraCommons.ioc().getInstance(AssertionFactory.class);
 
     static {
         Booter.bootOnce();
     }
 
     protected void collect(final Runnable runnable) {
+        Class<? extends IAssertion> prevClass = assertionFactory.setDefault(CollectedAssertion.class);
         runnable.run();
+        assertionFactory.setDefault(prevClass);
     }
 
     protected void nonFunctional(final Runnable runnable) {
+        Class<? extends IAssertion> prevClass = assertionFactory.setDefault(NonFunctionalAssertion.class);
         runnable.run();
+        assertionFactory.setDefault(prevClass);
     }
 }

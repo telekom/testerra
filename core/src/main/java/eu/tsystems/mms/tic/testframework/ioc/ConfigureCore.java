@@ -2,7 +2,9 @@ package eu.tsystems.mms.tic.testframework.ioc;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
+import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultAssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultCollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultNonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
@@ -26,6 +28,7 @@ public class ConfigureCore extends AbstractModule {
     }
 
     protected void configureAssertions() {
+        bind(AssertionFactory.class).to(DefaultAssertionFactory.class).in(Scopes.SINGLETON);
         bind(CollectedAssertion.class).to(DefaultCollectedAssertion.class).in(Scopes.SINGLETON);
         bind(NonFunctionalAssertion.class).to(DefaultNonFunctionalAssertion.class).in(Scopes.SINGLETON);
         bind(InstantAssertion.class).to(ThrowingAssertion.class).in(Scopes.SINGLETON);

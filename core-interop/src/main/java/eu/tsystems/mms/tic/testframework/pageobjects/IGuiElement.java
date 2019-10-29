@@ -38,9 +38,9 @@ public interface IGuiElement extends
     IStringPropertyAssertion<String> tagName();
     IStringPropertyAssertion<String> text();
     IStringPropertyAssertion<String> value();
-    IStringPropertyAssertion<String> value(final Attribute attribute);
+    IStringPropertyAssertion<String> value(Attribute attribute);
     IBinaryPropertyAssertion<Boolean> present();
-    IBinaryPropertyAssertion<Boolean> visible(final boolean complete);
+    IBinaryPropertyAssertion<Boolean> visible(boolean complete);
     IBinaryPropertyAssertion<Boolean> displayed();
     IBinaryPropertyAssertion<Boolean> enabled();
     IBinaryPropertyAssertion<Boolean> selected();
@@ -51,7 +51,7 @@ public interface IGuiElement extends
      * This method scrolls to the element with an given offset.
      * In difference to {@link #scrollToElement(int)} it adds the offset, not substracts it.
      */
-    IGuiElement scrollTo(final int yOffset);
+    IGuiElement scrollTo(int yOffset);
     IFrameLogic getFrameLogic();
 
     /**
@@ -59,15 +59,15 @@ public interface IGuiElement extends
      */
     @Override
     @Deprecated
-    IGuiElement getSubElement(final By by);
+    IGuiElement getSubElement(By by);
 
     @Override
     @Deprecated
-    IGuiElement getSubElement(final Locate locator);
+    IGuiElement getSubElement(Locate locator);
 
     @Override
     @Deprecated
-    IGuiElement scrollToElement(final int yOffset);
+    IGuiElement scrollToElement(int yOffset);
 
     @Override
     @Deprecated
@@ -75,7 +75,7 @@ public interface IGuiElement extends
 
     @Override
     @Deprecated
-    String getCssValue(final String cssIdentifier);
+    String getCssValue(String cssIdentifier);
 
     @Override
     @Deprecated
@@ -107,7 +107,7 @@ public interface IGuiElement extends
 
     @Override
     @Deprecated
-    int getLengthOfValueAfterSendKeys(final String textToInput);
+    int getLengthOfValueAfterSendKeys(String textToInput);
 
     @Override
     @Deprecated
@@ -115,7 +115,7 @@ public interface IGuiElement extends
 
     @Override
     @Deprecated
-    boolean isVisible(final boolean complete);
+    boolean isVisible(boolean complete);
 
     @Override
     @Deprecated
@@ -128,7 +128,7 @@ public interface IGuiElement extends
     /**
      * Fluent {@link IGuiElement} overrides
      */
-    IGuiElement select(final Boolean select);
+    IGuiElement select(Boolean select);
 
     @Override
     IGuiElement click();
@@ -152,7 +152,7 @@ public interface IGuiElement extends
     IGuiElement highlight();
 
     @Override
-    IGuiElement swipe(final int offsetX, final int offSetY);
+    IGuiElement swipe(int offsetX, int offSetY);
 
     @Override
     IGuiElement select();
@@ -161,10 +161,10 @@ public interface IGuiElement extends
     IGuiElement deselect();
 
     @Override
-    IGuiElement type(final String text);
+    IGuiElement type(String text);
 
     @Override
-    IGuiElement sendKeys(final CharSequence... charSequences);
+    IGuiElement sendKeys(CharSequence... charSequences);
 
     @Override
     IGuiElement clear();

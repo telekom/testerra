@@ -52,7 +52,7 @@ public interface GuiElementFacade extends GuiElementCore {
     GuiElementFacade highlight();
 
     @Override
-    GuiElementFacade swipe(final int offsetX, final int offSetY);
+    GuiElementFacade swipe(int offsetX, int offSetY);
 
     @Override
     GuiElementFacade select();
@@ -61,10 +61,10 @@ public interface GuiElementFacade extends GuiElementCore {
     GuiElementFacade deselect();
 
     @Override
-    GuiElementFacade type(final String text);
+    GuiElementFacade type(String text);
 
     @Override
-    GuiElementFacade sendKeys(final CharSequence... charSequences);
+    GuiElementFacade sendKeys(CharSequence... charSequences);
 
     @Override
     GuiElementFacade clear();

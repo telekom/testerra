@@ -4,12 +4,12 @@ import org.openqa.selenium.WebDriver;
 
 public interface GuiElementFactory {
     IGuiElement create(
-        final Locate locator,
-        final WebDriver webDriver,
-        final IGuiElement parent
+        Locate locator,
+        WebDriver webDriver,
+        IGuiElement parent
     );
     IGuiElement create(
-        final Locate locator,
-        final WebDriver webDriver
+        Locate locator,
+        WebDriver webDriver
     );
 }

@@ -60,6 +60,11 @@ public class GuiElementNewApiTest extends AbstractTestSitesTest {
     public void test_NewApi_Page_title_length_fails() {
         try {
             FluentTestPage page = prepareTestPage();
+//            collect(
+//                page.title().length().greaterThan(10),
+//                page.title().length().greaterThan(10),
+//                page.title().length().greaterThan(10)
+//            );
             page.title().length().greaterThan(10);
         } catch (TimeoutException e) {
             instantAssertion.assertEndsWith(e.getCause().getMessage(), "[10] is greater than [10]", e.getCause().getMessage());

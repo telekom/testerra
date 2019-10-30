@@ -210,8 +210,8 @@ public class GuiElement implements IGuiElement, Loggable {
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
         //guiElementFacade = new GuiElementFace(guiElementFacade, guiElementData);
 
-        int delayAfterAction = Properties.DELAY_AFTER_ACTION_MILLIS.asInt();
-        int delayBeforeAction = Properties.DELAY_BEFORE_ACTION_MILLIS.asInt();
+        int delayAfterAction = Properties.DELAY_AFTER_ACTION_MILLIS.asLong().intValue();
+        int delayBeforeAction = Properties.DELAY_BEFORE_ACTION_MILLIS.asLong().intValue();
         if (delayAfterAction > 0 || delayBeforeAction > 0) {
             guiElementFacade = new DelayActionsGuiElementFacade(guiElementFacade, delayBeforeAction, delayAfterAction, guiElementData);
         }

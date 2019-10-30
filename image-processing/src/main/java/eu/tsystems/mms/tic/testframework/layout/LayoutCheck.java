@@ -57,20 +57,21 @@ public final class LayoutCheck {
             this.defaultValue = defaultValue;
             return this;
         }
+
         @Override
         public Double asDouble() {
-            return PropertyManager.getDoubleProperty(property, (Double) defaultValue);
+            return PropertyManager.parser.getDoubleProperty(property, defaultValue);
         }
         @Override
         public Long asLong() {
-            return PropertyManager.getLongProperty(property, (Long)defaultValue);
+            return PropertyManager.parser.getLongProperty(property, defaultValue);
         }
-        @Override
-        public Integer asInt() { return PropertyManager.getIntProperty(property, (Integer)defaultValue); }
         @Override
         public Boolean asBool() {
-            return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue);
+            return PropertyManager.parser.getBooleanProperty(property, defaultValue);
         }
+        @Override
+        public String asString() { return PropertyManager.parser.getProperty(property, defaultValue); }
     }
 
     public static class MatchStep {

@@ -58,16 +58,17 @@ public interface IGuiElement extends
             this.defaultValue = defaultValue;
             return this;
         }
+
         @Override
         public Double asDouble() {
-            return PropertyManager.getDoubleProperty(property, (Double) defaultValue);
+            return PropertyManager.parser.getDoubleProperty(property, defaultValue);
         }
         @Override
-        public Long asLong() { return PropertyManager.getLongProperty(property, (Long)defaultValue); }
+        public Long asLong() { return PropertyManager.parser.getLongProperty(property, defaultValue); }
         @Override
-        public Integer asInt() { return PropertyManager.getIntProperty(property, (Integer) defaultValue); }
+        public Boolean asBool() { return PropertyManager.parser.getBooleanProperty(property, defaultValue); }
         @Override
-        public Boolean asBool() { return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue); }
+        public String asString() { return PropertyManager.parser.getProperty(property, defaultValue); }
     }
     /**
      * New Features

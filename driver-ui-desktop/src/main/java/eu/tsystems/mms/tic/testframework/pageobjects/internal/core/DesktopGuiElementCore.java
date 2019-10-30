@@ -145,8 +145,8 @@ public class DesktopGuiElementCore implements
         long start = System.currentTimeMillis();
         List<WebElement> elements = findWebElements();
         logTimings(start, Timings.getFindCounter());
-        if (IGuiElement.Properties.DELAY_AFTER_FIND_MILLIS.asInt() > 0) {
-            TimerUtils.sleep(IGuiElement.Properties.DELAY_AFTER_FIND_MILLIS.asInt());
+        if (IGuiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong() > 0) {
+            TimerUtils.sleep(IGuiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong().intValue());
         }
         return elements.size();
     }

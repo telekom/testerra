@@ -47,9 +47,12 @@ public class Testerra {
         @Override
         public Long asLong() { return PropertyManager.getLongProperty(property, (Long)defaultValue); }
         @Override
-        public Integer asInt() { return PropertyManager.getIntProperty(property, (Integer) defaultValue); }
-        @Override
         public Boolean asBool() { return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue); }
+
+        @Override
+        public String asString() {
+            return null;
+        }
     }
 
     /**

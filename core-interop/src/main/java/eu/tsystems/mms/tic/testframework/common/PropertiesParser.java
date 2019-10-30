@@ -20,9 +20,8 @@
 package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.transfer.BooleanPackedResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -36,15 +35,13 @@ import java.util.regex.Pattern;
  * <p/>
  * Created by peter on 01.09.14.
  */
-public final class PropertiesParser {
+public final class PropertiesParser implements Loggable {
 
     private static final Pattern patternReplace = Pattern.compile("\\{[^\\}]*\\}");
     private static final String REGEX_SENSIBLE = "@SENSIBLE@";
     private static final Pattern PATTERN_SENSIBLE = Pattern.compile(REGEX_SENSIBLE);
 
     public final List<Properties> properties = new LinkedList();
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesParser.class);
 
     /**
      * Parses a property and searches for testerra properties replacement marks: "{...}".
@@ -83,7 +80,7 @@ public final class PropertiesParser {
                 String value = pGetPrioritizedProperty(key);
 
                 if (value == null) {
-                    LOGGER.warn("Property " + match + " not found");
+                    log().warn("Property " + match + " not found");
                 } else {
                     // look if SENSIBLE
                     final BooleanPackedResponse<String> response = findAndVoidSENSIBLETag(value);
@@ -102,7 +99,7 @@ public final class PropertiesParser {
                     if (sensible) {
                         value = "###########";
                     }
-                    LOGGER.info("Replacing " + match + " with >" + value + "<");
+                    log().info("Replacing " + match + " with >" + value + "<");
                 }
             }
         }
@@ -151,13 +148,12 @@ public final class PropertiesParser {
         return value;
     }
 
-    public String getProperty(final String key, final String defaultValue) {
-        final String value = getProperty(key);
+    public String getProperty(String key, Object defaultValue) {
+        String value = getProperty(key);
         if (value == null || value.length() <= 0) {
-            return defaultValue;
-        } else {
-            return value;
+            value = defaultValue.toString();
         }
+        return value;
     }
 
     private String pGetPrioritizedProperty(final String key) {
@@ -176,12 +172,15 @@ public final class PropertiesParser {
      *
      * @return property value
      */
-    public int getIntProperty(final String key, final int defaultValue) {
-        final String prop = getProperty(key);
+    public int getIntProperty(String key, Object defaultValue) {
+        String prop = getProperty(key);
+        if (prop == null) {
+            prop = defaultValue.toString();
+        }
         try {
             return Integer.parseInt(prop);
         } catch (final NumberFormatException e) {
-            return defaultValue;
+            return (Integer)defaultValue;
         }
     }
 
@@ -192,13 +191,8 @@ public final class PropertiesParser {
      *
      * @return property value or -1 if value cannot be parsed.
      */
-    public int getIntProperty(final String key) {
-        final String prop = getProperty(key);
-        try {
-            return Integer.parseInt(prop);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+    public int getIntProperty(String key) {
+       return getIntProperty(key, -1);
     }
 
     /**
@@ -209,15 +203,15 @@ public final class PropertiesParser {
      *
      * @return property value
      */
-    public double getDoubleProperty(String key, double defaultValue) {
-        final String prop = getProperty(key);
+    public double getDoubleProperty(String key, Object defaultValue) {
+        String prop = getProperty(key);
         if (prop == null) {
-            return defaultValue;
+            prop = defaultValue.toString();
         }
         try {
             return Double.parseDouble(prop);
         } catch (final NumberFormatException e) {
-            return defaultValue;
+            return (Double)defaultValue;
         }
     }
 
@@ -228,16 +222,8 @@ public final class PropertiesParser {
      *
      * @return property value or -1 if value cannot be parsed or is not set.
      */
-    public double getDoubleProperty(final String key) {
-        final String prop = getProperty(key);
-        if (prop == null) {
-            return -1;
-        }
-        try {
-            return Double.parseDouble(prop);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+    public double getDoubleProperty(String key) {
+        return getDoubleProperty(key, -1);
     }
 
     /**
@@ -248,15 +234,15 @@ public final class PropertiesParser {
      *
      * @return property value
      */
-    public long getLongProperty(String key, long defaultValue) {
-        final String prop = getProperty(key);
+    public long getLongProperty(String key, Object defaultValue) {
+        String prop = getProperty(key);
         if (prop == null) {
-            return defaultValue;
+            prop = defaultValue.toString();
         }
         try {
             return Long.parseLong(prop);
         } catch (final NumberFormatException e) {
-            return defaultValue;
+            return (Long)defaultValue;
         }
     }
 
@@ -267,16 +253,8 @@ public final class PropertiesParser {
      *
      * @return property value or -1 if value cannot be parsed or is not set.
      */
-    public long getLongProperty(final String key) {
-        final String prop = getProperty(key);
-        if (prop == null) {
-            return -1;
-        }
-        try {
-            return Long.parseLong(prop);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+    public long getLongProperty(String key) {
+        return getLongProperty(key, -1);
     }
 
     /**
@@ -288,12 +266,8 @@ public final class PropertiesParser {
      *
      * @see java.lang.Boolean#parseBoolean(String)
      */
-    public boolean getBooleanProperty(final String key) {
-        final String prop = getProperty(key);
-        if (prop == null) {
-            return false;
-        }
-        return Boolean.parseBoolean(prop.trim());
+    public boolean getBooleanProperty(String key) {
+        return getBooleanProperty(key, false);
     }
 
     /**
@@ -304,18 +278,12 @@ public final class PropertiesParser {
      *
      * @return property value
      */
-    public boolean getBooleanProperty(final String key, final boolean defaultValue) {
-        final String prop = getProperty(key);
+    public boolean getBooleanProperty(final String key, Object defaultValue) {
+        String prop = getProperty(key);
         if (prop == null) {
-            return defaultValue;
+            prop = defaultValue.toString();
         }
-        if (prop.equalsIgnoreCase("true")) {
-            return true;
-        } else if (prop.equalsIgnoreCase("false")) {
-            return false;
-        } else {
-            return defaultValue;
-        }
+        return Boolean.parseBoolean(prop.trim());
     }
 
 }

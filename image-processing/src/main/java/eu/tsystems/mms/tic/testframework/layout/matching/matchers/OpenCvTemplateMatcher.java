@@ -35,7 +35,7 @@ public class OpenCvTemplateMatcher implements
     /**
      * Defines at which score a region is considered a match. Should be as high as possible and as low as needed.
      */
-    protected double matchThreshold = LayoutCheck.Properties.LAYOUTCHECK_MATCH_THRESHOLD.asDouble();
+    protected double matchThreshold = LayoutCheck.Properties.MATCH_THRESHOLD.asDouble();
     protected MatchingMode matchingMode;
 
     public OpenCvTemplateMatcher(MatchingMode matchingMode) {

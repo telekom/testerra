@@ -156,8 +156,8 @@ public class AnnotationReader {
     }
 
     private void loadProperties() {
-        maximalFractionOfMarkedPixels = LayoutCheck.Properties.LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO.asLong().intValue();
-        minimumMarkedPixels = LayoutCheck.Properties.LAYOUTCHECK_MINIMUM_MARKED_PIXELS.asLong().intValue();
+        maximalFractionOfMarkedPixels = LayoutCheck.Properties.MAXIMUM_MARKED_PIXELS_RATIO.asLong().intValue();
+        minimumMarkedPixels = LayoutCheck.Properties.MINIMUM_MARKED_PIXELS.asLong().intValue();
     }
 
     private LayoutElement createLayoutElement(Point2D startingPoint, HashSet<Point2D> markedPoints) {

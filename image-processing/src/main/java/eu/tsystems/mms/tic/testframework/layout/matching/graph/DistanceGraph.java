@@ -174,7 +174,7 @@ public class DistanceGraph {
      * potentially be improved by changing some parameters.
      */
     public void checkForParameterWarnings() {
-        distanceBetweenMultipleMatchesToProduceWarning = LayoutCheck.Properties.LAYOUTCHECK_INTERNAL_PARAMETER_4.asDouble();
+        distanceBetweenMultipleMatchesToProduceWarning = LayoutCheck.Properties.INTERNAL_PARAMETER_4.asDouble();
 
         HashSet<Edge> warnedEdges = new HashSet<Edge>();
         for (TemplateNode templateNode : templateNodes) {
@@ -209,7 +209,7 @@ public class DistanceGraph {
      * This method tries to detect such a case and adjust both coordinate systems.
      */
     public void incorporateSubImageDisplacement() {
-        minimumSimilarMovementErrorsForDisplacementCorrection = LayoutCheck.Properties.LAYOUTCHECK_INTERNAL_PARAMETER_3.asDouble();
+        minimumSimilarMovementErrorsForDisplacementCorrection = LayoutCheck.Properties.INTERNAL_PARAMETER_3.asDouble();
 
         GroupMovementDetector groupMovementDetector = new GroupMovementDetector();
         List<List<ElementMovedError>> movementErrorGroups = groupMovementDetector.getMovementErrorGroups(this);

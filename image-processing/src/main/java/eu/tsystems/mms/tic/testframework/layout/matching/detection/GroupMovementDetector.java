@@ -32,12 +32,12 @@ public class GroupMovementDetector extends MovedElementDetector {
     private boolean ignoreGroups;
 
     public GroupMovementDetector() {
-        ignorePropertyKey = LayoutCheck.Properties.LAYOUTCHECK_IGNORE_MOVEMENT.asString();
-        ignoreGroups = LayoutCheck.Properties.LAYOUTCHECK_IGNORE_GROUP_MOVEMENT.asBool();
+        ignorePropertyKey = LayoutCheck.Properties.IGNORE_MOVEMENT.asString();
+        ignoreGroups = LayoutCheck.Properties.IGNORE_GROUP_MOVEMENT.asBool();
     }
 
     private void loadProperties() {
-        maximalIntraGroupMovement = LayoutCheck.Properties.LAYOUTCHECK_INTRA_GROUPING_THRESHOLD.asLong().intValue();
+        maximalIntraGroupMovement = LayoutCheck.Properties.INTRA_GROUPING_THRESHOLD.asLong().intValue();
     }
 
     @Override

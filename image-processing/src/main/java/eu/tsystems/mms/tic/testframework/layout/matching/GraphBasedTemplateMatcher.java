@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class GraphBasedTemplateMatcher extends TemplateMatcher {
 
-    private double minimalDistanceBetweenMatches = LayoutCheck.Properties.LAYOUTCHECK_INTERNAL_PARAMETER_1.asDouble();
+    private double minimalDistanceBetweenMatches = LayoutCheck.Properties.INTERNAL_PARAMETER_1.asDouble();
 
     private final TemplateMatchingAlgorithm templateMatchingAlgorithm;
 

@@ -94,7 +94,7 @@ public class LayoutComparator {
      * Public constructor
      */
     public LayoutComparator() {
-        String matcherProperty = LayoutCheck.Properties.LAYOUTCHECK_MATCHING_ALGORITHM.asString();
+        String matcherProperty = LayoutCheck.Properties.MATCHING_ALGORITHM.asString();
         TemplateMatchingAlgorithm templateMatchingAlgorithm;
         if (matcherProperty.equals("opencvtemplatematcher")) {
             templateMatchingAlgorithm = new OpenCvTemplateMatcher(OpenCvTemplateMatcher.MatchingMode.CCOEFF_NORMED);
@@ -245,7 +245,7 @@ public class LayoutComparator {
     }
 
     private void loadProperties() {
-        minimalSizeDifferenceOfSubImages = LayoutCheck.Properties.LAYOUTCHECK_INTERNAL_PARAMETER_2.asLong().intValue();
+        minimalSizeDifferenceOfSubImages = LayoutCheck.Properties.INTERNAL_PARAMETER_2.asLong().intValue();
     }
 
     private static Mat loadImageFromFile(final String absoluteFileName) throws FileNotFoundException {

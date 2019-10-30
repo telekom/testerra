@@ -27,7 +27,7 @@ import java.util.List;
 public class AmbiguousMatchDetector extends FeatureDetector {
 
     public AmbiguousMatchDetector() {
-        ignorePropertyKey = LayoutCheck.Properties.LAYOUTCHECK_IGNORE_AMBIGUOUS_MATCH.asString();
+        ignorePropertyKey = LayoutCheck.Properties.IGNORE_AMBIGUOUS_MATCH.asString();
     }
 
     @Override

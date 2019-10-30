@@ -37,58 +37,58 @@ import java.util.List;
 public final class LayoutCheck {
 
     public enum Properties implements IProperties {
-        MODE("tt.layoutcheck.mode", "pixel"),
-        TAKEREFERENCE("tt.layoutcheck.takereference", false),
+        MODE("mode", "pixel"),
+        TAKEREFERENCE("takereference", false),
         // if true, will use non-functional asserts
-        //LAYOUTCHECK_ASSERT_INFO_MODE("tt.layoutcheck.assert.info.mode", null),
-        LAYOUTCHECK_REFERENCE_NAMETEMPLATE("tt.layoutcheck.reference.nametemplate", "Reference%s.png"),
-        LAYOUTCHECK_ANNOTATED_NAMETEMPLATE("tt.layoutcheck.annotated.nametemplate", "ReferenceAnnotated%s.png"),
-        LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE("tt.layoutcheck.annotationdata.nametemplate", "Reference%s_data.json"),
-        LAYOUTCHECK_ACTUAL_NAMETEMPLATE("tt.layoutcheck.actual.nametemplate", "Actual%s.png"),
-        LAYOUTCHECK_DISTANCE_NAMETEMPLATE("tt.layoutcheck.distance.nametemplate", "Distance%s.png"),
-        LAYOUTCHECK_REFERENCE_PATH("tt.layoutcheck.reference.path", "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/reference"),
-        LAYOUTCHECK_DISTANCE_PATH("tt.layoutcheck.distance.path", "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/distance"),
-        LAYOUTCHECK_ACTUAL_PATH("tt.layoutcheck.actual.path", "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/actual"),
-        LAYOUTCHECK_USE_IGNORE_COLOR("tt.layoutcheck.use.ignore.color", false),
-        LAYOUTCHECK_USE_AREA_COLOR("tt.layoutcheck.use.area.color", false),
-        LAYOUTCHECK_PIXEL_RGB_DEVIATION_PERCENT("tt.layout.pixel.rgb.deviation.percent", 0),
+        //LAYOUTCHECK_ASSERT_INFO_MODE("assert.info.mode", null),
+        REFERENCE_NAMETEMPLATE("reference.nametemplate", "Reference%s.png"),
+        ANNOTATED_NAMETEMPLATE("annotated.nametemplate", "ReferenceAnnotated%s.png"),
+        ANNOTATIONDATA_NAMETEMPLATE("annotationdata.nametemplate", "Reference%s_data.json"),
+        ACTUAL_NAMETEMPLATE("actual.nametemplate", "Actual%s.png"),
+        DISTANCE_NAMETEMPLATE("distance.nametemplate", "Distance%s.png"),
+        REFERENCE_PATH("reference.path", "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/reference"),
+        DISTANCE_PATH("distance.path", "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/distance"),
+        ACTUAL_PATH("actual.path", "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/actual"),
+        USE_IGNORE_COLOR("use.ignore.color", false),
+        USE_AREA_COLOR("use.area.color", false),
+        PIXEL_RGB_DEVIATION_PERCENT("pixel.rgb.deviation.percent", 0),
 
         // Properties for the layout comparator working with
-        LAYOUTCHECK_MATCH_THRESHOLD("tt.layoutcheck.match.threshold", 0.95d),
-        LAYOUTCHECK_DISPLACEMENT_THRESHOLD("tt.layoutcheck.displacement.threshold", 5),
-        LAYOUTCHECK_INTRA_GROUPING_THRESHOLD("tt.layoutcheck.intra.grouping.threshold", 5),
-        LAYOUTCHECK_MINIMUM_MARKED_PIXELS("tt.layoutcheck.minimum.marked.pixels", 12),
-        LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO("tt.layoutcheck.maximum.marked.pixels.ratio", 0.04d),
-        LAYOUTCHECK_MATCHING_ALGORITHM("tt.layoutcheck.matching.algorithm", "opencvtemplatematcher"),
+        MATCH_THRESHOLD("match.threshold", 0.95d),
+        DISPLACEMENT_THRESHOLD("displacement.threshold", 5),
+        INTRA_GROUPING_THRESHOLD("intra.grouping.threshold", 5),
+        MINIMUM_MARKED_PIXELS("minimum.marked.pixels", 12),
+        MAXIMUM_MARKED_PIXELS_RATIO("maximum.marked.pixels.ratio", 0.04d),
+        MATCHING_ALGORITHM("matching.algorithm", "opencvtemplatematcher"),
         /**
          * minimalDistanceBetweenMatches
          */
-        LAYOUTCHECK_INTERNAL_PARAMETER_1("tt.layoutcheck.internal.parameter.1", 5),
+        INTERNAL_PARAMETER_1("internal.parameter.1", 5),
         /**
          * minimalSizeDifferenceOfSubImages
          */
-        LAYOUTCHECK_INTERNAL_PARAMETER_2("tt.layoutcheck.internal.parameter.2", 10),
+        INTERNAL_PARAMETER_2("internal.parameter.2", 10),
         /**
          * minimumSimilarMovementErrorsForDisplacementCorrection
          */
-        LAYOUTCHECK_INTERNAL_PARAMETER_3("tt.layoutcheck.internal.parameter.3",  0.51d),
+        INTERNAL_PARAMETER_3("internal.parameter.3",  0.51d),
         /**
          * distanceBetweenMultipleMatchesToProduceWarning
          */
-        LAYOUTCHECK_INTERNAL_PARAMETER_4("tt.layoutcheck.internal.parameter.4", 14),
-        LAYOUTCHECK_IGNORE_AMBIGUOUS_MOVEMENT("tt.layoutcheck.ignore.ambiguous.movement", null),
-        LAYOUTCHECK_IGNORE_MOVEMENT("tt.layoutcheck.ignore.movement", null),
-        LAYOUTCHECK_IGNORE_GROUP_MOVEMENT("tt.layoutcheck.ignore.group.movement", false),
-        LAYOUTCHECK_IGNORE_MISSING_ELEMENTS("tt.layoutcheck.ignore.missing.elements", null),
-        LAYOUTCHECK_IGNORE_AMBIGUOUS_MATCH("tt.layoutcheck.ignore.ambiguous.match", null),
+        INTERNAL_PARAMETER_4("internal.parameter.4", 14),
+        IGNORE_AMBIGUOUS_MOVEMENT("ignore.ambiguous.movement", null),
+        IGNORE_MOVEMENT("ignore.movement", null),
+        IGNORE_GROUP_MOVEMENT("ignore.group.movement", false),
+        IGNORE_MISSING_ELEMENTS("ignore.missing.elements", null),
+        IGNORE_AMBIGUOUS_MATCH("ignore.ambiguous.match", null),
 
         /**
          * If below 1, the value is regarded as percent threshold for erroneous pixels / all edge and text pixel. If 1 or
          * greater, it is regarded as absolute error pixel count.
          */
-        //LAYOUTCHECK_TEXT_ERRORDETECTOR_ERROR_THRESHOLD("tt.layoutcheck.text.error.detector.error.threshold", null),
-        LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH("tt.layoutcheck.text.error.detector.minimal.line.length", 25),
-        LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGESTRENGTH("tt.layoutcheck.text.error.detector.minimal.edge.strength", 5),
+        //LAYOUTCHECK_TEXT_ERRORDETECTOR_ERROR_THRESHOLD("text.error.detector.error.threshold", null),
+        LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH("text.error.detector.minimal.line.length", 25),
+        LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGESTRENGTH("text.error.detector.minimal.edge.strength", 5),
         ;
         private final String property;
         private Object defaultValue;
@@ -100,7 +100,7 @@ public final class LayoutCheck {
 
         @Override
         public String toString() {
-            return property;
+            return String.format("tt.layoutcheck.%s", property);
         }
         public IProperties useDefault(Object defaultValue) {
             this.defaultValue = defaultValue;
@@ -109,18 +109,18 @@ public final class LayoutCheck {
 
         @Override
         public Double asDouble() {
-            return PropertyManager.parser.getDoubleProperty(property, defaultValue);
+            return PropertyManager.parser.getDoubleProperty(toString(), defaultValue);
         }
         @Override
         public Long asLong() {
-            return PropertyManager.parser.getLongProperty(property, defaultValue);
+            return PropertyManager.parser.getLongProperty(toString(), defaultValue);
         }
         @Override
         public Boolean asBool() {
-            return PropertyManager.parser.getBooleanProperty(property, defaultValue);
+            return PropertyManager.parser.getBooleanProperty(toString(), defaultValue);
         }
         @Override
-        public String asString() { return PropertyManager.parser.getProperty(property, defaultValue); }
+        public String asString() { return PropertyManager.parser.getProperty(toString(), defaultValue); }
     }
 
     public static class MatchStep {
@@ -152,11 +152,11 @@ public final class LayoutCheck {
     }
 
     private static final double NO_DISTANCE = 0;
-    private static final int RGB_DEVIATION_PERCENT = Properties.LAYOUTCHECK_PIXEL_RGB_DEVIATION_PERCENT.asLong().intValue();
+    private static final int RGB_DEVIATION_PERCENT = Properties.PIXEL_RGB_DEVIATION_PERCENT.asLong().intValue();
     private static final double RGB_MAX_DEVIATION = 255;
-    private static final File REFERENCE_IMAGES_PATH = new File(Properties.LAYOUTCHECK_REFERENCE_PATH.asString());
-    private static final File DISTANCE_IMAGES_PATH = new File(Properties.LAYOUTCHECK_DISTANCE_PATH.asString());
-    private static final File ACTUAL_IMAGES_PATH = new File(Properties.LAYOUTCHECK_ACTUAL_PATH.asString());
+    private static final File REFERENCE_IMAGES_PATH = new File(Properties.REFERENCE_PATH.asString());
+    private static final File DISTANCE_IMAGES_PATH = new File(Properties.DISTANCE_PATH.asString());
+    private static final File ACTUAL_IMAGES_PATH = new File(Properties.ACTUAL_PATH.asString());
 
     private static HashMap<String, Integer> runCount = new HashMap<String, Integer>();
 
@@ -293,13 +293,13 @@ public final class LayoutCheck {
     ) {
         final MatchStep step = new MatchStep();
         step.referenceFileName = Paths.get(REFERENCE_IMAGES_PATH + "/" +
-            String.format(Properties.LAYOUTCHECK_REFERENCE_NAMETEMPLATE.asString(), targetImageName)
+            String.format(Properties.REFERENCE_NAMETEMPLATE.asString(), targetImageName)
         );
         step.annotationDataFileName = Paths.get(REFERENCE_IMAGES_PATH + "/" +
-            String.format(Properties.LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE.asString(), targetImageName)
+            String.format(Properties.ANNOTATIONDATA_NAMETEMPLATE.asString(), targetImageName)
         );
         step.annotatedReferenceFileName = Paths.get(REFERENCE_IMAGES_PATH + "/" +
-            String.format(Properties.LAYOUTCHECK_ANNOTATED_NAMETEMPLATE.asString(), targetImageName)
+            String.format(Properties.ANNOTATED_NAMETEMPLATE.asString(), targetImageName)
         );
 
         String runCountModifier = "";
@@ -325,7 +325,7 @@ public final class LayoutCheck {
             step.consecutiveTargetImageName = targetImageName + runCountModifier;
             step.actualFileName = Paths.get(
                 ACTUAL_IMAGES_PATH + "/" +
-                String.format(Properties.LAYOUTCHECK_ACTUAL_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
+                String.format(Properties.ACTUAL_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
             );
 
             try {
@@ -338,7 +338,7 @@ public final class LayoutCheck {
 
             // create distance file name
             step.distanceFileName = Paths.get(DISTANCE_IMAGES_PATH + "/" +
-                String.format(Properties.LAYOUTCHECK_DISTANCE_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
+                String.format(Properties.DISTANCE_NAMETEMPLATE.asString(), step.consecutiveTargetImageName)
             );
         }
 
@@ -378,7 +378,7 @@ public final class LayoutCheck {
             final BufferedImage referenceImage = ImageIO.read(refFile);
             final BufferedImage actualImage = ImageIO.read(actualFile);
 
-            final boolean useIgnoreColor = Properties.LAYOUTCHECK_USE_IGNORE_COLOR.asBool();
+            final boolean useIgnoreColor = Properties.USE_IGNORE_COLOR.asBool();
 
             // create distance image to given reference
             step.distance = generateDistanceImage(
@@ -478,7 +478,7 @@ public final class LayoutCheck {
         }
 
         List<Rectangle> markedRectangles = null;
-        boolean useExplicitRectangles = Properties.LAYOUTCHECK_USE_AREA_COLOR.asBool();
+        boolean useExplicitRectangles = Properties.USE_AREA_COLOR.asBool();
         if (!useIgnoreColor && useExplicitRectangles) {
             AnnotationReader annotationReader = new AnnotationReader();
             markedRectangles = annotationReader.readAnnotationDimensions(expectedImage);

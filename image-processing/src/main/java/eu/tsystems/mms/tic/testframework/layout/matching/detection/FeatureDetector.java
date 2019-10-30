@@ -65,7 +65,7 @@ public abstract class FeatureDetector {
     }
 
     private void loadProperties() {
-        displacementConsideredAsError = LayoutCheck.Properties.LAYOUTCHECK_DISPLACEMENT_THRESHOLD.asDouble();
+        displacementConsideredAsError = LayoutCheck.Properties.DISPLACEMENT_THRESHOLD.asDouble();
         // This should be done more nicely in the future - every Detector who does not set the ignorePropertyKey is considered
         // as detector of correct matches!
         if (ignorePropertyKey != null) {

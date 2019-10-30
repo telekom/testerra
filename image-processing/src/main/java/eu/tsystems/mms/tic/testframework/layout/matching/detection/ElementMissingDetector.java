@@ -25,7 +25,7 @@ import java.util.List;
 public class ElementMissingDetector extends FeatureDetector {
 
     public ElementMissingDetector() {
-        ignorePropertyKey = LayoutCheck.Properties.LAYOUTCHECK_IGNORE_MISSING_ELEMENTS.toString();
+        ignorePropertyKey = LayoutCheck.Properties.IGNORE_MISSING_ELEMENTS.toString();
     }
 
     @Override

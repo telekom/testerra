@@ -27,7 +27,7 @@ import java.util.List;
 public class AmbiguousMovementDetector extends FeatureDetector {
 
     public AmbiguousMovementDetector() {
-        ignorePropertyKey = LayoutCheck.Properties.LAYOUTCHECK_IGNORE_AMBIGUOUS_MOVEMENT.toString();
+        ignorePropertyKey = LayoutCheck.Properties.IGNORE_AMBIGUOUS_MOVEMENT.toString();
     }
 
     @Override

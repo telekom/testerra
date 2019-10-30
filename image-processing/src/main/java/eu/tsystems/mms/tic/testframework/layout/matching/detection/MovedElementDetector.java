@@ -29,7 +29,7 @@ import java.util.List;
 public class MovedElementDetector extends FeatureDetector {
 
     public MovedElementDetector() {
-        ignorePropertyKey = LayoutCheck.Properties.LAYOUTCHECK_IGNORE_MOVEMENT.toString();
+        ignorePropertyKey = LayoutCheck.Properties.IGNORE_MOVEMENT.toString();
     }
 
     @Override

@@ -7,7 +7,7 @@
  */
 package eu.tsystems.mms.tic.testframework.layout.matching.detection;
 
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.AmbiguousMatchError;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
@@ -27,7 +27,7 @@ import java.util.List;
 public class AmbiguousMatchDetector extends FeatureDetector {
 
     public AmbiguousMatchDetector() {
-        ignorePropertyKey = TesterraProperties.LAYOUTCHECK_IGNORE_AMBIGUOUS_MATCH;
+        ignorePropertyKey = LayoutCheck.Properties.LAYOUTCHECK_IGNORE_AMBIGUOUS_MATCH.asString();
     }
 
     @Override

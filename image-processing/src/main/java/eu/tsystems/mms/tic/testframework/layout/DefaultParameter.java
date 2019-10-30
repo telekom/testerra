@@ -3,6 +3,7 @@ package eu.tsystems.mms.tic.testframework.layout;
 /**
  * Created by rnhb on 20.01.2015.
  */
+@Deprecated
 public class DefaultParameter {
     public static final double LAYOUTCHECK_MATCH_THRESHOLD = 0.95d;
     public static final int LAYOUTCHECK_DISPLACEMENT_THRESHOLD = 5;

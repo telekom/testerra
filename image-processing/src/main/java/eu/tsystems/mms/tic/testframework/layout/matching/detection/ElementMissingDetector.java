@@ -7,7 +7,7 @@
  */
 package eu.tsystems.mms.tic.testframework.layout.matching.detection;
 
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.ElementMissingError;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
@@ -25,7 +25,7 @@ import java.util.List;
 public class ElementMissingDetector extends FeatureDetector {
 
     public ElementMissingDetector() {
-        ignorePropertyKey = TesterraProperties.LAYOUTCHECK_IGNORE_MISSING_ELEMENTS;
+        ignorePropertyKey = LayoutCheck.Properties.LAYOUTCHECK_IGNORE_MISSING_ELEMENTS.toString();
     }
 
     @Override

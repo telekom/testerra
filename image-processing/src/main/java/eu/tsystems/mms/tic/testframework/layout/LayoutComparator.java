@@ -8,8 +8,6 @@
 package eu.tsystems.mms.tic.testframework.layout;
 
 import eu.tsystems.mms.tic.testframework.annotator.AnnotationContainer;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.layout.core.DistanceGraphInterpreter;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
@@ -17,7 +15,11 @@ import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.matching.GraphBasedTemplateMatcher;
 import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.TemplateMatcher;
-import eu.tsystems.mms.tic.testframework.layout.matching.detection.*;
+import eu.tsystems.mms.tic.testframework.layout.matching.detection.AmbiguousMatchDetector;
+import eu.tsystems.mms.tic.testframework.layout.matching.detection.AmbiguousMovementDetector;
+import eu.tsystems.mms.tic.testframework.layout.matching.detection.CorrectMatchDetector;
+import eu.tsystems.mms.tic.testframework.layout.matching.detection.ElementMissingDetector;
+import eu.tsystems.mms.tic.testframework.layout.matching.detection.GroupMovementDetector;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
 import eu.tsystems.mms.tic.testframework.layout.matching.graph.DistanceGraph;
 import eu.tsystems.mms.tic.testframework.layout.matching.matchers.OpenCvTemplateMatcher;
@@ -92,7 +94,7 @@ public class LayoutComparator {
      * Public constructor
      */
     public LayoutComparator() {
-        String matcherProperty = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_MATCHING_ALGORITHM, "opencvtemplatematcher");
+        String matcherProperty = LayoutCheck.Properties.LAYOUTCHECK_MATCHING_ALGORITHM.asString();
         TemplateMatchingAlgorithm templateMatchingAlgorithm;
         if (matcherProperty.equals("opencvtemplatematcher")) {
             templateMatchingAlgorithm = new OpenCvTemplateMatcher(OpenCvTemplateMatcher.MatchingMode.CCOEFF_NORMED);
@@ -243,9 +245,7 @@ public class LayoutComparator {
     }
 
     private void loadProperties() {
-        minimalSizeDifferenceOfSubImages = PropertyManager.getIntProperty(
-                TesterraProperties.LAYOUTCHECK_INTERNAL_PARAMETER_2,
-                DefaultParameter.LAYOUTCHECK_INTERNAL_PARAMETER_2);
+        minimalSizeDifferenceOfSubImages = LayoutCheck.Properties.LAYOUTCHECK_INTERNAL_PARAMETER_2.asLong().intValue();
     }
 
     private static Mat loadImageFromFile(final String absoluteFileName) throws FileNotFoundException {

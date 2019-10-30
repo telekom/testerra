@@ -1,8 +1,6 @@
 package eu.tsystems.mms.tic.testframework.layout.matching.matchers;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.layout.DefaultParameter;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
 import eu.tsystems.mms.tic.testframework.layout.core.ValuedPoint2D;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -37,10 +35,7 @@ public class OpenCvTemplateMatcher implements
     /**
      * Defines at which score a region is considered a match. Should be as high as possible and as low as needed.
      */
-    protected double matchThreshold = PropertyManager.getDoubleProperty(
-            TesterraProperties.LAYOUTCHECK_MATCH_THRESHOLD,
-            DefaultParameter.LAYOUTCHECK_MATCH_THRESHOLD);
-
+    protected double matchThreshold = LayoutCheck.Properties.LAYOUTCHECK_MATCH_THRESHOLD.asDouble();
     protected MatchingMode matchingMode;
 
     public OpenCvTemplateMatcher(MatchingMode matchingMode) {

@@ -7,9 +7,7 @@
  */
 package eu.tsystems.mms.tic.testframework.layout.matching.graph;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.layout.DefaultParameter;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
 import eu.tsystems.mms.tic.testframework.layout.core.Point2D;
 import eu.tsystems.mms.tic.testframework.layout.matching.detection.GroupMovementDetector;
@@ -176,9 +174,7 @@ public class DistanceGraph {
      * potentially be improved by changing some parameters.
      */
     public void checkForParameterWarnings() {
-         distanceBetweenMultipleMatchesToProduceWarning = PropertyManager.getDoubleProperty(
-                 TesterraProperties.LAYOUTCHECK_INTERNAL_PARAMETER_4,
-                 DefaultParameter.LAYOUTCHECK_INTERNAL_PARAMETER_4);
+        distanceBetweenMultipleMatchesToProduceWarning = LayoutCheck.Properties.LAYOUTCHECK_INTERNAL_PARAMETER_4.asDouble();
 
         HashSet<Edge> warnedEdges = new HashSet<Edge>();
         for (TemplateNode templateNode : templateNodes) {
@@ -213,9 +209,7 @@ public class DistanceGraph {
      * This method tries to detect such a case and adjust both coordinate systems.
      */
     public void incorporateSubImageDisplacement() {
-        minimumSimilarMovementErrorsForDisplacementCorrection = PropertyManager.getDoubleProperty(
-                TesterraProperties.LAYOUTCHECK_INTERNAL_PARAMETER_3,
-                DefaultParameter.LAYOUTCHECK_INTERNAL_PARAMETER_3);
+        minimumSimilarMovementErrorsForDisplacementCorrection = LayoutCheck.Properties.LAYOUTCHECK_INTERNAL_PARAMETER_3.asDouble();
 
         GroupMovementDetector groupMovementDetector = new GroupMovementDetector();
         List<List<ElementMovedError>> movementErrorGroups = groupMovementDetector.getMovementErrorGroups(this);

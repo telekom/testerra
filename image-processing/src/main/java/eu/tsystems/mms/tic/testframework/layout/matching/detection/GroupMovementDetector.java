@@ -7,9 +7,7 @@
  */
 package eu.tsystems.mms.tic.testframework.layout.matching.detection;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.layout.DefaultParameter;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.ElementMovedError;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.GroupMovedError;
@@ -34,14 +32,12 @@ public class GroupMovementDetector extends MovedElementDetector {
     private boolean ignoreGroups;
 
     public GroupMovementDetector() {
-        ignorePropertyKey = TesterraProperties.LAYOUTCHECK_IGNORE_MOVEMENT;
-        ignoreGroups = PropertyManager.getBooleanProperty(TesterraProperties.LAYOUTCHECK_IGNORE_GROUP_MOVEMENT, false);
+        ignorePropertyKey = LayoutCheck.Properties.LAYOUTCHECK_IGNORE_MOVEMENT.asString();
+        ignoreGroups = LayoutCheck.Properties.LAYOUTCHECK_IGNORE_GROUP_MOVEMENT.asBool();
     }
 
     private void loadProperties() {
-        maximalIntraGroupMovement = PropertyManager.getIntProperty(
-                TesterraProperties.LAYOUTCHECK_INTRA_GROUPING_THRESHOLD,
-                DefaultParameter.LAYOUTCHECK_INTRA_GROUPING_THRESHOLD);
+        maximalIntraGroupMovement = LayoutCheck.Properties.LAYOUTCHECK_INTRA_GROUPING_THRESHOLD.asLong().intValue();
     }
 
     @Override

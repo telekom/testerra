@@ -8,10 +8,8 @@
 package eu.tsystems.mms.tic.testframework.layout.extraction;
 
 import eu.tsystems.mms.tic.testframework.annotator.AnnotationContainer;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.layout.DefaultParameter;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.layout.LayoutComparator;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
 import eu.tsystems.mms.tic.testframework.layout.core.Point2D;
@@ -158,12 +156,8 @@ public class AnnotationReader {
     }
 
     private void loadProperties() {
-        maximalFractionOfMarkedPixels = PropertyManager.getDoubleProperty(
-                TesterraProperties.LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO,
-                DefaultParameter.LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO);
-        minimumMarkedPixels = PropertyManager.getIntProperty(
-                TesterraProperties.LAYOUTCHECK_MINIMUM_MARKED_PIXELS,
-                DefaultParameter.LAYOUTCHECK_MINIMUM_MARKED_PIXELS);
+        maximalFractionOfMarkedPixels = LayoutCheck.Properties.LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO.asLong().intValue();
+        minimumMarkedPixels = LayoutCheck.Properties.LAYOUTCHECK_MINIMUM_MARKED_PIXELS.asLong().intValue();
     }
 
     private LayoutElement createLayoutElement(Point2D startingPoint, HashSet<Point2D> markedPoints) {

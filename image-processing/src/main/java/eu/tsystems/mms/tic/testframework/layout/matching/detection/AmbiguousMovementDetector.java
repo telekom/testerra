@@ -7,7 +7,7 @@
  */
 package eu.tsystems.mms.tic.testframework.layout.matching.detection;
 
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.AmbiguousElementMovedError;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
@@ -27,7 +27,7 @@ import java.util.List;
 public class AmbiguousMovementDetector extends FeatureDetector {
 
     public AmbiguousMovementDetector() {
-        ignorePropertyKey = TesterraProperties.LAYOUTCHECK_IGNORE_AMBIGUOUS_MOVEMENT;
+        ignorePropertyKey = LayoutCheck.Properties.LAYOUTCHECK_IGNORE_AMBIGUOUS_MOVEMENT.toString();
     }
 
     @Override

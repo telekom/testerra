@@ -1,7 +1,6 @@
 package eu.tsystems.mms.tic.testframework.layout.textlayout;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import org.opencv.core.Mat;
 
 import java.util.LinkedList;
@@ -12,8 +11,8 @@ import java.util.List;
  */
 public class LineDetector {
 
-    private final int minLineLength = PropertyManager.getIntProperty(TesterraProperties.LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH, 25);
-    private final double minEdgeStrength = PropertyManager.getDoubleProperty(TesterraProperties.LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH, 5);
+    private final int minLineLength = LayoutCheck.Properties.LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH.asLong().intValue();
+    private final double minEdgeStrength = LayoutCheck.Properties.LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGESTRENGTH.asDouble();
 
     public List<Line> detectLines(Mat mat) {
         LinkedList<Line> lines = new LinkedList<Line>();

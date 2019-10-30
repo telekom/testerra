@@ -8,8 +8,7 @@
 package eu.tsystems.mms.tic.testframework.layout.matching.detection;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.layout.DefaultParameter;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.layout.matching.FeatureCategory;
 import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
@@ -66,9 +65,7 @@ public abstract class FeatureDetector {
     }
 
     private void loadProperties() {
-        displacementConsideredAsError = PropertyManager.getIntProperty(
-                TesterraProperties.LAYOUTCHECK_DISPLACEMENT_THRESHOLD,
-                DefaultParameter.LAYOUTCHECK_DISPLACEMENT_THRESHOLD);
+        displacementConsideredAsError = LayoutCheck.Properties.LAYOUTCHECK_DISPLACEMENT_THRESHOLD.asDouble();
         // This should be done more nicely in the future - every Detector who does not set the ignorePropertyKey is considered
         // as detector of correct matches!
         if (ignorePropertyKey != null) {

@@ -21,7 +21,6 @@ package eu.tsystems.mms.tic.testframework.core.test.layoutcheck;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -69,7 +68,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
         guiElement.asserts().assertVisible(true);
     }
 
-    @Test(expectedExceptions = TimeoutException.class)
+    @Test(expectedExceptions = AssertionError.class)
     public void testCheckElementLayoutDistance() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("TestArticleChrome", 10);

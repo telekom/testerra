@@ -150,8 +150,9 @@ public final class PropertiesParser implements Loggable {
 
     public String getProperty(String key, Object defaultValue) {
         String value = getProperty(key);
-        if (value == null || value.length() <= 0) {
-            value = defaultValue.toString();
+        if (value == null || value.isEmpty()) {
+            if (defaultValue != null) value = defaultValue.toString();
+            else value = "";
         }
         return value;
     }

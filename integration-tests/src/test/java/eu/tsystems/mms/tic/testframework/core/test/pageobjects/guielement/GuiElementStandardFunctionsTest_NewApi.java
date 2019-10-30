@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 
-public class NewApiTests extends AbstractTestSitesTest {
+public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTest {
 
     private final static InstantAssertion instantAssertion = Testerra.ioc().getInstance(InstantAssertion.class);
     private FluentTestPage page;

@@ -138,9 +138,9 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         /*
         build endpoint stuff
          */
-        String host = StringUtils.getFirstValidString(r.seleniumServerHost, Properties.SELENIUM_SERVER_HOST.toString());
-        String port = StringUtils.getFirstValidString(r.seleniumServerPort, Properties.SELENIUM_SERVER_PORT.toString());
-        String url = StringUtils.getFirstValidString(r.seleniumServerURL, Properties.SELENIUM_SERVER_URL.useDefault(String.format("http://%s:%s/wd/hub", host, port)).toString());
+        String host = StringUtils.getFirstValidString(r.seleniumServerHost, Properties.SELENIUM_SERVER_HOST.asString());
+        String port = StringUtils.getFirstValidString(r.seleniumServerPort, Properties.SELENIUM_SERVER_PORT.asString());
+        String url = StringUtils.getFirstValidString(r.seleniumServerURL, Properties.SELENIUM_SERVER_URL.useDefault(String.format("http://%s:%s/wd/hub", host, port)).asString());
 
         // set backwards
         try {

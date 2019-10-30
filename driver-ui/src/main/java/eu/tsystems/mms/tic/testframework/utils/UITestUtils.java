@@ -128,7 +128,7 @@ public class UITestUtils {
             String originalWindowHandle,
             String sessionKey
     ) {
-        if (!Flags.SCREENSHOTTER_ACTIVE) {
+        if (!Report.Properties.SCREENSHOTTER_ACTIVE.asBool()) {
             return null;
         }
 

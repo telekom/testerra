@@ -40,7 +40,7 @@ def setReportDir(reportname) {
     if (!projectDir.toString().contains(modulename)) {
         reportdir = modulename + "/" + reportname
     }
-    System.setProperty("tt.reportdir", reportdir)
+    System.setProperty("tt.report.dir", reportdir)
 }
 
 def setFailureCorridor(nr) {

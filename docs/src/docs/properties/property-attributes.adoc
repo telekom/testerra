@@ -39,13 +39,13 @@
 :delay_after_guielement_action_millis:      tt.delay.after.guielement.action.millis
 
 // report
-:reportdir:                         tt.reportdir
-:reportname:                        tt.reportname
+:reportdir:                         tt.report.dir
+:reportname:                        tt.report.name
 :runcfg:                            tt.runcfg
-:screenshotter_active:              tt.screenshotter.active
+:screenshotter_active:              tt.report.screenshotter.active
 :report_screenshots_preview:        tt.report.screenshots.preview
-:screenshot_on_pageload:            tt.screenshot.on.pageload
-:screencaster_active:               tt.screencaster.active
+:screenshot_on_pageload:            tt.report.screenshot.on.pageload
+:screencaster_active:               tt.report.screencaster.active
 
 // execution
 :dryrun:                            tt.dryrun

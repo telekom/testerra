@@ -64,13 +64,7 @@ public final class TesterraProperties {
     /**
      * Property key stating to take automatic screenshots or not.
      */
-    public static final String SCREENSHOTTER_ACTIVE = "tt.screenshotter.active";
 //    public static final String AUTOSCREENSHOTS = "tt.takeAutomaticScreenshot";
-
-    /**
-     * Key of reportDir Property.
-     */
-    public static final String REPORTNAME = "tt.reportname";
 
     public static final String LOG_LEVEL ="tt.loglevel";
 
@@ -106,11 +100,6 @@ public final class TesterraProperties {
     public static final String CLOSE_WINDOWS_ON_FAILURE = "tt.wdm.closewindows.onfailure";
 
     /**
-     * Visually marks every GuiElement that is being processed. Might break a LayoutTest.
-     */
-    public static final String DEMO_MODE = "tt.demomode";
-
-    /**
      * Element timeout seconds.
      */
     public static final String ELEMENT_TIMEOUT_SECONDS = "tt.element.timeout.seconds";
@@ -132,11 +121,6 @@ public final class TesterraProperties {
      * tt.source.lines.prefetch
      */
     public static final String SOURCE_LINES_PREFETCH = "tt.source.lines.prefetch";
-    /**
-     * tt.report.activate.sources
-     */
-    public static final String REPORT_ACTIVATE_SOURCES = "tt.report.activate.sources";
-
     /**
      * Guielement easy mode.
      */
@@ -160,11 +144,6 @@ public final class TesterraProperties {
     /** Perf test Property, used to set default values of a Load test */
     public static final String PERF_TEST = "tt.perf.test";
 
-    /**
-     * If true, screenshot after page is loaded will be taken.
-     */
-    public static final String SCREENSHOT_ON_PAGELOAD = "tt.screenshot.on.pageload";
-
     public static final String DB_TIMEOUT = "tt.db.timeout";
 
     public static final String GUIELEMENT_CHECK_RULE = "tt.guielement.checkrule";
@@ -178,8 +157,6 @@ public final class TesterraProperties {
 
     public static final String PROXY_SETTINGS_LOAD = "tt.proxy.settings.load";
     public static final String PROXY_SETTINGS_FILE = "tt.proxy.settings.file";
-
-    public static final String REPORT_DATAPROVIDER_INFOS = "tt.report.dataprovider.infos";
 
     public static final String LIST_TESTS = "tt.list.tests";
 
@@ -205,7 +182,4 @@ public final class TesterraProperties {
 
     public static final String PAGE_FACTORY_LOOPS = "tt.page.factory.loops";
     public static final String EXECUTION_OMIT_IN_DEVELOPMENT = "tt.execution.omit.indevelopment";
-
-    public static final String SCREENCASTER_ACTIVE = "tt.screencaster.active";
-
 }

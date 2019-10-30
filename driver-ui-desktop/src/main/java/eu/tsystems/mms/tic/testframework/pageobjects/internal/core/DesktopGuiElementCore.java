@@ -31,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -644,7 +643,7 @@ public class DesktopGuiElementCore implements
      * Mouse over highlight in demo mode.
      */
     private void demoMouseOver() {
-        if (POConfig.isDemoMode()) {
+        if (Testerra.Properties.DEMO_MODE.asBool()) {
             JSUtils.highlightWebElement(webDriver, guiElementData.webElement, 0, 255, 255); // yellow
         }
     }

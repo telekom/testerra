@@ -62,10 +62,6 @@ public final class POConfig {
         POConfig.uiElementTimeoutInSeconds = uiElementTimeoutInSeconds;
     }
 
-    public static boolean isDemoMode() {
-        return PropertyManager.getBooleanProperty(TesterraProperties.DEMO_MODE, true);
-    }
-
     public static CheckRule getGuiElementCheckRule() {
         return guiElementCheckRule;
     }

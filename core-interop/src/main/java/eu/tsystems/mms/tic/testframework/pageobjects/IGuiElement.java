@@ -61,14 +61,14 @@ public interface IGuiElement extends
 
         @Override
         public Double asDouble() {
-            return PropertyManager.parser.getDoubleProperty(property, defaultValue);
+            return PropertyManager.parser.getDoubleProperty(toString(), defaultValue);
         }
         @Override
-        public Long asLong() { return PropertyManager.parser.getLongProperty(property, defaultValue); }
+        public Long asLong() { return PropertyManager.parser.getLongProperty(toString(), defaultValue); }
         @Override
-        public Boolean asBool() { return PropertyManager.parser.getBooleanProperty(property, defaultValue); }
+        public Boolean asBool() { return PropertyManager.parser.getBooleanProperty(toString(), defaultValue); }
         @Override
-        public String asString() { return PropertyManager.parser.getProperty(property, defaultValue); }
+        public String asString() { return PropertyManager.parser.getProperty(toString(), defaultValue); }
     }
     /**
      * New Features

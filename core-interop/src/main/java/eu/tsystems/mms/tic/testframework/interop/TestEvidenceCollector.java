@@ -19,10 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.interop;
 
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +50,7 @@ public final class TestEvidenceCollector {
     }
 
     public static List<Screenshot> collectScreenshots() {
-        if (!Flags.SCREENSHOTTER_ACTIVE) {
+        if (!Report.Properties.SCREENSHOTTER_ACTIVE.asBool()) {
             return null;
         }
 
@@ -69,7 +69,7 @@ public final class TestEvidenceCollector {
     }
 
     public static List<Video> collectVideos() {
-        if (!Flags.SCREENCASTER_ACTIVE) {
+        if (!Report.Properties.SCREENCASTER_ACTIVE.asBool()) {
             return null;
         }
 
@@ -104,7 +104,7 @@ public final class TestEvidenceCollector {
     public static void logInfo() {
         LOGGER.info("Screenshots: " + SCREENSHOT_COLLECTORS.size() + " screenshot collectors, " + SOURCE_COLLECTORS.size() + " source collectors");
         LOGGER.info("Videos: " + VIDEO_COLLECTORS.size() + " video collectors");
-        LOGGER.info("Videos: ScreenCaster enabled=" + Flags.SCREENCASTER_ACTIVE);
+        LOGGER.info("Videos: ScreenCaster enabled=" + Report.Properties.SCREENCASTER_ACTIVE.asBool());
     }
 
 }

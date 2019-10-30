@@ -22,6 +22,7 @@ public class Testerra {
     public enum Properties implements IProperties {
         DRY_RUN("tt.dryrun", false),
         MONITOR_MEMORY("tt.monitor.memory", true),
+        DEMO_MODE("tt.demomode",true),
         ;
         private final String property;
         private Object defaultValue;
@@ -42,16 +43,19 @@ public class Testerra {
 
         @Override
         public Double asDouble() {
-            return PropertyManager.getDoubleProperty(property, (Double) defaultValue);
+            return PropertyManager.parser.getDoubleProperty(toString(),defaultValue);
         }
         @Override
-        public Long asLong() { return PropertyManager.getLongProperty(property, (Long)defaultValue); }
+        public Long asLong() {
+            return PropertyManager.parser.getLongProperty(toString(), defaultValue);
+        }
         @Override
-        public Boolean asBool() { return PropertyManager.getBooleanProperty(property, (Boolean)defaultValue); }
-
+        public Boolean asBool() {
+            return PropertyManager.parser.getBooleanProperty(toString(), defaultValue);
+        }
         @Override
         public String asString() {
-            return null;
+            return PropertyManager.parser.getProperty(toString(), defaultValue);
         }
     }
 

@@ -26,6 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
@@ -205,7 +206,7 @@ public final class JSUtils {
         final int g,
         final int b
     ) {
-        if (!POConfig.isDemoMode()) {
+        if (!Testerra.Properties.DEMO_MODE.asBool()) {
             return;
         }
 
@@ -234,7 +235,7 @@ public final class JSUtils {
         final int g,
         final int b
     ) {
-        if (!POConfig.isDemoMode()) {
+        if (!Testerra.Properties.DEMO_MODE.asBool()) {
             return;
         }
 

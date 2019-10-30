@@ -47,8 +47,13 @@ public class Report {
     public static final String XML_FOLDER_NAME = "xml";
 
     public enum Properties implements IProperties {
-        BASE_DIR("tt.reportdir", "testerra-report"),
-        SCREENSHOTS_PREVIEW("tt.report.screenshots.preview", true)
+        BASE_DIR("dir", "testerra-report"),
+        SCREENSHOTS_PREVIEW("screenshots.preview", true),
+        NAME("name", null),
+        ACTIVATE_SOURCES("activate.sources", true),
+        SCREENSHOTTER_ACTIVE("screenshotter.active", true),
+        SCREENSHOT_ON_PAGELOAD("screenshot.on.pageload", false),
+        SCREENCASTER_ACTIVE("screencaster.active", false),
         ;
         private final String property;
         private Object defaultValue;
@@ -60,7 +65,7 @@ public class Report {
 
         @Override
         public String toString() {
-            return property;
+            return String.format("tt.report.%s",property);
         }
         public IProperties useDefault(Object defaultValue) {
             this.defaultValue = defaultValue;
@@ -69,19 +74,19 @@ public class Report {
 
         @Override
         public Double asDouble() {
-            return PropertyManager.parser.getDoubleProperty(property, defaultValue);
+            return PropertyManager.parser.getDoubleProperty(toString(), defaultValue);
         }
         @Override
         public Long asLong() {
-            return PropertyManager.parser.getLongProperty(property, defaultValue);
+            return PropertyManager.parser.getLongProperty(toString(), defaultValue);
         }
         @Override
         public Boolean asBool() {
-            return PropertyManager.parser.getBooleanProperty(property, defaultValue);
+            return PropertyManager.parser.getBooleanProperty(toString(), defaultValue);
         }
         @Override
         public String asString() {
-            return PropertyManager.parser.getProperty(property, defaultValue);
+            return PropertyManager.parser.getProperty(toString(), defaultValue);
         }
     }
 
@@ -89,7 +94,7 @@ public class Report {
         /*
         Initialize report directory
          */
-        final String relativeReportDir = Report.Properties.BASE_DIR.toString();
+        final String relativeReportDir = Report.Properties.BASE_DIR.asString();
         REPORT_DIRECTORY = new File(relativeReportDir);
 
         // cleanup

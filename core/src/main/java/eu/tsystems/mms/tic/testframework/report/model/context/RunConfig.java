@@ -23,6 +23,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.TesterraBuildInformation;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 
 import java.io.File;
 
@@ -47,7 +48,7 @@ public final class RunConfig {
         } catch (Exception e) {
             // nothing
         }
-        reportName = PropertyManager.getProperty(TesterraProperties.REPORTNAME, defaultName);
+        reportName = Report.Properties.NAME.useDefault(defaultName).asString();
     }
 
     public String getReportName() {

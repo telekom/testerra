@@ -166,7 +166,7 @@ public abstract class Page extends AbstractPage {
 
     @Override
     protected void handleDemoMode(WebDriver webDriver) {
-        if (POConfig.isDemoMode() && webDriver != null) {
+        if (Testerra.Properties.DEMO_MODE.asBool() && webDriver != null) {
             JSUtils.turnOnDemoModeForCurrentPage(webDriver);
         }
     }

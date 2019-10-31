@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
@@ -37,6 +38,7 @@ import org.openqa.selenium.WebDriver;
 public class GuiElementCheckFieldAction extends CheckFieldAction {
 
     final boolean forceStandardAssert;
+    private final static PageConfig pageConfig = Testerra.ioc().getInstance(PageConfig.class);
 
     public GuiElementCheckFieldAction(FieldWithActionConfig field, AbstractPage declaringPage) {
         super(field, declaringPage);
@@ -45,7 +47,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
 
     private void pCheckField(GuiElement guiElement, GuiElementAssert GuiElementAssert, CheckRule checkRule, boolean findNot, boolean fast) {
         if (checkRule == CheckRule.DEFAULT) {
-            checkRule = POConfig.getGuiElementCheckRule();
+            checkRule = pageConfig.getGuiElementCheckRule();
         }
 
         String errorMessageNotNot = "You are trying to FIND_NOT a not present element.";

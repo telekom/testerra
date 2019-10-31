@@ -71,22 +71,22 @@ public class Testerra {
     /**
      * We initialize the IoC modules in a reverse sorted class name order,
      * to be able to override module configures.
-     * This is not best practice, bad currently the only way to override module bindings.
+     * This is not best practice, but currently the only way to override module bindings.
      * Because {@link Modules#override(Module...)} doesn't work in the way we need it.
      */
     public static Injector ioc() {
         if (ioc==null) {
-            final Reflections reflections = new Reflections(TesterraCommons.DEFAULT_PACKAGE_NAME);
-            final Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
-            final Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
-            final TreeMap<String, Module> sortedModules = new TreeMap<>();
+            Reflections reflections = new Reflections(TesterraCommons.DEFAULT_PACKAGE_NAME);
+            Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
+            Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
+            TreeMap<String, Module> sortedModules = new TreeMap<>();
             try {
                 while (iterator.hasNext()) {
-                    final Class<? extends AbstractModule> moduleClass = iterator.next();
-                    final Constructor<?> ctor = moduleClass.getConstructor();
+                    Class<? extends AbstractModule> moduleClass = iterator.next();
+                    Constructor<?> ctor = moduleClass.getConstructor();
                     sortedModules.put(moduleClass.getSimpleName(), (Module) ctor.newInstance());
                 }
-                final List<Module> reverseSortedModules = new ArrayList<>(sortedModules.values());
+                List<Module> reverseSortedModules = new ArrayList<>(sortedModules.values());
                 Collections.reverse(reverseSortedModules);
                 System.out.println(String.format("%s - Register IoC modules: %s", Testerra.class.getCanonicalName(), reverseSortedModules));
                 ioc = Guice.createInjector(reverseSortedModules);

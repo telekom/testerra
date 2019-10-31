@@ -57,6 +57,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
 
     @Override
     public WebElement getWebElement() {
+        int prevTimeout = timerWrapper.getTimeoutInSeconds();
         Timer.Sequence<WebElement> sequence = new Timer.Sequence<WebElement>() {
             @Override
             public void run() {
@@ -65,7 +66,9 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<WebElement> throwablePackedResponse = timerWrapper.executeShortIntervalSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(1);
+        ThrowablePackedResponse<WebElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(prevTimeout);
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -568,6 +571,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
 
     @Override
     public boolean isPresent() {
+        int prevTimeout = timerWrapper.getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -580,12 +584,15 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeShortIntervalSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 
     @Override
     public boolean isEnabled() {
+        int prevTimeout = timerWrapper.getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -598,7 +605,9 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeShortIntervalSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -618,6 +627,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
 
     @Override
     public boolean isDisplayed() {
+        int prevTimeout = timerWrapper.getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -630,12 +640,15 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeShortIntervalSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 
     @Override
     public boolean isVisible(boolean complete) {
+        int prevTimeout = timerWrapper.getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -648,12 +661,15 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeShortIntervalSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 
     @Override
     public boolean isSelected() {
+        int prevTimeout = timerWrapper.getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -666,7 +682,9 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeShortIntervalSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -700,6 +718,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
 
     @Override
     public boolean isDisplayedFromWebElement() {
+        int prevTimeout = timerWrapper.getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -712,12 +731,15 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeShortIntervalSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 
     @Override
     public boolean isSelectable() {
+        int prevTimeout = timerWrapper.getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -730,7 +752,9 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeShortIntervalSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        timerWrapper.setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 

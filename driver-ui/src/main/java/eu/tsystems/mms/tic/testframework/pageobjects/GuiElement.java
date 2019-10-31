@@ -99,18 +99,22 @@ public class GuiElement implements IGuiElement, Loggable {
             this.guiElementData.name = guiElementData.name + "_" + index;
         }
         buildInternals(guiElementData.webDriver, guiElementData.by);
-
     }
 
     /**
      * Constructor with explicit web driver session.
      */
-    public GuiElement(final WebDriver driver, final By by) {
+    public GuiElement(WebDriver driver, By by) {
         this(driver, by, null);
     }
 
-    public GuiElement(final WebDriver driver, final Locate locator) {
+    public GuiElement(WebDriver driver, Locate locator) {
         this(driver, locator, null);
+    }
+
+    public GuiElement(IPage page, Locate locator) {
+        this(page.getWebDriver(), locator, null);
+        this.setTimeoutInSeconds(page.getElementTimeoutInSeconds());
     }
 
     /**
@@ -488,18 +492,15 @@ public class GuiElement implements IGuiElement, Loggable {
         return this;
     }
 
-    @Deprecated
     public int getTimeoutInSeconds() {
         return guiElementData.getTimeoutInSeconds();
     }
 
-    @Deprecated
     public IGuiElement setTimeoutInSeconds(int timeoutInSeconds) {
         guiElementData.setTimeoutInSeconds(timeoutInSeconds);
         return this;
     }
 
-    @Deprecated
     public IGuiElement restoreDefaultTimeout() {
         int timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
         guiElementData.setTimeoutInSeconds(timeoutInSeconds);

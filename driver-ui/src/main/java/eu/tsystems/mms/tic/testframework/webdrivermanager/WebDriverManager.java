@@ -377,6 +377,7 @@ public final class WebDriverManager {
      *
      * @return element timeout in seconds.
      */
+    @Deprecated
     public static int getElementTimeoutInSeconds() {
         return POConfig.getUiElementTimeoutInSeconds();
     }

@@ -4,19 +4,14 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageConfig;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 
 import java.util.function.Function;
 
 public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropertyAssertion<T> {
-
-    /**
-     * @todo Make configurable by PropertyManager
-     */
-    private static final int sleepTimeInMsShortInterval = 200;
-    private static final int timeoutInSecondsShortInterval = 1;
-
+    private static final PageConfig pageConfig = Testerra.ioc().getInstance(PageConfig.class);
     private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
     protected final IAssertion assertion = Testerra.ioc().getInstance(InstantAssertion.class);
 
@@ -29,7 +24,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
     }
 
     protected void testTimer(Function<T, Boolean> testFunction) {
-        Timer timer = new Timer(sleepTimeInMsShortInterval, timeoutInSecondsShortInterval * 1000);
+        Timer timer = new Timer(Testerra.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), pageConfig.getElementTimeoutInSeconds() * 1000);
         ThrowablePackedResponse throwablePackedResponse = timer.executeSequence(new Timer.Sequence<Object>() {
             @Override
             public void run() {

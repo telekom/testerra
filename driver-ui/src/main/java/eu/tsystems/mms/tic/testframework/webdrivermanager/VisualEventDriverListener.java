@@ -20,7 +20,6 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;

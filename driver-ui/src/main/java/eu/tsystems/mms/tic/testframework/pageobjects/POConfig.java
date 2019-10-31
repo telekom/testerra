@@ -29,61 +29,41 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 
-/**
- * @todo Create interface and make injectable or configure these things anywhere else
- */
+@Deprecated
 public final class POConfig {
+
+    private static final PageConfig pageConfig = Testerra.ioc().getInstance(PageConfig.class);
 
     /** Private Constructor, cause this is a util class. */
     private POConfig() { }
 
-    /**
-     * The element-timeout in seconds. Default: 8s.
-     */
-    private static int uiElementTimeoutInSeconds = Testerra.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
-
-    private static final ThreadLocal<Integer> THREAD_LOCAL_TIMEOUT = new ThreadLocal<>();
-
-    private static CheckRule guiElementCheckRule = CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString());
-
     public static int getUiElementTimeoutInSeconds() {
-        if (THREAD_LOCAL_TIMEOUT.get() != null) {
-            return THREAD_LOCAL_TIMEOUT.get();
-        }
-        return uiElementTimeoutInSeconds;
+        return pageConfig.getElementTimeoutInSeconds();
     }
 
     public static void setUiElementTimeoutInSeconds(int uiElementTimeoutInSeconds) {
-        POConfig.uiElementTimeoutInSeconds = uiElementTimeoutInSeconds;
+        pageConfig.setElementTimeoutInSeconds(uiElementTimeoutInSeconds);
     }
 
     public static CheckRule getGuiElementCheckRule() {
-        return guiElementCheckRule;
+        return pageConfig.getGuiElementCheckRule();
     }
 
     public static void setGuiElementCheckRule(CheckRule guiElementCheckRule) {
-        POConfig.guiElementCheckRule = guiElementCheckRule;
+        pageConfig.setGuiElementCheckRule(guiElementCheckRule);
     }
 
     public static void setThreadLocalUiElementTimeoutInSeconds(int value) {
-        THREAD_LOCAL_TIMEOUT.set(value);
+        pageConfig.setElementTimeoutInSeconds(value);
     }
 
-    @Deprecated
     public static void removeThreadLocalUiElementTimeout() {
-        THREAD_LOCAL_TIMEOUT.remove();
     }
 
-    @Deprecated
     public static void executeWithExplicitUiElementTimeout(int value, Runnable runnable) {
-        Integer timeoutBefore = THREAD_LOCAL_TIMEOUT.get();
-        THREAD_LOCAL_TIMEOUT.set(value);
+        int timeoutBefore = pageConfig.getElementTimeoutInSeconds();
+        pageConfig.setElementTimeoutInSeconds(value);
         runnable.run();
-        if (timeoutBefore == null) {
-            THREAD_LOCAL_TIMEOUT.remove();
-        }
-        else {
-            THREAD_LOCAL_TIMEOUT.set(timeoutBefore);
-        }
+        pageConfig.setElementTimeoutInSeconds(timeoutBefore);
     }
 }

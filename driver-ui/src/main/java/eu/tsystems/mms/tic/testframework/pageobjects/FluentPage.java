@@ -96,22 +96,22 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
     protected Finder forAncestor(IGuiElement ancestor) {
         return new AncestorFind(ancestor);
     }
-    protected IGuiElement findOneById(final String id) {
+    protected IGuiElement findOneById(String id) {
         return findOne(Locate.by().id(id));
     }
-    protected IGuiElement findOneByQa(final String qa) {
+    protected IGuiElement findOneByQa(String qa) {
         return findOne(Locate.by().qa(qa));
     }
-    protected IGuiElement findOne(final By by) {
+    protected IGuiElement findOne(By by) {
         return findOne(Locate.by(by));
     }
-    protected IGuiElement findOne(final Locate locator) {
-        return guiElementFactory.create(locator, driver);
+    protected IGuiElement findOne(Locate locator) {
+        return guiElementFactory.create(locator, this);
     }
-    protected <T extends WebDriverRetainer> T createPage(final Class<T> pageClass) {
+    protected <T extends IPage> T createPage(final Class<T> pageClass) {
         return pageFactory.create(pageClass, driver);
     }
-    protected <T extends WebDriverRetainer> T createComponent(final Class<T> pageClass, final IGuiElement guiElement) {
+    protected <T extends IPage> T createComponent(Class<T> pageClass, IGuiElement guiElement) {
         return pageFactory.create(pageClass, guiElement);
     }
 
@@ -126,13 +126,22 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
         return self();
     }
 
-    public SELF call(final String urlString) {
+    public SELF call(String urlString) {
         driver.navigate().to(urlString);
         return self();
     }
 
-    public SELF call(final URL url) {
+    public SELF call(URL url) {
         driver.navigate().to(url);
+        return self();
+    }
+
+    /**
+     * Fluent Overrides
+     */
+    @Override
+    public SELF setElementTimeoutInSeconds(int newElementTimeout) {
+        super.setElementTimeoutInSeconds(newElementTimeout);
         return self();
     }
 

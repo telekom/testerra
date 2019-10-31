@@ -21,7 +21,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import org.openqa.selenium.WebDriver;
 
 public class DefaultGuiElementFactory implements
     GuiElementFactory,
@@ -49,8 +48,8 @@ public class DefaultGuiElementFactory implements
     @Override
     public IGuiElement create(
         Locate locator,
-        WebDriver webDriver
+        IPage page
     ) {
-        return new GuiElement(webDriver, locator);
+        return new GuiElement(page, locator);
     }
 }

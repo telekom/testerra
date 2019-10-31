@@ -41,9 +41,6 @@ public class TimerWrapper {
     private int sleepTimeInMs;
     private int timeoutInSeconds;
 
-    private static final int sleepTimeInMsShortInterval = 200;
-    private static final int timeoutInSecondsShortInterval = 1;
-
     private final WebDriver webDriver;
     private final ExecutionLog executionLog;
 
@@ -58,37 +55,22 @@ public class TimerWrapper {
         return sleepTimeInMs;
     }
 
-    public void setSleepTimeInMs(int sleepTimeInMs) {
+    public TimerWrapper setSleepTimeInMs(int sleepTimeInMs) {
         this.sleepTimeInMs = sleepTimeInMs;
+        return this;
     }
 
-    public int getTimeoutInMs() {
+    private int getTimeoutInMs() {
         return timeoutInSeconds * 1000;
     }
 
-    public void setTimeoutInSeconds(int timeoutInS) {
+    public TimerWrapper setTimeoutInSeconds(int timeoutInS) {
         this.timeoutInSeconds = timeoutInS;
+        return this;
     }
 
     public int getTimeoutInSeconds() {
         return timeoutInSeconds;
-    }
-
-    public <T> ThrowablePackedResponse<T> executeShortIntervalSequence(final Timer.Sequence<T> sequence) {
-        Timer timer = new Timer(sleepTimeInMsShortInterval, timeoutInSecondsShortInterval * 1000, executionLog);
-        ThrowablePackedResponse<T> booleanThrowablePackedResponse = null;
-
-        try {
-            booleanThrowablePackedResponse = timer.executeSequence(sequence);
-        } catch (Throwable t) {
-            checkForPageLoadTimeout(t);
-            if (t instanceof RuntimeException) { // can be nothing else, but to avoid cast warning
-                throw (RuntimeException) t;
-            }
-        }
-
-        booleanThrowablePackedResponse.setLogError(false);
-        return booleanThrowablePackedResponse;
     }
 
     public <T> ThrowablePackedResponse<T> executeSequence(final Timer.Sequence<T> sequence) {

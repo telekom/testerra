@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
@@ -47,7 +48,9 @@ import java.util.Set;
  *
  */
 @Deprecated()
-public abstract class AbstractPage implements WebDriverRetainer {
+public abstract class AbstractPage implements IPage {
+
+    protected static final PageConfig pageConfig = Testerra.ioc().getInstance(PageConfig.class);
 
     /**
      * The webdriver object.
@@ -57,7 +60,7 @@ public abstract class AbstractPage implements WebDriverRetainer {
     /**
      * Element timeout in seconds (int).
      */
-    protected int elementTimeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
+    protected int elementTimeoutInSeconds = pageConfig.getElementTimeoutInSeconds();
 
     /**
      * Protected logger.
@@ -104,8 +107,10 @@ public abstract class AbstractPage implements WebDriverRetainer {
      *
      * @param newElementTimeout a new timeout in seconds
      */
-    public void setElementTimeoutInSeconds(final int newElementTimeout) {
+    @Override
+    public IPage setElementTimeoutInSeconds(int newElementTimeout) {
         elementTimeoutInSeconds = newElementTimeout;
+        return this;
     }
 
     /**
@@ -280,6 +285,7 @@ public abstract class AbstractPage implements WebDriverRetainer {
         throw new TimeoutException(message);
     }
 
+    @Override
     public int getElementTimeoutInSeconds() {
         return elementTimeoutInSeconds;
     }

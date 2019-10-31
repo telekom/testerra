@@ -354,7 +354,7 @@ public abstract class Page extends AbstractPage {
     }
 
     public boolean waitForIsTextPresent(final String text) {
-        Timer timer = new Timer(1000, elementTimeoutInSeconds * 1000);
+        Timer timer = new Timer(Testerra.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), elementTimeoutInSeconds * 1000);
         ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -367,7 +367,7 @@ public abstract class Page extends AbstractPage {
     }
 
     public boolean waitForIsTextDisplayed(final String text) {
-        Timer timer = new Timer(1000, elementTimeoutInSeconds * 1000);
+        Timer timer = new Timer(Testerra.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), elementTimeoutInSeconds * 1000);
         ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {

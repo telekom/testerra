@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 
@@ -45,12 +46,13 @@ public final class POConfig {
     /**
      * The element-timeout in seconds. Default: 8s.
      */
-    private static int uiElementTimeoutInSeconds = PropertyManager.getIntProperty(TesterraProperties.ELEMENT_TIMEOUT_SECONDS, 8);
+    private static int uiElementTimeoutInSeconds = Testerra.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
 
     private static final ThreadLocal<Integer> THREAD_LOCAL_TIMEOUT = new ThreadLocal<>();
 
     private static CheckRule guiElementCheckRule = CheckRule.valueOf(PropertyManager.getProperty(TesterraProperties.GUIELEMENT_CHECK_RULE, CheckRule.IS_DISPLAYED.name()));
 
+    @Deprecated
     public static int getUiElementTimeoutInSeconds() {
         if (THREAD_LOCAL_TIMEOUT.get() != null) {
             return THREAD_LOCAL_TIMEOUT.get();
@@ -58,6 +60,7 @@ public final class POConfig {
         return uiElementTimeoutInSeconds;
     }
 
+    @Deprecated
     public static void setUiElementTimeoutInSeconds(int uiElementTimeoutInSeconds) {
         POConfig.uiElementTimeoutInSeconds = uiElementTimeoutInSeconds;
     }
@@ -74,10 +77,12 @@ public final class POConfig {
         THREAD_LOCAL_TIMEOUT.set(value);
     }
 
+    @Deprecated
     public static void removeThreadLocalUiElementTimeout() {
         THREAD_LOCAL_TIMEOUT.remove();
     }
 
+    @Deprecated
     public static void executeWithExplicitUiElementTimeout(int value, Runnable runnable) {
         Integer timeoutBefore = THREAD_LOCAL_TIMEOUT.get();
         THREAD_LOCAL_TIMEOUT.set(value);

@@ -100,11 +100,6 @@ public final class TesterraProperties {
     public static final String CLOSE_WINDOWS_ON_FAILURE = "tt.wdm.closewindows.onfailure";
 
     /**
-     * Element timeout seconds.
-     */
-    public static final String ELEMENT_TIMEOUT_SECONDS = "tt.element.timeout.seconds";
-
-    /**
      * State condition.
      */
     public static final String ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS = "tt.on.state.testfailed.skip.following.tests";

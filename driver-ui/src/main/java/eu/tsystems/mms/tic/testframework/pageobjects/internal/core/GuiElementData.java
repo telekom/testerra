@@ -44,6 +44,7 @@ public class GuiElementData {
     public final WebDriver webDriver;
     public String name;
     public final ExecutionLog executionLog;
+    @Deprecated
     public int timeoutInSeconds;
     public final TimerWrapper timerWrapper;
     public WebElement webElement;

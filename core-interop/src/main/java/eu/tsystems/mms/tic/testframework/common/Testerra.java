@@ -23,6 +23,11 @@ public class Testerra {
         DRY_RUN("tt.dryrun", false),
         MONITOR_MEMORY("tt.monitor.memory", true),
         DEMO_MODE("tt.demomode",true),
+        @Deprecated
+        SELENIUM_SERVER_HOST("tt.selenium.server.host", "localhost"),
+        @Deprecated
+        SELENIUM_SERVER_PORT("tt.selenium.server.port", 4444),
+        SELENIUM_SERVER_URL("tt.selenium.server.url", String.format("http://%s:%s/wd/hub", SELENIUM_SERVER_HOST, SELENIUM_SERVER_PORT)),
         ;
         private final String property;
         private Object defaultValue;
@@ -36,7 +41,9 @@ public class Testerra {
         public String toString() {
             return property;
         }
-        public IProperties useDefault(Object defaultValue) {
+
+        @Override
+        public IProperties newDefault(Object defaultValue) {
             this.defaultValue = defaultValue;
             return this;
         }

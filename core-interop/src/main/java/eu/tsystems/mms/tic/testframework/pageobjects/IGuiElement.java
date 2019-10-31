@@ -54,7 +54,9 @@ public interface IGuiElement extends
         public String toString() {
             return property;
         }
-        public IProperties useDefault(Object defaultValue) {
+
+        @Override
+        public IProperties newDefault(Object defaultValue) {
             this.defaultValue = defaultValue;
             return this;
         }

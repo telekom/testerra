@@ -67,11 +67,11 @@ public class Report {
         public String toString() {
             return String.format("tt.report.%s",property);
         }
-        public IProperties useDefault(Object defaultValue) {
+        @Override
+        public IProperties newDefault(Object defaultValue) {
             this.defaultValue = defaultValue;
             return this;
         }
-
         @Override
         public Double asDouble() {
             return PropertyManager.parser.getDoubleProperty(toString(), defaultValue);

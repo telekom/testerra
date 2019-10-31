@@ -1,12 +1,12 @@
 package eu.tsystems.mms.tic.testframework.common;
 
-public interface IProperties<T> {
+public interface IProperties {
     /**
      * Sets a new default value
      * @param defaultValue
      * @return this
      */
-    IProperties useDefault(Object defaultValue);
+    IProperties newDefault(Object defaultValue);
     /**
      * @return Value as double
      */

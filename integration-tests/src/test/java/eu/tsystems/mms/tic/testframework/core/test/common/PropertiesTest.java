@@ -47,7 +47,7 @@ public class PropertiesTest extends TesterraTest {
         }
 
         @Override
-        public IProperties useDefault(Object defaultValue) {
+        public IProperties newDefault(Object defaultValue) {
             return null;
         }
 

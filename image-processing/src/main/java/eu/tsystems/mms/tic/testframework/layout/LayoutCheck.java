@@ -102,7 +102,9 @@ public final class LayoutCheck {
         public String toString() {
             return String.format("tt.layoutcheck.%s", property);
         }
-        public IProperties useDefault(Object defaultValue) {
+
+        @Override
+        public IProperties newDefault(Object defaultValue) {
             this.defaultValue = defaultValue;
             return this;
         }

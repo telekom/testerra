@@ -48,7 +48,7 @@ public final class RunConfig {
         } catch (Exception e) {
             // nothing
         }
-        reportName = Report.Properties.NAME.useDefault(defaultName).asString();
+        reportName = Report.Properties.NAME.newDefault(defaultName).asString();
     }
 
     public String getReportName() {

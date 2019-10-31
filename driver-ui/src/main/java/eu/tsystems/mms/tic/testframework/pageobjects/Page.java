@@ -77,9 +77,6 @@ public abstract class Page extends AbstractPage {
         pageLoadHandlers.add(h);
     }
 
-    private static final GuiElementFactory guiElementFactory = Testerra.ioc().getInstance(GuiElementFactory.class);
-    private static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
-
     protected final IGuiElement guiElement;
 
     /**
@@ -440,32 +437,5 @@ public abstract class Page extends AbstractPage {
         }
 
         return simpleClassName + " -> " + actionName;
-    }
-    protected IGuiElement findOneById(final String id) {
-        return findOne(Locate.by().id(id));
-    }
-    protected IGuiElement findOneByQa(final String qa) {
-        return findOne(Locate.by().qa(qa));
-    }
-    protected IGuiElement findOneByQa(final String qa, final IGuiElement parent) {
-        return findOne(Locate.by().qa(qa), parent);
-    }
-    protected IGuiElement findOne(final Locate locator) {
-        return guiElementFactory.create(locator, driver);
-    }
-    protected IGuiElement findOne(final Locate locator, final IGuiElement parent) {
-        return guiElementFactory.create(locator, driver, parent);
-    }
-    protected IGuiElement findOne(final By by) {
-        return findOne(Locate.by(by));
-    }
-    protected IGuiElement findOne(final By by, final IGuiElement parent) {
-        return findOne(Locate.by(by), parent);
-    }
-    protected <T extends WebDriverRetainer> T createPage(final Class<T> pageClass) {
-        return pageFactory.create(pageClass, driver);
-    }
-    protected <T extends WebDriverRetainer> T createComponent(final Class<T> pageClass, final IGuiElement guiElement) {
-        return pageFactory.create(pageClass, guiElement);
     }
 }

@@ -25,8 +25,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,7 +81,7 @@ public class FrameLogic implements IFrameLogic, Loggable {
         List<IGuiElement> allFrames = getAllFramesInOrder();
 
         driver.switchTo().defaultContent();
-        ArrayList<WebElement> frameWebElementList = new ArrayList<WebElement>();
+        ArrayList<WebElement> frameWebElementList = new ArrayList<>();
         for (IGuiElement frameGuiElement : allFrames) {
             // do not switch to the webElement that was recovered last, as this will be done by getWebElement of 'frameGuiElement'
             for (int i = 0; i < frameWebElementList.size() - 1; i++) {

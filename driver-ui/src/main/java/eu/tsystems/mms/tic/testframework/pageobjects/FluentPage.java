@@ -33,6 +33,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPro
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImagePropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 
@@ -44,7 +45,42 @@ import java.net.URL;
  */
 public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
 
+    protected interface Finder {
+        IGuiElement findOne(Locate locator);
+        default IGuiElement findOneById(String id) {
+            return findOne(Locate.by().id(id));
+        }
+        default IGuiElement findOneByQa(String qa) {
+            return findOne(Locate.by().qa(qa));
+        }
+        default IGuiElement findOne(By by) {
+            return findOne(Locate.by(by));
+        }
+    }
+
+    private class FrameFind implements Finder {
+        private IGuiElement frame;
+        private FrameFind(IGuiElement frame) {
+            this.frame = frame;
+        }
+        public IGuiElement findOne(Locate locator) {
+            return guiElementFactory.createWithFrames(locator, frame);
+        }
+    }
+
+    private class AncestorFind implements Finder {
+        private IGuiElement ancestor;
+        private AncestorFind(IGuiElement ancestor) {
+            this.ancestor = ancestor;
+        }
+        public IGuiElement findOne(Locate locator) {
+            return guiElementFactory.createFromAncestor(locator, ancestor);
+        }
+    }
+
     protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.ioc().getInstance(PropertyAssertionFactory.class);
+    private static final GuiElementFactory guiElementFactory = Testerra.ioc().getInstance(GuiElementFactory.class);
+    private static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
 
     /**
      * Constructor for existing sessions.
@@ -85,6 +121,42 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
         });
     }
 
+    protected Finder inFrame(IGuiElement frame) {
+        return new FrameFind(frame);
+    }
+    protected Finder forAncestor(IGuiElement ancestor) {
+        return new AncestorFind(ancestor);
+    }
+    protected IGuiElement findOneById(final String id) {
+        return findOne(Locate.by().id(id));
+    }
+    protected IGuiElement findOneByQa(final String qa) {
+        return findOne(Locate.by().qa(qa));
+    }
+    protected IGuiElement findOne(final By by) {
+        return findOne(Locate.by(by));
+    }
+    protected IGuiElement findOne(final Locate locator) {
+        return guiElementFactory.create(locator, driver);
+    }
+    protected <T extends WebDriverRetainer> T createPage(final Class<T> pageClass) {
+        return pageFactory.create(pageClass, driver);
+    }
+    protected <T extends WebDriverRetainer> T createComponent(final Class<T> pageClass, final IGuiElement guiElement) {
+        return pageFactory.create(pageClass, guiElement);
+    }
+
+    /**
+     * Fluent actions
+     */
+    protected abstract SELF self();
+
+    @Override
+    public SELF refresh() {
+        super.refresh();
+        return self();
+    }
+
     public SELF call(final String urlString) {
         driver.navigate().to(urlString);
         return self();
@@ -95,24 +167,9 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
         return self();
     }
 
-    protected abstract SELF self();
-
     /**
-     * Fluent types
+     * Fluent properties
      */
-    @Override
-    public SELF refresh() {
-        super.refresh();
-        return self();
-    }
-
-    @Override
-    @Deprecated
-    public SELF takeScreenshot() {
-        super.takeScreenshot();
-        return self();
-    }
-
     public IImagePropertyAssertion screenshot() {
         return new ImagePropertyAssertion(new AssertionProvider<File>() {
             @Override
@@ -128,8 +185,16 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
     }
 
     /**
-     * Deprecations
+     * Deprecation APIs
      */
+
+    @Override
+    @Deprecated
+    public SELF takeScreenshot() {
+        super.takeScreenshot();
+        return self();
+    }
+
     @Override
     @Deprecated
     public Page refresh(boolean checkPage) {

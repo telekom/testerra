@@ -485,9 +485,10 @@ public class DesktopGuiElementCore implements
         return subElement;
     }
 
+    @Override
     public IGuiElement getSubElement(Locate locate) {
         final GuiElementFactory factory = Testerra.ioc().getInstance(GuiElementFactory.class);
-        return factory.create(locate, webDriver, guiElementData.guiElement);
+        return factory.createFromAncestor(locate, guiElementData.guiElement);
     }
 
     @Override

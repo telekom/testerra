@@ -19,8 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class DefaultGuiElementFactory implements
@@ -28,31 +28,29 @@ public class DefaultGuiElementFactory implements
     Loggable
 {
     @Override
-    public IGuiElement create(
-        Locate locate,
-        WebDriver webDriver,
-        IGuiElement parent
+    public IGuiElement createFromAncestor(
+        Locate locator,
+        IGuiElement ancestor
     ) {
-        String locatorToString = locate.getBy().toString();
-        if (locatorToString.toLowerCase().contains("xpath")) {
-            int i = locatorToString.indexOf(":") + 1;
-            String locator = locatorToString.substring(i).trim();
-            // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
-            if (locator.startsWith("/")) {
-                log().warn("Forced replacement of / to ./ at startTime of By.xpath locator, because / would not be relative: " + locator);
-                locate = Locate.by(By.xpath(locator));
-            } else if (!locator.startsWith(".") && !(locator.length() >= 2 && locator.startsWith("(") && locator.substring(1, 2).equals("."))) {
-                log().warn("Apparently, getSubElement is called with an By.xpath locator that does not startTime with a dot. " +
-                    "This will most likely lead to unexpected and potentially quiet errors. Locator is \"" +
-                    locatorToString + "\".");
-            }
-        }
-
-        return new GuiElement(locate, webDriver, parent);
+        return new GuiElement(locator, ancestor);
     }
 
     @Override
-    public IGuiElement create(Locate locator, WebDriver webDriver) {
+    public IGuiElement createWithFrames(
+        Locate locator,
+        IGuiElement... frames
+    ) {
+        if (frames == null || frames.length == 0) {
+            throw new TesterraRuntimeException("No frames given");
+        }
+        return new GuiElement(frames[0].getWebDriver(), locator, frames);
+    }
+
+    @Override
+    public IGuiElement create(
+        Locate locator,
+        WebDriver webDriver
+    ) {
         return new GuiElement(webDriver, locator);
     }
 }

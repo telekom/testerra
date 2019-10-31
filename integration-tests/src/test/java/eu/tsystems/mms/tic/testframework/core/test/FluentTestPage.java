@@ -12,9 +12,16 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
     private IGuiElement input = findOneById("11");
 
     @Check
-    private IGuiElement button = findOneByQa("action/submit", input);
+    private IGuiElement button = forAncestor(input).findOneByQa("action/submit");
+    //private IGuiElement section = withAncestor(button)
 
     private IGuiElement text = findOne(By.className("affe"));
+
+    private IGuiElement frame = findOne(By.tagName("iframe"));
+
+    private IGuiElement btnInFrame = findOne(By.tagName("iframe"));
+    private IGuiElement newDocRoot = inFrame(frame).findOne(By.tagName("body"));
+    private IGuiElement btnInFrame3 = forAncestor(newDocRoot).findOne(By.tagName("button"));
 
     /**
      * Constructor for existing sessions.

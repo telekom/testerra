@@ -28,7 +28,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
@@ -104,9 +104,6 @@ public class GuiElement implements IGuiElement, Loggable {
 
     /**
      * Constructor with explicit web driver session.
-     *
-     * @param driver Actual driver object.
-     * @param by     By locator.
      */
     public GuiElement(final WebDriver driver, final By by) {
         this(driver, by, null);
@@ -118,62 +115,70 @@ public class GuiElement implements IGuiElement, Loggable {
 
     /**
      * Constructor with frames and explicit webDriver session.
-     *
-     * @param locator     By locator.
-     * @param frames frames containing the element
-     * @param driver Driver Object.
      */
     public GuiElement(
-        final WebDriver driver,
-        final Locate locator,
-        final IGuiElement... frames
-    ) {
-        this(locator, driver, frames);
-    }
-
-    public GuiElement(
-        final WebDriver driver,
-        final By by,
-        final IGuiElement... frames
-    ) {
-        this(Locate.by(by), driver, frames);
-    }
-
-    public GuiElement(
-        final Locate locator,
-        final WebDriver driver,
-        final IGuiElement... frames
+        WebDriver driver,
+        Locate locator,
+        IGuiElement... frames
     ) {
         IFrameLogic frameLogic = null;
         if (frames != null && frames.length > 0) {
             frameLogic = new FrameLogic(driver, frames);
         }
-        final By by = locator.getBy();
+        By by = locator.getBy();
         guiElementData = new GuiElementData(driver, "", frameLogic, by, this);
         buildInternals(driver, by);
         this.locator = locator;
     }
 
+    /**
+     * Default Constructor for optional FrameLogic
+     */
     public GuiElement(
-        final Locate locator,
-        final WebDriver driver,
-        final GuiElementFacade parent
+        WebDriver driver,
+        By by,
+        IGuiElement... frames
     ) {
-        if (!(parent instanceof GuiElement)) {
-            throw new TesterraSystemException(String.format("Parent element is no implementation of %s", GuiElement.class));
+        this(driver, Locate.by(by), frames);
+    }
+
+    /**
+     * Constructor with ancestor GuiElement
+     */
+    public GuiElement(
+        Locate locator,
+        IGuiElement ancestor
+    ) {
+        if (!(ancestor instanceof GuiElement)) {
+            throw new TesterraRuntimeException(String.format("Ancestor is no implementation of %s", GuiElement.class));
         }
 
         // Use FrameLogic from parent
-        GuiElement parentGuiElement = (GuiElement)parent;
+        GuiElement ancestorGuiElement = (GuiElement)ancestor;
         IFrameLogic frameLogic = null;
-        if (parentGuiElement.guiElementData.frameLogic != null) {
-            frameLogic = parentGuiElement.guiElementData.frameLogic;
+        if (ancestorGuiElement.guiElementData.frameLogic != null) {
+            frameLogic = ancestorGuiElement.guiElementData.frameLogic;
         }
 
-        final By by = locator.getBy();
-        guiElementData = new GuiElementData(driver, "", frameLogic, by, this);
-        guiElementData.parent = parentGuiElement.guiElementCore;
-        buildInternals(driver, by);
+        String byString = locator.getBy().toString();
+        if (byString.toLowerCase().contains("xpath")) {
+            int i = byString.indexOf(":") + 1;
+            String locatorString = byString.substring(i).trim();
+            // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
+            if (locatorString.startsWith("/")) {
+                log().warn("Forced replacement of / to ./ at startTime of By.xpath locator, because / would not be relative: " + locator);
+                locator = Locate.by(By.xpath(locatorString));
+            } else if (!locatorString.startsWith(".") && !(locatorString.length() >= 2 && locatorString.startsWith("(") && locatorString.substring(1, 2).equals("."))) {
+                log().warn("Apparently, getSubElement is called with an By.xpath locator that does not startTime with a dot. " +
+                    "This will most likely lead to unexpected and potentially quiet errors. Locator is \"" +
+                    byString + "\".");
+            }
+        }
+
+        By by = locator.getBy();
+        guiElementData = new GuiElementData(ancestor.getWebDriver(), "", frameLogic, by, this);
+        guiElementData.parent = ancestorGuiElement.guiElementCore;
+        buildInternals(ancestor.getWebDriver(), by);
         this.locator = locator;
     }
 

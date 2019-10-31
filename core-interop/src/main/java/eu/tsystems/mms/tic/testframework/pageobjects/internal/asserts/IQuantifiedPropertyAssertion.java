@@ -5,19 +5,39 @@ import java.math.BigDecimal;
 public interface IQuantifiedPropertyAssertion<T> extends IBinaryPropertyAssertion<T> {
     T actual();
     IQuantifiedPropertyAssertion<T> is(Object expected);
-    IQuantifiedPropertyAssertion<T> greaterThan(long expected);
-    IQuantifiedPropertyAssertion<T> greaterThan(double expected);
+    default IQuantifiedPropertyAssertion<T> greaterThan(long expected) {
+        return greaterThan(new BigDecimal(expected));
+    }
+    default IQuantifiedPropertyAssertion<T> greaterThan(double expected) {
+        return greaterThan(new BigDecimal(expected));
+    }
     IQuantifiedPropertyAssertion<T> greaterThan(BigDecimal expected);
-    IQuantifiedPropertyAssertion<T> lowerThan(long expected);
-    IQuantifiedPropertyAssertion<T> lowerThan(double expected);
+    default IQuantifiedPropertyAssertion<T> lowerThan(long expected) {
+        return lowerThan(new BigDecimal(expected));
+    }
+    default IQuantifiedPropertyAssertion<T> lowerThan(double expected) {
+        return lowerThan(new BigDecimal(expected));
+    }
     IQuantifiedPropertyAssertion<T> lowerThan(BigDecimal expected);
-    IQuantifiedPropertyAssertion<T> greaterEqualThan(long expected);
-    IQuantifiedPropertyAssertion<T> greaterEqualThan(double expected);
+    default IQuantifiedPropertyAssertion<T> greaterEqualThan(long expected) {
+        return greaterEqualThan(new BigDecimal(expected));
+    }
+    default IQuantifiedPropertyAssertion<T> greaterEqualThan(double expected) {
+        return greaterEqualThan(new BigDecimal(expected));
+    }
     IQuantifiedPropertyAssertion<T> greaterEqualThan(BigDecimal expected);
-    IQuantifiedPropertyAssertion<T> lowerEqualThan(long expected);
-    IQuantifiedPropertyAssertion<T> lowerEqualThan(double expected);
+    default IQuantifiedPropertyAssertion<T> lowerEqualThan(long expected) {
+        return lowerEqualThan(new BigDecimal(expected));
+    }
+    default IQuantifiedPropertyAssertion<T> lowerEqualThan(double expected) {
+        return lowerEqualThan(new BigDecimal(expected));
+    }
     IQuantifiedPropertyAssertion<T> lowerEqualThan(BigDecimal expected);
-    IQuantifiedPropertyAssertion<T> between(long lower, long higher);
-    IQuantifiedPropertyAssertion<T> between(double lower, double higher);
+    default IQuantifiedPropertyAssertion<T> between(long lower, long higher) {
+        return between(new BigDecimal(lower), new BigDecimal(higher));
+    }
+    default IQuantifiedPropertyAssertion<T> between(double lower, double higher) {
+        return between(new BigDecimal(lower), new BigDecimal(higher));
+    }
     IQuantifiedPropertyAssertion<T> between(BigDecimal lower, BigDecimal higher);
 }

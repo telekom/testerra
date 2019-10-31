@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImagePropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import org.openqa.selenium.By;
@@ -91,36 +90,6 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
         super(driver);
     }
 
-    public IStringPropertyAssertion<String> title() {
-        final Page self = this;
-        return propertyAssertionFactory.string(new AssertionProvider<String>() {
-            @Override
-            public String actual() {
-                return driver.getTitle();
-            }
-
-            @Override
-            public Object subject() {
-                return String.format("%s.title", self);
-            }
-        });
-    }
-
-    public IStringPropertyAssertion<String> url() {
-        final Page self = this;
-        return propertyAssertionFactory.string(new AssertionProvider<String>() {
-            @Override
-            public String actual() {
-                return driver.getCurrentUrl();
-            }
-
-            @Override
-            public Object subject() {
-                return String.format("%s.url", self);
-            }
-        });
-    }
-
     protected Finder inFrame(IGuiElement frame) {
         return new FrameFind(frame);
     }
@@ -170,8 +139,37 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Page {
     /**
      * Fluent properties
      */
+    public IStringPropertyAssertion<String> title() {
+        final Page self = this;
+        return propertyAssertionFactory.string(new AssertionProvider<String>() {
+            @Override
+            public String actual() {
+                return driver.getTitle();
+            }
+
+            @Override
+            public Object subject() {
+                return String.format("%s.title", self);
+            }
+        });
+    }
+
+    public IStringPropertyAssertion<String> url() {
+        final Page self = this;
+        return propertyAssertionFactory.string(new AssertionProvider<String>() {
+            @Override
+            public String actual() {
+                return driver.getCurrentUrl();
+            }
+
+            @Override
+            public Object subject() {
+                return String.format("%s.url", self);
+            }
+        });
+    }
     public IImagePropertyAssertion screenshot() {
-        return new ImagePropertyAssertion(new AssertionProvider<File>() {
+        return propertyAssertionFactory.image(new AssertionProvider<File>() {
             @Override
             public File actual() {
                 return UITestUtils.takeScreenshotAs(driver, OutputType.FILE);

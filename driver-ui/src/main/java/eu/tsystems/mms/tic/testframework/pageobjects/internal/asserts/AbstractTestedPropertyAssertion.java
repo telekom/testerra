@@ -20,8 +20,8 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
     private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
     protected final IAssertion assertion = Testerra.ioc().getInstance(InstantAssertion.class);
 
-    public AbstractTestedPropertyAssertion(AssertionProvider<T> provider) {
-        super(provider);
+    public AbstractTestedPropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+        super(parentAssertion, provider);
     }
 
     public T actual() {
@@ -38,7 +38,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
             }
         });
         if (!throwablePackedResponse.isSuccessful()) {
-            provider.failedRecursive();
+            failedRecursive();
             IAssertion finalAssertion = assertionFactory.create();
             finalAssertion.fail(throwablePackedResponse.getTimeoutException().getCause());
         }

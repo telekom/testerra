@@ -8,13 +8,13 @@ import java.nio.file.Files;
 
 public class FilePropertyAssertion extends AbstractPropertyAssertion<File> implements IFilePropertyAssertion {
 
-    public FilePropertyAssertion(AssertionProvider<File> provider) {
-        super(provider);
+    public FilePropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<File> provider) {
+        super(parentAssertion, provider);
     }
 
     @Override
     public IQuantifiedPropertyAssertion<Long> bytes() {
-        return propertyAssertionFactory.quantified(new AssertionProvider<Long>(this) {
+        return propertyAssertionFactory.quantified(this, new AssertionProvider<Long>() {
             @Override
             public Long actual() {
                 return provider.actual().length();
@@ -29,7 +29,7 @@ public class FilePropertyAssertion extends AbstractPropertyAssertion<File> imple
 
     @Override
     public IStringPropertyAssertion<String> name() {
-        return propertyAssertionFactory.string(new AssertionProvider<String>(this) {
+        return propertyAssertionFactory.string(this, new AssertionProvider<String>() {
             @Override
             public String actual() {
                 return provider.actual().getName();
@@ -44,7 +44,7 @@ public class FilePropertyAssertion extends AbstractPropertyAssertion<File> imple
 
     @Override
     public IStringPropertyAssertion<String> extension() {
-        return propertyAssertionFactory.string(new AssertionProvider<String>(this) {
+        return propertyAssertionFactory.string(this, new AssertionProvider<String>() {
             @Override
             public String actual() {
                 return FilenameUtils.getExtension(provider.actual().getName());
@@ -59,7 +59,7 @@ public class FilePropertyAssertion extends AbstractPropertyAssertion<File> imple
 
     @Override
     public IStringPropertyAssertion<String> mimetype() {
-        return propertyAssertionFactory.string(new AssertionProvider<String>(this) {
+        return propertyAssertionFactory.string(this, new AssertionProvider<String>() {
             @Override
             public String actual() {
                 try {
@@ -78,7 +78,7 @@ public class FilePropertyAssertion extends AbstractPropertyAssertion<File> imple
 
     @Override
     public IBinaryPropertyAssertion<Boolean> exists() {
-        return propertyAssertionFactory.binary(new AssertionProvider<Boolean>(this) {
+        return propertyAssertionFactory.binary(this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean actual() {
                 return provider.actual().exists();

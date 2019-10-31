@@ -2,8 +2,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<T> implements IBinaryPropertyAssertion<T> {
 
-    public BinaryPropertyAssertion(AssertionProvider<T> provider) {
-        super(provider);
+    public BinaryPropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+        super(parentAssertion, provider);
     }
 
     @Override
@@ -17,7 +17,7 @@ public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<
                     || actualString.equalsIgnoreCase("yes")
                 )
             ) {
-                assertion.fail(assertion.format(actualString, "is one of [true, 'on', '1', 'yes']", provider.traceSubjectString()));
+                assertion.fail(assertion.format(actualString, "is one of [true, 'on', '1', 'yes']", traceSubjectString()));
                 return false;
             }
             return true;
@@ -36,7 +36,7 @@ public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<
                     || actualString.equalsIgnoreCase("no")
                 )
             ) {
-                assertion.fail(assertion.format(actualString, "is one of [false, 'off', '0', 'no']", provider.traceSubjectString()));
+                assertion.fail(assertion.format(actualString, "is one of [false, 'off', '0', 'no']", traceSubjectString()));
                 return false;
             }
             return true;

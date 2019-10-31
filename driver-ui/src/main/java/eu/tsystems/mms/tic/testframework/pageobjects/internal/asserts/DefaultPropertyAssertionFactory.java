@@ -5,27 +5,27 @@ import java.io.File;
 public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory {
 
     @Override
-    public <T> IBinaryPropertyAssertion<T> binary(AssertionProvider<T> provider) {
-        return new BinaryPropertyAssertion<>(provider);
+    public <T> IBinaryPropertyAssertion<T> binary(PropertyAssertion parent, AssertionProvider<T> provider) {
+        return new BinaryPropertyAssertion(parent, provider);
     }
 
     @Override
-    public <T> IQuantifiedPropertyAssertion<T> quantified(AssertionProvider<T> provider) {
-        return new QuantifiedPropertyAssertion(provider);
+    public <T> IQuantifiedPropertyAssertion<T> quantified(PropertyAssertion parent, AssertionProvider<T> provider) {
+        return new QuantifiedPropertyAssertion(parent, provider);
     }
 
     @Override
-    public <T> IStringPropertyAssertion<T> string(AssertionProvider<T> provider) {
-        return new StringPropertyAssertion<>(provider);
+    public <T> IStringPropertyAssertion<T> string(PropertyAssertion parent, AssertionProvider<T> provider) {
+        return new StringPropertyAssertion(parent, provider);
     }
 
     @Override
-    public IFilePropertyAssertion file(AssertionProvider<File> provider) {
-        return new FilePropertyAssertion(provider);
+    public IFilePropertyAssertion file(PropertyAssertion parent, AssertionProvider<File> provider) {
+        return new FilePropertyAssertion(parent, provider);
     }
 
     @Override
-    public IImagePropertyAssertion image(AssertionProvider<File> provider) {
-        return new ImagePropertyAssertion(provider);
+    public IImagePropertyAssertion image(PropertyAssertion parent, AssertionProvider<File> provider) {
+        return new ImagePropertyAssertion(parent, provider);
     }
 }

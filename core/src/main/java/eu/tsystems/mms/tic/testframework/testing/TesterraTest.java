@@ -32,6 +32,12 @@ import org.testng.annotations.Listeners;
 @Listeners(TesterraListener.class)
 public abstract class TesterraTest {
 
+    protected class TimeoutTest {
+        private TimeoutTest(int timeout, Runnable runnable) {
+            //int currentTimeout = POC
+        }
+    }
+
     protected static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
     private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
 

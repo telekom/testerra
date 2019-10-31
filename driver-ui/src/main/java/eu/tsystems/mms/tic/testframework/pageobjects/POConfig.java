@@ -26,17 +26,11 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 
 /**
- * Created by IntelliJ IDEA.
- * User: pele
- * Date: 10.01.12
- * Time: 13:46
- * To change this template use File | Settings | File Templates.
+ * @todo Create interface and make injectable or configure these things anywhere else
  */
 public final class POConfig {
 
@@ -50,9 +44,8 @@ public final class POConfig {
 
     private static final ThreadLocal<Integer> THREAD_LOCAL_TIMEOUT = new ThreadLocal<>();
 
-    private static CheckRule guiElementCheckRule = CheckRule.valueOf(PropertyManager.getProperty(TesterraProperties.GUIELEMENT_CHECK_RULE, CheckRule.IS_DISPLAYED.name()));
+    private static CheckRule guiElementCheckRule = CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString());
 
-    @Deprecated
     public static int getUiElementTimeoutInSeconds() {
         if (THREAD_LOCAL_TIMEOUT.get() != null) {
             return THREAD_LOCAL_TIMEOUT.get();
@@ -60,7 +53,6 @@ public final class POConfig {
         return uiElementTimeoutInSeconds;
     }
 
-    @Deprecated
     public static void setUiElementTimeoutInSeconds(int uiElementTimeoutInSeconds) {
         POConfig.uiElementTimeoutInSeconds = uiElementTimeoutInSeconds;
     }

@@ -6,6 +6,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 
 public class DefaultAssertionFactory implements AssertionFactory {
 
+    /**
+     * @todo Make Thread local
+     */
     private Class<? extends IAssertion> currentAssertionClass;
 
     private final Injector injector;

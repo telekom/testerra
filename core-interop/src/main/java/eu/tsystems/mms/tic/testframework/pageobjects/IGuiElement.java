@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
@@ -41,6 +42,7 @@ public interface IGuiElement extends
         DELAY_AFTER_FIND_MILLIS("tt.delay.after.guielement.find.millis", 0),
         DELAY_BEFORE_ACTION_MILLIS("tt.delay.before.guielement.action.millis",0),
         DELAY_AFTER_ACTION_MILLIS("tt.delay.after.guielement.action.millis", 0),
+        CHECK_RULE("tt.guielement.checkrule", CheckRule.IS_DISPLAYED.name()),
         ;
         private final String property;
         private Object defaultValue;

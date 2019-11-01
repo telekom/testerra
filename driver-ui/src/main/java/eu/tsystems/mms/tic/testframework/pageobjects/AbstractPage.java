@@ -107,10 +107,8 @@ public abstract class AbstractPage implements IPage {
      *
      * @param newElementTimeout a new timeout in seconds
      */
-    @Override
-    public IPage setElementTimeoutInSeconds(int newElementTimeout) {
+    public void setElementTimeoutInSeconds(int newElementTimeout) {
         elementTimeoutInSeconds = newElementTimeout;
-        return this;
     }
 
     /**
@@ -150,7 +148,7 @@ public abstract class AbstractPage implements IPage {
         }
     }
 
-    public final void forceGuiElementStandardAsserts() {
+    public void forceGuiElementStandardAsserts() {
         forcedGuiElementStandardAsserts = true;
     }
 
@@ -285,7 +283,6 @@ public abstract class AbstractPage implements IPage {
         throw new TimeoutException(message);
     }
 
-    @Override
     public int getElementTimeoutInSeconds() {
         return elementTimeoutInSeconds;
     }
@@ -414,9 +411,8 @@ public abstract class AbstractPage implements IPage {
     /**
      * taking screenshot from all open windows
      */
-    public AbstractPage takeScreenshot() {
+    public void takeScreenshot() {
         UITestUtils.takeScreenshot(driver, true);
-        return this;
     }
 
     public abstract void waitForPageToLoad();
@@ -430,9 +426,7 @@ public abstract class AbstractPage implements IPage {
     public void assertPageIsNotShown() {
     }
 
-    /**
-     * @deprecated
-     */
+    @Deprecated
     public WebDriver getDriver() {
         return driver;
     }

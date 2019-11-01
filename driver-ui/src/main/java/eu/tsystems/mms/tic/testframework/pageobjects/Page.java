@@ -77,15 +77,6 @@ public abstract class Page extends AbstractPage {
         pageLoadHandlers.add(h);
     }
 
-    protected final IGuiElement guiElement;
-
-    /**
-     * Constructor for GuiElement based components
-     */
-    public Page(final IGuiElement guiElement) {
-        this(guiElement.getWebDriver(), guiElement);
-    }
-
     /**
      * Constructor for existing sessions.
      */
@@ -98,7 +89,6 @@ public abstract class Page extends AbstractPage {
             throw new IllegalArgumentException("The driver object must not be null");
         }
         this.driver = driver;
-        this.guiElement = guiElement;
 
         // webdriver based waitForPageToLoad
         waitForPageToLoad();

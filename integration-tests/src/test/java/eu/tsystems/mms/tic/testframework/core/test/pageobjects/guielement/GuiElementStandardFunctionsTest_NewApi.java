@@ -166,6 +166,10 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
         }
     }
 
+    public void test_component() {
+        page.header().screenshot().file().bytes().lowerThan(10);
+    }
+
     public void test_GuiElement() {
         FluentTestPage page = pageFactory.create(FluentTestPage.class);
         page.call("https://www.google.de");

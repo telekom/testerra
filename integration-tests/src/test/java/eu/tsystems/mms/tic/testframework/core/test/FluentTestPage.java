@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.core.test;
 
+import eu.tsystems.mms.tic.testframework.core.test.components.HeaderComponent;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.FluentPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
@@ -22,6 +23,8 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
     private IGuiElement btnInFrame = findOne(By.tagName("iframe"));
     private IGuiElement newDocRoot = inFrame(frame).findOne(By.tagName("body"));
     private IGuiElement btnInFrame3 = forAncestor(newDocRoot).findOne(By.tagName("button"));
+
+    private HeaderComponent header = createComponent(HeaderComponent.class, findOne(By.id("header")));
 
     /**
      * Constructor for existing sessions.
@@ -50,6 +53,10 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
 
     public IGuiElement nonExistentElement() {
         return findOneById("schnullifacks");
+    }
+
+    public HeaderComponent header() {
+        return header;
     }
 
     @Override

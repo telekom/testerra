@@ -32,12 +32,12 @@ import java.lang.reflect.InvocationTargetException;
 public class DefaultPageFactory implements IPageFactory {
 
     @Override
-    public <T extends WebDriverRetainer> T create(Class<T> pageClass) {
+    public <T extends IPage> T create(Class<T> pageClass) {
         return create(pageClass, WebDriverManager.getWebDriver());
     }
 
     @Override
-    public <T extends WebDriverRetainer> T create(Class<T> pageClass, WebDriver webDriver) {
+    public <T extends IPage> T create(Class<T> pageClass, WebDriver webDriver) {
         try {
             final Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
             return constructor.newInstance(webDriver);
@@ -47,12 +47,12 @@ public class DefaultPageFactory implements IPageFactory {
     }
 
     @Override
-    public <T extends WebDriverRetainer> T create(Class<T> pageClass, IGuiElement guiElement) {
+    public <T extends IComponent> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
         try {
-            final Constructor<T> constructor = pageClass.getConstructor(IGuiElement.class);
-            return constructor.newInstance(guiElement);
+            final Constructor<T> constructor = componentClass.getConstructor(IGuiElement.class);
+            return constructor.newInstance(rootElement);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", pageClass, guiElement), e);
+            throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", componentClass, rootElement), e);
         }
     }
 }

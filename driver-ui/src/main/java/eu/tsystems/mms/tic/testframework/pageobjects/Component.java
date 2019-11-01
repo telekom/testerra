@@ -36,9 +36,9 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
 
     protected final IGuiElement rootElement;
 
-    public Component(IGuiElement root) {
-        super(root.getWebDriver());
-        this.rootElement = root;
+    public Component(IGuiElement rootElement) {
+        super(rootElement.getWebDriver());
+        this.rootElement = rootElement;
     }
 
     public IImagePropertyAssertion screenshot() {

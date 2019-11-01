@@ -5,8 +5,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 
 public class HeaderComponent extends Component<HeaderComponent> {
 
-    public HeaderComponent(IGuiElement root) {
-        super(root);
+    public HeaderComponent(IGuiElement rootElement) {
+        super(rootElement);
     }
 
     @Override

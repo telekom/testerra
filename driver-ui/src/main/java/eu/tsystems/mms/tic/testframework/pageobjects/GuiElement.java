@@ -28,7 +28,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
@@ -114,7 +113,8 @@ public class GuiElement implements IGuiElement, Loggable {
 
     public GuiElement(IPage page, Locate locator) {
         this(page.getWebDriver(), locator, null);
-        this.setTimeoutInSeconds(page.getElementTimeoutInSeconds());
+        Page pageImpl = (Page)page;
+        this.setTimeoutInSeconds(pageImpl.getElementTimeoutInSeconds());
     }
 
     /**
@@ -153,10 +153,6 @@ public class GuiElement implements IGuiElement, Loggable {
         Locate locator,
         IGuiElement ancestor
     ) {
-        if (!(ancestor instanceof GuiElement)) {
-            throw new TesterraRuntimeException(String.format("Ancestor is no implementation of %s", GuiElement.class));
-        }
-
         // Use FrameLogic from parent
         GuiElement ancestorGuiElement = (GuiElement)ancestor;
         IFrameLogic frameLogic = null;

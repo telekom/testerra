@@ -69,7 +69,7 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
         super(driver);
     }
 
-    protected Finder forAncestor(IGuiElement ancestor) {
+    protected Finder withAncestor(IGuiElement ancestor) {
         return new AncestorFind(ancestor);
     }
     protected IGuiElement findOneById(String id) {

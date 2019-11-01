@@ -13,8 +13,7 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
     private IGuiElement input = findOneById("11");
 
     @Check
-    private IGuiElement button = forAncestor(input).findOneByQa("action/submit");
-    //private IGuiElement section = withAncestor(button)
+    private IGuiElement button = withAncestor(input).findOneByQa("action/submit");
 
     private IGuiElement text = findOne(By.className("affe"));
 
@@ -22,7 +21,7 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
 
     private IGuiElement btnInFrame = findOne(By.tagName("iframe"));
     private IGuiElement newDocRoot = inFrame(frame).findOne(By.tagName("body"));
-    private IGuiElement btnInFrame3 = forAncestor(newDocRoot).findOne(By.tagName("button"));
+    private IGuiElement btnInFrame3 = withAncestor(newDocRoot).findOne(By.tagName("button"));
 
     private HeaderComponent header = createComponent(HeaderComponent.class, findOne(By.id("header")));
 

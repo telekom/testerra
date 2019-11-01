@@ -46,7 +46,7 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     }
 
     protected IGuiElement findOne(Locate locator) {
-        return forAncestor(rootElement).findOne(locator);
+        return withAncestor(rootElement).findOne(locator);
     }
 
     @Override

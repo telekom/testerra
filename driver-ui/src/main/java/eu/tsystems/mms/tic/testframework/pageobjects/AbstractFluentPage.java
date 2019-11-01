@@ -88,8 +88,8 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
     protected <T extends IPage> T createPage(final Class<T> pageClass) {
         return pageFactory.create(pageClass, driver);
     }
-    protected <T extends IComponent> T createComponent(Class<T> pageClass, IGuiElement guiElement) {
-        return pageFactory.createComponent(pageClass, guiElement);
+    protected <T extends IComponent> T createComponent(Class<T> pageClass, IGuiElement rootElement) {
+        return pageFactory.createComponent(pageClass, rootElement);
     }
 
     /**

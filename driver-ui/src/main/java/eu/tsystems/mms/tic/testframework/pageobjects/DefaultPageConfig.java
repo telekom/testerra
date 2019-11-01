@@ -9,7 +9,6 @@ public class DefaultPageConfig implements PageConfig {
     private final ThreadLocal<CheckRule> threadLocalCheckRule = new ThreadLocal<>();
 
     DefaultPageConfig() {
-        CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString());
     }
 
     @Override

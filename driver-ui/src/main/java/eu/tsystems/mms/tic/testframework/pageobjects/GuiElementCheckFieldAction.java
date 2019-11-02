@@ -54,10 +54,9 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
 
         if (fast) {
             /**
-             * Sets the timeout for "fast" check to one second.
-             * Fortunately, this value is not documented and differs in
-             * previous implementations.
-             * However, we set this timeout now to 1 sec
+             * Sets the timeout for "fast" checks.
+             * Unfortunately, this value is not documented and differs in previous implementations.
+             * However, we set this timeout now to zero seconds.
              */
             pageOverrides.setElementTimeoutInSeconds(0);
         }

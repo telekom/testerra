@@ -28,13 +28,11 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Report implements IReport, Loggable {
 
@@ -87,60 +85,38 @@ public class Report implements IReport, Loggable {
 
     /**
      * Adds a screenshot to the report
-     * @param screenshotFile The screenshot file
-     * @param screenshotSourceFileOrNull The source code of the screenshot origin
-     * @param mode
-     * @return Screenshot instance
      */
     @Override
-    public IReport addScreenshot(
-        File screenshotFile,
-        File screenshotSourceFileOrNull,
-        Mode mode
-    ) throws IOException {
-        if (!screenshotFile.exists()) {
-            log().error("Cannot create screenshot: " + screenshotFile + " does not exist");
-            return null;
-        }
-        if (screenshotSourceFileOrNull != null && !screenshotSourceFileOrNull.exists()) {
-            log().warn("Cannot create screenshot source: " + screenshotSourceFileOrNull + " does not exist");
-            screenshotSourceFileOrNull = null;
-        }
-
-        final Screenshot screenshot = new Screenshot();
-
+    public IReport addScreenshot(Screenshot screenshot, Mode mode) {
         /*
         provide screenshot
          */
-        screenshot.filename = UUID.randomUUID() + "." + FilenameUtils.getExtension(screenshotFile.getName());
-        screenshot.meta().put(Screenshot.Meta.FILE_NAME.toString(), screenshotFile.getName());
         final File targetScreenshotFile = new File(SCREENSHOTS_DIRECTORY, screenshot.filename);
-        switch (mode) {
-            case COPY:
-                FileUtils.copyFile(screenshotFile, targetScreenshotFile, true);
-                break;
-            case MOVE:
-                FileUtils.moveFile(screenshotFile, targetScreenshotFile);
-                break;
-        }
-
-
-        /*
-        provide source
-         */
-        if (screenshotSourceFileOrNull != null) {
-            screenshot.sourceFilename = screenshot.filename + ".html";
-            screenshot.meta().put(Screenshot.Meta.SOURCE_FILE_NAME.toString(), screenshotSourceFileOrNull.getName());
-            final File targetSourceFile = new File(SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
+        try {
             switch (mode) {
                 case COPY:
-                    FileUtils.copyFile(screenshotSourceFileOrNull, targetSourceFile, true);
+                    FileUtils.copyFile(screenshot.getScreenshotFile(), targetScreenshotFile, true);
                     break;
                 case MOVE:
-                    FileUtils.moveFile(screenshotSourceFileOrNull, targetSourceFile);
+                    FileUtils.moveFile(screenshot.getScreenshotFile(), targetScreenshotFile);
                     break;
             }
+        } catch (IOException e) {
+            log().error(e.getMessage());
+        }
 
+        final File targetSourceFile = new File(SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
+        try {
+            switch (mode) {
+                case COPY:
+                    FileUtils.copyFile(screenshot.getPageSourceFile(), targetSourceFile, true);
+                    break;
+                case MOVE:
+                    FileUtils.moveFile(screenshot.getPageSourceFile(), targetSourceFile);
+                    break;
+            }
+        } catch (IOException e) {
+            log().error(e.getMessage());
         }
 
         List<Screenshot> screenshots = new ArrayList<>();
@@ -149,17 +125,20 @@ public class Report implements IReport, Loggable {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.addScreenshots(screenshots);
 
-        log().info("Created screenshot " + screenshotFile + " as " + targetScreenshotFile);
+        log().info("Provided screenshot " + screenshot.filename + " as " + targetScreenshotFile);
 
         return this;
     }
 
+    /**
+     * @deprecated This method does nothing
+     */
+    @Deprecated
     public static Screenshot provideScreenshot(
         File screenshotFile,
         File screenshotSourceFileOrNull,
         Mode mode
     ) throws IOException {
-        report.addScreenshot(screenshotFile, screenshotSourceFileOrNull, mode);
         return new Screenshot();
     }
 

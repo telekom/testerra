@@ -2,9 +2,7 @@ package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-
-import java.io.File;
-import java.io.IOException;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
 public interface IReport {
     enum Mode {
@@ -54,9 +52,5 @@ public interface IReport {
             return PropertyManager.parser.getProperty(toString(), defaultValue);
         }
     }
-    IReport addScreenshot(
-        File screenshotFile,
-        File screenshotSourceFileOrNull,
-        Mode mode
-    ) throws IOException;
+    IReport addScreenshot(Screenshot screenshot, Mode mode);
 }

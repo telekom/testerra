@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.report.Snapshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import org.openqa.selenium.WebDriver;
 
@@ -112,12 +112,11 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
         });
     }
     public IImageAssertion screenshot() {
-        return propertyAssertionFactory.image(new AssertionProvider<File>() {
+        return propertyAssertionFactory.screenshot(new AssertionProvider<File>() {
             @Override
             public File actual() {
-                Snapshot snapshot = new Snapshot(this.toString());
-                UITestUtils.takeScreenshot(snapshot, driver);
-                return snapshot.screenshotFile;
+                Screenshot screenshot = UITestUtils.takeScreenshot(driver);
+                return screenshot.getScreenshotFile();
             }
 
             @Override

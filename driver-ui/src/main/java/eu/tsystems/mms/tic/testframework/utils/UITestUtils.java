@@ -38,7 +38,6 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.remote.RemoteDownloadPath;
 import eu.tsystems.mms.tic.testframework.report.IReport;
-import eu.tsystems.mms.tic.testframework.report.Snapshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
@@ -102,6 +101,10 @@ public class UITestUtils {
 
     private static final IReport report = Testerra.ioc().getInstance(IReport.class);
 
+    public static Screenshot takeScreenshot(WebDriver webDriver) {
+        return takeScreenshot(webDriver, false);
+    }
+
     @Deprecated
     public static Screenshot takeScreenshot(
         WebDriver webDriver,
@@ -114,43 +117,35 @@ public class UITestUtils {
         );
         if (intoReport) {
             if (screenshot != null) {
-                report.addScreenshot(screenshot);
+                report.addScreenshot(screenshot, IReport.Mode.MOVE);
             }
         }
 
         return screenshot;
     }
 
-    public static void takeScreenshot(
-        Snapshot snapshot,
-        WebDriver webDriver
-    ) {
-        takeScreenshot(snapshot, webDriver, webDriver.getWindowHandle(), WebDriverManager.getSessionKeyFrom(webDriver));
-    }
-
-
-    public static void takeScreenshot(
-        Snapshot snapshot,
+    public static Screenshot takeScreenshot(
         WebDriver eventFiringWebDriver,
         String originalWindowHandle,
         String sessionKey
     ) {
         if (!IReport.Properties.SCREENSHOTTER_ACTIVE.asBool()) {
-            return;
+            return null;
         }
 
         WebDriverRequest webDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
         if (Browsers.htmlunit.equalsIgnoreCase(webDriverRequest.browser)) {
             LOGGER.warn("Not taking screenshot for htmunit");
-            return;
+            return null;
         }
 
         /*
          * Take the screenshot
          */
         if (eventFiringWebDriver != null) {
+            Screenshot screenshot = new Screenshot();
             try {
-                takeWebDriverScreenshotToFile(eventFiringWebDriver, snapshot.screenshotFile);
+                takeWebDriverScreenshotToFile(eventFiringWebDriver, screenshot.getScreenshotFile());
 
                 // get page source (webdriver)
                 String pageSource = eventFiringWebDriver.getPageSource();
@@ -160,13 +155,8 @@ public class UITestUtils {
                 } else {
 
                     // save page source to file
-                    savePageSource(pageSource, snapshot.pageSourceFile);
+                    savePageSource(pageSource, screenshot.getPageSourceFile());
                 }
-
-                Screenshot screenshot = report.provideScreenshot(snapshot.screenshotFile, snapshot.pageSourceFile, IReport.Mode.MOVE);
-                snapshot.setScreenshot(screenshot);
-                final Date screenshotDate = new Date();
-                screenshot.meta().put(Screenshot.Meta.DATE.toString(), screenshotDate.toString());
 
                 /*
                 get infos
@@ -204,6 +194,8 @@ public class UITestUtils {
                 screenshot.meta().put(Screenshot.Meta.WINDOW.toString(), window);
                 screenshot.meta().put(Screenshot.Meta.URL.toString(), currentUrl);
 
+                return screenshot;
+
             } catch (final Exception e) {
                 LOGGER.error(ERROR_TAKING_SCREENSHOT, e);
             }
@@ -211,17 +203,7 @@ public class UITestUtils {
             LOGGER.info("No screenshot was taken. WebDriver is not active.");
         }
 
-        return;
-    }
-
-    public static Screenshot takeScreenshot(
-        WebDriver eventFiringWebDriver,
-        String originalWindowHandle,
-        String sessionKey
-    ) {
-        Snapshot snapshot = new Snapshot("Screenshot");
-        takeScreenshot(snapshot, eventFiringWebDriver, originalWindowHandle, sessionKey);
-        return snapshot.getScreenshot();
+        return null;
     }
 
     public static void takeWebDriverScreenshotToFile(WebDriver eventFiringWebDriver, File screenShotTargetFile) {

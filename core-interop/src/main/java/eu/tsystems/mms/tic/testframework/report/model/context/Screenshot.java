@@ -19,10 +19,15 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Screenshot {
+public class Screenshot implements Loggable {
 
     public enum Meta {
         SESSION_KEY("SessionKey"),
@@ -47,13 +52,54 @@ public class Screenshot {
     }
 
     public String filename;
+    private File screenshotFile;
     public String sourceFilename;
+    private File pageSourceFile;
     final private Map<String, String> meta = new HashMap<>();
+    private static HashMap<String, Integer> counter = new HashMap<>();
+    private final String name;
 
     /*
     Refers to the errorContext the screenshot belongs to.
      */
     public String errorContextId;
+
+    public Screenshot() {
+        this("Screenshot");
+    }
+
+    public Screenshot(String name) {
+        meta.put(Meta.DATE.toString(), new Date().toString());
+        int count = counter.get(name);
+        this.name = String.format("%s-%03d-", name, counter.get(name));
+        counter.put(name, ++count);
+    }
+
+    public File getScreenshotFile() {
+        if (screenshotFile==null) {
+            try {
+                screenshotFile = File.createTempFile(name, "png");
+                filename = screenshotFile.getName();
+                meta.put(Meta.FILE_NAME.toString(), filename);
+            } catch (IOException e) {
+                log().error(e.getMessage());
+            }
+        }
+        return screenshotFile;
+    }
+
+    public File getPageSourceFile() {
+        if (pageSourceFile==null) {
+            try {
+                pageSourceFile = File.createTempFile(name, "html");
+                sourceFilename = pageSourceFile.getName();
+                meta.put(Meta.SOURCE_FILE_NAME.toString(), sourceFilename);
+            } catch (IOException e) {
+                log().error(e.getMessage());
+            }
+        }
+        return pageSourceFile;
+    }
 
     @Override
     public String toString() {

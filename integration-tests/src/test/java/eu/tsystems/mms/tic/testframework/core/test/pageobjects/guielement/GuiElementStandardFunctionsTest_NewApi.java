@@ -129,12 +129,19 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     }
 
     @Test
-    public void test_NonExistent_GuiElement_fails() {
+    public void test_NonExistent_GuiElement_present_fails() {
+        String msg = null;
         try {
             page.nonExistentElement().present().isTrue();
         } catch (AssertionError e) {
-            instantAssertion.assertEndsWith(e.getMessage(), "is one of [true, 'on', '1', 'yes']", e.getClass().toString());
+            msg = e.getMessage();
         }
+        instantAssertion.assertEndsWith(msg, "is one of [true, 'on', '1', 'yes']", AssertionError.class.toString());
+    }
+
+    @Test
+    public void test_NonExistent_GuiElement_present_fails_fast() {
+        withTimeout(0, () -> test_NonExistent_GuiElement_present_fails());
     }
 
     @Test
@@ -156,12 +163,14 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
     @Test
     public void test_NonExistent_GuiElement_screenshot_fails() {
+        String msg=null;
         try {
             IImageAssertion screenshot = page.nonExistentElement().screenshot();
             screenshot.file().exists().isTrue();
         } catch (AssertionError e) {
-            instantAssertion.assertEndsWith(e.getMessage(), "not found", e.getClass().toString());
+            msg = e.getMessage();
         }
+        instantAssertion.assertEndsWith(msg, "not found", AssertionError.class.toString());
     }
 
     public void test_component() {

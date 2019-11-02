@@ -32,38 +32,39 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 @Deprecated
 public final class POConfig {
 
-    private static final PageConfig pageConfig = Testerra.ioc().getInstance(PageConfig.class);
+    private static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
 
     /** Private Constructor, cause this is a util class. */
     private POConfig() { }
 
     public static int getUiElementTimeoutInSeconds() {
-        return pageConfig.getElementTimeoutInSeconds();
+        return pageOverrides.getElementTimeoutInSeconds(Testerra.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue());
     }
 
     public static void setUiElementTimeoutInSeconds(int uiElementTimeoutInSeconds) {
-        pageConfig.setElementTimeoutInSeconds(uiElementTimeoutInSeconds);
+        pageOverrides.setElementTimeoutInSeconds(uiElementTimeoutInSeconds);
     }
 
     public static CheckRule getGuiElementCheckRule() {
-        return pageConfig.getGuiElementCheckRule();
+        return pageOverrides.getGuiElementCheckRule(CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString()));
     }
 
     public static void setGuiElementCheckRule(CheckRule guiElementCheckRule) {
-        pageConfig.setGuiElementCheckRule(guiElementCheckRule);
+        pageOverrides.setGuiElementCheckRule(guiElementCheckRule);
     }
 
     public static void setThreadLocalUiElementTimeoutInSeconds(int value) {
-        pageConfig.setElementTimeoutInSeconds(value);
+        pageOverrides.setElementTimeoutInSeconds(value);
     }
 
     public static void removeThreadLocalUiElementTimeout() {
+        pageOverrides.removeElementTimeoutInSeconds();
     }
 
     public static void executeWithExplicitUiElementTimeout(int value, Runnable runnable) {
-        int timeoutBefore = pageConfig.getElementTimeoutInSeconds();
-        pageConfig.setElementTimeoutInSeconds(value);
+        int timeoutBefore = pageOverrides.getElementTimeoutInSeconds(value);
+        pageOverrides.setElementTimeoutInSeconds(value);
         runnable.run();
-        pageConfig.setElementTimeoutInSeconds(timeoutBefore);
+        pageOverrides.setElementTimeoutInSeconds(timeoutBefore);
     }
 }

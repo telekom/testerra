@@ -50,7 +50,7 @@ import java.util.Set;
 @Deprecated()
 public abstract class AbstractPage implements IPage {
 
-    protected static final PageConfig pageConfig = Testerra.ioc().getInstance(PageConfig.class);
+    protected static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
 
     /**
      * The webdriver object.
@@ -60,7 +60,7 @@ public abstract class AbstractPage implements IPage {
     /**
      * Element timeout in seconds (int).
      */
-    protected int elementTimeoutInSeconds = pageConfig.getElementTimeoutInSeconds();
+    protected int elementTimeoutInSeconds = pageOverrides.getElementTimeoutInSeconds(Testerra.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue());
 
     /**
      * Protected logger.

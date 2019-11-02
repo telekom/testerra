@@ -488,15 +488,26 @@ public class GuiElement implements IGuiElement, Loggable {
         return this;
     }
 
+    /**
+     * @deprecated This method should not be public
+     */
+    @Deprecated
     public int getTimeoutInSeconds() {
         return guiElementData.getTimeoutInSeconds();
     }
 
+    /**
+     * @deprecated This method should not be public
+     */
+    @Deprecated
     public IGuiElement setTimeoutInSeconds(int timeoutInSeconds) {
         guiElementData.setTimeoutInSeconds(timeoutInSeconds);
         return this;
     }
 
+    /**
+     * @deprecated This method should not be public
+     */
     public IGuiElement restoreDefaultTimeout() {
         int timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
         guiElementData.setTimeoutInSeconds(timeoutInSeconds);

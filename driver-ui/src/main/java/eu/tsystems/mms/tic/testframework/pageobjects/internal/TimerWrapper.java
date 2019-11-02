@@ -19,7 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
@@ -28,15 +31,13 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Created by rnhb on 14.08.2015.
  */
-public class TimerWrapper {
+public class TimerWrapper implements Loggable {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(TimerWrapper.class);
+    private final static PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
 
     private int sleepTimeInMs;
     private int timeoutInSeconds;
@@ -70,7 +71,7 @@ public class TimerWrapper {
     }
 
     public int getTimeoutInSeconds() {
-        return timeoutInSeconds;
+        return pageOverrides.getElementTimeoutInSeconds(timeoutInSeconds);
     }
 
     public <T> ThrowablePackedResponse<T> executeSequence(final Timer.Sequence<T> sequence) {
@@ -99,7 +100,7 @@ public class TimerWrapper {
         final String message = throwableContainedIn.getMessage();
         if (!StringUtils.isStringEmpty(message)) {
             if (message.contains("Timed out waiting for page load")) {
-                LOGGER.error("Shutting down WebDriver session(s) due to org.openqa.selenium.TimeoutException");
+                log().error("Shutting down WebDriver session(s) due to org.openqa.selenium.TimeoutException");
                     /*
                     Close the session to avoid huge timeouts.
                      */

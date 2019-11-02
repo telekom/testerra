@@ -2,8 +2,8 @@ package eu.tsystems.mms.tic.testframework.ioc;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
-import eu.tsystems.mms.tic.testframework.pageobjects.DefaultPageConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageConfig;
+import eu.tsystems.mms.tic.testframework.pageobjects.DefaultPageOverrides;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementAssertFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultGuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWaitFactory;
@@ -24,7 +24,7 @@ public class ConfigureDriverUi extends AbstractModule {
         if (!pageObjectsConfigured) configurePageObjects();
         if (!webDriverConfigured) configureWebDriver();
         bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class).in(Scopes.SINGLETON);
-        bind(PageConfig.class).to(DefaultPageConfig.class).in(Scopes.SINGLETON);
+        bind(PageOverrides.class).to(DefaultPageOverrides.class).in(Scopes.SINGLETON);
     }
 
     protected void configurePageObjects() {

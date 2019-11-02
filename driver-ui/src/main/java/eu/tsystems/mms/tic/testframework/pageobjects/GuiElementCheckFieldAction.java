@@ -37,8 +37,8 @@ import org.openqa.selenium.WebDriver;
  */
 public class GuiElementCheckFieldAction extends CheckFieldAction {
 
-    final boolean forceStandardAssert;
-    private final static PageConfig pageConfig = Testerra.ioc().getInstance(PageConfig.class);
+    private final boolean forceStandardAssert;
+    private final static PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
 
     public GuiElementCheckFieldAction(FieldWithActionConfig field, AbstractPage declaringPage) {
         super(field, declaringPage);
@@ -47,27 +47,29 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
 
     private void pCheckField(GuiElement guiElement, GuiElementAssert GuiElementAssert, CheckRule checkRule, boolean findNot, boolean fast) {
         if (checkRule == CheckRule.DEFAULT) {
-            checkRule = pageConfig.getGuiElementCheckRule();
+            checkRule = pageOverrides.getGuiElementCheckRule(CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString()));
         }
 
         String errorMessageNotNot = "You are trying to FIND_NOT a not present element.";
+
+        if (fast) {
+            /**
+             * Sets the timeout for "fast" check to one second.
+             * Fortunately, this value is not documented and differs in
+             * previous implementations.
+             * However, we set this timeout now to 1 sec
+             */
+            pageOverrides.setElementTimeoutInSeconds(0);
+        }
 
         switch (checkRule) {
             case DEFAULT:
                 throw new TesterraSystemException("Internal Error. Please provide stacktrace to testerra developers.");
             case IS_PRESENT:
                 if (findNot) {
-                    if (fast) {
-                        GuiElementAssert.assertIsNotPresentFast();
-                    } else {
-                        GuiElementAssert.assertIsNotPresent();
-                    }
+                    GuiElementAssert.assertIsNotPresent();
                 } else {
-                    if (fast) {
-                        GuiElementAssert.assertIsPresentFast();
-                    } else {
-                        GuiElementAssert.assertIsPresent();
-                    }
+                    GuiElementAssert.assertIsPresent();
                 }
                 break;
             case IS_NOT_PRESENT:
@@ -79,60 +81,33 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
 //                    }
                     logger.warn(errorMessageNotNot);
                 } else {
-                    if (fast) {
-                        GuiElementAssert.assertIsNotPresentFast();
-                    } else {
-                        GuiElementAssert.assertIsNotPresent();
-                    }
+                    GuiElementAssert.assertIsNotPresent();
                 }
                 break;
             case IS_DISPLAYED: {
-                // save timeout config
-                int timeoutInSeconds = guiElement.getTimeoutInSeconds();
-                if (fast) {
-                    // reduce timeout to 0
-                    guiElement.setTimeoutInSeconds(0);
-                }
-
-                try {
-                    if (findNot) {
-                        GuiElementAssert.assertIsNotDisplayed();
-                    } else {
-                        GuiElementAssert.assertIsDisplayed();
-                    }
-                } finally {
-                    // restore timeout
-                    if (fast) {
-                        guiElement.setTimeoutInSeconds(timeoutInSeconds);
-                    }
+                if (findNot) {
+                    GuiElementAssert.assertIsNotDisplayed();
+                } else {
+                    GuiElementAssert.assertIsDisplayed();
                 }
             }
             break;
             case IS_NOT_DISPLAYED: {
-                // save timeout config
-                int timeoutInSeconds = guiElement.getTimeoutInSeconds();
-                if (fast) {
-                    // reduce timeout to 0
-                    guiElement.setTimeoutInSeconds(0);
-                }
-
-                try {
-                    if (findNot) {
-//                            assertGuiElement.assertIsDisplayed();
-                        logger.warn(errorMessageNotNot);
-                    } else {
-                        GuiElementAssert.assertIsNotDisplayed();
-                    }
-                } finally {
-                    // restore timeout
-                    if (fast) {
-                        guiElement.setTimeoutInSeconds(timeoutInSeconds);
-                    }
+                if (findNot) {
+                    logger.warn(errorMessageNotNot);
+                } else {
+                    GuiElementAssert.assertIsNotDisplayed();
                 }
             }
             break;
             default:
+                if (fast) {
+                    pageOverrides.removeElementTimeoutInSeconds();
+                }
                 throw new TesterraSystemException("CheckRule not implemented: " + checkRule);
+        }
+        if (fast) {
+            pageOverrides.removeElementTimeoutInSeconds();
         }
     }
 

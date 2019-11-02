@@ -26,20 +26,16 @@ import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.testng.annotations.Listeners;
 
 @Listeners(TesterraListener.class)
 public abstract class TesterraTest {
 
-    protected class TimeoutTest {
-        private TimeoutTest(int timeout, Runnable runnable) {
-            //int currentTimeout = POC
-        }
-    }
-
     protected static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
     private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
+    private static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
 
     static {
         Booter.bootOnce();
@@ -55,5 +51,11 @@ public abstract class TesterraTest {
         Class<? extends IAssertion> prevClass = assertionFactory.setDefault(NonFunctionalAssertion.class);
         runnable.run();
         assertionFactory.setDefault(prevClass);
+    }
+
+    protected void withTimeout(int timeout, Runnable runnable) {
+        pageOverrides.setElementTimeoutInSeconds(timeout);
+        runnable.run();
+        pageOverrides.removeElementTimeoutInSeconds();
     }
 }

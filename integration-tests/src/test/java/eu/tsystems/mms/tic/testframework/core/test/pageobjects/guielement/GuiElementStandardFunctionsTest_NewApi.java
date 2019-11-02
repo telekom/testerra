@@ -92,11 +92,13 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
     @Test()
     public void test_Page_url_endsWith_fails() {
+        String msg = null;
         try {
             page.url().endsWith("nonexistingfile.html");
         } catch (AssertionError e) {
-            instantAssertion.assertEndsWith(e.getCause().getMessage(), "ends with [nonexistingfile.html]", e.getCause().getMessage());
+           msg = e.getMessage();
         }
+        instantAssertion.assertEndsWith(msg, "ends with [nonexistingfile.html]", AssertionError.class.toString());
     }
 
     @Test

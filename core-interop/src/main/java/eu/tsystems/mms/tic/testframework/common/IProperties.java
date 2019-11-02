@@ -1,5 +1,9 @@
 package eu.tsystems.mms.tic.testframework.common;
 
+/**
+ * New Properties with overridable default value
+ * @author Mike Reiche
+ */
 public interface IProperties {
     /**
      * Sets a new default value

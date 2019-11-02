@@ -32,6 +32,10 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
+/**
+ * GuiElement with new fluent API support
+ * @author Mike Reiche
+ */
 public interface IGuiElement extends
     Nameable<IGuiElement>,
     WebDriverRetainer

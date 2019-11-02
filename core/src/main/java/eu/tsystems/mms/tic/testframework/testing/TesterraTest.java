@@ -53,8 +53,8 @@ public abstract class TesterraTest {
         assertionFactory.setDefault(prevClass);
     }
 
-    protected void withTimeout(int timeout, Runnable runnable) {
-        pageOverrides.setElementTimeoutInSeconds(timeout);
+    protected void withTimeout(int seconds, Runnable runnable) {
+        pageOverrides.setElementTimeoutInSeconds(seconds);
         runnable.run();
         pageOverrides.removeElementTimeoutInSeconds();
     }

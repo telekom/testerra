@@ -28,10 +28,10 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.report.Snapshot;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 
 import java.io.File;
@@ -45,9 +45,9 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
 
     private static final GuiElementFactory guiElementFactory = Testerra.ioc().getInstance(GuiElementFactory.class);
 
-    private class FrameFind implements Finder {
+    private static class FrameFinder implements Finder {
         private IGuiElement frame;
-        private FrameFind(IGuiElement frame) {
+        private FrameFinder(IGuiElement frame) {
             this.frame = frame;
         }
         public IGuiElement findOne(Locate locator) {
@@ -60,7 +60,7 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
     }
 
     protected Finder inFrame(IGuiElement frame) {
-        return new FrameFind(frame);
+        return new FrameFinder(frame);
     }
 
     @Override
@@ -111,11 +111,13 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
             }
         });
     }
-    public IImagePropertyAssertion screenshot() {
+    public IImageAssertion screenshot() {
         return propertyAssertionFactory.image(new AssertionProvider<File>() {
             @Override
             public File actual() {
-                return UITestUtils.takeScreenshotAs(driver, OutputType.FILE);
+                Snapshot snapshot = new Snapshot(this.toString());
+                UITestUtils.takeScreenshot(snapshot, driver);
+                return snapshot.screenshotFile;
             }
 
             @Override

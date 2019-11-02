@@ -32,12 +32,12 @@ import java.lang.reflect.InvocationTargetException;
 public class DefaultPageFactory implements IPageFactory {
 
     @Override
-    public <T extends IPage> T create(Class<T> pageClass) {
-        return create(pageClass, WebDriverManager.getWebDriver());
+    public <T extends IPage> T createPage(Class<T> pageClass) {
+        return createPage(pageClass, WebDriverManager.getWebDriver());
     }
 
     @Override
-    public <T extends IPage> T create(Class<T> pageClass, WebDriver webDriver) {
+    public <T extends IPage> T createPage(Class<T> pageClass, WebDriver webDriver) {
         try {
             final Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
             return constructor.newInstance(webDriver);

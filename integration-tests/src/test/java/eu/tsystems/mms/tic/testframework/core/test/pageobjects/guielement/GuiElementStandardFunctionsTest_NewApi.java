@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.Assert;
@@ -44,7 +44,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
     @BeforeClass
     private FluentTestPage prepareTestPage() {
-        page = pageFactory.create(FluentTestPage.class);
+        page = pageFactory.createPage(FluentTestPage.class);
         return page.call(TestPage.INPUT_TEST_PAGE.getUrl());
     }
 
@@ -152,14 +152,14 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
     @Test
     public void test_GuiElement_screenshot() {
-        IImagePropertyAssertion screenshot = page.notVisibleElement().screenshot();
+        IImageAssertion screenshot = page.notVisibleElement().screenshot();
         screenshot.file().exists().isTrue();
     }
 
     @Test
     public void test_NonExistent_GuiElement_screenshot_fails() {
         try {
-            IImagePropertyAssertion screenshot = page.nonExistentElement().screenshot();
+            IImageAssertion screenshot = page.nonExistentElement().screenshot();
             screenshot.file().exists().isTrue();
         } catch (AssertionError e) {
             instantAssertion.assertEndsWith(e.getMessage(), "not found", e.getClass().toString());
@@ -171,7 +171,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     }
 
     public void test_GuiElement() {
-        FluentTestPage page = pageFactory.create(FluentTestPage.class);
+        FluentTestPage page = pageFactory.createPage(FluentTestPage.class);
         page.call("https://www.google.de");
         // Expect GuiElement(By.id("11")).value(attribute: value) [Hausmaus] contains not [maus]
 
@@ -188,7 +188,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
         // Expect GuiElement(By.qa("action/submit")).value(attribute: style) [display:none] equals [display:block]
         page.submit().value(Attribute.STYLE).is("display:block");
 
-        final IImagePropertyAssertion screenshot = page.submit().screenshot();
+        final IImageAssertion screenshot = page.submit().screenshot();
         // Expect GuiElement(By.qa("action/submit")).screenshot.pixelDistance(referenceImageName: "SubmitButton") [10] between [3] and [5]
         screenshot.pixelDistance("SubmitButton").between(3,5);
         // Expect GuiElement(By.qa("action/submit")).screenshot.file.name [SomeImage] contains [screenshot]

@@ -24,7 +24,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.openqa.selenium.By;
@@ -87,7 +87,7 @@ public interface IGuiElement extends
     IBinaryPropertyAssertion<Boolean> displayed();
     IBinaryPropertyAssertion<Boolean> enabled();
     IBinaryPropertyAssertion<Boolean> selected();
-    IImagePropertyAssertion screenshot();
+    IImageAssertion screenshot();
     IGuiElement scrollTo();
     Locate getLocator();
     WebElement getWebElement();

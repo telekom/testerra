@@ -20,12 +20,12 @@ public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory
     }
 
     @Override
-    public IFilePropertyAssertion file(PropertyAssertion parent, AssertionProvider<File> provider) {
-        return new FilePropertyAssertion(parent, provider);
+    public IFileAssertion file(PropertyAssertion parent, AssertionProvider<File> provider) {
+        return new FileAssertion(parent, provider);
     }
 
     @Override
-    public IImagePropertyAssertion image(PropertyAssertion parent, AssertionProvider<File> provider) {
-        return new ImagePropertyAssertion(parent, provider);
+    public IImageAssertion image(PropertyAssertion parent, AssertionProvider<File> provider) {
+        return new ImageAssertion(parent, provider);
     }
 }

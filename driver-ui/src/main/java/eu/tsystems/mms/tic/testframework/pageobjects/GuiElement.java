@@ -39,7 +39,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElement
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
@@ -880,7 +880,7 @@ public class GuiElement implements IGuiElement, Loggable {
     }
 
     @Override
-    public IImagePropertyAssertion screenshot() {
+    public IImageAssertion screenshot() {
         final IGuiElement self = this;
         return propertyAssertionFactory.image(new AssertionProvider<File>() {
             @Override

@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TestOS;
@@ -36,14 +37,14 @@ import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.remote.RemoteDownloadPath;
+import eu.tsystems.mms.tic.testframework.report.IReport;
+import eu.tsystems.mms.tic.testframework.report.Snapshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -57,7 +58,6 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -100,42 +100,49 @@ public class UITestUtils {
 
     private static final boolean STITCH = PropertyManager.getBooleanProperty(TesterraProperties.STITCH_CHROME_SCREENSHOTS, true);
 
+    private static final IReport report = Testerra.ioc().getInstance(IReport.class);
+
+    @Deprecated
     public static Screenshot takeScreenshot(
-            final WebDriver driver,
-            boolean intoReport
+        WebDriver webDriver,
+        boolean intoReport
     ) {
         Screenshot screenshot = takeScreenshot(
-                driver,
-                driver.getWindowHandle(),
-                WebDriverManager.getSessionKeyFrom(driver)
+            webDriver,
+            webDriver.getWindowHandle(),
+            WebDriverManager.getSessionKeyFrom(webDriver)
         );
-
         if (intoReport) {
             if (screenshot != null) {
-                List<Screenshot> screenshots = new ArrayList<>();
-                screenshots.add(screenshot);
-
-                MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                addScreenshotsToMethodContext(methodContext, screenshots);
+                report.addScreenshot(screenshot);
             }
         }
 
         return screenshot;
     }
 
-    public static Screenshot takeScreenshot(
-            final WebDriver eventFiringWebDriver,
-            String originalWindowHandle,
-            String sessionKey
+    public static void takeScreenshot(
+        Snapshot snapshot,
+        WebDriver webDriver
     ) {
-        if (!Report.Properties.SCREENSHOTTER_ACTIVE.asBool()) {
-            return null;
+        takeScreenshot(snapshot, webDriver, webDriver.getWindowHandle(), WebDriverManager.getSessionKeyFrom(webDriver));
+    }
+
+
+    public static void takeScreenshot(
+        Snapshot snapshot,
+        WebDriver eventFiringWebDriver,
+        String originalWindowHandle,
+        String sessionKey
+    ) {
+        if (!IReport.Properties.SCREENSHOTTER_ACTIVE.asBool()) {
+            return;
         }
 
         WebDriverRequest webDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
         if (Browsers.htmlunit.equalsIgnoreCase(webDriverRequest.browser)) {
             LOGGER.warn("Not taking screenshot for htmunit");
-            return null;
+            return;
         }
 
         /*
@@ -143,9 +150,7 @@ public class UITestUtils {
          */
         if (eventFiringWebDriver != null) {
             try {
-                final File screenShotTargetFile = FileUtils.createTempFileName("screenshot.png");
-                final File sourceTargetFile = FileUtils.createTempFileName("pagesource.html");
-                takeWebDriverScreenshotToFile(eventFiringWebDriver, screenShotTargetFile);
+                takeWebDriverScreenshotToFile(eventFiringWebDriver, snapshot.screenshotFile);
 
                 // get page source (webdriver)
                 String pageSource = eventFiringWebDriver.getPageSource();
@@ -155,10 +160,11 @@ public class UITestUtils {
                 } else {
 
                     // save page source to file
-                    savePageSource(pageSource, sourceTargetFile);
+                    savePageSource(pageSource, snapshot.pageSourceFile);
                 }
 
-                final Screenshot screenshot = Report.provideScreenshot(screenShotTargetFile, sourceTargetFile, Report.Mode.MOVE);
+                Screenshot screenshot = report.provideScreenshot(snapshot.screenshotFile, snapshot.pageSourceFile, IReport.Mode.MOVE);
+                snapshot.setScreenshot(screenshot);
                 final Date screenshotDate = new Date();
                 screenshot.meta().put(Screenshot.Meta.DATE.toString(), screenshotDate.toString());
 
@@ -198,8 +204,6 @@ public class UITestUtils {
                 screenshot.meta().put(Screenshot.Meta.WINDOW.toString(), window);
                 screenshot.meta().put(Screenshot.Meta.URL.toString(), currentUrl);
 
-                return screenshot;
-
             } catch (final Exception e) {
                 LOGGER.error(ERROR_TAKING_SCREENSHOT, e);
             }
@@ -207,64 +211,17 @@ public class UITestUtils {
             LOGGER.info("No screenshot was taken. WebDriver is not active.");
         }
 
-        return null;
+        return;
     }
 
-    public static <X> X fileToOutputType(final File file, OutputType<X> outputType) {
-        if (outputType == OutputType.FILE) {
-            return (X)file;
-        } else {
-            final byte[] bytes;
-            try {
-                bytes = IOUtils.toByteArray(new FileInputStream(file));
-                if (outputType == OutputType.BASE64) {
-                    return (X)Base64.encodeBase64(bytes);
-                } else {
-                    return (X) bytes;
-                }
-            } catch (IOException e) {
-                LOGGER.error("Unable convert file", e);
-            }
-        }
-        return null;
-    }
-
-    public static <X> X takeScreenshotAs(WebDriver webDriver, OutputType<X> outputType) {
-        final File screenShotTargetFile = FileUtils.createTempFileName("screenshot.png");
-        takeWebDriverScreenshotToFile(webDriver, screenShotTargetFile);
-        return fileToOutputType(screenShotTargetFile, outputType);
-    }
-
-    /**
-     * Publish the screenshots to the report into the current errorContext.
-     *
-     * @param methodContext
-     * @param screenshots
-     *
-     * @return
-     */
-    private static void addScreenshotsToMethodContext(MethodContext methodContext, List<Screenshot> screenshots) {
-        if (methodContext != null) {
-            /*
-            only add if we can NOT find any screenshots for this error context
-             */
-            long count = methodContext.screenshots.stream().filter(s -> s.errorContextId == methodContext.id).count();
-
-            if (count == 0) {
-                methodContext.screenshots.addAll(screenshots);
-
-                /*
-                 * add AFTER path to action log
-                 */
-                for (Screenshot screenshot : screenshots) {
-                    methodContext.steps().getCurrentTestStep().getCurrentTestStepAction().addScreenshots(null, screenshot);
-                }
-
-                LOGGER.info("Linked screenshots: " + screenshots);
-            } else {
-                LOGGER.warn("Skipped linking screenshot, because we already have " + count + " screenshots for this ErrorContext");
-            }
-        }
+    public static Screenshot takeScreenshot(
+        WebDriver eventFiringWebDriver,
+        String originalWindowHandle,
+        String sessionKey
+    ) {
+        Snapshot snapshot = new Snapshot("Screenshot");
+        takeScreenshot(snapshot, eventFiringWebDriver, originalWindowHandle, sessionKey);
+        return snapshot.getScreenshot();
     }
 
     public static void takeWebDriverScreenshotToFile(WebDriver eventFiringWebDriver, File screenShotTargetFile) {
@@ -318,27 +275,6 @@ public class UITestUtils {
          */
 
         makeSimpleScreenshot(driver, screenShotTargetFile);
-    }
-
-    /**
-     * Saves a Selenium/WebDriver Screenshot String to a file in the logging directory.
-     *
-     * @param screenshot Base64 encoded String.
-     * @param filename   filename of target File.
-     */
-    private static void saveBase64EncodedScreenshot(final String screenshot, final String filename) {
-        // Convert Base64 String to byte[]
-        final byte[] imageBytes = Base64.decodeBase64(screenshot.getBytes());
-        try {
-            final FileOutputStream fos = new FileOutputStream(filename);
-            fos.write(imageBytes);
-            fos.close();
-        } catch (final FileNotFoundException ex) {
-            LoggerFactory.getLogger(UITestUtils.class).warn(
-                    ("Screenshot file could not be written to file system: " + ex.toString()));
-        } catch (final IOException ioe) {
-            LoggerFactory.getLogger(UITestUtils.class).warn(ioe.toString());
-        }
     }
 
     /**
@@ -478,7 +414,7 @@ public class UITestUtils {
                 screenshots.forEach(screenshot -> screenshot.errorContextId = methodContext.id);
             }
 
-            addScreenshotsToMethodContext(methodContext, screenshots);
+            methodContext.addScreenshots(screenshots);
         }
 
         return screenshots;
@@ -588,7 +524,9 @@ public class UITestUtils {
      *
      * @param methodContext
      * @return
+     * @deprecated This method should not be public
      */
+    @Deprecated
     public static List<Screenshot> takeScreenshots(final MethodContext methodContext, boolean explicitlyForThisContext) {
         long threadId = Thread.currentThread().getId();
         List<WebDriver> webDriversFromThread = WebDriverManager.getWebDriversFromThread(threadId);
@@ -604,5 +542,4 @@ public class UITestUtils {
 
         return UITestUtils.takeScreenshotsFromSessions(methodContext, webDriverSessions, explicitlyForThisContext);
     }
-
 }

@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -55,9 +55,9 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
         }
     }
 
-    private class AncestorFind implements Finder {
+    private static class AncestorFinder implements Finder {
         private IGuiElement ancestor;
-        private AncestorFind(IGuiElement ancestor) {
+        private AncestorFinder(IGuiElement ancestor) {
             this.ancestor = ancestor;
         }
         public IGuiElement findOne(Locate locator) {
@@ -70,7 +70,7 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
     }
 
     protected Finder withAncestor(IGuiElement ancestor) {
-        return new AncestorFind(ancestor);
+        return new AncestorFinder(ancestor);
     }
     protected IGuiElement findOneById(String id) {
         return findOne(Locate.by().id(id));
@@ -86,10 +86,10 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
     }
 
     protected <T extends IPage> T createPage(final Class<T> pageClass) {
-        return pageFactory.create(pageClass, driver);
+        return pageFactory.createPage(pageClass, driver);
     }
-    protected <T extends IComponent> T createComponent(Class<T> pageClass, IGuiElement rootElement) {
-        return pageFactory.createComponent(pageClass, rootElement);
+    protected <T extends IComponent> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
+        return pageFactory.createComponent(componentClass, rootElement);
     }
 
     /**
@@ -101,7 +101,7 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
      * Fluent Overrides
      */
 
-    public abstract IImagePropertyAssertion screenshot();
+    public abstract IImageAssertion screenshot();
 
     /**
      * Deprecation APIs

@@ -6,9 +6,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class FilePropertyAssertion extends AbstractPropertyAssertion<File> implements IFilePropertyAssertion {
+public class FileAssertion extends AbstractPropertyAssertion<File> implements IFileAssertion {
 
-    public FilePropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<File> provider) {
+    public FileAssertion(PropertyAssertion parentAssertion, AssertionProvider<File> provider) {
         super(parentAssertion, provider);
     }
 

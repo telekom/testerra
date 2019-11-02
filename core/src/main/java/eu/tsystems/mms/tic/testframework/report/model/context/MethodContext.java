@@ -323,4 +323,30 @@ public class MethodContext extends Context implements SynchronizableContext {
             return classContext;
         }
     }
+
+    /**
+     * Publish the screenshots to the report into the current errorContext.
+     */
+    public void addScreenshots(List<Screenshot> screenshots) {
+        /*
+            only add if we can NOT find any screenshots for this error context
+             */
+        long count = screenshots.stream().filter(s -> s.errorContextId == id).count();
+
+        if (count == 0) {
+            screenshots.addAll(screenshots);
+
+            /*
+             * add AFTER path to action log
+             */
+            for (Screenshot screenshot : screenshots) {
+                steps().getCurrentTestStep().getCurrentTestStepAction().addScreenshots(null, screenshot);
+            }
+
+            LOGGER.info("Linked screenshots: " + screenshots);
+        } else {
+            LOGGER.warn("Skipped linking screenshot, because we already have " + count + " screenshots for this ErrorContext");
+        }
+    }
+
 }

@@ -5,9 +5,9 @@ import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ImagePropertyAssertion extends AbstractPropertyAssertion<File> implements IImagePropertyAssertion {
+public class ImageAssertion extends AbstractPropertyAssertion<File> implements IImageAssertion {
 
-    public ImagePropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<File> provider) {
+    public ImageAssertion(PropertyAssertion parentAssertion, AssertionProvider<File> provider) {
         super(parentAssertion, provider);
     }
 
@@ -39,7 +39,7 @@ public class ImagePropertyAssertion extends AbstractPropertyAssertion<File> impl
     }
 
     @Override
-    public IFilePropertyAssertion file() {
+    public IFileAssertion file() {
         return propertyAssertionFactory.file(this, new AssertionProvider<File>() {
             @Override
             public File actual() {

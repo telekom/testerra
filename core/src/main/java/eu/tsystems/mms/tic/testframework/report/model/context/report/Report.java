@@ -19,24 +19,24 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context.report;
 
-import eu.tsystems.mms.tic.testframework.common.IProperties;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.IReport;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.context.Video;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-public class Report {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Report.class);
+public class Report implements IReport, Loggable {
 
     public static final File REPORT_DIRECTORY;
 
@@ -46,55 +46,13 @@ public class Report {
     public static final String VIDEO_FOLDER_NAME = "videos";
     public static final String XML_FOLDER_NAME = "xml";
 
-    public enum Properties implements IProperties {
-        BASE_DIR("dir", "testerra-report"),
-        SCREENSHOTS_PREVIEW("screenshots.preview", true),
-        NAME("name", null),
-        ACTIVATE_SOURCES("activate.sources", true),
-        SCREENSHOTTER_ACTIVE("screenshotter.active", true),
-        SCREENSHOT_ON_PAGELOAD("screenshot.on.pageload", false),
-        SCREENCASTER_ACTIVE("screencaster.active", false),
-        ;
-        private final String property;
-        private Object defaultValue;
-
-        Properties(String property, Object defaultValue) {
-            this.property = property;
-            this.defaultValue = defaultValue;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("tt.report.%s",property);
-        }
-        @Override
-        public IProperties newDefault(Object defaultValue) {
-            this.defaultValue = defaultValue;
-            return this;
-        }
-        @Override
-        public Double asDouble() {
-            return PropertyManager.parser.getDoubleProperty(toString(), defaultValue);
-        }
-        @Override
-        public Long asLong() {
-            return PropertyManager.parser.getLongProperty(toString(), defaultValue);
-        }
-        @Override
-        public Boolean asBool() {
-            return PropertyManager.parser.getBooleanProperty(toString(), defaultValue);
-        }
-        @Override
-        public String asString() {
-            return PropertyManager.parser.getProperty(toString(), defaultValue);
-        }
-    }
+    private final static IReport report = Testerra.ioc().getInstance(IReport.class);
 
     static {
         /*
         Initialize report directory
          */
-        final String relativeReportDir = Report.Properties.BASE_DIR.asString();
+        final String relativeReportDir = Properties.BASE_DIR.asString();
         REPORT_DIRECTORY = new File(relativeReportDir);
 
         // cleanup
@@ -105,8 +63,8 @@ public class Report {
         }
         if (!REPORT_DIRECTORY.mkdirs()) {
             throw new TesterraSystemException(
-                    "Error cleaning report dir: " + REPORT_DIRECTORY +
-                            "\nCheck consoles or other directory and file accesses for locks.");
+                "Error cleaning report dir: " + REPORT_DIRECTORY +
+                    "\nCheck consoles or other directory and file accesses for locks.");
         }
     }
 
@@ -127,11 +85,6 @@ public class Report {
         XML_DIRECTORY.mkdirs();
     }
 
-    public enum Mode {
-        COPY,
-        MOVE
-    }
-
     /**
      * Adds a screenshot to the report
      * @param screenshotFile The screenshot file
@@ -139,17 +92,18 @@ public class Report {
      * @param mode
      * @return Screenshot instance
      */
-    public static Screenshot provideScreenshot(
+    @Override
+    public IReport addScreenshot(
         File screenshotFile,
         File screenshotSourceFileOrNull,
         Mode mode
     ) throws IOException {
         if (!screenshotFile.exists()) {
-            LOGGER.error("Cannot provide screenshot: " + screenshotFile + " does not exist");
+            log().error("Cannot create screenshot: " + screenshotFile + " does not exist");
             return null;
         }
         if (screenshotSourceFileOrNull != null && !screenshotSourceFileOrNull.exists()) {
-            LOGGER.warn("Cannot provide screenshot source: " + screenshotSourceFileOrNull + " does not exist");
+            log().warn("Cannot create screenshot source: " + screenshotSourceFileOrNull + " does not exist");
             screenshotSourceFileOrNull = null;
         }
 
@@ -189,38 +143,53 @@ public class Report {
 
         }
 
-        LOGGER.info("Provided screenshot " + screenshotFile + " as " + targetScreenshotFile);
+        List<Screenshot> screenshots = new ArrayList<>();
+        screenshots.add(screenshot);
 
-        return screenshot;
+        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+        methodContext.addScreenshots(screenshots);
+
+        log().info("Created screenshot " + screenshotFile + " as " + targetScreenshotFile);
+
+        return this;
     }
 
-    public static Video provideVideo(
-        File file,
+    public static Screenshot provideScreenshot(
+        File screenshotFile,
+        File screenshotSourceFileOrNull,
         Mode mode
     ) throws IOException {
-        if (!file.exists()) {
-            LOGGER.error("Cannot provide video: " + file + " does not exist");
-            return null;
-        }
-
-        final String fileName = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getName());
-
-        File targetFile = new File(VIDEO_DIRECTORY, fileName);
-        switch (mode) {
-            case COPY:
-                FileUtils.copyFile(file, targetFile, true);
-                break;
-            case MOVE:
-                FileUtils.moveFile(file, targetFile);
-                break;
-        }
-
-        Video video = new Video();
-        video.filename = fileName;
-
-        LOGGER.info("Provided video " + file + " as " + targetFile);
-
-        return video;
+        report.addScreenshot(screenshotFile, screenshotSourceFileOrNull, mode);
+        return new Screenshot();
     }
 
+//
+//    public static Video provideVideo(
+//        File file,
+//        Mode mode
+//    ) throws IOException {
+//        if (!file.exists()) {
+//            LOGGER.error("Cannot provide video: " + file + " does not exist");
+//            return null;
+//        }
+//
+//        final String fileName = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getName());
+//
+//        File targetFile = new File(VIDEO_DIRECTORY, fileName);
+//        switch (mode) {
+//            case COPY:
+//                FileUtils.copyFile(file, targetFile, true);
+//                break;
+//            case MOVE:
+//                FileUtils.moveFile(file, targetFile);
+//                break;
+//        }
+//
+//        Video video = new Video();
+//        video.filename = fileName;
+//
+//        LOGGER.info("Provided video " + file + " as " + targetFile);
+//
+//        return video;
+//    }
 }

@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImagePropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 
 /**
  * Components implementation
@@ -35,18 +35,20 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageProp
 public abstract class Component<SELF extends Component<SELF>> extends AbstractFluentPage<SELF> implements IComponent {
 
     protected final IGuiElement rootElement;
+    private final Finder defaultFinder;
 
     public Component(IGuiElement rootElement) {
         super(rootElement.getWebDriver());
         this.rootElement = rootElement;
+        defaultFinder = withAncestor(rootElement);
     }
 
-    public IImagePropertyAssertion screenshot() {
+    public IImageAssertion screenshot() {
         return rootElement.screenshot();
     }
 
     protected IGuiElement findOne(Locate locator) {
-        return withAncestor(rootElement).findOne(locator);
+        return defaultFinder.findOne(locator);
     }
 
     @Override

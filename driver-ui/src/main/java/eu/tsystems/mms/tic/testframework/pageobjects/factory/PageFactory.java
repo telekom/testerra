@@ -125,7 +125,7 @@ public final class PageFactory {
                     t = constructor.newInstance(driver, pageVariables);
                 } else {
                     IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
-                    t = pageFactory.create(pageClass, driver);
+                    t = pageFactory.createPage(pageClass, driver);
                 }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new TesterraRuntimeException(msg + pageClass.getSimpleName(), e);

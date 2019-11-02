@@ -24,10 +24,13 @@ import de.idyl.winzipaes.impl.AESEncrypter;
 import de.idyl.winzipaes.impl.AESEncrypterJCA;
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.openqa.selenium.OutputType;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,6 +41,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -46,7 +50,7 @@ import static java.lang.Thread.currentThread;
 /**
  * Created by pele on 24.11.2014.
  */
-public final class FileUtils extends org.apache.commons.io.FileUtils {
+public final class FileUtils extends org.apache.commons.io.FileUtils implements Loggable {
 
     private static String lineBreak = "\n";
 
@@ -301,5 +305,24 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
     public static File createTempFileName(String fileName) {
         final String extension = FilenameUtils.getExtension(fileName);
         return new File(System.getProperty("java.io.tmpdir") + "/" + FilenameUtils.getBaseName(fileName) + "-" + UUID.randomUUID() + (extension.length() > 0 ? "." + extension : ""));
+    }
+
+    public <X> X fileToOutputType(final File file, OutputType<X> outputType) {
+        if (outputType == OutputType.FILE) {
+            return (X)file;
+        } else {
+            final byte[] bytes;
+            try {
+                bytes = IOUtils.toByteArray(new FileInputStream(file));
+                if (outputType == OutputType.BASE64) {
+                    return (X) Base64.getEncoder().encode(bytes);
+                } else {
+                    return (X) bytes;
+                }
+            } catch (IOException e) {
+                log().error("Unable convert file", e);
+            }
+        }
+        return null;
     }
 }

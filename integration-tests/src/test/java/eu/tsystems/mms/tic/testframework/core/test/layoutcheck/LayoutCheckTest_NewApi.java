@@ -35,7 +35,7 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
 
     @BeforeMethod
     private FluentLayoutCheckPage preparePage() {
-        FluentLayoutCheckPage page = pageFactory.create(FluentLayoutCheckPage.class);
+        FluentLayoutCheckPage page = pageFactory.createPage(FluentLayoutCheckPage.class);
         page.call(TestPage.LAYOUT.getUrl());
         return page;
     }

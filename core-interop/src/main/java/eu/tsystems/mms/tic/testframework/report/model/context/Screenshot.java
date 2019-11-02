@@ -19,7 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Screenshot {
 

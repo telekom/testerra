@@ -1,5 +1,9 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+/**
+ * Provides properties for further assertion
+ * @author Mike Reiche
+ */
 public abstract class AssertionProvider<T> implements ActualProperty<T> {
     @Override
     abstract public T actual();
@@ -7,9 +11,11 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
     abstract public Object subject();
 
     /**
-     * This method will be called if one of this provider assertion failed
+     * This method will be called called recursive from bottom to top
+     * if one of the assertions finally failed.
+     * @param assertion The failed assertion
      */
-    public void failed() {
+    public void failed(PropertyAssertion assertion) {
     }
 
     /**

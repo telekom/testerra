@@ -27,21 +27,24 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Implementation of new fluent Page Object API
  * @author Mike Reiche
  */
-public abstract class FluentPage<SELF extends FluentPage<SELF>> extends AbstractFluentPage<SELF> {
+public abstract class FluentPage<SELF extends FluentPage<SELF>> extends AbstractFluentPage<SELF> implements Loggable {
 
     private static final GuiElementFactory guiElementFactory = Testerra.ioc().getInstance(GuiElementFactory.class);
 
@@ -112,16 +115,25 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
         });
     }
     public IImageAssertion screenshot() {
-        return propertyAssertionFactory.screenshot(new AssertionProvider<File>() {
+        final Page self = this;
+        final AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();
+        atomicScreenshot.set(UITestUtils.takeScreenshot(driver));
+        return propertyAssertionFactory.image(new AssertionProvider<File>() {
+
             @Override
             public File actual() {
-                Screenshot screenshot = UITestUtils.takeScreenshot(driver);
-                return screenshot.getScreenshotFile();
+                return atomicScreenshot.get().getScreenshotFile();
+            }
+
+            @Override
+            public void failed(PropertyAssertion assertion) {
+                // Take new screenshot only if failed
+                atomicScreenshot.set(UITestUtils.takeScreenshot(driver));
             }
 
             @Override
             public Object subject() {
-                return String.format("%s.screenshot", this);
+                return String.format("%s.screenshot", self);
             }
         });
     }

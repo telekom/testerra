@@ -28,7 +28,7 @@ public class ImageAssertion extends AbstractPropertyAssertion<File> implements I
             }
 
             @Override
-            public void failed() {
+            public void failedFinally(PropertyAssertion assertion) {
                 LayoutCheck.MatchStep matchStep = atomicMatchStep.get();
                 atomicMatchStep.get();
                 if (matchStep!=null && !matchStep.takeReferenceOnly) {

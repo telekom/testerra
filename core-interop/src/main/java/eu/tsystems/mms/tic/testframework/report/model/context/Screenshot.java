@@ -70,15 +70,16 @@ public class Screenshot implements Loggable {
 
     public Screenshot(String name) {
         meta.put(Meta.DATE.toString(), new Date().toString());
-        int count = counter.get(name);
-        this.name = String.format("%s-%03d-", name, counter.get(name));
+        int count = counter.getOrDefault(name, 1);
+        this.name = String.format("%s-%03d-", name, count);
         counter.put(name, ++count);
     }
 
     public File getScreenshotFile() {
         if (screenshotFile==null) {
             try {
-                screenshotFile = File.createTempFile(name, "png");
+                screenshotFile = File.createTempFile(name, ".png");
+                if (screenshotFile.exists()) screenshotFile.delete();
                 filename = screenshotFile.getName();
                 meta.put(Meta.FILE_NAME.toString(), filename);
             } catch (IOException e) {
@@ -91,7 +92,8 @@ public class Screenshot implements Loggable {
     public File getPageSourceFile() {
         if (pageSourceFile==null) {
             try {
-                pageSourceFile = File.createTempFile(name, "html");
+                pageSourceFile = File.createTempFile(name, ".html");
+                if (pageSourceFile.exists()) pageSourceFile.delete();
                 sourceFilename = pageSourceFile.getName();
                 meta.put(Meta.SOURCE_FILE_NAME.toString(), sourceFilename);
             } catch (IOException e) {

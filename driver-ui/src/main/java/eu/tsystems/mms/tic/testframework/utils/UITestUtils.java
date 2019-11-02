@@ -97,6 +97,7 @@ public class UITestUtils {
 
     private static final String BROWSER_DOWNLOAD_PATH_UUID = UUID.randomUUID().toString();
 
+    @Deprecated
     private static final boolean STITCH = PropertyManager.getBooleanProperty(TesterraProperties.STITCH_CHROME_SCREENSHOTS, true);
 
     private static final IReport report = Testerra.ioc().getInstance(IReport.class);
@@ -251,6 +252,7 @@ public class UITestUtils {
         }
     }
 
+    @Deprecated
     private static void makeStitchedChromeScreenshot(WebDriver driver, File screenShotTargetFile) {
         /*
         deactivated since it is not working correctly - pele 05.12.2017

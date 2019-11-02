@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * An abstract property assertion without any test implementations
+ * @author Mike Reiche
+ */
 public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<T> {
 
     protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.ioc().getInstance(PropertyAssertionFactory.class);
@@ -35,6 +39,15 @@ public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<
         }
         Collections.reverse(subjects);
         return String.join(".", subjects);
+    }
+
+    public void failedRecursive() {
+        provider.failed(this);
+        AbstractPropertyAssertion parentAssertion = parent;
+        while (parentAssertion != null) {
+            parentAssertion.provider.failed(this);
+            parentAssertion = parentAssertion.parent;
+        }
     }
 
     public void failedFinallyRecursive() {

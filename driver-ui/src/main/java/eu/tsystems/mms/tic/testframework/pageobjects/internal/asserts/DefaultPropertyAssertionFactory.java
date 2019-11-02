@@ -28,9 +28,4 @@ public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory
     public IImageAssertion image(PropertyAssertion parent, AssertionProvider<File> provider) {
         return new ImageAssertion(parent, provider);
     }
-
-    @Override
-    public IImageAssertion screenshot(PropertyAssertion parent, AssertionProvider<File> provider) {
-        return new ScreenshotAssertion(parent, provider);
-    }
 }

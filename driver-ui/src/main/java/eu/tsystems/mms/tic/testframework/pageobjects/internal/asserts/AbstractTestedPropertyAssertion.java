@@ -10,6 +10,11 @@ import eu.tsystems.mms.tic.testframework.utils.Timer;
 
 import java.util.function.Function;
 
+/**
+ * An abstract Property Assertion which performs a test
+ * and informs the Assertion Provider about it.
+ * @author Mike Reiche
+ */
 public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropertyAssertion<T> {
     private static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
     private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
@@ -37,11 +42,11 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
                     setPassState(testFunction.apply(null));
                 } catch (AssertionError e) {
                     setReturningObject(e);
-                    provider.failed();
+                    failedRecursive();
                     setPassState(false);
                 } catch (Throwable throwable) {
                     setReturningObject(new AssertionError(throwable));
-                    provider.failed();
+                    failedRecursive();
                     setPassState(false);
                 }
             }

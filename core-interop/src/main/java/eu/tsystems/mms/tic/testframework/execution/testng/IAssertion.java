@@ -29,11 +29,11 @@ public interface IAssertion {
     boolean assertEquals(Iterator<?> actual, Iterator<?> expected, String subject);
     boolean assertEquals(Iterable<?> actual, Iterable<?> expected, String subject);
     boolean assertEquals(Object[] actual, Object[] expected, String subject);
-    boolean assertEqualsNoOrder(Object[] actual, Object[] expected, String subject);
     boolean assertEquals(Set<?> actual, Set<?> expected, String subject);
-    boolean assertEqualsDeep(Set<?> actual, Set<?> expected, String subject);
     boolean assertEquals(Map<?, ?> actual, Map<?, ?> expected, String subject);
+    boolean assertEqualsDeep(Set<?> actual, Set<?> expected, String subject);
     boolean assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected, String subject);
+    boolean assertEqualsNoOrder(Object[] actual, Object[] expected, String subject);
     boolean assertNotEquals(Object actual1, Object actual2, String subject);
     boolean assertNotEquals(Set<?> actual, Set<?> expected, String subject);
     boolean assertNotEquals(Map<?, ?> actual, Map<?, ?> expected, String subject);

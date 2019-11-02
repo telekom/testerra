@@ -35,9 +35,11 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
                 } catch (AssertionError e) {
                     setReturningObject(e);
                     provider.failed();
+                    setPassState(false);
                 } catch (Throwable throwable) {
                     setReturningObject(new AssertionError(throwable));
                     provider.failed();
+                    setPassState(false);
                 }
             }
         });

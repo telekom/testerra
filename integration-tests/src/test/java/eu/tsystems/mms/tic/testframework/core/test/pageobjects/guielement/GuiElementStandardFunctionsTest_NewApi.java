@@ -52,7 +52,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     public void test_Page_title() {
         page.title()
             .is("Input test")
-            .contains("Input2")
+            .contains("Input")
             .containsNot("SuperTestPage");
 
         page.title().length()
@@ -139,11 +139,13 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
     @Test
     public void test_NonExistent_GuiElement_displayed_fails() {
+        String msg=null;
         try {
             page.nonExistentElement().displayed().isFalse();
         } catch (AssertionError e) {
-            instantAssertion.assertEndsWith(e.getMessage(), "not found", e.getClass().toString());
+            msg = e.getMessage();
         }
+        instantAssertion.assertEndsWith(msg, "not found", AssertionError.class.toString());
     }
 
     @Test

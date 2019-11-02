@@ -25,8 +25,8 @@ import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
+import eu.tsystems.mms.tic.testframework.report.IReport;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -115,7 +115,7 @@ public abstract class AbstractPage implements IPage {
      * Executes a screenshot when the specific property is set.
      */
     private void screenShotOnPageLoad() {
-        if (Report.Properties.SCREENSHOT_ON_PAGELOAD.asBool()) {
+        if (IReport.Properties.SCREENSHOT_ON_PAGELOAD.asBool()) {
             takeScreenshot();
         }
     }

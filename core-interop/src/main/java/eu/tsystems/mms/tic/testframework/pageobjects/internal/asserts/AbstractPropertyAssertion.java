@@ -37,12 +37,12 @@ public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<
         return String.join(".", subjects);
     }
 
-    public void failedRecursive() {
-        provider.failed();
-        AbstractPropertyAssertion assertion = parent;
-        while (assertion != null) {
-            assertion.provider.failed();
-            assertion = assertion.parent;
+    public void failedFinallyRecursive() {
+        provider.failedFinally(this);
+        AbstractPropertyAssertion parentAssertion = parent;
+        while (parentAssertion != null) {
+            parentAssertion.provider.failedFinally(this);
+            parentAssertion = parentAssertion.parent;
         }
     }
 }

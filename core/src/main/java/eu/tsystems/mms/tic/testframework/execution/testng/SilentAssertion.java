@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
  */
 public class SilentAssertion extends AbstractAssertion implements TestAssertion {
     @Override
-    public void fail(Throwable cause) {
+    public void fail(AssertionError error) {
 
     }
 }

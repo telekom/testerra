@@ -52,7 +52,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     public void test_Page_title() {
         page.title()
             .is("Input test")
-            .contains("Input")
+            .contains("Input2")
             .containsNot("SuperTestPage");
 
         page.title().length()
@@ -64,13 +64,9 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
             .lowerEqualThan(10);
     }
 
-    @Test
+    @Test(expectedExceptions = AssertionError.class)
     public void test_Page_title_length_fails() {
-        try {
-            page.title().length().greaterThan(10);
-        } catch (AssertionError e) {
-            instantAssertion.assertEndsWith(e.getCause().getMessage(), "[10] is greater than [10]", e.getCause().getMessage());
-        }
+        page.title().length().greaterThan(10);
     }
 
     @Test

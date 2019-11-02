@@ -25,17 +25,26 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
 
     protected void testTimer(Function<T, Boolean> testFunction) {
         Timer timer = new Timer(Testerra.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), pageConfig.getElementTimeoutInSeconds() * 1000);
-        ThrowablePackedResponse throwablePackedResponse = timer.executeSequence(new Timer.Sequence<Object>() {
+        ThrowablePackedResponse<AssertionError> packedResponse = timer.executeSequence(new Timer.Sequence<AssertionError>() {
             @Override
             public void run() {
+                // Prevent TimeoutException on any other exception
                 setSkipThrowingException(true);
-                setPassState(testFunction.apply(null));
+                try {
+                    setPassState(testFunction.apply(null));
+                } catch (AssertionError e) {
+                    setReturningObject(e);
+                    provider.failed();
+                } catch (Throwable throwable) {
+                    setReturningObject(new AssertionError(throwable));
+                    provider.failed();
+                }
             }
         });
-        if (!throwablePackedResponse.isSuccessful()) {
-            failedRecursive();
+        if (!packedResponse.isSuccessful()) {
+            failedFinallyRecursive();
             IAssertion finalAssertion = assertionFactory.create();
-            finalAssertion.fail(throwablePackedResponse.getTimeoutException().getCause());
+            finalAssertion.fail(packedResponse.getResponse());
         }
     }
 }

@@ -28,7 +28,7 @@ package eu.tsystems.mms.tic.testframework.core.test.testdata;
 
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.testdata.XLSTestDataReader;
 import eu.tsystems.mms.tic.testframework.testdata.XLSWriter;
 import org.testng.Assert;

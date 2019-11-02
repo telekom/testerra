@@ -9,7 +9,7 @@ public class ThrowingAssertion extends AbstractAssertion implements InstantAsser
         throw new AssertionError(message, cause);
     }
     @Override
-    public void fail(Throwable cause) {
-        throw new AssertionError(cause);
+    public void fail(AssertionError error) {
+        throw error;
     }
 }

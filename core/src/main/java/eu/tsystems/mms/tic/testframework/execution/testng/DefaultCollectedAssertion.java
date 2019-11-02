@@ -16,7 +16,7 @@ public class DefaultCollectedAssertion extends AbstractAssertion implements Coll
     }
 
     @Override
-    public void fail(Throwable cause) {
-        collector.store(cause);
+    public void fail(AssertionError error) {
+        collector.store(error);
     }
 }

@@ -9,7 +9,7 @@ import java.util.Set;
 public interface IAssertion {
     void fail(String message, Throwable realCause);
     void fail(String message);
-    void fail(Throwable throwable);
+    void fail(AssertionError error);
     String format(Object actual, Object expected, String subject);
     boolean assertTrue(boolean condition, String subject);
     boolean assertFalse(boolean condition, String subject);

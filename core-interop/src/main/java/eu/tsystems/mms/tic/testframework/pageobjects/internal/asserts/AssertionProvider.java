@@ -7,8 +7,16 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
     abstract public Object subject();
 
     /**
-     * Override this method if you want to finalize something on failed assertion
+     * This method will be called if one of this provider assertion failed
      */
     public void failed() {
+    }
+
+    /**
+     * This method will be called recursive from bottom to top
+     * if one of the assertions finally failed.
+     * @param assertion The failed assertion
+     */
+    public void failedFinally(PropertyAssertion assertion) {
     }
 }

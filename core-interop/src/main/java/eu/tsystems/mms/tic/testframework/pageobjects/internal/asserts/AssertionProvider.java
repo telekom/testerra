@@ -11,8 +11,8 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
     abstract public Object subject();
 
     /**
-     * This method will be called called recursive from bottom to top
-     * if one of the assertions finally failed.
+     * This method will be called recursive from bottom to top
+     * if one of the assertions failed.
      * @param assertion The failed assertion
      */
     public void failed(PropertyAssertion assertion) {

@@ -80,15 +80,11 @@ public abstract class Page extends AbstractPage {
     /**
      * Constructor for existing sessions.
      */
-    public Page(final WebDriver webDriver) {
-        this(webDriver, null);
-    }
-
-    private Page(final WebDriver driver, final IGuiElement guiElement) {
-        if (driver == null) {
+    private Page(final WebDriver webDriver) {
+        if (webDriver == null) {
             throw new IllegalArgumentException("The driver object must not be null");
         }
-        this.driver = driver;
+        this.driver = webDriver;
 
         // webdriver based waitForPageToLoad
         waitForPageToLoad();

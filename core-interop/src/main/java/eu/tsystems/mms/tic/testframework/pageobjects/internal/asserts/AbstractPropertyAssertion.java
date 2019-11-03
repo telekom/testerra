@@ -7,7 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * An abstract property assertion without any test implementations
+ * An abstract property assertion without any test implementations.
+ * Extend this class if you don't need to perform assertions, but compose others.
  * @author Mike Reiche
  */
 public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<T> {

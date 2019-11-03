@@ -2,6 +2,10 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import java.math.BigDecimal;
 
+/**
+ * Allows numeric range based assertions
+ * @author Mike Reiche
+ */
 public interface IQuantifiedPropertyAssertion<T> extends IBinaryPropertyAssertion<T> {
     T actual();
     IQuantifiedPropertyAssertion<T> is(Object expected);

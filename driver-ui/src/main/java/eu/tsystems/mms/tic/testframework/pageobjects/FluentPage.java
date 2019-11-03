@@ -114,6 +114,11 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
             }
         });
     }
+
+    /**
+     * @todo Implement toReport feature
+     * @return
+     */
     public IImageAssertion screenshot() {
         final Page self = this;
         final AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();

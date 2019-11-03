@@ -1,5 +1,9 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+/**
+ * Allows string based assertions
+ * @author Mike Reiche
+ */
 public interface IStringPropertyAssertion<T> extends IQuantifiedPropertyAssertion<T>
 {
     T actual();

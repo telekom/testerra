@@ -62,7 +62,7 @@ public class DefaultPageFactory implements IPageFactory {
         try {
             Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
             T page = constructor.newInstance(webDriver);
-            page.checkElements();
+            page.checkGuiElements();
             return page;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", pageClass, webDriver), e);
@@ -83,7 +83,7 @@ public class DefaultPageFactory implements IPageFactory {
         try {
             Constructor<T> constructor = componentClass.getConstructor(IGuiElement.class);
             T component = constructor.newInstance(rootElement);
-            component.checkElements();
+            component.checkGuiElements();
             return component;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", componentClass, rootElement), e);

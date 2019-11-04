@@ -641,6 +641,7 @@ public class GuiElement implements
      *
      * @return GuiElementAssert object for functional assertions
      */
+    @Deprecated
     public GuiElementAssert asserts() {
         if (defaultAssert == null) {
             if (IGuiElement.Properties.DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
@@ -660,6 +661,7 @@ public class GuiElement implements
      *
      * @return GuiElementAssert object for functional assertions
      */
+    @Deprecated
     public GuiElementAssert asserts(String errorMessage) {
         GuiElementAssertDescriptionDecorator guiElementAssertDescriptionDecorator
                 = new GuiElementAssertDescriptionDecorator(errorMessage, asserts());
@@ -671,6 +673,7 @@ public class GuiElement implements
      *
      * @return GuiElementAssert object for non-functional assertions
      */
+    @Deprecated
     public GuiElementAssert nonFunctionalAsserts() {
         if (nonFunctionalAssert==null) {
             GuiElementAssertFactory assertFactory = Testerra.ioc().getInstance(GuiElementAssertFactory.class);
@@ -688,12 +691,14 @@ public class GuiElement implements
      *
      * @return GuiElementAssert object for non-functional assertions
      */
+    @Deprecated
     public GuiElementAssert nonFunctionalAsserts(String errorMessage) {
         GuiElementAssertDescriptionDecorator guiElementAssertDescriptionDecorator
                 = new GuiElementAssertDescriptionDecorator(errorMessage, nonFunctionalAsserts());
         return guiElementAssertDescriptionDecorator;
     }
 
+    @Deprecated
     public GuiElementAssert instantAsserts() {
         if (instantAssert == null) {
             GuiElementAssertFactory assertFactory = Testerra.ioc().getInstance(GuiElementAssertFactory.class);
@@ -709,6 +714,7 @@ public class GuiElement implements
      * @return GuiElementAssert object for functional assertions
      * @deprecated Use {@link #asserts()} instead
      */
+    @Deprecated
     public GuiElementAssert assertCollector() {
         if (collectableAssert==null) {
             GuiElementAssertFactory assertFactory = Testerra.ioc().getInstance(GuiElementAssertFactory.class);
@@ -726,6 +732,7 @@ public class GuiElement implements
      *
      * @return GuiElementAssert object for functional assertions
      */
+    @Deprecated
     public GuiElementAssert assertCollector(String errorMessage) {
         GuiElementAssertDescriptionDecorator guiElementAssertDescriptionDecorator
                 = new GuiElementAssertDescriptionDecorator(errorMessage, assertCollector());

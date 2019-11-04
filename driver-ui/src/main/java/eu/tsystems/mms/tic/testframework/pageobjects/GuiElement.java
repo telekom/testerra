@@ -185,7 +185,7 @@ public class GuiElement implements IGuiElement, Loggable {
     }
 
     @Override
-    public Locate getLocator() {
+    public Locate getLocate() {
         return locator;
     }
 

@@ -97,7 +97,7 @@ public interface IGuiElement extends
      */
     IImageAssertion screenshot();
     IGuiElement scrollTo();
-    Locate getLocator();
+    Locate getLocate();
     WebElement getWebElement();
 
     /**

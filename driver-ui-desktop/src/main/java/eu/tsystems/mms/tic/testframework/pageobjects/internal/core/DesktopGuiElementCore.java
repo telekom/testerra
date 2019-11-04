@@ -102,7 +102,7 @@ public class DesktopGuiElementCore implements
 
         List<WebElement> elements = null;
         GuiElementCore parent = guiElementData.parent;
-        Locate locate = guiElementData.guiElement.getLocator();
+        Locate locate = guiElementData.guiElement.getLocate();
         Exception cause = null;
         try {
             if (parent != null) {

@@ -99,7 +99,7 @@ public class GuiElementData {
         } else {
             toString += "GuiElement";
         }
-        toString+="("+guiElement.getLocator().toString();
+        toString+="("+guiElement.getLocate().toString();
 
         if (hasFrameLogic()) {
             String frameString = ", frames={";

@@ -52,7 +52,7 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
         private FrameFinder(IGuiElement frame) {
             this.frame = frame;
         }
-        public IGuiElement findOne(Locate locator) {
+        public IGuiElement find(Locate locator) {
             return guiElementFactory.createWithFrames(locator, frame);
         }
     }

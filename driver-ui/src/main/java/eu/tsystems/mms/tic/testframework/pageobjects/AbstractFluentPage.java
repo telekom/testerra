@@ -42,15 +42,15 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
     private static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
 
     protected interface Finder {
-        IGuiElement findOne(Locate locator);
+        IGuiElement find(Locate locator);
         default IGuiElement findOneById(String id) {
-            return findOne(Locate.by().id(id));
+            return find(Locate.by().id(id));
         }
         default IGuiElement findOneByQa(String qa) {
-            return findOne(Locate.by().qa(qa));
+            return find(Locate.by().qa(qa));
         }
         default IGuiElement findOne(By by) {
-            return findOne(Locate.by(by));
+            return find(Locate.by(by));
         }
     }
 
@@ -63,7 +63,7 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
         private AncestorFinder(IGuiElement ancestor) {
             this.ancestor = ancestor;
         }
-        public IGuiElement findOne(Locate locator) {
+        public IGuiElement find(Locate locator) {
             return guiElementFactory.createFromAncestor(locator, ancestor);
         }
         public <T extends IComponent> T createComponent(Class<T> componentClass) {
@@ -79,15 +79,15 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
         return new AncestorFinder(ancestor);
     }
     protected IGuiElement findOneById(String id) {
-        return findOne(Locate.by().id(id));
+        return find(Locate.by().id(id));
     }
     protected IGuiElement findOneByQa(String qa) {
-        return findOne(Locate.by().qa(qa));
+        return find(Locate.by().qa(qa));
     }
     protected IGuiElement findOne(By by) {
-        return findOne(Locate.by(by));
+        return find(Locate.by(by));
     }
-    protected IGuiElement findOne(Locate locator) {
+    protected IGuiElement find(Locate locator) {
         return guiElementFactory.create(locator, this);
     }
 

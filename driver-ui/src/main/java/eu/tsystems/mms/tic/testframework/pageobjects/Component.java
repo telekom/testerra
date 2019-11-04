@@ -51,8 +51,8 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
         return rootElement.screenshot();
     }
 
-    protected IGuiElement findOne(Locate locator) {
-        return defaultFinder.findOne(locator);
+    protected IGuiElement find(Locate locator) {
+        return defaultFinder.find(locator);
     }
 
     @Override

@@ -99,8 +99,12 @@
 
     <test name="15 Page Factory">
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryTest"/>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryPrefixedTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryTest_Deprecated"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryTest_IoC"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryPrefixedTest_Deprecated"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryPrefixedTest_IoC"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageOptionsTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageOptionsTest_IoC"/>
         </classes>
     </test>
 

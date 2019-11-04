@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.openqa.selenium.WebDriver;
 
@@ -38,12 +37,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by pele on 29.11.2016.
+ * @deprecated Use {@link IPageFactory} instead
  */
+@Deprecated
 public final class PageFactory {
 
-    private static String GLOBAL_PAGES_PREFIX = null;
-    private static ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
+    private static IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
 
     private static final ThreadLocal<CircularFifoBuffer> LOOP_DETECTION_LOGGER = new ThreadLocal<>();
     private static final int NR_OF_LOOPS = PropertyManager.getIntProperty(TesterraProperties.PAGE_FACTORY_LOOPS, 20);
@@ -60,24 +59,31 @@ public final class PageFactory {
 
     private static ErrorHandler errorHandler = null;
 
+    @Deprecated
     public static void setGlobalPagesPrefix(String prefix) {
-        GLOBAL_PAGES_PREFIX = prefix;
+        pageFactory.setGlobalPagePrefix(prefix);
     }
 
+    @Deprecated
     public static void setThreadLocalPagesPrefix(String threadLocalPagesPrefix) {
-        THREAD_LOCAL_PAGES_PREFIX.set(threadLocalPagesPrefix);
+        pageFactory.setThreadLocalPagePrefix(threadLocalPagesPrefix);
     }
 
+    @Deprecated
     public static void clearThreadLocalPagesPrefix() {
-        THREAD_LOCAL_PAGES_PREFIX.remove();
+        pageFactory.removeThreadLocalPagePrefix();
     }
 
+    /**
+     * @deprecated False-Check overrides are deprecated
+     */
+    @Deprecated
     public static <T extends Page> T checkNot(Class<T> pageClass, WebDriver driver) {
         return loadPO(pageClass, driver, null, false);
     }
 
     /**
-     * @deprecated Passing page variables is deprecated
+     * @deprecated False-Check overrides are deprecated
      */
     @Deprecated
     public static <T extends Page, U extends PageVariables> T checkNot(Class<T> pageClass, WebDriver driver, U pageVariables) {
@@ -85,7 +91,7 @@ public final class PageFactory {
     }
 
     public static <T extends Page> T create(Class<T> pageClass, WebDriver driver) {
-        return loadPO(pageClass, driver, null, true);
+        return pageFactory.createPage(pageClass, driver);
     }
 
     /**
@@ -93,9 +99,17 @@ public final class PageFactory {
      */
     @Deprecated
     public static <T extends Page, U extends PageVariables> T create(Class<T> pageClass, WebDriver driver, U pageVariables) {
-        return loadPO(pageClass, driver, pageVariables, true);
+        if (pageVariables != null) {
+            return loadPO(pageClass, driver, pageVariables, true);
+        } else {
+            return create(pageClass, driver);
+        }
     }
 
+    /**
+     * @deprecated Passing page variables and False-Check overrides are deprecated
+     */
+    @Deprecated
     private static <T extends Page, U extends PageVariables> T loadPO(Class<T> pageClass, WebDriver driver, U pageVariables, boolean positiveCheck) {
         if (pageVariables instanceof Page) {
             throw new TesterraRuntimeException("You cannot hand over a page to a page. This is a bad design and also may produce looping. " +
@@ -106,11 +120,7 @@ public final class PageFactory {
         /*
         find matching implementing class
          */
-        String pagesPrefix = GLOBAL_PAGES_PREFIX;
-        if (!StringUtils.isStringEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
-            pagesPrefix = THREAD_LOCAL_PAGES_PREFIX.get();
-        }
-        pageClass = ClassFinder.getBestMatchingClass(pageClass, driver, pagesPrefix);
+        pageClass = pageFactory.findBestMatchingClass(pageClass, driver);
 
         /*
         create object
@@ -120,13 +130,8 @@ public final class PageFactory {
         try {
             try {
                 Constructor<T> constructor;
-                if (pageVariables != null) {
-                    constructor = pageClass.getConstructor(WebDriver.class, pageVariables.getClass());
-                    t = constructor.newInstance(driver, pageVariables);
-                } else {
-                    IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
-                    t = pageFactory.createPage(pageClass, driver);
-                }
+                constructor = pageClass.getConstructor(WebDriver.class, pageVariables.getClass());
+                t = constructor.newInstance(driver, pageVariables);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new TesterraRuntimeException(msg + pageClass.getSimpleName(), e);
             }
@@ -194,6 +199,7 @@ public final class PageFactory {
         return t;
     }
 
+    @Deprecated
     public static void clearCache() {
         ClassFinder.clearCache();
     }

@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class PageOptionsTest extends AbstractTestSitesTest {
+public class PageOptionsTest extends AbstractTestSitesTest implements IPageFactoryTest {
 
     @Test
     public void testT01_PageOptions_ElementTimeout() {
@@ -17,9 +17,13 @@ public class PageOptionsTest extends AbstractTestSitesTest {
 
         driver.get(TestPage.INPUT_TEST_PAGE.getUrl());
 
-        PageWithPageOptions page = PageFactory.create(PageWithPageOptions.class, driver);
+        PageWithPageOptions page = getPage();
 
         Assert.assertEquals(page.existingElement.getTimeoutInSeconds(), 3, "Timeout value from page options");
     }
 
+    @Override
+    public PageWithPageOptions getPage() {
+        return PageFactory.create(PageWithPageOptions.class, WebDriverManager.getWebDriver());
+    }
 }

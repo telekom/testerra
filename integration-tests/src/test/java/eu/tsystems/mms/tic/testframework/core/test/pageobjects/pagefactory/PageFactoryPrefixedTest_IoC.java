@@ -22,7 +22,19 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
-import eu.tsystems.mms.tic.testframework.pageobjects.*;
+import eu.tsystems.mms.tic.testframework.pageobjects.BasePage;
+import eu.tsystems.mms.tic.testframework.pageobjects.BasePage2016;
+import eu.tsystems.mms.tic.testframework.pageobjects.PrefixBasePage;
+import eu.tsystems.mms.tic.testframework.pageobjects.PrefixBasePage2016;
+import eu.tsystems.mms.tic.testframework.pageobjects.PrefixResponsiveWebTestPage_1235px_Max;
+import eu.tsystems.mms.tic.testframework.pageobjects.PrefixResponsiveWebTestPage_601px_800px;
+import eu.tsystems.mms.tic.testframework.pageobjects.PrefixResponsiveWebTestPage_801px_1234px;
+import eu.tsystems.mms.tic.testframework.pageobjects.PrefixResponsiveWebTestPage_Min_600px;
+import eu.tsystems.mms.tic.testframework.pageobjects.ResponsiveWebTestPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.TLPrefix1ResponsiveWebTestPage_601px_800px;
+import eu.tsystems.mms.tic.testframework.pageobjects.TLPrefix1ResponsiveWebTestPage_801px_1234px;
+import eu.tsystems.mms.tic.testframework.pageobjects.TLPrefix2ResponsiveWebTestPage_601px_800px;
+import eu.tsystems.mms.tic.testframework.pageobjects.TLPrefix2ResponsiveWebTestPage_801px_1234px;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -36,7 +48,7 @@ import org.testng.annotations.Test;
 /**
  * Tests the responsive page factory for correct instantiated classes.
  */
-public class PageFactoryPrefixedTest extends AbstractTestSitesTest {
+public class PageFactoryPrefixedTest_IoC extends AbstractTestSitesTest {
 
     /**
      * Set the browser size by adjusting it to the given viewport size.

@@ -7,7 +7,7 @@
 
     <test name="Test1">
         <!--<classes>-->
-            <!--<class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryTest">-->
+            <!--<class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryTest_Deprecated">-->
                 <!--<methods>-->
                     <!--<include name="testT01_ClassNameMatch"/>-->
                 <!--</methods>-->

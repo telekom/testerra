@@ -20,16 +20,36 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.ClassFinder;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * @todo Implement Page Checks
- */
 public class DefaultPageFactory implements IPageFactory {
+
+    private String GLOBAL_PAGES_PREFIX = null;
+    private final ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
+
+    @Override
+    public IPageFactory setGlobalPagePrefix(String pagePrefix) {
+        GLOBAL_PAGES_PREFIX = pagePrefix;
+        return this;
+    }
+
+    @Override
+    public IPageFactory setThreadLocalPagePrefix(String pagePrefix) {
+        THREAD_LOCAL_PAGES_PREFIX.set(pagePrefix);
+        return this;
+    }
+
+    @Override
+    public IPageFactory removeThreadLocalPagePrefix() {
+        THREAD_LOCAL_PAGES_PREFIX.remove();
+        return this;
+    }
 
     @Override
     public <T extends IPage> T createPage(Class<T> pageClass) {
@@ -38,19 +58,33 @@ public class DefaultPageFactory implements IPageFactory {
 
     @Override
     public <T extends IPage> T createPage(Class<T> pageClass, WebDriver webDriver) {
+        pageClass = findBestMatchingClass(pageClass, webDriver);
         try {
             final Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
-            return constructor.newInstance(webDriver);
+            T page = constructor.newInstance(webDriver);
+            page.checkElements();
+            return page;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", pageClass, webDriver), e);
         }
     }
 
     @Override
+    public <T extends IPage> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
+        String pagesPrefix = GLOBAL_PAGES_PREFIX;
+        if (!StringUtils.isStringEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
+            pagesPrefix = THREAD_LOCAL_PAGES_PREFIX.get();
+        }
+        return ClassFinder.getBestMatchingClass(pageClass, webDriver, pagesPrefix);
+    }
+
+    @Override
     public <T extends IComponent> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
         try {
             final Constructor<T> constructor = componentClass.getConstructor(IGuiElement.class);
-            return constructor.newInstance(rootElement);
+            T component = constructor.newInstance(rootElement);
+            component.checkElements();
+            return component;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", componentClass, rootElement), e);
         }

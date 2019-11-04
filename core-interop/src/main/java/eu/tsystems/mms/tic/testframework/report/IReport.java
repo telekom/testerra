@@ -4,6 +4,8 @@ import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
+import java.io.File;
+
 public interface IReport {
     enum Mode {
         COPY,
@@ -52,5 +54,12 @@ public interface IReport {
             return PropertyManager.parser.getProperty(toString(), defaultValue);
         }
     }
+    /**
+     * Adds a screenshot to the current MethodContext
+     */
     IReport addScreenshot(Screenshot screenshot, Mode mode);
+    /**
+     * Creates a screenshot, moves it files but doesn't add in to the current MethodContext
+     */
+    Screenshot provideScreenshot(File file, Mode mode);
 }

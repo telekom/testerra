@@ -83,61 +83,64 @@ public class Report implements IReport, Loggable {
         XML_DIRECTORY.mkdirs();
     }
 
-    /**
-     * Adds a screenshot to the report
-     */
-    @Override
-    public IReport addScreenshot(Screenshot screenshot, Mode mode) {
-        /*
-        provide screenshot
-         */
-        final File targetScreenshotFile = new File(SCREENSHOTS_DIRECTORY, screenshot.filename);
+    private void addFile(File sourceFile, File directory, Mode mode) {
         try {
             switch (mode) {
                 case COPY:
-                    FileUtils.copyFile(screenshot.getScreenshotFile(), targetScreenshotFile, true);
+                    FileUtils.copyFileToDirectory(sourceFile, directory, true);
                     break;
                 case MOVE:
-                    FileUtils.moveFile(screenshot.getScreenshotFile(), targetScreenshotFile);
+                    FileUtils.moveFileToDirectory(sourceFile, directory, true);
                     break;
             }
         } catch (IOException e) {
             log().error(e.getMessage());
         }
+    }
 
-        final File targetSourceFile = new File(SCREENSHOTS_DIRECTORY, screenshot.sourceFilename);
-        try {
-            switch (mode) {
-                case COPY:
-                    FileUtils.copyFile(screenshot.getPageSourceFile(), targetSourceFile, true);
-                    break;
-                case MOVE:
-                    FileUtils.moveFile(screenshot.getPageSourceFile(), targetSourceFile);
-                    break;
-            }
-        } catch (IOException e) {
-            log().error(e.getMessage());
-        }
-
+    private void addScreenshot(Screenshot screenshot) {
         List<Screenshot> screenshots = new ArrayList<>();
         screenshots.add(screenshot);
 
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.addScreenshots(screenshots);
+    }
 
+    private void addScreenshotFiles(Screenshot screenshot, Mode mode) {
+        if (screenshot.getScreenshotFile() != null) {
+            addFile(screenshot.getScreenshotFile(), SCREENSHOTS_DIRECTORY, mode);
+        }
+
+        if (screenshot.getPageSourceFile() != null) {
+            addFile(screenshot.getPageSourceFile(), SCREENSHOTS_DIRECTORY, mode);
+        }
+    }
+
+    @Override
+    public IReport addScreenshot(Screenshot screenshot, Mode mode) {
+        addScreenshotFiles(screenshot, mode);
+        addScreenshot(screenshot);
         return this;
     }
 
+    @Override
+    public Screenshot provideScreenshot(File file, Mode mode) {
+        Screenshot screenshot = new Screenshot(file, null);
+        addScreenshotFiles(screenshot, mode);
+        return screenshot;
+    }
+
     /**
-     * @deprecated This method does nothing
+     * @deprecated Use {@link IReport} instead
      */
     @Deprecated
     public static Screenshot provideScreenshot(
         File screenshotFile,
-        File screenshotSourceFileOrNull,
+        File ignored,
         Mode mode
-    ) throws IOException {
-        return new Screenshot();
+    ) {
+        IReport report = Testerra.ioc().getInstance(IReport.class);
+        return report.provideScreenshot(screenshotFile, mode);
     }
 
 //

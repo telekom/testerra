@@ -77,8 +77,9 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     @Test
     public void testCheckPageLayout() {
         FluentLayoutCheckPage page = preparePage();
-        page.screenshot().pixelDistance("LayoutTestPage").lowerThan(1);
-        page.screenshot().toReport();
+        page.screenshot()
+            .toReport()
+            .pixelDistance("LayoutTestPage").lowerThan(1);
     }
 
     @Test(expectedExceptions = AssertionError.class)

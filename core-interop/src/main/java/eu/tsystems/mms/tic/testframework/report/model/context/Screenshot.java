@@ -51,17 +51,20 @@ public class Screenshot implements Loggable {
         }
     }
 
+    @Deprecated
     public String filename;
     private File screenshotFile;
+    @Deprecated
     public String sourceFilename;
     private File pageSourceFile;
     final private Map<String, String> meta = new HashMap<>();
     private static HashMap<String, Integer> counter = new HashMap<>();
-    private final String name;
+    private final String tmpName;
 
     /*
     Refers to the errorContext the screenshot belongs to.
      */
+    @Deprecated
     public String errorContextId;
 
     public Screenshot() {
@@ -69,24 +72,33 @@ public class Screenshot implements Loggable {
     }
 
     public Screenshot(String name) {
-        meta.put(Meta.DATE.toString(), new Date().toString());
         int count = counter.getOrDefault(name, 1);
-        this.name = String.format("%s-%03d-", name, count);
+        this.tmpName = String.format("%s-%03d-", name, count);
         counter.put(name, ++count);
     }
 
-    public Screenshot setScreenshotFile(File screenshotFile) {
-        this.screenshotFile = screenshotFile;
+    public Screenshot(File screenshotFile, File pageSourceFile) {
+        setScreenshotFile(screenshotFile);
+        if (pageSourceFile!=null) {
+            setPageSourceFile(pageSourceFile);
+        }
+        tmpName = null;
+    }
+
+    private Screenshot setScreenshotFile(File file) {
+        meta.put(Meta.DATE.toString(), new Date(file.lastModified()).toString());
+        screenshotFile = file;
+        filename = file.getName();
+        meta.put(Meta.FILE_NAME.toString(), filename);
         return this;
     }
 
     public File getScreenshotFile() {
         if (screenshotFile==null) {
             try {
-                screenshotFile = File.createTempFile(name, ".png");
-                if (screenshotFile.exists()) screenshotFile.delete();
-                filename = screenshotFile.getName();
-                meta.put(Meta.FILE_NAME.toString(), filename);
+                File file = File.createTempFile(tmpName, ".png");
+                if (file.exists()) file.delete();
+                setScreenshotFile(file);
             } catch (IOException e) {
                 log().error(e.getMessage());
             }
@@ -94,13 +106,19 @@ public class Screenshot implements Loggable {
         return screenshotFile;
     }
 
+    private Screenshot setPageSourceFile(File file) {
+        sourceFilename = file.getName();
+        pageSourceFile = file;
+        meta.put(Meta.SOURCE_FILE_NAME.toString(), sourceFilename);
+        return this;
+    }
+
     public File getPageSourceFile() {
         if (pageSourceFile==null) {
             try {
-                pageSourceFile = File.createTempFile(name, ".html");
-                if (pageSourceFile.exists()) pageSourceFile.delete();
-                sourceFilename = pageSourceFile.getName();
-                meta.put(Meta.SOURCE_FILE_NAME.toString(), sourceFilename);
+                File file = File.createTempFile(tmpName, ".html");
+                if (file.exists()) file.delete();
+                setPageSourceFile(file);
             } catch (IOException e) {
                 log().error(e.getMessage());
             }

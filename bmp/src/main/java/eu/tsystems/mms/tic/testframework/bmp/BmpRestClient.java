@@ -44,6 +44,7 @@ import javax.ws.rs.WebApplicationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -57,11 +58,37 @@ public class BmpRestClient {
     private final URL baseUrl;
     private Integer proxyPort = null;
 
+    /**
+     * Create REST client for browser mob proxy
+     *
+     * @param host     {@link String} host
+     * @param restPort {@link Integer} API port.
+     *
+     * @throws MalformedURLException
+     * @deprecated Please use other constructors instead.
+     */
+    @Deprecated
+    public BmpRestClient(final String host, final int restPort) throws MalformedURLException {
+
+        this(new URL("http://" + host + ":" + restPort));
+    }
+
+    /**
+     * Create REST client for browser mob proxy.
+     *
+     * @param apiUrl {@link URL} API endpoint.
+     */
     public BmpRestClient(final URL apiUrl) {
 
         this(apiUrl, null);
     }
 
+    /**
+     * Create REST client for browser mob proxy.
+     *
+     * @param apiUrl           {@link URL} API endpoint.
+     * @param upstreamProxyUrl {@link URL} Upstream proxy url.
+     */
     public BmpRestClient(final URL apiUrl, final URL upstreamProxyUrl) {
 
         this.baseUrl = apiUrl;

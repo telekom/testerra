@@ -25,7 +25,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingStaticElement;
@@ -44,7 +43,7 @@ import java.lang.reflect.Method;
 /**
  * Created by rnhb on 29.12.2015.
  */
-public class CheckPageTest extends AbstractTestSitesTest {
+public class CheckPageTest_Deprecated extends AbstractTestSitesTest {
 
     @BeforeMethod
     public void before(Method method) {

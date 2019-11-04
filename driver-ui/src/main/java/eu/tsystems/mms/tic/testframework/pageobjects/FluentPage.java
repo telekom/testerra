@@ -57,7 +57,7 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
         }
     }
 
-    protected FluentPage(WebDriver driver) {
+    public FluentPage(WebDriver driver) {
         super(driver);
     }
 

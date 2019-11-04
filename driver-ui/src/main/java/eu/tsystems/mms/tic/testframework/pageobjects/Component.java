@@ -38,7 +38,7 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     protected final IGuiElement rootElement;
     private final Finder defaultFinder;
 
-    protected Component(IGuiElement rootElement) {
+    public Component(IGuiElement rootElement) {
         super(rootElement.getWebDriver());
         this.rootElement = rootElement;
         defaultFinder = withAncestor(rootElement);

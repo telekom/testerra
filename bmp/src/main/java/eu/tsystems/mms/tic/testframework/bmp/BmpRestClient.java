@@ -31,6 +31,8 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
@@ -39,6 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.WebApplicationException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URL;
@@ -49,47 +52,92 @@ public class BmpRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BmpRestClient.class);
 
-    private final String host;
-    private final int restPort;
-    public String url;
-    private Integer proxyPort = null;
     private URL upstreamProxy;
 
-    /**
-     * Hide Default constructor.
-     *
-     * @param restPort
-     */
-    public BmpRestClient(String host, int restPort) {
-        this.host = host;
-        this.restPort = restPort;
-        this.url = "http://" + host + ":" + restPort + "/";
+    private final URL baseUrl;
+    private Integer proxyPort = null;
+
+    public BmpRestClient(final URL apiUrl) {
+
+        this(apiUrl, null);
+    }
+
+    public BmpRestClient(final URL apiUrl, final URL upstreamProxyUrl) {
+
+        this.baseUrl = apiUrl;
+        this.setUpstreamProxy(upstreamProxyUrl);
+    }
+
+    private URIBuilder url() {
+
+        final URIBuilder uriBuilder = new URIBuilder();
+        uriBuilder.setScheme(this.baseUrl.getProtocol());
+        uriBuilder.setHost(this.baseUrl.getHost());
+        uriBuilder.setPort(this.baseUrl.getPort());
+
+        return uriBuilder;
     }
 
     /**
      * Sets the upstream proxy to route requests through
+     *
+     * @param url {@link URL}
      */
-    public void setUpstreamProxy(URL url) {
-        upstreamProxy = url;
+    public void setUpstreamProxy(final URL url) {
+
+        this.upstreamProxy = url;
     }
 
-    public void setHeader(String key, String value) {
-        JSONObject auth = new JSONObject();
-        auth.put(key, value);
+    /**
+     * Set header for all outgoing requests.
+     *
+     * @param key   {@link String}
+     * @param value {@link String}
+     *
+     * @implNote can only be called after a BMP already started.
+     */
+    public void setHeader(final String key, final String value) {
+
+        if (this.proxyPort == null) {
+            throw new TesterraRuntimeException("No proxy started yet. Not possible to set a header.");
+        }
+
+        final JSONObject jsonHeaderMap = new JSONObject();
+        jsonHeaderMap.put(key, value);
+
         try {
-            sendPost("headers", auth.toString());
+            final String urlToCall = url().setPath("/proxy/" + this.proxyPort + "/headers").toString();
+            this.sendPost(urlToCall, jsonHeaderMap.toString());
         } catch (Exception e) {
-            LOGGER.error("Error setting basic auth", e);
+            LOGGER.error("Error setting header.", e);
         }
     }
 
-    public void setBasicAuth(String domain, String username, String password) {
+
+    /**
+     * Add basic auth for domain.
+     *
+     * @param domain   {@link String}
+     * @param username {@link String}
+     * @param password {@link String}
+     *
+     * @implNote Can only be called after a BMP already started.
+     */
+    public void setBasicAuth(final String domain, final String username, final String password) {
+
+        if (this.proxyPort == null) {
+            throw new TesterraRuntimeException("No proxy started yet. Not possible to set auth credentials.");
+        }
+
         LOGGER.info("Adding Basic Auth for " + username + ":*****@" + domain);
-        JSONObject auth = new JSONObject();
+        final JSONObject auth = new JSONObject();
+
         auth.put("username", username);
         auth.put("password", password);
+
         try {
-            sendPost("auth/basic/" + domain, auth.toString());
+            final String urlToCall = url().setPath("/proxy/" + this.proxyPort + "/auth/basic/" + domain).toString();
+            this.sendPost(urlToCall, auth.toString());
         } catch (Exception e) {
             LOGGER.error("Error setting basic auth", e);
         }
@@ -101,6 +149,7 @@ public class BmpRestClient {
      * @return portnumber of proxy server
      */
     public int startServer() {
+
         return this.startServer(null);
     }
 
@@ -108,43 +157,46 @@ public class BmpRestClient {
      * Start the proxy server on the remote machine wiht a custom port.
      *
      * @param customPort
+     *
      * @return portnumber of proxy server
      */
-    public int startServer(Integer customPort) {
-        String path = "proxy?trustAllServers=true";
+    public int startServer(final Integer customPort) {
 
-        if (upstreamProxy != null) {
-            path += String.format("&httpProxy=%s:%d", upstreamProxy.getHost(), upstreamProxy.getPort());
+        final URIBuilder startServerUriBuilder = url().setPath("/proxy").setParameter("trustAllServers", "true");
+
+        // set upstream proxy.
+        if (this.upstreamProxy != null) {
+            startServerUriBuilder.setParameter("httpProxy", String.format("%s:%d", upstreamProxy.getHost(), upstreamProxy.getPort()));
         }
 
         // Cannot create a new proxy server on an used port,
         // so I need to check it before
         if (customPort != null) {
-            boolean runsAtPort = checkIfProxyRunsAtPort(customPort);
-            if (runsAtPort) {
-                proxyPort = customPort;
-                url = url + "proxy/" + proxyPort + "/";
+
+            if (this.isProxyRunningAtPort(customPort)) {
+
+                this.proxyPort = customPort;
+                final String proxyUrl = url().setPath("/proxy/" + proxyPort + "/").toString();
+
                 LOGGER.info("BMP proxy port " + customPort + " already active.");
-                LOGGER.info("Using proxy server at " + url);
-                return proxyPort;
+                LOGGER.info("Using proxy server at " + proxyUrl);
+                return this.proxyPort;
             }
-            path += String.format("&port=%s", customPort);
+
+            startServerUriBuilder.setParameter("port", String.valueOf(customPort));
         }
 
         try {
-            String response = sendPost(path, "bindAddress=" + host);
-            JsonElement jsonElement = new JsonParser().parse(response);
+            final String response = sendPost(startServerUriBuilder.toString(), "bindAddress=" + this.baseUrl.getHost());
+            final JsonElement jsonElement = new JsonParser().parse(response);
+            this.proxyPort = jsonElement.getAsJsonObject().get("port").getAsInt();
 
-            proxyPort = jsonElement.getAsJsonObject().get("port").getAsInt();
+            final String proxyUrl = url().setPath("/proxy/" + proxyPort + "/").toString();
+            LOGGER.info("Created new proxy server at " + proxyUrl);
+            return this.proxyPort;
 
-            if (proxyPort == null) {
-                throw new TesterraRuntimeException("Error executing http request");
-            }
-            url = url + "proxy/" + proxyPort + "/";
-            LOGGER.info("Created new proxy server at " + url);
-            return proxyPort;
         } catch (Exception e) {
-            throw new RuntimeException("error starting proxy", e);
+            throw new TesterraRuntimeException("Error starting browser mob proxy", e);
         }
     }
 
@@ -152,10 +204,13 @@ public class BmpRestClient {
      * Stop the remote proxy
      */
     public void stopServer() {
+
         try {
-            sendDelete("");
+            final String deleteProxyUrl = url().setPath("/proxy/" + this.proxyPort + "/").toString();
+            sendDelete(deleteProxyUrl);
+
         } catch (Exception e) {
-            throw new RuntimeException("error stopping proxy", e);
+            throw new TesterraRuntimeException("Error stopping proxy", e);
         }
     }
 
@@ -166,22 +221,41 @@ public class BmpRestClient {
      * @param content capture contents.
      */
     public void startCapture(boolean headers, boolean content) {
+
+        if (this.proxyPort == null) {
+            throw new TesterraRuntimeException("No proxy started yet. Not possible to start capture.");
+        }
+
         try {
-            sendPut(String.format("har?captureHeaders=%s&captureContent=%s", headers, content), null);
+            final String urlToCall = url()
+                    .setPath("/proxy/" + this.proxyPort + "/har")
+                    .setParameter("captureHeaders", String.valueOf(headers))
+                    .setParameter("captureContent", String.valueOf(content))
+                    .toString();
+
+            this.sendPut(urlToCall, null);
         } catch (Exception e) {
             throw new RuntimeException("error starting capture", e);
         }
     }
 
     public void setHostMapping(Map<String, String> hostNameToIPMapping) {
-        JSONObject jso = new JSONObject();
-        for (String hostname : hostNameToIPMapping.keySet()) {
-            String ip = hostNameToIPMapping.get(hostname);
 
+        if (this.proxyPort == null) {
+            throw new TesterraRuntimeException("No proxy started yet. Not possible to set host mapping.");
+        }
+
+        final JSONObject jso = new JSONObject();
+        for (final String hostname : hostNameToIPMapping.keySet()) {
+
+            final String ip = hostNameToIPMapping.get(hostname);
             jso.put(hostname, ip);
         }
+
+
         try {
-            sendPost("hosts", jso.toString());
+            final String urlToCall = url().setPath("/proxy/" + this.proxyPort + "/hosts").toString();
+            this.sendPost(urlToCall, jso.toString());
         } catch (Exception e) {
             LOGGER.error("Error setting host mapping", e);
         }
@@ -193,9 +267,10 @@ public class BmpRestClient {
      * @return Captured traffic in JsonFormat (serialized Har)
      */
     public JsonElement stopCapture() {
+
         try {
-            JsonElement jsonElement = new JsonParser().parse(sendGet("har"));
-            return jsonElement;
+            final String urlToCall = url().setPath("/proxy/" + this.proxyPort + "/har").toString();
+            return new JsonParser().parse(sendGet(urlToCall));
         } catch (Exception e) {
             throw new RuntimeException("error starting capture", e);
         }
@@ -204,18 +279,21 @@ public class BmpRestClient {
     /**
      * Checks if Port is already used
      *
-     * @param portToCheck
+     * @param portToCheck int
+     *
      * @return bool if port is already used.
      */
-    public boolean checkIfProxyRunsAtPort(int portToCheck) {
-        String path = "proxy";
-        try {
-            String response = sendGet(path);
-            JsonElement jsonElement = new JsonParser().parse(response);
+    public boolean isProxyRunningAtPort(int portToCheck) {
 
-            JsonArray portArray = jsonElement.getAsJsonObject().getAsJsonArray("proxyList");
-            for (JsonElement element : portArray) {
-                int actualPort = element.getAsJsonObject().get("port").getAsInt();
+        try {
+            final String urlToCall = url().setPath("/proxy").toString();
+            final String response = sendGet(urlToCall);
+            final JsonElement jsonElement = new JsonParser().parse(response);
+            final JsonArray portArray = jsonElement.getAsJsonObject().getAsJsonArray("proxyList");
+
+            for (final JsonElement element : portArray) {
+
+                final int actualPort = element.getAsJsonObject().get("port").getAsInt();
                 if (actualPort == portToCheck) {
                     return true;
                 }
@@ -227,116 +305,76 @@ public class BmpRestClient {
     }
 
     // HTTP POST request
-    private String sendPost(String path, String content) throws Exception {
-        HttpClient httpclient = HttpClients.createDefault();
-        String uri = url + path;
-        LOGGER.info("Sending bmp command " + uri + " with " + content);
-        HttpPost httppost = new HttpPost(uri);
+    private String sendPost(final String url, String content) throws Exception {
+
+        final HttpClient httpclient = HttpClients.createDefault();
+        final HttpPost httppost = new HttpPost(url);
 
         if (content != null) {
             // Request parameters and other properties.
             StringEntity myEntity = new StringEntity(content, ContentType.create("text/plain", "UTF-8"));
             httppost.setEntity(myEntity);
         }
-        //Execute and get the response.
-        HttpResponse response = httpclient.execute(httppost);
-        int statusCode = response.getStatusLine().getStatusCode();
-        if (statusCode != 200) {
-            String reasonPhrase = response.getStatusLine().getReasonPhrase();
-            throw new TesterraRuntimeException("Error posting to BMPServer: " + statusCode + " > " + reasonPhrase + " R: " + response);
-        }
-        HttpEntity entity = response.getEntity();
 
-        StringWriter writer = new StringWriter();
-        if (entity != null) {
-            InputStream instream = entity.getContent();
-            try {
-                IOUtils.copy(instream, writer, Charset.defaultCharset());
-            } finally {
-                instream.close();
-            }
-        }
-        return writer.toString();
+        LOGGER.info("Sending bmp command (post) " + url + " with " + content);
+        return this.executeRequest(httpclient, httppost);
     }
 
     // HTTP PUT request
-    private String sendPut(String path, String content) throws Exception {
-        HttpClient httpclient = HttpClients.createDefault();
-        HttpPut httpput = new HttpPut(url + path);
+    private String sendPut(String url, String content) throws Exception {
+
+        final HttpClient httpclient = HttpClients.createDefault();
+        final HttpPut httpput = new HttpPut(url);
 
         if (content != null) {
             // Request parameters and other properties.
-            StringEntity myEntity = new StringEntity(content,
-                    ContentType.create("text/plain", "UTF-8"));
+            final StringEntity myEntity = new StringEntity(content, ContentType.create("text/plain", "UTF-8"));
             httpput.setEntity(myEntity);
         }
-        //Execute and get the response.
-        HttpResponse response = httpclient.execute(httpput);
-        int statusCode = response.getStatusLine().getStatusCode();
-        // Take 204 into consideration as well - successful status, no content update
-        if (statusCode != 204 && statusCode != 200) {
-            throw new WebApplicationException(statusCode);
-        }
-        HttpEntity entity = response.getEntity();
 
-        StringWriter writer = new StringWriter();
-        if (entity != null) {
-            InputStream instream = entity.getContent();
-            try {
-                IOUtils.copy(instream, writer, Charset.defaultCharset());
-            } finally {
-                instream.close();
-            }
-        }
-        return writer.toString();
+        LOGGER.info("Sending bmp command (put) " + url + " with " + content);
+        return this.executeRequest(httpclient, httpput);
     }
 
     // HTTP Get request
-    private String sendGet(String path) throws Exception {
-        HttpClient httpclient = HttpClients.createDefault();
-        HttpGet httpget = new HttpGet(url + path);
+    private String sendGet(final String url) throws Exception {
+
+        final HttpClient httpclient = HttpClients.createDefault();
+        final HttpGet httpget = new HttpGet(url);
 
         //Execute and get the response.
-        HttpResponse response = httpclient.execute(httpget);
-        if (response.getStatusLine().getStatusCode() != 200) {
-            throw new WebApplicationException(response.getStatusLine().getStatusCode());
-        }
-        HttpEntity entity = response.getEntity();
-
-        StringWriter writer = new StringWriter();
-        if (entity != null) {
-            InputStream instream = entity.getContent();
-            try {
-                IOUtils.copy(instream, writer, Charset.defaultCharset());
-            } finally {
-                instream.close();
-            }
-        }
-        return writer.toString();
+        LOGGER.info("Sending bmp command (get): " + url);
+        return this.executeRequest(httpclient, httpget);
     }
 
     // HTTP DELETE request
-    private String sendDelete(String path) throws Exception {
-        HttpClient httpclient = HttpClients.createDefault();
-        HttpDelete httpDelete = new HttpDelete(url + path);
+    private String sendDelete(final String url) throws Exception {
+
+        final HttpClient httpclient = HttpClients.createDefault();
+        final HttpDelete httpDelete = new HttpDelete(url);
 
         //Execute and get the response.
-        HttpResponse response = httpclient.execute(httpDelete);
-        if (response.getStatusLine().getStatusCode() != 200) {
-            throw new WebApplicationException(response.getStatusLine().getStatusCode());
-        }
-        HttpEntity entity = response.getEntity();
-
-        StringWriter writer = new StringWriter();
-        if (entity != null) {
-            InputStream instream = entity.getContent();
-            try {
-                IOUtils.copy(instream, writer, Charset.defaultCharset());
-            } finally {
-                instream.close();
-            }
-        }
-        return writer.toString();
+        LOGGER.info("Sending bmp command (delete): " + url);
+        return this.executeRequest(httpclient, httpDelete);
     }
 
+    private String executeRequest(final HttpClient httpclient, final HttpRequestBase httpRequest) throws IOException {
+
+        final HttpResponse response = httpclient.execute(httpRequest);
+        final int statusCode = response.getStatusLine().getStatusCode();
+        if (statusCode != 200 && statusCode != 204) {
+            throw new WebApplicationException(response.getStatusLine().getStatusCode());
+        }
+
+        final HttpEntity entity = response.getEntity();
+        final StringWriter writer = new StringWriter();
+
+        if (entity != null) {
+            try (final InputStream inputStream = entity.getContent()) {
+                IOUtils.copy(inputStream, writer, Charset.defaultCharset());
+            }
+        }
+
+        return writer.toString();
+    }
 }

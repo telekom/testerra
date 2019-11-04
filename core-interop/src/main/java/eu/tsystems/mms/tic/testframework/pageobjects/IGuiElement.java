@@ -91,6 +91,10 @@ public interface IGuiElement extends
     IBinaryPropertyAssertion<Boolean> displayed();
     IBinaryPropertyAssertion<Boolean> enabled();
     IBinaryPropertyAssertion<Boolean> selected();
+
+    /**
+     * Takes a screenshot of the current element
+     */
     IImageAssertion screenshot();
     IGuiElement scrollTo();
     Locate getLocator();

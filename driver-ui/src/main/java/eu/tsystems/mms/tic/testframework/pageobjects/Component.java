@@ -43,6 +43,9 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
         defaultFinder = withAncestor(rootElement);
     }
 
+    /**
+     * Takes a screenshot of the current component
+     */
     public IImageAssertion screenshot() {
         return rootElement.screenshot();
     }

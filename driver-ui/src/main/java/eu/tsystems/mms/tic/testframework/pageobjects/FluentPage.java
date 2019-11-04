@@ -114,6 +114,9 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
         });
     }
 
+    /**
+     * Takes a screenshot of the current page
+     */
     public IScreenshotAssertion screenshot() {
         final Page self = this;
         final AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();

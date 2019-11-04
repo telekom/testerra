@@ -34,7 +34,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.CheckableGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
@@ -77,7 +77,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Authors: pele, rnhb
  */
 public class GuiElement implements
-    Checkable,
+    CheckableGuiElement,
     IGuiElement,
     Loggable
 {
@@ -110,14 +110,17 @@ public class GuiElement implements
     /**
      * Constructor with explicit web driver session.
      */
+    @Deprecated
     public GuiElement(WebDriver driver, By by) {
         this(driver, by, null);
     }
 
+    @Deprecated
     public GuiElement(WebDriver driver, Locate locator) {
         this(driver, locator, null);
     }
 
+    @Deprecated
     public GuiElement(IPage page, Locate locator) {
         this(page.getWebDriver(), locator, null);
         Page pageImpl = (Page)page;
@@ -127,6 +130,7 @@ public class GuiElement implements
     /**
      * Constructor with frames and explicit webDriver session.
      */
+    @Deprecated
     public GuiElement(
         WebDriver driver,
         Locate locator,
@@ -145,6 +149,7 @@ public class GuiElement implements
     /**
      * Default Constructor for optional FrameLogic
      */
+    @Deprecated
     public GuiElement(
         WebDriver driver,
         By by,
@@ -156,6 +161,7 @@ public class GuiElement implements
     /**
      * Constructor with ancestor GuiElement
      */
+    @Deprecated
     public GuiElement(
         Locate locator,
         IGuiElement ancestor
@@ -268,6 +274,7 @@ public class GuiElement implements
      *
      * @return GuiElement
      */
+    @Deprecated
     public GuiElement getSubElement(By by) {
         return getSubElement(by, null);
     }

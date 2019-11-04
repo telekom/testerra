@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.CheckableGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
@@ -37,6 +38,7 @@ import org.openqa.selenium.WebElement;
  * @author Mike Reiche
  */
 public interface IGuiElement extends
+    CheckableGuiElement,
     Nameable<IGuiElement>,
     WebDriverRetainer
 {

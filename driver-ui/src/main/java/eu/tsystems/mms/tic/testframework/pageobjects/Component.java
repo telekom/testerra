@@ -26,6 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 
 /**
@@ -58,5 +59,20 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     @Deprecated
     public Page refresh() {
         return super.refresh();
+    }
+
+    @Override
+    public GuiElementAssert nonFunctionalAsserts() {
+        return rootElement.nonFunctionalAsserts();
+    }
+
+    @Override
+    public GuiElementAssert asserts() {
+        return rootElement.asserts();
+    }
+
+    @Override
+    public GuiElementAssert instantAsserts() {
+        return rootElement.instantAsserts();
     }
 }

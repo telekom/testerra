@@ -169,6 +169,9 @@
 </head>
 <body style="margin:8px">
     <h1>Input test</h1>
+
+	<button style="display: none" class="component-btn" value="If you found me, Components may not work!"></button>
+
     <hr>
 	<div class="className" style="border:1px solid black;position:absolute;top:100;left:10;width:300;height:300;padding:8px">
 	    <input id="1" maxlength="5" type="text" onfocus="log('Input 1 Focus')"
@@ -176,7 +179,7 @@
 		       onkeypress="log('Input 1 Key press')" onkeyup="log('Input 1 Key up')"> <br>
 	    <input id="2" type="file"> <br>
 	    <input id="3" type="checkbox" ondblclick="log('Input 3 Double clicked')"> <br>
-	    <input id="4" type="button" value="Button1" onclick="ButtonClicked()"> <br>
+	    <input id="4" type="button" class="component-btn" value="Button1" onclick="ButtonClicked()"> <br>
 	    <input id="5" type="text" maxlength="5" onmousedown="log('Input 5 Mouse down')"
 		       onmousemove="log('Input 5 Mouse move')"
 		       onmouseout="log('Input 5 Mouse out')"

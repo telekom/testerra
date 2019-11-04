@@ -19,10 +19,16 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 
 /**
- * An interface to allow performing {@link Check}
+ * An interface to allow performing @Check
  */
-public interface Checkable {
+public interface CheckableGuiElement {
+    @Deprecated
+    GuiElementAssert nonFunctionalAsserts();
+    @Deprecated
+    GuiElementAssert asserts();
+    @Deprecated
+    GuiElementAssert instantAsserts();
 }

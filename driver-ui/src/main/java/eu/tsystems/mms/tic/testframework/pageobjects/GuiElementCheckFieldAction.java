@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.CheckableGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.CheckFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
@@ -45,7 +46,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
         forceStandardAssert = field.forceStandardAssert;
     }
 
-    private void pCheckField(GuiElement guiElement, GuiElementAssert GuiElementAssert, CheckRule checkRule, boolean findNot, boolean fast) {
+    private void pCheckField(CheckableGuiElement guiElement, GuiElementAssert GuiElementAssert, CheckRule checkRule, boolean findNot, boolean fast) {
         if (checkRule == CheckRule.DEFAULT) {
             checkRule = pageOverrides.getGuiElementCheckRule(CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString()));
         }
@@ -114,16 +115,8 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
     protected void checkField(Check check, boolean fast) {
         CheckRule checkRule = check.checkRule();
 
-        GuiElement guiElement;
-        try {
-            guiElement = (GuiElement) checkableInstance;
-        } catch (ClassCastException e) {
-            throw new TesterraSystemException("Internal Error. FieldAction was used by a Page, for which it was not implemented." +
-                    " " + declaringPage + " from " + declaringClass, e);
-        }
-
         if (check.nonFunctional()) {
-            pCheckField(guiElement, guiElement.nonFunctionalAsserts(), checkRule, findNot, fast);
+            pCheckField(checkableInstance, checkableInstance.nonFunctionalAsserts(), checkRule, findNot, fast);
         } else {
 
             GuiElementAssert guiElementAssert;
@@ -132,13 +125,13 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
              * This is covered by a {@link GuiElementAssert} that contains an {@link InstantAssertion}.
              */
             if (forceStandardAssert) {
-                guiElementAssert = guiElement.instantAsserts();
+                guiElementAssert = checkableInstance.instantAsserts();
             } else {
-                guiElementAssert = guiElement.asserts();
+                guiElementAssert = checkableInstance.asserts();
             }
 
             try {
-                pCheckField(guiElement, guiElementAssert, checkRule, findNot, fast);
+                pCheckField(checkableInstance, guiElementAssert, checkRule, findNot, fast);
             } catch (AssertionError e) {
                 final PageNotFoundException pageNotFoundException = new PageNotFoundException(readableMessage, e);
 

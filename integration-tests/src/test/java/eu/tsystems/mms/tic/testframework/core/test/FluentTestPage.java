@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.core.test;
 
-import eu.tsystems.mms.tic.testframework.core.test.components.HeaderComponent;
+import eu.tsystems.mms.tic.testframework.core.test.components.InputForm;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.FluentPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
@@ -10,20 +10,10 @@ import org.openqa.selenium.WebDriver;
 public class FluentTestPage extends FluentPage<FluentTestPage> {
 
     @Check
-    private IGuiElement input = findOneById("11");
+    private IGuiElement textElement = findOneById("11");
 
     @Check
-    private IGuiElement button = withAncestor(input).findOneByQa("action/submit");
-
-    private IGuiElement text = findOne(By.className("affe"));
-
-    private IGuiElement frame = findOne(By.tagName("iframe"));
-
-    private IGuiElement btnInFrame = findOne(By.tagName("iframe"));
-    private IGuiElement newDocRoot = inFrame(frame).findOne(By.tagName("body"));
-    private IGuiElement btnInFrame3 = withAncestor(newDocRoot).findOne(By.tagName("button"));
-
-    private HeaderComponent header = createComponent(HeaderComponent.class, findOne(By.id("header")));
+    private InputForm inputForm = withAncestor(findOne(By.className("className"))).createComponent(InputForm.class);
 
     /**
      * Constructor for existing sessions.
@@ -34,12 +24,8 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
         super(driver);
     }
 
-    public IGuiElement input() {
-        return input;
-    }
-
-    public IGuiElement submit() {
-        return button;
+    public IGuiElement textElement() {
+        return textElement;
     }
 
     public IGuiElement notDisplayedElement() {
@@ -54,8 +40,8 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
         return findOneById("schnullifacks");
     }
 
-    public HeaderComponent header() {
-        return header;
+    public InputForm inputForm() {
+        return inputForm;
     }
 
     @Override

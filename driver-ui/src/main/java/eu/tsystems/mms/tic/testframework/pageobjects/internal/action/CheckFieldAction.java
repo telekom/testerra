@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.CheckableGuiElement;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
@@ -32,18 +32,11 @@ import java.lang.reflect.Modifier;
  * Created by rnhb on 17.12.2015.
  */
 public abstract class CheckFieldAction extends FieldAction {
-    /**
-     * Readable message template.
-     * Wehere ### is guiElement and *** is simpleClassName
-     */
-    private static final String msgGuiElementNotFoundTemplate = "***: Mandatory GuiElement >###< was not found";
-    private static final String msgGuiElementFoundTemplate = "***: Mandatory GuiElement >###< was found, but expected to be NOT";
-
     protected final boolean findNot;
     private final boolean fast;
     protected String readableMessage;
 
-    protected Checkable checkableInstance;
+    protected CheckableGuiElement checkableInstance;
 
     public CheckFieldAction(FieldWithActionConfig fieldWithActionConfig, AbstractPage declaringPage) {
         super(fieldWithActionConfig.field, declaringPage);
@@ -52,9 +45,9 @@ public abstract class CheckFieldAction extends FieldAction {
 
         String simpleClassName = declaringPage.getClass().getSimpleName();
         if (findNot) {
-            readableMessage = msgGuiElementFoundTemplate.replace("###", fieldName).replace("***", simpleClassName);
+            readableMessage = String.format("Mandatory GuiElement {%s.%s} was found, but expected to be NOT", simpleClassName, fieldName);
         } else {
-            readableMessage = msgGuiElementNotFoundTemplate.replace("###", fieldName).replace("***", simpleClassName);
+            readableMessage = String.format("Mandatory GuiElement {%s.%s} was not found", simpleClassName, fieldName);
         }
     }
 
@@ -64,12 +57,11 @@ public abstract class CheckFieldAction extends FieldAction {
     @Override
     public boolean before() {
         boolean isCheckAnnotated = field.isAnnotationPresent(Check.class);
-        boolean isCheckable = Checkable.class.isAssignableFrom(typeOfField);
+        boolean isCheckable = CheckableGuiElement.class.isAssignableFrom(typeOfField);
 
         if (isCheckAnnotated && !isCheckable) {
-            throw new TesterraRuntimeException("Field " + fieldName + " in " + declaringClass.getCanonicalName()
-                    + " is annotated with @Check, but the class is not checkable. A class is checkable, if it " +
-                    "implements the marker interface " + Checkable.class.getCanonicalName());
+            throw new TesterraRuntimeException("Field {" + fieldName + "} of " + declaringClass.getCanonicalName()
+                    + " is annotated with @Check, but the class doesn't implement " + CheckableGuiElement.class.getCanonicalName());
         }
 
         if (isCheckable) {
@@ -94,7 +86,7 @@ public abstract class CheckFieldAction extends FieldAction {
     @Override
     public void execute() {
         try {
-            checkableInstance = (Checkable) field.get(declaringPage);
+            checkableInstance = (CheckableGuiElement) field.get(declaringPage);
         } catch (IllegalAccessException e) {
             logger.error("Internal Error", e);
             return;
@@ -104,7 +96,7 @@ public abstract class CheckFieldAction extends FieldAction {
         }
         Check check = field.getAnnotation(Check.class);
         if (checkableInstance == null) {
-            throw new TesterraRuntimeException("Field " + fieldName + " in " + declaringClass.getCanonicalName()
+            throw new TesterraRuntimeException("Field {" + fieldName + "} of " + declaringClass.getCanonicalName()
                     + " is annotated with @Check and was never initialized (it is null). This is not allowed" +
                     " because @Check indicates a mandatory GuiElement of a Page.");
         } else {

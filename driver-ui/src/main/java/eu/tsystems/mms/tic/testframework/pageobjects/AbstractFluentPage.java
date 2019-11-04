@@ -54,7 +54,11 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
         }
     }
 
-    private static class AncestorFinder implements Finder {
+    protected interface ComponentFinder extends Finder {
+        public <T extends IComponent> T createComponent(Class<T> componentClass);
+    }
+
+    private static class AncestorFinder implements ComponentFinder {
         private IGuiElement ancestor;
         private AncestorFinder(IGuiElement ancestor) {
             this.ancestor = ancestor;
@@ -62,13 +66,16 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
         public IGuiElement findOne(Locate locator) {
             return guiElementFactory.createFromAncestor(locator, ancestor);
         }
+        public <T extends IComponent> T createComponent(Class<T> componentClass) {
+            return pageFactory.createComponent(componentClass, ancestor);
+        }
     }
 
     public AbstractFluentPage(WebDriver driver) {
         super(driver);
     }
 
-    protected Finder withAncestor(IGuiElement ancestor) {
+    protected ComponentFinder withAncestor(IGuiElement ancestor) {
         return new AncestorFinder(ancestor);
     }
     protected IGuiElement findOneById(String id) {
@@ -86,9 +93,6 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
 
     protected <T extends IPage> T createPage(final Class<T> pageClass) {
         return pageFactory.createPage(pageClass, driver);
-    }
-    protected <T extends IComponent> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
-        return pageFactory.createComponent(componentClass, rootElement);
     }
 
     /**

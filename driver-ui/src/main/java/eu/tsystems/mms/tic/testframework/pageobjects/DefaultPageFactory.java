@@ -60,7 +60,7 @@ public class DefaultPageFactory implements IPageFactory {
     public <T extends IPage> T createPage(Class<T> pageClass, WebDriver webDriver) {
         pageClass = findBestMatchingClass(pageClass, webDriver);
         try {
-            final Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
+            Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
             T page = constructor.newInstance(webDriver);
             page.checkElements();
             return page;
@@ -81,7 +81,7 @@ public class DefaultPageFactory implements IPageFactory {
     @Override
     public <T extends IComponent> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
         try {
-            final Constructor<T> constructor = componentClass.getConstructor(IGuiElement.class);
+            Constructor<T> constructor = componentClass.getConstructor(IGuiElement.class);
             T component = constructor.newInstance(rootElement);
             component.checkElements();
             return component;

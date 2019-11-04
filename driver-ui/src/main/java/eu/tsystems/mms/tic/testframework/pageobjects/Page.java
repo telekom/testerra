@@ -79,7 +79,9 @@ public abstract class Page extends AbstractPage {
 
     /**
      * Constructor for existing sessions.
+     * @deprecated Use {@link IPageFactory} for creating new pages
      */
+    @Deprecated
     public Page(final WebDriver webDriver) {
         if (webDriver == null) {
             throw new IllegalArgumentException("The driver object must not be null");

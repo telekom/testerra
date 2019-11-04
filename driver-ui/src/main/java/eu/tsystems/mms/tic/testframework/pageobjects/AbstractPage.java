@@ -156,11 +156,17 @@ public abstract class AbstractPage implements IPage {
      * The call of this method is injected into the constructor of every page class or must be called from every page
      * class constructor!!!
      * If there are several subclasses each calling checkPage, it will be only called from the class of the calling instance.
+     * @deprecated Calling this method by yourself is deprecated
      */
+    @Deprecated
     public final void checkPage() {
         pCheckPage(false, false, true);
     }
 
+    /**
+     * @deprecated Inverse checks are deprecated
+     */
+    @Deprecated
     public final void checkPage(final boolean inverse, final boolean fast) {
         pCheckPage(inverse, fast, true);
     }

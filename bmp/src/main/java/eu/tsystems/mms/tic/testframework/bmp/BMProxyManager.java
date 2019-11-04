@@ -126,8 +126,7 @@ public final class BMProxyManager {
 
         if (usedPort == null) {
             return null; // should not happen
-        }
-        else {
+        } else {
             // set port as inUse and return it
             usedPortPool.remove(usedPort);
             usedPortPool.put(usedPort, Boolean.TRUE);

@@ -86,8 +86,8 @@ public class ProxyServer {
     public static void checkTmpFiles() {
         String tmpdir = System.getProperty("java.io.tmpdir");
 
-        String file1Content =   "lastUpdateCheck=200000000000000\r\n" +
-                                "currentVersion=1";
+        String file1Content = "lastUpdateCheck=200000000000000\r\n" +
+                "currentVersion=1";
 
         if (tmpdir != null) {
             try {
@@ -140,26 +140,26 @@ public class ProxyServer {
 
         try {
             bmpProxyServer.start();
-//            httpClient = getHttpClient(bmpProxyServer);
+            //            httpClient = getHttpClient(bmpProxyServer);
         } catch (Exception e) {
             throw new TesterraRuntimeException(e);
         }
 
         bmpProxyServer.setOptions(options);
 
-//        if (proxyHost != null) {
-//            final String proxyHost = this.proxyHost.getHostName();
-//            final int proxyPort = this.proxyHost.getPort();
-//            LOGGER.info("Setting proxy for this bmp session: " + proxyHost + ":" + proxyPort);
-//
-////            AuthScope authScope = new AuthScope(proxyHost, proxyPort);
-////            if (credentials != null) {
-////                httpClient.getCredentialsProvider().setCredentials(authScope, credentials);
-////            }
-//
-//            httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxyHost);
-//
-//        }
+        //        if (proxyHost != null) {
+        //            final String proxyHost = this.proxyHost.getHostName();
+        //            final int proxyPort = this.proxyHost.getPort();
+        //            LOGGER.info("Setting proxy for this bmp session: " + proxyHost + ":" + proxyPort);
+        //
+        ////            AuthScope authScope = new AuthScope(proxyHost, proxyPort);
+        ////            if (credentials != null) {
+        ////                httpClient.getCredentialsProvider().setCredentials(authScope, credentials);
+        ////            }
+        //
+        //            httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxyHost);
+        //
+        //        }
 
         LOGGER.info("BMP server started on " + internalPort);
         return bmpProxyServer;

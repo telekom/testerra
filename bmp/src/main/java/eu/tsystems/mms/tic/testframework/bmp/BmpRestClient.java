@@ -21,7 +21,9 @@ package eu.tsystems.mms.tic.testframework.bmp;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -36,7 +38,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -129,8 +130,8 @@ public class BmpRestClient {
             throw new TesterraRuntimeException("No proxy started yet. Not possible to set a header.");
         }
 
-        final JSONObject jsonHeaderMap = new JSONObject();
-        jsonHeaderMap.put(key, value);
+        final JsonObject jsonHeaderMap = new JsonObject();
+        jsonHeaderMap.add(key, new JsonPrimitive(value));
 
         try {
             final String urlToCall = url().setPath("/proxy/" + this.proxyPort + "/headers").toString();
@@ -139,7 +140,6 @@ public class BmpRestClient {
             LOGGER.error("Error setting header.", e);
         }
     }
-
 
     /**
      * Add basic auth for domain.
@@ -157,10 +157,10 @@ public class BmpRestClient {
         }
 
         LOGGER.info("Adding Basic Auth for " + username + ":*****@" + domain);
-        final JSONObject auth = new JSONObject();
 
-        auth.put("username", username);
-        auth.put("password", password);
+        final JsonObject auth = new JsonObject();
+        auth.add("username", new JsonPrimitive(username));
+        auth.add("password", new JsonPrimitive(password));
 
         try {
             final String urlToCall = url().setPath("/proxy/" + this.proxyPort + "/auth/basic/" + domain).toString();
@@ -214,6 +214,7 @@ public class BmpRestClient {
         }
 
         try {
+
             final String response = sendPost(startServerUriBuilder.toString(), "bindAddress=" + this.baseUrl.getHost());
             final JsonElement jsonElement = new JsonParser().parse(response);
             this.proxyPort = jsonElement.getAsJsonObject().get("port").getAsInt();
@@ -266,19 +267,18 @@ public class BmpRestClient {
         }
     }
 
-    public void setHostMapping(Map<String, String> hostNameToIPMapping) {
+    public void setHostMapping(Map<String, String> hostNameToIpMapping) {
 
         if (this.proxyPort == null) {
             throw new TesterraRuntimeException("No proxy started yet. Not possible to set host mapping.");
         }
 
-        final JSONObject jso = new JSONObject();
-        for (final String hostname : hostNameToIPMapping.keySet()) {
+        final JsonObject jso = new JsonObject();
 
-            final String ip = hostNameToIPMapping.get(hostname);
-            jso.put(hostname, ip);
+        for (final String hostname : hostNameToIpMapping.keySet()) {
+            final String ip = hostNameToIpMapping.get(hostname);
+            jso.add(hostname, new JsonPrimitive(ip));
         }
-
 
         try {
             final String urlToCall = url().setPath("/proxy/" + this.proxyPort + "/hosts").toString();

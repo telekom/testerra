@@ -80,7 +80,7 @@ public abstract class Page extends AbstractPage {
     /**
      * Constructor for existing sessions.
      */
-    private Page(final WebDriver webDriver) {
+    public Page(final WebDriver webDriver) {
         if (webDriver == null) {
             throw new IllegalArgumentException("The driver object must not be null");
         }

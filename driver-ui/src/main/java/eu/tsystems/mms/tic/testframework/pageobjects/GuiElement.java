@@ -41,6 +41,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElement
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFactory;
@@ -67,6 +68,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * GuiElement is the access point for most tests and is an extension of WebElement.
@@ -893,10 +895,17 @@ public class GuiElement implements IGuiElement, Loggable {
     @Override
     public IImageAssertion screenshot() {
         final IGuiElement self = this;
+        final AtomicReference<File> screenshot = new AtomicReference<>();
+        screenshot.set(guiElementCore.takeScreenshot());
         return propertyAssertionFactory.image(new AssertionProvider<File>() {
             @Override
             public File actual() {
-                return guiElementCore.takeScreenshot();
+                return screenshot.get();
+            }
+
+            @Override
+            public void failed(PropertyAssertion assertion) {
+                screenshot.set(guiElementCore.takeScreenshot());
             }
 
             @Override

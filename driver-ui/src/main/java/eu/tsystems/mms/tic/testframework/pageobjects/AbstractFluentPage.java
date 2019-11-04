@@ -101,7 +101,11 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
      * Fluent Overrides
      */
 
-    public abstract IImageAssertion screenshot();
+    public IImageAssertion screenshot() {
+        return screenshot(false);
+    }
+
+    public abstract IImageAssertion screenshot(boolean toReport);
 
     /**
      * Deprecation APIs

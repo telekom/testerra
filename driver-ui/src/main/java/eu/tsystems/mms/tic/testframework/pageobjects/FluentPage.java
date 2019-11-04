@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionP
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
+import eu.tsystems.mms.tic.testframework.report.IReport;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import org.openqa.selenium.WebDriver;
@@ -47,6 +48,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public abstract class FluentPage<SELF extends FluentPage<SELF>> extends AbstractFluentPage<SELF> implements Loggable {
 
     private static final GuiElementFactory guiElementFactory = Testerra.ioc().getInstance(GuiElementFactory.class);
+    protected static final IReport report = Testerra.ioc().getInstance(IReport.class);
 
     private static class FrameFinder implements Finder {
         private IGuiElement frame;
@@ -119,10 +121,15 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
      * @todo Implement toReport feature
      * @return
      */
-    public IImageAssertion screenshot() {
+    public IImageAssertion screenshot(boolean toReport) {
         final Page self = this;
         final AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();
         atomicScreenshot.set(UITestUtils.takeScreenshot(driver));
+
+        if (toReport) {
+            report.addScreenshot(atomicScreenshot.get(), IReport.Mode.COPY);
+        }
+
         return propertyAssertionFactory.image(new AssertionProvider<File>() {
 
             @Override

@@ -24,8 +24,8 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
         super(parentAssertion, provider);
     }
 
-    public T actual() {
-        return provider.actual();
+    public T getActual() {
+        return provider.getActual();
     }
 
     protected void testTimer(Function<T, Boolean> testFunction) {

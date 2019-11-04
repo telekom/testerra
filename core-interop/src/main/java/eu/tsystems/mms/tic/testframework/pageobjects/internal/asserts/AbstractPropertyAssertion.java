@@ -23,19 +23,19 @@ public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<
         this.provider = provider;
     }
 
-    public T actual() {
-        return provider.actual();
+    public T getActual() {
+        return provider.getActual();
     }
 
     public String traceSubjectString() {
         final List<String> subjects = new ArrayList<>();
-        Object subject = provider.subject();
-        if (subject!=null) subjects.add(subject.toString());
+        String subject = provider.getSubject();
+        if (subject!=null) subjects.add(subject);
 
         AbstractPropertyAssertion assertion = parent;
         while (assertion != null) {
-            subject = assertion.provider.subject();
-            if (subject!=null) subjects.add(subject.toString());
+            subject = assertion.provider.getSubject();
+            if (subject!=null) subjects.add(subject);
             assertion = assertion.parent;
         }
         Collections.reverse(subjects);

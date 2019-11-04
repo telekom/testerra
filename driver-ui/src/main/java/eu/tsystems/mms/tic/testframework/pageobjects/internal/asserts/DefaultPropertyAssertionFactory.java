@@ -1,5 +1,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+
 import java.io.File;
 
 public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory {
@@ -27,5 +29,10 @@ public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory
     @Override
     public IImageAssertion image(PropertyAssertion parent, AssertionProvider<File> provider) {
         return new ImageAssertion(parent, provider);
+    }
+
+    @Override
+    public IScreenshotAssertion screenshot(PropertyAssertion parent, AssertionProvider<Screenshot> provider) {
+        return new ScreenshotAssertion(parent, provider);
     }
 }

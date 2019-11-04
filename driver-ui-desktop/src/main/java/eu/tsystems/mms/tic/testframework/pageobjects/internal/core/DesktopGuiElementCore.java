@@ -730,7 +730,7 @@ public class DesktopGuiElementCore implements
     public boolean anyFollowingTextNodeContains(String contains) {
         By byStringContain = By.xpath(String.format(".//*[contains(text(),\"%s\")]", contains));
         IGuiElement subElement = getSubElement(byStringContain, null);
-        return subElement.present().actual();
+        return subElement.present().getActual();
     }
 
     @Override

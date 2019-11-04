@@ -16,14 +16,14 @@ public class ImageAssertion extends AbstractPropertyAssertion<File> implements I
         final AtomicReference<LayoutCheck.MatchStep> atomicMatchStep = new AtomicReference<>();
         return propertyAssertionFactory.quantified(this, new AssertionProvider<Double>() {
             @Override
-            public Double actual() {
-                LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(provider.actual(), referenceImageName);
+            public Double getActual() {
+                LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(provider.getActual(), referenceImageName);
                 atomicMatchStep.set(matchStep);
                 return matchStep.distance;
             }
 
             @Override
-            public String subject() {
+            public String getSubject() {
                 return String.format("pixelDistance(referenceImageName: %s)", referenceImageName);
             }
 
@@ -42,13 +42,13 @@ public class ImageAssertion extends AbstractPropertyAssertion<File> implements I
     public IFileAssertion file() {
         return propertyAssertionFactory.file(this, new AssertionProvider<File>() {
             @Override
-            public File actual() {
-                return provider.actual();
+            public File getActual() {
+                return provider.getActual();
             }
 
             @Override
-            public Object subject() {
-                return String.format("\"%s\"", provider.actual().getAbsolutePath());
+            public String getSubject() {
+                return String.format("\"%s\"", provider.getActual().getAbsolutePath());
             }
         });
     }

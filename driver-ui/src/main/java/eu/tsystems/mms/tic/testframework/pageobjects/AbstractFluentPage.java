@@ -27,7 +27,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -96,16 +95,6 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
      * Fluent actions
      */
     protected abstract SELF self();
-
-    /**
-     * Fluent Overrides
-     */
-
-    public IImageAssertion screenshot() {
-        return screenshot(false);
-    }
-
-    public abstract IImageAssertion screenshot(boolean toReport);
 
     /**
      * Deprecation APIs

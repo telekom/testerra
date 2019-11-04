@@ -1,5 +1,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+
 import java.io.File;
 
 public interface PropertyAssertionFactory {
@@ -8,6 +10,7 @@ public interface PropertyAssertionFactory {
     <T> IStringPropertyAssertion<T> string(PropertyAssertion parent, AssertionProvider<T> provider);
     IFileAssertion file(PropertyAssertion parent, AssertionProvider<File> provider);
     IImageAssertion image(PropertyAssertion parent, AssertionProvider<File> provider);
+    IScreenshotAssertion screenshot(PropertyAssertion parent, AssertionProvider<Screenshot> provider);
     default <T> IBinaryPropertyAssertion<T> binary(AssertionProvider<T> provider) {
         return binary(null, provider);
     }
@@ -22,5 +25,8 @@ public interface PropertyAssertionFactory {
     }
     default IImageAssertion image(AssertionProvider<File> provider) {
         return image(null, provider);
+    }
+    default IScreenshotAssertion screenshot(AssertionProvider<Screenshot> provider) {
+        return screenshot(null, provider);
     }
 }

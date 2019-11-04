@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  * @author Mike Reiche
  */
 public interface IQuantifiedPropertyAssertion<T> extends IBinaryPropertyAssertion<T> {
-    T actual();
+    T getActual();
     IQuantifiedPropertyAssertion<T> is(Object expected);
     default IQuantifiedPropertyAssertion<T> greaterThan(long expected) {
         return greaterThan(new BigDecimal(expected));

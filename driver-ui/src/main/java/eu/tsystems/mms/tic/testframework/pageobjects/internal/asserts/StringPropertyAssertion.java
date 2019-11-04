@@ -16,25 +16,25 @@ public class StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T> i
 
     @Override
     public StringPropertyAssertion<T> contains(final String expected) {
-        testTimer(t -> assertion.assertContains((String)provider.actual(), expected, traceSubjectString()));
+        testTimer(t -> assertion.assertContains((String)provider.getActual(), expected, traceSubjectString()));
         return this;
     }
 
     @Override
     public StringPropertyAssertion<T> containsNot(final String expected) {
-        testTimer(t -> assertion.assertContainsNot((String)provider.actual(), expected, traceSubjectString()));
+        testTimer(t -> assertion.assertContainsNot((String)provider.getActual(), expected, traceSubjectString()));
         return this;
     }
 
     @Override
     public StringPropertyAssertion<T> beginsWith(String expected) {
-        testTimer(t -> assertion.assertBeginsWith(provider.actual(), expected, traceSubjectString()));
+        testTimer(t -> assertion.assertBeginsWith(provider.getActual(), expected, traceSubjectString()));
         return this;
     }
 
     @Override
     public StringPropertyAssertion<T> endsWith(String expected) {
-        testTimer(t -> assertion.assertEndsWith(provider.actual(), expected, traceSubjectString()));
+        testTimer(t -> assertion.assertEndsWith(provider.getActual(), expected, traceSubjectString()));
         return this;
     }
 
@@ -42,13 +42,13 @@ public class StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T> i
     public IQuantifiedPropertyAssertion<Integer> length() {
         return propertyAssertionFactory.quantified(this, new AssertionProvider<Integer>() {
             @Override
-            public Integer actual() {
-                return provider.actual().toString().length();
+            public Integer getActual() {
+                return provider.getActual().toString().length();
             }
 
             @Override
-            public Object subject() {
-                return String.format("\"%s\".length",provider.actual().toString());
+            public String getSubject() {
+                return String.format("\"%s\".length",provider.getActual().toString());
             }
         });
     }

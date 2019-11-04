@@ -9,7 +9,7 @@ public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<
     @Override
     public IBinaryPropertyAssertion<T> isTrue() {
         testTimer(t -> {
-            final String actualString = actual().toString();
+            final String actualString = getActual().toString();
             if (!(
                     actualString.equalsIgnoreCase("true")
                     || actualString.equalsIgnoreCase("on")
@@ -28,7 +28,7 @@ public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<
     @Override
     public IBinaryPropertyAssertion<T> isFalse() {
         testTimer(t -> {
-            final String actualString = actual().toString();
+            final String actualString = getActual().toString();
             if (!(
                     actualString.equalsIgnoreCase("false")
                     || actualString.equalsIgnoreCase("off")

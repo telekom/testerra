@@ -10,37 +10,37 @@ public class QuantifiedPropertyAssertion<T> extends BinaryPropertyAssertion<T> i
 
     @Override
     public IQuantifiedPropertyAssertion<T> is(final Object expected) {
-        testTimer(t -> assertion.assertEquals(provider.actual(), expected, traceSubjectString()));
+        testTimer(t -> assertion.assertEquals(provider.getActual(), expected, traceSubjectString()));
         return this;
     }
 
     @Override
     public IQuantifiedPropertyAssertion<T> greaterThan(final BigDecimal expected) {
-        testTimer(t -> assertion.assertGreaterThan(new BigDecimal(provider.actual().toString()), expected, traceSubjectString()));
+        testTimer(t -> assertion.assertGreaterThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
         return this;
     }
 
     @Override
     public IQuantifiedPropertyAssertion<T> lowerThan(final BigDecimal expected) {
-        testTimer(t -> assertion.assertLowerThan(new BigDecimal(provider.actual().toString()), expected, traceSubjectString()));
+        testTimer(t -> assertion.assertLowerThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
         return this;
     }
 
     @Override
     public IQuantifiedPropertyAssertion<T> greaterEqualThan(final BigDecimal expected) {
-        testTimer(t -> assertion.assertGreaterEqualThan(new BigDecimal(provider.actual().toString()), expected, traceSubjectString()));
+        testTimer(t -> assertion.assertGreaterEqualThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
         return this;
     }
 
     @Override
     public IQuantifiedPropertyAssertion<T> lowerEqualThan(final BigDecimal expected) {
-        testTimer(t -> assertion.assertLowerEqualThan(new BigDecimal(provider.actual().toString()), expected, traceSubjectString()));
+        testTimer(t -> assertion.assertLowerEqualThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
         return this;
     }
 
     @Override
     public IQuantifiedPropertyAssertion<T> between(BigDecimal lower, BigDecimal higher) {
-        testTimer(t -> assertion.assertBetween(new BigDecimal(provider.actual().toString()), lower, higher, traceSubjectString()));
+        testTimer(t -> assertion.assertBetween(new BigDecimal(provider.getActual().toString()), lower, higher, traceSubjectString()));
         return this;
     }
 }

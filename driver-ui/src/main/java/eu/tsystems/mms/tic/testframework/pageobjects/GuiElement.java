@@ -755,12 +755,12 @@ public class GuiElement implements IGuiElement, Loggable {
         final IGuiElement self = this;
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
-            public String actual() {
+            public String getActual() {
                 return guiElementCore.findFirstWebElement().getTagName();
             }
 
             @Override
-            public String subject() {
+            public String getSubject() {
                 return String.format("%s.tagName", self);
             }
         });
@@ -771,12 +771,12 @@ public class GuiElement implements IGuiElement, Loggable {
         final IGuiElement self = this;
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
-            public String actual() {
+            public String getActual() {
                 return guiElementCore.findFirstWebElement().getText();
             }
 
             @Override
-            public String subject() {
+            public String getSubject() {
                 return String.format("%s.text", self);
             }
         });
@@ -797,12 +797,12 @@ public class GuiElement implements IGuiElement, Loggable {
         final IGuiElement self = this;
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
-            public String actual() {
+            public String getActual() {
                 return guiElementCore.findFirstWebElement().getAttribute(attribute);
             }
 
             @Override
-            public String subject() {
+            public String getSubject() {
                 return String.format("%s.value(attribute: %s)", self, attribute);
             }
         });
@@ -813,7 +813,7 @@ public class GuiElement implements IGuiElement, Loggable {
         final IGuiElement self = this;
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
-            public Boolean actual() {
+            public Boolean getActual() {
                 try {
                     return guiElementCore.findFirstWebElement()!=null;
                 } catch (ElementNotFoundException e) {
@@ -822,7 +822,7 @@ public class GuiElement implements IGuiElement, Loggable {
             }
 
             @Override
-            public String subject() {
+            public String getSubject() {
                 return String.format("%s.present", self);
             }
         });
@@ -833,12 +833,12 @@ public class GuiElement implements IGuiElement, Loggable {
         final IGuiElement self = this;
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
-            public Boolean actual() {
+            public Boolean getActual() {
                 return guiElementCore.isVisible(complete);
             }
 
             @Override
-            public String subject() {
+            public String getSubject() {
                 return String.format("%s.visible(complete: %s)", self, complete);
             }
         });
@@ -849,12 +849,12 @@ public class GuiElement implements IGuiElement, Loggable {
         final IGuiElement self = this;
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
-            public Boolean actual() {
+            public Boolean getActual() {
                 return guiElementCore.findFirstWebElement().isDisplayed();
             }
 
             @Override
-            public String subject() {
+            public String getSubject() {
                 return String.format("%s.displayed", self);
             }
         });
@@ -865,12 +865,12 @@ public class GuiElement implements IGuiElement, Loggable {
         final IGuiElement self = this;
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
-            public Boolean actual() {
+            public Boolean getActual() {
                 return guiElementCore.findFirstWebElement().isEnabled();
             }
 
             @Override
-            public String subject() {
+            public String getSubject() {
                 return String.format("%s.enabled", self);
             }
         });
@@ -881,12 +881,12 @@ public class GuiElement implements IGuiElement, Loggable {
         final IGuiElement self = this;
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
-            public Boolean actual() {
+            public Boolean getActual() {
                 return guiElementCore.findFirstWebElement().isSelected();
             }
 
             @Override
-            public String subject() {
+            public String getSubject() {
                 return String.format("%s.selected", self);
             }
         });
@@ -899,7 +899,7 @@ public class GuiElement implements IGuiElement, Loggable {
         screenshot.set(guiElementCore.takeScreenshot());
         return propertyAssertionFactory.image(new AssertionProvider<File>() {
             @Override
-            public File actual() {
+            public File getActual() {
                 return screenshot.get();
             }
 
@@ -909,7 +909,7 @@ public class GuiElement implements IGuiElement, Loggable {
             }
 
             @Override
-            public String subject() {
+            public String getSubject() {
                 return String.format("%s.screenshot", self);
             }
         });

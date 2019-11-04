@@ -75,6 +75,11 @@ public class Screenshot implements Loggable {
         counter.put(name, ++count);
     }
 
+    public Screenshot setScreenshotFile(File screenshotFile) {
+        this.screenshotFile = screenshotFile;
+        return this;
+    }
+
     public File getScreenshotFile() {
         if (screenshotFile==null) {
             try {

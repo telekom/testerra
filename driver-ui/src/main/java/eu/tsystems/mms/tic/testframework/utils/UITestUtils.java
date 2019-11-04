@@ -106,6 +106,15 @@ public class UITestUtils {
         return takeScreenshot(webDriver, false);
     }
 
+    public static void takeScreenshot(WebDriver webDriver, Screenshot screenshot) {
+        takeScreenshot(
+            screenshot,
+            webDriver,
+            webDriver.getWindowHandle(),
+            WebDriverManager.getSessionKeyFrom(webDriver)
+        );
+    }
+
     @Deprecated
     public static Screenshot takeScreenshot(
         WebDriver webDriver,
@@ -123,6 +132,66 @@ public class UITestUtils {
         }
 
         return screenshot;
+    }
+
+    public static void takeScreenshot(
+        Screenshot screenshot,
+        WebDriver eventFiringWebDriver,
+        String originalWindowHandle,
+        String sessionKey
+    ) {
+        try {
+            takeWebDriverScreenshotToFile(eventFiringWebDriver, screenshot.getScreenshotFile());
+
+            // get page source (webdriver)
+            String pageSource = eventFiringWebDriver.getPageSource();
+
+            if (pageSource == null) {
+                LOGGER.error("getPageSource() returned nothing, skipping to add page source");
+            } else {
+
+                // save page source to file
+                savePageSource(pageSource, screenshot.getPageSourceFile());
+            }
+
+                /*
+                get infos
+                 */
+            if (sessionKey != null) {
+                screenshot.meta().put(Screenshot.Meta.SESSION_KEY.toString(), sessionKey);
+            }
+            screenshot.meta().put(Screenshot.Meta.TITLE.toString(), eventFiringWebDriver.getTitle());
+
+            /*
+            window and focus infos
+             */
+            String window = "";
+            String windowHandle = eventFiringWebDriver.getWindowHandle();
+            if (originalWindowHandle != null) {
+                if (windowHandle.equals(originalWindowHandle)) {
+                    screenshot.meta().put(Screenshot.Meta.DRIVER_FOCUS.toString(), "true");
+                } else {
+                    screenshot.meta().put(Screenshot.Meta.DRIVER_FOCUS.toString(), "false");
+                }
+            }
+            Set<String> windowHandles = eventFiringWebDriver.getWindowHandles();
+            if (windowHandles.size() < 2) {
+                window = "#1/1";
+            } else {
+                String[] handleStrings = windowHandles.toArray(new String[0]);
+                for (int i = 0; i < handleStrings.length; i++) {
+                    if (handleStrings[i].equals(windowHandle)) {
+                        window = "#" + (i + 1) + "/" + handleStrings.length;
+                    }
+                }
+            }
+
+            String currentUrl = eventFiringWebDriver.getCurrentUrl();
+            screenshot.meta().put(Screenshot.Meta.WINDOW.toString(), window);
+            screenshot.meta().put(Screenshot.Meta.URL.toString(), currentUrl);
+        } catch (final Exception e) {
+            LOGGER.error(ERROR_TAKING_SCREENSHOT, e);
+        }
     }
 
     public static Screenshot takeScreenshot(
@@ -145,61 +214,13 @@ public class UITestUtils {
          */
         if (eventFiringWebDriver != null) {
             Screenshot screenshot = new Screenshot();
-            try {
-                takeWebDriverScreenshotToFile(eventFiringWebDriver, screenshot.getScreenshotFile());
-
-                // get page source (webdriver)
-                String pageSource = eventFiringWebDriver.getPageSource();
-
-                if (pageSource == null) {
-                    LOGGER.error("getPageSource() returned nothing, skipping to add page source");
-                } else {
-
-                    // save page source to file
-                    savePageSource(pageSource, screenshot.getPageSourceFile());
-                }
-
-                /*
-                get infos
-                 */
-                if (sessionKey != null) {
-                    screenshot.meta().put(Screenshot.Meta.SESSION_KEY.toString(), sessionKey);
-                }
-                screenshot.meta().put(Screenshot.Meta.TITLE.toString(), eventFiringWebDriver.getTitle());
-
-                /*
-                window and focus infos
-                 */
-                String window = "";
-                String windowHandle = eventFiringWebDriver.getWindowHandle();
-                if (originalWindowHandle != null) {
-                    if (windowHandle.equals(originalWindowHandle)) {
-                        screenshot.meta().put(Screenshot.Meta.DRIVER_FOCUS.toString(), "true");
-                    } else {
-                        screenshot.meta().put(Screenshot.Meta.DRIVER_FOCUS.toString(), "false");
-                    }
-                }
-                Set<String> windowHandles = eventFiringWebDriver.getWindowHandles();
-                if (windowHandles.size() < 2) {
-                    window = "#1/1";
-                } else {
-                    String[] handleStrings = windowHandles.toArray(new String[0]);
-                    for (int i = 0; i < handleStrings.length; i++) {
-                        if (handleStrings[i].equals(windowHandle)) {
-                            window = "#" + (i + 1) + "/" + handleStrings.length;
-                        }
-                    }
-                }
-
-                String currentUrl = eventFiringWebDriver.getCurrentUrl();
-                screenshot.meta().put(Screenshot.Meta.WINDOW.toString(), window);
-                screenshot.meta().put(Screenshot.Meta.URL.toString(), currentUrl);
-
-                return screenshot;
-
-            } catch (final Exception e) {
-                LOGGER.error(ERROR_TAKING_SCREENSHOT, e);
-            }
+            takeScreenshot(
+                screenshot,
+                eventFiringWebDriver,
+                originalWindowHandle,
+                sessionKey
+            );
+            return screenshot;
         } else {
             LOGGER.info("No screenshot was taken. WebDriver is not active.");
         }

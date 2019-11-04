@@ -29,15 +29,13 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IScreenshotAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
-import eu.tsystems.mms.tic.testframework.report.IReport;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import org.openqa.selenium.WebDriver;
 
-import java.io.File;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -48,7 +46,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public abstract class FluentPage<SELF extends FluentPage<SELF>> extends AbstractFluentPage<SELF> implements Loggable {
 
     private static final GuiElementFactory guiElementFactory = Testerra.ioc().getInstance(GuiElementFactory.class);
-    protected static final IReport report = Testerra.ioc().getInstance(IReport.class);
 
     private static class FrameFinder implements Finder {
         private IGuiElement frame;
@@ -91,12 +88,12 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
         final Page self = this;
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
-            public String actual() {
+            public String getActual() {
                 return driver.getTitle();
             }
 
             @Override
-            public Object subject() {
+            public String getSubject() {
                 return String.format("%s.title", self);
             }
         });
@@ -106,46 +103,41 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
         final Page self = this;
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
-            public String actual() {
+            public String getActual() {
                 return driver.getCurrentUrl();
             }
 
             @Override
-            public Object subject() {
+            public String getSubject() {
                 return String.format("%s.url", self);
             }
         });
     }
 
-    /**
-     * @todo Implement toReport feature
-     * @return
-     */
-    public IImageAssertion screenshot(boolean toReport) {
+    public IScreenshotAssertion screenshot() {
         final Page self = this;
         final AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();
-        atomicScreenshot.set(UITestUtils.takeScreenshot(driver));
 
-        if (toReport) {
-            report.addScreenshot(atomicScreenshot.get(), IReport.Mode.COPY);
-        }
+        Screenshot screenshot = new Screenshot(self.toString());
+        UITestUtils.takeScreenshot(driver, screenshot);
+        atomicScreenshot.set(screenshot);
 
-        return propertyAssertionFactory.image(new AssertionProvider<File>() {
+        return propertyAssertionFactory.screenshot(new AssertionProvider<Screenshot>() {
 
             @Override
-            public File actual() {
-                return atomicScreenshot.get().getScreenshotFile();
+            public Screenshot getActual() {
+                return atomicScreenshot.get();
             }
 
             @Override
             public void failed(PropertyAssertion assertion) {
                 // Take new screenshot only if failed
-                atomicScreenshot.set(UITestUtils.takeScreenshot(driver));
+                UITestUtils.takeScreenshot(driver, atomicScreenshot.get());
             }
 
             @Override
-            public Object subject() {
-                return String.format("%s.screenshot", self);
+            public String getSubject() {
+                return self.toString();
             }
         });
     }

@@ -6,7 +6,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
  */
 public interface IStringPropertyAssertion<T> extends IQuantifiedPropertyAssertion<T>
 {
-    T actual();
+    T getActual();
     IStringPropertyAssertion<T> is(String expected);
     IStringPropertyAssertion<T> contains(String expected);
     IStringPropertyAssertion<T> containsNot(String expected);

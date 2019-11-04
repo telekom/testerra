@@ -125,8 +125,6 @@ public class Report implements IReport, Loggable {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.addScreenshots(screenshots);
 
-        log().info("Provided screenshot " + screenshot.filename + " as " + targetScreenshotFile);
-
         return this;
     }
 

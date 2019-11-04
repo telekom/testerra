@@ -6,9 +6,9 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
  */
 public abstract class AssertionProvider<T> implements ActualProperty<T> {
     @Override
-    abstract public T actual();
+    abstract public T getActual();
 
-    abstract public Object subject();
+    abstract public String getSubject();
 
     /**
      * This method will be called recursive from bottom to top

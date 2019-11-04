@@ -55,7 +55,7 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
     }
 
     protected interface ComponentFinder extends Finder {
-        public <T extends IComponent> T createComponent(Class<T> componentClass);
+        <T extends IComponent> T createComponent(Class<T> componentClass);
     }
 
     private static class AncestorFinder implements ComponentFinder {

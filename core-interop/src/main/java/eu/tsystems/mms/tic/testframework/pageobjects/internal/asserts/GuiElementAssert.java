@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
  * User: rnhb
  * Date: 11.08.2015
  */
+@Deprecated
 public interface GuiElementAssert {
 
     /**

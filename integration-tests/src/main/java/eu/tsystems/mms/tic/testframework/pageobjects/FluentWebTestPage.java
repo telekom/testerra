@@ -33,31 +33,36 @@ import org.openqa.selenium.WebDriver;
  * Created with IntelliJ IDEA. User: pele Date: 07.01.13 Time: 14:15 To change this template use File | Settings | File
  * Templates.
  */
-public class WebTestPage extends AbstractWebTestPage {
+public class FluentWebTestPage extends FluentPage<FluentWebTestPage> {
 
-    private final GuiElement input1 = new GuiElement(driver, By.id("1"));
+    private final IGuiElement input1 = findOneById("1");
+
     /** A button on the page. */
     @Check(nonFunctional = true)
-    private final GuiElement button1 = new GuiElement(driver, By.id("4"));
+    private final IGuiElement button1 = findOneById("4");
+
+    //@Check
+    //private IGuiElement specialElementFromVariable;
 
     @Check
-    private GuiElement specialElementFromVariable;
+    private final IGuiElement openAgainLink = findOneById("11");
 
     /** The output text field. */
     @Check
-    private final GuiElement textOutputField = new GuiElement(driver, By.id("99"));
+    private final IGuiElement textOutputField = findOneById("99");
 
     /**
      * Default Page constructor.
      */
-    public WebTestPage(WebDriver driver, MyVariables myVariables) {
+    public FluentWebTestPage(WebDriver driver) {
         super(driver);
 
-        specialElementFromVariable = new GuiElement(driver, By.id("" + myVariables.number));
+        //specialElementFromVariable = findOne(By.id("" + myVariables.number));
     }
 
-    public WebTestPage(WebDriver driver) {
-        super(driver);
+    @Override
+    protected FluentWebTestPage self() {
+        return this;
     }
 
     /**
@@ -74,9 +79,9 @@ public class WebTestPage extends AbstractWebTestPage {
      *
      * @return Instance of the new page.
      */
-    public WebTestPage reloadPage() {
+    public FluentWebTestPage reloadPage() {
         openAgainLink.click();
-        return new WebTestPage(driver);
+        return new FluentWebTestPage(driver);
     }
 
     /**
@@ -84,7 +89,7 @@ public class WebTestPage extends AbstractWebTestPage {
      *
      */
     public void gotoHell() {
-        GuiElement guiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
+        IGuiElement guiElement = findOne(By.xpath("id('surely_not_existing')"));
         guiElement.click();
     }
 
@@ -93,7 +98,7 @@ public class WebTestPage extends AbstractWebTestPage {
      *
      */
     public void nonfunctionalAssert() {
-        GuiElement guiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
+        IGuiElement guiElement = findOne(By.xpath("id('surely_not_existing')"));
         guiElement.nonFunctionalAsserts().assertIsPresent();
     }
 

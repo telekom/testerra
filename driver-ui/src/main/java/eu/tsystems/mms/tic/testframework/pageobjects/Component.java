@@ -29,8 +29,10 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBoundingBoxAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
+import org.openqa.selenium.WebElement;
 
 /**
  * Components implementation
@@ -65,6 +67,11 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     @Override
     public Locate getLocate() {
         return rootElement.getLocate();
+    }
+
+    @Override
+    public WebElement getWebElement() {
+        return rootElement.getWebElement();
     }
 
     protected IGuiElement find(Locate locator) {
@@ -108,6 +115,11 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     @Override
     public IStringPropertyAssertion<String> tagName() {
         return rootElement.tagName();
+    }
+
+    @Override
+    public IBoundingBoxAssertion boundingBox() {
+        return rootElement.boundingBox();
     }
 
     @Override

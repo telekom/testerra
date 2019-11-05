@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
 
 /**
  * GuiElement with new fluent API support
@@ -78,7 +77,6 @@ public interface IGuiElement extends
         public String asString() { return PropertyManager.parser.getProperty(toString(), defaultValue); }
     }
 
-    WebElement getWebElement();
     IFrameLogic getFrameLogic();
 
     /**

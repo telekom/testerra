@@ -22,8 +22,10 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBoundingBoxAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
+import org.openqa.selenium.WebElement;
 
 /**
  * An interface to allow basic GuiElement operations
@@ -40,6 +42,7 @@ public interface BasicGuiElement {
     IBinaryPropertyAssertion<Boolean> displayed();
     IBinaryPropertyAssertion<Boolean> visible(boolean complete);
     IStringPropertyAssertion<String> tagName();
+    IBoundingBoxAssertion boundingBox();
 
     /**
      * Takes a screenshot of the current element
@@ -58,4 +61,6 @@ public interface BasicGuiElement {
     BasicGuiElement highlight();
 
     Locate getLocate();
+
+    WebElement getWebElement();
 }

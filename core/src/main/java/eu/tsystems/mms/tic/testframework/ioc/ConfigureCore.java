@@ -16,6 +16,8 @@ import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.report.IReport;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 
 public class ConfigureCore extends AbstractModule {
     protected static boolean assertionsCollectorConfigured = false;
@@ -28,6 +30,7 @@ public class ConfigureCore extends AbstractModule {
             configureAssertionsCollector();
         }
         bind(IReport.class).to(Report.class).in(Scopes.SINGLETON);
+        bind(Formatter.class).to(DefaultFormatter.class).in(Scopes.SINGLETON);
     }
 
     protected void configureAssertions() {

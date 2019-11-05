@@ -50,6 +50,10 @@ public class GuiElementData {
     public final IFrameLogic frameLogic;
     public final int timerSleepTimeInMs = 500;
     public boolean sensibleData = false;
+    /**
+     * @deprecated Should be GuiElementData
+     */
+    @Deprecated
     public GuiElementCore parent;
     public int index = -1;
     public LogLevel logLevel = LogLevel.DEBUG;
@@ -91,9 +95,9 @@ public class GuiElementData {
     @Override
     public String toString() {
         String toString = "";
-        if (parent != null) {
+        /*if (parent != null) {
             toString = parent + " -> ";
-        }
+        }*/
         if (hasName()) {
             toString += name;
         } else {

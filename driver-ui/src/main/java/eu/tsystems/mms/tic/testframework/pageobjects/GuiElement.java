@@ -36,10 +36,12 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BoundingBoxAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBoundingBoxAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
@@ -61,6 +63,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -907,6 +910,22 @@ public class GuiElement implements
             @Override
             public String getSubject() {
                 return String.format("%s.selected", self);
+            }
+        });
+    }
+
+    @Override
+    public IBoundingBoxAssertion boundingBox() {
+        final IGuiElement self = this;
+        return new BoundingBoxAssertion(null, new AssertionProvider<Rectangle>() {
+            @Override
+            public Rectangle getActual() {
+                return self.getWebElement().getRect();
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("%s.boundingBox", self);
             }
         });
     }

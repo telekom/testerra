@@ -58,6 +58,11 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     }
 
     @Override
+    public BasicGuiElement highlight() {
+        return rootElement.highlight();
+    }
+
+    @Override
     public Locate getLocate() {
         return rootElement.getLocate();
     }

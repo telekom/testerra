@@ -26,8 +26,11 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 
 /**
  * Components implementation
@@ -44,11 +47,19 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
         defaultFinder = withAncestor(rootElement);
     }
 
-    /**
-     * Takes a screenshot of the current component
-     */
+    @Override
     public IImageAssertion screenshot() {
         return rootElement.screenshot();
+    }
+
+    @Override
+    public BasicGuiElement scrollTo(int yOffset) {
+        return rootElement.scrollTo(yOffset);
+    }
+
+    @Override
+    public Locate getLocate() {
+        return rootElement.getLocate();
     }
 
     protected IGuiElement find(Locate locator) {
@@ -62,17 +73,40 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     }
 
     @Override
+    @Deprecated
     public GuiElementAssert nonFunctionalAsserts() {
         return rootElement.nonFunctionalAsserts();
     }
 
     @Override
+    @Deprecated
     public GuiElementAssert asserts() {
         return rootElement.asserts();
     }
 
     @Override
+    @Deprecated
     public GuiElementAssert instantAsserts() {
         return rootElement.instantAsserts();
+    }
+
+    @Override
+    public IBinaryPropertyAssertion<Boolean> present() {
+        return rootElement.present();
+    }
+
+    @Override
+    public IBinaryPropertyAssertion<Boolean> visible(boolean complete) {
+        return rootElement.visible(complete);
+    }
+
+    @Override
+    public IStringPropertyAssertion<String> tagName() {
+        return rootElement.tagName();
+    }
+
+    @Override
+    public IBinaryPropertyAssertion<Boolean> displayed() {
+        return rootElement.displayed();
     }
 }

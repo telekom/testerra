@@ -22,11 +22,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.CheckableGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.InteractiveGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -38,7 +35,7 @@ import org.openqa.selenium.WebElement;
  * @author Mike Reiche
  */
 public interface IGuiElement extends
-    CheckableGuiElement,
+    InteractiveGuiElement,
     Nameable<IGuiElement>,
     WebDriverRetainer
 {
@@ -80,27 +77,9 @@ public interface IGuiElement extends
         @Override
         public String asString() { return PropertyManager.parser.getProperty(toString(), defaultValue); }
     }
-    /**
-     * New Features
-     */
-    IStringPropertyAssertion<String> tagName();
-    IStringPropertyAssertion<String> text();
-    IStringPropertyAssertion<String> value();
-    IStringPropertyAssertion<String> value(Attribute attribute);
-    IStringPropertyAssertion<String> value(String attribute);
-    IBinaryPropertyAssertion<Boolean> present();
-    IBinaryPropertyAssertion<Boolean> visible(boolean complete);
-    IBinaryPropertyAssertion<Boolean> displayed();
-    IBinaryPropertyAssertion<Boolean> enabled();
-    IBinaryPropertyAssertion<Boolean> selected();
 
-    /**
-     * Takes a screenshot of the current element
-     */
-    IImageAssertion screenshot();
-    IGuiElement scrollTo();
-    Locate getLocate();
     WebElement getWebElement();
+    IFrameLogic getFrameLogic();
 
     /**
      * Deprecated API
@@ -113,45 +92,4 @@ public interface IGuiElement extends
 
     @Deprecated
     Dimension getSize();
-
-    /**
-     * This method scrolls to the element with an given offset.
-     */
-    IGuiElement scrollTo(int yOffset);
-    IFrameLogic getFrameLogic();
-
-    /**
-     * Fluent {@link IGuiElement} overrides
-     */
-    IGuiElement select(Boolean select);
-
-    IGuiElement click();
-
-    IGuiElement clickJS();
-
-    IGuiElement doubleClick();
-
-    IGuiElement doubleClickJS();
-
-    IGuiElement rightClick();
-
-    IGuiElement rightClickJS();
-
-    IGuiElement highlight();
-
-    IGuiElement swipe(int offsetX, int offSetY);
-
-    IGuiElement select();
-
-    IGuiElement deselect();
-
-    IGuiElement type(String text);
-
-    IGuiElement sendKeys(CharSequence... charSequences);
-
-    IGuiElement clear();
-
-    IGuiElement mouseOver();
-
-    IGuiElement mouseOverJS();
 }

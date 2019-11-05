@@ -4,6 +4,7 @@ import eu.tsystems.mms.tic.testframework.core.test.components.InputForm;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.FluentPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.TestableGuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -24,19 +25,19 @@ public class FluentTestPage extends FluentPage<FluentTestPage> {
         super(driver);
     }
 
-    public IGuiElement textElement() {
+    public TestableGuiElement textElement() {
         return textElement;
     }
 
-    public IGuiElement notDisplayedElement() {
+    public TestableGuiElement notDisplayedElement() {
         return findOneById("notDisplayedElement");
     }
 
-    public IGuiElement notVisibleElement() {
+    public TestableGuiElement notVisibleElement() {
         return findOneById("notVisibleElement");
     }
 
-    public IGuiElement nonExistentElement() {
+    public TestableGuiElement nonExistentElement() {
         return findOneById("schnullifacks");
     }
 

@@ -19,16 +19,41 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
 
 /**
- * An interface to allow performing @Check
+ * An interface to allow basic GuiElement operations
  */
-public interface CheckableGuiElement {
+public interface BasicGuiElement {
     @Deprecated
     GuiElementAssert nonFunctionalAsserts();
     @Deprecated
     GuiElementAssert asserts();
     @Deprecated
     GuiElementAssert instantAsserts();
+
+    IBinaryPropertyAssertion<Boolean> present();
+    IBinaryPropertyAssertion<Boolean> displayed();
+    IBinaryPropertyAssertion<Boolean> visible(boolean complete);
+    IStringPropertyAssertion<String> tagName();
+
+    /**
+     * Takes a screenshot of the current element
+     */
+    IImageAssertion screenshot();
+
+    /**
+     * This method scrolls to the element with an given offset.
+     */
+    BasicGuiElement scrollTo(int yOffset);
+
+    default BasicGuiElement scrollTo() {
+        return scrollTo(0);
+    }
+
+    Locate getLocate();
 }

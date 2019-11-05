@@ -19,9 +19,12 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+
 /**
- * Created by rnhb on 12.08.2015.
+ * @deprecated This interface should be replaced by {@link BasicGuiElement}
  */
+@Deprecated
 public interface GuiElementStatusCheck {
     /**
      * Checks if an element is found by webdriver.

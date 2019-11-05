@@ -34,7 +34,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.CheckableGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
@@ -77,7 +77,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Authors: pele, rnhb
  */
 public class GuiElement implements
-    CheckableGuiElement,
+    BasicGuiElement,
     IGuiElement,
     Loggable
 {
@@ -932,11 +932,6 @@ public class GuiElement implements
                 return String.format("%s.screenshot", self);
             }
         });
-    }
-
-    @Override
-    public IGuiElement scrollTo() {
-        return scrollToElement();
     }
 
     @Override

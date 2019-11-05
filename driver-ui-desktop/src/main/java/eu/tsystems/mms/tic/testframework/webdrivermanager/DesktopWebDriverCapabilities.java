@@ -173,6 +173,11 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 //Map<String, Object> prefs = new HashMap<>();
                 //prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
                 //chromeOptions.setExperimentalOption("prefs", prefs);
+
+                if (browser.equals(Browsers.chromeHeadless)) {
+                    chromeOptions.addArguments("--headless", "--disable-gpu");
+                }
+
                 desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                 break;
             case Browsers.ie:
@@ -202,18 +207,6 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         add own desired capabilities
          */
         addContextCapabilities(desiredCapabilities, desktopWebDriverRequest);
-
-        /*
-        add some hidden configs
-         */
-        if (Browsers.chromeHeadless.equalsIgnoreCase(browser)) {
-            ChromeOptions chromeOptions = (ChromeOptions) desiredCapabilities.getCapability(ChromeOptions.CAPABILITY);
-            if (chromeOptions == null) {
-                chromeOptions = new ChromeOptions();
-            }
-            chromeOptions.addArguments("--headless", "--disable-gpu");
-            desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-        }
 
         return desiredCapabilities;
     }

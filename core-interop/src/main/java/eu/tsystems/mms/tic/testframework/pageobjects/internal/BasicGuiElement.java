@@ -55,5 +55,7 @@ public interface BasicGuiElement {
         return scrollTo(0);
     }
 
+    BasicGuiElement highlight();
+
     Locate getLocate();
 }

@@ -96,9 +96,8 @@ public abstract class CheckFieldAction extends FieldAction {
         }
         Check check = field.getAnnotation(Check.class);
         if (checkableInstance == null) {
-            throw new TesterraRuntimeException("Field {" + fieldName + "} of " + declaringClass.getCanonicalName()
-                    + " is annotated with @Check and was never initialized (it is null). This is not allowed" +
-                    " because @Check indicates a mandatory GuiElement of a Page.");
+            throw new TesterraRuntimeException(String.format("Field {%s.%s} is annotated with @Check and was never initialized (it is null)." +
+                "This is not allowed because @Check indicates a mandatory GuiElement of a Page.", declaringClass.getSimpleName(), fieldName));
         } else {
             logger.debug("Looking for GuiElement on " + declaringClass.getSimpleName() + ": " + fieldName
                     + " with locator " + checkableInstance.toString());

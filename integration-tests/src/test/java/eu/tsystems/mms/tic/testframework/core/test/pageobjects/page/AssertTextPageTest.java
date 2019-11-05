@@ -20,8 +20,6 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.IPageFactoryTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -33,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
@@ -44,11 +41,6 @@ import org.testng.annotations.Test;
  *
  */
 public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFactoryTest {
-
-    @BeforeClass
-    public void setupTestableBrowser() {
-        System.getProperties().setProperty(TesterraProperties.BROWSER, Browsers.chrome);
-    }
 
     @Override
     public WebTestPage getPage() {

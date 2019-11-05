@@ -3,8 +3,8 @@ include::properties/property-attributes.adoc[]
 
 == System requirements
 
-...
-
+* Testerra is based on Java. You need a *JDK 8* or later.
+* Execute your tests with *Maven* or *Gradle*
 
 == Mandatory steps
 

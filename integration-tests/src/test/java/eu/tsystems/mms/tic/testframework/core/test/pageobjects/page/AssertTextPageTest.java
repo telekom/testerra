@@ -52,7 +52,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
 
     @Override
     public WebTestPage getPage() {
-        return PageFactory.create(WebTestPage.class, WebDriverManager.getWebDriver());
+        return PageFactory.create(WebTestPage.class, WebDriverManager.getWebDriver(), new WebTestPage.MyVariables(1));
     }
 
     public WebTestFramedPage getFramePage() {
@@ -146,6 +146,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         driver.get(url);
 
         WebTestPage page = getPage();
+
 
         GuiElement input = new GuiElement(driver, By.xpath("//label[@for='inputMillis']"));
         WebElement webElement = input.getWebElement();

@@ -20,14 +20,15 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.IPageFactoryTest;
+import eu.tsystems.mms.tic.testframework.pageobjects.FluentWebFramedTestPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.FluentWebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.MyVariables;
-import eu.tsystems.mms.tic.testframework.pageobjects.WebTestFramedPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -43,7 +44,9 @@ import org.testng.annotations.Test;
  * To test that checkpage() is executed, a not existing, check-annotated element is used.
  *
  */
-public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFactoryTest {
+public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements IPageFactoryTest {
+
+    private static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
 
     @BeforeClass
     public void setupTestableBrowser() {
@@ -51,13 +54,12 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
     }
 
     @Override
-    public WebTestPage getPage() {
-        return new WebTestPage(WebDriverManager.getWebDriver(), new MyVariables(1));
-        //return PageFactory.create(WebTestPage.class, WebDriverManager.getWebDriver(), new MyVariables(1));
+    public FluentWebTestPage getPage() {
+        return pageFactory.createPage(FluentWebTestPage.class);
     }
 
-    public WebTestFramedPage getFramePage() {
-        return new WebTestFramedPage(WebDriverManager.getWebDriver());
+    public FluentWebFramedTestPage getFramePage() {
+        return pageFactory.createPage(FluentWebFramedTestPage.class);
     }
 
     @Test
@@ -66,7 +68,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
+        FluentWebFramedTestPage page = getFramePage();
         page.assertIsTextPresent("Frame1234");
     }
 
@@ -76,7 +78,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
+        FluentWebFramedTestPage page = getFramePage();
         page.assertIsTextPresent("Bifi");
     }
 
@@ -86,7 +88,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
+        FluentWebFramedTestPage page = getFramePage();
         page.assertIsNotTextPresent("Bifi");
     }
 
@@ -96,7 +98,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
+        FluentWebFramedTestPage page = getFramePage();
         page.assertIsNotTextPresent("Frame1234");
     }
 
@@ -106,7 +108,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
+        FluentWebFramedTestPage page = getFramePage();
         page.assertIsTextDisplayed("Frame1234");
     }
 
@@ -116,7 +118,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
+        FluentWebFramedTestPage page = getFramePage();
         page.assertIsTextDisplayed("Bifi");
     }
 
@@ -126,7 +128,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
+        FluentWebFramedTestPage page = getFramePage();
         page.assertIsNotTextDisplayed("Bifi");
     }
 
@@ -136,7 +138,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
+        FluentWebFramedTestPage page = getFramePage();
         page.assertIsNotTextDisplayed("Frame1234");
     }
 
@@ -146,7 +148,7 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.INPUT_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestPage page = getPage();
+        FluentWebTestPage page = getPage();
 
         GuiElement input = new GuiElement(driver, By.xpath("//label[@for='inputMillis']"));
         WebElement webElement = input.getWebElement();

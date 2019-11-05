@@ -22,7 +22,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
@@ -95,29 +94,29 @@ public class GuiElementData {
     @Override
     public String toString() {
         String toString = "";
-        /*if (parent != null) {
-            toString = parent + " -> ";
-        }*/
+        Object parent = guiElement.getParent();
+        if (parent != null) {
+            toString = parent+".";
+        }
         if (hasName()) {
             toString += name;
         } else {
-            toString += "GuiElement";
+            toString += "GuiElement("+guiElement.getLocate().toString()+")";
         }
-        toString+="("+guiElement.getLocate().toString();
-
-        if (hasFrameLogic()) {
-            String frameString = ", frames={";
-            if (frameLogic.hasFrames()) {
-                for (IGuiElement frame : frameLogic.getFrames()) {
-                    frameString += frame.toString() + ", ";
-                }
-            } else {
-                frameString += "autodetect, ";
-            }
-            frameString = frameString.substring(0, frameString.length() - 2);
-            toString = toString + frameString + "}";
-        }
-        return toString+")";
+        //toString+="("+guiElement.getLocate().toString();
+//        if (hasFrameLogic()) {
+//            String frameString = ", frames={";
+//            if (frameLogic.hasFrames()) {
+//                for (IGuiElement frame : frameLogic.getFrames()) {
+//                    frameString += frame.toString() + ", ";
+//                }
+//            } else {
+//                frameString += "autodetect, ";
+//            }
+//            frameString = frameString.substring(0, frameString.length() - 2);
+//            toString = toString + frameString + "}";
+//        }
+        return toString;
     }
 
     public boolean hasFrameLogic() {

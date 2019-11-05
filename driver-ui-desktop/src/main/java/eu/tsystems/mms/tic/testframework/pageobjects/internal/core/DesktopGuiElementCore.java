@@ -124,7 +124,11 @@ public class DesktopGuiElementCore implements
         }
 
         if (guiElementData.webElement == null) {
-            String message = String.format("%s not found", toString());
+            String subject = toString();
+            if (guiElementData.hasName()) {
+                subject += String.format("(%s)", locate);
+            }
+            String message = String.format("%s not found", subject);
             MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
             if (currentMethodContext != null) {
                 currentMethodContext.errorContext().setThrowable(message, cause);
@@ -792,20 +796,6 @@ public class DesktopGuiElementCore implements
     @Override
     public int getNumberOfFoundElements() {
         return find();
-    }
-
-    /**
-     * Tries to parse the By-Locator to get the user defined selector string.
-     *
-     * @return Selector string if parsing is successful, complete By.toString() if not.
-     */
-    private String getSelectorString() {
-        try {
-            return by.toString().substring(by.toString().indexOf(" ") + 1);
-        } catch (final Exception e) {
-            LOGGER.warn("Error in getSelectorString.", e);
-            return by.toString();
-        }
     }
 
     /**

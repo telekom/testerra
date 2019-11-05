@@ -48,7 +48,7 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
     private static final GuiElementFactory guiElementFactory = Testerra.ioc().getInstance(GuiElementFactory.class);
 
     private static class FrameFinder implements Finder {
-        private IGuiElement frame;
+        private final IGuiElement frame;
         private FrameFinder(IGuiElement frame) {
             this.frame = frame;
         }

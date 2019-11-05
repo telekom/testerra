@@ -79,11 +79,20 @@ public class DefaultPageFactory implements IPageFactory {
     }
 
     @Override
-    public <T extends IComponent> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
+    public <T extends IComponent> T createComponent(Class<T> componentClass, IPage page, IGuiElement rootElement) {
         try {
             Constructor<T> constructor = componentClass.getConstructor(IGuiElement.class);
             T component = constructor.newInstance(rootElement);
             component.checkGuiElements();
+
+            /**
+             * Link component between GuiElement and Page
+             */
+            Component realComponent = (Component)component;
+            GuiElement realGuiElement = (GuiElement)rootElement;
+            realComponent.setParent(page);
+            realGuiElement.setParent(realComponent);
+
             return component;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", componentClass, rootElement), e);

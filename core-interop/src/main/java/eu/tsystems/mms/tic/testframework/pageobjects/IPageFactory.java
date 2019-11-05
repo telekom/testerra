@@ -9,5 +9,5 @@ public interface IPageFactory {
     <T extends IPage> T createPage(Class<T> pageClass);
     <T extends IPage> T createPage(Class<T> pageClass, WebDriver webDriver);
     <T extends IPage> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver);
-    <T extends IComponent> T createComponent(Class<T> componentClass, IGuiElement rootElement);
+    <T extends IComponent> T createComponent(Class<T> componentClass, IPage page, IGuiElement rootElement);
 }

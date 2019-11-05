@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBoundingBoxAssertion;
@@ -38,10 +39,14 @@ import org.openqa.selenium.WebElement;
  * Components implementation
  * @author Mike Reiche
  */
-public abstract class Component<SELF extends Component<SELF>> extends AbstractFluentPage<SELF> implements IComponent {
-
+public abstract class Component<SELF extends Component<SELF>> extends AbstractFluentPage<SELF> implements
+    IComponent<SELF>,
+    Hierarchy<SELF>
+{
     protected final IGuiElement rootElement;
     private final Finder defaultFinder;
+    private String name;
+    private Object parent;
 
     public Component(IGuiElement rootElement) {
         super(rootElement.getWebDriver());
@@ -125,5 +130,41 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     @Override
     public IBinaryPropertyAssertion<Boolean> displayed() {
         return rootElement.displayed();
+    }
+
+    @Override
+    public SELF setName(String name) {
+        this.name = name;
+        return self();
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public SELF setParent(Object parent) {
+        this.parent = parent;
+        return self();
+    }
+
+    @Override
+    public Object getParent() {
+        return parent;
+    }
+
+    @Override
+    public String toString() {
+        String toString="";
+        if (parent!=null) {
+            toString += parent+".";
+        }
+        if (name!=null) {
+            toString += name;
+        } else {
+            toString += super.toString();
+        }
+        return toString;
     }
 }

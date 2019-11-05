@@ -20,14 +20,15 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.test.FluentTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -161,12 +162,11 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     public void test_NonExistent_GuiElement_screenshot_fails() {
         String msg=null;
         try {
-            IImageAssertion screenshot = page.nonExistentElement().screenshot();
-            screenshot.file().exists().isTrue();
-        } catch (AssertionError e) {
+            page.nonExistentElement().screenshot().file().exists().isTrue();
+        } catch (ElementNotFoundException e) {
             msg = e.getMessage();
         }
-        instantAssertion.assertEndsWith(msg, "not found", AssertionError.class.toString());
+        instantAssertion.assertEndsWith(msg, "not found", ElementNotFoundException.class.toString());
     }
 
     @Test
@@ -176,7 +176,9 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
         final Formatter formatter = Testerra.ioc().getInstance(Formatter.class);
         log().info(formatter.toString(page.inputForm().boundingBox().getActual()));
         log().info(formatter.toString(page.inputForm().button().boundingBox().getActual()));
-        page.inputForm().boundingBox().fromRight().toRight(page.inputForm().button()).lowerThan(5);
+        withTimeout(1, () -> {
+            page.inputForm().boundingBox().fromRight().toRight(page.inputForm().button()).lowerThan(5);
+        });
         page.inputForm().button().boundingBox().contains(page.inputForm());
         //page.inputForm().button().boundingBox().fromRight().toRight(page.inputForm()).lowerThan(5);
 

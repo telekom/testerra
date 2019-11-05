@@ -35,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BoundingBoxAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
@@ -82,7 +83,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class GuiElement implements
     BasicGuiElement,
     IGuiElement,
-    Loggable
+    Loggable,
+    Hierarchy<IGuiElement>
 {
 
     protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.ioc().getInstance(PropertyAssertionFactory.class);
@@ -100,6 +102,7 @@ public class GuiElement implements
     private GuiElementWait guiElementWait;
     private Locate locator;
     private final GuiElementData guiElementData;
+    protected Object parent;
 
     private GuiElement(GuiElementData guiElementData, int index) {
         this.guiElementData = guiElementData.copy();
@@ -128,6 +131,7 @@ public class GuiElement implements
         this(page.getWebDriver(), locator, null);
         Page pageImpl = (Page)page;
         this.setTimeoutInSeconds(pageImpl.getElementTimeoutInSeconds());
+        setParent(page);
     }
 
     /**
@@ -194,6 +198,7 @@ public class GuiElement implements
         By by = locator.getBy();
         guiElementData = new GuiElementData(ancestor.getWebDriver(), "", frameLogic, by, this);
         guiElementData.parent = ancestorGuiElement.guiElementCore;
+        setParent(ancestorGuiElement);
         buildInternals(ancestor.getWebDriver(), by);
         this.locator = locator;
     }
@@ -584,24 +589,22 @@ public class GuiElement implements
     }
 
     /**
-     * Get the parent element of this element, from getSubElement().
-     *
-     * @return parent object or null if this element has no parent
+     * Sets the abstract parent
+     * @param parent {@link IGuiElement} or {@link IPage}
      */
-    @Deprecated
-    public GuiElementCore getParent() {
-        return guiElementData.parent;
+    @Override
+    public IGuiElement setParent(Object parent) {
+        this.parent = parent;
+        return this;
     }
 
     /**
-     * Sets an element as parent.
-     *
-     * @param parent Object that should act as parent.
+     * Retrieves the parent
+     * @return Can be {@link IGuiElement} or {@link IPage}
      */
-    @Deprecated
-    public IGuiElement setParent(GuiElementCore parent) {
-        guiElementData.parent = parent;
-        return this;
+    @Override
+    public Object getParent() {
+        return parent;
     }
 
     @Deprecated
@@ -920,7 +923,7 @@ public class GuiElement implements
         return new BoundingBoxAssertion(null, new AssertionProvider<Rectangle>() {
             @Override
             public Rectangle getActual() {
-                return self.getWebElement().getRect();
+                return guiElementCore.findFirstWebElement().getRect();
             }
 
             @Override

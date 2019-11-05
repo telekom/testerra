@@ -59,15 +59,17 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
     }
 
     private static class AncestorFinder implements ComponentFinder {
-        private IGuiElement ancestor;
-        private AncestorFinder(IGuiElement ancestor) {
+        private final IGuiElement ancestor;
+        private final IPage parentPage;
+        private AncestorFinder(IPage parentPage, IGuiElement ancestor) {
+            this.parentPage = parentPage;
             this.ancestor = ancestor;
         }
         public IGuiElement find(Locate locator) {
             return guiElementFactory.createFromAncestor(locator, ancestor);
         }
         public <T extends IComponent> T createComponent(Class<T> componentClass) {
-            return pageFactory.createComponent(componentClass, ancestor);
+            return pageFactory.createComponent(componentClass, parentPage, ancestor);
         }
     }
 
@@ -76,7 +78,7 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
     }
 
     protected ComponentFinder withAncestor(IGuiElement ancestor) {
-        return new AncestorFinder(ancestor);
+        return new AncestorFinder(this,ancestor);
     }
     protected IGuiElement findOneById(String id) {
         return find(Locate.by().id(id));

@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
-import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -172,14 +171,15 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     @Test
     public void test_Component() {
         page.inputForm().button().value().is("Button1");
-        page.inputForm().boundingBox().contains(page.inputForm().button());
-        final Formatter formatter = Testerra.ioc().getInstance(Formatter.class);
-        log().info(formatter.toString(page.inputForm().boundingBox().getActual()));
-        log().info(formatter.toString(page.inputForm().button().boundingBox().getActual()));
+
+        page.inputForm().rect().contains(page.inputForm().button()).isFalse();
+        page.inputForm().button().rect().contains(page.inputForm()).isFalse();
+
         withTimeout(1, () -> {
-            page.inputForm().boundingBox().fromRight().toRight(page.inputForm().button()).lowerThan(5);
+            page.inputForm().rect().fromRight().toRightOf(page.inputForm().button()).lowerThan(5);
         });
-        page.inputForm().button().boundingBox().contains(page.inputForm());
+
+        page.inputForm().rect().contains(page.inputForm().button());
         //page.inputForm().button().boundingBox().fromRight().toRight(page.inputForm()).lowerThan(5);
 
         //page.inputForm().button().boundingBox().contains(page.inputForm());

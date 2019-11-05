@@ -58,6 +58,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
@@ -88,6 +89,7 @@ public class GuiElement implements
 {
 
     protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.ioc().getInstance(PropertyAssertionFactory.class);
+    protected static final Formatter formatter = Testerra.ioc().getInstance(Formatter.class);
 
     private GuiElementAssert defaultAssert;
     private GuiElementAssert instantAssert;
@@ -918,7 +920,7 @@ public class GuiElement implements
     }
 
     @Override
-    public IBoundingBoxAssertion boundingBox() {
+    public IBoundingBoxAssertion rect() {
         final IGuiElement self = this;
         return new BoundingBoxAssertion(null, new AssertionProvider<Rectangle>() {
             @Override
@@ -928,7 +930,7 @@ public class GuiElement implements
 
             @Override
             public String getSubject() {
-                return String.format("%s.boundingBox", self);
+                return String.format("%s.rect", self);
             }
         });
     }

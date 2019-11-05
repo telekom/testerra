@@ -42,7 +42,7 @@ public interface BasicGuiElement {
     IBinaryPropertyAssertion<Boolean> displayed();
     IBinaryPropertyAssertion<Boolean> visible(boolean complete);
     IStringPropertyAssertion<String> tagName();
-    IBoundingBoxAssertion boundingBox();
+    IBoundingBoxAssertion rect();
 
     /**
      * Takes a screenshot of the current element

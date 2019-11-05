@@ -10,7 +10,7 @@ public class HorizontalDistanceAssertion extends AbstractPropertyAssertion<Integ
     }
 
     @Override
-    public IQuantifiedPropertyAssertion<Integer> toRight(BasicGuiElement guiElement) {
+    public IQuantifiedPropertyAssertion<Integer> toRightOf(BasicGuiElement guiElement) {
         return propertyAssertionFactory.quantified(this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
@@ -20,13 +20,13 @@ public class HorizontalDistanceAssertion extends AbstractPropertyAssertion<Integ
 
             @Override
             public String getSubject() {
-                return String.format("toRight(guiElement: %s)", guiElement);
+                return String.format("toRightOf(guiElement: %s)", guiElement);
             }
         });
     }
 
     @Override
-    public IQuantifiedPropertyAssertion<Integer> toLeft(BasicGuiElement guiElement) {
+    public IQuantifiedPropertyAssertion<Integer> toLeftOf(BasicGuiElement guiElement) {
         return propertyAssertionFactory.quantified(this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
@@ -36,7 +36,7 @@ public class HorizontalDistanceAssertion extends AbstractPropertyAssertion<Integ
 
             @Override
             public String getSubject() {
-                return String.format("toLeft(guiElement: %s)", guiElement);
+                return String.format("toLeftOf(guiElement: %s)", guiElement);
             }
         });
     }

@@ -123,8 +123,8 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     }
 
     @Override
-    public IBoundingBoxAssertion boundingBox() {
-        return rootElement.boundingBox();
+    public IBoundingBoxAssertion rect() {
+        return rootElement.rect();
     }
 
     @Override

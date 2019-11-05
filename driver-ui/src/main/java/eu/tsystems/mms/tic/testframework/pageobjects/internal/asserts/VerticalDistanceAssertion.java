@@ -10,7 +10,7 @@ public class VerticalDistanceAssertion extends AbstractPropertyAssertion<Integer
     }
 
     @Override
-    public IQuantifiedPropertyAssertion<Integer> toTop(BasicGuiElement guiElement) {
+    public IQuantifiedPropertyAssertion<Integer> toTopOf(BasicGuiElement guiElement) {
         return propertyAssertionFactory.quantified(this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
@@ -20,13 +20,13 @@ public class VerticalDistanceAssertion extends AbstractPropertyAssertion<Integer
 
             @Override
             public String getSubject() {
-                return String.format("toTop(guiElement: %s)", guiElement);
+                return String.format("toTopOf(guiElement: %s)", guiElement);
             }
         });
     }
 
     @Override
-    public IQuantifiedPropertyAssertion<Integer> toBottom(BasicGuiElement guiElement) {
+    public IQuantifiedPropertyAssertion<Integer> toBottomOf(BasicGuiElement guiElement) {
         return propertyAssertionFactory.quantified(this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
@@ -36,7 +36,7 @@ public class VerticalDistanceAssertion extends AbstractPropertyAssertion<Integer
 
             @Override
             public String getSubject() {
-                return String.format("toBottom(guiElement: %s)", guiElement);
+                return String.format("toBottomOf(guiElement: %s)", guiElement);
             }
         });
     }

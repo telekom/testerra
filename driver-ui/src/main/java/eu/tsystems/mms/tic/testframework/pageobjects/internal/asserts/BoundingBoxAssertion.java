@@ -1,11 +1,11 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.openqa.selenium.Rectangle;
 
-public class BoundingBoxAssertion extends AbstractTestedPropertyAssertion<Rectangle> implements IBoundingBoxAssertion {
+public class BoundingBoxAssertion extends AbstractPropertyAssertion<Rectangle> implements IBoundingBoxAssertion {
 
     private static final Formatter formatter = Testerra.ioc().getInstance(Formatter.class);
 
@@ -23,45 +23,41 @@ public class BoundingBoxAssertion extends AbstractTestedPropertyAssertion<Rectan
     }
 
     @Override
-    public IBoundingBoxAssertion contains(BasicGuiElement guiElement) {
-        this.testTimer(t -> {
-            Rectangle referenceRect = guiElement.getWebElement().getRect();
-            Rectangle originRect = provider.getActual();
-            if (toRectangle(originRect).contains(toRectangle(referenceRect))) {
-                return true;
-            } else {
-                assertion.fail(
-                    assertion.format(
-                        formatter.toString(originRect),
-                        String.format("contains {%s.boundingBox} [%s]", guiElement, formatter.toString(referenceRect)),
-                        traceSubjectString()
-                    )
+    public IBinaryPropertyAssertion contains(BasicGuiElement guiElement) {
+        return propertyAssertionFactory.binary(this, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                return toRectangle(provider.getActual()).contains(toRectangle(guiElement.getWebElement().getRect()));
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("%s.contains(guiElement: %s.rect.%s)",
+                    formatter.toString(provider.getActual()),
+                    guiElement,
+                    formatter.toString(guiElement.getWebElement().getRect())
                 );
-                return false;
             }
         });
-        return this;
     }
 
     @Override
-    public IBoundingBoxAssertion intersects(BasicGuiElement guiElement) {
-        this.testTimer(t -> {
-            Rectangle referenceRect = guiElement.getWebElement().getRect();
-            Rectangle originRect = provider.getActual();
-            if (toRectangle(originRect).intersects(toRectangle(referenceRect))) {
-                return true;
-            } else {
-                assertion.fail(
-                    assertion.format(
-                        formatter.toString(originRect),
-                        String.format("intersects {%s.boundingBox} [%s]", guiElement, formatter.toString(referenceRect)),
-                        traceSubjectString()
-                    )
+    public IBinaryPropertyAssertion intersects(BasicGuiElement guiElement) {
+        return propertyAssertionFactory.binary(this, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                return toRectangle(provider.getActual()).intersects(toRectangle(guiElement.getWebElement().getRect()));
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("%s.intersects(guiElement: %s.rect.%s)",
+                    formatter.toString(provider.getActual()),
+                    guiElement,
+                    formatter.toString(guiElement.getWebElement().getRect())
                 );
-                return false;
             }
         });
-        return this;
     }
 
     @Override

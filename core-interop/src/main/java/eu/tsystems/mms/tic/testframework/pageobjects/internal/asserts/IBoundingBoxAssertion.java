@@ -8,8 +8,8 @@ import org.openqa.selenium.Rectangle;
  * @author Mike Reiche
  */
 public interface IBoundingBoxAssertion extends ActualProperty<Rectangle> {
-    IBoundingBoxAssertion contains(BasicGuiElement guiElement);
-    IBoundingBoxAssertion intersects(BasicGuiElement guiElement);
+    IBinaryPropertyAssertion<Boolean> contains(BasicGuiElement guiElement);
+    IBinaryPropertyAssertion<Boolean> intersects(BasicGuiElement guiElement);
     IHorizontalDistanceAssertion fromRight();
     IHorizontalDistanceAssertion fromLeft();
     IVerticalDistanceAssertion fromTop();

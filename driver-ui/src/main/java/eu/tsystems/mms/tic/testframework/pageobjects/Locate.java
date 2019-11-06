@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * Advanced selector for elements as replacement for By
  *
- * @author Mike Reiche <mike.reiche@t-systems.com>
+ * @author Mike Reiche
  */
 public class Locate {
 

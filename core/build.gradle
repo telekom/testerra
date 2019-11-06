@@ -48,7 +48,7 @@ test {
 
 task writeBuildInformation() {
     doLast {
-        file('src/main/resources/testerra-build.properties').text = """build.java.version=${System.getProperty("java.version")}
+        file('src/main/resources/build.properties').text = """build.java.version=${System.getProperty("java.version")}
 build.os.name=${System.getProperty("os.name")}
 build.os.arch=${System.getProperty("os.arch")}
 build.os.version=${System.getProperty("os.version")}

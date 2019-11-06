@@ -207,6 +207,10 @@ public class ProxyServer {
         return this;
     }
 
+    public int getPort() {
+        return bmpProxyServer.getPort();
+    }
+
     /**
      * @deprecated
      */

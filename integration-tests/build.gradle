@@ -2,12 +2,11 @@ doNotPublish(this)
 
 dependencies {
     compile driver_ui_desktop
+
     // <XML>
-    implementation 'org.jsoup:jsoup:1.7.2'
-    implementation 'org.jdom:jdom2:2.0.6'
-    implementation "javax.xml.bind:jaxb-api:2.2.11"
     implementation 'org.xmlunit:xmlunit-core:2.5.0'
     // </XML
+
     testCompile 'org.seleniumhq.selenium:selenium-server:' + seleniumVersion
 }
 

@@ -10,9 +10,10 @@ dependencies {
     implementation 'com.sun.jersey:jersey-client:1.19.3'
 
     // <XML>
-    implementation 'org.jsoup:jsoup:1.7.2'
-    implementation 'org.jdom:jdom2:2.0.6'
-    implementation "javax.xml.bind:jaxb-api:2.2.11"
+    // These dependencies are exposed by XMLUtils.java
+    compile 'org.jsoup:jsoup:1.7.2'
+    compile 'org.jdom:jdom2:2.0.6'
+    compile "javax.xml.bind:jaxb-api:2.2.11"
     // </XML
 
     implementation 'org.codehaus.plexus:plexus-utils:2.1'

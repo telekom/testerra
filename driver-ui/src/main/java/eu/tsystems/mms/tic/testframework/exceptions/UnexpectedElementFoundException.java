@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 14.08.2012
@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 
 /**
  * Exception indicating an unexpected element was found on a page.
- * 
+ *
  * @author pele
  */
 public class UnexpectedElementFoundException extends RuntimeException {
@@ -42,7 +42,7 @@ public class UnexpectedElementFoundException extends RuntimeException {
 
     /**
      * Constructor for this Exception.
-     * 
+     *
      * @param guiElement GuiElement that was found but not expected.
      */
     public UnexpectedElementFoundException(final GuiElement guiElement) {

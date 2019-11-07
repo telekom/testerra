@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 27.06.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -46,7 +46,7 @@ import java.util.Properties;
 
 /**
  * MailConnector using the SMTP Protocol. Creates a session with values from mailconnection.properties.
- * 
+ *
  * @author pele, mrgi
  */
 public class SMTPMailConnector extends AbstractMailConnector {
@@ -126,10 +126,10 @@ public class SMTPMailConnector extends AbstractMailConnector {
 
     /**
      * Send a new message.
-     * 
+     *
      * @param message The message to send.
      * @throws TesterraSystemException thrown if message was not sent.
-     * 
+     *
      */
     public void sendMessage(final MimeMessage message) throws TesterraSystemException {
         this.pSendMessage(message);
@@ -137,10 +137,10 @@ public class SMTPMailConnector extends AbstractMailConnector {
 
     /**
      * Send a new message.
-     * 
+     *
      * @param message The message to send.
      * @throws TesterraSystemException thrown if message was not sent.
-     * 
+     *
      */
     private void pSendMessage(final MimeMessage message) throws TesterraSystemException {
         Transport transport = null;
@@ -169,7 +169,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
 
     /**
      * Creates a MimeBodyPart attachment from file.
-     * 
+     *
      * @param file The file to convert to MimeBodyPart.
      * @return MimeBodyPart.
      */
@@ -179,7 +179,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
 
     /**
      * Creates a MimeBodyPart attachment from file.
-     * 
+     *
      * @param file The file to convert to MimeBodyPart.
      * @return MimeBodyPart.
      */
@@ -198,7 +198,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
 
     /**
      * Add MimeBodyParts to a message. Can only called once, otherwise message text can not saved.
-     * 
+     *
      * @param attachments An array containing the MimeBodyParts.
      * @param message The message to add the attachments.
      * @return The message with the attached MimeBodyParts.
@@ -209,7 +209,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
 
     /**
      * Add MimeBodyParts to a message. Can only called once, otherwise message text can not saved.
-     * 
+     *
      * @param attachments An array containing the MimeBodyParts.
      * @param message The message to add the attachments.
      * @return The message with the attached MimeBodyParts.
@@ -239,14 +239,14 @@ public class SMTPMailConnector extends AbstractMailConnector {
 
     /**
      * Send a virus mail.
-     * 
+     *
      * @param from The from address.
      * @param receiver The to address.
      * @param ccReceiver The cc address. Can be null.
      * @param bcc The bcc address. Can be null.
-     * 
+     *
      * @return A MimeMessage containing a virus signature.
-     * 
+     *
      * @throws TesterraSystemException thrown if virus Mail can't generated.
      * @throws TesterraRuntimeException thrown if address parameters were wrong.
      */
@@ -257,14 +257,14 @@ public class SMTPMailConnector extends AbstractMailConnector {
 
     /**
      * Send a virus mail.
-     * 
+     *
      * @param from The from address.
      * @param receiver The to address.
      * @param ccReceiver The cc address. Can be null.
      * @param bcc The bcc address. Can be null.
-     * 
+     *
      * @return A MimeMessage containing a virus signature.
-     * 
+     *
      * @throws TesterraSystemException thrown if virus Mail can't generated.
      * @throws TesterraRuntimeException thrown if address parameters were wrong.
      */
@@ -315,7 +315,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
 
     /**
      * .
-     * 
+     *
      * @return .
      */
     public String getMessageID() {
@@ -324,7 +324,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
 
     /**
      * .
-     * 
+     *
      * @return last sent message
      */
     public MimeMessage getLastSentMessage() {

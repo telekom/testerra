@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 01.01.2012
@@ -92,7 +92,7 @@ public class BaseLoggingActor extends AppenderSkeleton {
 
     /**
      * Layout should be given.
-     * 
+     *
      * @return Returns always true.
      */
     @Override
@@ -102,7 +102,7 @@ public class BaseLoggingActor extends AppenderSkeleton {
 
     /**
      * Appends a LoggingEvent to the HTML Report using Reporter.log().
-     * 
+     *
      * @param event The event to be logged.
      */
     @Override
@@ -141,7 +141,7 @@ public class BaseLoggingActor extends AppenderSkeleton {
 
     /**
      * Appends a LoggingEvent to the HTML Report using Reporter.log().
-     * 
+     *
      * @param event The event to be logged.
      */
     private void appendForReport(final LoggingEvent event) {

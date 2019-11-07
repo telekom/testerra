@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 01.08.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -31,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.dbconnector.Table;
 /**
  * Objects of this class represent SQL SELECT queries. Instances can be parametrized with a Table class to restrict
  * queries to that table or instances of subclasses of the table.
- * 
+ *
  * @author sepr
  * @param <T> Table to restrict queries to.
  */
@@ -45,7 +45,7 @@ public class SelectQuery<T extends Table> extends Query<T> {
 
     /**
      * Constructor creating a SelectQuery object with a single column to select.
-     * 
+     *
      * @param what String containing the column to select (leave emtpy or null to select all - '*').
      * @param fromTable Table to select data from.
      * @param where Where clause to constrain selected data.
@@ -67,7 +67,7 @@ public class SelectQuery<T extends Table> extends Query<T> {
 
     /**
      * Constructor to create a Select Query with multiple columns to select.
-     * 
+     *
      * @param columns Array of Columns to select. Leave empty to select all ('*'). Queries returning values of one
      *            column will use the first one.
      * @param fromTable Table to select data from.
@@ -93,7 +93,7 @@ public class SelectQuery<T extends Table> extends Query<T> {
     /**
      * String defining the name of the first column to select. This column is chosen if the result for a query should
      * only contain one column.
-     * 
+     *
      * @return Column nmae as string.
      */
     public String getColumn() {

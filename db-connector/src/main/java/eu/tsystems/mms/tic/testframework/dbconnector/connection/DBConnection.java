@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 01.08.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -39,7 +39,7 @@ import java.util.Properties;
 
 /**
  * Utility class for JDBC connection handling.
- * 
+ *
  * @author sepr
  */
 public final class DBConnection {
@@ -56,7 +56,7 @@ public final class DBConnection {
 
     /**
      * Creates a connection to the DB with the given attributes. The connection needs to be closed manually.
-     * 
+     *
      * @param host
      *            Host where db lies (most likely web address).
      * @param port
@@ -80,10 +80,10 @@ public final class DBConnection {
             throws SQLException, ClassNotFoundException {
         return pGetConnection(host, port, driver, schema, username, password);
     }
-    
+
     /**
      * Creates a connection to the DB with the given attributes. The connection needs to be closed manually.
-     * 
+     *
      * @param host
      *            Host where db lies (most likely web address).
      * @param port

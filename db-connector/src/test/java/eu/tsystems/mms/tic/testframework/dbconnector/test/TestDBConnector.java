@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 13.06.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -47,14 +47,14 @@ import java.util.List;
 
 /**
  * Integration Tests for TesterraDBConnector.
- * 
+ *
  * @author sepr
  */
 public class TestDBConnector extends AbstractDBConnectorTest {
 
     /**
      * Test implementation of "DELETE FROM table [WHERE x=y]" of tt. DBConnector.
-     * 
+     *
      * @throws SQLException Error while querying the db.
      */
     @Test
@@ -74,7 +74,7 @@ public class TestDBConnector extends AbstractDBConnectorTest {
 
     /**
      * Test implementation of "Select row From table [where x=y]" of tt. DBConnector, where 'row' contains BLOBs.
-     * 
+     *
      * @throws SQLException Error while querying the db.
      */
     @Test(expectedExceptions = JdbcSQLException.class, expectedExceptionsMessageRegExp = ".*LARGEOBJECTS.*")
@@ -94,7 +94,7 @@ public class TestDBConnector extends AbstractDBConnectorTest {
 
     /**
      * Test implementation of "Select row From table [where x=y]" of tt. DBConnector, where 'row' contains CLOBs.
-     * 
+     *
      * @throws SQLException Error while querying the db.
      */
     @Test(expectedExceptions = JdbcSQLException.class, expectedExceptionsMessageRegExp = ".*LARGEOBJECTS.*")
@@ -114,7 +114,7 @@ public class TestDBConnector extends AbstractDBConnectorTest {
 
     /**
      * Test implementation of "INSERT INTO table [(col1,col2,...)] VALUES(...)" of tt. DBConnector.
-     * 
+     *
      * @throws SQLException Error while querying the db.
      */
     @Test
@@ -132,7 +132,7 @@ public class TestDBConnector extends AbstractDBConnectorTest {
 
     /**
      * Test implementation of "Select * From table [where x=y]" of tt. DBConnector.
-     * 
+     *
      * @throws SQLException Error while querying the db.
      */
     @Test
@@ -151,7 +151,7 @@ public class TestDBConnector extends AbstractDBConnectorTest {
 
     /**
      * Test implementation of "Select col From table [where x=y]" of tt. DBConnector.
-     * 
+     *
      * @throws SQLException Error while querying the db.
      */
     @Test
@@ -172,7 +172,7 @@ public class TestDBConnector extends AbstractDBConnectorTest {
 
     /**
      * Test implementation of "Select row From table [where x=y]" of tt. DBConnector.
-     * 
+     *
      * @throws SQLException Error while querying the db.
      */
     @Test
@@ -189,7 +189,7 @@ public class TestDBConnector extends AbstractDBConnectorTest {
 
     /**
      * Test implementation of "Select row From table [where x=y]" of tt. DBConnector.
-     * 
+     *
      * @throws SQLException Error while querying the db.
      */
     @Test
@@ -207,7 +207,7 @@ public class TestDBConnector extends AbstractDBConnectorTest {
 
     /**
      * Test implementation of "TRUNCATE table" of tt. DBConnector.
-     * 
+     *
      * @throws SQLException Error while querying the db.
      */
     @Test
@@ -220,7 +220,7 @@ public class TestDBConnector extends AbstractDBConnectorTest {
 
     /**
      * Test implementation of "UPDATE table SET (col1=x,col2=y,...) WHERE s=t" of tt. DBConnector.
-     * 
+     *
      * @throws SQLException Error while querying the db.
      */
     @Test

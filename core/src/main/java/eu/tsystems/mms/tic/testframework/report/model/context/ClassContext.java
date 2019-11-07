@@ -14,9 +14,9 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     erku <Eric.Kubenka@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     erku
+ *     pele
  */
 /*
  * Created on 25.01.2011

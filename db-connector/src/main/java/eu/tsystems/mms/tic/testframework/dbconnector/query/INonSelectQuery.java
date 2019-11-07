@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 17.09.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -28,9 +28,9 @@ package eu.tsystems.mms.tic.testframework.dbconnector.query;
 
 /**
  * Interface marking a Query class not to be an SelectQuery.
- * 
+ *
  * @author sepr
- * 
+ *
  */
 public interface INonSelectQuery {
 

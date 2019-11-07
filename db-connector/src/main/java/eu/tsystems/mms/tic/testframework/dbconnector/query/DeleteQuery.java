@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 17.09.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -30,17 +30,17 @@ import eu.tsystems.mms.tic.testframework.dbconnector.Table;
 
 /**
  * Class representing Queries to delete something.
- * 
+ *
  * @param <T>
  *            Table to delete data from.
- * 
+ *
  * @author sepr
  */
 public class DeleteQuery<T extends Table> extends Query<T> implements INonSelectQuery {
 
     /**
      * Creates a query to delete rows from a table.
-     * 
+     *
      * @param table
      *            Table to delete rows from.
      * @param where

@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 06.08.2012
@@ -28,9 +28,9 @@ package eu.tsystems.mms.tic.testframework.exceptions;
 
 /**
  * Runtime Exception indicating any unexpected behaviour of Page objects.
- * 
+ *
  * @author pele
- * 
+ *
  */
 public class PageObjectException extends RuntimeException {
 
@@ -41,7 +41,7 @@ public class PageObjectException extends RuntimeException {
 
     /**
      * Inherited Constructed, giving a message to the exception.
-     * 
+     *
      * @param message Message for exception.
      */
     public PageObjectException(final String message) {
@@ -50,7 +50,7 @@ public class PageObjectException extends RuntimeException {
 
     /**
      * Inherited Constructor creating this exception by its cause and with a message.
-     * 
+     *
      * @param message Message for exception.
      * @param cause Cause of exception.
      */
@@ -60,7 +60,7 @@ public class PageObjectException extends RuntimeException {
 
     /**
      * Inherited Constructor creating this exception by its cause.
-     * 
+     *
      * @param cause Cause of exception.
      */
     public PageObjectException(final Throwable cause) {

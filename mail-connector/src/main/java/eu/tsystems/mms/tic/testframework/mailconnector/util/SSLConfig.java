@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 27.06.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -31,49 +31,49 @@ public final class SSLConfig {
 
     /** ThreadLocal Object to only set one threadsafe keystore key chain */
     private static ThreadLocal<KeyChain> currentKeyStoreKeyChain = new ThreadLocal<KeyChain>();
-    
+
     /** ThreadLocal Object to only set one threadsafe keystore key chain */
     private static ThreadLocal<KeyChain> currentTrustStoreKeyChain = new ThreadLocal<KeyChain>();
-    
+
     /** Private constructor to hide the public one since this is a static only class. */
     private SSLConfig() { }
-    
-    /** 
+
+    /**
      * Set the keystore keychain.
-     * 
+     *
      * @param keyChain
-     *              The KeyChain to set.             
+     *              The KeyChain to set.
      */
     public static void setCurrentKeyStoreKeyChain(final KeyChain keyChain) {
         currentKeyStoreKeyChain.set(keyChain);
     }
-    
+
     /**
      * Get the keystore keycahin
-     * 
+     *
      * @return KeyChain
      */
     public static KeyChain getCurrentKeyStoreKeyChain() {
         return currentKeyStoreKeyChain.get();
     }
-    
-    /** 
+
+    /**
      * Set the truststore keychain.
-     * 
+     *
      * @param keyChain
-     *              The KeyChain to set.             
+     *              The KeyChain to set.
      */
     public static void setCurrentTrustStoreKeyChain(final KeyChain keyChain) {
         currentTrustStoreKeyChain.set(keyChain);
     }
-    
+
     /**
      * Get the truststore keychain
-     * 
+     *
      * @return KeyChain
      */
     public static KeyChain getCurrentTrustStoreKeyChain() {
         return currentTrustStoreKeyChain.get();
     }
-    
+
 }

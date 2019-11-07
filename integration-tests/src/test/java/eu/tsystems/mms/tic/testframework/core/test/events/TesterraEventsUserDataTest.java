@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 07.01.14
@@ -41,7 +41,7 @@ import java.util.List;
 
 /**
  * <Beschreibung der Klasse>
- * 
+ *
  * @author pele
  */
 public class TesterraEventsUserDataTest extends AbstractTest {

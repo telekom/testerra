@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 13.06.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -28,9 +28,9 @@ package eu.tsystems.mms.tic.testframework.dbconnector.test.connectors;
 
 /**
  * Table skeleton of mysql test table.
- * 
+ *
  * @author sepr
- * 
+ *
  */
 public class TestTable extends TableDefinitions {
 
@@ -51,7 +51,7 @@ public class TestTable extends TableDefinitions {
 
     /**
      * Constructor of the table.
-     * 
+     *
      * @param table name of the table.
      */
     public TestTable(final String table) {

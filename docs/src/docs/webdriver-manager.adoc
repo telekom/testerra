@@ -149,7 +149,7 @@ At the end of the test run Testerra always calls `WebDriverManager.forceShutdown
 
 === Shared sessions in one thread
 
-You can reuse the wedriver session in the next test by setting the following property:
+You can reuse the wedriver session in the following test by setting the following property:
 
 .test.properties
 [source, properties, subs="attributes"]
@@ -157,20 +157,67 @@ You can reuse the wedriver session in the next test by setting the following pro
 {wdm_closewindows_aftertestmethods}=false
 ----
 
+.Working with shared sessions
+[source, java]
+----
+@Test
+public void test1() {
+    WebDriver driver = WebDriverManager.getWebDriver();
+    ...
+}
+
+@Test
+public void test2() {
+    // You get the already opened session from test1
+    WebDriver driver = WebDriverManager.getWebDriver();
+    ...
+}
+----
+
 IMPORTANT: You can only reuse the session in the current thread. If you run parallel tests, you have no access to the session between parallel test threads.
 
-.Reuse a session in the same test thread
+.Limitations of reusing shared sessions
 image::resuse_webdriver_sessions_1.png[]
 
 === Shared sessions over different threads
 
+To use a browser session over different test threads, you need an _exclusive_ session.
 
+Exclusive sessions are identified by a special uuid, not by the standard session key.
 
+.Create exclusive browser sessions
+[source, java]
+----
+private static String uuid = null;
 
-#Should be tested#
+@Test
+public void test1() {
+    WebDriver driver = WebDriverManager.getWebDriver();
+    uuid = WebDriverManager.makeSessionExclusive(driver);
+}
 
-String uuid WebDriverManager.makeSessionExclusive(WebDriver driver)
-WebDriverManager.shutdownExclusiveSession(String key)
+@Test
+public void test2() {
+    // Get the exclusive session
+    WebDriver driver = WebDriverManager.getWebDriver(uuid);
+}
+----
+
+.Reuse a session in different test threads
+image::resuse_webdriver_sessions_2.png[]
+
+[IMPORTANT]
+=====
+An exclusive session has an unlimited lifetime. You need do close this session manually.
+
+[source, java]
+----
+@AfterTest
+public void cleanup() {
+    WebDriverManager.shutdownExclusiveSession(uuid);
+}
+----
+=====
 
 == WebDriver configuration
 

@@ -17,11 +17,10 @@
  *     Peter Lehmann <p.lehmann@t-systems.com>
  *     pele <p.lehmann@t-systems.com>
  */
-package eu.tsystems.mms.tic.testframework.bmp.test;
+package eu.tsystems.mms.tic.testframework.bmp.playground;
 
 import eu.tsystems.mms.tic.testframework.bmp.AbstractTest;
 import eu.tsystems.mms.tic.testframework.bmp.ProxyServer;
-import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
@@ -51,7 +50,8 @@ public class ProxyServerTest extends AbstractTest {
 
     @Test
     public void testProxyServer() {
-        HttpHost proxyHost = new HttpHost("proxy.mms-dresden.de", 8080);
+
+        HttpHost proxyHost = new HttpHost("localhost", 8080);
         ProxyServer proxyServer = new ProxyServer(9999, proxyHost, null);
 
         try {

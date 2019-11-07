@@ -1,17 +1,18 @@
 = Browser Mob Proxy
 
-Browser Mob Proxy (BMP) is a utility for manipulating network traffic. You can use it to enable Basic Auth for your SUT and other features.
+Browser Mob Proxy (BMP) is a utility for manipulating network traffic.
+You can use it to enable Basic Auth for your SUT and other features.
 
 == Project setup
 
 .build.gradle
-[source, gradle, role="primary"]
+[source,gradle,role="primary"]
 ----
 compile 'eu.tsystems.mms.tic.testerra:bmp:1-SNAPSHOT'
 ----
 
 .pom.xml
-[source, xml, role="secondary"]
+[source,xml,role="secondary"]
 ----
 <dependencies>
     <dependency>
@@ -35,21 +36,24 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.Proxy;
 
 public abstract class AbstractTest extends TesterraTest {
+
     private static BmpRestClient bmpClient;
 
     @BeforeSuite
     public void proxySetup() {
-        final String bmpHost = "proxy.example.com";
-        final int bmpPort = 8080;
-        bmpClient = new BmpRestClient(bmpHost, bmpPort);
+
+        final URL apiUrl = new URL("http://localhost:8080");
+        bmpClient = new BmpRestClient(apiUrl);
+
         /* Additional Proxy setup here */
         final int proxyPort = bmpClient.startServer();
-        String bmpProxyAddress = String.format("%s:%d", bmpHost, proxyPort);
-        Proxy proxy = new Proxy();
+        final String bmpProxyAddress = String.format("%s:%d", apiUrl.getHost(), proxyPort);
+
+        // For selenium usage.
+        final Proxy proxy = new Proxy();
         proxy.setHttpProxy(bmpProxyAddress)
             .setFtpProxy(bmpProxyAddress)
-            .setSslProxy(bmpProxyAddress)
-            .setNoProxy(bmpProxyAddress);
+            .setSslProxy(bmpProxyAddress);
 
         WebDriverManager.setGlobalExtraCapability(CapabilityType.PROXY, proxy);
     }
@@ -59,6 +63,19 @@ public abstract class AbstractTest extends TesterraTest {
         bmpClient.stopServer();
     }
 }
+----
+
+BMP creates a new proxy server at the next free port beginning with port 8081 (BMP default).
+
+If you need a dedicated port, use `startServer` with a port number.
+If the port already used, BMP client only returns the port number.
+
+[source,java]
+----
+...
+int customPort = 8085;
+final int proxyPort = bmpClient.startServer(customPort);
+...
 ----
 
 == Basic Auth
@@ -91,6 +108,12 @@ bmpClient.setUpstreamProxy(ProxyUtils.getSystemHttpProxyUrl());
 
 [source,java]
 ----
+/*
+ Checks if a proxy server is available by a custom port.
+ */
+int port = 8085;
+boolean isUsed = bmpClient.isProxyRunningAtPort(port);
+
 /*
  Maps specifc host names to another host names or IP adresses
  */

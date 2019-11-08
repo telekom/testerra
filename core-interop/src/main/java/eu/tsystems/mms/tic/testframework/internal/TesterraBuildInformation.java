@@ -69,7 +69,7 @@ public class TesterraBuildInformation implements Serializable {
             if (instance == null) {
                 instance = new TesterraBuildInformation();
                 try {
-                    PropertyManager.loadProperties("testerra-build.properties");
+                    PropertyManager.loadProperties("build.properties");
                     instance.buildJavaVersion = PropertyManager.getProperty("build.java.version", instance.buildJavaVersion);
                     instance.buildOsName = PropertyManager.getProperty("build.os.name", instance.buildOsName);
                     instance.buildOsArch = PropertyManager.getProperty("build.os.arch", instance.buildOsArch);

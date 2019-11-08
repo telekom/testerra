@@ -202,6 +202,19 @@ public class ProxyServer {
         checkTmpFiles();
     }
 
+    public ProxyServer setHeader(String name, String value) {
+        bmpProxyServer.addHeader(name, value);
+        return this;
+    }
+
+    public int getPort() {
+        return bmpProxyServer.getPort();
+    }
+
+    /**
+     * @deprecated
+     */
+    @Deprecated
     public net.lightbody.bmp.proxy.ProxyServer getBmpProxyServer() {
         return bmpProxyServer;
     }

@@ -72,7 +72,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
     @Test(expectedExceptions = TimeoutException.class)
     public void testCheckElementLayoutDistance() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
-        guiElement.asserts().assertScreenshot("TestArticleChrome", 10);
+        guiElement.asserts().assertScreenshot("TestArticleFailed", 1);
     }
 
     @Test

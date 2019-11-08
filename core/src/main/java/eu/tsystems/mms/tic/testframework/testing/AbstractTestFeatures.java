@@ -36,7 +36,7 @@ public abstract class AbstractTestFeatures {
     private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
     private static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
     protected static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
-    protected static Assertion Assert = assertionFactory.create();
+    protected Assertion Assert = assertionFactory.create();
 
     protected void collectAssertions(Runnable runnable) {
         Class<? extends Assertion> prevClass = assertionFactory.setDefault(CollectedAssertion.class);

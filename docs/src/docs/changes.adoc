@@ -137,16 +137,8 @@ class MyPage extends Page {
 
 The new standard way for performing assertions is now
 ```java
-assertion.assertTrue(false);
-```
-
-[NOTE]
-.Using the TestNG `Assert` is not recommended
-====
-```java
 Assert.assertTrue(false);
 ```
-====
 
 === Collected Assertions
 
@@ -169,7 +161,7 @@ For custom assertions
 ```java
 collectAssertions(() -> {
     String data = loadSomeData();
-    assertion.assertEquals(data, "Hello World", "some data");
+    Assert.assertEquals(data, "Hello World", "some data");
 });
 ```
 

@@ -10,8 +10,9 @@ Checks if the element is present in the DOM
 element.isPresent();
 ----
 
-Checks if the element is present in the Viewport
-and if it's visible by it's `display` and `visibility` style properties.
+Checks if the element is present in the Viewport,
+if it's visible by it's `display` and `visibility` style properties
+and it's `width` and `height` are both greater than 0.
 [source,java]
 ----
 element.isDisplayed();

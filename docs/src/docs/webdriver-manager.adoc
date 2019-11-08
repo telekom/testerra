@@ -289,7 +289,6 @@ You can reset the settings to the default values or defined in `test.properties`
 WebDriverManager.resetConfig();
 ----
 
-
 #what is with this?#
 WebDriverManager.setBaseURL()
 
@@ -314,6 +313,6 @@ WebDriver driver = WebDriverManager.getWebDriver(myRequest);
 
 WebDriverManagerUtils
 
-WebDriverUtils ??
+WebDriverUtils
 
 https://testautomation-mms.atlassian.net/wiki/spaces/XETA/pages/327794/01+-+WebDriverManager#id-01-WebDriverManager-Other

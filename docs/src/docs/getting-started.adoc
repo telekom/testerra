@@ -272,6 +272,8 @@ IMPORTANT: Setting the System proxy will override the Testerra proxy settings.
 
 If you want to setup a proxy for Testerra, including TestNG and the JVM, just add `proxysettings.properties` to your resource bundle at `src/test/resources` with the following content
 
+For example Testerra requires this setting to connect to a Selenium grid, if you are in a corporate network.
+
 .Example of proxysettings.properties
 [source,properties]
 ----

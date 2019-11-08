@@ -20,9 +20,9 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.FluentWebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.openqa.selenium.By;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 /**
  * Created by pele on 31.08.2015.
  */
-public class GuiElementLayoutsTest_NewApi extends GuiElementStandardFunctionsTest {
+public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     private FluentWebTestPage page;
 
     @BeforeMethod
@@ -52,14 +52,14 @@ public class GuiElementLayoutsTest_NewApi extends GuiElementStandardFunctionsTes
     public void testT02_LeftOfFails() throws Exception {
         GuiElement left = getGuiElementBy(By.id("1"));
         GuiElement right = getGuiElementBy(By.linkText("Open again"));
-        right.rect().leftOf(left).isTrue();
+        withTimeout(0, () -> right.rect().leftOf(left).isTrue());
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT03_LeftOfFailsSameCoords() throws Exception {
         GuiElement left = getGuiElementBy(By.id("1"));
         GuiElement right = getGuiElementBy(By.id("5"));
-        right.rect().leftOf(left).isTrue();
+        withTimeout(0, () -> right.rect().leftOf(left).isTrue());
     }
 
     /*
@@ -77,14 +77,14 @@ public class GuiElementLayoutsTest_NewApi extends GuiElementStandardFunctionsTes
     public void testT12_RightOfFails() throws Exception {
         GuiElement left = getGuiElementBy(By.id("1"));
         GuiElement right = getGuiElementBy(By.linkText("Open again"));
-        left.rect().rightOf(right).isTrue();
+        withTimeout(0, () -> left.rect().rightOf(right).isTrue());
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT13_RightOfFailsSameCoords() throws Exception {
         GuiElement left = getGuiElementBy(By.id("1"));
         GuiElement right = getGuiElementBy(By.id("5"));
-        left.asserts().assertLayout(Layout.outer().rightOf(right));
+        withTimeout(0, () -> left.rect().rightOf(right).isTrue());
     }
 
     /*
@@ -95,14 +95,14 @@ public class GuiElementLayoutsTest_NewApi extends GuiElementStandardFunctionsTes
     public void testT21_Above() throws Exception {
         GuiElement oben = getGuiElementBy(By.id("1"));
         GuiElement unten = getGuiElementBy(By.id("5"));
-        oben.asserts().assertLayout(Layout.outer().above(unten));
+        oben.rect().above(unten).isTrue();
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT22_AboveFails() throws Exception {
         GuiElement oben = getGuiElementBy(By.id("1"));
         GuiElement unten = getGuiElementBy(By.id("5"));
-        unten.asserts().assertLayout(Layout.outer().above(oben));
+        withTimeout(0, () -> unten.rect().above(oben).isTrue());
     }
 
     /*
@@ -113,14 +113,14 @@ public class GuiElementLayoutsTest_NewApi extends GuiElementStandardFunctionsTes
     public void testT31_Below() throws Exception {
         GuiElement oben = getGuiElementBy(By.id("1"));
         GuiElement unten = getGuiElementBy(By.id("5"));
-        unten.asserts().assertLayout(Layout.outer().below(oben));
+        unten.rect().below(oben).isTrue();
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT32_BelowFails() throws Exception {
         GuiElement oben = getGuiElementBy(By.id("1"));
         GuiElement unten = getGuiElementBy(By.id("5"));
-        oben.asserts().assertLayout(Layout.outer().below(unten));
+        withTimeout(0, () -> oben.rect().below(unten).isTrue());
     }
 
     /*
@@ -131,21 +131,21 @@ public class GuiElementLayoutsTest_NewApi extends GuiElementStandardFunctionsTes
     public void testT41_SameTop() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11")).getSubElement(By.xpath("./.."));
-        e1.asserts().assertLayout(Layout.outer().sameTop(e2, 0));
+        e1.rect().fromTop().toTopOf(e2).is(0);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT42_SameTopFails() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11"));
-        e1.asserts().assertLayout(Layout.outer().sameTop(e2, 0));
+        withTimeout(0, () -> e1.rect().fromTop().toTopOf(e2).is(0));
     }
 
     @Test
     public void testT43_SameTopWithDelta() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11"));
-        e1.asserts().assertLayout(Layout.outer().sameTop(e2, 20));
+        e1.rect().fromTop().toTopOf(e2).absolute().lowerEqualThan(20);
     }
 
     /*
@@ -156,21 +156,21 @@ public class GuiElementLayoutsTest_NewApi extends GuiElementStandardFunctionsTes
     public void testT51_SameBottom() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11")).getSubElement(By.xpath("./.."));
-        e1.asserts().assertLayout(Layout.outer().sameBottom(e2, 0));
+        e1.rect().fromBottom().toBottomOf(e2).is(0);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT52_SameBottomFails() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11"));
-        e1.asserts().assertLayout(Layout.outer().sameBottom(e2, 0));
+        withTimeout(0, () -> e1.rect().fromBottom().toBottomOf(e2).is(0));
     }
 
     @Test
     public void testT53_SameBottomWithDelta() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11"));
-        e1.asserts().assertLayout(Layout.outer().sameBottom(e2, 311));
+        e1.rect().fromBottom().toBottomOf(e2).absolute().lowerEqualThan(311);
     }
 
     /*
@@ -181,21 +181,21 @@ public class GuiElementLayoutsTest_NewApi extends GuiElementStandardFunctionsTes
     public void testT61_SameLeft() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1"));
         GuiElement e2 = getGuiElementBy(By.id("5"));
-        e1.asserts().assertLayout(Layout.outer().sameLeft(e2, 0));
+        e1.rect().fromLeft().toLeftOf(e2).is(0);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT62_SameLeftFails() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1"));
         GuiElement e2 = getGuiElementBy(By.id("3"));
-        e1.asserts().assertLayout(Layout.outer().sameLeft(e2, 0));
+        withTimeout(0, () -> e1.rect().fromLeft().toLeftOf(e2).is(0));
     }
 
     @Test
     public void testT63_SameLeftWithDelta() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1"));
         GuiElement e2 = getGuiElementBy(By.id("3"));
-        e1.asserts().assertLayout(Layout.outer().sameLeft(e2, 10));
+        e1.rect().fromLeft().toLeftOf(e2).absolute().lowerEqualThan(10);
     }
 
     /*
@@ -206,50 +206,40 @@ public class GuiElementLayoutsTest_NewApi extends GuiElementStandardFunctionsTes
     public void testT71_SameRight() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1"));
         GuiElement e2 = getGuiElementBy(By.id("5"));
-        e1.asserts().assertLayout(Layout.outer().sameRight(e2, 0));
+        e1.rect().fromRight().toRightOf(e2).is(0);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT72_SameRightFails() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1"));
         GuiElement e2 = getGuiElementBy(By.id("3"));
-        e1.asserts().assertLayout(Layout.outer().sameRight(e2, 0));
+        withTimeout(0, () -> e1.rect().fromRight().toRightOf(e2).is(0));
     }
 
     @Test
     public void testT73_SameRightWithDelta() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("11"));
         GuiElement e2 = getGuiElementBy(By.id("12"));
-        e1.asserts().assertLayout(Layout.outer().sameRight(e2, 150));
+        e1.rect().fromRight().toRightOf(e2).absolute().lowerEqualThan(150);
     }
 
     /*
     Inner
      */
 
-    @Test
+    @Test(enabled = false)
+    /**
+     * There is no implementation for inner borders
+     */
     public void testT81_InnerBorders() throws Exception {
-        GuiElement e1 = getGuiElementBy(By.id("1"));
-        Layout.LayoutBorders innerBorders = Layout.inner().getElementLayoutBorders(e1);
-        Layout.LayoutBorders outerBorders = Layout.outer().getElementLayoutBorders(e1);
-
-        Assert.assertTrue(innerBorders.getLeft() > outerBorders.getLeft(), "inner left > outer left");
-        Assert.assertTrue(innerBorders.getRight() < outerBorders.getRight(), "inner right < outer right");
-        Assert.assertTrue(innerBorders.getTop() > outerBorders.getTop(), "inner top > outer top");
-        Assert.assertTrue(innerBorders.getBottom() < outerBorders.getBottom(), "inner bottom < outer bottom");
     }
 
-    @Test
+    @Test(enabled = false)
+    /**
+     * There is no implementation for inner borders
+     */
     public void testT82_Checkon_Assert() throws Exception {
-        GuiElement e1 = getGuiElementBy(By.id("1"));
-        GuiElement e2 = getGuiElementBy(By.id("11"));
-        boolean catched = false;
-        try {
-            e1.asserts().assertLayout(Layout.inner().sameRight(e2, 0));
-        } catch (AssertionError e) {
-            catched = true;
-        }
-        Assert.assertTrue(catched, "Assertion is thrown");
+
     }
 
     @Override

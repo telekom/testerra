@@ -12,3 +12,7 @@ public void test_ItWillFail() {
     Assert.assertTrue(false);
 }
 ----
+
+In the report this tests are also marked as failed, but they are less highlighted.
+
+If tests are passed again, you get a note in the report to remove the `Fails` annotation.

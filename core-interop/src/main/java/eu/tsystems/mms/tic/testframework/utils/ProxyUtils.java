@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class ProxyUtils {
+
     /**
      * @return null If there is no URL configured
      */
@@ -28,6 +29,8 @@ public class ProxyUtils {
     }
 
     private static URL getSystemProxyUrlWithPrefix(String prefix) {
+
+
         final String urlEncoding = "UTF-8";
         String proxyUrlString = prefix + "://";
         try {
@@ -57,9 +60,7 @@ public class ProxyUtils {
             }
 
             return new URL(proxyUrlString);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
+        } catch (UnsupportedEncodingException | MalformedURLException e) {
             e.printStackTrace();
         }
         return null;

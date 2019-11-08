@@ -2,7 +2,11 @@ doNotPublish(this)
 
 dependencies {
     compile driver_ui_desktop
+
+    // <XML>
     implementation 'org.xmlunit:xmlunit-core:2.5.0'
+    // </XML
+
     testCompile 'org.seleniumhq.selenium:selenium-server:' + seleniumVersion
 }
 

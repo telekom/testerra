@@ -4,7 +4,7 @@ include::properties/property-attributes.adoc[]
 == Overview
 WebDriverManager is the central component to create or close your WebDriver session.
 
-WebDriverManager uses the standard Selenium Webdriver but it is much simpler to configure your session or create a new remote Selenium session.
+WebDriverManager uses the standard Selenium Webdriver but it is easier to configure your. To create a new browser session you only need a single call.
 
 == WebDriver sessions
 
@@ -29,7 +29,12 @@ To tell Selenium where the Webdriver binary is located, use the `system.properti
 .system.properties
 [source, properties]
 ----
-webdriver.gecko.driver=src\\main\\resources\\geckodriver.exe
+webdriver.gecko.driver=path/to/your/binary/geckodriver.exe
+
+# or for other browsers
+webdriver.chrome.driver=...
+webdriver.edge.driver=...
+webdriver.ie.driver=...
 ----
 
 .Usage in your test method
@@ -139,17 +144,80 @@ WebDriverManager.forceShutdownAllThreads()
 ====
 Testerra calls `WebDriverManager.shutdown()` automatically at the end of every test method.
 
-With `wdm.closewindows.aftertestmethods` you can control this behaviour.
-
-At the end of the test run Testerra alwawys calls `WebDriverManager.forceShutdown()` to cleanup all sessions.
+At the end of the test run Testerra always calls `WebDriverManager.forceShutdown()` to cleanup all sessions.
 ====
 
-=== Exclusive sessions
+=== Shared sessions in one thread
 
-#Should be tested#
+You can reuse the wedriver session in the following test by setting the following property:
 
-String uuid WebDriverManager.makeSessionExclusive(WebDriver driver)
-WebDriverManager.shutdownExclusiveSession(String key)
+.test.properties
+[source, properties, subs="attributes"]
+----
+{wdm_closewindows_aftertestmethods}=false
+----
+
+.Working with shared sessions
+[source, java]
+----
+@Test
+public void test1() {
+    WebDriver driver = WebDriverManager.getWebDriver();
+    ...
+}
+
+@Test
+public void test2() {
+    // You get the already opened session from test1
+    WebDriver driver = WebDriverManager.getWebDriver();
+    ...
+}
+----
+
+IMPORTANT: You can only reuse the session in the current thread. If you run parallel tests, you have no access to the session between parallel test threads.
+
+.Limitations of reusing shared sessions
+image::resuse_webdriver_sessions_1.png[]
+
+=== Shared sessions over different threads
+
+To use a browser session over different test threads, you need an _exclusive_ session.
+
+Exclusive sessions are identified by a special uuid, not by the standard session key.
+
+.Create exclusive browser sessions
+[source, java]
+----
+private static String uuid = null;
+
+@Test
+public void test1() {
+    WebDriver driver = WebDriverManager.getWebDriver();
+    uuid = WebDriverManager.makeSessionExclusive(driver);
+}
+
+@Test
+public void test2() {
+    // Get the exclusive session
+    WebDriver driver = WebDriverManager.getWebDriver(uuid);
+}
+----
+
+.Reuse a session in different test threads
+image::resuse_webdriver_sessions_2.png[]
+
+[IMPORTANT]
+=====
+An exclusive session has an unlimited lifetime. You need do close this session manually.
+
+[source, java]
+----
+@AfterTest
+public void cleanup() {
+    WebDriverManager.shutdownExclusiveSession(uuid);
+}
+----
+=====
 
 == WebDriver configuration
 
@@ -221,7 +289,6 @@ You can reset the settings to the default values or defined in `test.properties`
 WebDriverManager.resetConfig();
 ----
 
-
 #what is with this?#
 WebDriverManager.setBaseURL()
 
@@ -246,6 +313,6 @@ WebDriver driver = WebDriverManager.getWebDriver(myRequest);
 
 WebDriverManagerUtils
 
-WebDriverUtils ??
+WebDriverUtils
 
 https://testautomation-mms.atlassian.net/wiki/spaces/XETA/pages/327794/01+-+WebDriverManager#id-01-WebDriverManager-Other

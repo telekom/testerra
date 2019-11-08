@@ -13,13 +13,13 @@ element.click();
 element.doubleClick();
 element.rightClick();
 
-// With 'JS' click methods JavaScript is used for click instead of Selenium click. 
+// With 'JS' click methods JavaScript is used for click instead of Selenium click.
 // It could be useful if elements are hidden or not reachable by Selenium.
 element.clickJS();
 element.doubleClickJS();
 element.rightClickJS();
 
-// This method uses a special mouse navigation path like 'mouseOverAbsolute2Axis()'. 
+// This method uses a special mouse navigation path like 'mouseOverAbsolute2Axis()'.
 element.clickAbsolute();
 ----
 
@@ -31,12 +31,12 @@ See <<Mouse over>> for more details about the `mouseOverAbsolute2Axis` method.
 ----
 GuiElement element = new GuiElement(driver, By.id("input"));
 
-// Enters the given text in a input or textfield. 
-// Any old values are automatically deleted before input. 
+// Enters the given text in a input or textfield.
+// Any old values are automatically deleted before input.
 // The type method has a value check. If the given string is NULL or empty, the method does nothing.
 element.type("my text");
 
-// The standard Selenium method is used. 
+// The standard Selenium method is used.
 // You can also use the Selenim Keys class to enter special keys.
 element.sendKeys("my text");
 element.sendKeys("my text" + Keys.ENTER);
@@ -117,7 +117,7 @@ The following graphic shows 2 different mouse pointer paths beginning at the upp
 .Two possible mouse paths
 image::absolute2Axis.png[]
 
-The standard path (green) goes over a menu with hover effets. This could hide your target element. The blue path variant always goes first to the point (0,0) of the viewport, then in x and y direction the the target element.
+The standard path (green) goes over a menu with hover effects. This could hide your target element. The blue path variant always goes first to the point (0,0) of the viewport, then in x and y direction the the target element.
 
 == Drag and drop actions
 

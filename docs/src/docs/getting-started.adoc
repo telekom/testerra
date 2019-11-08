@@ -3,20 +3,16 @@ include::properties/property-attributes.adoc[]
 
 == System requirements
 
-...
-
+* Testerra is based on Java. You need a *JDK 8* or later.
+* Execute your tests with *Maven* or *Gradle*
 
 == Mandatory steps
 
-=== Create Maven or Gradle Project
+=== Testerra setup
 
-As a prequisite, Maven or Gradle need to be installed and configured. There a lot of manuals are on the internet, so this is not described here. The Testerra libs are deployed to https://bintray.com/bintray/jcenter. Please add this to your local settings.
+The Testerra framework is deployed to https://bintray.com/bintray/jcenter.
 
-Then create a new Maven or Gradle project. Usally the IDE can do this comfortably.
-
-=== Add Testerra dependencies
-
-For Testerra you need at least the following dependencies you add to your `build.gradle` or `pom.xml` file.
+For Testerra you need at least the following dependencies for Gradle or Maven.
 
 .build.gradle
 [source, gradle, role="primary"]
@@ -74,9 +70,10 @@ Create a new file at `src/test/resources` with the name `test.properties`.
 {baseurl}=http://example.org
 ----
 
-TIP: All defined properties can be overwritten later by adding system parameters to your command (e.a `-D{browser}=chrome`)
+TIP: All defined properties can be overwritten later by adding system parameters to your command +
+ (e.a `-D{browser}=chrome`)
 
-There are more supported `.properties` files described in the <<PropertyManager>> section.
+All supported browsers are listed in <<WebdriverManager properties>>
 
 === Create Page Class
 
@@ -274,6 +271,8 @@ IMPORTANT: Setting the System proxy will override the Testerra proxy settings.
 ==== Testerra proxy
 
 If you want to setup a proxy for Testerra, including TestNG and the JVM, just add `proxysettings.properties` to your resource bundle at `src/test/resources` with the following content
+
+For example Testerra requires this setting to connect to a Selenium grid, if you are in a corporate network.
 
 .Example of proxysettings.properties
 [source,properties]

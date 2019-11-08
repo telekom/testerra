@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class AbstractAssertion implements IAssertion {
+public abstract class AbstractAssertion implements Assertion {
     public void failNotEquals(Object actual, Object expected, String subject) {
         fail(format(actual, String.format("equals [%s]", expected), subject));
     }

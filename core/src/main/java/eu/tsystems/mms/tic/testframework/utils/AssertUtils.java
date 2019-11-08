@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 
 import java.math.BigDecimal;
@@ -28,7 +28,7 @@ import java.math.BigDecimal;
 @Deprecated
 public final class AssertUtils {
 
-    private static final IAssertion assertion;
+    private static final Assertion assertion;
 
     static {
         assertion = Testerra.ioc().getInstance(InstantAssertion.class);

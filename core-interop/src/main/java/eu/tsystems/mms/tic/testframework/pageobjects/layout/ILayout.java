@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.layout;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 
 public interface ILayout {
@@ -8,7 +8,7 @@ public interface ILayout {
 
     ILayout leftOf(IGuiElement distanceGE);
 
-    void checkOn(IGuiElement actualGE, IAssertion configuredAssert);
+    void checkOn(IGuiElement actualGE, Assertion configuredAssert);
 
     String toStringText();
 

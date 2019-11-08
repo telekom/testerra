@@ -2,7 +2,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
-import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -18,7 +18,7 @@ import java.util.function.Function;
 public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropertyAssertion<T> {
     private static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
     private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
-    protected final IAssertion assertion = Testerra.ioc().getInstance(InstantAssertion.class);
+    protected final Assertion assertion = Testerra.ioc().getInstance(InstantAssertion.class);
 
     public AbstractTestedPropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
@@ -53,7 +53,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
         });
         if (!packedResponse.isSuccessful()) {
             failedFinallyRecursive();
-            IAssertion finalAssertion = assertionFactory.create();
+            Assertion finalAssertion = assertionFactory.create();
             finalAssertion.fail(packedResponse.getResponse());
         }
     }

@@ -1,4 +1,4 @@
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-public interface NonFunctionalAssertion extends IAssertion {
+public interface NonFunctionalAssertion extends Assertion {
 }

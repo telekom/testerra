@@ -31,7 +31,7 @@ import java.util.Set;
  */
 @Deprecated
 public class AssertCollector {
-    private static IAssertion assertion =  Testerra.ioc().getInstance(CollectedAssertion.class);
+    private static Assertion assertion =  Testerra.ioc().getInstance(CollectedAssertion.class);
 
     /**
      * Protect constructor since it is a static only class

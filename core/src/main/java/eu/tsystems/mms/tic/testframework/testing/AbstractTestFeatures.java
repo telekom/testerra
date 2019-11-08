@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.testing;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
@@ -36,10 +36,10 @@ public abstract class AbstractTestFeatures {
     protected static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
     private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
     protected static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
-    protected static IAssertion assertion = assertionFactory.create();
+    protected static Assertion assertion = assertionFactory.create();
 
     protected void collectAssertions(Runnable runnable) {
-        Class<? extends IAssertion> prevClass = assertionFactory.setDefault(CollectedAssertion.class);
+        Class<? extends Assertion> prevClass = assertionFactory.setDefault(CollectedAssertion.class);
         assertion = assertionFactory.create();
         runnable.run();
         assertionFactory.setDefault(prevClass);
@@ -47,7 +47,7 @@ public abstract class AbstractTestFeatures {
     }
 
     protected void nonFunctionalAssertions(Runnable runnable) {
-        Class<? extends IAssertion> prevClass = assertionFactory.setDefault(NonFunctionalAssertion.class);
+        Class<? extends Assertion> prevClass = assertionFactory.setDefault(NonFunctionalAssertion.class);
         assertion = assertionFactory.create();
         runnable.run();
         assertionFactory.setDefault(prevClass);

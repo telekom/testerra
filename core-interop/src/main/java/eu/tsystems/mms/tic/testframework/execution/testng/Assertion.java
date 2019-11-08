@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public interface IAssertion {
+public interface Assertion {
     void fail(String message, Throwable realCause);
     void fail(String message);
     void fail(AssertionError error);

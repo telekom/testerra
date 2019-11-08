@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
@@ -34,13 +34,13 @@ public class DefaultGuiElementAssert implements GuiElementAssert {
 
     private final GuiElementWait guiElementWait;
     private final GuiElementCore guiElementCore;
-    private final IAssertion configuredAssert;
+    private final Assertion configuredAssert;
     private final GuiElementData guiElementData;
 
     public DefaultGuiElementAssert(
         GuiElementCore guiElementCore,
         GuiElementWait guiElementWait,
-        IAssertion configuredAssert,
+        Assertion configuredAssert,
         GuiElementData guiElementData
     ) {
         this.guiElementWait = guiElementWait;

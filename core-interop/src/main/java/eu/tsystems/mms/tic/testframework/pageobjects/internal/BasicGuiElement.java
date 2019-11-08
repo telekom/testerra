@@ -21,10 +21,10 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBoundingBoxAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -38,16 +38,16 @@ public interface BasicGuiElement {
     @Deprecated
     GuiElementAssert instantAsserts();
 
-    IBinaryPropertyAssertion<Boolean> present();
-    IBinaryPropertyAssertion<Boolean> displayed();
-    IBinaryPropertyAssertion<Boolean> visible(boolean complete);
-    IStringPropertyAssertion<String> tagName();
-    IBoundingBoxAssertion rect();
+    BinaryPropertyAssertion<Boolean> present();
+    BinaryPropertyAssertion<Boolean> displayed();
+    BinaryPropertyAssertion<Boolean> visible(boolean complete);
+    StringPropertyAssertion<String> tagName();
+    RectAssertion rect();
 
     /**
      * Takes a screenshot of the current element
      */
-    IImageAssertion screenshot();
+    ImageAssertion screenshot();
 
     /**
      * This method scrolls to the element with an given offset.

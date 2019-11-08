@@ -5,28 +5,28 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import java.io.File;
 
 public interface PropertyAssertionFactory {
-    <T> IBinaryPropertyAssertion<T> binary(PropertyAssertion parent, AssertionProvider<T> provider);
-    <T> IQuantifiedPropertyAssertion<T> quantified(PropertyAssertion parent, AssertionProvider<T> provider);
-    <T> IStringPropertyAssertion<T> string(PropertyAssertion parent, AssertionProvider<T> provider);
-    IFileAssertion file(PropertyAssertion parent, AssertionProvider<File> provider);
-    IImageAssertion image(PropertyAssertion parent, AssertionProvider<File> provider);
-    IScreenshotAssertion screenshot(PropertyAssertion parent, AssertionProvider<Screenshot> provider);
-    default <T> IBinaryPropertyAssertion<T> binary(AssertionProvider<T> provider) {
+    <T> BinaryPropertyAssertion<T> binary(PropertyAssertion parent, AssertionProvider<T> provider);
+    <T> QuantifiedPropertyAssertion<T> quantified(PropertyAssertion parent, AssertionProvider<T> provider);
+    <T> StringPropertyAssertion<T> string(PropertyAssertion parent, AssertionProvider<T> provider);
+    FileAssertion file(PropertyAssertion parent, AssertionProvider<File> provider);
+    ImageAssertion image(PropertyAssertion parent, AssertionProvider<File> provider);
+    ScreenshotAssertion screenshot(PropertyAssertion parent, AssertionProvider<Screenshot> provider);
+    default <T> BinaryPropertyAssertion<T> binary(AssertionProvider<T> provider) {
         return binary(null, provider);
     }
-    default <T> IQuantifiedPropertyAssertion<T> quantified(AssertionProvider<T> provider) {
+    default <T> QuantifiedPropertyAssertion<T> quantified(AssertionProvider<T> provider) {
         return quantified(null, provider);
     }
-    default <T> IStringPropertyAssertion<T> string(AssertionProvider<T> provider) {
+    default <T> StringPropertyAssertion<T> string(AssertionProvider<T> provider) {
         return string(null, provider);
     }
-    default IFileAssertion file(AssertionProvider<File> provider) {
+    default FileAssertion file(AssertionProvider<File> provider) {
         return file(null, provider);
     }
-    default IImageAssertion image(AssertionProvider<File> provider) {
+    default ImageAssertion image(AssertionProvider<File> provider) {
         return image(null, provider);
     }
-    default IScreenshotAssertion screenshot(AssertionProvider<Screenshot> provider) {
+    default ScreenshotAssertion screenshot(AssertionProvider<Screenshot> provider) {
         return screenshot(null, provider);
     }
 }

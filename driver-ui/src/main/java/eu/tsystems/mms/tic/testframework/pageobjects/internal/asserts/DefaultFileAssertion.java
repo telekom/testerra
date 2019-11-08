@@ -6,14 +6,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class FileAssertion extends AbstractPropertyAssertion<File> implements IFileAssertion {
+public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implements FileAssertion {
 
-    public FileAssertion(PropertyAssertion parentAssertion, AssertionProvider<File> provider) {
+    public DefaultFileAssertion(PropertyAssertion parentAssertion, AssertionProvider<File> provider) {
         super(parentAssertion, provider);
     }
 
     @Override
-    public IQuantifiedPropertyAssertion<Long> bytes() {
+    public QuantifiedPropertyAssertion<Long> bytes() {
         return propertyAssertionFactory.quantified(this, new AssertionProvider<Long>() {
             @Override
             public Long getActual() {
@@ -28,7 +28,7 @@ public class FileAssertion extends AbstractPropertyAssertion<File> implements IF
     }
 
     @Override
-    public IStringPropertyAssertion<String> name() {
+    public StringPropertyAssertion<String> name() {
         return propertyAssertionFactory.string(this, new AssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -43,7 +43,7 @@ public class FileAssertion extends AbstractPropertyAssertion<File> implements IF
     }
 
     @Override
-    public IStringPropertyAssertion<String> extension() {
+    public StringPropertyAssertion<String> extension() {
         return propertyAssertionFactory.string(this, new AssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -58,7 +58,7 @@ public class FileAssertion extends AbstractPropertyAssertion<File> implements IF
     }
 
     @Override
-    public IStringPropertyAssertion<String> mimetype() {
+    public StringPropertyAssertion<String> mimetype() {
         return propertyAssertionFactory.string(this, new AssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -77,7 +77,7 @@ public class FileAssertion extends AbstractPropertyAssertion<File> implements IF
     }
 
     @Override
-    public IBinaryPropertyAssertion<Boolean> exists() {
+    public BinaryPropertyAssertion<Boolean> exists() {
         return propertyAssertionFactory.binary(this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {

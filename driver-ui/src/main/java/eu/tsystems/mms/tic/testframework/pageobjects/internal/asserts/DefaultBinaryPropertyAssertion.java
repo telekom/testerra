@@ -1,13 +1,13 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<T> implements IBinaryPropertyAssertion<T> {
+public class DefaultBinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<T> implements BinaryPropertyAssertion<T> {
 
-    public BinaryPropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+    public DefaultBinaryPropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
     }
 
     @Override
-    public IBinaryPropertyAssertion<T> isTrue() {
+    public BinaryPropertyAssertion<T> isTrue() {
         testTimer(t -> {
             final String actualString = getActual().toString();
             if (!(
@@ -26,7 +26,7 @@ public class BinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<
     }
 
     @Override
-    public IBinaryPropertyAssertion<T> isFalse() {
+    public BinaryPropertyAssertion<T> isFalse() {
         testTimer(t -> {
             final String actualString = getActual().toString();
             if (!(

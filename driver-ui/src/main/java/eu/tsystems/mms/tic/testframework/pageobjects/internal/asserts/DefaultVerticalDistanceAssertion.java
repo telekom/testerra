@@ -3,14 +3,14 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import org.openqa.selenium.Rectangle;
 
-public class VerticalDistanceAssertion extends AbstractPropertyAssertion<Integer> implements IVerticalDistanceAssertion {
+public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<Integer> implements VerticalDistanceAssertion {
 
-    public VerticalDistanceAssertion(PropertyAssertion parentAssertion, AssertionProvider<Integer> provider) {
+    public DefaultVerticalDistanceAssertion(PropertyAssertion parentAssertion, AssertionProvider<Integer> provider) {
         super(parentAssertion, provider);
     }
 
     @Override
-    public IQuantifiedPropertyAssertion<Integer> toTopOf(BasicGuiElement guiElement) {
+    public QuantifiedPropertyAssertion<Integer> toTopOf(BasicGuiElement guiElement) {
         return propertyAssertionFactory.quantified(this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
@@ -26,7 +26,7 @@ public class VerticalDistanceAssertion extends AbstractPropertyAssertion<Integer
     }
 
     @Override
-    public IQuantifiedPropertyAssertion<Integer> toBottomOf(BasicGuiElement guiElement) {
+    public QuantifiedPropertyAssertion<Integer> toBottomOf(BasicGuiElement guiElement) {
         return propertyAssertionFactory.quantified(this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {

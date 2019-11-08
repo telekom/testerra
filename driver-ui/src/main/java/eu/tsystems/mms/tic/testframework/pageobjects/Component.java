@@ -29,10 +29,10 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBinaryPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IBoundingBoxAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -55,7 +55,7 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     }
 
     @Override
-    public IImageAssertion screenshot() {
+    public ImageAssertion screenshot() {
         return rootElement.screenshot();
     }
 
@@ -108,27 +108,27 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     }
 
     @Override
-    public IBinaryPropertyAssertion<Boolean> present() {
+    public BinaryPropertyAssertion<Boolean> present() {
         return rootElement.present();
     }
 
     @Override
-    public IBinaryPropertyAssertion<Boolean> visible(boolean complete) {
+    public BinaryPropertyAssertion<Boolean> visible(boolean complete) {
         return rootElement.visible(complete);
     }
 
     @Override
-    public IStringPropertyAssertion<String> tagName() {
+    public StringPropertyAssertion<String> tagName() {
         return rootElement.tagName();
     }
 
     @Override
-    public IBoundingBoxAssertion rect() {
+    public RectAssertion rect() {
         return rootElement.rect();
     }
 
     @Override
-    public IBinaryPropertyAssertion<Boolean> displayed() {
+    public BinaryPropertyAssertion<Boolean> displayed() {
         return rootElement.displayed();
     }
 

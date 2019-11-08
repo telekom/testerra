@@ -25,13 +25,10 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.test.FluentTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
-import org.testng.Assert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -154,7 +151,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
     @Test
     public void test_GuiElement_screenshot() {
-        IImageAssertion screenshot = page.notVisibleElement().screenshot();
+        ImageAssertion screenshot = page.notVisibleElement().screenshot();
         screenshot.file().exists().isTrue();
     }
 

@@ -29,8 +29,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IScreenshotAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IStringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ScreenshotAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
@@ -84,7 +84,7 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
     /**
      * Fluent properties
      */
-    public IStringPropertyAssertion<String> title() {
+    public StringPropertyAssertion<String> title() {
         final Page self = this;
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
@@ -99,7 +99,7 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
         });
     }
 
-    public IStringPropertyAssertion<String> url() {
+    public StringPropertyAssertion<String> url() {
         final Page self = this;
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
@@ -117,7 +117,7 @@ public abstract class FluentPage<SELF extends FluentPage<SELF>> extends Abstract
     /**
      * Takes a screenshot of the current page
      */
-    public IScreenshotAssertion screenshot() {
+    public ScreenshotAssertion screenshot() {
         final Page self = this;
         final AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();
 

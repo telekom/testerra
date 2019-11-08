@@ -6,13 +6,13 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
 import java.io.File;
 
-public class ScreenshotAssertion extends ImageAssertion implements IScreenshotAssertion {
+public class DefaultScreenshotAssertion extends DefaultImageAssertion implements ScreenshotAssertion {
 
     private static IReport report = Testerra.ioc().getInstance(IReport.class);
 
     private final AssertionProvider<Screenshot> providerOverride;
 
-    public ScreenshotAssertion(PropertyAssertion parentAssertion, AssertionProvider<Screenshot> provider) {
+    public DefaultScreenshotAssertion(PropertyAssertion parentAssertion, AssertionProvider<Screenshot> provider) {
         super(parentAssertion, new AssertionProvider<File>() {
             @Override
             public File getActual() {
@@ -28,7 +28,7 @@ public class ScreenshotAssertion extends ImageAssertion implements IScreenshotAs
     }
 
     @Override
-    public IScreenshotAssertion toReport() {
+    public ScreenshotAssertion toReport() {
         report.addScreenshot(providerOverride.getActual(), IReport.Mode.COPY);
         return this;
     }

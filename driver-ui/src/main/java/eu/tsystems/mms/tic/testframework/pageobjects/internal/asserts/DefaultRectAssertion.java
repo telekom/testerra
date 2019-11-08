@@ -5,11 +5,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.openqa.selenium.Rectangle;
 
-public class BoundingBoxAssertion extends AbstractPropertyAssertion<Rectangle> implements IBoundingBoxAssertion {
+public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> implements RectAssertion {
 
     private static final Formatter formatter = Testerra.ioc().getInstance(Formatter.class);
 
-    public BoundingBoxAssertion(PropertyAssertion parentAssertion, AssertionProvider<Rectangle> provider) {
+    public DefaultRectAssertion(PropertyAssertion parentAssertion, AssertionProvider<Rectangle> provider) {
         super(parentAssertion, provider);
     }
 
@@ -23,7 +23,7 @@ public class BoundingBoxAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public IBinaryPropertyAssertion contains(BasicGuiElement guiElement) {
+    public BinaryPropertyAssertion contains(BasicGuiElement guiElement) {
         return propertyAssertionFactory.binary(this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -42,7 +42,7 @@ public class BoundingBoxAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public IBinaryPropertyAssertion intersects(BasicGuiElement guiElement) {
+    public BinaryPropertyAssertion intersects(BasicGuiElement guiElement) {
         return propertyAssertionFactory.binary(this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -61,8 +61,8 @@ public class BoundingBoxAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public IHorizontalDistanceAssertion fromRight() {
-        return new HorizontalDistanceAssertion(this, new AssertionProvider<Integer>() {
+    public HorizontalDistanceAssertion fromRight() {
+        return new DefaultHorizontalDistanceAssertion(this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 Rectangle originRect = provider.getActual();
@@ -77,8 +77,8 @@ public class BoundingBoxAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public IHorizontalDistanceAssertion fromLeft() {
-        return new HorizontalDistanceAssertion(this, new AssertionProvider<Integer>() {
+    public HorizontalDistanceAssertion fromLeft() {
+        return new DefaultHorizontalDistanceAssertion(this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 Rectangle originRect = provider.getActual();
@@ -93,8 +93,8 @@ public class BoundingBoxAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public IVerticalDistanceAssertion fromTop() {
-        return new VerticalDistanceAssertion(this, new AssertionProvider<Integer>() {
+    public VerticalDistanceAssertion fromTop() {
+        return new DefaultVerticalDistanceAssertion(this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 Rectangle originRect = provider.getActual();
@@ -109,8 +109,8 @@ public class BoundingBoxAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public IVerticalDistanceAssertion fromBottom() {
-        return new VerticalDistanceAssertion(this, new AssertionProvider<Integer>() {
+    public VerticalDistanceAssertion fromBottom() {
+        return new DefaultVerticalDistanceAssertion(this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 Rectangle originRect = provider.getActual();

@@ -61,6 +61,66 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
+    public BinaryPropertyAssertion<Boolean> leftOf(BasicGuiElement guiElement) {
+        return propertyAssertionFactory.binary(this, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                return fromLeft().toLeftOf(guiElement).getActual()<0;
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("leftOf(guiElement: %s)", guiElement);
+            }
+        });
+    }
+
+    @Override
+    public BinaryPropertyAssertion<Boolean> rightOf(BasicGuiElement guiElement) {
+        return propertyAssertionFactory.binary(this, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                return fromLeft().toRightOf(guiElement).getActual()>=0;
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("rightOf(guiElement: %s)", guiElement);
+            }
+        });
+    }
+
+    @Override
+    public BinaryPropertyAssertion<Boolean> above(BasicGuiElement guiElement) {
+        return propertyAssertionFactory.binary(this, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                return fromTop().toTopOf(guiElement).getActual()<0;
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("above(guiElement: %s)", guiElement);
+            }
+        });
+    }
+
+    @Override
+    public BinaryPropertyAssertion<Boolean> below(BasicGuiElement guiElement) {
+        return propertyAssertionFactory.binary(this, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                return fromTop().toBottomOf(guiElement).getActual()>=0;
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("below(guiElement: %s)", guiElement);
+            }
+        });
+    }
+
+    @Override
     public HorizontalDistanceAssertion fromRight() {
         return new DefaultHorizontalDistanceAssertion(this, new AssertionProvider<Integer>() {
             @Override

@@ -102,4 +102,7 @@ public class FluentWebTestPage extends FluentPage<FluentWebTestPage> {
         guiElement.nonFunctionalAsserts().assertIsPresent();
     }
 
+    public IGuiElement getGuiElementBy(By by) {
+        return findOne(by);
+    }
 }

@@ -15,10 +15,16 @@ public interface Assertion {
         return assertTrue(condition, null);
     }
     boolean assertTrue(boolean condition, String subject);
+    default boolean assertFalse(boolean condition) {
+        return assertFalse(condition, null);
+    }
     boolean assertFalse(boolean condition, String subject);
     boolean assertSame(Object actual, Object expected, String subject);
     boolean assertNotSame(Object actual, Object expected, String subject);
     boolean assertNull(Object object, String subject);
+    default boolean assertNotNull(Object object) {
+        return assertNotNull(object, null);
+    }
     boolean assertNotNull(Object object, String subject);
     boolean assertContains(String actual, String expected, String subject);
     boolean assertContainsNot(String actual, String expected, String subject);
@@ -27,6 +33,9 @@ public interface Assertion {
     boolean assertLowerThan(BigDecimal actual, BigDecimal expected, String subject);
     boolean assertLowerEqualThan(BigDecimal actual, BigDecimal expected, String subject);
     boolean assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, String subject);
+    default boolean assertEquals(Object actual, Object expected) {
+        return assertEquals(actual, expected, null);
+    }
     boolean assertEquals(Object actual, Object expected, String subject);
     boolean assertEquals(Collection<?> actual, Collection<?> expected, String subject);
     boolean assertEquals(Iterator<?> actual, Iterator<?> expected, String subject);

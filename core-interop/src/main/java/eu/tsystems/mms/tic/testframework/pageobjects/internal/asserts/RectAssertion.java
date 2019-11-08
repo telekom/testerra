@@ -10,6 +10,10 @@ import org.openqa.selenium.Rectangle;
 public interface RectAssertion extends ActualProperty<Rectangle> {
     BinaryPropertyAssertion<Boolean> contains(BasicGuiElement guiElement);
     BinaryPropertyAssertion<Boolean> intersects(BasicGuiElement guiElement);
+    BinaryPropertyAssertion<Boolean> leftOf(BasicGuiElement guiElement);
+    BinaryPropertyAssertion<Boolean> rightOf(BasicGuiElement guiElement);
+    BinaryPropertyAssertion<Boolean> above(BasicGuiElement guiElement);
+    BinaryPropertyAssertion<Boolean> below(BasicGuiElement guiElement);
     HorizontalDistanceAssertion fromRight();
     HorizontalDistanceAssertion fromLeft();
     VerticalDistanceAssertion fromTop();

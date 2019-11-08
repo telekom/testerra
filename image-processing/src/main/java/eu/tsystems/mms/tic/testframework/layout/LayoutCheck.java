@@ -313,7 +313,7 @@ public final class LayoutCheck {
         } else {
             Integer newCount = runCount.get(targetImageName) + 1;
             runCount.put(targetImageName, newCount);
-            runCountModifier = newCount.toString();
+            runCountModifier = String.format("-%03d",newCount);
         }
 
         step.takeReferenceOnly = Properties.TAKEREFERENCE.asBool();

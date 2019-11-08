@@ -39,7 +39,6 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
 
     protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.ioc().getInstance(PropertyAssertionFactory.class);
     private static final GuiElementFactory guiElementFactory = Testerra.ioc().getInstance(GuiElementFactory.class);
-    private static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
 
     protected interface Finder {
         IGuiElement find(Locate locator);

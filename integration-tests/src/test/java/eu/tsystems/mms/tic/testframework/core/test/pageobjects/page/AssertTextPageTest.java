@@ -143,6 +143,8 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
 
 
         GuiElement input = new GuiElement(driver, By.xpath("//label[@for='inputMillis']"));
+        input.assertCollector().assertIsDisplayed();
+        page.forceGuiElementStandardAsserts();
         WebElement webElement = input.getWebElement();
 
         page.assertIsTextDisplayed("in Millis");

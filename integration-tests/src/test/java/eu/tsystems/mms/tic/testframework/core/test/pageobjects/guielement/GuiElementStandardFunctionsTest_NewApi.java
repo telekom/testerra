@@ -20,14 +20,18 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.test.FluentTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
+import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.IImageAssertion;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -64,17 +68,14 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     }
 
     @Test
+    @Fails(description = "The test itself passes, but collected assertions will always fail")
     public void test_Page_title_length_fails_collected() {
-        collectAssertions(()->{
-            page.title().length().greaterThan(10);
-        });
+        collectAssertions(()->page.title().length().greaterThan(10));
     }
 
     @Test
     public void test_Page_title_length_fails_nonFunctional() {
-        nonFunctionalAssertions(()->{
-            page.title().length().greaterThan(10);
-        });
+        nonFunctionalAssertions(()-> page.title().length().greaterThan(10));
     }
 
     @Test
@@ -171,18 +172,5 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     @Test
     public void test_Component() {
         page.inputForm().button().value().is("Button1");
-
-        page.inputForm().rect().contains(page.inputForm().button()).isFalse();
-        page.inputForm().button().rect().contains(page.inputForm()).isFalse();
-
-        withTimeout(1, () -> {
-            page.inputForm().rect().fromRight().toRightOf(page.inputForm().button()).lowerThan(5);
-        });
-
-        page.inputForm().rect().contains(page.inputForm().button());
-        //page.inputForm().button().boundingBox().fromRight().toRight(page.inputForm()).lowerThan(5);
-
-        //page.inputForm().button().boundingBox().contains(page.inputForm());
-        //page.inputForm().button().boundingBox().intersects(page.inputForm());
     }
 }

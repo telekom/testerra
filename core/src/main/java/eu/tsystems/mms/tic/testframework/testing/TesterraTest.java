@@ -20,42 +20,13 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
-import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.IAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.testng.annotations.Listeners;
 
 @Listeners(TesterraListener.class)
-public abstract class TesterraTest {
-
-    protected static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
-    private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
-    private static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
+public abstract class TesterraTest extends AbstractTestFeatures {
 
     static {
         Booter.bootOnce();
-    }
-
-    protected void collectAssertions(Runnable runnable) {
-        Class<? extends IAssertion> prevClass = assertionFactory.setDefault(CollectedAssertion.class);
-        runnable.run();
-        assertionFactory.setDefault(prevClass);
-    }
-
-    protected void nonFunctionalAssertions(Runnable runnable) {
-        Class<? extends IAssertion> prevClass = assertionFactory.setDefault(NonFunctionalAssertion.class);
-        runnable.run();
-        assertionFactory.setDefault(prevClass);
-    }
-
-    protected void withTimeout(int seconds, Runnable runnable) {
-        pageOverrides.setElementTimeoutInSeconds(seconds);
-        runnable.run();
-        pageOverrides.removeElementTimeoutInSeconds();
     }
 }

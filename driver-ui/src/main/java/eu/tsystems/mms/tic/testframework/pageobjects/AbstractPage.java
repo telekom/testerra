@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithAc
 import eu.tsystems.mms.tic.testframework.report.IReport;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.testing.AbstractTestFeatures;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.TimeoutException;
@@ -48,10 +49,7 @@ import java.util.Set;
  *
  */
 @Deprecated()
-public abstract class AbstractPage implements IPage {
-
-    protected static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
-
+public abstract class AbstractPage extends AbstractTestFeatures implements IPage {
     /**
      * The webdriver object.
      */
@@ -70,8 +68,10 @@ public abstract class AbstractPage implements IPage {
     /**
      * Page storage.
      */
+    @Deprecated
     private static final ThreadLocal<AbstractPage> STORED_PAGES = new ThreadLocal<AbstractPage>();
 
+    @Deprecated
     private boolean forcedGuiElementStandardAsserts = false;
 
     /**
@@ -106,7 +106,9 @@ public abstract class AbstractPage implements IPage {
      * Setter.
      *
      * @param newElementTimeout a new timeout in seconds
+     * @deprecated Use {@link PageOptions} instead
      */
+    @Deprecated
     public void setElementTimeoutInSeconds(int newElementTimeout) {
         elementTimeoutInSeconds = newElementTimeout;
     }
@@ -148,6 +150,10 @@ public abstract class AbstractPage implements IPage {
         }
     }
 
+    /**
+     * @deprecated Use {@link Check}
+     */
+    @Deprecated
     public void forceGuiElementStandardAsserts() {
         forcedGuiElementStandardAsserts = true;
     }
@@ -171,7 +177,7 @@ public abstract class AbstractPage implements IPage {
         pCheckPage(inverse, fast, true);
     }
 
-    void pCheckPage(final boolean findNot, final boolean fast, final boolean checkCaller) {
+    protected void pCheckPage(final boolean findNot, final boolean fast, final boolean checkCaller) {
 
         if (checkCaller) {
         /*
@@ -285,10 +291,12 @@ public abstract class AbstractPage implements IPage {
      *
      * @param message .
      */
+    @Deprecated
     public void exitWithTimeoutException(final String message) {
         throw new TimeoutException(message);
     }
 
+    @Deprecated
     public int getElementTimeoutInSeconds() {
         return elementTimeoutInSeconds;
     }
@@ -299,6 +307,7 @@ public abstract class AbstractPage implements IPage {
      * The current page object is then stored thread safe and can be reloaded with a Page.restore(T) call, where T is a
      * class of expected page type T. If a correct object is stored, you will get it.
      */
+    @Deprecated
     public void store() {
         STORED_PAGES.set(this);
     }
@@ -351,6 +360,10 @@ public abstract class AbstractPage implements IPage {
         }
     }
 
+    /**
+     * @deprecated This method should not be protected
+     */
+    @Deprecated
     protected abstract List<FieldAction> getFieldActions(List<FieldWithActionConfig> field, AbstractPage abstractPage);
 
     private Set<Field> makeFieldsAccessible(List<FieldWithActionConfig> fields) {

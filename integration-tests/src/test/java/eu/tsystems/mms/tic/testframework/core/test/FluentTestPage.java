@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.core.test;
 
+import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.core.test.components.InputForm;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.FluentPage;
@@ -8,6 +9,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.TestableGuiElement
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+@PageOptions(elementTimeoutInSeconds = 1)
 public class FluentTestPage extends FluentPage<FluentTestPage> {
 
     @Check

@@ -16,7 +16,6 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.Da
 import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.DashboardModuleTestResultPieChart;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 
 /**
  * Created by riwa on 25.10.2016.

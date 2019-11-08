@@ -1,6 +1,8 @@
-# New API Changes
+= Changes
 
-## Pages implementation
+== New API
+
+=== Page implementation
 
 The new standard implementation of Pages is now
 ```java
@@ -8,66 +10,71 @@ class MyPage extends FluentPage<MyPage> {
     public MyPage(WebDriver webDriver) {
         super(webDriver);
     }
-    
+
     protected MyPage self() {
         return this;
     }
 }
 ```
 
-## Pages instantiation
+=== Pages instantiation
 
 The new standard way to instantiate Pages is now
 ```java
 class MyTest extends TesterraTest {
-    
     @Test
     public void test_MyPageTest() {
         MyPage page = pageFactory.create(MyPage.class);
-        
+
         // Or with different WebDriver
         MyPage page = pageFactory.create(MyPage.class, WebDriverManager.getWebDriver());
     }
 }
 ```
-
-Using the static PageFactory is `@deprecated`
+[NOTE]
+.Using the static `PageFactory` is `@deprecated`
+====
 ```java
 MyPage page = PageFactory.create(MyPage.class, WebDriverManager.getWebDriver());
 ```
+====
 
-Constructor instantiation of Pages is `FORBIDDEN`
+[CAUTION]
+.Constructor instantiation of Pages is forbidden!
+====
 ```java
 MyPage page = new MyPage(WebDriverManager.getWebDriver());
 ```
+====
 
-## Implicit Element checks
+=== Implicit Element checks
 
 The standard way of implicit GuiElement checks is now
 ```java
 class MyPage extends FluentPage<MyPage> {
-    
     @Check
     private IGuiElement guiElement = findOneById(42);
 }
 ```
 
-Performing own page checks is `FORBIDDEN`
+[CAUTION]
+.Performing explicit page checks is forbidden!
+====
 ```java
 class MyPage extends FluentPage<MyPage> {
-
     private IGuiElement guiElement = findOneById(42);
-    
+
     public MyPage(WebDriver webDriver) {
         super(webDriver);
-        
-        // forbidden
-        checkPage();
+
+        checkPage(); <1>
     }
 }
 ```
+<1> Forbidden
+====
 
-## Element instantiation
+=== Element instantiation
 
 The new standard way to instantiate GuiElements is now
 ```java
@@ -77,14 +84,16 @@ class MyPage extends FluentPage<MyPage> {
 }
 ```
 
-Constructor instantiation of GuiElements is now `@deprecated`
-
+[NOTE]
+.Constructor instantiation of GuiElements is now `@deprecated`
+====
 ```java
 class MyPage extends Page {
     private GuiElement guiElement = new GuiElement(By.id(42), driver);
     private GuiElement guiElement = new GuiElement(By.xpath("//div[1]"), driver);
 }
 ```
+====
 
 For sub elements
 ```java
@@ -94,13 +103,16 @@ class MyPage extends FluentPage<MyPage> {
 }
 ```
 
-Retrieving sub elements from GuiElement is now `@deprecated`
+[NOTE]
+.Retrieving sub elements from GuiElement is now `@deprecated`
+====
 ```java
 class MyPage extends FluentPage<MyPage> {
-    private IGuiElement guiElement = new GuiElement(By.id(42), driver);
-    private IGuiElement subElement = guiElement.getSubElement(By.xpath("//div[1]"));
+    private GuiElement guiElement = new GuiElement(By.id(42), driver);
+    private GuiElement subElement = guiElement.getSubElement(By.xpath("//div[1]"));
 }
 ```
+====
 
 For elements in frames
 ```java
@@ -110,27 +122,33 @@ class MyPage extends FluentPage<MyPage> {
 }
 ```
 
-Passing frames to the constructor is now `@deprecated`
+[NOTE]
+.Passing frames to the constructor is now `@deprecated`
+====
 ```java
 class MyPage extends Page {
     private GuiElement frame = new GuiElement(By.tagName("frame"), driver);
     private GuiElement guiElement = new GuiElement(By.id(14), driver, frame);
 }
 ```
+====
 
-## Assertions
+=== Assertions
 
 The new standard way for performing assertions is now
 ```java
 assertion.assertTrue(false);
 ```
 
-Using the TestNG `Assert` is not recommended
+[NOTE]
+.Using the TestNG `Assert` is not recommended
+====
 ```java
 Assert.assertTrue(false);
 ```
+====
 
-## Collected Assertions
+=== Collected Assertions
 
 The new standard way to collect assertions of GuiElements is now
 ```java
@@ -163,44 +181,62 @@ public void test_CollectEverything() {
 }
 ```
 
-Using the static `AssertCollector` is now `@deprecated`
+[NOTE]
+.Using the static `AssertCollector` is now `@deprecated`
+====
 ```java
 AssertCollector.assertTrue(false);
 ```
+====
 
-Using the GuiElement's assert collector is now `@deprecated`
+[NOTE]
+.Using the GuiElement's assert collector is now `@deprecated`
+====
 ```java
 guiElement.assertCollector().assertIsDisplayed();
 ```
+====
 
-Forcing standard assertions is now `@deprecated`
+[NOTE]
+.Forcing standard assertions is now `@deprecated`
+====
 ```java
 page.forceGuiElementStandardAsserts();
 ```
+====
 
-Setting collected assertions by default is now `@deprecated`
+[NOTE]
+.Setting collected assertions by default is now `@deprecated`
+====
 ```properties
 tt.guielement.default.assertcollector=true
 ```
+====
 
-## Non Functional Assertions
+=== Non Functional Assertions
 
 The new standard way for non functional assertions works like collected assertions
 ```java
 nonFunctional(() -> guiElement.displayed().isTrue());
 ```
 
-Using the static `NonFunctionalAssert` is now `@deprecated`
+[NOTE]
+.Using the static `NonFunctionalAssert` is now `@deprecated`
+====
 ```java
 NonFunctionalAssert.assertTrue(false);
 ```
+====
 
-Using the GuiElement's non functional asserts are now `@deprecated`
+[NOTE]
+.Using the GuiElement's non functional asserts are now `@deprecated`
+====
 ```java
 guiElement.nonFunctionalAsserts().assertIsDisplayed();
 ```
+====
 
-## Timeouts
+=== Timeouts
 
 The new standard way for setting timeouts is now
 
@@ -233,27 +269,35 @@ public void test_TestSomething_fast() {
 }
 ```
 
-Setting explicit timeouts on the Page is now `@deprecated`
+[NOTE]
+.Setting explicit timeouts on the Page is now `@deprecated`
+====
 ```java
 page.setElementTimeoutInSeconds(1);
 ```
+====
 
-Setting and restoring explicit timeouts on the GuiElement is now `@deprecated`
+[NOTE]
+.Setting and restoring explicit timeouts on the GuiElement is now `@deprecated`
+====
 ```java
 guiElement.setTimeoutInSeconds(1);
 guiElement.restoreDefaultTimeout();
 ```
+====
 
-Setting thread local timeouts using static `POConfig` is now `@deprecated`
+[NOTE]
+.Setting thread local timeouts using static `POConfig` is now `@deprecated`
+====
 ```java
 POConfig.setThreadLocalUiElementTimeoutInSeconds(1);
 ```
+====
 
-## Sub Pages
+=== Sub Pages
 The new standard way to implement Sub Pages aka Components is
 ```java
 public class MyComponent extends Component<MyComponent> {
-
     public MyComponent(IGuiElement rootElement) {
         super(rootElement);
     }
@@ -270,4 +314,6 @@ class MyPage extends FluentPage<MyPage> {
     private MyComponent component = withAncestor(By.tagName("form")).createComponent(MyComponent.class);
 }
 ```
+
+
 

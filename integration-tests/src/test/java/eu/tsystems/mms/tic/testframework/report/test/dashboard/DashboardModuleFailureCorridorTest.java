@@ -14,7 +14,6 @@ import eu.tsystems.mms.tic.testframework.report.model.TestReportSixNumbers;
 import eu.tsystems.mms.tic.testframework.report.model.TestReportThreeNumbers;
 import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoNumbers;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

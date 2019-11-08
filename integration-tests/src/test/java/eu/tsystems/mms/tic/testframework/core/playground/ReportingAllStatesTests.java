@@ -15,7 +15,6 @@ import eu.tsystems.mms.tic.testframework.utils.RandomUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.openqa.selenium.WebDriverException;
-import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;

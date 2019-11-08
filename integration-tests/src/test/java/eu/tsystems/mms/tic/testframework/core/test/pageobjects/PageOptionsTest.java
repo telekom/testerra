@@ -6,7 +6,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.PageWithPageOptions;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class PageOptionsTest extends AbstractTestSitesTest implements IPageFactoryTest {

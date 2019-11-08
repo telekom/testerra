@@ -29,7 +29,6 @@ package eu.tsystems.mms.tic.testframework.core.test.reporting;
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**

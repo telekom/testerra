@@ -24,7 +24,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.PageWithGuiElementGroups;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroup;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**

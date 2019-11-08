@@ -3,7 +3,6 @@ package eu.tsystems.mms.tic.testframework.report.testundertest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -29,7 +28,8 @@ public class ReportTestUnderTestPassed extends AbstractTest {
 		Assert.assertTrue(true);
 	}
 	@Test
-	public void test_TestStatePassed3() {Assert.assertTrue(true);}
+	public void test_TestStatePassed3() {
+        Assert.assertTrue(true);}
 	@Test
 	public void test_TestStatePassed4() { Assert.assertTrue(2==2); }
 	@Test

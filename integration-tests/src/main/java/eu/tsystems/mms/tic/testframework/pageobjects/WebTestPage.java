@@ -28,6 +28,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
 /**
  * Created with IntelliJ IDEA. User: pele Date: 07.01.13 Time: 14:15 To change this template use File | Settings | File
@@ -54,6 +55,7 @@ public class WebTestPage extends AbstractWebTestPage {
         super(driver);
 
         specialElementFromVariable = new GuiElement(driver, By.id("" + myVariables.number));
+        Assert.assertTrue(false);
     }
 
     public WebTestPage(WebDriver driver) {

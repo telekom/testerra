@@ -8,7 +8,6 @@
 
 package eu.tsystems.mms.tic.testframework.report.testundertest;
 
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -33,19 +32,19 @@ public class ReportTestUnderTestDependsOn extends AbstractTest {
 
     @Test(dependsOnMethods = {"test_PassedAlways"})
     public void test_FailedDependsOnPassedMethod() {
-        
+
         Assert.assertTrue(false);
     }
 
     @Test(dependsOnMethods = {"test_FailedDependsOnPassedMethod"})
     public void test_SkippedDependsOnFailedMethod() {
-        
+
         Assert.assertTrue(true, "Skipped - Not reachable. Depends on failed method");
     }
 
     @Test(dependsOnMethods = {"test_FailedDependsOnPassedMethod"}, alwaysRun = true)
     public void test_PassedDependsOnFailedMethodButAlwaysRun() {
-        
+
         Assert.assertTrue(true, "Reachable. Depends on failed method but alwaysRun flag is set");
     }
 
@@ -53,7 +52,7 @@ public class ReportTestUnderTestDependsOn extends AbstractTest {
     @Test(dependsOnMethods = {"test_FailedAlways"}, dataProvider = "dependsOnDP")
     public void test_dependsOnFailedMethodWithDP(String actualRun) {
         final String expectedRun = "Run1";
-        
+
         Assert.assertEquals(actualRun, expectedRun, "This test Run is not the expected Run");
     }
 
@@ -61,14 +60,14 @@ public class ReportTestUnderTestDependsOn extends AbstractTest {
     @Test(dependsOnMethods = {"test_dependsOnFailedMethodWithDP"}, dataProvider = "dependsOnDP")
     public void test_dependsOnFailedMethodWithDP2(String actualRun) {
         final String expectedRun = "Run1";
-        
+
         Assert.assertEquals(actualRun, expectedRun, "This test Run is not the expected Run");
     }
 
     @Test(dependsOnMethods = {"test_FailedDependsOnPassedMethod"}, dataProvider = "dependsOnDP", alwaysRun = true)
     public void test_dependsOnFailedMethodButAlwaysRunWithDP(String actualRun) {
         final String expectedRun = "Run1";
-        
+
         Assert.assertEquals(actualRun, expectedRun, "This test Run is not the expected Run");
     }
 

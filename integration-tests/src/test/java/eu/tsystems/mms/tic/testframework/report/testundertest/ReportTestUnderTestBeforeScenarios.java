@@ -1,7 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.testundertest;
 
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
-import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.lang.reflect.Method;

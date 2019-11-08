@@ -21,7 +21,6 @@ package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.regex.Matcher;

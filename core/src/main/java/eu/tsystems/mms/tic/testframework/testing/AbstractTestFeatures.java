@@ -33,25 +33,25 @@ import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
  */
 public abstract class AbstractTestFeatures {
 
-    protected static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
     private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
-    protected static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
-    protected static Assertion assertion = assertionFactory.create();
+    private static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
+    protected static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
+    protected static Assertion Assert = assertionFactory.create();
 
     protected void collectAssertions(Runnable runnable) {
         Class<? extends Assertion> prevClass = assertionFactory.setDefault(CollectedAssertion.class);
-        assertion = assertionFactory.create();
+        Assert = assertionFactory.create();
         runnable.run();
         assertionFactory.setDefault(prevClass);
-        assertion = assertionFactory.create();
+        Assert = assertionFactory.create();
     }
 
     protected void nonFunctionalAssertions(Runnable runnable) {
         Class<? extends Assertion> prevClass = assertionFactory.setDefault(NonFunctionalAssertion.class);
-        assertion = assertionFactory.create();
+        Assert = assertionFactory.create();
         runnable.run();
         assertionFactory.setDefault(prevClass);
-        assertion = assertionFactory.create();
+        Assert = assertionFactory.create();
     }
 
     protected void withTimeout(int seconds, Runnable runnable) {

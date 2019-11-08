@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.testdata.XLSTestDataReader;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -60,7 +59,7 @@ public class XLSReaderTest extends AbstractTest {
 
     /**
      * Reads a complete sheet of a .xls(x) file
-     * 
+     *
      * @param filename gets xls(x) document(s) given by DataProvider
      */
     @Test(dataProvider = "FileType")
@@ -76,7 +75,7 @@ public class XLSReaderTest extends AbstractTest {
 
     /**
      * Reads a number of rows of a .xls(x) limited by "fromId" (row from which to start) and "toId" (row where to end)
-     * 
+     *
      * @param filename gets xls(x) document(s) given by DataProvider
      */
     @Test(dataProvider = "FileType")
@@ -183,7 +182,7 @@ public class XLSReaderTest extends AbstractTest {
 
     /**
      * Negativ test case for a not existing file in resources.
-     * 
+     *
      */
     @Test
     public void testT09F_XlsReader_FileNotFoundInResources() {

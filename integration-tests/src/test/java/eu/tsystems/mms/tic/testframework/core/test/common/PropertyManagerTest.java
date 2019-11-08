@@ -21,7 +21,6 @@ package eu.tsystems.mms.tic.testframework.core.test.common;
 
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**

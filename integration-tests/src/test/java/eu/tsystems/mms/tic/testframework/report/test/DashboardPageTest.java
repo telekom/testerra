@@ -14,7 +14,6 @@ import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;

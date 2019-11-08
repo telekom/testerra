@@ -21,7 +21,6 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**

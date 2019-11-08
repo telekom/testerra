@@ -2,7 +2,6 @@ package eu.tsystems.mms.tic.testframework.core.test.l10n;
 
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.l10n.SimpleLocalization;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

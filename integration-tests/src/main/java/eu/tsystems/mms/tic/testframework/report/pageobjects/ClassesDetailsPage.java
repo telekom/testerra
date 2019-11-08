@@ -12,7 +12,6 @@ import eu.tsystems.mms.tic.testframework.report.model.ReportConfigMethodStateHel
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 
 import java.awt.*;
 import java.text.DateFormat;

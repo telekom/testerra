@@ -6,7 +6,6 @@ import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFai
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
 import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoNumbers;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 
 import java.util.List;
 

@@ -32,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.events.test.TesterraEventUserDataTestLi
 import eu.tsystems.mms.tic.testframework.events.test.UserDataTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -41,7 +40,7 @@ import java.util.List;
 
 /**
  * <Beschreibung der Klasse>
- * 
+ *
  * @author pele
  */
 public class TesterraEventsUserDataTest extends AbstractTest {

@@ -11,6 +11,9 @@ public interface Assertion {
     void fail(String message);
     void fail(AssertionError error);
     String format(Object actual, Object expected, String subject);
+    default boolean assertTrue(boolean condition) {
+        return assertTrue(condition, null);
+    }
     boolean assertTrue(boolean condition, String subject);
     boolean assertFalse(boolean condition, String subject);
     boolean assertSame(Object actual, Object expected, String subject);

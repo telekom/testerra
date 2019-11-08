@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.*;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Map;

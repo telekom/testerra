@@ -50,6 +50,7 @@ import java.util.Set;
  */
 @Deprecated()
 public abstract class AbstractPage extends AbstractTestFeatures implements IPage {
+    private static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
     /**
      * The webdriver object.
      */

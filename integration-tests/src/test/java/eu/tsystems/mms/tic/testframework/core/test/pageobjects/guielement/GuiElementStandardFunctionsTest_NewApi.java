@@ -22,12 +22,12 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.core.test.FluentTestPage;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
+import eu.tsystems.mms.tic.testframework.pageobjects.FluentWebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -35,11 +35,11 @@ import org.testng.annotations.Test;
 public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTest implements Loggable {
 
     private final static InstantAssertion instantAssertion = Testerra.ioc().getInstance(InstantAssertion.class);
-    private FluentTestPage page;
+    private FluentWebTestPage page;
 
     @BeforeClass
-    private FluentTestPage prepareTestPage() {
-        page = pageFactory.createPage(FluentTestPage.class);
+    private FluentWebTestPage prepareTestPage() {
+        page = pageFactory.createPage(FluentWebTestPage.class);
         return page.call(TestPage.INPUT_TEST_PAGE.getUrl());
     }
 

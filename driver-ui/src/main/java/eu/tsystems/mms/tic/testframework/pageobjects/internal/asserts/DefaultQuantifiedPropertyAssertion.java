@@ -43,4 +43,25 @@ public class DefaultQuantifiedPropertyAssertion<T> extends DefaultBinaryProperty
         testTimer(t -> assertion.assertBetween(new BigDecimal(provider.getActual().toString()), lower, higher, traceSubjectString()));
         return this;
     }
+
+    @Override
+    public QuantifiedPropertyAssertion<BigDecimal> absolute() {
+        return propertyAssertionFactory.quantified(this, new AssertionProvider<BigDecimal>() {
+            @Override
+            public BigDecimal getActual() {
+                BigDecimal number;
+                if (!(provider.getActual() instanceof BigDecimal)) {
+                    number = new BigDecimal(provider.getActual().toString());
+                } else {
+                    number = (BigDecimal)provider.getActual();
+                }
+                return number.abs();
+            }
+
+            @Override
+            public String getSubject() {
+                return "absolute";
+            }
+        });
+    }
 }

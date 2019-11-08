@@ -44,4 +44,5 @@ public interface QuantifiedPropertyAssertion<T> extends BinaryPropertyAssertion<
         return between(new BigDecimal(lower), new BigDecimal(higher));
     }
     QuantifiedPropertyAssertion<T> between(BigDecimal lower, BigDecimal higher);
+    QuantifiedPropertyAssertion<BigDecimal> absolute();
 }

@@ -26,6 +26,8 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.components.InputForm;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.TestableGuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -40,6 +42,9 @@ public class FluentWebTestPage extends FluentPage<FluentWebTestPage> {
     /** A button on the page. */
     @Check(nonFunctional = true)
     private final IGuiElement button1 = findOneById("4");
+
+    @Check
+    private InputForm inputForm = withAncestor(findOne(By.className("className"))).createComponent(InputForm.class);
 
     //@Check
     //private IGuiElement specialElementFromVariable;
@@ -65,41 +70,20 @@ public class FluentWebTestPage extends FluentPage<FluentWebTestPage> {
         return this;
     }
 
-    /**
-     * Test if button works as aspected.
-     */
-    public void assertFunctionalityOfButton1() {
-        final String something = "some";
-        input1.type(something);
-        textOutputField.asserts().assertTextContains(something);
+    public InputForm inputForm() {
+        return inputForm;
     }
 
-    /**
-     * Click on link to open this page again.
-     *
-     * @return Instance of the new page.
-     */
-    public FluentWebTestPage reloadPage() {
-        openAgainLink.click();
-        return new FluentWebTestPage(driver);
+    public TestableGuiElement notDisplayedElement() {
+        return findOneById("notDisplayedElement");
     }
 
-    /**
-     * Click on not existing element
-     *
-     */
-    public void gotoHell() {
-        IGuiElement guiElement = findOne(By.xpath("id('surely_not_existing')"));
-        guiElement.click();
+    public TestableGuiElement notVisibleElement() {
+        return findOneById("notVisibleElement");
     }
 
-    /**
-     * Proof whether non existing element is present
-     *
-     */
-    public void nonfunctionalAssert() {
-        IGuiElement guiElement = findOne(By.xpath("id('surely_not_existing')"));
-        guiElement.nonFunctionalAsserts().assertIsPresent();
+    public TestableGuiElement nonExistentElement() {
+        return findOneById("schnullifacks");
     }
 
     public IGuiElement getGuiElementBy(By by) {

@@ -1,4 +1,4 @@
-package eu.tsystems.mms.tic.testframework.core.test.components;
+package eu.tsystems.mms.tic.testframework.pageobjects.components;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.Component;

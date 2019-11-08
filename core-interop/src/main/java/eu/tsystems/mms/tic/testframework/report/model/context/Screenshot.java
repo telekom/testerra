@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,7 +83,7 @@ public class Screenshot implements Loggable {
         if (pageSourceFile!=null) {
             setPageSourceFile(pageSourceFile);
         }
-        tmpName = null;
+        tmpName = FilenameUtils.getBaseName(screenshotFile.getName());
     }
 
     private Screenshot setScreenshotFile(File file) {

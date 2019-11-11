@@ -28,21 +28,15 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.enums.MaximizePosition;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Class holding configuration settings for the WebDriverManager. Some are writable. This class is not ThreadSafe, some
  * settings may not be valid.
  */
 public class WebDriverManagerConfig {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverManagerConfig.class);
 
     /*
      * Default values.
@@ -71,6 +65,7 @@ public class WebDriverManagerConfig {
             true);
 
     public boolean maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
+    public MaximizePosition maximizePosition = MaximizePosition.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, MaximizePosition.SELF.toString()).toUpperCase());
 
     /**
      * Default constructor.
@@ -113,7 +108,7 @@ public class WebDriverManagerConfig {
 
     /**
      * Returns the webdriver mode.
-     * 
+     *
      * @return the webDriverMode
      */
     private WebDriverMode initWebDriverMode() {

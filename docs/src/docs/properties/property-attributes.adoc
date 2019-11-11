@@ -17,6 +17,7 @@
 :selenium_server_host:              tt.selenium.server.host
 :selenium_server_port:              tt.selenium.server.port
 :browser_maximize:                  tt.browser.maximize
+:browser_maximize_position:                  tt.browser.maximize.position
 :display_resolution:                tt.display.resolution
 :wdm_closewindows_aftertestmethods: tt.wdm.closewindows.aftertestmethods
 :wdm_closewindows_onfailure:        tt.wdm.closewindows.onfailure

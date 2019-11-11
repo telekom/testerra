@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.Constants;
 import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.enums.MaximizePosition;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
@@ -202,13 +203,31 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
           */
         StopWatch.startPageLoad(eventFiringWebDriver);
 
+        WebDriverManagerConfig config = WebDriverManager.config();
+        WebDriver.Window window = eventFiringWebDriver.manage().window();
         /*
          Maximize
          */
-        if (WebDriverManager.config().maximize) {
+        if (config.maximize) {
             LOGGER.info(logSCID() + "Trying to maximize window");
             try {
-                eventFiringWebDriver.manage().window().maximize();
+                Dimension originWindowSize = window.getSize();
+                // Maxmize to detect window size
+                window.maximize();
+                if (config.maximizePosition != MaximizePosition.SELF) {
+                    LOGGER.info(String.format("Setting maximized window position to: %s", config.maximizePosition));
+                    Point targetPosition = new Point(0,0);
+                    switch (config.maximizePosition) {
+                        case LEFT: targetPosition.x = -originWindowSize.width; break;
+                        case RIGHT: targetPosition.x = window.getSize().width+1; break;
+                        case TOP: targetPosition.y = -originWindowSize.height; break;
+                        case BOTTOM: targetPosition.y = window.getSize().height+1; break;
+                    }
+                    LOGGER.info(String.format("Move window to: %s", targetPosition));
+                    window.setPosition(targetPosition);
+                    // Re-maximize
+                    window.maximize();
+                }
             } catch (Throwable t1) {
                 LOGGER.info(logSCID() + "Could not maximize window", t1);
 
@@ -218,7 +237,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 int width = Integer.valueOf(split[0]);
                 int height = Integer.valueOf(split[1]);
                 try {
-                    eventFiringWebDriver.manage().window().setSize(new Dimension(width, height));
+                    window.setSize(new Dimension(width, height));
                 } catch (Throwable t2) {
                     LOGGER.error(logSCID() + "Could not set window size", t2);
 
@@ -232,8 +251,8 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                                 setSkipThrowingException(true);
                                 LOGGER.info(logSCID() + "Trying setPosition() and setSize()");
                                 try {
-                                    eventFiringWebDriver.manage().window().setPosition(new Point(0, 0));
-                                    eventFiringWebDriver.manage().window().setSize(new Dimension(width, height));
+                                    window.setPosition(new Point(0, 0));
+                                    window.setSize(new Dimension(width, height));
                                     LOGGER.info(logSCID() + "Yup, success!");
                                 } catch (Exception e) {
                                     LOGGER.warn(logSCID() + "Nope. Got error: " + e.getMessage());

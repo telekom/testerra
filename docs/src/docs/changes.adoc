@@ -291,13 +291,13 @@ POConfig.setThreadLocalUiElementTimeoutInSeconds(1);
 === Sub Pages
 The new standard way to implement Sub Pages aka Components is
 ```java
-public class MyComponent extends Component<MyComponent> {
-    public MyComponent(IGuiElement rootElement) {
+public class MyForm extends Component<MyForm> {
+    public MyForm(IGuiElement rootElement) {
         super(rootElement);
     }
 
     @Override
-    protected MyComponent self() {
+    protected MyForm self() {
         return this;
     }
 }
@@ -305,7 +305,7 @@ public class MyComponent extends Component<MyComponent> {
 Instantiate components
 ```java
 class MyPage extends FluentPage<MyPage> {
-    private MyComponent component = withAncestor(By.tagName("form")).createComponent(MyComponent.class);
+    private MyForm form = withAncestor(find(By.tagName("form"))).createComponent(MyForm.class);
 }
 ```
 

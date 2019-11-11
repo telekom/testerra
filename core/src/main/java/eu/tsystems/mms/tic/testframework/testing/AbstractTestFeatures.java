@@ -20,9 +20,11 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
@@ -36,6 +38,20 @@ public abstract class AbstractTestFeatures {
     private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
     private static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
     protected static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
+    /**
+     * Instance for wrapping static class {@link AssertCollector}
+     */
+    @Deprecated
+    protected final Assertion AssertCollector = Testerra.ioc().getInstance(CollectedAssertion.class);
+    /**
+     * Instance for wrapping static class {@link NonFunctionalAssert}
+     */
+    @Deprecated
+    protected final Assertion NonFunctionalAssert = Testerra.ioc().getInstance(NonFunctionalAssertion.class);
+
+    /**
+     * @todo There is currently no way to make that final.
+     */
     protected Assertion Assert = assertionFactory.create();
 
     protected void collectAssertions(Runnable runnable) {

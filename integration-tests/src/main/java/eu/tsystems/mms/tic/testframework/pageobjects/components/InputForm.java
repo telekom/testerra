@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 public class InputForm extends Component<InputForm> {
 
     @Check
-    private IGuiElement button = findOne(By.className("component-btn"));
+    private IGuiElement button = find(By.className("component-btn"));
 
     public InputForm(IGuiElement rootElement) {
         super(rootElement);

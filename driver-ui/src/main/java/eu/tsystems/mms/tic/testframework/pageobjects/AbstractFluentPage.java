@@ -42,13 +42,13 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
 
     protected interface Finder {
         IGuiElement find(Locate locator);
-        default IGuiElement findOneById(String id) {
+        default IGuiElement findById(String id) {
             return find(Locate.by().id(id));
         }
-        default IGuiElement findOneByQa(String qa) {
+        default IGuiElement findByQa(String qa) {
             return find(Locate.by().qa(qa));
         }
-        default IGuiElement findOne(By by) {
+        default IGuiElement find(By by) {
             return find(Locate.by(by));
         }
     }
@@ -79,13 +79,13 @@ public abstract class AbstractFluentPage<SELF extends AbstractFluentPage<SELF>> 
     protected ComponentFinder withAncestor(IGuiElement ancestor) {
         return new AncestorFinder(this,ancestor);
     }
-    protected IGuiElement findOneById(String id) {
+    protected IGuiElement findById(String id) {
         return find(Locate.by().id(id));
     }
-    protected IGuiElement findOneByQa(String qa) {
+    protected IGuiElement findByQa(String qa) {
         return find(Locate.by().qa(qa));
     }
-    protected IGuiElement findOne(By by) {
+    protected IGuiElement find(By by) {
         return find(Locate.by(by));
     }
     protected IGuiElement find(Locate locator) {

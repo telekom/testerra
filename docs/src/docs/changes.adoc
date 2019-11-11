@@ -53,7 +53,7 @@ The standard way of implicit GuiElement checks is now
 ```java
 class MyPage extends FluentPage<MyPage> {
     @Check
-    private IGuiElement guiElement = findOneById(42);
+    private IGuiElement guiElement = findById(42);
 }
 ```
 
@@ -61,17 +61,19 @@ class MyPage extends FluentPage<MyPage> {
 .Performing explicit page checks is forbidden!
 ====
 ```java
-class MyPage extends FluentPage<MyPage> {
-    private IGuiElement guiElement = findOneById(42);
-
+class MyPage extends Page {
     public MyPage(WebDriver webDriver) {
         super(webDriver);
-
         checkPage(); <1>
     }
 }
 ```
-<1> Forbidden
+<1> Calling `checkPage()` as `protected` member is forbidden
+```java
+MyPage page = pageFactory.create(MyPage.class);
+page.checkPage(); <2>
+```
+<2> Calling `checkPage()` as `public` member is forbidden
 ====
 
 === Element instantiation
@@ -79,8 +81,8 @@ class MyPage extends FluentPage<MyPage> {
 The new standard way to instantiate GuiElements is now
 ```java
 class MyPage extends FluentPage<MyPage> {
-    private IGuiElement guiElement = findOneById(42);
-    private IGuiElement guiElement = findOne(By.xpath("//div[1]"));
+    private IGuiElement guiElement = findById(42);
+    private IGuiElement guiElement = find(By.xpath("//div[1]"));
 }
 ```
 
@@ -98,8 +100,8 @@ class MyPage extends Page {
 For sub elements
 ```java
 class MyPage extends FluentPage<MyPage> {
-    private IGuiElement guiElement = findOneById(42);
-    private IGuiElement subElement = withAncestor(guiElement).findOne(By.xpath("//div[1]"));
+    private IGuiElement guiElement = findById(42);
+    private IGuiElement subElement = withAncestor(guiElement).find(By.xpath("//div[1]"));
 }
 ```
 
@@ -117,8 +119,8 @@ class MyPage extends FluentPage<MyPage> {
 For elements in frames
 ```java
 class MyPage extends FluentPage<MyPage> {
-    private IGuiElement frame = findOne(By.tagName("frame"));
-    private IGuiElement guiElement = inFrame(frame).findOneById(14);
+    private IGuiElement frame = find(By.tagName("frame"));
+    private IGuiElement guiElement = inFrame(frame).findById(14);
 }
 ```
 
@@ -207,7 +209,7 @@ tt.guielement.default.assertcollector=true
 
 === Non Functional Assertions
 
-The new standard way for non functional assertions works like collected assertions
+The new standard way for non functional assertions works like <<Collected Assertions>>
 ```java
 nonFunctional(() -> guiElement.displayed().isTrue());
 ```

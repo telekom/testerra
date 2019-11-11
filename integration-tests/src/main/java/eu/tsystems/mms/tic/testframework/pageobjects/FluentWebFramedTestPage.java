@@ -35,17 +35,17 @@ import org.openqa.selenium.WebDriver;
  */
 public class FluentWebFramedTestPage extends FluentPage<FluentWebFramedTestPage> {
 
-    IGuiElement inputFrame1 = findOne(By.name("InputFrame1"));
+    IGuiElement inputFrame1 = find(By.name("InputFrame1"));
 
     /** First text field on page. */
     @Check
-    private final IGuiElement input1 = inFrame(inputFrame1).findOneById("1");
+    private final IGuiElement input1 = inFrame(inputFrame1).findById("1");
     /** A button on the page. */
     @Check(nonFunctional = true)
-    private final IGuiElement button1 = inFrame(inputFrame1).findOneById("4");
+    private final IGuiElement button1 = inFrame(inputFrame1).findById("4");
     /** The output text field. */
-    private final IGuiElement textOutputField = findOne(By.xpath("//p[@id='99']"));
-    private final IGuiElement textOutputFieldNotExisting = findOne(By.xpath("//p[@id='notthere']"));
+    private final IGuiElement textOutputField = find(By.xpath("//p[@id='99']"));
+    private final IGuiElement textOutputFieldNotExisting = find(By.xpath("//p[@id='notthere']"));
 
     public FluentWebFramedTestPage(WebDriver driver) {
         super(driver);

@@ -37,24 +37,24 @@ import org.openqa.selenium.WebDriver;
  */
 public class FluentWebTestPage extends FluentPage<FluentWebTestPage> {
 
-    private final IGuiElement input1 = findOneById("1");
+    private final IGuiElement input1 = findById("1");
 
     /** A button on the page. */
     @Check(nonFunctional = true)
-    private final IGuiElement button1 = findOneById("4");
+    private final IGuiElement button1 = findById("4");
 
     @Check
-    private InputForm inputForm = withAncestor(findOne(By.className("className"))).createComponent(InputForm.class);
+    private InputForm inputForm = withAncestor(find(By.className("className"))).createComponent(InputForm.class);
 
     //@Check
     //private IGuiElement specialElementFromVariable;
 
     @Check
-    private final IGuiElement openAgainLink = findOneById("11");
+    private final IGuiElement openAgainLink = findById("11");
 
     /** The output text field. */
     @Check
-    private final IGuiElement textOutputField = findOneById("99");
+    private final IGuiElement textOutputField = findById("99");
 
     /**
      * Default Page constructor.
@@ -75,18 +75,18 @@ public class FluentWebTestPage extends FluentPage<FluentWebTestPage> {
     }
 
     public TestableGuiElement notDisplayedElement() {
-        return findOneById("notDisplayedElement");
+        return findById("notDisplayedElement");
     }
 
     public TestableGuiElement notVisibleElement() {
-        return findOneById("notVisibleElement");
+        return findById("notVisibleElement");
     }
 
     public TestableGuiElement nonExistentElement() {
-        return findOneById("schnullifacks");
+        return findById("schnullifacks");
     }
 
     public IGuiElement getGuiElementBy(By by) {
-        return findOne(by);
+        return find(by);
     }
 }

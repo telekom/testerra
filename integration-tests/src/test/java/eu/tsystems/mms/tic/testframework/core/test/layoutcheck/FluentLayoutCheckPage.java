@@ -13,6 +13,6 @@ public class FluentLayoutCheckPage extends FluentPage<FluentLayoutCheckPage> {
         return this;
     }
     public IGuiElement getGuiElementQa(String qa) {
-        return findOneByQa(qa);
+        return findByQa(qa);
     }
 }

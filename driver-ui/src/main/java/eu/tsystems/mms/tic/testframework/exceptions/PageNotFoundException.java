@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 14.08.2012
@@ -28,7 +28,7 @@ package eu.tsystems.mms.tic.testframework.exceptions;
 
 /**
  * Exception indicating that a page was not found.
- * 
+ *
  * @author pele
  */
 public class PageNotFoundException extends RuntimeException {
@@ -40,7 +40,7 @@ public class PageNotFoundException extends RuntimeException {
 
     /**
      * Create Exception with a message.
-     * 
+     *
      * @param message Message for Exception.
      */
     public PageNotFoundException(final String message) {
@@ -49,7 +49,7 @@ public class PageNotFoundException extends RuntimeException {
 
     /**
      * Exception create by the throwable and a message.
-     * 
+     *
      * @param message Message for Exception.
      * @param cause Throwable that causes the exception.
      */
@@ -59,7 +59,7 @@ public class PageNotFoundException extends RuntimeException {
 
     /**
      * Create Exception by a cause.
-     * 
+     *
      * @param cause Throwable that causes the exception.
      */
     public PageNotFoundException(final Throwable cause) {

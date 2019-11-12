@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 12.04.2013
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -38,7 +38,7 @@ import java.util.Properties;
 
 /**
  * MailConnector using the IMAP Protocol. Creates a session with values from mailconnection.properties.
- * 
+ *
  * @author mibu
  */
 public class ImapMailConnector extends AbstractMailConnector {
@@ -115,7 +115,7 @@ public class ImapMailConnector extends AbstractMailConnector {
 
     /**
      * Marks all messages in inbox as seen.
-     * 
+     *
      * @throws TesterraSystemException Error connecting with Server.
      */
     public void markAllMailsAsSeen() throws TesterraSystemException {
@@ -124,7 +124,7 @@ public class ImapMailConnector extends AbstractMailConnector {
 
     /**
      * Marks all messages in inbox as seen.
-     * 
+     *
      * @throws TesterraSystemException Error connecting with Server.
      */
     private void pMarkAllMailsAsSeen() throws TesterraSystemException {

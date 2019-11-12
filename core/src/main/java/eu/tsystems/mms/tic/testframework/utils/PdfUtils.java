@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 23.07.2014
- * 
+ *
  * Copyright(c) 2011 - 2014 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -37,7 +37,7 @@ import java.io.*;
 
 /**
  * Class for Reading Pdfs
- * 
+ *
  * @author wakr
  */
 public final class PdfUtils {
@@ -47,7 +47,7 @@ public final class PdfUtils {
 
     /**
      * Get content of pdf as string.
-     * 
+     *
      * @param pdffilelocation Absolute path of file
      * @return PDF content as String
      */
@@ -67,7 +67,7 @@ public final class PdfUtils {
 
     /**
      * Get content of pdf as string.
-     * 
+     *
      * @param stream File stream
      * @return PDF content as String
      */

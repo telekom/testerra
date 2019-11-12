@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 01.08.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -61,7 +61,7 @@ public abstract class AbstractConnection {
     /**
      * Open the JDBC connection with the details specified in this class (either DBConnector object or single
      * properties.
-     * 
+     *
      * @return DBConnector object with details that have been used to connect.
      * @throws SQLException .
      * @throws ClassNotFoundException .
@@ -76,7 +76,7 @@ public abstract class AbstractConnection {
 
     /**
      * Closes the JDBC connection.
-     * 
+     *
      * @throws SQLException Exception while closing the DBConnection.
      */
     public void close() throws SQLException {
@@ -88,7 +88,7 @@ public abstract class AbstractConnection {
 
     /**
      * Getter.
-     * 
+     *
      * @return automaticConnectionHandling
      */
     public Boolean isAutomaticConnectionHandling() {
@@ -97,7 +97,7 @@ public abstract class AbstractConnection {
 
     /**
      * Setter.
-     * 
+     *
      * @param automaticConnectionHandling value.
      */
     public static void setAutomaticConnectionHandling(final boolean automaticConnectionHandling) {
@@ -247,11 +247,11 @@ public abstract class AbstractConnection {
     public void setConnection(final Connection connection) {
         this.connection = connection;
     }
-    
+
     /**
      * Open the JDBC connection with the details specified in this class (either DBConnector object or single
      * properties.
-     * 
+     *
      * @return DBConnector object with details that have been used to connect.
      * @throws SQLException .
      * @throws ClassNotFoundException .

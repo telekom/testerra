@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 13.06.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 /**
  * Class containing TableDefinitions for DBConnector test.
- * 
+ *
  * Created with IntelliJ IDEA. User: pele Date: 18.05.12 Time: 13:41 *
  */
 public class TableDefinitions extends Table {
@@ -47,7 +47,7 @@ public class TableDefinitions extends Table {
 
     /**
      * Default constructor for a table.
-     * 
+     *
      * @param table
      *            Name of the table.
      */

@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 04.01.2013
- * 
+ *
  * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -49,7 +49,7 @@ public class DataSet implements Serializable {
 
     /**
      * Constructor creating a Data Set for the ThreadVisualizer without endTime.
-     * 
+     *
      * @param threadName Name of thread.
      * @param content HTML content representing the data.
      * @param startTime Start of thread.
@@ -62,7 +62,7 @@ public class DataSet implements Serializable {
 
     /**
      * Constructor creating a Data Set for the ThreadVisualizer.
-     * 
+     *
      * @param threadName Name of thread.
      * @param content HTML content representing the data.
      * @param startTime Start of thread.
@@ -77,7 +77,7 @@ public class DataSet implements Serializable {
 
     /**
      * Format String for html.
-     * 
+     *
      * @param s String to format.
      * @return formatted String.
      */

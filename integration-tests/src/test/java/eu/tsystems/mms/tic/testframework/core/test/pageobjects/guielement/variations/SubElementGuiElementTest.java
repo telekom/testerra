@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
 
@@ -77,6 +77,11 @@ public class SubElementGuiElementTest extends GuiElementTestCollector {
     @Test
     public void testT04N_GuiElement_GetSubElement_NoSubElement_xPath() {
         checkGetSubElementWithLocatorIsNotPresent(By.xpath(".//a[@id='11']"));
+    }
+
+    @Test
+    public void testT04N_GuiElement_GetSubElement_NoSubElement_Absolute_xPath() {
+        checkGetSubElementWithLocatorIsNotPresent(By.xpath("//a[@id='11']"));
     }
 
     /**

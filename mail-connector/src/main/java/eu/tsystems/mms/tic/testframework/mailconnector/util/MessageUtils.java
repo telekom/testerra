@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 17.09.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -42,9 +42,9 @@ import java.util.Map;
 
 /**
  * Class containing utility functions for MimeMessage handling.
- * 
+ *
  * @author sepr
- * 
+ *
  */
 public final class MessageUtils {
 
@@ -59,7 +59,7 @@ public final class MessageUtils {
 
     /**
      * Get Email headers (as String[]) from a mime message.
-     * 
+     *
      * @param message The message to get the headers.
      * @return A string array containing the headers.
      * @throws TesterraSystemException thrown if email headers can't read.
@@ -70,7 +70,7 @@ public final class MessageUtils {
 
     /**
      * Get Email headers (as String[]) from a mime message.
-     * 
+     *
      * @param message The message to get the headers.
      * @return A string array containing the headers.
      * @throws TesterraSystemException thrown if email headers can't read.
@@ -92,7 +92,7 @@ public final class MessageUtils {
 
     /**
      * Bugfix for MultiPart messages. Any method must called.
-     * 
+     *
      * @param message The message to fix.
      */
     public static void multiPartBugfix(final Message message) {
@@ -101,7 +101,7 @@ public final class MessageUtils {
 
     /**
      * Bugfix for MultiPart messages. Any method must called.
-     * 
+     *
      * @param message The message to fix.
      */
     private static void pMultiPartBugfix(final Message message) {
@@ -118,11 +118,11 @@ public final class MessageUtils {
 
     /**
      * Messages filter. Filter criteria are: subject and from
-     * 
+     *
      * @param map The treemap containing subjects or from values. e.g. TreeMap<"subject", "Our Meeting"> or
      *            TreeMap<"from","info@example.org">
      * @param messages An array containing all the messages to search.
-     * 
+     *
      * @return An array containing only the filtered messages.
      * @throws TesterraSystemException thrown if messages can't be filtered.
      */
@@ -133,11 +133,11 @@ public final class MessageUtils {
 
     /**
      * Messages filter. Filter criteria are: subject and from
-     * 
+     *
      * @param map The treemap containing subjects or from values. e.g. TreeMap<"subject", "Our Meeting"> or
      *            TreeMap<"from","info@example.org">
      * @param messages An array containing all the messages to search.
-     * 
+     *
      * @return An array containing only the filtered messages.
      * @throws TesterraSystemException thrown if messages can't be filtered.
      */
@@ -167,7 +167,7 @@ public final class MessageUtils {
 
     /**
      * Sets the header for the message.
-     * 
+     *
      * @param message The message to set the header.
      * @param subject The subject to set.
      * @param fromAddresses The FROM Address/Addresses.
@@ -186,7 +186,7 @@ public final class MessageUtils {
 
     /**
      * Sets the header for the message.
-     * 
+     *
      * @param message The message to set the header.
      * @param subject The subject to set.
      * @param fromAddresses The FROM Address/Addresses.

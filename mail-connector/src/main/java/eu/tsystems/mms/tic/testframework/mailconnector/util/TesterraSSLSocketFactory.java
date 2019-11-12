@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 27.06.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -49,20 +49,20 @@ import java.security.Security;
  * @author pele, mrgi
  */
 public class TesterraSSLSocketFactory extends SSLSocketFactory {
-    
+
     /** The Logger. */
     public static final Logger LOGGER = LoggerFactory.getLogger(TesterraSSLSocketFactory.class);
-    
+
     /** The inner class SSLSocketFactory Object. */
     private SSLSocketFactory factory;
-    
+
     /**
      * Creates a new SSL Factory Object. The Key Chains must set before.
      */
     public TesterraSSLSocketFactory() {
-        this.init(); 
+        this.init();
     }
-    
+
     /**
      * Called from constructor. Initializes the ImapMailConnector.
      */
@@ -90,7 +90,7 @@ public class TesterraSSLSocketFactory extends SSLSocketFactory {
                 LOGGER.info("No Keystore was set!");
                 kmf.init(null, null);
             }
-            
+
             final KeyChain trustStoreKC = SSLConfig.getCurrentTrustStoreKeyChain();
             final KeyStore trustStore = KeyStore.getInstance("JKS");
             final TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
@@ -107,13 +107,13 @@ public class TesterraSSLSocketFactory extends SSLSocketFactory {
                 LOGGER.info("No Truststore was set!");
             }
             tmf.init(trustStore);
-            
+
             final SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(kmf.getKeyManagers(), tmf.getTrustManagers(), new java.security.SecureRandom());
             factory = sslContext.getSocketFactory();
         } catch (final Exception ex) {
             LOGGER.error(ex.getMessage());
-        }     
+        }
     }
 
     /**
@@ -131,7 +131,7 @@ public class TesterraSSLSocketFactory extends SSLSocketFactory {
      * @see javax.net.ssl.SSLSocketFactory#createSocket(java.net.Socket, java.lang.String, int, boolean)
      */
     @Override
-    public Socket createSocket(final Socket socket, final String host, final int port, final boolean autoClose) 
+    public Socket createSocket(final Socket socket, final String host, final int port, final boolean autoClose)
             throws IOException {
         return factory.createSocket(socket, host, port, autoClose);
     }
@@ -182,7 +182,7 @@ public class TesterraSSLSocketFactory extends SSLSocketFactory {
      * @see javax.net.SocketFactory#createSocket(java.lang.String, int, java.net.InetAddress, int)
      */
     @Override
-    public Socket createSocket(final String arg0, final int arg1, final InetAddress arg2, final int arg3) 
+    public Socket createSocket(final String arg0, final int arg1, final InetAddress arg2, final int arg3)
             throws IOException {
         return factory.createSocket(arg0, arg1, arg2, arg3);
     }
@@ -193,7 +193,7 @@ public class TesterraSSLSocketFactory extends SSLSocketFactory {
      * @see javax.net.SocketFactory#createSocket(java.net.InetAddress, int, java.net.InetAddress, int)
      */
     @Override
-    public Socket createSocket(final InetAddress arg0, final int arg1, final InetAddress arg2, final int arg3) 
+    public Socket createSocket(final InetAddress arg0, final int arg1, final InetAddress arg2, final int arg3)
             throws IOException {
         return factory.createSocket(arg0, arg1, arg2, arg3);
     }

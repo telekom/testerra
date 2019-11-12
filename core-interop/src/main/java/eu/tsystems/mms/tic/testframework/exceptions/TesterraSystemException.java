@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 06.08.2012
@@ -28,19 +28,19 @@ package eu.tsystems.mms.tic.testframework.exceptions;
 
 /**
  * Exception for tt.
- * 
+ *
  * @author pele
  */
 public class TesterraSystemException extends RuntimeException {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
     /**
      * Exception with message.
-     * 
+     *
      * @param message The message that should displayed.
      */
     public TesterraSystemException(final String message) {
@@ -49,7 +49,7 @@ public class TesterraSystemException extends RuntimeException {
 
     /**
      * Exception with message and cause.
-     * 
+     *
      * @param message The message that should displayed.
      * @param cause The Throwable of the exception.
      */
@@ -59,7 +59,7 @@ public class TesterraSystemException extends RuntimeException {
 
     /**
      * Exception with cause.
-     * 
+     *
      * @param cause The Throwable of the exception.
      */
     public TesterraSystemException(final Throwable cause) {

@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.constants;
 
@@ -35,7 +35,7 @@ public final class RTConstants {
 
     /**
      * Get download directory for the specified platform.
-     * 
+     *
      * @param platform os to build a valid folder
      * @return Folder path valid for given OS.
      */

@@ -29,6 +29,11 @@ test {
         s = ['src/test/resources/testng/tapas/TapasTask' + taskState + '.xml']
     }
 
+    def smokeTest = findProperty("smoke")
+    if (smokeTest) {
+        s = ['src/test/resources/Smoke.xml']
+    }
+
     useTestNG() {
         suites s
         configFailurePolicy "continue"
@@ -52,7 +57,7 @@ def setFailureCorridor(nr) {
     System.setProperty("tt.failure.corridor.allowed.failed.tests.mid", "3")
     System.setProperty("tt.failure.corridor.allowed.failed.tests.low", "5")
     //abhängig von nr
-    switch (nr){
+    switch (nr) {
         case "1":
             System.setProperty("tt.failure.corridor.allowed.failed.tests.high", "34")
             break
@@ -77,6 +82,6 @@ def setFailureCorridor(nr) {
     }
 }
 
-def setCloseWindows(){
+def setCloseWindows() {
     System.setProperty("tt.wdm.closeWindows.afterTestMethods", "false")
 }

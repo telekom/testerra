@@ -21,9 +21,13 @@ GuiElement upper = new GuiElement(driver, By.name("upperElement"));
 
 // Create the sub elements
 GuiElement lower = upper.getSubElement(By.name("lowerElement"));
-// Don't forget the dot (.) before the slashes!
-GuiElement lower2 = upper.getSubElement(By.xpath(".//p[@id='element']"));
+GuiElement lower = upper.getSubElement(By.xpath(".//p[@id='element']")); <1>
+GuiElement lower = upper.getSubElement(By.xpath("//p[@id='element']")); <2>
+GuiElement lower = upper.getSubElement(By.xpath("./p[@id='element']")); <3>
 ----
+<1> Find any matching descendant
+<2> Corrects the selector prefix to './/'
+<3> Find any matching child
 
 == Advanced GuiElement locating
 
@@ -50,11 +54,16 @@ GuiElement myElement = new GuiElement(driver, Locate.by().displayed().xpath(".//
 ----
 
 === Prepared xpath expressions
+
+Using prepared expressions makes your selectors more readable.
+
 [source,java]
 ----
-Locate locator = Locate.prepare("//button[text()='%s'])");
-GuiElement loginButton = new GuiElement(driver, locator.with("Login"));
-GuiElement logoutButton = new GuiElement(driver, locator.with("Logout"));
+Locate byText = Locate.prepare("//button[text()='%s'])");
+Locate byClass = Locate.prepare("//%s[contains(@class, '%s')][%d]");
+
+GuiElement loginButton = new GuiElement(driver, byText.with("Login"));
+GuiElement logoutButton = new GuiElement(driver, byClass.with("button", "btn-logout", 1));
 ----
 
 === Filtering elements (draft)

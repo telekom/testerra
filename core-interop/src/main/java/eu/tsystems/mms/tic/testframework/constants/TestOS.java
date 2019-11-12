@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 24.01.2017
- * 
+ *
  * Copyright(c) 2011 - 2017 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.constants;
 
 /**
- * OS to run tests on. 
+ * OS to run tests on.
  * @author sepr
  */
 public enum TestOS {

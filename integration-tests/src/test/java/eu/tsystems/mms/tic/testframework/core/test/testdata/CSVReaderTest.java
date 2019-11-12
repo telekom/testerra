@@ -20,7 +20,7 @@ import java.util.Map;
  * Date: 18.09.2019
  * Time: 08:48
  *
- * @author Eric.Kubenka <Eric.Kubenka@t-systems.com>
+ * @author Eric.Kubenka
  */
 public class CSVReaderTest {
 

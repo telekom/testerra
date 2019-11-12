@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 01.08.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -32,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.dbconnector.connection.Driver;
  * This abstract class is used to parametrize the DBConnector to allow only project specific DB connections. Therefor create your
  * project specific project connections class which inherits from this one. In that class you can define your connections which are
  * then allowed to be used if you parametrize the generic DBConnector with your project specific connections class.
- * 
+ *
  * This is an optional feature.
  */
 public class ProjectConnections {
@@ -51,7 +51,7 @@ public class ProjectConnections {
 
     /**
      * Default constuctor.
-     * 
+     *
      * @param dbConnection
      *            DBConnector holding connection details.
      */
@@ -61,7 +61,7 @@ public class ProjectConnections {
 
     /**
      * Getter.
-     * 
+     *
      * @return DBConnector.
      */
     public DBConnector<?> getDbConnection() {
@@ -71,7 +71,7 @@ public class ProjectConnections {
 
 /**
  * Sample class to show usage of ProjectConnections for ow profiles.
- * 
+ *
  * @author sepr
  */
 class MyConnections extends ProjectConnections {
@@ -84,7 +84,7 @@ class MyConnections extends ProjectConnections {
 
     /**
      * Default constructor.
-     * 
+     *
      * @param dbConnection
      *            DBConnector holding connection details.
      */

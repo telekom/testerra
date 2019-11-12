@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 23.04.2012
- * 
+ *
  * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 
 /**
  * Utility class for logging methods.
- * 
+ *
  * @author pele
  */
 public final class LoggerUtils {
@@ -43,7 +43,7 @@ public final class LoggerUtils {
 
     /**
      * Configure the log level for tt.
-     * 
+     *
      * @param logger The logger to log.
      * @param level The LogLevel which log messages should be logged,
      * @param msg The message to log.

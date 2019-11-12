@@ -123,8 +123,8 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     }
 
     @Override
-    public RectAssertion rect() {
-        return rootElement.rect();
+    public RectAssertion bounds() {
+        return rootElement.bounds();
     }
 
     @Override

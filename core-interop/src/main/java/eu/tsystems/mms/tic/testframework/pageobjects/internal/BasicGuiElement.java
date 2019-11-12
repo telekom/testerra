@@ -42,7 +42,7 @@ public interface BasicGuiElement {
     BinaryPropertyAssertion<Boolean> displayed();
     BinaryPropertyAssertion<Boolean> visible(boolean complete);
     StringPropertyAssertion<String> tagName();
-    RectAssertion rect();
+    RectAssertion bounds();
 
     /**
      * Takes a screenshot of the current element

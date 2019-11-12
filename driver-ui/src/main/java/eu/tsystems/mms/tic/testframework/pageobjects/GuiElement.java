@@ -918,7 +918,10 @@ public class GuiElement implements
     }
 
     @Override
-    public RectAssertion rect() {
+    /**
+     * @todo Separate distance and Layout
+     */
+    public RectAssertion bounds() {
         final IGuiElement self = this;
         return new DefaultRectAssertion(null, new AssertionProvider<Rectangle>() {
             @Override

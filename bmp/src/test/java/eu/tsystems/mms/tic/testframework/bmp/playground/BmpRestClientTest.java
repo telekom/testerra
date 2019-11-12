@@ -19,7 +19,7 @@ import java.net.URL;
  * Date: 04.11.2019
  * Time: 08:44
  *
- * @author Eric Kubenka <Eric.Kubenka@t-systems.com>
+ * @author Eric Kubenka
  * @implNote Please start your local instance of https://github.com/lightbody/browsermob-proxy on your machine or override API_URL before testing
  */
 public class BmpRestClientTest {

@@ -29,6 +29,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.TakesScreenshot;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
@@ -38,6 +40,11 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
     @Override
     protected TestPage getStartPage() {
         return TestPage.LAYOUT;
+    }
+
+    @BeforeMethod
+    public void gotoStartSite() {
+        WebDriverManager.getWebDriver().navigate().to(getStartPage().getUrl());
     }
 
     private GuiElement getGuiElementQa(final String qaTag) {

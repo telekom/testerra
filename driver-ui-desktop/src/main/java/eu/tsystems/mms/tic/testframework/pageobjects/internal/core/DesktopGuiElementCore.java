@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
@@ -57,7 +58,7 @@ import java.util.List;
 /**
  * Created by rnhb on 12.08.2015.
  */
-public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives {
+public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives, Loggable {
 
     private By by;
 
@@ -479,18 +480,20 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
             frames = frameLogic.getFrames();
         }
 
-        String locatorToString = locate.getBy().toString();
-        if (locatorToString.toLowerCase().contains("xpath")) {
-            int i = locatorToString.indexOf(":") + 1;
-            String locator = locatorToString.substring(i).trim();
+        String abstractLocatorString = locate.getBy().toString();
+        if (abstractLocatorString.toLowerCase().contains("xpath")) {
+            int i = abstractLocatorString.indexOf(":") + 1;
+            String xpath = abstractLocatorString.substring(i).trim();
+            String prevXPath = xpath;
             // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
-            if (locator.startsWith("/")) {
-                LOGGER.warn("GetSubElement: Forced replacement of / to ./ at startTime of By.xpath locator, because / would not be relative: " + locator);
-                locate = Locate.by(By.xpath(locator));
-            } else if (!locator.startsWith(".") && !(locator.length() >= 2 && locator.startsWith("(") && locator.substring(1, 2).equals("."))) {
-                LOGGER.warn("Apparently, getSubElement is called with an By.xpath locator that does not startTime with a dot. " +
-                    "This will most likely lead to unexpected and potentially quiet errors. Locator is \"" +
-                    locatorToString + "\".");
+            if (xpath.startsWith("/")) {
+                xpath = xpath.replaceFirst("/", "./");
+                log().warn(String.format("Replaced absolute xpath locator \"%s\" to relative: \"%s\"", prevXPath, xpath));
+                locate = Locate.by(By.xpath(xpath));
+            } else if (!xpath.startsWith(".")) {
+                xpath = "./" + xpath;
+                log().warn(String.format("Added relative xpath locator for children to \"%s\": \"%s\"", prevXPath, xpath));
+                locate = Locate.by(By.xpath(xpath));
             }
         }
 

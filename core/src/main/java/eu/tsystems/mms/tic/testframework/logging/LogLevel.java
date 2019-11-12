@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 23.04.2012
- * 
+ *
  * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -28,7 +28,7 @@ package eu.tsystems.mms.tic.testframework.logging;
 
 /**
  * Enum for containing the 4 logLevel types.
- * 
+ *
  * @author pele
  */
 public enum LogLevel {

@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 04.01.2013
@@ -41,7 +41,7 @@ public class ElementStateException extends RuntimeException {
 
     /**
      * Constructor.
-     * 
+     *
      * @param guiElement Create Exception from GuiElement.
      */
     public ElementStateException(final GuiElement guiElement) {
@@ -50,7 +50,7 @@ public class ElementStateException extends RuntimeException {
 
     /**
      * Constructor creating the exception if it's caused by a wrong state.
-     * 
+     *
      * @param guiElement Element that causes the exception.
      * @param state Description of the wrong state.
      */
@@ -67,7 +67,7 @@ public class ElementStateException extends RuntimeException {
 
     /**
      * Constructor creating this exception with a simple message.
-     * 
+     *
      * @param message Message for Exception.
      */
     public ElementStateException(final String message) {
@@ -76,7 +76,7 @@ public class ElementStateException extends RuntimeException {
 
     /**
      * Default constructor inherited by Exception class.
-     * 
+     *
      * @param message Message for exception.
      * @param cause Throwable that causes this exception.
      */
@@ -86,7 +86,7 @@ public class ElementStateException extends RuntimeException {
 
     /**
      * Default constructor inherited by Exception class.
-     * 
+     *
      * @param cause Exception that causes this Exception.
      */
     public ElementStateException(final Throwable cause) {

@@ -9,7 +9,7 @@ package eu.tsystems.mms.tic.testframework.helper;
  * Date: 18.09.2019
  * Time: 09:21
  *
- * @author Eric.Kubenka <Eric.Kubenka@t-systems.com>
+ * @author Eric.Kubenka
  */
 public class TestCsvReaderBeanWithSubBean {
 

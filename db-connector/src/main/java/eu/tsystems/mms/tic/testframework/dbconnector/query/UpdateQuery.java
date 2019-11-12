@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 17.09.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -31,17 +31,17 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 
 /**
  * Class representing an update query.
- * 
+ *
  * @param <T>
  *            Table to update.
- * 
+ *
  * @author sepr
  */
 public class UpdateQuery<T extends Table> extends Query<T> implements INonSelectQuery {
 
     /**
      * Method to create an UPDATE SQL query statement.
-     * 
+     *
      * @param table
      *            Table to update data.
      * @param cols

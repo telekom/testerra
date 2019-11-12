@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
@@ -105,7 +105,7 @@ public final class MouseActions {
 
     /**
      * Perfoms a drag and drop over frames using the JS selectors.
-     * 
+     *
      * @param driver WebDriver
      * @param drag GuiElement
      * @param drop GuiElement

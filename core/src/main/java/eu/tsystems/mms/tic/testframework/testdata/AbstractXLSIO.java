@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 21.10.2013
@@ -170,9 +170,9 @@ public abstract class AbstractXLSIO {
 
     /**
      * TODO always returns null?
-     * 
+     *
      * Open xls file from resources.
-     * 
+     *
      * @param fileInResources filename
      * @param sheetName Sheet of xls(x) to read from
      * @return XLSWriter
@@ -205,9 +205,9 @@ public abstract class AbstractXLSIO {
 
     /**
      * TODO always returns null?
-     * 
+     *
      * Open xls file from absolute path.
-     * 
+     *
      * @param filename filename
      * @param sheetName Sheet of xls(x) to read from
      * @return XLSWriter
@@ -235,7 +235,7 @@ public abstract class AbstractXLSIO {
 
     /**
      * Iterates through all rows until one with the given id was found (in index column)
-     * 
+     *
      * @param id Id to search for.
      * @return Row object representing xls(x) row.
      */

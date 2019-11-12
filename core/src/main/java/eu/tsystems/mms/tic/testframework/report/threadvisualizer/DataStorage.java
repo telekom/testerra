@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 04.01.2013
- * 
+ *
  * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -53,7 +53,7 @@ public final class DataStorage {
 
     /**
      * Add new DataSet to storage.
-     * 
+     *
      * @param dataSet new DataSet.
      */
     public static void addDataSet(final DataSet dataSet) {

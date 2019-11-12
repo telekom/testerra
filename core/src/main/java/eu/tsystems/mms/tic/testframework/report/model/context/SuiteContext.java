@@ -14,9 +14,9 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     erku <Eric.Kubenka@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     erku
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 

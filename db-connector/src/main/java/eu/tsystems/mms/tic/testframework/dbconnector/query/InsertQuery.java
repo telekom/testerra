@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 17.09.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -33,17 +33,17 @@ import java.util.stream.Collectors;
 
 /**
  * Class representing insert queries.
- * 
+ *
  * @param <T>
  *            Table to insert data into.
- * 
+ *
  * @author sepr
  */
 public class InsertQuery<T extends Table> extends Query<T> implements INonSelectQuery {
 
     /**
      * Method to create an INSERT SQL query statement.
-     * 
+     *
      * @param intoTable
      *            Table to insert data into.
      * @param cols

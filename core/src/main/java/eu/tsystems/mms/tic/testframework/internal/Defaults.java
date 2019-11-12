@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Deprecated
 public final class Defaults {
 
     private static String load(String property, String defaultValue, String pattern) {

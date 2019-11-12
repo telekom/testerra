@@ -230,40 +230,39 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 }
             } catch (Throwable t1) {
                 LOGGER.info(logSCID() + "Could not maximize window", t1);
+            }
+        } else if (!Defaults.DISPLAY_RESOLUTION.isEmpty()) {
+            LOGGER.info(logSCID() + "Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
+            String[] split = Defaults.DISPLAY_RESOLUTION.split("x");
+            int width = Integer.valueOf(split[0]);
+            int height = Integer.valueOf(split[1]);
+            try {
+                window.setSize(new Dimension(width, height));
+            } catch (Throwable t2) {
+                LOGGER.error(logSCID() + "Could not set window size", t2);
 
-                String res = Defaults.DISPLAY_RESOLUTION;
-                LOGGER.info(logSCID() + "Trying to execute setSize() to " + res + " as a workaround");
-                String[] split = res.split("x");
-                int width = Integer.valueOf(split[0]);
-                int height = Integer.valueOf(split[1]);
-                try {
-                    window.setSize(new Dimension(width, height));
-                } catch (Throwable t2) {
-                    LOGGER.error(logSCID() + "Could not set window size", t2);
+                if (Browsers.edge.equals(browser)) {
+                    LOGGER.info(logSCID() + "Edge Browser was requested, trying a second workaround");
 
-                    if (Browsers.edge.equals(browser)) {
-                        LOGGER.info(logSCID() + "Edge Browser was requested, trying a second workaround");
-
-                        Timer timer = new Timer(500, 5000);
-                        ThrowablePackedResponse<Object> response = timer.executeSequence(new Timer.Sequence<Object>() {
-                            @Override
-                            public void run() throws Throwable {
-                                setSkipThrowingException(true);
-                                LOGGER.info(logSCID() + "Trying setPosition() and setSize()");
-                                try {
-                                    window.setPosition(new Point(0, 0));
-                                    window.setSize(new Dimension(width, height));
-                                    LOGGER.info(logSCID() + "Yup, success!");
-                                } catch (Exception e) {
-                                    LOGGER.warn(logSCID() + "Nope. Got error: " + e.getMessage());
-                                    throw e;
-                                }
+                    Timer timer = new Timer(500, 5000);
+                    ThrowablePackedResponse<Object> response = timer.executeSequence(new Timer.Sequence<Object>() {
+                        @Override
+                        public void run() throws Throwable {
+                            setSkipThrowingException(true);
+                            LOGGER.info(logSCID() + "Trying setPosition() and setSize()");
+                            try {
+                                window.setPosition(new Point(0, 0));
+                                window.setSize(new Dimension(width, height));
+                                LOGGER.info(logSCID() + "Yup, success!");
+                            } catch (Exception e) {
+                                LOGGER.warn(logSCID() + "Nope. Got error: " + e.getMessage());
+                                throw e;
                             }
-                        });
-
-                        if (!response.isSuccessful()) {
-                            LOGGER.error("Finally, could not set Edge Window size", response.getThrowable());
                         }
+                    });
+
+                    if (!response.isSuccessful()) {
+                        LOGGER.error("Finally, could not set Edge Window size", response.getThrowable());
                     }
                 }
             }

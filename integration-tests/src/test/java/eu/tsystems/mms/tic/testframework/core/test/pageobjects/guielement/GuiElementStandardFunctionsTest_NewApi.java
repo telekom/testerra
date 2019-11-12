@@ -135,7 +135,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
     @Test
     public void test_NonExistent_GuiElement_present_fails_fast() {
-        withTimeout(0, () -> test_NonExistent_GuiElement_present_fails());
+        withElementTimeout(0, () -> test_NonExistent_GuiElement_present_fails());
     }
 
     @Test

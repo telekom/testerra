@@ -232,15 +232,15 @@ guiElement.nonFunctionalAsserts().assertIsDisplayed();
 
 === Timeouts
 
-The new standard way for setting timeouts is now
+The new standard way for setting GuiElement timeouts is now
 
 ```java
-withTimeout(1, () -> guiElement.displayed().isTrue());
+withElementTimeout(1, () -> guiElement.displayed().isTrue());
 ```
 
 For many GuiElements or Pages
 ```java
-withTimeout(1, () -> {
+withElementTimeout(1, () -> {
     MyPage page = pageFactory.create(MyPage.class);
     page.title().is("TestPage");
 
@@ -259,7 +259,7 @@ For other test methods
 ```java
 @Test
 public void test_TestSomething_fast() {
-    withTimeout(1, () -> test_TestSomething());
+    withElementTimeout(1, () -> test_TestSomething());
 }
 ```
 
@@ -281,10 +281,11 @@ guiElement.restoreDefaultTimeout();
 ====
 
 [NOTE]
-.Setting thread local timeouts using static `POConfig` is now `@deprecated`
+.Setting timeouts using static `POConfig` is now `@deprecated`
 ====
 ```java
 POConfig.setThreadLocalUiElementTimeoutInSeconds(1);
+POConfig.setUiElementTimeoutInSeconds(1);
 ```
 ====
 

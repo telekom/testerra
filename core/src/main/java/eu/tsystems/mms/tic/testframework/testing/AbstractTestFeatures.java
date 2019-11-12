@@ -70,7 +70,7 @@ public abstract class AbstractTestFeatures {
         Assert = assertionFactory.create();
     }
 
-    protected void withTimeout(int seconds, Runnable runnable) {
+    protected void withElementTimeout(int seconds, Runnable runnable) {
         pageOverrides.setElementTimeoutInSeconds(seconds);
         runnable.run();
         pageOverrides.removeElementTimeoutInSeconds();

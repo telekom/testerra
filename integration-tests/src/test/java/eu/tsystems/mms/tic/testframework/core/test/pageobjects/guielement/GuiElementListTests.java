@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElementListPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -37,42 +38,68 @@ public class GuiElementListTests extends AbstractTestSitesTest {
     public void test_getSubElement_byTagName_getList() {
         GuiElementListPage page = preparePage();
         GuiElement items = page.getNavigationSubElementsByTagName();
-        testItems(items);
+        testNavigationItems(items);
     }
 
     @Test
     public void test_getSubElement_byChildrenXPath_getList() {
         GuiElementListPage page = preparePage();
         GuiElement items = page.getNavigationSubElementsByChildrenXPath();
-        testItems(items);
+        testNavigationItems(items);
     }
 
     @Test
     public void test_getSubElement_byDescendantsXPath_getList() {
         GuiElementListPage page = preparePage();
         GuiElement items = page.getNavigationSubElementsByDescendantsXPath();
-        testItems(items);
+        testNavigationItems(items);
     }
 
     @Test
     public void test_byAbsoluteChildrenXPath_getList() {
         GuiElementListPage page = preparePage();
         GuiElement items = page.getNavigationSubElementsByAbsoluteChildrenXPath();
-        testItems(items);
+        testNavigationItems(items);
     }
 
     @Test
     public void test_byAbsoluteDescendantsXPath_getList() {
         GuiElementListPage page = preparePage();
         GuiElement items = page.getNavigationSubElementsByAbsoluteDescendantsXPath();
-        testItems(items);
+        testNavigationItems(items);
     }
 
-    private void testItems(GuiElement items) {
+    private void testNavigationItems(GuiElement items) {
         Assert.assertEquals(items.getNumberOfFoundElements(), 3);
         Assert.assertEquals(items.getList().size(), 3);
         Assert.assertEquals(items.getList().get(0).getText(), "First");
         Assert.assertEquals(items.getList().get(items.getNumberOfFoundElements()-1).getText(), "Third");
+    }
+
+    @Test
+    public void test_tableRowsByTagName() {
+        GuiElementListPage page = preparePage();
+        GuiElement rows = page.getTableRowsByTagName();
+        Assert.assertEquals(rows.getNumberOfFoundElements(), 4);
+
+        GuiElement mkriProfileLink = rows.getList().get(0).getSubElement(By.tagName("a"));
+        mkriProfileLink.asserts().assertAttributeContains("href", "mkri");
+
+        GuiElement erkuProfileLink = rows.getList().get(rows.getNumberOfFoundElements()-1).getSubElement(By.tagName("a"));
+        erkuProfileLink.asserts().assertAttributeContains("href", "erku");
+    }
+
+    @Test
+    public void test_tableRowsByDescendantsXPath() {
+        GuiElementListPage page = preparePage();
+        GuiElement rows = page.getTableRowsByTagName();
+        Assert.assertEquals(rows.getNumberOfFoundElements(), 4);
+
+        GuiElement mkriProfileLink = rows.getList().get(0).getSubElement(By.xpath(".//a"));
+        mkriProfileLink.asserts().assertAttributeContains("href", "mkri");
+
+        GuiElement erkuProfileLink = rows.getList().get(rows.getNumberOfFoundElements()-1).getSubElement(By.xpath(".//a"));
+        erkuProfileLink.asserts().assertAttributeContains("href", "erku");
     }
 
     @Override

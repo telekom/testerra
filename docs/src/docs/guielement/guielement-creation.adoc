@@ -21,9 +21,13 @@ GuiElement upper = new GuiElement(driver, By.name("upperElement"));
 
 // Create the sub elements
 GuiElement lower = upper.getSubElement(By.name("lowerElement"));
-// Don't forget the dot (.) before the slashes!
-GuiElement lower2 = upper.getSubElement(By.xpath(".//p[@id='element']"));
+GuiElement lower = upper.getSubElement(By.xpath(".//p[@id='element']")); <1>
+GuiElement lower = upper.getSubElement(By.xpath("//p[@id='element']")); <2>
+GuiElement lower = upper.getSubElement(By.xpath("./p[@id='element']")); <3>
 ----
+<1> Find any matching descendant
+<2> Corrects the selector prefix to './/'
+<3> Find any matching child
 
 == Advanced GuiElement locating
 

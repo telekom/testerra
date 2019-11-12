@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantifiedPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
@@ -43,6 +44,7 @@ public interface BasicGuiElement {
     BinaryPropertyAssertion<Boolean> visible(boolean complete);
     StringPropertyAssertion<String> tagName();
     RectAssertion bounds();
+    QuantifiedPropertyAssertion<Integer> numberOfElements();
 
     /**
      * Takes a screenshot of the current element

@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.layoutcheck;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
@@ -67,7 +68,8 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
         guiElement.visible(true).isTrue();
     }
 
-    @Test(expectedExceptions = AssertionError.class)
+    @Test()
+    @Fails(description = "This test should fail")
     public void testCheckElementLayoutDistance() {
         FluentLayoutCheckPage page = preparePage();
         IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");

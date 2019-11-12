@@ -100,7 +100,7 @@ public class GuiElement implements
     private GuiElementFacade guiElementFacade;
     private GuiElementCore guiElementCore;
     private GuiElementWait guiElementWait;
-    private Locate locator;
+    private Locate locate;
     private final GuiElementData guiElementData;
     protected Object parent;
 
@@ -122,13 +122,13 @@ public class GuiElement implements
     }
 
     @Deprecated
-    public GuiElement(WebDriver driver, Locate locator) {
-        this(driver, locator, null);
+    public GuiElement(WebDriver driver, Locate locate) {
+        this(driver, locate, null);
     }
 
     @Deprecated
-    public GuiElement(IPage page, Locate locator) {
-        this(page.getWebDriver(), locator, null);
+    public GuiElement(IPage page, Locate locate) {
+        this(page.getWebDriver(), locate, null);
         Page pageImpl = (Page)page;
         this.setTimeoutInSeconds(pageImpl.getElementTimeoutInSeconds());
         setParent(page);
@@ -140,17 +140,17 @@ public class GuiElement implements
     @Deprecated
     public GuiElement(
         WebDriver driver,
-        Locate locator,
+        Locate locate,
         IGuiElement... frames
     ) {
         IFrameLogic frameLogic = null;
         if (frames != null && frames.length > 0) {
             frameLogic = new FrameLogic(driver, frames);
         }
-        By by = locator.getBy();
+        By by = locate.getBy();
         guiElementData = new GuiElementData(driver, "", frameLogic, by, this);
         buildInternals(driver, by);
-        this.locator = locator;
+        this.locate = locate;
     }
 
     /**
@@ -170,7 +170,7 @@ public class GuiElement implements
      */
     @Deprecated
     public GuiElement(
-        Locate locator,
+        Locate locate,
         IGuiElement ancestor
     ) {
         // Use FrameLogic from parent
@@ -180,32 +180,34 @@ public class GuiElement implements
             frameLogic = ancestorGuiElement.guiElementData.frameLogic;
         }
 
-        String byString = locator.getBy().toString();
-        if (byString.toLowerCase().contains("xpath")) {
-            int i = byString.indexOf(":") + 1;
-            String locatorString = byString.substring(i).trim();
+        String abstractLocatorString = locate.getBy().toString();
+        if (abstractLocatorString.toLowerCase().contains("xpath")) {
+            int i = abstractLocatorString.indexOf(":") + 1;
+            String xpath = abstractLocatorString.substring(i).trim();
+            String prevXPath = xpath;
             // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
-            if (locatorString.startsWith("/")) {
-                log().warn("Forced replacement of / to ./ at startTime of By.xpath locator, because / would not be relative: " + locator);
-                locator = Locate.by(By.xpath(locatorString));
-            } else if (!locatorString.startsWith(".") && !(locatorString.length() >= 2 && locatorString.startsWith("(") && locatorString.substring(1, 2).equals("."))) {
-                log().warn("Apparently, getSubElement is called with an By.xpath locator that does not startTime with a dot. " +
-                    "This will most likely lead to unexpected and potentially quiet errors. Locator is \"" +
-                    byString + "\".");
+            if (xpath.startsWith("/")) {
+                xpath = xpath.replaceFirst("/", "./");
+                log().warn(String.format("Replaced absolute xpath locator \"%s\" to relative: \"%s\"", prevXPath, xpath));
+                locate = Locate.by(By.xpath(xpath));
+            } else if (!xpath.startsWith(".")) {
+                xpath = "./" + xpath;
+                log().warn(String.format("Added relative xpath locator for children to \"%s\": \"%s\"", prevXPath, xpath));
+                locate = Locate.by(By.xpath(xpath));
             }
         }
 
-        By by = locator.getBy();
+        By by = locate.getBy();
         guiElementData = new GuiElementData(ancestor.getWebDriver(), "", frameLogic, by, this);
         guiElementData.parent = ancestorGuiElement.guiElementCore;
         setParent(ancestorGuiElement);
         buildInternals(ancestor.getWebDriver(), by);
-        this.locator = locator;
+        this.locate = locate;
     }
 
     @Override
     public Locate getLocate() {
-        return locator;
+        return locate;
     }
 
     private void buildInternals(WebDriver driver, By by) {
@@ -256,7 +258,7 @@ public class GuiElement implements
     @Deprecated
     public GuiElement withWebElementFilter(WebElementFilter... filters) {
         if (filters != null) {
-            Collections.addAll(locator.getFilters(), filters);
+            Collections.addAll(locate.getFilters(), filters);
         }
         return this;
     }
@@ -609,7 +611,7 @@ public class GuiElement implements
 
     @Deprecated
     public List<WebElementFilter> getWebElementFilters() {
-        return locator.getFilters();
+        return locate.getFilters();
     }
 
     @Override

@@ -232,7 +232,7 @@ public class ReportFormatter {
     }
 
     private static void out(Exception e) {
-        LOGGER.error("Could not create html: " + e);
+        LOGGER.error("Could not create html: " + e, e);
     }
 
     public static void createMethodsFrame(final File logFile, final MethodContext methodContext,

@@ -324,8 +324,7 @@
 
             <tr>
                 <td class="cellTop" style="width: 50%">
-                    <div id="classesBars" style="padding:20px;"></div>
-                    <canvas id="classesBars0" style="padding:20px;"></canvas>
+                    <canvas id="classesBars" style="padding:20px;"></canvas>
                 </td>
 
                 <td class="cellTop" style="width: 50%">
@@ -483,7 +482,9 @@ function drawClassesBars() {
 
         var options = {
 	        showLines: true,
+            maintainAspectRatio: false,
 	        scales: {
+                // barThickness: 4, // sounds good, doesnt work
                 xAxes: [{
                     stacked: true
                 }],
@@ -505,13 +506,14 @@ function drawClassesBars() {
                     showMethodsViewOnDashboard(classname, status);
                 }
                 else {
+                    console.log(e);
                     // click on a category: not possible to retrieve information
                 }
             }
         };
 
         if (chart0 == null) {
-            var canvas0 = document.getElementById("classesBars0");
+            var canvas0 = document.getElementById("classesBars");
             #set ($height = $methodStatsPerClass.size() * 15 + 30)
             canvas0.height = $height;
 

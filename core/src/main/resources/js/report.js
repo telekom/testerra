@@ -12,7 +12,7 @@ function initDataTable(tableId) {
     }
     var table = $(tableId).DataTable({
         "paging" : false,
-        "dom" : '<"tableHead"fBT>rt',   
+        "dom" : '<"tableHead"fBT>rt',
 		"select": {
             style: 'multi'
         },
@@ -30,7 +30,7 @@ function initDataTable(tableId) {
 			"sSearch": "Include: "
 		}
     });
-    
+
     $(tableId + '_filterInp').keyup( function() {
         table.draw();
     } );
@@ -280,7 +280,7 @@ function getStyle(elementId, property) {
 /*
  * Fügt den Listeneinträgen Eventhandler und CSS Klassen hinzu, um die
  * Menüpunkte am Anfang zu schließen.
- * 
+ *
  * menu: Referenz auf die Liste. data: String, der die Nummern aufgeklappter
  * Menüpunkte enthält.
  */
@@ -311,7 +311,7 @@ function treeMenu_init(menu, data) {
 /*
  * Ändert die Klasse eines angeclickten Listenelements, sodass geöffnete
  * Menüpunkte geschlossen und geschlossene geöffnet werden.
- * 
+ *
  * event: Das Event Objekt, dass der Browser übergibt.
  */
 function treeMenu_handleClick(event) {
@@ -338,7 +338,7 @@ function treeMenu_handleClick(event) {
 }
 /*
  * Gibt alle Klassen zurück, die einem HTML-Element zugeordnet sind.
- * 
+ *
  * element: Das HTML-Element return: Die zugeordneten Klassen.
  */
 function treeMenu_getClasses(element) {
@@ -350,7 +350,7 @@ function treeMenu_getClasses(element) {
 }
 /*
  * Überprüft, ob ein Array ein bestimmtes Element enthält.
- * 
+ *
  * array: Das Array element: Das Element return: true, wenn das Array das
  * Element enthält.
  */
@@ -365,7 +365,7 @@ function treeMenu_contains(array, element) {
 /*
  * Gibt einen String zurück, indem die Nummern aller geöffneten Menüpunkte
  * stehen.
- * 
+ *
  * menu: Referenz auf die Liste return: Der String
  */
 function treeMenu_store(menu) {

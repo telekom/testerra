@@ -35,35 +35,35 @@ public class GuiElementListTests extends AbstractTestSitesTest {
     }
 
     @Test
-    public void test_getSubElement_byTagName_getList() {
+    public void test_getSubElement_getList_byTagName() {
         GuiElementListPage page = preparePage();
         GuiElement items = page.getNavigationSubElementsByTagName();
         testNavigationItems(items);
     }
 
     @Test
-    public void test_getSubElement_byChildrenXPath_getList() {
+    public void test_getSubElement_getList_byChildrenXPath() {
         GuiElementListPage page = preparePage();
         GuiElement items = page.getNavigationSubElementsByChildrenXPath();
         testNavigationItems(items);
     }
 
     @Test
-    public void test_getSubElement_byDescendantsXPath_getList() {
+    public void test_getSubElement_getList_byDescendantsXPath() {
         GuiElementListPage page = preparePage();
         GuiElement items = page.getNavigationSubElementsByDescendantsXPath();
         testNavigationItems(items);
     }
 
     @Test
-    public void test_byAbsoluteChildrenXPath_getList() {
+    public void test_getList_byAbsoluteChildrenXPath() {
         GuiElementListPage page = preparePage();
         GuiElement items = page.getNavigationSubElementsByAbsoluteChildrenXPath();
         testNavigationItems(items);
     }
 
     @Test
-    public void test_byAbsoluteDescendantsXPath_getList() {
+    public void test_getList_byAbsoluteDescendantsXPath() {
         GuiElementListPage page = preparePage();
         GuiElement items = page.getNavigationSubElementsByAbsoluteDescendantsXPath();
         testNavigationItems(items);
@@ -77,7 +77,7 @@ public class GuiElementListTests extends AbstractTestSitesTest {
     }
 
     @Test
-    public void test_tableRowsByTagName() {
+    public void test_getSubElement_getList_tableRowsByTagName() {
         GuiElementListPage page = preparePage();
         GuiElement rows = page.getTableRowsByTagName();
         Assert.assertEquals(rows.getNumberOfFoundElements(), 4);
@@ -90,7 +90,7 @@ public class GuiElementListTests extends AbstractTestSitesTest {
     }
 
     @Test
-    public void test_tableRowsByDescendantsXPath() {
+    public void test_getSubElement_getList_tableRowsByDescendantsXPath() {
         GuiElementListPage page = preparePage();
         GuiElement rows = page.getTableRowsByTagName();
         Assert.assertEquals(rows.getNumberOfFoundElements(), 4);

@@ -50,11 +50,16 @@ GuiElement myElement = new GuiElement(driver, Locate.by().displayed().xpath(".//
 ----
 
 === Prepared xpath expressions
+
+Using prepared expressions makes your selectors more readable.
+
 [source,java]
 ----
-Locate locator = Locate.prepare("//button[text()='%s'])");
-GuiElement loginButton = new GuiElement(driver, locator.with("Login"));
-GuiElement logoutButton = new GuiElement(driver, locator.with("Logout"));
+Locate byText = Locate.prepare("//button[text()='%s'])");
+Locate byClass = Locate.prepare("//%s[contains(@class, '%s')][%d]");
+
+GuiElement loginButton = new GuiElement(driver, byText.with("Login"));
+GuiElement logoutButton = new GuiElement(driver, byClass.with("button", "btn-logout", 1));
 ----
 
 === Filtering elements (draft)

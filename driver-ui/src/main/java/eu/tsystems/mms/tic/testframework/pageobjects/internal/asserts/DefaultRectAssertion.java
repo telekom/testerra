@@ -32,7 +32,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String getSubject() {
-                return String.format("%s.contains(guiElement: %s.rect.%s)",
+                return String.format("%s.contains(guiElement: %s.bounds.%s)",
                     formatter.toString(provider.getActual()),
                     guiElement,
                     formatter.toString(guiElement.getWebElement().getRect())
@@ -51,7 +51,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
             @Override
             public String getSubject() {
-                return String.format("%s.intersects(guiElement: %s.rect.%s)",
+                return String.format("%s.intersects(guiElement: %s.bounds.%s)",
                     formatter.toString(provider.getActual()),
                     guiElement,
                     formatter.toString(guiElement.getWebElement().getRect())

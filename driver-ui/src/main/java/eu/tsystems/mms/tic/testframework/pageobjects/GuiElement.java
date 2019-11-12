@@ -42,6 +42,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElement
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantifiedPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
@@ -920,9 +921,6 @@ public class GuiElement implements
     }
 
     @Override
-    /**
-     * @todo Separate distance and Layout
-     */
     public RectAssertion bounds() {
         final IGuiElement self = this;
         return new DefaultRectAssertion(null, new AssertionProvider<Rectangle>() {
@@ -933,7 +931,22 @@ public class GuiElement implements
 
             @Override
             public String getSubject() {
-                return String.format("%s.rect", self);
+                return String.format("%s.bounds", self);
+            }
+        });
+    }
+
+    @Override
+    public QuantifiedPropertyAssertion<Integer> numberOfElements() {
+        return propertyAssertionFactory.quantified(new AssertionProvider<Integer>() {
+            @Override
+            public Integer getActual() {
+                return getNumberOfFoundElements();
+            }
+
+            @Override
+            public String getSubject() {
+                return "numberOfElements";
             }
         });
     }

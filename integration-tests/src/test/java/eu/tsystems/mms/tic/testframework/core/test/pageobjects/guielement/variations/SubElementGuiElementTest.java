@@ -79,6 +79,11 @@ public class SubElementGuiElementTest extends GuiElementTestCollector {
         checkGetSubElementWithLocatorIsNotPresent(By.xpath(".//a[@id='11']"));
     }
 
+    @Test
+    public void testT04N_GuiElement_GetSubElement_NoSubElement_Absolute_xPath() {
+        checkGetSubElementWithLocatorIsNotPresent(By.xpath("//a[@id='11']"));
+    }
+
     /**
      * Test if the getSubElement method actually only returns sub-elements
      */

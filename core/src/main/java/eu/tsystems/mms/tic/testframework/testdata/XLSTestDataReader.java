@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 14.08.2013
@@ -37,14 +37,14 @@ import java.util.Map;
 
 /**
  * <Beschreibung der Klasse>
- * 
+ *
  * @author pele
  */
 public class XLSTestDataReader extends AbstractXLSIO {
 
     /**
      * Read data from DataSource.
-     * 
+     *
      * @param fileInResources .
      * @param sheetName .
      * @param id .
@@ -59,7 +59,7 @@ public class XLSTestDataReader extends AbstractXLSIO {
 
     /**
      * Read data from DataSource.
-     * 
+     *
      * @param file .
      * @param sheetName .
      * @param id .
@@ -74,7 +74,7 @@ public class XLSTestDataReader extends AbstractXLSIO {
 
     /**
      * Read data set from id
-     * 
+     *
      * @param id to read
      * @return data set for id
      */
@@ -101,7 +101,7 @@ public class XLSTestDataReader extends AbstractXLSIO {
 
     /**
      * Put data of a found row in a dataset structure
-     * 
+     *
      * @param headerRow Row with header information
      * @param row Row to read data from.
      * @return Map mapping header to data.
@@ -124,7 +124,7 @@ public class XLSTestDataReader extends AbstractXLSIO {
 
     /**
      * Read a complete sheet of an xls resource file.
-     * 
+     *
      * @param fileInResources name of file in resources.
      * @param sheetName Name of xls sheet.
      * @return List of Maps mapping headers to row values.
@@ -136,7 +136,7 @@ public class XLSTestDataReader extends AbstractXLSIO {
 
     /**
      * Reads a xls(x) resource file from (fromId) to (toId)
-     * 
+     *
      * @param fileInResources name of file in resources.
      * @param sheetName Name of xls sheet.
      * @param fromId Index (1-based) of row to start reading from
@@ -164,7 +164,7 @@ public class XLSTestDataReader extends AbstractXLSIO {
 
     /**
      * Reads a xls(x) file on the file system from (fromId) to (toId)
-     * 
+     *
      * @param fileAbsolutePath absolute path of file
      * @param sheetName Name of xls sheet.
      * @param fromId Index (1-based) of row to start reading from

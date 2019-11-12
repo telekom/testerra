@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 02.11.2012
@@ -40,7 +40,7 @@ public final class RandomUtils {
 
     /**
      * Generates a random string with length of 8 characters [a..z]
-     * 
+     *
      * @return random string
      */
     public static String generateRandomString() {
@@ -57,7 +57,7 @@ public final class RandomUtils {
 
     /**
      * Generiert eine Random Number als String der Lange 4.
-     * 
+     *
      * @return random number
      */
     public static String generateRandomNumber() {

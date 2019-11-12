@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 13.06.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -31,9 +31,9 @@ import java.util.Date;
 
 /**
  * Java object to hold entries of TestTable.
- * 
+ *
  * @author sepr
- * 
+ *
  */
 public class DBEntry {
 
@@ -52,7 +52,7 @@ public class DBEntry {
 
     /**
      * Creates a db entry object with all fields.
-     * 
+     *
      * @param user userName.
      * @param first firstName.
      * @param last lastName

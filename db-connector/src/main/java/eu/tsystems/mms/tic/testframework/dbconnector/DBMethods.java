@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 01.08.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -39,7 +39,7 @@ import java.util.List;
 
 /**
  * Class holding methods to send queries to the DB.
- * 
+ *
  * @author sepr
  */
 public class DBMethods extends AbstractConnection {
@@ -49,7 +49,7 @@ public class DBMethods extends AbstractConnection {
 
     /**
      * Returns a list of query results containing a mapping of column names and their respective values.
-     * 
+     *
      * @param query Query object to query the DB.
      * @return List of table rows, containing mapping of column name and value.
      * @throws SQLException .
@@ -57,10 +57,10 @@ public class DBMethods extends AbstractConnection {
     public List<HashMap<String, String>> select(final SelectQuery<?> query) throws SQLException {
         return this.lSelect(query);
     }
-    
+
     /**
      * Returns a list of query results containing a mapping of column names and their respective values.
-     * 
+     *
      * @param query Query object to query the DB.
      * @return List of table rows, containing mapping of column name and value.
      * @throws SQLException .
@@ -71,7 +71,7 @@ public class DBMethods extends AbstractConnection {
 
     /**
      * Returns the count of updated (deleted, inserted or truncated) rows.
-     * 
+     *
      * @param query Query object to query the DB.
      * @return Count of updated rows or -1.
      * @throws SQLException .
@@ -79,10 +79,10 @@ public class DBMethods extends AbstractConnection {
     public int query(final INonSelectQuery query) throws SQLException {
         return this.pQuery(query);
     }
-    
+
     /**
      * Returns the count of updated (deleted, inserted or truncated) rows.
-     * 
+     *
      * @param query Query object to query the DB.
      * @return Count of updated rows or -1.
      * @throws SQLException .
@@ -101,7 +101,7 @@ public class DBMethods extends AbstractConnection {
 
     /**
      * Returns a list of query results containing a mapping of column names and their respective values.
-     * 
+     *
      * @param query Query to run on DB.
      * @return List of table rows, containing mapping of column name and value.
      * @throws SQLException .
@@ -109,10 +109,10 @@ public class DBMethods extends AbstractConnection {
     public List<HashMap<String, String>> query(final String query) throws SQLException {
         return this.pQuery(query);
     }
-    
+
     /**
      * Returns a list of query results containing a mapping of column names and their respective values.
-     * 
+     *
      * @param query Query to run on DB.
      * @return List of table rows, containing mapping of column name and value.
      * @throws SQLException .
@@ -151,7 +151,7 @@ public class DBMethods extends AbstractConnection {
 
     /**
      * Returns a list of all values of the first column specified in the select query.
-     * 
+     *
      * @param query SelectQuery to query DB.
      * @return List of all values of the specified column.
      * @throws SQLException .
@@ -159,10 +159,10 @@ public class DBMethods extends AbstractConnection {
     public List<String> selectSingleColumn(final SelectQuery<?> query) throws SQLException {
         return this.pSelectSingleColumn(query);
     }
-    
+
     /**
      * Returns a list of all values of the first column specified in the select query.
-     * 
+     *
      * @param query SelectQuery to query DB.
      * @return List of all values of the specified column.
      * @throws SQLException .
@@ -179,7 +179,7 @@ public class DBMethods extends AbstractConnection {
 
     /**
      * Returns the first object returned by query.
-     * 
+     *
      * @param query SelectQuery object.
      * @return Returns first value of first specified column in query.
      * @throws SQLException .
@@ -187,10 +187,10 @@ public class DBMethods extends AbstractConnection {
     public Object selectSingleObject(final SelectQuery<?> query) throws SQLException {
         return this.pSelectSingleObject(query);
     }
-    
+
     /**
      * Returns the first object returned by query.
-     * 
+     *
      * @param query SelectQuery object.
      * @return Returns first value of first specified column in query.
      * @throws SQLException .
@@ -207,7 +207,7 @@ public class DBMethods extends AbstractConnection {
 
     /**
      * Gets first Character Large Object of this queries result.
-     * 
+     *
      * @param query Query object to get CLOB.
      * @return Returns first CLOB of the first specified column in select statement or null.
      * @throws SQLException .
@@ -215,10 +215,10 @@ public class DBMethods extends AbstractConnection {
     public Clob selectClob(final SelectQuery<?> query) throws SQLException {
         return this.pSelectClob(query);
     }
-    
+
     /**
      * Gets first Character Large Object of this queries result.
-     * 
+     *
      * @param query Query object to get CLOB.
      * @return Returns first CLOB of the first specified column in select statement or null.
      * @throws SQLException .
@@ -249,7 +249,7 @@ public class DBMethods extends AbstractConnection {
 
     /**
      * Gets first Binary Large Object of this queries result.
-     * 
+     *
      * @param query Query object to get BLOB.
      * @return Returns first BLOB of the first specified column in select statement or null.
      * @throws SQLException .
@@ -257,10 +257,10 @@ public class DBMethods extends AbstractConnection {
     public Blob selectBlob(final SelectQuery<?> query) throws SQLException {
         return this.pSelectBlob(query);
     }
-    
+
     /**
      * Gets first Binary Large Object of this queries result.
-     * 
+     *
      * @param query Query object to get BLOB.
      * @return Returns first BLOB of the first specified column in select statement or null.
      * @throws SQLException .
@@ -298,7 +298,7 @@ public class DBMethods extends AbstractConnection {
      *       }
      *  </code> Try to use the predefined query methods which close the objects for you. Just use this method for
      * special cases (e.g. getting a list of BLOBs).
-     * 
+     *
      * @param query SQL query to send to db.
      * @return JDBC ResultSet or int representing update Count.
      * @throws SQLException .
@@ -306,7 +306,7 @@ public class DBMethods extends AbstractConnection {
     public Object queryResultSet(final String query) throws SQLException {
         return this.pQueryResultSet(query);
     }
-    
+
     /**
      * With this method you can submit any query and get a JDBC result set back. <b>The returned resultset and statement
      * must be closed manually.</b> <code>Statement stmt = set.getStatement();
@@ -316,7 +316,7 @@ public class DBMethods extends AbstractConnection {
      *       }
      *  </code> Try to use the predefined query methods which close the objects for you. Just use this method for
      * special cases (e.g. getting a list of BLOBs).
-     * 
+     *
      * @param query SQL query to send to db.
      * @return JDBC ResultSet or int representing update Count.
      * @throws SQLException .

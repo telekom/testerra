@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 01.08.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -32,15 +32,15 @@ import java.lang.reflect.Field;
 
 /**
  * Class representing a DB table. Tables its and subclasses are used in Query objects to build queries.
- * 
+ *
  * Parameterizing the generic type Query with a table will result in restricting queries only to the named table class
  * or their subclasses.
- * 
+ *
  * In addition columns can be declared as public string properties of the class. They are automatically instantiated
  * with their name as value. These column fields can then be used at building queries too.
- * 
+ *
  * For samples see the containing class MyTable.
- * 
+ *
  * @author sepr
  */
 public abstract class Table {
@@ -50,7 +50,7 @@ public abstract class Table {
 
     /**
      * Constructor creating a table object.
-     * 
+     *
      * @param table Name of the table in the DB.
      */
     protected Table(final String table) {
@@ -87,7 +87,7 @@ public abstract class Table {
 
 /**
  * Sample Table declaration.
- * 
+ *
  * @author sepr
  */
 class MyTable extends Table {
@@ -108,7 +108,7 @@ class MyTable extends Table {
 
     /**
      * Default constructor implementation.
-     * 
+     *
      * @param table Tablename.
      */
     public MyTable(final String table) {

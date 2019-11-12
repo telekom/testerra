@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 15.03.2011
@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Utility Methods to support searching in StackStraces related to Selenium and the logging extension.
- * 
+ *
  * @author mibu
  */
 public final class StackTraceUtils {
@@ -64,9 +64,9 @@ public final class StackTraceUtils {
 
     /**
      * Generates a string representation of the given stack trace element containing the class name and the line number.
-     * 
+     *
      * @param stackTraceElement The stack trace element.
-     * 
+     *
      * @return string A String representation of the stack trace element containing the class name and the line number.
      */
     public static String getClassNameAndLineNumber(final StackTraceElement stackTraceElement) {
@@ -79,11 +79,11 @@ public final class StackTraceUtils {
 
     /**
      * Determines whether the class name of the stack trace element contains the <code>wantedClassName</code>.
-     * 
+     *
      * @param stackTraceElement The stack trace element.
-     * 
+     *
      * @param wantedClassName The class to be contained.
-     * 
+     *
      * @return True, if <code>wantedClassName</code> is contained in <code>stackTraceElement</code>s class name.
      */
     public static boolean isClassName(final StackTraceElement stackTraceElement, final String wantedClassName) {
@@ -94,9 +94,9 @@ public final class StackTraceUtils {
     /**
      * Determines the current calling class by searching the given stack trace for the first element after
      * <code>preecedingClassName</code>.
-     * 
+     *
      * @param testElements The stack trace array to be searched in.
-     * 
+     *
      * @return The element following <code>preceedingClassName</code> or <code>preceedingClassName</code> if no further
      *         element left. <code>null</code> if <code>preceedingClassName</code> wasn't there.
      */
@@ -114,11 +114,11 @@ public final class StackTraceUtils {
 
     /**
      * Determines whether <code>className</code> is present in the given stack trace array.
-     * 
+     *
      * @param testElements The stack trace array to be searched in.
-     * 
+     *
      * @param className The class name to be searched for.
-     * 
+     *
      * @return True, if the class name was seen in the stack trace, false otherwise.
      */
     public static boolean isClassInStackTrace(final StackTraceElement[] testElements, final String className) {

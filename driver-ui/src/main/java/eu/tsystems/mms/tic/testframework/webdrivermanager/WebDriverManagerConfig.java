@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 07.08.2012
@@ -113,7 +113,7 @@ public class WebDriverManagerConfig {
 
     /**
      * Returns the webdriver mode.
-     * 
+     *
      * @return the webDriverMode
      */
     private WebDriverMode initWebDriverMode() {

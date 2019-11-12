@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 01.08.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -30,23 +30,23 @@ import eu.tsystems.mms.tic.testframework.dbconnector.connection.Driver;
 
 /**
  * Class to wrap jdbc connection details.
- * 
- * @param <T> Generic type to restrict connector to use only connections of the specified project. 
+ *
+ * @param <T> Generic type to restrict connector to use only connections of the specified project.
  */
 public class DBConnector<T extends ProjectConnections> extends DBMethods {
 
     /**
      * Constructor parametrized with connection profile.
-     *  
+     *
      * @param projectConnection Profile to use for connection.
      */
     public DBConnector(final T projectConnection) {
-        setSelf(projectConnection.getDbConnection());        
+        setSelf(projectConnection.getDbConnection());
     }
 
     /**
      * Constructor parametrized with connection details.
-     * 
+     *
      * @param host Host to connect to.
      * @param port Port to use.
      * @param driver JDBC Driver to use.
@@ -54,7 +54,7 @@ public class DBConnector<T extends ProjectConnections> extends DBMethods {
      * @param username Username of DB connection.
      * @param password Password of DB connection.
      */
-    public DBConnector(final String host, final String port, final Driver driver, final String schema, 
+    public DBConnector(final String host, final String port, final Driver driver, final String schema,
                        final String username, final String password) {
         this.setHost(host);
         this.setPort(port);

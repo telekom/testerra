@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 27.06.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -28,17 +28,17 @@ package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 /** Creates a keychain with username, password and path to keystore file.  */
 public class KeyChain {
-    
+
     /** The username. */
     private String username;
-    
+
     /** The path to keystore file. */
     private String path;
-    
+
     /** The password. */
     private String password;
-    
-    /** Add the values to create the key. 
+
+    /** Add the values to create the key.
      * @param pathToFile
      *            The path to keystore file.
      * @param userName
@@ -51,7 +51,7 @@ public class KeyChain {
         this.password = passWord;
         this.path = pathToFile;
     }
-    
+
     /**
      * .
      * @return
@@ -60,7 +60,7 @@ public class KeyChain {
     public String getUserName() {
         return username;
     }
-    
+
     /**
      * .
      * @return
@@ -69,7 +69,7 @@ public class KeyChain {
     public String getPath() {
         return path;
     }
-    
+
     /**
      * .
      * @return

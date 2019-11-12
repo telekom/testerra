@@ -938,6 +938,7 @@ public class GuiElement implements
 
     @Override
     public QuantifiedPropertyAssertion<Integer> numberOfElements() {
+        final IGuiElement self = this;
         return propertyAssertionFactory.quantified(new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
@@ -946,7 +947,7 @@ public class GuiElement implements
 
             @Override
             public String getSubject() {
-                return "numberOfElements";
+                return String.format("%s.numberOfElements", self);
             }
         });
     }

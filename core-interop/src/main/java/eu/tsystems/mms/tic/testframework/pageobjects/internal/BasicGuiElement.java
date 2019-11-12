@@ -44,7 +44,6 @@ public interface BasicGuiElement {
     BinaryPropertyAssertion<Boolean> visible(boolean complete);
     StringPropertyAssertion<String> tagName();
     RectAssertion bounds();
-    QuantifiedPropertyAssertion<Integer> numberOfElements();
 
     /**
      * Takes a screenshot of the current element

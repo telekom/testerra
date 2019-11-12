@@ -226,13 +226,13 @@ public class ReportFormatter {
 
         try {
             pFormatWithTestClass(logFile, testClass, template);
-        } catch (IOException e) {
+        } catch (Exception e) {
             out(e);
         }
     }
 
     private static void out(Exception e) {
-        LOGGER.error("Could not create html", e);
+        LOGGER.error("Could not create html: " + e);
     }
 
     public static void createMethodsFrame(final File logFile, final MethodContext methodContext,
@@ -240,7 +240,7 @@ public class ReportFormatter {
 
         try {
             pFormatWithTestMethod(logFile, methodContext, template);
-        } catch (IOException e) {
+        } catch (Exception e) {
             out(e);
         }
     }

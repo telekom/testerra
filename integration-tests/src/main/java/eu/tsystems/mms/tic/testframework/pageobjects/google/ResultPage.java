@@ -5,7 +5,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class ResultPage extends FluentPage<ResultPage> {
+public class ResultPage extends FluentPage {
     public ResultPage(WebDriver driver) {
         super(driver);
     }

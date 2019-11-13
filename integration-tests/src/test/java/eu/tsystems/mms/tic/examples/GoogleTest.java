@@ -1,6 +1,5 @@
 package eu.tsystems.mms.tic.examples;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.google.ResultPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.google.StartPage;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;

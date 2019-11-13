@@ -5,7 +5,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class StartPage extends FluentPage<StartPage> {
+public class StartPage extends FluentPage {
     private IGuiElement searchField = find(By.name("q"));
     private IGuiElement searchBtn = find(By.name("btnK"));
 

@@ -5,7 +5,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TestableGuiElement;
 import org.openqa.selenium.By;
 
-public class ResultItem extends Component<ResultItem> {
+public class ResultItem extends Component {
     public ResultItem(IGuiElement rootElement) {
         super(rootElement);
     }

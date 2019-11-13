@@ -555,14 +555,10 @@ function showMethodsViewOnDashboard(classname, status) {
     }
 
     var filter = ".filter" + status;
-    var file = "classes/" + classname + "_dashboard.html";
-
-    $(e).empty();
-    $(e).load(file, function() {
-        $('.filterMethods').hide();
-        $(filter).show();
-    });
-
+    var templateHtml = $('#'+classname+'_dashboard').html();
+    $(e).html(templateHtml);
+    $('.filterMethods').hide();
+    $(filter).show();
 }
 
 function showLoadingIn(elementId) {

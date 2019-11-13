@@ -787,6 +787,13 @@ background-color:#b0bed9 !important;
     vertical-align: top !important;
 }
 
+.classesOverview {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
 .dashboardTextBig {
     font-size: 40px;
     color: #888;

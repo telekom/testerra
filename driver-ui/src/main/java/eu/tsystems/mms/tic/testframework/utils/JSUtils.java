@@ -115,7 +115,7 @@ public final class JSUtils {
                 javascriptExecutor.executeScript(injectedScript);
             }
         } catch (Exception e) {
-            LOGGER.error("Error executing javascript: " + e, e);
+            LOGGER.error("Error executing javascript: " + e.getMessage(), e);
         }
     }
 
@@ -166,7 +166,7 @@ public final class JSUtils {
         try {
             return executeScriptWOCatch(driver, script, parameters);
         } catch (Exception e) {
-            LOGGER.error("Error executing javascript", e);
+            LOGGER.error("Error executing javascript: "+e.getMessage(), e);
             return null;
         }
     }
@@ -191,6 +191,9 @@ public final class JSUtils {
        highlightWebElement(driver, webElement, new Color(r,g,b));
     }
 
+    /**
+     * @todo What is the difference between {@link #highlightWebElementStatic(WebDriver, WebElement, Color)}?
+     */
     public static void highlightWebElement(
         final WebDriver driver,
         final WebElement webElement,
@@ -229,6 +232,9 @@ public final class JSUtils {
     }
 
 
+    /**
+     * @todo What is the difference between {@link #highlightWebElement(WebDriver, WebElement, Color)}?
+     */
     public static void highlightWebElementStatic(
         WebDriver driver,
         WebElement webElement,
@@ -240,15 +246,11 @@ public final class JSUtils {
         turnOnDemoModeForCurrentPage(driver);
 
         LOGGER.debug("Static highlighting WebElement " + webElement);
-        try {
-            executeScriptWOCatch(
-                driver,
-                String.format("highlightElementStatic(arguments[0],%d,%d,%d)",color.getRed(),color.getGreen(),color.getBlue()),
-                webElement
-            );
-        } catch (Throwable t) {
-            LOGGER.warn("Could not highlight webElement", t);
-        }
+        executeScript(
+            driver,
+            String.format("highlightElementStatic(arguments[0],%d,%d,%d)",color.getRed(),color.getGreen(),color.getBlue()),
+            webElement
+        );
         LOGGER.debug("Finished static highlighting WebElement" + webElement);
     }
 

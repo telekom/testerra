@@ -52,27 +52,27 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
         page.title().length()
             .is(10)
-            .lowerThan(100)
-            .greaterThan(5)
-            .between(1,11)
-            .greaterEqualThan(-10)
-            .lowerEqualThan(10);
+            .isLowerThan(100)
+            .isGreaterThan(5)
+            .isBetween(1,11)
+            .isGreaterEqualThan(-10)
+            .isLowerEqualThan(10);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_Page_title_length_fails() {
-        page.title().length().greaterThan(10);
+        page.title().length().isGreaterThan(10);
     }
 
     @Test
     @Fails(description = "The test itself passes, but collected assertions will always fail")
     public void test_Page_title_length_fails_collected() {
-        collectAssertions(()->page.title().length().greaterThan(10));
+        collectAssertions(()->page.title().length().isGreaterThan(10));
     }
 
     @Test
     public void test_Page_title_length_fails_nonFunctional() {
-        nonFunctionalAssertions(()-> page.title().length().greaterThan(10));
+        nonFunctionalAssertions(()-> page.title().length().isGreaterThan(10));
     }
 
     @Test

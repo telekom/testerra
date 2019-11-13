@@ -45,10 +45,10 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     public void testCheckElementLayout() {
         FluentLayoutCheckPage page = preparePage();
         IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");
-        guiElement.screenshot().pixelDistance("TestArticle").lowerThan(1.3);
+        guiElement.screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
 
         guiElement = page.getGuiElementQa("section/invisibleTestArticle");
-        guiElement.screenshot().pixelDistance("InvisibleTestArticle").lowerThan(1.3);
+        guiElement.screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(1.3);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     public void testCheckElementLayoutDistance() {
         FluentLayoutCheckPage page = preparePage();
         IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");
-        withElementTimeout(0, () -> guiElement.screenshot().pixelDistance("TestArticleFailed").lowerThan(1));
+        withElementTimeout(0, () -> guiElement.screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
     }
 
     @Test
@@ -81,12 +81,12 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
         FluentLayoutCheckPage page = preparePage();
         page.screenshot()
             .toReport()
-            .pixelDistance("LayoutTestPage").lowerThan(1);
+            .pixelDistance("LayoutTestPage").isLowerThan(1);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testCheckPageLayout_failed() {
         FluentLayoutCheckPage page = preparePage();
-        withElementTimeout(0, () -> page.screenshot().pixelDistance("LayoutTestPage").greaterThan(100));
+        withElementTimeout(0, () -> page.screenshot().pixelDistance("LayoutTestPage").isGreaterThan(100));
     }
 }

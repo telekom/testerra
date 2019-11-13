@@ -145,7 +145,7 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     public void testT43_SameTopWithDelta() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11"));
-        e1.bounds().fromTop().toTopOf(e2).absolute().lowerEqualThan(20);
+        e1.bounds().fromTop().toTopOf(e2).absolute().isLowerEqualThan(20);
     }
 
     /*
@@ -170,7 +170,7 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     public void testT53_SameBottomWithDelta() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11"));
-        e1.bounds().fromBottom().toBottomOf(e2).absolute().lowerEqualThan(311);
+        e1.bounds().fromBottom().toBottomOf(e2).absolute().isLowerEqualThan(311);
     }
 
     /*
@@ -195,7 +195,7 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     public void testT63_SameLeftWithDelta() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1"));
         GuiElement e2 = getGuiElementBy(By.id("3"));
-        e1.bounds().fromLeft().toLeftOf(e2).absolute().lowerEqualThan(20);
+        e1.bounds().fromLeft().toLeftOf(e2).absolute().isLowerEqualThan(20);
     }
 
     /*
@@ -220,7 +220,7 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     public void testT73_SameRightWithDelta() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("11"));
         GuiElement e2 = getGuiElementBy(By.id("12"));
-        e1.bounds().fromRight().toRightOf(e2).absolute().lowerEqualThan(150);
+        e1.bounds().fromRight().toRightOf(e2).absolute().isLowerEqualThan(150);
     }
 
     /*

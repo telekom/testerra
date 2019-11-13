@@ -235,7 +235,7 @@ public class DefaultGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
-        guiElementData.guiElement.screenshot().pixelDistance(targetImageName).lowerEqualThan(confidenceThreshold);
+        guiElementData.guiElement.screenshot().pixelDistance(targetImageName).isLowerEqualThan(confidenceThreshold);
     }
 
     @Override

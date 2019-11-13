@@ -514,8 +514,12 @@ function drawClassesBars() {
 
         if (chart0 == null) {
             var canvas0 = document.getElementById("classesBars");
-            #set ($height = $methodStatsPerClass.size() * 15 + 30)
-            //canvas0.height = $height;
+            /*
+             60px per class is a good working value
+             for the responsiveness of  graph bar chart
+             */
+            #set ($height = $methodStatsPerClass.size() * 60)
+            canvas0.height = $height;
 
             chart0 = new Chart(canvas0, {
                 type: 'horizontalBar',

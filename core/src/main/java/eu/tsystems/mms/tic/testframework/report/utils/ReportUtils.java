@@ -440,8 +440,8 @@ public final class ReportUtils {
                 File reportFile0 = new File(classesLogDir, classContext.id + ".html");
                 ReportFormatter.createMethodsView(reportFile0, classContext, "methods.vm");
                 // short view for dashboard
-                reportFile0 = new File(classesLogDir, classContext.name + "_dashboard.html");
-                ReportFormatter.createMethodsView(reportFile0, classContext, "methodsDashboard.vm");
+                /*reportFile0 = new File(classesLogDir, classContext.name + "_dashboard.html");
+                ReportFormatter.createMethodsView(reportFile0, classContext, "methodsDashboard.vm");*/
             }
         };
         executorService.submit(createMethodsRunnable);

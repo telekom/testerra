@@ -352,6 +352,7 @@ public class ReportFormatter {
         htmlLogTemplate.setEncoding("UTF-8");
         VelocityContext context = getVelocityContext();
 
+        context.put("classContexts", reportingData.classContexts);
         context.put("dashboardInfos", ReportInfo.getDashboardInfo().getInfos());
         context.put("dashboardWarnings", ReportInfo.getDashboardWarning().getInfos());
 

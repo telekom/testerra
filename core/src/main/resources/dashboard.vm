@@ -16,6 +16,10 @@
 
         <script type="text/javascript" src="js/inject/highlightElement.js"></script>
 
+        <!-- Required for #detailView -->
+        <link rel="stylesheet" href="style/fotorama.css"/>
+        <script type="text/javascript" src="js/fotorama.js"></script>
+
         <script type="text/javascript">
         var lastRunBarsVisible = false;
         </script>
@@ -320,23 +324,22 @@
             #end
         </div>
 
-        <table class="standardTable" style="table-layout:fixed; width:100%;">
+        <div class="classesOverview">
+            <div style="width: 50%;">
+                <canvas id="classesBars"></canvas>
+            </div>
 
-            <tr>
-                <td class="cellTop" style="width: 50%">
-                    <div id="classesBars" style="padding:20px;"></div>
-                    <canvas id="classesBars0" style="padding:20px;"></canvas>
-                </td>
-
-                <td class="cellTop" style="width: 50%">
-                    <div id="detailsView" style="display: table; width: 100%; height: 40vh; text-align: center;">
-                    </div>
-                </td>
-            </tr>
-
-        </table>
-
+            <div id="detailsView" style="width: 50%;">
+            </div>
+        </div>
     </body>
+
+    <!-- Test classes dashboard snippets for the detail view of bar graph -->
+#foreach ($testClass in $classContexts)
+<template id="${testClass.name}_dashboard">
+    #parse("methodsDashboard.vm")
+</template>
+#end
 
 #set ($statuses = ${executionContext.getAvailableStatuses()})
 <!-- fill the pie charts -->
@@ -427,7 +430,7 @@ function pieClickEventCallBack(elementId, category, activated) {
 function defaultMethodsDetailsView() {
     var e = "#detailsView";
     $(e).empty();
-    $(e).append('<div style="display: table-cell; vertical-align: middle;"><a href="" style="font-size: 3;"><img src="logo.png" alt="testerra" width="300"></a><div><div style="text-align: center;">testerra Test Automation Framework<br>(c) Copyright T-Systems Multimedia Solutions GmbH 2018...</div>');
+    $(e).append('<div><a href="" style="font-size: 3;"><img src="logo.png" alt="testerra" width="300"></a><div><div style="text-align: center;">testerra Test Automation Framework<br>(c) Copyright T-Systems Multimedia Solutions GmbH 2018...</div>');
 }
 
 defaultMethodsDetailsView();
@@ -483,7 +486,9 @@ function drawClassesBars() {
 
         var options = {
 	        showLines: true,
+            maintainAspectRatio: false,
 	        scales: {
+                // barThickness: 4, // sounds good, doesnt work
                 xAxes: [{
                     stacked: true
                 }],
@@ -505,14 +510,19 @@ function drawClassesBars() {
                     showMethodsViewOnDashboard(classname, status);
                 }
                 else {
+                    console.log(e);
                     // click on a category: not possible to retrieve information
                 }
             }
         };
 
         if (chart0 == null) {
-            var canvas0 = document.getElementById("classesBars0");
-            #set ($height = $methodStatsPerClass.size() * 15 + 30)
+            var canvas0 = document.getElementById("classesBars");
+            /*
+             50px per class is a good working value
+             for the responsiveness of  graph bar chart
+             */
+            #set ($height = ($methodStatsPerClass.size()+1) * 50)
             canvas0.height = $height;
 
             chart0 = new Chart(canvas0, {

@@ -40,7 +40,18 @@ import eu.tsystems.mms.tic.testframework.utils.*;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
@@ -48,6 +59,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -86,10 +98,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
      * @return the WebElement located by by-locator.
      */
     private int find() {
-        return find(false);
-    }
-
-    private int find(final boolean enableHighlight) {
         guiElementData.executionLog.addMessage("Executing find().");
         int findCounter = -1;
         int numberOfFoundElements = 0;
@@ -122,10 +130,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
         throwExceptionIfWebElementIsNull(notFoundCause);
 
         logTimings(start, findCounter);
-
-        if (enableHighlight) {
-            highlightWebElement();
-        }
 
         if (delayAfterFindInMilliSeconds > 0) {
             TimerUtils.sleep(delayAfterFindInMilliSeconds);
@@ -217,12 +221,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
         }
     }
 
-    private void highlightWebElement() {
-        if (POConfig.isDemoMode()) {
-            LOGGER.debug("find(): Highlighting WebElement");
-            JSUtils.highlightWebElement(webDriver, guiElementData.webElement, 0, 0, 255); // blue
-            LOGGER.debug("find(): Done highlighting WebElement");
-        }
+    private void highlightWebElement(Color color) {
+        JSUtils.highlightWebElement(webDriver, guiElementData.webElement, color);
     }
 
     private void logTimings(long start, int findCounter) {
@@ -245,7 +245,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
 
     @Override
     public WebElement getWebElement() {
-        find(false);
+        find();
         return guiElementData.webElement;
     }
 
@@ -655,7 +655,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
      */
     private void demoMouseOver() {
         if (POConfig.isDemoMode()) {
-            JSUtils.highlightWebElement(webDriver, guiElementData.webElement, 0, 255, 255); // yellow
+            highlightWebElement(new Color(255, 255, 0));
         }
     }
 
@@ -778,7 +778,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     @Override
     public void highlight() {
         LOGGER.debug("highlight(): starting highlight");
-        JSUtils.highlightWebElement(webDriver, getWebElement(), 0, 0, 255);
+        find();
+        highlightWebElement(new Color(0,0,255));
         LOGGER.debug("highlight(): finished highlight");
     }
 

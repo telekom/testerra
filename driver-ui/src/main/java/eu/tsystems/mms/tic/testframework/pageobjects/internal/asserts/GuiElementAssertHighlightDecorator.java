@@ -26,6 +26,8 @@ import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.awt.*;
+
 /**
  * Created by rnhb on 26.10.2015.
  */
@@ -49,14 +51,13 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
 
     @Override
     void afterAssertion(String message, AssertionError assertionErrorOrNull) {
+        if (!POConfig.isDemoMode()) {
+            return;
+        }
         highlight(assertionErrorOrNull == null);
     }
 
     private void highlight(boolean successful) {
-        if (!POConfig.isDemoMode()) {
-            return;
-        }
-
         WebElement webElement = guiElementData.webElement;
         if (webElement == null) {
             return;
@@ -66,9 +67,9 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
                 frameLogic.switchToCorrectFrame();
             }
             if (successful) {
-                JSUtils.highlightWebElementStatic(webDriver, webElement, 0, 255, 0);
+                JSUtils.highlightWebElementStatic(webDriver, webElement, new Color(0, 255, 0));
             } else {
-                JSUtils.highlightWebElementStatic(webDriver, webElement, 255, 0, 0);
+                JSUtils.highlightWebElementStatic(webDriver, webElement, new Color(255, 0, 0));
             }
         } catch (RuntimeException e) {
             // could not highlight, but thats ok.

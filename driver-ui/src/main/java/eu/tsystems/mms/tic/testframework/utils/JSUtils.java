@@ -36,9 +36,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
+import org.openqa.selenium.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -194,6 +196,7 @@ public final class JSUtils {
      * @param g .
      * @param b .
      */
+    @Deprecated
     public static void highlightWebElement(
         final WebDriver driver,
         final WebElement webElement,
@@ -201,17 +204,20 @@ public final class JSUtils {
         final int g,
         final int b
     ) {
-        if (!POConfig.isDemoMode()) {
-            return;
-        }
+       highlightWebElement(driver, webElement, new Color(r,g,b));
+    }
 
+    public static void highlightWebElement(
+        final WebDriver driver,
+        final WebElement webElement,
+        Color color
+    ) {
         /*
          * Try to inject JS for demo mode before executing highlight
          */
         turnOnDemoModeForCurrentPage(driver);
 
-        executeScript(driver, "highlightElement(arguments[0]," + r + "," + g + "," + b + ")",
-                webElement);
+        executeScript(driver, "highlightElement(arguments[0]," + color.getRed() + ",",color.getGreen() + "," + color.getBlue() + ")", webElement);
     }
 
     /**
@@ -223,6 +229,7 @@ public final class JSUtils {
      * @param g .
      * @param b .
      */
+    @Deprecated
     public static void highlightWebElementStatic(
         final WebDriver driver,
         final WebElement webElement,
@@ -230,10 +237,15 @@ public final class JSUtils {
         final int g,
         final int b
     ) {
-        if (!POConfig.isDemoMode()) {
-            return;
-        }
+       highlightWebElementStatic(driver, webElement, new Color(r,g,b));
+    }
 
+
+    public static void highlightWebElementStatic(
+        WebDriver driver,
+        WebElement webElement,
+        Color color
+    ) {
         /*
          * Try to inject JS for demo mode before executing highlight
          */
@@ -241,8 +253,7 @@ public final class JSUtils {
 
         LOGGER.debug("Static highlighting WebElement " + webElement);
         try {
-            executeScriptWOCatch(driver, "highlightElementStatic(arguments[0]," + r + "," + g + "," + b + ")",
-                    webElement);
+            executeScriptWOCatch(driver, "highlightElementStatic(arguments[0]," + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + ")", webElement);
         } catch (Throwable t) {
             LOGGER.warn("Could not highlight webElement", t);
         }

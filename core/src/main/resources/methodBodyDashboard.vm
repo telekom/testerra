@@ -61,7 +61,7 @@
                     </a>
 
                     <div id="fotorama$index" class="hidden fotoramaContainer">
-<                        <div class="fotorama"
+                        <div class="fotorama"
                              data-height="300"
                              data-width="500"
                              data-navposition="top"
@@ -83,12 +83,9 @@
                                         <i id="fullscreenButton" class="fa fa-arrows-alt"></i>
                                         <!--<i id="closeFullscreenButton" class="fa fa-close fa-2x"></i>-->
                                     </a>
-
                                 </div>
                             #end
                         </div>
-
-
                     </div>
                 </div>
             #end

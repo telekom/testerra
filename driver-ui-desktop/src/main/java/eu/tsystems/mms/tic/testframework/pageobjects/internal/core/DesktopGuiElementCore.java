@@ -126,10 +126,10 @@ public class DesktopGuiElementCore implements
 
         if (guiElementData.webElement == null) {
             String subject = toString();
-            if (guiElementData.hasName()) {
+            if (!guiElementData.hasName()) {
                 subject += String.format("(%s)", locate);
             }
-            String message = String.format("%s not found", subject);
+            String message = String.format("{%s} not found", subject);
             MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
             if (currentMethodContext != null) {
                 currentMethodContext.errorContext().setThrowable(message, cause);

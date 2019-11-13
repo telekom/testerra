@@ -7,6 +7,7 @@ public interface CheckablePage extends WebDriverRetainer {
     @Deprecated
     void checkPage();
 
+    @Deprecated
     default void checkGuiElements() {
         checkPage();
     }

@@ -1,9 +1,6 @@
 #set($cols = 2)
 #set($velocityCount1 = 1)
 
-<!--link rel="stylesheet" href="style/fotorama.css"/>
-<script type="text/javascript" src="js/fotorama.js"></script-->
-
 <table class="textleft resultsTable">
 <tr class="header">
     <td colspan="3" class="group">

@@ -16,6 +16,10 @@
 
         <script type="text/javascript" src="js/inject/highlightElement.js"></script>
 
+        <!-- Required for #detailView -->
+        <link rel="stylesheet" href="style/fotorama.css"/>
+        <script type="text/javascript" src="js/fotorama.js"></script>
+
         <script type="text/javascript">
         var lastRunBarsVisible = false;
         </script>
@@ -515,10 +519,10 @@ function drawClassesBars() {
         if (chart0 == null) {
             var canvas0 = document.getElementById("classesBars");
             /*
-             60px per class is a good working value
+             50px per class is a good working value
              for the responsiveness of  graph bar chart
              */
-            #set ($height = $methodStatsPerClass.size() * 60)
+            #set ($height = ($methodStatsPerClass.size()+1) * 50)
             canvas0.height = $height;
 
             chart0 = new Chart(canvas0, {

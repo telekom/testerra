@@ -212,7 +212,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             LOGGER.info(logSCID() + "Trying to maximize window");
             try {
                 Dimension originWindowSize = window.getSize();
-                // Maxmize to detect window size
+                // Maximize to detect window size
                 window.maximize();
                 if (config.maximizePosition != MaximizePosition.SELF) {
                     LOGGER.info(String.format("Setting maximized window position to: %s", config.maximizePosition));
@@ -230,42 +230,10 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 }
             } catch (Throwable t1) {
                 LOGGER.info(logSCID() + "Could not maximize window", t1);
+                setWindowSizeBasedOnDisplayResolution(window, browser);
             }
-        } else if (!Defaults.DISPLAY_RESOLUTION.isEmpty()) {
-            LOGGER.info(logSCID() + "Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
-            String[] split = Defaults.DISPLAY_RESOLUTION.split("x");
-            int width = Integer.valueOf(split[0]);
-            int height = Integer.valueOf(split[1]);
-            try {
-                window.setSize(new Dimension(width, height));
-            } catch (Throwable t2) {
-                LOGGER.error(logSCID() + "Could not set window size", t2);
-
-                if (Browsers.edge.equals(browser)) {
-                    LOGGER.info(logSCID() + "Edge Browser was requested, trying a second workaround");
-
-                    Timer timer = new Timer(500, 5000);
-                    ThrowablePackedResponse<Object> response = timer.executeSequence(new Timer.Sequence<Object>() {
-                        @Override
-                        public void run() throws Throwable {
-                            setSkipThrowingException(true);
-                            LOGGER.info(logSCID() + "Trying setPosition() and setSize()");
-                            try {
-                                window.setPosition(new Point(0, 0));
-                                window.setSize(new Dimension(width, height));
-                                LOGGER.info(logSCID() + "Yup, success!");
-                            } catch (Exception e) {
-                                LOGGER.warn(logSCID() + "Nope. Got error: " + e.getMessage());
-                                throw e;
-                            }
-                        }
-                    });
-
-                    if (!response.isSuccessful()) {
-                        LOGGER.error("Finally, could not set Edge Window size", response.getThrowable());
-                    }
-                }
-            }
+        } else {
+            setWindowSizeBasedOnDisplayResolution(window, browser);
         }
 
         if (!Browsers.safari.equalsIgnoreCase(browser)) {
@@ -283,6 +251,43 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             }
         } else {
             LOGGER.warn(logSCID() + "Not setting timeouts for Safari.");
+        }
+    }
+
+    private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, String browser) {
+        LOGGER.info(logSCID() + "Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
+        String[] split = Defaults.DISPLAY_RESOLUTION.split("x");
+        int width = Integer.valueOf(split[0]);
+        int height = Integer.valueOf(split[1]);
+        try {
+            window.setSize(new Dimension(width, height));
+        } catch (Throwable t2) {
+            LOGGER.error(logSCID() + "Could not set window size", t2);
+
+            if (Browsers.edge.equals(browser)) {
+                LOGGER.info(logSCID() + "Edge Browser was requested, trying a second workaround");
+
+                Timer timer = new Timer(500, 5000);
+                ThrowablePackedResponse<Object> response = timer.executeSequence(new Timer.Sequence<Object>() {
+                    @Override
+                    public void run() throws Throwable {
+                        setSkipThrowingException(true);
+                        LOGGER.info(logSCID() + "Trying setPosition() and setSize()");
+                        try {
+                            window.setPosition(new Point(0, 0));
+                            window.setSize(new Dimension(width, height));
+                            LOGGER.info(logSCID() + "Yup, success!");
+                        } catch (Exception e) {
+                            LOGGER.warn(logSCID() + "Nope. Got error: " + e.getMessage());
+                            throw e;
+                        }
+                    }
+                });
+
+                if (!response.isSuccessful()) {
+                    LOGGER.error("Finally, could not set Edge Window size", response.getThrowable());
+                }
+            }
         }
     }
 

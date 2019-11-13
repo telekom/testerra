@@ -77,7 +77,7 @@
                             #foreach( $screenshot in $testMethod.screenshots )
                                 <div data-img="../screenshots/${screenshot.filename}">
                                     <!-- Quit fullscreen -->
-                                    <a class="gallerybutton" href="#" onclick="var fotorama = $('.fotorama').fotorama().data('fotorama');fotorama.cancelFullScreen();">
+                                    <a class="gallerybutton" href="#">
                                         <!--<img id="fullscreenButton" alt="F" title="Fullscreen" src="style/thumb_full-screen.png" style="width: 21px; background-color: white;"/>-->
                                         <!--<img id="closeFullscreenButton" class="hidden" alt="F" title="Close" src="style/cancel.png" style="width: 21px; background-color: white;"/>-->
                                         <i id="fullscreenButton" class="fa fa-arrows-alt"></i>

@@ -559,6 +559,7 @@ function showMethodsViewOnDashboard(classname, status) {
     $(e).html(templateHtml);
     $('.filterMethods').hide();
     $(filter).show();
+    $('.fotorama').fotorama().data('fotorama');
 }
 
 function showLoadingIn(elementId) {

@@ -26,6 +26,8 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.components.InputForm;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.TestableGuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -41,8 +43,10 @@ public class WebTestPage extends AbstractWebTestPage {
     @Check(nonFunctional = true)
     private final GuiElement button1 = new GuiElement(driver, By.id("4"));
 
-    @Check
     private GuiElement specialElementFromVariable;
+
+    @Check
+    private InputForm inputForm = withAncestor(find(By.className("className"))).createComponent(InputForm.class);
 
     /** The output text field. */
     @Check
@@ -55,7 +59,6 @@ public class WebTestPage extends AbstractWebTestPage {
         super(driver);
 
         specialElementFromVariable = new GuiElement(driver, By.id("" + myVariables.number));
-        Assert.assertTrue(false);
     }
 
     public WebTestPage(WebDriver driver) {
@@ -97,6 +100,26 @@ public class WebTestPage extends AbstractWebTestPage {
     public void nonfunctionalAssert() {
         GuiElement guiElement = new GuiElement(driver, By.xpath("id('surely_not_existing')"));
         guiElement.nonFunctionalAsserts().assertIsPresent();
+    }
+
+    public InputForm inputForm() {
+        return inputForm;
+    }
+
+    public TestableGuiElement notDisplayedElement() {
+        return findById("notDisplayedElement");
+    }
+
+    public TestableGuiElement notVisibleElement() {
+        return findById("notVisibleElement");
+    }
+
+    public TestableGuiElement nonExistentElement() {
+        return findById("schnullifacks");
+    }
+
+    public IGuiElement getGuiElementBy(By by) {
+        return find(by);
     }
 
 }

@@ -2,21 +2,6 @@
 
 == New API
 
-=== Page implementation
-
-The new standard implementation of Pages is now
-```java
-class MyPage extends FluentPage<MyPage> {
-    public MyPage(WebDriver webDriver) {
-        super(webDriver);
-    }
-
-    protected MyPage self() {
-        return this;
-    }
-}
-```
-
 === Pages instantiation
 
 The new standard way to instantiate Pages is now
@@ -51,7 +36,7 @@ MyPage page = new MyPage(WebDriverManager.getWebDriver());
 
 The standard way of implicit GuiElement checks is now
 ```java
-class MyPage extends FluentPage<MyPage> {
+class MyPage extends Page {
     @Check
     private IGuiElement guiElement = findById(42);
 }
@@ -80,7 +65,7 @@ page.checkPage(); <2>
 
 The new standard way to instantiate GuiElements is now
 ```java
-class MyPage extends FluentPage<MyPage> {
+class MyPage extends Page {
     private IGuiElement guiElement = findById(42);
     private IGuiElement guiElement = find(By.xpath("//div[1]"));
 }
@@ -99,7 +84,7 @@ class MyPage extends Page {
 
 For sub elements
 ```java
-class MyPage extends FluentPage<MyPage> {
+class MyPage extends Page {
     private IGuiElement guiElement = findById(42);
     private IGuiElement subElement = withAncestor(guiElement).find(By.xpath("//div[1]"));
 }
@@ -109,7 +94,7 @@ class MyPage extends FluentPage<MyPage> {
 .Retrieving sub elements from GuiElement is now `@deprecated`
 ====
 ```java
-class MyPage extends FluentPage<MyPage> {
+class MyPage extends Page {
     private GuiElement guiElement = new GuiElement(By.id(42), driver);
     private GuiElement subElement = guiElement.getSubElement(By.xpath("//div[1]"));
 }
@@ -118,7 +103,7 @@ class MyPage extends FluentPage<MyPage> {
 
 For elements in frames
 ```java
-class MyPage extends FluentPage<MyPage> {
+class MyPage extends Page {
     private IGuiElement frame = find(By.tagName("frame"));
     private IGuiElement guiElement = inFrame(frame).findById(14);
 }
@@ -251,7 +236,7 @@ withElementTimeout(1, () -> {
 For the whole Page
 ```java
 @PageOptions(elementTimeoutInSeconds = 1)
-class MyPage extends FluentPage<MyPage> {
+class MyPage extends Page {
 }
 ```
 
@@ -292,20 +277,15 @@ POConfig.setUiElementTimeoutInSeconds(1);
 === Sub Pages
 The new standard way to implement Sub Pages aka Components is
 ```java
-public class MyForm extends Component<MyForm> {
+public class MyForm extends Component {
     public MyForm(IGuiElement rootElement) {
         super(rootElement);
-    }
-
-    @Override
-    protected MyForm self() {
-        return this;
     }
 }
 ```
 Instantiate components
 ```java
-class MyPage extends FluentPage<MyPage> {
+class MyPage extends Page {
     private MyForm form = withAncestor(find(By.tagName("form"))).createComponent(MyForm.class);
 }
 ```

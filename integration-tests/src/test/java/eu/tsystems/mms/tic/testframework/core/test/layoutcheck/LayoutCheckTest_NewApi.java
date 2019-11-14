@@ -35,15 +35,15 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     }
 
     @BeforeMethod
-    private FluentLayoutCheckPage preparePage() {
-        FluentLayoutCheckPage page = pageFactory.createPage(FluentLayoutCheckPage.class);
-        page.call(TestPage.LAYOUT.getUrl());
+    private LayoutCheckPage preparePage() {
+        LayoutCheckPage page = pageFactory.createPage(LayoutCheckPage.class);
+        page.getWebDriver().navigate().to(TestPage.LAYOUT.getUrl());
         return page;
     }
 
     @Test
     public void testCheckElementLayout() {
-        FluentLayoutCheckPage page = preparePage();
+        LayoutCheckPage page = preparePage();
         IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");
         guiElement.screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
 
@@ -53,7 +53,7 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
 
     @Test
     public void testCheckElementVisibility() {
-        FluentLayoutCheckPage page = preparePage();
+        LayoutCheckPage page = preparePage();
         IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");
         guiElement.visible(true).isTrue();
 
@@ -71,14 +71,14 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     @Test()
     @Fails(description = "This test should fail")
     public void testCheckElementLayoutDistance() {
-        FluentLayoutCheckPage page = preparePage();
+        LayoutCheckPage page = preparePage();
         IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");
         withElementTimeout(0, () -> guiElement.screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
     }
 
     @Test
     public void testCheckPageLayout() {
-        FluentLayoutCheckPage page = preparePage();
+        LayoutCheckPage page = preparePage();
         page.screenshot()
             .toReport()
             .pixelDistance("LayoutTestPage").isLowerThan(1);
@@ -86,7 +86,7 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
 
     @Test(expectedExceptions = AssertionError.class)
     public void testCheckPageLayout_failed() {
-        FluentLayoutCheckPage page = preparePage();
+        LayoutCheckPage page = preparePage();
         withElementTimeout(0, () -> page.screenshot().pixelDistance("LayoutTestPage").isGreaterThan(100));
     }
 }

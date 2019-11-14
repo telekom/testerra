@@ -21,8 +21,8 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
-import eu.tsystems.mms.tic.testframework.pageobjects.FluentWebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import org.openqa.selenium.By;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -31,11 +31,11 @@ import org.testng.annotations.Test;
  * Created by pele on 31.08.2015.
  */
 public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
-    private FluentWebTestPage page;
+    private WebTestPage page;
 
     @BeforeMethod
     private void createPage() {
-        page = pageFactory.createPage(FluentWebTestPage.class);
+        page = pageFactory.createPage(WebTestPage.class);
     }
     /*
     Left

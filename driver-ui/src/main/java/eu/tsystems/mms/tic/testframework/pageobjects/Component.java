@@ -36,12 +36,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringProp
 import org.openqa.selenium.WebElement;
 
 /**
- * Components implementation
+ * Components are wrappers for HTML elements like components
  * @author Mike Reiche
  */
-public abstract class Component<SELF extends Component<SELF>> extends AbstractFluentPage<SELF> implements
-    IComponent<SELF>,
-    Hierarchy<SELF>
+public abstract class Component extends AbstractPage implements
+    IComponent<Component>,
+    Hierarchy<Component>
 {
     protected final IGuiElement rootElement;
     private final Finder defaultFinder;
@@ -49,7 +49,6 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     private Object parent;
 
     public Component(IGuiElement rootElement) {
-        super(rootElement.getWebDriver());
         this.rootElement = rootElement;
         defaultFinder = withAncestor(rootElement);
     }
@@ -81,12 +80,6 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
 
     protected IGuiElement find(Locate locator) {
         return defaultFinder.find(locator);
-    }
-
-    @Override
-    @Deprecated
-    public Page refresh() {
-        return super.refresh();
     }
 
     @Override
@@ -133,9 +126,9 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     }
 
     @Override
-    public SELF setName(String name) {
+    public Component setName(String name) {
         this.name = name;
-        return self();
+        return this;
     }
 
     @Override
@@ -144,9 +137,9 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractFl
     }
 
     @Override
-    public SELF setParent(Object parent) {
+    public Component setParent(Object parent) {
         this.parent = parent;
-        return self();
+        return this;
     }
 
     @Override

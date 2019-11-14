@@ -13,9 +13,4 @@ public class ResultItem extends Component {
     public TestableGuiElement headline() {
         return find(By.className("S3Uucc"));
     }
-
-    @Override
-    protected ResultItem self() {
-        return null;
-    }
 }

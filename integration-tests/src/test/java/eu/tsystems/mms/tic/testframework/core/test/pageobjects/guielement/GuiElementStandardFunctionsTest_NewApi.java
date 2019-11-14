@@ -27,20 +27,21 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
-import eu.tsystems.mms.tic.testframework.pageobjects.FluentWebTestPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTest implements Loggable {
 
-    private final static InstantAssertion instantAssertion = Testerra.ioc().getInstance(InstantAssertion.class);
-    private FluentWebTestPage page;
+    private final static InstantAssertion instantAssertion = ioc.getInstance(InstantAssertion.class);
+    private WebTestPage page;
 
     @BeforeClass
-    private FluentWebTestPage prepareTestPage() {
-        page = pageFactory.createPage(FluentWebTestPage.class);
-        return page.call(TestPage.INPUT_TEST_PAGE.getUrl());
+    private WebTestPage prepareTestPage() {
+        page = pageFactory.createPage(WebTestPage.class);
+        page.getWebDriver().navigate().to(TestPage.INPUT_TEST_PAGE.getUrl());
+        return page;
     }
 
     @Test

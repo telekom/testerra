@@ -41,7 +41,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiEleme
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroupAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ScreenshotAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -59,21 +64,33 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * tt. page objects base class.
- *
- * @author pele
+ * A Page implements the PageObject pattern
+ * @see {https://martinfowler.com/bliki/PageObject.html}
+ * @author Peter Lehmann
+ * @author Mike Reiche
  */
 public abstract class Page extends AbstractPage {
 
     public static final String CHECKPAGE_METHOD_NAME = "checkPage";
     private final GuiElementGroups guiElementGroups;
-
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
+    private static final GuiElementFactory guiElementFactory = ioc.getInstance(GuiElementFactory.class);
 
-    public static void registerPageLoadHandler(PageLoadHandler h) {
-        pageLoadHandlers.add(h);
+    private static class FrameFinder implements Finder {
+        private final IGuiElement frame;
+        private FrameFinder(IGuiElement frame) {
+            this.frame = frame;
+        }
+        public IGuiElement find(Locate locator) {
+            return guiElementFactory.createWithFrames(locator, frame);
+        }
+    }
+
+    protected Finder inFrame(IGuiElement frame) {
+        return new FrameFinder(frame);
     }
 
     /**
@@ -100,6 +117,15 @@ public abstract class Page extends AbstractPage {
 
         // initialize ge groups
         guiElementGroups = new GuiElementGroups();
+    }
+
+    protected <T extends IPage> T createPage(final Class<T> pageClass) {
+        return pageFactory.createPage(pageClass, driver);
+    }
+
+
+    public static void registerPageLoadHandler(PageLoadHandler h) {
+        pageLoadHandlers.add(h);
     }
 
     /**
@@ -157,7 +183,7 @@ public abstract class Page extends AbstractPage {
 
     @Override
     protected List<FieldAction> getFieldActions(List<FieldWithActionConfig> fields, AbstractPage declaringPage) {
-        List<FieldAction> fieldActions = new ArrayList<FieldAction>();
+        List<FieldAction> fieldActions = new ArrayList<>();
         for (FieldWithActionConfig field : fields) {
             GuiElementCheckFieldAction guiElementCheckFieldAction = new GuiElementCheckFieldAction(field, declaringPage);
             SetNameFieldAction setNameFieldAction = new SetNameFieldAction(field.field, declaringPage);
@@ -425,4 +451,69 @@ public abstract class Page extends AbstractPage {
 
         return simpleClassName + " -> " + actionName;
     }
+
+    /**
+     * Fluent properties
+     */
+    public StringPropertyAssertion<String> title() {
+        final Page self = this;
+        return propertyAssertionFactory.string(new AssertionProvider<String>() {
+            @Override
+            public String getActual() {
+                return driver.getTitle();
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("%s.title", self);
+            }
+        });
+    }
+
+    public StringPropertyAssertion<String> url() {
+        final Page self = this;
+        return propertyAssertionFactory.string(new AssertionProvider<String>() {
+            @Override
+            public String getActual() {
+                return driver.getCurrentUrl();
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("%s.url", self);
+            }
+        });
+    }
+
+    /**
+     * Takes a screenshot of the current page
+     */
+    public ScreenshotAssertion screenshot() {
+        final Page self = this;
+        final AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();
+
+        Screenshot screenshot = new Screenshot(self.toString());
+        UITestUtils.takeScreenshot(driver, screenshot);
+        atomicScreenshot.set(screenshot);
+
+        return propertyAssertionFactory.screenshot(new AssertionProvider<Screenshot>() {
+
+            @Override
+            public Screenshot getActual() {
+                return atomicScreenshot.get();
+            }
+
+            @Override
+            public void failed(PropertyAssertion assertion) {
+                // Take new screenshot only if failed
+                UITestUtils.takeScreenshot(driver, atomicScreenshot.get());
+            }
+
+            @Override
+            public String getSubject() {
+                return self.toString();
+            }
+        });
+    }
+
 }

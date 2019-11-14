@@ -23,14 +23,20 @@ import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiElementTimeoutFieldAction;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroupAction;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.report.IReport;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.AbstractTestFeatures;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -45,12 +51,66 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @deprecated This class can be merged with Page
- *
+ * Provides basic PageObject related features
+ * @author Peter Lehmann
+ * @author Mike Reiche
  */
-@Deprecated()
-public abstract class AbstractPage extends AbstractTestFeatures implements IPage {
-    private static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
+public abstract class AbstractPage extends AbstractTestFeatures implements
+    IPage,
+    Loggable
+{
+    private static final PageOverrides pageOverrides = ioc.getInstance(PageOverrides.class);
+    private static final GuiElementFactory guiElementFactory = ioc.getInstance(GuiElementFactory.class);
+    protected static final PropertyAssertionFactory propertyAssertionFactory = ioc.getInstance(PropertyAssertionFactory.class);
+
+    protected interface Finder {
+        IGuiElement find(Locate locator);
+        default IGuiElement findById(String id) {
+            return find(Locate.by().id(id));
+        }
+        default IGuiElement findByQa(String qa) {
+            return find(Locate.by().qa(qa));
+        }
+        default IGuiElement find(By by) {
+            return find(Locate.by(by));
+        }
+    }
+
+    protected interface ComponentFinder extends Finder {
+        <T extends IComponent> T createComponent(Class<T> componentClass);
+    }
+
+    private static class AncestorFinder implements Page.ComponentFinder {
+        private final IGuiElement ancestor;
+        private final IPage parentPage;
+        private AncestorFinder(IPage parentPage, IGuiElement ancestor) {
+            this.parentPage = parentPage;
+            this.ancestor = ancestor;
+        }
+        public IGuiElement find(Locate locator) {
+            return guiElementFactory.createFromAncestor(locator, ancestor);
+        }
+        public <T extends IComponent> T createComponent(Class<T> componentClass) {
+            return pageFactory.createComponent(componentClass, parentPage, ancestor);
+        }
+    }
+
+    protected Page.ComponentFinder withAncestor(IGuiElement ancestor) {
+        return new AncestorFinder(this,ancestor);
+    }
+    protected IGuiElement findById(String id) {
+        return find(Locate.by().id(id));
+    }
+    protected IGuiElement findByQa(String qa) {
+        return find(Locate.by().qa(qa));
+    }
+    protected IGuiElement find(By by) {
+        return find(Locate.by(by));
+    }
+    protected IGuiElement find(Locate locator) {
+        return guiElementFactory.create(locator, this);
+    }
+
     /**
      * The webdriver object.
      */
@@ -275,7 +335,9 @@ public abstract class AbstractPage extends AbstractTestFeatures implements IPage
         // allow pages to run code before performing checkpage
     }
 
-    protected abstract void handleDemoMode(WebDriver webDriver);
+    protected void handleDemoMode(WebDriver webDriver) {
+
+    }
 
     /**
      * Method entered when checkPage runs into an error (catching any throwable). You can throw a new throwable that
@@ -361,11 +423,9 @@ public abstract class AbstractPage extends AbstractTestFeatures implements IPage
         }
     }
 
-    /**
-     * @deprecated This method should not be protected
-     */
-    @Deprecated
-    protected abstract List<FieldAction> getFieldActions(List<FieldWithActionConfig> field, AbstractPage abstractPage);
+    protected List<FieldAction> getFieldActions(List<FieldWithActionConfig> fields, AbstractPage declaringPage) {
+       return new ArrayList<>();
+    }
 
     private Set<Field> makeFieldsAccessible(List<FieldWithActionConfig> fields) {
         Set<Field> fieldsMadeAccessible = new HashSet<Field>();
@@ -435,7 +495,9 @@ public abstract class AbstractPage extends AbstractTestFeatures implements IPage
         UITestUtils.takeScreenshot(driver, true);
     }
 
-    public abstract void waitForPageToLoad();
+    public void waitForPageToLoad() {
+
+    }
 
     /**
      * Empty method to be overriden. Can perform some (additional) checks on page objects.

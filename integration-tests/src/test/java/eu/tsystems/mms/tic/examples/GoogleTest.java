@@ -9,7 +9,7 @@ public class GoogleTest extends TesterraTest {
 
     private StartPage prepare() {
         StartPage page = pageFactory.createPage(StartPage.class);
-        page.call("https://google.de");
+        page.getWebDriver().navigate().to("https://google.de");
         return page;
     }
 

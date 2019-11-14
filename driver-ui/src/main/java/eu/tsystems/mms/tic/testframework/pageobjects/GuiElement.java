@@ -495,13 +495,11 @@ public class GuiElement implements
         return guiElementFacade.getCssValue(cssIdentifier);
     }
 
-    @Override
     public IGuiElement mouseOver() {
         guiElementFacade.mouseOver();
         return this;
     }
 
-    @Override
     public IGuiElement mouseOverJS() {
         guiElementFacade.mouseOverJS();
         return this;
@@ -565,7 +563,6 @@ public class GuiElement implements
         return this;
     }
 
-    @Override
     public IGuiElement swipe(int offsetX, int offSetY) {
         guiElementFacade.swipe(offsetX, offSetY);
         return this;

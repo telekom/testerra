@@ -8,11 +8,10 @@ public interface InteractiveGuiElement extends TestableGuiElement {
     InteractiveGuiElement doubleClickJS();
     InteractiveGuiElement rightClick();
     InteractiveGuiElement rightClickJS();
-    InteractiveGuiElement swipe(int offsetX, int offSetY);
     InteractiveGuiElement select();
     InteractiveGuiElement deselect();
     InteractiveGuiElement sendKeys(CharSequence... charSequences);
     InteractiveGuiElement clear();
-    InteractiveGuiElement mouseOver();
-    InteractiveGuiElement mouseOverJS();
+    //InteractiveGuiElement mouseOver();
+    //InteractiveGuiElement mouseOverJS();
 }

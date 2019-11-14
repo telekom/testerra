@@ -88,10 +88,9 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      *
      * @return InputStream
      *
-     * @throws TesterraSystemException Exception, when file not existing
      * @implNote avoid logging here!
      */
-    public static InputStream getLocalFileOrResourceInputStream(final String filePathAndName) {
+    public static InputStream getLocalFileOrResourceInputStream(final String filePathAndName) throws TesterraSystemException{
         try {
             return getLocalFileInputStream(filePathAndName);
             // throws FileNotFound, when not present! --> Try to get the resource file instead.

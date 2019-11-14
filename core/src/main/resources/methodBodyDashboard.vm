@@ -61,7 +61,7 @@
                     </a>
 
                     <div id="fotorama$index" class="hidden fotoramaContainer">
-<                        <div class="fotorama"
+                        <div class="fotorama"
                              data-height="300"
                              data-width="500"
                              data-navposition="top"
@@ -77,18 +77,15 @@
                             #foreach( $screenshot in $testMethod.screenshots )
                                 <div data-img="../screenshots/${screenshot.filename}">
                                     <!-- Quit fullscreen -->
-                                    <a class="gallerybutton" href="#" onclick="var fotorama = $('.fotorama').fotorama().data('fotorama');fotorama.cancelFullScreen();">
+                                    <a class="gallerybutton" href="#">
                                         <!--<img id="fullscreenButton" alt="F" title="Fullscreen" src="style/thumb_full-screen.png" style="width: 21px; background-color: white;"/>-->
                                         <!--<img id="closeFullscreenButton" class="hidden" alt="F" title="Close" src="style/cancel.png" style="width: 21px; background-color: white;"/>-->
                                         <i id="fullscreenButton" class="fa fa-arrows-alt"></i>
                                         <!--<i id="closeFullscreenButton" class="fa fa-close fa-2x"></i>-->
                                     </a>
-
                                 </div>
                             #end
                         </div>
-
-
                     </div>
                 </div>
             #end

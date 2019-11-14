@@ -1,6 +1,6 @@
 = Changes
 
-== New API
+== New API (Draft)
 
 === Pages instantiation
 
@@ -16,11 +16,32 @@ class MyTest extends TesterraTest {
     }
 }
 ```
+Within Pages
+```java
+class MyPage extends Page {
+    public AnotherPage navigateToAnotherPage() {
+        return createPage(AnotherPage.class);
+    }
+}
+```
+
 [NOTE]
-.Using the static `PageFactory` is `@deprecated`
+.Using the static `PageFactory` is now `@deprecated`
 ====
 ```java
 MyPage page = PageFactory.create(MyPage.class, WebDriverManager.getWebDriver());
+```
+====
+
+[NOTE]
+.Passing variables to the Page constructor is now `@deprecated`
+====
+```java
+MyPage page = PageFactory.create(
+    MyPage.class,
+    WebDriverManager.getWebDriver(),
+    new PageVariables()
+);
 ```
 ====
 
@@ -31,6 +52,22 @@ MyPage page = PageFactory.create(MyPage.class, WebDriverManager.getWebDriver());
 MyPage page = new MyPage(WebDriverManager.getWebDriver());
 ```
 ====
+
+=== Sub Pages
+The new standard way to implement Sub Pages aka Components is now
+```java
+public class MyForm extends Component {
+    public MyForm(IGuiElement rootElement) {
+        super(rootElement);
+    }
+}
+```
+Instantiate components
+```java
+class MyPage extends Page {
+    private MyForm form = withAncestor(find(By.tagName("form"))).createComponent(MyForm.class);
+}
+```
 
 === Implicit Element checks
 
@@ -52,12 +89,11 @@ class MyPage extends Page {
         checkPage(); <1>
     }
 }
-```
-<1> Calling `checkPage()` as `protected` member is forbidden
-```java
+
 MyPage page = pageFactory.create(MyPage.class);
 page.checkPage(); <2>
 ```
+<1> Calling `checkPage()` as `protected` member is forbidden
 <2> Calling `checkPage()` as `public` member is forbidden
 ====
 
@@ -127,7 +163,67 @@ The new standard way for performing assertions is now
 Assert.assertTrue(false);
 ```
 
-=== Collected Assertions
+==== Element Assertions
+
+The new standard way to perform assertions on elements like Pages and GuiElements is now
+```java
+guiElement.displayed().isTrue();
+guiElement.value().contains("Hallo Welt");
+page.url().endsWith("index.html");
+page.url().length().isGreaterEqualThan(10);
+```
+[NOTE]
+.Using the GuiElement assertions is now `@deprecated`
+====
+```java
+guiElement.asserts().assertIsDisplayed();
+```
+====
+[NOTE]
+.Using the GuiElement waits is now `@deprecated`
+====
+```java
+guiElement.waits().waitForIsDisplayed();
+```
+====
+
+==== Screenshot based Assertions
+The new standard way to perform screenshot based assertions is now
+```java
+guiElement.screenshot().pixelDistance("ElementReference").isLowerThan(1);
+page.screenshot().pixelDistance("PageReference").isBetween(0, 10);
+```
+
+Add screenshot to the report
+```java
+page.screenshot().toReport();
+```
+[NOTE]
+.Using the static `UITestUtils` is now `@deprecated`
+====
+```java
+UITestUtils.takeScreenshot(page.getWebDriver(), true);
+```
+====
+
+==== Layout based Assertions
+The new standard way to perform layout based assertions is now
+```java
+left.bounds().leftOf(right).isTrue(); <1>
+left.bounds().fromRight().toRightOf(right).is(0); <2>
+parent.bounds().contains(child).isTrue();
+left.bounds().intersects(right).isFalse();
+```
+[NOTE]
+.Using the `assertLayout()` method is now `@deprecated`
+====
+```java
+left.asserts().assertLayout(Layout.outer().leftOf(right)); <1>
+left.asserts().assertLayout(Layout.outer().sameRight(right, 0)); <2>
+```
+====
+
+==== Collected Assertions
 
 The new standard way to collect assertions of GuiElements is now
 ```java
@@ -139,8 +235,7 @@ For many GuiElements or Pages
 collectAssertions(() -> {
     MyPage page = pageFactory.create(MyPage.class);
     page.title().is("TestPage");
-
-    page.element().value().contains("Hello");
+    guiElement.value().contains("Hello");
 });
 ```
 
@@ -192,7 +287,7 @@ tt.guielement.default.assertcollector=true
 ```
 ====
 
-=== Non Functional Assertions
+==== Non Functional Assertions
 
 The new standard way for non functional assertions works like <<Collected Assertions>>
 ```java
@@ -228,16 +323,14 @@ For many GuiElements or Pages
 withElementTimeout(1, () -> {
     MyPage page = pageFactory.create(MyPage.class);
     page.title().is("TestPage");
-
-    page.element().value().contains("Hello");
+    guiElement.value().contains("Hello");
 });
 ```
 
 For the whole Page
 ```java
 @PageOptions(elementTimeoutInSeconds = 1)
-class MyPage extends Page {
-}
+class MyPage extends Page {...}
 ```
 
 For other test methods
@@ -273,22 +366,6 @@ POConfig.setThreadLocalUiElementTimeoutInSeconds(1);
 POConfig.setUiElementTimeoutInSeconds(1);
 ```
 ====
-
-=== Sub Pages
-The new standard way to implement Sub Pages aka Components is
-```java
-public class MyForm extends Component {
-    public MyForm(IGuiElement rootElement) {
-        super(rootElement);
-    }
-}
-```
-Instantiate components
-```java
-class MyPage extends Page {
-    private MyForm form = withAncestor(find(By.tagName("form"))).createComponent(MyForm.class);
-}
-```
 
 
 

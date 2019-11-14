@@ -59,7 +59,7 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @throws ElementNotFoundException If none found
      * @throws NonUniqueElementException If more than one WebElement has been found according to given {@link Locate}
      */
-    WebElement findFirstWebElement();
+    WebElement findWebElement();
 
     /**
      * Returns by locator element.

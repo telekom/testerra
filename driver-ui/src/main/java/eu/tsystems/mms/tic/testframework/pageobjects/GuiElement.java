@@ -34,7 +34,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultRectAssertion;
@@ -60,6 +59,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
@@ -71,6 +71,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -82,7 +84,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * Authors: pele, rnhb
  */
 public class GuiElement implements
-    BasicGuiElement,
     IGuiElement,
     Loggable,
     Hierarchy<IGuiElement>
@@ -308,6 +309,7 @@ public class GuiElement implements
         return (GuiElement)guiElementFacade.getSubElement(locator);
     }
 
+    @Override
     public WebElement getWebElement() {
         return guiElementFacade.getWebElement();
     }
@@ -362,7 +364,6 @@ public class GuiElement implements
         return this;
     }
 
-    @Override
     public IGuiElement type(String text) {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementCore.type(text);
@@ -405,9 +406,28 @@ public class GuiElement implements
 
     @Override
     public IGuiElement sendKeys(CharSequence... charSequences) {
-        guiElementData.setLogLevel(LogLevel.INFO);
-        guiElementFacade.sendKeys(charSequences);
-        guiElementData.resetLogLevel();
+        int cpm = Properties.USER_INPUT_CHARACTERS_PER_MINUTE.asLong().intValue();
+        if (cpm > 0) {
+            return userSendKeys(cpm, charSequences);
+        } else {
+            guiElementData.setLogLevel(LogLevel.INFO);
+            guiElementFacade.sendKeys(charSequences);
+            guiElementData.resetLogLevel();
+        }
+        return this;
+    }
+
+    private IGuiElement userSendKeys(int cpm, CharSequence... charSequences) {
+        float cps = cpm/60;
+        if (cps <= 0) cps = 1;
+        int cpsSleepMs = Math.round(1000/cps);
+        final WebElement webElement = guiElementCore.findWebElement();
+        for (CharSequence charSequence : charSequences) {
+            charSequence.codePoints().forEach(codePoint -> {
+                webElement.sendKeys(new String(Character.toChars(codePoint)));
+                TimerUtils.sleepSilent(cpsSleepMs);
+            });
+        }
         return this;
     }
 
@@ -784,7 +804,7 @@ public class GuiElement implements
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return guiElementCore.findFirstWebElement().getTagName();
+                return guiElementCore.findWebElement().getTagName();
             }
 
             @Override
@@ -800,7 +820,7 @@ public class GuiElement implements
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return guiElementCore.findFirstWebElement().getText();
+                return guiElementCore.findWebElement().getText();
             }
 
             @Override
@@ -826,12 +846,28 @@ public class GuiElement implements
         return propertyAssertionFactory.string(new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return guiElementCore.findFirstWebElement().getAttribute(attribute);
+                return guiElementCore.findWebElement().getAttribute(attribute);
             }
 
             @Override
             public String getSubject() {
                 return String.format("%s.value(attribute: %s)", self, attribute);
+            }
+        });
+    }
+
+    @Override
+    public StringPropertyAssertion<String> css(String property) {
+        final IGuiElement self = this;
+        return propertyAssertionFactory.string(new AssertionProvider<String>() {
+            @Override
+            public String getActual() {
+                return getCssValue(property);
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("%s.css(property: %s)", self, property);
             }
         });
     }
@@ -843,7 +879,7 @@ public class GuiElement implements
             @Override
             public Boolean getActual() {
                 try {
-                    return guiElementCore.findFirstWebElement()!=null;
+                    return guiElementCore.findWebElement()!=null;
                 } catch (ElementNotFoundException e) {
                     return false;
                 }
@@ -878,7 +914,7 @@ public class GuiElement implements
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return guiElementCore.findFirstWebElement().isDisplayed();
+                return guiElementCore.findWebElement().isDisplayed();
             }
 
             @Override
@@ -894,7 +930,7 @@ public class GuiElement implements
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return guiElementCore.findFirstWebElement().isEnabled();
+                return guiElementCore.findWebElement().isEnabled();
             }
 
             @Override
@@ -910,7 +946,7 @@ public class GuiElement implements
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return guiElementCore.findFirstWebElement().isSelected();
+                return guiElementCore.findWebElement().isSelected();
             }
 
             @Override
@@ -926,7 +962,7 @@ public class GuiElement implements
         return new DefaultRectAssertion(null, new AssertionProvider<Rectangle>() {
             @Override
             public Rectangle getActual() {
-                return guiElementCore.findFirstWebElement().getRect();
+                return guiElementCore.findWebElement().getRect();
             }
 
             @Override

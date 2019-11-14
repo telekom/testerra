@@ -110,8 +110,8 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public WebElement findFirstWebElement() {
-        return decoratedFacade.findFirstWebElement();
+    public WebElement findWebElement() {
+        return decoratedFacade.findWebElement();
     }
 
     @Override

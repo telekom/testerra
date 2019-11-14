@@ -107,7 +107,7 @@ public class DesktopGuiElementCore implements
         Exception cause = null;
         try {
             if (parent != null) {
-                elements = parent.findFirstWebElement().findElements(locate.getBy());
+                elements = parent.findWebElement().findElements(locate.getBy());
             } else {
                 elements = webDriver.findElements(locate.getBy());
             }
@@ -140,7 +140,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElement findFirstWebElement() {
+    public WebElement findWebElement() {
         findWebElements();
         return guiElementData.webElement;
     }
@@ -566,8 +566,8 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public boolean isVisible(final boolean complete) {
-        final WebElement webElement = findFirstWebElement();
+    public boolean isVisible(boolean complete) {
+        WebElement webElement = findWebElement();
         if (!webElement.isDisplayed()) return false;
         Rectangle viewport = WebDriverUtils.getViewport(webDriver);
         // getRect doesn't work
@@ -616,16 +616,12 @@ public class DesktopGuiElementCore implements
 
     @Override
     public Dimension getSize() {
-        find();
-        Dimension size = guiElementData.webElement.getSize();
-        return size;
+        return findWebElement().getSize();
     }
 
     @Override
     public String getCssValue(String cssIdentifier) {
-        find();
-        String cssValue = guiElementData.webElement.getCssValue(cssIdentifier);
-        return cssValue;
+        return findWebElement().getCssValue(cssIdentifier);
     }
 
     @Override

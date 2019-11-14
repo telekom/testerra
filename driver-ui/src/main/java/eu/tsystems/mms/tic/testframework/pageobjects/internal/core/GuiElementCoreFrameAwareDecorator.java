@@ -68,8 +68,8 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
     }
 
     @Override
-    public WebElement findFirstWebElement() {
-        return decoratedGuiElementCore.findFirstWebElement();
+    public WebElement findWebElement() {
+        return decoratedGuiElementCore.findWebElement();
     }
 
     @Override

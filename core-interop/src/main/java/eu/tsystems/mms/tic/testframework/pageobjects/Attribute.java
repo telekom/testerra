@@ -7,7 +7,9 @@ public enum Attribute {
     HREF("href"),
     TITLE("title"),
     VALUE("value"),
-    STYLE("style")
+    STYLE("style"),
+    ALT("alt"),
+    SRC("src"),
     ;
 
     private final String attrib;

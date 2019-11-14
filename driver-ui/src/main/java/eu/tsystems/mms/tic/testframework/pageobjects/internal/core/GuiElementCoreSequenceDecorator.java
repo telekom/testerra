@@ -78,8 +78,8 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
     }
 
     @Override
-    public WebElement findFirstWebElement() {
-        return guiElementCore.findFirstWebElement();
+    public WebElement findWebElement() {
+        return guiElementCore.findWebElement();
     }
 
     @Override

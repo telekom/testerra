@@ -10,6 +10,7 @@ public interface TestableGuiElement extends BasicGuiElement {
     StringPropertyAssertion<String> value();
     StringPropertyAssertion<String> value(Attribute attribute);
     StringPropertyAssertion<String> value(String attribute);
+    StringPropertyAssertion<String> css(String property);
     BinaryPropertyAssertion<Boolean> enabled();
     BinaryPropertyAssertion<Boolean> selected();
     QuantifiedPropertyAssertion<Integer> numberOfElements();

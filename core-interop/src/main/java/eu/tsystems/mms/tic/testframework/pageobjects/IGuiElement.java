@@ -46,6 +46,7 @@ public interface IGuiElement extends
         DELAY_BEFORE_ACTION_MILLIS("tt.delay.before.guielement.action.millis",0),
         DELAY_AFTER_ACTION_MILLIS("tt.delay.after.guielement.action.millis", 0),
         CHECK_RULE("tt.guielement.checkrule", CheckRule.IS_DISPLAYED.name()),
+        USER_INPUT_CHARACTERS_PER_MINUTE("tt.user.input.cpm", 180),
         ;
         private final String property;
         private Object defaultValue;

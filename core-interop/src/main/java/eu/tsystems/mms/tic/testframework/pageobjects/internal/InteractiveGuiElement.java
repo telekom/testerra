@@ -11,7 +11,6 @@ public interface InteractiveGuiElement extends TestableGuiElement {
     InteractiveGuiElement swipe(int offsetX, int offSetY);
     InteractiveGuiElement select();
     InteractiveGuiElement deselect();
-    InteractiveGuiElement type(String text);
     InteractiveGuiElement sendKeys(CharSequence... charSequences);
     InteractiveGuiElement clear();
     InteractiveGuiElement mouseOver();

@@ -20,11 +20,13 @@
 package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.testng.annotations.Listeners;
 
 @Listeners(TesterraListener.class)
 public abstract class TesterraTest extends AbstractTestFeatures {
+    protected static final IPageFactory pageFactory = ioc.getInstance(IPageFactory.class);
 
     static {
         Booter.bootOnce();

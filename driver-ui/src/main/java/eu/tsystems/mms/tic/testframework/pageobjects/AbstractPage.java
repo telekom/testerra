@@ -61,6 +61,8 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
 {
     private static final PageOverrides pageOverrides = ioc.getInstance(PageOverrides.class);
     private static final GuiElementFactory guiElementFactory = ioc.getInstance(GuiElementFactory.class);
+    private static final IPageFactory pageFactory = ioc.getInstance(IPageFactory.class);
+
     protected static final PropertyAssertionFactory propertyAssertionFactory = ioc.getInstance(PropertyAssertionFactory.class);
 
     protected interface Finder {
@@ -134,6 +136,10 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
 
     @Deprecated
     private boolean forcedGuiElementStandardAsserts = false;
+    
+    protected <T extends IPage> T createPage(final Class<T> pageClass) {
+        return pageFactory.createPage(pageClass, driver);
+    }
 
     /**
      * Restore a stored page class.

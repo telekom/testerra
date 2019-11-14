@@ -39,7 +39,6 @@ public abstract class AbstractTestFeatures {
     protected static final Injector ioc = Testerra.ioc();
     private static final AssertionFactory assertionFactory = ioc.getInstance(AssertionFactory.class);
     private static final PageOverrides pageOverrides = ioc.getInstance(PageOverrides.class);
-    protected static final IPageFactory pageFactory = ioc.getInstance(IPageFactory.class);
     /**
      * Instance for wrapping static class {@link AssertCollector}
      */

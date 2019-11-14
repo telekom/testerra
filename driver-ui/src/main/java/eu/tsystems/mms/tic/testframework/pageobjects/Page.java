@@ -118,11 +118,6 @@ public abstract class Page extends AbstractPage {
         guiElementGroups = new GuiElementGroups();
     }
 
-    protected <T extends IPage> T createPage(final Class<T> pageClass) {
-        return pageFactory.createPage(pageClass, driver);
-    }
-
-
     public static void registerPageLoadHandler(PageLoadHandler h) {
         pageLoadHandlers.add(h);
     }

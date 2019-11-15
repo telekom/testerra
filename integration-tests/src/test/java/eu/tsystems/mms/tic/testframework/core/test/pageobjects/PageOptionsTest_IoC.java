@@ -6,7 +6,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.PageWithPageOptions;
 
 public class PageOptionsTest_IoC extends PageOptionsTest {
 
-    private static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
+    private static final IPageFactory pageFactory = Testerra.injector.getInstance(IPageFactory.class);
 
     @Override
     public PageWithPageOptions getPage() {

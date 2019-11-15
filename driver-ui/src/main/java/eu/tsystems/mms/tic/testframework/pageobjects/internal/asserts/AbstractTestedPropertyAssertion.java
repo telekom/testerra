@@ -16,9 +16,9 @@ import java.util.function.Function;
  * @author Mike Reiche
  */
 public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropertyAssertion<T> {
-    private static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
-    private static final AssertionFactory assertionFactory = Testerra.ioc().getInstance(AssertionFactory.class);
-    protected final Assertion assertion = Testerra.ioc().getInstance(InstantAssertion.class);
+    private static final PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
+    private static final AssertionFactory assertionFactory = Testerra.injector.getInstance(AssertionFactory.class);
+    protected final Assertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
 
     public AbstractTestedPropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);

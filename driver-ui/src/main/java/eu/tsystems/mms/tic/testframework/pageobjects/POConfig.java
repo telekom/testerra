@@ -32,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 @Deprecated
 public final class POConfig {
 
-    private static final PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
+    private static final PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
 
     /** Private Constructor, cause this is a util class. */
     private POConfig() { }

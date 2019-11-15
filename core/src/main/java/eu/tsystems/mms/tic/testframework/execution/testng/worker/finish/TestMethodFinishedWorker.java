@@ -31,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.internal.Counters;
  */
 public class TestMethodFinishedWorker extends MethodWorker {
 
-    final AssertionsCollector assertionsCollector = Testerra.ioc().getInstance(AssertionsCollector.class);
+    final AssertionsCollector assertionsCollector = Testerra.injector.getInstance(AssertionsCollector.class);
 
     @Override
     public void run() {

@@ -12,6 +12,7 @@ public interface InteractiveGuiElement extends TestableGuiElement {
     InteractiveGuiElement deselect();
     InteractiveGuiElement sendKeys(CharSequence... charSequences);
     InteractiveGuiElement clear();
+    InteractiveGuiElement hover();
     //InteractiveGuiElement mouseOver();
     //InteractiveGuiElement mouseOverJS();
 }

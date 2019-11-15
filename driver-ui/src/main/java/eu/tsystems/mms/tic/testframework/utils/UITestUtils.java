@@ -100,7 +100,7 @@ public class UITestUtils {
     @Deprecated
     private static final boolean STITCH = PropertyManager.getBooleanProperty(TesterraProperties.STITCH_CHROME_SCREENSHOTS, true);
 
-    private static final IReport report = Testerra.ioc().getInstance(IReport.class);
+    private static final IReport report = Testerra.injector.getInstance(IReport.class);
 
     public static Screenshot takeScreenshot(WebDriver webDriver) {
         return takeScreenshot(webDriver, false);

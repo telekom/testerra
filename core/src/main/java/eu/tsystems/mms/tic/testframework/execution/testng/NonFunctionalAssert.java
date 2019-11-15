@@ -37,7 +37,7 @@ import java.util.Set;
 @Deprecated
 public class NonFunctionalAssert {
 
-    private static Assertion assertion = Testerra.ioc().getInstance(NonFunctionalAssertion.class);
+    private static Assertion assertion = Testerra.injector.getInstance(NonFunctionalAssertion.class);
 
     /**
      * Protect constructor since it is a static only class

@@ -35,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.InteractiveGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultRectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
@@ -71,8 +72,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
-import java.text.CharacterIterator;
-import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -89,7 +88,7 @@ public class GuiElement implements
     Hierarchy<IGuiElement>
 {
 
-    protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.ioc().getInstance(PropertyAssertionFactory.class);
+    protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
 
     private GuiElementAssert defaultAssert;
     private GuiElementAssert instantAssert;
@@ -218,10 +217,10 @@ public class GuiElement implements
         String currentBrowser = webDriverRequest.browser;
         guiElementData.browser = currentBrowser;
 
-        GuiElementCoreFactory coreFactory = Testerra.ioc().getInstance(GuiElementCoreFactory.class);
+        GuiElementCoreFactory coreFactory = Testerra.injector.getInstance(GuiElementCoreFactory.class);
         guiElementCore = coreFactory.create(currentBrowser, by, driver, guiElementData);
 
-        GuiElementWaitFactory waitFactory = Testerra.ioc().getInstance(GuiElementWaitFactory.class);
+        GuiElementWaitFactory waitFactory = Testerra.injector.getInstance(GuiElementWaitFactory.class);
         guiElementWait = waitFactory.create(guiElementCore, guiElementData);
 
         guiElementFacade = createFacade(guiElementCore);
@@ -434,6 +433,12 @@ public class GuiElement implements
     @Override
     public IGuiElement clear() {
         guiElementFacade.clear();
+        return this;
+    }
+
+    @Override
+    public InteractiveGuiElement hover() {
+        guiElementCore.mouseOver();
         return this;
     }
 
@@ -702,8 +707,8 @@ public class GuiElement implements
     @Deprecated
     public GuiElementAssert nonFunctionalAsserts() {
         if (nonFunctionalAssert==null) {
-            GuiElementAssertFactory assertFactory = Testerra.ioc().getInstance(GuiElementAssertFactory.class);
-            NonFunctionalAssertion assertion = Testerra.ioc().getInstance(NonFunctionalAssertion.class);
+            GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
+            NonFunctionalAssertion assertion = Testerra.injector.getInstance(NonFunctionalAssertion.class);
             nonFunctionalAssert = assertFactory.create(assertion, guiElementCore, guiElementWait, guiElementData);
         }
         return nonFunctionalAssert;
@@ -727,8 +732,8 @@ public class GuiElement implements
     @Deprecated
     public GuiElementAssert instantAsserts() {
         if (instantAssert == null) {
-            GuiElementAssertFactory assertFactory = Testerra.ioc().getInstance(GuiElementAssertFactory.class);
-            InstantAssertion assertion = Testerra.ioc().getInstance(InstantAssertion.class);
+            GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
+            InstantAssertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
             instantAssert = assertFactory.create(assertion, guiElementCore, guiElementWait, guiElementData);
         }
         return instantAssert;
@@ -743,8 +748,8 @@ public class GuiElement implements
     @Deprecated
     public GuiElementAssert assertCollector() {
         if (collectableAssert==null) {
-            GuiElementAssertFactory assertFactory = Testerra.ioc().getInstance(GuiElementAssertFactory.class);
-            CollectedAssertion assertion = Testerra.ioc().getInstance(CollectedAssertion.class);
+            GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
+            CollectedAssertion assertion = Testerra.injector.getInstance(CollectedAssertion.class);
             collectableAssert = assertFactory.create(assertion, guiElementCore, guiElementWait, guiElementData);
         }
         return collectableAssert;

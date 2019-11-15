@@ -42,7 +42,7 @@ import java.util.List;
 @Deprecated
 public final class PageFactory {
 
-    private static IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
+    private static IPageFactory pageFactory = Testerra.injector.getInstance(IPageFactory.class);
 
     private static final ThreadLocal<CircularFifoBuffer> LOOP_DETECTION_LOGGER = new ThreadLocal<>();
     private static final int NR_OF_LOOPS = PropertyManager.getIntProperty(TesterraProperties.PAGE_FACTORY_LOOPS, 20);

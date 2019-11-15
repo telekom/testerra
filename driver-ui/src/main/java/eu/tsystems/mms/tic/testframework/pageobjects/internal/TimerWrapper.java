@@ -37,7 +37,7 @@ import org.openqa.selenium.WebDriver;
  */
 public class TimerWrapper implements Loggable {
 
-    private final static PageOverrides pageOverrides = Testerra.ioc().getInstance(PageOverrides.class);
+    private final static PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
 
     private int sleepTimeInMs;
     private int timeoutInSeconds;

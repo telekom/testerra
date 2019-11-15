@@ -498,7 +498,7 @@ public class DesktopGuiElementCore implements
 
     @Override
     public IGuiElement getSubElement(Locate locate) {
-        final GuiElementFactory factory = Testerra.ioc().getInstance(GuiElementFactory.class);
+        final GuiElementFactory factory = Testerra.injector.getInstance(GuiElementFactory.class);
         return factory.createFromAncestor(locate, guiElementData.guiElement);
     }
 

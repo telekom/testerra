@@ -29,7 +29,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
  */
 public class PageFactoryTest_IoC extends AbstractPageFactoryTest {
 
-    private static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
+    private static final IPageFactory pageFactory = Testerra.injector.getInstance(IPageFactory.class);
 
     public ResponsiveWebTestPage getPage() {
         return pageFactory.createPage(ResponsiveWebTestPage.class, WebDriverManager.getWebDriver());

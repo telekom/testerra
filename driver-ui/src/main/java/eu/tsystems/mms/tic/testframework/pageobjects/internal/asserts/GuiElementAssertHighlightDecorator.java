@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -51,7 +52,7 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
 
     @Override
     void afterAssertion(String message, AssertionError assertionErrorOrNull) {
-        if (POConfig.isDemoMode()) {
+        if (Testerra.Properties.DEMO_MODE.asBool()) {
             highlight(assertionErrorOrNull == null);
         }
     }

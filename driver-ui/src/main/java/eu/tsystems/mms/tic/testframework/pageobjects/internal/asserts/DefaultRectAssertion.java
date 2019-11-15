@@ -7,7 +7,7 @@ import org.openqa.selenium.Rectangle;
 
 public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> implements RectAssertion {
 
-    private static final Formatter formatter = Testerra.ioc().getInstance(Formatter.class);
+    private static final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
 
     public DefaultRectAssertion(PropertyAssertion parentAssertion, AssertionProvider<Rectangle> provider) {
         super(parentAssertion, provider);

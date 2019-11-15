@@ -42,7 +42,7 @@ import java.lang.reflect.Method;
  */
 public class CheckPageTest_IoC extends AbstractTestSitesTest {
 
-    private static final IPageFactory pageFactory = Testerra.ioc().getInstance(IPageFactory.class);
+    private static final IPageFactory pageFactory = Testerra.injector.getInstance(IPageFactory.class);
 
     @BeforeMethod
     public void before(Method method) {

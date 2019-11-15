@@ -8,7 +8,7 @@ import java.io.File;
 
 public class DefaultScreenshotAssertion extends DefaultImageAssertion implements ScreenshotAssertion {
 
-    private static IReport report = Testerra.ioc().getInstance(IReport.class);
+    private static IReport report = Testerra.injector.getInstance(IReport.class);
 
     private final AssertionProvider<Screenshot> providerOverride;
 

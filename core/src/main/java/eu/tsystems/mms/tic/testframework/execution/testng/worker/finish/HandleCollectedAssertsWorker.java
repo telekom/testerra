@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class HandleCollectedAssertsWorker extends MethodWorker {
 
-    final AssertionsCollector assertionsCollector = Testerra.ioc().getInstance(AssertionsCollector.class);
+    final AssertionsCollector assertionsCollector = Testerra.injector.getInstance(AssertionsCollector.class);
 
     @Override
     public void run() {

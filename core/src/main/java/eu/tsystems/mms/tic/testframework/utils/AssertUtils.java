@@ -31,7 +31,7 @@ public final class AssertUtils {
     private static final Assertion assertion;
 
     static {
-        assertion = Testerra.ioc().getInstance(InstantAssertion.class);
+        assertion = Testerra.injector.getInstance(InstantAssertion.class);
     }
 
     public static void assertContains(String actual, String expected) {

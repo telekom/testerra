@@ -76,8 +76,9 @@ import java.util.List;
  */
 public class DesktopGuiElementCore implements
     GuiElementCore,
-    UseJSAlternatives
-, Loggable {
+    UseJSAlternatives,
+    Loggable
+{
 
     private By by;
 

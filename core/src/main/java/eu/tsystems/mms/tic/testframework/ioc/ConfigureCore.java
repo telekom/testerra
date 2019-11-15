@@ -20,30 +20,14 @@ import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 
 public class ConfigureCore extends AbstractModule {
-    protected static boolean assertionsCollectorConfigured = false;
-    protected static boolean assertionsConfigured = false;
     protected void configure() {
-        if (!assertionsConfigured) {
-            configureAssertions();
-        }
-        if (!assertionsCollectorConfigured) {
-            configureAssertionsCollector();
-        }
         bind(IReport.class).to(Report.class).in(Scopes.SINGLETON);
         bind(Formatter.class).to(DefaultFormatter.class).in(Scopes.SINGLETON);
-    }
-
-    protected void configureAssertions() {
         bind(AssertionFactory.class).to(DefaultAssertionFactory.class).in(Scopes.SINGLETON);
         bind(CollectedAssertion.class).to(DefaultCollectedAssertion.class).in(Scopes.SINGLETON);
         bind(NonFunctionalAssertion.class).to(DefaultNonFunctionalAssertion.class).in(Scopes.SINGLETON);
         bind(InstantAssertion.class).to(ThrowingAssertion.class).in(Scopes.SINGLETON);
         bind(TestAssertion.class).to(SilentAssertion.class).in(Scopes.SINGLETON);
-        assertionsConfigured = true;
-    }
-
-    protected void configureAssertionsCollector() {
         bind(AssertionsCollector.class).to(CollectedAssertions.class).in(Scopes.SINGLETON);
-        assertionsCollectorConfigured = true;
     }
 }

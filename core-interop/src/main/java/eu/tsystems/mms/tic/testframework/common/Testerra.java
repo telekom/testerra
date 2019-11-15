@@ -69,10 +69,8 @@ public class Testerra {
     }
 
     /**
-     * We initialize the IoC modules in a reverse sorted class name order,
-     * to be able to override module configures.
-     * This is not best practice, but currently the only way to override module bindings.
-     * Because {@link Modules#override(Module...)} doesn't work in the way we need it.
+     * We initialize the IoC modules in class name order,
+     * and override each previously configured module with the next.
      */
     public static Injector ioc() {
         if (ioc==null) {
@@ -81,15 +79,24 @@ public class Testerra {
             Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
             TreeMap<String, Module> sortedModules = new TreeMap<>();
             try {
+                // Sort all modules
                 while (iterator.hasNext()) {
                     Class<? extends AbstractModule> moduleClass = iterator.next();
                     Constructor<?> ctor = moduleClass.getConstructor();
                     sortedModules.put(moduleClass.getSimpleName(), (Module) ctor.newInstance());
                 }
-                List<Module> reverseSortedModules = new ArrayList<>(sortedModules.values());
-                Collections.reverse(reverseSortedModules);
-                System.out.println(String.format("%s - Register IoC modules: %s", Testerra.class.getCanonicalName(), reverseSortedModules));
-                ioc = Guice.createInjector(reverseSortedModules);
+                System.out.println(String.format("%s - Register IoC modules: %s", Testerra.class.getCanonicalName(), sortedModules.keySet()));
+
+                // Override each module with next
+                Module prevModule = null;
+                for (Module overrideModule : sortedModules.values()) {
+                    if (prevModule!=null) {
+                        overrideModule = Modules.override(prevModule).with(overrideModule);
+                    }
+                    prevModule = overrideModule;
+                }
+
+                ioc = Guice.createInjector(prevModule);
             } catch (Exception e) {
                 e.printStackTrace();
                 //LOGGER.error("Unable to initialize IoC modules", e);

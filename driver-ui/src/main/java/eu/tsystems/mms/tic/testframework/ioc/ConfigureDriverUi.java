@@ -16,26 +16,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPro
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 
 public class ConfigureDriverUi extends AbstractModule {
-
-    protected static boolean pageObjectsConfigured = false;
-    protected static boolean webDriverConfigured = false;
-
     protected void configure() {
-        if (!pageObjectsConfigured) configurePageObjects();
-        if (!webDriverConfigured) configureWebDriver();
-        bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class).in(Scopes.SINGLETON);
-        bind(PageOverrides.class).to(DefaultPageOverrides.class).in(Scopes.SINGLETON);
-    }
-
-    protected void configurePageObjects() {
         bind(GuiElementAssertFactory.class).to(DefaultGuiElementAssertFactory.class).in(Scopes.SINGLETON);
         bind(GuiElementWaitFactory.class).to(DefaultGuiElementWaitFactory.class).in(Scopes.SINGLETON);
         bind(GuiElementFactory.class).to(DefaultGuiElementFactory.class).in(Scopes.SINGLETON);
         bind(IPageFactory.class).to(DefaultPageFactory.class).in(Scopes.SINGLETON);
-        pageObjectsConfigured = true;
-    }
-
-    protected void configureWebDriver() {
-        webDriverConfigured = true;
+        bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class).in(Scopes.SINGLETON);
+        bind(PageOverrides.class).to(DefaultPageOverrides.class).in(Scopes.SINGLETON);
     }
 }

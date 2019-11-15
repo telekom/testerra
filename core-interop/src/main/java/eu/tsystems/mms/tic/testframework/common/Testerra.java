@@ -14,7 +14,7 @@ import java.util.TreeMap;
 
 public class Testerra {
 
-    private static Injector ioc;
+    public final static Injector injector = initIoc();
 
     public enum Properties implements IProperties {
         DRY_RUN("tt.dryrun", false),
@@ -74,8 +74,8 @@ public class Testerra {
      * We initialize the IoC modules in class name order,
      * and override each previously configured module with the next.
      */
-    public static Injector ioc() {
-        if (ioc==null) {
+    private static Injector initIoc() {
+        if (injector ==null) {
             Reflections reflections = new Reflections(TesterraCommons.DEFAULT_PACKAGE_NAME);
             Set<Class<? extends AbstractModule>> classes = reflections.getSubTypesOf(AbstractModule.class);
             Iterator<Class<? extends AbstractModule>> iterator = classes.iterator();
@@ -97,13 +97,12 @@ public class Testerra {
                     }
                     prevModule = overrideModule;
                 }
-
-                ioc = Guice.createInjector(prevModule);
+                return Guice.createInjector(prevModule);
             } catch (Exception e) {
                 e.printStackTrace();
                 //LOGGER.error("Unable to initialize IoC modules", e);
             }
         }
-        return ioc;
+        return null;
     }
 }

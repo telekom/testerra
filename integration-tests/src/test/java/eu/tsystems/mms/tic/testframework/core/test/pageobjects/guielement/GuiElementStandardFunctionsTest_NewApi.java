@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 
 public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTest implements Loggable {
 
-    private final static InstantAssertion instantAssertion = ioc.getInstance(InstantAssertion.class);
+    private final static InstantAssertion instantAssertion = Testerra.injector.getInstance(InstantAssertion.class);
     private WebTestPage page;
 
     @BeforeClass

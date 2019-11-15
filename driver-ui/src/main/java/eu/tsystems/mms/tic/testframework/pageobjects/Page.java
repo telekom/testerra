@@ -78,7 +78,7 @@ public abstract class Page extends AbstractPage {
     public static final String CHECKPAGE_METHOD_NAME = "checkPage";
     private final GuiElementGroups guiElementGroups;
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
-    private static final GuiElementFactory guiElementFactory = ioc.getInstance(GuiElementFactory.class);
+    private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
 
     private static class FrameFinder implements Finder {
         private final IGuiElement frame;

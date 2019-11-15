@@ -59,11 +59,11 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     IPage,
     Loggable
 {
-    private static final PageOverrides pageOverrides = ioc.getInstance(PageOverrides.class);
-    private static final GuiElementFactory guiElementFactory = ioc.getInstance(GuiElementFactory.class);
-    private static final IPageFactory pageFactory = ioc.getInstance(IPageFactory.class);
+    private static final PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
+    private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
+    private static final IPageFactory pageFactory = Testerra.injector.getInstance(IPageFactory.class);
 
-    protected static final PropertyAssertionFactory propertyAssertionFactory = ioc.getInstance(PropertyAssertionFactory.class);
+    protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
 
     protected interface Finder {
         IGuiElement find(Locate locator);
@@ -136,7 +136,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
 
     @Deprecated
     private boolean forcedGuiElementStandardAsserts = false;
-    
+
     protected <T extends IPage> T createPage(final Class<T> pageClass) {
         return pageFactory.createPage(pageClass, driver);
     }

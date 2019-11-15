@@ -19,15 +19,13 @@
  */
 package eu.tsystems.mms.tic.testframework.testing;
 
-import com.google.inject.Injector;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 
 /**
@@ -36,19 +34,19 @@ import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
  */
 public abstract class AbstractTestFeatures {
 
-    protected static final Injector ioc = Testerra.ioc();
-    private static final AssertionFactory assertionFactory = ioc.getInstance(AssertionFactory.class);
-    private static final PageOverrides pageOverrides = ioc.getInstance(PageOverrides.class);
+    private static final AssertionFactory assertionFactory = Testerra.injector.getInstance(AssertionFactory.class);
+    private static final PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
+
     /**
      * Instance for wrapping static class {@link AssertCollector}
      */
     @Deprecated
-    protected final Assertion AssertCollector = ioc.getInstance(CollectedAssertion.class);
+    protected final Assertion AssertCollector = Testerra.injector.getInstance(CollectedAssertion.class);
     /**
      * Instance for wrapping static class {@link NonFunctionalAssert}
      */
     @Deprecated
-    protected final Assertion NonFunctionalAssert = ioc.getInstance(NonFunctionalAssertion.class);
+    protected final Assertion NonFunctionalAssert = Testerra.injector.getInstance(NonFunctionalAssertion.class);
 
     /**
      * @todo There is currently no way to make that final.

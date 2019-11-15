@@ -51,10 +51,9 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
 
     @Override
     void afterAssertion(String message, AssertionError assertionErrorOrNull) {
-        if (!POConfig.isDemoMode()) {
-            return;
+        if (POConfig.isDemoMode()) {
+            highlight(assertionErrorOrNull == null);
         }
-        highlight(assertionErrorOrNull == null);
     }
 
     private void highlight(boolean successful) {

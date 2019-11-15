@@ -116,20 +116,13 @@ public class TesterraCommons {
             return;
         }
 
-        final String filename = PropertyManager.getProperty(TesterraProperties.PROXY_SETTINGS_FILE, "proxysettings.properties");
-        final InputStream inputStream = FileUtils.getLocalFileOrResourceInputStream(filename);
-
-        if (inputStream == null) {
-            LOGGER.warn("File " + filename + " not found. No proxy settings loaded.");
-            return;
-        }
-
-        final Properties props = new Properties();
-
+        String filename = PropertyManager.getProperty(TesterraProperties.PROXY_SETTINGS_FILE, "proxysettings.properties");
+        Properties props = new Properties();
         try {
+            InputStream inputStream = FileUtils.getLocalFileOrResourceInputStream(filename);
             props.load(inputStream);
         } catch (Exception e) {
-            LOGGER.warn("Not loaded: " + filename);
+            LOGGER.warn(String.format("Not loaded proxy settings from file: %s", e.getMessage()), e);
             return;
         }
 

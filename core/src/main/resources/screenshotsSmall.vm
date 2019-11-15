@@ -15,11 +15,12 @@
             #foreach( $screenshot in $methodInfo.screenshots )
                 <div data-img="../../screenshots/${screenshot.filename}">
                     <!-- Fullscreen -->
-                    <a class="gallerybutton" href="#" title="Fullscreen" onclick="var fotorama = $('.fotorama').fotorama().data('fotorama');fotorama.cancelFullScreen();">
+                    <a class="gallerybutton" href="#" title="Fullscreen" onclick="fotorama.cancelFullScreen();">
                         <i class="bgwhite fa fa-arrows-alt"></i>
                     </a>
                 </div>
             #end
         </div>
     </div>
+    <script>var fotorama = $('.fotorama').fotorama().data('fotorama');</script>
 #end

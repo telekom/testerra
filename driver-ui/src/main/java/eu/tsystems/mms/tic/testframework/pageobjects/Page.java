@@ -60,6 +60,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -253,7 +254,7 @@ public abstract class Page extends AbstractPage {
         if (textElement.isPresent()) {
             // highlight
             WebElement webElement = textElement.getWebElement();
-            JSUtils.highlightWebElementStatic(driver, webElement, 0, 255, 0);
+            JSUtils.highlightWebElementStatic(driver, webElement, new Color(0, 255, 0));
             return true;
         }
 

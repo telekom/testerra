@@ -27,8 +27,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 
+import java.awt.*;
+
 /**
- * Created by pele on 02.03.2016.
+ * Highlights some WebDriver events in Demo Mode
  */
 public class VisualEventDriverListener implements WebDriverEventListener {
 
@@ -117,7 +119,7 @@ public class VisualEventDriverListener implements WebDriverEventListener {
 //                    JSUtils.highlightWebElementClick(webDriver, webElement);
 //                }
 
-                JSUtils.highlightWebElement(webDriver, webElement, 0, 0, 255); // blue
+                JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 0, 255));
                 lastClickedElement = webElement;
             }
         }
@@ -131,7 +133,7 @@ public class VisualEventDriverListener implements WebDriverEventListener {
     public void beforeChangeValueOf(WebElement webElement, WebDriver webDriver, CharSequence[] charSequences) {
         if (webElement != null) {
             if (Testerra.Properties.DEMO_MODE.asBool()) {
-                JSUtils.highlightWebElement(webDriver, webElement, 0, 255, 0); // green
+                JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 255, 0));
             }
         }
     }

@@ -63,6 +63,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -224,6 +225,10 @@ public class DesktopGuiElementCore implements
             guiElementData.executionLog.addMessage(filteredElements.size() + " WebElements remaining after filtering. Removed " + (foundElements.size() - filteredElements.size() + " WebElements."));
             return filteredElements;
         }
+    }
+
+    private void highlightWebElement(Color color) {
+        JSUtils.highlightWebElement(webDriver, guiElementData.webElement, color);
     }
 
     private void logTimings(long start, int findCounter) {
@@ -646,7 +651,7 @@ public class DesktopGuiElementCore implements
      */
     private void demoMouseOver() {
         if (Testerra.Properties.DEMO_MODE.asBool()) {
-            JSUtils.highlightWebElement(webDriver, guiElementData.webElement, 0, 255, 255); // yellow
+            highlightWebElement(new Color(255, 255, 0));
         }
     }
 
@@ -771,7 +776,8 @@ public class DesktopGuiElementCore implements
     @Override
     public GuiElementCore highlight() {
         LOGGER.debug("highlight(): starting highlight");
-        JSUtils.highlightWebElement(webDriver, getWebElement(), 0, 0, 255);
+        find();
+        highlightWebElement(new Color(0,0,255));
         LOGGER.debug("highlight(): finished highlight");
         return this;
     }

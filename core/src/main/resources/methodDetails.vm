@@ -462,37 +462,37 @@
                         <th style="text-align:center; left: 20px;"><h6>Screenshots</h6></th>
                     </tr>
                     #if (${testMethod.nonFunctionalInfos.size()} > 0)
-                    #foreach($nfi in $testMethod.nonFunctionalInfos)
-                    #if($velocityCountNF % 2 == 0)
-                    #set($backgroundColor = "#fefefe")
-                    #else
-                    #set($backgroundColor = "#efefef")
-                    #end
-                    <tr class="standardTable tr" style="background-color: $backgroundColor">
-                        <td width="100%" style="text-align:left;">
-                            <a href="javascript:void(0);" onclick="toggleElement('non-functional-exception-$velocityCountNF')"
-                               title="Click to expand/collapse" style="color:SkyBlue; font-weight: bold;">
-                                $nfi.errorContext().readableErrorMessage
-                            </a>
-                            <div style="display: none;" id="non-functional-exception-$velocityCountNF">
-                                <div style="margin-left: 10px;">
-                                    #if($nfi.stackTrace)
-                                        #set($stackTrace = $nfi.stackTrace)
-                                        #parse("stackTrace.vm")
-                                    #end
-                                </div>
-                            </div>
-                        </td>
-                        <td width="" style="">
-                                  <span class="screenshots">
-                                      <!-- screenshots -->
-                                      #set($methodInfo=$nfi)
-                                      #parse("screenshotsSmall.vm")
-                                  </span>
-                        </td>
-                    </tr>
-                    #set($velocityCountNF = $velocityCountNF + 1)
-                    #end
+                        #foreach($nfi in $testMethod.nonFunctionalInfos)
+                            #if($velocityCountNF % 2 == 0)
+                                #set($backgroundColor = "#fefefe")
+                            #else
+                                #set($backgroundColor = "#efefef")
+                            #end
+                            <tr class="standardTable tr" style="background-color: $backgroundColor">
+                                <td width="100%" style="text-align:left;">
+                                    <a href="javascript:void(0);" onclick="toggleElement('non-functional-exception-$velocityCountNF')"
+                                       title="Click to expand/collapse" style="color:SkyBlue; font-weight: bold;">
+                                        $nfi.errorContext().readableErrorMessage
+                                    </a>
+                                    <div style="display: none;" id="non-functional-exception-$velocityCountNF">
+                                        <div style="margin-left: 10px;">
+                                            #if($nfi.stackTrace)
+                                                #set($stackTrace = $nfi.stackTrace)
+                                                #parse("stackTrace.vm")
+                                            #end
+                                        </div>
+                                    </div>
+                                </td>
+##                                <td width="" style="">
+##                                          <span class="screenshots">
+##                                              <!-- screenshots -->
+##                                              #set($methodInfo=$nfi)
+##                                              #parse("screenshotsSmall.vm")
+##                                          </span>
+##                                </td>
+                            </tr>
+                            #set($velocityCountNF = $velocityCountNF + 1)
+                        #end
                     #end
                 </table>
             </div>

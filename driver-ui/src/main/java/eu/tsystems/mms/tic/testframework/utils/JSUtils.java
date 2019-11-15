@@ -32,17 +32,20 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.awt.Color;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -78,31 +81,14 @@ public final class JSUtils {
         }
 
         LOGGER.debug("JS inject: " + resourceFile);
-
-        InputStream inputStream = null;
-        try {
-            inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceFile);
-        } catch (Exception e) {
-            LOGGER.error("Error loading javascript file", e);
-        }
-
-        if (inputStream == null) {
-            throw new TesterraSystemException("Could not load: " + resourceFile);
-        }
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         /*
          * Build inline string
          */
         String inline = "";
         try {
-            String line = bufferedReader.readLine();
-            while (line != null) {
-                inline += line;
-                line = bufferedReader.readLine();
-            }
-            bufferedReader.close();
-
-        } catch (IOException e) {
+            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceFile);
+            inline = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+        } catch (Exception e) {
             throw new TesterraSystemException(e);
         }
 
@@ -129,7 +115,7 @@ public final class JSUtils {
                 javascriptExecutor.executeScript(injectedScript);
             }
         } catch (Exception e) {
-            LOGGER.error("Error executing javascript", e);
+            LOGGER.error("Error executing javascript: " + e.getMessage(), e);
         }
     }
 
@@ -180,7 +166,7 @@ public final class JSUtils {
         try {
             return executeScriptWOCatch(driver, script, parameters);
         } catch (Exception e) {
-            LOGGER.error("Error executing javascript", e);
+            LOGGER.error("Error executing javascript: "+e.getMessage(), e);
             return null;
         }
     }
@@ -194,6 +180,7 @@ public final class JSUtils {
      * @param g .
      * @param b .
      */
+    @Deprecated
     public static void highlightWebElement(
         final WebDriver driver,
         final WebElement webElement,
@@ -201,17 +188,27 @@ public final class JSUtils {
         final int g,
         final int b
     ) {
-        if (!POConfig.isDemoMode()) {
-            return;
-        }
+       highlightWebElement(driver, webElement, new Color(r,g,b));
+    }
 
+    /**
+     * Highlights an element for a specified time.
+     */
+    public static void highlightWebElement(
+        WebDriver driver,
+        WebElement webElement,
+        Color color
+    ) {
         /*
          * Try to inject JS for demo mode before executing highlight
          */
         turnOnDemoModeForCurrentPage(driver);
 
-        executeScript(driver, "highlightElement(arguments[0]," + r + "," + g + "," + b + ")",
-                webElement);
+        executeScript(
+            driver,
+            String.format("highlightElement(arguments[0],%d,%d,%d)", color.getRed(), color.getGreen(), color.getBlue()),
+            webElement
+        );
     }
 
     /**
@@ -223,6 +220,7 @@ public final class JSUtils {
      * @param g .
      * @param b .
      */
+    @Deprecated
     public static void highlightWebElementStatic(
         final WebDriver driver,
         final WebElement webElement,
@@ -230,22 +228,29 @@ public final class JSUtils {
         final int g,
         final int b
     ) {
-        if (!POConfig.isDemoMode()) {
-            return;
-        }
+       highlightWebElementStatic(driver, webElement, new Color(r,g,b));
+    }
 
+
+    /**
+     * Static element highlight doesn't fade out.
+     */
+    public static void highlightWebElementStatic(
+        WebDriver driver,
+        WebElement webElement,
+        Color color
+    ) {
         /*
          * Try to inject JS for demo mode before executing highlight
          */
         turnOnDemoModeForCurrentPage(driver);
 
         LOGGER.debug("Static highlighting WebElement " + webElement);
-        try {
-            executeScriptWOCatch(driver, "highlightElementStatic(arguments[0]," + r + "," + g + "," + b + ")",
-                    webElement);
-        } catch (Throwable t) {
-            LOGGER.warn("Could not highlight webElement", t);
-        }
+        executeScript(
+            driver,
+            String.format("highlightElementStatic(arguments[0],%d,%d,%d)",color.getRed(),color.getGreen(),color.getBlue()),
+            webElement
+        );
         LOGGER.debug("Finished static highlighting WebElement" + webElement);
     }
 

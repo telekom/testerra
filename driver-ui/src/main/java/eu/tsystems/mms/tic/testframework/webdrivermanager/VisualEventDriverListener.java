@@ -30,7 +30,7 @@ import org.openqa.selenium.support.events.WebDriverEventListener;
 import java.awt.*;
 
 /**
- * Created by pele on 02.03.2016.
+ * Highlights some WebDriver events in Demo Mode
  */
 public class VisualEventDriverListener implements WebDriverEventListener {
 

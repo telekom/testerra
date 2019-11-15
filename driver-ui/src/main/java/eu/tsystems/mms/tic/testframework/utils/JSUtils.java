@@ -192,11 +192,11 @@ public final class JSUtils {
     }
 
     /**
-     * @todo What is the difference between {@link #highlightWebElementStatic(WebDriver, WebElement, Color)}?
+     * Highlights an element for a specified time.
      */
     public static void highlightWebElement(
-        final WebDriver driver,
-        final WebElement webElement,
+        WebDriver driver,
+        WebElement webElement,
         Color color
     ) {
         /*
@@ -233,7 +233,7 @@ public final class JSUtils {
 
 
     /**
-     * @todo What is the difference between {@link #highlightWebElement(WebDriver, WebElement, Color)}?
+     * Static element highlight doesn't fade out.
      */
     public static void highlightWebElementStatic(
         WebDriver driver,

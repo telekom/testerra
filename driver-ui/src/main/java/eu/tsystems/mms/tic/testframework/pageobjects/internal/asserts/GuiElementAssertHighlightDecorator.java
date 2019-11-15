@@ -29,7 +29,7 @@ import org.openqa.selenium.WebElement;
 import java.awt.*;
 
 /**
- * Created by rnhb on 26.10.2015.
+ * Highlights assertions in Demo Mode
  */
 public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorator {
 

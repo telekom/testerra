@@ -52,16 +52,6 @@ public final class TesterraProperties {
     public static final String BROWSER_SETTING = "tt.browser.setting";
 
     /**
-     * Property Key for webdriver mode remote|local
-     */
-    public static final String WEBDRIVERMODE = "tt.webdriver.mode";
-
-    /**
-     * Property key of baseUrl used by Selenium.
-     */
-    public static final String BASEURL = "tt.baseurl";
-
-    /**
      * Property key stating to take automatic screenshots or not.
      */
 //    public static final String AUTOSCREENSHOTS = "tt.takeAutomaticScreenshot";

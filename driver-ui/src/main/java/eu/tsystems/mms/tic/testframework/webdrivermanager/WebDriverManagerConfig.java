@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
@@ -117,8 +118,7 @@ public class WebDriverManagerConfig {
      * @return the webDriverMode
      */
     private WebDriverMode initWebDriverMode() {
-        String modeString = PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, webDriverMode.name()).trim();
-        webDriverMode = WebDriverMode.valueOf(modeString);
+        webDriverMode = WebDriverMode.valueOf(Testerra.Properties.WEBDRIVER_MODE.asString().trim());
         return webDriverMode;
     }
 

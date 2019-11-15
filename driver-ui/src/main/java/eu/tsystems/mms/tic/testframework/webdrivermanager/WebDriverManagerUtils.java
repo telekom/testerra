@@ -30,6 +30,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.model.HostInfo;
@@ -93,7 +94,7 @@ public final class WebDriverManagerUtils {
          * baseURL defined by System property or config file
          */
         else {
-            baseUrl = PropertyManager.getProperty(TesterraProperties.BASEURL, "");
+            baseUrl = Testerra.Properties.BASEURL.asString();
         }
         return baseUrl;
     }

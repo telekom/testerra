@@ -8,10 +8,7 @@ import com.google.inject.util.Modules;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -30,6 +27,11 @@ public class Testerra {
         SELENIUM_SERVER_URL("tt.selenium.server.url", String.format("http://%s:%s/wd/hub", SELENIUM_SERVER_HOST, SELENIUM_SERVER_PORT)),
         ELEMENT_TIMEOUT_SECONDS("tt.element.timeout.seconds", 8),
         ELEMENT_WAIT_INTERVAL_MS("tt.element.wait.ms", 200),
+        BASEURL("tt.baseurl", "about:_blank"),
+        /**
+         * @todo Default should be based on WebDriverMode class
+         */
+        WEBDRIVER_MODE("tt.webdriver.mode", "local"),
         ;
         private final String property;
         private Object defaultValue;

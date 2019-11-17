@@ -170,7 +170,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     @Test
     public void test_Component() {
         page.inputForm().button().value().is("Button1");
-        page.inputForm().input().hover().clear().sendKeys("Ich gebe etwas ein").value().is("Ich gebe etwas ein");
+        page.inputForm().input().hover().clear().sendKeysWithCpm(300,"Ich gebe etwas ein").value().is("Ich gebe etwas ein");
         page.inputForm().button().numberOfElements().is(1);
     }
 }

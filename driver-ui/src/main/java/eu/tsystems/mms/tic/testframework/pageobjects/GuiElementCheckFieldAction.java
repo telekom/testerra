@@ -38,6 +38,7 @@ import org.openqa.selenium.WebDriver;
  */
 public class GuiElementCheckFieldAction extends CheckFieldAction {
 
+    @Deprecated
     private final boolean forceStandardAssert;
     private final static PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
 
@@ -46,7 +47,13 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
         forceStandardAssert = field.forceStandardAssert;
     }
 
-    private void pCheckField(BasicGuiElement guiElement, GuiElementAssert GuiElementAssert, CheckRule checkRule, boolean findNot, boolean fast) {
+    private void pCheckField(
+        BasicGuiElement guiElement,
+        GuiElementAssert GuiElementAssert,
+        CheckRule checkRule,
+        boolean findNot,
+        boolean fast
+    ) {
         if (checkRule == CheckRule.DEFAULT) {
             checkRule = pageOverrides.getGuiElementCheckRule(CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString()));
         }

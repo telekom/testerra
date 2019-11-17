@@ -24,6 +24,7 @@ import java.lang.reflect.Field;
 /**
  * Created by rnhb on 21.12.2015.
  */
+@Deprecated
 public class FieldWithActionConfig {
 
     public final Field field;

@@ -158,7 +158,7 @@ class MyPage extends Page {
 
 === Assertions
 
-The new standard way for performing assertions is now
+The new standard way for performing assertions in Tests or Pages is now
 ```java
 Assert.assertTrue(false);
 ```
@@ -225,14 +225,14 @@ left.asserts().assertLayout(Layout.outer().sameRight(right, 0)); <2>
 
 ==== Collected Assertions
 
-The new standard way to collect assertions of GuiElements is now
+The new standard way to collect assertions of GuiElements in Tests or Pages is now
 ```java
-collectAssertions(() -> guiElement.displayed().isTrue());
+Control.collectAssertions(() -> guiElement.displayed().isTrue());
 ```
 
 For many GuiElements or Pages
 ```java
-collectAssertions(() -> {
+Control.collectAssertions(() -> {
     MyPage page = pageFactory.create(MyPage.class);
     page.title().is("TestPage");
     guiElement.value().contains("Hello");
@@ -241,7 +241,7 @@ collectAssertions(() -> {
 
 For custom assertions
 ```java
-collectAssertions(() -> {
+Control.collectAssertions(() -> {
     String data = loadSomeData();
     Assert.assertEquals(data, "Hello World", "some data");
 });
@@ -251,7 +251,7 @@ For other test methods
 ```java
 @Test
 public void test_CollectEverything() {
-    collectAssertions(() -> test_TestSomething());
+    Control.collectAssertions(() -> test_TestSomething());
 }
 ```
 
@@ -291,14 +291,14 @@ tt.guielement.default.assertcollector=true
 
 The new standard way for non functional assertions works like <<Collected Assertions>>
 ```java
-nonFunctional(() -> guiElement.displayed().isTrue());
+Control.nonFunctional(() -> guiElement.displayed().isTrue());
 ```
 
 [NOTE]
 .Using the static `NonFunctionalAssert` is now `@deprecated`
 ====
 ```java
-NonFunctionalAssert.assertTrue(false);
+Control.NonFunctionalAssert.assertTrue(false);
 ```
 ====
 
@@ -310,17 +310,52 @@ guiElement.nonFunctionalAsserts().assertIsDisplayed();
 ```
 ====
 
+==== Advanced Topics on Assertions
+Perform assertions outside of Pages or Tests
+```java
+public MyClass {
+    @Inject
+    public MyClass(Assertion assertion) {
+        assertion.assertTrue(false);
+    }
+}
+```
+For non-injectable classes
+```java
+public MyClass {
+    private final Assertion assertion = Testerra.injector.getInstance(Assertion.class);
+    public MyClass() {
+        assertion.assertTrue(false);
+    }
+}
+```
+Force performing explicit assertions
+```java
+public MyClass {
+    @Inject
+    public MyClass(
+        NonFunctionalAssertion nonFunctional,
+        CollectedAssertion collected,
+        InstantAssertion instant
+    ) {
+        nonFunctional.assertTrue(false);
+        collected.assertTrue(false);
+        instant.assertTrue(false);
+    }
+}
+```
+
 === Timeouts
 
 The new standard way for setting GuiElement timeouts is now
 
 ```java
-withElementTimeout(1, () -> guiElement.displayed().isTrue());
+Control.withElementTimeout(1, () -> guiElement.displayed().isTrue());
 ```
 
 For many GuiElements or Pages
 ```java
-withElementTimeout(1, () -> {
+Control.withElementTimeout(1, () -> {
     MyPage page = pageFactory.create(MyPage.class);
     page.title().is("TestPage");
     guiElement.value().contains("Hello");
@@ -337,7 +372,7 @@ For other test methods
 ```java
 @Test
 public void test_TestSomething_fast() {
-    withElementTimeout(1, () -> test_TestSomething());
+    Control.withElementTimeout(1, () -> test_TestSomething());
 }
 ```
 

@@ -25,8 +25,6 @@ public class Testerra {
         @Deprecated
         SELENIUM_SERVER_PORT("tt.selenium.server.port", 4444),
         SELENIUM_SERVER_URL("tt.selenium.server.url", String.format("http://%s:%s/wd/hub", SELENIUM_SERVER_HOST, SELENIUM_SERVER_PORT)),
-        ELEMENT_TIMEOUT_SECONDS("tt.element.timeout.seconds", 8),
-        ELEMENT_WAIT_INTERVAL_MS("tt.element.wait.ms", 200),
         BASEURL("tt.baseurl", "about:_blank"),
         /**
          * @todo Default should be based on WebDriverMode class

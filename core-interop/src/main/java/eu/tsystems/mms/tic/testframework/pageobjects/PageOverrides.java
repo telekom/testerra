@@ -11,9 +11,7 @@ import eu.tsystems.mms.tic.testframework.testing.TestController;
  */
 public interface PageOverrides {
     int getElementTimeoutInSeconds(int fallbackTimeout);
-    PageOverrides setElementTimeoutInSeconds(int elementTimeoutInSeconds);
-    PageOverrides removeElementTimeoutInSeconds();
+    int setElementTimeoutInSeconds(int elementTimeoutInSeconds);
     CheckRule getGuiElementCheckRule(CheckRule fallbackCheckRule);
     PageOverrides setGuiElementCheckRule(CheckRule guiElementCheckRule);
-    PageOverrides removeGuiElementCheckRule();
 }

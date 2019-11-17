@@ -50,23 +50,26 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
     private void pCheckField(
         BasicGuiElement guiElement,
         GuiElementAssert GuiElementAssert,
-        CheckRule checkRule,
+        Check check,
         boolean findNot,
         boolean fast
     ) {
+        CheckRule checkRule = check.checkRule();
         if (checkRule == CheckRule.DEFAULT) {
             checkRule = pageOverrides.getGuiElementCheckRule(CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString()));
         }
 
         String errorMessageNotNot = "You are trying to FIND_NOT a not present element.";
-
+        int prevTimeout = -1;
         if (fast) {
             /**
              * Sets the timeout for "fast" checks.
              * Unfortunately, this value is not documented and differs in previous implementations.
              * However, we set this timeout now to zero seconds.
              */
-            pageOverrides.setElementTimeoutInSeconds(0);
+            prevTimeout = pageOverrides.setElementTimeoutInSeconds(0);
+        } else if (check.timeout()!=-1) {
+            prevTimeout = pageOverrides.setElementTimeoutInSeconds(check.timeout());
         }
 
         switch (checkRule) {
@@ -108,22 +111,20 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             }
             break;
             default:
-                if (fast) {
-                    pageOverrides.removeElementTimeoutInSeconds();
+                if (prevTimeout >= 0) {
+                    pageOverrides.setElementTimeoutInSeconds(prevTimeout);
                 }
                 throw new TesterraSystemException("CheckRule not implemented: " + checkRule);
         }
-        if (fast) {
-            pageOverrides.removeElementTimeoutInSeconds();
+        if (prevTimeout >= 0) {
+            pageOverrides.setElementTimeoutInSeconds(prevTimeout);
         }
     }
 
     @Override
     protected void checkField(Check check, boolean fast) {
-        CheckRule checkRule = check.checkRule();
-
         if (check.nonFunctional()) {
-            pCheckField(checkableInstance, checkableInstance.nonFunctionalAsserts(), checkRule, findNot, fast);
+            pCheckField(checkableInstance, checkableInstance.nonFunctionalAsserts(), check, findNot, fast);
         } else {
 
             GuiElementAssert guiElementAssert;
@@ -138,7 +139,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             }
 
             try {
-                pCheckField(checkableInstance, guiElementAssert, checkRule, findNot, fast);
+                pCheckField(checkableInstance, guiElementAssert, check, findNot, fast);
             } catch (AssertionError e) {
                 final PageNotFoundException pageNotFoundException = new PageNotFoundException(readableMessage, e);
 

@@ -45,7 +45,9 @@ public interface IGuiElement extends
         DELAY_AFTER_FIND_MILLIS("tt.delay.after.guielement.find.millis", 0),
         DELAY_BEFORE_ACTION_MILLIS("tt.delay.before.guielement.action.millis",0),
         DELAY_AFTER_ACTION_MILLIS("tt.delay.after.guielement.action.millis", 0),
-        CHECK_RULE("tt.guielement.checkrule", CheckRule.IS_DISPLAYED.name())
+        CHECK_RULE("tt.guielement.checkrule", CheckRule.IS_DISPLAYED.name()),
+        ELEMENT_TIMEOUT_SECONDS("tt.element.timeout.seconds", 8),
+        ELEMENT_WAIT_INTERVAL_MS("tt.element.wait.ms", 200),
         ;
         private final String property;
         private Object defaultValue;

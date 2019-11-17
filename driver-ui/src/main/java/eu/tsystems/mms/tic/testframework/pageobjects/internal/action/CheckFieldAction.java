@@ -51,6 +51,10 @@ public abstract class CheckFieldAction extends FieldAction {
         }
     }
 
+    /**
+     * @deprecated Fast checks are deprecated. Use {@link Check#timeout()} instead
+     */
+    @Deprecated
     protected abstract void checkField(Check check, boolean fast);
     protected boolean execute = false;
 

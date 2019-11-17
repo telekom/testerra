@@ -64,7 +64,5 @@ public class WebDriverSessionsAfterMethodWorker extends MethodWorker {
                 }
             }
         }
-
-        POConfig.removeThreadLocalUiElementTimeout();
     }
 }

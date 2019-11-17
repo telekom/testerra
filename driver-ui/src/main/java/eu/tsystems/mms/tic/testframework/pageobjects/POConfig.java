@@ -38,7 +38,7 @@ public final class POConfig {
     private POConfig() { }
 
     public static int getUiElementTimeoutInSeconds() {
-        return pageOverrides.getElementTimeoutInSeconds(Testerra.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue());
+        return pageOverrides.getElementTimeoutInSeconds(IGuiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue());
     }
 
     public static void setUiElementTimeoutInSeconds(int uiElementTimeoutInSeconds) {
@@ -46,7 +46,7 @@ public final class POConfig {
     }
 
     public static CheckRule getGuiElementCheckRule() {
-        return pageOverrides.getGuiElementCheckRule(CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString()));
+        return pageOverrides.getGuiElementCheckRule(CheckRule.valueOf(IGuiElement.Properties.CHECK_RULE.asString()));
     }
 
     public static void setGuiElementCheckRule(CheckRule guiElementCheckRule) {
@@ -58,7 +58,7 @@ public final class POConfig {
     }
 
     public static void removeThreadLocalUiElementTimeout() {
-        pageOverrides.removeElementTimeoutInSeconds();
+
     }
 
     public static void executeWithExplicitUiElementTimeout(int value, Runnable runnable) {

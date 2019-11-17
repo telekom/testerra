@@ -122,7 +122,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     /**
      * Element timeout in seconds (int).
      */
-    protected int elementTimeoutInSeconds = pageOverrides.getElementTimeoutInSeconds(Testerra.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue());
+    protected int elementTimeoutInSeconds = pageOverrides.getElementTimeoutInSeconds(IGuiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue());
 
     /**
      * Protected logger.

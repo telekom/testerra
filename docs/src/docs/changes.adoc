@@ -350,6 +350,34 @@ public MyClass {
 The new standard way for setting GuiElement timeouts is now
 
 ```java
+class MyPage extends Page {
+    @Check(timeout = 1)
+    private IGuiElement guiElement;
+}
+```
+[NOTE]
+.Setting and restoring explicit timeouts on the GuiElement is now `@deprecated`
+====
+```java
+guiElement.setTimeoutInSeconds(1);
+guiElement.restoreDefaultTimeout();
+```
+====
+For the whole Page
+```java
+@PageOptions(elementTimeoutInSeconds = 1)
+class MyPage extends Page {...}
+```
+[NOTE]
+.Setting explicit timeouts on the Page is now `@deprecated`
+====
+```java
+page.setElementTimeoutInSeconds(1);
+```
+====
+
+Override during runtime
+```java
 Control.withElementTimeout(1, () -> guiElement.displayed().isTrue());
 ```
 
@@ -362,12 +390,6 @@ Control.withElementTimeout(1, () -> {
 });
 ```
 
-For the whole Page
-```java
-@PageOptions(elementTimeoutInSeconds = 1)
-class MyPage extends Page {...}
-```
-
 For other test methods
 ```java
 @Test
@@ -377,28 +399,12 @@ public void test_TestSomething_fast() {
 ```
 
 [NOTE]
-.Setting explicit timeouts on the Page is now `@deprecated`
-====
-```java
-page.setElementTimeoutInSeconds(1);
-```
-====
-
-[NOTE]
-.Setting and restoring explicit timeouts on the GuiElement is now `@deprecated`
-====
-```java
-guiElement.setTimeoutInSeconds(1);
-guiElement.restoreDefaultTimeout();
-```
-====
-
-[NOTE]
 .Setting timeouts using static `POConfig` is now `@deprecated`
 ====
 ```java
 POConfig.setThreadLocalUiElementTimeoutInSeconds(1);
 POConfig.setUiElementTimeoutInSeconds(1);
+POConfig.removeThreadLocalUiElementTimeout();
 ```
 ====
 

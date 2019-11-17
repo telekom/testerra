@@ -2,6 +2,10 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 
+/**
+ * @todo Implement thread local reset
+ * @author Mike Reiche
+ */
 public class DefaultPageOverrides implements PageOverrides {
 
     private final ThreadLocal<Integer> threadLocalTimeout = new ThreadLocal<>();
@@ -20,15 +24,10 @@ public class DefaultPageOverrides implements PageOverrides {
     }
 
     @Override
-    public PageOverrides setElementTimeoutInSeconds(int elementTimeoutInSeconds) {
+    public int setElementTimeoutInSeconds(int elementTimeoutInSeconds) {
+        int prevTimeout = threadLocalTimeout.get();
         threadLocalTimeout.set(elementTimeoutInSeconds);
-        return this;
-    }
-
-    @Override
-    public PageOverrides removeElementTimeoutInSeconds() {
-        threadLocalTimeout.remove();
-        return this;
+        return prevTimeout;
     }
 
     @Override
@@ -43,12 +42,6 @@ public class DefaultPageOverrides implements PageOverrides {
     @Override
     public PageOverrides setGuiElementCheckRule(CheckRule guiElementCheckRule) {
         threadLocalCheckRule.set(guiElementCheckRule);
-        return this;
-    }
-
-    @Override
-    public PageOverrides removeGuiElementCheckRule() {
-        threadLocalCheckRule.remove();
         return this;
     }
 }

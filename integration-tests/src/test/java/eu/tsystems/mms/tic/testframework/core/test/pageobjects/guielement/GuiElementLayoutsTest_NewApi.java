@@ -52,14 +52,14 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     public void testT02_LeftOfFails() throws Exception {
         GuiElement left = getGuiElementBy(By.id("1"));
         GuiElement right = getGuiElementBy(By.linkText("Open again"));
-        withElementTimeout(0, () -> right.bounds().leftOf(left).isTrue());
+        Control.withElementTimeout(0, () -> right.bounds().leftOf(left).isTrue());
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT03_LeftOfFailsSameCoords() throws Exception {
         GuiElement left = getGuiElementBy(By.id("1"));
         GuiElement right = getGuiElementBy(By.id("5"));
-        withElementTimeout(0, () -> right.bounds().leftOf(left).isTrue());
+        Control.withElementTimeout(0, () -> right.bounds().leftOf(left).isTrue());
     }
 
     /*
@@ -77,14 +77,14 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     public void testT12_RightOfFails() throws Exception {
         GuiElement left = getGuiElementBy(By.id("1"));
         GuiElement right = getGuiElementBy(By.linkText("Open again"));
-        withElementTimeout(0, () -> left.bounds().rightOf(right).isTrue());
+        Control.withElementTimeout(0, () -> left.bounds().rightOf(right).isTrue());
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT13_RightOfFailsSameCoords() throws Exception {
         GuiElement left = getGuiElementBy(By.id("1"));
         GuiElement right = getGuiElementBy(By.id("5"));
-        withElementTimeout(0, () -> left.bounds().rightOf(right).isTrue());
+        Control.withElementTimeout(0, () -> left.bounds().rightOf(right).isTrue());
     }
 
     /*
@@ -102,7 +102,7 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     public void testT22_AboveFails() throws Exception {
         GuiElement oben = getGuiElementBy(By.id("1"));
         GuiElement unten = getGuiElementBy(By.id("5"));
-        withElementTimeout(0, () -> unten.bounds().above(oben).isTrue());
+        Control.withElementTimeout(0, () -> unten.bounds().above(oben).isTrue());
     }
 
     /*
@@ -120,7 +120,7 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     public void testT32_BelowFails() throws Exception {
         GuiElement oben = getGuiElementBy(By.id("1"));
         GuiElement unten = getGuiElementBy(By.id("5"));
-        withElementTimeout(0, () -> oben.bounds().below(unten).isTrue());
+        Control.withElementTimeout(0, () -> oben.bounds().below(unten).isTrue());
     }
 
     /*
@@ -138,7 +138,7 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     public void testT42_SameTopFails() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11"));
-        withElementTimeout(0, () -> e1.bounds().fromTop().toTopOf(e2).is(0));
+        Control.withElementTimeout(0, () -> e1.bounds().fromTop().toTopOf(e2).is(0));
     }
 
     @Test
@@ -163,7 +163,7 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     public void testT52_SameBottomFails() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11"));
-        withElementTimeout(0, () -> e1.bounds().fromBottom().toBottomOf(e2).is(0));
+        Control.withElementTimeout(0, () -> e1.bounds().fromBottom().toBottomOf(e2).is(0));
     }
 
     @Test
@@ -188,7 +188,7 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     public void testT62_SameLeftFails() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1"));
         GuiElement e2 = getGuiElementBy(By.id("3"));
-        withElementTimeout(0, () -> e1.bounds().fromLeft().toLeftOf(e2).is(0));
+        Control.withElementTimeout(0, () -> e1.bounds().fromLeft().toLeftOf(e2).is(0));
     }
 
     @Test
@@ -213,7 +213,7 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
     public void testT72_SameRightFails() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1"));
         GuiElement e2 = getGuiElementBy(By.id("3"));
-        withElementTimeout(0, () -> e1.bounds().fromRight().toRightOf(e2).is(0));
+        Control.withElementTimeout(0, () -> e1.bounds().fromRight().toRightOf(e2).is(0));
     }
 
     @Test

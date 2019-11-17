@@ -17,16 +17,22 @@
  *     Peter Lehmann
  *     pele
  */
-package eu.tsystems.mms.tic.testframework.testing;
+package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import com.google.inject.Inject;
 
 /**
- * Abstract test features for Tests and Pages
+ * Passes assertions to the current implementation.
  * @author Mike Reiche
  */
-public abstract class AbstractTestFeatures {
-    protected final Assertion Assert = Testerra.injector.getInstance(Assertion.class);
-    protected final TestController Control = Testerra.injector.getInstance(TestController.class);
+public class DefaultAssertionWrapper extends AbstractAssertion implements Assertion {
+    private final AssertionFactory assertionFactory;
+    @Inject
+    protected DefaultAssertionWrapper(AssertionFactory assertionFactory) {
+        this.assertionFactory = assertionFactory;
+    }
+    @Override
+    public void fail(AssertionError error) {
+        this.assertionFactory.create().fail(error);
+    }
 }

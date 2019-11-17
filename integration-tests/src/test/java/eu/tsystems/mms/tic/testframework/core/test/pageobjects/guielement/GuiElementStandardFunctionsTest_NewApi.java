@@ -68,12 +68,12 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     @Test
     @Fails(description = "The test itself passes, but collected assertions will always fail")
     public void test_Page_title_length_fails_collected() {
-        collectAssertions(()->page.title().length().isGreaterThan(10));
+        Control.collectAssertions(()->page.title().length().isGreaterThan(10));
     }
 
     @Test
     public void test_Page_title_length_fails_nonFunctional() {
-        nonFunctionalAssertions(()-> page.title().length().isGreaterThan(10));
+        Control.nonFunctionalAssertions(()-> page.title().length().isGreaterThan(10));
     }
 
     @Test
@@ -136,7 +136,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
     @Test
     public void test_NonExistent_GuiElement_present_fails_fast() {
-        withElementTimeout(0, () -> test_NonExistent_GuiElement_present_fails());
+        Control.withElementTimeout(0, () -> test_NonExistent_GuiElement_present_fails());
     }
 
     @Test

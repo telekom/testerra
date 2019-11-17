@@ -2,8 +2,10 @@ package eu.tsystems.mms.tic.testframework.ioc;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultAssertionWrapper;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultAssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultCollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultNonFunctionalAssertion;
@@ -16,6 +18,8 @@ import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.report.IReport;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.testing.DefaultTestController;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 
@@ -29,5 +33,7 @@ public class ConfigureCore extends AbstractModule {
         bind(InstantAssertion.class).to(ThrowingAssertion.class).in(Scopes.SINGLETON);
         bind(TestAssertion.class).to(SilentAssertion.class).in(Scopes.SINGLETON);
         bind(AssertionsCollector.class).to(CollectedAssertions.class).in(Scopes.SINGLETON);
+        bind(Assertion.class).to(DefaultAssertionWrapper.class).in(Scopes.SINGLETON);
+        bind(TestController.class).to(DefaultTestController.class);
     }
 }

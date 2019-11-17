@@ -73,7 +73,7 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     public void testCheckElementLayoutDistance() {
         LayoutCheckPage page = preparePage();
         IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");
-        withElementTimeout(0, () -> guiElement.screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
+        Control.withElementTimeout(0, () -> guiElement.screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
     }
 
     @Test
@@ -87,6 +87,6 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     @Test(expectedExceptions = AssertionError.class)
     public void testCheckPageLayout_failed() {
         LayoutCheckPage page = preparePage();
-        withElementTimeout(0, () -> page.screenshot().pixelDistance("LayoutTestPage").isGreaterThan(100));
+        Control.withElementTimeout(0, () -> page.screenshot().pixelDistance("LayoutTestPage").isGreaterThan(100));
     }
 }

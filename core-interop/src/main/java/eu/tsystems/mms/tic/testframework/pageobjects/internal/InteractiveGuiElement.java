@@ -11,6 +11,11 @@ public interface InteractiveGuiElement extends TestableGuiElement {
     InteractiveGuiElement select();
     InteractiveGuiElement deselect();
     InteractiveGuiElement sendKeys(CharSequence... charSequences);
+
+    /**
+     * Sends keys with a maximum of characters per minute
+     */
+    InteractiveGuiElement sendKeysWithCpm(int cpm, CharSequence... charSequences);
     InteractiveGuiElement clear();
     InteractiveGuiElement hover();
     //InteractiveGuiElement mouseOver();

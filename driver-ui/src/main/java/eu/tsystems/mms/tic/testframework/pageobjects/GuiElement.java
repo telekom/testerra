@@ -405,18 +405,14 @@ public class GuiElement implements
 
     @Override
     public IGuiElement sendKeys(CharSequence... charSequences) {
-        int cpm = Properties.USER_INPUT_CHARACTERS_PER_MINUTE.asLong().intValue();
-        if (cpm > 0) {
-            return userSendKeys(cpm, charSequences);
-        } else {
-            guiElementData.setLogLevel(LogLevel.INFO);
-            guiElementFacade.sendKeys(charSequences);
-            guiElementData.resetLogLevel();
-        }
+        guiElementData.setLogLevel(LogLevel.INFO);
+        guiElementFacade.sendKeys(charSequences);
+        guiElementData.resetLogLevel();
         return this;
     }
 
-    private IGuiElement userSendKeys(int cpm, CharSequence... charSequences) {
+    @Override
+    public IGuiElement sendKeysWithCpm(int cpm, CharSequence... charSequences) {
         float cps = cpm/60;
         if (cps <= 0) cps = 1;
         int cpsSleepMs = Math.round(1000/cps);

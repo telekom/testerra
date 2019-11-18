@@ -412,7 +412,7 @@ public class GuiElement implements
     }
 
     @Override
-    public IGuiElement sendKeysWithCpm(int cpm, CharSequence... charSequences) {
+    public IGuiElement userSendKeys(int cpm, CharSequence... charSequences) {
         float cps = cpm/60;
         if (cps <= 0) cps = 1;
         int cpsSleepMs = Math.round(1000/cps);

@@ -25,18 +25,18 @@
             </thead>
             <tbody id="logging-${testMethod.methodRunIndex}-tbody">
 
+                #set($testSteps = $testMethod.steps().getTestSteps());
+                #foreach ($step in $testSteps)
 
-                #foreach ($step in $testMethod.steps().getTestSteps())
-
-                    #set($stepNumber = $step.getNumber())
+                    #set($stepNumber = $testSteps.indexOf($step))
                     #foreach ($action in $step.getTestStepActions())
 
-                        #set($actionNumber = $action.getNumber())
+                        #set($actionNumber =  $step.getTestStepActions().indexOf($action))
                         #set($viewclass = "viewclass_${stepNumber}_${actionNumber}")
 
                         #foreach ($entry in $action.getTestStepActionEntries())
 
-                            #set($entryNumber = $entry.getNumber())
+                            #set($entryNumber = $action.getTestStepActionEntries().indexOf($entry))
                             #if ($entry.getLogMessage())
                                 #set($logMessage = $entry.getLogMessage())
 

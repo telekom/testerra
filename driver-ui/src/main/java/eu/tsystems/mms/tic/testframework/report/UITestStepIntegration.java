@@ -34,6 +34,7 @@ import org.openqa.selenium.WebDriver;
 import java.io.File;
 import java.util.UUID;
 
+@Deprecated
 public class UITestStepIntegration implements TestStepEventListener {
 
     private static boolean init = false;

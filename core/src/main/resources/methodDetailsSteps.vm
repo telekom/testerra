@@ -9,21 +9,19 @@
                        onclick="javascript:showDetailsLog('logentry', '${testMethod.methodRunIndex}');">Test Steps in
                         ${testMethod.name}</a><br/>
 
-                    #foreach ($step in $testMethod.steps().getTestSteps())
+                    #set($testSteps = $testMethod.steps().getTestSteps())
+                    #foreach ($step in $testSteps)
 
-                        #set($stepNumber = $step.getNumber())
+                        #set($stepNumber = $testSteps.indexOf($step))
 
-                        #set($stepName = "Step")
-                        #if ($step.getName())
-                            #set($stepName = $step.getName())
-                        #end
+                        #set($stepName = $step.getName())
                         <a href="#" class="listlayer2 list-group-item listitem"
                            onclick="javascript:showDetailsLog('viewclass_${stepNumber}', '${testMethod.methodRunIndex}');">${stepNumber})
                             ${stepName}</a><br/>
 
                         #foreach ($action in $step.getTestStepActions())
 
-                            #set($actionNumber = $action.getNumber())
+                            #set($actionNumber = $step.getTestStepActions().indexOf($action))
                             #set($viewclass = "viewclass_${stepNumber}_${actionNumber}")
 
                             <!-- default action symbol -->
@@ -70,17 +68,17 @@
                 </tr>
                 </thead>
                 <tbody id="logging-${testMethod.methodRunIndex}-tbody">
-                #foreach ($step in $testMethod.steps().getTestSteps())
+                #foreach ($step in $testSteps)
 
-                    #set($stepNumber = $step.getNumber())
+                    #set($stepNumber = $testSteps.indexOf($step))
                     #foreach ($action in $step.getTestStepActions())
 
-                        #set($actionNumber = $action.getNumber())
+                        #set($actionNumber = $step.getTestStepActions().indexOf($action))
                         #set($viewclass = "viewclass_${stepNumber}_${actionNumber}")
 
                         #foreach ($entry in $action.getTestStepActionEntries())
 
-                            #set($entryNumber = $entry.getNumber())
+                            #set($entryNumber = $action.getTestStepActionEntries().indexOf($entry))
 
                             #if ($entry.logMessage)
 

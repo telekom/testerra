@@ -52,6 +52,9 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import java.awt.Color;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,7 +65,7 @@ import java.util.Random;
  *
  * @author pele
  */
-public abstract class Page extends AbstractPage {
+public abstract class Page extends AbstractPage implements InvocationHandler {
 
     public static final String CHECKPAGE_METHOD_NAME = "checkPage";
     private final GuiElementGroups guiElementGroups;
@@ -420,5 +423,16 @@ public abstract class Page extends AbstractPage {
         }
 
         return simpleClassName + " -> " + actionName;
+    }
+
+    @Override
+    public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
+        try {
+            return method.invoke(o, objects);
+        } catch (IllegalAccessException | IllegalArgumentException e) {
+            throw e;
+        } catch (InvocationTargetException e) {
+            throw e.getTargetException();
+        }
     }
 }

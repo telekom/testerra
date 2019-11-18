@@ -44,22 +44,19 @@ public class TestStepController implements Serializable {
     Test Steps Contexts
      */
 
-    private List<TestStep> testSteps = Collections.synchronizedList(new LinkedList<TestStep>());
+    private final List<TestStep> testSteps = Collections.synchronizedList(new LinkedList<>());
 
     public TestStep getCurrentTestStep() {
-        // if there are no test steps yet, create an initial one
+        // if there are no active test step yet, create a new initial one
         if (testSteps.size() == 0) {
-            TestStep testStep = new TestStep(null, 1);
-            testSteps.add(testStep);
-            return testStep;
+            return announceTestStep(TestStep.INTERNAL);
         }
 
         // get the last TestStep
-        TestStep testStep = testSteps.get(testSteps.size() - 1);
+        TestStep testStep = getLastStep();
 
         if (testStep.isClosed()) {
-            testStep = new TestStep(null, testStep.getNumber() + 1);
-            testSteps.add(testStep);
+            return announceTestStep(TestStep.INTERNAL);
         }
 
         return testStep;
@@ -81,19 +78,23 @@ public class TestStepController implements Serializable {
         testStepAction.addLogMessage(logMessage);
     }
 
-    public TestStep announceTestStep(final String name) {
+    private TestStep getLastStep() {
+        return testSteps.get(testSteps.size()-1);
+    }
+
+    public TestStep announceTestStep(String name) {
         // create a new one if empty
         TestStep testStep;
         if (testSteps.size() == 0) {
-            testStep = new TestStep(name, 1);
+            testStep = new TestStep(name);
             testSteps.add(testStep);
         } else {
             // get the last TestStep
-            testStep = testSteps.get(testSteps.size() - 1);
+            testStep = getLastStep();
 
             // create new step if the steps differs
             if (!StringUtils.equals(testStep.getName(), name)) {
-                testStep = new TestStep(name, testStep.getNumber() + 1);
+                testStep = new TestStep(name);
                 testSteps.add(testStep);
             }
         }
@@ -101,7 +102,7 @@ public class TestStepController implements Serializable {
         return testStep;
     }
 
-    public void announceTestStepAction(final String name) {
+    public void announceTestStepAction(String name) {
         getCurrentTestStep().getTestStepAction(name); // it is basically the same
     }
 
@@ -123,7 +124,7 @@ public class TestStepController implements Serializable {
             TestStep actualTestStep = methodContext.steps().getCurrentTestStep();
 
             if (!actualTestStep.hasActions()) {
-                actualTestStep.getTestStepActions().add(new TestStepAction("Screenshot", 1));
+                actualTestStep.getTestStepActions().add(new TestStepAction("Screenshot"));
             }
             final TestStepAction actualAction = actualTestStep.getCurrentTestStepAction();
             actualAction.addScreenshots(beforeShot, afterShot);

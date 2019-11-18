@@ -26,12 +26,15 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,7 +194,11 @@ public final class PageFactory {
             }
         }
 
-        return t;
+        return (T) Proxy.newProxyInstance(
+            pageClass.getClassLoader(),
+            ObjectUtils.getAllInterfacesOf(t),
+            t
+        );
     }
 
     public static void clearCache() {

@@ -118,6 +118,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
 
     /**
      * The webdriver object.
+     * @todo This should be final
      */
     protected WebDriver driver;
 
@@ -135,7 +136,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
      * Page storage.
      */
     @Deprecated
-    private static final ThreadLocal<AbstractPage> STORED_PAGES = new ThreadLocal<AbstractPage>();
+    private static final ThreadLocal<AbstractPage> STORED_PAGES = new ThreadLocal<>();
 
     @Deprecated
     private boolean forcedGuiElementStandardAsserts = false;
@@ -157,6 +158,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
      * @return stored instance
      */
     @SuppressWarnings("unchecked")
+    @Deprecated
     public static <T extends Page> T restore(final Class<T> c) {
         AbstractPage page = STORED_PAGES.get();
 
@@ -181,15 +183,6 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     @Deprecated
     public void setElementTimeoutInSeconds(int newElementTimeout) {
         elementTimeoutInSeconds = newElementTimeout;
-    }
-
-    /**
-     * Executes a screenshot when the specific property is set.
-     */
-    private void screenShotOnPageLoad() {
-        if (IReport.Properties.SCREENSHOT_ON_PAGELOAD.asBool()) {
-            takeScreenshot();
-        }
     }
 
     /**
@@ -229,7 +222,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     }
 
     @Override
-    public void checkGuiElements(CheckRule checkRule) {
+    public IPage checkGuiElements(CheckRule checkRule) {
         switch (checkRule) {
             case IS_NOT_PRESENT:
             case IS_NOT_DISPLAYED:
@@ -238,21 +231,11 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
             default:
                 pCheckPage(false, false, true);
         }
+        return this;
     }
 
     /**
-     * The call of this method is injected into the constructor of every page class or must be called from every page
-     * class constructor!!!
-     * If there are several subclasses each calling checkPage, it will be only called from the class of the calling instance.
-     * @deprecated Calling this method by yourself is deprecated
-     */
-    @Deprecated
-    public final void checkPage() {
-        pCheckPage(false, false, true);
-    }
-
-    /**
-     * @deprecated Inverse checks are deprecated
+     * @deprecated Use {@link #checkGuiElements(CheckRule)} instead
      */
     @Deprecated
     public final void checkPage(final boolean inverse, final boolean fast) {
@@ -347,9 +330,6 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
         }
 
         logger.info("Checking mandatory elements done for: " + classSimpleName);
-
-        screenShotOnPageLoad();
-
         logger.info("Page load successful: " + classSimpleName);
     }
 
@@ -510,23 +490,18 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
         return allClasses;
     }
 
-    /**
-     * taking screenshot from all open windows
-     */
-    public void takeScreenshot() {
-        UITestUtils.takeScreenshot(driver, true);
-    }
-
+    @Deprecated
     public void waitForPageToLoad() {
-
     }
 
     /**
      * Empty method to be overriden. Can perform some (additional) checks on page objects.
      */
+    @Deprecated
     public void assertPageIsShown() {
     }
 
+    @Deprecated
     public void assertPageIsNotShown() {
     }
 

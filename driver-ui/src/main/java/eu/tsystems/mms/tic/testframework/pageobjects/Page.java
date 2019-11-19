@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
@@ -46,6 +47,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionP
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ScreenshotAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.report.IReport;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -167,10 +169,6 @@ public abstract class Page extends AbstractPage {
     }
 
     @Override
-    public void waitForPageToLoad() {
-    }
-
-    @Override
     protected void handleDemoMode(WebDriver webDriver) {
         if (Testerra.Properties.DEMO_MODE.asBool() && webDriver != null) {
             JSUtils.turnOnDemoModeForCurrentPage(webDriver);
@@ -204,8 +202,26 @@ public abstract class Page extends AbstractPage {
     }
 
     /**
-     * Send F5 to the browser.
+     * taking screenshot from all open windows
      */
+    @Deprecated
+    public void takeScreenshot() {
+        screenshot().toReport();
+    }
+
+    @Override
+    protected void pCheckPage(boolean findNot, boolean fast, boolean checkCaller) {
+        super.pCheckPage(findNot, fast, checkCaller);
+        if (IReport.Properties.SCREENSHOT_ON_PAGELOAD.asBool()) {
+            screenshot().toReport();
+        }
+    }
+
+    /**
+     * Send F5 to the browser.
+     * @deprecated Use {@link #refresh()} and {@link #checkGuiElements(CheckRule)} instead
+     */
+    @Deprecated
     public Page refresh(boolean checkPage) {
         driver.navigate().refresh();
         if (checkPage) {

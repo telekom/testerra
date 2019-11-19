@@ -23,6 +23,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.IPageFactoryTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.MyVariables;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestFramedPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
@@ -41,16 +42,15 @@ import org.testng.annotations.Test;
  * To test that checkpage() is executed, a not existing, check-annotated element is used.
  *
  */
-public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFactoryTest {
+public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements IPageFactoryTest {
 
     @Override
     public WebTestPage getPage() {
-        return new WebTestPage(WebDriverManager.getWebDriver(), new MyVariables(1));
-        //return PageFactory.create(WebTestPage.class, WebDriverManager.getWebDriver(), new MyVariables(1));
+        return pageFactory.createPage(WebTestPage.class);
     }
 
     public WebTestFramedPage getFramePage() {
-        return PageFactory.create(WebTestFramedPage.class, WebDriverManager.getWebDriver());
+        return pageFactory.createPage(WebTestFramedPage.class);
     }
 
     @Test
@@ -59,8 +59,10 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
-        page.assertIsTextPresent("Frame1234");
+        Control.withElementTimeout(0, () -> {
+            WebTestFramedPage page = getFramePage();
+            page.anyElementContainsText("Frame1234").present().isTrue();
+        });
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -69,8 +71,10 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
-        page.assertIsTextPresent("Bifi");
+        Control.withElementTimeout(0, () -> {
+            WebTestFramedPage page = getFramePage();
+            page.anyElementContainsText("Bifi").present().isTrue();
+        });
     }
 
     @Test
@@ -78,9 +82,10 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         WebDriver driver = WebDriverManager.getWebDriver();
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
-
-        WebTestFramedPage page = getFramePage();
-        page.assertIsNotTextPresent("Bifi");
+        Control.withElementTimeout(0, () -> {
+            WebTestFramedPage page = getFramePage();
+            page.anyElementContainsText("Bifi").present().isFalse();
+        });
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -89,8 +94,10 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
-        page.assertIsNotTextPresent("Frame1234");
+        Control.withElementTimeout(0, () -> {
+            WebTestFramedPage page = getFramePage();
+            page.anyElementContainsText("Frame1234").present().isFalse();
+        });
     }
 
     @Test
@@ -99,8 +106,10 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
-        page.assertIsTextDisplayed("Frame1234");
+        Control.withElementTimeout(0, () -> {
+            WebTestFramedPage page = getFramePage();
+            page.anyElementContainsText("Frame1234").displayed().isTrue();
+        });
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -109,8 +118,10 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
-        page.assertIsTextDisplayed("Bifi");
+        Control.withElementTimeout(0, () -> {
+            WebTestFramedPage page = getFramePage();
+            page.anyElementContainsText("Bifi").displayed().isTrue();
+        });
     }
 
     @Test
@@ -119,8 +130,10 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
-        page.assertIsNotTextDisplayed("Bifi");
+        Control.withElementTimeout(0, () -> {
+            WebTestFramedPage page = getFramePage();
+            page.anyElementContainsText("Bifi").displayed().isFalse();
+        });
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -129,8 +142,10 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         String url = TestPage.FRAME_TEST_PAGE.getUrl();
         driver.get(url);
 
-        WebTestFramedPage page = getFramePage();
-        page.assertIsNotTextDisplayed("Frame1234");
+        Control.withElementTimeout(0, () -> {
+            WebTestFramedPage page = getFramePage();
+            page.anyElementContainsText("Frame1234").displayed().isFalse();
+        });
     }
 
     @Test
@@ -140,16 +155,13 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFa
         driver.get(url);
 
         WebTestPage page = getPage();
-
-
-        GuiElement input = new GuiElement(driver, By.xpath("//label[@for='inputMillis']"));
-        input.assertCollector().assertIsDisplayed();
-        page.forceGuiElementStandardAsserts();
+        IGuiElement input = page.getGuiElementBy(By.xpath("//label[@for='inputMillis']"));
+        input.displayed().isTrue();
         WebElement webElement = input.getWebElement();
 
-        page.assertIsTextDisplayed("in Millis");
+        page.anyElementContainsText("in Millis").displayed().isTrue();
         JSUtils.executeScript(driver, "arguments[0].style.visibility='hidden';", webElement);
-        page.assertIsNotTextDisplayed("in Millis");
+        page.anyElementContainsText("in Millis").displayed().isFalse();
     }
 
 }

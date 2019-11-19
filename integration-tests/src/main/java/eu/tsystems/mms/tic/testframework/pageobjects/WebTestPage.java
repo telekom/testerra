@@ -121,5 +121,8 @@ public class WebTestPage extends AbstractWebTestPage {
     public IGuiElement getGuiElementBy(By by) {
         return find(by);
     }
+    public IGuiElement getGuiElementQa(String qa) {
+        return findByQa(qa);
+    }
 
 }

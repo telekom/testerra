@@ -912,7 +912,11 @@ public class GuiElement implements
         return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return guiElementCore.findWebElement().isDisplayed();
+                try {
+                    return guiElementCore.findWebElement().isDisplayed();
+                } catch (ElementNotFoundException e) {
+                    return false;
+                }
             }
 
             @Override
@@ -976,7 +980,11 @@ public class GuiElement implements
         return propertyAssertionFactory.quantified(new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
-                return getNumberOfFoundElements();
+                try {
+                    return guiElementCore.findWebElements().size();
+                } catch (ElementNotFoundException e) {
+                    return 0;
+                }
             }
 
             @Override

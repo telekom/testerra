@@ -10,6 +10,7 @@
         <packages>
             <package name="eu.tsystems.mms.tic.testframework.core.test.common"/>
             <package name="eu.tsystems.mms.tic.testframework.core.test.testdata"/>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.l10n"/>
         </packages>
         <classes>
             <class name="eu.tsystems.mms.tic.testframework.core.test.utils.AssertUtilsTest"/>
@@ -98,14 +99,15 @@
     </test>
 
     <test name="15 Page Factory">
-        <classes>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryTest_Deprecated"/>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryTest_IoC"/>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryPrefixedTest_Deprecated"/>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryPrefixedTest_IoC"/>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageOptionsTest"/>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageOptionsTest_IoC"/>
-        </classes>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory"/>
+        </packages>
+    </test>
+
+    <test name="LayoutCheck">
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.layoutcheck"/>
+        </packages>
     </test>
 
 </suite>

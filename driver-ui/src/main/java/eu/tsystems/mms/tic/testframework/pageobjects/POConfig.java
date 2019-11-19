@@ -38,7 +38,7 @@ public final class POConfig {
     private POConfig() { }
 
     public static int getUiElementTimeoutInSeconds() {
-        return pageOverrides.getElementTimeoutInSeconds(IGuiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue());
+        return pageOverrides.getElementTimeoutInSeconds();
     }
 
     public static void setUiElementTimeoutInSeconds(int uiElementTimeoutInSeconds) {
@@ -46,7 +46,7 @@ public final class POConfig {
     }
 
     public static CheckRule getGuiElementCheckRule() {
-        return pageOverrides.getGuiElementCheckRule(CheckRule.valueOf(IGuiElement.Properties.CHECK_RULE.asString()));
+        return pageOverrides.getGuiElementCheckRule();
     }
 
     public static void setGuiElementCheckRule(CheckRule guiElementCheckRule) {
@@ -62,7 +62,7 @@ public final class POConfig {
     }
 
     public static void executeWithExplicitUiElementTimeout(int value, Runnable runnable) {
-        int timeoutBefore = pageOverrides.getElementTimeoutInSeconds(value);
+        int timeoutBefore = pageOverrides.getElementTimeoutInSeconds();
         pageOverrides.setElementTimeoutInSeconds(value);
         runnable.run();
         pageOverrides.setElementTimeoutInSeconds(timeoutBefore);

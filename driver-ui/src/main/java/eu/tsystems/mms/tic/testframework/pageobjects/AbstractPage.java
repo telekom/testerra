@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
@@ -123,7 +124,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     /**
      * Element timeout in seconds (int).
      */
-    protected int elementTimeoutInSeconds = pageOverrides.getElementTimeoutInSeconds(IGuiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue());
+    protected int elementTimeoutInSeconds = pageOverrides.getElementTimeoutInSeconds();
 
     /**
      * Protected logger.

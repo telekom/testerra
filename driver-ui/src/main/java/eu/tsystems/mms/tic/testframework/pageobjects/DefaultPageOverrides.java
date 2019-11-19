@@ -15,33 +15,34 @@ public class DefaultPageOverrides implements PageOverrides {
     }
 
     @Override
-    public int getElementTimeoutInSeconds(int fallbackTimeout) {
+    public int getElementTimeoutInSeconds() {
         Integer timeout = threadLocalTimeout.get();
         if (timeout==null) {
-            timeout = fallbackTimeout;
+            timeout = IGuiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
         }
         return timeout;
     }
 
     @Override
     public int setElementTimeoutInSeconds(int elementTimeoutInSeconds) {
-        int prevTimeout = threadLocalTimeout.get();
+        int prevTimeout = getElementTimeoutInSeconds();
         threadLocalTimeout.set(elementTimeoutInSeconds);
         return prevTimeout;
     }
 
     @Override
-    public CheckRule getGuiElementCheckRule(CheckRule fallbackCheckRule) {
+    public CheckRule getGuiElementCheckRule() {
         CheckRule checkRule = threadLocalCheckRule.get();
         if (checkRule==null) {
-            checkRule = fallbackCheckRule;
+            checkRule = CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString());
         }
         return checkRule;
     }
 
     @Override
-    public PageOverrides setGuiElementCheckRule(CheckRule guiElementCheckRule) {
+    public CheckRule setGuiElementCheckRule(CheckRule guiElementCheckRule) {
+        CheckRule prevCheckRule = getGuiElementCheckRule();
         threadLocalCheckRule.set(guiElementCheckRule);
-        return this;
+        return prevCheckRule;
     }
 }

@@ -35,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.TestableGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiElementTimeoutFieldAction;
@@ -213,6 +214,7 @@ public abstract class Page extends AbstractPage {
         return this;
     }
 
+    @Deprecated
     public boolean isTextPresent(String text) {
         driver.switchTo().defaultContent();
 
@@ -224,6 +226,7 @@ public abstract class Page extends AbstractPage {
         return out;
     }
 
+    @Deprecated
     public boolean isTextDisplayed(String text) {
         driver.switchTo().defaultContent();
 
@@ -235,61 +238,16 @@ public abstract class Page extends AbstractPage {
         return out;
     }
 
-    private static final String TEXT_FINDER_PLACEHOLDER = "###TEXT###";
-    private static final String TEXT_FINDER_XPATH = "//text()[contains(., '" + TEXT_FINDER_PLACEHOLDER + "')]/..";
-
     @Fails(validFor = "unsupportedBrowser=true")
     private boolean pIsTextPresentRecursive(final boolean isDisplayed, final String text) {
-        // check for text in current frame
-        GuiElement textElement;
-
-        String textFinderXpath = TEXT_FINDER_XPATH.replace(TEXT_FINDER_PLACEHOLDER, text);
-
-        textElement = new GuiElement(driver, By.xpath(textFinderXpath));
-        if (isDisplayed) {
-            textElement.withWebElementFilter(WebElementFilter.DISPLAYED.is(true));
-        }
-
-        textElement.setTimeoutInSeconds(1);
-        if (textElement.isPresent()) {
-            // highlight
+        TestableGuiElement textElement = anyElementContainsText(text);
+        if (
+            isDisplayed && textElement.displayed().getActual()
+            || textElement.present().getActual()
+        ) {
             WebElement webElement = textElement.getWebElement();
             JSUtils.highlightWebElementStatic(driver, webElement, new Color(0, 255, 0));
             return true;
-        }
-
-        /*
-         scan for frames
-          */
-
-        // exit when safari
-        WebDriverRequest request = WebDriverManager.getRelatedWebDriverRequest(driver);
-        if (Browsers.safari.equalsIgnoreCase(request.browser) || Browsers.phantomjs.equalsIgnoreCase(request.browser)) {
-            String msg = "Recursive Page Scan does not work. Unsupported Browser.";
-            logger.error(msg);
-            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-            if (methodContext != null) {
-                methodContext.addPriorityMessage(msg);
-            }
-            // don't return here, let it run into failure...
-        }
-
-        List<WebElement> iframes = driver.findElements(By.tagName("iframe"));
-        for (WebElement iframe : iframes) {
-            driver.switchTo().frame(iframe);
-            if (pIsTextPresentRecursive(isDisplayed, text)) {
-                return true;
-            }
-            driver.switchTo().parentFrame();
-        }
-
-        List<WebElement> frames = driver.findElements(By.tagName("frame"));
-        for (WebElement frame : frames) {
-            driver.switchTo().frame(frame);
-            if (pIsTextPresentRecursive(isDisplayed, text)) {
-                return true;
-            }
-            driver.switchTo().parentFrame();
         }
 
         return false;
@@ -300,6 +258,7 @@ public abstract class Page extends AbstractPage {
      *
      * @return boolean true if success == text is not present. false otherwise.
      */
+    @Deprecated
     public boolean waitForIsNotTextPresentWithDelay(final String text, final int delayInSeconds) {
         TimerUtils.sleep(delayInSeconds * 1000);
         return waitForIsNotTextPresent(text);
@@ -310,6 +269,7 @@ public abstract class Page extends AbstractPage {
      *
      * @return boolean true if success == text is not present. false otherwise.
      */
+    @Deprecated
     public boolean waitForIsNotTextDisplayedWithDelay(final String text, final int delayInSeconds) {
         TimerUtils.sleep(delayInSeconds * 1000);
         return waitForIsNotTextDisplayed(text);
@@ -320,6 +280,7 @@ public abstract class Page extends AbstractPage {
      *
      * @return boolean true if success == text is not present. false otherwise.
      */
+    @Deprecated
     public boolean waitForIsNotTextPresent(final String text) {
         final Timer timer = new Timer();
         final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
@@ -343,6 +304,7 @@ public abstract class Page extends AbstractPage {
      *
      * @return boolean true if success == text is not present. false otherwise.
      */
+    @Deprecated
     public boolean waitForIsNotTextDisplayed(final String text) {
         final Timer timer = new Timer();
         final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
@@ -361,6 +323,7 @@ public abstract class Page extends AbstractPage {
         return response.getResponse();
     }
 
+    @Deprecated
     public boolean waitForIsTextPresent(final String text) {
         Timer timer = new Timer(IGuiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), elementTimeoutInSeconds * 1000);
         ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
@@ -374,6 +337,7 @@ public abstract class Page extends AbstractPage {
         return response.getResponse();
     }
 
+    @Deprecated
     public boolean waitForIsTextDisplayed(final String text) {
         Timer timer = new Timer(IGuiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), elementTimeoutInSeconds * 1000);
         ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
@@ -387,34 +351,34 @@ public abstract class Page extends AbstractPage {
         return response.getResponse();
     }
 
+    @Deprecated
     public void assertIsTextPresent(String text, String description) {
-        logger.info("assertIsTextPresent '" + text + "' on " + this.getClass().getSimpleName());
-        Assert.assertTrue(waitForIsTextPresent(text), "Text '" + text + "' is present on current page. " + description);
+        assertIsTextPresent(text);
     }
 
+    @Deprecated
     public void assertIsTextDisplayed(String text, String description) {
-        logger.info("assertIsTextDisplayed '" + text + "' on " + this.getClass().getSimpleName());
-        Assert.assertTrue(waitForIsTextDisplayed(text), "Text '" + text + "' is displayed on current page. " + description);
+        assertIsTextDisplayed(text);
     }
 
+    @Deprecated
     public void assertIsTextPresent(String text) {
-        logger.info("assertIsTextPresent '" + text + "' on " + this.getClass().getSimpleName());
-        Assert.assertTrue(waitForIsTextPresent(text), "Text '" + text + "' is present on current page");
+        anyElementContainsText(text).present().isTrue();
     }
 
+    @Deprecated
     public void assertIsTextDisplayed(String text) {
-        logger.info("assertIsTextDisplayed '" + text + "' on " + this.getClass().getSimpleName());
-        Assert.assertTrue(waitForIsTextDisplayed(text), "Text '" + text + "' is displayed on current page");
+        anyElementContainsText(text).displayed().isTrue();
     }
 
+    @Deprecated
     public void assertIsNotTextPresent(String text) {
-        logger.info("assertIsNotTextPresent '" + text + "' on " + this.getClass().getSimpleName());
-        Assert.assertFalse(isTextPresent(text), "Text '" + text + "' is present on current page");
+        anyElementContainsText(text).present().isFalse();
     }
 
+    @Deprecated
     public void assertIsNotTextDisplayed(String text) {
-        logger.info("assertIsNotTextDisplayed '" + text + "' on " + this.getClass().getSimpleName());
-        Assert.assertFalse(isTextDisplayed(text), "Text '" + text + "' is displayed on current page");
+        anyElementContainsText(text).displayed().isFalse();
     }
 
     @Override
@@ -511,4 +475,45 @@ public abstract class Page extends AbstractPage {
         });
     }
 
+    public TestableGuiElement anyElementContainsText(String text) {
+        String textFinderXpath = String.format("//text()[contains(., '%s')]/..", text);
+        Locate locate = Locate.by(By.xpath(textFinderXpath));
+        TestableGuiElement textElements = find(locate);
+        if (textElements.numberOfElements().getActual()>0) {
+            return textElements;
+        }
+
+        WebDriverRequest request = WebDriverManager.getRelatedWebDriverRequest(driver);
+        if (Browsers.safari.equalsIgnoreCase(request.browser) || Browsers.phantomjs.equalsIgnoreCase(request.browser)) {
+            String msg = "Recursive Page Scan does not work. Unsupported Browser.";
+            logger.error(msg);
+            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+            if (methodContext != null) {
+                methodContext.addPriorityMessage(msg);
+            }
+            // don't return here, let it run into failure...
+        }
+
+        List<WebElement> iframes = driver.findElements(By.tagName("iframe"));
+        for (WebElement iframe : iframes) {
+            driver.switchTo().frame(iframe);
+            textElements = anyElementContainsText(text);
+            if (textElements.numberOfElements().getActual()>0) {
+               return textElements;
+            }
+            driver.switchTo().parentFrame();
+        }
+
+        List<WebElement> frames = driver.findElements(By.tagName("frame"));
+        for (WebElement frame : frames) {
+            driver.switchTo().frame(frame);
+            textElements = anyElementContainsText(text);
+            if (textElements.numberOfElements().getActual()>0) {
+                return textElements;
+            }
+            driver.switchTo().parentFrame();
+        }
+
+        return textElements;
+    }
 }

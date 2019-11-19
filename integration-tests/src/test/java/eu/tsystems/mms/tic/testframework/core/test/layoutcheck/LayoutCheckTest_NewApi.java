@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -35,15 +36,15 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     }
 
     @BeforeMethod
-    private LayoutCheckPage preparePage() {
-        LayoutCheckPage page = pageFactory.createPage(LayoutCheckPage.class);
+    private WebTestPage preparePage() {
+        WebTestPage page = pageFactory.createPage(WebTestPage.class);
         page.getWebDriver().navigate().to(TestPage.LAYOUT.getUrl());
         return page;
     }
 
     @Test
     public void testCheckElementLayout() {
-        LayoutCheckPage page = preparePage();
+        WebTestPage page = preparePage();
         IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");
         guiElement.screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
 
@@ -53,7 +54,7 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
 
     @Test
     public void testCheckElementVisibility() {
-        LayoutCheckPage page = preparePage();
+        WebTestPage page = preparePage();
         IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");
         guiElement.visible(true).isTrue();
 
@@ -71,14 +72,14 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     @Test()
     @Fails(description = "This test should fail")
     public void testCheckElementLayoutDistance() {
-        LayoutCheckPage page = preparePage();
+        WebTestPage page = preparePage();
         IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");
         Control.withElementTimeout(0, () -> guiElement.screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
     }
 
     @Test
     public void testCheckPageLayout() {
-        LayoutCheckPage page = preparePage();
+        WebTestPage page = preparePage();
         page.screenshot()
             .toReport()
             .pixelDistance("LayoutTestPage").isLowerThan(1);
@@ -86,7 +87,7 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
 
     @Test(expectedExceptions = AssertionError.class)
     public void testCheckPageLayout_failed() {
-        LayoutCheckPage page = preparePage();
+        WebTestPage page = preparePage();
         Control.withElementTimeout(0, () -> page.screenshot().pixelDistance("LayoutTestPage").isGreaterThan(100));
     }
 }

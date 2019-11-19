@@ -56,7 +56,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
     ) {
         CheckRule checkRule = check.checkRule();
         if (checkRule == CheckRule.DEFAULT) {
-            checkRule = pageOverrides.getGuiElementCheckRule(CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString()));
+            checkRule = pageOverrides.getGuiElementCheckRule();
         }
 
         String errorMessageNotNot = "You are trying to FIND_NOT a not present element.";

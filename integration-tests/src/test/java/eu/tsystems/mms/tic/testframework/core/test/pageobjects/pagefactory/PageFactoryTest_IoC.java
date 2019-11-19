@@ -19,8 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.ResponsiveWebTestPage;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
@@ -28,8 +26,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
  * Tests the responsive page factory for correct instantiated classes.
  */
 public class PageFactoryTest_IoC extends AbstractPageFactoryTest {
-
-    private static final IPageFactory pageFactory = Testerra.injector.getInstance(IPageFactory.class);
 
     public ResponsiveWebTestPage getPage() {
         return pageFactory.createPage(ResponsiveWebTestPage.class, WebDriverManager.getWebDriver());

@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
@@ -75,7 +76,7 @@ public final class PageFactory {
     }
 
     /**
-     * @deprecated False-Check overrides are deprecated
+     * @deprecated Use {@link IPageFactory#createPageWithCheckRule(Class, CheckRule)} instead
      */
     @Deprecated
     public static <T extends Page> T checkNot(Class<T> pageClass, WebDriver driver) {
@@ -83,7 +84,7 @@ public final class PageFactory {
     }
 
     /**
-     * @deprecated False-Check overrides are deprecated
+     * @deprecated Use {@link IPageFactory#createPageWithCheckRule(Class, CheckRule)} instead
      */
     @Deprecated
     public static <T extends Page, U extends PageVariables> T checkNot(Class<T> pageClass, WebDriver driver, U pageVariables) {

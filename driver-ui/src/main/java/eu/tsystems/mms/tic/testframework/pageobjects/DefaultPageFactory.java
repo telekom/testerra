@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.ClassFinder;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -57,19 +58,6 @@ public class DefaultPageFactory implements IPageFactory {
     }
 
     @Override
-    public <T extends IPage> T createPage(Class<T> pageClass, WebDriver webDriver) {
-        pageClass = findBestMatchingClass(pageClass, webDriver);
-        try {
-            Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
-            T page = constructor.newInstance(webDriver);
-            page.checkGuiElements();
-            return page;
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", pageClass, webDriver), e);
-        }
-    }
-
-    @Override
     public <T extends IPage> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
         String pagesPrefix = GLOBAL_PAGES_PREFIX;
         if (!StringUtils.isStringEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
@@ -96,6 +84,24 @@ public class DefaultPageFactory implements IPageFactory {
             return component;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", componentClass, rootElement), e);
+        }
+    }
+
+    @Override
+    public <T extends IPage> T createPageWithCheckRule(Class<T> pageClass, CheckRule checkRule) {
+        return createPageWithCheckRule(pageClass, WebDriverManager.getWebDriver(), checkRule);
+    }
+
+    @Override
+    public <T extends IPage> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule) {
+        pageClass = findBestMatchingClass(pageClass, webDriver);
+        try {
+            Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);
+            T page = constructor.newInstance(webDriver);
+            page.checkGuiElements(checkRule);
+            return page;
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new TesterraRuntimeException(String.format("Could not create instance of %s(%s)", pageClass, webDriver), e);
         }
     }
 }

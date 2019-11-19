@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -224,6 +225,18 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     @Deprecated
     public void forceGuiElementStandardAsserts() {
         forcedGuiElementStandardAsserts = true;
+    }
+
+    @Override
+    public void checkGuiElements(CheckRule checkRule) {
+        switch (checkRule) {
+            case IS_NOT_PRESENT:
+            case IS_NOT_DISPLAYED:
+                pCheckPage(true, false, true);
+                break;
+            default:
+                pCheckPage(false, false, true);
+        }
     }
 
     /**

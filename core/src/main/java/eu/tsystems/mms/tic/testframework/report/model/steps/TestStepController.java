@@ -73,8 +73,13 @@ public class TestStepController implements Serializable {
             }
         }
 
-        TestStepAction testStepAction = getCurrentTestStep().getTestStepAction(actionContext);
-        // ok, now add log messages
+        TestStep currentTestStep = getCurrentTestStep();
+        TestStepAction testStepAction;
+        if (actionContext==null) {
+            testStepAction = currentTestStep.getCurrentTestStepAction();
+        } else {
+            testStepAction = currentTestStep.getTestStepAction(actionContext);
+        }
         testStepAction.addLogMessage(logMessage);
     }
 

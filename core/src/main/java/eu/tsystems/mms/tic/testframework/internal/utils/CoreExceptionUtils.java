@@ -21,6 +21,8 @@ package eu.tsystems.mms.tic.testframework.internal.utils;
 
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
 
+import java.lang.reflect.Modifier;
+
 /**
  * Created by piet on 11.03.16.
  */
@@ -47,14 +49,13 @@ public class CoreExceptionUtils extends ThrowableUtils {
             if (!foundClass) {
                 try {
                     Class<?> classToTest = Class.forName(className);
-
-                    // We only want subtypes of this class
-                    if (
-                        classToTest.equals(baseClass) == false
+                    int modifiers = classToTest.getModifiers();
+                    // We only want non abstract public implementations
+                    foundClass = (
+                        !Modifier.isAbstract(modifiers)
                         && baseClass.isAssignableFrom(classToTest)
-                    ) {
-                        foundClass = true;
-                    }
+                        && Modifier.isPublic(modifiers)
+                    );
                 } catch (ClassNotFoundException e) {
                     // ignore
                 }

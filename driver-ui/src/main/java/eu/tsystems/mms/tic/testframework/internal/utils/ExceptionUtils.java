@@ -20,7 +20,6 @@
 package eu.tsystems.mms.tic.testframework.internal.utils;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
@@ -29,8 +28,6 @@ public class ExceptionUtils extends CoreExceptionUtils {
     private static final String INIT_STRING = "<init>";
 
     public static String getPageContextFromThrowable(final Throwable throwable) {
-//        return "PageClass -> myMethod";
-
         if (throwable == null) {
             return null;
         }
@@ -86,7 +83,7 @@ public class ExceptionUtils extends CoreExceptionUtils {
             StringUtils.isStringEmpty(actionName)
             || actionName.equals(INIT_STRING)
         ) {
-            return String.format("%s()", simpleClassName);
+            return String.format("Construct %s", simpleClassName);
         } else {
             return String.format("%s.%s", simpleClassName, actionName);
         }

@@ -34,20 +34,25 @@ public class CoreExceptionUtils extends ThrowableUtils {
         return split[split.length - 1];
     }
 
-    public static int findSubclassCallBackwards(StackTraceElement[] stackTrace, int from, Class clazz, final String methodNameToLookFor) {
+    public static int findSubclassCallBackwards(StackTraceElement[] stackTrace, int from, Class baseClass, final String methodNameToLookFor) {
         for (int i = from; i >= 0; i--) {
             StackTraceElement stackTraceElement = stackTrace[i];
             String className = stackTraceElement.getClassName();
             String methodName = stackTraceElement.getMethodName();
 
-            boolean foundClass = clazz == null;
+            boolean foundClass = baseClass == null;
             boolean foundMethod = methodNameToLookFor == null;
 
             // search class
             if (!foundClass) {
                 try {
-                    Class<?> aClass = Class.forName(className);
-                    if (clazz.isAssignableFrom(aClass)) {
+                    Class<?> classToTest = Class.forName(className);
+
+                    // We only want subtypes of this class
+                    if (
+                        classToTest.equals(baseClass) == false
+                        && baseClass.isAssignableFrom(classToTest)
+                    ) {
                         foundClass = true;
                     }
                 } catch (ClassNotFoundException e) {

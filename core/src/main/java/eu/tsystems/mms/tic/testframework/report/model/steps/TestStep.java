@@ -56,15 +56,15 @@ public class TestStep implements Serializable {
         return testStepActions;
     }
 
-    public TestStepAction getTestStepAction(String context) {
-
-        if (context==null || context.isEmpty()) {
-            context = TestStep.INTERNAL;
-        }
-
+    /**
+     * Creates a new test step action based.
+     * If the name is null or matches the last action, it will return the last action.
+     * Otherwise it will create a new action for this name.
+     */
+    public TestStepAction getTestStepAction(String name) {
         // if there are no test steps actions yet, create an initial one
         if (testStepActions.size() == 0) {
-            TestStepAction testStepAction = new TestStepAction(context);
+            TestStepAction testStepAction = new TestStepAction(name);
             testStepActions.add(testStepAction);
             return testStepAction;
         }
@@ -72,8 +72,11 @@ public class TestStep implements Serializable {
         TestStepAction testStepAction = getLastAction();
 
         // if the last TestStepAction name is NOT the same as the current contextual one, then we have to create a new one
-        if (!StringUtils.equals(testStepAction.getName(), context)) {
-            testStepAction = new TestStepAction(context);
+        if (
+            name!=null
+            && !StringUtils.equals(testStepAction.getName(), name)
+        ) {
+            testStepAction = new TestStepAction(name);
             testStepActions.add(testStepAction);
         }
 

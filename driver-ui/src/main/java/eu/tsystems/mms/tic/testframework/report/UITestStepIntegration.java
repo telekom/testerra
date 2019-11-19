@@ -19,22 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.internal.Constants;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.ExceptionUtils;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepEventListener;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import org.openqa.selenium.WebDriver;
 
-import java.io.File;
-import java.util.UUID;
-
-@Deprecated
 public class UITestStepIntegration implements TestStepEventListener {
 
     private static boolean init = false;
@@ -51,22 +40,5 @@ public class UITestStepIntegration implements TestStepEventListener {
     @Override
     public String getTestStepActionContext(LogMessage logMessage) {
         return ExceptionUtils.getPageContextFromThrowable(new Throwable());
-    }
-
-    public static String takeLoggingScreenshot(final TestStepController.OnExec onExec, final WebDriver driver) {
-        if (!Flags.WEB_TAKE_ACTION_SCREENSHOTS) {
-            return null;
-        }
-
-        final MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        if (methodContext != null && onExec != null) {
-            final String imageName = UUID.randomUUID() + "_" + onExec.name() + ".png";
-            final File screenShotTargetFile = new File(Report.SCREENSHOTS_DIRECTORY, imageName);
-            final String reportScreenshotPath = "../../" + Constants.SCREENSHOTS_PATH + imageName;
-
-            UITestUtils.takeWebDriverScreenshotToFile(driver, screenShotTargetFile);
-            return reportScreenshotPath;
-        }
-        return null;
     }
 }

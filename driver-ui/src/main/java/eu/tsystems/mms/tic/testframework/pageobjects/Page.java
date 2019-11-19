@@ -65,13 +65,9 @@ import java.util.Random;
  *
  * @author pele
  */
-public abstract class Page extends AbstractPage implements InvocationHandler {
-
-    public static final String CHECKPAGE_METHOD_NAME = "checkPage";
+public abstract class Page extends AbstractPage {
     private final GuiElementGroups guiElementGroups;
-
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
-
     public static void registerPageLoadHandler(PageLoadHandler h) {
         pageLoadHandlers.add(h);
     }
@@ -402,37 +398,5 @@ public abstract class Page extends AbstractPage implements InvocationHandler {
 
     public GuiElementGroups getGuiElementGroups() {
         return guiElementGroups;
-    }
-
-    /**
-     * This method returns the steps string.
-     * @param simpleClassName .
-     * @param actionName .
-     * @return .
-     */
-    public static String getPageContext(final String simpleClassName, String actionName) {
-        if (StringUtils.isStringEmpty(actionName)) {
-            return simpleClassName;
-        }
-        else if ("<init>".equals(actionName)) {
-//            actionName = "Initialization";
-            return simpleClassName;
-        }
-        else if (actionName.equals(Page.CHECKPAGE_METHOD_NAME)) {
-            return simpleClassName;
-        }
-
-        return simpleClassName + " -> " + actionName;
-    }
-
-    @Override
-    public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
-        try {
-            return method.invoke(o, objects);
-        } catch (IllegalAccessException | IllegalArgumentException e) {
-            throw e;
-        } catch (InvocationTargetException e) {
-            throw e.getTargetException();
-        }
     }
 }

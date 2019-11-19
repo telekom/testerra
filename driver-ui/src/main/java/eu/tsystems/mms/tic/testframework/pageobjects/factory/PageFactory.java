@@ -194,11 +194,7 @@ public final class PageFactory {
             }
         }
 
-        return (T) Proxy.newProxyInstance(
-            pageClass.getClassLoader(),
-            ObjectUtils.getAllInterfacesOf(t),
-            t
-        );
+        return t;
     }
 
     public static void clearCache() {

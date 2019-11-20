@@ -70,6 +70,16 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
         }
     }
 
+    @Test
+    public void test_Page_title_matches() {
+        page.title().matches("input\\s+.es.").isTrue();
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void test_Page_title_matches_fails() {
+        page.title().matches("input\\s+.es.").isFalse();
+    }
+
     @Test(expectedExceptions = AssertionError.class)
     public void test_Page_title_length_fails() {
         page.title().length().isGreaterThan(10);
@@ -120,6 +130,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
         page.notVisibleElement().value("style").contains("hidden");
         page.notVisibleElement().visible(true).isFalse();
         page.notVisibleElement().visible(false).isFalse();
+        page.notDisplayedElement().css("display").is("hidden");
     }
 
     @Test(expectedExceptions = AssertionError.class)

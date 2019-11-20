@@ -3,10 +3,10 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import org.openqa.selenium.WebDriver;
 
-public interface IPageFactory {
-    IPageFactory setGlobalPagePrefix(String pagePrefix);
-    IPageFactory setThreadLocalPagePrefix(String pagePrefix);
-    IPageFactory removeThreadLocalPagePrefix();
+public interface PageObjectFactory {
+    PageObjectFactory setGlobalPagePrefix(String pagePrefix);
+    PageObjectFactory setThreadLocalPagePrefix(String pagePrefix);
+    PageObjectFactory removeThreadLocalPagePrefix();
 
     /**
      * @todo Make default when WebDriverManager has an interface

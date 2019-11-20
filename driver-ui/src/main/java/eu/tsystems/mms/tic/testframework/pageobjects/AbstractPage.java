@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.AbstractTestFeatures;
@@ -57,9 +56,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
 {
     private static final PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
     private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
-    private static final IPageFactory pageFactory = Testerra.injector.getInstance(IPageFactory.class);
-
-    protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
+    private static final PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
 
     protected interface Finder {
         IGuiElement find(Locate locator);

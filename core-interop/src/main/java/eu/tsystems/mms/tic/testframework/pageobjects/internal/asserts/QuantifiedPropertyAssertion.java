@@ -8,41 +8,42 @@ import java.math.BigDecimal;
  */
 public interface QuantifiedPropertyAssertion<T> extends BinaryPropertyAssertion<T> {
     T getActual();
-    QuantifiedPropertyAssertion<T> is(Object expected);
-    default QuantifiedPropertyAssertion<T> isGreaterThan(long expected) {
+    boolean is(Object expected);
+    default boolean isGreaterThan(long expected) {
         return isGreaterThan(new BigDecimal(expected));
     }
-    default QuantifiedPropertyAssertion<T> isGreaterThan(double expected) {
+    default boolean isGreaterThan(double expected) {
         return isGreaterThan(new BigDecimal(expected));
     }
-    QuantifiedPropertyAssertion<T> isGreaterThan(BigDecimal expected);
-    default QuantifiedPropertyAssertion<T> isLowerThan(long expected) {
+    boolean isGreaterThan(BigDecimal expected);
+    default boolean isLowerThan(long expected) {
         return isLowerThan(new BigDecimal(expected));
     }
-    default QuantifiedPropertyAssertion<T> isLowerThan(double expected) {
+    default boolean isLowerThan(double expected) {
         return isLowerThan(new BigDecimal(expected));
     }
-    QuantifiedPropertyAssertion<T> isLowerThan(BigDecimal expected);
-    default QuantifiedPropertyAssertion<T> isGreaterEqualThan(long expected) {
+    boolean isLowerThan(BigDecimal expected);
+    default boolean isGreaterEqualThan(long expected) {
         return isGreaterEqualThan(new BigDecimal(expected));
     }
-    default QuantifiedPropertyAssertion<T> isGreaterEqualThan(double expected) {
+    default boolean isGreaterEqualThan(double expected) {
         return isGreaterEqualThan(new BigDecimal(expected));
     }
-    QuantifiedPropertyAssertion<T> isGreaterEqualThan(BigDecimal expected);
-    default QuantifiedPropertyAssertion<T> isLowerEqualThan(long expected) {
+    boolean isGreaterEqualThan(BigDecimal expected);
+    default boolean isLowerEqualThan(long expected) {
         return isLowerEqualThan(new BigDecimal(expected));
     }
-    default QuantifiedPropertyAssertion<T> isLowerEqualThan(double expected) {
+    default boolean isLowerEqualThan(double expected) {
         return isLowerEqualThan(new BigDecimal(expected));
     }
-    QuantifiedPropertyAssertion<T> isLowerEqualThan(BigDecimal expected);
-    default QuantifiedPropertyAssertion<T> isBetween(long lower, long higher) {
+    boolean isLowerEqualThan(BigDecimal expected);
+    default boolean isBetween(long lower, long higher) {
         return isBetween(new BigDecimal(lower), new BigDecimal(higher));
     }
-    default QuantifiedPropertyAssertion<T> isBetween(double lower, double higher) {
+    default boolean isBetween(double lower, double higher) {
         return isBetween(new BigDecimal(lower), new BigDecimal(higher));
     }
-    QuantifiedPropertyAssertion<T> isBetween(BigDecimal lower, BigDecimal higher);
+    boolean isBetween(BigDecimal lower, BigDecimal higher);
     QuantifiedPropertyAssertion<BigDecimal> absolute();
+    QuantifiedPropertyAssertion<T> perhaps();
 }

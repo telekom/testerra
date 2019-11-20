@@ -29,6 +29,8 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantifiedPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -46,18 +48,26 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
     @Test
     public void test_Page_title() {
-        page.title()
-            .is("Input test")
-            .contains("Input")
-            .containsNot("SuperTestPage");
+        StringPropertyAssertion<String> title = page.title();
 
-        page.title().length()
-            .is(10)
-            .isLowerThan(100)
-            .isGreaterThan(5)
-            .isBetween(1,11)
-            .isGreaterEqualThan(-10)
-            .isLowerEqualThan(10);
+        title.is("Input test");
+        title.contains("Input");
+        title.containsNot("SuperTestPage");
+
+        QuantifiedPropertyAssertion<Integer> length = page.title().length();
+        length.is(10);
+        length.isLowerThan(100);
+        length.isGreaterThan(5);
+        length.isBetween(1,11);
+        length.isGreaterEqualThan(-10);
+        length.isLowerEqualThan(10);
+    }
+
+    @Test
+    public void test_Page_title_perhaps_contains() {
+        if (page.title().perhaps().contains("Katzentitel")) {
+            Assert.assertFalse(true);
+        }
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -78,9 +88,8 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
     @Test
     public void test_Page_url() {
-        page.url()
-            .beginsWith("http")
-            .endsWith("input.html");
+        page.url().beginsWith("http");
+        page.url().endsWith("input.html");
     }
 
     @Test()

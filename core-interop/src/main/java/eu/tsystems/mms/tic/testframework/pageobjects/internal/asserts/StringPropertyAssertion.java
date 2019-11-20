@@ -7,10 +7,11 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 public interface StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T>
 {
     T getActual();
-    StringPropertyAssertion<T> is(String expected);
-    StringPropertyAssertion<T> contains(String expected);
-    StringPropertyAssertion<T> containsNot(String expected);
-    StringPropertyAssertion<T> beginsWith(String expected);
-    StringPropertyAssertion<T> endsWith(String expected);
+    boolean is(String expected);
+    boolean contains(String expected);
+    boolean containsNot(String expected);
+    boolean beginsWith(String expected);
+    boolean endsWith(String expected);
     QuantifiedPropertyAssertion<Integer> length();
+    StringPropertyAssertion<T> perhaps();
 }

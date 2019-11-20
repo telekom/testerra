@@ -24,7 +24,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingStaticElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNonCheckableCheck;
@@ -42,7 +42,7 @@ import java.lang.reflect.Method;
  */
 public class CheckPageTest_IoC extends AbstractTestSitesTest {
 
-    private static final IPageFactory pageFactory = Testerra.injector.getInstance(IPageFactory.class);
+    private static final PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
 
     @BeforeMethod
     public void before(Method method) {

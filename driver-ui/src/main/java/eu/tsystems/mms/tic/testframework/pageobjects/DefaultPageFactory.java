@@ -29,25 +29,25 @@ import org.openqa.selenium.WebDriver;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public class DefaultPageFactory implements IPageFactory {
+public class DefaultPageFactory implements PageObjectFactory {
 
     private String GLOBAL_PAGES_PREFIX = null;
     private final ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
 
     @Override
-    public IPageFactory setGlobalPagePrefix(String pagePrefix) {
+    public PageObjectFactory setGlobalPagePrefix(String pagePrefix) {
         GLOBAL_PAGES_PREFIX = pagePrefix;
         return this;
     }
 
     @Override
-    public IPageFactory setThreadLocalPagePrefix(String pagePrefix) {
+    public PageObjectFactory setThreadLocalPagePrefix(String pagePrefix) {
         THREAD_LOCAL_PAGES_PREFIX.set(pagePrefix);
         return this;
     }
 
     @Override
-    public IPageFactory removeThreadLocalPagePrefix() {
+    public PageObjectFactory removeThreadLocalPagePrefix() {
         THREAD_LOCAL_PAGES_PREFIX.remove();
         return this;
     }

@@ -7,8 +7,8 @@ public class DefaultBinaryPropertyAssertion<T> extends AbstractTestedPropertyAss
     }
 
     @Override
-    public BinaryPropertyAssertion<T> isTrue() {
-        testTimer(t -> {
+    public boolean isTrue() {
+        return testTimer(t -> {
             final String actualString = getActual().toString();
             if (!(
                     actualString.equalsIgnoreCase("true")
@@ -17,17 +17,16 @@ public class DefaultBinaryPropertyAssertion<T> extends AbstractTestedPropertyAss
                     || actualString.equalsIgnoreCase("yes")
                 )
             ) {
-                assertion.fail(assertion.format(actualString, "is one of [true, 'on', '1', 'yes']", traceSubjectString()));
+                instantAssertion.fail(instantAssertion.format(actualString, "is one of [true, 'on', '1', 'yes']", traceSubjectString()));
                 return false;
             }
             return true;
         });
-        return this;
     }
 
     @Override
-    public BinaryPropertyAssertion<T> isFalse() {
-        testTimer(t -> {
+    public boolean isFalse() {
+        return testTimer(t -> {
             final String actualString = getActual().toString();
             if (!(
                     actualString.equalsIgnoreCase("false")
@@ -36,11 +35,16 @@ public class DefaultBinaryPropertyAssertion<T> extends AbstractTestedPropertyAss
                     || actualString.equalsIgnoreCase("no")
                 )
             ) {
-                assertion.fail(assertion.format(actualString, "is one of [false, 'off', '0', 'no']", traceSubjectString()));
+                instantAssertion.fail(instantAssertion.format(actualString, "is one of [false, 'off', '0', 'no']", traceSubjectString()));
                 return false;
             }
             return true;
         });
+    }
+
+    @Override
+    public DefaultBinaryPropertyAssertion<T> perhaps() {
+        super.perhaps();
         return this;
     }
 }

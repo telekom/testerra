@@ -9,38 +9,33 @@ public class DefaultStringPropertyAssertion<T> extends DefaultQuantifiedProperty
     }
 
     @Override
-    public StringPropertyAssertion<T> is(String expected) {
-        super.is(expected);
-        return this;
+    public boolean is(String expected) {
+        return super.is(expected);
     }
 
     @Override
-    public DefaultStringPropertyAssertion<T> contains(final String expected) {
-        testTimer(t -> assertion.assertContains((String)provider.getActual(), expected, traceSubjectString()));
-        return this;
+    public boolean contains(String expected) {
+        return testTimer(t -> instantAssertion.assertContains((String)provider.getActual(), expected, traceSubjectString()));
     }
 
     @Override
-    public DefaultStringPropertyAssertion<T> containsNot(final String expected) {
-        testTimer(t -> assertion.assertContainsNot((String)provider.getActual(), expected, traceSubjectString()));
-        return this;
+    public boolean containsNot(String expected) {
+        return testTimer(t -> instantAssertion.assertContainsNot((String)provider.getActual(), expected, traceSubjectString()));
     }
 
     @Override
-    public DefaultStringPropertyAssertion<T> beginsWith(String expected) {
-        testTimer(t -> assertion.assertBeginsWith(provider.getActual(), expected, traceSubjectString()));
-        return this;
+    public boolean beginsWith(String expected) {
+        return testTimer(t -> instantAssertion.assertBeginsWith(provider.getActual(), expected, traceSubjectString()));
     }
 
     @Override
-    public DefaultStringPropertyAssertion<T> endsWith(String expected) {
-        testTimer(t -> assertion.assertEndsWith(provider.getActual(), expected, traceSubjectString()));
-        return this;
+    public boolean endsWith(String expected) {
+        return testTimer(t -> instantAssertion.assertEndsWith(provider.getActual(), expected, traceSubjectString()));
     }
 
     @Override
     public QuantifiedPropertyAssertion<Integer> length() {
-        return propertyAssertionFactory.quantified(this, new AssertionProvider<Integer>() {
+        return new DefaultQuantifiedPropertyAssertion<>(this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 return provider.getActual().toString().length();
@@ -51,5 +46,11 @@ public class DefaultStringPropertyAssertion<T> extends DefaultQuantifiedProperty
                 return String.format("\"%s\".length",provider.getActual().toString());
             }
         });
+    }
+
+    @Override
+    public DefaultStringPropertyAssertion<T> perhaps() {
+        super.perhaps();
+        return this;
     }
 }

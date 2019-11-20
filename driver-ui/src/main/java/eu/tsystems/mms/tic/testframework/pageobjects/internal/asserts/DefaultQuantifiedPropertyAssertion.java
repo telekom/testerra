@@ -9,44 +9,38 @@ public class DefaultQuantifiedPropertyAssertion<T> extends DefaultBinaryProperty
     }
 
     @Override
-    public QuantifiedPropertyAssertion<T> is(final Object expected) {
-        testTimer(t -> assertion.assertEquals(provider.getActual(), expected, traceSubjectString()));
-        return this;
+    public boolean is(final Object expected) {
+        return testTimer(t -> instantAssertion.assertEquals(provider.getActual(), expected, traceSubjectString()));
     }
 
     @Override
-    public QuantifiedPropertyAssertion<T> isGreaterThan(final BigDecimal expected) {
-        testTimer(t -> assertion.assertGreaterThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
-        return this;
+    public boolean isGreaterThan(final BigDecimal expected) {
+        return testTimer(t -> instantAssertion.assertGreaterThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
     }
 
     @Override
-    public QuantifiedPropertyAssertion<T> isLowerThan(final BigDecimal expected) {
-        testTimer(t -> assertion.assertLowerThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
-        return this;
+    public boolean isLowerThan(final BigDecimal expected) {
+        return testTimer(t -> instantAssertion.assertLowerThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
     }
 
     @Override
-    public QuantifiedPropertyAssertion<T> isGreaterEqualThan(final BigDecimal expected) {
-        testTimer(t -> assertion.assertGreaterEqualThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
-        return this;
+    public boolean isGreaterEqualThan(final BigDecimal expected) {
+        return testTimer(t -> instantAssertion.assertGreaterEqualThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
     }
 
     @Override
-    public QuantifiedPropertyAssertion<T> isLowerEqualThan(final BigDecimal expected) {
-        testTimer(t -> assertion.assertLowerEqualThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
-        return this;
+    public boolean isLowerEqualThan(final BigDecimal expected) {
+        return testTimer(t -> instantAssertion.assertLowerEqualThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
     }
 
     @Override
-    public QuantifiedPropertyAssertion<T> isBetween(BigDecimal lower, BigDecimal higher) {
-        testTimer(t -> assertion.assertBetween(new BigDecimal(provider.getActual().toString()), lower, higher, traceSubjectString()));
-        return this;
+    public boolean isBetween(BigDecimal lower, BigDecimal higher) {
+        return testTimer(t -> instantAssertion.assertBetween(new BigDecimal(provider.getActual().toString()), lower, higher, traceSubjectString()));
     }
 
     @Override
     public QuantifiedPropertyAssertion<BigDecimal> absolute() {
-        return propertyAssertionFactory.quantified(this, new AssertionProvider<BigDecimal>() {
+        return new DefaultQuantifiedPropertyAssertion<>(this, new AssertionProvider<BigDecimal>() {
             @Override
             public BigDecimal getActual() {
                 BigDecimal number;
@@ -63,5 +57,11 @@ public class DefaultQuantifiedPropertyAssertion<T> extends DefaultBinaryProperty
                 return "absolute";
             }
         });
+    }
+
+    @Override
+    public DefaultQuantifiedPropertyAssertion<T> perhaps() {
+        super.perhaps();
+        return this;
     }
 }

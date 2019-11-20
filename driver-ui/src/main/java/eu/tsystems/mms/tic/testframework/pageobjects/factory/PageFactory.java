@@ -24,7 +24,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.pageobjects.IPageFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -38,12 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @deprecated Use {@link IPageFactory} instead
+ * @deprecated Use {@link PageObjectFactory} instead
  */
 @Deprecated
 public final class PageFactory {
 
-    private static IPageFactory pageFactory = Testerra.injector.getInstance(IPageFactory.class);
+    private static PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
 
     private static final ThreadLocal<CircularFifoBuffer> LOOP_DETECTION_LOGGER = new ThreadLocal<>();
     private static final int NR_OF_LOOPS = PropertyManager.getIntProperty(TesterraProperties.PAGE_FACTORY_LOOPS, 20);
@@ -76,7 +76,7 @@ public final class PageFactory {
     }
 
     /**
-     * @deprecated Use {@link IPageFactory#createPageWithCheckRule(Class, CheckRule)} instead
+     * @deprecated Use {@link PageObjectFactory#createPageWithCheckRule(Class, CheckRule)} instead
      */
     @Deprecated
     public static <T extends Page> T checkNot(Class<T> pageClass, WebDriver driver) {
@@ -84,7 +84,7 @@ public final class PageFactory {
     }
 
     /**
-     * @deprecated Use {@link IPageFactory#createPageWithCheckRule(Class, CheckRule)} instead
+     * @deprecated Use {@link PageObjectFactory#createPageWithCheckRule(Class, CheckRule)} instead
      */
     @Deprecated
     public static <T extends Page, U extends PageVariables> T checkNot(Class<T> pageClass, WebDriver driver, U pageVariables) {

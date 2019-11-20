@@ -44,7 +44,10 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFiel
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroupAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultScreenshotAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantifiedPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ScreenshotAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.report.IReport;
@@ -64,6 +67,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.awt.Color;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -427,12 +431,9 @@ public abstract class Page extends AbstractPage {
         return simpleClassName + " -> " + actionName;
     }
 
-    /**
-     * Fluent properties
-     */
     public StringPropertyAssertion<String> title() {
         final Page self = this;
-        return propertyAssertionFactory.string(new AssertionProvider<String>() {
+        return new DefaultStringPropertyAssertion<>(null, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return driver.getTitle();
@@ -447,7 +448,7 @@ public abstract class Page extends AbstractPage {
 
     public StringPropertyAssertion<String> url() {
         final Page self = this;
-        return propertyAssertionFactory.string(new AssertionProvider<String>() {
+        return new DefaultStringPropertyAssertion<>(null, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return driver.getCurrentUrl();
@@ -471,7 +472,7 @@ public abstract class Page extends AbstractPage {
         UITestUtils.takeScreenshot(driver, screenshot);
         atomicScreenshot.set(screenshot);
 
-        return propertyAssertionFactory.screenshot(new AssertionProvider<Screenshot>() {
+        return new DefaultScreenshotAssertion(null, new AssertionProvider<Screenshot>() {
 
             @Override
             public Screenshot getActual() {

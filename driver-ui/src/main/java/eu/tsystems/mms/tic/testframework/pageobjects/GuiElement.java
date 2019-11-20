@@ -37,7 +37,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.InteractiveGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultBinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultQuantifiedPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultRectAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultStringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertFactory;
@@ -47,7 +51,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssert
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
@@ -87,9 +90,6 @@ public class GuiElement implements
     Loggable,
     Hierarchy<IGuiElement>
 {
-
-    protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
-
     private GuiElementAssert defaultAssert;
     private GuiElementAssert instantAssert;
     private GuiElementAssert collectableAssert;
@@ -799,7 +799,7 @@ public class GuiElement implements
     @Override
     public StringPropertyAssertion<String> tagName() {
         final IGuiElement self = this;
-        return propertyAssertionFactory.string(new AssertionProvider<String>() {
+        return new DefaultStringPropertyAssertion<>(null, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return guiElementCore.findWebElement().getTagName();
@@ -815,7 +815,7 @@ public class GuiElement implements
     @Override
     public StringPropertyAssertion<String> text() {
         final IGuiElement self = this;
-        return propertyAssertionFactory.string(new AssertionProvider<String>() {
+        return new DefaultStringPropertyAssertion<>(null, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return guiElementCore.findWebElement().getText();
@@ -841,7 +841,7 @@ public class GuiElement implements
     @Override
     public StringPropertyAssertion<String> value(String attribute) {
         final IGuiElement self = this;
-        return propertyAssertionFactory.string(new AssertionProvider<String>() {
+        return new DefaultStringPropertyAssertion<>(null, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return guiElementCore.findWebElement().getAttribute(attribute);
@@ -857,7 +857,7 @@ public class GuiElement implements
     @Override
     public StringPropertyAssertion<String> css(String property) {
         final IGuiElement self = this;
-        return propertyAssertionFactory.string(new AssertionProvider<String>() {
+        return new DefaultStringPropertyAssertion<>(null, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return getCssValue(property);
@@ -873,7 +873,7 @@ public class GuiElement implements
     @Override
     public BinaryPropertyAssertion<Boolean> present() {
         final IGuiElement self = this;
-        return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
+        return new DefaultBinaryPropertyAssertion<>(null, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 try {
@@ -893,7 +893,7 @@ public class GuiElement implements
     @Override
     public BinaryPropertyAssertion<Boolean> visible(boolean complete) {
         final IGuiElement self = this;
-        return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
+        return new DefaultBinaryPropertyAssertion<>(null, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return guiElementCore.isVisible(complete);
@@ -909,7 +909,7 @@ public class GuiElement implements
     @Override
     public BinaryPropertyAssertion<Boolean> displayed() {
         final IGuiElement self = this;
-        return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
+        return new DefaultBinaryPropertyAssertion<>(null, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 try {
@@ -929,7 +929,7 @@ public class GuiElement implements
     @Override
     public BinaryPropertyAssertion<Boolean> enabled() {
         final IGuiElement self = this;
-        return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
+        return new DefaultBinaryPropertyAssertion<>(null, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return guiElementCore.findWebElement().isEnabled();
@@ -945,7 +945,7 @@ public class GuiElement implements
     @Override
     public BinaryPropertyAssertion<Boolean> selected() {
         final IGuiElement self = this;
-        return propertyAssertionFactory.binary(new AssertionProvider<Boolean>() {
+        return new DefaultBinaryPropertyAssertion<>(null, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return guiElementCore.findWebElement().isSelected();
@@ -977,7 +977,7 @@ public class GuiElement implements
     @Override
     public QuantifiedPropertyAssertion<Integer> numberOfElements() {
         final IGuiElement self = this;
-        return propertyAssertionFactory.quantified(new AssertionProvider<Integer>() {
+        return new DefaultQuantifiedPropertyAssertion<>(null, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 try {
@@ -999,7 +999,7 @@ public class GuiElement implements
         final IGuiElement self = this;
         final AtomicReference<File> screenshot = new AtomicReference<>();
         screenshot.set(guiElementCore.takeScreenshot());
-        return propertyAssertionFactory.image(new AssertionProvider<File>() {
+        return new DefaultImageAssertion(null, new AssertionProvider<File>() {
             @Override
             public File getActual() {
                 return screenshot.get();

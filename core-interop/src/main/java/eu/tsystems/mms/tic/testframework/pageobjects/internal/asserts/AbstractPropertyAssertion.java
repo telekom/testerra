@@ -13,8 +13,6 @@ import java.util.List;
  */
 public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<T> {
 
-    protected static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
-
     protected final AssertionProvider<T> provider;
     protected final AbstractPropertyAssertion parent;
 

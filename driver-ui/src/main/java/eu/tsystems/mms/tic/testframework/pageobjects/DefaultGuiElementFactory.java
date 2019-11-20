@@ -48,7 +48,7 @@ public class DefaultGuiElementFactory implements
     @Override
     public IGuiElement create(
         Locate locator,
-        IPage page
+        PageObject page
     ) {
         return new GuiElement(page, locator);
     }

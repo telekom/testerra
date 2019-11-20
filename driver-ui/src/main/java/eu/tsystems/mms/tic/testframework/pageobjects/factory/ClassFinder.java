@@ -26,7 +26,7 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
-import eu.tsystems.mms.tic.testframework.pageobjects.IPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -65,9 +65,9 @@ final public class ClassFinder {
 
         private static final String NULL_PAGE_PREFIX = " _ ";
 
-        private static final Map<Class<? extends IPage>, Map<String, PrioritizedClassInfos<? extends IPage>>> IMPLEMENTATIONS_CACHE = new ConcurrentHashMap<>();
+        private static final Map<Class<? extends PageObject>, Map<String, PrioritizedClassInfos<? extends PageObject>>> IMPLEMENTATIONS_CACHE = new ConcurrentHashMap<>();
 
-        private static PrioritizedClassInfos getCache(Class<? extends IPage> pageClass, String prefixOrNull) {
+        private static PrioritizedClassInfos getCache(Class<? extends PageObject> pageClass, String prefixOrNull) {
             if (StringUtils.isStringEmpty(prefixOrNull)) {
                 prefixOrNull = NULL_PAGE_PREFIX;
             }
@@ -77,7 +77,7 @@ final public class ClassFinder {
                     return null;
                 }
 
-                Map<String, PrioritizedClassInfos<? extends IPage>> map = IMPLEMENTATIONS_CACHE.get(pageClass);
+                Map<String, PrioritizedClassInfos<? extends PageObject>> map = IMPLEMENTATIONS_CACHE.get(pageClass);
                 if (!map.containsKey(prefixOrNull)) {
                     return null;
                 }
@@ -86,7 +86,7 @@ final public class ClassFinder {
             }
         }
 
-        private static void setCache(Class<? extends IPage> pageClass, String prefixOrNull, PrioritizedClassInfos<? extends IPage> prioritizedClassInfos) {
+        private static void setCache(Class<? extends PageObject> pageClass, String prefixOrNull, PrioritizedClassInfos<? extends PageObject> prioritizedClassInfos) {
             if (StringUtils.isStringEmpty(prefixOrNull)) {
                 prefixOrNull = NULL_PAGE_PREFIX;
             }
@@ -95,7 +95,7 @@ final public class ClassFinder {
                 if (!IMPLEMENTATIONS_CACHE.containsKey(pageClass)) {
                     IMPLEMENTATIONS_CACHE.put(pageClass, new HashMap<>());
                 }
-                Map<String, PrioritizedClassInfos<? extends IPage>> map = IMPLEMENTATIONS_CACHE.get(pageClass);
+                Map<String, PrioritizedClassInfos<? extends PageObject>> map = IMPLEMENTATIONS_CACHE.get(pageClass);
 
                 map.put(prefixOrNull, prioritizedClassInfos);
             }
@@ -109,7 +109,7 @@ final public class ClassFinder {
      * @param baseClass The base page class
      */
     @SuppressWarnings("unchecked")
-    private static <T extends IPage> void findSubPagesOf(final Class<T> baseClass, String prefix) {
+    private static <T extends PageObject> void findSubPagesOf(final Class<T> baseClass, String prefix) {
         LOGGER.debug(String.format("Searching for subtypes of class <%s>", baseClass));
 
         if (prefix == null) {
@@ -143,9 +143,9 @@ final public class ClassFinder {
         }
     }
 
-    private static <T extends IPage> void tryToFindImplementationOf(Class<T> subClass, String classname,
-                                                                   String baseClassName, String prefix,
-                                                                   PrioritizedClassInfos<T> prioritizedClassInfos) {
+    private static <T extends PageObject> void tryToFindImplementationOf(Class<T> subClass, String classname,
+                                                                         String baseClassName, String prefix,
+                                                                         PrioritizedClassInfos<T> prioritizedClassInfos) {
         if (classname.startsWith(prefix + baseClassName)) {
             String resPart = classname.replace(prefix + baseClassName, "");
             if (matchesOurAnyOfPatterns(resPart)) {
@@ -201,7 +201,7 @@ final public class ClassFinder {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends IPage> Class<T> getBestMatchingClass(Class<T> baseClass, WebDriver driver, String prefix) {
+    public static <T extends PageObject> Class<T> getBestMatchingClass(Class<T> baseClass, WebDriver driver, String prefix) {
         PrioritizedClassInfos<? extends Page> prioritizedClassInfos = Caches.getCache(baseClass, prefix);
 
         if (prioritizedClassInfos == null) {
@@ -283,7 +283,7 @@ final public class ClassFinder {
         Caches.IMPLEMENTATIONS_CACHE.clear();
     }
 
-    private static class PrioritizedClassInfos<T extends IPage> {
+    private static class PrioritizedClassInfos<T extends PageObject> {
         List<ResolutionClassInfo<T>> prefixedClasses = new LinkedList<>();
         Class<T> prefixedBaseClass;
         List<ResolutionClassInfo<T>> nonPrefixedClasses = new LinkedList<>();
@@ -339,7 +339,7 @@ final public class ClassFinder {
         }
     }
 
-    private static class ResolutionClassInfo<T extends IPage> {
+    private static class ResolutionClassInfo<T extends PageObject> {
         int resLowerLimit = -1;
         int resUpperLimit = -1;
 

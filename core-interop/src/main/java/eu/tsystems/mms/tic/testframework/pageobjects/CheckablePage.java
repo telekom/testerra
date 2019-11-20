@@ -11,8 +11,8 @@ public interface CheckablePage extends WebDriverRetainer {
         checkGuiElements();
     }
 
-    default IPage checkGuiElements() {
+    default PageObject checkGuiElements() {
         return checkGuiElements(CheckRule.IS_DISPLAYED);
     }
-    IPage checkGuiElements(CheckRule checkRule);
+    PageObject checkGuiElements(CheckRule checkRule);
 }

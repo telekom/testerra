@@ -11,16 +11,16 @@ public interface IPageFactory {
     /**
      * @todo Make default when WebDriverManager has an interface
      */
-    <T extends IPage> T createPage(Class<T> pageClass);
-    default <T extends IPage> T createPage(Class<T> pageClass, WebDriver webDriver) {
+    <T extends PageObject> T createPage(Class<T> pageClass);
+    default <T extends PageObject> T createPage(Class<T> pageClass, WebDriver webDriver) {
         return createPageWithCheckRule(pageClass, webDriver, CheckRule.IS_DISPLAYED);
     }
-    <T extends IPage> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver);
-    <T extends IComponent> T createComponent(Class<T> componentClass, IPage page, IGuiElement rootElement);
+    <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver);
+    <T extends IComponent> T createComponent(Class<T> componentClass, PageObject page, IGuiElement rootElement);
     /**
      * @todo Make default when WebDriverManager has an interface
      */
-    <T extends IPage> T createPageWithCheckRule(Class<T> pageClass, CheckRule checkRule);
-    <T extends IPage> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule);
+    <T extends PageObject> T createPageWithCheckRule(Class<T> pageClass, CheckRule checkRule);
+    <T extends PageObject> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule);
 
 }

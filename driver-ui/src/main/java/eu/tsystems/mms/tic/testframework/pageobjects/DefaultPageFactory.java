@@ -53,12 +53,12 @@ public class DefaultPageFactory implements IPageFactory {
     }
 
     @Override
-    public <T extends IPage> T createPage(Class<T> pageClass) {
+    public <T extends PageObject> T createPage(Class<T> pageClass) {
         return createPage(pageClass, WebDriverManager.getWebDriver());
     }
 
     @Override
-    public <T extends IPage> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
+    public <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
         String pagesPrefix = GLOBAL_PAGES_PREFIX;
         if (!StringUtils.isStringEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
             pagesPrefix = THREAD_LOCAL_PAGES_PREFIX.get();
@@ -67,7 +67,7 @@ public class DefaultPageFactory implements IPageFactory {
     }
 
     @Override
-    public <T extends IComponent> T createComponent(Class<T> componentClass, IPage page, IGuiElement rootElement) {
+    public <T extends IComponent> T createComponent(Class<T> componentClass, PageObject page, IGuiElement rootElement) {
         try {
             Constructor<T> constructor = componentClass.getConstructor(IGuiElement.class);
             T component = constructor.newInstance(rootElement);
@@ -88,12 +88,12 @@ public class DefaultPageFactory implements IPageFactory {
     }
 
     @Override
-    public <T extends IPage> T createPageWithCheckRule(Class<T> pageClass, CheckRule checkRule) {
+    public <T extends PageObject> T createPageWithCheckRule(Class<T> pageClass, CheckRule checkRule) {
         return createPageWithCheckRule(pageClass, WebDriverManager.getWebDriver(), checkRule);
     }
 
     @Override
-    public <T extends IPage> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule) {
+    public <T extends PageObject> T createPageWithCheckRule(Class<T> pageClass, WebDriver webDriver, CheckRule checkRule) {
         pageClass = findBestMatchingClass(pageClass, webDriver);
         try {
             Constructor<T> constructor = pageClass.getConstructor(WebDriver.class);

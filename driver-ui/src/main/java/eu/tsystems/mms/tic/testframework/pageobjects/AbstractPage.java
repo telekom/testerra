@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
@@ -28,15 +27,10 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiElementTimeoutFieldAction;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroupAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
-import eu.tsystems.mms.tic.testframework.report.IReport;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.AbstractTestFeatures;
-import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -44,7 +38,6 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.DELETE;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,7 +52,7 @@ import java.util.Set;
  * @author Mike Reiche
  */
 public abstract class AbstractPage extends AbstractTestFeatures implements
-    IPage,
+    PageObject,
     Loggable
 {
     private static final PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
@@ -87,8 +80,8 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
 
     private static class AncestorFinder implements Page.ComponentFinder {
         private final IGuiElement ancestor;
-        private final IPage parentPage;
-        private AncestorFinder(IPage parentPage, IGuiElement ancestor) {
+        private final PageObject parentPage;
+        private AncestorFinder(PageObject parentPage, IGuiElement ancestor) {
             this.parentPage = parentPage;
             this.ancestor = ancestor;
         }
@@ -141,7 +134,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     @Deprecated
     private boolean forcedGuiElementStandardAsserts = false;
 
-    protected <T extends IPage> T createPage(final Class<T> pageClass) {
+    protected <T extends PageObject> T createPage(final Class<T> pageClass) {
         return pageFactory.createPage(pageClass, driver);
     }
 
@@ -222,7 +215,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     }
 
     @Override
-    public IPage checkGuiElements(CheckRule checkRule) {
+    public PageObject checkGuiElements(CheckRule checkRule) {
         switch (checkRule) {
             case IS_NOT_PRESENT:
             case IS_NOT_DISPLAYED:

@@ -128,7 +128,7 @@ public class GuiElement implements
     }
 
     @Deprecated
-    public GuiElement(IPage page, Locate locate) {
+    public GuiElement(PageObject page, Locate locate) {
         this(page.getWebDriver(), locate, null);
         Page pageImpl = (Page)page;
         this.setTimeoutInSeconds(pageImpl.getElementTimeoutInSeconds());
@@ -611,7 +611,7 @@ public class GuiElement implements
 
     /**
      * Sets the abstract parent
-     * @param parent {@link IGuiElement} or {@link IPage}
+     * @param parent {@link IGuiElement} or {@link PageObject}
      */
     @Override
     public IGuiElement setParent(Object parent) {
@@ -621,7 +621,7 @@ public class GuiElement implements
 
     /**
      * Retrieves the parent
-     * @return Can be {@link IGuiElement} or {@link IPage}
+     * @return Can be {@link IGuiElement} or {@link PageObject}
      */
     @Override
     public Object getParent() {

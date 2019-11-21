@@ -69,6 +69,10 @@ public class WebTestPage extends AbstractWebTestPage {
         super(driver);
     }
 
+    public void clickAButton() {
+        button1.click();
+    }
+
     /**
      * Test if button works as aspected.
      */

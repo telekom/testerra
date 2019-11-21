@@ -289,19 +289,17 @@
                                                         <td class="cellCenter">
                                                             #if ($testMethod.errorContext().scriptSource)
                                                             <div id="sourceScript" style="text-align: initial">
-<pre>
-<br>
-<code>$testMethod.errorContext().scriptSource.fileName # $testMethod.errorContext().scriptSource.methodName</code>
-<code>
-#foreach($s in $testMethod.errorContext().scriptSource.lines)
-    #if ($s.mark)
+#set ($source=$testMethod.errorContext().scriptSource)
+<pre><code>  // $source.fileName
+
+#foreach($s in $source.lines)
+#if ($s.mark)
 &#8623; $s.lineNumber : $s.line
-    #else
-&nbsp; $s.lineNumber : $s.line
-    #end
+#else
+  $s.lineNumber : $s.line
 #end
-</code><br/></pre>
-                                                                <br/>
+#end
+</code></pre>
                                                             </div>
                                                             #else
                                                             No test sources
@@ -311,19 +309,17 @@
                                                             #if ($testMethod.errorContext().executionObjectSource)
                                                             <div id="sourcePage" style="text-align: initial">
                                                                 <div id="sourceScript" style="text-align: initial">
-<pre>
-<br>
-<code>$testMethod.errorContext().executionObjectSource.fileName # $testMethod.errorContext().executionObjectSource.methodName</code>
-<code>
-    #foreach($s in $testMethod.errorContext().executionObjectSource.lines)
-        #if ($s.mark)
-            &#8623; $s.lineNumber : $s.line
-        #else
-            &nbsp; $s.lineNumber : $s.line
-        #end
-    #end
-</code><br/></pre>
-                                                                    <br/>
+#set ($source=$testMethod.errorContext().executionObjectSource)
+<pre><code>  // $source.fileName
+
+#foreach($s in $source.lines)
+#if ($s.mark)
+&#8623; $s.lineNumber : $s.line.replace($source.methodName, $String.format("<mark>%s</mark>", $source.methodName));
+#else
+  $s.lineNumber : $s.line
+#end
+#end
+</code></pre>
                                                                 </div>
                                                             </div>
                                                             #else

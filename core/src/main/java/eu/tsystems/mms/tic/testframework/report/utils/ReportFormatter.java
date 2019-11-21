@@ -221,9 +221,11 @@ public class ReportFormatter {
      * @param testClass A test class.
      * @param template  The template file to use.
      */
-    public static void createMethodsView(final File logFile, final ClassContext testClass,
-                                         final String template) {
-
+    public static void createMethodsView(
+        File logFile,
+        ClassContext testClass,
+        String template
+    ) {
         try {
             pFormatWithTestClass(logFile, testClass, template);
         } catch (Exception e) {
@@ -235,9 +237,11 @@ public class ReportFormatter {
         LOGGER.error("Could not create html: " + e, e);
     }
 
-    public static void createMethodsFrame(final File logFile, final MethodContext methodContext,
-                                          final String template) {
-
+    public static void createMethodsFrame(
+        File logFile,
+        MethodContext methodContext,
+        String template
+    ) {
         try {
             pFormatWithTestMethod(logFile, methodContext, template);
         } catch (Exception e) {
@@ -245,9 +249,11 @@ public class ReportFormatter {
         }
     }
 
-    public static void createMultiMethodsHtml(final ReportingData reportingData, final File logFile,
-                                              final String template) {
-
+    public static void createMultiMethodsHtml(
+        ReportingData reportingData,
+        File logFile,
+        String template
+    ) {
         try {
             pFormatWithFailuresAndHistory(reportingData, logFile, template);
         } catch (IOException e) {
@@ -262,8 +268,11 @@ public class ReportFormatter {
      * @param testClass A test class.
      * @param template  The template file to use.
      */
-    private static void pFormatWithTestClass(final File logFile, final ClassContext testClass,
-                                             final String template) throws IOException {
+    private static void pFormatWithTestClass(
+        File logFile,
+        ClassContext testClass,
+        String template
+    ) throws IOException {
 
         Template htmlLogTemplate = Velocity.getTemplate(template, "UTF-8");
         htmlLogTemplate.setEncoding("UTF-8");
@@ -285,9 +294,11 @@ public class ReportFormatter {
      * @param methodContext A test class.
      * @param template            The template file to use.
      */
-    private static void pFormatWithTestMethod(final File logFile, final MethodContext methodContext,
-                                              final String template) throws IOException {
-
+    private static void pFormatWithTestMethod(
+        File logFile,
+        MethodContext methodContext,
+        String template
+    ) throws IOException {
         Template htmlLogTemplate = Velocity.getTemplate(template, "UTF-8");
         htmlLogTemplate.setEncoding("UTF-8");
 

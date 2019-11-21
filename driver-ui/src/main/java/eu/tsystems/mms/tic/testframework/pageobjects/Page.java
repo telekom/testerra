@@ -52,6 +52,9 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import java.awt.Color;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,12 +66,8 @@ import java.util.Random;
  * @author pele
  */
 public abstract class Page extends AbstractPage {
-
-    public static final String CHECKPAGE_METHOD_NAME = "checkPage";
     private final GuiElementGroups guiElementGroups;
-
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
-
     public static void registerPageLoadHandler(PageLoadHandler h) {
         pageLoadHandlers.add(h);
     }
@@ -399,26 +398,5 @@ public abstract class Page extends AbstractPage {
 
     public GuiElementGroups getGuiElementGroups() {
         return guiElementGroups;
-    }
-
-    /**
-     * This method returns the steps string.
-     * @param simpleClassName .
-     * @param actionName .
-     * @return .
-     */
-    public static String getPageContext(final String simpleClassName, String actionName) {
-        if (StringUtils.isStringEmpty(actionName)) {
-            return simpleClassName;
-        }
-        else if ("<init>".equals(actionName)) {
-//            actionName = "Initialization";
-            return simpleClassName;
-        }
-        else if (actionName.equals(Page.CHECKPAGE_METHOD_NAME)) {
-            return simpleClassName;
-        }
-
-        return simpleClassName + " -> " + actionName;
     }
 }

@@ -30,47 +30,51 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * A static wrapper for {@link MethodContext#steps()}
  * Created by piet on 11.03.16.
  */
 public class TestStep implements Serializable {
 
     private static final long serialVersionUID = Serial.SERIAL;
+    public static final String SETUP="Setup";
+    public static final String TEARDOWN="TearDown";
+    public static final String INTERNAL="Internal";
 
-    private String name;
-    private int number;
-    private List<TestStepAction> testStepActions = Collections.synchronizedList(new LinkedList<>());
+    private final String name;
+    private final List<TestStepAction> testStepActions = Collections.synchronizedList(new LinkedList<>());
     private boolean closed = false;
 
-    public TestStep(String name, int number) {
+    public TestStep(String name) {
         this.name = name;
-        this.number = number;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getNumber() {
-        return number;
-    }
-
     public List<TestStepAction> getTestStepActions() {
         return testStepActions;
     }
 
-    public TestStepAction getTestStepAction(final String context) {
+    /**
+     * @return The last action if it matches the name, otherwise a new action is returned.
+     */
+    public TestStepAction getTestStepAction(String name) {
+        if (name==null || name.isEmpty()) {
+            name = INTERNAL;
+        }
         // if there are no test steps actions yet, create an initial one
         if (testStepActions.size() == 0) {
-            TestStepAction testStepAction = new TestStepAction(context, 1);
+            TestStepAction testStepAction = new TestStepAction(name);
             testStepActions.add(testStepAction);
             return testStepAction;
         }
         // get the last TestStepAction
-        TestStepAction testStepAction = testStepActions.get(testStepActions.size() - 1);
+        TestStepAction testStepAction = getLastAction();
 
         // if the last TestStepAction name is NOT the same as the current contextual one, then we have to create a new one
-        if (!StringUtils.equals(testStepAction.getName(), context)) {
-            testStepAction = new TestStepAction(context, testStepAction.getNumber() + 1);
+        if (!StringUtils.equals(testStepAction.getName(), name)) {
+            testStepAction = new TestStepAction(name);
             testStepActions.add(testStepAction);
         }
 
@@ -85,11 +89,15 @@ public class TestStep implements Serializable {
         return closed;
     }
 
+    private TestStepAction getLastAction() {
+        return testStepActions.get(testStepActions.size() - 1);
+    }
+
     public TestStepAction getCurrentTestStepAction() {
         if (testStepActions.size() == 0) {
-            return getTestStepAction("Internal");
+            return getTestStepAction(INTERNAL);
         }
-        return testStepActions.get(testStepActions.size() - 1);
+        return getLastAction();
     }
 
     /**
@@ -104,9 +112,9 @@ public class TestStep implements Serializable {
             testStep = methodContext.steps().announceTestStep(name);
         }
 
-        if (testStep == null) {
+        /*if (testStep == null) {
             testStep = new TestStep("dummy", 1);
-        }
+        }*/
 
         return testStep;
     }
@@ -130,15 +138,6 @@ public class TestStep implements Serializable {
 
     @Override
     public String toString() {
-        if (name != null) {
-            String nameLowerCase = name.toLowerCase();
-            if (nameLowerCase.contains("step") || nameLowerCase.contains("schritt")) {
-                return name;
-            } else {
-                return "Step " + name;
-            }
-        } else {
-            return "Step " + number;
-        }
+        return name;
     }
 }

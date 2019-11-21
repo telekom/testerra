@@ -21,6 +21,8 @@ package eu.tsystems.mms.tic.testframework.internal.utils;
 
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
 
+import java.lang.reflect.Modifier;
+
 /**
  * Created by piet on 11.03.16.
  */
@@ -34,22 +36,26 @@ public class CoreExceptionUtils extends ThrowableUtils {
         return split[split.length - 1];
     }
 
-    public static int findSubclassCallBackwards(StackTraceElement[] stackTrace, int from, Class clazz, final String methodNameToLookFor) {
+    public static int findSubclassCallBackwards(StackTraceElement[] stackTrace, int from, Class baseClass, final String methodNameToLookFor) {
         for (int i = from; i >= 0; i--) {
             StackTraceElement stackTraceElement = stackTrace[i];
             String className = stackTraceElement.getClassName();
             String methodName = stackTraceElement.getMethodName();
 
-            boolean foundClass = clazz == null;
+            boolean foundClass = baseClass == null;
             boolean foundMethod = methodNameToLookFor == null;
 
             // search class
             if (!foundClass) {
                 try {
-                    Class<?> aClass = Class.forName(className);
-                    if (clazz.isAssignableFrom(aClass)) {
-                        foundClass = true;
-                    }
+                    Class<?> classToTest = Class.forName(className);
+                    int modifiers = classToTest.getModifiers();
+                    // We only want non abstract public implementations
+                    foundClass = (
+                        !Modifier.isAbstract(modifiers)
+                        && baseClass.isAssignableFrom(classToTest)
+                        && Modifier.isPublic(modifiers)
+                    );
                 } catch (ClassNotFoundException e) {
                     // ignore
                 }

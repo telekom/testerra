@@ -48,6 +48,7 @@ public interface IGuiElement extends
         CHECK_RULE("tt.guielement.checkrule", CheckRule.IS_DISPLAYED.name()),
         ELEMENT_TIMEOUT_SECONDS("tt.element.timeout.seconds", 8),
         ELEMENT_WAIT_INTERVAL_MS("tt.element.wait.ms", 200),
+        QA_ATTRIBUTE("tt.element.qa.attribute", "data-qa");
         ;
         private final String property;
         private Object defaultValue;

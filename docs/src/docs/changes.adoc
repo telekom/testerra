@@ -198,9 +198,9 @@ page.assertIsTextDisplayed("You see me"); <4>
 ```
 ====
 
-Perform decisions on occurrence
+Perform decisions on occurrence with the `waitFor` prefix.
 ```
-if (guiElement.displayed().perhaps().isTrue()) {
+if (guiElement.waitFor().displayed().isTrue()) {
     // Optional element became visible
 }
 ```

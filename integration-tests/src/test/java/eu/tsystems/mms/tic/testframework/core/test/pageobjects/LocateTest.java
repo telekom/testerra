@@ -49,12 +49,7 @@ public class LocateTest extends AbstractTestSitesTest {
 
     @Test
     public void testLocateBySelect() {
-        IGuiElement realA = page.findByQa("action/linkWithFormattedText");
-        IGuiElement realSpan = page.getSubElement(realA, By.tagName("span"));
-        realSpan.text().is("Subtext");
-
-        IGuiElement span = page.find(Locate.by(XPath.node("a").withWords("some", "text!").select("span").withWords("Subtext")));
-        span.tagName().is("span");
-        span.text().is(realSpan.text().getActual());
+        IGuiElement a = page.find(Locate.by(XPath.node("a").withWords("This link").contains("span").withWords("Subtext")));
+        a.value("data-qa").contains("linkWithFormattedText");
     }
 }

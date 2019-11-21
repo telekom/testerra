@@ -93,8 +93,8 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     protected Page.ComponentFinder withAncestor(IGuiElement ancestor) {
         return new AncestorFinder(this,ancestor);
     }
-    protected IGuiElement findById(String id) {
-        return find(Locate.by().id(id));
+    protected IGuiElement findById(Object id) {
+        return find(Locate.by().id(id.toString()));
     }
     protected IGuiElement findByQa(String qa) {
         return find(Locate.by().qa(qa));
@@ -102,8 +102,8 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     protected IGuiElement find(By by) {
         return find(Locate.by(by));
     }
-    protected IGuiElement find(Locate locator) {
-        return guiElementFactory.create(locator, this);
+    protected IGuiElement find(Locate locate) {
+        return guiElementFactory.create(locate, this);
     }
 
     /**

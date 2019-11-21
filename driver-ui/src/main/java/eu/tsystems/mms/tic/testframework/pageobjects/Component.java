@@ -78,8 +78,8 @@ public abstract class Component extends AbstractPage implements
         return rootElement.getWebElement();
     }
 
-    protected IGuiElement find(Locate locator) {
-        return defaultFinder.find(locator);
+    protected IGuiElement find(Locate locate) {
+        return defaultFinder.find(locate);
     }
 
     @Override

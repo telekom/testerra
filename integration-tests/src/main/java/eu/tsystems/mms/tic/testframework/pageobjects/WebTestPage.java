@@ -118,11 +118,19 @@ public class WebTestPage extends AbstractWebTestPage {
         return findById("schnullifacks");
     }
 
-    public IGuiElement getGuiElementBy(By by) {
-        return find(by);
+    public IGuiElement find(By by) {
+        return super.find(by);
     }
-    public IGuiElement getGuiElementQa(String qa) {
-        return findByQa(qa);
+    public IGuiElement findById(Object id) {
+        return super.findById(id);
     }
-
+    public IGuiElement findByQa(String qa) {
+        return super.findByQa(qa);
+    }
+    public IGuiElement find(Locate locate) {
+        return super.find(locate);
+    }
+    public IGuiElement getSubElement(IGuiElement parent, By by) {
+        return withAncestor(parent).find(by);
+    }
 }

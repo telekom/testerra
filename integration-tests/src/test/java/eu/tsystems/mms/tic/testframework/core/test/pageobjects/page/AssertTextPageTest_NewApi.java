@@ -22,12 +22,9 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.IPageFactoryTest;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.MyVariables;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestFramedPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -155,7 +152,7 @@ public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements 
         driver.get(url);
 
         WebTestPage page = getPage();
-        IGuiElement input = page.getGuiElementBy(By.xpath("//label[@for='inputMillis']"));
+        IGuiElement input = page.find(By.xpath("//label[@for='inputMillis']"));
         input.displayed().isTrue();
         WebElement webElement = input.getWebElement();
 

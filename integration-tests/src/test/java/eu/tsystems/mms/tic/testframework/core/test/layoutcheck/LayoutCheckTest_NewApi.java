@@ -45,20 +45,20 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     @Test
     public void testCheckElementLayout() {
         WebTestPage page = preparePage();
-        IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");
+        IGuiElement guiElement = page.findByQa("section/layoutTestArticle");
         guiElement.screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
 
-        guiElement = page.getGuiElementQa("section/invisibleTestArticle");
+        guiElement = page.findByQa("section/invisibleTestArticle");
         guiElement.screenshot().pixelDistance("InvisibleTestArticle").isLowerThan(1.3);
     }
 
     @Test
     public void testCheckElementVisibility() {
         WebTestPage page = preparePage();
-        IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");
+        IGuiElement guiElement = page.findByQa("section/layoutTestArticle");
         guiElement.visible(true).isTrue();
 
-        guiElement = page.getGuiElementQa("section/invisibleTestArticle");
+        guiElement = page.findByQa("section/invisibleTestArticle");
         guiElement.visible(false).isFalse();
 
         // Scroll to offset doesn't work
@@ -73,7 +73,7 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     @Fails(description = "This test should fail")
     public void testCheckElementLayoutDistance() {
         WebTestPage page = preparePage();
-        IGuiElement guiElement = page.getGuiElementQa("section/layoutTestArticle");
+        IGuiElement guiElement = page.findByQa("section/layoutTestArticle");
         Control.withElementTimeout(0, () -> guiElement.screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
     }
 

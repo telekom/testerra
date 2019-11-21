@@ -14,7 +14,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
 
     @Override
     public QuantityAssertion<Long> bytes() {
-        return new DefaultQuantityAssertion<>(this, new AssertionProvider<Long>() {
+        return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Long>() {
             @Override
             public Long getActual() {
                 return provider.getActual().length();
@@ -29,7 +29,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
 
     @Override
     public StringAssertion<String> name() {
-        return new DefaultStringAssertion<>(this, new AssertionProvider<String>() {
+        return propertyAssertionFactory.create(DefaultStringAssertion.class, this, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return provider.getActual().getName();
@@ -44,7 +44,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
 
     @Override
     public StringAssertion<String> extension() {
-        return new DefaultStringAssertion<>(this, new AssertionProvider<String>() {
+        return propertyAssertionFactory.create(DefaultStringAssertion.class, this, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return FilenameUtils.getExtension(provider.getActual().getName());
@@ -59,7 +59,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
 
     @Override
     public StringAssertion<String> mimetype() {
-        return new DefaultStringAssertion<>(this, new AssertionProvider<String>() {
+        return propertyAssertionFactory.create(DefaultStringAssertion.class, this, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 try {
@@ -78,7 +78,7 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
 
     @Override
     public BinaryAssertion<Boolean> exists() {
-        return new DefaultBinaryAssertion<>(this, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return provider.getActual().exists();

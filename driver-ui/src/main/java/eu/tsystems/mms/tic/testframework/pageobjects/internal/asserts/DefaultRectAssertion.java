@@ -24,7 +24,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
     @Override
     public BinaryAssertion<Boolean> contains(BasicGuiElement guiElement) {
-        return new DefaultBinaryAssertion<>(this, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return toRectangle(provider.getActual()).contains(toRectangle(guiElement.getWebElement().getRect()));
@@ -43,7 +43,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
     @Override
     public BinaryAssertion<Boolean> intersects(BasicGuiElement guiElement) {
-        return new DefaultBinaryAssertion<>(this, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return toRectangle(provider.getActual()).intersects(toRectangle(guiElement.getWebElement().getRect()));
@@ -62,7 +62,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
     @Override
     public BinaryAssertion<Boolean> leftOf(BasicGuiElement guiElement) {
-        return new DefaultBinaryAssertion<>(this, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return fromLeft().toLeftOf(guiElement).getActual()<0;
@@ -77,7 +77,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
     @Override
     public BinaryAssertion<Boolean> rightOf(BasicGuiElement guiElement) {
-        return new DefaultBinaryAssertion<>(this, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return fromLeft().toRightOf(guiElement).getActual()>=0;
@@ -92,7 +92,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
     @Override
     public BinaryAssertion<Boolean> above(BasicGuiElement guiElement) {
-        return new DefaultBinaryAssertion<>(this, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return fromTop().toTopOf(guiElement).getActual()<0;
@@ -107,7 +107,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
     @Override
     public BinaryAssertion<Boolean> below(BasicGuiElement guiElement) {
-        return new DefaultBinaryAssertion<>(this, new AssertionProvider<Boolean>() {
+        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return fromTop().toBottomOf(guiElement).getActual()>=0;
@@ -122,7 +122,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
     @Override
     public HorizontalDistanceAssertion fromRight() {
-        return new DefaultHorizontalDistanceAssertion(this, new AssertionProvider<Integer>() {
+        return propertyAssertionFactory.create(DefaultHorizontalDistanceAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 Rectangle originRect = provider.getActual();
@@ -138,7 +138,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
     @Override
     public HorizontalDistanceAssertion fromLeft() {
-        return new DefaultHorizontalDistanceAssertion(this, new AssertionProvider<Integer>() {
+        return propertyAssertionFactory.create(DefaultHorizontalDistanceAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 Rectangle originRect = provider.getActual();
@@ -154,7 +154,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
     @Override
     public VerticalDistanceAssertion fromTop() {
-        return new DefaultVerticalDistanceAssertion(this, new AssertionProvider<Integer>() {
+        return propertyAssertionFactory.create(DefaultVerticalDistanceAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 Rectangle originRect = provider.getActual();
@@ -170,7 +170,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
     @Override
     public VerticalDistanceAssertion fromBottom() {
-        return new DefaultVerticalDistanceAssertion(this, new AssertionProvider<Integer>() {
+        return propertyAssertionFactory.create(DefaultVerticalDistanceAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 Rectangle originRect = provider.getActual();

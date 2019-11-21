@@ -215,7 +215,7 @@ if (guiElement.waits().waitForIsDisplayed()) {
 
 Support of more features through consistent assertion API
 ```java
-guiElement.css("display").is("hidden"); <1>
+guiElement.css("display").is("none"); <1>
 guiElement.text().matches("^Hello\\s.orld").isTrue(); <2>
 page.anyElementContainsText("You see me").numberOfElements().is(1); <3>
 ```
@@ -457,13 +457,13 @@ But there is only one timeout for each assertion now. No more implicit timeouts 
 This is what an assertion internally does, when you perform `guiElement.text().contains("Something")`.
 
 . Find web element using WebDriver
-. Check if element is displayed
+. Check if element is present
 . Retrieve the text of the element
-. If text does not contain "Something", start over with 1.
+. If the text does not contain "Something", start over with 1.
 . Otherwise when the timeout has reached, an assertion error message will be displayed that the
 text of the element you're looking for doesn't contain the string "Something".
 
-==== More consistence, less complexity and more features
+==== More consistence, less complexity
 
 There will be only one interface for everything you need in a manner of
 an easy to read fluent API. It is not too abstract like TestNG Assert, and not to technically like AssertJ.
@@ -473,8 +473,8 @@ You don't have to decide which method you should use. The standard way will be t
 
 ==== Strict Page Object pattern
 
-Testerra is built on the Page Object pattern in mind. The new API makes it harder for you and your team to
-break out and keeps you on track, even if your project contains hundreds of Pages and thousands of Tests.
+Testerra was built with the Page Object pattern in mind. The new API makes it easier for your team, to keep you on track
+makes it harder to break out, even if your project contains hundreds of Pages and thousands of Tests.
 
 The new components extension allows you to implement Page Objects like the Web Developer would do by separating
 functionality into reusable components.
@@ -482,16 +482,16 @@ functionality into reusable components.
 ==== Smaller codebase and less boilerplate
 The API provides abstract assertion implementations for several properties.
 
-. StringPropertyAssertion allows you to perform assertions on strings like `string.contains("Something")`
-. QuantifiedPropertyAssertion allows you to perform assertions on quantified values like `value.isBetween(-2,3)`
-. BinaryPropertyAssertion allows to assert if an value is boolean or a string that represents a boolean value with `displayed.isTrue()`
+. `StringAssertion` allows you to perform assertions on strings like `contains("Something")`
+. `QuantityAssertion` allows you to perform assertions on quantified values like `isBetween(-2,3)`
+. `BinaryAssertion` allows to assert if an value is boolean or a string that represents a boolean value with `isTrue()`
 
 These generic assertions are used in many other assertions and supports a hierarchical order.
 This is what the hierarchy looks like when you perform `guiElement.screenshot().file().extension().is("png")`
 
-. Take a screenshot and return a ScreenshotAssertion
-. Return a generic FileAssertion with the taken screenshot file
-. Return a generic StringAssertion with the given file name
+. Take a screenshot and return a `ScreenshotAssertion`
+. Return a generic `FileAssertion` with the taken screenshot file
+. Return a generic `StringAssertion` with the given file name extension
 
 This implementation helps to keep the internal assertion code small, easy extensible and maintainable.
 

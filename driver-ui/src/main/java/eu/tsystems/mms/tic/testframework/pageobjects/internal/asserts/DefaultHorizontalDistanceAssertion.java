@@ -11,7 +11,7 @@ public class DefaultHorizontalDistanceAssertion extends AbstractPropertyAssertio
 
     @Override
     public QuantityAssertion<Integer> toRightOf(BasicGuiElement guiElement) {
-        return new DefaultQuantityAssertion<>(this, new AssertionProvider<Integer>() {
+        return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 Rectangle referenceRect = guiElement.getWebElement().getRect();
@@ -27,7 +27,7 @@ public class DefaultHorizontalDistanceAssertion extends AbstractPropertyAssertio
 
     @Override
     public QuantityAssertion<Integer> toLeftOf(BasicGuiElement guiElement) {
-        return new DefaultQuantityAssertion<>(this, new AssertionProvider<Integer>() {
+        return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 Rectangle referenceRect = guiElement.getWebElement().getRect();

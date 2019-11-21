@@ -40,7 +40,7 @@ public class DefaultQuantityAssertion<T> extends DefaultBinaryAssertion<T> imple
 
     @Override
     public QuantityAssertion<BigDecimal> absolute() {
-        return new DefaultQuantityAssertion<>(this, new AssertionProvider<BigDecimal>() {
+        return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<BigDecimal>() {
             @Override
             public BigDecimal getActual() {
                 BigDecimal number;

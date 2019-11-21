@@ -42,7 +42,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
     @Override
     public PatternAssertion matches(Pattern pattern) {
-        return new DefaultPatternAssertion(this, new AssertionProvider<Matcher>() {
+        return propertyAssertionFactory.create(DefaultPatternAssertion.class, this, new AssertionProvider<Matcher>() {
             @Override
             public Matcher getActual() {
                 return pattern.matcher(provider.getActual().toString());
@@ -61,7 +61,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
     @Override
     public QuantityAssertion<Integer> length() {
-        return new DefaultQuantityAssertion<>(this, new AssertionProvider<Integer>() {
+        return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 return provider.getActual().toString().length();

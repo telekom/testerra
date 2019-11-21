@@ -1,5 +1,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
  */
 public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<T> {
 
+    protected final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
     protected final AssertionProvider<T> provider;
     protected final AbstractPropertyAssertion parent;
     protected boolean shouldWait;

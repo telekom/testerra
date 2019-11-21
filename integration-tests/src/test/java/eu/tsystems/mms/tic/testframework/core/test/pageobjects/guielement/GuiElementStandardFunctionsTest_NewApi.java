@@ -136,7 +136,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
         page.notVisibleElement().value("style").contains("hidden");
         page.notVisibleElement().visible(true).isFalse();
         page.notVisibleElement().visible(false).isFalse();
-        page.notDisplayedElement().css("display").is("hidden");
+        page.notDisplayedElement().css("display").is("none");
     }
 
     @Test

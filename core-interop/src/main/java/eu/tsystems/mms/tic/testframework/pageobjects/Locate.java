@@ -54,9 +54,13 @@ public class Locate {
         return new Locate();
     }
     public static Locate by(By by) {
-        final Locate locate = new Locate();
+        Locate locate = new Locate();
         locate.by = by;
         return locate;
+    }
+
+    public static Locate by(XPath xPath) {
+        return new Locate().by().xpath(xPath.toString());
     }
 
     /**
@@ -143,6 +147,7 @@ public class Locate {
         by = new By.ByXPath(String.format("//*[@%s='%s']", IGuiElement.Properties.QA_ATTRIBUTE.asString(), string));
         return this;
     }
+
 
     public By getBy() {
         return this.by;

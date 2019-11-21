@@ -93,6 +93,10 @@ public class GuiElementData {
 
     @Override
     public String toString() {
+        return toString(false);
+    }
+
+    public String toString(boolean detailed) {
         String toString = "";
         Object parent = guiElement.getParent();
         if (parent != null) {
@@ -100,7 +104,8 @@ public class GuiElementData {
         }
         if (hasName()) {
             toString += name;
-        } else {
+        }
+        if (!hasName() || detailed) {
             toString += "GuiElement("+guiElement.getLocate().toString()+")";
         }
         //toString+="("+guiElement.getLocate().toString();

@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -31,12 +32,13 @@ import org.testng.annotations.Test;
 /**
  * Created by pele on 31.08.2015.
  */
-public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
+public class GuiElementLayoutsTest_NewApi extends AbstractTestSitesTest {
     private WebTestPage page;
 
     @BeforeMethod
     private void createPage() {
         page = pageFactory.createPage(WebTestPage.class);
+        page.getWebDriver().navigate().to(TestPage.INPUT_TEST_PAGE.getUrl());
     }
 
     @Test
@@ -238,15 +240,5 @@ public class GuiElementLayoutsTest_NewApi extends AbstractGuiElementTest {
      */
     public void testT82_Checkon_Assert() throws Exception {
 
-    }
-
-    @Override
-    public GuiElement getGuiElementBy(By locator) {
-        return (GuiElement) page.find(locator);
-    }
-
-    @Override
-    protected TestPage getTestPage() {
-        return TestPage.INPUT_TEST_PAGE;
     }
 }

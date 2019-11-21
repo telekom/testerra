@@ -29,8 +29,8 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantifiedPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -48,13 +48,13 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
     @Test
     public void test_Page_title() {
-        StringPropertyAssertion<String> title = page.title();
+        StringAssertion<String> title = page.title();
 
         title.is("Input test");
         title.contains("Input");
         title.containsNot("SuperTestPage");
 
-        QuantifiedPropertyAssertion<Integer> length = page.title().length();
+        QuantityAssertion<Integer> length = page.title().length();
         length.is(10);
         length.isLowerThan(100);
         length.isGreaterThan(5);
@@ -64,8 +64,8 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     }
 
     @Test
-    public void test_Page_title_perhaps_contains() {
-        if (page.title().perhaps().contains("Katzentitel")) {
+    public void test_Page_waitFor_title_contains_inexistent() {
+        if (page.waitFor().title().contains("Katzentitel")) {
             Assert.assertFalse(true);
         }
     }

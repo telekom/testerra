@@ -29,10 +29,10 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -101,17 +101,17 @@ public abstract class Component extends AbstractPage implements
     }
 
     @Override
-    public BinaryPropertyAssertion<Boolean> present() {
+    public BinaryAssertion<Boolean> present() {
         return rootElement.present();
     }
 
     @Override
-    public BinaryPropertyAssertion<Boolean> visible(boolean complete) {
+    public BinaryAssertion<Boolean> visible(boolean complete) {
         return rootElement.visible(complete);
     }
 
     @Override
-    public StringPropertyAssertion<String> tagName() {
+    public StringAssertion<String> tagName() {
         return rootElement.tagName();
     }
 
@@ -121,7 +121,7 @@ public abstract class Component extends AbstractPage implements
     }
 
     @Override
-    public BinaryPropertyAssertion<Boolean> displayed() {
+    public BinaryAssertion<Boolean> displayed() {
         return rootElement.displayed();
     }
 

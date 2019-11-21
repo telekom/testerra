@@ -2,34 +2,34 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import java.math.BigDecimal;
 
-public class DefaultQuantifiedPropertyAssertion<T> extends DefaultBinaryPropertyAssertion<T> implements QuantifiedPropertyAssertion<T> {
+public class DefaultQuantityAssertion<T> extends DefaultBinaryAssertion<T> implements QuantityAssertion<T> {
 
-    public DefaultQuantifiedPropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+    public DefaultQuantityAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
     }
 
     @Override
-    public boolean is(final Object expected) {
+    public boolean is(Object expected) {
         return testTimer(t -> instantAssertion.assertEquals(provider.getActual(), expected, traceSubjectString()));
     }
 
     @Override
-    public boolean isGreaterThan(final BigDecimal expected) {
+    public boolean isGreaterThan(BigDecimal expected) {
         return testTimer(t -> instantAssertion.assertGreaterThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
     }
 
     @Override
-    public boolean isLowerThan(final BigDecimal expected) {
+    public boolean isLowerThan(BigDecimal expected) {
         return testTimer(t -> instantAssertion.assertLowerThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
     }
 
     @Override
-    public boolean isGreaterEqualThan(final BigDecimal expected) {
+    public boolean isGreaterEqualThan(BigDecimal expected) {
         return testTimer(t -> instantAssertion.assertGreaterEqualThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
     }
 
     @Override
-    public boolean isLowerEqualThan(final BigDecimal expected) {
+    public boolean isLowerEqualThan(BigDecimal expected) {
         return testTimer(t -> instantAssertion.assertLowerEqualThan(new BigDecimal(provider.getActual().toString()), expected, traceSubjectString()));
     }
 
@@ -39,8 +39,8 @@ public class DefaultQuantifiedPropertyAssertion<T> extends DefaultBinaryProperty
     }
 
     @Override
-    public QuantifiedPropertyAssertion<BigDecimal> absolute() {
-        return new DefaultQuantifiedPropertyAssertion<>(this, new AssertionProvider<BigDecimal>() {
+    public QuantityAssertion<BigDecimal> absolute() {
+        return new DefaultQuantityAssertion<>(this, new AssertionProvider<BigDecimal>() {
             @Override
             public BigDecimal getActual() {
                 BigDecimal number;
@@ -57,11 +57,5 @@ public class DefaultQuantifiedPropertyAssertion<T> extends DefaultBinaryProperty
                 return "absolute";
             }
         });
-    }
-
-    @Override
-    public DefaultQuantifiedPropertyAssertion<T> perhaps() {
-        super.perhaps();
-        return this;
     }
 }

@@ -7,6 +7,6 @@ import java.io.File;
  * @author Mike Reiche
  */
 public interface ImageAssertion extends ActualProperty<File> {
-    QuantifiedPropertyAssertion<Double> pixelDistance(String referenceImageName);
+    QuantityAssertion<Double> pixelDistance(String referenceImageName);
     FileAssertion file();
 }

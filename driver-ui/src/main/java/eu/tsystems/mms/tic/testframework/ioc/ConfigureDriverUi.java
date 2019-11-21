@@ -4,6 +4,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultPageOverrides;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementAssertFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultGuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWaitFactory;
@@ -20,5 +22,6 @@ public class ConfigureDriverUi extends AbstractModule {
         bind(GuiElementFactory.class).to(DefaultGuiElementFactory.class).in(Scopes.SINGLETON);
         bind(PageObjectFactory.class).to(DefaultPageFactory.class).in(Scopes.SINGLETON);
         bind(PageOverrides.class).to(DefaultPageOverrides.class).in(Scopes.SINGLETON);
+        bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class).in(Scopes.SINGLETON);
     }
 }

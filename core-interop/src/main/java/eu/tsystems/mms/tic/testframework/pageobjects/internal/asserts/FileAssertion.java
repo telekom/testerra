@@ -7,9 +7,9 @@ import java.io.File;
  * @author Mike Reiche
  */
 public interface FileAssertion extends ActualProperty<File> {
-    QuantifiedPropertyAssertion<Long> bytes();
-    StringPropertyAssertion<String> name();
-    StringPropertyAssertion<String> extension();
-    StringPropertyAssertion<String> mimetype();
-    BinaryPropertyAssertion<Boolean> exists();
+    QuantityAssertion<Long> bytes();
+    StringAssertion<String> name();
+    StringAssertion<String> extension();
+    StringAssertion<String> mimetype();
+    BinaryAssertion<Boolean> exists();
 }

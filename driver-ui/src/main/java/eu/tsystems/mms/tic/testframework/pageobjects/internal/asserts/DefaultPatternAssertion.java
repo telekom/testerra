@@ -22,10 +22,4 @@ public class DefaultPatternAssertion extends AbstractTestedPropertyAssertion<Mat
     public boolean isFalse() {
         return this.testTimer(matcher -> instantAssertion.assertFalse(getActual().find(), traceSubjectString()));
     }
-
-    @Override
-    public DefaultPatternAssertion perhaps() {
-        super.perhaps();
-        return this;
-    }
 }

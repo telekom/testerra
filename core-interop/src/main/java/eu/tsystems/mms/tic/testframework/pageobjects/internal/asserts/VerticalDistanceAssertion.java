@@ -7,6 +7,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
  * @author Mike Reiche
  */
 public interface VerticalDistanceAssertion extends ActualProperty<Integer> {
-    QuantifiedPropertyAssertion<Integer> toTopOf(BasicGuiElement guiElement);
-    QuantifiedPropertyAssertion<Integer> toBottomOf(BasicGuiElement guiElement);
+    QuantityAssertion<Integer> toTopOf(BasicGuiElement guiElement);
+    QuantityAssertion<Integer> toBottomOf(BasicGuiElement guiElement);
 }

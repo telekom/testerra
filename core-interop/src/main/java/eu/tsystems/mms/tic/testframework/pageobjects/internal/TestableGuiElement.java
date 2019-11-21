@@ -1,17 +1,17 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantifiedPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 
 public interface TestableGuiElement extends BasicGuiElement {
-    StringPropertyAssertion<String> text();
-    StringPropertyAssertion<String> value();
-    StringPropertyAssertion<String> value(Attribute attribute);
-    StringPropertyAssertion<String> value(String attribute);
-    StringPropertyAssertion<String> css(String property);
-    BinaryPropertyAssertion<Boolean> enabled();
-    BinaryPropertyAssertion<Boolean> selected();
-    QuantifiedPropertyAssertion<Integer> numberOfElements();
+    StringAssertion<String> text();
+    StringAssertion<String> value();
+    StringAssertion<String> value(Attribute attribute);
+    StringAssertion<String> value(String attribute);
+    StringAssertion<String> css(String property);
+    BinaryAssertion<Boolean> enabled();
+    BinaryAssertion<Boolean> selected();
+    QuantityAssertion<Integer> numberOfElements();
 }

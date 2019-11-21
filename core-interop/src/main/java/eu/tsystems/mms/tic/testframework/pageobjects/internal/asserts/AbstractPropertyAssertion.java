@@ -1,7 +1,5 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,10 +13,17 @@ public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<
 
     protected final AssertionProvider<T> provider;
     protected final AbstractPropertyAssertion parent;
+    protected boolean shouldWait;
 
     public AbstractPropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         this.parent = (AbstractPropertyAssertion)parentAssertion;
         this.provider = provider;
+    }
+
+    @Override
+    public AbstractPropertyAssertion<T> shouldWait(boolean wait) {
+        shouldWait = wait;
+        return this;
     }
 
     public T getActual() {

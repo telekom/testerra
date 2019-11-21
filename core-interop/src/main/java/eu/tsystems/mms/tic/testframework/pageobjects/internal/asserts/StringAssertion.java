@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
  * Allows string based assertions
  * @author Mike Reiche
  */
-public interface StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<T>
+public interface StringAssertion<T> extends QuantityAssertion<T>
 {
     T getActual();
     boolean is(String expected);
@@ -18,6 +18,5 @@ public interface StringPropertyAssertion<T> extends QuantifiedPropertyAssertion<
     default PatternAssertion matches(String pattern) {
         return matches(Pattern.compile(pattern, Pattern.CASE_INSENSITIVE|Pattern.MULTILINE));
     }
-    QuantifiedPropertyAssertion<Integer> length();
-    StringPropertyAssertion<T> perhaps();
+    QuantityAssertion<Integer> length();
 }

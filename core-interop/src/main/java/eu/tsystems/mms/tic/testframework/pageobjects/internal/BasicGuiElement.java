@@ -21,11 +21,10 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryPropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantifiedPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -39,10 +38,10 @@ public interface BasicGuiElement {
     @Deprecated
     GuiElementAssert instantAsserts();
 
-    BinaryPropertyAssertion<Boolean> present();
-    BinaryPropertyAssertion<Boolean> displayed();
-    BinaryPropertyAssertion<Boolean> visible(boolean complete);
-    StringPropertyAssertion<String> tagName();
+    BinaryAssertion<Boolean> present();
+    BinaryAssertion<Boolean> displayed();
+    BinaryAssertion<Boolean> visible(boolean complete);
+    StringAssertion<String> tagName();
     RectAssertion bounds();
 
     /**

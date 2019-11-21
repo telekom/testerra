@@ -1,8 +1,8 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-public class DefaultBinaryPropertyAssertion<T> extends AbstractTestedPropertyAssertion<T> implements BinaryPropertyAssertion<T> {
+public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T> implements BinaryAssertion<T> {
 
-    public DefaultBinaryPropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+    public DefaultBinaryAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
     }
 
@@ -40,11 +40,5 @@ public class DefaultBinaryPropertyAssertion<T> extends AbstractTestedPropertyAss
             }
             return true;
         });
-    }
-
-    @Override
-    public DefaultBinaryPropertyAssertion<T> perhaps() {
-        super.perhaps();
-        return this;
     }
 }

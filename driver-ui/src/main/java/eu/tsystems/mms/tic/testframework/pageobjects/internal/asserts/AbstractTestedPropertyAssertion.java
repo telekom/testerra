@@ -20,7 +20,6 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
     private static final PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
     private static final AssertionFactory assertionFactory = Testerra.injector.getInstance(AssertionFactory.class);
     protected final Assertion instantAssertion = Testerra.injector.getInstance(InstantAssertion.class);
-    private Boolean perhaps = false;
 
     public AbstractTestedPropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
@@ -28,11 +27,6 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
 
     public T getActual() {
         return provider.getActual();
-    }
-
-    public AbstractTestedPropertyAssertion<T> perhaps() {
-        perhaps = true;
-        return this;
     }
 
     protected boolean testTimer(Function<T, Boolean> testFunction) {
@@ -60,8 +54,8 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
         });
         if (!packedResponse.isSuccessful()) {
             failedFinallyRecursive();
-            // Dont handle exceptions when in "perhaps" mode
-            if (!perhaps) {
+            // Dont handle exceptions when it should only wait
+            if (!shouldWait) {
                 Assertion finalAssertion = assertionFactory.create();
                 finalAssertion.fail(packedResponse.getResponse());
             }

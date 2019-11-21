@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * Allows numeric range based assertions
  * @author Mike Reiche
  */
-public interface QuantifiedPropertyAssertion<T> extends BinaryPropertyAssertion<T> {
+public interface QuantityAssertion<T> extends BinaryAssertion<T> {
     T getActual();
     boolean is(Object expected);
     default boolean isGreaterThan(long expected) {
@@ -44,6 +44,5 @@ public interface QuantifiedPropertyAssertion<T> extends BinaryPropertyAssertion<
         return isBetween(new BigDecimal(lower), new BigDecimal(higher));
     }
     boolean isBetween(BigDecimal lower, BigDecimal higher);
-    QuantifiedPropertyAssertion<BigDecimal> absolute();
-    QuantifiedPropertyAssertion<T> perhaps();
+    QuantityAssertion<BigDecimal> absolute();
 }

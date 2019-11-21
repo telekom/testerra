@@ -13,8 +13,8 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
     }
 
     @Override
-    public QuantifiedPropertyAssertion<Long> bytes() {
-        return new DefaultQuantifiedPropertyAssertion<>(this, new AssertionProvider<Long>() {
+    public QuantityAssertion<Long> bytes() {
+        return new DefaultQuantityAssertion<>(this, new AssertionProvider<Long>() {
             @Override
             public Long getActual() {
                 return provider.getActual().length();
@@ -28,8 +28,8 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
     }
 
     @Override
-    public StringPropertyAssertion<String> name() {
-        return new DefaultStringPropertyAssertion<>(this, new AssertionProvider<String>() {
+    public StringAssertion<String> name() {
+        return new DefaultStringAssertion<>(this, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return provider.getActual().getName();
@@ -43,8 +43,8 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
     }
 
     @Override
-    public StringPropertyAssertion<String> extension() {
-        return new DefaultStringPropertyAssertion<>(this, new AssertionProvider<String>() {
+    public StringAssertion<String> extension() {
+        return new DefaultStringAssertion<>(this, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return FilenameUtils.getExtension(provider.getActual().getName());
@@ -58,8 +58,8 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
     }
 
     @Override
-    public StringPropertyAssertion<String> mimetype() {
-        return new DefaultStringPropertyAssertion<>(this, new AssertionProvider<String>() {
+    public StringAssertion<String> mimetype() {
+        return new DefaultStringAssertion<>(this, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 try {
@@ -77,8 +77,8 @@ public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implem
     }
 
     @Override
-    public BinaryPropertyAssertion<Boolean> exists() {
-        return new DefaultBinaryPropertyAssertion<>(this, new AssertionProvider<Boolean>() {
+    public BinaryAssertion<Boolean> exists() {
+        return new DefaultBinaryAssertion<>(this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return provider.getActual().exists();

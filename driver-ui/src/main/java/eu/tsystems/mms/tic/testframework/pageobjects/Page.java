@@ -35,7 +35,6 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
-import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TestableGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
@@ -43,13 +42,13 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiEleme
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroupAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultScreenshotAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultStringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultStringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantifiedPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ScreenshotAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringPropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.report.IReport;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -67,7 +66,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.awt.Color;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,12 +78,13 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Peter Lehmann
  * @author Mike Reiche
  */
-public abstract class Page extends AbstractPage {
+public abstract class Page extends AbstractPage implements TestablePage {
 
     public static final String CHECKPAGE_METHOD_NAME = "checkPage";
     private final GuiElementGroups guiElementGroups;
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
     private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
+    private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
 
     private static class FrameFinder implements Finder {
         private final IGuiElement frame;
@@ -431,9 +430,10 @@ public abstract class Page extends AbstractPage {
         return simpleClassName + " -> " + actionName;
     }
 
-    public StringPropertyAssertion<String> title() {
+    @Override
+    public StringAssertion<String> title() {
         final Page self = this;
-        return new DefaultStringPropertyAssertion<>(null, new AssertionProvider<String>() {
+        return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return driver.getTitle();
@@ -446,9 +446,10 @@ public abstract class Page extends AbstractPage {
         });
     }
 
-    public StringPropertyAssertion<String> url() {
+    @Override
+    public StringAssertion<String> url() {
         final Page self = this;
-        return new DefaultStringPropertyAssertion<>(null, new AssertionProvider<String>() {
+        return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return driver.getCurrentUrl();
@@ -461,9 +462,7 @@ public abstract class Page extends AbstractPage {
         });
     }
 
-    /**
-     * Takes a screenshot of the current page
-     */
+    @Override
     public ScreenshotAssertion screenshot() {
         final Page self = this;
         final AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();
@@ -472,8 +471,7 @@ public abstract class Page extends AbstractPage {
         UITestUtils.takeScreenshot(driver, screenshot);
         atomicScreenshot.set(screenshot);
 
-        return new DefaultScreenshotAssertion(null, new AssertionProvider<Screenshot>() {
-
+        return propertyAssertionFactory.create(DefaultScreenshotAssertion.class, new AssertionProvider<Screenshot>() {
             @Override
             public Screenshot getActual() {
                 return atomicScreenshot.get();
@@ -492,6 +490,7 @@ public abstract class Page extends AbstractPage {
         });
     }
 
+    @Override
     public TestableGuiElement anyElementContainsText(String text) {
         String textFinderXpath = String.format("//text()[contains(., '%s')]/..", text);
         Locate locate = Locate.by(By.xpath(textFinderXpath));
@@ -533,4 +532,11 @@ public abstract class Page extends AbstractPage {
 
         return textElements;
     }
+
+    @Override
+    public TestablePage waitFor() {
+        propertyAssertionFactory.nextShouldWait();
+        return this;
+    }
+
 }

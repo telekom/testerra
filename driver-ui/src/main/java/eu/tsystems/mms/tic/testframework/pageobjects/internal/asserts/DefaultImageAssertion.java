@@ -12,9 +12,9 @@ public class DefaultImageAssertion extends AbstractPropertyAssertion<File> imple
     }
 
     @Override
-    public QuantifiedPropertyAssertion<Double> pixelDistance(final String referenceImageName) {
+    public QuantityAssertion<Double> pixelDistance(String referenceImageName) {
         final AtomicReference<LayoutCheck.MatchStep> atomicMatchStep = new AtomicReference<>();
-        return new DefaultQuantifiedPropertyAssertion<>(this, new AssertionProvider<Double>() {
+        return new DefaultQuantityAssertion<>(this, new AssertionProvider<Double>() {
             @Override
             public Double getActual() {
                 LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(provider.getActual(), referenceImageName);

@@ -7,11 +7,11 @@ import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DefaultStringPropertyAssertion<T> extends DefaultQuantifiedPropertyAssertion<T> implements StringPropertyAssertion<T>, Loggable {
+public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> implements StringAssertion<T>, Loggable {
 
     private final static Formatter formatter = Testerra.injector.getInstance(Formatter.class);
 
-    public DefaultStringPropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+    public DefaultStringAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
     }
 
@@ -60,8 +60,8 @@ public class DefaultStringPropertyAssertion<T> extends DefaultQuantifiedProperty
     }
 
     @Override
-    public QuantifiedPropertyAssertion<Integer> length() {
-        return new DefaultQuantifiedPropertyAssertion<>(this, new AssertionProvider<Integer>() {
+    public QuantityAssertion<Integer> length() {
+        return new DefaultQuantityAssertion<>(this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 return provider.getActual().toString().length();
@@ -72,11 +72,5 @@ public class DefaultStringPropertyAssertion<T> extends DefaultQuantifiedProperty
                 return String.format("\"%s\".length", getStringSubject());
             }
         });
-    }
-
-    @Override
-    public DefaultStringPropertyAssertion<T> perhaps() {
-        super.perhaps();
-        return this;
     }
 }

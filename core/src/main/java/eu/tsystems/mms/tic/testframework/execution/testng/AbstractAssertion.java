@@ -37,7 +37,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public boolean assertContains(String actual, String expected, String subject) {
-        if (!actual.contains(expected)) {
+        if (actual == null || !actual.contains(expected)) {
             fail(format(actual, String.format("contains [%s]", expected), subject));
             return false;
         } else {
@@ -47,7 +47,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public boolean assertContainsNot(String actual, String expected, String subject) {
-        if (actual.contains(expected)) {
+        if (actual != null && actual.contains(expected)) {
             fail(format(actual, String.format("contains not [%s]", expected), subject));
             return false;
         } else {

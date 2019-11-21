@@ -64,10 +64,16 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     }
 
     @Test
-    public void test_Page_waitFor_title_contains_inexistent() {
-        if (page.waitFor().title().contains("Katzentitel")) {
-            Assert.assertFalse(true);
-        }
+    public void test_Page_waitFor() {
+        Control.withElementTimeout(0, () -> {
+            if (page.waitFor().title().contains("Katzentitel")) {
+                Assert.assertFalse(true);
+            }
+
+            if (page.waitFor().title().is("Input test")) {
+                Assert.assertTrue(true);
+            }
+        });
     }
 
     @Test
@@ -131,6 +137,18 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
         page.notVisibleElement().visible(true).isFalse();
         page.notVisibleElement().visible(false).isFalse();
         page.notDisplayedElement().css("display").is("hidden");
+    }
+
+    @Test
+    public void test_GuiElement_waitFor() {
+        Control.withElementTimeout(0, () -> {
+            if (page.notVisibleElement().waitFor().value(Attribute.STYLE).is("humbug")) {
+                Assert.assertFalse(true);
+            }
+            if (page.notVisibleElement().waitFor().value(Attribute.STYLE).contains("hidden")) {
+                Assert.assertTrue(true);
+            }
+        });
     }
 
     @Test(expectedExceptions = AssertionError.class)

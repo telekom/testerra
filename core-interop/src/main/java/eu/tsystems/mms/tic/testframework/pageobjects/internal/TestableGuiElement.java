@@ -14,4 +14,5 @@ public interface TestableGuiElement extends BasicGuiElement {
     BinaryAssertion<Boolean> enabled();
     BinaryAssertion<Boolean> selected();
     QuantityAssertion<Integer> numberOfElements();
+    TestableGuiElement waitFor();
 }

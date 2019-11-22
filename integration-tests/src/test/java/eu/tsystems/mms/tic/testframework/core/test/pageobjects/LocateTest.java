@@ -6,7 +6,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
-import org.openqa.selenium.By;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -45,11 +44,5 @@ public class LocateTest extends AbstractTestSitesTest {
         IGuiElement realA = page.findByQa("action/linkWithFormattedText");
         IGuiElement a = page.find(Locate.by(XPath.node("a").withWords("some", "text!").contains("span").withWords("Subtext")));
         a.text().is(realA.text().getActual());
-    }
-
-    @Test
-    public void testLocateBySelect() {
-        IGuiElement a = page.find(Locate.by(XPath.node("a").withWords("This link").contains("span").withWords("Subtext")));
-        a.value("data-qa").contains("linkWithFormattedText");
     }
 }

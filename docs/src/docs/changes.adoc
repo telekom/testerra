@@ -444,6 +444,55 @@ POConfig.removeThreadLocalUiElementTimeout();
 ```
 ====
 
+=== New Locator interface
+
+The `Locate.by()` method allows you to pass a new introduced `XPath` object, that helps you to build failsafe xpathes optimized for HTML.
+
+This is what the basic syntax looks like
+```java
+IGuiElement div = find(Locate.by(XPath.node("div"));
+```
+
+But it supports many other features you need when you select
+elements from the DOM, like first and last element.
+```java
+XPath.node("td", 1);
+XPath.node("td", -1);
+```
+
+Elements that have classes
+
+```java
+XPath.node("div").classNames("navigation", "header"); <1>
+```
+<1> This will find elements like `<div class="header large navigation">` and not `<div class="navigation-header">`
+
+Select an element that contains another element
+
+```java
+XPath.node("nav")
+    .classNames("mobile")
+    .contains("div")
+        .classNames("navigation", "header");
+```
+
+Select an element by its text
+```java
+XPath.node("*").textWords("Login here"); <1>
+```
+<1> This will find elements like
+```html
+<a> Login first
+    here </a>
+```
+Select a sub element
+```java
+XPath.node("form")
+    .attribute("name", "login")
+    .select("button")
+        .textWords("Login");
+```
+
 === The internals
 
 This chapter explains how the new API works internally.

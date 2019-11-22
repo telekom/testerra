@@ -134,6 +134,9 @@ public class WebTestPage extends AbstractWebTestPage {
     public IGuiElement find(Locate locate) {
         return super.find(locate);
     }
+    public IGuiElement findByXPath(XPath xPath) {
+        return find(Locate.by(xPath));
+    }
     public IGuiElement getSubElement(IGuiElement parent, By by) {
         return withAncestor(parent).find(by);
     }

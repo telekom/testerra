@@ -34,7 +34,7 @@ public class XPath {
         return xPath;
     }
 
-    public XPath hasClass(Object ... classes) {
+    public XPath classNames(Object ... classes) {
         return attributeWords("class", classes);
     }
 
@@ -54,7 +54,7 @@ public class XPath {
     }
     private void somethingContainsWords(String something, Object ... texts) {
         for (Object text : texts) {
-            for (String word : text.toString().split("\b+")) {
+            for (String word : text.toString().split("\\s+")) {
                 somethingContainsWord(something, word);
             }
         }
@@ -87,7 +87,7 @@ public class XPath {
         return this;
     }
 
-    public XPath textIs(Object string) {
+    public XPath text(Object string) {
         somethingIs("text()", string);
         return this;
     }

@@ -36,14 +36,6 @@ public class TestStepActionEntry implements Serializable {
     public Screenshot beforeScreenshot;
     public Screenshot afterScreenshot;
 
-    private int number;
-
-    public TestStepActionEntry(int number) {
-        this.number = number;
+    public TestStepActionEntry() {
     }
-
-    public int getNumber() {
-        return number;
-    }
-
 }

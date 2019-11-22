@@ -37,40 +37,30 @@ public class TestStepAction implements Serializable {
 
     private static final long serialVersionUID = Serial.SERIAL;
 
-    private String name;
-    private int number;
+    private final String name;
 
-    private List<TestStepActionEntry> testStepActionEntries = Collections.synchronizedList(new LinkedList<TestStepActionEntry>());
+    private final List<TestStepActionEntry> testStepActionEntries = Collections.synchronizedList(new LinkedList<>());
 
-    public TestStepAction(String name, int number) {
+    public TestStepAction(String name) {
         this.name = name;
-        this.number = number;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getNumber() {
-        return number;
-    }
-
     public List<TestStepActionEntry> getTestStepActionEntries() {
         return testStepActionEntries;
     }
 
-    public int getNewEntryNumber() {
-        return testStepActionEntries.size() + 1;
-    }
-
     public void addLogMessage(LogMessage logMessage) {
-        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry(getNewEntryNumber());
+        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
         testStepActionEntry.logMessage = logMessage;
         testStepActionEntries.add(testStepActionEntry);
     }
 
     public void addScreenshots(final Screenshot beforeShot, final Screenshot afterShot) {
-        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry(getNewEntryNumber());
+        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
         testStepActionEntry.beforeScreenshot = beforeShot;
         testStepActionEntry.afterScreenshot = afterShot;
         testStepActionEntries.add(testStepActionEntry);
@@ -84,7 +74,7 @@ public class TestStepAction implements Serializable {
                 Thread.currentThread().getName(),
                 "Test Failed",
                 msg);
-        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry(getNewEntryNumber());
+        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
         testStepActionEntry.logMessage = logMessage;
         testStepActionEntries.add(testStepActionEntry);
     }

@@ -66,6 +66,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.awt.Color;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -79,8 +82,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Mike Reiche
  */
 public abstract class Page extends AbstractPage implements TestablePage {
-
-    public static final String CHECKPAGE_METHOD_NAME = "checkPage";
     private final GuiElementGroups guiElementGroups;
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
     private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
@@ -407,27 +408,6 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
     public GuiElementGroups getGuiElementGroups() {
         return guiElementGroups;
-    }
-
-    /**
-     * This method returns the steps string.
-     * @param simpleClassName .
-     * @param actionName .
-     * @return .
-     */
-    public static String getPageContext(final String simpleClassName, String actionName) {
-        if (StringUtils.isStringEmpty(actionName)) {
-            return simpleClassName;
-        }
-        else if ("<init>".equals(actionName)) {
-//            actionName = "Initialization";
-            return simpleClassName;
-        }
-        else if (actionName.equals(Page.CHECKPAGE_METHOD_NAME)) {
-            return simpleClassName;
-        }
-
-        return simpleClassName + " -> " + actionName;
     }
 
     @Override

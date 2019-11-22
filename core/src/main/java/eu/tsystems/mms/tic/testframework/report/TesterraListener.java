@@ -265,8 +265,11 @@ public class TesterraListener implements
      * @param context    steps of test.
      */
     @Override
-    public void beforeInvocation(final IInvokedMethod method, final ITestResult testResult,
-                                 final ITestContext context) {
+    public void beforeInvocation(
+        IInvokedMethod method,
+        ITestResult testResult,
+        ITestContext context
+    ) {
         try {
             pBeforeInvocation(method, testResult, context);
         } catch (Throwable t) {
@@ -282,7 +285,11 @@ public class TesterraListener implements
      * @param testResult    result of invoked method.
      * @param testContext
      */
-    private void pBeforeInvocation(final IInvokedMethod invokedMethod, final ITestResult testResult, ITestContext testContext) {
+    private void pBeforeInvocation(
+        IInvokedMethod invokedMethod,
+        ITestResult testResult,
+        ITestContext testContext
+    ) {
         /*
         check for listener duplicates
          */
@@ -295,13 +302,13 @@ public class TesterraListener implements
             return;
         }
 
-        TestStep.begin("Setup");
-
         /*
          * store testresult, create method context
          */
-        final MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
+        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
         ExecutionContextController.setCurrentMethodContext(methodContext);
+
+        TestStep step = methodContext.steps().announceTestStep(TestStep.SETUP);
 
         final String infoText = "beforeInvocation: " + invokedMethod.getTestMethod().getTestClass().getName() + "." +
                 methodName +
@@ -321,7 +328,8 @@ public class TesterraListener implements
 
         workerExecutor.run(testResult, methodName, methodContext, testContext, invokedMethod);
 
-        TestStep.end();
+        // We don't close teardown steps, because we want to collect further actions there
+        //step.close();
     }
 
     /**
@@ -362,8 +370,11 @@ public class TesterraListener implements
      * @param testContext   steps of test.
      */
     // CHECKSTYLE:OFF
-    private void pAfterInvocation(final IInvokedMethod invokedMethod, final ITestResult testResult,
-                                  final ITestContext testContext) {
+    private void pAfterInvocation(
+        IInvokedMethod invokedMethod,
+        ITestResult testResult,
+        ITestContext testContext
+    ) {
 
         final String methodName;
         final String testClassName;
@@ -413,7 +424,7 @@ public class TesterraListener implements
         /*
         add workers in workflow order
          */
-        TestStep.begin("TearDown");
+        TestStep step = methodContext.steps().announceTestStep(TestStep.TEARDOWN);
         if (testResult.isSuccess()) {
             LOGGER.info(methodName + " PASSED");
         } else if (testResult.getStatus() == ITestResult.FAILURE) {
@@ -451,12 +462,16 @@ public class TesterraListener implements
          */
         workerExecutor.run(testResult, methodName, methodContext, testContext, invokedMethod);
 
-        TestStep.end();
+        // We don't close teardown steps, because we want to collect further actions there
+        //step.close();
     }
 
     @Override
-    public void generateReport(final List<XmlSuite> xmlSuites, final List<ISuite> suites,
-                               final String outputDirectory) {
+    public void generateReport(
+        List<XmlSuite> xmlSuites,
+        List<ISuite> suites,
+        String outputDirectory
+    ) {
         GenerateReport.runOnce(xmlSuites, suites, outputDirectory, XML_REPORTER);
     }
 

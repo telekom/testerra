@@ -13,9 +13,10 @@ public class XPath {
     private XPath sub;
     private final int pos;
     protected XPath root;
+
     protected XPath(String selector, int position) {
         this.selector = selector;
-        if (position < 1) position = 1;
+        if (position == 0) position = 1;
         pos = position;
     }
     protected XPath(String selector) {
@@ -33,44 +34,76 @@ public class XPath {
         return xPath;
     }
 
-    public XPath withClass(String ... classes) {
-        for (String className : classes) {
-            /**
-             * @see {https://stackoverflow.com/questions/1390568/how-can-i-match-on-an-attribute-that-contains-a-certain-string}
-             */
-            attributes.add(String.format("contains(concat(' ', normalize-space(@class), ' '), ' %s ')", className));
+    public XPath hasClass(Object ... classes) {
+        return attributeWords("class", classes);
+    }
 
-            // Regex match with XPath 2.0
-            //attributes.add(String.format("contains(@class, '[\\s|\\W]%s[\\s|\\W]')", className));
+    private void somethingIs(String something, Object string) {
+        attributes.add(String.format("%s='%s'", something, string));
+    }
+    private void somethingContains(String something, Object string) {
+        attributes.add(String.format("contains(%s, '%s')", something, string));
+    }
+    private void somethingContainsWord(String something, Object string) {
+        /**
+         * @see {https://stackoverflow.com/questions/1390568/how-can-i-match-on-an-attribute-that-contains-a-certain-string}
+         */
+        attributes.add(String.format("contains(concat(' ', normalize-space(%s), ' '), ' %s ')", something, string));
+        // Regex match with XPath 2.0
+        //attributes.add(String.format("contains(@class, '[\\s|\\W]%s[\\s|\\W]')", className));
+    }
+    private void somethingContainsWords(String something, Object ... texts) {
+        for (Object text : texts) {
+            for (String word : text.toString().split("\b+")) {
+                somethingContainsWord(something, word);
+            }
         }
+    }
+
+    public XPath attribute(Attribute attribute, Object string) {
+        return attribute(attribute.toString(), string);
+    }
+
+    public XPath attribute(String attribute, Object string) {
+        somethingIs(String.format("@%s", attribute), string);
         return this;
     }
 
-    public XPath withAttribute(String attribute, Object string) {
-        attributes.add(String.format("@%s='%s'", attribute, string));
+    public XPath attributeContains(Attribute attribute, Object string) {
+        return attributeContains(attribute.toString(), string);
+    }
+
+    public XPath attributeContains(String attribute, Object string) {
+        somethingContains(String.format("@%s", attribute), string);
         return this;
     }
 
-//
-//    public XPath attributeContains(String attribute, Object string) {
-//        attributes.add(String.format("contains(@%s, '%s')", attribute, string));
-//        return this;
-//    }
+    public XPath attributeWords(Attribute attribute, Object string) {
+        return attributeWords(attribute.toString(), string);
+    }
 
-//    public XPath withText(Object text) {
-//        attributes.add(String.format("contains(normalize-space(text(), '%s'))", text));
-//        return this;
-//    }
+    public XPath attributeWords(String attribute, Object ... words) {
+        somethingContainsWords(String.format("@%s", attribute), words);
+        return this;
+    }
 
-    public XPath withWords(Object ... words) {
-        for (Object word : words) {
-            attributes.add(String.format("contains(concat(' ', normalize-space(text()), ' '), ' %s ')", word));
-        }
+    public XPath textIs(Object string) {
+        somethingIs("text()", string);
+        return this;
+    }
+
+    public XPath textContains(Object string) {
+        somethingContains("text()", string);
+        return this;
+    }
+
+    public XPath textWords(Object ... words) {
+        somethingContainsWords("text()", words);
         return this;
     }
 
     private static String translateSubSelection(String selector) {
-        if (selector.startsWith("/")==false) {
+        if (!selector.startsWith("/")) {
             selector = "//"+selector;
         }
         return selector;
@@ -119,7 +152,9 @@ public class XPath {
         if (attributes.size() > 0) {
             xPath.append(String.format("[%s]", String.join(" and ", attributes)));
         }
-        if (pos != 0) {
+        if (pos < 0) {
+            xPath.append("[last()]");
+        } else if (pos != 0) {
             xPath.append(String.format("[%d]", pos));
         }
         if (sub != null) {

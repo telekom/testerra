@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.model.steps;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.pageobjects.MyVariables;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -13,7 +14,7 @@ import org.testng.annotations.Test;
 public class TestStepTest extends AbstractTestSitesTest {
 
     public WebTestPage getPage() {
-        return PageFactory.create(WebTestPage.class, WebDriverManager.getWebDriver(), new WebTestPage.MyVariables(1));
+        return PageFactory.create(WebTestPage.class, WebDriverManager.getWebDriver(), new MyVariables(1));
     }
 
     @BeforeTest

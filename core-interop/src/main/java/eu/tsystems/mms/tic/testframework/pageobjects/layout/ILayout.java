@@ -1,8 +1,9 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.layout;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.IGuiElement;
 
+@Deprecated
 public interface ILayout {
     LayoutBorders getElementLayoutBorders(IGuiElement GuiElementFacade);
 
@@ -26,6 +27,7 @@ public interface ILayout {
 
     ILayout sameRight(IGuiElement distanceGE, int delta);
 
+    @Deprecated
     public static class LayoutBorders {
         long left = -1;
         long right = -1;

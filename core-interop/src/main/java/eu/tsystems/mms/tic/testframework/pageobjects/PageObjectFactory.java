@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.IGuiElement;
 import org.openqa.selenium.WebDriver;
 
 public interface PageObjectFactory {

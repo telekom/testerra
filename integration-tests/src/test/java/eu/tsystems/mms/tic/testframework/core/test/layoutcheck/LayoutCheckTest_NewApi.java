@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

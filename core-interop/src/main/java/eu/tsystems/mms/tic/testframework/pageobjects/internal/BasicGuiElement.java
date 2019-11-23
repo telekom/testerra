@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
@@ -43,6 +44,7 @@ public interface BasicGuiElement {
     BinaryAssertion<Boolean> visible(boolean complete);
     StringAssertion<String> tagName();
     RectAssertion bounds();
+    TestableGuiElement waitFor();
 
     /**
      * Takes a screenshot of the current element

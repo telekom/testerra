@@ -21,16 +21,14 @@ package eu.tsystems.mms.tic.testframework.pageobjects.layout;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.IGuiElement;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 
 import java.util.Map;
 
-/**
- * @todo Allow access to distance values (required for new assert interface)
- */
+@Deprecated
 public abstract class Layout implements ILayout {
 
     private boolean innerBorders = false;

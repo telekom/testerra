@@ -1,4 +1,4 @@
-package eu.tsystems.mms.tic.testframework.pageobjects.internal;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
 public interface InteractiveGuiElement extends TestableGuiElement {
     InteractiveGuiElement select(Boolean select);

@@ -60,7 +60,7 @@ public class Locate {
     }
 
     public static Locate by(XPath xPath) {
-        return new Locate().by().xpath(xPath.toString());
+        return by().xpath(xPath.toString());
     }
 
     /**

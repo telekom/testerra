@@ -14,6 +14,7 @@ public interface InteractiveGuiElement extends TestableGuiElement {
 
     /**
      * Sends keys with a maximum of characters per minute
+     * @deprecated This is an alpha feature
      */
     InteractiveGuiElement userSendKeys(int cpm, CharSequence... charSequences);
     InteractiveGuiElement clear();

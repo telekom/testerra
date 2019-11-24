@@ -27,7 +27,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.components.InputForm;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.IGuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

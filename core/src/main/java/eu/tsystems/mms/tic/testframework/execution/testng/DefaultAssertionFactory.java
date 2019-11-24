@@ -2,7 +2,7 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 
 public class DefaultAssertionFactory implements AssertionFactory {
     private ThreadLocal<Class<? extends Assertion>> threadLocalAssertionClass = new ThreadLocal<>();

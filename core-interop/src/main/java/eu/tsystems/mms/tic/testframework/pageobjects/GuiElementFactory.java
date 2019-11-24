@@ -1,7 +1,5 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.IGuiElement;
-
 public interface GuiElementFactory {
     IGuiElement create(
         Locate locator,

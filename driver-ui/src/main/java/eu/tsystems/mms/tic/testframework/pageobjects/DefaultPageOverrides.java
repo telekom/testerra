@@ -1,7 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.IGuiElement;
 
 /**
  * @todo Implement thread local reset

@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context.report;
 
+import afu.org.checkerframework.checker.oigj.qual.O;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
@@ -26,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.IReport;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 
@@ -130,45 +132,16 @@ public class Report implements IReport, Loggable {
         return screenshot;
     }
 
-    /**
-     * @deprecated Use {@link IReport} instead
-     */
-    @Deprecated
-    public static Screenshot provideScreenshot(
-        File screenshotFile,
-        File ignored,
-        Mode mode
-    ) {
-        return report.provideScreenshot(screenshotFile, mode);
+    @Override
+    public IReport addVideo(Video video, Mode mode) {
+        addFile(video.getVideoFile(), VIDEO_DIRECTORY, mode);
+        return this;
     }
 
-//
-//    public static Video provideVideo(
-//        File file,
-//        Mode mode
-//    ) throws IOException {
-//        if (!file.exists()) {
-//            LOGGER.error("Cannot provide video: " + file + " does not exist");
-//            return null;
-//        }
-//
-//        final String fileName = UUID.randomUUID() + "." + FilenameUtils.getExtension(file.getName());
-//
-//        File targetFile = new File(VIDEO_DIRECTORY, fileName);
-//        switch (mode) {
-//            case COPY:
-//                FileUtils.copyFile(file, targetFile, true);
-//                break;
-//            case MOVE:
-//                FileUtils.moveFile(file, targetFile);
-//                break;
-//        }
-//
-//        Video video = new Video();
-//        video.filename = fileName;
-//
-//        LOGGER.info("Provided video " + file + " as " + targetFile);
-//
-//        return video;
-//    }
+    @Override
+    public Video provideVideo(File file, Mode mode)  {
+        Video video = new Video(file);
+        addVideo(video, mode);
+        return video;
+    }
 }

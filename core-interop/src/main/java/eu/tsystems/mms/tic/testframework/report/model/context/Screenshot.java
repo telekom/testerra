@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Screenshot implements Loggable {
+public class Screenshot extends Attachment implements Loggable {
 
     public enum Meta {
         SESSION_KEY("SessionKey"),
@@ -53,14 +53,9 @@ public class Screenshot implements Loggable {
     }
 
     @Deprecated
-    public String filename;
-    private File screenshotFile;
-    @Deprecated
     public String sourceFilename;
     private File pageSourceFile;
     final private Map<String, String> meta = new HashMap<>();
-    private static HashMap<String, Integer> counter = new HashMap<>();
-    private final String tmpName;
 
     /*
     Refers to the errorContext the screenshot belongs to.
@@ -73,38 +68,25 @@ public class Screenshot implements Loggable {
     }
 
     public Screenshot(String name) {
-        int count = counter.getOrDefault(name, 1);
-        this.tmpName = String.format("%s-%03d-", name, count);
-        counter.put(name, ++count);
+        super(name);
     }
 
     public Screenshot(File screenshotFile, File pageSourceFile) {
-        setScreenshotFile(screenshotFile);
+        super(screenshotFile);
         if (pageSourceFile!=null) {
             setPageSourceFile(pageSourceFile);
         }
-        tmpName = FilenameUtils.getBaseName(screenshotFile.getName());
     }
 
-    private Screenshot setScreenshotFile(File file) {
+    @Override
+    protected Attachment setFile(File file) {
         meta.put(Meta.DATE.toString(), new Date(file.lastModified()).toString());
-        screenshotFile = file;
-        filename = file.getName();
-        meta.put(Meta.FILE_NAME.toString(), filename);
-        return this;
+        meta.put(Meta.FILE_NAME.toString(), file.getName());
+        return super.setFile(file);
     }
 
     public File getScreenshotFile() {
-        if (screenshotFile==null) {
-            try {
-                File file = File.createTempFile(tmpName, ".png");
-                if (file.exists()) file.delete();
-                setScreenshotFile(file);
-            } catch (IOException e) {
-                log().error(e.getMessage());
-            }
-        }
-        return screenshotFile;
+        return getOrCreateTempFile(".png");
     }
 
     private Screenshot setPageSourceFile(File file) {
@@ -117,7 +99,7 @@ public class Screenshot implements Loggable {
     public File getPageSourceFile() {
         if (pageSourceFile==null) {
             try {
-                File file = File.createTempFile(tmpName, ".html");
+                File file = File.createTempFile(FilenameUtils.getBaseName(getScreenshotFile().getName()), ".html");
                 if (file.exists()) file.delete();
                 setPageSourceFile(file);
             } catch (IOException e) {

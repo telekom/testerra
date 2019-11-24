@@ -19,18 +19,28 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Video {
-
-    public String filename;
-    public List<String> infos = new LinkedList<>();
+public class Video extends Attachment {
+    public final List<String> infos = new LinkedList<>();
 
     /*
     Refers to the errorContext the screenshot belongs to.
      */
     public String errorContextId;
+
+    public Video() {
+        super("Video");
+    }
+    public Video(File file) {
+        super(file);
+    }
+
+    public File getVideoFile() {
+        return getOrCreateTempFile(".mp4");
+    }
 
     @Override
     public String toString() {

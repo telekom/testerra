@@ -26,7 +26,10 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import com.google.inject.Key;
+import com.google.inject.TypeLiteral;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
@@ -50,6 +53,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides threadsafe WebDriver and Selenium objects. These objects are needed for correct logging and reporting.
@@ -78,11 +82,6 @@ public final class WebDriverManager {
      * Executing selenium hosts. Package local access for WDInternal class.
      */
     static final ThreadLocal<String> EXECUTING_SELENIUM_HOSTS_PER_THREAD = new ThreadLocal<String>();
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverManager.class);
 
     /**
      * The preset baseURL. Set by setBaseURL().
@@ -478,7 +477,8 @@ public final class WebDriverManager {
         return WebDriverSessionsManager.getWebDriversFromThread(threadId);
     }
 
-    public static void registerWebDriverFactory(WebDriverFactory webDriverFactory, String... browsers) {
+    @Deprecated
+    public static void registerWebDriverFactory(IWebDriverFactory webDriverFactory, String... browsers) {
         WebDriverSessionsManager.registerWebDriverFactory(webDriverFactory, browsers);
     }
 

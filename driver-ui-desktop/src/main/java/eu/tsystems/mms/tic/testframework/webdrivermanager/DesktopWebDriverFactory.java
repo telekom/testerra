@@ -35,6 +35,9 @@ import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -44,6 +47,7 @@ import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import net.anthavio.phanbedder.Phanbedder;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -67,13 +71,15 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by pele on 19.07.2017.
  */
-public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> {
+public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> implements IWebDriverFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverFactory.class);
 
     @Override
@@ -464,4 +470,21 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         return phantomjsFile;
     }
 
+    @Override
+    public List<String> getSupportedBrowsers() {
+        return Arrays.asList(
+            Browsers.safari,
+            Browsers.ie,
+            Browsers.chrome,
+            Browsers.chromeHeadless,
+            Browsers.edge,
+            Browsers.firefox,
+            Browsers.phantomjs
+        );
+    }
+
+    @Override
+    public GuiElementCore createGuiElementAdapter(By by, WebDriver webDriver, GuiElementData guiElementData) {
+        return new DesktopGuiElementCore(by, webDriver, guiElementData);
+    }
 }

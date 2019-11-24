@@ -19,6 +19,9 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import com.google.inject.Key;
+import com.google.inject.TypeLiteral;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
@@ -53,7 +56,7 @@ public final class WebDriverSessionsManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverSessionsManager.class);
 
-    private static final Map<String, WebDriverFactory> WEB_DRIVER_FACTORIES = new HashMap<>();
+    private static final Map<String, IWebDriverFactory> WEB_DRIVER_FACTORIES = new HashMap<>();
 
     public static final String EXCLUSIVE_PREFIX = "EXCLUSIVE_";
 
@@ -76,6 +79,15 @@ public final class WebDriverSessionsManager {
     private static String getFullSessionKey(String sessionKey) {
         Thread currentThread = Thread.currentThread();
         return currentThread.getId() + FULL_SESSION_KEY_SPLIT_MARKER + sessionKey;
+    }
+
+    static {
+        /**
+         * Getting multi binder set programmatically
+         * @see {https://groups.google.com/forum/#!topic/google-guice/EUnNStmrhOk}
+         */
+        Set<IWebDriverFactory> webDriverFactories = Testerra.injector.getInstance(Key.get(new TypeLiteral<Set<IWebDriverFactory>>(){}));
+        webDriverFactories.forEach(webDriverFactory -> webDriverFactory.getSupportedBrowsers().forEach(browser -> WEB_DRIVER_FACTORIES.put(browser, webDriverFactory)));
     }
 
     static void storeWebDriverSession(WebDriverRequest webDriverRequest, WebDriver eventFiringWebDriver, SessionContext sessionContext) {
@@ -410,7 +422,7 @@ public final class WebDriverSessionsManager {
         decide which session manager to use
          */
         if (WEB_DRIVER_FACTORIES.containsKey(browser)) {
-            WebDriverFactory webDriverFactory = WEB_DRIVER_FACTORIES.get(browser);
+            IWebDriverFactory webDriverFactory = WEB_DRIVER_FACTORIES.get(browser);
 
             /*
             create session context and link to method context
@@ -458,7 +470,8 @@ public final class WebDriverSessionsManager {
         }
     }
 
-    static void registerWebDriverFactory(WebDriverFactory webDriverFactory, String... browsers) {
+    @Deprecated
+    static void registerWebDriverFactory(IWebDriverFactory webDriverFactory, String... browsers) {
         LOGGER.info("Registering " + webDriverFactory.getClass().getSimpleName() + " for browsers " + ArrayUtils.join(browsers, ","));
 
         for (String browser : browsers) {
@@ -468,5 +481,9 @@ public final class WebDriverSessionsManager {
 
     public static SessionContext getSessionContext(String sessionId) {
         return ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.get(sessionId);
+    }
+
+    public static IWebDriverFactory getWebDriverFactory(String browser) {
+        return WEB_DRIVER_FACTORIES.getOrDefault(browser, null);
     }
 }

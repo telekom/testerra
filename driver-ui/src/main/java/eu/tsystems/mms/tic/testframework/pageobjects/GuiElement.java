@@ -52,7 +52,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAsser
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DefaultGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
@@ -64,8 +65,10 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -219,8 +222,15 @@ public class GuiElement implements
         String currentBrowser = webDriverRequest.browser;
         guiElementData.browser = currentBrowser;
 
-        GuiElementCoreFactory coreFactory = Testerra.injector.getInstance(GuiElementCoreFactory.class);
-        guiElementCore = coreFactory.create(currentBrowser, by, driver, guiElementData);
+        IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(currentBrowser);
+        guiElementCore = factory.createGuiElementAdapter(by, driver, guiElementData);
+        if (guiElementData.hasFrameLogic()) {
+
+            // if frames are set, the waiter should use frame switches when executing its sequences
+            guiElementCore = new GuiElementCoreFrameAwareDecorator(guiElementCore, guiElementData);
+        }
+        // Wrap the core with sequence decorator, such that its methods are executed with sequence
+        guiElementCore = new GuiElementCoreSequenceDecorator(guiElementCore, guiElementData);
 
         GuiElementWaitFactory waitFactory = Testerra.injector.getInstance(GuiElementWaitFactory.class);
         guiElementWait = waitFactory.create(guiElementCore, guiElementData);

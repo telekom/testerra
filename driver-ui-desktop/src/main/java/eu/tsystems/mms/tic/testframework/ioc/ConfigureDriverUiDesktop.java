@@ -2,12 +2,14 @@ package eu.tsystems.mms.tic.testframework.ioc;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCoreFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFactory;
+import com.google.inject.multibindings.Multibinder;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverFactory;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 
 public class ConfigureDriverUiDesktop extends AbstractModule {
     @Override
     protected void configure() {
-        bind(GuiElementCoreFactory.class).to(DesktopGuiElementCoreFactory.class).in(Scopes.SINGLETON);
+        Multibinder<IWebDriverFactory> uriBinder = Multibinder.newSetBinder(binder(), IWebDriverFactory.class);
+        uriBinder.addBinding().to(DesktopWebDriverFactory.class).in(Scopes.SINGLETON);
     }
 }

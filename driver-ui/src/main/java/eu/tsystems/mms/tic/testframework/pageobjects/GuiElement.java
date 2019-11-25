@@ -123,14 +123,9 @@ public class GuiElement implements
     private Locate locator;
     private final GuiElementData guiElementData;
 
-    private GuiElement(GuiElementData guiElementData, int index) {
-        this.guiElementData = guiElementData.copy();
-        this.guiElementData.index = index;
-        if (!StringUtils.isEmpty(guiElementData.name)) {
-            this.guiElementData.name = guiElementData.name + "_" + index;
-        }
+    private GuiElement(GuiElementData guiElementData) {
+        this.guiElementData = guiElementData;
         buildInternals(guiElementData.webDriver, guiElementData.by);
-
     }
 
     /**
@@ -728,7 +723,7 @@ public class GuiElement implements
         int numberOfFoundElements = getNumberOfFoundElements();
         List<GuiElement> guiElements = new ArrayList<>(numberOfFoundElements);
         for (int i = 0; i < numberOfFoundElements; i++) {
-            GuiElement guiElement = new GuiElement(guiElementData, i);
+            GuiElement guiElement = new GuiElement(new GuiElementData(guiElementData, i));
             guiElements.add(guiElement);
         }
         return guiElements;

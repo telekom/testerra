@@ -66,6 +66,7 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      *
      * @return by locator
      */
+    @Deprecated
     By getBy();
 
     /**

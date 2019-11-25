@@ -20,9 +20,5 @@ public interface IWebDriverFactory {
     default boolean isBrowserSupported(String browser) {
         return getSupportedBrowsers().indexOf(browser) >= 0;
     }
-    GuiElementCore createGuiElementAdapter(
-        By by,
-        WebDriver webDriver,
-        GuiElementData guiElementData
-    );
+    GuiElementCore createGuiElementAdapter(GuiElementData guiElementData);
 }

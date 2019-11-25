@@ -484,7 +484,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     }
 
     @Override
-    public GuiElementCore createGuiElementAdapter(By by, WebDriver webDriver, GuiElementData guiElementData) {
-        return new DesktopGuiElementCore(by, webDriver, guiElementData);
+    public GuiElementCore createGuiElementAdapter(GuiElementData guiElementData) {
+        return new DesktopGuiElementCore(guiElementData);
     }
 }

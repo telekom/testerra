@@ -112,7 +112,11 @@ public class GuiElement implements
 
     private GuiElement(GuiElementData guiElementData) {
         this.guiElementData = guiElementData;
-        buildInternals(guiElementData.webDriver, guiElementData.by);
+        buildInternals(guiElementData.webDriver);
+    }
+
+    public GuiElementCore getCore() {
+        return guiElementCore;
     }
 
     /**
@@ -149,9 +153,8 @@ public class GuiElement implements
         if (frames != null && frames.length > 0) {
             frameLogic = new FrameLogic(driver, frames);
         }
-        By by = locate.getBy();
-        guiElementData = new GuiElementData(driver, "", frameLogic, by, this);
-        buildInternals(driver, by);
+        guiElementData = new GuiElementData(driver, "", frameLogic, locate, this);
+        buildInternals(driver);
         this.locate = locate;
     }
 
@@ -177,10 +180,6 @@ public class GuiElement implements
     ) {
         // Use FrameLogic from parent
         GuiElement ancestorGuiElement = (GuiElement)ancestor;
-        IFrameLogic frameLogic = null;
-        if (ancestorGuiElement.guiElementData.frameLogic != null) {
-            frameLogic = ancestorGuiElement.guiElementData.frameLogic;
-        }
 
         String abstractLocatorString = locate.getBy().toString();
         if (abstractLocatorString.toLowerCase().contains("xpath")) {
@@ -199,11 +198,9 @@ public class GuiElement implements
             }
         }
 
-        By by = locate.getBy();
-        guiElementData = new GuiElementData(ancestor.getWebDriver(), "", frameLogic, by, this);
-        guiElementData.parent = ancestorGuiElement.guiElementCore;
+        guiElementData = new GuiElementData(ancestorGuiElement.guiElementData, locate);
         setParent(ancestorGuiElement);
-        buildInternals(ancestor.getWebDriver(), by);
+        buildInternals(ancestor.getWebDriver());
         this.locate = locate;
     }
 
@@ -212,14 +209,13 @@ public class GuiElement implements
         return locate;
     }
 
-    private void buildInternals(WebDriver driver, By by) {
+    private void buildInternals(WebDriver driver) {
         // Create core depending on requested Browser
         WebDriverRequest webDriverRequest = WebDriverManager.getRelatedWebDriverRequest(driver);
         String currentBrowser = webDriverRequest.browser;
-        guiElementData.browser = currentBrowser;
 
         IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(currentBrowser);
-        guiElementCore = factory.createGuiElementAdapter(by, driver, guiElementData);
+        guiElementCore = factory.createGuiElementAdapter(guiElementData);
         if (guiElementData.hasFrameLogic()) {
 
             // if frames are set, the waiter should use frame switches when executing its sequences
@@ -774,6 +770,7 @@ public class GuiElement implements
         return guiElementAssertDescriptionDecorator;
     }
 
+    @Deprecated
     public List<GuiElement> getList() {
         int numberOfFoundElements = getNumberOfFoundElements();
         List<GuiElement> guiElements = new ArrayList<>(numberOfFoundElements);

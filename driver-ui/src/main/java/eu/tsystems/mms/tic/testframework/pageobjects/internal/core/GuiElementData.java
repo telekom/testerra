@@ -22,11 +22,14 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -35,73 +38,81 @@ import org.openqa.selenium.WebElement;
  * @todo Create interface
  */
 public class GuiElementData {
-
-    public final By by;
-    /**
-     * @todo This will not @deprecated in Testerra 2
-     */
-    @Deprecated // Evil, should never be used!!! <<< why, i need it?? pele 23.08.2019
+    public final Locate locate;
     public final GuiElement guiElement;
-
     public final WebDriver webDriver;
     public String name;
     public final ExecutionLog executionLog;
-    public int timeoutInSeconds;
+    private int timeoutInSeconds;
+    @Deprecated
     public final TimerWrapper timerWrapper;
     public WebElement webElement;
     public final IFrameLogic frameLogic;
-    public final int timerSleepTimeInMs = 500;
+    private final int timerSleepTimeInMs = 500;
     public boolean sensibleData = false;
-    /**
-     * @deprecated Should be GuiElementData
-     */
-    @Deprecated
-    public GuiElementCore parent;
+    public final GuiElementData parent;
     public final int index;
-    public LogLevel logLevel = LogLevel.DEBUG;
-    public LogLevel storedLogLevel = logLevel;
-    public String browser;
+    private LogLevel logLevel = LogLevel.DEBUG;
+    private LogLevel storedLogLevel = logLevel;
+    public final String browser;
     public boolean shadowRoot = false;
 
-    public GuiElementData(GuiElementData guiElementData, int index) {
+    public GuiElementData(GuiElementData parent, Locate locate) {
         this(
-            guiElementData.webDriver,
-            guiElementData.name,
-            guiElementData.frameLogic,
-            guiElementData.by,
-            guiElementData.guiElement,
+            parent.webDriver,
+            parent.name,
+            parent.frameLogic,
+            locate,
+            parent.guiElement,
+            parent,
+            -1
+        );
+    }
+
+    public GuiElementData(GuiElementData parent, int index) {
+        this(
+            parent.webDriver,
+            parent.name,
+            parent.frameLogic,
+            parent.locate,
+            parent.guiElement,
+            parent,
             index
         );
-        parent = guiElementData.parent;
     }
 
     public GuiElementData(
         WebDriver webDriver,
         String name,
         IFrameLogic frameLogic,
-        By by,
+        Locate locate,
         GuiElement guiElement
     ) {
-        this(webDriver, name, frameLogic, by, guiElement, -1);
+        this(webDriver, name, frameLogic, locate, guiElement, null, -1);
     }
 
     private GuiElementData(
         WebDriver webDriver,
         String name,
-        FrameLogic frameLogic,
-        By by,
+        IFrameLogic frameLogic,
+        Locate locate,
         GuiElement guiElement,
+        GuiElementData parent,
         int index
     ) {
         this.webDriver = webDriver;
         this.name = name;
-        this.by = by;
+        this.locate = locate;
         this.guiElement = guiElement;
         this.executionLog = new ExecutionLog();
         this.timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
         this.frameLogic = frameLogic;
+        WebDriverRequest request = WebDriverManager.getRelatedWebDriverRequest(webDriver);
+        this.browser = request.browser;
         // Central Timer Object which is used by all sequence executions
         this.timerWrapper = new TimerWrapper(timerSleepTimeInMs, timeoutInSeconds, webDriver, executionLog);
+        this.parent = parent;
+        if (parent == null) index = -1;
         this.index = index;
     }
 

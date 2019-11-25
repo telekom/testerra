@@ -7,7 +7,6 @@ import java.math.BigDecimal;
  * @author Mike Reiche
  */
 public interface QuantityAssertion<T> extends BinaryAssertion<T> {
-    T getActual();
     boolean is(Object expected);
     default boolean isGreaterThan(long expected) {
         return isGreaterThan(new BigDecimal(expected));

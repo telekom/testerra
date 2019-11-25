@@ -96,10 +96,6 @@ public abstract class Page extends AbstractPage implements TestablePage {
         return new FrameFinder(frame);
     }
 
-    /**
-     * @deprecated This constructor should be protected
-     */
-    @Deprecated
     public Page(WebDriver webDriver) {
         if (webDriver == null) {
             throw new IllegalArgumentException("The driver object must not be null");
@@ -256,6 +252,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
     @Fails(validFor = "unsupportedBrowser=true")
     private boolean pIsTextPresentRecursive(final boolean isDisplayed, final String text) {
         TestableGuiElement textElement = anyElementContainsText(text);
+        textElement.displayed();
         if (
             isDisplayed && textElement.displayed().getActual()
             || textElement.present().getActual()

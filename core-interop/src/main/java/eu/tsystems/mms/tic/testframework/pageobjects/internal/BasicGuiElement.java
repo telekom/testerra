@@ -19,19 +19,26 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import org.openqa.selenium.WebElement;
 
+import java.util.Iterator;
+
 /**
  * An interface to allow basic GuiElement operations
  */
-public interface BasicGuiElement {
+public interface BasicGuiElement<SELF> extends
+    Iterable<SELF>,
+    Iterator<SELF>
+{
     @Deprecated
     GuiElementAssert nonFunctionalAsserts();
     @Deprecated
@@ -45,6 +52,7 @@ public interface BasicGuiElement {
     StringAssertion<String> tagName();
     RectAssertion bounds();
     TestableGuiElement waitFor();
+    QuantityAssertion<Integer> numberOfElements();
 
     /**
      * Takes a screenshot of the current element
@@ -65,4 +73,8 @@ public interface BasicGuiElement {
     Locate getLocate();
 
     WebElement getWebElement();
+
+    SELF element(int position);
+    SELF firstElement();
+    SELF lastElement();
 }

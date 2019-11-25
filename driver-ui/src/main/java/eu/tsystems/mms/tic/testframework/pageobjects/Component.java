@@ -30,28 +30,31 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import org.openqa.selenium.WebElement;
 
+import java.util.Iterator;
+
 /**
  * Components are wrappers for HTML elements like components
  * @author Mike Reiche
  */
-public abstract class Component extends AbstractPage implements
-    IComponent<Component>,
+public abstract class Component<SELF extends Component<SELF>> extends AbstractPage implements
+    IComponent<SELF>,
     Hierarchy<Component>
 {
     protected final IGuiElement rootElement;
-    private final Finder defaultFinder;
     private String name;
     private Object parent;
 
     public Component(IGuiElement rootElement) {
         this.rootElement = rootElement;
-        defaultFinder = withAncestor(rootElement);
     }
+
+    protected abstract SELF self();
 
     @Override
     public ImageAssertion screenshot() {
@@ -78,8 +81,23 @@ public abstract class Component extends AbstractPage implements
         return rootElement.getWebElement();
     }
 
+    @Override
+    public SELF element(int position) {
+        return null;
+    }
+
+    @Override
+    public SELF firstElement() {
+        return null;
+    }
+
+    @Override
+    public SELF lastElement() {
+        return null;
+    }
+
     protected IGuiElement find(Locate locate) {
-        return defaultFinder.find(locate);
+        return rootElement.find(locate);
     }
 
     @Override
@@ -126,14 +144,19 @@ public abstract class Component extends AbstractPage implements
     }
 
     @Override
+    public QuantityAssertion<Integer> numberOfElements() {
+        return rootElement.numberOfElements();
+    }
+
+    @Override
     public BinaryAssertion<Boolean> displayed() {
         return rootElement.displayed();
     }
 
     @Override
-    public Component setName(String name) {
+    public SELF setName(String name) {
         this.name = name;
-        return this;
+        return self();
     }
 
     @Override
@@ -164,5 +187,20 @@ public abstract class Component extends AbstractPage implements
             toString += super.toString();
         }
         return toString;
+    }
+
+    @Override
+    public Iterator<SELF> iterator() {
+        return this;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return rootElement.hasNext();
+    }
+
+    @Override
+    public SELF next() {
+        return (SELF) createComponent(self().getClass(), rootElement.next());
     }
 }

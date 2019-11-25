@@ -7,7 +7,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
 import org.openqa.selenium.By;
 
-public class InputForm extends Component {
+public class InputForm extends Component<InputForm> {
 
     @Check
     private IGuiElement button = find(By.className("component-btn"));
@@ -16,6 +16,11 @@ public class InputForm extends Component {
 
     public InputForm(IGuiElement rootElement) {
         super(rootElement);
+    }
+
+    @Override
+    protected InputForm self() {
+        return this;
     }
 
     public TestableGuiElement button() {

@@ -33,7 +33,7 @@ import org.openqa.selenium.Point;
  * @author Mike Reiche
  */
 public interface IGuiElement extends
-    InteractiveGuiElement,
+    InteractiveGuiElement<IGuiElement>,
     Nameable<IGuiElement>,
     WebDriverRetainer
 {
@@ -93,4 +93,7 @@ public interface IGuiElement extends
 
     @Deprecated
     Dimension getSize();
+
+    IGuiElement find(Locate locate);
+    IGuiElement find(By by);
 }

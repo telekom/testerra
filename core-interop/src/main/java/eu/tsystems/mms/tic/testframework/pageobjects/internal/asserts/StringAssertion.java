@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
  */
 public interface StringAssertion<T> extends QuantityAssertion<T>
 {
-    T getActual();
     boolean is(String expected);
     boolean contains(String expected);
     boolean containsNot(String expected);

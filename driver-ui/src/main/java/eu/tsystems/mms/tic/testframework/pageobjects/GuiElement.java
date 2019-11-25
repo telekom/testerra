@@ -63,7 +63,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -80,6 +79,7 @@ import org.openqa.selenium.support.ui.Select;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -94,6 +94,7 @@ public class GuiElement implements
     Hierarchy<IGuiElement>
 {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
+    private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
 
     private GuiElementAssert defaultAssert;
     private GuiElementAssert instantAssert;
@@ -109,6 +110,8 @@ public class GuiElement implements
     private Locate locate;
     private final GuiElementData guiElementData;
     protected Object parent;
+    private int iteratorIndex = 0;
+    private int iteratorSize = 0;
 
     private GuiElement(GuiElementData guiElementData) {
         this.guiElementData = guiElementData;
@@ -494,6 +497,32 @@ public class GuiElement implements
     @Override
     public Dimension getSize() {
         return guiElementFacade.getSize();
+    }
+
+    @Override
+    public IGuiElement find(Locate locate) {
+        return guiElementFactory.createFromAncestor(locate, this);
+    }
+
+    @Override
+    public IGuiElement find(By by) {
+        return find(Locate.by(by));
+    }
+
+    @Override
+    public IGuiElement element(int position) {
+        if (position < 1) position = 1;
+        return new GuiElement(new GuiElementData(guiElementData, position-1));
+    }
+
+    @Override
+    public IGuiElement firstElement() {
+        return element(1);
+    }
+
+    @Override
+    public IGuiElement lastElement() {
+        return new GuiElement(new GuiElementData(guiElementData, getNumberOfFoundElements()));
     }
 
     public String getCssValue(String cssIdentifier) {
@@ -1035,5 +1064,22 @@ public class GuiElement implements
          * because {@link #scrollToElement(int)} substracts the offset
          */
         return scrollToElement(yOffset*-1);
+    }
+
+    @Override
+    public Iterator<IGuiElement> iterator() {
+        iteratorIndex = 0;
+        iteratorSize = guiElementCore.findWebElements().size();
+        return this;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return iteratorIndex < iteratorSize;
+    }
+
+    @Override
+    public IGuiElement next() {
+        return new GuiElement(new GuiElementData(guiElementData, iteratorIndex++));
     }
 }

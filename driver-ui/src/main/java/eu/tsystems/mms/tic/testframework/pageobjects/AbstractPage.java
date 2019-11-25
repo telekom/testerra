@@ -82,14 +82,17 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
             this.parentPage = parentPage;
             this.ancestor = ancestor;
         }
+        @Deprecated
         public IGuiElement find(Locate locator) {
             return guiElementFactory.createFromAncestor(locator, ancestor);
         }
+        @Deprecated
         public <T extends IComponent> T createComponent(Class<T> componentClass) {
             return pageFactory.createComponent(componentClass, parentPage, ancestor);
         }
     }
 
+    @Deprecated
     protected Page.ComponentFinder withAncestor(IGuiElement ancestor) {
         return new AncestorFinder(this,ancestor);
     }
@@ -104,6 +107,9 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     }
     protected IGuiElement find(Locate locate) {
         return guiElementFactory.create(locate, this);
+    }
+    public <T extends IComponent> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
+        return pageFactory.createComponent(componentClass, this, rootElement);
     }
 
     /**

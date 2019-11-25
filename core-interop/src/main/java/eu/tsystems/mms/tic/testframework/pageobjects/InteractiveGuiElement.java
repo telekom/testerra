@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-public interface InteractiveGuiElement extends TestableGuiElement {
+public interface InteractiveGuiElement<SELF> extends TestableGuiElement<SELF> {
     InteractiveGuiElement select(Boolean select);
     InteractiveGuiElement click();
     InteractiveGuiElement clickJS();

@@ -18,15 +18,15 @@ public class NewGuiElementListPage extends Page {
     }
 
     public IGuiElement getNavigationSubElementsByTagName() {
-        return withAncestor(getNavigation()).find(By.tagName("a"));
+        return getNavigation().find(By.tagName("a"));
     }
 
     public IGuiElement getNavigationSubElementsByChildrenXPath() {
-        return withAncestor(getNavigation()).find(By.xpath("./a"));
+        return getNavigation().find(By.xpath("./a"));
     }
 
     public IGuiElement getNavigationSubElementsByDescendantsXPath() {
-        return withAncestor(getNavigation()).find(By.xpath(".//a"));
+        return getNavigation().find(By.xpath(".//a"));
     }
 
     public IGuiElement getNavigationSubElementsByAbsoluteChildrenXPath() {
@@ -39,9 +39,5 @@ public class NewGuiElementListPage extends Page {
 
     public TableRow getTableRowsByTagName() {
         return createComponent(TableRow.class, getTable().find(By.tagName("tr")));
-    }
-
-    public IGuiElement getSubElement(IGuiElement parent, By by) {
-        return withAncestor(parent).find(by);
     }
 }

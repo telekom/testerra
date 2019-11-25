@@ -95,5 +95,14 @@ public interface IGuiElement extends
     Dimension getSize();
 
     IGuiElement find(Locate locate);
-    IGuiElement find(By by);
+
+    default IGuiElement find(By by) {
+        return find(Locate.by(by));
+    }
+    default IGuiElement findById(Object id) {
+        return find(By.id(id.toString()));
+    }
+    default IGuiElement findByQa(String qa) {
+        return find(Locate.by().qa(qa));
+    }
 }

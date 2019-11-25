@@ -505,11 +505,6 @@ public class GuiElement implements
     }
 
     @Override
-    public IGuiElement find(By by) {
-        return find(Locate.by(by));
-    }
-
-    @Override
     public IGuiElement element(int position) {
         if (position < 1) position = 1;
         return new GuiElement(new GuiElementData(guiElementData, position-1));

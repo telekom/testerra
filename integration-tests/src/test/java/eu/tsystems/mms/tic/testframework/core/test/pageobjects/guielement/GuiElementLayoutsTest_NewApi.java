@@ -127,21 +127,21 @@ public class GuiElementLayoutsTest_NewApi extends AbstractTestSitesTest {
 
     @Test
     public void testT41_SameTop() throws Exception {
-        IGuiElement e1 = page.getSubElement(page.findById(1), By.xpath("./.."));
-        IGuiElement e2 = page.getSubElement(page.findById(11), By.xpath("./.."));
+        IGuiElement e1 = page.findById(1).find(By.xpath("./.."));
+        IGuiElement e2 = page.findById(11).find(By.xpath("./.."));
         e1.bounds().fromTop().toTopOf(e2).is(0);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT42_SameTopFails() throws Exception {
-        IGuiElement e1 = page.getSubElement(page.findById(1), By.xpath("./.."));
+        IGuiElement e1 = page.findById(1).find(By.xpath("./.."));
         IGuiElement e2 = page.findById(11);
         Control.withElementTimeout(0, () -> e1.bounds().fromTop().toTopOf(e2).is(0));
     }
 
     @Test
     public void testT43_SameTopWithDelta() throws Exception {
-        IGuiElement e1 = page.getSubElement(page.findById(1), By.xpath("./.."));
+        IGuiElement e1 = page.findById(1).find(By.xpath("./.."));
         IGuiElement e2 = page.findById(11);
         e1.bounds().fromTop().toTopOf(e2).absolute().isLowerEqualThan(20);
     }
@@ -152,21 +152,21 @@ public class GuiElementLayoutsTest_NewApi extends AbstractTestSitesTest {
 
     @Test
     public void testT51_SameBottom() throws Exception {
-        IGuiElement e1 = page.getSubElement(page.findById(1), By.xpath("./.."));
-        IGuiElement e2 = page.getSubElement(page.findById(11), By.xpath("./.."));
+        IGuiElement e1 = page.findById(1).find(By.xpath("./.."));
+        IGuiElement e2 = page.findById(11).find(By.xpath("./.."));
         e1.bounds().fromBottom().toBottomOf(e2).is(0);
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT52_SameBottomFails() throws Exception {
-        IGuiElement e1 = page.getSubElement(page.findById(1), By.xpath("./.."));
+        IGuiElement e1 = page.findById(1).find(By.xpath("./.."));
         IGuiElement e2 = page.findById(11);
         Control.withElementTimeout(0, () -> e1.bounds().fromBottom().toBottomOf(e2).is(0));
     }
 
     @Test
     public void testT53_SameBottomWithDelta() throws Exception {
-        IGuiElement e1 = page.getSubElement(page.findById(1), By.xpath("./.."));
+        IGuiElement e1 = page.findById(1).find(By.xpath("./.."));
         IGuiElement e2 = page.findById(11);
         e1.bounds().fromBottom().toBottomOf(e2).absolute().isLowerEqualThan(311);
     }

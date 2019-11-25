@@ -44,7 +44,7 @@ public class WebTestPage extends AbstractWebTestPage {
     private GuiElement specialElementFromVariable;
 
     @Check
-    private InputForm inputForm = withAncestor(find(By.className("className"))).createComponent(InputForm.class);
+    private InputForm inputForm = createComponent(InputForm.class, find(By.className("className")));
 
     /** The output text field. */
     @Check
@@ -134,8 +134,5 @@ public class WebTestPage extends AbstractWebTestPage {
     }
     public IGuiElement findByXPath(XPath xPath) {
         return find(Locate.by(xPath));
-    }
-    public IGuiElement getSubElement(IGuiElement parent, By by) {
-        return withAncestor(parent).find(by);
     }
 }

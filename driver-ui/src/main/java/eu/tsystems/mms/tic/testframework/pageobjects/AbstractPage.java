@@ -71,31 +71,6 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
         }
     }
 
-    protected interface ComponentFinder extends Finder {
-        <T extends IComponent> T createComponent(Class<T> componentClass);
-    }
-
-    private static class AncestorFinder implements Page.ComponentFinder {
-        private final IGuiElement ancestor;
-        private final PageObject parentPage;
-        private AncestorFinder(PageObject parentPage, IGuiElement ancestor) {
-            this.parentPage = parentPage;
-            this.ancestor = ancestor;
-        }
-        @Deprecated
-        public IGuiElement find(Locate locator) {
-            return guiElementFactory.createFromAncestor(locator, ancestor);
-        }
-        @Deprecated
-        public <T extends IComponent> T createComponent(Class<T> componentClass) {
-            return pageFactory.createComponent(componentClass, parentPage, ancestor);
-        }
-    }
-
-    @Deprecated
-    protected Page.ComponentFinder withAncestor(IGuiElement ancestor) {
-        return new AncestorFinder(this,ancestor);
-    }
     protected IGuiElement findById(Object id) {
         return find(Locate.by().id(id.toString()));
     }
@@ -108,7 +83,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     protected IGuiElement find(Locate locate) {
         return guiElementFactory.create(locate, this);
     }
-    public <T extends IComponent> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
+    protected <T extends IComponent> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
         return pageFactory.createComponent(componentClass, this, rootElement);
     }
 

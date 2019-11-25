@@ -157,16 +157,6 @@ public class GuiElementData {
         return frameLogic != null;
     }
 
-    public GuiElementData copy() {
-        FrameLogic frameLogic = null;
-        if (this.frameLogic != null) {
-            frameLogic = new FrameLogic(webDriver, this.frameLogic.getFrames());
-        }
-        GuiElementData guiElementData = new GuiElementData(webDriver, this.name, frameLogic, by, this.guiElement);
-        guiElementData.parent = parent;
-        return guiElementData;
-    }
-
     public LogLevel getLogLevel() {
         return logLevel;
     }

@@ -943,7 +943,7 @@ public class GuiElement implements
     @Override
     public BinaryAssertion<Boolean> displayed() {
         final IGuiElement self = this;
-        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+        BinaryAssertion<Boolean> prop = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 try {
@@ -958,6 +958,7 @@ public class GuiElement implements
                 return String.format("%s.displayed", self);
             }
         });
+        return prop;
     }
 
     @Override

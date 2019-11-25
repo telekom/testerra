@@ -5,7 +5,7 @@ public interface GuiElementFactory {
         Locate locator,
         PageObject page
     );
-    IGuiElement createFromAncestor(
+    IGuiElement createWithAncestor(
         Locate locator,
         IGuiElement ancestor
     );

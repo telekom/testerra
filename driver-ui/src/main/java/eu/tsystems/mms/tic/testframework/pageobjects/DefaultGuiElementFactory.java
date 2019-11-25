@@ -27,7 +27,7 @@ public class DefaultGuiElementFactory implements
     Loggable
 {
     @Override
-    public IGuiElement createFromAncestor(
+    public IGuiElement createWithAncestor(
         Locate locator,
         IGuiElement ancestor
     ) {

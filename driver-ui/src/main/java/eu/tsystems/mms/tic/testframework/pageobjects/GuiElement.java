@@ -65,8 +65,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -107,15 +105,15 @@ public class GuiElement implements
     private GuiElementFacade guiElementFacade;
     private GuiElementCore guiElementCore;
     private GuiElementWait guiElementWait;
-    private Locate locate;
     private final GuiElementData guiElementData;
+
     protected Object parent;
     private int iteratorIndex = 0;
     private int iteratorSize = 0;
 
     private GuiElement(GuiElementData guiElementData) {
         this.guiElementData = guiElementData;
-        buildInternals(guiElementData.webDriver);
+        buildInternals();
     }
 
     public GuiElementCore getCore() {
@@ -157,8 +155,7 @@ public class GuiElement implements
             frameLogic = new FrameLogic(driver, frames);
         }
         guiElementData = new GuiElementData(driver, "", frameLogic, locate, this);
-        buildInternals(driver);
-        this.locate = locate;
+        buildInternals();
     }
 
     /**
@@ -203,21 +200,16 @@ public class GuiElement implements
 
         guiElementData = new GuiElementData(ancestorGuiElement.guiElementData, locate);
         setParent(ancestorGuiElement);
-        buildInternals(ancestor.getWebDriver());
-        this.locate = locate;
+        buildInternals();
     }
 
     @Override
     public Locate getLocate() {
-        return locate;
+        return guiElementData.locate;
     }
 
-    private void buildInternals(WebDriver driver) {
-        // Create core depending on requested Browser
-        WebDriverRequest webDriverRequest = WebDriverManager.getRelatedWebDriverRequest(driver);
-        String currentBrowser = webDriverRequest.browser;
-
-        IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(currentBrowser);
+    private void buildInternals() {
+        IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(guiElementData.browser);
         guiElementCore = factory.createGuiElementAdapter(guiElementData);
         if (guiElementData.hasFrameLogic()) {
 
@@ -266,7 +258,7 @@ public class GuiElement implements
     @Deprecated
     public GuiElement withWebElementFilter(WebElementFilter... filters) {
         if (filters != null) {
-            Collections.addAll(locate.getFilters(), filters);
+            Collections.addAll(guiElementData.locate.getFilters(), filters);
         }
         return this;
     }
@@ -501,7 +493,7 @@ public class GuiElement implements
 
     @Override
     public IGuiElement find(Locate locate) {
-        return guiElementFactory.createFromAncestor(locate, this);
+        return guiElementFactory.createWithAncestor(locate, this);
     }
 
     @Override
@@ -658,7 +650,7 @@ public class GuiElement implements
 
     @Deprecated
     public List<WebElementFilter> getWebElementFilters() {
-        return locate.getFilters();
+        return guiElementData.locate.getFilters();
     }
 
     @Override

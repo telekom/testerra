@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import org.openqa.selenium.By;
@@ -38,9 +39,9 @@ import java.util.List;
  */
 public class DefaultGuiElementFacade implements GuiElementFacade {
 
-    private GuiElementCore guiElementCore;
+    private WebElementAdapter guiElementCore;
 
-    public DefaultGuiElementFacade(GuiElementCore guiElementCore) {
+    public DefaultGuiElementFacade(WebElementAdapter guiElementCore) {
         this.guiElementCore = guiElementCore;
     }
 
@@ -167,21 +168,6 @@ public class DefaultGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public IGuiElement getSubElement(By byLocator, String description) {
-        return guiElementCore.getSubElement(byLocator, description);
-    }
-
-    @Override
-    public IGuiElement getSubElement(Locate locator) {
-        return guiElementCore.getSubElement(locator);
-    }
-
-    @Override
-    public IGuiElement getSubElement(By by) {
-        return guiElementCore.getSubElement(by);
-    }
-
-    @Override
     public boolean isDisplayed() {
         return guiElementCore.isDisplayed();
     }
@@ -241,11 +227,6 @@ public class DefaultGuiElementFacade implements GuiElementFacade {
     @Override
     public List<String> getTextsFromChildren() {
         return guiElementCore.getTextsFromChildren();
-    }
-
-    @Override
-    public boolean anyFollowingTextNodeContains(String contains) {
-        return guiElementCore.anyFollowingTextNodeContains(contains);
     }
 
     @Override

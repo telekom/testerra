@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -35,9 +36,9 @@ import java.util.List;
  */
 public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecorator implements GuiElementCore {
 
-    private GuiElementCore decoratedGuiElementCore;
+    private WebElementAdapter decoratedGuiElementCore;
 
-    public GuiElementCoreDecorator(GuiElementCore decoratedGuiElementCore) {
+    public GuiElementCoreDecorator(WebElementAdapter decoratedGuiElementCore) {
         super(decoratedGuiElementCore);
         this.decoratedGuiElementCore = decoratedGuiElementCore;
     }

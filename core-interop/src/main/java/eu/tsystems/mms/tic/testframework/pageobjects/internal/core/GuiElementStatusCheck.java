@@ -41,14 +41,6 @@ public interface GuiElementStatusCheck {
     boolean isEnabled();
 
     /**
-     * Returns true if any following text node of current element contains a text.
-     *
-     * @param contains Text.
-     * @return True or false.
-     */
-    boolean anyFollowingTextNodeContains(String contains);
-
-    /**
      * WebElement.isDisplayed.
      *
      * @return true if element is displayed.

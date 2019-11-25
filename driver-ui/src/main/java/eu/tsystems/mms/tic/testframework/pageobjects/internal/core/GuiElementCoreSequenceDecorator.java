@@ -23,6 +23,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import org.openqa.selenium.By;
@@ -45,11 +46,11 @@ import java.util.List;
 @Deprecated
 public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable {
 
-    private final GuiElementCore guiElementCore;
+    private final WebElementAdapter guiElementCore;
     private final GuiElementData guiElementData;
     private final TimerWrapper timerWrapper;
 
-    public GuiElementCoreSequenceDecorator(GuiElementCore guiElementCore, GuiElementData guiElementData) {
+    public GuiElementCoreSequenceDecorator(WebElementAdapter guiElementCore, GuiElementData guiElementData) {
         this.guiElementCore = guiElementCore;
         this.guiElementData = guiElementData;
         this.timerWrapper = guiElementData.timerWrapper;
@@ -319,39 +320,6 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
     }
 
     @Override
-    public IGuiElement getSubElement(final By by, final String description) {
-        Timer.Sequence<IGuiElement> sequence = new Timer.Sequence<IGuiElement>() {
-            @Override
-            public void run() {
-                IGuiElement guiElement = guiElementCore.getSubElement(by, description);
-                setReturningObject(guiElement);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<IGuiElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
-    }
-
-    @Override
-    public IGuiElement getSubElement(Locate locator) {
-        Timer.Sequence<IGuiElement> sequence = new Timer.Sequence<IGuiElement>() {
-            @Override
-            public void run() {
-                IGuiElement guiElement = guiElementCore.getSubElement(locator);
-                setReturningObject(guiElement);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<IGuiElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
-    }
-
-    @Override
-    public IGuiElement getSubElement(By by) {
-        return getSubElement(by, "");
-    }
-
-    @Override
     public Point getLocation() {
         Timer.Sequence<Point> sequence = new Timer.Sequence<Point>() {
             @Override
@@ -609,20 +577,6 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
         timerWrapper.setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
-    }
-
-    @Override
-    public boolean anyFollowingTextNodeContains(final String contains) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                Boolean bool = guiElementCore.anyFollowingTextNodeContains(contains);
-                setReturningObject(bool);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = timerWrapper.executeSequence(sequence);
-        return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 
     @Override

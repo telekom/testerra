@@ -35,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultBinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultImageAssertion;
@@ -51,7 +52,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssert
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
@@ -103,9 +103,9 @@ public class GuiElement implements
      * Facade for all parts of the lowest GuiElement
      */
     private GuiElementFacade guiElementFacade;
-    private GuiElementCore guiElementCore;
+    private WebElementAdapter guiElementCore;
     private GuiElementWait guiElementWait;
-    private final GuiElementData guiElementData;
+    public final GuiElementData guiElementData;
 
     protected Object parent;
     private int iteratorIndex = 0;
@@ -114,10 +114,6 @@ public class GuiElement implements
     private GuiElement(GuiElementData guiElementData) {
         this.guiElementData = guiElementData;
         buildInternals();
-    }
-
-    public GuiElementCore getCore() {
-        return guiElementCore;
     }
 
     /**
@@ -154,7 +150,7 @@ public class GuiElement implements
         if (frames != null && frames.length > 0) {
             frameLogic = new FrameLogic(driver, frames);
         }
-        guiElementData = new GuiElementData(driver, "", frameLogic, locate, this);
+        guiElementData = new GuiElementData(driver, frameLogic, locate, this);
         buildInternals();
     }
 
@@ -174,10 +170,7 @@ public class GuiElement implements
      * Constructor with ancestor GuiElement
      */
     @Deprecated
-    public GuiElement(
-        Locate locate,
-        IGuiElement ancestor
-    ) {
+    public GuiElement(Locate locate, IGuiElement ancestor) {
         // Use FrameLogic from parent
         GuiElement ancestorGuiElement = (GuiElement)ancestor;
 
@@ -198,7 +191,14 @@ public class GuiElement implements
             }
         }
 
-        guiElementData = new GuiElementData(ancestorGuiElement.guiElementData, locate);
+        guiElementData = new GuiElementData(
+            ancestorGuiElement.getWebDriver(),
+            ancestorGuiElement.getFrameLogic(),
+            locate,
+            this,
+            ancestorGuiElement.guiElementData,
+            -1
+        );
         setParent(ancestorGuiElement);
         buildInternals();
     }
@@ -210,9 +210,9 @@ public class GuiElement implements
 
     private void buildInternals() {
         IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(guiElementData.browser);
-        guiElementCore = factory.createGuiElementAdapter(guiElementData);
-        if (guiElementData.hasFrameLogic()) {
+        guiElementCore = factory.createAdapter(guiElementData);
 
+        if (guiElementData.hasFrameLogic()) {
             // if frames are set, the waiter should use frame switches when executing its sequences
             guiElementCore = new GuiElementCoreFrameAwareDecorator(guiElementCore, guiElementData);
         }
@@ -220,7 +220,7 @@ public class GuiElement implements
         guiElementCore = new GuiElementCoreSequenceDecorator(guiElementCore, guiElementData);
 
         GuiElementWaitFactory waitFactory = Testerra.injector.getInstance(GuiElementWaitFactory.class);
-        guiElementWait = waitFactory.create(guiElementCore, guiElementData);
+        guiElementWait = waitFactory.create(this);
 
         guiElementFacade = createFacade(guiElementCore);
     }
@@ -232,7 +232,7 @@ public class GuiElement implements
      * You can move this code to DefaultGuiElementFactory when no more 'new GuiElement()' calls exists.
      * But this may not happen before 2119.
      */
-    private GuiElementFacade createFacade(GuiElementCore guiElementCore) {
+    private GuiElementFacade createFacade(WebElementAdapter guiElementCore) {
         GuiElementFacade guiElementFacade;
         guiElementFacade = new DefaultGuiElementFacade(guiElementCore);
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
@@ -300,11 +300,13 @@ public class GuiElement implements
      */
     @Deprecated
     public GuiElement getSubElement(By by, String description) {
-        return (GuiElement)guiElementCore.getSubElement(by, description);
+        GuiElement subElement = getSubElement(Locate.by(by));
+        if (description != null) subElement.setName(description);
+        return subElement;
     }
 
-    public GuiElement getSubElement(Locate locator) {
-        return (GuiElement)guiElementFacade.getSubElement(locator);
+    public GuiElement getSubElement(Locate locate) {
+        return (GuiElement)guiElementFactory.createWithAncestor(locate, this);
     }
 
     @Override
@@ -539,7 +541,17 @@ public class GuiElement implements
     }
 
     public boolean anyFollowingTextNodeContains(String contains) {
-        return guiElementFacade.anyFollowingTextNodeContains(contains);
+        TestableGuiElement<IGuiElement> textElements = anyElementContainsText(contains);
+        return textElements.present().getActual();
+    }
+
+    /**
+     * This method is no part of any interface, because we don't know if
+     * we want to support this feature at the moment.
+     */
+    public TestableGuiElement<IGuiElement> anyElementContainsText(String text) {
+        String textFinderXpath = String.format("//text()[contains(., '%s')]/..", text);
+        return find(By.xpath(textFinderXpath));
     }
 
     public WebDriver getWebDriver() {
@@ -615,6 +627,7 @@ public class GuiElement implements
         return this;
     }
 
+    @Deprecated
     public File takeScreenshot() {
         return guiElementFacade.takeScreenshot();
     }
@@ -655,7 +668,34 @@ public class GuiElement implements
 
     @Override
     public String toString() {
-        return guiElementData.toString();
+        return toString(false);
+    }
+
+    public String toString(boolean detailed) {
+        String toString = "";
+        if (parent != null) {
+            toString = parent+".";
+        }
+        if (guiElementData.hasName()) {
+            toString += guiElementData.name;
+        }
+        if (!guiElementData.hasName() || detailed) {
+            toString += "GuiElement("+guiElementData.locate.toString()+")";
+        }
+        //toString+="("+guiElement.getLocate().toString();
+//        if (hasFrameLogic()) {
+//            String frameString = ", frames={";
+//            if (frameLogic.hasFrames()) {
+//                for (IGuiElement frame : frameLogic.getFrames()) {
+//                    frameString += frame.toString() + ", ";
+//                }
+//            } else {
+//                frameString += "autodetect, ";
+//            }
+//            frameString = frameString.substring(0, frameString.length() - 2);
+//            toString = toString + frameString + "}";
+//        }
+        return toString;
     }
 
     @Deprecated
@@ -725,7 +765,7 @@ public class GuiElement implements
         if (nonFunctionalAssert==null) {
             GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             NonFunctionalAssertion assertion = Testerra.injector.getInstance(NonFunctionalAssertion.class);
-            nonFunctionalAssert = assertFactory.create(assertion, guiElementCore, guiElementWait, guiElementData);
+            nonFunctionalAssert = assertFactory.create(this, assertion, guiElementWait);
         }
         return nonFunctionalAssert;
     }
@@ -750,7 +790,7 @@ public class GuiElement implements
         if (instantAssert == null) {
             GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             InstantAssertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
-            instantAssert = assertFactory.create(assertion, guiElementCore, guiElementWait, guiElementData);
+            instantAssert = assertFactory.create(this, assertion, guiElementWait);
         }
         return instantAssert;
     }
@@ -766,7 +806,7 @@ public class GuiElement implements
         if (collectableAssert==null) {
             GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             CollectedAssertion assertion = Testerra.injector.getInstance(CollectedAssertion.class);
-            collectableAssert = assertFactory.create(assertion, guiElementCore, guiElementWait, guiElementData);
+            collectableAssert = assertFactory.create(this, assertion, guiElementWait);
         }
         return collectableAssert;
     }
@@ -797,14 +837,17 @@ public class GuiElement implements
         return guiElements;
     }
 
+    @Deprecated
     public LogLevel getLogLevel() {
         return guiElementData.getLogLevel();
     }
 
+    @Deprecated
     public void setLogLevel(LogLevel logLevel) {
         guiElementData.setLogLevel(logLevel);
     }
 
+    @Deprecated
     public IGuiElement shadowRoot() {
         guiElementData.shadowRoot = true;
         return this;

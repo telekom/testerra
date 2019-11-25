@@ -53,14 +53,6 @@ public abstract class GuiElementStatusCheckDecorator implements GuiElementStatus
     }
 
     @Override
-    public boolean anyFollowingTextNodeContains(String contains) {
-        beforeDelegation();
-        boolean textNodeContains = decoratedGuiElementStatusCheck.anyFollowingTextNodeContains(contains);
-        afterDelegation();
-        return textNodeContains;
-    }
-
-    @Override
     public boolean isDisplayed() {
         beforeDelegation();
         boolean displayed = decoratedGuiElementStatusCheck.isDisplayed();

@@ -22,8 +22,9 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
@@ -32,14 +33,13 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
 
     private final GuiElementStatusCheck guiElementStatusCheck;
     private final TimerWrapper timerWrapper;
+    private final GuiElement guiElement;
 
     @Inject
-    public DefaultGuiElementWait(
-        @Assisted GuiElementStatusCheck guiElementStatusCheck,
-        @Assisted GuiElementData guiElementData
-    ) {
+    public DefaultGuiElementWait(GuiElement guiElement, GuiElementStatusCheck guiElementStatusCheck) {
+        this.guiElement = guiElement;
         this.guiElementStatusCheck = guiElementStatusCheck;
-        this.timerWrapper = guiElementData.timerWrapper;
+        this.timerWrapper = guiElement.guiElementData.timerWrapper;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                boolean anyFollowingTextNodeContains = guiElementStatusCheck.anyFollowingTextNodeContains(contains);
+                boolean anyFollowingTextNodeContains = guiElement.anyFollowingTextNodeContains(contains);
                 setPassState(anyFollowingTextNodeContains);
                 setReturningObject(anyFollowingTextNodeContains);
             }

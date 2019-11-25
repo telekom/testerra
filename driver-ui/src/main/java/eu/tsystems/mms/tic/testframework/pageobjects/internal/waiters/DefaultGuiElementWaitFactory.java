@@ -19,21 +19,21 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheckFrameAwareDecorator;
 
 public class DefaultGuiElementWaitFactory implements GuiElementWaitFactory {
 
     @Override
-    public GuiElementWait create(
-        GuiElementStatusCheck guiElementStatusCheck,
-        GuiElementData guiElementData
-    ) {
-        if (guiElementData.hasFrameLogic()) {
+    public GuiElementWait create(IGuiElement guiElement) {
+        GuiElement realGuiElement = (GuiElement)guiElement;
+        GuiElementStatusCheck guiElementStatusCheck = realGuiElement.guiElementData.adapter;
+        if (realGuiElement.guiElementData.hasFrameLogic()) {
             // if frames are set, the waiter should use frame switches when executing its sequences
-            guiElementStatusCheck = new GuiElementStatusCheckFrameAwareDecorator(guiElementStatusCheck, guiElementData);
+            guiElementStatusCheck = new GuiElementStatusCheckFrameAwareDecorator(guiElementStatusCheck, realGuiElement.guiElementData);
         }
-        return new DefaultGuiElementWait(guiElementStatusCheck, guiElementData);
+        return new DefaultGuiElementWait(realGuiElement, guiElementStatusCheck);
     }
 }

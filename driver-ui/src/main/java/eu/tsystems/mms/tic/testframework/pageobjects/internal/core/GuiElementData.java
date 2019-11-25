@@ -22,9 +22,11 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -39,7 +41,7 @@ import org.openqa.selenium.WebElement;
  */
 public class GuiElementData {
     public final Locate locate;
-    public final GuiElement guiElement;
+    public final WebElementAdapter adapter;
     public final WebDriver webDriver;
     public String name;
     public final ExecutionLog executionLog;
@@ -57,25 +59,12 @@ public class GuiElementData {
     public final String browser;
     public boolean shadowRoot = false;
 
-    public GuiElementData(GuiElementData parent, Locate locate) {
-        this(
-            parent.webDriver,
-            parent.name,
-            parent.frameLogic,
-            locate,
-            parent.guiElement,
-            parent,
-            -1
-        );
-    }
-
     public GuiElementData(GuiElementData parent, int index) {
         this(
             parent.webDriver,
-            parent.name,
             parent.frameLogic,
             parent.locate,
-            parent.guiElement,
+            parent.adapter,
             parent,
             index
         );
@@ -83,27 +72,24 @@ public class GuiElementData {
 
     public GuiElementData(
         WebDriver webDriver,
-        String name,
         IFrameLogic frameLogic,
         Locate locate,
-        GuiElement guiElement
+        WebElementAdapter adapter
     ) {
-        this(webDriver, name, frameLogic, locate, guiElement, null, -1);
+        this(webDriver, frameLogic, locate, adapter, null, -1);
     }
 
-    private GuiElementData(
+    public GuiElementData(
         WebDriver webDriver,
-        String name,
         IFrameLogic frameLogic,
         Locate locate,
-        GuiElement guiElement,
+        WebElementAdapter adapter,
         GuiElementData parent,
         int index
     ) {
         this.webDriver = webDriver;
-        this.name = name;
+        this.adapter = adapter;
         this.locate = locate;
-        this.guiElement = guiElement;
         this.executionLog = new ExecutionLog();
         this.timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
         this.frameLogic = frameLogic;
@@ -127,39 +113,6 @@ public class GuiElementData {
 
     public boolean hasName() {
         return !StringUtils.isEmpty(name);
-    }
-
-    @Override
-    public String toString() {
-        return toString(false);
-    }
-
-    public String toString(boolean detailed) {
-        String toString = "";
-        Object parent = guiElement.getParent();
-        if (parent != null) {
-            toString = parent+".";
-        }
-        if (hasName()) {
-            toString += name;
-        }
-        if (!hasName() || detailed) {
-            toString += "GuiElement("+guiElement.getLocate().toString()+")";
-        }
-        //toString+="("+guiElement.getLocate().toString();
-//        if (hasFrameLogic()) {
-//            String frameString = ", frames={";
-//            if (frameLogic.hasFrames()) {
-//                for (IGuiElement frame : frameLogic.getFrames()) {
-//                    frameString += frame.toString() + ", ";
-//                }
-//            } else {
-//                frameString += "autodetect, ";
-//            }
-//            frameString = frameString.substring(0, frameString.length() - 2);
-//            toString = toString + frameString + "}";
-//        }
-        return toString;
     }
 
     public boolean hasFrameLogic() {

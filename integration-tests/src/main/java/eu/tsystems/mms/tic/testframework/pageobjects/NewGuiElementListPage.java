@@ -38,6 +38,7 @@ public class NewGuiElementListPage extends Page {
     }
 
     public TableRow getTableRowsByTagName() {
-        return createComponent(TableRow.class, getTable().find(By.tagName("tr")));
+        IGuiElement tr = getTable().find(By.tagName("tr"));
+        return createComponent(TableRow.class, tr);
     }
 }

@@ -332,29 +332,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public IGuiElement getSubElement(By by, String description) {
-        return getSubElement(by);
-    }
-
-    @Override
-    public IGuiElement getSubElement(Locate locator) {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeDelegation(methodName, locator.toString());
-        IGuiElement subElement = decoratedFacade.getSubElement(locator);
-        afterDelegation(String.format("%s(%s) = %s", methodName, locator.toString(), subElement));
-        return subElement;
-    }
-
-    @Override
-    public IGuiElement getSubElement(By by) {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeDelegation(methodName, by.toString());
-        IGuiElement subElement = decoratedFacade.getSubElement(by);
-        afterDelegation(String.format("%s(%s) = %s", methodName, by.toString(), subElement));
-        return subElement;
-    }
-
-    @Override
     public boolean isDisplayed() {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);
@@ -464,15 +441,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         List<String> textsFromChildren = decoratedFacade.getTextsFromChildren();
         afterDelegation("getTextsFromChildren() = " + textsFromChildren);
         return textsFromChildren;
-    }
-
-    @Override
-    public boolean anyFollowingTextNodeContains(String contains) {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeDelegation(methodName, "\"" + contains + "\"");
-        final boolean b = decoratedFacade.anyFollowingTextNodeContains(contains);
-        afterDelegation(String.format("%s(%s) = %s", methodName, contains, b));
-        return b;
     }
 
     @Override

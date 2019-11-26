@@ -27,6 +27,8 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiElementTimeoutFieldAction;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.AbstractTestFeatures;
@@ -83,7 +85,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     protected IGuiElement find(Locate locate) {
         return guiElementFactory.create(this, locate);
     }
-    protected <T extends IComponent> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
+    protected <T extends Component> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
         return pageFactory.createComponent(componentClass, this, rootElement);
     }
 
@@ -216,6 +218,9 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     @Deprecated
     protected void pCheckPage(final boolean findNot, final boolean fast, final boolean checkCaller) {
 
+        /**
+         * @todo This whole checkCaller block may be removed safely
+         */
         if (checkCaller) {
         /*
         Check for class inheritance
@@ -240,10 +245,13 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
             } catch (ClassNotFoundException e) {
                 logger.debug("Internal error: Failed to load class that called checkPage, identified by name from stacktrace.", e);
             }
-            if (classCallingCheckPage != null && AbstractPage.class.isAssignableFrom(classCallingCheckPage)) {
+            /**
+             * We have explicitly check for {@link Page} here,
+             * because {@link AbstractComponent} is also an {@link AbstractPage} which is legal to have.
+             */
+            if (classCallingCheckPage != null && Page.class.isAssignableFrom(classCallingCheckPage)) {
                 if (!callingClassName.equals(thisClassName)) {
-                    logger.debug("Not performing checkPage() for " + callingClassName + ", because the calling instance is of class " +
-                            thisClassName + ".");
+                    logger.debug("Not performing checkPage() for " + callingClassName + ", because the calling instance is of class " + thisClassName + ".");
                     return;
                 }
             }
@@ -396,8 +404,23 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
         }
     }
 
-    protected List<FieldAction> getFieldActions(List<FieldWithActionConfig> fields, AbstractPage declaringPage) {
-       return new ArrayList<>();
+    abstract protected void addCustomFieldAction(FieldWithActionConfig field, List<FieldAction> fieldActions, AbstractPage declaringPage);
+
+    private List<FieldAction> getFieldActions(List<FieldWithActionConfig> fields, AbstractPage declaringPage) {
+        List<FieldAction> fieldActions = new ArrayList<>();
+        for (FieldWithActionConfig field : fields) {
+            GuiElementCheckFieldAction guiElementCheckFieldAction = new GuiElementCheckFieldAction(field, declaringPage);
+            SetNameFieldAction setNameFieldAction = new SetNameFieldAction(field.field, declaringPage);
+
+            /*
+            Priority List!!
+             */
+            fieldActions.add(setNameFieldAction);
+            fieldActions.add(new SetGuiElementTimeoutFieldAction(field.field, declaringPage));
+            addCustomFieldAction(field, fieldActions, declaringPage);
+            fieldActions.add(guiElementCheckFieldAction);
+        }
+        return fieldActions;
     }
 
     private Set<Field> makeFieldsAccessible(List<FieldWithActionConfig> fields) {

@@ -171,15 +171,15 @@ public class GuiElementData implements
     }
 
     public String toString(boolean detailed) {
-        String toString = "";
-        if (parent != null) {
-            toString = parent+".";
+        StringBuilder sb = new StringBuilder();
+        if (guiElement.hasParent()) {
+            sb.append(guiElement.getParent()).append(".");
         }
         if (hasName()) {
-            toString += name;
+            sb.append(name);
         }
         if (!hasName() || detailed) {
-            toString += "GuiElement("+locate.toString()+")";
+            sb.append("GuiElement(").append(locate).append(")");
         }
         //toString+="("+guiElement.getLocate().toString();
 //        if (hasFrameLogic()) {
@@ -194,7 +194,7 @@ public class GuiElementData implements
 //            frameString = frameString.substring(0, frameString.length() - 2);
 //            toString = toString + frameString + "}";
 //        }
-        return toString;
+        return sb.toString();
     }
 
     public int getTimeoutInSeconds() {
@@ -203,10 +203,6 @@ public class GuiElementData implements
 
     public void setTimeoutInSeconds(int timeoutInSeconds) {
         getTimerWrapper().setTimeoutInSeconds(timeoutInSeconds);
-    }
-
-    public boolean hasName() {
-        return !StringUtils.isEmpty(name);
     }
 
     public boolean hasFrameLogic() {

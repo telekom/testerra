@@ -28,6 +28,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
@@ -36,21 +38,23 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAsser
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Components are wrappers for HTML elements like components
  * @author Mike Reiche
  */
-public abstract class Component<SELF extends Component<SELF>> extends AbstractPage implements
-    IComponent<SELF>,
-    Hierarchy<Component>
+public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> extends AbstractPage implements
+    Component<SELF>,
+    Hierarchy<AbstractComponent>
 {
     protected final IGuiElement rootElement;
     private String name;
     private Object parent;
 
-    public Component(IGuiElement rootElement) {
+    public AbstractComponent(IGuiElement rootElement) {
         this.rootElement = rootElement;
     }
 
@@ -98,6 +102,11 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractPa
 
     protected IGuiElement find(Locate locate) {
         return rootElement.find(locate);
+    }
+
+    @Override
+    protected void addCustomFieldAction(FieldWithActionConfig field, List<FieldAction> fieldActions, AbstractPage declaringPage) {
+
     }
 
     @Override
@@ -165,7 +174,7 @@ public abstract class Component<SELF extends Component<SELF>> extends AbstractPa
     }
 
     @Override
-    public Component setParent(Object parent) {
+    public AbstractComponent setParent(Object parent) {
         this.parent = parent;
         return this;
     }

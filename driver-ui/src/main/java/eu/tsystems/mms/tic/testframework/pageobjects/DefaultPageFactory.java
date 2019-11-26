@@ -67,19 +67,20 @@ public class DefaultPageFactory implements PageObjectFactory {
     }
 
     @Override
-    public <T extends IComponent> T createComponent(Class<T> componentClass, PageObject page, IGuiElement rootElement) {
+    public <T extends Component> T createComponent(Class<T> componentClass, PageObject page, IGuiElement rootElement) {
         try {
             Constructor<T> constructor = componentClass.getConstructor(IGuiElement.class);
             T component = constructor.newInstance(rootElement);
-            component.checkGuiElements();
 
             /**
              * Link component between GuiElement and Page
              */
-            Component realComponent = (Component)component;
+            AbstractComponent realComponent = (AbstractComponent)component;
             GuiElement realGuiElement = (GuiElement)rootElement;
             realComponent.setParent(page);
             realGuiElement.setParent(realComponent);
+
+            component.checkGuiElements();
 
             return component;
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {

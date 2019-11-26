@@ -50,12 +50,8 @@ public class SetNameFieldAction extends FieldAction {
                 logger.error("Failed to assign description to " + field + ". Make sure the field was made accessible in the" +
                         " AbstractPage class before calling this method.");
             }
-            if (guiElement != null) {
-                // Add element description
-                String name = guiElement.getName();
-                if (StringUtils.isStringEmpty(name)) {
-                    guiElement.setName(field.getName());
-                }
+            if (guiElement != null && !guiElement.hasName()) {
+                guiElement.setName(field.getName());
             }
         }
     }

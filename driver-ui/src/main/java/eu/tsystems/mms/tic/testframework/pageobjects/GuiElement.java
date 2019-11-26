@@ -143,8 +143,8 @@ public class GuiElement implements
     @Deprecated
     public GuiElement(PageObject page, Locate locate) {
         this(page.getWebDriver(), locate, null);
-        Page pageImpl = (Page)page;
-        this.setTimeoutInSeconds(pageImpl.getElementTimeoutInSeconds());
+        Page realPage = (Page)page;
+        this.setTimeoutInSeconds(realPage.getElementTimeoutInSeconds());
         setParent(page);
     }
 
@@ -240,7 +240,7 @@ public class GuiElement implements
      *
      * @param description A very short description of this GuiElement, for example "Continue Shopping Button"
      *
-     * @deprecated use setName() instead.
+     * @deprecated use {@link #setName(String)} instead.
      */
     @Deprecated
     public GuiElement setDescription(String description) {

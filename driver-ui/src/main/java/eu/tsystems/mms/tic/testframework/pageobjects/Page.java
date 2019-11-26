@@ -171,22 +171,8 @@ public abstract class Page extends AbstractPage implements TestablePage {
     }
 
     @Override
-    protected List<FieldAction> getFieldActions(List<FieldWithActionConfig> fields, AbstractPage declaringPage) {
-        List<FieldAction> fieldActions = new ArrayList<>();
-        for (FieldWithActionConfig field : fields) {
-            GuiElementCheckFieldAction guiElementCheckFieldAction = new GuiElementCheckFieldAction(field, declaringPage);
-            SetNameFieldAction setNameFieldAction = new SetNameFieldAction(field.field, declaringPage);
-            GuiElementGroupAction guiElementGroupAction = new GuiElementGroupAction(field.field, declaringPage, guiElementGroups);
-
-            /*
-            Priority List!!
-             */
-            fieldActions.add(setNameFieldAction);
-            fieldActions.add(new SetGuiElementTimeoutFieldAction(field.field, declaringPage));
-            fieldActions.add(guiElementGroupAction);
-            fieldActions.add(guiElementCheckFieldAction);
-        }
-        return fieldActions;
+    protected void addCustomFieldAction(FieldWithActionConfig field, List<FieldAction> fieldActions, AbstractPage declaringPage) {
+        fieldActions.add(new GuiElementGroupAction(field.field, declaringPage, guiElementGroups));
     }
 
     /**

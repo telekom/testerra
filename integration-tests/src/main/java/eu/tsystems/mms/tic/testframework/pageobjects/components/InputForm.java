@@ -1,13 +1,13 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.components;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.Component;
+import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
 import org.openqa.selenium.By;
 
-public class InputForm extends Component<InputForm> {
+public class InputForm extends AbstractComponent<InputForm> {
 
     @Check
     private IGuiElement button = find(By.className("component-btn"));

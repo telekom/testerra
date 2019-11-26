@@ -22,4 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 public interface Hierarchy<SELF> {
     SELF setParent(Object parent);
     Object getParent();
+    default boolean hasParent() {
+        return getParent()!=null;
+    }
 }

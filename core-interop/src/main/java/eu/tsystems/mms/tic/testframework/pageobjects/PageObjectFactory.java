@@ -16,7 +16,7 @@ public interface PageObjectFactory {
         return createPageWithCheckRule(pageClass, webDriver, CheckRule.IS_DISPLAYED);
     }
     <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver);
-    <T extends IComponent> T createComponent(Class<T> componentClass, PageObject page, IGuiElement rootElement);
+    <T extends Component> T createComponent(Class<T> componentClass, PageObject page, IGuiElement rootElement);
     /**
      * @todo Make default when WebDriverManager has an interface
      */

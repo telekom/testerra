@@ -1,13 +1,16 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 
 import java.lang.reflect.Field;
 
 /**
  * Created by rnhb on 02.02.2016.
+ * @deprecated Use {@link Check#timeout()} instead
  */
+@Deprecated
 public class SetGuiElementTimeoutFieldAction extends FieldAction {
 
     public SetGuiElementTimeoutFieldAction(Field field, AbstractPage declaringPage) {

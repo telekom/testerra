@@ -19,8 +19,13 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+
 public interface Nameable<SELF> {
 
     SELF setName(String name);
     String getName();
+    default boolean hasName() {
+        return !StringUtils.isEmpty(getName());
+    }
 }

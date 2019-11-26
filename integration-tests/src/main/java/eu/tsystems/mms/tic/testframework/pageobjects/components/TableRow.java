@@ -1,11 +1,11 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.components;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.Component;
+import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
 import org.openqa.selenium.By;
 
-public class TableRow extends Component<TableRow> {
+public class TableRow extends AbstractComponent<TableRow> {
     public TableRow(IGuiElement rootElement) {
         super(rootElement);
     }

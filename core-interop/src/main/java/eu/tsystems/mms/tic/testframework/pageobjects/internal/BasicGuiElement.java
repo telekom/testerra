@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
@@ -37,7 +36,8 @@ import java.util.Iterator;
  */
 public interface BasicGuiElement<SELF> extends
     Iterable<SELF>,
-    Iterator<SELF>
+    Iterator<SELF>,
+    HasParent
 {
     @Deprecated
     GuiElementAssert nonFunctionalAsserts();

@@ -52,6 +52,9 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     private HasParent parent;
 
     public AbstractComponent(IGuiElement rootElement) {
+        GuiElement realRootElement = (GuiElement)rootElement;
+        setParent(realRootElement.getParent());
+        realRootElement.setParent(this);
         this.rootElement = rootElement;
     }
 

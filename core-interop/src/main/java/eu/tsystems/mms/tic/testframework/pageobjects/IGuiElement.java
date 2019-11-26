@@ -37,8 +37,7 @@ import org.openqa.selenium.Point;
 public interface IGuiElement extends
     InteractiveGuiElement<IGuiElement>,
     Nameable<IGuiElement>,
-    WebDriverRetainer,
-    HasParent
+    WebDriverRetainer
 {
     enum Properties implements IProperties {
         @Deprecated

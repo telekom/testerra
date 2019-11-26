@@ -86,7 +86,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
         return guiElementFactory.createWithPage(this, locate);
     }
     protected <T extends Component> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
-        return pageFactory.createComponent(componentClass, this, rootElement);
+        return pageFactory.createComponent(componentClass, rootElement);
     }
 
     /**

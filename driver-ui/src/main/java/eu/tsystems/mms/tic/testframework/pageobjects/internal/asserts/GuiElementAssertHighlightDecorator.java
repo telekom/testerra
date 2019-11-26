@@ -35,13 +35,9 @@ import java.awt.*;
 public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorator {
 
     private final GuiElementData guiElementData;
-    private final WebDriver webDriver;
-    private final IFrameLogic frameLogic;
 
     public GuiElementAssertHighlightDecorator(GuiElementAssert decoratedAssert, GuiElementData guiElementData) {
         super(decoratedAssert);
-        this.webDriver = guiElementData.webDriver;
-        this.frameLogic = guiElementData.frameLogic;
         this.guiElementData = guiElementData;
     }
 
@@ -58,25 +54,25 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
     }
 
     private void highlight(boolean successful) {
-        WebElement webElement = guiElementData.webElement;
+        WebElement webElement = guiElementData.getWebElement();
         if (webElement == null) {
             return;
         }
         try {
-            if (frameLogic != null) {
-                frameLogic.switchToCorrectFrame();
+            if (guiElementData.getFrameLogic() != null) {
+                guiElementData.getFrameLogic().switchToCorrectFrame();
             }
             if (successful) {
-                JSUtils.highlightWebElementStatic(webDriver, webElement, new Color(0, 255, 0));
+                JSUtils.highlightWebElementStatic(guiElementData.webDriver, guiElementData.getWebElement(), new Color(0, 255, 0));
             } else {
-                JSUtils.highlightWebElementStatic(webDriver, webElement, new Color(255, 0, 0));
+                JSUtils.highlightWebElementStatic(guiElementData.webDriver, guiElementData.getWebElement(), new Color(255, 0, 0));
             }
         } catch (RuntimeException e) {
             // could not highlight, but thats ok.
             LOGGER.debug("Could not highlight element", e);
         } finally {
-            if (frameLogic != null) {
-                frameLogic.switchToDefaultFrame();
+            if (guiElementData.getFrameLogic() != null) {
+                guiElementData.getFrameLogic().switchToDefaultFrame();
             }
         }
 

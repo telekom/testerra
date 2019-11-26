@@ -30,14 +30,12 @@ import eu.tsystems.mms.tic.testframework.utils.Timer;
 public class DefaultGuiElementWait implements GuiElementWait, Loggable {
 
     private final GuiElementStatusCheck guiElementStatusCheck;
-    private final TimerWrapper timerWrapper;
     private final GuiElementData guiElementData;
 
     @Inject
     public DefaultGuiElementWait(GuiElementData data, GuiElementStatusCheck guiElementStatusCheck) {
         this.guiElementData = data;
         this.guiElementStatusCheck = guiElementStatusCheck;
-        this.timerWrapper = data.timerWrapper;
     }
 
     @Override
@@ -63,7 +61,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setPassState(sequenceStatus);
             }
         };
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -90,7 +88,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(sequenceStatus);
             }
         };
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -107,7 +105,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(anyFollowingTextNodeContains);
             }
         };
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -135,7 +133,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
             }
         };
         log().debug("Executing pWaitForDisplayedStatus=" + checkForDisplayed + " with Sequence.");
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -163,7 +161,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
             }
         };
         log().debug("Executing pWaitForVisibleStatus=" + visible + " with Sequence.");
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -190,7 +188,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(sequenceStatus);
             }
         };
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -217,7 +215,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(sequenceStatus);
             }
         };
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -240,7 +238,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(equals);
             }
         };
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -268,7 +266,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(contains);
             }
         };
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -292,7 +290,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(gone);
             }
         };
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -309,7 +307,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(hasAttribute);
             }
         };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 
@@ -328,7 +326,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(hasAttribute);
             }
         };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 
@@ -346,7 +344,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(hasAttribute);
             }
         };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 
@@ -364,7 +362,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(hasNotAttribute);
             }
         };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 
@@ -391,7 +389,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(selectable);
             }
         };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 
@@ -408,7 +406,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(notSelectable);
             }
         };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 }

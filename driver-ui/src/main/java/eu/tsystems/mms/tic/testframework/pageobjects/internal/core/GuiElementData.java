@@ -22,8 +22,10 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -33,47 +35,63 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
- * @todo Create interface
+ * Holds the state of the GuiElement to interchange with any other
+ * GuiElement compatible class like {@link GuiElementCore}
  */
-public class GuiElementData {
+public class GuiElementData implements Nameable<GuiElementData> {
+    private static final int timerSleepTimeInMs = 500;
+
+    /**
+     * @deprecated Should not be public
+     */
     public final Locate locate;
     /**
      * @deprecated Should not be public
      */
-    @Deprecated
-    public GuiElement guiElement;
     public final WebDriver webDriver;
     /**
      * @deprecated Should not be public
      */
-    @Deprecated
-    public String name;
     public final ExecutionLog executionLog;
-    private int timeoutInSeconds;
     /**
      * @deprecated Should not be public
      */
-    @Deprecated
-    public final TimerWrapper timerWrapper;
-    /**
-     * @deprecated Should not be public
-     */
-    @Deprecated
-    public WebElement webElement;
-    /**
-     * @deprecated Should not be public
-     */
-    @Deprecated
-    public IFrameLogic frameLogic;
-    private final int timerSleepTimeInMs = 500;
-    public boolean sensibleData = false;
     public final GuiElementData parent;
+    /**
+     * @deprecated Should not be public
+     */
     public final int index;
+    private GuiElement guiElement;
+    private String name;
+    private WebElement webElement;
+    private IFrameLogic frameLogic;
+    private TimerWrapper timerWrapper;
     private LogLevel logLevel = LogLevel.DEBUG;
     private LogLevel storedLogLevel = logLevel;
-    public final String browser;
-    public boolean shadowRoot = false;
 
+    /**
+     * @todo Add accessor methods
+     */
+    public boolean shadowRoot = false;
+    public boolean sensibleData = false;
+
+    /**
+     * Creates a state based on another state
+     */
+    public GuiElementData(GuiElementData parent, Locate locate) {
+        this(
+            parent.getWebDriver(),
+            locate,
+            parent,
+            -1
+        );
+        frameLogic = parent.frameLogic;
+        guiElement = parent.guiElement;
+    }
+
+    /**
+     * Creates a state as iteration of another state
+     */
     public GuiElementData(GuiElementData parent, int index) {
         this(
             parent.webDriver,
@@ -92,7 +110,7 @@ public class GuiElementData {
         this(webDriver, locate, null, -1);
     }
 
-    public GuiElementData(
+    private GuiElementData(
         WebDriver webDriver,
         Locate locate,
         GuiElementData parent,
@@ -101,11 +119,6 @@ public class GuiElementData {
         this.webDriver = webDriver;
         this.locate = locate;
         this.executionLog = new ExecutionLog();
-        this.timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
-        WebDriverRequest request = WebDriverManager.getRelatedWebDriverRequest(webDriver);
-        this.browser = request.browser;
-        // Central Timer Object which is used by all sequence executions
-        this.timerWrapper = new TimerWrapper(timerSleepTimeInMs, timeoutInSeconds, webDriver, executionLog);
         this.parent = parent;
         if (parent == null) index = -1;
         this.index = index;
@@ -136,6 +149,29 @@ public class GuiElementData {
 
     public WebElement getWebElement() {
         return this.webElement;
+    }
+
+    public TimerWrapper getTimerWrapper() {
+        if (timerWrapper==null) {
+            timerWrapper = new TimerWrapper(timerSleepTimeInMs, POConfig.getUiElementTimeoutInSeconds(), webDriver, executionLog);
+        }
+        return timerWrapper;
+    }
+
+    public GuiElementData getParent() {
+        return parent;
+    }
+
+    public Locate getLocate() {
+        return locate;
+    }
+
+    public String getBrowser() {
+        return WebDriverManager.getRelatedWebDriverRequest(webDriver).browser;
+    }
+
+    public WebDriver getWebDriver() {
+        return webDriver;
     }
 
     @Override
@@ -171,12 +207,11 @@ public class GuiElementData {
     }
 
     public int getTimeoutInSeconds() {
-        return timeoutInSeconds;
+        return getTimerWrapper().getTimeoutInSeconds();
     }
 
     public void setTimeoutInSeconds(int timeoutInSeconds) {
-        this.timeoutInSeconds = timeoutInSeconds;
-        timerWrapper.setTimeoutInSeconds(timeoutInSeconds);
+        getTimerWrapper().setTimeoutInSeconds(timeoutInSeconds);
     }
 
     public boolean hasName() {
@@ -202,4 +237,14 @@ public class GuiElementData {
         this.logLevel = this.storedLogLevel;
     }
 
+    @Override
+    public GuiElementData setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

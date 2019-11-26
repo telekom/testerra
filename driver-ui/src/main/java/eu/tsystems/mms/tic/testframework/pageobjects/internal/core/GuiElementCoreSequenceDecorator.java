@@ -44,44 +44,44 @@ import java.util.List;
 @Deprecated
 public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable {
 
-    private final GuiElementCore guiElementCore;
-    private final TimerWrapper timerWrapper;
+    private final GuiElementData guiElementData;
+    private final GuiElementCore decoratedCore;
 
-    public GuiElementCoreSequenceDecorator(GuiElementCore guiElementCore, GuiElementData guiElementData) {
-        this.guiElementCore = guiElementCore;
-        this.timerWrapper = guiElementData.timerWrapper;
+    public GuiElementCoreSequenceDecorator(GuiElementCore decoratedCore, GuiElementData guiElementData) {
+        this.decoratedCore = decoratedCore;
+        this.guiElementData = guiElementData;
     }
 
     @Override
     public WebElement getWebElement() {
-        int prevTimeout = timerWrapper.getTimeoutInSeconds();
+        int prevTimeout = guiElementData.getTimerWrapper().getTimeoutInSeconds();
         Timer.Sequence<WebElement> sequence = new Timer.Sequence<WebElement>() {
             @Override
             public void run() {
-                WebElement webElement = guiElementCore.getWebElement();
+                WebElement webElement = decoratedCore.getWebElement();
                 setReturningObject(webElement);
             }
         };
         sequence.setSkipThrowingException(true);
-        timerWrapper.setTimeoutInSeconds(1);
-        ThrowablePackedResponse<WebElement> throwablePackedResponse = timerWrapper.executeSequence(sequence);
-        timerWrapper.setTimeoutInSeconds(prevTimeout);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(1);
+        ThrowablePackedResponse<WebElement> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(prevTimeout);
         return throwablePackedResponse.finalizeTimer();
     }
 
     @Override
     public List<WebElement> findWebElements() {
-        return guiElementCore.findWebElements();
+        return decoratedCore.findWebElements();
     }
 
     @Override
     public WebElement findWebElement() {
-        return guiElementCore.findWebElement();
+        return decoratedCore.findWebElement();
     }
 
     @Override
     public By getBy() {
-        return guiElementCore.getBy();
+        return decoratedCore.getBy();
     }
 
     @Override
@@ -89,11 +89,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.scrollToElement();
+                decoratedCore.scrollToElement();
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -103,11 +103,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.scrollToElement(yOffset);
+                decoratedCore.scrollToElement(yOffset);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -117,12 +117,12 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.select();
-                setPassState(guiElementCore.isSelected());
+                decoratedCore.select();
+                setPassState(decoratedCore.isSelected());
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -132,12 +132,12 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.deselect();
-                setPassState(!guiElementCore.isSelected());
+                decoratedCore.deselect();
+                setPassState(!decoratedCore.isSelected());
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -147,11 +147,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.type(text);
+                decoratedCore.type(text);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -162,19 +162,19 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             @Override
             public void run() {
                 setSkipThrowingException(true);
-                guiElementCore.click();
+                decoratedCore.click();
             }
         };
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "click", guiElementCore::clickJS);
+        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "click", decoratedCore::clickJS);
         return this;
     }
 
     private void checkForClickingJSAlternativeOrExit(ThrowablePackedResponse throwablePackedResponse, String action, Runnable runnable) {
         if (throwablePackedResponse.hasTimeoutException()) {
 
-            if (!UseJSAlternatives.class.isAssignableFrom(guiElementCore.getClass()) || !IGuiElement.Properties.USE_JS_ALTERNATIVES.asBool()) {
+            if (!UseJSAlternatives.class.isAssignableFrom(decoratedCore.getClass()) || !IGuiElement.Properties.USE_JS_ALTERNATIVES.asBool()) {
                 // we cannot use clickJS()
                 throwablePackedResponse.finalizeTimer();
                 return;
@@ -208,7 +208,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
                     ||
                     message.contains("not clickable at point") // another chrome message (maybe FF with native events (emulation), too)
                     ) {
-                log().warn(action + "() failed on " + guiElementCore + ". Trying fallback " + action + "JS().");
+                log().warn(action + "() failed on " + decoratedCore + ". Trying fallback " + action + "JS().");
                 runnable.run();
                 return;
             }
@@ -222,11 +222,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.clickJS();
+                decoratedCore.clickJS();
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -236,11 +236,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.clickAbsolute();
+                decoratedCore.clickAbsolute();
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -250,11 +250,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.mouseOverAbsolute2Axis();
+                decoratedCore.mouseOverAbsolute2Axis();
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -264,11 +264,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.submit();
+                decoratedCore.submit();
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -278,11 +278,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.sendKeys(charSequences);
+                decoratedCore.sendKeys(charSequences);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -292,11 +292,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.clear();
+                decoratedCore.clear();
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -306,12 +306,12 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
             @Override
             public void run() {
-                String tagName = guiElementCore.getTagName();
+                String tagName = decoratedCore.getTagName();
                 setReturningObject(tagName);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<String> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<String> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -320,12 +320,12 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<Point> sequence = new Timer.Sequence<Point>() {
             @Override
             public void run() {
-                Point point = guiElementCore.getLocation();
+                Point point = decoratedCore.getLocation();
                 setReturningObject(point);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Point> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Point> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -334,12 +334,12 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<Dimension> sequence = new Timer.Sequence<Dimension>() {
             @Override
             public void run() {
-                Dimension dimension = guiElementCore.getSize();
+                Dimension dimension = decoratedCore.getSize();
                 setReturningObject(dimension);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Dimension> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Dimension> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -348,12 +348,12 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
             @Override
             public void run() {
-                String cssValue = guiElementCore.getCssValue(cssIdentifier);
+                String cssValue = decoratedCore.getCssValue(cssIdentifier);
                 setReturningObject(cssValue);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<String> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<String> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -363,10 +363,10 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             @Override
             public void run() {
                 setSkipThrowingException(true);
-                guiElementCore.mouseOver();
+                decoratedCore.mouseOver();
             }
         };
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -376,11 +376,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.mouseOverJS();
+                decoratedCore.mouseOverJS();
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -390,12 +390,12 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<Select> sequence = new Timer.Sequence<Select>() {
             @Override
             public void run() {
-                Select select = guiElementCore.getSelectElement();
+                Select select = decoratedCore.getSelectElement();
                 setReturningObject(select);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Select> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Select> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -404,12 +404,12 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<List<String>> sequence = new Timer.Sequence<List<String>>() {
             @Override
             public void run() {
-                List<String> stringList = guiElementCore.getTextsFromChildren();
+                List<String> stringList = decoratedCore.getTextsFromChildren();
                 setReturningObject(stringList);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<List<String>> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<List<String>> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -418,13 +418,13 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.doubleClick();
+                decoratedCore.doubleClick();
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "doubleClick", guiElementCore::doubleClickJS);
+        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "doubleClick", decoratedCore::doubleClickJS);
         return this;
     }
 
@@ -433,11 +433,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.highlight();
+                decoratedCore.highlight();
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.logThrowableAndReturnResponse();
         return this;
     }
@@ -447,11 +447,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.swipe(offsetX, offSetY);
+                decoratedCore.swipe(offsetX, offSetY);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -461,12 +461,12 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<Integer> sequence = new Timer.Sequence<Integer>() {
             @Override
             public void run() {
-                Integer integer = guiElementCore.getLengthOfValueAfterSendKeys(textToInput);
+                Integer integer = decoratedCore.getLengthOfValueAfterSendKeys(textToInput);
                 setReturningObject(integer);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Integer> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Integer> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -476,12 +476,12 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             @Override
             public void run() {
                 setReturningObject(0);
-                int numberOfFoundElements = guiElementCore.getNumberOfFoundElements();
+                int numberOfFoundElements = decoratedCore.getNumberOfFoundElements();
                 setReturningObject(numberOfFoundElements);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Integer> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<Integer> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -490,13 +490,13 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.rightClick();
+                decoratedCore.rightClick();
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "rightClick", guiElementCore::rightClickJS);
+        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "rightClick", decoratedCore::rightClickJS);
         return this;
     }
 
@@ -505,11 +505,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.rightClickJS();
+                decoratedCore.rightClickJS();
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -519,122 +519,122 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.doubleClickJS();
+                decoratedCore.doubleClickJS();
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         throwablePackedResponse.finalizeTimer();
         return this;
     }
 
     @Override
     public File takeScreenshot() {
-        return guiElementCore.takeScreenshot();
+        return decoratedCore.takeScreenshot();
     }
 
     @Override
     public boolean isPresent() {
-        int prevTimeout = timerWrapper.getTimeoutInSeconds();
+        int prevTimeout = guiElementData.getTimerWrapper().getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean present = guiElementCore.isPresent();
+                boolean present = decoratedCore.isPresent();
                 setReturningObject(present);
                 setPassState(present);
             }
         };
         sequence.setSkipThrowingException(true);
-        timerWrapper.setTimeoutInSeconds(1);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
-        timerWrapper.setTimeoutInSeconds(prevTimeout);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 
     @Override
     public boolean isEnabled() {
-        int prevTimeout = timerWrapper.getTimeoutInSeconds();
+        int prevTimeout = guiElementData.getTimerWrapper().getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean enabled = guiElementCore.isEnabled();
+                boolean enabled = decoratedCore.isEnabled();
                 setReturningObject(enabled);
                 setPassState(enabled);
             }
         };
         sequence.setSkipThrowingException(true);
-        timerWrapper.setTimeoutInSeconds(1);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
-        timerWrapper.setTimeoutInSeconds(prevTimeout);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 
     @Override
     public boolean isDisplayed() {
-        int prevTimeout = timerWrapper.getTimeoutInSeconds();
+        int prevTimeout = guiElementData.getTimerWrapper().getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean displayed = guiElementCore.isDisplayed();
+                boolean displayed = decoratedCore.isDisplayed();
                 setReturningObject(displayed);
                 setPassState(displayed);
             }
         };
         sequence.setSkipThrowingException(true);
-        timerWrapper.setTimeoutInSeconds(1);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
-        timerWrapper.setTimeoutInSeconds(prevTimeout);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 
     @Override
     public boolean isVisible(boolean complete) {
-        int prevTimeout = timerWrapper.getTimeoutInSeconds();
+        int prevTimeout = guiElementData.getTimerWrapper().getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean visible = guiElementCore.isVisible(complete);
+                boolean visible = decoratedCore.isVisible(complete);
                 setReturningObject(visible);
                 setPassState(visible);
             }
         };
         sequence.setSkipThrowingException(true);
-        timerWrapper.setTimeoutInSeconds(1);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
-        timerWrapper.setTimeoutInSeconds(prevTimeout);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 
     @Override
     public boolean isSelected() {
-        int prevTimeout = timerWrapper.getTimeoutInSeconds();
+        int prevTimeout = guiElementData.getTimerWrapper().getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean selected = guiElementCore.isSelected();
+                boolean selected = decoratedCore.isSelected();
                 setReturningObject(selected);
                 setPassState(selected);
             }
         };
         sequence.setSkipThrowingException(true);
-        timerWrapper.setTimeoutInSeconds(1);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
-        timerWrapper.setTimeoutInSeconds(prevTimeout);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -643,12 +643,12 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
             @Override
             public void run() {
-                String text = guiElementCore.getText();
+                String text = decoratedCore.getText();
                 setReturningObject(text);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<String> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<String> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -657,54 +657,54 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
             @Override
             public void run() {
-                String attributeValue = guiElementCore.getAttribute(attributeName);
+                String attributeValue = decoratedCore.getAttribute(attributeName);
                 setReturningObject(attributeValue);
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<String> throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        ThrowablePackedResponse<String> throwablePackedResponse = guiElementData.getTimerWrapper().executeSequence(sequence);
         return throwablePackedResponse.finalizeTimer();
     }
 
     @Override
     public boolean isDisplayedFromWebElement() {
-        int prevTimeout = timerWrapper.getTimeoutInSeconds();
+        int prevTimeout = guiElementData.getTimerWrapper().getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean displayedFromWebElement = guiElementCore.isDisplayedFromWebElement();
+                boolean displayedFromWebElement = decoratedCore.isDisplayedFromWebElement();
                 setReturningObject(displayedFromWebElement);
                 setPassState(displayedFromWebElement);
             }
         };
         sequence.setSkipThrowingException(true);
-        timerWrapper.setTimeoutInSeconds(1);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
-        timerWrapper.setTimeoutInSeconds(prevTimeout);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 
     @Override
     public boolean isSelectable() {
-        int prevTimeout = timerWrapper.getTimeoutInSeconds();
+        int prevTimeout = guiElementData.getTimerWrapper().getTimeoutInSeconds();
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean selectable = guiElementCore.isSelectable();
+                boolean selectable = decoratedCore.isSelectable();
                 setReturningObject(selectable);
                 setPassState(selectable);
             }
         };
         sequence.setSkipThrowingException(true);
-        timerWrapper.setTimeoutInSeconds(1);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeSequence(sequence);
-        timerWrapper.setTimeoutInSeconds(prevTimeout);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(1);
+        ThrowablePackedResponse<Boolean> response = guiElementData.getTimerWrapper().executeSequence(sequence);
+        guiElementData.getTimerWrapper().setTimeoutInSeconds(prevTimeout);
         return response.logThrowableAndReturnResponse();
     }
 

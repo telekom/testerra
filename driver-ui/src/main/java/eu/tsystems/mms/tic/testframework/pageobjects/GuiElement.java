@@ -51,6 +51,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssert
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
@@ -99,14 +100,15 @@ public class GuiElement implements
     private GuiElementAssert collectableAssert;
     private GuiElementAssert nonFunctionalAssert;
 
+    public final GuiElementCore core;
+    public final GuiElementData guiElementData;
+
     /**
      * Facade for all parts of the lowest GuiElement
      */
-    private GuiElementFacade guiElementFacade;
-    public final GuiElementCore core;
-    private GuiElementCore guiElementCore;
-    private GuiElementWait guiElementWait;
-    public final GuiElementData guiElementData;
+    private GuiElementFacade decoratedFacade;
+    private GuiElementCore decoratedCore;
+    private GuiElementWait decoratedWait;
 
     protected Object parent;
     private int iteratorIndex = 0;
@@ -114,14 +116,20 @@ public class GuiElement implements
 
     private GuiElement(GuiElementData guiElementData) {
         this.guiElementData = guiElementData;
-        IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(guiElementData.browser);
+        IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(guiElementData.getBrowser());
         core = factory.createCore(guiElementData);
+        guiElementData.setGuiElement(this);
         buildInternals();
     }
 
-    /**
-     * Constructor with explicit web driver session.
-     */
+    public GuiElement(GuiElementCore core) {
+        this.core = core;
+        AbstractGuiElementCore realCore = (AbstractGuiElementCore)core;
+        guiElementData = realCore.guiElementData;
+        guiElementData.setGuiElement(this);
+        buildInternals();
+    }
+
     @Deprecated
     public GuiElement(WebDriver driver, By by) {
         this(driver, by, null);
@@ -150,6 +158,7 @@ public class GuiElement implements
         IGuiElement... frames
     ) {
         this(new GuiElementData(driver, locate));
+
         if (frames != null && frames.length > 0) {
             guiElementData.setFrameLogic(new FrameLogic(driver, frames));
         }
@@ -167,42 +176,6 @@ public class GuiElement implements
         this(driver, Locate.by(by), frames);
     }
 
-    /**
-     * Constructor with ancestor GuiElement
-     */
-    @Deprecated
-    public GuiElement(Locate locate, IGuiElement ancestor) {
-        // Use FrameLogic from parent
-        GuiElement ancestorGuiElement = (GuiElement)ancestor;
-
-        String abstractLocatorString = locate.getBy().toString();
-        if (abstractLocatorString.toLowerCase().contains("xpath")) {
-            int i = abstractLocatorString.indexOf(":") + 1;
-            String xpath = abstractLocatorString.substring(i).trim();
-            String prevXPath = xpath;
-            // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
-            if (xpath.startsWith("/")) {
-                xpath = xpath.replaceFirst("/", "./");
-                log().warn(String.format("Replaced absolute xpath locator \"%s\" to relative: \"%s\"", prevXPath, xpath));
-                locate = Locate.by(By.xpath(xpath));
-            } else if (!xpath.startsWith(".")) {
-                xpath = "./" + xpath;
-                log().warn(String.format("Added relative xpath locator for children to \"%s\": \"%s\"", prevXPath, xpath));
-                locate = Locate.by(By.xpath(xpath));
-            }
-        }
-
-        this(new GuiElementData(
-            ancestorGuiElement.getWebDriver(),
-            ancestorGuiElement.getFrameLogic(),
-            locate,
-            this,
-            ancestorGuiElement.guiElementData,
-            -1
-        ));
-        setParent(ancestorGuiElement);
-    }
-
     @Override
     public Locate getLocate() {
         return guiElementData.locate;
@@ -211,15 +184,15 @@ public class GuiElement implements
     private void buildInternals() {
         if (guiElementData.hasFrameLogic()) {
             // if frames are set, the waiter should use frame switches when executing its sequences
-            guiElementCore = new GuiElementCoreFrameAwareDecorator(guiElementCore, guiElementData);
+            decoratedCore = new GuiElementCoreFrameAwareDecorator(decoratedCore, guiElementData);
         }
         // Wrap the core with sequence decorator, such that its methods are executed with sequence
-        guiElementCore = new GuiElementCoreSequenceDecorator(guiElementCore, guiElementData);
+        decoratedCore = new GuiElementCoreSequenceDecorator(decoratedCore, guiElementData);
 
         GuiElementWaitFactory waitFactory = Testerra.injector.getInstance(GuiElementWaitFactory.class);
-        guiElementWait = waitFactory.create(this);
+        decoratedWait = waitFactory.create(guiElementData);
 
-        guiElementFacade = createFacade(guiElementCore);
+        decoratedFacade = createFacade(decoratedCore);
     }
 
     /**
@@ -269,7 +242,7 @@ public class GuiElement implements
      */
     @Deprecated
     public GuiElement setDescription(String description) {
-        guiElementData.name = description;
+        guiElementData.setName(description);
         return this;
     }
 
@@ -303,32 +276,32 @@ public class GuiElement implements
     }
 
     public GuiElement getSubElement(Locate locate) {
-        return (GuiElement)guiElementFactory.createWithAncestor(locate, this);
+        return (GuiElement)guiElementFactory.createWithParent(locate, this);
     }
 
     @Override
     public WebElement getWebElement() {
-        return guiElementFacade.getWebElement();
+        return decoratedFacade.getWebElement();
     }
 
     public By getBy() {
-        return guiElementFacade.getBy();
+        return decoratedFacade.getBy();
     }
 
     public GuiElement scrollToElement() {
-        guiElementFacade.scrollToElement();
+        decoratedFacade.scrollToElement();
         return this;
     }
 
     public IGuiElement scrollToElement(int yOffset) {
-        guiElementFacade.scrollToElement(yOffset);
+        decoratedFacade.scrollToElement(yOffset);
         return this;
     }
 
     @Override
     public IGuiElement select() {
         guiElementData.setLogLevel(LogLevel.INFO);
-        guiElementFacade.select();
+        decoratedFacade.select();
         guiElementData.resetLogLevel();
         return this;
     }
@@ -345,9 +318,9 @@ public class GuiElement implements
             log().info("Select option is null. Selecting/Deselecting nothing.");
         }
         if (select) {
-            guiElementFacade.select();
+            decoratedFacade.select();
         } else {
-            guiElementFacade.deselect();
+            decoratedFacade.deselect();
         }
         guiElementData.resetLogLevel();
         return this;
@@ -356,14 +329,14 @@ public class GuiElement implements
     @Override
     public IGuiElement deselect() {
         guiElementData.setLogLevel(LogLevel.INFO);
-        guiElementFacade.deselect();
+        decoratedFacade.deselect();
         guiElementData.resetLogLevel();
         return this;
     }
 
     public IGuiElement type(String text) {
         guiElementData.setLogLevel(LogLevel.INFO);
-        guiElementCore.type(text);
+        decoratedCore.type(text);
         guiElementData.resetLogLevel();
         return this;
     }
@@ -371,7 +344,7 @@ public class GuiElement implements
     @Override
     public IGuiElement click() {
         guiElementData.setLogLevel(LogLevel.INFO);
-        guiElementFacade.click();
+        decoratedFacade.click();
         guiElementData.resetLogLevel();
         return this;
     }
@@ -379,32 +352,32 @@ public class GuiElement implements
     @Override
     public IGuiElement clickJS() {
         guiElementData.setLogLevel(LogLevel.INFO);
-        guiElementFacade.clickJS();
+        decoratedFacade.clickJS();
         guiElementData.resetLogLevel();
         return this;
     }
 
     public IGuiElement clickAbsolute() {
         guiElementData.setLogLevel(LogLevel.INFO);
-        guiElementFacade.clickAbsolute();
+        decoratedFacade.clickAbsolute();
         guiElementData.resetLogLevel();
         return this;
     }
 
     public IGuiElement mouseOverAbsolute2Axis() {
-        guiElementFacade.mouseOverAbsolute2Axis();
+        decoratedFacade.mouseOverAbsolute2Axis();
         return this;
     }
 
     public IGuiElement submit() {
-        guiElementFacade.submit();
+        decoratedFacade.submit();
         return this;
     }
 
     @Override
     public IGuiElement sendKeys(CharSequence... charSequences) {
         guiElementData.setLogLevel(LogLevel.INFO);
-        guiElementFacade.sendKeys(charSequences);
+        decoratedFacade.sendKeys(charSequences);
         guiElementData.resetLogLevel();
         return this;
     }
@@ -414,7 +387,7 @@ public class GuiElement implements
         float cps = cpm/60;
         if (cps <= 0) cps = 1;
         int cpsSleepMs = Math.round(1000/cps);
-        final WebElement webElement = guiElementCore.findWebElement();
+        final WebElement webElement = decoratedCore.findWebElement();
         for (CharSequence charSequence : charSequences) {
             charSequence.codePoints().forEach(codePoint -> {
                 webElement.sendKeys(new String(Character.toChars(codePoint)));
@@ -426,46 +399,46 @@ public class GuiElement implements
 
     @Override
     public IGuiElement clear() {
-        guiElementFacade.clear();
+        decoratedFacade.clear();
         return this;
     }
 
     @Override
     public InteractiveGuiElement hover() {
-        guiElementCore.mouseOver();
+        decoratedCore.mouseOver();
         return this;
     }
 
     public String getTagName() {
-        return guiElementFacade.getTagName();
+        return decoratedFacade.getTagName();
     }
 
     public String getAttribute(String attributeName) {
-        return guiElementFacade.getAttribute(attributeName);
+        return decoratedFacade.getAttribute(attributeName);
     }
 
     public boolean isSelected() {
-        return guiElementFacade.isSelected();
+        return decoratedFacade.isSelected();
     }
 
     public boolean isEnabled() {
-        return guiElementFacade.isEnabled();
+        return decoratedFacade.isEnabled();
     }
 
     public String getText() {
-        return guiElementFacade.getText();
+        return decoratedFacade.getText();
     }
 
     public boolean isDisplayed() {
-        return guiElementFacade.isDisplayed();
+        return decoratedFacade.isDisplayed();
     }
 
     public boolean isVisible(final boolean complete) {
-        return guiElementFacade.isVisible(complete);
+        return decoratedFacade.isVisible(complete);
     }
 
     public boolean isDisplayedFromWebElement() {
-        return guiElementFacade.isDisplayedFromWebElement();
+        return decoratedFacade.isDisplayedFromWebElement();
     }
 
     /**
@@ -477,22 +450,22 @@ public class GuiElement implements
      * @return true, if the element is selectable.
      */
     public boolean isSelectable() {
-        return guiElementFacade.isSelectable();
+        return decoratedFacade.isSelectable();
     }
 
     @Override
     public Point getLocation() {
-        return guiElementFacade.getLocation();
+        return decoratedFacade.getLocation();
     }
 
     @Override
     public Dimension getSize() {
-        return guiElementFacade.getSize();
+        return decoratedFacade.getSize();
     }
 
     @Override
     public IGuiElement find(Locate locate) {
-        return guiElementFactory.createWithAncestor(locate, this);
+        return guiElementFactory.createWithParent(locate, this);
     }
 
     @Override
@@ -512,29 +485,29 @@ public class GuiElement implements
     }
 
     public String getCssValue(String cssIdentifier) {
-        return guiElementFacade.getCssValue(cssIdentifier);
+        return decoratedFacade.getCssValue(cssIdentifier);
     }
 
     public IGuiElement mouseOver() {
-        guiElementFacade.mouseOver();
+        decoratedFacade.mouseOver();
         return this;
     }
 
     public IGuiElement mouseOverJS() {
-        guiElementFacade.mouseOverJS();
+        decoratedFacade.mouseOverJS();
         return this;
     }
 
     public boolean isPresent() {
-        return guiElementFacade.isPresent();
+        return decoratedFacade.isPresent();
     }
 
     public Select getSelectElement() {
-        return guiElementFacade.getSelectElement();
+        return decoratedFacade.getSelectElement();
     }
 
     public List<String> getTextsFromChildren() {
-        return guiElementFacade.getTextsFromChildren();
+        return decoratedFacade.getTextsFromChildren();
     }
 
     public boolean anyFollowingTextNodeContains(String contains) {
@@ -557,7 +530,7 @@ public class GuiElement implements
 
     @Override
     public IGuiElement doubleClick() {
-        guiElementFacade.doubleClick();
+        decoratedFacade.doubleClick();
         return this;
     }
 
@@ -589,44 +562,44 @@ public class GuiElement implements
 
     @Override
     public IGuiElement highlight() {
-        guiElementFacade.highlight();
+        decoratedFacade.highlight();
         return this;
     }
 
     public IGuiElement swipe(int offsetX, int offSetY) {
-        guiElementFacade.swipe(offsetX, offSetY);
+        decoratedFacade.swipe(offsetX, offSetY);
         return this;
     }
 
     public int getLengthOfValueAfterSendKeys(String textToInput) {
-        return guiElementFacade.getLengthOfValueAfterSendKeys(textToInput);
+        return decoratedFacade.getLengthOfValueAfterSendKeys(textToInput);
     }
 
     public int getNumberOfFoundElements() {
-        return guiElementFacade.getNumberOfFoundElements();
+        return decoratedFacade.getNumberOfFoundElements();
     }
 
     @Override
     public IGuiElement rightClick() {
-        guiElementFacade.rightClick();
+        decoratedFacade.rightClick();
         return this;
     }
 
     @Override
     public IGuiElement rightClickJS() {
-        guiElementFacade.rightClickJS();
+        decoratedFacade.rightClickJS();
         return this;
     }
 
     @Override
     public IGuiElement doubleClickJS() {
-        guiElementFacade.doubleClickJS();
+        decoratedFacade.doubleClickJS();
         return this;
     }
 
     @Deprecated
     public File takeScreenshot() {
-        return guiElementFacade.takeScreenshot();
+        return decoratedFacade.takeScreenshot();
     }
 
     /**
@@ -636,7 +609,7 @@ public class GuiElement implements
      */
     @Override
     public IFrameLogic getFrameLogic() {
-        return guiElementData.frameLogic;
+        return guiElementData.getFrameLogic();
     }
 
     /**
@@ -684,13 +657,13 @@ public class GuiElement implements
 
     @Override
     public IGuiElement setName(String name) {
-        guiElementData.name = name;
+        guiElementData.setName(name);
         return this;
     }
 
     @Override
     public String getName() {
-        return guiElementData.name;
+        return guiElementData.getName();
     }
 
     /**
@@ -735,7 +708,7 @@ public class GuiElement implements
         if (nonFunctionalAssert==null) {
             GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             NonFunctionalAssertion assertion = Testerra.injector.getInstance(NonFunctionalAssertion.class);
-            nonFunctionalAssert = assertFactory.create(this, assertion, guiElementWait);
+            nonFunctionalAssert = assertFactory.create(guiElementData, assertion, decoratedWait);
         }
         return nonFunctionalAssert;
     }
@@ -760,7 +733,7 @@ public class GuiElement implements
         if (instantAssert == null) {
             GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             InstantAssertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
-            instantAssert = assertFactory.create(this, assertion, guiElementWait);
+            instantAssert = assertFactory.create(guiElementData, assertion, decoratedWait);
         }
         return instantAssert;
     }
@@ -776,7 +749,7 @@ public class GuiElement implements
         if (collectableAssert==null) {
             GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             CollectedAssertion assertion = Testerra.injector.getInstance(CollectedAssertion.class);
-            collectableAssert = assertFactory.create(this, assertion, guiElementWait);
+            collectableAssert = assertFactory.create(guiElementData, assertion, decoratedWait);
         }
         return collectableAssert;
     }
@@ -827,7 +800,7 @@ public class GuiElement implements
      * Provides access to all wait methods
      */
     public GuiElementWait waits() {
-        return guiElementWait;
+        return decoratedWait;
     }
 
     @Override
@@ -836,7 +809,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return guiElementCore.findWebElement().getTagName();
+                return core.findWebElement().getTagName();
             }
 
             @Override
@@ -852,7 +825,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return guiElementCore.findWebElement().getText();
+                return core.findWebElement().getText();
             }
 
             @Override
@@ -878,7 +851,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return guiElementCore.findWebElement().getAttribute(attribute);
+                return core.findWebElement().getAttribute(attribute);
             }
 
             @Override
@@ -911,7 +884,7 @@ public class GuiElement implements
             @Override
             public Boolean getActual() {
                 try {
-                    return guiElementCore.findWebElement()!=null;
+                    return core.findWebElement()!=null;
                 } catch (ElementNotFoundException e) {
                     return false;
                 }
@@ -930,7 +903,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return guiElementCore.isVisible(complete);
+                return core.isVisible(complete);
             }
 
             @Override
@@ -947,7 +920,7 @@ public class GuiElement implements
             @Override
             public Boolean getActual() {
                 try {
-                    return guiElementCore.findWebElement().isDisplayed();
+                    return core.findWebElement().isDisplayed();
                 } catch (ElementNotFoundException e) {
                     return false;
                 }
@@ -967,7 +940,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return guiElementCore.findWebElement().isEnabled();
+                return core.findWebElement().isEnabled();
             }
 
             @Override
@@ -983,7 +956,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return guiElementCore.findWebElement().isSelected();
+                return core.findWebElement().isSelected();
             }
 
             @Override
@@ -999,7 +972,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultRectAssertion.class, new AssertionProvider<Rectangle>() {
             @Override
             public Rectangle getActual() {
-                return guiElementCore.findWebElement().getRect();
+                return core.findWebElement().getRect();
             }
 
             @Override
@@ -1016,7 +989,7 @@ public class GuiElement implements
             @Override
             public Integer getActual() {
                 try {
-                    return guiElementCore.findWebElements().size();
+                    return decoratedCore.findWebElements().size();
                 } catch (ElementNotFoundException e) {
                     return 0;
                 }
@@ -1039,7 +1012,7 @@ public class GuiElement implements
     public ImageAssertion screenshot() {
         final IGuiElement self = this;
         final AtomicReference<File> screenshot = new AtomicReference<>();
-        screenshot.set(guiElementCore.takeScreenshot());
+        screenshot.set(decoratedCore.takeScreenshot());
         return propertyAssertionFactory.create(DefaultImageAssertion.class, new AssertionProvider<File>() {
             @Override
             public File getActual() {
@@ -1048,7 +1021,7 @@ public class GuiElement implements
 
             @Override
             public void failed(PropertyAssertion assertion) {
-                screenshot.set(guiElementCore.takeScreenshot());
+                screenshot.set(core.takeScreenshot());
             }
 
             @Override
@@ -1070,7 +1043,7 @@ public class GuiElement implements
     @Override
     public Iterator<IGuiElement> iterator() {
         iteratorIndex = 0;
-        iteratorSize = guiElementCore.findWebElements().size();
+        iteratorSize = decoratedCore.findWebElements().size();
         return this;
     }
 

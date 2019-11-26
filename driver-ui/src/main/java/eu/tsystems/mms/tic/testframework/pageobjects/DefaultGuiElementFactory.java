@@ -21,17 +21,24 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCore;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 
 public class DefaultGuiElementFactory implements
     GuiElementFactory,
     Loggable
 {
     @Override
-    public IGuiElement createWithAncestor(
-        Locate locator,
-        IGuiElement ancestor
+    public IGuiElement createWithParent(
+        IGuiElement parent,
+        Locate locator
     ) {
-        return new GuiElement(locator, ancestor);
+        GuiElement parentGuiElement = (GuiElement)parent;
+        IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(parentGuiElement.guiElementData.getBrowser());
+        GuiElementCore core = factory.createCoreWithParent(parentGuiElement.guiElementData, locator);
+        return new GuiElement(core);
     }
 
     @Override
@@ -47,8 +54,8 @@ public class DefaultGuiElementFactory implements
 
     @Override
     public IGuiElement create(
-        Locate locator,
-        PageObject page
+        PageObject page,
+        Locate locator
     ) {
         return new GuiElement(page, locator);
     }

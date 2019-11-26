@@ -73,22 +73,20 @@ import java.util.List;
 /**
  * Created by rnhb on 12.08.2015.
  */
-public class DesktopGuiElementCore implements
-    GuiElementCore,
+public class DesktopGuiElementCore extends AbstractGuiElementCore implements
     UseJSAlternatives,
     Loggable
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);
-    private final GuiElementData guiElementData;
 
     public DesktopGuiElementCore(GuiElementData guiElementData) {
-        this.guiElementData = guiElementData;
+        super(guiElementData);
     }
 
     @Override
     public List<WebElement> findWebElements() {
         guiElementData.executionLog.addMessage("Executing find().");
-        guiElementData.webElement = null;
+        guiElementData.setWebElement(null);
 
         List<WebElement> elements = null;
         Locate locate = guiElementData.locate;
@@ -112,7 +110,7 @@ public class DesktopGuiElementCore implements
             setWebElement(elements);
         }
 
-        if (guiElementData.webElement == null) {
+        if (guiElementData.getWebElement() == null) {
             String message = String.format("{%s} not found", guiElementData.toString(true));
             MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
             if (currentMethodContext != null) {
@@ -126,7 +124,7 @@ public class DesktopGuiElementCore implements
     @Override
     public WebElement findWebElement() {
         findWebElements();
-        return guiElementData.webElement;
+        return guiElementData.getWebElement();
     }
 
     private int find() {
@@ -163,7 +161,7 @@ public class DesktopGuiElementCore implements
             webElement = ObjectUtils.simpleProxy(WebElement.class, webElementProxy, interfaces);
 
             // set webelement
-            guiElementData.webElement = webElement;
+            guiElementData.setWebElement(webElement);
 
             // find timings
             int findCounter = Timings.raiseFindCounter();
@@ -211,7 +209,7 @@ public class DesktopGuiElementCore implements
     }
 
     private void highlightWebElement(Color color) {
-        JSUtils.highlightWebElement(guiElementData.webDriver, guiElementData.webElement, color);
+        JSUtils.highlightWebElement(guiElementData.webDriver, guiElementData.getWebElement(), color);
     }
 
     private void logTimings(long start, int findCounter) {
@@ -236,7 +234,7 @@ public class DesktopGuiElementCore implements
     @Deprecated
     public WebElement getWebElement() {
         find();
-        return guiElementData.webElement;
+        return guiElementData.getWebElement();
     }
 
     @Override
@@ -309,7 +307,7 @@ public class DesktopGuiElementCore implements
 
         find();
 
-        WebElement webElement = guiElementData.webElement;
+        WebElement webElement = guiElementData.getWebElement();
         webElement.clear();
         webElement.sendKeys(text);
 
@@ -330,7 +328,7 @@ public class DesktopGuiElementCore implements
         find();
         LOGGER.debug("click(): found element, adding ClickPath");
         LOGGER.debug("click(): added ClickPath, clicking relative");
-        pClickRelative(this, guiElementData.webDriver, guiElementData.webElement);
+        pClickRelative(this, guiElementData.webDriver, guiElementData.getWebElement());
         LOGGER.debug("click(): clicked relative");
         return this;
     }
@@ -371,14 +369,14 @@ public class DesktopGuiElementCore implements
     @Override
     public GuiElementCore clickJS() {
         find();
-        JSUtils.executeScript(guiElementData.webDriver, "arguments[0].click();", guiElementData.webElement);
+        JSUtils.executeScript(guiElementData.webDriver, "arguments[0].click();", guiElementData.getWebElement());
         return this;
     }
 
     @Override
     public GuiElementCore clickAbsolute() {
         find();
-        pClickAbsolute(this, guiElementData.webDriver, guiElementData.webElement);
+        pClickAbsolute(this, guiElementData.webDriver, guiElementData.getWebElement());
         return this;
     }
 
@@ -386,7 +384,7 @@ public class DesktopGuiElementCore implements
     public GuiElementCore mouseOverAbsolute2Axis() {
         find();
         demoMouseOver();
-        mouseOverAbsolute2Axis(guiElementData.webDriver, guiElementData.webElement);
+        mouseOverAbsolute2Axis(guiElementData.webDriver, guiElementData.getWebElement());
         return this;
     }
 
@@ -413,7 +411,7 @@ public class DesktopGuiElementCore implements
     }
 
     private void checkAndWarnIfIE() {
-        if (Browsers.ie.equalsIgnoreCase(guiElementData.browser)) {
+        if (Browsers.ie.equalsIgnoreCase(guiElementData.getBrowser())) {
             LOGGER.warn("*** IE driver with mouse events might not work ***");
         }
     }
@@ -439,35 +437,35 @@ public class DesktopGuiElementCore implements
     @Override
     public String getTagName() {
         find();
-        String tagName = guiElementData.webElement.getTagName();
+        String tagName = guiElementData.getWebElement().getTagName();
         return tagName;
     }
 
     @Override
     public String getAttribute(String attributeName) {
         find();
-        String attribute = guiElementData.webElement.getAttribute(attributeName);
+        String attribute = guiElementData.getWebElement().getAttribute(attributeName);
         return attribute;
     }
 
     @Override
     public boolean isSelected() {
         find();
-        boolean selected = guiElementData.webElement.isSelected();
+        boolean selected = guiElementData.getWebElement().isSelected();
         return selected;
     }
 
     @Override
     public boolean isEnabled() {
         find();
-        boolean enabled = guiElementData.webElement.isEnabled();
+        boolean enabled = guiElementData.getWebElement().isEnabled();
         return enabled;
     }
 
     @Override
     public String getText() {
         find();
-        String text = guiElementData.webElement.getText();
+        String text = guiElementData.getWebElement().getText();
         return text;
     }
 
@@ -485,7 +483,7 @@ public class DesktopGuiElementCore implements
         }
 
         // in isPresent(), find() was executed which should set "webElement" or throw an exception
-        WebElement webElement = guiElementData.webElement;
+        WebElement webElement = guiElementData.getWebElement();
         if (webElement == null) {
             throw new TesterraSystemException("Internal error. This state should not be reached.");
         }
@@ -530,7 +528,7 @@ public class DesktopGuiElementCore implements
             LOGGER.debug("isDisplayedFromWebElement(): WebElement is not present");
             return false;
         }
-        boolean displayed = guiElementData.webElement.isDisplayed();
+        boolean displayed = guiElementData.getWebElement().isDisplayed();
         guiElementData.executionLog.addMessage("isDisplayedFromWebElement = " + displayed);
         return displayed;
     }
@@ -580,7 +578,7 @@ public class DesktopGuiElementCore implements
     @Override
     public Point getLocation() {
         find();
-        Point location = guiElementData.webElement.getLocation();
+        Point location = guiElementData.getWebElement().getLocation();
         return location;
     }
 
@@ -596,7 +594,7 @@ public class DesktopGuiElementCore implements
 
     @Override
     public GuiElementCore mouseOver() {
-        String browser = guiElementData.browser;
+        String browser = guiElementData.getBrowser();
         switch (browser) {
             case Browsers.safari:
             case Browsers.edge:
@@ -627,7 +625,7 @@ public class DesktopGuiElementCore implements
         find();
         demoMouseOver();
 
-        WebElement webElement = guiElementData.webElement;
+        WebElement webElement = guiElementData.getWebElement();
         final Point location = webElement.getLocation();
         final int x = location.getX();
         final int y = location.getY();
@@ -652,7 +650,7 @@ public class DesktopGuiElementCore implements
                 + "evObj.initEvent( 'mouseover', true, true );"
                 + "fireOnThis.dispatchEvent(evObj);";
 
-        ((JavascriptExecutor) guiElementData.webDriver).executeScript(code, guiElementData.webElement);
+        ((JavascriptExecutor) guiElementData.webDriver).executeScript(code, guiElementData.getWebElement());
     }
 
     @Override
@@ -672,7 +670,7 @@ public class DesktopGuiElementCore implements
     @Override
     public Select getSelectElement() {
         find();
-        Select select = new Select(guiElementData.webElement);
+        Select select = new Select(guiElementData.getWebElement());
         return select;
     }
 
@@ -684,7 +682,7 @@ public class DesktopGuiElementCore implements
 
     private List<String> pGetTextsFromChildren() {
         // find() not necessary here, because findElements() is called, which calls find().
-        List<WebElement> childElements = guiElementData.webElement.findElements(By.xpath(".//*"));
+        List<WebElement> childElements = guiElementData.getWebElement().findElements(By.xpath(".//*"));
 
         ArrayList<String> childTexts = new ArrayList<String>();
         for (WebElement childElement : childElements) {
@@ -700,7 +698,7 @@ public class DesktopGuiElementCore implements
     @Override
     public GuiElementCore doubleClick() {
         find();
-        WebElement webElement = guiElementData.webElement;
+        WebElement webElement = guiElementData.getWebElement();
         By localBy = getBy();
 
         WebDriverRequest driverRequest = WebDriverManager.getRelatedWebDriverRequest(guiElementData.webDriver);
@@ -773,7 +771,7 @@ public class DesktopGuiElementCore implements
     public GuiElementCore rightClick() {
         find();
         Actions actions = new Actions(guiElementData.webDriver);
-        actions.moveToElement(guiElementData.webElement).contextClick().build().perform();
+        actions.moveToElement(guiElementData.getWebElement()).contextClick().build().perform();
         return this;
     }
 
@@ -785,7 +783,7 @@ public class DesktopGuiElementCore implements
                 "e.initMouseEvent('contextmenu', true, true,element.ownerDocument.defaultView, 1, 0, 0, 0, 0, false,false, false, false,2, null);" +
                 "return !element.dispatchEvent(e);";
 
-        JSUtils.executeScript(guiElementData.webDriver, script, guiElementData.webElement);
+        JSUtils.executeScript(guiElementData.webDriver, script, guiElementData.getWebElement());
         return this;
     }
 

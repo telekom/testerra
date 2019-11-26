@@ -45,7 +45,7 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
     @Override
     protected void beforeDelegation() {
         if (guiElementData.hasFrameLogic()) {
-            IFrameLogic frameLogic = guiElementData.frameLogic;
+            IFrameLogic frameLogic = guiElementData.getFrameLogic();
             ExecutionLog executionLog = guiElementData.executionLog;
             executionLog.addMessage("Switching to frames " + frameLogic);
             frameLogic.switchToCorrectFrame();
@@ -57,7 +57,7 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
     protected void afterDelegation() {
         ExecutionLog executionLog = guiElementData.executionLog;
         executionLog.addMessage("Switching to DefaultFrame.");
-        guiElementData.frameLogic.switchToDefaultFrame();
+        guiElementData.getFrameLogic().switchToDefaultFrame();
         executionLog.addMessage("Switching to DefaultFrame successful.");
     }
 
@@ -79,11 +79,10 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
 
     @Override
     public Select getSelectElement() {
-        IFrameLogic frameLogic = guiElementData.frameLogic;
         beforeDelegation();
-        WebElement webElement = decoratedGuiElementCore.getWebElement();
+        WebElement webElement = decoratedGuiElementCore.findWebElement();
         Select select = new Select(webElement);
-        Select frameAwareSelect = new FrameAwareSelect(select, webElement, frameLogic.getFrames(),guiElementData.webDriver );
+        Select frameAwareSelect = new FrameAwareSelect(select, webElement, guiElementData.getFrameLogic().getFrames(), guiElementData.webDriver );
         afterDelegation();
         return frameAwareSelect;
     }

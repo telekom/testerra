@@ -32,7 +32,7 @@ public class GuiElementStatusCheckFrameAwareDecorator extends GuiElementStatusCh
 
     public GuiElementStatusCheckFrameAwareDecorator(GuiElementStatusCheck decoratedGuiElementStatusCheck, GuiElementData guiElementData) {
         super(decoratedGuiElementStatusCheck);
-        frameLogic = guiElementData.frameLogic;
+        frameLogic = guiElementData.getFrameLogic();
         executionLog = guiElementData.executionLog;
     }
 

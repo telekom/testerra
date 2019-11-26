@@ -162,7 +162,11 @@ public class GuiElementData implements
             sb.append(name);
         }
         if (!hasName() || detailed) {
-            sb.append("GuiElement(").append(locate).append(")");
+            sb.append("GuiElement(").append(locate);
+            if (index != -1) {
+                sb.append("[").append(index+1).append("]");
+            }
+            sb.append(")");
         }
         //toString+="("+guiElement.getLocate().toString();
 //        if (hasFrameLogic()) {

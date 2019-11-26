@@ -63,9 +63,9 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
                 guiElementData.getFrameLogic().switchToCorrectFrame();
             }
             if (successful) {
-                JSUtils.highlightWebElementStatic(guiElementData.webDriver, guiElementData.getWebElement(), new Color(0, 255, 0));
+                JSUtils.highlightWebElementStatic(guiElementData.getWebDriver(), guiElementData.getWebElement(), new Color(0, 255, 0));
             } else {
-                JSUtils.highlightWebElementStatic(guiElementData.webDriver, guiElementData.getWebElement(), new Color(255, 0, 0));
+                JSUtils.highlightWebElementStatic(guiElementData.getWebDriver(), guiElementData.getWebElement(), new Color(255, 0, 0));
             }
         } catch (RuntimeException e) {
             // could not highlight, but thats ok.

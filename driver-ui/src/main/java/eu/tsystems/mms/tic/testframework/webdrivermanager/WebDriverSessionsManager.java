@@ -445,7 +445,7 @@ public final class WebDriverSessionsManager {
             /*
             setup new session
              */
-            eventFiringWebDriver = webDriverFactory.getWebDriver(webDriverRequest, sessionContext);
+            eventFiringWebDriver = webDriverFactory.createWebDriver(webDriverRequest, sessionContext);
 
             /*
             run the handlers

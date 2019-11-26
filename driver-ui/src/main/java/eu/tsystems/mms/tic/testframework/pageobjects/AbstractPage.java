@@ -81,7 +81,7 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
         return find(Locate.by(by));
     }
     protected IGuiElement find(Locate locate) {
-        return guiElementFactory.create(locate, this);
+        return guiElementFactory.create(this, locate);
     }
     protected <T extends IComponent> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
         return pageFactory.createComponent(componentClass, this, rootElement);

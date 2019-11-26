@@ -22,15 +22,14 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -38,29 +37,20 @@ import org.openqa.selenium.WebElement;
  * Holds the state of the GuiElement to interchange with any other
  * GuiElement compatible class like {@link GuiElementCore}
  */
-public class GuiElementData implements Nameable<GuiElementData> {
+public class GuiElementData implements
+    Nameable<GuiElementData>,
+    WebDriverRetainer
+{
     private static final int timerSleepTimeInMs = 500;
 
-    /**
-     * @deprecated Should not be public
-     */
-    public final Locate locate;
-    /**
-     * @deprecated Should not be public
-     */
-    public final WebDriver webDriver;
+    private final Locate locate;
+    private final WebDriver webDriver;
     /**
      * @deprecated Should not be public
      */
     public final ExecutionLog executionLog;
-    /**
-     * @deprecated Should not be public
-     */
-    public final GuiElementData parent;
-    /**
-     * @deprecated Should not be public
-     */
-    public final int index;
+    private final GuiElementData parent;
+    private final int index;
     private GuiElement guiElement;
     private String name;
     private WebElement webElement;
@@ -170,6 +160,7 @@ public class GuiElementData implements Nameable<GuiElementData> {
         return WebDriverManager.getRelatedWebDriverRequest(webDriver).browser;
     }
 
+    @Override
     public WebDriver getWebDriver() {
         return webDriver;
     }
@@ -246,5 +237,9 @@ public class GuiElementData implements Nameable<GuiElementData> {
     @Override
     public String getName() {
         return name;
+    }
+
+    public int getIndex() {
+        return index;
     }
 }

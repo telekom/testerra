@@ -178,10 +178,12 @@ public class GuiElement implements
 
     @Override
     public Locate getLocate() {
-        return guiElementData.locate;
+        return guiElementData.getLocate();
     }
 
     private void buildInternals() {
+        decoratedCore = core;
+
         if (guiElementData.hasFrameLogic()) {
             // if frames are set, the waiter should use frame switches when executing its sequences
             decoratedCore = new GuiElementCoreFrameAwareDecorator(decoratedCore, guiElementData);
@@ -228,7 +230,7 @@ public class GuiElement implements
     @Deprecated
     public GuiElement withWebElementFilter(WebElementFilter... filters) {
         if (filters != null) {
-            Collections.addAll(guiElementData.locate.getFilters(), filters);
+            Collections.addAll(guiElementData.getLocate().getFilters(), filters);
         }
         return this;
     }
@@ -275,8 +277,9 @@ public class GuiElement implements
         return subElement;
     }
 
+    @Deprecated
     public GuiElement getSubElement(Locate locate) {
-        return (GuiElement)guiElementFactory.createWithParent(locate, this);
+        return (GuiElement)find(locate);
     }
 
     @Override
@@ -387,7 +390,7 @@ public class GuiElement implements
         float cps = cpm/60;
         if (cps <= 0) cps = 1;
         int cpsSleepMs = Math.round(1000/cps);
-        final WebElement webElement = decoratedCore.findWebElement();
+        final WebElement webElement = core.findWebElement();
         for (CharSequence charSequence : charSequences) {
             charSequence.codePoints().forEach(codePoint -> {
                 webElement.sendKeys(new String(Character.toChars(codePoint)));
@@ -405,8 +408,7 @@ public class GuiElement implements
 
     @Override
     public InteractiveGuiElement hover() {
-        decoratedCore.mouseOver();
-        return this;
+        return mouseOver();
     }
 
     public String getTagName() {
@@ -465,7 +467,7 @@ public class GuiElement implements
 
     @Override
     public IGuiElement find(Locate locate) {
-        return guiElementFactory.createWithParent(locate, this);
+        return guiElementFactory.createWithParent(this, locate);
     }
 
     @Override
@@ -524,8 +526,9 @@ public class GuiElement implements
         return find(By.xpath(textFinderXpath));
     }
 
+    @Override
     public WebDriver getWebDriver() {
-        return guiElementData.webDriver;
+        return guiElementData.getWebDriver();
     }
 
     @Override
@@ -633,7 +636,7 @@ public class GuiElement implements
 
     @Deprecated
     public List<WebElementFilter> getWebElementFilters() {
-        return guiElementData.locate.getFilters();
+        return guiElementData.getLocate().getFilters();
     }
 
     @Override
@@ -989,7 +992,7 @@ public class GuiElement implements
             @Override
             public Integer getActual() {
                 try {
-                    return decoratedCore.findWebElements().size();
+                    return core.findWebElements().size();
                 } catch (ElementNotFoundException e) {
                     return 0;
                 }
@@ -1012,7 +1015,7 @@ public class GuiElement implements
     public ImageAssertion screenshot() {
         final IGuiElement self = this;
         final AtomicReference<File> screenshot = new AtomicReference<>();
-        screenshot.set(decoratedCore.takeScreenshot());
+        screenshot.set(core.takeScreenshot());
         return propertyAssertionFactory.create(DefaultImageAssertion.class, new AssertionProvider<File>() {
             @Override
             public File getActual() {
@@ -1043,7 +1046,7 @@ public class GuiElement implements
     @Override
     public Iterator<IGuiElement> iterator() {
         iteratorIndex = 0;
-        iteratorSize = decoratedCore.findWebElements().size();
+        iteratorSize = core.findWebElements().size();
         return this;
     }
 

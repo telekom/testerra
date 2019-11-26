@@ -146,7 +146,7 @@ public final class MouseActions {
 
     public static void swipeElement(GuiElementData data, int offsetX, int offsetY) {
 
-        WebDriver driver = data.webDriver;
+        WebDriver driver = data.getWebDriver();
         WebElement webElement = data.getGuiElement().getWebElement();
         Point location = webElement.getLocation();
         Dimension size = webElement.getSize();

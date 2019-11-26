@@ -89,13 +89,13 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         guiElementData.setWebElement(null);
 
         List<WebElement> elements = null;
-        Locate locate = guiElementData.locate;
+        Locate locate = guiElementData.getLocate();
         Exception cause = null;
         try {
-            if (guiElementData.parent != null) {
-                elements = guiElementData.parent.getGuiElement().core.findWebElement().findElements(locate.getBy());
+            if (guiElementData.getParent() != null) {
+                elements = guiElementData.getParent().getGuiElement().core.findWebElement().findElements(locate.getBy());
             } else {
-                elements = guiElementData.webDriver.findElements(locate.getBy());
+                elements = guiElementData.getWebDriver().findElements(locate.getBy());
             }
         } catch(Exception e) {
             cause = e;
@@ -139,24 +139,24 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
 
     private int setWebElement(List<WebElement> elements) {
         int numberOfFoundElements = elements.size();
-        if (numberOfFoundElements < guiElementData.index + 1) {
-            throw new StaleElementReferenceException("Request index of GuiElement was " + guiElementData.index + ", but only " + numberOfFoundElements + " were found. There you go, GuiElementList-Fanatics!");
-        }
+        /*if (numberOfFoundElements < guiElementData.getIndex() + 1) {
+            throw new StaleElementReferenceException("Request index of GuiElement was " + guiElementData.getIndex() + ", but only " + numberOfFoundElements + " were found. There you go, GuiElementList-Fanatics!");
+        }*/
 
         if (numberOfFoundElements > 0) {
             // webelement to set
-            WebElement webElement = elements.get(Math.max(0, guiElementData.index));
+            WebElement webElement = elements.get(Math.max(0, guiElementData.getIndex()));
 
             // check for shadowRoot
             if (guiElementData.shadowRoot) {
-                Object o = JSUtils.executeScript(guiElementData.webDriver, "return arguments[0].shadowRoot", webElement);
+                Object o = JSUtils.executeScript(guiElementData.getWebDriver(), "return arguments[0].shadowRoot", webElement);
                 if (o instanceof WebElement) {
                     webElement = (WebElement) o;
                 }
             }
 
             // proxy the web element for logging
-            WebElementProxy webElementProxy = new WebElementProxy(guiElementData.webDriver, webElement);
+            WebElementProxy webElementProxy = new WebElementProxy(guiElementData.getWebDriver(), webElement);
             Class[] interfaces = ObjectUtils.getAllInterfacesOf(webElement);
             webElement = ObjectUtils.simpleProxy(WebElement.class, webElementProxy, interfaces);
 
@@ -165,7 +165,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
 
             // find timings
             int findCounter = Timings.raiseFindCounter();
-            if (numberOfFoundElements > 1 && guiElementData.index == -1) {
+            if (numberOfFoundElements > 1 && guiElementData.getIndex() == -1) {
                 LOGGER.debug("find()#" + findCounter + ": GuiElement " + toString() + " was found " + numberOfFoundElements + " times. Will use the first occurrence.");
             } else {
                 LOGGER.debug("find()#" + findCounter + ": GuiElement " + toString() + " was found.");
@@ -183,7 +183,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
             return foundElements;
         } else {
             LOGGER.debug("find(): Filtering with WebElementFilters " + webElementFilters);
-            List<WebElement> filteredElements = new LinkedList<WebElement>();
+            List<WebElement> filteredElements = new LinkedList<>();
             for (WebElement webElement : foundElements) {
                 boolean satisfiesAllFilters = true;
                 for (WebElementFilter filter : webElementFilters) {
@@ -209,12 +209,12 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
     }
 
     private void highlightWebElement(Color color) {
-        JSUtils.highlightWebElement(guiElementData.webDriver, guiElementData.getWebElement(), color);
+        JSUtils.highlightWebElement(guiElementData.getWebDriver(), guiElementData.getWebElement(), color);
     }
 
     private void logTimings(long start, int findCounter) {
         if (findCounter != -1) {
-            GuiElementData parent = guiElementData.parent;
+            GuiElementData parent = guiElementData.getParent();
             long end = System.currentTimeMillis();
             long ms = end - start;
             if (parent != null) {
@@ -239,7 +239,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
 
     @Override
     public By getBy() {
-        return guiElementData.locate.getBy();
+        return guiElementData.getLocate().getBy();
     }
 
     @Override
@@ -263,7 +263,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         final int y = location.getY() - yOffset;
         LOGGER.trace("Scrolling into view: " + x + ", " + y);
 
-        JSUtils.executeScript(guiElementData.webDriver, "scroll(" + x + ", " + y + ");");
+        JSUtils.executeScript(guiElementData.getWebDriver(), "scroll(" + x + ", " + y + ");");
     }
 
     @Override
@@ -328,7 +328,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         find();
         LOGGER.debug("click(): found element, adding ClickPath");
         LOGGER.debug("click(): added ClickPath, clicking relative");
-        pClickRelative(this, guiElementData.webDriver, guiElementData.getWebElement());
+        pClickRelative(this, guiElementData.getWebDriver(), guiElementData.getWebElement());
         LOGGER.debug("click(): clicked relative");
         return this;
     }
@@ -369,14 +369,14 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
     @Override
     public GuiElementCore clickJS() {
         find();
-        JSUtils.executeScript(guiElementData.webDriver, "arguments[0].click();", guiElementData.getWebElement());
+        JSUtils.executeScript(guiElementData.getWebDriver(), "arguments[0].click();", guiElementData.getWebElement());
         return this;
     }
 
     @Override
     public GuiElementCore clickAbsolute() {
         find();
-        pClickAbsolute(this, guiElementData.webDriver, guiElementData.getWebElement());
+        pClickAbsolute(this, guiElementData.getWebDriver(), guiElementData.getWebElement());
         return this;
     }
 
@@ -384,7 +384,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
     public GuiElementCore mouseOverAbsolute2Axis() {
         find();
         demoMouseOver();
-        mouseOverAbsolute2Axis(guiElementData.webDriver, guiElementData.getWebElement());
+        mouseOverAbsolute2Axis(guiElementData.getWebDriver(), guiElementData.getWebElement());
         return this;
     }
 
@@ -537,7 +537,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
     public boolean isVisible(boolean complete) {
         WebElement webElement = findWebElement();
         if (!webElement.isDisplayed()) return false;
-        Rectangle viewport = WebDriverUtils.getViewport(guiElementData.webDriver);
+        Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
         // getRect doesn't work
         Point elementLocation = webElement.getLocation();
         Dimension elementSize = webElement.getSize();
@@ -632,7 +632,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         webElement.getSize();
         LOGGER.debug("MouseOver: " + toString() + " at x: " + x + " y: " + y);
 
-        Actions action = new Actions(guiElementData.webDriver);
+        Actions action = new Actions(guiElementData.getWebDriver());
         action.moveToElement(webElement).build().perform();
     }
 
@@ -650,7 +650,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
                 + "evObj.initEvent( 'mouseover', true, true );"
                 + "fireOnThis.dispatchEvent(evObj);";
 
-        ((JavascriptExecutor) guiElementData.webDriver).executeScript(code, guiElementData.getWebElement());
+        ((JavascriptExecutor) guiElementData.getWebDriver()).executeScript(code, guiElementData.getWebElement());
     }
 
     @Override
@@ -660,7 +660,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
             find();
             guiElementData.executionLog.addMessage("isPresent = true");
         } catch (Exception e) {
-            LOGGER.debug("isPresent(): Element not found: " + guiElementData.locate, e);
+            LOGGER.debug("isPresent(): Element not found: " + guiElementData.getLocate(), e);
             guiElementData.executionLog.addMessage("isPresent = false");
             return false;
         }
@@ -701,21 +701,21 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         WebElement webElement = guiElementData.getWebElement();
         By localBy = getBy();
 
-        WebDriverRequest driverRequest = WebDriverManager.getRelatedWebDriverRequest(guiElementData.webDriver);
+        WebDriverRequest driverRequest = WebDriverManager.getRelatedWebDriverRequest(guiElementData.getWebDriver());
 
         if (localBy instanceof ByImage) {
             ByImage byImage = (ByImage) localBy;
             int x = byImage.getCenterX();
             int y = byImage.getCenterY();
             LOGGER.info("Image Double Click on image webElement at " + x + "," + y);
-            JSUtils.executeJavaScriptMouseAction(guiElementData.webDriver, webElement, JSMouseAction.DOUBLE_CLICK, x, y);
+            JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, x, y);
         }
         else if (Browsers.safari.equalsIgnoreCase(driverRequest.browser)) {
             LOGGER.info("Safari double click workaround");
-            JSUtils.executeJavaScriptMouseAction(guiElementData.webDriver, webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
+            JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
         }
         else {
-            Actions actions = new Actions(guiElementData.webDriver);
+            Actions actions = new Actions(guiElementData.getWebDriver());
             final Action action = actions.doubleClick(webElement).build();
 
             try {
@@ -770,7 +770,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
     @Override
     public GuiElementCore rightClick() {
         find();
-        Actions actions = new Actions(guiElementData.webDriver);
+        Actions actions = new Actions(guiElementData.getWebDriver());
         actions.moveToElement(guiElementData.getWebElement()).contextClick().build().perform();
         return this;
     }
@@ -783,7 +783,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
                 "e.initMouseEvent('contextmenu', true, true,element.ownerDocument.defaultView, 1, 0, 0, 0, 0, false,false, false, false,2, null);" +
                 "return !element.dispatchEvent(e);";
 
-        JSUtils.executeScript(guiElementData.webDriver, script, guiElementData.getWebElement());
+        JSUtils.executeScript(guiElementData.getWebDriver(), script, guiElementData.getWebElement());
         return this;
     }
 
@@ -792,7 +792,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         find();
         WebElement webElement = getWebElement();
         Point location = webElement.getLocation();
-        JSUtils.executeJavaScriptMouseAction(guiElementData.webDriver, webElement, JSMouseAction.DOUBLE_CLICK, location.getX(), location.getY());
+        JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, location.getX(), location.getY());
         return this;
     }
 
@@ -807,9 +807,9 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
             if (!isVisible(false)) {
                 this.scrollToElement();
             }
-            Rectangle viewport = WebDriverUtils.getViewport(guiElementData.webDriver);
+            Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
             try {
-                final TakesScreenshot driver = ((TakesScreenshot)guiElementData.webDriver);
+                final TakesScreenshot driver = ((TakesScreenshot)guiElementData.getWebDriver());
 
                 File screenshot = driver.getScreenshotAs(OutputType.FILE);
                 BufferedImage fullImg = ImageIO.read(screenshot);
@@ -827,7 +827,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
                 ImageIO.write(eleScreenshot, "png", screenshot);
                 return screenshot;
             } catch (IOException e) {
-                LOGGER.error(String.format("%s unable to take screenshot: %s ", this.guiElementData, e));
+                LOGGER.error(String.format("%s unable to take screenshot: %s ", guiElementData, e));
             }
         }
         return null;

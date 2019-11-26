@@ -34,7 +34,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultBinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultImageAssertion;
@@ -89,8 +89,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class GuiElement implements
     IGuiElement,
-    Loggable,
-    Hierarchy<IGuiElement>
+    Loggable
 {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
 
@@ -109,7 +108,7 @@ public class GuiElement implements
     private GuiElementCore decoratedCore;
     private GuiElementWait decoratedWait;
 
-    protected Object parent;
+    protected HasParent parent;
     private int iteratorIndex = 0;
     private int iteratorSize = 0;
 
@@ -619,8 +618,7 @@ public class GuiElement implements
      * Sets the abstract parent
      * @param parent {@link IGuiElement} or {@link PageObject}
      */
-    @Override
-    public IGuiElement setParent(Object parent) {
+    public IGuiElement setParent(HasParent parent) {
         this.parent = parent;
         return this;
     }
@@ -630,7 +628,7 @@ public class GuiElement implements
      * @return Can be {@link IGuiElement} or {@link PageObject}
      */
     @Override
-    public Object getParent() {
+    public HasParent getParent() {
         return parent;
     }
 
@@ -642,6 +640,11 @@ public class GuiElement implements
     @Override
     public String toString() {
         return guiElementData.toString();
+    }
+
+    @Override
+    public String toString(boolean details) {
+        return guiElementData.toString(details);
     }
 
     @Deprecated

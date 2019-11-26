@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
@@ -38,7 +38,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAsser
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import org.openqa.selenium.WebElement;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,13 +45,11 @@ import java.util.List;
  * Components are wrappers for HTML elements like components
  * @author Mike Reiche
  */
-public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> extends AbstractPage implements
-    Component<SELF>,
-    Hierarchy<AbstractComponent>
+public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> extends AbstractPage implements Component<SELF>
 {
     protected final IGuiElement rootElement;
     private String name;
-    private Object parent;
+    private HasParent parent;
 
     public AbstractComponent(IGuiElement rootElement) {
         this.rootElement = rootElement;
@@ -87,17 +84,8 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     public SELF element(int position) {
-        return null;
-    }
-
-    @Override
-    public SELF firstElement() {
-        return null;
-    }
-
-    @Override
-    public SELF lastElement() {
-        return null;
+        IGuiElement element = rootElement.element(position);
+        return (SELF) createComponent(self().getClass(), element);
     }
 
     protected IGuiElement find(Locate locate) {
@@ -173,27 +161,31 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
         return name;
     }
 
-    @Override
-    public AbstractComponent setParent(Object parent) {
+    public AbstractComponent setParent(HasParent parent) {
         this.parent = parent;
         return this;
     }
 
     @Override
-    public Object getParent() {
+    public HasParent getParent() {
         return parent;
     }
 
     @Override
     public String toString() {
+        return toString(false);
+    }
+
+    @Override
+    public String toString(boolean detailed) {
         StringBuilder sb = new StringBuilder();
         if (parent!=null) {
-            sb.append(parent).append(".");
+            sb.append(parent.toString(detailed)).append(".");
         }
         if (name!=null) {
             sb.append(name);
         } else {
-            sb.append(super.toString());
+            sb.append(getClass().getSimpleName());
         }
         return sb.toString();
     }

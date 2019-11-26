@@ -39,7 +39,7 @@ public class DefaultGuiElementFactory implements
         IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(parentGuiElement.guiElementData.getBrowser());
         GuiElementCore core = factory.createCoreWithParent(parentGuiElement.guiElementData, locator);
         GuiElement guiElement = new GuiElement(core);
-        guiElement.setParent(parent);
+        guiElement.setParent(parentGuiElement);
         return guiElement;
     }
 

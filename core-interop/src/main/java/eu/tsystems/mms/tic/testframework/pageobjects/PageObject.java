@@ -1,4 +1,10 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-public interface PageObject extends WebDriverRetainer, CheckablePage {
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
+
+public interface PageObject extends
+    HasParent,
+    WebDriverRetainer,
+    CheckablePage
+{
 }

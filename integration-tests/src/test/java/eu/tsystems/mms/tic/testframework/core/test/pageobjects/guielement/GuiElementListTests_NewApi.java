@@ -83,8 +83,9 @@ public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
         TableRow rows = page.getTableRowsByTagName();
         rows.numberOfElements().is(4);
 
-        rows.firstElement().linkByName().value(Attribute.HREF).is("mkri");
-        rows.lastElement().linkByName().value(Attribute.HREF).is("erku");
+        rows.firstElement().linkByName().value(Attribute.HREF).endsWith("mkri");
+        rows.element(2).linkByName().value(Attribute.HREF).endsWith("joku");
+        rows.lastElement().linkByName().value(Attribute.HREF).endsWith("erku");
     }
 
     @Test
@@ -93,8 +94,8 @@ public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
         TableRow rows = page.getTableRowsByTagName();
         rows.numberOfElements().is(4);
 
-        rows.firstElement().linkByXPath().value(Attribute.HREF).is("mkri");
-        rows.lastElement().linkByXPath().value(Attribute.HREF).is("erku");
+        rows.firstElement().linkByXPath().value(Attribute.HREF).endsWith("mkri");
+        rows.lastElement().linkByXPath().value(Attribute.HREF).endsWith("erku");
     }
 
     @Override

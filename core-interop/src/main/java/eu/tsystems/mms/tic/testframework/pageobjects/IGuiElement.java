@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
@@ -36,7 +37,8 @@ import org.openqa.selenium.Point;
 public interface IGuiElement extends
     InteractiveGuiElement<IGuiElement>,
     Nameable<IGuiElement>,
-    WebDriverRetainer
+    WebDriverRetainer,
+    HasParent
 {
     enum Properties implements IProperties {
         @Deprecated

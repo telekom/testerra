@@ -186,16 +186,16 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     public String toString() {
-        String toString="";
+        StringBuilder sb = new StringBuilder();
         if (parent!=null) {
-            toString += parent+".";
+            sb.append(parent).append(".");
         }
         if (name!=null) {
-            toString += name;
+            sb.append(name);
         } else {
-            toString += super.toString();
+            sb.append(super.toString());
         }
-        return toString;
+        return sb.toString();
     }
 
     @Override

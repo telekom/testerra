@@ -20,8 +20,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameAwareSelect;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.openqa.selenium.By;
@@ -35,10 +33,10 @@ import java.util.List;
  */
 public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
 
-    private WebElementAdapter decoratedGuiElementCore;
+    private GuiElementCore decoratedGuiElementCore;
     private final GuiElementData guiElementData;
 
-    public GuiElementCoreFrameAwareDecorator(WebElementAdapter decoratedGuiElementCore, GuiElementData guiElementData) {
+    public GuiElementCoreFrameAwareDecorator(GuiElementCore decoratedGuiElementCore, GuiElementData guiElementData) {
         super(decoratedGuiElementCore);
         this.decoratedGuiElementCore = decoratedGuiElementCore;
         this.guiElementData = guiElementData;
@@ -77,11 +75,6 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
     public By getBy() {
         By by = decoratedGuiElementCore.getBy();
         return by;
-    }
-
-    @Override
-    public IGuiElement getSubElement(By byLocator, String description) {
-        return decoratedGuiElementCore.getSubElement(byLocator, description);
     }
 
     @Override

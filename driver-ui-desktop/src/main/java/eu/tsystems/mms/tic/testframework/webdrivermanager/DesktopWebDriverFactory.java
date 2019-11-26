@@ -35,7 +35,6 @@ import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
@@ -48,7 +47,6 @@ import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import net.anthavio.phanbedder.Phanbedder;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -485,7 +483,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     }
 
     @Override
-    public WebElementAdapter createAdapter(GuiElementData guiElementData) {
+    public GuiElementCore createCore(GuiElementData guiElementData) {
         return new DesktopGuiElementCore(guiElementData);
     }
 }

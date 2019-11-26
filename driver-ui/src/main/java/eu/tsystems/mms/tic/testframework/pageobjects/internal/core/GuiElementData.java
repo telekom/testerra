@@ -22,17 +22,13 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -41,15 +37,34 @@ import org.openqa.selenium.WebElement;
  */
 public class GuiElementData {
     public final Locate locate;
-    public final WebElementAdapter adapter;
+    /**
+     * @deprecated Should not be public
+     */
+    @Deprecated
+    public GuiElement guiElement;
     public final WebDriver webDriver;
+    /**
+     * @deprecated Should not be public
+     */
+    @Deprecated
     public String name;
     public final ExecutionLog executionLog;
     private int timeoutInSeconds;
+    /**
+     * @deprecated Should not be public
+     */
     @Deprecated
     public final TimerWrapper timerWrapper;
+    /**
+     * @deprecated Should not be public
+     */
+    @Deprecated
     public WebElement webElement;
-    public final IFrameLogic frameLogic;
+    /**
+     * @deprecated Should not be public
+     */
+    @Deprecated
+    public IFrameLogic frameLogic;
     private final int timerSleepTimeInMs = 500;
     public boolean sensibleData = false;
     public final GuiElementData parent;
@@ -62,37 +77,31 @@ public class GuiElementData {
     public GuiElementData(GuiElementData parent, int index) {
         this(
             parent.webDriver,
-            parent.frameLogic,
             parent.locate,
-            parent.adapter,
             parent,
             index
         );
+        frameLogic = parent.frameLogic;
+        guiElement = parent.guiElement;
     }
 
     public GuiElementData(
         WebDriver webDriver,
-        IFrameLogic frameLogic,
-        Locate locate,
-        WebElementAdapter adapter
+        Locate locate
     ) {
-        this(webDriver, frameLogic, locate, adapter, null, -1);
+        this(webDriver, locate, null, -1);
     }
 
     public GuiElementData(
         WebDriver webDriver,
-        IFrameLogic frameLogic,
         Locate locate,
-        WebElementAdapter adapter,
         GuiElementData parent,
         int index
     ) {
         this.webDriver = webDriver;
-        this.adapter = adapter;
         this.locate = locate;
         this.executionLog = new ExecutionLog();
         this.timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
-        this.frameLogic = frameLogic;
         WebDriverRequest request = WebDriverManager.getRelatedWebDriverRequest(webDriver);
         this.browser = request.browser;
         // Central Timer Object which is used by all sequence executions
@@ -100,6 +109,65 @@ public class GuiElementData {
         this.parent = parent;
         if (parent == null) index = -1;
         this.index = index;
+    }
+
+    public GuiElementData setGuiElement(GuiElement guiElement) {
+        this.guiElement = guiElement;
+        return this;
+    }
+
+    public GuiElementData setFrameLogic(IFrameLogic frameLogic) {
+        this.frameLogic = frameLogic;
+        return this;
+    }
+
+    public GuiElement getGuiElement() {
+        return guiElement;
+    }
+
+    public IFrameLogic getFrameLogic() {
+        return frameLogic;
+    }
+
+    public GuiElementData setWebElement(WebElement webElement) {
+        this.webElement = webElement;
+        return this;
+    }
+
+    public WebElement getWebElement() {
+        return this.webElement;
+    }
+
+    @Override
+    public String toString() {
+        return toString(false);
+    }
+
+    public String toString(boolean detailed) {
+        String toString = "";
+        if (parent != null) {
+            toString = parent+".";
+        }
+        if (hasName()) {
+            toString += name;
+        }
+        if (!hasName() || detailed) {
+            toString += "GuiElement("+locate.toString()+")";
+        }
+        //toString+="("+guiElement.getLocate().toString();
+//        if (hasFrameLogic()) {
+//            String frameString = ", frames={";
+//            if (frameLogic.hasFrames()) {
+//                for (IGuiElement frame : frameLogic.getFrames()) {
+//                    frameString += frame.toString() + ", ";
+//                }
+//            } else {
+//                frameString += "autodetect, ";
+//            }
+//            frameString = frameString.substring(0, frameString.length() - 2);
+//            toString = toString + frameString + "}";
+//        }
+        return toString;
     }
 
     public int getTimeoutInSeconds() {

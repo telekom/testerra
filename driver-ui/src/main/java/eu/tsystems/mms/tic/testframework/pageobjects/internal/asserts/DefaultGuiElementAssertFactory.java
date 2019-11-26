@@ -20,10 +20,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 
@@ -31,14 +27,13 @@ public class DefaultGuiElementAssertFactory implements GuiElementAssertFactory {
 
     @Override
     public GuiElementAssert create(
-        IGuiElement guiElement,
+        GuiElementData data,
         Assertion assertion,
         GuiElementWait guiElementWait
     ) {
-        GuiElement realGuiElement = (GuiElement)guiElement;
-        GuiElementAssert guiElementAssert = new DefaultGuiElementAssert(realGuiElement, guiElementWait, assertion);
-        guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, realGuiElement.guiElementData);
-        guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, realGuiElement.guiElementData);
+        GuiElementAssert guiElementAssert = new DefaultGuiElementAssert(data, guiElementWait, assertion);
+        guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, data);
+        guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, data);
         return guiElementAssert;
     }
 }

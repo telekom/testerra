@@ -19,10 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -39,9 +36,9 @@ import java.util.List;
  */
 public class DefaultGuiElementFacade implements GuiElementFacade {
 
-    private WebElementAdapter guiElementCore;
+    private GuiElementCore guiElementCore;
 
-    public DefaultGuiElementFacade(WebElementAdapter guiElementCore) {
+    public DefaultGuiElementFacade(GuiElementCore guiElementCore) {
         this.guiElementCore = guiElementCore;
     }
 

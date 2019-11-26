@@ -19,11 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import afu.org.checkerframework.checker.igj.qual.I;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
@@ -36,22 +32,24 @@ import java.util.Arrays;
  */
 public class DefaultGuiElementAssert implements GuiElementAssert {
 
-    private final GuiElement guiElement;
     private final GuiElementWait guiElementWait;
-    private final WebElementAdapter guiElementCore;
+    /**
+     * @deprecated Use {@link #guiElementData} instead
+     */
+    @Deprecated
+    private final GuiElementCore guiElementCore;
     private final Assertion configuredAssert;
     private final GuiElementData guiElementData;
 
     public DefaultGuiElementAssert(
-        GuiElement guiElement,
+        GuiElementData guiElementData,
         GuiElementWait guiElementWait,
         Assertion configuredAssert
     ) {
-        this.guiElement = guiElement;
         this.guiElementWait = guiElementWait;
-        this.guiElementCore = guiElement.guiElementData.adapter;
+        this.guiElementCore = guiElementData.getGuiElement().core;
         this.configuredAssert = configuredAssert;
-        this.guiElementData = guiElement.guiElementData;
+        this.guiElementData = guiElementData;
     }
 
     @Override
@@ -225,7 +223,7 @@ public class DefaultGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertLayout(ILayout layout) {
-        layout.checkOn(guiElement, configuredAssert);
+        layout.checkOn(guiElementData.getGuiElement(), configuredAssert);
     }
 
     @Override
@@ -240,7 +238,7 @@ public class DefaultGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
-        guiElement.screenshot().pixelDistance(targetImageName).isLowerEqualThan(confidenceThreshold);
+        guiElementData.getGuiElement().screenshot().pixelDistance(targetImageName).isLowerEqualThan(confidenceThreshold);
     }
 
     @Override

@@ -35,7 +35,6 @@ import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Hierarchy;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultBinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultImageAssertion;
@@ -52,6 +51,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssert
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
@@ -103,7 +103,8 @@ public class GuiElement implements
      * Facade for all parts of the lowest GuiElement
      */
     private GuiElementFacade guiElementFacade;
-    private WebElementAdapter guiElementCore;
+    public final GuiElementCore core;
+    private GuiElementCore guiElementCore;
     private GuiElementWait guiElementWait;
     public final GuiElementData guiElementData;
 
@@ -113,6 +114,8 @@ public class GuiElement implements
 
     private GuiElement(GuiElementData guiElementData) {
         this.guiElementData = guiElementData;
+        IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(guiElementData.browser);
+        core = factory.createCore(guiElementData);
         buildInternals();
     }
 
@@ -146,12 +149,10 @@ public class GuiElement implements
         Locate locate,
         IGuiElement... frames
     ) {
-        IFrameLogic frameLogic = null;
+        this(new GuiElementData(driver, locate));
         if (frames != null && frames.length > 0) {
-            frameLogic = new FrameLogic(driver, frames);
+            guiElementData.setFrameLogic(new FrameLogic(driver, frames));
         }
-        guiElementData = new GuiElementData(driver, frameLogic, locate, this);
-        buildInternals();
     }
 
     /**
@@ -191,16 +192,15 @@ public class GuiElement implements
             }
         }
 
-        guiElementData = new GuiElementData(
+        this(new GuiElementData(
             ancestorGuiElement.getWebDriver(),
             ancestorGuiElement.getFrameLogic(),
             locate,
             this,
             ancestorGuiElement.guiElementData,
             -1
-        );
+        ));
         setParent(ancestorGuiElement);
-        buildInternals();
     }
 
     @Override
@@ -209,9 +209,6 @@ public class GuiElement implements
     }
 
     private void buildInternals() {
-        IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(guiElementData.browser);
-        guiElementCore = factory.createAdapter(guiElementData);
-
         if (guiElementData.hasFrameLogic()) {
             // if frames are set, the waiter should use frame switches when executing its sequences
             guiElementCore = new GuiElementCoreFrameAwareDecorator(guiElementCore, guiElementData);
@@ -232,7 +229,7 @@ public class GuiElement implements
      * You can move this code to DefaultGuiElementFactory when no more 'new GuiElement()' calls exists.
      * But this may not happen before 2119.
      */
-    private GuiElementFacade createFacade(WebElementAdapter guiElementCore) {
+    private GuiElementFacade createFacade(GuiElementCore guiElementCore) {
         GuiElementFacade guiElementFacade;
         guiElementFacade = new DefaultGuiElementFacade(guiElementCore);
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
@@ -668,34 +665,7 @@ public class GuiElement implements
 
     @Override
     public String toString() {
-        return toString(false);
-    }
-
-    public String toString(boolean detailed) {
-        String toString = "";
-        if (parent != null) {
-            toString = parent+".";
-        }
-        if (guiElementData.hasName()) {
-            toString += guiElementData.name;
-        }
-        if (!guiElementData.hasName() || detailed) {
-            toString += "GuiElement("+guiElementData.locate.toString()+")";
-        }
-        //toString+="("+guiElement.getLocate().toString();
-//        if (hasFrameLogic()) {
-//            String frameString = ", frames={";
-//            if (frameLogic.hasFrames()) {
-//                for (IGuiElement frame : frameLogic.getFrames()) {
-//                    frameString += frame.toString() + ", ";
-//                }
-//            } else {
-//                frameString += "autodetect, ";
-//            }
-//            frameString = frameString.substring(0, frameString.length() - 2);
-//            toString = toString + frameString + "}";
-//        }
-        return toString;
+        return guiElementData.toString();
     }
 
     @Deprecated

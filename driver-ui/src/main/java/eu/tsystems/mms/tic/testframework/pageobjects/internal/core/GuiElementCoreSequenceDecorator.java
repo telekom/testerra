@@ -21,9 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import org.openqa.selenium.By;
@@ -46,13 +44,11 @@ import java.util.List;
 @Deprecated
 public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable {
 
-    private final WebElementAdapter guiElementCore;
-    private final GuiElementData guiElementData;
+    private final GuiElementCore guiElementCore;
     private final TimerWrapper timerWrapper;
 
-    public GuiElementCoreSequenceDecorator(WebElementAdapter guiElementCore, GuiElementData guiElementData) {
+    public GuiElementCoreSequenceDecorator(GuiElementCore guiElementCore, GuiElementData guiElementData) {
         this.guiElementCore = guiElementCore;
-        this.guiElementData = guiElementData;
         this.timerWrapper = guiElementData.timerWrapper;
     }
 

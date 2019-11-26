@@ -29,11 +29,9 @@ import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementAdapter;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -76,7 +74,7 @@ import java.util.List;
  * Created by rnhb on 12.08.2015.
  */
 public class DesktopGuiElementCore implements
-    WebElementAdapter,
+    GuiElementCore,
     UseJSAlternatives,
     Loggable
 {
@@ -93,12 +91,11 @@ public class DesktopGuiElementCore implements
         guiElementData.webElement = null;
 
         List<WebElement> elements = null;
-        WebElementAdapter parent = guiElementData.parent.adapter;
         Locate locate = guiElementData.locate;
         Exception cause = null;
         try {
-            if (parent != null) {
-                elements = parent.findWebElement().findElements(locate.getBy());
+            if (guiElementData.parent != null) {
+                elements = guiElementData.parent.getGuiElement().core.findWebElement().findElements(locate.getBy());
             } else {
                 elements = guiElementData.webDriver.findElements(locate.getBy());
             }
@@ -219,7 +216,7 @@ public class DesktopGuiElementCore implements
 
     private void logTimings(long start, int findCounter) {
         if (findCounter != -1) {
-            WebElementAdapter parent = guiElementData.parent.adapter;
+            GuiElementData parent = guiElementData.parent;
             long end = System.currentTimeMillis();
             long ms = end - start;
             if (parent != null) {
@@ -248,13 +245,13 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter scrollToElement() {
+    public GuiElementCore scrollToElement() {
         pScrollToElement(0);
         return this;
     }
 
     @Override
-    public WebElementAdapter scrollToElement(int yOffset) {
+    public GuiElementCore scrollToElement(int yOffset) {
         pScrollToElement(yOffset);
         return this;
     }
@@ -272,7 +269,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter select() {
+    public GuiElementCore select() {
         if (!isSelected()) {
             click();
         }
@@ -280,7 +277,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter deselect() {
+    public GuiElementCore deselect() {
         if (isSelected()) {
             click();
         }
@@ -288,7 +285,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter type(String text) {
+    public GuiElementCore type(String text) {
         pType(text);
         return this;
     }
@@ -329,7 +326,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter click() {
+    public GuiElementCore click() {
         find();
         LOGGER.debug("click(): found element, adding ClickPath");
         LOGGER.debug("click(): added ClickPath, clicking relative");
@@ -340,7 +337,7 @@ public class DesktopGuiElementCore implements
 
 
     private void pClickRelative(
-        WebElementAdapter guiElementCore,
+        GuiElementCore guiElementCore,
         WebDriver driver,
         WebElement webElement
     ) {
@@ -359,7 +356,7 @@ public class DesktopGuiElementCore implements
         }
     }
 
-    private void pClickAbsolute(WebElementAdapter guiElementCore, WebDriver driver, WebElement webElement) {
+    private void pClickAbsolute(GuiElementCore guiElementCore, WebDriver driver, WebElement webElement) {
         LOGGER.trace("Absolute navigation and click on: " + guiElementCore.toString());
         guiElementCore.mouseOverAbsolute2Axis();
         Actions action = new Actions(driver);
@@ -372,21 +369,21 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter clickJS() {
+    public GuiElementCore clickJS() {
         find();
         JSUtils.executeScript(guiElementData.webDriver, "arguments[0].click();", guiElementData.webElement);
         return this;
     }
 
     @Override
-    public WebElementAdapter clickAbsolute() {
+    public GuiElementCore clickAbsolute() {
         find();
         pClickAbsolute(this, guiElementData.webDriver, guiElementData.webElement);
         return this;
     }
 
     @Override
-    public WebElementAdapter mouseOverAbsolute2Axis() {
+    public GuiElementCore mouseOverAbsolute2Axis() {
         find();
         demoMouseOver();
         mouseOverAbsolute2Axis(guiElementData.webDriver, guiElementData.webElement);
@@ -422,19 +419,19 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter submit() {
+    public GuiElementCore submit() {
         getWebElement().submit();
         return this;
     }
 
     @Override
-    public WebElementAdapter sendKeys(CharSequence... charSequences) {
+    public GuiElementCore sendKeys(CharSequence... charSequences) {
         getWebElement().sendKeys(charSequences);
         return this;
     }
 
     @Override
-    public WebElementAdapter clear() {
+    public GuiElementCore clear() {
         getWebElement().clear();
         return this;
     }
@@ -598,7 +595,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter mouseOver() {
+    public GuiElementCore mouseOver() {
         String browser = guiElementData.browser;
         switch (browser) {
             case Browsers.safari:
@@ -642,7 +639,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter mouseOverJS() {
+    public GuiElementCore mouseOverJS() {
         demoMouseOver();
         pMouseOverJS();
         return this;
@@ -701,7 +698,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter doubleClick() {
+    public GuiElementCore doubleClick() {
         find();
         WebElement webElement = guiElementData.webElement;
         By localBy = getBy();
@@ -735,7 +732,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter highlight() {
+    public GuiElementCore highlight() {
         LOGGER.debug("highlight(): starting highlight");
         find();
         highlightWebElement(new Color(0,0,255));
@@ -744,7 +741,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter swipe(int offsetX, int offSetY) {
+    public GuiElementCore swipe(int offsetX, int offSetY) {
         MouseActions.swipeElement(guiElementData, offsetX, offSetY);
         return this;
     }
@@ -773,7 +770,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter rightClick() {
+    public GuiElementCore rightClick() {
         find();
         Actions actions = new Actions(guiElementData.webDriver);
         actions.moveToElement(guiElementData.webElement).contextClick().build().perform();
@@ -781,7 +778,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter rightClickJS() {
+    public GuiElementCore rightClickJS() {
         find();
         String script = "var element = arguments[0];" +
                 "var e = element.ownerDocument.createEvent('MouseEvents');" +
@@ -793,7 +790,7 @@ public class DesktopGuiElementCore implements
     }
 
     @Override
-    public WebElementAdapter doubleClickJS() {
+    public GuiElementCore doubleClickJS() {
         find();
         WebElement webElement = getWebElement();
         Point location = webElement.getLocation();

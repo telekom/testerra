@@ -55,7 +55,7 @@ public class DefaultGuiElementFactory implements
     }
 
     @Override
-    public IGuiElement create(
+    public IGuiElement createWithPage(
         PageObject page,
         Locate locator
     ) {

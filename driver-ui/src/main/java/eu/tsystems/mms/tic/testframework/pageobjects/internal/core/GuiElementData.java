@@ -49,8 +49,8 @@ public class GuiElementData implements
      * @deprecated Should not be public
      */
     public final ExecutionLog executionLog;
-    private final GuiElementData parent;
-    private final int index;
+    private GuiElementData parent;
+    private int index = -1;
     private GuiElement guiElement;
     private String name;
     private WebElement webElement;
@@ -66,29 +66,24 @@ public class GuiElementData implements
     public boolean sensibleData = false;
 
     /**
-     * Creates a state based on another state
+     * Creates a state as descendant of on another state
+     * by setting the GuiElementData as new parent.
      */
     public GuiElementData(GuiElementData parent, Locate locate) {
-        this(
-            parent.getWebDriver(),
-            locate,
-            parent,
-            -1
-        );
+        this(parent.getWebDriver(), locate);
+        this.parent = parent;
         frameLogic = parent.frameLogic;
         guiElement = parent.guiElement;
     }
 
     /**
      * Creates a state as iteration of another state
+     * by copying the GuiElementData but using another index.
      */
     public GuiElementData(GuiElementData parent, int index) {
-        this(
-            parent.webDriver,
-            parent.locate,
-            parent,
-            index
-        );
+        this(parent.webDriver, parent.locate);
+        this.index = index;
+        this.parent = parent.parent;
         frameLogic = parent.frameLogic;
         guiElement = parent.guiElement;
     }
@@ -97,21 +92,9 @@ public class GuiElementData implements
         WebDriver webDriver,
         Locate locate
     ) {
-        this(webDriver, locate, null, -1);
-    }
-
-    private GuiElementData(
-        WebDriver webDriver,
-        Locate locate,
-        GuiElementData parent,
-        int index
-    ) {
         this.webDriver = webDriver;
         this.locate = locate;
         this.executionLog = new ExecutionLog();
-        this.parent = parent;
-        if (parent == null) index = -1;
-        this.index = index;
     }
 
     public GuiElementData setGuiElement(GuiElement guiElement) {

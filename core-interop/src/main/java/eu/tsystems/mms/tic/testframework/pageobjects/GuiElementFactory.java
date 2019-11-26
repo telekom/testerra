@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 public interface GuiElementFactory {
-    IGuiElement create(
+    IGuiElement createWithPage(
         PageObject page,
         Locate locator
     );

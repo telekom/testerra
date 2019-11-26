@@ -93,7 +93,6 @@ public class GuiElement implements
     Hierarchy<IGuiElement>
 {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
-    private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
 
     private GuiElementAssert defaultAssert;
     private GuiElementAssert instantAssert;
@@ -114,20 +113,58 @@ public class GuiElement implements
     private int iteratorIndex = 0;
     private int iteratorSize = 0;
 
-    private GuiElement(GuiElementData guiElementData) {
-        this.guiElementData = guiElementData;
+    /**
+     * Elementary constructor
+     */
+    private GuiElement(GuiElementData data) {
+        guiElementData = data;
         IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(guiElementData.getBrowser());
         core = factory.createCore(guiElementData);
-        guiElementData.setGuiElement(this);
-        buildInternals();
     }
 
+    /**
+     * Constructor for list elements for {@link #element(int)}
+     */
+    private GuiElement(GuiElement guiElement, int index) {
+        this(new GuiElementData(guiElement.guiElementData, index));
+        createDecoratorFacades();
+    }
+
+    /**
+     * Constructor for {@link GuiElementFactory#createWithParent(IGuiElement, Locate)}
+     */
     public GuiElement(GuiElementCore core) {
         this.core = core;
         AbstractGuiElementCore realCore = (AbstractGuiElementCore)core;
         guiElementData = realCore.guiElementData;
         guiElementData.setGuiElement(this);
-        buildInternals();
+        createDecoratorFacades();
+    }
+
+    /**
+     * Constructor for {@link GuiElementFactory#createWithPage(PageObject, Locate)}
+     */
+    public GuiElement(PageObject page, Locate locate) {
+        this(page.getWebDriver(), locate, null);
+        Page realPage = (Page)page;
+        setTimeoutInSeconds(realPage.getElementTimeoutInSeconds());
+        setParent(page);
+    }
+
+    /**
+     * Constructor for {@link GuiElementFactory#createWithFrames(Locate, IGuiElement...)}
+     */
+    public GuiElement(
+        WebDriver driver,
+        Locate locate,
+        IGuiElement... frames
+    ) {
+        this(new GuiElementData(driver, locate));
+        guiElementData.setGuiElement(this);
+        if (frames != null && frames.length > 0) {
+            guiElementData.setFrameLogic(new FrameLogic(driver, frames));
+        }
+        createDecoratorFacades();
     }
 
     @Deprecated
@@ -140,33 +177,6 @@ public class GuiElement implements
         this(driver, locate, null);
     }
 
-    @Deprecated
-    public GuiElement(PageObject page, Locate locate) {
-        this(page.getWebDriver(), locate, null);
-        Page realPage = (Page)page;
-        this.setTimeoutInSeconds(realPage.getElementTimeoutInSeconds());
-        setParent(page);
-    }
-
-    /**
-     * Constructor with frames and explicit webDriver session.
-     */
-    @Deprecated
-    public GuiElement(
-        WebDriver driver,
-        Locate locate,
-        IGuiElement... frames
-    ) {
-        this(new GuiElementData(driver, locate));
-
-        if (frames != null && frames.length > 0) {
-            guiElementData.setFrameLogic(new FrameLogic(driver, frames));
-        }
-    }
-
-    /**
-     * Default Constructor for optional FrameLogic
-     */
     @Deprecated
     public GuiElement(
         WebDriver driver,
@@ -181,7 +191,7 @@ public class GuiElement implements
         return guiElementData.getLocate();
     }
 
-    private void buildInternals() {
+    private void createDecoratorFacades() {
         decoratedCore = core;
 
         if (guiElementData.hasFrameLogic()) {
@@ -467,13 +477,13 @@ public class GuiElement implements
 
     @Override
     public IGuiElement find(Locate locate) {
-        return guiElementFactory.createWithParent(this, locate);
+        return Testerra.injector.getInstance(GuiElementFactory.class).createWithParent(this, locate);
     }
 
     @Override
     public IGuiElement element(int position) {
         if (position < 1) position = 1;
-        return new GuiElement(new GuiElementData(guiElementData, position-1));
+        return new GuiElement(this, position-1);
     }
 
     @Override
@@ -483,7 +493,7 @@ public class GuiElement implements
 
     @Override
     public IGuiElement lastElement() {
-        return new GuiElement(new GuiElementData(guiElementData, getNumberOfFoundElements()));
+        return element(getNumberOfFoundElements());
     }
 
     public String getCssValue(String cssIdentifier) {
@@ -777,8 +787,8 @@ public class GuiElement implements
         int numberOfFoundElements = getNumberOfFoundElements();
         List<GuiElement> guiElements = new ArrayList<>(numberOfFoundElements);
         for (int i = 0; i < numberOfFoundElements; i++) {
-            GuiElement guiElement = new GuiElement(new GuiElementData(guiElementData, i));
-            guiElements.add(guiElement);
+            IGuiElement guiElement = element(i+1);
+            guiElements.add((GuiElement)guiElement);
         }
         return guiElements;
     }
@@ -1057,6 +1067,6 @@ public class GuiElement implements
 
     @Override
     public IGuiElement next() {
-        return new GuiElement(new GuiElementData(guiElementData, iteratorIndex++));
+        return element(iteratorIndex++);
     }
 }

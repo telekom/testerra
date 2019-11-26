@@ -38,6 +38,9 @@ import org.slf4j.LoggerFactory;
 public class GuiElementData {
 
     public final By by;
+    /**
+     * @todo This will not @deprecated in Testerra 2
+     */
     @Deprecated // Evil, should never be used!!! <<< why, i need it?? pele 23.08.2019
     public final GuiElement guiElement;
 
@@ -50,12 +53,28 @@ public class GuiElementData {
     public final FrameLogic frameLogic;
     public final int timerSleepTimeInMs = 500;
     public boolean sensibleData = false;
+    /**
+     * @todo This will be @deprecated in Testerra 2
+     */
+    @Deprecated
     public GuiElementCore parent;
-    public int index = -1;
+    public final int index;
     public LogLevel logLevel = LogLevel.DEBUG;
     public LogLevel storedLogLevel = logLevel;
     public String browser;
     public boolean shadowRoot = false;
+
+    public GuiElementData(GuiElementData guiElementData, int index) {
+        this(
+            guiElementData.webDriver,
+            guiElementData.name,
+            guiElementData.frameLogic,
+            guiElementData.by,
+            guiElementData.guiElement,
+            index
+        );
+        parent = guiElementData.parent;
+    }
 
     public GuiElementData(
         WebDriver webDriver,
@@ -63,6 +82,17 @@ public class GuiElementData {
         FrameLogic frameLogic,
         By by,
         GuiElement guiElement
+    ) {
+        this(webDriver, name, frameLogic, by, guiElement, -1);
+    }
+
+    private GuiElementData(
+        WebDriver webDriver,
+        String name,
+        FrameLogic frameLogic,
+        By by,
+        GuiElement guiElement,
+        int index
     ) {
         this.webDriver = webDriver;
         this.name = name;
@@ -73,6 +103,7 @@ public class GuiElementData {
         this.frameLogic = frameLogic;
         // Central Timer Object which is used by all sequence executions
         this.timerWrapper = new TimerWrapper(timerSleepTimeInMs, timeoutInSeconds, webDriver, executionLog);
+        this.index = index;
     }
 
     public Logger getLogger() {
@@ -100,7 +131,11 @@ public class GuiElementData {
         }
 
         if (hasName()) {
-            toString = ">" + name + "< (" + toString + ")";
+            String realName = name;
+            if (index!=-1) {
+                realName += "_"+index;
+            }
+            toString = ">" + realName + "< (" + toString + ")";
         }
 
         if (hasFrameLogic()) {
@@ -120,15 +155,6 @@ public class GuiElementData {
 
     public boolean hasFrameLogic() {
         return frameLogic != null;
-    }
-
-    public GuiElementData copy() {
-        FrameLogic frameLogic = null;
-        if (this.frameLogic != null) {
-            frameLogic = new FrameLogic(webDriver, this.frameLogic.getFrames());
-        }
-        GuiElementData guiElementData = new GuiElementData(webDriver, this.name, frameLogic, by, this.guiElement);
-        return guiElementData;
     }
 
     public LogLevel getLogLevel() {

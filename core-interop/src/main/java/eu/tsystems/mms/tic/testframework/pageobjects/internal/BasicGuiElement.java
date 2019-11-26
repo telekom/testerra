@@ -75,6 +75,12 @@ public interface BasicGuiElement<SELF> extends
     WebElement getWebElement();
 
     SELF element(int position);
-    SELF firstElement();
-    SELF lastElement();
+
+    default SELF firstElement() {
+        return element(1);
+    }
+
+    default SELF lastElement() {
+        return element(numberOfElements().getActual());
+    }
 }

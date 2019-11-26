@@ -486,16 +486,6 @@ public class GuiElement implements
         return new GuiElement(this, position-1);
     }
 
-    @Override
-    public IGuiElement firstElement() {
-        return element(1);
-    }
-
-    @Override
-    public IGuiElement lastElement() {
-        return element(getNumberOfFoundElements());
-    }
-
     public String getCssValue(String cssIdentifier) {
         return decoratedFacade.getCssValue(cssIdentifier);
     }

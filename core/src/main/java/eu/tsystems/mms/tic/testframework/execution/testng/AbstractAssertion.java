@@ -307,7 +307,11 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public boolean assertBeginsWith(final Object actual, final Object expected, final String subject) {
-        if (!actual.toString().startsWith(expected.toString())) {
+        if (
+            actual != null
+            && expected != null
+            && !actual.toString().startsWith(expected.toString())
+        ) {
             fail(format(actual, String.format("begins with [%s]", expected), subject));
             return false;
         } else {
@@ -317,7 +321,11 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public boolean assertEndsWith(final Object actual, final Object expected, final String subject) {
-        if (!actual.toString().endsWith(expected.toString())) {
+        if (
+            actual != null
+            && expected != null
+            && !actual.toString().endsWith(expected.toString())
+        ) {
             fail(format(actual, String.format("ends with [%s]", expected), subject));
             return false;
         } else {

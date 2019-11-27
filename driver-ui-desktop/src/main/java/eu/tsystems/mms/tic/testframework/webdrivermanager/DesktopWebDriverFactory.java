@@ -494,7 +494,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     }
 
     @Override
-    public GuiElementCore createCoreWithParent(GuiElementData parent, Locate locate) {
+    public GuiElementCore createCoreFromParent(GuiElementData parent, Locate locate) {
         String abstractLocatorString = locate.getBy().toString();
         if (abstractLocatorString.toLowerCase().contains("xpath")) {
             int i = abstractLocatorString.indexOf(":") + 1;

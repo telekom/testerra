@@ -31,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiEleme
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.testing.AbstractTestFeatures;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -48,47 +47,17 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Provides basic PageObject related features
+ * Provides basic {@link PageObject} related features:
+ *      Supports page caching by {@link #store()}
+ *      Supports element {@link Check}
+ *      Supports {@link PageOptions}
+ *      Supports deprecated custom page checks by {@link #checkPage(boolean, boolean)}
+ *      Supports custom page load callbacks like {@link #assertPageIsShown()} and {@link #waitForPageToLoad()}
+ * @see {https://martinfowler.com/bliki/PageObject.html}
  * @author Peter Lehmann
  * @author Mike Reiche
  */
-public abstract class AbstractPage extends AbstractTestFeatures implements
-    PageObject,
-    Loggable
-{
-    private static final PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
-    private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
-    private static final PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
-
-    protected interface Finder {
-        IGuiElement find(Locate locator);
-        default IGuiElement findById(String id) {
-            return find(Locate.by().id(id));
-        }
-        default IGuiElement findByQa(String qa) {
-            return find(Locate.by().qa(qa));
-        }
-        default IGuiElement find(By by) {
-            return find(Locate.by(by));
-        }
-    }
-
-    protected IGuiElement findById(Object id) {
-        return find(Locate.by().id(id.toString()));
-    }
-    protected IGuiElement findByQa(String qa) {
-        return find(Locate.by().qa(qa));
-    }
-    protected IGuiElement find(By by) {
-        return find(Locate.by(by));
-    }
-    protected IGuiElement find(Locate locate) {
-        return guiElementFactory.createWithPage(this, locate);
-    }
-    protected <T extends Component> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
-        return pageFactory.createComponent(componentClass, rootElement);
-    }
-
+public abstract class AbstractPage extends AbstractPageObject implements Loggable {
     /**
      * The webdriver object.
      * @todo This should be final
@@ -98,11 +67,12 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
     /**
      * Element timeout in seconds (int).
      */
-    protected int elementTimeoutInSeconds = pageOverrides.getElementTimeoutInSeconds();
+    protected int elementTimeoutInSeconds = Testerra.injector.getInstance(PageOverrides.class).getElementTimeoutInSeconds();
 
     /**
-     * Protected logger.
+     * @deprecated Use {@link Loggable} instead
      */
+    @Deprecated
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
@@ -113,10 +83,6 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
 
     @Deprecated
     private boolean forcedGuiElementStandardAsserts = false;
-
-    protected <T extends PageObject> T createPage(final Class<T> pageClass) {
-        return pageFactory.createPage(pageClass, driver);
-    }
 
     /**
      * Restore a stored page class.
@@ -484,9 +450,11 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
         return allClasses;
     }
 
+    /**
+     * @deprecated This method should not be public
+     */
     @Deprecated
-    public void waitForPageToLoad() {
-    }
+    public abstract void waitForPageToLoad();
 
     /**
      * Empty method to be overriden. Can perform some (additional) checks on page objects.
@@ -501,9 +469,10 @@ public abstract class AbstractPage extends AbstractTestFeatures implements
 
     @Deprecated
     public WebDriver getDriver() {
-        return driver;
+        return getWebDriver();
     }
 
+    @Override
     public WebDriver getWebDriver() {
         return driver;
     }

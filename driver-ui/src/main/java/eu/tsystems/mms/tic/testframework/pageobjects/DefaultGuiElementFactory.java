@@ -21,7 +21,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
@@ -30,14 +29,17 @@ public class DefaultGuiElementFactory implements
     GuiElementFactory,
     Loggable
 {
+    /**
+     * Creates elements as sub elements from a given element
+     */
     @Override
-    public IGuiElement createWithParent(
+    public IGuiElement createFromParent(
         IGuiElement parent,
         Locate locator
     ) {
         GuiElement parentGuiElement = (GuiElement)parent;
         IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(parentGuiElement.guiElementData.getBrowser());
-        GuiElementCore core = factory.createCoreWithParent(parentGuiElement.guiElementData, locator);
+        GuiElementCore core = factory.createCoreFromParent(parentGuiElement.guiElementData, locator);
         GuiElement guiElement = new GuiElement(core);
         guiElement.setParent(parentGuiElement);
         return guiElement;

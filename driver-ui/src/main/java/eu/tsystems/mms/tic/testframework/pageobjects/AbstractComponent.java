@@ -42,7 +42,9 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Components are wrappers for HTML elements like components
+ * Components are wrappers for HTML elements like WebComponents
+ * that acts like a {@link IGuiElement} and {@link PageObject}
+ *      Supports finding component elements by {@link #find(Locate)}
  * @author Mike Reiche
  */
 public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> extends AbstractPage implements Component<SELF>
@@ -87,17 +89,20 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     public SELF element(int position) {
-        IGuiElement element = rootElement.element(position);
-        return (SELF) createComponent(self().getClass(), element);
+        return createIteratedComponent(rootElement.element(position));
     }
 
+    @Override
     protected IGuiElement find(Locate locate) {
         return rootElement.find(locate);
     }
 
     @Override
     protected void addCustomFieldAction(FieldWithActionConfig field, List<FieldAction> fieldActions, AbstractPage declaringPage) {
+    }
 
+    @Override
+    public void waitForPageToLoad() {
     }
 
     @Override
@@ -205,6 +210,12 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     public SELF next() {
-        return (SELF) createComponent(self().getClass(), rootElement.next());
+        return createIteratedComponent(rootElement.next());
+    }
+
+    private SELF createIteratedComponent(IGuiElement rootElement) {
+        SELF component = (SELF) createComponent(self().getClass(), rootElement);
+        component.setParent(getParent());
+        return component;
     }
 }

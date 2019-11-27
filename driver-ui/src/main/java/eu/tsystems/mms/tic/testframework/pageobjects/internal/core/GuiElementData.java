@@ -28,14 +28,13 @@ import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
- * Holds the state of the GuiElement to interchange with any other
- * GuiElement compatible class like {@link GuiElementCore}
+ * Holds the state of the {@link GuiElement} to interchange with any other
+ * implementations like {@link GuiElementCore}
  */
 public class GuiElementData implements
     Nameable<GuiElementData>,
@@ -67,7 +66,7 @@ public class GuiElementData implements
 
     /**
      * Creates a state as descendant of on another state
-     * by setting the GuiElementData as new parent.
+     * by setting the GuiElementData as parent.
      */
     public GuiElementData(GuiElementData parent, Locate locate) {
         this(parent.getWebDriver(), locate);
@@ -160,9 +159,11 @@ public class GuiElementData implements
         }
         if (hasName()) {
             sb.append(name);
+        } else {
+            sb.append("GuiElement");
         }
         if (!hasName() || detailed) {
-            sb.append("GuiElement(").append(locate);
+            sb.append("(").append(locate);
             if (index != -1) {
                 sb.append("[").append(index+1).append("]");
             }

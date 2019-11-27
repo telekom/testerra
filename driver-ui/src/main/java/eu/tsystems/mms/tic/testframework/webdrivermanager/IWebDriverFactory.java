@@ -20,5 +20,5 @@ public interface IWebDriverFactory {
         return getSupportedBrowsers().indexOf(browser) >= 0;
     }
     GuiElementCore createCore(GuiElementData guiElementData);
-    GuiElementCore createCoreWithParent(GuiElementData parent, Locate locate);
+    GuiElementCore createCoreFromParent(GuiElementData parent, Locate locate);
 }

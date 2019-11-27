@@ -26,7 +26,7 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.testng.annotations.Listeners;
 
 @Listeners(TesterraListener.class)
-public abstract class TesterraTest extends AbstractTestFeatures {
+public abstract class TesterraTest extends AbstractTest {
     protected static final PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
 
     static {

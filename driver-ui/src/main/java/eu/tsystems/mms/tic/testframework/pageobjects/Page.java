@@ -69,16 +69,40 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A Page implements the PageObject pattern
- * @see {https://martinfowler.com/bliki/PageObject.html}
+ * Represents a full web page and provides advanced {@link PageObject} features:
+ *      Supports finding elements by {@link #find(Locate)}
+ *      Support for {@link #registerPageLoadHandler(PageLoadHandler)}
+ *      Support for performance tests by {@link #perfTestExtras()}
+ *      Support for frames by {@link #inFrame(IGuiElement)}
+ *      Support for custom field actions {@link #addCustomFieldAction(FieldWithActionConfig, List, AbstractPage)}
+ *      Support for text assertions by {@link #anyElementContainsText(String)}
+ *      Support for {@link GuiElementGroups}
  * @author Peter Lehmann
  * @author Mike Reiche
  */
-public class Page extends AbstractPage implements TestablePage {
+public abstract class Page extends AbstractPage implements TestablePage {
     private final GuiElementGroups guiElementGroups;
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
     private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
+
+    protected interface Finder {
+        IGuiElement find(Locate locator);
+        default IGuiElement findById(String id) {
+            return find(Locate.by().id(id));
+        }
+        default IGuiElement findByQa(String qa) {
+            return find(Locate.by().qa(qa));
+        }
+        default IGuiElement find(By by) {
+            return find(Locate.by(by));
+        }
+    }
+
+    @Override
+    protected IGuiElement find(Locate locate) {
+        return guiElementFactory.createWithPage(this, locate);
+    }
 
     @Override
     public HasParent getParent() {
@@ -181,6 +205,11 @@ public class Page extends AbstractPage implements TestablePage {
     @Override
     protected void addCustomFieldAction(FieldWithActionConfig field, List<FieldAction> fieldActions, AbstractPage declaringPage) {
         fieldActions.add(new GuiElementGroupAction(field.field, declaringPage, guiElementGroups));
+    }
+
+    @Override
+    public void waitForPageToLoad() {
+
     }
 
     /**

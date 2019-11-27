@@ -67,8 +67,8 @@ public class Locate {
      * @param id The value of the "id" attribute to search for.
      * @return A By which locates elements by the value of the "id" attribute.
      */
-    public Locate id(String id) {
-        this.by = new By.ById(id);
+    public Locate id(Object id) {
+        this.by = new By.ById(id.toString());
         return this;
     }
 

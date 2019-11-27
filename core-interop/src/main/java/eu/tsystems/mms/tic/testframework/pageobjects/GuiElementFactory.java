@@ -5,7 +5,7 @@ public interface GuiElementFactory {
         PageObject page,
         Locate locator
     );
-    IGuiElement createWithParent(
+    IGuiElement createFromParent(
         IGuiElement parent,
         Locate locator
     );

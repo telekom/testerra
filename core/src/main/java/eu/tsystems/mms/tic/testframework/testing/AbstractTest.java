@@ -21,12 +21,13 @@ package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 
 /**
- * Abstract test features for Tests and Pages
+ * Provides protected test features for Tests and {@link PageObject}
  * @author Mike Reiche
  */
-public abstract class AbstractTestFeatures {
+public abstract class AbstractTest {
     protected final Assertion Assert = Testerra.injector.getInstance(Assertion.class);
     protected final TestController Control = Testerra.injector.getInstance(TestController.class);
 }

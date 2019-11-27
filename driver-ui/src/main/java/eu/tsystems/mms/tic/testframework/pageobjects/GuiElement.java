@@ -92,6 +92,7 @@ public class GuiElement implements
     Loggable
 {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
+    private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
 
     private GuiElementAssert defaultAssert;
     private GuiElementAssert instantAssert;
@@ -117,20 +118,25 @@ public class GuiElement implements
      */
     private GuiElement(GuiElementData data) {
         guiElementData = data;
+        guiElementData.setGuiElement(this);
         IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(guiElementData.getBrowser());
         core = factory.createCore(guiElementData);
     }
 
     /**
-     * Constructor for list elements for {@link #element(int)}
+     * Constructor for list elements of {@link #element(int)}
+     * Elements created by this constructor are identical to it's parent,
+     * but with a different element index.
      */
     private GuiElement(GuiElement guiElement, int index) {
         this(new GuiElementData(guiElement.guiElementData, index));
+        setParent(guiElement.getParent());
         createDecoratorFacades();
     }
 
     /**
-     * Constructor for {@link GuiElementFactory#createWithParent(IGuiElement, Locate)}
+     * Constructor for {@link GuiElementFactory#createFromParent(IGuiElement, Locate)}
+     * This is the internal standard constructor for elements with parent {@link GuiElementCore} implementations.
      */
     public GuiElement(GuiElementCore core) {
         this.core = core;
@@ -476,7 +482,7 @@ public class GuiElement implements
 
     @Override
     public IGuiElement find(Locate locate) {
-        return Testerra.injector.getInstance(GuiElementFactory.class).createWithParent(this, locate);
+        return guiElementFactory.createFromParent(this, locate);
     }
 
     @Override

@@ -95,6 +95,7 @@ public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
         rows.numberOfElements().is(4);
 
         rows.firstElement().linkByXPath().value(Attribute.HREF).endsWith("mkri");
+        rows.element(2).linkByXPath().value(Attribute.HREF).endsWith("joku");
         rows.lastElement().linkByXPath().value(Attribute.HREF).endsWith("erku");
     }
 

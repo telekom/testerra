@@ -44,7 +44,6 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * Returns the Webelement.
      *
      * @return webElement
-     * @throws ElementNotFoundException If non found
      */
     @Deprecated
     WebElement getWebElement();

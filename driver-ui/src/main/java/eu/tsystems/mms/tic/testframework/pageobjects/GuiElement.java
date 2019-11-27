@@ -401,17 +401,17 @@ public class GuiElement implements
     }
 
     @Override
-    public IGuiElement userSendKeys(int cpm, CharSequence... charSequences) {
-        float cps = cpm/60;
-        if (cps <= 0) cps = 1;
-        int cpsSleepMs = Math.round(1000/cps);
-        final WebElement webElement = core.findWebElement();
-        for (CharSequence charSequence : charSequences) {
-            charSequence.codePoints().forEach(codePoint -> {
-                webElement.sendKeys(new String(Character.toChars(codePoint)));
-                TimerUtils.sleepSilent(cpsSleepMs);
-            });
-        }
+    public InteractiveGuiElement asUser() {
+//        float cps = cpm/60;
+//        if (cps <= 0) cps = 1;
+//        int cpsSleepMs = Math.round(1000/cps);
+//        final WebElement webElement = core.findWebElement();
+//        for (CharSequence charSequence : charSequences) {
+//            charSequence.codePoints().forEach(codePoint -> {
+//                webElement.sendKeys(new String(Character.toChars(codePoint)));
+//                TimerUtils.sleepSilent(cpsSleepMs);
+//            });
+//        }
         return this;
     }
 

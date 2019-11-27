@@ -11,12 +11,10 @@ public interface InteractiveGuiElement<SELF> extends TestableGuiElement<SELF> {
     InteractiveGuiElement select();
     InteractiveGuiElement deselect();
     InteractiveGuiElement sendKeys(CharSequence... charSequences);
-
     /**
-     * Sends keys with a maximum of characters per minute
-     * @deprecated This is an alpha feature
+     * Performs actions as a user
      */
-    InteractiveGuiElement userSendKeys(int cpm, CharSequence... charSequences);
+    InteractiveGuiElement asUser();
     InteractiveGuiElement clear();
     InteractiveGuiElement hover();
     //InteractiveGuiElement mouseOver();

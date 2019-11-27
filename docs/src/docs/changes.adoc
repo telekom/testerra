@@ -77,7 +77,7 @@ public class MyForm extends AbstractComponent<MyForm> {
     }
 
     @Override
-    protected InputForm self() {
+    protected MyForm self() {
         return this;
     }
 }

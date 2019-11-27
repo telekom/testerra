@@ -78,7 +78,7 @@ public class TesterraBuildInformation implements Serializable {
                     instance.buildTimestamp = PropertyManager.getProperty("build.timestamp", instance.buildTimestamp);
                     instance.buildVersion = PropertyManager.getProperty("build.version", instance.buildVersion);
                 } catch (Exception e) {
-                    LOGGER.info("No pre-set build information");
+                    LOGGER.debug("No pre-set build information");
                 }
             }
         }

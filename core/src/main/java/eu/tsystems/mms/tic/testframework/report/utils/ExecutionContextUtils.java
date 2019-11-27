@@ -68,7 +68,7 @@ public class ExecutionContextUtils {
             final String msg = "Please use @BeforeMethod before(Method method) and @AfterMethod after(Method method)!" +
                     "\nThis will be mandatory in a future release.";
 
-            LOGGER.info(msg);
+            LOGGER.warn(msg);
             ReportInfo.getDashboardWarning().addInfo(10, StringUtils.prepareStringForHTML(msg));
         }
     }

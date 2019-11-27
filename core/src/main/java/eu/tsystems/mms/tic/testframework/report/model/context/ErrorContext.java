@@ -205,7 +205,7 @@ public class ErrorContext extends Context {
          * stacktrace filter
          */
         if (stackTrace != null) {
-            final String testframeworkPackage = TesterraCommons.DEFAULT_PACKAGE_NAME + ".testframework";
+            final String testframeworkPackage = TesterraCommons.FRAMEWORK_PACKAGE;
             final String completeStackTrace = stackTrace.toString();
             if (completeStackTrace.contains(TesterraCommons.DEFAULT_PACKAGE_NAME) &&
                     ((!completeStackTrace.contains(testframeworkPackage))

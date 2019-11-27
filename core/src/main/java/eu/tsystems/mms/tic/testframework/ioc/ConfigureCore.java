@@ -17,11 +17,13 @@ import eu.tsystems.mms.tic.testframework.execution.testng.ThrowingAssertion;
 import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.report.IReport;
+import eu.tsystems.mms.tic.testframework.report.ReportLogger;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.testing.DefaultTestController;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
+import org.apache.log4j.Appender;
 
 public class ConfigureCore extends AbstractModule {
     protected void configure() {
@@ -35,5 +37,6 @@ public class ConfigureCore extends AbstractModule {
         bind(AssertionsCollector.class).to(CollectedAssertions.class).in(Scopes.SINGLETON);
         bind(Assertion.class).to(DefaultAssertionWrapper.class).in(Scopes.SINGLETON);
         bind(TestController.class).to(DefaultTestController.class);
+        bind(Appender.class).to(ReportLogger.class).in(Scopes.SINGLETON);
     }
 }

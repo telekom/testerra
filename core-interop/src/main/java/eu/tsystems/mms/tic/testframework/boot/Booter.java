@@ -123,21 +123,18 @@ public final class Booter {
                 LOGGER.info("No Init Hooks found");
             }
 
-            final String startMarker = "******************* ";
-            final String endMarker = "################### ";
-
             hooks.forEach(aClass -> {
                 try {
                     ModuleHook moduleHook = aClass.getConstructor().newInstance();
-                    LOGGER.info(startMarker + "Calling Init Hook " + aClass.getSimpleName() + "...");
+                    LOGGER.info("Calling Init Hook " + aClass.getSimpleName() + "...");
                     moduleHook.init();
                     MODULE_HOOKS.add(moduleHook);
                 } catch (Exception e) {
-                    LOGGER.error(startMarker + "Could not load Init Hook " + aClass.getSimpleName());
+                    LOGGER.error("Could not load Init Hook " + aClass.getSimpleName());
                 }
             });
 
-            LOGGER.info(endMarker + "Done processing Init Hooks.");
+            LOGGER.info("Done processing Init Hooks.");
         }
     }
 

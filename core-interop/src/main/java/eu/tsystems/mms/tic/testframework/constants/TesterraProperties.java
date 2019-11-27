@@ -56,8 +56,6 @@ public final class TesterraProperties {
      */
 //    public static final String AUTOSCREENSHOTS = "tt.takeAutomaticScreenshot";
 
-    public static final String LOG_LEVEL ="tt.loglevel";
-
     /**
      * tt. test property file.
      */

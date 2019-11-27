@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
@@ -38,7 +39,8 @@ import org.openqa.selenium.WebElement;
  */
 public class GuiElementData implements
     Nameable<GuiElementData>,
-    WebDriverRetainer
+    WebDriverRetainer,
+    HasParent
 {
     private static final int timerSleepTimeInMs = 500;
 
@@ -130,6 +132,7 @@ public class GuiElementData implements
         return timerWrapper;
     }
 
+    @Override
     public GuiElementData getParent() {
         return parent;
     }

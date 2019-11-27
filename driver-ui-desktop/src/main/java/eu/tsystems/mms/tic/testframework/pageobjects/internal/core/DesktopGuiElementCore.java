@@ -91,7 +91,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         Locate locate = guiElementData.getLocate();
         Exception cause = null;
         try {
-            if (guiElementData.getParent() != null) {
+            if (guiElementData.hasParent()) {
                 elements = guiElementData.getParent().getGuiElement().core.findWebElement().findElements(locate.getBy());
             } else {
                 elements = guiElementData.getWebDriver().findElements(locate.getBy());

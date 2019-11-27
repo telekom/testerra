@@ -19,8 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-public interface HasParent<SELF> {
-    //SELF setParent(Hierarchy parent);
+public interface HasParent {
     HasParent getParent();
     default boolean hasParent() {
         return getParent()!=null;

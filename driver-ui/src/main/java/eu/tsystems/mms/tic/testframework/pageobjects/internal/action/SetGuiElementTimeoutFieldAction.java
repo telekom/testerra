@@ -38,7 +38,7 @@ public class SetGuiElementTimeoutFieldAction extends FieldAction {
                 int alreadySetTimeout = guiElement.getTimeoutInSeconds();
                 if (alreadySetTimeout != timeoutFromPage) {
                     // override timeout setting only if it is set to default
-                    logger.info("Setting page specific timeout for " + declaringPage.getClass().getSimpleName() + "/" + field.getName() + ": " + timeoutFromPage + "s");
+                    logger.info(String.format("Setting page specific timeout of {%s.%s} to %ds",declaringPage,guiElement,timeoutFromPage));
                     guiElement.setTimeoutInSeconds(timeoutFromPage);
                 }
             }

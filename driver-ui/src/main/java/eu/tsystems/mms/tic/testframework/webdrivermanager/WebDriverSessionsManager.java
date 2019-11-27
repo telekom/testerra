@@ -118,7 +118,7 @@ public final class WebDriverSessionsManager {
         final String sessionId = WebDriverUtils.getSessionId(eventFiringWebDriver);
         if (sessionId != null) {
             ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.put(sessionId, sessionContext);
-            LOGGER.info("Stored SessionContext " + sessionContext + " for session " + sessionId);
+            LOGGER.debug("Stored SessionContext " + sessionContext + " for session " + sessionId);
         } else {
             LOGGER.error("Could not store SessionContext, could not get SessionId");
         }

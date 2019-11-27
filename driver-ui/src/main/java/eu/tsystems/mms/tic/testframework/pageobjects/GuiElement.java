@@ -26,7 +26,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import afu.org.checkerframework.checker.oigj.qual.O;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
@@ -65,7 +64,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
-import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.By;
@@ -548,15 +546,12 @@ public class GuiElement implements
      */
     @Deprecated
     public int getTimeoutInSeconds() {
-        return guiElementData.getTimeoutInSeconds();
+        return guiElementData.getTimeoutSeconds();
     }
 
-    /**
-     * @deprecated This method should not be public
-     */
-    @Deprecated
     public IGuiElement setTimeoutInSeconds(int timeoutInSeconds) {
-        guiElementData.setTimeoutInSeconds(timeoutInSeconds);
+        propertyAssertionFactory.setDefaultTimeoutSeconds(timeoutInSeconds);
+        guiElementData.setTimeoutSeconds(timeoutInSeconds);
         return this;
     }
 
@@ -564,8 +559,8 @@ public class GuiElement implements
      * @deprecated This method should not be public
      */
     public IGuiElement restoreDefaultTimeout() {
-        int timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
-        guiElementData.setTimeoutInSeconds(timeoutInSeconds);
+        PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
+        guiElementData.setTimeoutSeconds(pageOverrides.getTimeoutSeconds());
         return this;
     }
 
@@ -1019,7 +1014,7 @@ public class GuiElement implements
 
     @Override
     public TestableGuiElement waitFor() {
-        propertyAssertionFactory.nextShouldWait();
+        propertyAssertionFactory.shouldWait();
         return this;
     }
 

@@ -26,6 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.pageobjects.components.InputForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -34,6 +35,7 @@ import org.openqa.selenium.WebDriver;
  * Created with IntelliJ IDEA. User: pele Date: 07.01.13 Time: 14:15 To change this template use File | Settings | File
  * Templates.
  */
+@PageOptions(elementTimeoutInSeconds = 1)
 public class WebTestPage extends AbstractWebTestPage {
 
     private final GuiElement input1 = new GuiElement(driver, By.id("1"));

@@ -530,7 +530,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
     @Override
     public TestablePage waitFor() {
-        propertyAssertionFactory.nextShouldWait();
+        propertyAssertionFactory.shouldWait();
         return this;
     }
 

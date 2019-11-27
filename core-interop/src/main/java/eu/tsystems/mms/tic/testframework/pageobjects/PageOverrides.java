@@ -10,23 +10,28 @@ import eu.tsystems.mms.tic.testframework.testing.TestController;
  * @author Mike Reiche
  */
 public interface PageOverrides {
+    boolean hasTimeoutSeconds();
     /**
      * @return Configured or default element timeout
      */
-    int getElementTimeoutInSeconds();
+    int getTimeoutSeconds();
 
     /**
      * Sets a new element timeout and returns the previously configured
+     * @param seconds If < 0, the timeout configuration will be removed
      */
-    int setElementTimeoutInSeconds(int elementTimeoutInSeconds);
+    int setTimeoutSeconds(int seconds);
+
+    boolean hasCheckRule();
 
     /**
      * @return Configured or default element check rule
      */
-    CheckRule getGuiElementCheckRule();
+    CheckRule getCheckRule();
 
     /**
      * Sets a new check rule and returns the previously configured
+     * @param checkRule If null, the checkrule configuration will be removed
      */
-    CheckRule setGuiElementCheckRule(CheckRule guiElementCheckRule);
+    CheckRule setCheckRule(CheckRule checkRule);
 }

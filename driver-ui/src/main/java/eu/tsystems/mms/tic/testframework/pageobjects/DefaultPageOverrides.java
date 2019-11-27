@@ -15,7 +15,12 @@ public class DefaultPageOverrides implements PageOverrides {
     }
 
     @Override
-    public int getElementTimeoutInSeconds() {
+    public boolean hasTimeoutSeconds() {
+        return threadLocalTimeout.get()!=null;
+    }
+
+    @Override
+    public int getTimeoutSeconds() {
         Integer timeout = threadLocalTimeout.get();
         if (timeout==null) {
             timeout = IGuiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
@@ -24,25 +29,44 @@ public class DefaultPageOverrides implements PageOverrides {
     }
 
     @Override
-    public int setElementTimeoutInSeconds(int elementTimeoutInSeconds) {
-        int prevTimeout = getElementTimeoutInSeconds();
-        threadLocalTimeout.set(elementTimeoutInSeconds);
+    public int setTimeoutSeconds(int seconds) {
+        int prevTimeout = -1;
+        if (hasTimeoutSeconds()) {
+            prevTimeout = getTimeoutSeconds();
+        }
+        if (seconds < 0) {
+            threadLocalTimeout.remove();
+        } else {
+            threadLocalTimeout.set(seconds);
+        }
         return prevTimeout;
     }
 
     @Override
-    public CheckRule getGuiElementCheckRule() {
+    public boolean hasCheckRule() {
+        return threadLocalCheckRule.get()!=null;
+    }
+
+    @Override
+    public CheckRule getCheckRule() {
         CheckRule checkRule = threadLocalCheckRule.get();
-        if (checkRule==null) {
+        if (checkRule == null) {
             checkRule = CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString());
         }
         return checkRule;
     }
 
     @Override
-    public CheckRule setGuiElementCheckRule(CheckRule guiElementCheckRule) {
-        CheckRule prevCheckRule = getGuiElementCheckRule();
-        threadLocalCheckRule.set(guiElementCheckRule);
+    public CheckRule setCheckRule(CheckRule checkRule) {
+        CheckRule prevCheckRule = null;
+        if (hasCheckRule()) {
+            prevCheckRule = getCheckRule();
+        }
+        if (checkRule == null) {
+            threadLocalCheckRule.remove();
+        } else {
+            threadLocalCheckRule.set(checkRule);
+        }
         return prevCheckRule;
     }
 }

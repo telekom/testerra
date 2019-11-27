@@ -31,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTest implements Loggable {
@@ -39,7 +39,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     private final static InstantAssertion instantAssertion = Testerra.injector.getInstance(InstantAssertion.class);
     private WebTestPage page;
 
-    @BeforeClass
+    @BeforeMethod
     private WebTestPage prepareTestPage() {
         page = pageFactory.createPage(WebTestPage.class);
         page.getWebDriver().navigate().to(TestPage.INPUT_TEST_PAGE.getUrl());

@@ -14,6 +14,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElement
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElementFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
 public class ConfigureDriverUi extends AbstractModule {
     protected void configure() {
@@ -23,5 +25,6 @@ public class ConfigureDriverUi extends AbstractModule {
         bind(PageObjectFactory.class).to(DefaultPageFactory.class).in(Scopes.SINGLETON);
         bind(PageOverrides.class).to(DefaultPageOverrides.class).in(Scopes.SINGLETON);
         bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class).in(Scopes.SINGLETON);
+        bind(IWebDriverManager.class).to(WebDriverManager.class).in(Scopes.SINGLETON);
     }
 }

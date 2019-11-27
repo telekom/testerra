@@ -22,12 +22,11 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -42,8 +41,6 @@ public class GuiElementData implements
     WebDriverRetainer,
     HasParent
 {
-    private static final int timerSleepTimeInMs = 500;
-
     private final Locate locate;
     private final WebDriver webDriver;
     /**
@@ -56,7 +53,7 @@ public class GuiElementData implements
     private String name;
     private WebElement webElement;
     private IFrameLogic frameLogic;
-    private TimerWrapper timerWrapper;
+    private int timeoutSeconds = IGuiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
     private LogLevel logLevel = LogLevel.DEBUG;
     private LogLevel storedLogLevel = logLevel;
 
@@ -73,6 +70,7 @@ public class GuiElementData implements
     public GuiElementData(GuiElementData parent, Locate locate) {
         this(parent.getWebDriver(), locate);
         this.parent = parent;
+        timeoutSeconds = parent.timeoutSeconds;
         frameLogic = parent.frameLogic;
         guiElement = parent.guiElement;
     }
@@ -85,6 +83,7 @@ public class GuiElementData implements
         this(parent.webDriver, parent.locate);
         this.index = index;
         this.parent = parent.parent;
+        timeoutSeconds = parent.timeoutSeconds;
         frameLogic = parent.frameLogic;
         guiElement = parent.guiElement;
     }
@@ -123,13 +122,6 @@ public class GuiElementData implements
 
     public WebElement getWebElement() {
         return this.webElement;
-    }
-
-    public TimerWrapper getTimerWrapper() {
-        if (timerWrapper==null) {
-            timerWrapper = new TimerWrapper(timerSleepTimeInMs, POConfig.getUiElementTimeoutInSeconds(), webDriver, executionLog);
-        }
-        return timerWrapper;
     }
 
     @Override
@@ -188,12 +180,12 @@ public class GuiElementData implements
         return sb.toString();
     }
 
-    public int getTimeoutInSeconds() {
-        return getTimerWrapper().getTimeoutInSeconds();
+    public int getTimeoutSeconds() {
+        return timeoutSeconds;
     }
 
-    public void setTimeoutInSeconds(int timeoutInSeconds) {
-        getTimerWrapper().setTimeoutInSeconds(timeoutInSeconds);
+    public void setTimeoutSeconds(int timeoutInSeconds) {
+        this.timeoutSeconds = timeoutInSeconds;
     }
 
     public boolean hasFrameLogic() {

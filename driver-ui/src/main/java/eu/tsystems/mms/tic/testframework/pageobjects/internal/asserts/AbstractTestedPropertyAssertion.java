@@ -30,9 +30,12 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
     }
 
     protected boolean testTimer(Function<T, Boolean> testFunction) {
+        int useTimeoutSeconds = timeoutSeconds;
+        if (pageOverrides.hasTimeoutSeconds()) useTimeoutSeconds = pageOverrides.getTimeoutSeconds();
+
         Timer timer = new Timer(
             IGuiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(),
-            pageOverrides.getElementTimeoutInSeconds() * 1000
+            useTimeoutSeconds * 1000
         );
         ThrowablePackedResponse<AssertionError> packedResponse = timer.executeSequence(new Timer.Sequence<AssertionError>() {
             @Override

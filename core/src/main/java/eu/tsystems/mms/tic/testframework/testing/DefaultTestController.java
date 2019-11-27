@@ -31,8 +31,8 @@ public class DefaultTestController implements TestController {
     }
 
     public void withElementTimeout(int seconds, Runnable runnable) {
-        int prevTimeout = pageOverrides.setElementTimeoutInSeconds(seconds);
+        int prevTimeout = pageOverrides.setTimeoutSeconds(seconds);
         runnable.run();
-        pageOverrides.setElementTimeoutInSeconds(prevTimeout);
+        pageOverrides.setTimeoutSeconds(prevTimeout);
     }
 }

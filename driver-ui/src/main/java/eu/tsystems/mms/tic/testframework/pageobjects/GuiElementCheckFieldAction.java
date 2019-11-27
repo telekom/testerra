@@ -56,7 +56,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
     ) {
         CheckRule checkRule = check.checkRule();
         if (checkRule == CheckRule.DEFAULT) {
-            checkRule = pageOverrides.getGuiElementCheckRule();
+            checkRule = pageOverrides.getCheckRule();
         }
 
         String errorMessageNotNot = "You are trying to FIND_NOT a not present element.";
@@ -67,9 +67,9 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
              * Unfortunately, this value is not documented and differs in previous implementations.
              * However, we set this timeout now to zero seconds.
              */
-            prevTimeout = pageOverrides.setElementTimeoutInSeconds(0);
+            prevTimeout = pageOverrides.setTimeoutSeconds(0);
         } else if (check.timeout()!=-1) {
-            prevTimeout = pageOverrides.setElementTimeoutInSeconds(check.timeout());
+            prevTimeout = pageOverrides.setTimeoutSeconds(check.timeout());
         }
 
         switch (checkRule) {
@@ -112,12 +112,12 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             break;
             default:
                 if (prevTimeout >= 0) {
-                    pageOverrides.setElementTimeoutInSeconds(prevTimeout);
+                    pageOverrides.setTimeoutSeconds(prevTimeout);
                 }
                 throw new TesterraSystemException("CheckRule not implemented: " + checkRule);
         }
         if (prevTimeout >= 0) {
-            pageOverrides.setElementTimeoutInSeconds(prevTimeout);
+            pageOverrides.setTimeoutSeconds(prevTimeout);
         }
     }
 

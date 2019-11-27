@@ -365,7 +365,7 @@ Control.nonFunctional(() -> guiElement.displayed().isTrue());
 .Using the static `NonFunctionalAssert` is now `@deprecated`
 ====
 ```java
-Control.NonFunctionalAssert.assertTrue(false);
+NonFunctionalAssert.assertTrue(false);
 ```
 ====
 
@@ -414,7 +414,9 @@ public MyClass {
 
 === Timeouts
 
-The new standard way for setting GuiElement timeouts is now
+==== @Check timeouts
+
+The new standard way for setting GuiElement timeouts on `@Check` is now
 
 ```java
 class MyPage extends Page {

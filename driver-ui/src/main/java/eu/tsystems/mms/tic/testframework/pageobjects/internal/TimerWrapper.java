@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -39,44 +40,31 @@ public class TimerWrapper implements Loggable {
 
     private final static PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
 
-    private int sleepTimeInMs;
-    private int timeoutInSeconds;
+    private static int sleepTimeInMs=200;
 
     private final WebDriver webDriver;
     private final ExecutionLog executionLog;
 
-    public TimerWrapper(int sleepTimeInMs, int timeoutInSeconds, WebDriver webDriver, ExecutionLog executionLog) {
-        this.sleepTimeInMs = sleepTimeInMs;
-        this.timeoutInSeconds = timeoutInSeconds;
+    public TimerWrapper(WebDriver webDriver, ExecutionLog executionLog) {
         this.webDriver = webDriver;
         this.executionLog = executionLog;
     }
 
-    public int getSleepTimeInMs() {
+    public TimerWrapper(WebDriver webDriver) {
+        this.webDriver = webDriver;
+        this.executionLog = null;
+    }
+
+    private int getSleepTimeInMs() {
         return sleepTimeInMs;
     }
 
-    public TimerWrapper setSleepTimeInMs(int sleepTimeInMs) {
-        this.sleepTimeInMs = sleepTimeInMs;
-        return this;
-    }
-
-    private int getTimeoutInMs() {
-        return timeoutInSeconds * 1000;
-    }
-
-    public TimerWrapper setTimeoutInSeconds(int timeoutInS) {
-        this.timeoutInSeconds = timeoutInS;
-        return this;
-    }
-
-    public int getTimeoutInSeconds() {
-        if (timeoutInSeconds > 0) return timeoutInSeconds;
-        else return pageOverrides.getElementTimeoutInSeconds();
-    }
-
     public <T> ThrowablePackedResponse<T> executeSequence(final Timer.Sequence<T> sequence) {
-        Timer timer = new Timer(getSleepTimeInMs(), getTimeoutInMs(), executionLog);
+        return executeSequence(sequence, pageOverrides.getTimeoutSeconds());
+    }
+
+    public <T> ThrowablePackedResponse<T> executeSequence(final Timer.Sequence<T> sequence, int timeoutInSeconds) {
+        Timer timer = new Timer(getSleepTimeInMs(), timeoutInSeconds*1000, executionLog);
         ThrowablePackedResponse<T> booleanThrowablePackedResponse = null;
 
         try {

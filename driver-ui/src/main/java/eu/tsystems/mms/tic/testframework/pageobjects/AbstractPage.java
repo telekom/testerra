@@ -32,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFiel
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -67,7 +66,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
     /**
      * Element timeout in seconds (int).
      */
-    protected int elementTimeoutInSeconds = Testerra.injector.getInstance(PageOverrides.class).getElementTimeoutInSeconds();
+    protected int elementTimeoutInSeconds = Testerra.injector.getInstance(PageOverrides.class).getTimeoutSeconds();
 
     /**
      * @deprecated Use {@link Loggable} instead
@@ -306,7 +305,6 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
         throw new TimeoutException(message);
     }
 
-    @Deprecated
     public int getElementTimeoutInSeconds() {
         return elementTimeoutInSeconds;
     }

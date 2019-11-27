@@ -38,23 +38,23 @@ public final class POConfig {
     private POConfig() { }
 
     public static int getUiElementTimeoutInSeconds() {
-        return pageOverrides.getElementTimeoutInSeconds();
+        return pageOverrides.getTimeoutSeconds();
     }
 
     public static void setUiElementTimeoutInSeconds(int uiElementTimeoutInSeconds) {
-        pageOverrides.setElementTimeoutInSeconds(uiElementTimeoutInSeconds);
+        pageOverrides.setTimeoutSeconds(uiElementTimeoutInSeconds);
     }
 
     public static CheckRule getGuiElementCheckRule() {
-        return pageOverrides.getGuiElementCheckRule();
+        return pageOverrides.getCheckRule();
     }
 
     public static void setGuiElementCheckRule(CheckRule guiElementCheckRule) {
-        pageOverrides.setGuiElementCheckRule(guiElementCheckRule);
+        pageOverrides.setCheckRule(guiElementCheckRule);
     }
 
     public static void setThreadLocalUiElementTimeoutInSeconds(int value) {
-        pageOverrides.setElementTimeoutInSeconds(value);
+        pageOverrides.setTimeoutSeconds(value);
     }
 
     public static void removeThreadLocalUiElementTimeout() {
@@ -62,9 +62,9 @@ public final class POConfig {
     }
 
     public static void executeWithExplicitUiElementTimeout(int value, Runnable runnable) {
-        int timeoutBefore = pageOverrides.getElementTimeoutInSeconds();
-        pageOverrides.setElementTimeoutInSeconds(value);
+        int timeoutBefore = pageOverrides.getTimeoutSeconds();
+        pageOverrides.setTimeoutSeconds(value);
         runnable.run();
-        pageOverrides.setElementTimeoutInSeconds(timeoutBefore);
+        pageOverrides.setTimeoutSeconds(timeoutBefore);
     }
 }

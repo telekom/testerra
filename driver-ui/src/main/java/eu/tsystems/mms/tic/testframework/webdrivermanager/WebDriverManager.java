@@ -26,10 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import com.google.inject.Key;
-import com.google.inject.TypeLiteral;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
@@ -37,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessio
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -47,21 +45,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Provides threadsafe WebDriver and Selenium objects. These objects are needed for correct logging and reporting.
  *
  * @author sepr
  */
-public final class WebDriverManager {
+public final class WebDriverManager implements IWebDriverManager {
 
     static {
         UITestUtils.initializePerfTest();
@@ -84,6 +79,8 @@ public final class WebDriverManager {
      */
     static final ThreadLocal<String> EXECUTING_SELENIUM_HOSTS_PER_THREAD = new ThreadLocal<String>();
 
+    private final Map<WebDriver, TimerWrapper>TIMER_WRAPPERS = new ConcurrentHashMap<>();
+
     /**
      * The preset baseURL. Set by setBaseURL().
      */
@@ -92,7 +89,7 @@ public final class WebDriverManager {
     /**
      * Private constructor to hide the public one since this a static only class.
      */
-    private WebDriverManager() {
+    WebDriverManager() {
     }
 
     /**
@@ -489,6 +486,13 @@ public final class WebDriverManager {
 
     public static WebDriverRequest getRelatedWebDriverRequest(WebDriver driver) {
         return WebDriverSessionsManager.DRIVER_REQUEST_MAP.get(driver);
+    }
+
+    public TimerWrapper getTimerWrapper(WebDriver webDriver) {
+        if (TIMER_WRAPPERS.containsKey(webDriver)==false) {
+            TIMER_WRAPPERS.put(webDriver, new TimerWrapper(webDriver));
+        }
+        return TIMER_WRAPPERS.get(webDriver);
     }
 
     public static SessionContext getSessionContextFromWebDriver(WebDriver driver) {

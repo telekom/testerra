@@ -86,6 +86,7 @@ public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
         rows.firstElement().linkByName().value(Attribute.HREF).endsWith("mkri");
         rows.element(2).linkByName().value(Attribute.HREF).endsWith("joku");
         rows.lastElement().linkByName().value(Attribute.HREF).endsWith("erku");
+        rows.forEach(tableRow -> tableRow.linkByName().value(Attribute.HREF).beginsWith("http"));
     }
 
     @Test

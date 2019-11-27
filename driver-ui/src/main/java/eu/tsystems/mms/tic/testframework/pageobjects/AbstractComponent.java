@@ -200,6 +200,8 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     public Iterator<SELF> iterator() {
+        // Resets the internal iterator
+        rootElement.iterator();
         return this;
     }
 

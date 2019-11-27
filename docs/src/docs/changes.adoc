@@ -71,16 +71,21 @@ MyPage page = new MyPage(WebDriverManager.getWebDriver());
 === Sub Pages
 The new standard way to implement Sub Pages aka Components is now
 ```java
-public class MyForm extends Component {
+public class MyForm extends AbstractComponent<MyForm> {
     public MyForm(IGuiElement rootElement) {
         super(rootElement);
+    }
+
+    @Override
+    protected InputForm self() {
+        return this;
     }
 }
 ```
 Instantiate components
 ```java
 class MyPage extends Page {
-    private MyForm form = withAncestor(find(By.tagName("form"))).createComponent(MyForm.class);
+    private MyForm form = createComponent(MyForm.class, find(By.tagName("form"));
 }
 ```
 
@@ -127,31 +132,57 @@ class MyPage extends Page {
 ====
 ```java
 class MyPage extends Page {
-    private GuiElement guiElement = new GuiElement(By.id(42), driver);
     private GuiElement guiElement = new GuiElement(By.xpath("//div[1]"), driver);
 }
 ```
 ====
 
-For sub elements
+For descendant elements
 ```java
 class MyPage extends Page {
-    private IGuiElement guiElement = findById(42);
-    private IGuiElement subElement = withAncestor(guiElement).find(By.xpath("//div[1]"));
+    private IGuiElement parent = findById(42);
+    private IGuiElement sub = parent.find(By.xpath("//div[1]"));
 }
 ```
 
 [NOTE]
-.Retrieving sub elements from GuiElement is now `@deprecated`
+.`getSubElement` is now `@deprecated`
 ====
 ```java
 class MyPage extends Page {
-    private GuiElement guiElement = new GuiElement(By.id(42), driver);
-    private GuiElement subElement = guiElement.getSubElement(By.xpath("//div[1]"));
+    private GuiElement parent = new GuiElement(By.id(42), driver);
+    private GuiElement sub = parent.getSubElement(By.xpath("//div[1]"));
 }
 ```
 ====
 
+List elements
+```java
+IGuiElement anchors = find(By.tagName("a"));
+
+anchors.numberOfElements().is(3); <1>
+anchors.firstElement().value(Attribute.TITLE).is("StartPage"); <2>
+anchors.element(2).value(Attribute.TITLE).is("About Us"); <3>
+anchors.lastElement().value(Attribute.TITLE).is("Contact"); <4>
+
+anchors.forEach(anchor -> anchor.value(Attribute.HREF).beginsWith("https")); <5>
+```
+[NOTE]
+.GuiElement lists are now `@deprecated`
+====
+```java
+GuiElement anchors = new GuiElement(driver, By.tagName("a"));
+
+Assert.assertEquals(anchors.getNumberOfFoundElements(), 3); <1>
+
+List<GuiElement> list = anchor.getList();
+list.get(0).asserts().assertAttributeValue("title", "StartPage"); <2>
+list.get(1).asserts().assertAttributeValue("title", "About Us"); <3>
+list.get(list.size()-1).asserts().assertAttributeValue("title", "Contact"); <4>
+
+list.forEach(anchor -> Assert.assertTrue(anchor.getAttribute("href").startsWith("https"))); <5>
+```
+====
 For elements in frames
 ```java
 class MyPage extends Page {

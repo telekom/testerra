@@ -26,6 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import afu.org.checkerframework.checker.oigj.qual.O;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
@@ -579,10 +580,12 @@ public class GuiElement implements
         return this;
     }
 
+    @Deprecated
     public int getLengthOfValueAfterSendKeys(String textToInput) {
         return decoratedFacade.getLengthOfValueAfterSendKeys(textToInput);
     }
 
+    @Deprecated
     public int getNumberOfFoundElements() {
         return decoratedFacade.getNumberOfFoundElements();
     }

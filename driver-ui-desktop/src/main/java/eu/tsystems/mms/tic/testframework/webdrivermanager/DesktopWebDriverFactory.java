@@ -499,15 +499,15 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         if (abstractLocatorString.toLowerCase().contains("xpath")) {
             int i = abstractLocatorString.indexOf(":") + 1;
             String xpath = abstractLocatorString.substring(i).trim();
-            String prevXPath = xpath;
+            //String prevXPath = xpath;
             // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
             if (xpath.startsWith("/")) {
                 xpath = xpath.replaceFirst("/", "./");
-                log().warn(String.format("Replaced absolute xpath locator \"%s\" to relative: \"%s\"", prevXPath, xpath));
+                //log().warn(String.format("Replaced absolute xpath locator \"%s\" to relative: \"%s\"", prevXPath, xpath));
                 locate = Locate.by(By.xpath(xpath));
             } else if (!xpath.startsWith(".")) {
                 xpath = "./" + xpath;
-                log().warn(String.format("Added relative xpath locator for children to \"%s\": \"%s\"", prevXPath, xpath));
+                //log().warn(String.format("Added relative xpath locator for children to \"%s\": \"%s\"", prevXPath, xpath));
                 locate = Locate.by(By.xpath(xpath));
             }
         }

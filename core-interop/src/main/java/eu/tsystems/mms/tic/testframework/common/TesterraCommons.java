@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.logging.LogAppender;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.log4j.Appender;
@@ -65,7 +66,7 @@ public class TesterraCommons {
      * value.
      */
     private static void initializeLogging() {
-        Appender appender = Testerra.injector.getInstance(Appender.class);
+        Appender appender = Testerra.injector.getInstance(LogAppender.class);
         final String loggerDefinitionsFilename = "test-log4j.xml";
         final URL log4jConfig = ClassLoader.getSystemResource(loggerDefinitionsFilename);
         if (log4jConfig != null) {

@@ -19,37 +19,21 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.apache.log4j.Layout;
 import org.apache.log4j.Level;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
 
-public class PlatformLogger extends BaseLoggingActor {
-
-    public static final Layout CONSOLE_LAYOUT_MCID = new PatternLayout("%d{"+DATE_FORMAT+"} [%t] [%-5p]: %c{2} - [MCID:%X{mcid}] %m");
-    public static final String SPLITTER = "---";
-    public static final Layout LAYOUT = new PatternLayout(LOGGER_PATTERN);
-
-    public static LogMessage createLogMessage(final String msg) {
-        if (msg == null) {
-            return null;
-        }
-
-        String[] split = msg.split(SPLITTER);
-        try {
-            return new LogMessage(split[0], split[1], split[2], split[3], split[4]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            /*
-            I can't use logging to log a logging error :)
-             */
-            System.err.println("Error creating LogMessage from: " + msg);
-            e.printStackTrace();
-            return null;
-        }
-    }
+/**
+ * This logger is required for the Platform to be able to link log messages
+ * to Context entities.
+ * @todo Move this implementation to Testerra Platform Connector
+ */
+public class PlatformLogAppender extends BaseLoggingActor {
+    private static final Layout PLATFORM_LOG_LAYOUT = new PatternLayout("%d{"+DATE_FORMAT+"} [%t] [%-5p]: %c{2} - [MCID:%X{mcid}][SCID:%X{scid}] %m");
 
     @Override
     public void close() {
@@ -78,16 +62,20 @@ public class PlatformLogger extends BaseLoggingActor {
         String formattedMessage;
         if (methodContext != null) {
             event.setProperty("mcid", methodContext.id);
-            formattedMessage = CONSOLE_LAYOUT_MCID.format(event);
-            // append for console
-            if (event.getLevel().isGreaterOrEqual(Level.ERROR)) {
-                System.err.println(formattedMessage);
-            }
-            else {
-                System.out.println(formattedMessage);
-            }
+        }
+        SessionContext sessionContext = ExecutionContextController.getCurrentSessionContext();
+        if (sessionContext != null) {
+            event.setProperty("scid", sessionContext.id);
         } else {
-            super.append(event);
+            event.setProperty("scid", "unrelated");
+        }
+        formattedMessage = PLATFORM_LOG_LAYOUT.format(event);
+        // append for console
+        if (event.getLevel().isGreaterOrEqual(Level.ERROR)) {
+            System.err.println(formattedMessage);
+        }
+        else {
+            System.out.println(formattedMessage);
         }
     }
 }

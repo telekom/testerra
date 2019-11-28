@@ -429,13 +429,14 @@ public final class WebDriverSessionsManager {
             create session context and link to method context
              */
             SessionContext sessionContext = new SessionContext(sessionKey, webDriverFactory.getClass().getSimpleName());
+            ExecutionContextController.setCurrentSessionContext(sessionContext);
+
             webDriverRequest.sessionContext = sessionContext;
             MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
             if (methodContext != null) {
                 methodContext.sessionContexts.add(sessionContext);
             }
             sessionContext.parentContext = methodContext;
-            ExecutionContextController.setCurrentSessionContext(sessionContext);
 
             // fire sync
             TesterraEventService.getInstance().fireEvent(

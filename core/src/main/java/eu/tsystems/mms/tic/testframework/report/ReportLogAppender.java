@@ -24,7 +24,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.LoggingDispatcher;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.log4j.spi.LoggingEvent;
 
-public class ReportLogger extends BaseLoggingActor {
+public class ReportLogAppender extends BaseLoggingActor {
 
     private static final String PLACEHOLDER = "###LOGMESSAGE###";
 

@@ -37,8 +37,6 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverFactory.class);
 
-    private SessionContext sessionContext = null;
-
     protected abstract R buildRequest(WebDriverRequest webDriverRequest);
 
     protected abstract DesiredCapabilities buildCapabilities(DesiredCapabilities preSetCaps, R request);
@@ -48,8 +46,6 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
     protected abstract void setupSession(EventFiringWebDriver eventFiringWebDriver, R request);
 
     public EventFiringWebDriver getWebDriver(WebDriverRequest r, SessionContext sessionContext) {
-        this.sessionContext = sessionContext;
-
         /*
         set base parameters
          */
@@ -129,14 +125,9 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
         return eventFiringWebDriver;
     }
 
-    protected String logSCID() {
-        final String scid = sessionContext == null ? "unrelated" : sessionContext.id;
-        return "[SCID:" + scid + "] ";
-    }
-
     private void logSessionRequest(R finalRequest, DesiredCapabilities finalCaps) {
         StringBuffer msg = new StringBuffer();
-        msg.append(logSCID()).append("Requesting new web driver session with capabilities:");
+        msg.append("Requesting new web driver session with capabilities:");
         finalCaps.asMap().forEach((k, v) -> msg.append(",").append(k).append("=").append(v));
 
         /*

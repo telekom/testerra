@@ -26,6 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
+import eu.tsystems.mms.tic.testframework.logging.LogAppender;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Layout;
 import org.apache.log4j.Level;
@@ -37,7 +38,7 @@ import java.text.SimpleDateFormat;
 /**
  * Allows to use log4j logs for HTML Reports.
  */
-public class BaseLoggingActor extends AppenderSkeleton {
+public class BaseLoggingActor extends AppenderSkeleton implements LogAppender {
     /*
     !!!!
 

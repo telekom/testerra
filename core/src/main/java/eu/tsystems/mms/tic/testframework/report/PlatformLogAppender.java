@@ -40,7 +40,7 @@ public class PlatformLogAppender extends BaseLoggingActor {
     @Inject
     public PlatformLogAppender(Formatter formatter) {
         super(formatter);
-        PLATFORM_LOG_LAYOUT = new PatternLayout("%d{"+formatter.DATE_TIME_FORMAT()+"} [%t] [%-5p]: %c{2} - [MCID:%X{mcid}][SCID:%X{scid}] %m");
+        PLATFORM_LOG_LAYOUT = new PatternLayout("%d{"+formatter.DATE_TIME_FORMAT()+"} [%t] [%-5p]: %c{2} - %X{context}%m");
     }
 
     @Override
@@ -67,17 +67,19 @@ public class PlatformLogAppender extends BaseLoggingActor {
     protected void append(final LoggingEvent event) {
         // enhance with method context id
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        String formattedMessage;
+        StringBuilder sb = new StringBuilder();
         if (methodContext != null) {
-            event.setProperty("mcid", methodContext.id);
+            sb.append("[MCID:").append(methodContext.id).append("]");
         }
         SessionContext sessionContext = ExecutionContextController.getCurrentSessionContext();
         if (sessionContext != null) {
-            event.setProperty("scid", sessionContext.id);
-        } else {
-            event.setProperty("scid", "unrelated");
+            sb.append("[SCID:").append(sessionContext.id).append("]");
         }
-        formattedMessage = PLATFORM_LOG_LAYOUT.format(event);
+        if (sb.length()>0) {
+            sb.append(" ");
+            event.setProperty("context", sb.toString());
+        }
+        String formattedMessage = PLATFORM_LOG_LAYOUT.format(event);
         // append for console
         if (event.getLevel().isGreaterOrEqual(Level.ERROR)) {
             System.err.println(formattedMessage);

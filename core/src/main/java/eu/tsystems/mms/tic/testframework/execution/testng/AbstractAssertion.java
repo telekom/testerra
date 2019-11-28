@@ -168,7 +168,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertEquals(actual, expected, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual, e, subject);
             return false;
         }
     }
@@ -179,7 +179,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertEquals(actual, expected, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual, e, subject);
             return false;
         }
     }
@@ -190,7 +190,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertEquals(actual, expected, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual, e, subject);
             return false;
         }
     }
@@ -201,7 +201,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertEquals(actual, expected, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual, e, subject);
             return false;
         }
     }
@@ -212,7 +212,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertEquals(actual, expected, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual, e, subject);
             return false;
         }
     }
@@ -223,7 +223,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertEqualsNoOrder(actual, expected, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual, e, subject);
             return false;
         }
     }
@@ -234,7 +234,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertEquals(actual, expected, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual, e, subject);
             return false;
         }
     }
@@ -245,7 +245,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertEqualsDeep(actual, expected, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual, e, subject);
             return false;
         }
     }
@@ -256,7 +256,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertEquals(actual, expected, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual, e, subject);
             return false;
         }
     }
@@ -267,7 +267,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertEqualsDeep(actual, expected, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual, e, subject);
             return false;
         }
     }
@@ -278,7 +278,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertNotEquals(actual1, actual2, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual1, actual2, subject);
             return false;
         }
     }
@@ -289,7 +289,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertNotEquals(actual, expected, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual, e, subject);
             return false;
         }
     }
@@ -300,7 +300,7 @@ public abstract class AbstractAssertion implements Assertion {
             Assert.assertNotEquals(actual, expected, subject);
             return true;
         } catch (AssertionError e) {
-            fail(e.getMessage());
+            failNotEquals(actual, e, subject);
             return false;
         }
     }

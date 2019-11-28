@@ -19,14 +19,34 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
+import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.utils.LoggingDispatcher;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.apache.log4j.Layout;
+import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
 
 public class ReportLogAppender extends BaseLoggingActor {
 
+    private final Layout LAYOUT;
+    private static final String SPLITTER = "---";
     private static final String PLACEHOLDER = "###LOGMESSAGE###";
+
+
+    @Inject
+    public ReportLogAppender(Formatter formatter) {
+        super(formatter);
+         /*
+        !!!!
+
+        LOGGER_PATTERN must match the split pattern and elements in createLogMessage()!
+
+        !!!
+         */
+        LAYOUT = new PatternLayout("%p---%d{" + formatter.DATE_TIME_FORMAT() + "}---%t---%c{1}---%m%n");
+    }
 
     public static LogMessage createLogMessage(final String msg) {
         if (msg == null) {

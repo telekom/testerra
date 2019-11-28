@@ -19,9 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
+import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.apache.log4j.Layout;
 import org.apache.log4j.Level;
 import org.apache.log4j.PatternLayout;
@@ -33,7 +35,13 @@ import org.apache.log4j.spi.LoggingEvent;
  * @todo Move this implementation to Testerra Platform Connector
  */
 public class PlatformLogAppender extends BaseLoggingActor {
-    private static final Layout PLATFORM_LOG_LAYOUT = new PatternLayout("%d{"+DATE_FORMAT+"} [%t] [%-5p]: %c{2} - [MCID:%X{mcid}][SCID:%X{scid}] %m");
+    private final Layout PLATFORM_LOG_LAYOUT;
+
+    @Inject
+    public PlatformLogAppender(Formatter formatter) {
+        super(formatter);
+        PLATFORM_LOG_LAYOUT = new PatternLayout("%d{"+formatter.DATE_TIME_FORMAT()+"} [%t] [%-5p]: %c{2} - [MCID:%X{mcid}][SCID:%X{scid}] %m");
+    }
 
     @Override
     public void close() {

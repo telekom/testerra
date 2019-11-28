@@ -19,10 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.steps;
 
-import eu.tsystems.mms.tic.testframework.report.BaseLoggingActor;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -40,6 +41,7 @@ public class TestStepAction implements Serializable {
     private final String name;
 
     private final List<TestStepActionEntry> testStepActionEntries = Collections.synchronizedList(new LinkedList<>());
+    private static final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
 
     public TestStepAction(String name) {
         this.name = name;
@@ -67,10 +69,9 @@ public class TestStepAction implements Serializable {
     }
 
     public void addFailingLogMessage(final String msg) {
-        String date = BaseLoggingActor.SIMPLE_DATE_FORMAT.format(new Date());
         LogMessage logMessage = new LogMessage(
                 "ERROR",
-                date,
+                formatter.formatDate(new Date()),
                 Thread.currentThread().getName(),
                 "Test Failed",
                 msg);

@@ -26,32 +26,26 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.LogAppender;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Layout;
 import org.apache.log4j.Level;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
 
-import java.text.SimpleDateFormat;
-
 /**
  * Allows to use log4j logs for HTML Reports.
  */
-public class BaseLoggingActor extends AppenderSkeleton implements LogAppender {
-    /*
-    !!!!
+public abstract class BaseLoggingActor extends AppenderSkeleton implements LogAppender {
+    protected final Formatter formatter;
+    private final Layout CONSOLE_LAYOUT;
 
-    LOGGER_PATTERN must match the split pattern and elements in createLogMessage()!
-
-    !!!
-     */
-    protected static final String DATE_FORMAT = "dd.MM.yyyy-HH:mm:ss.SSS";
-    public static final String LOGGER_PATTERN = "%p---%d{" + DATE_FORMAT + "}---%t---%c{1}---%m%n";
-    public static final Layout CONSOLE_LAYOUT = new PatternLayout("%d{"+DATE_FORMAT+"} [%t] [%-5p]: %c{2} - %m");
-    public static final String SPLITTER = "---";
-    public static final Layout LAYOUT = new PatternLayout(LOGGER_PATTERN);
-    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT);
+    public BaseLoggingActor(Formatter formatter) {
+        this.formatter = formatter;
+        CONSOLE_LAYOUT = new PatternLayout("%d{"+formatter.DATE_TIME_FORMAT()+"} [%t] [%-5p]: %c{2} - %m");
+    }
 
     @Override
     public void close() {

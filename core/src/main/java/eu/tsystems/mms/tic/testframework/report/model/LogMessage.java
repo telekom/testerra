@@ -19,8 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model;
 
-import eu.tsystems.mms.tic.testframework.report.BaseLoggingActor;
-
 import java.io.Serializable;
 
 /**
@@ -63,10 +61,12 @@ public class LogMessage implements Serializable {
     }
 
     public String toString() {
-        return logLevel + BaseLoggingActor.SPLITTER +
-                date + BaseLoggingActor.SPLITTER +
-                threadName + BaseLoggingActor.SPLITTER +
-                loggerName + BaseLoggingActor.SPLITTER +
-                message;
+        final String splitter = "---";
+        String sb = logLevel + splitter +
+            date + splitter +
+            threadName + splitter +
+            loggerName + splitter +
+            message;
+        return sb;
     }
 }

@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
+import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
@@ -106,6 +107,13 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     public void test_Page_url() {
         page.url().beginsWith("http");
         page.url().endsWith("input.html");
+    }
+
+    @Test
+    public void test_GuiElement_clear() {
+        IGuiElement element = page.findById(5);
+        element.sendKeys("Test");
+        element.clear().text().is("");
     }
 
     @Test()
@@ -208,7 +216,7 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
     @Test
     public void test_Component() {
         page.inputForm().button().value().is("Button1");
-        page.inputForm().input().asUser().hover().clear().sendKeys("Ich gebe etwas ein").value().is("Ich gebe etwas ein");
+        page.inputForm().input().clear().sendKeys("Ich gebe etwas ein").value().is("Ich gebe etwas ein");
         page.inputForm().button().numberOfElements().is(1);
     }
 }

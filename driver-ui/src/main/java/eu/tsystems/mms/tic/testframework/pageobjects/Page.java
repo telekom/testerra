@@ -129,9 +129,6 @@ public abstract class Page extends AbstractPage implements TestablePage {
     }
 
     public Page(WebDriver webDriver) {
-        if (webDriver == null) {
-            throw new IllegalArgumentException("The driver object must not be null");
-        }
         this.driver = webDriver;
 
         // webdriver based waitForPageToLoad

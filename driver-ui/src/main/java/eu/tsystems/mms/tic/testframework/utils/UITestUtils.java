@@ -29,15 +29,12 @@ package eu.tsystems.mms.tic.testframework.utils;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
-import eu.tsystems.mms.tic.testframework.constants.TestOS;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
-import eu.tsystems.mms.tic.testframework.remote.RemoteDownloadPath;
 import eu.tsystems.mms.tic.testframework.report.Shot;
-import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
@@ -368,32 +365,6 @@ public class UITestUtils {
         } else {
             LOGGER.error("Could not take native screenshot, screen region is missing");
         }
-    }
-
-    /**
-     * Return the browser download Directory for this session. This contains a uuid which is statically created.
-     *
-     * @param platform OS the browser will run on
-     *
-     * @return session based download path.
-     */
-    public static RemoteDownloadPath getStaticBrowserDownloadDirectory(TestOS platform) {
-        String uuid = BROWSER_DOWNLOAD_PATH_UUID;
-        String fullPath = eu.tsystems.mms.tic.testframework.constants.RTConstants.getDownloadPathByOS(platform) + uuid;
-        return new RemoteDownloadPath(fullPath, uuid);
-    }
-
-    /**
-     * Return the browser download Directory for this session. This contains a uuid which is created from string parameter.
-     *
-     * @param platform OS the browser will run on
-     *
-     * @return session based download path.
-     */
-    public static RemoteDownloadPath generateBrowserDownloadDirectory(TestOS platform) {
-        String uuid = UUID.randomUUID().toString();
-        String fullPath = eu.tsystems.mms.tic.testframework.constants.RTConstants.getDownloadPathByOS(platform) + uuid;
-        return new RemoteDownloadPath(fullPath, uuid);
     }
 
     private static GuiElementType guiElementType = null;

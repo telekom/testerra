@@ -215,8 +215,15 @@ public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTes
 
     @Test
     public void test_Component() {
+        final String input = "Ich gebe etwas ein";
         page.inputForm().button().value().is("Button1");
-        page.inputForm().input().clear().sendKeys("Ich gebe etwas ein").value().is("Ich gebe etwas ein");
+        page.inputForm().input().clear().sendKeys(input).value().is(input);
         page.inputForm().button().numberOfElements().is(1);
+    }
+
+    @Test
+    public void test_User_sendKeys() {
+        final String input = "Ich bin langsam im Tippen";
+        page.inputForm().input().asUser().clear().sendKeys(input).value().is(input);
     }
 }

@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
  * It should extend {@link IGuiElement} in the future,
  * when all of it's features should be decorated.
  */
+@Deprecated
 public interface GuiElementFacade extends GuiElementCore {
     /**
      * GuiElementCore to GuiElementFacade overrides

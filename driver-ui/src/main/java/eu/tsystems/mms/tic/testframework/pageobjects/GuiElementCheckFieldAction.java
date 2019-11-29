@@ -73,13 +73,11 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
         }
 
         switch (checkRule) {
-            case DEFAULT:
-                throw new TesterraSystemException("Internal Error. Please provide stacktrace to testerra developers.");
             case IS_PRESENT:
                 if (findNot) {
-                    GuiElementAssert.assertIsNotPresent();
+                    guiElement.present().isFalse();
                 } else {
-                    GuiElementAssert.assertIsPresent();
+                    guiElement.present().isTrue();
                 }
                 break;
             case IS_NOT_PRESENT:
@@ -89,33 +87,30 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
 //                    } else {
 //                        assertGuiElement.assertIsPresent();
 //                    }
-                    logger.warn(errorMessageNotNot);
+                    log().warn(errorMessageNotNot);
                 } else {
-                    GuiElementAssert.assertIsNotPresent();
+                    guiElement.present().isFalse();
                 }
                 break;
-            case IS_DISPLAYED: {
-                if (findNot) {
-                    GuiElementAssert.assertIsNotDisplayed();
-                } else {
-                    GuiElementAssert.assertIsDisplayed();
-                }
-            }
-            break;
             case IS_NOT_DISPLAYED: {
                 if (findNot) {
-                    logger.warn(errorMessageNotNot);
+                    log().warn(errorMessageNotNot);
                 } else {
-                    GuiElementAssert.assertIsNotDisplayed();
+                    guiElement.displayed().isFalse();
                 }
             }
             break;
-            default:
-                if (prevTimeout >= 0) {
-                    pageOverrides.setTimeoutSeconds(prevTimeout);
+            case DEFAULT:
+            case IS_DISPLAYED:
+            default: {
+                if (findNot) {
+                    guiElement.displayed().isFalse();
+                } else {
+                    guiElement.displayed().isTrue();
                 }
-                throw new TesterraSystemException("CheckRule not implemented: " + checkRule);
+            }
         }
+        
         if (prevTimeout >= 0) {
             pageOverrides.setTimeoutSeconds(prevTimeout);
         }
@@ -123,36 +118,20 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
 
     @Override
     protected void checkField(Check check, boolean fast) {
-        if (check.nonFunctional()) {
-            pCheckField(checkableInstance, checkableInstance.nonFunctionalAsserts(), check, findNot, fast);
-        } else {
-
-            GuiElementAssert guiElementAssert;
-            /**
-             * A standard assert means, that a throwed exception is expected.
-             * This is covered by a {@link GuiElementAssert} that contains an {@link InstantAssertion}.
-             */
-            if (forceStandardAssert) {
-                guiElementAssert = checkableInstance.instantAsserts();
-            } else {
-                guiElementAssert = checkableInstance.asserts();
-            }
-
-            try {
-                pCheckField(checkableInstance, guiElementAssert, check, findNot, fast);
-            } catch (AssertionError e) {
-                final PageNotFoundException pageNotFoundException = new PageNotFoundException(readableMessage, e);
+        try {
+            pCheckField(checkableInstance, null, check, findNot, fast);
+        } catch (AssertionError e) {
+            final PageNotFoundException pageNotFoundException = new PageNotFoundException(readableMessage, e);
 
                 /*
                 if @Check has a prioritizedErrorMessage mark, then wrap t's
                  */
-                String prioritizedErrorMessage = check.prioritizedErrorMessage();
-                if (!StringUtils.isStringEmpty(prioritizedErrorMessage)) {
-                    throw new AssertionError(prioritizedErrorMessage, pageNotFoundException);
-                }
-                else {
-                    throw pageNotFoundException;
-                }
+            String prioritizedErrorMessage = check.prioritizedErrorMessage();
+            if (!StringUtils.isStringEmpty(prioritizedErrorMessage)) {
+                throw new AssertionError(prioritizedErrorMessage, pageNotFoundException);
+            }
+            else {
+                throw pageNotFoundException;
             }
         }
     }

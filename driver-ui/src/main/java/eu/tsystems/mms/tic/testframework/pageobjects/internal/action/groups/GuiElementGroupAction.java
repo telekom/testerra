@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Groups;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -29,7 +30,7 @@ import java.lang.reflect.Field;
 /**
  * Created by rnhb on 24.02.2016.
  */
-public class GuiElementGroupAction extends FieldAction {
+public class GuiElementGroupAction extends FieldAction implements Loggable {
 
     private final GuiElementGroups guiElementGroups;
 
@@ -53,7 +54,7 @@ public class GuiElementGroupAction extends FieldAction {
         try {
             guiElement = (GuiElement) field.get(declaringPage);
         } catch (IllegalAccessException e) {
-            logger.error("Internal Error", e);
+            log().error("Internal Error", e);
             return;
         }
 

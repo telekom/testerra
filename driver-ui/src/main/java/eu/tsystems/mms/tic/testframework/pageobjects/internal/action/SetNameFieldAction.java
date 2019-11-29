@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -28,7 +29,7 @@ import java.lang.reflect.Field;
 /**
  * Created by rnhb on 02.02.2016.
  */
-public class SetNameFieldAction extends FieldAction {
+public class SetNameFieldAction extends FieldAction implements Loggable {
 
     public SetNameFieldAction(Field field, AbstractPage declaringPage) {
         super(field, declaringPage);
@@ -47,7 +48,7 @@ public class SetNameFieldAction extends FieldAction {
             try {
                 guiElement = (Nameable) field.get(declaringPage);
             } catch (IllegalAccessException e) {
-                logger.error("Failed to assign description to " + field + ". Make sure the field was made accessible in the" +
+                log().error("Failed to assign description to " + field + ". Make sure the field was made accessible in the" +
                         " AbstractPage class before calling this method.");
             }
             if (guiElement != null && !guiElement.hasName()) {

@@ -36,7 +36,6 @@ public abstract class FieldAction extends Action {
     protected final Class<?> typeOfField;
     protected final String fieldName;
     protected final AbstractPage declaringPage;
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public FieldAction(Field field, AbstractPage declaringPage) {
         this.field = field;

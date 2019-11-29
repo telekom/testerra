@@ -1,20 +1,20 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
 import org.openqa.selenium.Rectangle;
 
 public class DefaultHorizontalDistanceAssertion extends AbstractPropertyAssertion<Integer> implements HorizontalDistanceAssertion {
 
-    public DefaultHorizontalDistanceAssertion(PropertyAssertion parentAssertion, AssertionProvider<Integer> provider) {
+    public DefaultHorizontalDistanceAssertion(PropertyAssertion<Integer> parentAssertion, AssertionProvider<Integer> provider) {
         super(parentAssertion, provider);
     }
 
     @Override
-    public QuantityAssertion<Integer> toRightOf(BasicGuiElement guiElement) {
+    public QuantityAssertion<Integer> toRightOf(TestableGuiElement guiElement) {
         return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
-                Rectangle referenceRect = guiElement.getWebElement().getRect();
+                Rectangle referenceRect = guiElement.bounds().getActual();
                 return provider.getActual()-(referenceRect.x+referenceRect.width);
             }
 
@@ -26,11 +26,11 @@ public class DefaultHorizontalDistanceAssertion extends AbstractPropertyAssertio
     }
 
     @Override
-    public QuantityAssertion<Integer> toLeftOf(BasicGuiElement guiElement) {
+    public QuantityAssertion<Integer> toLeftOf(TestableGuiElement guiElement) {
         return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
-                Rectangle referenceRect = guiElement.getWebElement().getRect();
+                Rectangle referenceRect = guiElement.bounds().getActual();
                 return provider.getActual()-referenceRect.x;
             }
 

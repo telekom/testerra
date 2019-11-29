@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -11,7 +12,7 @@ import java.lang.reflect.Field;
  * @deprecated Use {@link Check#timeout()} instead
  */
 @Deprecated
-public class SetGuiElementTimeoutFieldAction extends FieldAction {
+public class SetGuiElementTimeoutFieldAction extends FieldAction implements Loggable {
 
     public SetGuiElementTimeoutFieldAction(Field field, AbstractPage declaringPage) {
         super(field, declaringPage);
@@ -30,7 +31,7 @@ public class SetGuiElementTimeoutFieldAction extends FieldAction {
             try {
                 guiElement = (GuiElement) field.get(declaringPage);
             } catch (IllegalAccessException e) {
-                logger.error("Failed to set element timeout to " + field + ". Make sure the field was made accessible in the" +
+                log().error("Failed to set element timeout to " + field + ". Make sure the field was made accessible in the" +
                         " AbstractPage class before calling this method.");
             }
             int timeoutFromPage = declaringPage.getElementTimeoutInSeconds();
@@ -38,7 +39,7 @@ public class SetGuiElementTimeoutFieldAction extends FieldAction {
                 int alreadySetTimeout = guiElement.getTimeoutInSeconds();
                 if (alreadySetTimeout != timeoutFromPage) {
                     // override timeout setting only if it is set to default
-                    logger.info(String.format("Setting page specific timeout of {%s.%s} to %ds",declaringPage,guiElement,timeoutFromPage));
+                    log().info(String.format("Setting page specific timeout of {%s.%s} to %ds",declaringPage,guiElement,timeoutFromPage));
                     guiElement.setTimeoutInSeconds(timeoutFromPage);
                 }
             }

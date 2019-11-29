@@ -388,7 +388,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
     }
 
     private Set<Field> makeFieldsAccessible(List<FieldWithActionConfig> fields) {
-        Set<Field> fieldsMadeAccessible = new HashSet<Field>();
+        Set<Field> fieldsMadeAccessible = new HashSet<>();
         for (FieldWithActionConfig fieldWithActionConfig : fields) {
             if (!fieldWithActionConfig.field.isAccessible()) {
                 fieldWithActionConfig.field.setAccessible(true);
@@ -399,7 +399,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
     }
 
     private List<FieldWithActionConfig> getFields(List<Class<? extends AbstractPage>> allClasses, boolean findNot, boolean fast) {
-        ArrayList<FieldWithActionConfig> fieldToChecks = new ArrayList<FieldWithActionConfig>();
+        ArrayList<FieldWithActionConfig> fieldToChecks = new ArrayList<>();
         for (final Class<? extends AbstractPage> cl : allClasses) {
             for (final Field field : cl.getDeclaredFields()) {
                 fieldToChecks.add(new FieldWithActionConfig(field, findNot, fast, forcedGuiElementStandardAsserts));

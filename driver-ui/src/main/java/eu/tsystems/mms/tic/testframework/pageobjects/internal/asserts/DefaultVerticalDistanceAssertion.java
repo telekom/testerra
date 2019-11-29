@@ -1,20 +1,21 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.IterableGuiElement;
 import org.openqa.selenium.Rectangle;
 
 public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<Integer> implements VerticalDistanceAssertion {
 
-    public DefaultVerticalDistanceAssertion(PropertyAssertion parentAssertion, AssertionProvider<Integer> provider) {
+    public DefaultVerticalDistanceAssertion(PropertyAssertion<Integer> parentAssertion, AssertionProvider<Integer> provider) {
         super(parentAssertion, provider);
     }
 
     @Override
-    public QuantityAssertion<Integer> toTopOf(BasicGuiElement guiElement) {
+    public QuantityAssertion<Integer> toTopOf(TestableGuiElement guiElement) {
         return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
-                Rectangle referenceRect = guiElement.getWebElement().getRect();
+                Rectangle referenceRect = guiElement.bounds().getActual();
                 return provider.getActual()-referenceRect.y;
             }
 
@@ -26,11 +27,11 @@ public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<
     }
 
     @Override
-    public QuantityAssertion<Integer> toBottomOf(BasicGuiElement guiElement) {
+    public QuantityAssertion<Integer> toBottomOf(TestableGuiElement guiElement) {
         return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
-                Rectangle referenceRect = guiElement.getWebElement().getRect();
+                Rectangle referenceRect = guiElement.bounds().getActual();
                 return provider.getActual()-(referenceRect.y+referenceRect.height);
             }
 

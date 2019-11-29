@@ -1,22 +1,17 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-public interface InteractiveGuiElement<SELF> extends TestableGuiElement<SELF> {
-    InteractiveGuiElement select(Boolean select);
-    InteractiveGuiElement click();
-    InteractiveGuiElement clickJS();
-    InteractiveGuiElement doubleClick();
-    InteractiveGuiElement doubleClickJS();
-    InteractiveGuiElement rightClick();
-    InteractiveGuiElement rightClickJS();
-    InteractiveGuiElement select();
-    InteractiveGuiElement deselect();
-    InteractiveGuiElement sendKeys(CharSequence... charSequences);
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.GuiElementActions;
+
+/**
+ * Provides more action features which cannot be chained
+ * @author Mike Reiche
+ */
+public interface InteractiveGuiElement extends
+    TestableGuiElement,
+    GuiElementActions
+{
     /**
      * Performs actions as a user
      */
-    InteractiveGuiElement asUser();
-    InteractiveGuiElement clear();
-    InteractiveGuiElement hover();
-    //InteractiveGuiElement mouseOver();
-    //InteractiveGuiElement mouseOverJS();
+    GuiElementActions asUser();
 }

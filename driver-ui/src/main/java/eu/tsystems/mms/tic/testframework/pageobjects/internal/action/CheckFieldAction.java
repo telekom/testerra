@@ -20,9 +20,12 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.IterableGuiElement;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
@@ -31,7 +34,7 @@ import java.lang.reflect.Modifier;
 /**
  * Created by rnhb on 17.12.2015.
  */
-public abstract class CheckFieldAction extends FieldAction {
+public abstract class CheckFieldAction extends FieldAction implements Loggable {
     protected final boolean findNot;
     private final boolean fast;
     protected String readableMessage;
@@ -61,11 +64,11 @@ public abstract class CheckFieldAction extends FieldAction {
     @Override
     public boolean before() {
         boolean isCheckAnnotated = field.isAnnotationPresent(Check.class);
-        boolean isCheckable = BasicGuiElement.class.isAssignableFrom(typeOfField);
+        boolean isCheckable = IterableGuiElement.class.isAssignableFrom(typeOfField);
 
         if (isCheckAnnotated && !isCheckable) {
             throw new TesterraRuntimeException("Field {" + fieldName + "} of " + declaringClass.getCanonicalName()
-                    + " is annotated with @Check, but the class doesn't implement " + BasicGuiElement.class.getCanonicalName());
+                    + " is annotated with @Check, but the class doesn't implement " + IterableGuiElement.class.getCanonicalName());
         }
 
         if (isCheckable) {
@@ -92,10 +95,10 @@ public abstract class CheckFieldAction extends FieldAction {
         try {
             checkableInstance = (BasicGuiElement) field.get(declaringPage);
         } catch (IllegalAccessException e) {
-            logger.error("Internal Error", e);
+            log().error("Internal Error", e);
             return;
         } catch (IllegalArgumentException e) {
-            logger.error("Internal Error. Maybe tried to get field from object that does not declare it.", e);
+            log().error("Internal Error. Maybe tried to get field from object that does not declare it.", e);
             return;
         }
         Check check = field.getAnnotation(Check.class);
@@ -103,7 +106,7 @@ public abstract class CheckFieldAction extends FieldAction {
             throw new TesterraRuntimeException(String.format("Field {%s.%s} is annotated with @Check and was never initialized (it is null)." +
                 "This is not allowed because @Check indicates a mandatory GuiElement of a Page.", declaringClass.getSimpleName(), fieldName));
         } else {
-            logger.debug("Looking for GuiElement on " + declaringClass.getSimpleName() + ": " + fieldName
+            log().debug("Looking for GuiElement on " + declaringClass.getSimpleName() + ": " + fieldName
                     + " with locator " + checkableInstance.toString());
             try {
                 checkField(check, fast);

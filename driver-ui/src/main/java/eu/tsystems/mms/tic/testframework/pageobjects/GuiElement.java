@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.GuiElementActions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultBinaryAssertion;
@@ -64,6 +65,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
+import eu.tsystems.mms.tic.testframework.simulation.UserSimulator;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.By;
@@ -111,6 +113,8 @@ public class GuiElement implements
     protected HasParent parent;
     private int iteratorIndex = 0;
     private int iteratorSize = 0;
+
+    private UserSimulator userSimulator;
 
     /**
      * Elementary constructor
@@ -323,26 +327,6 @@ public class GuiElement implements
         return this;
     }
 
-    /**
-     * Select/Deselect a selectable element. If null is passed, no action will be performed.
-     *
-     * @param select true/false/null.
-     */
-    @Override
-    public IGuiElement select(final Boolean select) {
-        guiElementData.setLogLevel(LogLevel.INFO);
-        if (select == null) {
-            log().info("Select option is null. Selecting/Deselecting nothing.");
-        }
-        if (select) {
-            decoratedFacade.select();
-        } else {
-            decoratedFacade.deselect();
-        }
-        guiElementData.resetLogLevel();
-        return this;
-    }
-
     @Override
     public IGuiElement deselect() {
         guiElementData.setLogLevel(LogLevel.INFO);
@@ -366,7 +350,6 @@ public class GuiElement implements
         return this;
     }
 
-    @Override
     public IGuiElement clickJS() {
         guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.clickJS();
@@ -400,18 +383,11 @@ public class GuiElement implements
     }
 
     @Override
-    public InteractiveGuiElement asUser() {
-//        float cps = cpm/60;
-//        if (cps <= 0) cps = 1;
-//        int cpsSleepMs = Math.round(1000/cps);
-//        final WebElement webElement = core.findWebElement();
-//        for (CharSequence charSequence : charSequences) {
-//            charSequence.codePoints().forEach(codePoint -> {
-//                webElement.sendKeys(new String(Character.toChars(codePoint)));
-//                TimerUtils.sleepSilent(cpsSleepMs);
-//            });
-//        }
-        return this;
+    public GuiElementActions asUser() {
+        if (this.userSimulator==null) {
+            this.userSimulator = new UserSimulator(this);
+        }
+        return this.userSimulator;
     }
 
     @Override
@@ -517,7 +493,7 @@ public class GuiElement implements
     }
 
     public boolean anyFollowingTextNodeContains(String contains) {
-        TestableGuiElement<IGuiElement> textElements = anyElementContainsText(contains);
+        TestableGuiElement textElements = anyElementContainsText(contains);
         return textElements.present().getActual();
     }
 
@@ -525,7 +501,7 @@ public class GuiElement implements
      * This method is no part of any interface, because we don't know if
      * we want to support this feature at the moment.
      */
-    public TestableGuiElement<IGuiElement> anyElementContainsText(String text) {
+    public TestableGuiElement anyElementContainsText(String text) {
         String textFinderXpath = String.format("//text()[contains(., '%s')]/..", text);
         return find(By.xpath(textFinderXpath));
     }
@@ -591,13 +567,11 @@ public class GuiElement implements
         return this;
     }
 
-    @Override
     public IGuiElement rightClickJS() {
         decoratedFacade.rightClickJS();
         return this;
     }
 
-    @Override
     public IGuiElement doubleClickJS() {
         decoratedFacade.doubleClickJS();
         return this;
@@ -843,16 +817,6 @@ public class GuiElement implements
                 return String.format("%s.text", self);
             }
         });
-    }
-
-    @Override
-    public StringAssertion<String> value() {
-        return value(Attribute.VALUE);
-    }
-
-    @Override
-    public StringAssertion<String> value(final Attribute attribute) {
-        return value(attribute.toString());
     }
 
     @Override

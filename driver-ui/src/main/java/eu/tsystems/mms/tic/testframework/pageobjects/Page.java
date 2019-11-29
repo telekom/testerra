@@ -271,7 +271,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
     @Fails(validFor = "unsupportedBrowser=true")
     private boolean pIsTextPresentRecursive(final boolean isDisplayed, final String text) {
-        TestableGuiElement<IGuiElement> textElement = anyElementContainsText(text);
+        IGuiElement textElement = (IGuiElement)anyElementContainsText(text);
         textElement.displayed();
         if (
             isDisplayed && textElement.displayed().getActual()
@@ -483,10 +483,10 @@ public abstract class Page extends AbstractPage implements TestablePage {
     }
 
     @Override
-    public TestableGuiElement<IGuiElement> anyElementContainsText(String text) {
+    public TestableGuiElement anyElementContainsText(String text) {
         String textFinderXpath = String.format("//text()[contains(., '%s')]/..", text);
         Locate locate = Locate.by(By.xpath(textFinderXpath));
-        TestableGuiElement<IGuiElement> textElements = find(locate);
+        TestableGuiElement textElements = find(locate);
         if (textElements.numberOfElements().getActual()>0) {
             return textElements;
         }

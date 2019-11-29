@@ -15,12 +15,12 @@ public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<
 
     protected final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
     protected final AssertionProvider<T> provider;
-    protected final AbstractPropertyAssertion parent;
+    protected final AbstractPropertyAssertion<T> parent;
     protected boolean shouldWait;
     protected int timeoutSeconds = 0;
 
-    public AbstractPropertyAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
-        this.parent = (AbstractPropertyAssertion)parentAssertion;
+    public AbstractPropertyAssertion(PropertyAssertion<T> parentAssertion, AssertionProvider<T> provider) {
+        this.parent = (AbstractPropertyAssertion<T>)parentAssertion;
         this.provider = provider;
     }
 

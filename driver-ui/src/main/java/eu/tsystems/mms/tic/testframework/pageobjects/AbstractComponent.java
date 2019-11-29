@@ -30,13 +30,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
-import org.openqa.selenium.WebElement;
 
 import java.util.Iterator;
 import java.util.List;
@@ -68,23 +66,9 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public BasicGuiElement scrollTo(int yOffset) {
-        return rootElement.scrollTo(yOffset);
-    }
-
-    @Override
     public BasicGuiElement highlight() {
-        return rootElement.highlight();
-    }
-
-    @Override
-    public Locate getLocate() {
-        return rootElement.getLocate();
-    }
-
-    @Override
-    public WebElement getWebElement() {
-        return rootElement.getWebElement();
+        rootElement.highlight();
+        return this;
     }
 
     @Override
@@ -103,24 +87,6 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     public void waitForPageToLoad() {
-    }
-
-    @Override
-    @Deprecated
-    public GuiElementAssert nonFunctionalAsserts() {
-        return rootElement.nonFunctionalAsserts();
-    }
-
-    @Override
-    @Deprecated
-    public GuiElementAssert asserts() {
-        return rootElement.asserts();
-    }
-
-    @Override
-    @Deprecated
-    public GuiElementAssert instantAsserts() {
-        return rootElement.instantAsserts();
     }
 
     @Override
@@ -144,11 +110,6 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public TestableGuiElement waitFor() {
-        return rootElement.waitFor();
-    }
-
-    @Override
     public QuantityAssertion<Integer> numberOfElements() {
         return rootElement.numberOfElements();
     }
@@ -158,7 +119,6 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
         return rootElement.displayed();
     }
 
-    @Override
     public SELF setName(String name) {
         this.name = name;
         return self();
@@ -169,7 +129,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
         return name;
     }
 
-    public AbstractComponent setParent(HasParent parent) {
+    public AbstractComponent<SELF> setParent(HasParent parent) {
         this.parent = parent;
         return this;
     }

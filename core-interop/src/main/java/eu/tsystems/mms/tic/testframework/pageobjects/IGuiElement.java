@@ -23,21 +23,25 @@ import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.IterableGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 
 /**
  * GuiElement with new fluent API support
  * @author Mike Reiche
  */
 public interface IGuiElement extends
-    InteractiveGuiElement<IGuiElement>,
+    InteractiveGuiElement,
+    IterableGuiElement<IGuiElement>,
     Nameable<IGuiElement>,
-    WebDriverRetainer
+    WebDriverRetainer,
+    HasParent
 {
     enum Properties implements IProperties {
         @Deprecated
@@ -49,7 +53,11 @@ public interface IGuiElement extends
         CHECK_RULE("tt.guielement.checkrule", CheckRule.IS_DISPLAYED.name()),
         ELEMENT_TIMEOUT_SECONDS("tt.element.timeout.seconds", 8),
         ELEMENT_WAIT_INTERVAL_MS("tt.element.wait.ms", 200),
-        QA_ATTRIBUTE("tt.element.qa.attribute", "data-qa");
+        QA_ATTRIBUTE("tt.element.qa.attribute", "data-qa"),
+        /**
+         * The user's input speed in characters per minute
+         */
+        USER_INPUT_CPM("tt.user.input.cpm", 200),
         ;
         private final String property;
         private Object defaultValue;
@@ -89,12 +97,14 @@ public interface IGuiElement extends
      */
     @Deprecated
     By getBy();
-
     @Deprecated
     Point getLocation();
-
     @Deprecated
     Dimension getSize();
+
+    Locate getLocate();
+
+    WebElement getWebElement();
 
     IGuiElement find(Locate locate);
 

@@ -23,7 +23,7 @@ public class InputForm extends AbstractComponent<InputForm> {
         return this;
     }
 
-    public TestableGuiElement button() {
+    public InteractiveGuiElement button() {
         return button;
     }
 

@@ -26,7 +26,6 @@
  */
 package eu.tsystems.mms.tic.testframework.common;
 
-import eu.tsystems.mms.tic.testframework.constants.RTConstants;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +66,7 @@ public final class PropertyManager {
      */
     static {
         // set static properties
-        String propertyFile = RTConstants.getTesterraTestPropertiesFile();
+        String propertyFile = "test.properties";
         pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
         System.out.println("Loaded boot time properties from: " + propertyFile);
 

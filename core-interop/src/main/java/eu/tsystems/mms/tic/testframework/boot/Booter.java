@@ -19,14 +19,14 @@
  */
 package eu.tsystems.mms.tic.testframework.boot;
 
-import eu.tsystems.mms.tic.testframework.common.Locks;
+import com.google.inject.Key;
+import com.google.inject.TypeLiteral;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.TesterraBuildInformation;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.reflections.Reflections;
-import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 public final class Booter {
 
     private static final Logger LOGGER;
-    private static final List<ModuleHook> MODULE_HOOKS = new LinkedList<>();
+    private static Set<ModuleHook> MODULE_HOOKS;
 
     static {
         TesterraCommons.init();
@@ -111,31 +111,11 @@ public final class Booter {
     }
 
     private static void initHooks() {
-        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.addClassLoader(Thread.currentThread().getContextClassLoader());
-        configurationBuilder.forPackages("eu.tsystems.mms.tic");
-
-        synchronized (Locks.REFLECTIONS) {
-            Reflections reflections = new Reflections(configurationBuilder);
-            Set<Class<? extends ModuleHook>> hooks = reflections.getSubTypesOf(ModuleHook.class);
-
-            if (hooks.isEmpty()) {
-                LOGGER.info("No Init Hooks found");
-            }
-
-            hooks.forEach(aClass -> {
-                try {
-                    ModuleHook moduleHook = aClass.getConstructor().newInstance();
-                    LOGGER.info("Calling Init Hook " + aClass.getSimpleName() + "...");
-                    moduleHook.init();
-                    MODULE_HOOKS.add(moduleHook);
-                } catch (Exception e) {
-                    LOGGER.error("Could not load Init Hook " + aClass.getSimpleName());
-                }
-            });
-
-            LOGGER.info("Done processing Init Hooks.");
-        }
+        MODULE_HOOKS = Testerra.injector.getInstance(Key.get(new TypeLiteral<Set<ModuleHook>>(){}));
+        MODULE_HOOKS.forEach(moduleHook -> {
+            LOGGER.debug("Calling Init Hook " + moduleHook.getClass().getSimpleName() + "...");
+            moduleHook.init();
+        });
     }
 
     public static void shutdown() {

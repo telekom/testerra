@@ -222,6 +222,7 @@ public final class TesterraProperties {
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID = "tt.failure.corridor.allowed.failed.tests.mid";
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW = "tt.failure.corridor.allowed.failed.tests.low";
 
+    @Deprecated
     public static final String STITCH_CHROME_SCREENSHOTS = "tt.stitch.chrome.screenshots";
 
     public static final String DISPLAY_RESOLUTION = "tt.display.resolution";

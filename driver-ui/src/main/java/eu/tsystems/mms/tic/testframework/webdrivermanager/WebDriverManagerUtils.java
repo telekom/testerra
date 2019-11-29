@@ -29,13 +29,12 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.model.HostInfo;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.report.model.YauaaBrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
@@ -104,16 +103,19 @@ public final class WebDriverManagerUtils {
      *
      * @param driver WebDriver or Selenium to get info from.
      */
-    protected static void logUserAgent(final String sessionKey, final WebDriver driver,
-            final HostInfo hostInfo) {
+    protected static void logUserAgent(
+        final String sessionKey,
+        final WebDriver driver,
+        final HostInfo hostInfo
+    ) {
 
         String browserInfo = pLogUserAgent(driver);
 
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
-            ClassContext classContext = methodContext.classContext;
-            String context = classContext.name + "." + methodContext.name + " : " + sessionKey + " on " + hostInfo;
-            BrowserInformation.setBrowserInfoWithContext(browserInfo, context);
+            //ClassContext classContext = methodContext.classContext;
+            //String context = classContext.name + "." + methodContext.name + " : " + sessionKey + " on " + hostInfo;
+            //BrowserInformation.setBrowserInfoWithContext(browserInfo, context);
         }
         else {
             LOGGER.warn("You started the web driver session not from inside a method, YOU SHALL NOT DO THIS ;)");
@@ -179,10 +181,11 @@ public final class WebDriverManagerUtils {
                 LOGGER.error("Error requesting user agent", e);
 
             }
-            browserInformation = new BrowserInformation(userAgentString);
+            browserInformation = Testerra.injector.getInstance(BrowserInformation.class);
+            browserInformation.parseUserAgent(userAgentString);
         }
         else {
-            browserInformation = new BrowserInformation(null);
+            browserInformation = Testerra.injector.getInstance(BrowserInformation.class);
         }
 
         CACHED_BROWSER_INFOS.put(driver, browserInformation);

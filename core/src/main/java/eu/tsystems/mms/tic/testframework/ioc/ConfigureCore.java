@@ -19,6 +19,9 @@ import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.logging.LogAppender;
 import eu.tsystems.mms.tic.testframework.report.IReport;
 import eu.tsystems.mms.tic.testframework.report.ReportLogAppender;
+import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.report.model.UapBrowserInformation;
+import eu.tsystems.mms.tic.testframework.report.model.YauaaBrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.testing.DefaultTestController;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
@@ -38,5 +41,7 @@ public class ConfigureCore extends AbstractModule {
         bind(Assertion.class).to(DefaultAssertionWrapper.class).in(Scopes.SINGLETON);
         bind(TestController.class).to(DefaultTestController.class);
         bind(LogAppender.class).to(ReportLogAppender.class).in(Scopes.SINGLETON);
+        bind(BrowserInformation.class).to(UapBrowserInformation.class);
+        //bind(BrowserInformation.class).to(YauaaBrowserInformation.class);
     }
 }

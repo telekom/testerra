@@ -129,15 +129,8 @@ public final class TesterraProperties {
 
     public static final String DB_TIMEOUT = "tt.db.timeout";
 
-    public static final String GUIELEMENT_CHECK_RULE = "tt.guielement.checkrule";
-
-    public static final String SKIP_EXECUTION_WHEN_PREVIOUSLY_PASSED = "tt.skip.execution.when.previously.passed";
-
     public static final String BROWSER_MAXIMIZE = "tt.browser.maximize";
     public static final String BROWSER_MAXIMIZE_POSITION = "tt.browser.maximize.position";
-
-    public static final String WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD = "webdriver.timeouts.seconds.pageload";
-    public static final String WEBDRIVER_TIMEOUT_SECONDS_SCRIPT = "webdriver.timeouts.seconds.script";
 
     public static final String PROXY_SETTINGS_LOAD = "tt.proxy.settings.load";
     public static final String PROXY_SETTINGS_FILE = "tt.proxy.settings.file";

@@ -19,12 +19,9 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.constants.Constants;
 import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.MaximizePosition;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSetupException;
@@ -248,8 +245,8 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         }
 
         if (!Browsers.safari.equalsIgnoreCase(browser)) {
-            int pageLoadTimeout = Constants.PAGE_LOAD_TIMEOUT_SECONDS;
-            int scriptTimeout = PropertyManager.getIntProperty(TesterraProperties.WEBDRIVER_TIMEOUT_SECONDS_SCRIPT, 120);
+            int pageLoadTimeout = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD.asLong().intValue();
+            int scriptTimeout = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_SCRIPT.asLong().intValue();
             try {
                 eventFiringWebDriver.manage().timeouts().pageLoadTimeout(pageLoadTimeout, TimeUnit.SECONDS);
             } catch (Exception e) {
@@ -358,9 +355,8 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                         newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
                 }
             } catch (final TesterraSetupException e) {
-                int ms = Constants.WEBDRIVER_START_RETRY_TIME_IN_MS;
-                LOGGER.error("Error starting WebDriver. Trying again in "
-                        + (ms / 1000) + " seconds.", e);
+                int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue()*1000;
+                LOGGER.error("Error starting WebDriver. Trying again in " + (ms / 1000) + " seconds.", e);
                 TimerUtils.sleep(ms);
                 newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
             }

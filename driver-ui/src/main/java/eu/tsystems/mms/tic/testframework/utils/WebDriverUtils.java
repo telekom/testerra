@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.constants.Constants;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -283,7 +283,7 @@ public final class WebDriverUtils {
         /*
          * Check these links
          */
-        int timeoutInMilliseconds = Constants.PAGE_LOAD_TIMEOUT_SECONDS * 1000;
+        int timeoutInMilliseconds = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD.asLong().intValue();
         for (String key : hrefs.keySet()) {
             LOGGER.info("Checking " + key);
             final String url = hrefs.get(key);

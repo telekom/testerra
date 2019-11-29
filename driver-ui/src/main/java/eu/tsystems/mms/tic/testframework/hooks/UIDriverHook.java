@@ -28,12 +28,8 @@ import eu.tsystems.mms.tic.testframework.execution.worker.start.WebDriverLogging
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.*;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class UIDriverHook implements ModuleHook {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UIDriverHook.class);
 
     @Override
     public void init() {

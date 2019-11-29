@@ -26,13 +26,13 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public abstract class Context implements SynchronizableContext {
@@ -146,33 +146,25 @@ public abstract class Context implements SynchronizableContext {
     }
 
     public int nrOfFailed(Map<TestStatusController.Status, Integer> counts) {
-        IntRef i = new IntRef();
+        final AtomicReference<Integer> count = new AtomicReference<>();
+        count.set(0);
         counts.keySet().forEach(status -> {
             if (status.isFailed(false, false, false)) {
-                i.increaseBy(counts.get(status));
+                count.set(count.get()+counts.get(status));
             }
         });
-        return i.getI();
+        return count.get();
     }
 
     public int nrOfPassed(Map<TestStatusController.Status, Integer> counts) {
-        IntRef i = new IntRef();
+        final AtomicReference<Integer> count = new AtomicReference<>();
+        count.set(0);
         counts.keySet().forEach(status -> {
             if (status.isPassed()) {
-                i.increaseBy(counts.get(status));
+                count.set(count.get()+counts.get(status));
             }
         });
-        return i.getI();
-    }
-
-    public int nrOfSkipped(Map<TestStatusController.Status, Integer> counts) {
-        IntRef i = new IntRef();
-        counts.keySet().forEach(status -> {
-            if (status == TestStatusController.Status.SKIPPED) {
-                i.increaseBy(counts.get(status));
-            }
-        });
-        return i.getI();
+        return count.get();
     }
 
     public int passRate(Map<TestStatusController.Status, Integer> counts, int numberOfTests) {

@@ -156,7 +156,7 @@ class MyPage extends Page {
 ```
 ====
 
-List elements
+List elements (Draft 1)
 ```java
 IGuiElement anchors = find(By.tagName("a"));
 
@@ -167,6 +167,19 @@ anchors.lastElement().value(Attribute.TITLE).is("Contact"); <4>
 
 anchors.forEach(anchor -> anchor.value(Attribute.HREF).beginsWith("https")); <5>
 ```
+
+List elements (Draft 2)
+```java
+IGuiElement anchors = find(By.tagName("a"));
+
+anchors.numberOfElements().is(3); <1>
+anchors.list().first().value(Attribute.TITLE).is("StartPage"); <2>
+anchors.list().get(1).value(Attribute.TITLE).is("About Us"); <3>
+anchors.list().last().value(Attribute.TITLE).is("Contact"); <4>
+
+anchors.list().forEach(anchor -> anchor.value(Attribute.HREF).beginsWith("https")); <5>
+```
+
 [NOTE]
 .GuiElement lists are now `@deprecated`
 ====

@@ -50,6 +50,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     protected final IGuiElement rootElement;
     private String name;
     private HasParent parent;
+    private DefaultComponentList<SELF> list;
 
     public AbstractComponent(IGuiElement rootElement) {
         GuiElement realRootElement = (GuiElement)rootElement;
@@ -74,6 +75,14 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     @Override
     public SELF element(int position) {
         return createIteratedComponent(rootElement.element(position));
+    }
+
+    @Override
+    public GuiElementList<SELF> list() {
+        if (this.list == null) {
+            this.list = new DefaultComponentList<>(self());
+        }
+        return this.list;
     }
 
     @Override

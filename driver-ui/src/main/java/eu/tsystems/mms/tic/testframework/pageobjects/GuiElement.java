@@ -115,6 +115,7 @@ public class GuiElement implements
     private int iteratorSize = 0;
 
     private UserSimulator userSimulator;
+    private DefaultGuiElementList list;
 
     /**
      * Elementary constructor
@@ -131,7 +132,7 @@ public class GuiElement implements
      * Elements created by this constructor are identical to it's parent,
      * but with a different element index.
      */
-    private GuiElement(GuiElement guiElement, int index) {
+    public GuiElement(GuiElement guiElement, int index) {
         this(new GuiElementData(guiElement.guiElementData, index));
         setParent(guiElement.getParent());
         createDecoratorFacades();
@@ -464,6 +465,14 @@ public class GuiElement implements
     public IGuiElement element(int position) {
         if (position < 1) position = 1;
         return new GuiElement(this, position-1);
+    }
+
+    @Override
+    public GuiElementList<IGuiElement> list() {
+        if (this.list == null) {
+            this.list = new DefaultGuiElementList(this);
+        }
+        return this.list;
     }
 
     public String getCssValue(String cssIdentifier) {

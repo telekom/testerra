@@ -75,6 +75,10 @@ public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
         items.firstElement().text().is("First");
         items.element(2).text().is("Second");
         items.lastElement().text().is("Third");
+
+        items.list().first().text().is("First");
+        items.list().get(1).text().is("Second");
+        items.list().last().text().is("Third");
     }
 
     @Test
@@ -87,6 +91,11 @@ public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
         rows.element(2).linkByName().value(Attribute.HREF).endsWith("joku");
         rows.lastElement().linkByName().value(Attribute.HREF).endsWith("erku");
         rows.forEach(tableRow -> tableRow.linkByName().value(Attribute.HREF).beginsWith("http"));
+
+        rows.list().first().linkByName().value(Attribute.HREF).endsWith("mkri");
+        rows.list().get(1).linkByName().value(Attribute.HREF).endsWith("joku");
+        rows.list().last().linkByName().value(Attribute.HREF).endsWith("erku");
+        rows.list().forEach(tableRow -> tableRow.linkByName().value(Attribute.HREF).beginsWith("http"));
     }
 
     @Test

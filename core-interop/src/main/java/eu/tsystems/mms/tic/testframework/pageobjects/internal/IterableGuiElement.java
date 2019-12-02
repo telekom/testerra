@@ -19,6 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElementList;
+
 import java.util.Iterator;
 
 /**
@@ -38,4 +40,6 @@ public interface IterableGuiElement<SELF> extends
     default SELF lastElement() {
         return element(numberOfElements().getActual());
     }
+
+    GuiElementList<SELF> list();
 }

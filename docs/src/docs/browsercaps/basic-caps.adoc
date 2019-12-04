@@ -1,21 +1,9 @@
 = Setting global capabilities
 
-You can customize your browser session by setting so called capabilities for every browser type.
+You can customize your browser session by setting so called capabilities for every browser type before calling `WebDriverManager.getWebDriver()`.
 
 [source,java]
 ----
-FirefoxOptions options = WebDriverManager.getBrowserOptions(Browsers.firefox);
+FirefoxOptions options = WebDriverManager.getBrowserOptions(FirefoxOptions.class);
 options.addPreference("intl.accept_languages", "de-DE");
 ----
-
-You can also use the options class directly
-
-[source,java]
-----
-InternetExplorerOptions options = WebDriverManager.getBrowserOptions(InternetExplorerOptions.class);
-options.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
-options.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
-----
-
-IMPORTANT: A global capability means, that they are defined for the whole WebDriver session.
-

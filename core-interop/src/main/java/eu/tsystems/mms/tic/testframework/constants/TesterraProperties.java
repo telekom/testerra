@@ -80,8 +80,8 @@ public final class TesterraProperties {
     /**
      * Key of reportDir Property.
      */
-    public static final String REPORTDIR = "tt.reportdir";
-    public static final String REPORTNAME = "tt.reportname";
+    public static final String REPORTDIR = "tt.report.dir";
+    public static final String REPORTNAME = "tt.report.name";
 
     public static final String LOG_LEVEL ="tt.loglevel";
 

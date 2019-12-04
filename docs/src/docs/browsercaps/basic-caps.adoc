@@ -4,6 +4,17 @@ You can customize your browser session by setting so called capabilities for eve
 
 [source,java]
 ----
-FirefoxOptions options = WebDriverManager.getBrowserOptions(FirefoxOptions.class);
-options.addPreference("intl.accept_languages", "de-DE");
+FirefoxOptions firefoxOptions = WebDriverManager.getBrowserOptions(FirefoxOptions.class);
+firefoxOptions.addPreference("intl.accept_languages", "de-DE");
 ----
+
+== Useful browser configurations
+
+=== Prevent Firefox download confirmation dialog
+
+```java
+// You have to add every mimetype you want no confirmation for
+firefoxOptions.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/zip");
+firefoxOptions.addPreference("browser.download.manager.showAlertOnComplete", false);
+firefoxOptions.addPreference("browser.download.manager.showWhenStarting", false);
+```

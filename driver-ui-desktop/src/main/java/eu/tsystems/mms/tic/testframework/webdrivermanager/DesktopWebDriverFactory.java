@@ -45,13 +45,18 @@ import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -59,6 +64,7 @@ import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -422,14 +428,20 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
               */
             switch (browser) {
                 case Browsers.firefox:
-                    driver = new FirefoxDriver(capabilities);
+                    FirefoxOptions firefoxOptions = WebDriverManager.getBrowserOptions(FirefoxOptions.class);
+                    firefoxOptions.merge(capabilities);
+                    driver = new FirefoxDriver(firefoxOptions);
                     break;
                 case Browsers.ie:
-                    driver = new InternetExplorerDriver(capabilities);
+                    InternetExplorerOptions internetExplorerOptions = WebDriverManager.getBrowserOptions(InternetExplorerOptions.class);
+                    internetExplorerOptions.merge(capabilities);
+                    driver = new InternetExplorerDriver(internetExplorerOptions);
                     break;
                 case Browsers.chrome:
                 case Browsers.chromeHeadless:
-                    driver = new ChromeDriver(capabilities);
+                    ChromeOptions chromeOptions = WebDriverManager.getBrowserOptions(ChromeOptions.class);
+                    chromeOptions.merge(capabilities);
+                    driver = new ChromeDriver(chromeOptions);
                     break;
 //                case Browsers.htmlunit:
 //                    driver = new HtmlUnitDriver(capabilities);
@@ -445,10 +457,14 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     driver = new PhantomJSDriver(capabilities);
                     break;
                 case Browsers.safari:
-                    driver = new SafariDriver(capabilities);
+                    SafariOptions safariOptions = WebDriverManager.getBrowserOptions(SafariOptions.class);
+                    safariOptions.merge(capabilities);
+                    driver = new SafariDriver(safariOptions);
                     break;
                 case Browsers.edge:
-                    driver = new EdgeDriver(capabilities);
+                    EdgeOptions edgeOptions = WebDriverManager.getBrowserOptions(EdgeOptions.class);
+                    edgeOptions.merge(capabilities);
+                    driver = new EdgeDriver(edgeOptions);
                     break;
                 default:
                     throw new TesterraSystemException(ErrorMessages.browserNotSupportedHere(browser));

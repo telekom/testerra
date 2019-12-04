@@ -144,31 +144,18 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 desiredCapabilities.setJavascriptEnabled(true);
                 break;
             case Browsers.firefox:
-                desiredCapabilities.setBrowserName(BrowserType.FIREFOX);
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
                 //firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", browserLocale.getLanguage(), browserLocale.getCountry()));
-                desiredCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
-                break;
-            case Browsers.safari:
-                LOGGER.info("Creating capabilities for SafariDriver");
-                desiredCapabilities.setBrowserName(BrowserType.SAFARI);
                 break;
             case Browsers.edge:
                 LOGGER.info("Creating capabilities for Edge");
-                desiredCapabilities.setBrowserName(BrowserType.EDGE);
-
-                EdgeOptions edgeOptions = new EdgeOptions();
+                EdgeOptions edgeOptions = WebDriverManager.getBrowserOptions(EdgeOptions.class);
                 final String platform = null;
                 edgeOptions.setCapability("platform", platform);
-
-                desiredCapabilities.setCapability("edgeOptions", edgeOptions);
-//                desiredCapabilities.setCapability(EdgeOptions.CAPABILITY, edgeOptions);
                 break;
             case Browsers.chrome:
             case Browsers.chromeHeadless:
                 LOGGER.info("Creating capabilities for ChromeDriver");
-                desiredCapabilities.setBrowserName(BrowserType.CHROME);
-                ChromeOptions chromeOptions = new ChromeOptions();
+                ChromeOptions chromeOptions = WebDriverManager.getBrowserOptions(ChromeOptions.class);
                 chromeOptions.addArguments("--no-sandbox");
                 //Map<String, Object> prefs = new HashMap<>();
                 //prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
@@ -177,17 +164,11 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
                 if (browser.equals(Browsers.chromeHeadless)) {
                     chromeOptions.addArguments("--headless", "--disable-gpu");
                 }
-
-                desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                 break;
             case Browsers.ie:
                 LOGGER.info("Creating capabilities for InternetExplorerDriver");
-                desiredCapabilities.setBrowserName(BrowserType.IEXPLORE);
-
-                InternetExplorerOptions options = new InternetExplorerOptions();
+                InternetExplorerOptions options = WebDriverManager.getBrowserOptions(InternetExplorerOptions.class);
                 options.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-
-                desiredCapabilities.setCapability("se:ieOptions", options);
                 break;
             default:
                 throw new TesterraSystemException(ErrorMessages.browserNotSupportedHere(browser));

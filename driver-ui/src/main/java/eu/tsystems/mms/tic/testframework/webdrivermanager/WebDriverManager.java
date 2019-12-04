@@ -525,29 +525,4 @@ public final class WebDriverManager {
         }
         return (T) browserOptions.get(optionClass);
     }
-
-    public static <T extends MutableCapabilities> T getBrowserOptions(String browser) {
-        Class optionClass;
-        switch (browser) {
-            case Browsers.chrome:
-            case Browsers.chromeHeadless:
-                optionClass = ChromeOptions.class;
-                break;
-            case Browsers.edge:
-                optionClass = EdgeOptions.class;
-                break;
-            case Browsers.safari:
-                optionClass = SafariOptions.class;
-                break;
-            case Browsers.firefox:
-                optionClass = FirefoxOptions.class;
-                break;
-            case Browsers.ie:
-                optionClass = InternetExplorerOptions.class;
-                break;
-            default:
-                optionClass = null;
-        }
-        return (T) getBrowserOptions(optionClass);
-    }
 }

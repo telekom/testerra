@@ -50,9 +50,6 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import java.awt.Color;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

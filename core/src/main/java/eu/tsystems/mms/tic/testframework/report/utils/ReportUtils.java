@@ -514,7 +514,7 @@ public final class ReportUtils {
         try {
             File reportFile2 = new File(Report.METHODS_DIRECTORY, "steps" + methodContext.methodRunIndex + ".html");
             ReportFormatter.createMethodsFrame(reportFile2, methodContext, "methodDetailsSteps.vm");
-            LOGGER.info("Created method details steps view for " + methodContext);
+            LOGGER.debug("Created method details steps view for " + methodContext);
         } catch (Exception e) {
             LOGGER.error("Could not create method details steps view for " + methodContext, e);
         }

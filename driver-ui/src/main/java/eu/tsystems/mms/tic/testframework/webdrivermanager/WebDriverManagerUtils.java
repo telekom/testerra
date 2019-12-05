@@ -107,9 +107,6 @@ public final class WebDriverManagerUtils {
         final WebDriver driver,
         final HostInfo hostInfo
     ) {
-
-        String browserInfo = pLogUserAgent(driver);
-
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
             //ClassContext classContext = methodContext.classContext;
@@ -122,34 +119,11 @@ public final class WebDriverManagerUtils {
 
         SessionContext sessionContext = ExecutionContextController.getCurrentSessionContext();
         if (sessionContext != null) {
-            sessionContext.metaData.put("browserInfo", browserInfo);
+            sessionContext.metaData.put("browserInfo", getBrowserInformation(driver));
         }
         else {
             LOGGER.error("Something is wrong, I don't have a session context, but I'm in a session");
         }
-    }
-
-    public static void logUserAgent(WebDriver driver) {
-        pLogUserAgent(driver);
-    }
-
-    private static String pLogUserAgent(WebDriver driver) {
-        String browserInfo;
-        String browserName = "Browser unknown";
-        String browserVersion = " unknown";
-        final String msg = "Error logging user agent";
-        try {
-            final BrowserInformation browserInformation = getBrowserInformation(driver);
-            browserName = browserInformation.getBrowserName();
-            browserVersion = browserInformation.getBrowserVersion();
-        } catch (final Exception we) {
-            LOGGER.error(msg, we);
-        }
-
-        browserInfo = browserName + " - v" + browserVersion;
-
-        LOGGER.info("Browser: " + browserInfo);
-        return browserInfo;
     }
 
     private static final Map<WebDriver, BrowserInformation> CACHED_BROWSER_INFOS = new ConcurrentHashMap<>();

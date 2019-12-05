@@ -173,7 +173,7 @@ public class JVMMonitor implements TesterraEventListener {
 
     private static void init() {
         MONITOR_THREAD = new Thread(() -> {
-            LOGGER.info("JVM Monitor started.");
+            LOGGER.debug("Started");
             long start = System.currentTimeMillis();
             long now;
             while (!threadStop) {
@@ -199,7 +199,7 @@ public class JVMMonitor implements TesterraEventListener {
     }
 
     public static void start() {
-        LOGGER.info("Starting JVM Monitor...");
+        LOGGER.debug("Starting...");
         if (MONITOR_THREAD != null && (MONITOR_THREAD.isAlive() || MONITOR_THREAD.isDaemon())) {
             stop();
         }
@@ -213,7 +213,7 @@ public class JVMMonitor implements TesterraEventListener {
     }
 
     public static void stop() {
-        LOGGER.info("Stopping Memory Monitor...");
+        LOGGER.debug("Stopping...");
         threadStop = true;
         try {
             MONITOR_THREAD.join(30000);
@@ -221,7 +221,7 @@ public class JVMMonitor implements TesterraEventListener {
             LOGGER.error("Error joining monitor thread", e);
         }
         logJVMUsageInfo();
-        LOGGER.info("JVM Monitor stopped.");
+        LOGGER.debug("Stopped");
     }
 
     public static Map<Long, Long> getMeasurements() {

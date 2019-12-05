@@ -71,7 +71,7 @@ public class TestStepAction implements Serializable {
     public void addFailingLogMessage(final String msg) {
         LogMessage logMessage = new LogMessage(
                 "ERROR",
-                formatter.formatDate(new Date()),
+                formatter.logTime(new Date()),
                 Thread.currentThread().getName(),
                 "Test Failed",
                 msg);

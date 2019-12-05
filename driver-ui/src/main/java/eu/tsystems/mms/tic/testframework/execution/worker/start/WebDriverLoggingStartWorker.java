@@ -20,6 +20,8 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.start;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import org.openqa.selenium.WebDriver;
@@ -29,7 +31,7 @@ import java.util.List;
 /**
  * Created by pele on 19.01.2017.
  */
-public class WebDriverLoggingStartWorker extends MethodWorker {
+public class WebDriverLoggingStartWorker extends MethodWorker implements Loggable {
 
     @Override
     public void run() {
@@ -47,14 +49,15 @@ public class WebDriverLoggingStartWorker extends MethodWorker {
                 if (executingSeleniumHost.contains("\n")) {
                     msg += "\n";
                 }
-                LOGGER.info(msg + executingSeleniumHost);
+                log().info(msg + executingSeleniumHost);
 
                 // log browser
                 long threadId = Thread.currentThread().getId();
                 List<WebDriver> webDriversFromThread = WebDriverManager.getWebDriversFromThread(threadId);
                 if (webDriversFromThread != null && webDriversFromThread.size() > 0) {
                     WebDriver driver = webDriversFromThread.get(0);
-                    WebDriverManagerUtils.logUserAgent(driver);
+                    BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(driver);
+                    log().info(String.format("Started User Agent %s %s", browserInformation.getBrowserName(), browserInformation.getBrowserVersion()));
                 }
             }
         }

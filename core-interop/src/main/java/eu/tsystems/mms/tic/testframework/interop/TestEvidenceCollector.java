@@ -38,14 +38,17 @@ public final class TestEvidenceCollector {
     private static final List<SourceCollector> SOURCE_COLLECTORS = new LinkedList<>();
 
     public static void registerScreenshotCollector(ScreenshotCollector screenshotCollector) {
+        LOGGER.debug("Register " + screenshotCollector);
         SCREENSHOT_COLLECTORS.add(screenshotCollector);
     }
 
     public static void registerVideoCollector(VideoCollector videoCollector) {
+        LOGGER.debug("Register " + videoCollector);
         VIDEO_COLLECTORS.add(videoCollector);
     }
 
     public static void registerSourceCollector(SourceCollector sourceCollector) {
+        LOGGER.debug("Register " + sourceCollector);
         SOURCE_COLLECTORS.add(sourceCollector);
     }
 
@@ -100,11 +103,4 @@ public final class TestEvidenceCollector {
         }
         return null;
     }
-
-    public static void logInfo() {
-        LOGGER.info("Screenshots: " + SCREENSHOT_COLLECTORS.size() + " screenshot collectors, " + SOURCE_COLLECTORS.size() + " source collectors");
-        LOGGER.info("Videos: " + VIDEO_COLLECTORS.size() + " video collectors");
-        LOGGER.info("Videos: ScreenCaster enabled=" + IReport.Properties.SCREENCASTER_ACTIVE.asBool());
-    }
-
 }

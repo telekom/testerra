@@ -94,7 +94,7 @@ public class TesterraCommons {
 
         final boolean loadProxySettings = PropertyManager.getBooleanProperty(TesterraProperties.PROXY_SETTINGS_LOAD, true);
         if (!loadProxySettings) {
-            LOGGER.info("Skipping loading of Proxy Settings.");
+            LOGGER.debug("Skipping loading of Proxy Settings.");
             return;
         }
 
@@ -113,7 +113,7 @@ public class TesterraCommons {
             if (StringUtils.isStringEmpty(systemPropertyValue)) {
                 final String propertyValue = props.getProperty(property);
                 System.setProperty(property, propertyValue);
-                LOGGER.info("Setting system property " + property + " = " + propertyValue);
+                LOGGER.debug("Setting system property " + property + " = " + propertyValue);
             } else {
                 LOGGER.warn("System property " + property + " is NOT set because it was already set to "
                         + systemPropertyValue);
@@ -138,7 +138,7 @@ public class TesterraCommons {
                 if (!StringUtils.isStringEmpty(value)) {
                     LOGGER.warn("SystemProperty - Overwriting " + key + "=" + value + " << " + newValue);
                 } else {
-                    LOGGER.info("SystemProperty - Setting " + key + "=" + newValue);
+                    LOGGER.debug("SystemProperty - Setting " + key + "=" + newValue);
                 }
                 System.setProperty(key, newValue);
             });

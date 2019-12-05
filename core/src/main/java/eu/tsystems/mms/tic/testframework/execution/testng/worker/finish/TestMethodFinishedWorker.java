@@ -25,13 +25,16 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventUserDataManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 
 /**
  * Created by pele on 19.01.2017.
  */
-public class TestMethodFinishedWorker extends MethodWorker {
+public class TestMethodFinishedWorker extends MethodWorker implements Loggable {
 
     final AssertionsCollector assertionsCollector = Testerra.injector.getInstance(AssertionsCollector.class);
+    private final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
 
     @Override
     public void run() {
@@ -67,13 +70,13 @@ public class TestMethodFinishedWorker extends MethodWorker {
          */
 
         if (isSuccess()) {
-            LOGGER.info(msg);
+            log().info(msg);
         } else if (isFailed()) {
             if (throwable != null) {
-                LOGGER.error(msg, throwable);
+                log().error(msg, throwable);
             }
             else {
-                LOGGER.error(msg);
+                log().error(msg);
             }
         }
 

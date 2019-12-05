@@ -57,12 +57,12 @@ public final class TesterraEventService implements TesterraEventListener {
 
         for (TesterraEventListener listener : listeners) {
             if (listener.getClass().equals(TesterraEventListener.getClass())) {
-                LOGGER.warn("Listener" + TesterraEventListenerName + " already added to TesterraEventService.");
+                LOGGER.warn("Listener" + TesterraEventListenerName + " already added");
                 return;
             }
         }
 
-        LOGGER.info("Adding listener to TesterraEventService: " + TesterraEventListenerName);
+        LOGGER.debug("Adding listener: " + TesterraEventListenerName);
         listeners.add(TesterraEventListener);
     }
 

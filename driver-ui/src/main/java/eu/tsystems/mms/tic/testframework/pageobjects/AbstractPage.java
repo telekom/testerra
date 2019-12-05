@@ -179,7 +179,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
         Logging and demo mode
          */
         String classSimpleName = this.getClass().getSimpleName();
-        log().info("Perform element checks");
+        log().debug("Perform element checks");
 
         handleDemoMode(this.driver);
 
@@ -225,7 +225,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
                 }
             }
         }
-        log().info("Page load successful");
+        log().debug("Page load successful");
     }
 
     protected void checkPagePreparation() {

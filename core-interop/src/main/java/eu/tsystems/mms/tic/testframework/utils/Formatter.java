@@ -1,6 +1,8 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import org.openqa.selenium.Rectangle;
+import org.testng.ITestNGMethod;
 
 import java.util.Date;
 
@@ -23,5 +25,13 @@ public interface Formatter {
     default String DATE_TIME_FORMAT() {
         return "dd.MM.yyyy-HH:mm:ss.SSS";
     }
-    String formatDate(Date date);
+    String logTime(Date date);
+    default String testMethod(ITestNGMethod method) {
+        return String.format("%s.%s.%s()",
+            method.getClass().getPackage().getName().replace(TesterraCommons.DEFAULT_PACKAGE_NAME, ""),
+            method.getClass().getSimpleName(),
+            method.getMethodName()
+        );
+    }
+
 }

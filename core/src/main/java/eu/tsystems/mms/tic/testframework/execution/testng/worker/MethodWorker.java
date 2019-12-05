@@ -35,8 +35,6 @@ import java.lang.reflect.Method;
  */
 public abstract class MethodWorker implements Worker {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger("ResultHandler");
-
     protected ITestResult testResult;
     protected ITestNGMethod testMethod;
     protected Method method;

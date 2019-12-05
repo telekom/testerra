@@ -144,7 +144,7 @@ public class TesterraListener implements
         }
 
         ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        LOGGER.info("Context ClassLoader for TesterraListener: " + contextClassLoader);
+        LOGGER.debug("Context ClassLoader for TesterraListener: " + contextClassLoader);
 
         // start test for xml
         XML_REPORTER = new JUnitXMLReporter(true, Report.XML_DIRECTORY);
@@ -425,11 +425,6 @@ public class TesterraListener implements
         add workers in workflow order
          */
         TestStep step = methodContext.steps().announceTestStep(TestStep.TEARDOWN);
-        if (testResult.isSuccess()) {
-            LOGGER.info(methodName + " PASSED");
-        } else if (testResult.getStatus() == ITestResult.FAILURE) {
-            LOGGER.error(methodName + " FAILED", testResult.getThrowable());
-        }
 
         /*
         Workers #1

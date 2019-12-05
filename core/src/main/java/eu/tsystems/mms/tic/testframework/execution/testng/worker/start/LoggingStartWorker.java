@@ -20,11 +20,12 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 
 /**
  * Created by pele on 19.01.2017.
  */
-public class LoggingStartWorker extends MethodWorker {
+public class LoggingStartWorker extends MethodWorker implements Loggable {
 
     @Override
     public void run() {
@@ -35,13 +36,13 @@ public class LoggingStartWorker extends MethodWorker {
              * Test method
              */
 
-            LOGGER.info("Starting test method: " + testClassName + "." + methodName);
+            log().info("Starting " + testClassName + "." + methodName);
         } else {
             /*
              * Configuration methods
              */
 
-            LOGGER.info("Starting configuration method: " + testClassName + "." + methodName);
+            log().info("Starting configuration " + testClassName + "." + methodName);
         }
 
     }

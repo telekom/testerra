@@ -22,13 +22,14 @@ package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
 /**
  * Created by pele on 19.01.2017.
  */
-public class ConditionalBehaviourWorker extends MethodWorker {
+public class ConditionalBehaviourWorker extends MethodWorker implements Loggable {
 
     @Override
     public void run() {
@@ -38,7 +39,7 @@ public class ConditionalBehaviourWorker extends MethodWorker {
             boolean skipShutdown = PropertyManager.getBooleanProperty(
                     TesterraProperties.ON_STATE_TESTFAILED_SKIP_SHUTDOWN, false);
             if (skipShutdown) {
-                LOGGER.debug("ON_STATE_TESTFAILED_SKIP_SHUTDOWN: true");
+                log().debug("ON_STATE_TESTFAILED_SKIP_SHUTDOWN: true");
                 // leave all windows open when this condition is true (except you call forceShutdown)
                 WebDriverManager.config().executeCloseWindows = false;
             }
@@ -47,7 +48,7 @@ public class ConditionalBehaviourWorker extends MethodWorker {
             boolean skipFollowingTests = PropertyManager.getBooleanProperty(
                     TesterraProperties.ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS, false);
             if (skipFollowingTests) {
-                LOGGER.info(TesterraProperties.ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS + " : true, skipping all tests from now on");
+                log().info(TesterraProperties.ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS + " : true, skipping all tests from now on");
                 TesterraListener.skipAllTests();
             }
         }

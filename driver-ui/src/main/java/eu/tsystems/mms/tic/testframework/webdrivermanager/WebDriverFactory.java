@@ -138,7 +138,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
             msg.append("\n").append(proxy.toJson());
         }
 
-        LOGGER.info(msg.toString());
+        LOGGER.debug(msg.toString());
     }
 
     /**

@@ -46,8 +46,6 @@ import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextCon
 public class TestStatusController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestStatusController.class);
-    private static final String PASSED = "PASSED";
-    private static final String FAILED = "FAILED";
     private static int testsSuccessful = 0;
     private static int testsSkipped = 0;
     private static int testsFailed = 0;
@@ -247,6 +245,7 @@ public class TestStatusController {
         return out;
     }
 
+    @Deprecated
     public static void reportCountersToTeamCity() {
         String counterInfoMessage = getCounterInfoMessage();
         String teamCityMessage = ReportUtils.getReportName() + " " + EXECUTION_CONTEXT.runConfig.RUNCFG + ": " + counterInfoMessage;

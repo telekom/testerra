@@ -7,7 +7,7 @@ public class DefaultFormatter implements Formatter {
     private final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_TIME_FORMAT());
 
     @Override
-    public String formatDate(Date date) {
+    public String logTime(Date date) {
         return SIMPLE_DATE_FORMAT.format(date);
     }
 }

@@ -49,8 +49,6 @@ public final class Booter {
         // when logger is configured:
         printTesterraBanner();
         initHooks();
-        // log evidence collector
-        TestEvidenceCollector.logInfo();
     }
 
     public static void bootOnce() {}

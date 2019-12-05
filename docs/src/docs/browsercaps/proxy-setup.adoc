@@ -1,9 +1,5 @@
 = Proxy setup
 
-#Need to rework#
-
-#Use addProxy method of WebDriverManagerUtils#
-
 If you want that the browser uses a proxy for the SUT, you can just configure that by default Selenium capabilites.
 
 NOTE: If you want to setup a proxy for the whole runtime environment, you have to follow the instructions at <<Using a proxy>>

@@ -4,8 +4,16 @@ You can customize your browser session by setting so called capabilities for eve
 
 [source,java]
 ----
-FirefoxOptions firefoxOptions = WebDriverManager.getBrowserOptions(FirefoxOptions.class);
-firefoxOptions.addPreference("intl.accept_languages", "de-DE");
+import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
+
+class MyTest extends TesterraTest {
+    @BeforeSuite
+    void setupBrowsers() {
+        WebDriverManager.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
+            options.addPreference("intl.accept_languages", "de-DE");
+        });
+    }
+}
 ----
 
 == Useful browser configurations

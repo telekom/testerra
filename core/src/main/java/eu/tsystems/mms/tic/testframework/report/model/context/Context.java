@@ -26,13 +26,17 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public abstract class Context implements SynchronizableContext {
@@ -74,8 +78,8 @@ public abstract class Context implements SynchronizableContext {
 
                     // fire context update event: create context
                     TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                            .addData(TesterraEventDataType.CONTEXT, context)
-                            .addData(TesterraEventDataType.WITH_PARENT, true));
+                        .addData(TesterraEventDataType.CONTEXT, context)
+                        .addData(TesterraEventDataType.WITH_PARENT, true));
 
                     return context;
                 } catch (Exception e) {
@@ -133,10 +137,10 @@ public abstract class Context implements SynchronizableContext {
     public String getDuration(Date startTime, Date endTime) {
         Duration between = Duration.between(startTime.toInstant(), endTime.toInstant());
         long millis = between.toMillis();
-        if (millis > 60*60*1000) {
+        if (millis > 60 * 60 * 1000) {
             return DurationFormatUtils.formatDuration(millis, "H 'h' mm 'm' ss 's'", false);
         }
-        if (millis > 60*1000) {
+        if (millis > 60 * 1000) {
             return DurationFormatUtils.formatDuration(millis, "mm 'm' ss 's'", false);
         }
         if (millis > 1000) {
@@ -146,33 +150,36 @@ public abstract class Context implements SynchronizableContext {
     }
 
     public int nrOfFailed(Map<TestStatusController.Status, Integer> counts) {
-        IntRef i = new IntRef();
+        final AtomicReference<Integer> count = new AtomicReference<>();
+        count.set(0);
         counts.keySet().forEach(status -> {
             if (status.isFailed(false, false, false)) {
-                i.increaseBy(counts.get(status));
+                count.set(count.get() + counts.get(status));
             }
         });
-        return i.getI();
+        return count.get();
     }
 
     public int nrOfPassed(Map<TestStatusController.Status, Integer> counts) {
-        IntRef i = new IntRef();
+        final AtomicReference<Integer> count = new AtomicReference<>();
+        count.set(0);
         counts.keySet().forEach(status -> {
             if (status.isPassed()) {
-                i.increaseBy(counts.get(status));
+                count.set(count.get() + counts.get(status));
             }
         });
-        return i.getI();
+        return count.get();
     }
 
     public int nrOfSkipped(Map<TestStatusController.Status, Integer> counts) {
-        IntRef i = new IntRef();
+        final AtomicReference<Integer> count = new AtomicReference<>();
+        count.set(0);
         counts.keySet().forEach(status -> {
             if (status == TestStatusController.Status.SKIPPED) {
-                i.increaseBy(counts.get(status));
+                count.set(count.get() + counts.get(status));
             }
         });
-        return i.getI();
+        return count.get();
     }
 
     public int passRate(Map<TestStatusController.Status, Integer> counts, int numberOfTests) {

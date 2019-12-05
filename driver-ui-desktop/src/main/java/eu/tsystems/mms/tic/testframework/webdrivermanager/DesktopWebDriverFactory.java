@@ -428,18 +428,19 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
               */
             switch (browser) {
                 case Browsers.firefox:
-                    FirefoxOptions firefoxOptions = WebDriverManager.getBrowserOptions(FirefoxOptions.class);
+                    FirefoxOptions firefoxOptions = new FirefoxOptions(WebDriverManager.getBrowserOptions(FirefoxOptions.class));
                     firefoxOptions.merge(capabilities);
                     driver = new FirefoxDriver(firefoxOptions);
                     break;
                 case Browsers.ie:
-                    InternetExplorerOptions internetExplorerOptions = WebDriverManager.getBrowserOptions(InternetExplorerOptions.class);
+                    InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions(WebDriverManager.getBrowserOptions(InternetExplorerOptions.class));
                     internetExplorerOptions.merge(capabilities);
                     driver = new InternetExplorerDriver(internetExplorerOptions);
                     break;
                 case Browsers.chrome:
                 case Browsers.chromeHeadless:
-                    ChromeOptions chromeOptions = WebDriverManager.getBrowserOptions(ChromeOptions.class);
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.merge(WebDriverManager.getBrowserOptions(ChromeOptions.class));
                     chromeOptions.merge(capabilities);
                     driver = new ChromeDriver(chromeOptions);
                     break;
@@ -457,12 +458,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     driver = new PhantomJSDriver(capabilities);
                     break;
                 case Browsers.safari:
-                    SafariOptions safariOptions = WebDriverManager.getBrowserOptions(SafariOptions.class);
+                    SafariOptions safariOptions = new SafariOptions(WebDriverManager.getBrowserOptions(SafariOptions.class));
                     safariOptions.merge(capabilities);
                     driver = new SafariDriver(safariOptions);
                     break;
                 case Browsers.edge:
-                    EdgeOptions edgeOptions = WebDriverManager.getBrowserOptions(EdgeOptions.class);
+                    EdgeOptions edgeOptions = new EdgeOptions();
+                    edgeOptions.merge(WebDriverManager.getBrowserOptions(EdgeOptions.class));
                     edgeOptions.merge(capabilities);
                     driver = new EdgeDriver(edgeOptions);
                     break;

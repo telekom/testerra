@@ -42,15 +42,7 @@ import java.util.regex.Pattern;
  */
 public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 
-    private static void safelyAddCapsValue(DesiredCapabilities caps, String key, Object value) {
-        if (value == null) {
-            return;
-        }
-        if (StringUtils.isStringEmpty("" + value)) {
-            return;
-        }
-        caps.setCapability(key, value);
-    }
+    private static final Map<Pattern, Capabilities> ENDPOINT_CAPABILITIES = new LinkedHashMap<>();
 
     static void addContextCapabilities(DesiredCapabilities baseCapabilities, DesktopWebDriverRequest desktopWebDriverRequest) {
         /*
@@ -64,23 +56,15 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 
         ** overwritten if not empty
          */
-
-        if (baseCapabilities == null) {
-            baseCapabilities = new DesiredCapabilities();
-        }
-
         /*
         add global caps
          */
-        for (String key : GLOBALCAPABILITIES.keySet()) {
-            Object value = GLOBALCAPABILITIES.get(key);
-            safelyAddCapsValue(baseCapabilities, key, value);
-        }
+        getGlobalExtraCapabilities().forEach((s, o) -> safelyAddCapsValue(baseCapabilities, s, o));
 
-        /*
+       /*
         add thread local caps
          */
-        Map<String, Object> threadLocalCaps = THREAD_CAPABILITIES.get();
+        Map<String, Object> threadLocalCaps = getThreadCapabilities();
         if (threadLocalCaps != null) {
             for (String key : threadLocalCaps.keySet()) {
                 Object value = threadLocalCaps.get(key);
@@ -202,8 +186,6 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
             }
         }
     }
-
-    private static final Map<Pattern, Capabilities> ENDPOINT_CAPABILITIES = new LinkedHashMap<>();
 
     public static void registerEndPointCapabilities(Pattern endPointSelector, Capabilities capabilities) {
         ENDPOINT_CAPABILITIES.put(endPointSelector, capabilities);

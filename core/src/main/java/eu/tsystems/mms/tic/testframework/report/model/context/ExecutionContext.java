@@ -149,16 +149,16 @@ public class ExecutionContext extends Context implements SynchronizableContext {
         /*
         sort
          */
-        Comparator<? super Map<Integer,Integer>> comp = (Comparator<Map<Integer,Integer>>) (m1, m2) -> {
-            final AtomicReference<Integer> i1 = new AtomicReference<>();
+        final AtomicReference<Integer> i1 = new AtomicReference<>();
+        final AtomicReference<Integer> i2 = new AtomicReference<>();
+        Comparator<? super Map> comp = (Comparator<Map>) (m1, m2) -> {
             i1.set(0);
-            m1.keySet().forEach(status -> i1.set(i1.get()+m1.get(status)));
+            m1.keySet().forEach(status -> i1.set(i1.get()+((int)m1.get(status))));
 
-            final AtomicReference<Integer> i2 = new AtomicReference<>();
             i2.set(0);
-            m1.keySet().forEach(status -> i2.set(i2.get()+m2.get(status)));
+            m2.keySet().forEach(status -> i2.set(i2.get()+((int)m2.get(status))));
 
-            return i2.get() - i1.get();
+            return i2.get()-i1.get();
         };
         final Map sortedMap = methodStatsPerClass.entrySet().stream().sorted(Map.Entry.comparingByValue(comp))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,

@@ -23,7 +23,6 @@ import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
@@ -31,11 +30,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiEleme
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -47,7 +43,6 @@ import java.util.Set;
 
 /**
  * Provides basic {@link PageObject} related features:
- *      Supports page caching by {@link #store()}
  *      Supports element {@link Check}
  *      Supports {@link PageOptions}
  *      Supports deprecated custom page checks by {@link #checkPage(boolean, boolean)}
@@ -170,7 +165,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
             }
             /**
              * We have explicitly check for {@link Page} here,
-             * because {@link AbstractComponent} is also an {@link AbstractPage} which is legal to have.
+             * because {@link AbstractComponent} which is legal to have within a Page is also an {@link AbstractPage}.
              */
             if (classCallingCheckPage != null && Page.class.isAssignableFrom(classCallingCheckPage)) {
                 if (!callingClassName.equals(thisClassName)) {
@@ -184,7 +179,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
         Logging and demo mode
          */
         String classSimpleName = this.getClass().getSimpleName();
-        log().info("Checking mandatory elements for " + classSimpleName);
+        log().info("Perform element checks");
 
         handleDemoMode(this.driver);
 
@@ -230,9 +225,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
                 }
             }
         }
-
-        log().info("Checking mandatory elements done for: " + classSimpleName);
-        log().info("Page load successful: " + classSimpleName);
+        log().info("Page load successful");
     }
 
     protected void checkPagePreparation() {

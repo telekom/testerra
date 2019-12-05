@@ -87,10 +87,10 @@ public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
         TableRow rows = page.getTableRowsByTagName();
         rows.numberOfElements().is(4);
 
-        rows.firstElement().linkByName().value(Attribute.HREF).endsWith("mkri");
-        rows.element(2).linkByName().value(Attribute.HREF).endsWith("joku");
-        rows.lastElement().linkByName().value(Attribute.HREF).endsWith("erku");
-        rows.forEach(tableRow -> tableRow.linkByName().value(Attribute.HREF).beginsWith("http"));
+//        rows.firstElement().linkByName().value(Attribute.HREF).endsWith("mkri");
+//        rows.element(2).linkByName().value(Attribute.HREF).endsWith("joku");
+//        rows.lastElement().linkByName().value(Attribute.HREF).endsWith("erku");
+//        rows.forEach(tableRow -> tableRow.linkByName().value(Attribute.HREF).beginsWith("http"));
 
         rows.list().first().linkByName().value(Attribute.HREF).endsWith("mkri");
         rows.list().get(1).linkByName().value(Attribute.HREF).endsWith("joku");

@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
 /**
  * Created by pele on 08.01.2015.
  */
+@Deprecated
 public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 
     private static final Map<Pattern, Capabilities> ENDPOINT_CAPABILITIES = new LinkedHashMap<>();
@@ -94,8 +95,7 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
     static DesiredCapabilities createCapabilities(final WebDriverManagerConfig config, DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
         String browser = desktopWebDriverRequest.browser;
         if (browser == null) {
-            throw new TesterraRuntimeException(
-                    "Browser is not set correctly");
+            throw new TesterraRuntimeException("Browser is not set correctly");
         }
         final DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         desiredCapabilities.merge(preSetCaps);

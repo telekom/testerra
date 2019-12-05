@@ -38,8 +38,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiElementTimeoutFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroupAction;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -66,7 +64,6 @@ import java.util.Random;
  * @author pele
  */
 public abstract class Page extends AbstractPage {
-    private final GuiElementGroups guiElementGroups;
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
     public static void registerPageLoadHandler(PageLoadHandler h) {
         pageLoadHandlers.add(h);
@@ -93,9 +90,6 @@ public abstract class Page extends AbstractPage {
         for (PageLoadHandler pageLoadHandler : pageLoadHandlers) {
             pageLoadHandler.run(this);
         }
-
-        // initialize ge groups
-        guiElementGroups = new GuiElementGroups();
     }
 
     /**
@@ -157,14 +151,12 @@ public abstract class Page extends AbstractPage {
         for (FieldWithActionConfig field : fields) {
             GuiElementCheckFieldAction guiElementCheckFieldAction = new GuiElementCheckFieldAction(field, declaringPage);
             SetNameFieldAction setNameFieldAction = new SetNameFieldAction(field.field, declaringPage);
-            GuiElementGroupAction guiElementGroupAction = new GuiElementGroupAction(field.field, declaringPage, guiElementGroups);
 
             /*
             Priority List!!
              */
             fieldActions.add(setNameFieldAction);
             fieldActions.add(new SetGuiElementTimeoutFieldAction(field.field, declaringPage));
-            fieldActions.add(guiElementGroupAction);
             fieldActions.add(guiElementCheckFieldAction);
         }
         return fieldActions;
@@ -394,9 +386,5 @@ public abstract class Page extends AbstractPage {
     @Override
     public String toString() {
         return this.getClass().getSimpleName();
-    }
-
-    public GuiElementGroups getGuiElementGroups() {
-        return guiElementGroups;
     }
 }

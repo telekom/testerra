@@ -181,7 +181,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
             }
         }
         // wait Thinktime + Offset
-        logger.info("Waiting a Thinktime of " + timeToWait + " milliseconds");
+        log().info("Waiting a Thinktime of " + timeToWait + " milliseconds");
         TimerUtils.sleep(timeToWait);
     }
 
@@ -318,7 +318,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
         });
 
         if (response.hasThrowable()) {
-            logger.error("waitForIsNotTextPresent ran into an error", response.getThrowable());
+            log().error("waitForIsNotTextPresent ran into an error", response.getThrowable());
         }
         return response.getResponse();
     }
@@ -342,7 +342,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
         });
 
         if (response.hasThrowable()) {
-            logger.error("waitForIsNotTextDisplayed ran into an error", response.getThrowable());
+            log().error("waitForIsNotTextDisplayed ran into an error", response.getThrowable());
         }
         return response.getResponse();
     }
@@ -482,7 +482,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
         WebDriverRequest request = WebDriverManager.getRelatedWebDriverRequest(driver);
         if (Browsers.safari.equalsIgnoreCase(request.browser) || Browsers.phantomjs.equalsIgnoreCase(request.browser)) {
             String msg = "Recursive Page Scan does not work. Unsupported Browser.";
-            logger.error(msg);
+            log().error(msg);
             MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
             if (methodContext != null) {
                 methodContext.addPriorityMessage(msg);

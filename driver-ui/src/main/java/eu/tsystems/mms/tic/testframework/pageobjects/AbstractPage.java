@@ -68,12 +68,6 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
      */
     protected int elementTimeoutInSeconds = Testerra.injector.getInstance(PageOverrides.class).getTimeoutSeconds();
 
-    /**
-     * @deprecated Use {@link Loggable} instead
-     */
-    @Deprecated
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private boolean forcedGuiElementStandardAsserts = false;
 
     /**
@@ -159,7 +153,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
             StackTraceElement stackTraceElement = stackTrace[3];
             String callingMethodName = stackTraceElement.getMethodName();
             if ("<init>".equals(callingMethodName)) {
-                logger.debug("checkPage() was called from constructor. Please use PageFactory.create() and remove checkPage() from constructors.");
+                log().debug("checkPage() was called from constructor. Please use PageFactory.create() and remove checkPage() from constructors.");
             }
             // Class.forName(stackTraceElement.getClassName()).isAssignableFrom(this.getClass())
             String thisClassName = this.getClass().getName();
@@ -172,7 +166,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
             try {
                 classCallingCheckPage = Class.forName(stackTraceElement.getClassName());
             } catch (ClassNotFoundException e) {
-                logger.debug("Internal error: Failed to load class that called checkPage, identified by name from stacktrace.", e);
+                log().debug("Internal error: Failed to load class that called checkPage, identified by name from stacktrace.", e);
             }
             /**
              * We have explicitly check for {@link Page} here,
@@ -180,7 +174,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
              */
             if (classCallingCheckPage != null && Page.class.isAssignableFrom(classCallingCheckPage)) {
                 if (!callingClassName.equals(thisClassName)) {
-                    logger.debug("Not performing checkPage() for " + callingClassName + ", because the calling instance is of class " + thisClassName + ".");
+                    log().debug("Not performing checkPage() for " + callingClassName + ", because the calling instance is of class " + thisClassName + ".");
                     return;
                 }
             }
@@ -190,7 +184,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
         Logging and demo mode
          */
         String classSimpleName = this.getClass().getSimpleName();
-        logger.info("Checking mandatory elements for " + classSimpleName);
+        log().info("Checking mandatory elements for " + classSimpleName);
 
         handleDemoMode(this.driver);
 
@@ -237,8 +231,8 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
             }
         }
 
-        logger.info("Checking mandatory elements done for: " + classSimpleName);
-        logger.info("Page load successful: " + classSimpleName);
+        log().info("Checking mandatory elements done for: " + classSimpleName);
+        log().info("Page load successful: " + classSimpleName);
     }
 
     protected void checkPagePreparation() {
@@ -316,7 +310,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
 
     private void applyPageOptions(PageOptions pageOptions) {
         if (pageOptions.elementTimeoutInSeconds() >= 0) {
-            logger.info("Applying timeout value for this page object: " + pageOptions.elementTimeoutInSeconds() + "s");
+            log().info("Applying timeout value for this page object: " + pageOptions.elementTimeoutInSeconds() + "s");
             setElementTimeoutInSeconds(pageOptions.elementTimeoutInSeconds());
         }
     }

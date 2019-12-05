@@ -19,31 +19,20 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 
 /**
  * Created by pele on 19.01.2017.
  */
 public class LoggingStartWorker extends MethodWorker implements Loggable {
 
+    private final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
+
     @Override
     public void run() {
-        String testClassName = testMethod.getTestClass().getName();
-
-        if (isTest()) {
-            /*
-             * Test method
-             */
-
-            log().info("Starting " + testClassName + "." + methodName);
-        } else {
-            /*
-             * Configuration methods
-             */
-
-            log().info("Starting configuration " + testClassName + "." + methodName);
-        }
-
+        log().info("Start " + formatter.toString(testMethod));
     }
 }

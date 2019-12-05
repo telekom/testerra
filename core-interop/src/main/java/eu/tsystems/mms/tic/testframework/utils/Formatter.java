@@ -26,12 +26,15 @@ public interface Formatter {
         return "dd.MM.yyyy-HH:mm:ss.SSS";
     }
     String logTime(Date date);
-    default String testMethod(ITestNGMethod method) {
-        return String.format("%s.%s.%s()",
-            method.getClass().getPackage().getName().replace(TesterraCommons.DEFAULT_PACKAGE_NAME, ""),
-            method.getClass().getSimpleName(),
-            method.getMethodName()
-        );
+    default String toString(ITestNGMethod method) {
+        StringBuilder sb = new StringBuilder();
+        sb
+            .append((method.isTest()?"Test":"Configuration"))
+            .append("(")
+            .append(method.getTestClass().getName().replace(TesterraCommons.FRAMEWORK_PACKAGE+".", ""))
+            .append(".")
+            .append(method.getMethodName())
+            .append(")");
+        return sb.toString();
     }
-
 }

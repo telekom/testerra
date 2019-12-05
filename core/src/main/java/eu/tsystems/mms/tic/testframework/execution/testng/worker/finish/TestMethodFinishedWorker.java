@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 
 /**
@@ -38,46 +39,20 @@ public class TestMethodFinishedWorker extends MethodWorker implements Loggable {
 
     @Override
     public void run() {
-        String msg = "";
-
-        if (isTest()) {
-            msg += "Test ";
-        }
-        else {
-            msg += "Config method ";
-        }
-
-        final String testClassName = testMethod.getTestClass().getName();
-        msg += testClassName + "." + methodName + " ";
-
-        Throwable throwable = null;
+        StringBuilder sb = new StringBuilder();
         if (isFailed()) {
-            msg += "failed";
-            throwable = testResult.getThrowable();
-            if (throwable != null) {
-                msg += " with: ";
-            }
+            sb
+                .append(TestStatusController.Status.FAILED.title)
+                .append(" ")
+                .append(formatter.toString(testMethod));
+            log().error(sb.toString(), testResult.getThrowable());
         }
         else if (isSuccess()) {
-            msg += "passed";
-        }
-        else if (isSkipped()) {
-            msg += "skipped";
-        }
-
-        /*
-         * Log and introduce result
-         */
-
-        if (isSuccess()) {
-            log().info(msg);
-        } else if (isFailed()) {
-            if (throwable != null) {
-                log().error(msg, throwable);
-            }
-            else {
-                log().error(msg);
-            }
+            sb
+                .append(TestStatusController.Status.PASSED.title)
+                .append(" ")
+                .append(formatter.toString(testMethod));
+            log().info(sb.toString());
         }
 
         if (isTest()) {

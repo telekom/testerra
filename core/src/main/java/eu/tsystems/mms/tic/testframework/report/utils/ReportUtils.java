@@ -594,7 +594,7 @@ public final class ReportUtils {
         File htmlOutputFile = new File(Report.FRAMES_DIRECTORY, htmlOutputFileName);
         try {
             ReportFormatter.createHtml(vmTemplateFileInResources, htmlOutputFile, velocityContext);
-            LOGGER.info("Created " + tabName + " tab view: " + htmlOutputFile);
+            LOGGER.debug("Created " + tabName + " tab view: " + htmlOutputFile);
         } catch (IOException e) {
             LOGGER.error("Could not create " + tabName + " tab", e);
         }

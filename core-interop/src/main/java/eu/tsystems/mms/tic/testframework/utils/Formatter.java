@@ -6,6 +6,10 @@ import org.testng.ITestNGMethod;
 
 import java.util.Date;
 
+/**
+ * General formatter for everything
+ * @author Mike Reiche
+ */
 public interface Formatter {
     default String toString(Rectangle rectangle) {
         return String.format("(left: %d, top: %d, right: %d, bottom: %d)", rectangle.x, rectangle.y, rectangle.x+rectangle.width,rectangle.y+rectangle.height);

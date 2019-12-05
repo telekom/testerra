@@ -118,7 +118,7 @@ public final class Booter {
 
     public static void shutdown() {
         MODULE_HOOKS.forEach(moduleHook -> {
-            LOGGER.info("Shutting down " + moduleHook.getClass().getSimpleName());
+            LOGGER.debug("Shutting down " + moduleHook.getClass().getSimpleName());
             moduleHook.terminate();
         });
     }

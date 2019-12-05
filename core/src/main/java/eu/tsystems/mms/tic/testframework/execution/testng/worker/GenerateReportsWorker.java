@@ -32,6 +32,7 @@ import java.util.List;
  */
 public abstract class GenerateReportsWorker implements Worker {
 
+    @Deprecated
     protected static final Logger LOGGER = LoggerFactory.getLogger("ResultHandler");
 
     protected List<XmlSuite> xmlSuites;
@@ -47,9 +48,6 @@ public abstract class GenerateReportsWorker implements Worker {
         this.suites = suites;
         this.outputDirectory = outputDirectory;
         this.jUnitXMLReporter = jUnitXMLReporter;
-    }
-
-    public static class SharedAttributes {
     }
 
     public abstract void run();

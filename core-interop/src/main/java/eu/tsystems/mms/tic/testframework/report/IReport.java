@@ -20,6 +20,7 @@ public interface IReport {
         SCREENSHOTTER_ACTIVE("screenshotter.active", true),
         SCREENSHOT_ON_PAGELOAD("screenshot.on.pageload", false),
         SCREENCASTER_ACTIVE("screencaster.active", false),
+        LIST_TESTS("tt.list.tests", false)
         ;
         private final String property;
         private Object defaultValue;

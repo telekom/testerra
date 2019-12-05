@@ -26,8 +26,7 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.TestEndEventWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateTesterraReportWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateOtherOutputsWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateXmlReportWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
@@ -60,17 +59,13 @@ public class GenerateReport {
         // flush run contexts
         MethodRelations.flushAll();
 
-        LOGGER.info("*** Generating Report ***");
         LOGGER.info("Preparing report in " + Report.REPORT_DIRECTORY.getAbsolutePath());
         JVMMonitor.label("Tests Finished");
-
         JVMMonitor.stop();
-        JVMMonitor.start(1000);
-
         /*
         List tests only
          */
-        if (Flags.LIST_TESTS) {
+        if (Report.Properties.LIST_TESTS.asBool()) {
             GenerateReport.printTestsList();
             // discontinue
             System.exit(0);
@@ -98,8 +93,7 @@ public class GenerateReport {
 
             FrameworkUtils.addWorkersToExecutor(TesterraListener.GENERATE_REPORTS_WORKERS, workerExecutor);
 
-            workerExecutor.add(new GenerateTesterraReportWorker());
-            workerExecutor.add(new GenerateOtherOutputsWorker());
+            workerExecutor.add(new GenerateXmlReportWorker());
 
             // run workers
             workerExecutor.run(xmlSuites, suites, outputDirectory, xmlReporter);

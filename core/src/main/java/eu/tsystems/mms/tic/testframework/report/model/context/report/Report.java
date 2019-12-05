@@ -46,8 +46,6 @@ public class Report implements IReport, Loggable {
     public static final String VIDEO_FOLDER_NAME = "videos";
     public static final String XML_FOLDER_NAME = "xml";
 
-    private final static IReport report = Testerra.injector.getInstance(IReport.class);
-
     static {
         /*
         Initialize report directory

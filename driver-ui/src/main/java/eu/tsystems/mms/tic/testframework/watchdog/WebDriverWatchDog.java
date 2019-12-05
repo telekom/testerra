@@ -232,9 +232,9 @@ public final class WebDriverWatchDog {
         }
 
         try {
-            LOGGER.info("Stopping WebDriverWatchDog...");
+            LOGGER.debug("Stopping WebDriverWatchDog...");
             WATCH_DOG_THREAD.stopWatchDog();
-            LOGGER.info("WebDriverWatchDog stopped");
+            LOGGER.debug("WebDriverWatchDog stopped");
         } catch (InterruptedException e) {
             LOGGER.error("Exception stopping WebDriverWatchDog", e);
         }

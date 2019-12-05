@@ -20,22 +20,26 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
-import eu.tsystems.mms.tic.testframework.utils.DateUtils;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import org.json.JSONObject;
 
 /**
  * Created by pele on 30.01.2017.
  */
-public class GenerateTesterraReportWorker extends GenerateReportsWorker {
+public class GenerateXmlReportWorker extends GenerateReportsWorker implements Loggable {
     @Override
     public void run() {
         /*
-         * Generate Report
+        Create surefire and testng results xml
          */
-        long start = System.currentTimeMillis();
-        ReportUtils.generateReportEssentials();
-        long stop = System.currentTimeMillis();
-        String formattedDuration = DateUtils.getFormattedDuration(stop - start, false);
-        LOGGER.info("Took " + formattedDuration + " to create the report.");
+        // generate xml reports for surefire
+        log().info("Generating xml reports...");
+        jUnitXMLReporter.testSetCompleted(new SimpleReportEntry("", "Results"));
+        // generate testng-results.xml
+        org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();
+        testNgXmlReporter.generateReport(xmlSuites, suites, Report.XML_DIRECTORY.getAbsolutePath());
     }
 }

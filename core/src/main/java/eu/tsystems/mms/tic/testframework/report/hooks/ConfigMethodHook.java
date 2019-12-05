@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.report.hooks;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IConfigureCallBack;
@@ -38,7 +39,7 @@ public final class ConfigMethodHook extends Hook {
 
         final ITestNGMethod testNGMethod = testResult.getMethod();
 
-        if (Flags.LIST_TESTS) {
+        if (Report.Properties.LIST_TESTS.asBool()) {
             LOGGER.info("Dry run for list tests: " + testNGMethod.getMethodName());
             // no sleep
             return;

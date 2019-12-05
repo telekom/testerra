@@ -42,10 +42,12 @@ public class UapBrowserInformation extends AbstractBrowserInformation implements
     private Client client;
 
     public UapBrowserInformation() {
-        try {
-            userAgentAnalyzer = new Parser();
-        } catch (IOException e) {
-            log().error(e.getMessage(), e);
+        if (userAgentAnalyzer == null) {
+            try {
+                userAgentAnalyzer = new Parser();
+            } catch (IOException e) {
+                log().error(e.getMessage(), e);
+            }
         }
     }
 

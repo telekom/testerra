@@ -27,7 +27,6 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
@@ -37,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
+import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
@@ -44,19 +44,12 @@ import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,16 +83,11 @@ public final class WebDriverManager {
     static final ThreadLocal<String> EXECUTING_SELENIUM_HOSTS_PER_THREAD = new ThreadLocal<>();
 
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverManager.class);
-
-    /**
      * The preset baseURL. Set by setBaseURL().
      */
     private static String presetBaseURL = null;
 
-    private static final HashMap<Class<? extends MutableCapabilities>, MutableCapabilities> browserOptions = new HashMap<>();
+    private static final HashMap<String, UserAgentConfig> userAgentConfigurators = new HashMap<>();
 
     /**
      * Private constructor to hide the public one since this a static only class.
@@ -512,17 +500,11 @@ public final class WebDriverManager {
         return null;
     }
 
-    public static <T extends MutableCapabilities> T getBrowserOptions(Class<T> optionClass) {
-        if (!browserOptions.containsKey(optionClass)) {
-            try {
-                Constructor<T> constructor = optionClass.getConstructor();
-                T t = constructor.newInstance();
-                browserOptions.put(optionClass, t);
-            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                LOGGER.error(String.format("Unable to create browser options: %s", e.getMessage()), e);
-                browserOptions.put(optionClass, new MutableCapabilities());
-            }
-        }
-        return (T) browserOptions.get(optionClass);
+    public static void setUserAgentConfig(String browser, UserAgentConfig configurator) {
+        userAgentConfigurators.put(browser, configurator);
+    }
+
+    static UserAgentConfig getUserAgentConfig(String browser) {
+        return userAgentConfigurators.get(browser);
     }
 }

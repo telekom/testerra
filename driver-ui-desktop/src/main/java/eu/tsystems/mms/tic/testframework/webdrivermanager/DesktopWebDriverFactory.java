@@ -38,6 +38,7 @@ import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
+import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
@@ -45,7 +46,6 @@ import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -59,6 +59,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -82,6 +83,10 @@ import java.util.concurrent.TimeUnit;
 public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverFactory.class);
+
+    public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
+
+    private static File phantomjsFile = null;
 
     @Override
     protected DesktopWebDriverRequest buildRequest(WebDriverRequest request) {
@@ -335,22 +340,16 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 }
             }
 
+
+
             try {
-                switch (browser) {
-                    case Browsers.htmlunit:
-                        LOGGER.info(logSCID() + "Starting HtmlUnitRemoteWebDriver.");
-                        newDriver = new RemoteWebDriver(remoteAddress, capabilities);
-                        break;
-                    /*
-                    Rest: fallthrough
-                     */
-                    case Browsers.firefox:
-                    case Browsers.chrome:
-                    case Browsers.chromeHeadless:
-                    case Browsers.ie:
-                    case Browsers.safari:
-                    default:
-                        newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
+                if (browser.equals(Browsers.htmlunit)) {
+                    capabilities.setBrowserName(BrowserType.HTMLUNIT);
+                    capabilities.setJavascriptEnabled(false);
+                    LOGGER.info(logSCID() + "Starting HtmlUnitRemoteWebDriver.");
+                    newDriver = new RemoteWebDriver(remoteAddress, capabilities);
+                } else {
+                    newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
                 }
             } catch (final TesterraSetupException e) {
                 int ms = Constants.WEBDRIVER_START_RETRY_TIME_IN_MS;
@@ -423,33 +422,60 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             // set local file detector
             ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
         } else if (browser != null) {
+
+            /*
+             * This is the standard way of setting the browser locale for Selenoid based sessions
+             * @see https://aerokube.com/selenoid/latest/#_per_session_environment_variables_env
+             */
+    //        final Locale browserLocale = Locale.getDefault();
+    //        desiredCapabilities.setCapability("env",
+    //            String.format(
+    //                "[\"LANG=%s.UTF-8\", \"LANGUAGE=%s\", \"LC_ALL=%s.UTF-8\"]",
+    //                browserLocale,
+    //                browserLocale.getLanguage(),
+    //                browserLocale
+    //            )
+    //        );
+
+            UserAgentConfig uaConfig = WebDriverManager.getUserAgentConfig(browser);
+
             /*
              local mode
               */
             switch (browser) {
                 case Browsers.firefox:
-                    FirefoxOptions firefoxOptions = new FirefoxOptions(WebDriverManager.getBrowserOptions(FirefoxOptions.class));
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    if (uaConfig!=null) uaConfig.configure(firefoxOptions);
                     firefoxOptions.merge(capabilities);
+                    //firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", browserLocale.getLanguage(), browserLocale.getCountry()));
                     driver = new FirefoxDriver(firefoxOptions);
                     break;
                 case Browsers.ie:
-                    InternetExplorerOptions internetExplorerOptions = new InternetExplorerOptions(WebDriverManager.getBrowserOptions(InternetExplorerOptions.class));
-                    internetExplorerOptions.merge(capabilities);
-                    driver = new InternetExplorerDriver(internetExplorerOptions);
+                    InternetExplorerOptions ieOptions = new InternetExplorerOptions();
+                    if (uaConfig!=null) uaConfig.configure(ieOptions);
+                    ieOptions.merge(capabilities);
+                    ieOptions.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+                    driver = new InternetExplorerDriver(ieOptions);
                     break;
                 case Browsers.chrome:
                 case Browsers.chromeHeadless:
                     ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.merge(WebDriverManager.getBrowserOptions(ChromeOptions.class));
+                    if (uaConfig!=null) uaConfig.configure(chromeOptions);
                     chromeOptions.merge(capabilities);
+                    //Map<String, Object> prefs = new HashMap<>();
+                    //prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
+                    //chromeOptions.setExperimentalOption("prefs", prefs);
+                    chromeOptions.addArguments("--no-sandbox");
+                    if (browser.equals(Browsers.chromeHeadless)) {
+                        chromeOptions.setHeadless(true);
+                    }
                     driver = new ChromeDriver(chromeOptions);
                     break;
-//                case Browsers.htmlunit:
-//                    driver = new HtmlUnitDriver(capabilities);
-//                    break;
                 case Browsers.phantomjs:
                     File phantomjsFile = getPhantomJSBinary();
                     capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjsFile.getAbsolutePath());
+                    capabilities.setBrowserName(BrowserType.PHANTOMJS);
+                    capabilities.setJavascriptEnabled(true);
 
                     String[] args = {
                         "--ssl-protocol=any"
@@ -458,14 +484,20 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     driver = new PhantomJSDriver(capabilities);
                     break;
                 case Browsers.safari:
-                    SafariOptions safariOptions = new SafariOptions(WebDriverManager.getBrowserOptions(SafariOptions.class));
+                    SafariOptions safariOptions = new SafariOptions();
+                    if (uaConfig!=null) uaConfig.configure(safariOptions);
                     safariOptions.merge(capabilities);
                     driver = new SafariDriver(safariOptions);
                     break;
                 case Browsers.edge:
                     EdgeOptions edgeOptions = new EdgeOptions();
-                    edgeOptions.merge(WebDriverManager.getBrowserOptions(EdgeOptions.class));
+                    if (uaConfig!=null) uaConfig.configure(edgeOptions);
                     edgeOptions.merge(capabilities);
+                    /**
+                     * @todo What is this platform capability for?
+                     */
+                    final String platform = null;
+                    edgeOptions.setCapability("platform", platform);
                     driver = new EdgeDriver(edgeOptions);
                     break;
                 default:
@@ -481,10 +513,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
         return driver;
     }
-
-    public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
-
-    private static File phantomjsFile = null;
 
     private File getPhantomJSBinary() {
         if (phantomjsFile == null) {
@@ -504,5 +532,4 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         }
         return phantomjsFile;
     }
-
 }

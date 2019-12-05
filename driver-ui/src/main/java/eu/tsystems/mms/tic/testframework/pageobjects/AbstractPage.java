@@ -74,43 +74,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
     @Deprecated
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    /**
-     * Page storage.
-     */
-    @Deprecated
-    private static final ThreadLocal<AbstractPage> STORED_PAGES = new ThreadLocal<>();
-
-    @Deprecated
     private boolean forcedGuiElementStandardAsserts = false;
-
-    /**
-     * Restore a stored page class.
-     * <p/>
-     * A page class can be stored with a Page.store() call.
-     * <p/>
-     * The current page object is then stored thread safe and can be reloaded with a Page.restore(T) call, where T is a
-     * class of expected page type T. If a correct object is stored, you will get it.
-     *
-     * @param c   class of expected page type
-     * @param <T> expected page type
-     * @return stored instance
-     */
-    @SuppressWarnings("unchecked")
-    @Deprecated
-    public static <T extends Page> T restore(final Class<T> c) {
-        AbstractPage page = STORED_PAGES.get();
-
-        if (page == null) {
-            throw new TesterraRuntimeException("There is no page object stored. Call store() before!");
-        }
-
-        if (c.isInstance(page)) {
-            page.handleDemoMode(WebDriverManager.getWebDriver());
-            return (T) page;
-        } else {
-            throw new TesterraRuntimeException("The page object is not of expected type.");
-        }
-    }
 
     /**
      * Setter.
@@ -307,17 +271,6 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
 
     public int getElementTimeoutInSeconds() {
         return elementTimeoutInSeconds;
-    }
-
-    /**
-     * Store a page class.
-     * <p/>
-     * The current page object is then stored thread safe and can be reloaded with a Page.restore(T) call, where T is a
-     * class of expected page type T. If a correct object is stored, you will get it.
-     */
-    @Deprecated
-    public void store() {
-        STORED_PAGES.set(this);
     }
 
     private PageOptions getPageOptions(List<Class<? extends AbstractPage>> allClasses) {

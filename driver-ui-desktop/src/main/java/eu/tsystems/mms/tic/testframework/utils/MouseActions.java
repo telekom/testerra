@@ -23,7 +23,6 @@ import eu.tsystems.mms.tic.testframework.enums.DragAndDropOption;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
-import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -34,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Created by pele on 11.12.2015.
@@ -191,15 +191,14 @@ public final class MouseActions {
             sourcePoint.y = elementLocationInViewPort.y;
         }
 
-        final IntRef x = new IntRef();
-        final IntRef y = new IntRef();
+        final Point p = new Point(0,0);
         if (relative) {
             /*
             get relative x,y
              */
             Point relativePositionVector = JSUtils.getRelativePositionVector(source, target);
-            x.setI(relativePositionVector.x);
-            y.setI(relativePositionVector.y);
+            p.x = relativePositionVector.x;
+            p.y = relativePositionVector.y;
         }
 
         List<Runnable> workflow = new LinkedList<>();
@@ -215,11 +214,11 @@ public final class MouseActions {
         final WebElement destinationWebElement = target.getWebElement();
         final IFrameLogic destinationFrameLogic = target.getFrameLogic();
 
-        final IntRef sleepMS = new IntRef();
-        sleepMS.setI(0);
+        AtomicReference<Integer> sleepMS = new AtomicReference<>();
+        sleepMS.set(0);
 
         if (dndOptionsContain(DragAndDropOption.EXTRA_SLEEPS, dragAndDropOptions)) {
-            sleepMS.setI(1000);
+            sleepMS.set(1000);
         }
 
         /*
@@ -250,14 +249,14 @@ public final class MouseActions {
             if (dragFromXY) {
                 LOGGER.info("MoveTo drag source by x,y: " + sourcePoint.x + "," + sourcePoint.y);
                 actions.moveToElement(null, sourcePoint.x, sourcePoint.y).build().perform();
-                sleep(sleepMS);
+                sleep(sleepMS.get());
                 LOGGER.info("ClickAndHold");
                 actions.clickAndHold().build().perform();
             }
             else if (dndOptionsContain(DragAndDropOption.DRAG_MOVE_CLICKANDHOLD_SEPERATE, dragAndDropOptions)) {
                 LOGGER.info("MoveTo drag source " + source);
                 actions.moveToElement(sourceWebElement).build().perform();
-                sleep(sleepMS);
+                sleep(sleepMS.get());
                 LOGGER.info("ClickAndHold");
                 actions.clickAndHold().build().perform();
             }
@@ -266,7 +265,7 @@ public final class MouseActions {
                 actions.clickAndHold(sourceWebElement).build().perform();
             }
 
-            sleep(sleepMS);
+            sleep(sleepMS.get());
         });
 
         /*
@@ -296,10 +295,10 @@ public final class MouseActions {
          */
         Runnable release = () -> {
             if (relative) {
-                LOGGER.info("MoveRelative " + x.getI() + ", " + y.getI());
-                actions.moveByOffset(x.getI(), y.getI()).build().perform();
+                LOGGER.info("MoveRelative " + p.x + ", " + p.y);
+                actions.moveByOffset(p.x, p.y).build().perform();
 
-                sleep(sleepMS);
+                sleep(sleepMS.get());
 
                 LOGGER.info("Release");
                 actions.release().build().perform();
@@ -308,7 +307,7 @@ public final class MouseActions {
                 LOGGER.info("MoveTo drop target " + target);
                 actions.moveToElement(destinationWebElement).build().perform();
 
-                sleep(sleepMS);
+                sleep(sleepMS.get());
 
                 LOGGER.info("Release");
                 actions.release().build().perform();
@@ -367,9 +366,7 @@ public final class MouseActions {
         return false;
     }
 
-    private static void sleep(IntRef sleepMS) {
-        if (sleepMS.getI() > 0) {
-            TimerUtils.sleep(sleepMS.getI());
-        }
+    private static void sleep(int sleepMS) {
+        TimerUtils.sleep(sleepMS);
     }
 }

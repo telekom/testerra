@@ -27,11 +27,11 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class ExecutionContext extends Context implements SynchronizableContext {
@@ -86,16 +86,17 @@ public class ExecutionContext extends Context implements SynchronizableContext {
     }
 
     public int getNumberOfRepresentationalTests() {
-        IntRef i = new IntRef();
+        final AtomicReference<Integer> i = new AtomicReference<>();
+        i.set(0);
         List<SuiteContext> suiteContexts = copyOfSuiteContexts();
         suiteContexts.forEach(suiteContext -> {
             suiteContext.copyOfTestContexts().forEach(testContext -> {
                 testContext.copyOfClassContexts().forEach(classContext -> {
-                    i.increaseBy(classContext.getRepresentationalMethods().length);
+                    i.set(i.get()+classContext.getRepresentationalMethods().length);
                 });
             });
         });
-        return i.getI();
+        return i.get();
     }
 
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
@@ -148,14 +149,16 @@ public class ExecutionContext extends Context implements SynchronizableContext {
         /*
         sort
          */
-        Comparator<? super Map> comp = (Comparator<Map>) (m1, m2) -> {
-            IntRef i1 = new IntRef();
-            m1.keySet().forEach(status -> i1.increaseBy((int) m1.get(status)));
+        Comparator<? super Map<Integer,Integer>> comp = (Comparator<Map<Integer,Integer>>) (m1, m2) -> {
+            final AtomicReference<Integer> i1 = new AtomicReference<>();
+            i1.set(0);
+            m1.keySet().forEach(status -> i1.set(i1.get()+m1.get(status)));
 
-            IntRef i2 = new IntRef();
-            m2.keySet().forEach(status -> i2.increaseBy((int) m2.get(status)));
+            final AtomicReference<Integer> i2 = new AtomicReference<>();
+            i2.set(0);
+            m1.keySet().forEach(status -> i2.set(i2.get()+m2.get(status)));
 
-            return i2.getI() - i1.getI();
+            return i2.get() - i1.get();
         };
         final Map sortedMap = methodStatsPerClass.entrySet().stream().sorted(Map.Entry.comparingByValue(comp))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,

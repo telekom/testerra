@@ -38,7 +38,6 @@ import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroupAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
@@ -63,6 +62,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -81,7 +81,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Mike Reiche
  */
 public abstract class Page extends AbstractPage implements TestablePage {
-    private final GuiElementGroups guiElementGroups;
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
     private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
@@ -141,9 +140,6 @@ public abstract class Page extends AbstractPage implements TestablePage {
         for (PageLoadHandler pageLoadHandler : pageLoadHandlers) {
             pageLoadHandler.run(this);
         }
-
-        // initialize ge groups
-        guiElementGroups = new GuiElementGroups();
     }
 
     public static void registerPageLoadHandler(PageLoadHandler h) {
@@ -201,7 +197,6 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
     @Override
     protected void addCustomFieldAction(FieldWithActionConfig field, List<FieldAction> fieldActions, AbstractPage declaringPage) {
-        fieldActions.add(new GuiElementGroupAction(field.field, declaringPage, guiElementGroups));
     }
 
     @Override
@@ -416,10 +411,6 @@ public abstract class Page extends AbstractPage implements TestablePage {
     @Override
     public String toString() {
         return this.getClass().getSimpleName();
-    }
-
-    public GuiElementGroups getGuiElementGroups() {
-        return guiElementGroups;
     }
 
     @Override

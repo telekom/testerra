@@ -40,8 +40,8 @@
 :delay_after_guielement_action_millis:      tt.delay.after.guielement.action.millis
 
 // report
-:reportdir:                         tt.reportdir
-:reportname:                        tt.reportname
+:reportdir:                         tt.report.dir
+:reportname:                        tt.report.name
 :runcfg:                            tt.runcfg
 :screenshotter_active:              tt.screenshotter.active
 :report_screenshots_preview:        tt.report.screenshots.preview

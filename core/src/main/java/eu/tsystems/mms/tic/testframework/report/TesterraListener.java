@@ -36,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.Worker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.CQWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TeamCityMethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TesterraConnectorSyncEventsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TesterraEventsFinishWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
@@ -434,6 +435,7 @@ public class TesterraListener implements
         workerExecutor.add(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
         workerExecutor.add(new MethodAnnotationCheckerWorker()); // !! must be invoked before Container Update
         workerExecutor.add(new MethodContextUpdateWorker());
+        workerExecutor.add(new TeamCityMethodContextUpdateWorker());
 
         workerExecutor.run(testResult, methodName, methodContext, testContext, invokedMethod);
 

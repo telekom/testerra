@@ -61,24 +61,24 @@ public class TestStatusController {
     private static int testsExpectedFailed = 0;
     private static String SEPERATOR = ",";
 
-    public static JSONObject createStatusJSON() {
-        Map<String, Object> statusMap = new HashMap<>();
-
-        statusMap.put("TestsSuccessful", testsSuccessful);
-        statusMap.put("TestsSkipped", testsSkipped);
-        statusMap.put("TestsFailed", testsFailed);
-
-        statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
-        statusMap.put("DryRun", Testerra.Properties.DRY_RUN);
-
-        statusMap.put("Status", EXECUTION_CONTEXT.getStatus());
-        statusMap.put("StatusBool", EXECUTION_CONTEXT.getStatus() == Status.PASSED);
-
-        statusMap.put("RunCfg", EXECUTION_CONTEXT.runConfig.RUNCFG);
-        statusMap.put("Date", EXECUTION_CONTEXT.startTime.toString());
-
-        return new JSONObject(statusMap);
-    }
+//    public static JSONObject createStatusJSON() {
+//        Map<String, Object> statusMap = new HashMap<>();
+//
+//        statusMap.put("TestsSuccessful", testsSuccessful);
+//        statusMap.put("TestsSkipped", testsSkipped);
+//        statusMap.put("TestsFailed", testsFailed);
+//
+//        statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
+//        statusMap.put("DryRun", Testerra.Properties.DRY_RUN);
+//
+//        statusMap.put("Status", EXECUTION_CONTEXT.getStatus());
+//        statusMap.put("StatusBool", EXECUTION_CONTEXT.getStatus() == Status.PASSED);
+//
+//        statusMap.put("RunCfg", EXECUTION_CONTEXT.runConfig.RUNCFG);
+//        statusMap.put("Date", EXECUTION_CONTEXT.startTime.toString());
+//
+//        return new JSONObject(statusMap);
+//    }
 
     public static synchronized void setMethodStatus(MethodContext methodContext, Status status, Method method) {
         /*
@@ -174,9 +174,6 @@ public class TestStatusController {
 
             default: throw new TesterraSystemException("Not implemented: " + status);
         }
-
-        // update team city progress
-        reportCountersToTeamCity();
     }
 
     private static void levelFC(MethodContext methodContext, boolean raise) {
@@ -243,14 +240,6 @@ public class TestStatusController {
             out = StringUtils.enhanceList(out, testsFailedRetried + " Retried", SEPERATOR, true);
         }
         return out;
-    }
-
-    @Deprecated
-    public static void reportCountersToTeamCity() {
-        String counterInfoMessage = getCounterInfoMessage();
-        String teamCityMessage = ReportUtils.getReportName() + " " + EXECUTION_CONTEXT.runConfig.RUNCFG + ": " + counterInfoMessage;
-
-        LOGGER.info(teamCityMessage);
     }
 
     public static int getTestsFailed() {

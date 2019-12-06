@@ -102,11 +102,13 @@ public final class WebDriverManagerUtils {
      *
      * @param driver WebDriver or Selenium to get info from.
      */
-    protected static void logUserAgent(
+    protected static void logNewUserAgent(
         final String sessionKey,
         final WebDriver driver,
         final HostInfo hostInfo
     ) {
+        BrowserInformation browserInformation = getBrowserInformation(driver);
+        LOGGER.info(String.format("New user agent: %s %s", browserInformation.getBrowserName(), browserInformation.getBrowserVersion()));
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
             //ClassContext classContext = methodContext.classContext;
@@ -114,7 +116,7 @@ public final class WebDriverManagerUtils {
             //BrowserInformation.setBrowserInfoWithContext(browserInfo, context);
         }
         else {
-            LOGGER.warn("You started the web driver session not from inside a method, YOU SHALL NOT DO THIS ;)");
+            LOGGER.warn("You started the WebDriver session from outside a test method, YOU SHALL NOT DO THIS :(");
         }
 
         SessionContext sessionContext = ExecutionContextController.getCurrentSessionContext();
@@ -122,7 +124,7 @@ public final class WebDriverManagerUtils {
             sessionContext.metaData.put("browserInfo", getBrowserInformation(driver));
         }
         else {
-            LOGGER.error("Something is wrong, I don't have a session context, but I'm in a session");
+            LOGGER.error("Expected a current active session");
         }
     }
 

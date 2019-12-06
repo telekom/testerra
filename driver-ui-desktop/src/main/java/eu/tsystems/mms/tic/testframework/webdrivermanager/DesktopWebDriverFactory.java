@@ -64,8 +64,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -142,7 +140,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         Open url
          */
         final String baseUrl = request.baseUrl;
-        log().info("Opening baseUrl: " + baseUrl);
+        log().info("Opening: " + baseUrl);
         StopWatch.startPageLoad(driver);
         try {
             driver.get(baseUrl);
@@ -380,7 +378,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         desktopWebDriverRequest.storedExecutingNode = nodeInfo;
         log().debug("Executing Node " + nodeInfo.toString());
         WebDriverManager.addExecutingSeleniumHostInfo(sessionKey + ": " + nodeInfo.toString());
-        WebDriverManagerUtils.logUserAgent(sessionKey, newDriver, nodeInfo);
+        WebDriverManagerUtils.logNewUserAgent(sessionKey, newDriver, nodeInfo);
 
         return newDriver;
     }

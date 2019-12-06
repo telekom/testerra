@@ -43,7 +43,7 @@ public class UIDriverHook implements ModuleHook {
          */
         //start
         TesterraListener.registerBeforeMethodWorker(PerformanceStartWorker.class);
-        TesterraListener.registerBeforeMethodWorker(WebDriverLoggingStartWorker.class);
+        //TesterraListener.registerBeforeMethodWorker(WebDriverLoggingStartWorker.class);
 
         //finish
         TesterraListener.registerAfterMethodWorker(ConditionalBehaviourWorker.class);

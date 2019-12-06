@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
@@ -95,7 +94,7 @@ public abstract class Page extends AbstractPage {
     private void perfTestExtras() {
         StopWatch.stopPageLoad(driver, this.getClass());
 
-        if (UITestUtils.getGuiElementType() == GuiElementType.perf) {
+        if (PropertyManager.getBooleanProperty(TesterraProperties.PERF_TEST, false)) {
             executeThinkTime();
         }
 

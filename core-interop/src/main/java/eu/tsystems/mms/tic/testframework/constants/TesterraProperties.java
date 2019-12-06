@@ -150,10 +150,6 @@ public final class TesterraProperties {
      */
     public static final String REPORT_ACTIVATE_SOURCES = "tt.report.activate.sources";
 
-    /**
-     * Guielement easy mode.
-     */
-    public static final String GUIELEMENT_TYPE = "tt.guielement.type";
     public static final String GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = "tt.guielement.default.assertcollector";
     public static final String GUIELEMENT_USE_JS_ALTERNATIVES = "tt.guielement.use.js.alternatives";
 

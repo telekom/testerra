@@ -31,7 +31,6 @@
 
 // guielement
 :element_timeout_seconds:           tt.element.timeout.seconds
-:guielement_type:                   tt.guielement.type
 :guielement_default_assertcollector: tt.guielement.default.assertcollector
 :guielement_use_js_alternatives:    tt.guielement.use.js.alternatives
 :guielement_checkrule:              tt.guielement.checkrule

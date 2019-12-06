@@ -27,7 +27,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
@@ -235,17 +234,14 @@ public class GuiElement implements
                                                  GuiElementCore guiElementCore,
                                                  GuiElementWait guiElementWait,
                                                  GuiElementData guiElementData) {
-        GuiElementType guiElementType = GuiElementType.sequence;
         GuiElementAssert guiElementAssert;
-        switch (guiElementType) {
-            case perf:
-                guiElementAssert = new PerformanceTestGuiElementAssert();
-                break;
-            default:
-                ConfiguredAssert configuredAssert = new ConfiguredAssert(functional, collected);
-                guiElementAssert = new ConfigurableGuiElementAssert(guiElementCore, guiElementWait, configuredAssert, guiElementData);
-                guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, guiElementData);
-                guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, guiElementData);
+        if (PropertyManager.getBooleanProperty(TesterraProperties.PERF_TEST, false)) {
+            guiElementAssert = new PerformanceTestGuiElementAssert();
+        } else {
+            ConfiguredAssert configuredAssert = new ConfiguredAssert(functional, collected);
+            guiElementAssert = new ConfigurableGuiElementAssert(guiElementCore, guiElementWait, configuredAssert, guiElementData);
+            guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, guiElementData);
+            guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, guiElementData);
         }
         return guiElementAssert;
     }

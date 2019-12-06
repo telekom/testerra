@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
@@ -37,7 +38,7 @@ public class WDInternal {
      * Cleans EVENTFIRINGWEBDRIVER_MAP and/or SELENIUM_MAP.
      */
     public static void cleanupDriverReferencesInCurrentThread() {
-        if (Flags.REUSE_DATAPROVIDER_DRIVER_BY_THREAD) {
+        if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
             DriverStorage.clearDriverMap();
         }
     }

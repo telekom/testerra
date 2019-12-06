@@ -103,7 +103,7 @@ public final class WebDriverSessionsManager {
         /*
         storing driver into driver storage, for whatever reason
          */
-        if (Flags.REUSE_DATAPROVIDER_DRIVER_BY_THREAD) {
+        if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
             String methodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
             if (methodName != null) {
                 String threadName = Thread.currentThread().getId() + "";
@@ -142,7 +142,7 @@ public final class WebDriverSessionsManager {
         /*
         storing driver into driver storage, for whatever reason
          */
-        if (Flags.REUSE_DATAPROVIDER_DRIVER_BY_THREAD) {
+        if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
             String methodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
             if (methodName != null) {
                 String threadName = Thread.currentThread().getId() + "";

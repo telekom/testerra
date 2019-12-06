@@ -30,12 +30,7 @@ public class PerformanceStartWorker extends MethodWorker {
     @Override
     public void run() {
         if (isTest()) {
-            /*
-             * LoadTest setup
-             */
-            if (Flags.GENERATE_PERF_STATISTICS) {
-                StopWatch.initializeStopWatch();
-            }
+            StopWatch.initializeStopWatch();
         }
     }
 }

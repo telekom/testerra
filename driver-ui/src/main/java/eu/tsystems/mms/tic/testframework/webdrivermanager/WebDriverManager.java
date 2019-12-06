@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
@@ -297,7 +298,7 @@ public final class WebDriverManager implements IWebDriverManager {
                 WebDriverCapabilities.clearThreadCapabilities();
             }
 
-            if (Flags.REUSE_DATAPROVIDER_DRIVER_BY_THREAD) {
+            if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
                 String testMethodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
                 DriverStorage.removeSpecificDriver(testMethodName);
             }

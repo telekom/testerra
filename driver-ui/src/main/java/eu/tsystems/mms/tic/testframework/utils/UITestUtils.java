@@ -428,29 +428,15 @@ public class UITestUtils {
      * all properties can be overwritten with the values in test.properties
      */
     public static void initializePerfTest() {
-        boolean perfTest = PropertyManager.getBooleanProperty(TesterraProperties.PERF_TEST, false);
-        if (perfTest) {
+
+        if (Testerra.Properties.PERF_TEST.asBool()) {
             Properties fileProperties = PropertyManager.getFileProperties();
-            String value = fileProperties.getProperty(TesterraProperties.PERF_GENERATE_STATISTICS, "true");
-            fileProperties.setProperty(TesterraProperties.PERF_GENERATE_STATISTICS, value);
 
-            /* Override initial value of flag */
-            boolean isPropertyActive = PropertyManager.getBooleanProperty(TesterraProperties.PERF_GENERATE_STATISTICS);
-            Flags.GENERATE_PERF_STATISTICS = isPropertyActive;
-
-            value = fileProperties.getProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
+            String value = fileProperties.getProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
             fileProperties.setProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, value);
 
             value = fileProperties.getProperty(TesterraProperties.GUIELEMENT_TYPE, "perf");
             fileProperties.setProperty(TesterraProperties.GUIELEMENT_TYPE, value);
-
-            // in case of perfTest reuse driver instances for dataprovider threads
-            value = fileProperties.getProperty(TesterraProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, "true");
-            fileProperties.setProperty(TesterraProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, value);
-
-            /* Override initial value of flag */
-            isPropertyActive = PropertyManager.getBooleanProperty(TesterraProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD);
-            Flags.REUSE_DATAPROVIDER_DRIVER_BY_THREAD = isPropertyActive;
         }
     }
 

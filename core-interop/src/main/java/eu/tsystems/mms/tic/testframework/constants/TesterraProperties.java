@@ -115,17 +115,11 @@ public final class TesterraProperties {
     public static final String PROJECT_PACKAGE = "tt.project.package";
 
     /**
-     * Flag for Perf Test Statistics generation.
-     */
-    public static final String PERF_GENERATE_STATISTICS = "tt.perf.generate.statistics";
-    /**
      * Perf test thinktime.
      */
+    @Deprecated
     public static final String PERF_PAGE_THINKTIME_MS = "tt.perf.page.thinktime.ms";
     /** reuse existing driver for a thread of dataprovider */
-    public static final String REUSE_DATAPROVIDER_DRIVER_BY_THREAD = "tt.reuse.dataprovider.driver.by.thread";
-    /** Perf test Property, used to set default values of a Load test */
-    public static final String PERF_TEST = "tt.perf.test";
 
     public static final String DB_TIMEOUT = "tt.db.timeout";
 
@@ -135,9 +129,6 @@ public final class TesterraProperties {
     public static final String PROXY_SETTINGS_LOAD = "tt.proxy.settings.load";
     public static final String PROXY_SETTINGS_FILE = "tt.proxy.settings.file";
 
-    public static final String LIST_TESTS = "tt.list.tests";
-
-    public static final String WEB_TAKE_ACTION_SCREENSHOTS = "tt.web.take.action.screenshots";
 
     public static final String RUNCFG = "tt.runcfg";
 

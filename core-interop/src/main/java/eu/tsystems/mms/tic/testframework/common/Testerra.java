@@ -30,6 +30,9 @@ public class Testerra {
         WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD("webdriver.timeouts.seconds.pageload", 120),
         WEBDRIVER_TIMEOUT_SECONDS_SCRIPT("webdriver.timeouts.seconds.script", 120),
         WEBDRIVER_TIMEOUT_SECONDS_RETRY("webdriver.timeouts.seconds.retry", 10),
+        PERF_TEST("tt.perf.test", false),
+        PERF_GENERATE_STATISTICS("tt.perf.generate.statistics", false),
+        REUSE_DATAPROVIDER_DRIVER_BY_THREAD("tt.reuse.dataprovider.driver.by.thread", false),
 
         /**
          * @todo Default should be based on WebDriverMode class

@@ -159,7 +159,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         /*
         if there is a factories entry for the requested browser, then create the new (raw) instance here and wrap it directly in EventFiringWD
          */
-        if (Flags.REUSE_DATAPROVIDER_DRIVER_BY_THREAD) {
+        if (Testerra.Properties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD.asBool()) {
             String threadName = Thread.currentThread().getId() + "";
             String testMethodName = ExecutionContextUtils.getMethodNameFromCurrentTestResult();
 

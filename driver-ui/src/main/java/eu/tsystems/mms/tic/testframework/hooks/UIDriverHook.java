@@ -19,12 +19,12 @@
  */
 package eu.tsystems.mms.tic.testframework.hooks;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.WebDriverRetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.*;
 import eu.tsystems.mms.tic.testframework.execution.worker.shutdown.WebDriverShutDownAfterTestsWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceStartWorker;
-import eu.tsystems.mms.tic.testframework.execution.worker.start.WebDriverLoggingStartWorker;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.*;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
@@ -42,6 +42,10 @@ public class UIDriverHook implements ModuleHook {
         init TesterraListener Workers
          */
         //start
+        if (Testerra.Properties.PERF_GENERATE_STATISTICS.asBool()) {
+            TesterraListener.registerBeforeMethodWorker(PerformanceStartWorker.class);
+            TesterraListener.registerAfterMethodWorker(PerformanceFinishWorker.class);
+        }
         TesterraListener.registerBeforeMethodWorker(PerformanceStartWorker.class);
         //TesterraListener.registerBeforeMethodWorker(WebDriverLoggingStartWorker.class);
 
@@ -58,7 +62,6 @@ public class UIDriverHook implements ModuleHook {
         TesterraListener.registerAfterMethodWorker(WebDriverShutDownWorker.class);
 
         TesterraListener.registerAfterMethodWorker(TakeOutOfSessionsEvidencesWorker.class);
-        TesterraListener.registerAfterMethodWorker(TestMethodFinishWorker.class);
 
         //shutdown
         TesterraListener.registerGenerateReportsWorker(WebDriverShutDownAfterTestsWorker.class);

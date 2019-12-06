@@ -152,11 +152,6 @@ public abstract class Page extends AbstractPage implements TestablePage {
         if (UITestUtils.getGuiElementType() == GuiElementType.perf) {
             executeThinkTime();
         }
-
-        // activate the PERF_STOP_WATCH Flag if not already, to assure storing of pageLoadInfos only in case of perf test
-        if (!Flags.PERF_STOP_WATCH_ACTIVE) {
-            Flags.PERF_STOP_WATCH_ACTIVE = true;
-        }
     }
 
     /**

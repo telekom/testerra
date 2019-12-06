@@ -33,6 +33,7 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
@@ -149,7 +150,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
     private void perfTestExtras() {
         StopWatch.stopPageLoad(driver, this.getClass());
 
-        if (UITestUtils.getGuiElementType() == GuiElementType.perf) {
+        if (PropertyManager.getBooleanProperty(TesterraProperties.PERF_TEST, false)) {
             executeThinkTime();
         }
     }

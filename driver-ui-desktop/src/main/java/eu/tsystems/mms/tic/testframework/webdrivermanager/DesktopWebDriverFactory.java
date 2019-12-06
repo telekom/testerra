@@ -41,6 +41,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
+import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
@@ -52,17 +53,23 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import java.io.File;
@@ -81,18 +88,22 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     IWebDriverFactory,
     Loggable
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverFactory.class);
+
+    public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
+
+    private static File phantomjsFile = null;
+
     @Override
     protected DesktopWebDriverRequest buildRequest(WebDriverRequest request) {
         DesktopWebDriverRequest r;
         if (request instanceof DesktopWebDriverRequest) {
             r = (DesktopWebDriverRequest) request;
-        }
-        else if (request instanceof UnspecificWebDriverRequest) {
+        } else if (request instanceof UnspecificWebDriverRequest) {
             r = new DesktopWebDriverRequest();
             r.copyFrom(request);
-        }
-        else {
-            throw new TesterraSystemException(request.getClass().getSimpleName() +  " is not allowed here");
+        } else {
+            throw new TesterraSystemException(request.getClass().getSimpleName() + " is not allowed here");
         }
 
         /*
@@ -219,12 +230,20 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 window.maximize();
                 if (config.maximizePosition != MaximizePosition.SELF) {
                     log().info(String.format("Setting maximized window position to: %s", config.maximizePosition));
-                    Point targetPosition = new Point(0,0);
+                    Point targetPosition = new Point(0, 0);
                     switch (config.maximizePosition) {
-                        case LEFT: targetPosition.x = -originWindowSize.width; break;
-                        case RIGHT: targetPosition.x = window.getSize().width+1; break;
-                        case TOP: targetPosition.y = -originWindowSize.height; break;
-                        case BOTTOM: targetPosition.y = window.getSize().height+1; break;
+                        case LEFT:
+                            targetPosition.x = -originWindowSize.width;
+                            break;
+                        case RIGHT:
+                            targetPosition.x = window.getSize().width + 1;
+                            break;
+                        case TOP:
+                            targetPosition.y = -originWindowSize.height;
+                            break;
+                        case BOTTOM:
+                            targetPosition.y = window.getSize().height + 1;
+                            break;
                     }
                     log().info(String.format("Move window to: %s", targetPosition));
                     window.setPosition(targetPosition);
@@ -331,22 +350,16 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 }
             }
 
+
+
             try {
-                switch (browser) {
-                    case Browsers.htmlunit:
-                        log().info("Starting HtmlUnitRemoteWebDriver.");
+                if (browser.equals(Browsers.htmlunit)) {
+                    capabilities.setBrowserName(BrowserType.HTMLUNIT);
+                    capabilities.setJavascriptEnabled(false);
+                    log().info("Starting HtmlUnitRemoteWebDriver.");
                         newDriver = new RemoteWebDriver(remoteAddress, capabilities);
-                        break;
-                    /*
-                    Rest: fallthrough
-                     */
-                    case Browsers.firefox:
-                    case Browsers.chrome:
-                    case Browsers.chromeHeadless:
-                    case Browsers.ie:
-                    case Browsers.safari:
-                    default:
-                        newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
+                        } else {
+                    newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
                 }
             } catch (final TesterraSetupException e) {
                 int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue()*1000;
@@ -418,26 +431,59 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             // set local file detector
             ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
         } else if (browser != null) {
+
+            /*
+             * This is the standard way of setting the browser locale for Selenoid based sessions
+             * @see https://aerokube.com/selenoid/latest/#_per_session_environment_variables_env
+             */
+            //        final Locale browserLocale = Locale.getDefault();
+            //        desiredCapabilities.setCapability("env",
+            //            String.format(
+            //                "[\"LANG=%s.UTF-8\", \"LANGUAGE=%s\", \"LC_ALL=%s.UTF-8\"]",
+            //                browserLocale,
+            //                browserLocale.getLanguage(),
+            //                browserLocale
+            //            )
+            //        );
+
+            UserAgentConfig userAgentConfig = WebDriverManager.getUserAgentConfig(browser);
             /*
              local mode
               */
             switch (browser) {
                 case Browsers.firefox:
-                    driver = new FirefoxDriver(capabilities);
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    if (userAgentConfig != null) userAgentConfig.configure(firefoxOptions);
+                    firefoxOptions.merge(capabilities);
+                    //firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", browserLocale.getLanguage(), browserLocale.getCountry()));
+                    driver = new FirefoxDriver(firefoxOptions);
                     break;
                 case Browsers.ie:
-                    driver = new InternetExplorerDriver(capabilities);
+                    InternetExplorerOptions ieOptions = new InternetExplorerOptions();
+                    if (userAgentConfig != null) userAgentConfig.configure(ieOptions);
+                    ieOptions.merge(capabilities);
+                    ieOptions.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+                    driver = new InternetExplorerDriver(ieOptions);
                     break;
                 case Browsers.chrome:
                 case Browsers.chromeHeadless:
-                    driver = new ChromeDriver(capabilities);
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    if (userAgentConfig != null) userAgentConfig.configure(chromeOptions);
+                    chromeOptions.merge(capabilities);
+                    //Map<String, Object> prefs = new HashMap<>();
+                    //prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
+                    //chromeOptions.setExperimentalOption("prefs", prefs);
+                    chromeOptions.addArguments("--no-sandbox");
+                    if (browser.equals(Browsers.chromeHeadless)) {
+                        chromeOptions.setHeadless(true);
+                    }
+                    driver = new ChromeDriver(chromeOptions);
                     break;
-//                case Browsers.htmlunit:
-//                    driver = new HtmlUnitDriver(capabilities);
-//                    break;
                 case Browsers.phantomjs:
                     File phantomjsFile = getPhantomJSBinary();
                     capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjsFile.getAbsolutePath());
+                    capabilities.setBrowserName(BrowserType.PHANTOMJS);
+                    capabilities.setJavascriptEnabled(true);
 
                     String[] args = {
                         "--ssl-protocol=any"
@@ -446,10 +492,21 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     driver = new PhantomJSDriver(capabilities);
                     break;
                 case Browsers.safari:
-                    driver = new SafariDriver(capabilities);
+                    SafariOptions safariOptions = new SafariOptions();
+                    if (userAgentConfig != null) userAgentConfig.configure(safariOptions);
+                    safariOptions.merge(capabilities);
+                    driver = new SafariDriver(safariOptions);
                     break;
                 case Browsers.edge:
-                    driver = new EdgeDriver(capabilities);
+                    EdgeOptions edgeOptions = new EdgeOptions();
+                    if (userAgentConfig != null) userAgentConfig.configure(edgeOptions);
+                    edgeOptions.merge(capabilities);
+                    /**
+                     * @todo What is this platform capability for?
+                     */
+                    final String platform = null;
+                    edgeOptions.setCapability("platform", platform);
+                    driver = new EdgeDriver(edgeOptions);
                     break;
                 default:
                     throw new TesterraSystemException(ErrorMessages.browserNotSupportedHere(browser));
@@ -465,10 +522,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         return driver;
     }
 
-    public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
-
-    private static File phantomjsFile = null;
-
     private File getPhantomJSBinary() {
         if (phantomjsFile == null) {
             log().debug("Unpacking phantomJS...");
@@ -478,8 +531,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 if (e.getMessage() != null && e.getMessage().toLowerCase().contains("failed to make target directory")) {
                     File tmp = new File(FileUtils.getTempDirectory(), "phantomjs" + System.currentTimeMillis());
                     phantomjsFile = Phanbedder.unpack(tmp);
-                }
-                else {
+                } else {
                     throw e;
                 }
             }

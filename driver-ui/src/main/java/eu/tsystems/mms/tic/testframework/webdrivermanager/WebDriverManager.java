@@ -38,6 +38,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
+import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
@@ -48,6 +49,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -86,6 +88,8 @@ public final class WebDriverManager implements IWebDriverManager {
      * The preset baseURL. Set by setBaseURL().
      */
     private static String presetBaseURL = null;
+
+    private static final HashMap<String, UserAgentConfig> userAgentConfigurators = new HashMap<>();
 
     /**
      * Private constructor to hide the public one since this a static only class.
@@ -504,4 +508,11 @@ public final class WebDriverManager implements IWebDriverManager {
         return null;
     }
 
+    public static void setUserAgentConfig(String browser, UserAgentConfig configurator) {
+        userAgentConfigurators.put(browser, configurator);
+    }
+
+    static UserAgentConfig getUserAgentConfig(String browser) {
+        return userAgentConfigurators.get(browser);
+    }
 }

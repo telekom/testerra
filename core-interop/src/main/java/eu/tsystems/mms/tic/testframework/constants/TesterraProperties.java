@@ -104,10 +104,6 @@ public final class TesterraProperties {
      * tt.source.lines.prefetch
      */
     public static final String SOURCE_LINES_PREFETCH = "tt.source.lines.prefetch";
-    /**
-     * Guielement easy mode.
-     */
-    public static final String GUIELEMENT_TYPE = "tt.guielement.type";
 
     /*
      * Package the project is located in.

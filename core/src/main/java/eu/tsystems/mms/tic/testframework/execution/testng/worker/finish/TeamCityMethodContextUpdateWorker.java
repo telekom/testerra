@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 
 import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.EXECUTION_CONTEXT;
@@ -35,6 +36,13 @@ public class TeamCityMethodContextUpdateWorker extends MethodWorker implements L
 
     @Override
     public void run() {
+        if (
+            methodContext.isConfigMethod()
+            || methodContext.status == TestStatusController.Status.INFO
+        ) {
+            return;
+        }
+
         String counterInfoMessage = TestStatusController.getCounterInfoMessage();
         String teamCityMessage = ReportUtils.getReportName() + " " + EXECUTION_CONTEXT.runConfig.RUNCFG + ": " + counterInfoMessage;
 

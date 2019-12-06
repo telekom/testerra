@@ -30,11 +30,8 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
@@ -150,7 +147,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
     private void perfTestExtras() {
         StopWatch.stopPageLoad(driver, this.getClass());
 
-        if (PropertyManager.getBooleanProperty(TesterraProperties.PERF_TEST, false)) {
+        if (Testerra.Properties.PERF_TEST.asBool()) {
             executeThinkTime();
         }
     }

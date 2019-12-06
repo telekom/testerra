@@ -26,14 +26,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model;
 
-import eu.tsystems.mms.tic.testframework.utils.DateUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Wrapper class for browser test statistics. Reads browser informations from user agent string.
  */

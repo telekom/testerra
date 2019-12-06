@@ -88,8 +88,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     IWebDriverFactory,
     Loggable
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverFactory.class);
-
     public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
 
     private static File phantomjsFile = null;

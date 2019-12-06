@@ -93,13 +93,11 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         DesktopWebDriverRequest r;
         if (request instanceof DesktopWebDriverRequest) {
             r = (DesktopWebDriverRequest) request;
-        }
-        else if (request instanceof UnspecificWebDriverRequest) {
+        } else if (request instanceof UnspecificWebDriverRequest) {
             r = new DesktopWebDriverRequest();
             r.copyFrom(request);
-        }
-        else {
-            throw new TesterraSystemException(request.getClass().getSimpleName() +  " is not allowed here");
+        } else {
+            throw new TesterraSystemException(request.getClass().getSimpleName() + " is not allowed here");
         }
 
         /*
@@ -227,12 +225,20 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 window.maximize();
                 if (config.maximizePosition != MaximizePosition.SELF) {
                     LOGGER.info(String.format("Setting maximized window position to: %s", config.maximizePosition));
-                    Point targetPosition = new Point(0,0);
+                    Point targetPosition = new Point(0, 0);
                     switch (config.maximizePosition) {
-                        case LEFT: targetPosition.x = -originWindowSize.width; break;
-                        case RIGHT: targetPosition.x = window.getSize().width+1; break;
-                        case TOP: targetPosition.y = -originWindowSize.height; break;
-                        case BOTTOM: targetPosition.y = window.getSize().height+1; break;
+                        case LEFT:
+                            targetPosition.x = -originWindowSize.width;
+                            break;
+                        case RIGHT:
+                            targetPosition.x = window.getSize().width + 1;
+                            break;
+                        case TOP:
+                            targetPosition.y = -originWindowSize.height;
+                            break;
+                        case BOTTOM:
+                            targetPosition.y = window.getSize().height + 1;
+                            break;
                     }
                     LOGGER.info(String.format("Move window to: %s", targetPosition));
                     window.setPosition(targetPosition);
@@ -427,32 +433,31 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
              * This is the standard way of setting the browser locale for Selenoid based sessions
              * @see https://aerokube.com/selenoid/latest/#_per_session_environment_variables_env
              */
-    //        final Locale browserLocale = Locale.getDefault();
-    //        desiredCapabilities.setCapability("env",
-    //            String.format(
-    //                "[\"LANG=%s.UTF-8\", \"LANGUAGE=%s\", \"LC_ALL=%s.UTF-8\"]",
-    //                browserLocale,
-    //                browserLocale.getLanguage(),
-    //                browserLocale
-    //            )
-    //        );
+            //        final Locale browserLocale = Locale.getDefault();
+            //        desiredCapabilities.setCapability("env",
+            //            String.format(
+            //                "[\"LANG=%s.UTF-8\", \"LANGUAGE=%s\", \"LC_ALL=%s.UTF-8\"]",
+            //                browserLocale,
+            //                browserLocale.getLanguage(),
+            //                browserLocale
+            //            )
+            //        );
 
-            UserAgentConfig uaConfig = WebDriverManager.getUserAgentConfig(browser);
-
+            UserAgentConfig userAgentConfig = WebDriverManager.getUserAgentConfig(browser);
             /*
              local mode
               */
             switch (browser) {
                 case Browsers.firefox:
                     FirefoxOptions firefoxOptions = new FirefoxOptions();
-                    if (uaConfig!=null) uaConfig.configure(firefoxOptions);
+                    if (userAgentConfig != null) userAgentConfig.configure(firefoxOptions);
                     firefoxOptions.merge(capabilities);
                     //firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", browserLocale.getLanguage(), browserLocale.getCountry()));
                     driver = new FirefoxDriver(firefoxOptions);
                     break;
                 case Browsers.ie:
                     InternetExplorerOptions ieOptions = new InternetExplorerOptions();
-                    if (uaConfig!=null) uaConfig.configure(ieOptions);
+                    if (userAgentConfig != null) userAgentConfig.configure(ieOptions);
                     ieOptions.merge(capabilities);
                     ieOptions.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
                     driver = new InternetExplorerDriver(ieOptions);
@@ -460,7 +465,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 case Browsers.chrome:
                 case Browsers.chromeHeadless:
                     ChromeOptions chromeOptions = new ChromeOptions();
-                    if (uaConfig!=null) uaConfig.configure(chromeOptions);
+                    if (userAgentConfig != null) userAgentConfig.configure(chromeOptions);
                     chromeOptions.merge(capabilities);
                     //Map<String, Object> prefs = new HashMap<>();
                     //prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
@@ -485,13 +490,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     break;
                 case Browsers.safari:
                     SafariOptions safariOptions = new SafariOptions();
-                    if (uaConfig!=null) uaConfig.configure(safariOptions);
+                    if (userAgentConfig != null) userAgentConfig.configure(safariOptions);
                     safariOptions.merge(capabilities);
                     driver = new SafariDriver(safariOptions);
                     break;
                 case Browsers.edge:
                     EdgeOptions edgeOptions = new EdgeOptions();
-                    if (uaConfig!=null) uaConfig.configure(edgeOptions);
+                    if (userAgentConfig != null) userAgentConfig.configure(edgeOptions);
                     edgeOptions.merge(capabilities);
                     /**
                      * @todo What is this platform capability for?
@@ -523,8 +528,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 if (e.getMessage() != null && e.getMessage().toLowerCase().contains("failed to make target directory")) {
                     File tmp = new File(FileUtils.getTempDirectory(), "phantomjs" + System.currentTimeMillis());
                     phantomjsFile = Phanbedder.unpack(tmp);
-                }
-                else {
+                } else {
                     throw e;
                 }
             }

@@ -303,7 +303,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
 
     private void applyPageOptions(PageOptions pageOptions) {
         if (pageOptions.elementTimeoutInSeconds() >= 0) {
-            log().info("Applying timeout value for this page object: " + pageOptions.elementTimeoutInSeconds() + "s");
+            log().debug("Setting page specific timeout to " + pageOptions.elementTimeoutInSeconds() + "s");
             setElementTimeoutInSeconds(pageOptions.elementTimeoutInSeconds());
         }
     }

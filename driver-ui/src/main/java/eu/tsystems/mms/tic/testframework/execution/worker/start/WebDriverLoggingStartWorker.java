@@ -49,7 +49,7 @@ public class WebDriverLoggingStartWorker extends MethodWorker implements Loggabl
                 if (executingSeleniumHost.contains("\n")) {
                     msg += "\n";
                 }
-                log().info(msg + executingSeleniumHost);
+                log().debug(msg + executingSeleniumHost);
 
                 // log browser
                 long threadId = Thread.currentThread().getId();
@@ -57,7 +57,7 @@ public class WebDriverLoggingStartWorker extends MethodWorker implements Loggabl
                 if (webDriversFromThread != null && webDriversFromThread.size() > 0) {
                     WebDriver driver = webDriversFromThread.get(0);
                     BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(driver);
-                    log().info(String.format("Started User Agent %s %s", browserInformation.getBrowserName(), browserInformation.getBrowserVersion()));
+                    log().info(String.format("Use User Agent %s %s", browserInformation.getBrowserName(), browserInformation.getBrowserVersion()));
                 }
             }
         }

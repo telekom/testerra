@@ -28,9 +28,7 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
@@ -351,30 +349,6 @@ public class UITestUtils {
         }
     }
 
-    private static GuiElementType guiElementType = null;
-
-    public static void loadGuiElementType() {
-        String guiElementTypeProperty = PropertyManager.getProperty(TesterraProperties.GUIELEMENT_TYPE, "sequence");
-        try {
-            guiElementType = GuiElementType.valueOf(guiElementTypeProperty);
-        } catch (IllegalArgumentException e) {
-            String errorMessage = "GuiElementType not supported: " + guiElementTypeProperty;
-            throw new TesterraSystemException(errorMessage);
-        }
-    }
-
-    /**
-     * checks if gui element type gets supported
-     *
-     * @return gui element type
-     */
-    public static GuiElementType getGuiElementType() {
-        if (guiElementType == null) {
-            loadGuiElementType();
-        }
-        return guiElementType;
-    }
-
     public static List<Screenshot> takeScreenshotsFromSessions(
             final MethodContext methodContext,
             final Map<String, WebDriver> rawWebDriverInstances,
@@ -470,9 +444,6 @@ public class UITestUtils {
 
             value = fileProperties.getProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
             fileProperties.setProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, value);
-
-            value = fileProperties.getProperty(TesterraProperties.GUIELEMENT_TYPE, "perf");
-            fileProperties.setProperty(TesterraProperties.GUIELEMENT_TYPE, value);
 
             // in case of perfTest reuse driver instances for dataprovider threads
             value = fileProperties.getProperty(TesterraProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, "true");

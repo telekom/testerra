@@ -41,7 +41,6 @@ public class TestStepTest extends AbstractTestSitesTest {
     public void test_Steps() {
         WebTestPage page = getPage();
         TestStep.begin("Explicit test step");
-        page.clickAButton();
         page.assertFunctionalityOfButton1();
     }
 }

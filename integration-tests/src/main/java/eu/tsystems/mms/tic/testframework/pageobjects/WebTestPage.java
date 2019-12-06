@@ -65,16 +65,13 @@ public class WebTestPage extends AbstractWebTestPage {
         super(driver);
     }
 
-    public void clickAButton() {
-        button1.click();
-    }
-
     /**
      * Test if button works as aspected.
      */
     public void assertFunctionalityOfButton1() {
         final String something = "some";
         input1.type(something);
+        button1.click();
         textOutputField.asserts().assertTextContains(something);
     }
 

@@ -23,9 +23,7 @@ import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.IterableGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -38,7 +36,6 @@ import org.openqa.selenium.WebElement;
  */
 public interface IGuiElement extends
     InteractiveGuiElement,
-    IterableGuiElement<IGuiElement>,
     Nameable<IGuiElement>,
     WebDriverRetainer,
     HasParent
@@ -117,4 +114,6 @@ public interface IGuiElement extends
     default IGuiElement findByQa(String qa) {
         return find(Locate.by().qa(qa));
     }
+
+    GuiElementList<IGuiElement> list();
 }

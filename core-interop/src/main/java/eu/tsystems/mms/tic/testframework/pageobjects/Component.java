@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.IterableGuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 
 /**
@@ -10,8 +10,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
  */
 public interface Component<SELF> extends
     CheckablePage,
-    IterableGuiElement<SELF>,
+    BasicGuiElement,
     HasParent,
     Nameable<SELF>
 {
+    GuiElementList<SELF> list();
 }

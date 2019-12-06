@@ -72,9 +72,6 @@ public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
 
     private void testNavigationItems(IGuiElement items) {
         items.numberOfElements().is(3);
-        items.firstElement().text().is("First");
-        items.element(2).text().is("Second");
-        items.lastElement().text().is("Third");
 
         items.list().first().text().is("First");
         items.list().get(1).text().is("Second");
@@ -86,11 +83,6 @@ public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
         NewGuiElementListPage page = preparePage();
         TableRow rows = page.getTableRowsByTagName();
         rows.numberOfElements().is(4);
-
-//        rows.firstElement().linkByName().value(Attribute.HREF).endsWith("mkri");
-//        rows.element(2).linkByName().value(Attribute.HREF).endsWith("joku");
-//        rows.lastElement().linkByName().value(Attribute.HREF).endsWith("erku");
-//        rows.forEach(tableRow -> tableRow.linkByName().value(Attribute.HREF).beginsWith("http"));
 
         rows.list().first().linkByName().value(Attribute.HREF).endsWith("mkri");
         rows.list().get(1).linkByName().value(Attribute.HREF).endsWith("joku");
@@ -104,9 +96,9 @@ public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
         TableRow rows = page.getTableRowsByTagName();
         rows.numberOfElements().is(4);
 
-        rows.firstElement().linkByXPath().value(Attribute.HREF).endsWith("mkri");
-        rows.element(2).linkByXPath().value(Attribute.HREF).endsWith("joku");
-        rows.lastElement().linkByXPath().value(Attribute.HREF).endsWith("erku");
+        rows.list().first().linkByXPath().value(Attribute.HREF).endsWith("mkri");
+        rows.list().get(2).linkByXPath().value(Attribute.HREF).endsWith("joku");
+        rows.list().last().linkByXPath().value(Attribute.HREF).endsWith("erku");
     }
 
     @Override

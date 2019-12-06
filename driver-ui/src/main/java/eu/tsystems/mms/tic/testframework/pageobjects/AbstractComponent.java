@@ -73,11 +73,6 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public SELF element(int position) {
-        return createIteratedComponent(rootElement.element(position));
-    }
-
-    @Override
     public GuiElementList<SELF> list() {
         if (this.list == null) {
             this.list = new DefaultComponentList<>(self());
@@ -165,28 +160,5 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
             sb.append(getClass().getSimpleName());
         }
         return sb.toString();
-    }
-
-    @Override
-    public Iterator<SELF> iterator() {
-        // Resets the internal iterator
-        rootElement.iterator();
-        return this;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return rootElement.hasNext();
-    }
-
-    @Override
-    public SELF next() {
-        return createIteratedComponent(rootElement.next());
-    }
-
-    private SELF createIteratedComponent(IGuiElement rootElement) {
-        SELF component = (SELF) createComponent(self().getClass(), rootElement);
-        component.setParent(getParent());
-        return component;
     }
 }

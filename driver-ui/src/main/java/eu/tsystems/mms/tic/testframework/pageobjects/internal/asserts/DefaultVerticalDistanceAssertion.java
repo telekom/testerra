@@ -1,7 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.IterableGuiElement;
 import org.openqa.selenium.Rectangle;
 
 public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<Integer> implements VerticalDistanceAssertion {

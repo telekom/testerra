@@ -23,9 +23,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.IterableGuiElement;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
@@ -64,11 +62,11 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
     @Override
     public boolean before() {
         boolean isCheckAnnotated = field.isAnnotationPresent(Check.class);
-        boolean isCheckable = IterableGuiElement.class.isAssignableFrom(typeOfField);
+        boolean isCheckable = BasicGuiElement.class.isAssignableFrom(typeOfField);
 
         if (isCheckAnnotated && !isCheckable) {
             throw new TesterraRuntimeException("Field {" + fieldName + "} of " + declaringClass.getCanonicalName()
-                    + " is annotated with @Check, but the class doesn't implement " + IterableGuiElement.class.getCanonicalName());
+                    + " is annotated with @Check, but the class doesn't implement " + BasicGuiElement.class.getCanonicalName());
         }
 
         if (isCheckable) {

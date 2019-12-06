@@ -83,7 +83,6 @@ import org.openqa.selenium.support.ui.Select;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -115,9 +114,6 @@ public class GuiElement implements
     private GuiElementWait decoratedWait;
 
     protected HasParent parent;
-    private int iteratorIndex = 0;
-    private int iteratorSize = 0;
-
     private UserSimulator userSimulator;
     private DefaultGuiElementList list;
 
@@ -132,7 +128,7 @@ public class GuiElement implements
     }
 
     /**
-     * Constructor for list elements of {@link #element(int)}
+     * Constructor for list elements of {@link #list}
      * Elements created by this constructor are identical to it's parent,
      * but with a different element index.
      */
@@ -466,12 +462,6 @@ public class GuiElement implements
     }
 
     @Override
-    public IGuiElement element(int position) {
-        if (position < 1) position = 1;
-        return new GuiElement(this, position-1);
-    }
-
-    @Override
     public GuiElementList<IGuiElement> list() {
         if (this.list == null) {
             this.list = new DefaultGuiElementList(this);
@@ -768,12 +758,8 @@ public class GuiElement implements
 
     @Deprecated
     public List<GuiElement> getList() {
-        int numberOfFoundElements = getNumberOfFoundElements();
-        List<GuiElement> guiElements = new ArrayList<>(numberOfFoundElements);
-        for (int i = 0; i < numberOfFoundElements; i++) {
-            IGuiElement guiElement = element(i+1);
-            guiElements.add((GuiElement)guiElement);
-        }
+        List<GuiElement> guiElements = new ArrayList<>();
+        list().forEach(guiElement -> guiElements.add((GuiElement)guiElement));
         return guiElements;
     }
 
@@ -1025,22 +1011,5 @@ public class GuiElement implements
          * because {@link #scrollToElement(int)} substracts the offset
          */
         return scrollToElement(yOffset*-1);
-    }
-
-    @Override
-    public Iterator<IGuiElement> iterator() {
-        iteratorIndex = 0;
-        iteratorSize = core.findWebElements().size();
-        return this;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return iteratorIndex < iteratorSize;
-    }
-
-    @Override
-    public IGuiElement next() {
-        return element(iteratorIndex++);
     }
 }

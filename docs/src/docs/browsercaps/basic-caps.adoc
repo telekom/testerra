@@ -1,6 +1,7 @@
 = Setting global capabilities
 
-You can customize your browser session by setting so called capabilities for every browser type before calling `WebDriverManager.getWebDriver()`.
+You can customize your browser session by setting so called capabilities for every browser type before
+the WebDriver has been initialized.
 
 [source,java]
 ----
@@ -14,6 +15,15 @@ class MyTest extends TesterraTest {
         });
     }
 }
+----
+
+== Setting local capabilities
+
+A local defined capability means its only available in the current test execution (current TestNG testmethod).
+
+[source,java]
+----
+WebDriverManager.addThreadCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 ----
 
 == Useful browser configurations

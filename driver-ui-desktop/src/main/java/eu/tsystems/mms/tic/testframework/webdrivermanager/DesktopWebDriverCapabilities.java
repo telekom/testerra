@@ -19,18 +19,9 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.LinkedHashMap;
@@ -40,17 +31,10 @@ import java.util.regex.Pattern;
 /**
  * Created by pele on 08.01.2015.
  */
+@Deprecated
 public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 
-    private static void safelyAddCapsValue(DesiredCapabilities caps, String key, Object value) {
-        if (value == null) {
-            return;
-        }
-        if (StringUtils.isStringEmpty("" + value)) {
-            return;
-        }
-        caps.setCapability(key, value);
-    }
+    private static final Map<Pattern, Capabilities> ENDPOINT_CAPABILITIES = new LinkedHashMap<>();
 
     static void addContextCapabilities(DesiredCapabilities baseCapabilities, DesktopWebDriverRequest desktopWebDriverRequest) {
         /*
@@ -64,23 +48,15 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 
         ** overwritten if not empty
          */
-
-        if (baseCapabilities == null) {
-            baseCapabilities = new DesiredCapabilities();
-        }
-
         /*
         add global caps
          */
-        for (String key : GLOBALCAPABILITIES.keySet()) {
-            Object value = GLOBALCAPABILITIES.get(key);
-            safelyAddCapsValue(baseCapabilities, key, value);
-        }
+        getGlobalExtraCapabilities().forEach((s, o) -> safelyAddCapsValue(baseCapabilities, s, o));
 
-        /*
+       /*
         add thread local caps
          */
-        Map<String, Object> threadLocalCaps = THREAD_CAPABILITIES.get();
+        Map<String, Object> threadLocalCaps = getThreadCapabilities();
         if (threadLocalCaps != null) {
             for (String key : threadLocalCaps.keySet()) {
                 Object value = threadLocalCaps.get(key);
@@ -110,88 +86,10 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
     static DesiredCapabilities createCapabilities(final WebDriverManagerConfig config, DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
         String browser = desktopWebDriverRequest.browser;
         if (browser == null) {
-            throw new TesterraRuntimeException(
-                    "Browser is not set correctly");
+            throw new TesterraRuntimeException("Browser is not set correctly");
         }
         final DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         desiredCapabilities.merge(preSetCaps);
-
-        /*
-         * This is the standard way of setting the browser locale for Selenoid based sessions
-         * @see https://aerokube.com/selenoid/latest/#_per_session_environment_variables_env
-         */
-//        final Locale browserLocale = Locale.getDefault();
-//        desiredCapabilities.setCapability("env",
-//            String.format(
-//                "[\"LANG=%s.UTF-8\", \"LANGUAGE=%s\", \"LC_ALL=%s.UTF-8\"]",
-//                browserLocale,
-//                browserLocale.getLanguage(),
-//                browserLocale
-//            )
-//        );
-
-        switch (browser) {
-            case Browsers.htmlunit:
-                LOGGER.info("Creating capabilities for HtmlUnitDriver");
-                // need to enable Javascript
-                desiredCapabilities.setBrowserName(BrowserType.HTMLUNIT);
-                desiredCapabilities.setJavascriptEnabled(false);
-                break;
-            case Browsers.phantomjs:
-                LOGGER.info("Creating capabilities for PhantomJS");
-                // need to enable Javascript
-                desiredCapabilities.setBrowserName(BrowserType.PHANTOMJS);
-                desiredCapabilities.setJavascriptEnabled(true);
-                break;
-            case Browsers.firefox:
-                desiredCapabilities.setBrowserName(BrowserType.FIREFOX);
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                //firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", browserLocale.getLanguage(), browserLocale.getCountry()));
-                desiredCapabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
-                break;
-            case Browsers.safari:
-                LOGGER.info("Creating capabilities for SafariDriver");
-                desiredCapabilities.setBrowserName(BrowserType.SAFARI);
-                break;
-            case Browsers.edge:
-                LOGGER.info("Creating capabilities for Edge");
-                desiredCapabilities.setBrowserName(BrowserType.EDGE);
-
-                EdgeOptions edgeOptions = new EdgeOptions();
-                final String platform = null;
-                edgeOptions.setCapability("platform", platform);
-
-                desiredCapabilities.setCapability("edgeOptions", edgeOptions);
-//                desiredCapabilities.setCapability(EdgeOptions.CAPABILITY, edgeOptions);
-                break;
-            case Browsers.chrome:
-            case Browsers.chromeHeadless:
-                LOGGER.info("Creating capabilities for ChromeDriver");
-                desiredCapabilities.setBrowserName(BrowserType.CHROME);
-                ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("--no-sandbox");
-                //Map<String, Object> prefs = new HashMap<>();
-                //prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
-                //chromeOptions.setExperimentalOption("prefs", prefs);
-
-                if (browser.equals(Browsers.chromeHeadless)) {
-                    chromeOptions.addArguments("--headless", "--disable-gpu");
-                }
-
-                desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-                break;
-            case Browsers.ie:
-                LOGGER.info("Creating capabilities for InternetExplorerDriver");
-                desiredCapabilities.setBrowserName(BrowserType.IEXPLORE);
-
-                InternetExplorerOptions options = new InternetExplorerOptions();
-                options.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-
-                desiredCapabilities.setCapability("se:ieOptions", options);
-                break;
-            default:
-                throw new TesterraSystemException(ErrorMessages.browserNotSupportedHere(browser));
-        }
 
         // set browser version into capabilities
         if (!StringUtils.isStringEmpty(desktopWebDriverRequest.browserVersion)) {
@@ -221,8 +119,6 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
             }
         }
     }
-
-    private static final Map<Pattern, Capabilities> ENDPOINT_CAPABILITIES = new LinkedHashMap<>();
 
     public static void registerEndPointCapabilities(Pattern endPointSelector, Capabilities capabilities) {
         ENDPOINT_CAPABILITIES.put(endPointSelector, capabilities);

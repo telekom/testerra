@@ -1,39 +1,38 @@
 = Setting global capabilities
 
-You can customize your browser session by setting so called capabilities for every browser type.
+You can customize your browser session by setting so called capabilities for every browser type before
+the WebDriver has been initialized.
 
 [source,java]
 ----
-// Use the Selenium browser option classes for define the caps
-FirefoxOptions firefoxOptions = new FirefoxOptions();
-firefoxOptions.addPreference("intl.accept_languages", "de-DE");
+import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
 
-// Add the browser specific caps to the global pool of capabilities
-WebDriverManager.setGlobalExtraCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
+class MyTest extends TesterraTest {
+    @BeforeSuite
+    void setupBrowsers() {
+        WebDriverManager.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
+            options.addPreference("intl.accept_languages", "de-DE");
+        });
+    }
+}
 ----
 
-You can also use the Seleniumd DesiredCapabilites class
-
-[source,java]
-----
-DesiredCapabilities caps = DesiredCapabilities.internetExplorer();
-caps.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
-caps.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
-
-WebDriverManager.setGlobalExtraCapabilities(caps);
-----
-
-IMPORTANT: A global capability means this setting is defined for the complete test run.
-
-= Setting local capabilities
+== Setting local capabilities
 
 A local defined capability means its only available in the current test execution (current TestNG testmethod).
 
 [source,java]
 ----
-FirefoxOptions firefoxOptions = new FirefoxOptions();
-firefoxOptions.addPreference("intl.accept_languages", "de-DE");
-
-WebDriverManager.addThreadCapability(FirefoxOptions.FIREFOX_OPTIONS, firefoxOptions);
+WebDriverManager.addThreadCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 ----
 
+== Useful browser configurations
+
+=== Prevent Firefox download confirmation dialog
+
+```java
+// You have to add every mimetype you want no confirmation for
+firefoxOptions.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/zip");
+firefoxOptions.addPreference("browser.download.manager.showAlertOnComplete", false);
+firefoxOptions.addPreference("browser.download.manager.showWhenStarting", false);
+```

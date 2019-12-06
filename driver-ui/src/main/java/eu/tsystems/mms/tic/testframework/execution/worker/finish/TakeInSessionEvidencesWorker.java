@@ -36,8 +36,7 @@ public class TakeInSessionEvidencesWorker extends AbstractEvidencesWorker {
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
 
             if (screenshots != null) {
-                screenshots.forEach(s -> s.errorContextId = methodContext.id);
-                methodContext.screenshots.addAll(screenshots);
+                methodContext.addScreenshots(screenshots);
             }
         }
     }

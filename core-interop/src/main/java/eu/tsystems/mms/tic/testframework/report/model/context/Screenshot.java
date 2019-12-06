@@ -57,12 +57,6 @@ public class Screenshot extends Attachment implements Loggable {
     private File pageSourceFile;
     final private Map<String, String> meta = new HashMap<>();
 
-    /*
-    Refers to the errorContext the screenshot belongs to.
-     */
-    @Deprecated
-    public String errorContextId;
-
     public Screenshot() {
         this("Screenshot");
     }

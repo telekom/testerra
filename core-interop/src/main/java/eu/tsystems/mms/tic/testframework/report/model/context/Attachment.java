@@ -12,6 +12,11 @@ public class Attachment implements Loggable {
     private File file;
     @Deprecated
     public String filename;
+    /*
+    Refers to the errorContext the screenshot belongs to.
+     */
+    @Deprecated
+    public String errorContextId;
 
     /**
      * @todo We may pass name and extension later.
@@ -46,5 +51,18 @@ public class Attachment implements Loggable {
         filename = file.getName();
         this.file = file;
         return this;
+    }
+
+    public Attachment setErrorContextId(String id) {
+        this.errorContextId = id;
+        return this;
+    }
+
+    public String getErrorContextId() {
+        return this.errorContextId;
+    }
+
+    public boolean hasErrorContext() {
+        return this.errorContextId != null;
     }
 }

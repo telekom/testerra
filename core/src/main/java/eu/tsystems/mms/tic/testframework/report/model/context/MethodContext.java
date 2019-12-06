@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.testng.ITestContext;
@@ -83,7 +84,15 @@ public class MethodContext extends Context implements SynchronizableContext {
     public List<MethodContext> relatedMethodContexts;
     public List<MethodContext> dependsOnMethodContexts;
 
+    /**
+     * @deprecated This should not be public
+     */
+    @Deprecated
     public final List<Video> videos = new LinkedList<>();
+    /**
+     * @deprecated This should not be public
+     */
+    @Deprecated
     public final List<Screenshot> screenshots = new LinkedList<>();
     public final List<CustomContext> customContexts = new LinkedList<>();
 
@@ -328,25 +337,10 @@ public class MethodContext extends Context implements SynchronizableContext {
      * Publish the screenshots to the report into the current errorContext.
      */
     public void addScreenshots(List<Screenshot> screenshots) {
-        /*
-            only add if we can NOT find any screenshots for this error context
-             */
-        long count = screenshots.stream().filter(s -> s.errorContextId == id).count();
-
-        if (count == 0) {
-            screenshots.addAll(screenshots);
-
-            /*
-             * add AFTER path to action log
-             */
-            for (Screenshot screenshot : screenshots) {
-                steps().getCurrentTestStep().getCurrentTestStepAction().addScreenshots(null, screenshot);
-            }
-
-            LOGGER.info("Linked screenshots: " + screenshots);
-        } else {
-            LOGGER.warn("Skipped linking screenshot, because we already have " + count + " screenshots for this ErrorContext");
-        }
+        TestStepAction currentTestStepAction = steps().getCurrentTestStep().getCurrentTestStepAction();
+        screenshots.stream().filter(s -> !s.hasErrorContext()).forEach(screenshot -> {
+            screenshot.setErrorContextId(this.id);
+            currentTestStepAction.addScreenshots(null, screenshot);
+        });
     }
-
 }

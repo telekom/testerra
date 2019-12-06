@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
@@ -31,9 +32,14 @@ public class DefaultGuiElementAssertFactory implements GuiElementAssertFactory {
         Assertion assertion,
         GuiElementWait guiElementWait
     ) {
-        GuiElementAssert guiElementAssert = new DefaultGuiElementAssert(data, guiElementWait, assertion);
-        guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, data);
-        guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, data);
+        GuiElementAssert guiElementAssert;
+        if (Testerra.Properties.PERF_TEST.asBool()) {
+            guiElementAssert = new PerformanceTestGuiElementAssert();
+        } else {
+            guiElementAssert = new DefaultGuiElementAssert(data, guiElementWait, assertion);
+            guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, data);
+            guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, data);
+        }
         return guiElementAssert;
     }
 }

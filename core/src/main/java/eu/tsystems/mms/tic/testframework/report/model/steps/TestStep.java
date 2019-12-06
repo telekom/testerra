@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.steps;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -33,7 +34,7 @@ import java.util.List;
  * A static wrapper for {@link MethodContext#steps()}
  * Created by piet on 11.03.16.
  */
-public class TestStep implements Serializable {
+public class TestStep implements Serializable, Loggable {
 
     private static final long serialVersionUID = Serial.SERIAL;
     public static final String SETUP="Setup";
@@ -46,6 +47,20 @@ public class TestStep implements Serializable {
 
     public TestStep(String name) {
         this.name = name;
+        if (!isInternalTestStep()) {
+            log().info("Begin " + name);
+        }
+    }
+
+    public boolean isInternalTestStep() {
+        switch (name) {
+            case SETUP:
+            case TEARDOWN:
+            case INTERNAL:
+                return true;
+            default:
+                return false;
+        }
     }
 
     public String getName() {
@@ -83,6 +98,9 @@ public class TestStep implements Serializable {
 
     public void close() {
         closed = true;
+        if (!isInternalTestStep()) {
+            log().info("End " + name);
+        }
     }
 
     public boolean isClosed() {

@@ -138,7 +138,6 @@ public final class WebDriverManager {
      *
      * @return .
      */
-    @Deprecated
     public static Map<String, Object> getThreadCapabilities() {
         return WebDriverCapabilities.getThreadCapabilities();
     }
@@ -149,7 +148,6 @@ public final class WebDriverManager {
      * @param key   .
      * @param value .
      */
-    @Deprecated
     public static void addThreadCapability(String key, Object value) {
         WebDriverCapabilities.addThreadCapability(key, value);
     }
@@ -159,7 +157,6 @@ public final class WebDriverManager {
      *
      * @param key The key of the capability to remove.
      */
-    @Deprecated
     public static void removeGlobalExtraCapability(final String key) {
         WebDriverCapabilities.removeGlobalExtraCapability(key);
     }

@@ -29,6 +29,7 @@ package eu.tsystems.mms.tic.testframework.report;
 import eu.tsystems.mms.tic.testframework.interop.LoggingActor;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.LoggingDispatcher;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -145,56 +146,64 @@ public class BaseLoggingActor extends AppenderSkeleton {
      * @param event The event to be logged.
      */
     private void appendForReport(final LoggingEvent event) {
-        if (event != null) {
-            /*
-            We can't create a "new" message und just format it. So we create a formatted output from orig event and
-            just replace the old message with the new content.
-             */
-            final String origMessage = event.getMessage().toString();
-            final String formattedMessage = LAYOUT.format(event);
-            final String formattedTemplate = formattedMessage.replace(origMessage, PLACEHOLDER);
 
-            String out;
+        /**
+         * We dont log any messages from steps package,
+         * because logs from {@link TestStep} also triggering logs by {@link LoggingDispatcher}
+         * which may result in a callstack loop.
+         */
+        if (event.getLoggerName().startsWith(TestStep.class.getPackage().getName())) {
+            return;
+        }
 
-            /*
-            Throwable toggle
-             */
-            final String htmlOrigMessage = StringUtils.prepareStringForHTML(origMessage);
-            if (event.getThrowableInformation() != null) {
-                String[] throwableStrRep = event.getThrowableInformation().getThrowableStrRep();
+        /*
+        We can't create a "new" message und just format it. So we create a formatted output from orig event and
+        just replace the old message with the new content.
+         */
+        final String origMessage = event.getMessage().toString();
+        final String formattedMessage = LAYOUT.format(event);
+        final String formattedTemplate = formattedMessage.replace(origMessage, PLACEHOLDER);
 
-                if (throwableStrRep != null) {
+        String out;
 
-                    /*
-                     * Reformat log
-                     */
-                    String id = System.currentTimeMillis() + "";
-                    out = "<a href=\"javascript:toggleElement('exception-" + id + "')\">"
-                                    + htmlOrigMessage
-                                    + "</a><br/><div id='exception-" + id + "' class='stackTrace'>";
+        /*
+        Throwable toggle
+         */
+        final String htmlOrigMessage = StringUtils.prepareStringForHTML(origMessage);
+        if (event.getThrowableInformation() != null) {
+            String[] throwableStrRep = event.getThrowableInformation().getThrowableStrRep();
 
-                    for (String line : throwableStrRep) {
-                        line = StringUtils.prepareStringForHTML(line);
-                        out += line + "<br/>";
-                    }
+            if (throwableStrRep != null) {
 
-                    out += "</div>";
+                /*
+                 * Reformat log
+                 */
+                String id = System.currentTimeMillis() + "";
+                out = "<a href=\"javascript:toggleElement('exception-" + id + "')\">"
+                                + htmlOrigMessage
+                                + "</a><br/><div id='exception-" + id + "' class='stackTrace'>";
+
+                for (String line : throwableStrRep) {
+                    line = StringUtils.prepareStringForHTML(line);
+                    out += line + "<br/>";
                 }
-                else {
-                    out = htmlOrigMessage;
-                }
+
+                out += "</div>";
             }
             else {
                 out = htmlOrigMessage;
             }
-
-            /*
-             * Add log message.
-             */
-            final String finalLogMessage = formattedTemplate.replace(PLACEHOLDER, out);
-            LogMessage logMessage = createLogMessage(finalLogMessage);
-            LoggingDispatcher.addLogMessage(logMessage);
         }
+        else {
+            out = htmlOrigMessage;
+        }
+
+        /*
+         * Add log message.
+         */
+        final String finalLogMessage = formattedTemplate.replace(PLACEHOLDER, out);
+        LogMessage logMessage = createLogMessage(finalLogMessage);
+        LoggingDispatcher.addLogMessage(logMessage);
     }
 
     public static void registerLoggingActor(LoggingActor loggingActor) {

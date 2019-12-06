@@ -59,7 +59,7 @@ public final class LoggingDispatcher {
     /**
      * Collection of unrelated logs.
      */
-    static final List<LogMessage> UNRELATED_LOGS = Collections.synchronizedList(new LinkedList<LogMessage>());
+    static final List<LogMessage> UNRELATED_LOGS = Collections.synchronizedList(new LinkedList<>());
 
     /**
      * Adds a logMessage message to MethodContext. Called in TesterraListener.class

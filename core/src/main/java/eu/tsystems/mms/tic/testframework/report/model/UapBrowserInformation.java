@@ -36,7 +36,7 @@ import java.io.IOException;
  * Uap User Agent implementation
  * @author Mike Reiche
  */
-public abstract class UapBrowserInformation extends AbstractBrowserInformation implements Loggable {
+public class UapBrowserInformation extends AbstractBrowserInformation implements Loggable {
 
     private static Parser userAgentAnalyzer;
     private Client client;

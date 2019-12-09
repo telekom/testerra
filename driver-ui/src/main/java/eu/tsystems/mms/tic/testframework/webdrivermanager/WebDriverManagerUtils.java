@@ -34,8 +34,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.model.HostInfo;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
-import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.YauaaBrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.json.JSONException;
@@ -109,15 +108,6 @@ public final class WebDriverManagerUtils {
     ) {
         BrowserInformation browserInformation = getBrowserInformation(driver);
         LOGGER.info(String.format("New user agent: %s %s", browserInformation.getBrowserName(), browserInformation.getBrowserVersion()));
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        if (methodContext != null) {
-            //ClassContext classContext = methodContext.classContext;
-            //String context = classContext.name + "." + methodContext.name + " : " + sessionKey + " on " + hostInfo;
-            //BrowserInformation.setBrowserInfoWithContext(browserInfo, context);
-        }
-        else {
-            LOGGER.warn("You started the WebDriver session from outside a test method, YOU SHALL NOT DO THIS :(");
-        }
 
         SessionContext sessionContext = ExecutionContextController.getCurrentSessionContext();
         if (sessionContext != null) {
@@ -154,7 +144,6 @@ public final class WebDriverManagerUtils {
                 userAgentString = (String) ((JavascriptExecutor) realDriver).executeScript("return navigator.userAgent;");
             } catch (Exception e) {
                 LOGGER.error("Error requesting user agent", e);
-
             }
             browserInformation = Testerra.injector.getInstance(BrowserInformation.class);
             browserInformation.parseUserAgent(userAgentString);

@@ -33,8 +33,6 @@ import nl.basjes.parse.useragent.UserAgentAnalyzerDirect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
-
 /**
  * Wrapper class for browser test statistics. Reads browser informations from user agent string.
  *
@@ -43,12 +41,6 @@ import java.util.*;
 public class BrowserInformation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowserInformation.class);
-
-    /**
-     * A collection of browser information with a list of contexts.
-     */
-    private static Map<String, List<String>> browserInfoWithContexts =
-            Collections.synchronizedMap(new HashMap<>(1));
 
     /**
      * The driver to log the commands through.
@@ -124,60 +116,6 @@ public class BrowserInformation {
             browsername = agent.getValue(UserAgent.AGENT_NAME);
             browserversion = agent.getValue(UserAgent.AGENT_VERSION_MAJOR);
         }
-    }
-
-    /**
-     * Introduce a browserInfo Text with a steps string.
-     *
-     * @param browserInfo .
-     * @param context .
-     */
-    public static synchronized void setBrowserInfoWithContext(final String browserInfo, final String context) {
-        if (browserInfoWithContexts.containsKey(browserInfo)) {
-            List<String> contexts = browserInfoWithContexts.get(browserInfo);
-            if (!contexts.contains(context)) {
-                contexts.add(context);
-            } else {
-                contexts.add(context + " " + DateUtils.getDate());
-            }
-        } else {
-            ArrayList<String> contexts = new ArrayList<String>(1);
-            contexts.add(context);
-            browserInfoWithContexts.put(browserInfo, contexts);
-        }
-    }
-
-    /**
-     * gives the steps List of a given browserinfo key
-     *
-     * @param key .
-     * @return steps List of the given browser
-     */
-    public static synchronized List<String> getContext(String key) {
-        if (browserInfoWithContexts.containsKey(key)) {
-            return browserInfoWithContexts.get(key);
-        }
-        return null;
-
-    }
-
-    /**
-     * Checks whether there are more then one key in the Map
-     * , so there are different browser versions in the key list
-     *
-     * @return true if there are different browsers in the Map
-     */
-    public static boolean detectDifferentBrowsers() {
-        return (browserInfoWithContexts.size() > 1);
-    }
-
-    /**
-     * checks whether there is any browser in the map
-     *
-     * @return true if there is no browser in the map
-     */
-    public static boolean detectAnyBrowser() {
-        return (browserInfoWithContexts.size() <= 0);
     }
 
     public String getUserAgent() {

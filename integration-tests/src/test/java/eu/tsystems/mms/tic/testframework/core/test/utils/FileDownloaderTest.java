@@ -72,8 +72,7 @@ public class FileDownloaderTest extends AbstractTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(Method method) {
-
-        FileDownloader.deleteDownloads();
+        new FileDownloader().cleanup();
     }
 
     /**
@@ -94,7 +93,7 @@ public class FileDownloaderTest extends AbstractTest {
 
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
 
-        FileDownloader.deleteDownloads();
+        downloader.cleanup();
         Assert.assertFalse(file.exists(), "File deleted.");
     }
 

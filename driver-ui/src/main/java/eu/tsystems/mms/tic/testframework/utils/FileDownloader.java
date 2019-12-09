@@ -119,7 +119,9 @@ public class FileDownloader {
 
     /**
      * Deletes all downloads
+     * @deprecated Use {@link #cleanup()} instead
      */
+    @Deprecated
     public static void deleteDownloads() {
         synchronized (downloadList) {
             for (String path : downloadList) {
@@ -132,6 +134,11 @@ public class FileDownloader {
 
             downloadList.clear();
         }
+    }
+
+    public FileDownloader cleanup() {
+        deleteDownloads();
+        return this;
     }
 
     public String getDownloadLocation() {
@@ -148,7 +155,6 @@ public class FileDownloader {
     }
 
     public FileDownloader setTrustAllCertificates(final boolean trustAllCertificates) {
-
         this.trustAllCertificates = trustAllCertificates;
         return this;
     }

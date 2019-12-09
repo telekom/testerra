@@ -298,6 +298,7 @@ public class GuiElement implements
      *
      * @return GuiElement
      */
+    @Override
     public GuiElement getSubElement(By by) {
         return getSubElement(by, null);
     }
@@ -312,6 +313,7 @@ public class GuiElement implements
      * @return GuiElement
      */
     @Deprecated
+    @Override
     public GuiElement getSubElement(By by, String description) {
         return guiElementFacade.getSubElement(by, description);
     }

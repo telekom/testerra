@@ -276,7 +276,6 @@ public class GuiElement implements
      * @return GuiElement
      */
     @Deprecated
-    @Override
     public GuiElement getSubElement(By by) {
         return getSubElement(by, null);
     }
@@ -291,7 +290,6 @@ public class GuiElement implements
      * @return GuiElement
      */
     @Deprecated
-    @Override
     public GuiElement getSubElement(By by, String description) {
         GuiElement subElement = getSubElement(Locate.by(by));
         if (description != null) subElement.setName(description);

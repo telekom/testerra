@@ -45,6 +45,7 @@ import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import net.anthavio.phanbedder.Phanbedder;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -72,6 +73,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -408,108 +410,108 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         String msg,
         String sessionKey
     ) {
-        WebDriver driver;
         LOGGER.info(logSCID() + "Starting WebDriver (" + sessionKey + ") " + msg, new NewSessionMarker());
         org.apache.commons.lang3.time.StopWatch sw = new org.apache.commons.lang3.time.StopWatch();
         sw.start();
 
-        final String errorMessage = "Error starting browser session";
-        if (remoteAddress != null) {
-            /*
-            remote mode
-             */
-            try {
-                driver = new TesterraWebDriver(remoteAddress, capabilities);
-            } catch (Exception e) {
-                WebDriverSessionsManager.SESSION_STARTUP_ERRORS.put(new Date(), e);
-                throw new TesterraSetupException(errorMessage, e);
+        /*
+         * This is the standard way of setting the browser locale for Selenoid based sessions
+         * @see https://aerokube.com/selenoid/latest/#_per_session_environment_variables_env
+         */
+        //        final Locale browserLocale = Locale.getDefault();
+        //        desiredCapabilities.setCapability("env",
+        //            String.format(
+        //                "[\"LANG=%s.UTF-8\", \"LANGUAGE=%s\", \"LC_ALL=%s.UTF-8\"]",
+        //                browserLocale,
+        //                browserLocale.getLanguage(),
+        //                browserLocale
+        //            )
+        //        );
+
+        UserAgentConfig userAgentConfig = WebDriverManager.getUserAgentConfig(browser);
+        Capabilities finalCapabilities;
+        Class<? extends RemoteWebDriver> driverClass;
+
+        switch (browser) {
+            case Browsers.firefox:
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                if (userAgentConfig != null) userAgentConfig.configure(firefoxOptions);
+                firefoxOptions.merge(capabilities);
+                //firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", browserLocale.getLanguage(), browserLocale.getCountry()));
+                finalCapabilities = firefoxOptions;
+                driverClass = FirefoxDriver.class;
+                break;
+            case Browsers.ie:
+                InternetExplorerOptions ieOptions = new InternetExplorerOptions();
+                if (userAgentConfig != null) userAgentConfig.configure(ieOptions);
+                ieOptions.merge(capabilities);
+                ieOptions.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+                finalCapabilities = ieOptions;
+                driverClass = InternetExplorerDriver.class;
+                break;
+            case Browsers.chrome:
+            case Browsers.chromeHeadless:
+                ChromeOptions chromeOptions = new ChromeOptions();
+                if (userAgentConfig != null) userAgentConfig.configure(chromeOptions);
+                chromeOptions.merge(capabilities);
+                //Map<String, Object> prefs = new HashMap<>();
+                //prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
+                //chromeOptions.setExperimentalOption("prefs", prefs);
+                chromeOptions.addArguments("--no-sandbox");
+                if (browser.equals(Browsers.chromeHeadless)) {
+                    chromeOptions.setHeadless(true);
+                }
+                finalCapabilities = chromeOptions;
+                driverClass = ChromeDriver.class;
+                break;
+            case Browsers.phantomjs:
+                File phantomjsFile = getPhantomJSBinary();
+                capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjsFile.getAbsolutePath());
+                capabilities.setBrowserName(BrowserType.PHANTOMJS);
+                capabilities.setJavascriptEnabled(true);
+
+                String[] args = {
+                    "--ssl-protocol=any"
+                };
+                capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, args);
+                finalCapabilities = capabilities;
+                driverClass = PhantomJSDriver.class;
+                break;
+            case Browsers.safari:
+                SafariOptions safariOptions = new SafariOptions();
+                if (userAgentConfig != null) userAgentConfig.configure(safariOptions);
+                safariOptions.merge(capabilities);
+                finalCapabilities = safariOptions;
+                driverClass = SafariDriver.class;
+                break;
+            case Browsers.edge:
+                EdgeOptions edgeOptions = new EdgeOptions();
+                if (userAgentConfig != null) userAgentConfig.configure(edgeOptions);
+                edgeOptions.merge(capabilities);
+                /**
+                 * @todo What is this platform capability for?
+                 */
+                final String platform = null;
+                edgeOptions.setCapability("platform", platform);
+                finalCapabilities = edgeOptions;
+                driverClass = EdgeDriver.class;
+                break;
+            default:
+                throw new TesterraSystemException(ErrorMessages.browserNotSupportedHere(browser));
+        }
+
+        WebDriver driver;
+        try {
+            if (remoteAddress != null) {
+                driver = new TesterraWebDriver(remoteAddress, finalCapabilities);
+                ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
+            } else {
+                Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(Capabilities.class);
+                driver = constructor.newInstance(finalCapabilities);
             }
-
-            // set local file detector
-            ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
-        } else if (browser != null) {
-
-            /*
-             * This is the standard way of setting the browser locale for Selenoid based sessions
-             * @see https://aerokube.com/selenoid/latest/#_per_session_environment_variables_env
-             */
-            //        final Locale browserLocale = Locale.getDefault();
-            //        desiredCapabilities.setCapability("env",
-            //            String.format(
-            //                "[\"LANG=%s.UTF-8\", \"LANGUAGE=%s\", \"LC_ALL=%s.UTF-8\"]",
-            //                browserLocale,
-            //                browserLocale.getLanguage(),
-            //                browserLocale
-            //            )
-            //        );
-
-            UserAgentConfig userAgentConfig = WebDriverManager.getUserAgentConfig(browser);
-            /*
-             local mode
-              */
-            switch (browser) {
-                case Browsers.firefox:
-                    FirefoxOptions firefoxOptions = new FirefoxOptions();
-                    if (userAgentConfig != null) userAgentConfig.configure(firefoxOptions);
-                    firefoxOptions.merge(capabilities);
-                    //firefoxOptions.addPreference("intl.accept_languages", String.format("%s-%s", browserLocale.getLanguage(), browserLocale.getCountry()));
-                    driver = new FirefoxDriver(firefoxOptions);
-                    break;
-                case Browsers.ie:
-                    InternetExplorerOptions ieOptions = new InternetExplorerOptions();
-                    if (userAgentConfig != null) userAgentConfig.configure(ieOptions);
-                    ieOptions.merge(capabilities);
-                    ieOptions.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-                    driver = new InternetExplorerDriver(ieOptions);
-                    break;
-                case Browsers.chrome:
-                case Browsers.chromeHeadless:
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    if (userAgentConfig != null) userAgentConfig.configure(chromeOptions);
-                    chromeOptions.merge(capabilities);
-                    //Map<String, Object> prefs = new HashMap<>();
-                    //prefs.put("intl.accept_languages", String.format("%s_%s", browserLocale.getLanguage(), browserLocale.getCountry()));
-                    //chromeOptions.setExperimentalOption("prefs", prefs);
-                    chromeOptions.addArguments("--no-sandbox");
-                    if (browser.equals(Browsers.chromeHeadless)) {
-                        chromeOptions.setHeadless(true);
-                    }
-                    driver = new ChromeDriver(chromeOptions);
-                    break;
-                case Browsers.phantomjs:
-                    File phantomjsFile = getPhantomJSBinary();
-                    capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjsFile.getAbsolutePath());
-                    capabilities.setBrowserName(BrowserType.PHANTOMJS);
-                    capabilities.setJavascriptEnabled(true);
-
-                    String[] args = {
-                        "--ssl-protocol=any"
-                    };
-                    capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, args);
-                    driver = new PhantomJSDriver(capabilities);
-                    break;
-                case Browsers.safari:
-                    SafariOptions safariOptions = new SafariOptions();
-                    if (userAgentConfig != null) userAgentConfig.configure(safariOptions);
-                    safariOptions.merge(capabilities);
-                    driver = new SafariDriver(safariOptions);
-                    break;
-                case Browsers.edge:
-                    EdgeOptions edgeOptions = new EdgeOptions();
-                    if (userAgentConfig != null) userAgentConfig.configure(edgeOptions);
-                    edgeOptions.merge(capabilities);
-                    /**
-                     * @todo What is this platform capability for?
-                     */
-                    final String platform = null;
-                    edgeOptions.setCapability("platform", platform);
-                    driver = new EdgeDriver(edgeOptions);
-                    break;
-                default:
-                    throw new TesterraSystemException(ErrorMessages.browserNotSupportedHere(browser));
-            }
-        } else {
-            throw new TesterraSystemException("Internal Error when starting webdriver.");
+        } catch (Exception e) {
+            WebDriverSessionsManager.SESSION_STARTUP_ERRORS.put(new Date(), e);
+            throw new TesterraSetupException("Error starting browser session", e);
         }
 
         sw.stop();

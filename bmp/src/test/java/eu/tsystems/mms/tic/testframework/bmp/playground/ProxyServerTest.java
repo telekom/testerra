@@ -41,7 +41,7 @@ public class ProxyServerTest extends AbstractTest {
     public void setupFFProfile() {
         WebDriverManager.config().webDriverMode = WebDriverMode.remote;
 
-        DesiredCapabilities desiredCapabilities = WebDriverManagerUtils.generateNewDesiredCapabilities();
+        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         WebDriverManagerUtils.addProxyToCapabilities(desiredCapabilities, "localhost:9999");
         WebDriverManager.setGlobalExtraCapabilities(desiredCapabilities);
 

@@ -381,6 +381,7 @@ public final class WebDriverManagerUtils {
      *
      * @return DesiredCapabilities.
      */
+    @Deprecated
     public static DesiredCapabilities generateNewDesiredCapabilities() {
         DesiredCapabilities cap = new DesiredCapabilities();
         return cap;

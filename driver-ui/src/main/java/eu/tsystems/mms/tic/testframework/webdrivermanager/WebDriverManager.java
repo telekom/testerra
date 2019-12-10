@@ -73,7 +73,7 @@ public final class WebDriverManager {
     /**
      * WebDriverManager configuration set. Modify by config() call!
      */
-    private static WebDriverManagerConfig webdriverManagerConfig = new WebDriverManagerConfig();
+    private static WebDriverManagerConfig webdriverManagerConfig;
     /**
      * Executing selenium hosts. Package local access for WDInternal class.
      */
@@ -317,6 +317,9 @@ public final class WebDriverManager {
      * @return .
      */
     public static WebDriverManagerConfig config() {
+        if (webdriverManagerConfig==null) {
+            webdriverManagerConfig = new WebDriverManagerConfig();
+        }
         return webdriverManagerConfig;
     }
 

@@ -243,6 +243,25 @@ public class FileDownloader {
     }
 
     /**
+     * @deprecated Use instance {@link #download(WebDriver, String)} instead
+     */
+    @Deprecated
+    public static String download(
+        String urlString,
+        File targetFile,
+        Proxy proxy,
+        int timeoutMS,
+        boolean trustAll,
+        SSLSocketFactory sslSocketFactory,
+        String cookieString,
+        boolean useSecondConnection
+    ) throws IOException {
+        URL url = new URL(urlString);
+        FileDownloader downloader = new FileDownloader();
+        return downloader.download(url, targetFile, proxy, timeoutMS, trustAll, sslSocketFactory, cookieString, useSecondConnection);
+    }
+
+    /**
      * Returns the absolute path to the target file as a String.
      *
      * @param url

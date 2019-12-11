@@ -173,6 +173,10 @@ public class FileDownloader {
         return this;
     }
 
+    public String download(GuiElement element) throws IOException {
+        return this.download(element, null);
+    }
+
     /**
      * Download the file specified in the href/src attribute of a WebElement
      *
@@ -180,7 +184,7 @@ public class FileDownloader {
      * @param targetFileName String
      * @return String
      */
-    public String download(final GuiElement element, final String targetFileName) throws IOException {
+    public String download(GuiElement element, String targetFileName) throws IOException {
 
         LOGGER.info("Try to get href attribute of GuiElement");
         String link = element.getAttribute("href");
@@ -193,7 +197,7 @@ public class FileDownloader {
             throw new TesterraSystemException("Neither href nor src attribute found on GuiElement.");
         }
 
-        return this.download(element.getDriver(), link, targetFileName);
+        return this.download(element.getWebDriver(), link, targetFileName);
     }
 
     public File download(WebDriver driver, String urlString) throws IOException {
@@ -209,11 +213,11 @@ public class FileDownloader {
      * @param targetFileName String
      * @return String
      */
-    public String download(final WebDriver driver, final String url, String targetFileName) throws IOException {
+    public String download(WebDriver driver, String url, String targetFileName) throws IOException {
         return this.pDownload(driver, url, targetFileName, DEFAULT_TIMEOUT_MS);
     }
 
-    public String download(final WebDriver driver, final String url, String targetFileName, int timeoutMS) throws IOException {
+    public String download(WebDriver driver, String url, String targetFileName, int timeoutMS) throws IOException {
         return this.pDownload(driver, url, targetFileName, timeoutMS);
     }
 
@@ -225,10 +229,15 @@ public class FileDownloader {
      * @param targetFileName String
      * @return String
      */
-    private String pDownload(final WebDriver driver, final String urlString, final String targetFileName, int timeoutMS) throws IOException {
+    private String pDownload(
+        WebDriver driver,
+        String urlString,
+        String targetFileName,
+        int timeoutMS
+    ) throws IOException {
         String cookieString = null;
 
-        if (this.isImitateCookies()) {
+        if (this.isImitateCookies() && driver != null) {
             cookieString = WebDriverUtils.getCookieString(driver);
         }
 
@@ -243,7 +252,7 @@ public class FileDownloader {
     }
 
     /**
-     * @deprecated Use instance {@link #download(WebDriver, String)} instead
+     * @deprecated Use instance {@link #download(WebDriver, String, String)} instead
      */
     @Deprecated
     public static String download(

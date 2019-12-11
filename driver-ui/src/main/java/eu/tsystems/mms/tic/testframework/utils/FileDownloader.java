@@ -173,8 +173,8 @@ public class FileDownloader {
         return this;
     }
 
-    public String download(GuiElement element) throws IOException {
-        return this.download(element, null);
+    public File download(GuiElement element) throws IOException {
+        return new File(this.download(element, null));
     }
 
     /**

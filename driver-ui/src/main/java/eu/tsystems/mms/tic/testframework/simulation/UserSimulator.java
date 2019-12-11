@@ -1,8 +1,8 @@
 package eu.tsystems.mms.tic.testframework.simulation;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.GuiElementActions;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.openqa.selenium.WebElement;
 
@@ -17,8 +17,8 @@ public class UserSimulator extends AbstractSimulator {
     }
 
     @Override
-    public GuiElementActions sendKeys(CharSequence... charSequences) {
-        float cps = IGuiElement.Properties.USER_INPUT_CPM.asLong()/60;
+    public UiElementActions sendKeys(CharSequence... charSequences) {
+        float cps = UiElement.Properties.USER_INPUT_CPM.asLong()/60;
         if (cps <= 0) cps = 1;
         int cpsSleepMs = Math.round(1000/cps);
         final WebElement webElement = guiElement.core.findWebElement();

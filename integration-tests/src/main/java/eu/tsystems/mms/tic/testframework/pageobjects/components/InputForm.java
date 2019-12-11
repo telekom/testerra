@@ -2,19 +2,18 @@ package eu.tsystems.mms.tic.testframework.pageobjects.components;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.IteractiveUiElement;
 import org.openqa.selenium.By;
 
 public class InputForm extends AbstractComponent<InputForm> {
 
     @Check
-    private IGuiElement button = find(By.className("component-btn"));
+    private UiElement button = find(By.className("component-btn"));
 
-    private IGuiElement input = findByQa("input/text");
+    private UiElement input = findByQa("input/text");
 
-    public InputForm(IGuiElement rootElement) {
+    public InputForm(UiElement rootElement) {
         super(rootElement);
     }
 
@@ -23,11 +22,11 @@ public class InputForm extends AbstractComponent<InputForm> {
         return this;
     }
 
-    public InteractiveGuiElement button() {
+    public IteractiveUiElement button() {
         return button;
     }
 
-    public InteractiveGuiElement input() {
+    public IteractiveUiElement input() {
         return input;
     }
 }

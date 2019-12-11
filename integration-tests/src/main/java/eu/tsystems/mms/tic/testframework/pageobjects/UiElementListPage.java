@@ -4,41 +4,41 @@ import eu.tsystems.mms.tic.testframework.pageobjects.components.TableRow;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class NewGuiElementListPage extends Page {
-    public NewGuiElementListPage(WebDriver driver) {
+public class UiElementListPage extends Page {
+    public UiElementListPage(WebDriver driver) {
         super(driver);
     }
 
-    public IGuiElement getNavigation() {
+    public UiElement getNavigation() {
         return findByQa("section/navigation");
     }
 
-    public IGuiElement getTable() {
+    public UiElement getTable() {
         return findByQa("section/table");
     }
 
-    public IGuiElement getNavigationSubElementsByTagName() {
+    public UiElement getNavigationSubElementsByTagName() {
         return getNavigation().find(By.tagName("a"));
     }
 
-    public IGuiElement getNavigationSubElementsByChildrenXPath() {
+    public UiElement getNavigationSubElementsByChildrenXPath() {
         return getNavigation().find(By.xpath("./a"));
     }
 
-    public IGuiElement getNavigationSubElementsByDescendantsXPath() {
+    public UiElement getNavigationSubElementsByDescendantsXPath() {
         return getNavigation().find(By.xpath(".//a"));
     }
 
-    public IGuiElement getNavigationSubElementsByAbsoluteChildrenXPath() {
+    public UiElement getNavigationSubElementsByAbsoluteChildrenXPath() {
         return find(By.xpath("//nav[@data-qa='section/navigation']/a"));
     }
 
-    public IGuiElement getNavigationSubElementsByAbsoluteDescendantsXPath() {
+    public UiElement getNavigationSubElementsByAbsoluteDescendantsXPath() {
         return find(By.xpath("//nav[@data-qa='section/navigation']//a"));
     }
 
     public TableRow getTableRowsByTagName() {
-        IGuiElement tr = getTable().find(By.tagName("tr"));
+        UiElement tr = getTable().find(By.tagName("tr"));
         return createComponent(TableRow.class, tr);
     }
 }

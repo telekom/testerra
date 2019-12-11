@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.openqa.selenium.Rectangle;
 
@@ -23,7 +23,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public BinaryAssertion<Boolean> contains(TestableGuiElement guiElement) {
+    public BinaryAssertion<Boolean> contains(TestableUiElement guiElement) {
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -42,7 +42,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public BinaryAssertion<Boolean> intersects(TestableGuiElement guiElement) {
+    public BinaryAssertion<Boolean> intersects(TestableUiElement guiElement) {
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -61,7 +61,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public BinaryAssertion<Boolean> leftOf(TestableGuiElement guiElement) {
+    public BinaryAssertion<Boolean> leftOf(TestableUiElement guiElement) {
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -76,7 +76,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public BinaryAssertion<Boolean> rightOf(TestableGuiElement guiElement) {
+    public BinaryAssertion<Boolean> rightOf(TestableUiElement guiElement) {
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -91,7 +91,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public BinaryAssertion<Boolean> above(TestableGuiElement guiElement) {
+    public BinaryAssertion<Boolean> above(TestableUiElement guiElement) {
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -106,7 +106,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
     }
 
     @Override
-    public BinaryAssertion<Boolean> below(TestableGuiElement guiElement) {
+    public BinaryAssertion<Boolean> below(TestableUiElement guiElement) {
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {

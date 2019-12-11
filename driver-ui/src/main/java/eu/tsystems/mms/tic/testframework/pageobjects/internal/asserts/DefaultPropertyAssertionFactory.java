@@ -1,14 +1,14 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public class DefaultPropertyAssertionFactory implements PropertyAssertionFactory, Loggable {
     private boolean wait = false;
-    private int timeoutInSeconds = IGuiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
+    private int timeoutInSeconds = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
 
     @Override
     public <ASSERTION extends PropertyAssertion, TYPE> ASSERTION create(

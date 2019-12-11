@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
@@ -37,7 +37,7 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
     private final boolean fast;
     protected String readableMessage;
 
-    protected BasicGuiElement checkableInstance;
+    protected BasicUiElement checkableInstance;
 
     public CheckFieldAction(FieldWithActionConfig fieldWithActionConfig, AbstractPage declaringPage) {
         super(fieldWithActionConfig.field, declaringPage);
@@ -62,11 +62,11 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
     @Override
     public boolean before() {
         boolean isCheckAnnotated = field.isAnnotationPresent(Check.class);
-        boolean isCheckable = BasicGuiElement.class.isAssignableFrom(typeOfField);
+        boolean isCheckable = BasicUiElement.class.isAssignableFrom(typeOfField);
 
         if (isCheckAnnotated && !isCheckable) {
             throw new TesterraRuntimeException("Field {" + fieldName + "} of " + declaringClass.getCanonicalName()
-                    + " is annotated with @Check, but the class doesn't implement " + BasicGuiElement.class.getCanonicalName());
+                    + " is annotated with @Check, but the class doesn't implement " + BasicUiElement.class.getCanonicalName());
         }
 
         if (isCheckable) {
@@ -91,7 +91,7 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
     @Override
     public void execute() {
         try {
-            checkableInstance = (BasicGuiElement) field.get(declaringPage);
+            checkableInstance = (BasicUiElement) field.get(declaringPage);
         } catch (IllegalAccessException e) {
             log().error("Internal Error", e);
             return;

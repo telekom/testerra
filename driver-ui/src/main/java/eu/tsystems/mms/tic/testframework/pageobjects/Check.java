@@ -47,7 +47,7 @@ public @interface Check {
     boolean nonFunctional() default false;
 
     /**
-     * Defaults to {@link IGuiElement.Properties#ELEMENT_TIMEOUT_SECONDS}
+     * Defaults to {@link UiElement.Properties#ELEMENT_TIMEOUT_SECONDS}
      */
     int timeout() default -1;
 

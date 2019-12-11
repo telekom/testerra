@@ -144,7 +144,7 @@ public class Locate {
     }
 
     public Locate qa(String string) {
-        by = new By.ByXPath(String.format("//*[@%s='%s']", IGuiElement.Properties.QA_ATTRIBUTE.asString(), string));
+        by = new By.ByXPath(String.format("//*[@%s='%s']", UiElement.Properties.QA_ATTRIBUTE.asString(), string));
         return this;
     }
 

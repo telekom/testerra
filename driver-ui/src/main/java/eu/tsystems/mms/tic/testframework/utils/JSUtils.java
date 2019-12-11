@@ -31,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
@@ -338,7 +338,7 @@ public final class JSUtils {
      * @param element GuiElement
      * @return String
      */
-    public static String getJavaScriptSelector(final IGuiElement element) {
+    public static String getJavaScriptSelector(final UiElement element) {
 
         final String jsFrameExpander = ".contentDocument";
         String hierarchyFrameSelector = "document";
@@ -347,8 +347,8 @@ public final class JSUtils {
         final IFrameLogic frameLogic = element.getFrameLogic();
 
         if (frameLogic != null) {
-            List<IGuiElement> allFramesInOrder = frameLogic.getAllFramesInOrder();
-            for (IGuiElement guiElement : allFramesInOrder) {
+            List<UiElement> allFramesInOrder = frameLogic.getAllFramesInOrder();
+            for (UiElement guiElement : allFramesInOrder) {
                 hierarchyFrameSelector = pGetSimpleJsSelector(guiElement, hierarchyFrameSelector) + jsFrameExpander;
             }
         }
@@ -366,7 +366,7 @@ public final class JSUtils {
      * @param documentSelector String Current Selector
      * @return String
      */
-    private static String pGetSimpleJsSelector(final IGuiElement element, final String documentSelector) {
+    private static String pGetSimpleJsSelector(final UiElement element, final String documentSelector) {
 
         final String jsById = documentSelector + ".getElementById(\"###\")";
         final String jsByClassName = documentSelector + ".getElementsByClassName(\"###\")[0]";
@@ -422,7 +422,7 @@ public final class JSUtils {
         return selector.toString().replaceFirst("By.*:", "").trim();
     }
 
-    public static Map<String, Long> getElementInnerBorders(IGuiElement guiElement) {
+    public static Map<String, Long> getElementInnerBorders(UiElement guiElement) {
         String cmd = "el = arguments[0];" +
                 "bl = window.getComputedStyle(el, null).getPropertyValue('border-left-width');" +
                 "br = window.getComputedStyle(el, null).getPropertyValue('border-right-width');" +
@@ -565,7 +565,7 @@ public final class JSUtils {
         return 0;
     }
 
-    public static Point getElementLocationInViewPort(IGuiElement guiElement) {
+    public static Point getElementLocationInViewPort(UiElement guiElement) {
         int x = 0;
         int y = 0;
 
@@ -573,8 +573,8 @@ public final class JSUtils {
         calculate frames
          */
         if (guiElement.getFrameLogic() != null) {
-            IGuiElement[] frames = guiElement.getFrameLogic().getFrames();
-            for (IGuiElement frame : frames) {
+            UiElement[] frames = guiElement.getFrameLogic().getFrames();
+            for (UiElement frame : frames) {
                 Point elementLocationInParent = getElementLocationInParent(frame, Where.TOP_LEFT);
                 x += elementLocationInParent.x;
                 y += elementLocationInParent.y;
@@ -596,7 +596,7 @@ public final class JSUtils {
         TOP_LEFT
     }
 
-    public static Point getElementLocationInParent(IGuiElement guiElement, Where where) {
+    public static Point getElementLocationInParent(UiElement guiElement, Where where) {
         WebElement webElement = guiElement.getWebElement();
         IFrameLogic frameLogic = guiElement.getFrameLogic();
 
@@ -631,7 +631,7 @@ public final class JSUtils {
         }
     }
 
-    public static Point getRelativePositionVector(IGuiElement from, IGuiElement to) {
+    public static Point getRelativePositionVector(UiElement from, UiElement to) {
         Point start = getElementLocationInViewPort(from);
         Point end = getElementLocationInViewPort(to);
 

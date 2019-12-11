@@ -67,9 +67,9 @@ public class DefaultPageFactory implements PageObjectFactory {
     }
 
     @Override
-    public <T extends Component> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
+    public <T extends Component> T createComponent(Class<T> componentClass, UiElement rootElement) {
         try {
-            Constructor<T> constructor = componentClass.getConstructor(IGuiElement.class);
+            Constructor<T> constructor = componentClass.getConstructor(UiElement.class);
             T component = constructor.newInstance(rootElement);
             component.checkGuiElements();
             return component;

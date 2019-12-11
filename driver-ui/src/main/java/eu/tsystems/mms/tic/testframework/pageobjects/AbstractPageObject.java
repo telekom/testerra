@@ -10,21 +10,21 @@ import org.openqa.selenium.By;
 public abstract class AbstractPageObject extends AbstractTest implements PageObject {
     private static final PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
 
-    protected abstract IGuiElement find(Locate locator);
+    protected abstract UiElement find(Locate locator);
 
-    protected IGuiElement findById(Object id) {
+    protected UiElement findById(Object id) {
         return find(Locate.by().id(id));
     }
 
-    protected IGuiElement findByQa(String qa) {
+    protected UiElement findByQa(String qa) {
         return find(Locate.by().qa(qa));
     }
 
-    protected IGuiElement find(By by) {
+    protected UiElement find(By by) {
         return find(Locate.by(by));
     }
 
-    protected <T extends Component> T createComponent(Class<T> componentClass, IGuiElement rootElement) {
+    protected <T extends Component> T createComponent(Class<T> componentClass, UiElement rootElement) {
         return pageFactory.createComponent(componentClass, rootElement);
     }
 

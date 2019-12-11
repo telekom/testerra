@@ -2,7 +2,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import java.util.Iterator;
 
-public interface GuiElementList<SELF> extends
+public interface UiElementList<SELF> extends
     Iterable<SELF>,
     Iterator<SELF>
 {

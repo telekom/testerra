@@ -1,36 +1,36 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 
 /**
  * All interactions that can be performed on a GuiElement
  * @author Mike Reiche
  */
-public interface GuiElementActions extends TestableGuiElement {
+public interface UiElementActions extends TestableUiElement {
     /**
      * Select/Deselect a selectable element.
      */
-    default GuiElementActions select(boolean select) {
+    default UiElementActions select(boolean select) {
         if (select) {
             return select();
         } else {
             return deselect();
         }
     }
-    GuiElementActions click();
-    GuiElementActions doubleClick();
-    GuiElementActions rightClick();
-    GuiElementActions select();
-    GuiElementActions deselect();
-    GuiElementActions sendKeys(CharSequence... charSequences);
-    GuiElementActions clear();
-    GuiElementActions hover();
+    UiElementActions click();
+    UiElementActions doubleClick();
+    UiElementActions rightClick();
+    UiElementActions select();
+    UiElementActions deselect();
+    UiElementActions sendKeys(CharSequence... charSequences);
+    UiElementActions clear();
+    UiElementActions hover();
     /**
      * This method scrolls to the element with an given offset.
      */
-    GuiElementActions scrollTo(int yOffset);
+    UiElementActions scrollTo(int yOffset);
 
-    default GuiElementActions scrollTo() {
+    default UiElementActions scrollTo() {
         return scrollTo(0);
     }
 

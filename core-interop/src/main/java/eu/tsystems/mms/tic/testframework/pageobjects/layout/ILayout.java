@@ -1,31 +1,31 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.layout;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 
 @Deprecated
 public interface ILayout {
-    LayoutBorders getElementLayoutBorders(IGuiElement GuiElementFacade);
+    LayoutBorders getElementLayoutBorders(UiElement GuiElementFacade);
 
-    ILayout leftOf(IGuiElement distanceGE);
+    ILayout leftOf(UiElement distanceGE);
 
-    void checkOn(IGuiElement actualGE, Assertion configuredAssert);
+    void checkOn(UiElement actualGE, Assertion configuredAssert);
 
     String toStringText();
 
-    ILayout above(IGuiElement distanceGE);
+    ILayout above(UiElement distanceGE);
 
-    ILayout rightOf(IGuiElement distanceGE);
+    ILayout rightOf(UiElement distanceGE);
 
-    ILayout below(IGuiElement distanceGE);
+    ILayout below(UiElement distanceGE);
 
-    ILayout sameTop(IGuiElement distanceGE, int delta);
+    ILayout sameTop(UiElement distanceGE, int delta);
 
-    ILayout sameBottom(IGuiElement distanceGE, int delta);
+    ILayout sameBottom(UiElement distanceGE, int delta);
 
-    ILayout sameLeft(IGuiElement distanceGE, int delta);
+    ILayout sameLeft(UiElement distanceGE, int delta);
 
-    ILayout sameRight(IGuiElement distanceGE, int delta);
+    ILayout sameRight(UiElement distanceGE, int delta);
 
     @Deprecated
     public static class LayoutBorders {

@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import org.openqa.selenium.Rectangle;
 
 /**
@@ -8,12 +8,12 @@ import org.openqa.selenium.Rectangle;
  * @author Mike Reiche
  */
 public interface RectAssertion extends ActualProperty<Rectangle> {
-    BinaryAssertion<Boolean> contains(TestableGuiElement guiElement);
-    BinaryAssertion<Boolean> intersects(TestableGuiElement guiElement);
-    BinaryAssertion<Boolean> leftOf(TestableGuiElement guiElement);
-    BinaryAssertion<Boolean> rightOf(TestableGuiElement guiElement);
-    BinaryAssertion<Boolean> above(TestableGuiElement guiElement);
-    BinaryAssertion<Boolean> below(TestableGuiElement guiElement);
+    BinaryAssertion<Boolean> contains(TestableUiElement guiElement);
+    BinaryAssertion<Boolean> intersects(TestableUiElement guiElement);
+    BinaryAssertion<Boolean> leftOf(TestableUiElement guiElement);
+    BinaryAssertion<Boolean> rightOf(TestableUiElement guiElement);
+    BinaryAssertion<Boolean> above(TestableUiElement guiElement);
+    BinaryAssertion<Boolean> below(TestableUiElement guiElement);
     HorizontalDistanceAssertion fromRight();
     HorizontalDistanceAssertion fromLeft();
     VerticalDistanceAssertion fromTop();

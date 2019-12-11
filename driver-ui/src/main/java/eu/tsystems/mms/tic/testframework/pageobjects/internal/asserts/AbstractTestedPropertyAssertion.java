@@ -4,7 +4,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
@@ -34,7 +34,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
         if (pageOverrides.hasTimeoutSeconds()) useTimeoutSeconds = pageOverrides.getTimeoutSeconds();
 
         Timer timer = new Timer(
-            IGuiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(),
+            UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(),
             useTimeoutSeconds * 1000
         );
         ThrowablePackedResponse<AssertionError> packedResponse = timer.executeSequence(new Timer.Sequence<AssertionError>() {

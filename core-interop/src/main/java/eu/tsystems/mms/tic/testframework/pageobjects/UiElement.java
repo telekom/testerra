@@ -34,9 +34,9 @@ import org.openqa.selenium.WebElement;
  * GuiElement with new fluent API support
  * @author Mike Reiche
  */
-public interface IGuiElement extends
-    InteractiveGuiElement,
-    Nameable<IGuiElement>,
+public interface UiElement extends
+    IteractiveUiElement,
+    Nameable<UiElement>,
     WebDriverRetainer,
     HasParent
 {
@@ -103,17 +103,17 @@ public interface IGuiElement extends
 
     WebElement getWebElement();
 
-    IGuiElement find(Locate locate);
+    UiElement find(Locate locate);
 
-    default IGuiElement find(By by) {
+    default UiElement find(By by) {
         return find(Locate.by(by));
     }
-    default IGuiElement findById(Object id) {
+    default UiElement findById(Object id) {
         return find(By.id(id.toString()));
     }
-    default IGuiElement findByQa(String qa) {
+    default UiElement findByQa(String qa) {
         return find(Locate.by().qa(qa));
     }
 
-    GuiElementList<IGuiElement> list();
+    UiElementList<UiElement> list();
 }

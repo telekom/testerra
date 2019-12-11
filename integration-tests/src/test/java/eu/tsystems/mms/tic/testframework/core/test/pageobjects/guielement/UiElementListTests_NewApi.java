@@ -22,55 +22,52 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.NewGuiElementListPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementListPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.components.TableRow;
-import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
-public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
-    private NewGuiElementListPage preparePage() {
-        return pageFactory.createPage(NewGuiElementListPage.class);
+public class UiElementListTests_NewApi extends AbstractTestSitesTest {
+    private UiElementListPage preparePage() {
+        return pageFactory.createPage(UiElementListPage.class);
     }
 
     @Test
     public void test_getSubElement_getList_byTagName() {
-        NewGuiElementListPage page = preparePage();
-        IGuiElement items = page.getNavigationSubElementsByTagName();
+        UiElementListPage page = preparePage();
+        UiElement items = page.getNavigationSubElementsByTagName();
         testNavigationItems(items);
     }
 
     @Test
     public void test_getSubElement_getList_byChildrenXPath() {
-        NewGuiElementListPage page = preparePage();
-        IGuiElement items = page.getNavigationSubElementsByChildrenXPath();
+        UiElementListPage page = preparePage();
+        UiElement items = page.getNavigationSubElementsByChildrenXPath();
         testNavigationItems(items);
     }
 
     @Test
     public void test_getSubElement_getList_byDescendantsXPath() {
-        NewGuiElementListPage page = preparePage();
-        IGuiElement items = page.getNavigationSubElementsByDescendantsXPath();
+        UiElementListPage page = preparePage();
+        UiElement items = page.getNavigationSubElementsByDescendantsXPath();
         testNavigationItems(items);
     }
 
     @Test
     public void test_getList_byAbsoluteChildrenXPath() {
-        NewGuiElementListPage page = preparePage();
-        IGuiElement items = page.getNavigationSubElementsByAbsoluteChildrenXPath();
+        UiElementListPage page = preparePage();
+        UiElement items = page.getNavigationSubElementsByAbsoluteChildrenXPath();
         testNavigationItems(items);
     }
 
     @Test
     public void test_getList_byAbsoluteDescendantsXPath() {
-        NewGuiElementListPage page = preparePage();
-        IGuiElement items = page.getNavigationSubElementsByAbsoluteDescendantsXPath();
+        UiElementListPage page = preparePage();
+        UiElement items = page.getNavigationSubElementsByAbsoluteDescendantsXPath();
         testNavigationItems(items);
     }
 
-    private void testNavigationItems(IGuiElement items) {
+    private void testNavigationItems(UiElement items) {
         items.numberOfElements().is(3);
 
         items.list().first().text().is("First");
@@ -80,7 +77,7 @@ public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
 
     @Test
     public void test_getSubElement_getList_tableRowsByTagName() {
-        NewGuiElementListPage page = preparePage();
+        UiElementListPage page = preparePage();
         TableRow rows = page.getTableRowsByTagName();
         rows.numberOfElements().is(4);
 
@@ -92,12 +89,12 @@ public class GuiElementListTests_NewApi extends AbstractTestSitesTest {
 
     @Test
     public void test_getSubElement_getList_tableRowsByDescendantsXPath() {
-        NewGuiElementListPage page = preparePage();
+        UiElementListPage page = preparePage();
         TableRow rows = page.getTableRowsByTagName();
         rows.numberOfElements().is(4);
 
         rows.list().first().linkByXPath().value(Attribute.HREF).endsWith("mkri");
-        rows.list().get(2).linkByXPath().value(Attribute.HREF).endsWith("joku");
+        rows.list().get(1).linkByXPath().value(Attribute.HREF).endsWith("joku");
         rows.list().last().linkByXPath().value(Attribute.HREF).endsWith("erku");
     }
 

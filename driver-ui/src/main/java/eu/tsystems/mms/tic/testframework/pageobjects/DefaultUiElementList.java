@@ -1,15 +1,15 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-public class DefaultGuiElementList extends AbstractGuiElementList<IGuiElement> {
+public class DefaultUiElementList extends AbstractUiElementList<UiElement> {
     private GuiElement guiElement;
 
-    public DefaultGuiElementList(GuiElement guiElement) {
+    public DefaultUiElementList(GuiElement guiElement) {
         super(guiElement);
         this.guiElement = guiElement;
     }
 
     @Override
-    public IGuiElement get(int i) {
+    public UiElement get(int i) {
         return new GuiElement(guiElement, i);
     }
 }

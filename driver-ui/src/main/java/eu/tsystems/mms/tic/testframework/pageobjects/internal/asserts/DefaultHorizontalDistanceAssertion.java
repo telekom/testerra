@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import org.openqa.selenium.Rectangle;
 
 public class DefaultHorizontalDistanceAssertion extends AbstractPropertyAssertion<Integer> implements HorizontalDistanceAssertion {
@@ -10,7 +10,7 @@ public class DefaultHorizontalDistanceAssertion extends AbstractPropertyAssertio
     }
 
     @Override
-    public QuantityAssertion<Integer> toRightOf(TestableGuiElement guiElement) {
+    public QuantityAssertion<Integer> toRightOf(TestableUiElement guiElement) {
         return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
@@ -26,7 +26,7 @@ public class DefaultHorizontalDistanceAssertion extends AbstractPropertyAssertio
     }
 
     @Override
-    public QuantityAssertion<Integer> toLeftOf(TestableGuiElement guiElement) {
+    public QuantityAssertion<Integer> toLeftOf(TestableUiElement guiElement) {
         return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {

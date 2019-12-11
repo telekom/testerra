@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import org.openqa.selenium.By;
@@ -35,7 +35,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Provides basic {@link IGuiElement} features
+ * Provides basic {@link UiElement} features
  * and acts as adapter for {@link WebDriver} implementations
  */
 public interface GuiElementCore extends GuiElementStatusCheck {

@@ -19,10 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 
 /**
- * @deprecated This decorator can be replaced by {@link BasicGuiElement}
+ * @deprecated This decorator can be replaced by {@link BasicUiElement}
  */
 @Deprecated
 public abstract class GuiElementStatusCheckDecorator implements GuiElementStatusCheck {

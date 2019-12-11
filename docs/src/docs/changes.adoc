@@ -72,7 +72,7 @@ MyPage page = new MyPage(WebDriverManager.getWebDriver());
 The new standard way to implement Sub Pages aka Components is now
 ```java
 public class MyForm extends AbstractComponent<MyForm> {
-    public MyForm(IGuiElement rootElement) {
+    public MyForm(UiElement rootElement) {
         super(rootElement);
     }
 
@@ -95,7 +95,7 @@ The standard way of implicit GuiElement checks is now
 ```java
 class MyPage extends Page {
     @Check
-    private IGuiElement guiElement = findById(42);
+    private UiElement uiElement = findById(42);
 }
 ```
 
@@ -122,8 +122,8 @@ page.checkPage(); <2>
 The new standard way to instantiate GuiElements is now
 ```java
 class MyPage extends Page {
-    private IGuiElement guiElement = findById(42);
-    private IGuiElement guiElement = find(By.xpath("//div[1]"));
+    private UiElement uiElement = findById(42);
+    private UiElement uiElement = find(By.xpath("//div[1]"));
 }
 ```
 
@@ -140,8 +140,8 @@ class MyPage extends Page {
 For descendant elements
 ```java
 class MyPage extends Page {
-    private IGuiElement parent = findById(42);
-    private IGuiElement sub = parent.find(By.xpath("//div[1]"));
+    private UiElement parent = findById(42);
+    private UiElement sub = parent.find(By.xpath("//div[1]"));
 }
 ```
 
@@ -158,7 +158,7 @@ class MyPage extends Page {
 
 List elements (Draft 1)
 ```java
-IGuiElement anchors = find(By.tagName("a"));
+UiElement anchors = find(By.tagName("a"));
 
 anchors.numberOfElements().is(3); <1>
 anchors.firstElement().value(Attribute.TITLE).is("StartPage"); <2>
@@ -170,7 +170,7 @@ anchors.forEach(anchor -> anchor.value(Attribute.HREF).beginsWith("https")); <5>
 
 List elements (Draft 2)
 ```java
-IGuiElement anchors = find(By.tagName("a"));
+UiElement anchors = find(By.tagName("a"));
 
 anchors.numberOfElements().is(3); <1>
 anchors.list().first().value(Attribute.TITLE).is("StartPage"); <2>
@@ -199,8 +199,8 @@ list.forEach(anchor -> Assert.assertTrue(anchor.getAttribute("href").startsWith(
 For elements in frames
 ```java
 class MyPage extends Page {
-    private IGuiElement frame = find(By.tagName("frame"));
-    private IGuiElement guiElement = inFrame(frame).findById(14);
+    private UiElement frame = find(By.tagName("frame"));
+    private UiElement uiElement = inFrame(frame).findById(14);
 }
 ```
 
@@ -226,8 +226,8 @@ Assert.assertTrue(false);
 
 The new standard way to perform assertions on elements like Pages and GuiElements is now
 ```java
-guiElement.displayed().isTrue(); <1>
-guiElement.value().contains("Hallo Welt"); <2>
+uiElement.displayed().isTrue(); <1>
+uiElement.value().contains("Hallo Welt"); <2>
 page.url().endsWith("index.html"); <3>
 page.anyElementContainsText("You see me").displayed().isTrue(); <4>
 ```
@@ -244,7 +244,7 @@ page.assertIsTextDisplayed("You see me"); <4>
 
 Perform decisions on occurrence with the `waitFor` prefix.
 ```
-if (guiElement.waitFor().displayed().isTrue()) {
+if (uiElement.waitFor().displayed().isTrue()) {
     // Optional element became visible
 }
 ```
@@ -259,8 +259,8 @@ if (guiElement.waits().waitForIsDisplayed()) {
 
 Support of more features through consistent assertion API
 ```java
-guiElement.css("display").is("none"); <1>
-guiElement.text().matches("^Hello\\s.orld").isTrue(); <2>
+uiElement.css("display").is("none"); <1>
+uiElement.text().matches("^Hello\\s.orld").isTrue(); <2>
 page.anyElementContainsText("You see me").numberOfElements().is(1); <3>
 ```
 <1> Perform assertions on the element's CSS properties
@@ -270,7 +270,7 @@ page.anyElementContainsText("You see me").numberOfElements().is(1); <3>
 ==== Screenshot based Assertions
 The new standard way to perform screenshot based assertions is now
 ```java
-guiElement.screenshot().pixelDistance("ElementReference").isLowerThan(1);
+uiElement.screenshot().pixelDistance("ElementReference").isLowerThan(1);
 page.screenshot().pixelDistance("PageReference").isBetween(0, 10);
 ```
 
@@ -307,7 +307,7 @@ left.asserts().assertLayout(Layout.outer().sameRight(right, 0)); <2>
 
 The new standard way to collect assertions of GuiElements in Tests or Pages is now
 ```java
-Control.collectAssertions(() -> guiElement.displayed().isTrue());
+Control.collectAssertions(() -> uiElement.displayed().isTrue());
 ```
 
 For many GuiElements or Pages
@@ -315,7 +315,7 @@ For many GuiElements or Pages
 Control.collectAssertions(() -> {
     MyPage page = pageFactory.create(MyPage.class);
     page.title().is("TestPage");
-    guiElement.value().contains("Hello");
+    uiElement.value().contains("Hello");
 });
 ```
 
@@ -371,7 +371,7 @@ tt.guielement.default.assertcollector=true
 
 The new standard way for non functional assertions works like <<Collected Assertions>>
 ```java
-Control.nonFunctional(() -> guiElement.displayed().isTrue());
+Control.nonFunctional(() -> uiElement.displayed().isTrue());
 ```
 
 [NOTE]
@@ -434,7 +434,7 @@ The new standard way for setting GuiElement timeouts on `@Check` is now
 ```java
 class MyPage extends Page {
     @Check(timeout = 1)
-    private IGuiElement guiElement;
+    private UiElement uiElement;
 }
 ```
 [NOTE]
@@ -460,7 +460,7 @@ page.setElementTimeoutInSeconds(1);
 
 Override during runtime
 ```java
-Control.withElementTimeout(1, () -> guiElement.displayed().isTrue());
+Control.withElementTimeout(1, () -> uiElement.displayed().isTrue());
 ```
 
 For many GuiElements or Pages
@@ -468,7 +468,7 @@ For many GuiElements or Pages
 Control.withElementTimeout(1, () -> {
     MyPage page = pageFactory.create(MyPage.class);
     page.title().is("TestPage");
-    guiElement.value().contains("Hello");
+    uiElement.value().contains("Hello");
 });
 ```
 
@@ -496,7 +496,7 @@ The `Locate.by()` method allows you to pass a new introduced `XPath` object, tha
 
 This is what the basic syntax looks like
 ```java
-IGuiElement div = find(Locate.by(XPath.node("div"));
+UiElement div = find(Locate.by(XPath.node("div"));
 ```
 
 But it supports many other features you need when you select
@@ -549,7 +549,7 @@ If this timeout has reached, the assertion will finally fail.
 
 But there is only one timeout for each assertion now. No more implicit timeouts on sub method calls like `getWebElement()`, `isPresent()` etc.
 
-This is what an assertion internally does, when you perform `guiElement.text().contains("Something")`.
+This is what an assertion internally does, when you perform `uiElement.text().contains("Something")`.
 
 . Find web element using WebDriver
 . Check if element is present
@@ -582,7 +582,7 @@ The API provides abstract assertion implementations for several properties.
 . `BinaryAssertion` allows to assert if an value is boolean or a string that represents a boolean value with `isTrue()`
 
 These generic assertions are used in many other assertions and supports a hierarchical order.
-This is what the hierarchy looks like when you perform `guiElement.screenshot().file().extension().is("png")`
+This is what the hierarchy looks like when you perform `uiElement.screenshot().file().extension().is("png")`
 
 . Take a screenshot and return a `ScreenshotAssertion`
 . Return a generic `FileAssertion` with the taken screenshot file

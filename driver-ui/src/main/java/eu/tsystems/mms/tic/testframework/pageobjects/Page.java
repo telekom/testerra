@@ -69,7 +69,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *      Supports finding elements by {@link #find(Locate)}
  *      Support for {@link #registerPageLoadHandler(PageLoadHandler)}
  *      Support for performance tests by {@link #perfTestExtras()}
- *      Support for frames by {@link #inFrame(IGuiElement)}
+ *      Support for frames by {@link #inFrame(UiElement)}
  *      Support for custom field actions {@link #addCustomFieldAction(FieldWithActionConfig, List, AbstractPage)}
  *      Support for text assertions by {@link #anyElementContainsText(String)}
  * @author Peter Lehmann
@@ -77,25 +77,25 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public abstract class Page extends AbstractPage implements TestablePage {
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
-    private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
+    private static final UiElementFactory UI_ELEMENT_FACTORY = Testerra.injector.getInstance(UiElementFactory.class);
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
 
     protected interface Finder {
-        IGuiElement find(Locate locator);
-        default IGuiElement findById(String id) {
+        UiElement find(Locate locator);
+        default UiElement findById(String id) {
             return find(Locate.by().id(id));
         }
-        default IGuiElement findByQa(String qa) {
+        default UiElement findByQa(String qa) {
             return find(Locate.by().qa(qa));
         }
-        default IGuiElement find(By by) {
+        default UiElement find(By by) {
             return find(Locate.by(by));
         }
     }
 
     @Override
-    protected IGuiElement find(Locate locate) {
-        return guiElementFactory.createWithPage(this, locate);
+    protected UiElement find(Locate locate) {
+        return UI_ELEMENT_FACTORY.createWithPage(this, locate);
     }
 
     @Override
@@ -109,16 +109,16 @@ public abstract class Page extends AbstractPage implements TestablePage {
     }
 
     private static class FrameFinder implements Finder {
-        private final IGuiElement frame;
-        private FrameFinder(IGuiElement frame) {
+        private final UiElement frame;
+        private FrameFinder(UiElement frame) {
             this.frame = frame;
         }
-        public IGuiElement find(Locate locator) {
-            return guiElementFactory.createWithFrames(locator, frame);
+        public UiElement find(Locate locator) {
+            return UI_ELEMENT_FACTORY.createWithFrames(locator, frame);
         }
     }
 
-    protected Finder inFrame(IGuiElement frame) {
+    protected Finder inFrame(UiElement frame) {
         return new FrameFinder(frame);
     }
 
@@ -256,7 +256,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
     @Fails(validFor = "unsupportedBrowser=true")
     private boolean pIsTextPresentRecursive(final boolean isDisplayed, final String text) {
-        IGuiElement textElement = (IGuiElement)anyElementContainsText(text);
+        UiElement textElement = (UiElement)anyElementContainsText(text);
         textElement.displayed();
         if (
             isDisplayed && textElement.displayed().getActual()
@@ -342,7 +342,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
     @Deprecated
     public boolean waitForIsTextPresent(final String text) {
-        Timer timer = new Timer(IGuiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), elementTimeoutInSeconds * 1000);
+        Timer timer = new Timer(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), elementTimeoutInSeconds * 1000);
         ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -356,7 +356,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
     @Deprecated
     public boolean waitForIsTextDisplayed(final String text) {
-        Timer timer = new Timer(IGuiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), elementTimeoutInSeconds * 1000);
+        Timer timer = new Timer(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), elementTimeoutInSeconds * 1000);
         ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -464,10 +464,10 @@ public abstract class Page extends AbstractPage implements TestablePage {
     }
 
     @Override
-    public TestableGuiElement anyElementContainsText(String text) {
+    public TestableUiElement anyElementContainsText(String text) {
         String textFinderXpath = String.format("//text()[contains(., '%s')]/..", text);
         Locate locate = Locate.by(By.xpath(textFinderXpath));
-        TestableGuiElement textElements = find(locate);
+        TestableUiElement textElements = find(locate);
         if (textElements.numberOfElements().getActual()>0) {
             return textElements;
         }

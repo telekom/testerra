@@ -19,10 +19,10 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 
 /**
- * @deprecated This interface should be replaced by {@link BasicGuiElement}
+ * @deprecated This interface should be replaced by {@link BasicUiElement}
  */
 @Deprecated
 public interface GuiElementStatusCheck {

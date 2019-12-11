@@ -25,16 +25,16 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 
-public class DefaultGuiElementFactory implements
-    GuiElementFactory,
+public class DefaultUiElementFactory implements
+    UiElementFactory,
     Loggable
 {
     /**
      * Creates elements as sub elements from a given element
      */
     @Override
-    public IGuiElement createFromParent(
-        IGuiElement parent,
+    public UiElement createFromParent(
+        UiElement parent,
         Locate locator
     ) {
         GuiElement parentGuiElement = (GuiElement)parent;
@@ -46,9 +46,9 @@ public class DefaultGuiElementFactory implements
     }
 
     @Override
-    public IGuiElement createWithFrames(
+    public UiElement createWithFrames(
         Locate locator,
-        IGuiElement... frames
+        UiElement... frames
     ) {
         if (frames == null || frames.length == 0) {
             throw new TesterraRuntimeException("No frames given");
@@ -57,7 +57,7 @@ public class DefaultGuiElementFactory implements
     }
 
     @Override
-    public IGuiElement createWithPage(
+    public UiElement createWithPage(
         PageObject page,
         Locate locator
     ) {

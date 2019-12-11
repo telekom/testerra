@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
 /**
  * Created by rnhb on 11.08.2015.
  */
+@Deprecated
 public interface GuiElementWait {
 
     /**

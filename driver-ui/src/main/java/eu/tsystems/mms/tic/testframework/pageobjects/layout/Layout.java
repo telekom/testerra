@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.layout;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -43,7 +43,7 @@ public abstract class Layout implements ILayout {
          */
         ILayout layout = new Layout(true) {
             @Override
-            public void checkOn(IGuiElement actualGE, Assertion configuredAssert) {
+            public void checkOn(UiElement actualGE, Assertion configuredAssert) {
                 //dummy
             }
 
@@ -62,7 +62,7 @@ public abstract class Layout implements ILayout {
          */
         ILayout layout = new Layout(false) {
             @Override
-            public void checkOn(IGuiElement actualGE, Assertion configuredAssert) {
+            public void checkOn(UiElement actualGE, Assertion configuredAssert) {
                 //dummy
             }
 
@@ -76,7 +76,7 @@ public abstract class Layout implements ILayout {
     }
 
     @Fails(validFor = "unsupportedBrowser", description = "Unsupported Browser")
-    public LayoutBorders getElementLayoutBorders(IGuiElement guiElement) {
+    public LayoutBorders getElementLayoutBorders(UiElement guiElement) {
         if (innerBorders) {
             Map<String, Long> borders = JSUtils.getElementInnerBorders(guiElement);
             if (borders != null) {
@@ -94,10 +94,10 @@ public abstract class Layout implements ILayout {
         }
     }
 
-    public ILayout leftOf(final IGuiElement distanceGE) {
+    public ILayout leftOf(final UiElement distanceGE) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(IGuiElement actualGE, Assertion configuredAssert) {
+            public void checkOn(UiElement actualGE, Assertion configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.left;
@@ -116,10 +116,10 @@ public abstract class Layout implements ILayout {
         return toStringText();
     }
 
-    public ILayout above(final IGuiElement distanceGE) {
+    public ILayout above(final UiElement distanceGE) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(IGuiElement actualGE, Assertion configuredAssert) {
+            public void checkOn(UiElement actualGE, Assertion configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.top;
@@ -135,10 +135,10 @@ public abstract class Layout implements ILayout {
     }
 
     @Override
-    public ILayout rightOf(final IGuiElement distanceGE) {
+    public ILayout rightOf(final UiElement distanceGE) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(IGuiElement actualGE, Assertion configuredAssert) {
+            public void checkOn(UiElement actualGE, Assertion configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.right;
@@ -153,10 +153,10 @@ public abstract class Layout implements ILayout {
         };
     }
 
-    public ILayout below(final IGuiElement distanceGE) {
+    public ILayout below(final UiElement distanceGE) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(IGuiElement actualGE, Assertion configuredAssert) {
+            public void checkOn(UiElement actualGE, Assertion configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.bottom;
@@ -172,10 +172,10 @@ public abstract class Layout implements ILayout {
     }
 
     @Override
-    public ILayout sameTop(final IGuiElement distanceGE, final int delta) {
+    public ILayout sameTop(final UiElement distanceGE, final int delta) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(IGuiElement actualGE, Assertion configuredAssert) {
+            public void checkOn(UiElement actualGE, Assertion configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.top;
@@ -194,10 +194,10 @@ public abstract class Layout implements ILayout {
     }
 
     @Override
-    public ILayout sameBottom(final IGuiElement distanceGE, final int delta) {
+    public ILayout sameBottom(final UiElement distanceGE, final int delta) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(IGuiElement actualGE, Assertion configuredAssert) {
+            public void checkOn(UiElement actualGE, Assertion configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.bottom;
@@ -216,10 +216,10 @@ public abstract class Layout implements ILayout {
     }
 
     @Override
-    public ILayout sameLeft(final IGuiElement distanceGE, final int delta) {
+    public ILayout sameLeft(final UiElement distanceGE, final int delta) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(IGuiElement actualGE, Assertion configuredAssert) {
+            public void checkOn(UiElement actualGE, Assertion configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.left;
@@ -238,10 +238,10 @@ public abstract class Layout implements ILayout {
     }
 
     @Override
-    public ILayout sameRight(final IGuiElement distanceGE, final int delta) {
+    public ILayout sameRight(final UiElement distanceGE, final int delta) {
         return new Layout(this.innerBorders) {
             @Override
-            public void checkOn(IGuiElement actualGE, Assertion configuredAssert) {
+            public void checkOn(UiElement actualGE, Assertion configuredAssert) {
                 LayoutBorders actLB = getElementLayoutBorders(actualGE);
                 LayoutBorders distLB = getElementLayoutBorders(distanceGE);
                 long actual = actLB.right;

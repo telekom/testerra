@@ -31,14 +31,10 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.GuiElementActions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultBinaryAssertion;
@@ -92,11 +88,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * Authors: pele, rnhb
  */
 public class GuiElement implements
-    IGuiElement,
+    UiElement,
     Loggable
 {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
-    private static final GuiElementFactory guiElementFactory = Testerra.injector.getInstance(GuiElementFactory.class);
+    private static final UiElementFactory UI_ELEMENT_FACTORY = Testerra.injector.getInstance(UiElementFactory.class);
 
     private GuiElementAssert defaultAssert;
     private GuiElementAssert instantAssert;
@@ -115,7 +111,7 @@ public class GuiElement implements
 
     protected HasParent parent;
     private UserSimulator userSimulator;
-    private DefaultGuiElementList list;
+    private DefaultUiElementList list;
 
     /**
      * Elementary constructor
@@ -139,7 +135,7 @@ public class GuiElement implements
     }
 
     /**
-     * Constructor for {@link GuiElementFactory#createFromParent(IGuiElement, Locate)}
+     * Constructor for {@link UiElementFactory#createFromParent(UiElement, Locate)}
      * This is the internal standard constructor for elements with parent {@link GuiElementCore} implementations.
      */
     public GuiElement(GuiElementCore core) {
@@ -151,7 +147,7 @@ public class GuiElement implements
     }
 
     /**
-     * Constructor for {@link GuiElementFactory#createWithPage(PageObject, Locate)}
+     * Constructor for {@link UiElementFactory#createWithPage(PageObject, Locate)}
      */
     public GuiElement(PageObject page, Locate locate) {
         this(page.getWebDriver(), locate, null);
@@ -161,12 +157,12 @@ public class GuiElement implements
     }
 
     /**
-     * Constructor for {@link GuiElementFactory#createWithFrames(Locate, IGuiElement...)}
+     * Constructor for {@link UiElementFactory#createWithFrames(Locate, UiElement...)}
      */
     public GuiElement(
         WebDriver driver,
         Locate locate,
-        IGuiElement... frames
+        UiElement... frames
     ) {
         this(new GuiElementData(driver, locate));
         guiElementData.setGuiElement(this);
@@ -190,7 +186,7 @@ public class GuiElement implements
     public GuiElement(
         WebDriver driver,
         By by,
-        IGuiElement... frames
+        UiElement... frames
     ) {
         this(driver, Locate.by(by), frames);
     }
@@ -315,13 +311,13 @@ public class GuiElement implements
         return this;
     }
 
-    public IGuiElement scrollToElement(int yOffset) {
+    public UiElement scrollToElement(int yOffset) {
         decoratedFacade.scrollToElement(yOffset);
         return this;
     }
 
     @Override
-    public IGuiElement select() {
+    public UiElement select() {
         guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.select();
         guiElementData.resetLogLevel();
@@ -329,14 +325,14 @@ public class GuiElement implements
     }
 
     @Override
-    public IGuiElement deselect() {
+    public UiElement deselect() {
         guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.deselect();
         guiElementData.resetLogLevel();
         return this;
     }
 
-    public IGuiElement type(String text) {
+    public UiElement type(String text) {
         guiElementData.setLogLevel(LogLevel.INFO);
         decoratedCore.type(text);
         guiElementData.resetLogLevel();
@@ -344,39 +340,39 @@ public class GuiElement implements
     }
 
     @Override
-    public IGuiElement click() {
+    public UiElement click() {
         guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.click();
         guiElementData.resetLogLevel();
         return this;
     }
 
-    public IGuiElement clickJS() {
+    public UiElement clickJS() {
         guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.clickJS();
         guiElementData.resetLogLevel();
         return this;
     }
 
-    public IGuiElement clickAbsolute() {
+    public UiElement clickAbsolute() {
         guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.clickAbsolute();
         guiElementData.resetLogLevel();
         return this;
     }
 
-    public IGuiElement mouseOverAbsolute2Axis() {
+    public UiElement mouseOverAbsolute2Axis() {
         decoratedFacade.mouseOverAbsolute2Axis();
         return this;
     }
 
-    public IGuiElement submit() {
+    public UiElement submit() {
         decoratedFacade.submit();
         return this;
     }
 
     @Override
-    public IGuiElement sendKeys(CharSequence... charSequences) {
+    public UiElement sendKeys(CharSequence... charSequences) {
         guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.sendKeys(charSequences);
         guiElementData.resetLogLevel();
@@ -384,7 +380,7 @@ public class GuiElement implements
     }
 
     @Override
-    public GuiElementActions asUser() {
+    public UiElementActions asUser() {
         if (this.userSimulator==null) {
             this.userSimulator = new UserSimulator(this);
         }
@@ -392,13 +388,13 @@ public class GuiElement implements
     }
 
     @Override
-    public IGuiElement clear() {
+    public UiElement clear() {
         decoratedFacade.clear();
         return this;
     }
 
     @Override
-    public InteractiveGuiElement hover() {
+    public IteractiveUiElement hover() {
         return mouseOver();
     }
 
@@ -457,14 +453,14 @@ public class GuiElement implements
     }
 
     @Override
-    public IGuiElement find(Locate locate) {
-        return guiElementFactory.createFromParent(this, locate);
+    public UiElement find(Locate locate) {
+        return UI_ELEMENT_FACTORY.createFromParent(this, locate);
     }
 
     @Override
-    public GuiElementList<IGuiElement> list() {
+    public UiElementList<UiElement> list() {
         if (this.list == null) {
-            this.list = new DefaultGuiElementList(this);
+            this.list = new DefaultUiElementList(this);
         }
         return this.list;
     }
@@ -473,12 +469,12 @@ public class GuiElement implements
         return decoratedFacade.getCssValue(cssIdentifier);
     }
 
-    public IGuiElement mouseOver() {
+    public UiElement mouseOver() {
         decoratedFacade.mouseOver();
         return this;
     }
 
-    public IGuiElement mouseOverJS() {
+    public UiElement mouseOverJS() {
         decoratedFacade.mouseOverJS();
         return this;
     }
@@ -496,7 +492,7 @@ public class GuiElement implements
     }
 
     public boolean anyFollowingTextNodeContains(String contains) {
-        TestableGuiElement textElements = anyElementContainsText(contains);
+        TestableUiElement textElements = anyElementContainsText(contains);
         return textElements.present().getActual();
     }
 
@@ -504,7 +500,7 @@ public class GuiElement implements
      * This method is no part of any interface, because we don't know if
      * we want to support this feature at the moment.
      */
-    public TestableGuiElement anyElementContainsText(String text) {
+    public TestableUiElement anyElementContainsText(String text) {
         String textFinderXpath = String.format("//text()[contains(., '%s')]/..", text);
         return find(By.xpath(textFinderXpath));
     }
@@ -515,7 +511,7 @@ public class GuiElement implements
     }
 
     @Override
-    public IGuiElement doubleClick() {
+    public UiElement doubleClick() {
         decoratedFacade.doubleClick();
         return this;
     }
@@ -528,7 +524,7 @@ public class GuiElement implements
         return guiElementData.getTimeoutSeconds();
     }
 
-    public IGuiElement setTimeoutInSeconds(int timeoutInSeconds) {
+    public UiElement setTimeoutInSeconds(int timeoutInSeconds) {
         propertyAssertionFactory.setDefaultTimeoutSeconds(timeoutInSeconds);
         guiElementData.setTimeoutSeconds(timeoutInSeconds);
         return this;
@@ -537,19 +533,19 @@ public class GuiElement implements
     /**
      * @deprecated This method should not be public
      */
-    public IGuiElement restoreDefaultTimeout() {
+    public UiElement restoreDefaultTimeout() {
         PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
         guiElementData.setTimeoutSeconds(pageOverrides.getTimeoutSeconds());
         return this;
     }
 
     @Override
-    public IGuiElement highlight() {
+    public UiElement highlight() {
         decoratedFacade.highlight();
         return this;
     }
 
-    public IGuiElement swipe(int offsetX, int offSetY) {
+    public UiElement swipe(int offsetX, int offSetY) {
         decoratedFacade.swipe(offsetX, offSetY);
         return this;
     }
@@ -565,17 +561,17 @@ public class GuiElement implements
     }
 
     @Override
-    public IGuiElement rightClick() {
+    public UiElement rightClick() {
         decoratedFacade.rightClick();
         return this;
     }
 
-    public IGuiElement rightClickJS() {
+    public UiElement rightClickJS() {
         decoratedFacade.rightClickJS();
         return this;
     }
 
-    public IGuiElement doubleClickJS() {
+    public UiElement doubleClickJS() {
         decoratedFacade.doubleClickJS();
         return this;
     }
@@ -597,16 +593,16 @@ public class GuiElement implements
 
     /**
      * Sets the abstract parent
-     * @param parent {@link IGuiElement} or {@link PageObject}
+     * @param parent {@link UiElement} or {@link PageObject}
      */
-    public IGuiElement setParent(HasParent parent) {
+    public UiElement setParent(HasParent parent) {
         this.parent = parent;
         return this;
     }
 
     /**
      * Retrieves the parent
-     * @return Can be {@link IGuiElement} or {@link PageObject}
+     * @return Can be {@link UiElement} or {@link PageObject}
      */
     @Override
     public HasParent getParent() {
@@ -643,7 +639,7 @@ public class GuiElement implements
     }
 
     @Override
-    public IGuiElement setName(String name) {
+    public UiElement setName(String name) {
         guiElementData.setName(name);
         return this;
     }
@@ -661,7 +657,7 @@ public class GuiElement implements
     @Deprecated
     public GuiElementAssert asserts() {
         if (defaultAssert == null) {
-            if (IGuiElement.Properties.DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
+            if (UiElement.Properties.DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
                 defaultAssert = assertCollector();
             } else {
                 defaultAssert = instantAsserts();
@@ -774,7 +770,7 @@ public class GuiElement implements
     }
 
     @Deprecated
-    public IGuiElement shadowRoot() {
+    public UiElement shadowRoot() {
         guiElementData.shadowRoot = true;
         return this;
     }
@@ -788,7 +784,7 @@ public class GuiElement implements
 
     @Override
     public StringAssertion<String> tagName() {
-        final IGuiElement self = this;
+        final UiElement self = this;
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -804,7 +800,7 @@ public class GuiElement implements
 
     @Override
     public StringAssertion<String> text() {
-        final IGuiElement self = this;
+        final UiElement self = this;
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -820,7 +816,7 @@ public class GuiElement implements
 
     @Override
     public StringAssertion<String> value(String attribute) {
-        final IGuiElement self = this;
+        final UiElement self = this;
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -836,7 +832,7 @@ public class GuiElement implements
 
     @Override
     public StringAssertion<String> css(String property) {
-        final IGuiElement self = this;
+        final UiElement self = this;
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
@@ -852,7 +848,7 @@ public class GuiElement implements
 
     @Override
     public BinaryAssertion<Boolean> present() {
-        final IGuiElement self = this;
+        final UiElement self = this;
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -872,7 +868,7 @@ public class GuiElement implements
 
     @Override
     public BinaryAssertion<Boolean> visible(boolean complete) {
-        final IGuiElement self = this;
+        final UiElement self = this;
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -888,7 +884,7 @@ public class GuiElement implements
 
     @Override
     public BinaryAssertion<Boolean> displayed() {
-        final IGuiElement self = this;
+        final UiElement self = this;
         BinaryAssertion<Boolean> prop = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -909,7 +905,7 @@ public class GuiElement implements
 
     @Override
     public BinaryAssertion<Boolean> enabled() {
-        final IGuiElement self = this;
+        final UiElement self = this;
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -925,7 +921,7 @@ public class GuiElement implements
 
     @Override
     public BinaryAssertion<Boolean> selected() {
-        final IGuiElement self = this;
+        final UiElement self = this;
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
@@ -941,7 +937,7 @@ public class GuiElement implements
 
     @Override
     public RectAssertion bounds() {
-        final IGuiElement self = this;
+        final UiElement self = this;
         return propertyAssertionFactory.create(DefaultRectAssertion.class, new AssertionProvider<Rectangle>() {
             @Override
             public Rectangle getActual() {
@@ -957,7 +953,7 @@ public class GuiElement implements
 
     @Override
     public QuantityAssertion<Integer> numberOfElements() {
-        final IGuiElement self = this;
+        final UiElement self = this;
         return propertyAssertionFactory.create(DefaultQuantityAssertion.class, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
@@ -976,14 +972,14 @@ public class GuiElement implements
     }
 
     @Override
-    public TestableGuiElement waitFor() {
+    public TestableUiElement waitFor() {
         propertyAssertionFactory.shouldWait();
         return this;
     }
 
     @Override
     public ImageAssertion screenshot() {
-        final IGuiElement self = this;
+        final UiElement self = this;
         final AtomicReference<File> screenshot = new AtomicReference<>();
         screenshot.set(core.takeScreenshot());
         return propertyAssertionFactory.create(DefaultImageAssertion.class, new AssertionProvider<File>() {
@@ -1005,7 +1001,7 @@ public class GuiElement implements
     }
 
     @Override
-    public IGuiElement scrollTo(final int yOffset) {
+    public UiElement scrollTo(final int yOffset) {
         /**
          * We have to negate the yOffset here
          * because {@link #scrollToElement(int)} substracts the offset

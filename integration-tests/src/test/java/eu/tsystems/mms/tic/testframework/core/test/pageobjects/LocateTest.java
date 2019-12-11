@@ -2,7 +2,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.XPath;
 import org.openqa.selenium.By;
@@ -22,35 +22,35 @@ public class LocateTest extends AbstractTestSitesTest {
 
     @Test
     public void locateByClass() {
-        IGuiElement div = page.findByXPath(XPath.node("div").classNames("element", "multiple"));
+        UiElement div = page.findByXPath(XPath.node("div").classNames("element", "multiple"));
         div.text().contains("This element has multiple classes");
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void locateByText_fails() {
-        IGuiElement realA = page.findByQa("action/linkWithFormattedText");
-        IGuiElement a = page.findByXPath(XPath.node("a").text(textToFind));
+        UiElement realA = page.findByQa("action/linkWithFormattedText");
+        UiElement a = page.findByXPath(XPath.node("a").text(textToFind));
         a.text().is(realA.text().getActual());
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void locateByTextContains_fails() {
-        IGuiElement realA = page.findByQa("action/linkWithFormattedText");
-        IGuiElement a = page.findByXPath(XPath.node("a").textContains(textToFind));
+        UiElement realA = page.findByQa("action/linkWithFormattedText");
+        UiElement a = page.findByXPath(XPath.node("a").textContains(textToFind));
         a.text().is(realA.text().getActual());
     }
 
     @Test
     public void locateByWords() {
-        IGuiElement realA = page.findByQa("action/linkWithFormattedText");
-        IGuiElement a = page.findByXPath(XPath.node("a").textWords(textToFind));
+        UiElement realA = page.findByQa("action/linkWithFormattedText");
+        UiElement a = page.findByXPath(XPath.node("a").textWords(textToFind));
         a.text().is(realA.text().getActual());
     }
 
     @Test
     public void locateByContains() {
-        IGuiElement realA = page.findByQa("action/linkWithFormattedText");
-        IGuiElement a = page.findByXPath(
+        UiElement realA = page.findByQa("action/linkWithFormattedText");
+        UiElement a = page.findByXPath(
             XPath.node("a")
                 .textWords("This link has some text!")
                 .contains("span")
@@ -61,19 +61,19 @@ public class LocateTest extends AbstractTestSitesTest {
 
     @Test(expectedExceptions = AssertionError.class)
     public void locateByClassName_fails() {
-        IGuiElement div = page.find(By.className("header"));
+        UiElement div = page.find(By.className("header"));
         div.text().is("You found me");
     }
 
     @Test
     public void testLocateByClassWord() {
-        IGuiElement div = page.findByXPath(XPath.node("*").classNames("header","large"));
+        UiElement div = page.findByXPath(XPath.node("*").classNames("header","large"));
         div.text().is("You found me");
     }
 
     @Test
     public void testLocatePosition() {
-        IGuiElement li;
+        UiElement li;
         li = page.findByXPath(XPath.node("ul").classNames("list-group").select("li",1));
         li.text().is("Affe");
 
@@ -86,7 +86,7 @@ public class LocateTest extends AbstractTestSitesTest {
 
     @Test
     public void testLocateByWords() {
-        IGuiElement div = page.findByXPath(XPath.node("*").textWords("Login here"));
+        UiElement div = page.findByXPath(XPath.node("*").textWords("Login here"));
         div.value("data-qa").is("action/login");
     }
 }

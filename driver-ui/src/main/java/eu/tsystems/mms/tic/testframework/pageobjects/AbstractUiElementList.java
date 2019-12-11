@@ -1,15 +1,15 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 
 import java.util.Iterator;
 
-public abstract class AbstractGuiElementList<SELF extends BasicGuiElement> implements GuiElementList<SELF> {
+public abstract class AbstractUiElementList<SELF extends BasicUiElement> implements UiElementList<SELF> {
     private final SELF guiElement;
     private int iteratorIndex = 0;
     private int iteratorSize = 0;
 
-    public AbstractGuiElementList(SELF guiElement) {
+    public AbstractUiElementList(SELF guiElement) {
         this.guiElement = guiElement;
     }
 

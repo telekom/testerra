@@ -2,7 +2,7 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 
 public class DefaultAssertionFactory implements AssertionFactory {
     private ThreadLocal<Class<? extends Assertion>> threadLocalAssertionClass = new ThreadLocal<>();
@@ -25,7 +25,7 @@ public class DefaultAssertionFactory implements AssertionFactory {
     public Assertion create() {
         Class<? extends Assertion> assertionClass = threadLocalAssertionClass.get();
         if (assertionClass==null) {
-            if (IGuiElement.Properties.DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
+            if (UiElement.Properties.DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
                 setDefault(CollectedAssertion.class);
             } else {
                 setDefault(InstantAssertion.class);

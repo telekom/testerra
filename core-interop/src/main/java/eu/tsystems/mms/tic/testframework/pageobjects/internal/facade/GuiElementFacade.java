@@ -19,11 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 
 /**
- * It should extend {@link IGuiElement} in the future,
+ * It should extend {@link UiElement} in the future,
  * when all of it's features should be decorated.
  */
 @Deprecated

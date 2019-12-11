@@ -8,7 +8,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAsse
  * All tests that can be performed on a GuiElement
  * @author Mike Reiche
  */
-public interface GuiElementAssertions extends BasicGuiElement {
+public interface UiElementAssertions extends BasicUiElement {
     StringAssertion<String> text();
     default StringAssertion<String> value() {
         return value(Attribute.VALUE);

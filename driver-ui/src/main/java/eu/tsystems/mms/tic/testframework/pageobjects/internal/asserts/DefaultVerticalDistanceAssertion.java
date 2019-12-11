@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import org.openqa.selenium.Rectangle;
 
 public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<Integer> implements VerticalDistanceAssertion {
@@ -10,7 +10,7 @@ public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<
     }
 
     @Override
-    public QuantityAssertion<Integer> toTopOf(TestableGuiElement guiElement) {
+    public QuantityAssertion<Integer> toTopOf(TestableUiElement guiElement) {
         return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
@@ -26,7 +26,7 @@ public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<
     }
 
     @Override
-    public QuantityAssertion<Integer> toBottomOf(TestableGuiElement guiElement) {
+    public QuantityAssertion<Integer> toBottomOf(TestableUiElement guiElement) {
         return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {

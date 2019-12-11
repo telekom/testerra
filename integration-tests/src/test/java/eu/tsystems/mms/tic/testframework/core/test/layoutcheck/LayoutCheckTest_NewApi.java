@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -45,7 +45,7 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     @Test
     public void testCheckElementLayout() {
         WebTestPage page = preparePage();
-        IGuiElement guiElement = page.findByQa("section/layoutTestArticle");
+        UiElement guiElement = page.findByQa("section/layoutTestArticle");
         guiElement.screenshot().pixelDistance("TestArticle").isLowerThan(1.3);
 
         guiElement = page.findByQa("section/invisibleTestArticle");
@@ -55,7 +55,7 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     @Test
     public void testCheckElementVisibility() {
         WebTestPage page = preparePage();
-        IGuiElement guiElement = page.findByQa("section/layoutTestArticle");
+        UiElement guiElement = page.findByQa("section/layoutTestArticle");
         guiElement.visible(true).isTrue();
 
         guiElement = page.findByQa("section/invisibleTestArticle");
@@ -73,7 +73,7 @@ public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Log
     @Fails(description = "This test should fail")
     public void testCheckElementLayoutDistance() {
         WebTestPage page = preparePage();
-        IGuiElement guiElement = page.findByQa("section/layoutTestArticle");
+        UiElement guiElement = page.findByQa("section/layoutTestArticle");
         Control.withElementTimeout(0, () -> guiElement.screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
     }
 

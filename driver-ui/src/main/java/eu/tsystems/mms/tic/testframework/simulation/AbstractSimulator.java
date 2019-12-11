@@ -1,15 +1,15 @@
 package eu.tsystems.mms.tic.testframework.simulation;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.TestableGuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.GuiElementActions;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 
-public class AbstractSimulator implements GuiElementActions {
+public class AbstractSimulator implements UiElementActions {
     protected final GuiElement guiElement;
 
     public AbstractSimulator(GuiElement guiElement) {
@@ -72,7 +72,7 @@ public class AbstractSimulator implements GuiElementActions {
     }
 
     @Override
-    public TestableGuiElement waitFor() {
+    public TestableUiElement waitFor() {
         return guiElement.waitFor();
     }
 
@@ -82,60 +82,60 @@ public class AbstractSimulator implements GuiElementActions {
     }
 
     @Override
-    public TestableGuiElement highlight() {
+    public TestableUiElement highlight() {
         return guiElement.highlight();
     }
 
     @Override
-    public GuiElementActions click() {
+    public UiElementActions click() {
         guiElement.click();
         return this;
     }
 
     @Override
-    public GuiElementActions doubleClick() {
+    public UiElementActions doubleClick() {
         guiElement.doubleClick();
         return this;
     }
 
     @Override
-    public GuiElementActions rightClick() {
+    public UiElementActions rightClick() {
         guiElement.rightClick();
         return this;
     }
 
     @Override
-    public GuiElementActions select() {
+    public UiElementActions select() {
         guiElement.select();
         return this;
     }
 
     @Override
-    public GuiElementActions deselect() {
+    public UiElementActions deselect() {
         guiElement.deselect();
         return this;
     }
 
     @Override
-    public GuiElementActions sendKeys(CharSequence... charSequences) {
+    public UiElementActions sendKeys(CharSequence... charSequences) {
         guiElement.sendKeys(charSequences);
         return this;
     }
 
     @Override
-    public GuiElementActions clear() {
+    public UiElementActions clear() {
         guiElement.clear();
         return this;
     }
 
     @Override
-    public GuiElementActions hover() {
+    public UiElementActions hover() {
         guiElement.hover();
         return this;
     }
 
     @Override
-    public GuiElementActions scrollTo(int yOffset) {
+    public UiElementActions scrollTo(int yOffset) {
         guiElement.scrollTo(yOffset);
         return this;
     }

@@ -29,7 +29,7 @@ import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
@@ -130,8 +130,8 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         long start = System.currentTimeMillis();
         List<WebElement> elements = findWebElements();
         logTimings(start, Timings.getFindCounter());
-        if (IGuiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong() > 0) {
-            TimerUtils.sleep(IGuiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong().intValue());
+        if (UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong() > 0) {
+            TimerUtils.sleep(UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong().intValue());
         }
         return elements.size();
     }

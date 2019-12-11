@@ -4,7 +4,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.Screenshot
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 
 public interface TestablePage {
-    TestableGuiElement anyElementContainsText(String text);
+    TestableUiElement anyElementContainsText(String text);
     ScreenshotAssertion screenshot();
     StringAssertion<String> title();
     StringAssertion<String> url();

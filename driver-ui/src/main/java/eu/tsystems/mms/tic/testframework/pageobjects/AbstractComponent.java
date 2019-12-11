@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
@@ -36,23 +36,22 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssert
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Components are wrappers for HTML elements like WebComponents
- * that acts like a {@link IGuiElement} and {@link PageObject}
+ * that acts like a {@link UiElement} and {@link PageObject}
  *      Supports finding component elements by {@link #find(Locate)}
  * @author Mike Reiche
  */
 public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> extends AbstractPage implements Component<SELF>
 {
-    protected final IGuiElement rootElement;
+    protected final UiElement rootElement;
     private String name;
     private HasParent parent;
     private DefaultComponentList<SELF> list;
 
-    public AbstractComponent(IGuiElement rootElement) {
+    public AbstractComponent(UiElement rootElement) {
         GuiElement realRootElement = (GuiElement)rootElement;
         setParent(realRootElement.getParent());
         realRootElement.setParent(this);
@@ -67,13 +66,13 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public BasicGuiElement highlight() {
+    public BasicUiElement highlight() {
         rootElement.highlight();
         return this;
     }
 
     @Override
-    public GuiElementList<SELF> list() {
+    public UiElementList<SELF> list() {
         if (this.list == null) {
             this.list = new DefaultComponentList<>(self());
         }
@@ -81,7 +80,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    protected IGuiElement find(Locate locate) {
+    protected UiElement find(Locate locate) {
         return rootElement.find(locate);
     }
 

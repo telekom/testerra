@@ -23,7 +23,7 @@ public class DefaultPageOverrides implements PageOverrides {
     public int getTimeoutSeconds() {
         Integer timeout = threadLocalTimeout.get();
         if (timeout==null) {
-            timeout = IGuiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
+            timeout = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
         }
         return timeout;
     }

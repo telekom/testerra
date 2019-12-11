@@ -22,9 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicGuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.CheckFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
@@ -48,7 +46,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
     }
 
     private void pCheckField(
-        BasicGuiElement guiElement,
+        BasicUiElement guiElement,
         GuiElementAssert GuiElementAssert,
         Check check,
         boolean findNot,
@@ -110,7 +108,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                 }
             }
         }
-        
+
         if (prevTimeout >= 0) {
             pageOverrides.setTimeoutSeconds(prevTimeout);
         }

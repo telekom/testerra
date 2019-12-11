@@ -2,7 +2,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 
-public class DefaultComponentList<COMPONENT extends AbstractComponent<COMPONENT>> extends AbstractGuiElementList<COMPONENT> {
+public class DefaultComponentList<COMPONENT extends AbstractComponent<COMPONENT>> extends AbstractUiElementList<COMPONENT> {
     private final PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
     private COMPONENT component;
 

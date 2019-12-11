@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.apache.commons.io.FilenameUtils;
 import org.openqa.selenium.WebDriver;
@@ -53,13 +54,14 @@ import java.util.List;
  *
  * @author erku
  */
-public class FileDownloader {
+public class FileDownloader implements Loggable {
 
     private static int DEFAULT_TIMEOUT_MS = 10 * 1000;
 
     /**
      * Logging Instance
      */
+    @Deprecated
     private static final Logger LOGGER = LoggerFactory.getLogger(FileDownloader.class);
 
     /**
@@ -126,10 +128,10 @@ public class FileDownloader {
         synchronized (downloadList) {
             for (String path : downloadList) {
                 File file = FileUtils.getFile(path);
-                if (!file.delete()) {
+                /*if (!file.delete()) {
                     LOGGER.warn(String.format("File >%s< couldn't be deleted on cleanup. Please remove file manually.",
                             file.getAbsolutePath()));
-                }
+                }*/
             }
 
             downloadList.clear();
@@ -186,10 +188,10 @@ public class FileDownloader {
      */
     public String download(GuiElement element, String targetFileName) throws IOException {
 
-        LOGGER.info("Try to get href attribute of GuiElement");
+        log().debug("Try to get href attribute of GuiElement");
         String link = element.getAttribute("href");
         if (link == null || link.length() == 0) {
-            LOGGER.info("No href attribute found. Try src attribute.");
+            log().debug("No href attribute found. Try src attribute.");
             link = element.getAttribute("src");
         }
 
@@ -292,7 +294,7 @@ public class FileDownloader {
         String cookieString,
         boolean useSecondConnection
     ) throws IOException {
-        LOGGER.info("Downloading file " + url);
+        log().debug("Downloading: " + url);
 
         String targetFileName="";
         URLConnection connection = openConnection(url, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
@@ -319,7 +321,7 @@ public class FileDownloader {
 
         FileUtils.copyInputStreamToFile(inputStream, targetFile);
 
-        LOGGER.info(String.format("Download to location >%s< successful", targetFile.getAbsolutePath()));
+        log().info(String.format("Downloaded to: %s", targetFile.getAbsolutePath()));
 
         synchronized (downloadList) {
             downloadList.add(targetFile.getAbsolutePath());
@@ -340,7 +342,7 @@ public class FileDownloader {
         return fileName;
     }
 
-    private static URLConnection openConnection(
+    private URLConnection openConnection(
         URL url,
         Proxy proxy,
         int timeoutMS,
@@ -353,19 +355,19 @@ public class FileDownloader {
             connection = url.openConnection();
         } else {
             connection = url.openConnection(proxy);
-            LOGGER.info("Using proxy " + proxy);
+            log().debug("Using proxy " + proxy);
         }
 
         connection.setConnectTimeout(timeoutMS);
         connection.setReadTimeout(timeoutMS);
 
         if (trustAll && isHttpsUrl(url)) {
-            LOGGER.info("Trust all certificates on download is set to " + trustAll);
+            log().debug("Trust all certificates on download is set to " + trustAll);
             connection = CertUtils.trustAllCerts((HttpsURLConnection) connection, sslSocketFactory);
         }
 
         if (cookieString != null) {
-            LOGGER.info("Imitating cookies");
+            log().debug("Imitating cookies");
             connection.setRequestProperty("Cookie", cookieString);
         }
 

@@ -28,6 +28,7 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import org.apache.commons.io.FilenameUtils;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,7 @@ import javax.net.ssl.SSLSocketFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
@@ -83,7 +85,7 @@ public class FileDownloader {
     /**
      * SSL Socket Factory
      */
-    private SSLSocketFactory sslSocketFactory;
+    //private SSLSocketFactory sslSocketFactory;
     private Proxy proxy = null;
 
     /**
@@ -117,7 +119,9 @@ public class FileDownloader {
 
     /**
      * Deletes all downloads
+     * @deprecated Use {@link #cleanup()} instead
      */
+    @Deprecated
     public static void deleteDownloads() {
         synchronized (downloadList) {
             for (String path : downloadList) {
@@ -132,22 +136,27 @@ public class FileDownloader {
         }
     }
 
+    public FileDownloader cleanup() {
+        deleteDownloads();
+        return this;
+    }
+
     public String getDownloadLocation() {
         return this.downloadLocation;
     }
 
-    public void setDownloadLocation(final String downloadLocation) {
+    public FileDownloader setDownloadLocation(final String downloadLocation) {
         this.downloadLocation = downloadLocation;
+        return this;
     }
 
     public boolean isTrustAllCertificates() {
-
         return this.trustAllCertificates;
     }
 
-    public void setTrustAllCertificates(final boolean trustAllCertificates) {
-
+    public FileDownloader setTrustAllCertificates(final boolean trustAllCertificates) {
         this.trustAllCertificates = trustAllCertificates;
+        return this;
     }
 
     public boolean isImitateCookies() {
@@ -159,8 +168,13 @@ public class FileDownloader {
      *
      * @param value boolean
      */
-    public void setImitateCookies(boolean value) {
+    public FileDownloader setImitateCookies(boolean value) {
         this.imitateCookies = value;
+        return this;
+    }
+
+    public File download(GuiElement element) throws IOException {
+        return new File(this.download(element, null));
     }
 
     /**
@@ -170,7 +184,7 @@ public class FileDownloader {
      * @param targetFileName String
      * @return String
      */
-    public String download(final GuiElement element, final String targetFileName) throws IOException {
+    public String download(GuiElement element, String targetFileName) throws IOException {
 
         LOGGER.info("Try to get href attribute of GuiElement");
         String link = element.getAttribute("href");
@@ -183,7 +197,12 @@ public class FileDownloader {
             throw new TesterraSystemException("Neither href nor src attribute found on GuiElement.");
         }
 
-        return this.download(element.getDriver(), link, targetFileName);
+        return this.download(element.getWebDriver(), link, targetFileName);
+    }
+
+    public File download(WebDriver driver, String urlString) throws IOException {
+        String filePath = this.download(driver, urlString, null);
+        return new File(filePath);
     }
 
     /**
@@ -194,11 +213,11 @@ public class FileDownloader {
      * @param targetFileName String
      * @return String
      */
-    public String download(final WebDriver driver, final String url, String targetFileName) throws IOException {
+    public String download(WebDriver driver, String url, String targetFileName) throws IOException {
         return this.pDownload(driver, url, targetFileName, DEFAULT_TIMEOUT_MS);
     }
 
-    public String download(final WebDriver driver, final String url, String targetFileName, int timeoutMS) throws IOException {
+    public String download(WebDriver driver, String url, String targetFileName, int timeoutMS) throws IOException {
         return this.pDownload(driver, url, targetFileName, timeoutMS);
     }
 
@@ -206,22 +225,49 @@ public class FileDownloader {
      * Downloads the given file
      *
      * @param driver         WebDriver
-     * @param url            String
+     * @param urlString            String
      * @param targetFileName String
      * @return String
      */
-    private String pDownload(final WebDriver driver, final String url, final String targetFileName, int timeoutMS) throws IOException {
+    private String pDownload(
+        WebDriver driver,
+        String urlString,
+        String targetFileName,
+        int timeoutMS
+    ) throws IOException {
         String cookieString = null;
 
-        if (this.isImitateCookies()) {
+        if (this.isImitateCookies() && driver != null) {
             cookieString = WebDriverUtils.getCookieString(driver);
         }
 
         this.ensureLocationExists();
 
+        File targetFile=null;
+        if (targetFileName!=null) {
+            targetFile = FileUtils.getFile(this.getDownloadLocation() + "/" + targetFileName);
+        }
+        URL url = new URL(urlString);
+        return download(url, targetFile, proxy, timeoutMS, trustAllCertificates, null, cookieString, false);
+    }
 
-        File targetFile = FileUtils.getFile(this.getDownloadLocation() + "/" + targetFileName);
-        return download(url, targetFile, proxy, timeoutMS, trustAllCertificates, sslSocketFactory, cookieString, false);
+    /**
+     * @deprecated Use instance {@link #download(WebDriver, String, String)} instead
+     */
+    @Deprecated
+    public static String download(
+        String urlString,
+        File targetFile,
+        Proxy proxy,
+        int timeoutMS,
+        boolean trustAll,
+        SSLSocketFactory sslSocketFactory,
+        String cookieString,
+        boolean useSecondConnection
+    ) throws IOException {
+        URL url = new URL(urlString);
+        FileDownloader downloader = new FileDownloader();
+        return downloader.download(url, targetFile, proxy, timeoutMS, trustAll, sslSocketFactory, cookieString, useSecondConnection);
     }
 
     /**
@@ -236,19 +282,39 @@ public class FileDownloader {
      * @param cookieString
      * @return
      */
-    public static String download(final String url, final File targetFile, final Proxy proxy, final int timeoutMS,
-                                  final boolean trustAll, final SSLSocketFactory sslSocketFactory,
-                                  final String cookieString, boolean useSecondConnection) throws IOException {
+    private String download(
+        URL url,
+        File targetFile,
+        Proxy proxy,
+        int timeoutMS,
+        boolean trustAll,
+        SSLSocketFactory sslSocketFactory,
+        String cookieString,
+        boolean useSecondConnection
+    ) throws IOException {
         LOGGER.info("Downloading file " + url);
-        URL fileToDownload = new URL(url);
 
-        URLConnection connection = openConnection(fileToDownload, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
+        String targetFileName="";
+        URLConnection connection = openConnection(url, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
+        if (connection instanceof HttpURLConnection) {
+            targetFileName = readFileNameFromConnection((HttpURLConnection) connection);
+        }
         InputStream inputStream = connection.getInputStream();
 
         if (useSecondConnection) {
             TimerUtils.sleep(3000, "FileDownloader flaky connections workaround");
-            URLConnection connection2 = openConnection(fileToDownload, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
-            inputStream = connection2.getInputStream();
+            connection = openConnection(url, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
+            if (connection instanceof HttpURLConnection) {
+                targetFileName = readFileNameFromConnection((HttpURLConnection) connection);
+            }
+            inputStream = connection.getInputStream();
+        }
+
+        if (targetFile == null) {
+            if (targetFileName.isEmpty()) {
+                targetFileName = FilenameUtils.getBaseName(url.getPath());
+            }
+            targetFile = FileUtils.getFile(this.getDownloadLocation() + "/" + targetFileName);
         }
 
         FileUtils.copyInputStreamToFile(inputStream, targetFile);
@@ -261,8 +327,27 @@ public class FileDownloader {
         return targetFile.getAbsolutePath();
     }
 
-    private static URLConnection openConnection(URL url, Proxy proxy, int timeoutMS, boolean trustAll,
-                                                String cookieString, SSLSocketFactory sslSocketFactory) throws IOException {
+    private String readFileNameFromConnection(HttpURLConnection connection) {
+        String fileName = "";
+
+        String disposition = connection.getHeaderField("Content-Disposition");
+        if (disposition != null) {
+            int index = disposition.indexOf("filename=");
+            if (index > 0) {
+                fileName = disposition.substring(index + 10, disposition.length() - 1);
+            }
+        }
+        return fileName;
+    }
+
+    private static URLConnection openConnection(
+        URL url,
+        Proxy proxy,
+        int timeoutMS,
+        boolean trustAll,
+        String cookieString,
+        SSLSocketFactory sslSocketFactory
+    ) throws IOException {
         URLConnection connection;
         if (proxy == null) {
             connection = url.openConnection();
@@ -307,7 +392,8 @@ public class FileDownloader {
         DEFAULT_TIMEOUT_MS = defaultTimeoutMs;
     }
 
-    public void setProxy(Proxy proxy) {
+    public FileDownloader setProxy(Proxy proxy) {
         this.proxy = proxy;
+        return this;
     }
 }

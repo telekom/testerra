@@ -68,8 +68,7 @@ public class FileDownloaderTest extends AbstractTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(Method method) {
-
-        FileDownloader.deleteDownloads();
+        new FileDownloader().cleanup();
     }
 
     /**
@@ -90,7 +89,7 @@ public class FileDownloaderTest extends AbstractTest {
 
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
 
-        FileDownloader.deleteDownloads();
+        downloader.cleanup();
         Assert.assertFalse(file.exists(), "File deleted.");
     }
 
@@ -129,6 +128,22 @@ public class FileDownloaderTest extends AbstractTest {
         File file = FileUtils.getFile(download);
 
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
+    }
+
+    @Test
+    public void test04_readFileNameFromResponseHeader() throws IOException {
+        WebDriver driver = createWebDriver(false);
+        FileDownloader downloader = new FileDownloader();
+        File file = downloader.download(driver, "https://upload.wikimedia.org/wikipedia/de/thumb/e/e1/Java-Logo.svg/800px-Java-Logo.svg.png");
+        Assert.assertEquals(file.getName(), "800px-Java-Logo.svg");
+    }
+
+    @Test
+    public void test05_readFileFromUrl() throws IOException {
+        WebDriver driver = createWebDriver(false);
+        FileDownloader downloader = new FileDownloader();
+        File file = downloader.download(driver, "https://httpbin.org/image/png");
+        Assert.assertEquals(file.getName(), "png");
     }
 
 }

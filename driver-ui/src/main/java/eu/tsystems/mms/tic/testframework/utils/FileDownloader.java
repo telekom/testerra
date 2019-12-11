@@ -28,7 +28,8 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.apache.commons.io.FilenameUtils;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -175,7 +176,7 @@ public class FileDownloader implements Loggable {
         return this;
     }
 
-    public File download(GuiElement element) throws IOException {
+    public File download(UiElement element) throws IOException {
         return new File(this.download(element, null));
     }
 
@@ -186,13 +187,13 @@ public class FileDownloader implements Loggable {
      * @param targetFileName String
      * @return String
      */
-    public String download(GuiElement element, String targetFileName) throws IOException {
+    public String download(UiElement element, String targetFileName) throws IOException {
 
         log().debug("Try to get href attribute of GuiElement");
-        String link = element.getAttribute("href");
+        String link = element.value(Attribute.HREF).getActual();
         if (link == null || link.length() == 0) {
             log().debug("No href attribute found. Try src attribute.");
-            link = element.getAttribute("src");
+            link = element.value(Attribute.SRC).getActual();
         }
 
         if (link == null || link.length() == 0) {

@@ -71,20 +71,9 @@ public class WebDriverManagerConfig {
      * Default constructor.
      */
     public WebDriverManagerConfig() {
-        init();
     }
 
-    /**
-     * Init config values.
-     */
-    public void init() {
-        /*
-        set remote
-         */
-        initWebDriverMode();
-    }
-
-    public static String browser() {
+    public String browser() {
         String browser = PropertyManager.getProperty(TesterraProperties.BROWSER, null);
 
         String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
@@ -96,7 +85,7 @@ public class WebDriverManagerConfig {
         return browser;
     }
 
-    public static String browserVersion() {
+    public String browserVersion() {
         String browserVersion = PropertyManager.getProperty(TesterraProperties.BROWSER_VERSION, null);
         String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
         if (!StringUtils.isStringEmpty(browserSetting) && browserSetting.contains(":")) {
@@ -104,17 +93,6 @@ public class WebDriverManagerConfig {
             browserVersion = split[1];
         }
         return browserVersion;
-    }
-
-    /**
-     * Returns the webdriver mode.
-     *
-     * @return the webDriverMode
-     */
-    private WebDriverMode initWebDriverMode() {
-        String modeString = PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, webDriverMode.name()).trim();
-        webDriverMode = WebDriverMode.valueOf(modeString);
-        return webDriverMode;
     }
 
     public boolean areSessionsClosedAfterTestMethod() {

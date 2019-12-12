@@ -1,6 +1,7 @@
 = Actions
 
-GuiElement provides a variety of action methods. Beside the known WebElement methods there are some more useful methods to interact with the web site.
+GuiElement provides a variety of action methods.
+Beside the known WebElement methods there are some more useful methods to interact with the web site.
 
 == Click on elements
 
@@ -111,17 +112,19 @@ element.mouseOverAbsolute2Axis();
 
 ----
 
-
 The following graphic shows 2 different mouse pointer paths beginning at the upper right image to the button 1.
 
 .Two possible mouse paths
 image::absolute2Axis.png[]
 
-The standard path (green) goes over a menu with hover effects. This could hide your target element. The blue path variant always goes first to the point (0,0) of the viewport, then in x and y direction the the target element.
+The standard path (green) goes over a menu with hover effects.
+This could hide your target element.
+The blue path variant always goes first to the point (0,0) of the viewport, then in x and y direction the the target element.
 
 == Drag and drop actions
 
-With the utils class `MouseActions` you can execute a drag-and-drop actions. Source and target GuiElements can be located in different frames.
+With the utils class `MouseActions` you can execute a drag-and-drop actions.
+Source and target GuiElements can be located in different frames.
 
 [source,java]
 ----
@@ -152,3 +155,42 @@ GuiElement element = new GuiElement(driver, By.id("button"));
 
 element.highlight();
 ----
+
+== Shadow Roots
+
+Modern web applications are allowed to use some third-party components, which can be integrated with Shadow DOM.
+This is the modern art of an iframe, because the components will be loaded via asynchronous JavaScript.
+
+Each embedded Shadow DOM component will have it's own shadow root.
+To work with shadow root elements Testerra provide the method `shadowRoot()` on the `GuiElement` class.
+
+Given the following HTML code snippet it will be easier how to get the corresponding `GuiElement` of the Shadow DOM component.
+
+.HTML Code
+[source,html]
+----
+<body>
+    <div id="wrapper">
+    <!-- HTML code-->
+    <my-custom-shadow-root-element>
+    <!-- #shadowRoot -->
+        <div class="custom-component">
+            <input id="custom-component-login-name" name="name">
+        </div>
+    </my-custom-shadow-root-element>
+    </div>
+    <!-- HTML code-->
+</body>
+----
+
+.Java Code
+[source,java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
+
+GuiElement shadowRootElement = new GuiElement(driver, By.cssSelector("my-custom-shadow-root-element")).shadowRoot();
+GuiElement inputName = shadowRootElement.getSubElement(By.cssSelector("#custom-component-login-name"));
+----
+
+IMPORTANT: Calling `isDisplayed()` on `shadowRoot()`-notated `GuiElement` will always return false, but `isPresent()` will work as designed.
+

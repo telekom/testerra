@@ -43,7 +43,11 @@ import org.json.JSONObject;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.*;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.CommandExecutor;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.HttpCommandExecutor;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -386,7 +390,8 @@ public final class WebDriverManagerUtils {
         return cap;
     }
 
-    public static String getSessionId(WebDriver driver) {
+    public static String getSessionKey(WebDriver driver) {
+
         return WebDriverSessionsManager.getSessionKey(driver);
     }
 

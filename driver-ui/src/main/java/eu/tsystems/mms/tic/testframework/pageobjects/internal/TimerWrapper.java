@@ -121,7 +121,7 @@ public class TimerWrapper {
                     /*
                     Close the session to avoid huge timeouts.
                      */
-                final String sessionId = WebDriverManagerUtils.getSessionId(webDriver);
+                final String sessionId = WebDriverManagerUtils.getSessionKey(webDriver);
                 if (!StringUtils.isAnyStringEmpty(sessionId)) {
                     WebDriverManager.shutdown();
                 } else {

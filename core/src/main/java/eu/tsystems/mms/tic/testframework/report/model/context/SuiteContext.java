@@ -28,7 +28,7 @@ import org.testng.ITestResult;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SuiteContext extends Context implements SynchronizableContext {
+public class SuiteContext extends AbstractContext implements SynchronizableContext {
 
     public final List<TestContextModel> testContextModels = new LinkedList<>();
     public final ExecutionContext executionContext;
@@ -54,6 +54,6 @@ public class SuiteContext extends Context implements SynchronizableContext {
 
     @Override
     public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(testContextModels.toArray(new Context[0]));
+        return getStatusFromContexts(testContextModels.toArray(new AbstractContext[0]));
     }
 }

@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
  *
  * @author pele
  */
-public class ClassContext extends Context implements SynchronizableContext {
+public class ClassContext extends AbstractContext implements SynchronizableContext {
 
     public final List<MethodContext> methodContexts = new LinkedList<>();
     public String fullClassName;
@@ -199,9 +199,9 @@ public class ClassContext extends Context implements SynchronizableContext {
         return getStatusFromContexts(getRepresentationalMethods());
     }
 
-    public Context[] getRepresentationalMethods() {
+    public AbstractContext[] getRepresentationalMethods() {
         List<MethodContext> methodContexts = copyOfMethodContexts();
-        Context[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod).toArray(Context[]::new);
+        AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod).toArray(AbstractContext[]::new);
         return contexts;
     }
 

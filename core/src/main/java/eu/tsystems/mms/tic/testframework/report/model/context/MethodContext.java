@@ -50,7 +50,7 @@ import java.util.List;
  *
  * @author mibu
  */
-public class MethodContext extends Context implements SynchronizableContext {
+public class MethodContext extends AbstractContext implements SynchronizableContext {
 
     public ITestResult testResult;
     public ITestContext iTestContext;

@@ -38,7 +38,7 @@ import java.util.Optional;
 /**
  * Representation of a TestNG {@link ITestContext}
  */
-public class TestContextModel extends Context implements SynchronizableContext {
+public class TestContextModel extends AbstractContext implements SynchronizableContext {
 
     public final List<ClassContext> classContexts = new LinkedList<>();
     public final SuiteContext suiteContext;
@@ -215,6 +215,6 @@ public class TestContextModel extends Context implements SynchronizableContext {
 
     @Override
     public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(classContexts.toArray(new Context[0]));
+        return getStatusFromContexts(classContexts.toArray(new AbstractContext[0]));
     }
 }

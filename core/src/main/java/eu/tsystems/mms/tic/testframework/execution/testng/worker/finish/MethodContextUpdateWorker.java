@@ -80,8 +80,8 @@ public class MethodContextUpdateWorker extends MethodWorker {
                     /*
                      * Enhance step infos
                      */
-                    TestStep currentTestStep = methodContext.steps().getCurrentTestStep();
-                    methodContext.failedStep = currentTestStep;
+                    TestStep failedStep = methodContext.steps().getCurrentTestStep();
+                    methodContext.setFailedStep(failedStep);
 
                     String msg = "";
                     String readableMessage = methodContext.errorContext().getReadableErrorMessage();
@@ -93,7 +93,7 @@ public class MethodContextUpdateWorker extends MethodWorker {
                     if (!StringUtils.isStringEmpty(additionalErrorMessage)) {
                         msg += additionalErrorMessage;
                     }
-                    currentTestStep.getCurrentTestStepAction().addFailingLogMessage(msg);
+                    failedStep.getCurrentTestStepAction().addFailingLogMessage(msg);
                 } else if (isSuccess()) {
                     TestStatusController.Status status = TestStatusController.Status.PASSED;
 

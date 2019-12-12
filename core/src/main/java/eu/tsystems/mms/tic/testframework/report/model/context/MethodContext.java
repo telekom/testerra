@@ -63,7 +63,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public int retryNumber = 0;
     public int methodRunIndex = -1;
     public String threadName = "unrelated";
-    public TestStep failedStep;
+    private TestStep lastFailedStep;
     public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.HIGH;
 
     public ClassContext classContext;
@@ -122,6 +122,15 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public TestStepController steps() {
         return testStepController;
+    }
+
+    public TestStep getLastFailedStep() {
+        return this.lastFailedStep;
+    }
+
+    public MethodContext setFailedStep(TestStep step) {
+        this.lastFailedStep = step;
+        return this;
     }
 
     public ErrorContext errorContext() {

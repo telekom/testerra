@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -35,7 +35,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class TestContext extends Context implements SynchronizableContext {
+/**
+ * Representation of a TestNG {@link ITestContext}
+ */
+public class TestContextModel extends Context implements SynchronizableContext {
 
     public final List<ClassContext> classContexts = new LinkedList<>();
     public final SuiteContext suiteContext;
@@ -49,7 +52,7 @@ public class TestContext extends Context implements SynchronizableContext {
      */
     private static final Map<String, ClassContext> CLASS_CONTEXT_MARKS = new LinkedHashMap<>();
 
-    public TestContext(SuiteContext suiteContext, ExecutionContext executionContext) {
+    public TestContextModel(SuiteContext suiteContext, ExecutionContext executionContext) {
         this.parentContext = this.suiteContext = suiteContext;
         this.executionContext = executionContext;
     }
@@ -99,19 +102,19 @@ public class TestContext extends Context implements SynchronizableContext {
         /*
         check if @TesterraClassContext is present on class
          */
-        if (realClass.isAnnotationPresent(TesterraClassContext.class)) {
+        if (realClass.isAnnotationPresent(TestContext.class)) {
 
             /*
             hook into executionContext mergedContexts
              */
-            final TesterraClassContext actualTesterraClassContext = realClass.getAnnotation(TesterraClassContext.class);
+            final TestContext actualTestContext = realClass.getAnnotation(TestContext.class);
 
-            if (actualTesterraClassContext.mode() == TesterraClassContext.Mode.ONE_FOR_ALL) {
+            if (actualTestContext.mode() == TestContext.Mode.ONE_FOR_ALL) {
                 final ClassContext mergedClassContext;
 
                 synchronized (executionContext.mergedClassContexts) {
                     // check if this class is present
-                    Optional<ClassContext> first = executionContext.mergedClassContexts.stream().filter(c -> c.testerraClassContext == actualTesterraClassContext).findFirst();
+                    Optional<ClassContext> first = executionContext.mergedClassContexts.stream().filter(c -> c.testContext == actualTestContext).findFirst();
                     if (first.isPresent()) {
                         mergedClassContext = first.get();
                     } else {
@@ -120,11 +123,11 @@ public class TestContext extends Context implements SynchronizableContext {
                         mergedClassContext.fullClassName = realClass.getName();
                         mergedClassContext.simpleClassName = realClass.getSimpleName();
                         fillBasicContextValues(mergedClassContext, this, mergedClassContext.simpleClassName);
-                        mergedClassContext.testerraClassContext = actualTesterraClassContext;
+                        mergedClassContext.testContext = actualTestContext;
                         mergedClassContext.merged = true;
 
-                        if (!StringUtils.isStringEmpty(actualTesterraClassContext.value())) {
-                            mergedClassContext.name = actualTesterraClassContext.value();
+                        if (!StringUtils.isStringEmpty(actualTestContext.name())) {
+                            mergedClassContext.name = actualTestContext.name();
                         }
 
                         executionContext.mergedClassContexts.add(mergedClassContext);

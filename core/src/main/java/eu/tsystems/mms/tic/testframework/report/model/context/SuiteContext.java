@@ -30,30 +30,30 @@ import java.util.List;
 
 public class SuiteContext extends Context implements SynchronizableContext {
 
-    public final List<TestContext> testContexts = new LinkedList<>();
+    public final List<TestContextModel> testContextModels = new LinkedList<>();
     public final ExecutionContext executionContext;
 
     public SuiteContext(ExecutionContext executionContext) {
         this.parentContext = this.executionContext = executionContext;
     }
 
-    public TestContext getTestContext(ITestResult testResult, ITestContext iTestContext) {
+    public TestContextModel getTestContext(ITestResult testResult, ITestContext iTestContext) {
         final String testName = TestNGHelper.getTestName(testResult, iTestContext);
-        return getContext(TestContext.class, testContexts, testName, true, () -> new TestContext(this, executionContext));
+        return getContext(TestContextModel.class, testContextModels, testName, true, () -> new TestContextModel(this, executionContext));
     }
 
-    public TestContext getTestContext(final ITestContext iTestContext) {
+    public TestContextModel getTestContext(final ITestContext iTestContext) {
         return this.getTestContext(null, iTestContext);
     }
 
-    public List<TestContext> copyOfTestContexts() {
-        synchronized (testContexts) {
-            return new LinkedList<>(testContexts);
+    public List<TestContextModel> copyOfTestContexts() {
+        synchronized (testContextModels) {
+            return new LinkedList<>(testContextModels);
         }
     }
 
     @Override
     public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(testContexts.toArray(new Context[0]));
+        return getStatusFromContexts(testContextModels.toArray(new Context[0]));
     }
 }

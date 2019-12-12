@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.testundertest;
 
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.report.general.TestsUnderTestGroup;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 /**
  * Created by jlma on 07.11.2016.
  */
-@TesterraClassContext("My_Context")
+@TestContext(name = "My_Context")
 public class ReportTestUnderTestFailed extends AbstractTest {
 
 

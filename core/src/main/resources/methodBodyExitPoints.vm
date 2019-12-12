@@ -22,7 +22,7 @@
         #end
 
         #if ($testMethod.classContext.merged)
-            (in $testMethod.suiteContext.name - $testMethod.testContext.name)
+            (in $testMethod.suiteContext.name - $testMethod.testContextModel.name)
         #end
     </a>
 

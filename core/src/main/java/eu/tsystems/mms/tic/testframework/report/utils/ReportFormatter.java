@@ -43,6 +43,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.velocity.tools.generic.DateTool;
 
 import java.io.*;
 import java.util.Collection;
@@ -377,6 +378,7 @@ public class ReportFormatter {
         context.put("reportScreenshotsPreview", Flags.REPORT_SCREENSHOTS_PREVIEW);
         context.put("reportName", ReportUtils.getReportName());
         context.put("dryrun", Flags.DRY_RUN);
+        context.put("dateFormatter", new DateTool());
 
         context.put("filter", FilterUtils.getInstance());
         context.put("fcActive", Flags.FAILURE_CORRIDOR_ACTIVE);

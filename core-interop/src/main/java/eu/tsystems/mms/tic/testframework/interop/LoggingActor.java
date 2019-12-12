@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.interop;
 
 import org.apache.log4j.spi.LoggingEvent;
 
+@Deprecated
 public interface LoggingActor {
 
     /**

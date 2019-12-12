@@ -19,14 +19,13 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.steps;
 
-import eu.tsystems.mms.tic.testframework.report.BaseLoggingActor;
+import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,12 +36,23 @@ public class TestStepAction implements Serializable {
 
     private static final long serialVersionUID = Serial.SERIAL;
 
+    private final String id = IDUtils.getB64encXID();
     private final String name;
+    private final TestStep testStep;
 
     private final List<TestStepActionEntry> testStepActionEntries = Collections.synchronizedList(new LinkedList<>());
 
-    public TestStepAction(String name) {
+    public TestStepAction(TestStep testStep, String name) {
+        this.testStep = testStep;
         this.name = name;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public TestStep getTestStep() {
+        return testStep;
     }
 
     public String getName() {
@@ -65,18 +75,18 @@ public class TestStepAction implements Serializable {
         testStepActionEntry.afterScreenshot = afterShot;
         testStepActionEntries.add(testStepActionEntry);
     }
-
-    public void addFailingLogMessage(final String msg) {
-        String date = BaseLoggingActor.SIMPLE_DATE_FORMAT.format(new Date());
-        LogMessage logMessage = new LogMessage(
-                "ERROR",
-                date,
-                Thread.currentThread().getName(),
-                "Test Failed",
-                msg);
-        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
-        testStepActionEntry.logMessage = logMessage;
-        testStepActionEntries.add(testStepActionEntry);
-    }
+//
+//    public void addFailingLogMessage(final String msg) {
+//        LogMessage logMessage = new LogMessage(
+//            Level.ERROR,
+//            System.currentTimeMillis(),
+//            Thread.currentThread().getName(),
+//            "Test Failed",
+//            msg
+//        );
+//        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
+//        testStepActionEntry.logMessage = logMessage;
+//        testStepActionEntries.add(testStepActionEntry);
+//    }
 }
 

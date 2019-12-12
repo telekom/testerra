@@ -26,6 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import com.google.common.collect.Lists;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
@@ -34,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.testng.ITestContext;
@@ -116,8 +118,8 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.methodType = methodType;
     }
 
-    public void addLogMessage(LogMessage logMessage) {
-        testStepController.addLogMessage(logMessage);
+    public TestStepAction addLogMessage(LogMessage logMessage) {
+        return testStepController.addLogMessage(logMessage);
     }
 
     public TestStepController steps() {

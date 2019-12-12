@@ -82,18 +82,17 @@ public class MethodContextUpdateWorker extends MethodWorker {
                      */
                     TestStep failedStep = methodContext.steps().getCurrentTestStep();
                     methodContext.setFailedStep(failedStep);
-
-                    String msg = "";
-                    String readableMessage = methodContext.errorContext().getReadableErrorMessage();
-                    if (!StringUtils.isStringEmpty(readableMessage)) {
-                        msg += readableMessage;
-                    }
-
-                    String additionalErrorMessage = methodContext.errorContext().getAdditionalErrorMessage();
-                    if (!StringUtils.isStringEmpty(additionalErrorMessage)) {
-                        msg += additionalErrorMessage;
-                    }
-                    failedStep.getCurrentTestStepAction().addFailingLogMessage(msg);
+//                    String msg = "";
+//                    String readableMessage = methodContext.errorContext().getReadableErrorMessage();
+//                    if (!StringUtils.isStringEmpty(readableMessage)) {
+//                        msg += readableMessage;
+//                    }
+//
+//                    String additionalErrorMessage = methodContext.errorContext().getAdditionalErrorMessage();
+//                    if (!StringUtils.isStringEmpty(additionalErrorMessage)) {
+//                        msg += additionalErrorMessage;
+//                    }
+//                    failedStep.getCurrentTestStepAction().addFailingLogMessage(msg);
                 } else if (isSuccess()) {
                     TestStatusController.Status status = TestStatusController.Status.PASSED;
 

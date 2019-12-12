@@ -38,6 +38,7 @@ public final class TesterraProperties {
      * Hide default constructor.
      */
     private TesterraProperties() {
+
     }
 
     /**
@@ -75,7 +76,7 @@ public final class TesterraProperties {
      * Property key stating to take automatic screenshots or not.
      */
     public static final String SCREENSHOTTER_ACTIVE = "tt.screenshotter.active";
-//    public static final String AUTOSCREENSHOTS = "tt.takeAutomaticScreenshot";
+    //    public static final String AUTOSCREENSHOTS = "tt.takeAutomaticScreenshot";
 
     /**
      * Key of reportDir Property.
@@ -83,7 +84,7 @@ public final class TesterraProperties {
     public static final String REPORTDIR = "tt.report.dir";
     public static final String REPORTNAME = "tt.report.name";
 
-    public static final String LOG_LEVEL ="tt.loglevel";
+    public static final String LOG_LEVEL = "tt.loglevel";
 
     /**
      * tt. test property file.
@@ -115,6 +116,11 @@ public final class TesterraProperties {
      * WDM close windows rule.
      */
     public static final String CLOSE_WINDOWS_ON_FAILURE = "tt.wdm.closewindows.onfailure";
+
+    /**
+     * WDM: Kill WebDriver on stucking selenium command after this.
+     */
+    public static final String WEBDRIVER_TIMEOUT_SECONDS_STUCK_COMMAND = "tt.wdm.timeouts.seconds.selenium.command.stuck";
 
     /**
      * Visually marks every GuiElement that is being processed. Might break a LayoutTest.
@@ -166,9 +172,13 @@ public final class TesterraProperties {
      * Perf test thinktime.
      */
     public static final String PERF_PAGE_THINKTIME_MS = "tt.perf.page.thinktime.ms";
-    /** reuse existing driver for a thread of dataprovider */
+    /**
+     * reuse existing driver for a thread of dataprovider
+     */
     public static final String REUSE_DATAPROVIDER_DRIVER_BY_THREAD = "tt.reuse.dataprovider.driver.by.thread";
-    /** Perf test Property, used to set default values of a Load test */
+    /**
+     * Perf test Property, used to set default values of a Load test
+     */
     public static final String PERF_TEST = "tt.perf.test";
 
     /**

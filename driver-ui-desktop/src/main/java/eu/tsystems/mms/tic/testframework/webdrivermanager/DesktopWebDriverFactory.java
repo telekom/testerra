@@ -62,6 +62,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
@@ -77,6 +78,7 @@ import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -92,6 +94,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
     @Override
     protected DesktopWebDriverRequest buildRequest(WebDriverRequest request) {
+
         DesktopWebDriverRequest r;
         if (request instanceof DesktopWebDriverRequest) {
             r = (DesktopWebDriverRequest) request;
@@ -133,6 +136,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
     @Override
     protected DesiredCapabilities buildCapabilities(DesiredCapabilities preSetCaps, DesktopWebDriverRequest desktopWebDriverRequest) {
+
         return DesktopWebDriverCapabilities.createCapabilities(WebDriverManager.config(), preSetCaps, desktopWebDriverRequest);
     }
 
@@ -203,6 +207,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
     @Override
     public void setupSession(EventFiringWebDriver eventFiringWebDriver, DesktopWebDriverRequest request) {
+
         final String browser = request.browser;
 
         // add event listeners
@@ -274,6 +279,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     }
 
     private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, String browser) {
+
         LOGGER.info(logSCID() + "Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
         String[] split = Defaults.DISPLAY_RESOLUTION.split("x");
         int width = Integer.valueOf(split[0]);
@@ -290,6 +296,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 ThrowablePackedResponse<Object> response = timer.executeSequence(new Timer.Sequence<Object>() {
                     @Override
                     public void run() throws Throwable {
+
                         setSkipThrowingException(true);
                         LOGGER.info(logSCID() + "Trying setPosition() and setSize()");
                         try {
@@ -311,6 +318,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     }
 
     private WebDriver newWebDriver(DesktopWebDriverRequest desktopWebDriverRequest, DesiredCapabilities capabilities) {
+
         String sessionKey = desktopWebDriverRequest.sessionKey;
 
         final String url = desktopWebDriverRequest.seleniumServerURL;
@@ -347,7 +355,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     // ignore silently
                 }
             }
-
 
 
             try {
@@ -404,12 +411,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
      * @return.
      */
     private WebDriver startNewWebDriverSession(
-        String browser,
-        DesiredCapabilities capabilities,
-        URL remoteAddress,
-        String msg,
-        String sessionKey
+            String browser,
+            DesiredCapabilities capabilities,
+            URL remoteAddress,
+            String msg,
+            String sessionKey
     ) {
+
         LOGGER.info(logSCID() + "Starting WebDriver (" + sessionKey + ") " + msg, new NewSessionMarker());
         org.apache.commons.lang3.time.StopWatch sw = new org.apache.commons.lang3.time.StopWatch();
         sw.start();
@@ -471,7 +479,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 capabilities.setJavascriptEnabled(true);
 
                 String[] args = {
-                    "--ssl-protocol=any"
+                        "--ssl-protocol=any"
                 };
                 capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, args);
                 finalCapabilities = capabilities;
@@ -503,8 +511,11 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         WebDriver driver;
         try {
             if (remoteAddress != null) {
-                driver = new TesterraWebDriver(remoteAddress, finalCapabilities);
+
+                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), remoteAddress, new TesterraHttpClientFactory());
+                driver = new TesterraWebDriver(httpCommandExecutor, finalCapabilities);
                 ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
+
             } else {
                 Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(Capabilities.class);
                 driver = constructor.newInstance(finalCapabilities);
@@ -522,6 +533,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     }
 
     private File getPhantomJSBinary() {
+
         if (phantomjsFile == null) {
             LOGGER.info(logSCID() + "Unpacking phantomJS...");
             try {

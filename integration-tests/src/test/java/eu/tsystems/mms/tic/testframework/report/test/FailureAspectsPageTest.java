@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFailurePointsPage;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by riwa on 24.11.2016.
  */
-@TesterraClassContext("View-FailureAspects")
+@TestContext(name = "View-FailureAspects")
 public class FailureAspectsPageTest extends AbstractReportFailuresTest {
 
     @BeforeMethod(alwaysRun = true)

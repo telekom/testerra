@@ -39,28 +39,28 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public abstract class Context implements SynchronizableContext {
+public abstract class AbstractContext implements SynchronizableContext {
 
     @FunctionalInterface
-    public interface CreateDownStreamContext<T extends Context> {
+    public interface CreateDownStreamContext<T extends AbstractContext> {
         T create();
     }
 
     public String name;
     public final String id = IDUtils.getB64encXID();
-    public Context parentContext;
+    public AbstractContext parentContext;
     public String swi; // system-wide identifier
     public Date startTime = new Date();
     public Date endTime = new Date();
 
     protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    protected static void fillBasicContextValues(Context context, Context parentContext, String name) {
+    protected static void fillBasicContextValues(AbstractContext context, AbstractContext parentContext, String name) {
         context.name = name;
         context.swi = parentContext.swi + "_" + name;
     }
 
-    protected <T extends Context> T getContext(Class<T> contextClass, List<T> contexts, String name, boolean autocreate, CreateDownStreamContext<T> createDownStreamContext) {
+    protected <T extends AbstractContext> T getContext(Class<T> contextClass, List<T> contexts, String name, boolean autocreate, CreateDownStreamContext<T> createDownStreamContext) {
         synchronized (contexts) {
             List<T> collect = contexts.stream().filter(context -> name.equals(context.name)).collect(Collectors.toList());
             if (collect.isEmpty()) {
@@ -107,7 +107,7 @@ public abstract class Context implements SynchronizableContext {
         return TestStatusController.Status.PASSED;
     }
 
-    TestStatusController.Status getStatusFromContexts(Context[] contexts) {
+    TestStatusController.Status getStatusFromContexts(AbstractContext[] contexts) {
         Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
         /*
         get statuses
@@ -116,7 +116,7 @@ public abstract class Context implements SynchronizableContext {
             // init with 0
             Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
 
-            for (Context context : contexts) {
+            for (AbstractContext context : contexts) {
                 TestStatusController.Status status = context.getStatus();
                 int value = 0;
                 if (counts.containsKey(status)) {
@@ -190,7 +190,7 @@ public abstract class Context implements SynchronizableContext {
     }
 
     public void updateEndTimeRecursive(Date date) {
-        Context context = this;
+        AbstractContext context = this;
         while (context != null) {
 //            LOGGER.info("Updating " + context.getClass().getSimpleName() + " context " + context.name + ": " + date);
 

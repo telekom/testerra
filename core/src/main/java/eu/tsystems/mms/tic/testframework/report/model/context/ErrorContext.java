@@ -29,7 +29,7 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 /**
  * Created by sagu on 21.09.2016.
  */
-public class ErrorContext extends Context {
+public class ErrorContext extends AbstractContext {
 
     public String readableErrorMessage;
     public String additionalErrorMessage;

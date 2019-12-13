@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.test.dashboard;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTestDashboard;
@@ -15,7 +15,7 @@ import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
-@TesterraClassContext("View-Dashboard-Module BarChart")
+@TestContext(name = "View-Dashboard-Module BarChart")
 public class DashboardModuleClassBarChartTest extends AbstractTestDashboard {
 
     /**

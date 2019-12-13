@@ -188,6 +188,7 @@ public final class WebDriverUtils {
      *
      * @return DesiredCapabilities.
      */
+    @Deprecated
     public static DesiredCapabilities generateNewDesiredCapabilities() {
         return WebDriverManagerUtils.generateNewDesiredCapabilities();
     }

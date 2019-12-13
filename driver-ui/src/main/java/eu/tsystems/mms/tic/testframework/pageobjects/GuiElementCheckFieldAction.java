@@ -142,7 +142,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                 // get the web driver session
                 GuiElement guiElement = (GuiElement) checkableInstance;
                 WebDriver driver = guiElement.getWebDriver();
-                String sessionId = WebDriverManagerUtils.getSessionId(driver);
+                String sessionId = WebDriverManagerUtils.getSessionKey(driver);
 
                 if (!StringUtils.isStringEmpty(sessionId)) {
                     // do only search for the gui element if JS is disabled

@@ -27,7 +27,6 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.MaximizePosition;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -72,20 +71,9 @@ public class WebDriverManagerConfig {
      * Default constructor.
      */
     public WebDriverManagerConfig() {
-        init();
     }
 
-    /**
-     * Init config values.
-     */
-    public void init() {
-        /*
-        set remote
-         */
-        initWebDriverMode();
-    }
-
-    public static String browser() {
+    public String browser() {
         String browser = PropertyManager.getProperty(TesterraProperties.BROWSER, null);
 
         String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
@@ -97,7 +85,7 @@ public class WebDriverManagerConfig {
         return browser;
     }
 
-    public static String browserVersion() {
+    public String browserVersion() {
         String browserVersion = PropertyManager.getProperty(TesterraProperties.BROWSER_VERSION, null);
         String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
         if (!StringUtils.isStringEmpty(browserSetting) && browserSetting.contains(":")) {
@@ -105,16 +93,6 @@ public class WebDriverManagerConfig {
             browserVersion = split[1];
         }
         return browserVersion;
-    }
-
-    /**
-     * Returns the webdriver mode.
-     *
-     * @return the webDriverMode
-     */
-    private WebDriverMode initWebDriverMode() {
-        webDriverMode = WebDriverMode.valueOf(Testerra.Properties.WEBDRIVER_MODE.asString().trim());
-        return webDriverMode;
     }
 
     public boolean areSessionsClosedAfterTestMethod() {

@@ -33,7 +33,9 @@ import java.lang.reflect.Modifier;
  * Created by rnhb on 17.12.2015.
  */
 public abstract class CheckFieldAction extends FieldAction implements Loggable {
+    @Deprecated
     protected final boolean findNot;
+    @Deprecated
     private final boolean fast;
     protected String readableMessage;
 

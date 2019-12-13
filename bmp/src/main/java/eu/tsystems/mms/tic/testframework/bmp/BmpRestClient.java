@@ -25,6 +25,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -50,9 +51,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-public class BmpRestClient {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(BmpRestClient.class);
+public class BmpRestClient implements Loggable {
 
     private URL upstreamProxy;
 
@@ -137,7 +136,7 @@ public class BmpRestClient {
             final String urlToCall = url().setPath("/proxy/" + this.proxyPort + "/headers").toString();
             this.sendPost(urlToCall, jsonHeaderMap.toString());
         } catch (Exception e) {
-            LOGGER.error("Error setting header.", e);
+            log().error("Error setting header.", e);
         }
     }
 
@@ -156,7 +155,7 @@ public class BmpRestClient {
             throw new TesterraRuntimeException("No proxy started yet. Not possible to set auth credentials.");
         }
 
-        LOGGER.info("Adding Basic Auth for " + username + ":*****@" + domain);
+        log().debug("Adding Basic Auth for " + username + ":*****@" + domain);
 
         final JsonObject auth = new JsonObject();
         auth.add("username", new JsonPrimitive(username));
@@ -166,7 +165,7 @@ public class BmpRestClient {
             final String urlToCall = url().setPath("/proxy/" + this.proxyPort + "/auth/basic/" + domain).toString();
             this.sendPost(urlToCall, auth.toString());
         } catch (Exception e) {
-            LOGGER.error("Error setting basic auth", e);
+            log().error("Error setting basic auth", e);
         }
     }
 
@@ -205,8 +204,7 @@ public class BmpRestClient {
                 this.proxyPort = customPort;
                 final String proxyUrl = url().setPath("/proxy/" + proxyPort + "/").toString();
 
-                LOGGER.info("BMP proxy port " + customPort + " already active.");
-                LOGGER.info("Using proxy server at " + proxyUrl);
+                log().warn("Use already active proxy server at " + proxyUrl);
                 return this.proxyPort;
             }
 
@@ -220,7 +218,7 @@ public class BmpRestClient {
             this.proxyPort = jsonElement.getAsJsonObject().get("port").getAsInt();
 
             final String proxyUrl = url().setPath("/proxy/" + proxyPort + "/").toString();
-            LOGGER.info("Created new proxy server at " + proxyUrl);
+            log().info("Created new proxy server at " + proxyUrl);
             return this.proxyPort;
 
         } catch (Exception e) {
@@ -284,7 +282,7 @@ public class BmpRestClient {
             final String urlToCall = url().setPath("/proxy/" + this.proxyPort + "/hosts").toString();
             this.sendPost(urlToCall, jso.toString());
         } catch (Exception e) {
-            LOGGER.error("Error setting host mapping", e);
+            log().error("Error setting host mapping", e);
         }
     }
 
@@ -343,7 +341,7 @@ public class BmpRestClient {
             httppost.setEntity(myEntity);
         }
 
-        LOGGER.info("Sending bmp command (post) " + url + " with " + content);
+        log().debug("Sending POST: " + url + " with " + content);
         return this.executeRequest(httpclient, httppost);
     }
 
@@ -359,7 +357,7 @@ public class BmpRestClient {
             httpput.setEntity(myEntity);
         }
 
-        LOGGER.info("Sending bmp command (put) " + url + " with " + content);
+        log().debug("Sending PUT: " + url + " with " + content);
         return this.executeRequest(httpclient, httpput);
     }
 
@@ -370,7 +368,7 @@ public class BmpRestClient {
         final HttpGet httpget = new HttpGet(url);
 
         //Execute and get the response.
-        LOGGER.info("Sending bmp command (get): " + url);
+        log().debug("Sending GET: " + url);
         return this.executeRequest(httpclient, httpget);
     }
 
@@ -381,7 +379,7 @@ public class BmpRestClient {
         final HttpDelete httpDelete = new HttpDelete(url);
 
         //Execute and get the response.
-        LOGGER.info("Sending bmp command (delete): " + url);
+        log().debug("Sending DELETE: " + url);
         return this.executeRequest(httpclient, httpDelete);
     }
 

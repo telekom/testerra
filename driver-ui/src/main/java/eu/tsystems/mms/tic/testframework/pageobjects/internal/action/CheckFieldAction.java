@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
@@ -37,21 +38,28 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
     protected final boolean findNot;
     @Deprecated
     private final boolean fast;
-    protected String readableMessage;
 
+    @Deprecated
     protected BasicUiElement checkableInstance;
 
     public CheckFieldAction(FieldWithActionConfig fieldWithActionConfig, AbstractPage declaringPage) {
         super(fieldWithActionConfig.field, declaringPage);
         this.fast = fieldWithActionConfig.fast;
         this.findNot = fieldWithActionConfig.findNot;
+    }
 
-        String simpleClassName = declaringPage.getClass().getSimpleName();
-        if (findNot) {
-            readableMessage = String.format("Mandatory GuiElement {%s.%s} was found, but expected to be NOT", simpleClassName, fieldName);
-        } else {
-            readableMessage = String.format("Mandatory GuiElement {%s.%s} was not found", simpleClassName, fieldName);
+    protected String createReadableMessage() {
+        try {
+            HasParent element = (HasParent)field.get(declaringPage);
+            if (findNot) {
+                return String.format("Mandatory {%s} was found, but expected to be NOT", element.toString(true));
+            } else {
+                return String.format("Mandatory {%s} was not found", element.toString(true));
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     /**

@@ -116,7 +116,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
         try {
             pCheckField(checkableInstance, null, check, findNot, fast);
         } catch (AssertionError e) {
-            final PageNotFoundException pageNotFoundException = new PageNotFoundException(readableMessage, e);
+            final PageNotFoundException pageNotFoundException = new PageNotFoundException(createReadableMessage(), e);
 
                 /*
                 if @Check has a prioritizedErrorMessage mark, then wrap t's

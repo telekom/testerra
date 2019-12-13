@@ -29,9 +29,7 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -52,6 +50,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 

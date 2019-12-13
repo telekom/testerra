@@ -96,7 +96,7 @@ public class GuiElementListTests extends AbstractTestSitesTest {
         Assert.assertEquals(rows.getNumberOfFoundElements(), 4);
 
         GuiElement mkriProfileLink = rows.getList().get(0).getSubElement(By.xpath(".//a"));
-        mkriProfileLink.asserts().assertAttributeContains("href", "muffte");
+        mkriProfileLink.asserts().assertAttributeContains("href", "mkri");
 
         GuiElement erkuProfileLink = rows.getList().get(rows.getNumberOfFoundElements()-1).getSubElement(By.xpath(".//a"));
         erkuProfileLink.asserts().assertAttributeContains("href", "erku");

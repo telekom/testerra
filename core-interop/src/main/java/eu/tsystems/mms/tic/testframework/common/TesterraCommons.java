@@ -66,15 +66,14 @@ public class TesterraCommons {
      * value.
      */
     private static void initializeLogging() {
-        Appender appender = Testerra.injector.getInstance(LogAppender.class);
-        final String loggerDefinitionsFilename = "test-log4j.xml";
-        final URL log4jConfig = ClassLoader.getSystemResource(loggerDefinitionsFilename);
+        URL log4jConfig = FileUtils.getResourceURL("test-log4j.xml");
         if (log4jConfig != null) {
-            //System.setProperty("log4j.configuration", loggerDefinitionsFilename);
             DOMConfigurator.configure(log4jConfig);
-            BasicConfigurator.configure(appender);
         } else {
-            BasicConfigurator.configure(appender);
+            Appender appender = Testerra.injector.getInstance(LogAppender.class);
+            org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
+            root.addAppender(appender);
+            root.setLevel(Level.INFO);
         }
         // implicit calls PropertyManager static block - init all the properties, load property file as well!
         TesterraCommons.setTesterraLogLevel();

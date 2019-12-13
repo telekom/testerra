@@ -102,8 +102,6 @@ public final class PropertyManager {
     private static Properties pLoadThreadLocalProperties(final String resourceFile, final String charset) {
         Properties threadLocalProperties = getThreadLocalProperties();
         pLoadPropertiesFromResource(threadLocalProperties, resourceFile, charset);
-
-        LOGGER.info("ThreadLocalProperties: " + threadLocalProperties);
         return threadLocalProperties;
     }
 
@@ -164,7 +162,6 @@ public final class PropertyManager {
      */
     public static Properties loadProperties(final String resourceFile, final String charset) {
         pLoadPropertiesFromResource(FILEPROPERTIES, resourceFile, charset);
-        LOGGER.info("Global Properties: " + FILEPROPERTIES);
         return FILEPROPERTIES;
     }
 

@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Created by fakr on 31.05.2017.
  */
-@TesterraClassContext("View-Classes")
+@TestContext(name = "View-Classes")
 public class ClassesPageTest extends AbstractTest {
 
 

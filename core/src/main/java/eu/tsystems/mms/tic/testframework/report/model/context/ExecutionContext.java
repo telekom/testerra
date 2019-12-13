@@ -34,7 +34,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class ExecutionContext extends Context implements SynchronizableContext {
+public class ExecutionContext extends AbstractContext implements SynchronizableContext {
 
     public final List<SuiteContext> suiteContexts = new LinkedList<>();
     public final List<ClassContext> mergedClassContexts = new LinkedList<>();
@@ -81,7 +81,7 @@ public class ExecutionContext extends Context implements SynchronizableContext {
                 return TestStatusController.Status.FAILED;
             }
         } else {
-            return getStatusFromContexts(suiteContexts.toArray(new Context[0]));
+            return getStatusFromContexts(suiteContexts.toArray(new AbstractContext[0]));
         }
     }
 

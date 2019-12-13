@@ -6,7 +6,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class SessionContext extends Context implements SynchronizableContext {
+public class SessionContext extends AbstractContext implements SynchronizableContext {
 
     public String sessionKey;
     public String provider;

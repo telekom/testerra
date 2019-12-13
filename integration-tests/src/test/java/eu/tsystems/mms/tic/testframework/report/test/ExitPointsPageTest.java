@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFailurePointsPage;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by riwa on 04.04.2017.
  */
-@TesterraClassContext("View-ExitPoints")
+@TestContext(name = "View-ExitPoints")
 public class ExitPointsPageTest extends AbstractReportFailuresTest {
     //TODO restructure tests: find exit points with the help of method names and not with index
 

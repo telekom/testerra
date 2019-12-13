@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.test.dashboard;
 
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractTestReportNumbers;
@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-@TesterraClassContext("View-Dashboard-ResultNumbers")
+@TestContext(name = "View-Dashboard-ResultNumbers")
 public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashboard {
 
     /**

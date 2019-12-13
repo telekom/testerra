@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.test.functional;
 
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
@@ -20,7 +20,7 @@ import org.testng.annotations.Test;
 /**
  * Created by fakr on 07.11.2017
  */
-@TesterraClassContext("Functional-TestNGBefore")
+@TestContext(name = "Functional-TestNGBefore")
 public class BeforeScenarioTest extends AbstractTest {
 
     private final String passedControlMethod = "controlMethodAfterBeforeScenarioPassed";

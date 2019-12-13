@@ -309,7 +309,7 @@ public class TesterraListener implements
         MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
         ExecutionContextController.setCurrentMethodContext(methodContext);
 
-        TestStep step = methodContext.steps().announceTestStep(TestStep.SETUP);
+        methodContext.steps().announceTestStep(TestStep.SETUP);
 
         final String infoText = "beforeInvocation: " + invokedMethod.getTestMethod().getTestClass().getName() + "." +
                 methodName +

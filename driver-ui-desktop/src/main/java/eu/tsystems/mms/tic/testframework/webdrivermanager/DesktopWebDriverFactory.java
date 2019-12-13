@@ -66,6 +66,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
@@ -81,6 +82,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -351,7 +353,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             }
 
 
-
             try {
                 if (browser.equals(Browsers.htmlunit)) {
                     capabilities.setBrowserName(BrowserType.HTMLUNIT);
@@ -405,11 +406,11 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
      * @return.
      */
     private WebDriver startNewWebDriverSession(
-        String browser,
-        DesiredCapabilities capabilities,
-        URL remoteAddress,
-        String msg,
-        String sessionKey
+            String browser,
+            DesiredCapabilities capabilities,
+            URL remoteAddress,
+            String msg,
+            String sessionKey
     ) {
         log().debug("Starting WebDriver (" + sessionKey + ") " + msg, new NewSessionMarker());
         org.apache.commons.lang3.time.StopWatch sw = new org.apache.commons.lang3.time.StopWatch();
@@ -472,7 +473,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 capabilities.setJavascriptEnabled(true);
 
                 String[] args = {
-                    "--ssl-protocol=any"
+                        "--ssl-protocol=any"
                 };
                 capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, args);
                 finalCapabilities = capabilities;
@@ -504,7 +505,8 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         WebDriver driver;
         try {
             if (remoteAddress != null) {
-                driver = new TesterraWebDriver(remoteAddress, finalCapabilities);
+                final HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(new HashMap<>(), remoteAddress, new TesterraHttpClientFactory());
+                driver = new TesterraWebDriver(httpCommandExecutor, finalCapabilities);
                 ((RemoteWebDriver) driver).setFileDetector(new LocalFileDetector());
             } else {
                 Constructor<? extends RemoteWebDriver> constructor = driverClass.getConstructor(Capabilities.class);

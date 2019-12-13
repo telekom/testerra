@@ -39,6 +39,7 @@ public final class TesterraProperties {
      * Hide default constructor.
      */
     private TesterraProperties() {
+
     }
 
     /**
@@ -88,6 +89,11 @@ public final class TesterraProperties {
     public static final String CLOSE_WINDOWS_ON_FAILURE = "tt.wdm.closewindows.onfailure";
 
     /**
+     * WDM: Kill WebDriver on stucking selenium command after this.
+     */
+    public static final String WEBDRIVER_TIMEOUT_SECONDS_STUCK_COMMAND = "tt.wdm.timeouts.seconds.selenium.command.stuck";
+
+    /**
      * State condition.
      */
     public static final String ON_STATE_TESTFAILED_SKIP_FOLLOWING_TESTS = "tt.on.state.testfailed.skip.following.tests";
@@ -115,7 +121,6 @@ public final class TesterraProperties {
      */
     @Deprecated
     public static final String PERF_PAGE_THINKTIME_MS = "tt.perf.page.thinktime.ms";
-    /** reuse existing driver for a thread of dataprovider */
 
     public static final String DB_TIMEOUT = "tt.db.timeout";
 

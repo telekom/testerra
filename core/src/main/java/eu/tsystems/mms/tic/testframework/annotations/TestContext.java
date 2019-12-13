@@ -29,14 +29,14 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface TesterraClassContext {
+public @interface TestContext {
 
     enum Mode {
         ONE_FOR_EACH,
         ONE_FOR_ALL
     }
 
-    String value() default "";
+    String name() default "";
 
     Mode mode() default Mode.ONE_FOR_ALL;
 

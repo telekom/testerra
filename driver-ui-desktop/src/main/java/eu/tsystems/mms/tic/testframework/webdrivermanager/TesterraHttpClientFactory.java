@@ -31,7 +31,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  *
  * @author Eric Kubenka
  */
-public class TesterraHttpClientFactory implements HttpClient.Factory {
+class TesterraHttpClientFactory implements HttpClient.Factory {
 
     private static long WDM_TIMEOUT_STUCK_SELENIUM_COMMANDS = PropertyManager.getLongProperty(TesterraProperties.WEBDRIVER_TIMEOUT_SECONDS_STUCK_COMMAND, 300);
 

@@ -51,7 +51,7 @@ public class BaseLoggingActor extends AppenderSkeleton {
 
     @Deprecated
     private static final List<LoggingActor> LOGGING_ACTORS = new LinkedList<>();
-    public static final Layout CONSOLE_LAYOUT = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss.SSS} [%t] [%-5p]: %c{2} - %m");
+    public static final Layout CONSOLE_LAYOUT = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss.SSS} [%t] [%-5p]: %c{2} -%X{ids} %m");
 
     @Override
     public void close() {
@@ -76,9 +76,9 @@ public class BaseLoggingActor extends AppenderSkeleton {
     @Override
     protected void append(final LoggingEvent event) {
         StringBuilder sb = new StringBuilder();
-        // enhance with method context id
-        sb.append(CONSOLE_LAYOUT.format(event)).append(" - ");
+        sb.append(" ");
 
+        // enhance with method context id
         SessionContext currentSessionContext = ExecutionContextController.getCurrentSessionContext();
         if (currentSessionContext != null) {
             sb.append("[SCID:").append(currentSessionContext.id).append("]");
@@ -99,7 +99,8 @@ public class BaseLoggingActor extends AppenderSkeleton {
             sb.append("[TSID:").append(testStepAction.getTestStep().getId()).append("-").append(testStepAction.getId()).append("]");
         }
 
-        String formattedMessage = sb.toString();
+        event.setProperty("ids", sb.toString());
+        String formattedMessage = CONSOLE_LAYOUT.format(event);
 
         // append for console
         if (event.getLevel().isGreaterOrEqual(Level.ERROR)) {

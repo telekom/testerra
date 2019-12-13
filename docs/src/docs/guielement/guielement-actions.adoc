@@ -1,6 +1,7 @@
 = Actions
 
-GuiElement provides a variety of action methods. Beside the known WebElement methods there are some more useful methods to interact with the web site.
+GuiElement provides a variety of action methods.
+Beside the known WebElement methods there are some more useful methods to interact with the web site.
 
 == Click on elements
 
@@ -111,17 +112,19 @@ element.mouseOverAbsolute2Axis();
 
 ----
 
-
 The following graphic shows 2 different mouse pointer paths beginning at the upper right image to the button 1.
 
 .Two possible mouse paths
 image::absolute2Axis.png[]
 
-The standard path (green) goes over a menu with hover effects. This could hide your target element. The blue path variant always goes first to the point (0,0) of the viewport, then in x and y direction the the target element.
+The standard path (green) goes over a menu with hover effects.
+This could hide your target element.
+The blue path variant always goes first to the point (0,0) of the viewport, then in x and y direction the the target element.
 
 == Drag and drop actions
 
-With the utils class `MouseActions` you can execute a drag-and-drop actions. Source and target GuiElements can be located in different frames.
+With the utils class `MouseActions` you can execute a drag-and-drop actions.
+Source and target GuiElements can be located in different frames.
 
 [source,java]
 ----

@@ -36,13 +36,10 @@ import org.openqa.selenium.WebDriver;
  */
 public class GuiElementCheckFieldAction extends CheckFieldAction {
 
-    @Deprecated
-    private final boolean forceStandardAssert;
     private final static PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
 
     public GuiElementCheckFieldAction(FieldWithActionConfig field, AbstractPage declaringPage) {
         super(field, declaringPage);
-        forceStandardAssert = field.forceStandardAssert;
     }
 
     private void pCheckField(

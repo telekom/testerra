@@ -30,12 +30,10 @@ public class FieldWithActionConfig {
     public final Field field;
     public final boolean findNot;
     public final boolean fast;
-    public final boolean forceStandardAssert;
 
-    public FieldWithActionConfig(Field field, boolean findNot, boolean fast, boolean forceStandardAssert) {
+    public FieldWithActionConfig(Field field, boolean findNot, boolean fast) {
         this.field = field;
         this.findNot = findNot;
         this.fast = fast;
-        this.forceStandardAssert = forceStandardAssert;
     }
 }

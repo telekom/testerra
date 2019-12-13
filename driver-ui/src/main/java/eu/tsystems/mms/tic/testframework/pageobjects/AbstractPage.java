@@ -63,8 +63,6 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
      */
     protected int elementTimeoutInSeconds = Testerra.injector.getInstance(PageOverrides.class).getTimeoutSeconds();
 
-    private boolean forcedGuiElementStandardAsserts = false;
-
     /**
      * Setter.
      *
@@ -102,14 +100,6 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
              */
             throw new PageNotFoundException(message, t);
         }
-    }
-
-    /**
-     * @deprecated Use {@link Check}
-     */
-    @Deprecated
-    public void forceGuiElementStandardAsserts() {
-        forcedGuiElementStandardAsserts = true;
     }
 
     @Override
@@ -342,7 +332,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
         ArrayList<FieldWithActionConfig> fieldToChecks = new ArrayList<>();
         for (final Class<? extends AbstractPage> cl : allClasses) {
             for (final Field field : cl.getDeclaredFields()) {
-                fieldToChecks.add(new FieldWithActionConfig(field, findNot, fast, forcedGuiElementStandardAsserts));
+                fieldToChecks.add(new FieldWithActionConfig(field, findNot, fast));
             }
         }
         return fieldToChecks;

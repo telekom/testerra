@@ -8,6 +8,7 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 
 /**
@@ -25,8 +26,7 @@ public class RemoveTestMethodIfRetryPassedWorker extends MethodWorker {
     public void run() {
 
         if (isSuccess()) {
-
-            if (methodContext.hasBeenRetried()) {
+            if (methodContext.getStatus().equals(TestStatusController.Status.PASSED_RETRY)) {
                 for (final MethodContext dependsOnMethodContexts : methodContext.getDependsOnMethodContexts()) {
                     if (dependsOnMethodContexts.isSame(methodContext) && dependsOnMethodContexts.isRetry()) {
                         testResult.getTestContext().getFailedTests().removeResult(dependsOnMethodContexts.testResult);

@@ -50,7 +50,7 @@ import java.util.List;
  *
  * @author mibu
  */
-public class MethodContext extends Context implements SynchronizableContext {
+public class MethodContext extends AbstractContext implements SynchronizableContext {
 
     public ITestResult testResult;
     public ITestContext iTestContext;
@@ -67,7 +67,7 @@ public class MethodContext extends Context implements SynchronizableContext {
     public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.HIGH;
 
     public ClassContext classContext;
-    public TestContext testContext;
+    public TestContextModel testContextModel;
     public SuiteContext suiteContext;
     public final ExecutionContext executionContext;
 
@@ -95,18 +95,18 @@ public class MethodContext extends Context implements SynchronizableContext {
      * @param methodType  method type.
      * @param classContext .
      * @param suiteContext .
-     * @param testContext .
+     * @param testContextModel .
      * @param executionContext .
      */
     public MethodContext(
         final String name,
         final MethodType methodType,
         final ClassContext classContext,
-        final TestContext testContext,
+        final TestContextModel testContextModel,
         final SuiteContext suiteContext,
         final ExecutionContext executionContext
     ) {
-        this.testContext = testContext;
+        this.testContextModel = testContextModel;
         this.suiteContext = suiteContext;
         this.executionContext = executionContext;
 

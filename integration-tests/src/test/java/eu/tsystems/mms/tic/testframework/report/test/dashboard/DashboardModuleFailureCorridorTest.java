@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.test.dashboard;
 
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractTestReportNumbers;
@@ -13,7 +13,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-@TesterraClassContext("View-Dashboard-FailureCorridor")
+@TestContext(name = "View-Dashboard-FailureCorridor")
 public class DashboardModuleFailureCorridorTest extends AbstractTestDashboard {
 
     @DataProvider(parallel = true)

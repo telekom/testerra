@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -231,7 +232,10 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
         return getGuiElementBy(By.id("DeselectRDButton"));
     }
 
-    public abstract GuiElement getGuiElementBy(By locator);
+    public GuiElement getGuiElementBy(By locator) {
+        return getGuiElementBy(Locate.by(locator));
+    }
+    public abstract GuiElement getGuiElementBy(Locate locate);
 
     protected abstract TestPage getTestPage();
 

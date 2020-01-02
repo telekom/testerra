@@ -256,16 +256,14 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT23_GuiElement_findByIDUnique() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement guiElement = new GuiElement(driver, Locate.by().unique().id("11"));
+        GuiElement guiElement = getGuiElementBy(Locate.by().unique().id("11"));
         WebElement webElement = guiElement.getWebElement();
         Assert.assertNotNull(webElement);
     }
 
     @Test
     public void test_GuiElement_findNonUnique() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement guiElement = new GuiElement(driver, Locate.by().unique().xpath("//div"));
+        GuiElement guiElement = getGuiElementBy(Locate.by().unique().xpath("//div"));
         try {
             WebElement webElement = guiElement.getWebElement();
         } catch (TimeoutException e) {
@@ -277,8 +275,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     @Test
     public void test_GuiElement_findPrepared() {
         final Locate locator = Locate.prepare("//*[@id='%s']");
-        final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement guiElement = new GuiElement(driver, locator.with("11"));
+        GuiElement guiElement = getGuiElementBy(locator.with("11"));
         Assert.assertNotNull(guiElement.getWebElement());
     }
 
@@ -452,7 +449,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         List<String> textsFromChildren = guiElement.getTextsFromChildren();
         Assert.assertEquals(textsFromChildren.size(), 5, "Correct amount of texts contained. Texts: " + textsFromChildren);
 
-        List<String> stringsManual = new ArrayList<String>();
+        List<String> stringsManual = new ArrayList<>();
         stringsManual.add("Open again");
         stringsManual.add("Show confirm");
         stringsManual.add("Open pop up");

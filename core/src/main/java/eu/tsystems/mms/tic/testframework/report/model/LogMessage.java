@@ -24,6 +24,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by piet on 08.12.16.
@@ -54,6 +55,14 @@ public class LogMessage implements Serializable, Loggable {
 
     public Level getLogLevel() {
         return level;
+    }
+
+    /**
+     * Required by velocity templates
+     * @return
+     */
+    public Date getDate() {
+        return new Date(getTimestamp());
     }
 
     public long getTimestamp() {

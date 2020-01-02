@@ -135,7 +135,7 @@ public class TestStep implements Serializable, Loggable {
         if (methodContext != null) {
             testStep = methodContext.steps().announceTestStep(name);
         } else {
-            testStep = new TestStep(TestStep.INTERNAL);
+            testStep = new TestStep(name);
         }
 
         return testStep;

@@ -13,7 +13,10 @@ dependencies {
     // These dependencies are exposed by XMLUtils.java
     compile 'org.jsoup:jsoup:1.7.2'
     compile 'org.jdom:jdom2:2.0.6'
-    compile "javax.xml.bind:jaxb-api:2.2.11"
+    compile "javax.xml.bind:jaxb-api:2.3.0"
+    compile "com.sun.xml.bind:jaxb-core:2.3.0"
+    compile "com.sun.xml.bind:jaxb-impl:2.3.0"
+    compile "javax.activation:activation:1.1"
     // </XML
 
     implementation 'org.codehaus.plexus:plexus-utils:2.1'

@@ -42,7 +42,6 @@ public class TestStep implements Serializable, Loggable {
     public static final String TEARDOWN="TearDown";
     public static final String INTERNAL="Internal";
 
-    private final String id = IDUtils.getB64encXID();
     private final String name;
     private final List<TestStepAction> testStepActions = Collections.synchronizedList(new LinkedList<>());
     private boolean closed = false;
@@ -52,10 +51,6 @@ public class TestStep implements Serializable, Loggable {
         if (!isInternalTestStep()) {
             log().info("Begin " + name);
         }
-    }
-
-    public String getId() {
-        return this.id;
     }
 
     public boolean isInternalTestStep() {

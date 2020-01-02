@@ -20,12 +20,10 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.BaseLoggingActor;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by piet on 08.12.16.
@@ -58,8 +56,8 @@ public class LogMessage implements Serializable, Loggable {
         return level;
     }
 
-    public Date getDate() {
-        return new Date(this.timestamp);
+    public long getTimestamp() {
+        return this.timestamp;
     }
 
     public String getThreadName() {

@@ -376,12 +376,9 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         getDisplayedElement().asserts().assertIsNotDisplayedFromWebElement();
     }
 
-    /**
-     * Test if GuiElement.asserts().assertIsNotPresent works for a not displayed element
-     */
     @Test
     public void testT35_GuiElement_assertIsNotPresent() {
-        getNotDisplayedElement().asserts().assertIsNotPresent();
+        getNotExistingElement().asserts().assertIsNotPresent();
     }
 
     /**
@@ -473,7 +470,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     /**
      * Test if assertIsPresentFast() works with a not present element
      */
-    @Test(expectedExceptions = {AssertionError.class})
+    @Test
     public void testT42N_GuiElement_assertIsPresentFast() {
         getNotDisplayedElement().asserts().assertIsPresentFast();
     }
@@ -595,7 +592,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT59_GuiElement_assertIsNotPresentFast() {
-        getNotDisplayedElement().asserts().assertIsNotPresentFast();
+        getNotExistingElement().asserts().assertIsNotPresentFast();
     }
 
     @Test(expectedExceptions = {AssertionError.class})

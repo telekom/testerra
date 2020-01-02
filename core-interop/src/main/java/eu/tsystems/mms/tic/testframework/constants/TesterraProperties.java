@@ -65,7 +65,6 @@ public final class TesterraProperties {
     /**
      * Property Key for webdriver mode remote|local
      */
-    @Deprecated
     public static final String WEBDRIVERMODE = "tt.webdriver.mode";
 
     /**

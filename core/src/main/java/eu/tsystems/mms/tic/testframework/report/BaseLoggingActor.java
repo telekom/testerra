@@ -94,10 +94,11 @@ public class BaseLoggingActor extends AppenderSkeleton {
         /**
          * Add the IDs for TestStep and Action
          */
-        TestStepAction testStepAction = appendForReport(event);
-        if (testStepAction != null) {
-            sb.append("[TSID:").append(testStepAction.getTestStep().getId()).append("-").append(testStepAction.getId()).append("]");
-        }
+        appendForReport(event);
+//        TestStepAction testStepAction = appendForReport(event);
+//        if (testStepAction != null) {
+//            sb.append("[TSID:").append(testStepAction.getTestStep().getId()).append("-").append(testStepAction.getId()).append("]");
+//        }
 
         event.setProperty("ids", sb.toString());
         String formattedMessage = CONSOLE_LAYOUT.format(event);

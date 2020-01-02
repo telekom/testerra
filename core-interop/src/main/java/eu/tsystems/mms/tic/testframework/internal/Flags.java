@@ -50,7 +50,6 @@ public final class Flags {
     public static boolean MONITOR_MEMORY = p(TesterraProperties.MONITOR_MEMORY, true);
     public static boolean DRY_RUN = p(TesterraProperties.DRY_RUN, false);
     public static boolean LIST_TESTS = p(TesterraProperties.LIST_TESTS, false);
-    public static boolean WEB_TAKE_ACTION_SCREENSHOTS = p(TesterraProperties.WEB_TAKE_ACTION_SCREENSHOTS, false);
     public static boolean FAILURE_CORRIDOR_ACTIVE = p(TesterraProperties.FAILURE_CORRIDOR_ACTIVE, false);
     public static boolean EXECUTION_OMIT_IN_DEVELOPMENT = p(TesterraProperties.EXECUTION_OMIT_IN_DEVELOPMENT, false);
     public static boolean GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = p(TesterraProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false);

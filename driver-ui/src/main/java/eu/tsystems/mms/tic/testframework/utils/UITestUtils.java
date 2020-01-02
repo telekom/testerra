@@ -130,8 +130,9 @@ public class UITestUtils {
          */
         if (eventFiringWebDriver != null) {
             try {
-                final File screenShotTargetFile = FileUtils.createTempFileName("screenshot.png");
-                final File sourceTargetFile = FileUtils.createTempFileName("pagesource.html");
+                FileUtils fileUtis = new FileUtils();
+                final File screenShotTargetFile = fileUtis.createTempFileName("screenshot.png");
+                final File sourceTargetFile = fileUtis.createTempFileName("pagesource.html");
                 takeWebDriverScreenshotToFile(eventFiringWebDriver, screenShotTargetFile);
 
                 // get page source (webdriver)

@@ -131,14 +131,12 @@ public class TestStep implements Serializable, Loggable {
      */
     public static TestStep begin(final String name) {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        TestStep testStep = null;
+        TestStep testStep;
         if (methodContext != null) {
             testStep = methodContext.steps().announceTestStep(name);
+        } else {
+            testStep = new TestStep(TestStep.INTERNAL);
         }
-
-        /*if (testStep == null) {
-            testStep = new TestStep("dummy", 1);
-        }*/
 
         return testStep;
     }

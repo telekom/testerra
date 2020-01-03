@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.GuiElementNonFunctionalAssertionTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -27,7 +28,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
-public class FrameAwareGuiElementTest extends GuiElementTestCollector {
+public class FrameAwareGuiElementTest extends GuiElementNonFunctionalAssertionTest {
 
     /**
      * Test if FrameAwareElement in deepest hierarchy is present via AllFrameLogic

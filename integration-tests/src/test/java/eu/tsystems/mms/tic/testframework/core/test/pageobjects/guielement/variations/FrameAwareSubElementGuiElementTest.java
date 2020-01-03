@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.GuiElementNonFunctionalAssertionTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -29,7 +30,7 @@ import org.openqa.selenium.WebDriver;
 /**
  * Created by rnhb on 13.05.2015.
  */
-public class FrameAwareSubElementGuiElementTest extends GuiElementTestCollector {
+public class FrameAwareSubElementGuiElementTest extends GuiElementNonFunctionalAssertionTest {
 
     @Override
     public GuiElement getGuiElementBy(Locate locator) {

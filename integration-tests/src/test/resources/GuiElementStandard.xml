@@ -1,0 +1,25 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="GuiElement" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="false">
+
+    <test name="GuiElement Core Features" parallel="methods">
+        <groups>
+            <run>
+                <exclude name="SEQUENTIAL"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.StandardGuiElementTest"/>
+        </packages>
+    </test>
+
+    <test name="GuiElement Layout Features" parallel="methods">
+        <groups>
+            <run>
+                <exclude name="SEQUENTIAL"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.layoutcheck"/>
+        </packages>
+    </test>
+</suite>

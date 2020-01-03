@@ -35,7 +35,7 @@ public class SubElementGuiElementTest extends AbstractGuiElementNonFunctionalAss
 
     @Override
     public GuiElement getGuiElementBy(Locate locator) {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getWebDriver();
         GuiElement parentElement = new GuiElement(driver, By.xpath("//body"));
         return parentElement.getSubElement(locator);
     }

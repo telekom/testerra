@@ -33,7 +33,7 @@ public class StandardGuiElementTest extends AbstractGuiElementNonFunctionalAsser
 
     @Override
     public GuiElement getGuiElementBy(Locate locator) {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getWebDriver();
         return new GuiElement(driver, locator);
     }
 

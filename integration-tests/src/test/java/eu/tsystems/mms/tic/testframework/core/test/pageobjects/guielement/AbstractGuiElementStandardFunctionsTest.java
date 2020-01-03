@@ -260,6 +260,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     }
 
     @Test
+    @Fails
     public void test_GuiElement_findNonUnique() {
         GuiElement guiElement = getGuiElementBy(Locate.by().unique().xpath("//div"));
         try {

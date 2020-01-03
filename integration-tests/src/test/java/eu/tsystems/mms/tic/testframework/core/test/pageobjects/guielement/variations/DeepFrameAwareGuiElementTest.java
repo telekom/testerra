@@ -23,17 +23,14 @@ import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.AbstractGuiElementNonFunctionalAssertionTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class DeepFrameAwareGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
 
     @Override
-
-
     public GuiElement getGuiElementBy(Locate locate) {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getWebDriver();
         GuiElement frame1 = new GuiElement(driver, By.name("frame1")).setDescription("frame1");
         GuiElement frame12 = new GuiElement(driver, By.name("frame12"), frame1).setDescription("frame2");
         GuiElement frame123 = new GuiElement(driver, By.name("frame123"), frame12).setDescription("frame3");

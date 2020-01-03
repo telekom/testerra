@@ -45,6 +45,7 @@ import java.lang.reflect.Method;
 public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final ThreadLocal<WebDriver> THREAD_LOCAL_WEBDRIVERS = new ThreadLocal<>();
 
     static {
         POConfig.setUiElementTimeoutInSeconds(3);
@@ -67,7 +68,7 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
     @BeforeMethod(alwaysRun = true)
     protected void initDriverAndWebsite(Method method) {
         testPage = getTestPage();
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getWebDriver();
         driver.get(testPage.getUrl());
     }
 
@@ -235,6 +236,17 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
     public GuiElement getGuiElementBy(By locator) {
         return getGuiElementBy(Locate.by(locator));
     }
+
+    public WebDriver getWebDriver() {
+        WebDriver webDriver = THREAD_LOCAL_WEBDRIVERS.get();
+        if (webDriver == null) {
+            webDriver = WebDriverManager.getWebDriver();
+            WebDriverManager.makeSessionExclusive(webDriver);
+            THREAD_LOCAL_WEBDRIVERS.set(webDriver);
+        }
+        return webDriver;
+    }
+
     public abstract GuiElement getGuiElementBy(Locate locate);
 
     protected abstract TestPage getTestPage();

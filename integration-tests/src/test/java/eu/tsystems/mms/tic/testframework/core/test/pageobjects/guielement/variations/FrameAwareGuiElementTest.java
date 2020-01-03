@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.AbstractGuiElementNonFunctionalAssertionTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -34,6 +35,7 @@ public class FrameAwareGuiElementTest extends AbstractGuiElementNonFunctionalAss
      * Test if FrameAwareElement in deepest hierarchy is present via AllFrameLogic
      */
     @Test
+    @Fails
     public void testTFA01_GuiElement_FrameLogic_AllFrames() {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement frame1 = new GuiElement(driver, By.name("frame1"));
@@ -46,7 +48,7 @@ public class FrameAwareGuiElementTest extends AbstractGuiElementNonFunctionalAss
 
     @Override
     public GuiElement getGuiElementBy(Locate locator) {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getWebDriver();
         GuiElement frame = new GuiElement(driver, By.name("InputFrame1"));
         return new GuiElement(driver, locator, frame);
     }

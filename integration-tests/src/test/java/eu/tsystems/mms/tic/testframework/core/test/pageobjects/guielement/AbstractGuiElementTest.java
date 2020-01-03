@@ -48,7 +48,7 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
     private final ThreadLocal<WebDriver> THREAD_LOCAL_WEBDRIVERS = new ThreadLocal<>();
 
     static {
-        POConfig.setUiElementTimeoutInSeconds(3);
+        POConfig.setUiElementTimeoutInSeconds(1);
         PropertyManager.getGlobalProperties().setProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
     }
 

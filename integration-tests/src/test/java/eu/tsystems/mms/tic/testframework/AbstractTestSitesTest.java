@@ -35,7 +35,6 @@ public abstract class AbstractTestSitesTest extends AbstractTest {
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         Server.start();
-        POConfig.setUiElementTimeoutInSeconds(1);
         WebDriverManager.setBaseURL(getStartPage().getUrl());
     }
 

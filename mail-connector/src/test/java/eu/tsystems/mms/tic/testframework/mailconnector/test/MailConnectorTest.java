@@ -77,7 +77,7 @@ public class MailConnectorTest extends TesterraTest {
     /** Constant ERR_NO_ATTACHMENT */
     private static final String ERR_NO_ATTACHMENT = "Message contains no attachment!";
     /** Constant RECIPIENT */
-    private static final String RECIPIENT = "test@192.168.60.239";
+    private static final String RECIPIENT = "test@localhost";
     /** Constant SENDER */
     private static final String SENDER = "secret@host";
 

@@ -260,14 +260,13 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     }
 
     @Test
-    @Fails
     public void test_GuiElement_findNonUnique() {
         GuiElement guiElement = getGuiElementBy(Locate.by().unique().xpath("//div"));
         try {
             WebElement webElement = guiElement.getWebElement();
         } catch (TimeoutException e) {
-
-            AssertUtils.assertContains(e.getCause().getMessage(), "GuiElement not found: "+ guiElement.getLocator());
+            AssertUtils.assertContains(e.getCause().getMessage(), "GuiElement not found");
+            AssertUtils.assertContains(e.getCause().getMessage(), guiElement.getLocator().toString());
         }
     }
 

@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 /**
  * Created by matz on 30.10.2015.
  */
-public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
+public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLayoutsTest {
 
     private void pre_hideText(boolean hide) {
         getTimeOutInput().type("1");

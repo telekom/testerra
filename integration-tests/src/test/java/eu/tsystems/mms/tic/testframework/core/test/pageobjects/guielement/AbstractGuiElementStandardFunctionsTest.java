@@ -20,7 +20,6 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
@@ -37,7 +36,7 @@ import java.util.List;
 /**
  * Created by pele on 31.08.2015.
  */
-public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElementTest {
+public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGuiElementTest {
 
     /**
      * Test if GuiElement.asserts().assertContainsText works for one string that is contained

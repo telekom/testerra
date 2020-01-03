@@ -30,7 +30,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class GuiElementListTests extends AbstractTestSitesTest {
+
     private GuiElementListPage preparePage() {
+        WebDriverManager.getWebDriver().get(getStartPage().getUrl());
         return PageFactory.create(GuiElementListPage.class, WebDriverManager.getWebDriver());
     }
 
@@ -73,7 +75,7 @@ public class GuiElementListTests extends AbstractTestSitesTest {
         Assert.assertEquals(items.getNumberOfFoundElements(), 3);
         Assert.assertEquals(items.getList().size(), 3);
         Assert.assertEquals(items.getList().get(0).getText(), "First");
-        Assert.assertEquals(items.getList().get(items.getNumberOfFoundElements()-1).getText(), "Third");
+        Assert.assertEquals(items.getList().get(items.getNumberOfFoundElements() - 1).getText(), "Third");
     }
 
     @Test
@@ -85,7 +87,7 @@ public class GuiElementListTests extends AbstractTestSitesTest {
         GuiElement mkriProfileLink = rows.getList().get(0).getSubElement(By.tagName("a"));
         mkriProfileLink.asserts().assertAttributeContains("href", "mkri");
 
-        GuiElement erkuProfileLink = rows.getList().get(rows.getNumberOfFoundElements()-1).getSubElement(By.tagName("a"));
+        GuiElement erkuProfileLink = rows.getList().get(rows.getNumberOfFoundElements() - 1).getSubElement(By.tagName("a"));
         erkuProfileLink.asserts().assertAttributeContains("href", "erku");
     }
 
@@ -98,7 +100,7 @@ public class GuiElementListTests extends AbstractTestSitesTest {
         GuiElement mkriProfileLink = rows.getList().get(0).getSubElement(By.xpath(".//a"));
         mkriProfileLink.asserts().assertAttributeContains("href", "mkri");
 
-        GuiElement erkuProfileLink = rows.getList().get(rows.getNumberOfFoundElements()-1).getSubElement(By.xpath(".//a"));
+        GuiElement erkuProfileLink = rows.getList().get(rows.getNumberOfFoundElements() - 1).getSubElement(By.xpath(".//a"));
         erkuProfileLink.asserts().assertAttributeContains("href", "erku");
     }
 

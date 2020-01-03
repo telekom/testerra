@@ -638,29 +638,57 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     }
 
     @Test
-    public void testT67_GuiElement_findElement() {
+    public void testT67_WebElement_findElement() {
         GuiElement element = getSelectableElement();
-        WebElement webElement = element.getWebElement().findElement(By.xpath("//div[1]"));
+        WebElement webElement = element.getWebElement();
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToCorrectFrame();
+        }
+        webElement = webElement.findElement(By.xpath("//div[1]"));
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToDefaultFrame();
+        }
         Assert.assertNotNull(webElement, "Found Element");
     }
 
     @Test
-    public void testT68N_GuiElement_findElement() {
+    public void testT68N_WebElement_findElement() {
         GuiElement element = getSelectableElement();
-        ThrowableUtils.expectThrowable(NoSuchElementException.class, () -> element.getWebElement().findElement(By.xpath("//div[text()=\'\']")));
+        WebElement webElement = element.getWebElement();
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToCorrectFrame();
+        }
+        ThrowableUtils.expectThrowable(NoSuchElementException.class, () -> webElement.findElement(By.xpath("//div[text()=\'\']")));
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToDefaultFrame();
+        }
     }
 
     @Test
-    public void testT69_GuiElement_findElements() {
+    public void testT69_WebElement_findElements() {
         GuiElement element = getSelectableElement();
-        List<WebElement> webElements = element.getWebElement().findElements(By.xpath("//div"));
+        WebElement webElement = element.getWebElement();
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToCorrectFrame();
+        }
+        List<WebElement> webElements = webElement.findElements(By.xpath("//div"));
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToDefaultFrame();
+        }
         Assert.assertNotEquals(webElements.size(), 0, "List is not empty");
     }
 
     @Test
-    public void testT70N_GuiElement_findElements() {
+    public void testT70N_WebElement_findElements() {
         GuiElement element = getSelectableElement();
-        List<WebElement> webElements = element.getWebElement().findElements(By.xpath("//div[text()=\'\']"));
+        WebElement webElement = element.getWebElement();
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToCorrectFrame();
+        }
+        List<WebElement> webElements = webElement.findElements(By.xpath("//div[text()=\'\']"));
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToDefaultFrame();
+        }
         Assert.assertEquals(webElements.size(), 0, "List is empty");
     }
 

@@ -594,6 +594,10 @@ public class GuiElement implements
         return guiElementData.frameLogic;
     }
 
+    public boolean hasFrameLogic() {
+        return guiElementData.hasFrameLogic();
+    }
+
     /**
      * Get the parent element of this element, from getSubElement().
      *

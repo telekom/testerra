@@ -162,6 +162,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
 
             // set webelement
             guiElementData.webElement = webElement;
+            GuiElementData.WEBELEMENT_MAP.put(webElement, guiElementData.guiElement);
 
             // find timings
             int findCounter = Timings.raiseFindCounter();

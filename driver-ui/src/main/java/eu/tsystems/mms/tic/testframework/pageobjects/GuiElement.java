@@ -51,13 +51,11 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.creation.GuiElemen
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacadeLoggingDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFace;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
 import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
@@ -250,7 +248,6 @@ public class GuiElement implements
         GuiElementFacade guiElementFacade;
         guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
-        guiElementFacade = new GuiElementFace(guiElementFacade, guiElementData);
 
         int delayAfterAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_AFTER_GUIELEMENT_ACTION_MILLIS);
         int delayBeforeAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS);

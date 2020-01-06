@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.steps;
 
+import eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -35,7 +36,17 @@ public class TestStepActionEntry implements Serializable {
     public LogMessage logMessage = null;
     public Screenshot beforeScreenshot;
     public Screenshot afterScreenshot;
+    private final ClickPathEvent clickPathEvent;
 
     public TestStepActionEntry() {
+        clickPathEvent = null;
+    }
+
+    public TestStepActionEntry(ClickPathEvent event) {
+        this.clickPathEvent = event;
+    }
+
+    public ClickPathEvent getClickPathEvent() {
+        return clickPathEvent;
     }
 }

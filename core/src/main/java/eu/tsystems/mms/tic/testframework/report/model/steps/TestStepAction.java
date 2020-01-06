@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.steps;
 
+import eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -80,7 +81,11 @@ public class TestStepAction implements Serializable {
         testStepActionEntries.add(testStepActionEntry);
     }
 
-    public void addScreenshots(final Screenshot beforeShot, final Screenshot afterShot) {
+    public void addClickPathEvent(ClickPathEvent event) {
+        testStepActionEntries.add(new TestStepActionEntry(event));
+    }
+
+    public void addScreenshots(Screenshot beforeShot, Screenshot afterShot) {
         TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
         testStepActionEntry.beforeScreenshot = beforeShot;
         testStepActionEntry.afterScreenshot = afterShot;

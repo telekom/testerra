@@ -17,23 +17,23 @@
  *     Peter Lehmann
  *     pele
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 /**
  *
  */
-public class StandardGuiElementTest extends GuiElementTestCollector {
+public class StandardGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
 
     @Override
-    public GuiElement getGuiElementBy(By locator) {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+    public GuiElement getGuiElementBy(Locate locator) {
+        WebDriver driver = getWebDriver();
         return new GuiElement(driver, locator);
     }
 

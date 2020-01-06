@@ -20,19 +20,20 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.AbstractGuiElementNonFunctionalAssertionTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 /**
  * Created by rnhb on 02.06.2015.
  */
-public class ExtensiveLoggingGuiElementTest extends GuiElementTestCollector {
+public class ExtensiveLoggingGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
 
     @Override
-    public GuiElement getGuiElementBy(By locator) {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+    public GuiElement getGuiElementBy(Locate locator) {
+        WebDriver driver = getWebDriver();
         GuiElement guiElement = new GuiElement(driver, locator);
         return guiElement;
     }

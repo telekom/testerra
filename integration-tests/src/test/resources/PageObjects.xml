@@ -1,0 +1,18 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Page Objects" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="false">
+    <test name="Page Objects" parallel="methods">
+        <groups>
+            <run>
+                <exclude name="SEQUENTIAL"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.page"/>
+        </packages>
+    </test>
+    <test name="Page Factory">
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory"/>
+        </packages>
+    </test>
+</suite>

@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -28,7 +29,7 @@ import org.testng.annotations.Test;
 /**
  * Created by pele on 31.08.2015.
  */
-public abstract class GuiElementLayoutsTest extends GuiElementStandardFunctionsTest {
+public abstract class AbstractGuiElementLayoutsTest extends AbstractGuiElementStandardFunctionsTest {
 
     /*
     Left

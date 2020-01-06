@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 /**
  * Created by matz on 30.10.2015.
  */
-public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
+public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLayoutsTest {
 
     private void pre_hideText(boolean hide) {
         getTimeOutInput().type("1");
@@ -244,7 +244,7 @@ public abstract class GuiElementWaiterTest extends GuiElementLayoutsTest {
      */
     @Test
     public void testT20_GuiElement_waitForIsNotPresent() {
-        boolean found = getNotDisplayedElement().waits().waitForIsNotPresent();
+        boolean found = getNotExistingElement().waits().waitForIsNotPresent();
         Assert.assertTrue(found, "The Element is found.");
     }
 

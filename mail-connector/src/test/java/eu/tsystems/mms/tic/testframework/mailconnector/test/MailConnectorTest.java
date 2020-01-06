@@ -29,8 +29,13 @@ package eu.tsystems.mms.tic.testframework.mailconnector.test;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.mailconnector.pop3.POP3MailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.smtp.SMTPMailConnector;
-import eu.tsystems.mms.tic.testframework.mailconnector.util.*;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.MessageUtils;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteria;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteriaType;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.TesterraMail;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +44,12 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import javax.mail.*;
+import javax.mail.Address;
 import javax.mail.Message.RecipientType;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Part;
+import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -60,35 +69,63 @@ import java.util.List;
 public class MailConnectorTest extends TesterraTest {
 
     // CONSTANTS
-    /** Constant PATH_HOME */
+    /**
+     * Constant PATH_HOME
+     */
     private static final String PATH_HOME = System.getProperty("user.dir");
-    /** Constant PATH_RES */
+    /**
+     * Constant PATH_RES
+     */
     private static final String PATH_RES = PATH_HOME +  /*"/tt.-mailconnector" +*/ "/src/test/resources/";
-    /** Constant STR_MAIL_SUBJECT */
+    /**
+     * Constant STR_MAIL_SUBJECT
+     */
     private static final String STR_MAIL_SUBJECT = "Test mail for TC: ";
-    /** Constant STR_MAIL_TEXT */
+    /**
+     * Constant STR_MAIL_TEXT
+     */
     private static final String STR_MAIL_TEXT = "I am a test mail!";
-    /** Constant ERR_CONTENT_DIFFERS */
+    /**
+     * Constant ERR_CONTENT_DIFFERS
+     */
     private static final String ERR_CONTENT_DIFFERS = "Content of sent and received message is not the same!";
-    /** Constant ERR_HEADERS_DIFFER */
+    /**
+     * Constant ERR_HEADERS_DIFFER
+     */
     private static final String ERR_HEADERS_DIFFER = "Headers of sent and received message are not the same!";
-    /** Constant ERR_NO_MSG_RECEIVED */
+    /**
+     * Constant ERR_NO_MSG_RECEIVED
+     */
     private static final String ERR_NO_MSG_RECEIVED = "No Message was received!";
-    /** Constant ERR_NO_ATTACHMENT */
+    /**
+     * Constant ERR_NO_ATTACHMENT
+     */
     private static final String ERR_NO_ATTACHMENT = "Message contains no attachment!";
-    /** Constant RECIPIENT */
-    private static final String RECIPIENT = "test@192.168.60.239";
-    /** Constant SENDER */
+    /**
+     * Constant RECIPIENT
+     */
+    private static final String RECIPIENT = "test@localhost";
+    /**
+     * Constant SENDER
+     */
     private static final String SENDER = "secret@host";
 
     // REFERENCES
-    /** LOGGER */
+    /**
+     * LOGGER
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(MailConnectorTest.class);
-    /** SMTPMailConnector */
+    /**
+     * SMTPMailConnector
+     */
     private SMTPMailConnector smtp; // Mail connector using the SMTP protocol
-    /** POP3MailConnector */
+    /**
+     * POP3MailConnector
+     */
     private POP3MailConnector pop3; // Mail connector using the POP3 protocol
-    /** session */
+    /**
+     * session
+     */
     private Session session;
 
     /**
@@ -105,6 +142,7 @@ public class MailConnectorTest extends TesterraTest {
     // Leeren des kompletten Postfaches
 
     // SETUP
+
     /**
      * Loads the mail connection properties and initializes the mail connector fields, as well as the smtp session.
      */
@@ -117,6 +155,7 @@ public class MailConnectorTest extends TesterraTest {
     }
 
     // TEST CASES
+
     /**
      * Saves a message to file, reloads it from that file and ensures that headers and content of the saved message and
      * loaded message are equal.
@@ -185,7 +224,7 @@ public class MailConnectorTest extends TesterraTest {
         // SETUP - Create message, add attachment.
         MimeMessage msg = this.createDefaultMessage(session, subject);
         MimeBodyPart attachment = smtp.createAttachment(new File(PATH_RES + attachmentFile));
-        MimeBodyPart[] attachments = { attachment };
+        MimeBodyPart[] attachments = {attachment};
         smtp.addAttachmentsToMessage(attachments, msg);
 
         // EXECUTION - Send and receive message.
@@ -233,9 +272,11 @@ public class MailConnectorTest extends TesterraTest {
      */
     @Test(enabled = false)
     public void testT04_sendAndWaitForMessageEncryptedWithKeyStore() throws Exception {
+
         final String subject = STR_MAIL_SUBJECT + "testT04_sendAndWaitForMessageEncryptedWithKeyStore";
-        final String pahtKeyStore = PATH_RES + "cacert.p12";
-        final String password = "mastest";
+        final File resourceFile = FileUtils.getResourceFile("cacert.p12");
+        final String pahtKeyStore = resourceFile.getAbsolutePath();
+        final String password = "123456";
         MimeMessage msg = createDefaultMessage(session, subject);
 
         // EXECUTION 1 - Encrypt message.
@@ -496,14 +537,14 @@ public class MailConnectorTest extends TesterraTest {
      * Creates a default test message.
      *
      * @param mailSession Session to be used for Mail.
-     * @param subject Subject of mail.
+     * @param subject     Subject of mail.
      * @return MimeMessage object.
      */
     private MimeMessage createDefaultMessage(Session mailSession, String subject) {
         MimeMessage msg = new MimeMessage(mailSession);
         try {
             msg.addRecipients(RecipientType.TO, RECIPIENT);
-            msg.addFrom(new Address[] { new InternetAddress(SENDER) });
+            msg.addFrom(new Address[]{new InternetAddress(SENDER)});
             msg.setSubject(subject);
             msg.setText(STR_MAIL_TEXT);
         } catch (MessagingException e) {
@@ -517,8 +558,8 @@ public class MailConnectorTest extends TesterraTest {
      * Waits until a message with a given subject was received.
      *
      * @param subject the subject to look for
-     * @throws AssertionError in case no message was received at all
      * @return the received TesterraMail-message
+     * @throws AssertionError in case no message was received at all
      */
     private TesterraMail waitForMessage(String subject) throws AssertionError {
         List<TesterraMail> receivedMsg = null;
@@ -540,8 +581,8 @@ public class MailConnectorTest extends TesterraTest {
      * Waits until a message with a given subject was received.
      *
      * @param searchCriterias .
-     * @throws AssertionError in case no message was received at all
      * @return the received TesterraMail-message
+     * @throws AssertionError in case no message was received at all
      */
     private TesterraMail waitForMessage(final List<SearchCriteria> searchCriterias) throws AssertionError {
         List<TesterraMail> receivedMsg = null;
@@ -560,9 +601,9 @@ public class MailConnectorTest extends TesterraTest {
     /**
      * Clean up method which deletes the message, which is passed as first parameter.
      *
-     * @param msg the TesterraMail-message to delete
+     * @param msg          the TesterraMail-message to delete
      * @param pop3Instance mailclient to use.
-     * @throws AssertionError if the inbox is not empty after deleting the message
+     * @throws AssertionError     if the inbox is not empty after deleting the message
      * @throws MessagingException if there is an error while retrieving the recipient or subject
      */
     private void deleteMessage(TesterraMail msg, POP3MailConnector pop3Instance) throws AssertionError, MessagingException {

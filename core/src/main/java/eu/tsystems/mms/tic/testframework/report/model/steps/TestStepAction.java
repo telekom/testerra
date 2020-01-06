@@ -76,20 +76,15 @@ public class TestStepAction implements Serializable {
         if (testStepActionEntries.size()==0) {
             this.timestamp = logMessage.getTimestamp();
         }
-        TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
-        testStepActionEntry.logMessage = logMessage;
-        testStepActionEntries.add(testStepActionEntry);
+        testStepActionEntries.add(new TestStepActionEntry(logMessage));
     }
 
     public void addClickPathEvent(ClickPathEvent event) {
         testStepActionEntries.add(new TestStepActionEntry(event));
     }
 
-    public void addScreenshots(Screenshot beforeShot, Screenshot afterShot) {
-        TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
-        testStepActionEntry.beforeScreenshot = beforeShot;
-        testStepActionEntry.afterScreenshot = afterShot;
-        testStepActionEntries.add(testStepActionEntry);
+    public void addScreenshot(Screenshot screenshot) {
+        testStepActionEntries.add(new TestStepActionEntry(screenshot));
     }
 //
 //    public void addFailingLogMessage(final String msg) {

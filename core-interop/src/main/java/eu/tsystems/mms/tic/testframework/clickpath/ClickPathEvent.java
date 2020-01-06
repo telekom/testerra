@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.clickpath;
 
 public class ClickPathEvent {
-    enum Type {
+    public enum Type {
         WINDOW,
         CLICK,
         VALUE,

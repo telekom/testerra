@@ -21,10 +21,8 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
-import org.json.JSONObject;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 
 /**
  * Created by pele on 30.01.2017.
@@ -40,6 +38,6 @@ public class GenerateXmlReportWorker extends GenerateReportsWorker implements Lo
         jUnitXMLReporter.testSetCompleted(new SimpleReportEntry("", "Results"));
         // generate testng-results.xml
         org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();
-        testNgXmlReporter.generateReport(xmlSuites, suites, Report.XML_DIRECTORY.getAbsolutePath());
+        testNgXmlReporter.generateReport(xmlSuites, suites, StaticReport.XML_DIRECTORY.getAbsolutePath());
     }
 }

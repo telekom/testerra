@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.MaximizePosition;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -49,7 +50,7 @@ public class WebDriverManagerConfig {
     /**
      * WebDriverMode that is used.
      */
-    public WebDriverMode webDriverMode = WebDriverMode.local;
+    public WebDriverMode webDriverMode = WebDriverMode.valueOf(Testerra.Properties.WEBDRIVER_MODE.asString());
 
     /**
      * Close windows after Test Methods.

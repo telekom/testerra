@@ -26,6 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.ConsumptionMeasurementsCollector;
@@ -33,11 +34,12 @@ import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestContainer;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.ThreadVisualizer;
@@ -81,7 +83,7 @@ public final class ReportUtils {
      */
     public static void copyReportResources() {
 
-        final File targetDir = new File(Report.REPORT_DIRECTORY, Report.FRAMES_FOLDER_NAME);
+        final File targetDir = new File(StaticReport.REPORT_DIRECTORY, StaticReport.FRAMES_FOLDER_NAME);
 
         String[] resources = new String[]{
                 "js/kis/main.js",
@@ -284,51 +286,6 @@ public final class ReportUtils {
     // HELPERS
 
     /**
-     * Returns the input stream for the resource located at a given path.
-     *
-     * @param resourcePath the relative resource path
-     * @return the input stream
-     */
-    private static InputStream getInputStream(final String resourcePath) {
-        return Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
-    }
-
-    /**
-     * Creates all needed directories. Returns the frames dir.
-     *
-     * @param reportDirectory .
-     * @return frames dir.
-     */
-    public static File createDirs(final File reportDirectory) {
-        final File framesDir = new File(reportDirectory + Report.FRAMES_FOLDER_NAME);
-        if (!framesDir.exists()) {
-            framesDir.mkdirs();
-        }
-
-        final File jsDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/js");
-        if (!jsDir.exists()) {
-            jsDir.mkdirs();
-        }
-
-        final File jsHighLightStylesDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/js/highlight-styles");
-        if (!jsHighLightStylesDir.exists()) {
-            jsHighLightStylesDir.mkdirs();
-        }
-
-        final File styleDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/style");
-        if (!styleDir.exists()) {
-            styleDir.mkdirs();
-        }
-
-        final File swfDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/swf");
-        if (!swfDir.exists()) {
-            swfDir.mkdirs();
-        }
-
-        return framesDir;
-    }
-
-    /**
      * Create html output
      */
     static void createReport(ReportingData reportingData) {
@@ -378,7 +335,7 @@ public final class ReportUtils {
         /*
          * main report index.html
          */
-        final File reportFileIndex = new File(Report.REPORT_DIRECTORY, "index.html");
+        final File reportFileIndex = new File(StaticReport.REPORT_DIRECTORY, "index.html");
         ReportFormatter.createTestClassesView(reportFileIndex, reportingData.classContexts, "index.vm", null, null);
 
         /*
@@ -398,7 +355,7 @@ public final class ReportUtils {
         /*
         create frames dir
          */
-        final File framesDir = Report.FRAMES_DIRECTORY;
+        final File framesDir = StaticReport.FRAMES_DIRECTORY;
 
         /*
         Dashboard
@@ -406,7 +363,7 @@ public final class ReportUtils {
         final File reportFileDashboard = new File(framesDir, "dashboard.html");
         ReportFormatter.createDashboardHtml(reportingData, reportFileDashboard, "dashboard.vm");
 
-        final File reportFileEmailable = new File(Report.REPORT_DIRECTORY, "emailable-report.html");
+        final File reportFileEmailable = new File(StaticReport.REPORT_DIRECTORY, "emailable-report.html");
         ReportFormatter.createEmailableReportHtml(reportingData, reportFileEmailable, "emailable-report.vm");
 
         /*
@@ -489,6 +446,9 @@ public final class ReportUtils {
         final File reportFileMemory = new File(framesDir, "memory.html");
         ReportFormatter.createMemoryHtml(reportFileMemory, "memory.vm");
 
+        Report report = Testerra.injector.getInstance(Report.class);
+        File finalDirectory = report.finalizeReport();
+
         /*
         finish all threads
          */
@@ -499,7 +459,7 @@ public final class ReportUtils {
             throw new TesterraSystemException("Report generation took too long", e);
         }
 
-        LOGGER.info("Report written to " + Report.REPORT_DIRECTORY.getAbsolutePath());
+        LOGGER.info("Report written to " + finalDirectory.getAbsolutePath());
     }
 
     private static void createAcknowledgements(List<MethodContext> methodsWithAcknowledgements) {
@@ -512,7 +472,7 @@ public final class ReportUtils {
 
     public static void createMethodDetailsStepsView(MethodContext methodContext) {
         try {
-            File reportFile2 = new File(Report.METHODS_DIRECTORY, "steps" + methodContext.methodRunIndex + ".html");
+            File reportFile2 = new File(StaticReport.METHODS_DIRECTORY, "steps" + methodContext.methodRunIndex + ".html");
             ReportFormatter.createMethodsFrame(reportFile2, methodContext, "methodDetailsSteps.vm");
             LOGGER.debug("Created method details steps view for " + methodContext);
         } catch (Exception e) {
@@ -522,7 +482,7 @@ public final class ReportUtils {
 
     public static void createMethodDetailsView(MethodContext methodContext) {
         try {
-            File reportFile2 = new File(Report.METHODS_DIRECTORY, methodContext.methodRunIndex + ".html");
+            File reportFile2 = new File(StaticReport.METHODS_DIRECTORY, methodContext.methodRunIndex + ".html");
             ReportFormatter.createMethodsFrame(reportFile2, methodContext, "methodDetails.vm");
             LOGGER.debug("Created method details view for " + methodContext);
         } catch (Exception e) {
@@ -591,10 +551,9 @@ public final class ReportUtils {
     static final List<TabInfo> TOP_LEVEL_TABS = new LinkedList<>();
 
     private static void createExtraTopLevelTab(String vmTemplateFileInResources, String htmlOutputFileName, String tabName, VelocityContext velocityContext) {
-        File htmlOutputFile = new File(Report.FRAMES_DIRECTORY, htmlOutputFileName);
+        File htmlOutputFile = new File(StaticReport.FRAMES_DIRECTORY, htmlOutputFileName);
         try {
             ReportFormatter.createHtml(vmTemplateFileInResources, htmlOutputFile, velocityContext);
-            LOGGER.debug("Created " + tabName + " tab view: " + htmlOutputFile);
         } catch (IOException e) {
             LOGGER.error("Could not create " + tabName + " tab", e);
         }

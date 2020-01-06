@@ -31,16 +31,14 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
-import eu.tsystems.mms.tic.testframework.report.IReport;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import org.apache.commons.codec.binary.Base64;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -90,7 +88,7 @@ public class UITestUtils {
      * A date format for files like screenshots.
      */
     private static final DateFormat FILES_DATE_FORMAT = new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss");
-    private static final IReport report = Testerra.injector.getInstance(IReport.class);
+    private static final Report report = Testerra.injector.getInstance(Report.class);
 
     public static Screenshot takeScreenshot(WebDriver webDriver) {
         return takeScreenshot(webDriver, false);
@@ -117,7 +115,7 @@ public class UITestUtils {
         );
         if (intoReport) {
             if (screenshot != null) {
-                report.addScreenshot(screenshot, IReport.Mode.MOVE);
+                report.addScreenshot(screenshot, Report.Mode.MOVE);
             }
         }
 
@@ -189,7 +187,7 @@ public class UITestUtils {
         String originalWindowHandle,
         String sessionKey
     ) {
-        if (!IReport.Properties.SCREENSHOTTER_ACTIVE.asBool()) {
+        if (!Report.Properties.SCREENSHOTTER_ACTIVE.asBool()) {
             return null;
         }
 
@@ -305,7 +303,7 @@ public class UITestUtils {
             final BufferedImage screenshot = screenRegion.getScreen().getScreenshot(upperLeftCorner.getX(), upperLeftCorner.getY(), lowerRightCorner.getX(), lowerRightCorner.getY());
 
             final String filename = "Desktop_" + FILES_DATE_FORMAT.format(new Date()) + ".png";
-            final File targetFile = new File(Report.SCREENSHOTS_DIRECTORY, filename);
+            final File targetFile = new File(StaticReport.SCREENSHOTS_DIRECTORY, filename);
             saveBufferedImage(screenshot, targetFile);
 
             final MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();

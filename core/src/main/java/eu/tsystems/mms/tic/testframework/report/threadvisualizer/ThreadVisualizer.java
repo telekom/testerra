@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
@@ -78,8 +78,8 @@ public class ThreadVisualizer {
         }
 
         // copy
-        ReportUtils.copyFile(css, Report.REPORT_DIRECTORY);
-        ReportUtils.copyFile(js, Report.REPORT_DIRECTORY);
+        ReportUtils.copyFile(css, StaticReport.REPORT_DIRECTORY);
+        ReportUtils.copyFile(js, StaticReport.REPORT_DIRECTORY);
 
         /*
          #### Velocity merge

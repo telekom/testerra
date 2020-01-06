@@ -591,6 +591,10 @@ public class GuiElement implements
         return guiElementData.getFrameLogic();
     }
 
+    public boolean hasFrameLogic() {
+        return guiElementData.hasFrameLogic();
+    }
+
     /**
      * Sets the abstract parent
      * @param parent {@link UiElement} or {@link PageObject}

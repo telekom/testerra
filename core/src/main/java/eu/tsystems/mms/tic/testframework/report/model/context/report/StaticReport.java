@@ -19,12 +19,9 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context.report;
 
-import afu.org.checkerframework.checker.oigj.qual.O;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.IReport;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
@@ -36,9 +33,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Report implements IReport, Loggable {
+public class StaticReport implements Report, Loggable {
 
-    public static final File REPORT_DIRECTORY;
+    public static File REPORT_DIRECTORY;
 
     public static final String FRAMES_FOLDER_NAME = "frames";
     public static final String METHODS_FOLDER_NAME = "methods";
@@ -46,42 +43,31 @@ public class Report implements IReport, Loggable {
     public static final String VIDEO_FOLDER_NAME = "videos";
     public static final String XML_FOLDER_NAME = "xml";
 
-    static {
-        /*
-        Initialize report directory
-         */
-        final String relativeReportDir = Properties.BASE_DIR.asString();
-        REPORT_DIRECTORY = new File(relativeReportDir);
+    public static File FRAMES_DIRECTORY = new File(REPORT_DIRECTORY, FRAMES_FOLDER_NAME);
+    public static File METHODS_DIRECTORY = new File(FRAMES_DIRECTORY, METHODS_FOLDER_NAME);
+    public static File SCREENSHOTS_DIRECTORY = new File(REPORT_DIRECTORY, SCREENSHOTS_FOLDER_NAME);
+    public static File VIDEO_DIRECTORY = new File(REPORT_DIRECTORY, VIDEO_FOLDER_NAME);
+    public static File XML_DIRECTORY = new File(REPORT_DIRECTORY, XML_FOLDER_NAME);
 
-        // cleanup
-        try {
-            FileUtils.deleteDirectory(REPORT_DIRECTORY);
-        } catch (IOException e) {
-            throw new TesterraRuntimeException("Could not clean report dir.", e);
-        }
-        if (!REPORT_DIRECTORY.mkdirs()) {
-            throw new TesterraSystemException(
-                "Error cleaning report dir: " + REPORT_DIRECTORY +
-                    "\nCheck consoles or other directory and file accesses for locks.");
-        }
-    }
+    public StaticReport() {
+        FileUtils fileUtils = new FileUtils();
+        String relativeReportDir = Properties.BASE_DIR.asString();
+        REPORT_DIRECTORY = fileUtils.createTempDir(relativeReportDir);
+        log().debug("Preparing report in " + StaticReport.REPORT_DIRECTORY.getAbsolutePath());
 
-    public static final File FRAMES_DIRECTORY = new File(REPORT_DIRECTORY, FRAMES_FOLDER_NAME);
-    public static final File METHODS_DIRECTORY = new File(FRAMES_DIRECTORY, METHODS_FOLDER_NAME);
-    public static final File SCREENSHOTS_DIRECTORY = new File(REPORT_DIRECTORY, SCREENSHOTS_FOLDER_NAME);
-    public static final File VIDEO_DIRECTORY = new File(REPORT_DIRECTORY, VIDEO_FOLDER_NAME);
-    public static final File XML_DIRECTORY = new File(REPORT_DIRECTORY, XML_FOLDER_NAME);
+        FRAMES_DIRECTORY = new File(REPORT_DIRECTORY, FRAMES_FOLDER_NAME);
+        METHODS_DIRECTORY = new File(FRAMES_DIRECTORY, METHODS_FOLDER_NAME);
+        SCREENSHOTS_DIRECTORY = new File(REPORT_DIRECTORY, SCREENSHOTS_FOLDER_NAME);
+        VIDEO_DIRECTORY = new File(REPORT_DIRECTORY, VIDEO_FOLDER_NAME);
+        XML_DIRECTORY = new File(REPORT_DIRECTORY, XML_FOLDER_NAME);
 
-    static {
-        /*
-        Initialize report sub directories
-         */
         FRAMES_DIRECTORY.mkdirs();
         METHODS_DIRECTORY.mkdirs();
         SCREENSHOTS_DIRECTORY.mkdirs();
         VIDEO_DIRECTORY.mkdirs();
         XML_DIRECTORY.mkdirs();
     }
+
 
     private void addFile(File sourceFile, File directory, Mode mode) {
         try {
@@ -96,6 +82,18 @@ public class Report implements IReport, Loggable {
         } catch (IOException e) {
             log().error(e.getMessage());
         }
+    }
+
+    public File finalizeReport() {
+        String relativeReportDir = Properties.BASE_DIR.asString();
+        File finalReportDirectory = new File(relativeReportDir);
+        try {
+            FileUtils.deleteDirectory(finalReportDirectory);
+            FileUtils.moveDirectory(REPORT_DIRECTORY, finalReportDirectory);
+        } catch (IOException e) {
+            throw new TesterraRuntimeException("Could not move report dir: " + e.getMessage(), e);
+        }
+        return finalReportDirectory;
     }
 
     private void addScreenshot(Screenshot screenshot) {
@@ -117,7 +115,7 @@ public class Report implements IReport, Loggable {
     }
 
     @Override
-    public IReport addScreenshot(Screenshot screenshot, Mode mode) {
+    public Report addScreenshot(Screenshot screenshot, Mode mode) {
         addScreenshotFiles(screenshot, mode);
         addScreenshot(screenshot);
         return this;
@@ -131,7 +129,7 @@ public class Report implements IReport, Loggable {
     }
 
     @Override
-    public IReport addVideo(Video video, Mode mode) {
+    public Report addVideo(Video video, Mode mode) {
         addFile(video.getVideoFile(), VIDEO_DIRECTORY, mode);
         return this;
     }

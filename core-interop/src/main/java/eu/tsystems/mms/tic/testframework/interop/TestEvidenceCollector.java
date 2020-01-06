@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.interop;
 
-import eu.tsystems.mms.tic.testframework.report.IReport;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
@@ -53,7 +53,7 @@ public final class TestEvidenceCollector {
     }
 
     public static List<Screenshot> collectScreenshots() {
-        if (!IReport.Properties.SCREENSHOTTER_ACTIVE.asBool()) {
+        if (!Report.Properties.SCREENSHOTTER_ACTIVE.asBool()) {
             return null;
         }
 
@@ -72,7 +72,7 @@ public final class TestEvidenceCollector {
     }
 
     public static List<Video> collectVideos() {
-        if (!IReport.Properties.SCREENCASTER_ACTIVE.asBool()) {
+        if (!Report.Properties.SCREENCASTER_ACTIVE.asBool()) {
             return null;
         }
 

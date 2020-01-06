@@ -38,7 +38,7 @@ import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 import eu.tsystems.mms.tic.testframework.report.velocity.PublicFieldUberspect;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -288,7 +288,7 @@ public class ReportFormatter {
         if (testClass != null) {
             context.put("testClass", testClass);
         }
-        context.put("reportScreenshotsPreview", Report.Properties.SCREENSHOTS_PREVIEW.asBool());
+        context.put("reportScreenshotsPreview", StaticReport.Properties.SCREENSHOTS_PREVIEW.asBool());
 
         writeHtml(logFile, htmlLogTemplate, context);
     }
@@ -380,7 +380,7 @@ public class ReportFormatter {
         VelocityContext context = new VelocityContext();
         context.put("executionContext", ExecutionContextController.EXECUTION_CONTEXT);
         context.put("TesterraBuildInformation", TesterraBuildInformation.getInstance());
-        context.put("reportScreenshotsPreview", Report.Properties.SCREENSHOTS_PREVIEW.asBool());
+        context.put("reportScreenshotsPreview", StaticReport.Properties.SCREENSHOTS_PREVIEW.asBool());
         context.put("reportName", ReportUtils.getReportName());
         context.put("dryrun", Testerra.Properties.DRY_RUN.asBool());
 

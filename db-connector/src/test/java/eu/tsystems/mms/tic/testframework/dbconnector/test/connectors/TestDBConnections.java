@@ -32,13 +32,13 @@ import eu.tsystems.mms.tic.testframework.dbconnector.connection.Driver;
 
 /**
  * Class holding DBConnections for TesterraTest-Project.
- *
+ * <p>
  * Created with IntelliJ IDEA. User: pele Date: 18.05.12 Time: 12:43
  */
 public class TestDBConnections extends ProjectConnections {
 
     /**
-     * Connection to MySQL DB on 192.168.60.239. Used by DBConnector tests.
+     * Connection to MySQL DB -  Used by DBConnector tests.
      */
     public static final TestDBConnections DB1 =
             new TestDBConnections(
@@ -56,8 +56,7 @@ public class TestDBConnections extends ProjectConnections {
     /**
      * Default constructor for DBConnections.
      *
-     * @param dbConnection
-     *            DBConnector object to be used for connection.
+     * @param dbConnection DBConnector object to be used for connection.
      */
     TestDBConnections(final DBConnector<?> dbConnection) {
         super(dbConnection);

@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 /**
  * Created by matz on 03.11.2015.
  */
-public abstract class GuiElementNonFunctionalAssertionTest extends GuiElementWaiterTest {
+public abstract class AbstractGuiElementNonFunctionalAssertionTest extends AbstractGuiElementWaiterTest {
 
     @Test
     public void testT1_GuiElement_NonFunctionalAssertLayout() throws Exception {

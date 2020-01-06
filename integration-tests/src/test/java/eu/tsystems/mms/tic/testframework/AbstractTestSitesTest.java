@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework;
 
 import eu.tsystems.mms.tic.testframework.core.test.Server;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +34,8 @@ public abstract class AbstractTestSitesTest extends AbstractTest {
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
+        POConfig.setUiElementTimeoutInSeconds(1);
         Server.start();
-
         WebDriverManager.setBaseURL(getStartPage().getUrl());
     }
 

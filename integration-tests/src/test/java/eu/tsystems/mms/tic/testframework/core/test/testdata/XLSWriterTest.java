@@ -28,7 +28,7 @@ package eu.tsystems.mms.tic.testframework.core.test.testdata;
 
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 import eu.tsystems.mms.tic.testframework.testdata.XLSTestDataReader;
 import eu.tsystems.mms.tic.testframework.testdata.XLSWriter;
 import org.testng.annotations.Test;
@@ -71,7 +71,7 @@ public class XLSWriterTest extends AbstractTest {
             xlsWriter.writeCell(id, col, data);
 
             filecounter++;
-            final String fullFileName = Report.REPORT_DIRECTORY + "/xls/out-" + filecounter + "-" + filename;
+            final String fullFileName = StaticReport.REPORT_DIRECTORY + "/xls/out-" + filecounter + "-" + filename;
 
             // check dirs
             File dir = new File(fullFileName).getParentFile();

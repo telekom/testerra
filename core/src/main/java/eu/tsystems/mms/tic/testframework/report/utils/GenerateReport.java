@@ -37,7 +37,7 @@ import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.slf4j.Logger;
@@ -59,13 +59,12 @@ public class GenerateReport {
         // flush run contexts
         MethodRelations.flushAll();
 
-        LOGGER.info("Preparing report in " + Report.REPORT_DIRECTORY.getAbsolutePath());
         JVMMonitor.label("Tests Finished");
         JVMMonitor.stop();
         /*
         List tests only
          */
-        if (Report.Properties.LIST_TESTS.asBool()) {
+        if (StaticReport.Properties.LIST_TESTS.asBool()) {
             GenerateReport.printTestsList();
             // discontinue
             System.exit(0);

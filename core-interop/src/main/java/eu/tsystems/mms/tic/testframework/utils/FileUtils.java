@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.OutputType;
 
@@ -42,6 +43,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Base64;
 import java.util.Objects;
+import java.util.UUID;
 
 import static java.lang.Thread.currentThread;
 
@@ -52,9 +54,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils implements 
 
     private static String lineBreak = "\n";
 
-    //private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
-
-    private FileUtils() {
+    public FileUtils() {
     }
 
     /**
@@ -301,7 +301,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils implements 
 
     public <X> X fileToOutputType(final File file, OutputType<X> outputType) {
         if (outputType == OutputType.FILE) {
-            return (X)file;
+            return (X) file;
         } else {
             final byte[] bytes;
             try {
@@ -316,5 +316,16 @@ public final class FileUtils extends org.apache.commons.io.FileUtils implements 
             }
         }
         return null;
+    }
+
+    public File createTempFileName(String fileName) {
+        String extension = FilenameUtils.getExtension(fileName);
+        return new File(System.getProperty("java.io.tmpdir") + "/" + FilenameUtils.getBaseName(fileName) + "-" + UUID.randomUUID() + (extension.length() > 0 ? "." + extension : ""));
+    }
+
+    public File createTempDir(String dirName) {
+        File dir = new File(System.getProperty("java.io.tmpdir") + "/" + dirName + "-" + UUID.randomUUID());
+        dir.mkdirs();
+        return dir;
     }
 }

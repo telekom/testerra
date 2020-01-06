@@ -12,7 +12,7 @@ dependencies {
 
 test {
     String[] s = [
-            'src/test/resources/CoreTestSuite.xml',
+            'src/test/resources/Integration.xml',
             'src/test/resources/ReportingTestSuite.xml'
     ]
 

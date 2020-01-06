@@ -7,7 +7,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 
 import java.io.File;
 
-public interface IReport {
+public interface Report {
     enum Mode {
         COPY,
         MOVE
@@ -59,11 +59,12 @@ public interface IReport {
     /**
      * Adds a screenshot to the current MethodContext
      */
-    IReport addScreenshot(Screenshot screenshot, Mode mode);
+    Report addScreenshot(Screenshot screenshot, Mode mode);
     /**
      * Creates a screenshot, moves it files but doesn't add in to the current MethodContext
      */
     Screenshot provideScreenshot(File file, Mode mode);
-    IReport addVideo(Video video, Mode mode);
+    Report addVideo(Video video, Mode mode);
     Video provideVideo(File file, Mode mode);
+    File finalizeReport();
 }

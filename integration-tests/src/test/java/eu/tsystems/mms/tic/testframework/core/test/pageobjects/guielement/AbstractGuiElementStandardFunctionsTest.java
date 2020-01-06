@@ -20,13 +20,11 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations.AbstractGuiElementTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
@@ -42,7 +40,7 @@ import java.util.List;
 /**
  * Created by pele on 31.08.2015.
  */
-public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElementTest {
+public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGuiElementTest {
 
     /**
      * Test if GuiElement.asserts().assertContainsText works for one string that is contained
@@ -260,29 +258,26 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT23_GuiElement_findByIDUnique() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement guiElement = new GuiElement(driver, Locate.by().unique().id("11"));
+        GuiElement guiElement = getGuiElementBy(Locate.by().unique().id("11"));
         WebElement webElement = guiElement.getWebElement();
         Assert.assertNotNull(webElement);
     }
 
     @Test
     public void test_GuiElement_findNonUnique() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement guiElement = new GuiElement(driver, Locate.by().unique().xpath("//div"));
+        GuiElement guiElement = getGuiElementBy(Locate.by().unique().xpath("//div"));
         try {
             WebElement webElement = guiElement.getWebElement();
         } catch (TimeoutException e) {
-
-            AssertUtils.assertContains(e.getCause().getMessage(), "found more than one WebElement");
+            AssertUtils.assertContains(e.getCause().getMessage(), "GuiElement not found");
+            AssertUtils.assertContains(e.getCause().getMessage(), guiElement.getLocate().toString());
         }
     }
 
     @Test
     public void test_GuiElement_findPrepared() {
         final Locate locator = Locate.prepare("//*[@id='%s']");
-        final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement guiElement = new GuiElement(driver, locator.with("11"));
+        GuiElement guiElement = getGuiElementBy(locator.with("11"));
         Assert.assertNotNull(guiElement.getWebElement());
     }
 
@@ -383,12 +378,9 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         getDisplayedElement().asserts().assertIsNotDisplayedFromWebElement();
     }
 
-    /**
-     * Test if GuiElement.asserts().assertIsNotPresent works for a not displayed element
-     */
     @Test
     public void testT35_GuiElement_assertIsNotPresent() {
-        getNotDisplayedElement().asserts().assertIsNotPresent();
+        getNotExistingElement().asserts().assertIsNotPresent();
     }
 
     /**
@@ -456,7 +448,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
         List<String> textsFromChildren = guiElement.getTextsFromChildren();
         Assert.assertEquals(textsFromChildren.size(), 5, "Correct amount of texts contained. Texts: " + textsFromChildren);
 
-        List<String> stringsManual = new ArrayList<String>();
+        List<String> stringsManual = new ArrayList<>();
         stringsManual.add("Open again");
         stringsManual.add("Show confirm");
         stringsManual.add("Open pop up");
@@ -480,7 +472,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     /**
      * Test if assertIsPresentFast() works with a not present element
      */
-    @Test(expectedExceptions = {AssertionError.class})
+    @Test
     public void testT42N_GuiElement_assertIsPresentFast() {
         getNotDisplayedElement().asserts().assertIsPresentFast();
     }
@@ -602,7 +594,7 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
 
     @Test
     public void testT59_GuiElement_assertIsNotPresentFast() {
-        getNotDisplayedElement().asserts().assertIsNotPresentFast();
+        getNotExistingElement().asserts().assertIsNotPresentFast();
     }
 
     @Test(expectedExceptions = {AssertionError.class})
@@ -650,29 +642,57 @@ public abstract class GuiElementStandardFunctionsTest extends AbstractGuiElement
     }
 
     @Test
-    public void testT67_GuiElement_findElement() {
+    public void testT67_WebElement_findElement() {
         GuiElement element = getSelectableElement();
-        WebElement webElement = element.getWebElement().findElement(By.xpath("//div[1]"));
+        WebElement webElement = element.getWebElement();
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToCorrectFrame();
+        }
+        webElement = webElement.findElement(By.xpath("//div[1]"));
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToDefaultFrame();
+        }
         Assert.assertNotNull(webElement, "Found Element");
     }
 
     @Test
-    public void testT68N_GuiElement_findElement() {
+    public void testT68N_WebElement_findElement() {
         GuiElement element = getSelectableElement();
-        ThrowableUtils.expectThrowable(NoSuchElementException.class, () -> element.getWebElement().findElement(By.xpath("//div[text()=\'\']")));
+        WebElement webElement = element.getWebElement();
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToCorrectFrame();
+        }
+        ThrowableUtils.expectThrowable(NoSuchElementException.class, () -> webElement.findElement(By.xpath("//div[text()=\'\']")));
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToDefaultFrame();
+        }
     }
 
     @Test
-    public void testT69_GuiElement_findElements() {
+    public void testT69_WebElement_findElements() {
         GuiElement element = getSelectableElement();
-        List<WebElement> webElements = element.getWebElement().findElements(By.xpath("//div"));
+        WebElement webElement = element.getWebElement();
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToCorrectFrame();
+        }
+        List<WebElement> webElements = webElement.findElements(By.xpath("//div"));
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToDefaultFrame();
+        }
         Assert.assertNotEquals(webElements.size(), 0, "List is not empty");
     }
 
     @Test
-    public void testT70N_GuiElement_findElements() {
+    public void testT70N_WebElement_findElements() {
         GuiElement element = getSelectableElement();
-        List<WebElement> webElements = element.getWebElement().findElements(By.xpath("//div[text()=\'\']"));
+        WebElement webElement = element.getWebElement();
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToCorrectFrame();
+        }
+        List<WebElement> webElements = webElement.findElements(By.xpath("//div[text()=\'\']"));
+        if (element.hasFrameLogic()) {
+            element.getFrameLogic().switchToDefaultFrame();
+        }
         Assert.assertEquals(webElements.size(), 0, "List is empty");
     }
 

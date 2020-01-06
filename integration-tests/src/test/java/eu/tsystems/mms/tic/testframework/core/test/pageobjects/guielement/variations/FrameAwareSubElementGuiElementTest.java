@@ -20,7 +20,9 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.AbstractGuiElementNonFunctionalAssertionTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -28,11 +30,11 @@ import org.openqa.selenium.WebDriver;
 /**
  * Created by rnhb on 13.05.2015.
  */
-public class FrameAwareSubElementGuiElementTest extends GuiElementTestCollector {
+public class FrameAwareSubElementGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
 
     @Override
-    public GuiElement getGuiElementBy(By locator) {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+    public GuiElement getGuiElementBy(Locate locator) {
+        WebDriver driver = getWebDriver();
         GuiElement frame = new GuiElement(driver, By.name("InputFrame1"));
         GuiElement parentElement = new GuiElement(driver, By.xpath("//body"), frame);
         return parentElement.getSubElement(locator);

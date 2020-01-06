@@ -35,7 +35,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAsse
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class GuiElementStandardFunctionsTest_NewApi extends AbstractTestSitesTest implements Loggable {
+public class StandardUiElementTests extends AbstractTestSitesTest implements Loggable {
 
     private final static InstantAssertion instantAssertion = Testerra.injector.getInstance(InstantAssertion.class);
     private WebTestPage page;

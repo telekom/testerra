@@ -43,7 +43,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultStr
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ScreenshotAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
-import eu.tsystems.mms.tic.testframework.report.IReport;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -212,7 +212,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
     @Override
     protected void pCheckPage(boolean findNot, boolean fast, boolean checkCaller) {
         super.pCheckPage(findNot, fast, checkCaller);
-        if (IReport.Properties.SCREENSHOT_ON_PAGELOAD.asBool()) {
+        if (Report.Properties.SCREENSHOT_ON_PAGELOAD.asBool()) {
             screenshot().toReport();
         }
     }

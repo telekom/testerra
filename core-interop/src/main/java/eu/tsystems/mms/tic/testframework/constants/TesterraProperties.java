@@ -53,20 +53,9 @@ public final class TesterraProperties {
     public static final String BROWSER_SETTING = "tt.browser.setting";
 
     /**
-     * Property key stating to take automatic screenshots or not.
-     */
-//    public static final String AUTOSCREENSHOTS = "tt.takeAutomaticScreenshot";
-
-    /**
-     * tt. test property file.
-     */
-    public static final String TEST_PROPERTIES_FILE = "tt.test.properties.file";
-
-    /**
      * Failed tests maximum number of retries.
      */
     public static final String FAILED_TESTS_MAX_RETRIES = "tt.failed.tests.max.retries";
-    public static final String FAILED_TESTS_RETRY_FLAPPING = "tt.failed.tests.retry.flapping";
 
     /**
      * Failed tests condition: Throwable Class(~es, devided by ','.
@@ -144,9 +133,6 @@ public final class TesterraProperties {
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH = "tt.failure.corridor.allowed.failed.tests.high";
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID = "tt.failure.corridor.allowed.failed.tests.mid";
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW = "tt.failure.corridor.allowed.failed.tests.low";
-
-    @Deprecated
-    public static final String STITCH_CHROME_SCREENSHOTS = "tt.stitch.chrome.screenshots";
 
     public static final String DISPLAY_RESOLUTION = "tt.display.resolution";
 

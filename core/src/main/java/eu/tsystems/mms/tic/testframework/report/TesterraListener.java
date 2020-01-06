@@ -43,11 +43,12 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCo
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodAnnotationCheckerWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodFinishedWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.RemoveTestMethodIfRetryPassedWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TestMethodFinishedWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TesterraEventsStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.LoggingStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TestStartWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TesterraEventsStartWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
@@ -57,7 +58,7 @@ import eu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook;
 import eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
@@ -148,7 +149,7 @@ public class TesterraListener implements
         LOGGER.debug("Context ClassLoader for TesterraListener: " + contextClassLoader);
 
         // start test for xml
-        XML_REPORTER = new JUnitXMLReporter(true, Report.XML_DIRECTORY);
+        XML_REPORTER = new JUnitXMLReporter(true, StaticReport.XML_DIRECTORY);
         XML_REPORTER.testSetStarting(new SimpleReportEntry("", "Test starting"));
 
         // start memory monitor
@@ -216,7 +217,6 @@ public class TesterraListener implements
      *
      * @param list         All methods that should be run due to current XML-Test
      * @param iTestContext .
-     *
      * @return Alle mthods taht shuld be run
      */
     @Override
@@ -267,9 +267,9 @@ public class TesterraListener implements
      */
     @Override
     public void beforeInvocation(
-        IInvokedMethod method,
-        ITestResult testResult,
-        ITestContext context
+            IInvokedMethod method,
+            ITestResult testResult,
+            ITestContext context
     ) {
         try {
             pBeforeInvocation(method, testResult, context);
@@ -287,9 +287,9 @@ public class TesterraListener implements
      * @param testContext
      */
     private void pBeforeInvocation(
-        IInvokedMethod invokedMethod,
-        ITestResult testResult,
-        ITestContext testContext
+            IInvokedMethod invokedMethod,
+            ITestResult testResult,
+            ITestContext testContext
     ) {
         /*
         check for listener duplicates
@@ -372,9 +372,9 @@ public class TesterraListener implements
      */
     // CHECKSTYLE:OFF
     private void pAfterInvocation(
-        IInvokedMethod invokedMethod,
-        ITestResult testResult,
-        ITestContext testContext
+            IInvokedMethod invokedMethod,
+            ITestResult testResult,
+            ITestContext testContext
     ) {
 
         final String methodName;
@@ -436,6 +436,7 @@ public class TesterraListener implements
         workerExecutor.add(new MethodAnnotationCheckerWorker()); // !! must be invoked before Container Update
         workerExecutor.add(new MethodContextUpdateWorker());
         workerExecutor.add(new TeamCityMethodContextUpdateWorker());
+        workerExecutor.add(new RemoveTestMethodIfRetryPassedWorker());
 
         workerExecutor.run(testResult, methodName, methodContext, testContext, invokedMethod);
 
@@ -465,9 +466,9 @@ public class TesterraListener implements
 
     @Override
     public void generateReport(
-        List<XmlSuite> xmlSuites,
-        List<ISuite> suites,
-        String outputDirectory
+            List<XmlSuite> xmlSuites,
+            List<ISuite> suites,
+            String outputDirectory
     ) {
         GenerateReport.runOnce(xmlSuites, suites, outputDirectory, XML_REPORTER);
     }

@@ -8,7 +8,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
-import eu.tsystems.mms.tic.testframework.report.IReport;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.apache.commons.io.FileUtils;
@@ -139,7 +139,7 @@ public final class LayoutCheck {
         public LayoutComparator layoutComparator;
     }
 
-    private static final IReport report = Testerra.injector.getInstance(IReport.class);
+    private static final Report report = Testerra.injector.getInstance(Report.class);
 
     /**
      * Hide Default constructor.
@@ -639,13 +639,13 @@ public final class LayoutCheck {
         context.mode = step.mode.name();
         context.distance = step.distance;
         // Always copy the reference image
-        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(), IReport.Mode.COPY);
-        context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), IReport.Mode.MOVE);
-        context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), IReport.Mode.MOVE);
+        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(), Report.Mode.COPY);
+        context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.Mode.MOVE);
+        context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.Mode.MOVE);
         context.distanceScreenshot.meta().put("Distance", Double.toString(step.distance));
         if (step.annotatedReferenceFileName!=null) {
             final Path annotatedReferenceScreenshotPath = step.annotatedReferenceFileName;
-            context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceScreenshotPath.toFile(), IReport.Mode.MOVE);
+            context.annotatedScreenshot = report.provideScreenshot(annotatedReferenceScreenshotPath.toFile(), Report.Mode.MOVE);
         }
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.customContexts.add(context);

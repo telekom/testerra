@@ -1,14 +1,14 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.report.IReport;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
 import java.io.File;
 
 public class DefaultScreenshotAssertion extends DefaultImageAssertion implements ScreenshotAssertion {
 
-    private static IReport report = Testerra.injector.getInstance(IReport.class);
+    private static Report report = Testerra.injector.getInstance(Report.class);
 
     private final AssertionProvider<Screenshot> providerOverride;
 
@@ -29,7 +29,7 @@ public class DefaultScreenshotAssertion extends DefaultImageAssertion implements
 
     @Override
     public ScreenshotAssertion toReport() {
-        report.addScreenshot(providerOverride.getActual(), IReport.Mode.COPY);
+        report.addScreenshot(providerOverride.getActual(), Report.Mode.COPY);
         return this;
     }
 }

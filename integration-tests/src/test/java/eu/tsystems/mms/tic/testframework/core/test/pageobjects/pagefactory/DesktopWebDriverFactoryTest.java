@@ -17,7 +17,7 @@
  *     Peter Lehmann
  *     pele
  */
-package eu.tsystems.mms.tic.testframework.core.test.desktop;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTest;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
@@ -39,8 +39,8 @@ public class DesktopWebDriverFactoryTest extends AbstractTest {
     public void testT01_BaseURL() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.baseUrl = "http://google.de";
-        request.webDriverMode = WebDriverMode.local;
-        request.browser = Browsers.phantomjs;
+        //request.webDriverMode = WebDriverMode.local;
+        //request.browser = Browsers.phantomjs;
 
         WebDriver driver = WebDriverManager.getWebDriver(request);
         String currentUrl = driver.getCurrentUrl();
@@ -50,20 +50,20 @@ public class DesktopWebDriverFactoryTest extends AbstractTest {
     @Test
     public void testT02_BaseURL_NotSet() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
-        request.webDriverMode = WebDriverMode.local;
-        request.browser = Browsers.phantomjs;
+        //request.webDriverMode = WebDriverMode.local;
+        //request.browser = Browsers.phantomjs;
 
         WebDriver driver = WebDriverManager.getWebDriver(request);
         String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue(currentUrl.contains("192.168"), "Current URL contains local ip - actual: " + currentUrl);
+        Assert.assertTrue(currentUrl.contains("localhost"), "Current URL is invalid - actual: " + currentUrl);
     }
 
     @Test
     public void testT03_EndPointCapabilities() throws Exception {
         DesktopWebDriverRequest request = new DesktopWebDriverRequest();
         request.baseUrl = "http://google.de";
-        request.webDriverMode = WebDriverMode.local;
-        request.browser = Browsers.phantomjs;
+        //request.webDriverMode = WebDriverMode.local;
+        //request.browser = Browsers.phantomjs;
 
         /*
         create caps

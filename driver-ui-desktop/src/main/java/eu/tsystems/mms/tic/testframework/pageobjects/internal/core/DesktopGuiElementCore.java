@@ -680,6 +680,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
     }
 
     private List<String> pGetTextsFromChildren() {
+        find();
         // find() not necessary here, because findElements() is called, which calls find().
         List<WebElement> childElements = guiElementData.getWebElement().findElements(By.xpath(".//*"));
 

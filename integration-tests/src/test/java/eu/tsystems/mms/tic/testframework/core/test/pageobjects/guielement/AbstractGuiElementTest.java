@@ -17,13 +17,14 @@
  *     Peter Lehmann
  *     pele
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -45,9 +46,9 @@ import java.lang.reflect.Method;
 public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final ThreadLocal<WebDriver> THREAD_LOCAL_WEBDRIVERS = new ThreadLocal<>();
 
     static {
-        POConfig.setUiElementTimeoutInSeconds(3);
         PropertyManager.getGlobalProperties().setProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
     }
 
@@ -67,7 +68,7 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
     @BeforeMethod(alwaysRun = true)
     protected void initDriverAndWebsite(Method method) {
         testPage = getTestPage();
-        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriver driver = getWebDriver();
         driver.get(testPage.getUrl());
     }
 
@@ -236,7 +237,21 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
      * @deprecated Use {@link WebTestPage#find(By)} instead
      */
     @Deprecated
-    public abstract GuiElement getGuiElementBy(By locator);
+    public GuiElement getGuiElementBy(By locator) {
+        return getGuiElementBy(Locate.by(locator));
+    }
+
+    public WebDriver getWebDriver() {
+        WebDriver webDriver = THREAD_LOCAL_WEBDRIVERS.get();
+        if (webDriver == null) {
+            webDriver = WebDriverManager.getWebDriver();
+            WebDriverManager.makeSessionExclusive(webDriver);
+            THREAD_LOCAL_WEBDRIVERS.set(webDriver);
+        }
+        return webDriver;
+    }
+
+    public abstract GuiElement getGuiElementBy(Locate locate);
 
     protected abstract TestPage getTestPage();
 

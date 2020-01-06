@@ -4,7 +4,6 @@
 // Testerra core
 :proxy_settings_load:               tt.proxy.settings.load
 :proxy_settings_file:               tt.proxy.settings.file
-:test_properties_file:              tt.test.properties.file
 :loglevel:                          tt.loglevel
 
 // webdriver
@@ -57,7 +56,6 @@
 :failed_tests_if_throwable_classes:         tt.failed.tests.if.throwable.classes
 :failed_tests_if_throwable_messages:        tt.failed.tests.if.throwable.messages
 :failed_tests_max_retries:          tt.failed.tests.max.retries
-:failed_tests_retry_flapping:       tt.failed.tests.retry.flapping
 :reuse_dataprovider_driver_by_thread:       tt.reuse.dataprovider.driver.by.thread
 :watchdog_enable:                   tt.watchdog.enable
 :watchdog_timeout_seconds:          tt.watchdog.timeout.seconds

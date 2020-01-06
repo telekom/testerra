@@ -60,8 +60,6 @@ public class GenerateReport {
         // flush run contexts
         MethodRelations.flushAll();
 
-        LOGGER.info("*** Generating Report ***");
-        LOGGER.info("Preparing report in " + Report.REPORT_DIRECTORY.getAbsolutePath());
         JVMMonitor.label("Tests Finished");
 
         JVMMonitor.stop();

@@ -284,51 +284,6 @@ public final class ReportUtils {
     // HELPERS
 
     /**
-     * Returns the input stream for the resource located at a given path.
-     *
-     * @param resourcePath the relative resource path
-     * @return the input stream
-     */
-    private static InputStream getInputStream(final String resourcePath) {
-        return Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
-    }
-
-    /**
-     * Creates all needed directories. Returns the frames dir.
-     *
-     * @param reportDirectory .
-     * @return frames dir.
-     */
-    public static File createDirs(final File reportDirectory) {
-        final File framesDir = new File(reportDirectory + Report.FRAMES_FOLDER_NAME);
-        if (!framesDir.exists()) {
-            framesDir.mkdirs();
-        }
-
-        final File jsDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/js");
-        if (!jsDir.exists()) {
-            jsDir.mkdirs();
-        }
-
-        final File jsHighLightStylesDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/js/highlight-styles");
-        if (!jsHighLightStylesDir.exists()) {
-            jsHighLightStylesDir.mkdirs();
-        }
-
-        final File styleDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/style");
-        if (!styleDir.exists()) {
-            styleDir.mkdirs();
-        }
-
-        final File swfDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/swf");
-        if (!swfDir.exists()) {
-            swfDir.mkdirs();
-        }
-
-        return framesDir;
-    }
-
-    /**
      * Create html output
      */
     static void createReport(ReportingData reportingData) {
@@ -489,6 +444,8 @@ public final class ReportUtils {
         final File reportFileMemory = new File(framesDir, "memory.html");
         ReportFormatter.createMemoryHtml(reportFileMemory, "memory.vm");
 
+        File finalDirectory = Report.moveReport();
+
         /*
         finish all threads
          */
@@ -499,7 +456,7 @@ public final class ReportUtils {
             throw new TesterraSystemException("Report generation took too long", e);
         }
 
-        LOGGER.info("Report written to " + Report.REPORT_DIRECTORY.getAbsolutePath());
+        LOGGER.info("Report written to " + finalDirectory.getAbsolutePath());
     }
 
     private static void createAcknowledgements(List<MethodContext> methodsWithAcknowledgements) {
@@ -594,7 +551,6 @@ public final class ReportUtils {
         File htmlOutputFile = new File(Report.FRAMES_DIRECTORY, htmlOutputFileName);
         try {
             ReportFormatter.createHtml(vmTemplateFileInResources, htmlOutputFile, velocityContext);
-            LOGGER.info("Created " + tabName + " tab view: " + htmlOutputFile);
         } catch (IOException e) {
             LOGGER.error("Could not create " + tabName + " tab", e);
         }

@@ -52,7 +52,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
 
     //private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
-    private FileUtils() {
+    public FileUtils() {
     }
 
     /**
@@ -297,8 +297,14 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
         return new File(resourceUrl.getFile());
     }
 
-    public static File createTempFileName(String fileName) {
-        final String extension = FilenameUtils.getExtension(fileName);
+    public File createTempFileName(String fileName) {
+        String extension = FilenameUtils.getExtension(fileName);
         return new File(System.getProperty("java.io.tmpdir") + "/" + FilenameUtils.getBaseName(fileName) + "-" + UUID.randomUUID() + (extension.length() > 0 ? "." + extension : ""));
+    }
+
+    public File createTempDir(String dirName) {
+        File dir = new File(System.getProperty("java.io.tmpdir") + "/" + dirName + "-" + UUID.randomUUID());
+        dir.mkdirs();
+        return dir;
     }
 }

@@ -77,7 +77,7 @@ public class Report {
         MOVE
     }
 
-    public static File moveReport() {
+    public static File finalizeReport() {
         String relativeReportDirString = PropertyManager.getProperty(TesterraProperties.REPORTDIR, DEFAULT_REPORTDIR);
         File finalReportDirectory = new File(relativeReportDirString);
         try {

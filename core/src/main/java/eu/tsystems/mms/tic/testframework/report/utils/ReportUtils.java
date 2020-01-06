@@ -444,8 +444,6 @@ public final class ReportUtils {
         final File reportFileMemory = new File(framesDir, "memory.html");
         ReportFormatter.createMemoryHtml(reportFileMemory, "memory.vm");
 
-        File finalDirectory = Report.moveReport();
-
         /*
         finish all threads
          */
@@ -456,6 +454,7 @@ public final class ReportUtils {
             throw new TesterraSystemException("Report generation took too long", e);
         }
 
+        File finalDirectory = Report.finalizeReport();
         LOGGER.info("Report written to " + finalDirectory.getAbsolutePath());
     }
 

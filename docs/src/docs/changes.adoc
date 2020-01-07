@@ -156,19 +156,7 @@ class MyPage extends Page {
 ```
 ====
 
-List elements (Draft 1)
-```java
-UiElement anchors = find(By.tagName("a"));
-
-anchors.numberOfElements().is(3); <1>
-anchors.firstElement().value(Attribute.TITLE).is("StartPage"); <2>
-anchors.element(2).value(Attribute.TITLE).is("About Us"); <3>
-anchors.lastElement().value(Attribute.TITLE).is("Contact"); <4>
-
-anchors.forEach(anchor -> anchor.value(Attribute.HREF).beginsWith("https")); <5>
-```
-
-List elements (Draft 2)
+List elements
 ```java
 UiElement anchors = find(By.tagName("a"));
 
@@ -496,7 +484,7 @@ The `Locate.by()` method allows you to pass a new introduced `XPath` object, tha
 
 This is what the basic syntax looks like
 ```java
-UiElement div = find(Locate.by(XPath.node("div"));
+UiElement div = find(Locate.by(XPath.node("div")));
 ```
 
 But it supports many other features you need when you select

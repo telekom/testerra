@@ -98,7 +98,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
      * @return the WebElement located by by-locator.
      */
     private int find() {
-        guiElementData.executionLog.addMessage("Executing find().");
         int findCounter = -1;
         int numberOfFoundElements = 0;
         long start = System.currentTimeMillis();
@@ -113,7 +112,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
                 elements = webDriver.findElements(by);
             }
             if (elements != null) {
-                guiElementData.executionLog.addMessage("Found " + elements.size() + " WebElements for the locator " + by);
                 final Locate selector = guiElementData.guiElement.getLocator();
                 if (selector.isUnique() && elements.size() > 1) {
                     throw new Exception("To many WebElements found (" + elements.size() + ")");
@@ -203,7 +201,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
                 }
             }
             LOGGER.debug("Before Filtering: " + foundElements.size() + " WebElements, After Filtering: " + filteredElements.size() + " WebElements.");
-            guiElementData.executionLog.addMessage(filteredElements.size() + " WebElements remaining after filtering. Removed " + (foundElements.size() - filteredElements.size() + " WebElements."));
             return filteredElements;
         }
     }
@@ -513,10 +510,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     }
 
     private boolean pIsDisplayed() {
-        guiElementData.executionLog.addMessage("Checking for isDisplayed. Expecting 3 things: Element is Present, " +
-                "webElement.isDisplayed() is true and the element is inside the viewport.");
         if (!isPresent()) {
-            guiElementData.executionLog.addMessage("WebElement is not present");
             return false;
         }
 
@@ -527,7 +521,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
         }
 
         if (webElement.isDisplayed()) {
-            guiElementData.executionLog.addMessage("isDisplayedFromWebElement = true");
             return true;
             /*
             Locatable item = (Locatable) webElement;
@@ -555,7 +548,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
             }
             */
         } else {
-            guiElementData.executionLog.addMessage("isDisplayedFromWebElement = false");
             return false;
         }
     }
@@ -566,9 +558,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
             LOGGER.debug("isDisplayedFromWebElement(): WebElement is not present");
             return false;
         }
-        boolean displayed = guiElementData.webElement.isDisplayed();
-        guiElementData.executionLog.addMessage("isDisplayedFromWebElement = " + displayed);
-        return displayed;
+        return guiElementData.webElement.isDisplayed();
     }
 
     @Override
@@ -698,10 +688,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
         try {
             LOGGER.debug("isPresent(): trying to find WebElement");
             find();
-            guiElementData.executionLog.addMessage("isPresent = true");
         } catch (Exception e) {
             LOGGER.debug("isPresent(): Element not found: " + by, e);
-            guiElementData.executionLog.addMessage("isPresent = false");
             return false;
         }
         return true;

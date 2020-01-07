@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
-import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
@@ -33,13 +32,11 @@ public class GuiElementFacadeLoggingDecorator extends GuiElementFacadeDecorator 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);
 
-    private final ExecutionLog executionLog;
     private final GuiElementData guiElementData;
 
     public GuiElementFacadeLoggingDecorator(GuiElementFacade guiElementFacade, GuiElementData guiElementData) {
         super(guiElementFacade, guiElementData);
         this.guiElementData = guiElementData;
-        this.executionLog = guiElementData.executionLog;
     }
 
     @Override
@@ -53,8 +50,6 @@ public class GuiElementFacadeLoggingDecorator extends GuiElementFacadeDecorator 
 
     @Override
     protected void beforeActionDelegation(String message) {
-        executionLog.clearLog();
-        executionLog.addMessage(message);
         print(message);
     }
 

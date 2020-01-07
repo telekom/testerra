@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 
 /**
@@ -28,25 +27,19 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 public class GuiElementStatusCheckFrameAwareDecorator extends GuiElementStatusCheckDecorator {
 
     private final FrameLogic frameLogic;
-    private final ExecutionLog executionLog;
 
     public GuiElementStatusCheckFrameAwareDecorator(GuiElementStatusCheck decoratedGuiElementStatusCheck, GuiElementData guiElementData) {
         super(decoratedGuiElementStatusCheck);
         frameLogic = guiElementData.frameLogic;
-        executionLog = guiElementData.executionLog;
     }
 
     @Override
     protected void beforeDelegation() {
-        executionLog.addMessage("Switching to frames " + frameLogic);
         frameLogic.switchToCorrectFrame();
-        executionLog.addMessage("Switching to frames successful.");
     }
 
     @Override
     protected void afterDelegation() {
-        executionLog.addMessage("Switching to DefaultFrame.");
         frameLogic.switchToDefaultFrame();
-        executionLog.addMessage("Switching to DefaultFrame successful.");
     }
 }

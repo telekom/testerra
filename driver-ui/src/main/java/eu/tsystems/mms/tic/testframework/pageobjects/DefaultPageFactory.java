@@ -19,9 +19,9 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.ClassFinder;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -33,6 +33,9 @@ public class DefaultPageFactory implements PageObjectFactory {
 
     private String GLOBAL_PAGES_PREFIX = null;
     private final ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
+
+    @Inject
+    private PageClassFinder classFinder;
 
     @Override
     public PageObjectFactory setGlobalPagePrefix(String pagePrefix) {
@@ -63,7 +66,7 @@ public class DefaultPageFactory implements PageObjectFactory {
         if (!StringUtils.isStringEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
             pagesPrefix = THREAD_LOCAL_PAGES_PREFIX.get();
         }
-        return ClassFinder.getBestMatchingClass(pageClass, webDriver, pagesPrefix);
+        return classFinder.getBestMatchingClass(pageClass, webDriver, pagesPrefix);
     }
 
     @Override

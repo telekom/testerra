@@ -28,6 +28,7 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
@@ -60,9 +61,7 @@ public final class SourceUtils {
     private static String sourceRoot = System.getProperty(TesterraProperties.MODULE_SOURCE_ROOT, "src");
     private static int linePrefetch = PropertyManager.getIntProperty(TesterraProperties.SOURCE_LINES_PREFETCH, 5);
     private static final boolean FIND_SOURCES = StaticReport.Properties.ACTIVATE_SOURCES.asBool();
-    private static HashMap<Class, List<String>> cachedClassNames = new HashMap<Class, List<String>>();
-    private static final String PACKAGE_SCOPE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE,
-            TesterraCommons.DEFAULT_PACKAGE_NAME);
+    private static HashMap<Class, List<String>> cachedClassNames = new HashMap<>();
 
     public static ScriptSource findScriptSourceForThrowable(Throwable throwable) {
         if (!FIND_SOURCES) {
@@ -185,7 +184,7 @@ public final class SourceUtils {
     private static List<String> findClassNamesForSubTypesOf(Class clazz) {
         final List<String> classnames = new ArrayList<String>();
         synchronized (Locks.REFLECTIONS) {
-            Reflections reflections = new Reflections(PACKAGE_SCOPE);
+            Reflections reflections = new Reflections(Testerra.Properties.PROJECT_PACKAGE.asString());
             Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
             for (Class aClass : subTypesOf) {
                 classnames.add(aClass.getName());

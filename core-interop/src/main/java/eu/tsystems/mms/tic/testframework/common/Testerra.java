@@ -33,6 +33,7 @@ public class Testerra {
         PERF_TEST("tt.perf.test", false),
         PERF_GENERATE_STATISTICS("tt.perf.generate.statistics", false),
         REUSE_DATAPROVIDER_DRIVER_BY_THREAD("tt.reuse.dataprovider.driver.by.thread", false),
+        PROJECT_PACKAGE("tt.project.package", TesterraCommons.DEFAULT_PACKAGE_NAME),
 
         /**
          * @todo Default should be based on WebDriverMode class

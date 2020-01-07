@@ -100,11 +100,6 @@ public final class TesterraProperties {
      */
     public static final String SOURCE_LINES_PREFETCH = "tt.source.lines.prefetch";
 
-    /*
-     * Package the project is located in.
-     */
-    public static final String PROJECT_PACKAGE = "tt.project.package";
-
     /**
      * Perf test thinktime.
      */

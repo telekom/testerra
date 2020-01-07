@@ -17,17 +17,14 @@
  *     Peter Lehmann
  *     pele
  */
-package eu.tsystems.mms.tic.testframework.pageobjects.factory;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.common.Locks;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.openqa.selenium.WebDriver;
@@ -36,15 +33,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by piet on 02.12.16.
  */
-final public class ClassFinder {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClassFinder.class);
+public class DefaultPageClassFinder implements PageClassFinder, Loggable {
 
     private static final String SCHEMA_DIV = "_";
     private static final String KEYWORD_PIXEL = "px";
@@ -57,9 +56,6 @@ final public class ClassFinder {
     private static final String PATTERN_MID = SCHEMA_DIV + RESOLUTION_REGEX + SCHEMA_DIV + RESOLUTION_REGEX;
     private static final String PATTERN_HI = SCHEMA_DIV + RESOLUTION_REGEX + SCHEMA_DIV + KEYWORD_MAX;
     private static final String PATTERN_RES = "TODO"; // TODO
-
-    private static final String PROJECT_PACKAGE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE,
-            TesterraCommons.DEFAULT_PACKAGE_NAME);
 
     private static class Caches {
 
@@ -109,15 +105,15 @@ final public class ClassFinder {
      * @param baseClass The base page class
      */
     @SuppressWarnings("unchecked")
-    private static <T extends PageObject> void findSubPagesOf(final Class<T> baseClass, String prefix) {
-        LOGGER.debug(String.format("Searching for subtypes of class <%s>", baseClass));
+    private <T extends PageObject> void findSubPagesOf(final Class<T> baseClass, String prefix) {
+        log().debug(String.format("Searching for subtypes of class <%s>", baseClass));
 
         if (prefix == null) {
             prefix = "";
         }
 
         synchronized (Locks.REFLECTIONS) {
-            final Reflections reflections = new Reflections(PROJECT_PACKAGE);
+            final Reflections reflections = new Reflections(Testerra.Properties.PROJECT_PACKAGE.asString());
             final String baseClassName = baseClass.getSimpleName();
 
             PrioritizedClassInfos<T> prioritizedClassInfos = new PrioritizedClassInfos<>();
@@ -133,7 +129,7 @@ final public class ClassFinder {
                 String classname = subClass.getSimpleName();
 
                 if (Modifier.isAbstract(subClass.getModifiers())) {
-                    LOGGER.debug("Not taking " + classname + " into consideration, because it is abstract");
+                    log().debug("Not taking " + classname + " into consideration, because it is abstract");
                 } else {
                     tryToFindImplementationOf(subClass, classname, baseClassName, prefix, prioritizedClassInfos);
                 }
@@ -143,7 +139,7 @@ final public class ClassFinder {
         }
     }
 
-    private static <T extends PageObject> void tryToFindImplementationOf(Class<T> subClass, String classname,
+    private <T extends PageObject> void tryToFindImplementationOf(Class<T> subClass, String classname,
                                                                          String baseClassName, String prefix,
                                                                          PrioritizedClassInfos<T> prioritizedClassInfos) {
         if (classname.startsWith(prefix + baseClassName)) {
@@ -166,7 +162,7 @@ final public class ClassFinder {
         }
     }
 
-    private static boolean matchesOurAnyOfPatterns(String resPartOfClassName) {
+    private boolean matchesOurAnyOfPatterns(String resPartOfClassName) {
         if (StringUtils.isStringEmpty(resPartOfClassName)) {
             return false;
         }
@@ -186,7 +182,7 @@ final public class ClassFinder {
      * @param driver The web driver
      * @return int
      */
-    private static int getBrowserViewportSize(final WebDriver driver, final int viewportWidth) {
+    private int getBrowserViewportSize(final WebDriver driver, final int viewportWidth) {
         if (viewportWidth > 0) {
             // mehrfaches auslesen verhindern, nur auslesen wenn nötig
             return viewportWidth;
@@ -194,14 +190,14 @@ final public class ClassFinder {
         Object o = JSUtils.executeScript(driver, "return window.innerWidth");
         if (o instanceof Long) {
             int viewportWidthNew = (int) (long) (Long) o;
-            LOGGER.debug(String.format("Browser viewport width is %dpx", viewportWidthNew));
+            log().debug(String.format("Browser viewport width is %dpx", viewportWidthNew));
             return viewportWidthNew;
         }
         return viewportWidth;
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends PageObject> Class<T> getBestMatchingClass(Class<T> baseClass, WebDriver driver, String prefix) {
+    public <T extends PageObject> Class<T> getBestMatchingClass(Class<T> baseClass, WebDriver driver, String prefix) {
         PrioritizedClassInfos<? extends Page> prioritizedClassInfos = Caches.getCache(baseClass, prefix);
 
         if (prioritizedClassInfos == null) {
@@ -271,19 +267,19 @@ final public class ClassFinder {
                     "\nMaybe you can solve this by making the base class non-abstract.");
         } else {
             if (viewPortWidth > 0) {
-                LOGGER.debug("For " + viewPortWidth + "px view port width, I'm choosing: " + bestMatchingClass.getSimpleName());
+                log().debug("For " + viewPortWidth + "px view port width, I'm choosing: " + bestMatchingClass.getSimpleName());
             } else {
-                LOGGER.debug("Without any viewport check, I'm choosing: " + bestMatchingClass.getSimpleName());
+                log().debug("Without any viewport check, I'm choosing: " + bestMatchingClass.getSimpleName());
             }
             return bestMatchingClass;
         }
     }
 
-    static void clearCache() {
+    public void clearCache() {
         Caches.IMPLEMENTATIONS_CACHE.clear();
     }
 
-    private static class PrioritizedClassInfos<T extends PageObject> {
+    private class PrioritizedClassInfos<T extends PageObject> {
         List<ResolutionClassInfo<T>> prefixedClasses = new LinkedList<>();
         Class<T> prefixedBaseClass;
         List<ResolutionClassInfo<T>> nonPrefixedClasses = new LinkedList<>();
@@ -335,7 +331,7 @@ final public class ClassFinder {
             if ("".equals(msg)) {
                 msg += "No usable (non-abstract) implementations found.";
             }
-            LOGGER.debug(msg);
+            log().debug(msg);
         }
     }
 

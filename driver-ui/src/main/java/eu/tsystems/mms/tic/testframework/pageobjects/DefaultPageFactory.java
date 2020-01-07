@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -28,7 +29,7 @@ import org.openqa.selenium.WebDriver;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public class DefaultPageFactory implements PageObjectFactory {
+public class DefaultPageFactory implements PageObjectFactory, Loggable {
 
     private String GLOBAL_PAGES_PREFIX = null;
     private final ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
@@ -56,16 +57,20 @@ public class DefaultPageFactory implements PageObjectFactory {
         return createPage(pageClass, WebDriverManager.getWebDriver());
     }
 
-    @Override
-    public <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
+    protected String getConfiguredPrefix() {
         String pagesPrefix = GLOBAL_PAGES_PREFIX;
         if (!StringUtils.isStringEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
             pagesPrefix = THREAD_LOCAL_PAGES_PREFIX.get();
         }
+        return (pagesPrefix!=null?pagesPrefix:"");
+    }
+
+    @Override
+    public <T extends PageObject> Class<T> findBestMatchingClass(Class<T> pageClass, WebDriver webDriver) {
         try {
-            return (Class<T>) Class.forName(pageClass.getPackage().getName() + pagesPrefix + pageClass.getSimpleName());
+            return (Class<T>) Class.forName(String.format("%s.%s%s",pageClass.getPackage().getName(), getConfiguredPrefix(), pageClass.getSimpleName()));
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log().error(e.getMessage(), e);
             return null;
         }
     }

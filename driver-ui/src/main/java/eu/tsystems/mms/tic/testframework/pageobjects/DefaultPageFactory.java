@@ -21,7 +21,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.pageobjects.factory.ClassFinder;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -63,7 +62,12 @@ public class DefaultPageFactory implements PageObjectFactory {
         if (!StringUtils.isStringEmpty(THREAD_LOCAL_PAGES_PREFIX.get())) {
             pagesPrefix = THREAD_LOCAL_PAGES_PREFIX.get();
         }
-        return ClassFinder.getBestMatchingClass(pageClass, webDriver, pagesPrefix);
+        try {
+            return (Class<T>) Class.forName(pageClass.getPackage().getName() + pagesPrefix + pageClass.getSimpleName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

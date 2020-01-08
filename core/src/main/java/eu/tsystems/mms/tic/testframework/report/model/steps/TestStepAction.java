@@ -19,14 +19,12 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.steps;
 
-import eu.tsystems.mms.tic.testframework.report.BaseLoggingActor;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,11 +36,30 @@ public class TestStepAction implements Serializable {
     private static final long serialVersionUID = Serial.SERIAL;
 
     private final String name;
+    private final TestStep testStep;
+    private long timestamp;
 
     private final List<TestStepActionEntry> testStepActionEntries = Collections.synchronizedList(new LinkedList<>());
 
-    public TestStepAction(String name) {
+    public TestStepAction(TestStep testStep, String name) {
+        this.testStep = testStep;
         this.name = name;
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    public TestStep getTestStep() {
+        return testStep;
+    }
+
+    /**
+     * Usually, a TestStep already contains a {@link TestStepActionEntry} which contains a {@link LogMessage},
+     * where the timestamp can be retrieved by calling {@link LogMessage#getTimestamp()}
+     * But when running under platform, the log messages are handled differently and not stored to the database within entities.
+     * In this case, the TestSteps are stored WITHOUT log messages and WITHOUT timestamp, which is still required to find log messages according to time ranges.
+     * Therefore, the TestStepAction gets it's own timestamp.
+     */
+    public long getTimestamp() {
+        return this.timestamp;
     }
 
     public String getName() {
@@ -54,29 +71,33 @@ public class TestStepAction implements Serializable {
     }
 
     public void addLogMessage(LogMessage logMessage) {
-        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
+        // We take the first real log message timestamp here
+        if (testStepActionEntries.size()==0) {
+            this.timestamp = logMessage.getTimestamp();
+        }
+        TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
         testStepActionEntry.logMessage = logMessage;
         testStepActionEntries.add(testStepActionEntry);
     }
 
     public void addScreenshots(final Screenshot beforeShot, final Screenshot afterShot) {
-        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
+        TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
         testStepActionEntry.beforeScreenshot = beforeShot;
         testStepActionEntry.afterScreenshot = afterShot;
         testStepActionEntries.add(testStepActionEntry);
     }
-
-    public void addFailingLogMessage(final String msg) {
-        String date = BaseLoggingActor.SIMPLE_DATE_FORMAT.format(new Date());
-        LogMessage logMessage = new LogMessage(
-                "ERROR",
-                date,
-                Thread.currentThread().getName(),
-                "Test Failed",
-                msg);
-        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
-        testStepActionEntry.logMessage = logMessage;
-        testStepActionEntries.add(testStepActionEntry);
-    }
+//
+//    public void addFailingLogMessage(final String msg) {
+//        LogMessage logMessage = new LogMessage(
+//            Level.ERROR,
+//            System.currentTimeMillis(),
+//            Thread.currentThread().getName(),
+//            "Test Failed",
+//            msg
+//        );
+//        final TestStepActionEntry testStepActionEntry = new TestStepActionEntry();
+//        testStepActionEntry.logMessage = logMessage;
+//        testStepActionEntries.add(testStepActionEntry);
+//    }
 }
 

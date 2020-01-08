@@ -23,7 +23,7 @@ public class WebDriverProxy extends ObjectUtils.PassThroughProxy<WebDriver> {
 
         if (!method.getName().equals("toString")) {
             String msg = target.getClass().getSimpleName() + "." + method.getName();
-            ProxyUtils.log(LOGGER, sessionContext, msg);
+            LOGGER.info(msg);
         }
 
         ProxyUtils.updateSessionContextRelations(sessionContext);

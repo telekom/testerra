@@ -62,7 +62,7 @@ public class TestStepController implements Serializable {
         return testStep;
     }
 
-    public void addLogMessage(LogMessage logMessage) {
+    public TestStepAction addLogMessage(LogMessage logMessage) {
         String actionContext = null;
 
         for (TestStepEventListener listener : listeners) {
@@ -81,6 +81,7 @@ public class TestStepController implements Serializable {
             testStepAction = currentTestStep.getTestStepAction(actionContext);
         }
         testStepAction.addLogMessage(logMessage);
+        return testStepAction;
     }
 
     private TestStep getLastStep() {
@@ -117,23 +118,6 @@ public class TestStepController implements Serializable {
 
     public enum OnExec {
         BEFORE, AFTER
-    }
-
-    public static void addScreenshotsToCurrentAction(final Screenshot beforeShot, final Screenshot afterShot) {
-        if (beforeShot == null && afterShot == null) {
-            return;
-        }
-
-        final MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        if (methodContext != null) {
-            TestStep actualTestStep = methodContext.steps().getCurrentTestStep();
-
-            if (!actualTestStep.hasActions()) {
-                actualTestStep.getTestStepActions().add(new TestStepAction("Screenshot"));
-            }
-            final TestStepAction actualAction = actualTestStep.getCurrentTestStepAction();
-            actualAction.addScreenshots(beforeShot, afterShot);
-        }
     }
 
     public static void addEventListener(TestStepEventListener testStepEventListener) {

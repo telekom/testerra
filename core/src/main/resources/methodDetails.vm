@@ -163,12 +163,12 @@
                                 <img src="../style/retry.png" alt="Retry" style="width:40px;" title="Retry"/>
                                 #end
 
-                                #if ($testMethod.failedStep)
+                                #if ($testMethod.getLastFailedStep())
                                 <div class="dashboardTextSmall">
                                     <br/>
                                     in
                                     <br/>
-                                    $testMethod.failedStep
+                                    $testMethod.getLastFailedStep()
                                     <br/>
                                 </div>
                                 #end

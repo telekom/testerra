@@ -59,7 +59,7 @@
                                     $logMessage[0]
                                 </td>
                                 <td class="top textleft"> <!-- date -->
-                                    $logMessage[1]
+                                    $dateFormatter.format("dd.MM.yyyy-HH:mm:ss.SSS",  $logMessage[1])
                                 </td>
                                 <td class="top maxwidth textleft"> <!-- thread -->
                                     $logMessage[2]
@@ -68,7 +68,7 @@
                                     $logMessage[3]
                                 </td>
                                 <td class="top logMessage textleft"> <!-- message -->
-                                    $logMessage[4]
+                                    <pre>$logMessage[4]</pre>
                                 </td>
                             </tr>
                             #end

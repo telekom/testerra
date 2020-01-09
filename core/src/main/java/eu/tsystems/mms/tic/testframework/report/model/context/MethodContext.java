@@ -26,6 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import com.google.common.collect.Lists;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
@@ -64,7 +65,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public int retryNumber = 0;
     public int methodRunIndex = -1;
     public String threadName = "unrelated";
-    public TestStep failedStep;
+    private TestStep lastFailedStep;
     public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.HIGH;
 
     public ClassContext classContext;
@@ -125,12 +126,21 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         this.methodType = methodType;
     }
 
-    public void addLogMessage(LogMessage logMessage) {
-        testStepController.addLogMessage(logMessage);
+    public TestStepAction addLogMessage(LogMessage logMessage) {
+        return testStepController.addLogMessage(logMessage);
     }
 
     public TestStepController steps() {
         return testStepController;
+    }
+
+    public TestStep getLastFailedStep() {
+        return this.lastFailedStep;
+    }
+
+    public MethodContext setFailedStep(TestStep step) {
+        this.lastFailedStep = step;
+        return this;
     }
 
     public ErrorContext errorContext() {

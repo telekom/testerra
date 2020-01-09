@@ -19,33 +19,54 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import org.apache.log4j.Level;
+import org.apache.log4j.spi.LoggingEvent;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by piet on 08.12.16.
  */
-public class LogMessage implements Serializable {
+public class LogMessage implements Serializable, Loggable {
 
-    public final String logLevel;
-    public final String date;
-    public final String threadName;
-    public final String loggerName;
-    public final String message;
+    private String threadName;
+    private String loggerName;
+    private String message;
+    private Level level;
+    private long timestamp;
 
-    public LogMessage(String logLevel, String date, String threadName, String loggerName, String message) {
-        this.logLevel = logLevel;
-        this.date = date;
+    public LogMessage(Level logLevel, long timestamp, String threadName, String loggerName, String message) {
+        this.level = logLevel;
+        this.timestamp = timestamp;
         this.threadName = threadName;
         this.loggerName = loggerName;
         this.message = message;
     }
 
-    public String getLogLevel() {
-        return logLevel;
+    public LogMessage(LoggingEvent event) {
+        this.level = event.getLevel();
+        this.threadName = event.getThreadName();
+        this.timestamp = event.getTimeStamp();
+        this.loggerName = event.getLoggerName();
+        this.message = event.getMessage().toString();
     }
 
-    public String getDate() {
-        return date;
+    public Level getLogLevel() {
+        return level;
+    }
+
+    /**
+     * Required by velocity templates
+     * @return
+     */
+    public Date getDate() {
+        return new Date(getTimestamp());
+    }
+
+    public long getTimestamp() {
+        return this.timestamp;
     }
 
     public String getThreadName() {
@@ -58,15 +79,5 @@ public class LogMessage implements Serializable {
 
     public String getMessage() {
         return message;
-    }
-
-    public String toString() {
-        final String splitter = "---";
-        String sb = logLevel + splitter +
-            date + splitter +
-            threadName + splitter +
-            loggerName + splitter +
-            message;
-        return sb;
     }
 }

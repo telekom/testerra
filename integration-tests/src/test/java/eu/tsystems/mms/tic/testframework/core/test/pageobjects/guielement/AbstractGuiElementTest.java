@@ -20,8 +20,6 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
@@ -29,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,15 +45,14 @@ import java.lang.reflect.Method;
 public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final ThreadLocal<WebDriver> THREAD_LOCAL_WEBDRIVERS = new ThreadLocal<>();
 
     static {
-        PropertyManager.getGlobalProperties().setProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
+        WebDriverManager.config().closeWindowsAfterTestMethod = false;
     }
 
     @AfterTest(alwaysRun = true)
     public void resetWDCloseWindowsMode() {
-        PropertyManager.getGlobalProperties().setProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "true");
+        WebDriverManager.config().closeWindowsAfterTestMethod = true;
     }
 
     /**
@@ -242,13 +240,14 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
     }
 
     public WebDriver getWebDriver() {
-        WebDriver webDriver = THREAD_LOCAL_WEBDRIVERS.get();
-        if (webDriver == null) {
-            webDriver = WebDriverManager.getWebDriver();
-            WebDriverManager.makeSessionExclusive(webDriver);
-            THREAD_LOCAL_WEBDRIVERS.set(webDriver);
+
+        try {
+            WebDriverManager.getWebDriver().getWindowHandles();
+        } catch (NoSuchSessionException s) {
+            WebDriverManager.forceShutdown(); // shutdown all threwad drivers.
         }
-        return webDriver;
+
+        return WebDriverManager.getWebDriver();
     }
 
     public abstract GuiElement getGuiElementBy(Locate locate);

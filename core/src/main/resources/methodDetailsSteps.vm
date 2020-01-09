@@ -83,7 +83,7 @@
                             #if ($entry.logMessage)
 
                                 #set($logMessage = $entry.logMessage)
-                                #set ($ll = $logMessage.logLevel)
+                                #set ($ll = $logMessage.logLevel.toString())
 
                                 #if ($ll.contains("WARN"))
                                 <tr class="logentry viewclass_${stepNumber} $viewclass ll_warning">
@@ -103,7 +103,7 @@
                                         $ll
                                     </td>
                                     <td class="top textleft"> <!-- date -->
-                                        $logMessage.date
+                                        $dateFormatter.format("dd.MM.yyyy-HH:mm:ss.SSS", $logMessage.date)
                                     </td>
                                     <td class="top maxwidth textleft"> <!-- thread -->
                                         $logMessage.threadName
@@ -112,7 +112,7 @@
                                         $logMessage.loggerName
                                     </td>
                                     <td class="top logMessage textleft"> <!-- message -->
-                                        $logMessage.message
+                                        <pre>$logMessage.message</pre>
                                     </td>
                                 </tr>
 

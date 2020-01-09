@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.steps;
 
+import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -80,7 +81,7 @@ public class TestStep implements Serializable, Loggable {
         }
         // if there are no test steps actions yet, create an initial one
         if (testStepActions.size() == 0) {
-            TestStepAction testStepAction = new TestStepAction(name);
+            TestStepAction testStepAction = new TestStepAction(this, name);
             testStepActions.add(testStepAction);
             return testStepAction;
         }
@@ -89,7 +90,7 @@ public class TestStep implements Serializable, Loggable {
 
         // if the last TestStepAction name is NOT the same as the current contextual one, then we have to create a new one
         if (!StringUtils.equals(testStepAction.getName(), name)) {
-            testStepAction = new TestStepAction(name);
+            testStepAction = new TestStepAction(this, name);
             testStepActions.add(testStepAction);
         }
 
@@ -125,14 +126,12 @@ public class TestStep implements Serializable, Loggable {
      */
     public static TestStep begin(final String name) {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        TestStep testStep = null;
+        TestStep testStep;
         if (methodContext != null) {
             testStep = methodContext.steps().announceTestStep(name);
+        } else {
+            testStep = new TestStep(name);
         }
-
-        /*if (testStep == null) {
-            testStep = new TestStep("dummy", 1);
-        }*/
 
         return testStep;
     }

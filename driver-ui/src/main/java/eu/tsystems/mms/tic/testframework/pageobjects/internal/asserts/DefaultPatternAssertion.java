@@ -14,12 +14,12 @@ public class DefaultPatternAssertion extends AbstractTestedPropertyAssertion<Mat
     }
 
     @Override
-    public boolean isTrue() {
+    public boolean isTrue(String messageOnFailure) {
         return this.testTimer(matcher -> instantAssertion.assertTrue(getActual().find(), traceSubjectString()));
     }
 
     @Override
-    public boolean isFalse() {
+    public boolean isFalse(String messageOnFailure) {
         return this.testTimer(matcher -> instantAssertion.assertFalse(getActual().find(), traceSubjectString()));
     }
 }

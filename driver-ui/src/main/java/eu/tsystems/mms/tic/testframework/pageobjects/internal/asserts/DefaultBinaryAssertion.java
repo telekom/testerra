@@ -7,7 +7,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
     }
 
     @Override
-    public boolean isTrue() {
+    public boolean isTrue(String messageOnFailure) {
         return testTimer(t -> {
             final String actualString = getActual().toString();
             if (!(
@@ -17,7 +17,13 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                     || actualString.equalsIgnoreCase("yes")
                 )
             ) {
-                instantAssertion.fail(instantAssertion.format(actualString, "is one of [true, 'on', '1', 'yes']", traceSubjectString()));
+                String message;
+                if (messageOnFailure != null) {
+                    message = formatCustomMessage(messageOnFailure, actualString, "true");
+                } else {
+                    message = instantAssertion.format(actualString, "is one of [true, 'on', '1', 'yes']", traceSubjectString());
+                }
+                instantAssertion.fail(message);
                 return false;
             }
             return true;
@@ -25,7 +31,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
     }
 
     @Override
-    public boolean isFalse() {
+    public boolean isFalse(String messageOnFailure) {
         return testTimer(t -> {
             final String actualString = getActual().toString();
             if (!(
@@ -35,7 +41,13 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                     || actualString.equalsIgnoreCase("no")
                 )
             ) {
-                instantAssertion.fail(instantAssertion.format(actualString, "is one of [false, 'off', '0', 'no']", traceSubjectString()));
+                String message;
+                if (messageOnFailure != null) {
+                    message = formatCustomMessage(messageOnFailure, actualString, "true");
+                } else {
+                    message = instantAssertion.format(actualString, "is one of [false, 'off', '0', 'no']", traceSubjectString());
+                }
+                instantAssertion.fail(message);
                 return false;
             }
             return true;

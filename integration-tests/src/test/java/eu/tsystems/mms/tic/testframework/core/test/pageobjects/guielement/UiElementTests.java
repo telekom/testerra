@@ -95,7 +95,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
     @Test
     @Fails(description = "The test itself passes, but collected assertions will always fail")
     public void test_Page_title_length_fails_collected() {
-        Control.collectAssertions(()->page.title().length().isGreaterThan(10));
+        Control.collectAssertions(() -> page.title().length().isGreaterThan(10));
     }
 
     @Test
@@ -136,6 +136,11 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
     @Test(expectedExceptions = AssertionError.class)
     public void test_GuiElement_displayed_false_fails() {
         page.notDisplayedElement().displayed().isTrue();
+    }
+
+    @Test
+    public void test_GuiElement_displayed_false_fails_with_message() {
+        page.notDisplayedElement().displayed().isTrue("We expect that an element is displayed, which is ${actual}");
     }
 
     @Test

@@ -85,7 +85,7 @@ public class MyForm extends AbstractComponent<MyForm> {
 Instantiate components
 ```java
 class MyPage extends Page {
-    private MyForm form = createComponent(MyForm.class, find(By.tagName("form"));
+    private MyForm form = createComponent(MyForm.class, find(By.tagName("form")));
 }
 ```
 
@@ -254,6 +254,11 @@ page.anyElementContainsText("You see me").numberOfElements().is(1); <3>
 <1> Perform assertions on the element's CSS properties
 <2> Regular expression assertions
 <3> Perform GuiElement assertions on found text nodes
+
+Custom failure messages
+```java
+uiElement.displayed().isTrue("This element should be displayed, which is ${actual}");
+```
 
 ==== Screenshot based Assertions
 The new standard way to perform screenshot based assertions is now

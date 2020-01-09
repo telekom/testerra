@@ -28,7 +28,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class LayoutCheckTest_NewApi extends AbstractTestSitesTest implements Loggable {
+public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements Loggable {
 
     @Override
     protected TestPage getStartPage() {

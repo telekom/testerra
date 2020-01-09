@@ -5,13 +5,22 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
  * @author Mike Reiche
  */
 public interface BinaryAssertion<T> extends ActualProperty<T> {
+
+    default boolean isTrue() {
+        return isTrue(null);
+    }
+
+    default boolean isFalse() {
+        return isFalse(null);
+    }
+
     /**
      * The property is boolean true or a string like 'true', 'on', '1' or 'no'
      */
-    boolean isTrue();
+    boolean isTrue(String messageOnFailure);
 
     /**
      * The property is boolean false or a string like 'false', 'off', '0' or 'no'
      */
-    boolean isFalse();
+    boolean isFalse(String messageOnFailure);
 }

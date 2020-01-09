@@ -24,48 +24,15 @@ import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.LoggingDispatcher;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.apache.log4j.Layout;
-import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
 
 public class ReportLogAppender extends BaseLoggingActor {
 
-    private final Layout LAYOUT;
-    private static final String SPLITTER = "---";
-    private static final String PLACEHOLDER = "###LOGMESSAGE###";
-
-
     @Inject
     public ReportLogAppender(Formatter formatter) {
         super(formatter);
-         /*
-        !!!!
-
-        LOGGER_PATTERN must match the split pattern and elements in createLogMessage()!
-
-        !!!
-         */
-        LAYOUT = new PatternLayout("%p---%d{" + formatter.DATE_TIME_FORMAT() + "}---%t---%c{1}---%m%n");
     }
 
-    public static LogMessage createLogMessage(final String msg) {
-        if (msg == null) {
-            return null;
-        }
-
-        String[] split = msg.split(SPLITTER);
-        try {
-            return new LogMessage(split[0], split[1], split[2], split[3], split[4]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            /*
-            I can't use logging to log a logging error :)
-             */
-            System.err.println("Error creating LogMessage from: " + msg);
-            e.printStackTrace();
-            return null;
-        }
-    }
     /**
      * Appends a LoggingEvent to the HTML Report using Reporter.log().
      *
@@ -83,6 +50,11 @@ public class ReportLogAppender extends BaseLoggingActor {
      * @param event The event to be logged.
      */
     private void appendForReport(final LoggingEvent event) {
+        /**
+         * We dont log any messages from steps package,
+         * because logs from {@link TestStep} also triggering logs by {@link LoggingDispatcher}
+         * which may result in a callstack loop.
+         */
         if (event.getLoggerName().startsWith(TestStep.class.getPackage().getName())) {
             return;
         }
@@ -91,49 +63,48 @@ public class ReportLogAppender extends BaseLoggingActor {
         We can't create a "new" message und just format it. So we create a formatted output from orig event and
         just replace the old message with the new content.
          */
-        final String origMessage = event.getMessage().toString();
-        final String formattedMessage = LAYOUT.format(event);
-        final String formattedTemplate = formattedMessage.replace(origMessage, PLACEHOLDER);
-
-        String out;
-
-        /*
-        Throwable toggle
-         */
-        final String htmlOrigMessage = StringUtils.prepareStringForHTML(origMessage);
-        if (event.getThrowableInformation() != null) {
-            String[] throwableStrRep = event.getThrowableInformation().getThrowableStrRep();
-
-            if (throwableStrRep != null) {
-
-                /*
-                 * Reformat log
-                 */
-                String id = System.currentTimeMillis() + "";
-                out = "<a href=\"javascript:toggleElement('exception-" + id + "')\">"
-                    + htmlOrigMessage
-                    + "</a><br/><div id='exception-" + id + "' class='stackTrace'>";
-
-                for (String line : throwableStrRep) {
-                    line = StringUtils.prepareStringForHTML(line);
-                    out += line + "<br/>";
-                }
-
-                out += "</div>";
-            }
-            else {
-                out = htmlOrigMessage;
-            }
-        }
-        else {
-            out = htmlOrigMessage;
-        }
+//        final String origMessage = event.getMessage().toString();
+//        final String formattedMessage = LAYOUT.format(event);
+//        final String formattedTemplate = formattedMessage.replace(origMessage, PLACEHOLDER);
+//
+//        String out;
+//
+//        /*
+//        Throwable toggle
+//         */
+//        final String htmlOrigMessage = StringUtils.prepareStringForHTML(origMessage);
+//        if (event.getThrowableInformation() != null) {
+//            String[] throwableStrRep = event.getThrowableInformation().getThrowableStrRep();
+//
+//            if (throwableStrRep != null) {
+//
+//                /*
+//                 * Reformat log
+//                 */
+//                String id = System.currentTimeMillis() + "";
+//                out = "<a href=\"javascript:toggleElement('exception-" + id + "')\">"
+//                    + htmlOrigMessage
+//                    + "</a><br/><div id='exception-" + id + "' class='stackTrace'>";
+//
+//                for (String line : throwableStrRep) {
+//                    line = StringUtils.prepareStringForHTML(line);
+//                    out += line + "<br/>";
+//                }
+//
+//                out += "</div>";
+//            }
+//            else {
+//                out = htmlOrigMessage;
+//            }
+//        }
+//        else {
+//            out = htmlOrigMessage;
+//        }
 
         /*
          * Add log message.
          */
-        final String finalLogMessage = formattedTemplate.replace(PLACEHOLDER, out);
-        LogMessage logMessage = createLogMessage(finalLogMessage);
+        LogMessage logMessage = new LogMessage(event);
         LoggingDispatcher.addLogMessage(logMessage);
     }
 }

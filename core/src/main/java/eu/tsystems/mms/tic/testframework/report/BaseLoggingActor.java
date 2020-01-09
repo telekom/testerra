@@ -26,7 +26,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.LogAppender;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.apache.log4j.AppenderSkeleton;

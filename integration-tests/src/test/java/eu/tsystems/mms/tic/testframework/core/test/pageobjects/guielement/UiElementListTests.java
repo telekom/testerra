@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElementListPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.components.TableRow;
 import org.testng.annotations.Test;
 
-public class UiElementListTests_NewApi extends AbstractTestSitesTest {
+public class UiElementListTests extends AbstractTestSitesTest {
     private UiElementListPage preparePage() {
         return pageFactory.createPage(UiElementListPage.class);
     }

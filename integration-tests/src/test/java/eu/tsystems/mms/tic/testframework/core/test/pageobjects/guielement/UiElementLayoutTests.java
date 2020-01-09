@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 /**
  * Created by pele on 31.08.2015.
  */
-public class GuiElementLayoutsTest_NewApi extends AbstractTestSitesTest {
+public class UiElementLayoutTests extends AbstractTestSitesTest {
     private WebTestPage page;
 
     @BeforeMethod

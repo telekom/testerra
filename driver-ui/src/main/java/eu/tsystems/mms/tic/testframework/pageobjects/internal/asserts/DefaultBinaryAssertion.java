@@ -9,7 +9,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
     }
 
     @Override
-    public boolean isTrue(String prefixMessage) {
+    public boolean isTrue(String message) {
         return testTimer(t -> {
             final String actualString = getActual().toString();
             if (!(
@@ -19,7 +19,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                     || actualString.equalsIgnoreCase("yes")
                 )
             ) {
-                instantAssertion.fail(instantAssertion.format(actualString, "is one of [true, 'on', '1', 'yes']", new Assertion.Message(prefixMessage, traceSubjectString())));
+                instantAssertion.fail(instantAssertion.format(actualString, "is one of [true, 'on', '1', 'yes']", new Assertion.Message(message, traceSubjectString())));
                 return false;
             }
             return true;
@@ -27,7 +27,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
     }
 
     @Override
-    public boolean isFalse(String prefixMessage) {
+    public boolean isFalse(String message) {
         return testTimer(t -> {
             final String actualString = getActual().toString();
             if (!(
@@ -37,7 +37,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                     || actualString.equalsIgnoreCase("no")
                 )
             ) {
-                instantAssertion.fail(instantAssertion.format(actualString, "is one of [false, 'off', '0', 'no']", new Assertion.Message(prefixMessage, traceSubjectString())));
+                instantAssertion.fail(instantAssertion.format(actualString, "is one of [false, 'off', '0', 'no']", new Assertion.Message(message, traceSubjectString())));
                 return false;
             }
             return true;

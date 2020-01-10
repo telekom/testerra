@@ -17,10 +17,10 @@ public interface BinaryAssertion<T> extends ActualProperty<T> {
     /**
      * The property is boolean true or a string like 'true', 'on', '1' or 'no'
      */
-    boolean isTrue(String messageOnFailure);
+    boolean isTrue(String prefixMessage);
 
     /**
      * The property is boolean false or a string like 'false', 'off', '0' or 'no'
      */
-    boolean isFalse(String messageOnFailure);
+    boolean isFalse(String prefixMessage);
 }

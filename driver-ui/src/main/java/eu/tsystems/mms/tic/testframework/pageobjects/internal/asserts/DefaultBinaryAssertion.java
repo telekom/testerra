@@ -1,5 +1,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+
 public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T> implements BinaryAssertion<T> {
 
     public DefaultBinaryAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
@@ -7,7 +9,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
     }
 
     @Override
-    public boolean isTrue(String messageOnFailure) {
+    public boolean isTrue(String prefixMessage) {
         return testTimer(t -> {
             final String actualString = getActual().toString();
             if (!(
@@ -17,13 +19,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                     || actualString.equalsIgnoreCase("yes")
                 )
             ) {
-                String message;
-                if (messageOnFailure != null) {
-                    message = formatCustomMessage(messageOnFailure, actualString, "true");
-                } else {
-                    message = instantAssertion.format(actualString, "is one of [true, 'on', '1', 'yes']", traceSubjectString());
-                }
-                instantAssertion.fail(message);
+                instantAssertion.fail(instantAssertion.format(actualString, "is one of [true, 'on', '1', 'yes']", new Assertion.Message(prefixMessage, traceSubjectString())));
                 return false;
             }
             return true;
@@ -31,7 +27,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
     }
 
     @Override
-    public boolean isFalse(String messageOnFailure) {
+    public boolean isFalse(String prefixMessage) {
         return testTimer(t -> {
             final String actualString = getActual().toString();
             if (!(
@@ -41,13 +37,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                     || actualString.equalsIgnoreCase("no")
                 )
             ) {
-                String message;
-                if (messageOnFailure != null) {
-                    message = formatCustomMessage(messageOnFailure, actualString, "true");
-                } else {
-                    message = instantAssertion.format(actualString, "is one of [false, 'off', '0', 'no']", traceSubjectString());
-                }
-                instantAssertion.fail(message);
+                instantAssertion.fail(instantAssertion.format(actualString, "is one of [false, 'off', '0', 'no']", new Assertion.Message(prefixMessage, traceSubjectString())));
                 return false;
             }
             return true;

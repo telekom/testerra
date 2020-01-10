@@ -58,15 +58,6 @@ public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<
         return String.join(".", subjects);
     }
 
-    public String formatCustomMessage(String message, String actual, String expected) {
-        Map<String, String> values = new HashMap<>();
-        values.put("expected", expected);
-        values.put("actual", actual);
-        values.put("subject", traceSubjectString());
-        StringSubstitutor sub = new StringSubstitutor(values, "${", "}");
-        return sub.replace(message);
-    }
-
     public void failedRecursive() {
         provider.failed(this);
         AbstractPropertyAssertion parentAssertion = parent;

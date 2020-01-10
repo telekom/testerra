@@ -140,7 +140,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void test_GuiElement_displayed_false_fails_with_message() {
-        page.notDisplayedElement().displayed().isTrue("We expect that an element is displayed, which is ${actual}");
+        page.notDisplayedElement().displayed().isTrue("Missing visible element here");
     }
 
     @Test

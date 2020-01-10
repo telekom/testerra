@@ -44,14 +44,14 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    static {
-        WebDriverManager.config().closeWindowsAfterTestMethod = false;
-    }
-
-    @AfterTest(alwaysRun = true)
-    public void resetWDCloseWindowsMode() {
-        WebDriverManager.config().closeWindowsAfterTestMethod = true;
-    }
+//    static {
+//        WebDriverManager.config().closeWindowsAfterTestMethod = false;
+//    }
+//
+//    @AfterTest(alwaysRun = true)
+//    public void resetWDCloseWindowsMode() {
+//        WebDriverManager.config().closeWindowsAfterTestMethod = true;
+//    }
 
     /**
      * testpage of the website

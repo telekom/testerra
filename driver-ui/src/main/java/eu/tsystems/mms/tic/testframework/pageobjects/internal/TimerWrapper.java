@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
@@ -45,13 +44,11 @@ public class TimerWrapper {
     private static final int timeoutInSecondsShortInterval = 1;
 
     private final WebDriver webDriver;
-    private final ExecutionLog executionLog;
 
-    public TimerWrapper(int sleepTimeInMs, int timeoutInSeconds, WebDriver webDriver, ExecutionLog executionLog) {
+    public TimerWrapper(int sleepTimeInMs, int timeoutInSeconds, WebDriver webDriver) {
         this.sleepTimeInMs = sleepTimeInMs;
         this.timeoutInSeconds = timeoutInSeconds;
         this.webDriver = webDriver;
-        this.executionLog = executionLog;
     }
 
     public int getSleepTimeInMs() {
@@ -75,7 +72,7 @@ public class TimerWrapper {
     }
 
     public <T> ThrowablePackedResponse<T> executeShortIntervalSequence(final Timer.Sequence<T> sequence) {
-        Timer timer = new Timer(sleepTimeInMsShortInterval, timeoutInSecondsShortInterval * 1000, executionLog);
+        Timer timer = new Timer(sleepTimeInMsShortInterval, timeoutInSecondsShortInterval * 1000);
         ThrowablePackedResponse<T> booleanThrowablePackedResponse = null;
 
         try {
@@ -92,7 +89,7 @@ public class TimerWrapper {
     }
 
     public <T> ThrowablePackedResponse<T> executeSequence(final Timer.Sequence<T> sequence) {
-        Timer timer = new Timer(getSleepTimeInMs(), getTimeoutInMs(), executionLog);
+        Timer timer = new Timer(getSleepTimeInMs(), getTimeoutInMs());
         ThrowablePackedResponse<T> booleanThrowablePackedResponse = null;
 
         try {

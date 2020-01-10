@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
@@ -49,7 +48,6 @@ public class GuiElementData {
 
     public final WebDriver webDriver;
     public String name;
-    public final ExecutionLog executionLog;
     public int timeoutInSeconds;
     public final TimerWrapper timerWrapper;
     public WebElement webElement;
@@ -101,11 +99,10 @@ public class GuiElementData {
         this.name = name;
         this.by = by;
         this.guiElement = guiElement;
-        this.executionLog = new ExecutionLog();
         this.timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
         this.frameLogic = frameLogic;
         // Central Timer Object which is used by all sequence executions
-        this.timerWrapper = new TimerWrapper(timerSleepTimeInMs, timeoutInSeconds, webDriver, executionLog);
+        this.timerWrapper = new TimerWrapper(timerSleepTimeInMs, timeoutInSeconds, webDriver);
         this.index = index;
     }
 

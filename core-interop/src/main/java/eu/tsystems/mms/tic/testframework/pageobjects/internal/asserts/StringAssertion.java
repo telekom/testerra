@@ -8,14 +8,35 @@ import java.util.regex.Pattern;
  */
 public interface StringAssertion<T> extends QuantityAssertion<T>
 {
-    boolean is(String expected);
-    boolean contains(String expected);
-    boolean containsNot(String expected);
-    boolean beginsWith(String expected);
-    boolean endsWith(String expected);
-    PatternAssertion matches(Pattern pattern);
+    default boolean is(String expected) {
+        return is(expected, null);
+    }
+    boolean is(String expected, String message);
+
+    default boolean contains(String expected) {
+        return contains(expected, null);
+    }
+    boolean contains(String expected, String message);
+
+    default boolean containsNot(String expected) {
+        return containsNot(expected, null);
+    }
+    boolean containsNot(String expected, String message);
+
+    default boolean beginsWith(String expected) {
+        return beginsWith(expected, null);
+    }
+    boolean beginsWith(String expected, String message);
+
+    default boolean endsWith(String expected) {
+        return endsWith(expected, null);
+    }
+    boolean endsWith(String expected, String message);
+
     default PatternAssertion matches(String pattern) {
         return matches(Pattern.compile(pattern, Pattern.CASE_INSENSITIVE|Pattern.MULTILINE));
     }
+    PatternAssertion matches(Pattern pattern);
+
     QuantityAssertion<Integer> length();
 }

@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 
@@ -16,28 +17,28 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
     }
 
     @Override
-    public boolean is(String expected) {
-        return super.is(expected);
+    public boolean is(String expected, String message) {
+        return super.is(expected, message);
     }
 
     @Override
-    public boolean contains(String expected) {
-        return testTimer(t -> instantAssertion.assertContains((String)provider.getActual(), expected, traceSubjectString()));
+    public boolean contains(String expected, String message) {
+        return testTimer(t -> instantAssertion.assertContains((String)provider.getActual(), expected, new Assertion.Message(message, traceSubjectString())));
     }
 
     @Override
-    public boolean containsNot(String expected) {
-        return testTimer(t -> instantAssertion.assertContainsNot((String)provider.getActual(), expected, traceSubjectString()));
+    public boolean containsNot(String expected, String message) {
+        return testTimer(t -> instantAssertion.assertContainsNot((String)provider.getActual(), expected, new Assertion.Message(message, traceSubjectString())));
     }
 
     @Override
-    public boolean beginsWith(String expected) {
-        return testTimer(t -> instantAssertion.assertBeginsWith(provider.getActual(), expected, traceSubjectString()));
+    public boolean beginsWith(String expected, String message) {
+        return testTimer(t -> instantAssertion.assertBeginsWith(provider.getActual(), expected, new Assertion.Message(message, traceSubjectString())));
     }
 
     @Override
-    public boolean endsWith(String expected) {
-        return testTimer(t -> instantAssertion.assertEndsWith(provider.getActual(), expected, traceSubjectString()));
+    public boolean endsWith(String expected, String message) {
+        return testTimer(t -> instantAssertion.assertEndsWith(provider.getActual(), expected, new Assertion.Message(message, traceSubjectString())));
     }
 
     @Override

@@ -34,6 +34,9 @@ public interface Assertion {
         return assertNotNull(object, null);
     }
     boolean assertNotNull(Object object, Object message);
+    default boolean assertContains(String actual, String expected) {
+        return assertContains(actual, expected, null);
+    }
     boolean assertContains(String actual, String expected, Object message);
     boolean assertContainsNot(String actual, String expected, Object message);
     boolean assertGreaterThan(BigDecimal actual, BigDecimal expected, Object message);
@@ -57,6 +60,10 @@ public interface Assertion {
     boolean assertNotEquals(Object actual1, Object actual2, Object message);
     boolean assertNotEquals(Set<?> actual, Set<?> expected, Object message);
     boolean assertNotEquals(Map<?, ?> actual, Map<?, ?> expected, Object message);
+
+    default boolean assertBeginsWith(Object actual, Object expected) {
+        return assertBeginsWith(actual, expected, null);
+    }
     boolean assertBeginsWith(Object actual, Object expected, Object message);
     boolean assertEndsWith(Object actual, Object expected, Object message);
 }

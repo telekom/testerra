@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
@@ -140,7 +141,12 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void test_GuiElement_displayed_false_fails_with_message() {
-        page.notDisplayedElement().displayed().isTrue("Missing visible element here");
+        try {
+            page.notDisplayedElement().displayed().isTrue("Missing visible element here");
+        } catch (AssertionError e) {
+            instantAssertion.assertBeginsWith(e.getMessage(), "Missing visible element here");
+            instantAssertion.assertContains(e.getMessage(), page.notDisplayedElement().toString());
+        }
     }
 
     @Test

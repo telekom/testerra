@@ -220,7 +220,7 @@ public class UITestUtils {
                  * add AFTER path to action log
                  */
                 for (Screenshot screenshot : screenshots) {
-                    methodContext.steps().getCurrentTestStep().getCurrentTestStepAction().addScreenshots(null, screenshot);
+                    methodContext.steps().getCurrentTestStep().getCurrentTestStepAction().addScreenshot(screenshot);
                 }
 
                 LOGGER.info("Linked screenshots: " + screenshots);

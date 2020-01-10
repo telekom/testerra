@@ -32,10 +32,13 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.WeakHashMap;
+
 /**
  * Created by rnhb on 21.12.2016.
  */
 public class GuiElementData {
+    public static final WeakHashMap<WebElement, GuiElement> WEBELEMENT_MAP = new WeakHashMap<>();
 
     public final By by;
     /**

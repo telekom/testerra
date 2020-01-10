@@ -21,11 +21,8 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
@@ -243,5 +240,15 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
     public void test_User_sendKeys() {
         final String input = "Ich bin langsam im Tippen";
         page.inputForm().input().asUser().clear().sendKeys(input).value().is(input);
+    }
+
+    @Test
+    public void test_Attributes() {
+        UiElement attributes = page.findByQa("section/attributeTest");
+
+        //attributes.value("ariaExpanded").is("true");
+        attributes.value("aria-expanded").is("true");
+        //attributes.value("dataCompletelyCustomAttribute").is("true");
+        attributes.value("data-completely-custom-attribute").is("yes");
     }
 }

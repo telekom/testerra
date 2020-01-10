@@ -53,8 +53,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAsser
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PerformanceTestGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
@@ -821,16 +819,25 @@ public class GuiElement implements
 
     @Override
     public StringAssertion<String> value(String attribute) {
+//        if (attribute.contains("-")) {
+//            String parts[] = attribute.split("\\-+");
+//            StringBuilder builder = new StringBuilder();
+//            for (String part : parts) {
+//                builder.append(StringUtils.capitalize(part));
+//            }
+//            attribute = builder.toString();
+//        }
+        final String finalAttribute = attribute;
         final UiElement self = this;
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return core.findWebElement().getAttribute(attribute);
+                return core.findWebElement().getAttribute(finalAttribute);
             }
 
             @Override
             public String getSubject() {
-                return String.format("%s.value(attribute: %s)", self, attribute);
+                return String.format("%s.value(attribute: %s)", self, finalAttribute);
             }
         });
     }

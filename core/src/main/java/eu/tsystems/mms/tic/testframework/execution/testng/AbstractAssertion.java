@@ -28,9 +28,11 @@ public abstract class AbstractAssertion implements Assertion {
         StringBuilder builder = new StringBuilder();
         String subject = null;
         if (message instanceof Message) {
-            builder.append(((Message) message).prefixMessage);
-            builder.append(": ");
-            subject = ((Message) message).subject;
+            Message realMessage = (Message)message;
+            if (realMessage.prefixMessage != null) {
+                builder.append(realMessage.prefixMessage).append(": ");
+            }
+            subject = realMessage.subject;
         } else if (message != null) {
             subject = message.toString();
         }

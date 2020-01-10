@@ -19,7 +19,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
@@ -32,6 +31,8 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.WeakHashMap;
+
 /**
  * Holds the state of the {@link GuiElement} to interchange with any other
  * implementations like {@link GuiElementCore}
@@ -41,12 +42,9 @@ public class GuiElementData implements
     WebDriverRetainer,
     HasParent
 {
+    public static final WeakHashMap<WebElement, GuiElement> WEBELEMENT_MAP = new WeakHashMap<>();
     private final Locate locate;
     private final WebDriver webDriver;
-    /**
-     * @deprecated Should not be public
-     */
-    public final ExecutionLog executionLog;
     private GuiElementData parent;
     private int index = -1;
     private GuiElement guiElement;
@@ -94,7 +92,6 @@ public class GuiElementData implements
     ) {
         this.webDriver = webDriver;
         this.locate = locate;
-        this.executionLog = new ExecutionLog();
     }
 
     public GuiElementData setGuiElement(GuiElement guiElement) {

@@ -350,7 +350,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
         TestStepAction currentTestStepAction = steps().getCurrentTestStep().getCurrentTestStepAction();
         screenshots.stream().filter(s -> !s.hasErrorContext()).forEach(screenshot -> {
             screenshot.setErrorContextId(this.id);
-            currentTestStepAction.addScreenshots(null, screenshot);
+            currentTestStepAction.addScreenshot(screenshot);
         });
     }
 }

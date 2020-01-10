@@ -27,8 +27,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
@@ -46,14 +46,14 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    static {
-        WebDriverManager.config().closeWindowsAfterTestMethod = false;
-    }
-
-    @AfterTest(alwaysRun = true)
-    public void resetWDCloseWindowsMode() {
-        WebDriverManager.config().closeWindowsAfterTestMethod = true;
-    }
+//    static {
+//        WebDriverManager.config().closeWindowsAfterTestMethod = false;
+//    }
+//
+//    @AfterTest(alwaysRun = true)
+//    public void resetWDCloseWindowsMode() {
+//        WebDriverManager.config().closeWindowsAfterTestMethod = true;
+//    }
 
     /**
      * testpage of the website
@@ -243,7 +243,7 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
         try {
             WebDriverManager.getWebDriver().getWindowHandles();
-        } catch (NoSuchSessionException s) {
+        } catch (WebDriverException s) {
             WebDriverManager.forceShutdown(); // shutdown all threwad drivers.
         }
 

@@ -38,7 +38,6 @@ public class DefaultGuiElementAssertFactory implements GuiElementAssertFactory {
         } else {
             guiElementAssert = new DefaultGuiElementAssert(data, guiElementWait, assertion);
             guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, data);
-            guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, data);
         }
         return guiElementAssert;
     }

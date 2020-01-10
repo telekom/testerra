@@ -53,6 +53,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAsser
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCore;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PerformanceTestGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
@@ -223,7 +225,6 @@ public class GuiElement implements
         GuiElementFacade guiElementFacade;
         guiElementFacade = new DefaultGuiElementFacade(guiElementCore);
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
-        //guiElementFacade = new GuiElementFace(guiElementFacade, guiElementData);
 
         int delayAfterAction = Properties.DELAY_AFTER_ACTION_MILLIS.asLong().intValue();
         int delayBeforeAction = Properties.DELAY_BEFORE_ACTION_MILLIS.asLong().intValue();

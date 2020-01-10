@@ -20,9 +20,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -43,16 +41,9 @@ public class TimerWrapper implements Loggable {
     private static int sleepTimeInMs=200;
 
     private final WebDriver webDriver;
-    private final ExecutionLog executionLog;
-
-    public TimerWrapper(WebDriver webDriver, ExecutionLog executionLog) {
-        this.webDriver = webDriver;
-        this.executionLog = executionLog;
-    }
 
     public TimerWrapper(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.executionLog = null;
     }
 
     private int getSleepTimeInMs() {
@@ -64,7 +55,7 @@ public class TimerWrapper implements Loggable {
     }
 
     public <T> ThrowablePackedResponse<T> executeSequence(final Timer.Sequence<T> sequence, int timeoutInSeconds) {
-        Timer timer = new Timer(getSleepTimeInMs(), timeoutInSeconds*1000, executionLog);
+        Timer timer = new Timer(getSleepTimeInMs(), timeoutInSeconds*1000);
         ThrowablePackedResponse<T> booleanThrowablePackedResponse = null;
 
         try {

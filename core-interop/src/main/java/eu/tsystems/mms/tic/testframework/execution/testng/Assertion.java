@@ -65,5 +65,8 @@ public interface Assertion {
         return assertBeginsWith(actual, expected, null);
     }
     boolean assertBeginsWith(Object actual, Object expected, Object message);
+    default boolean assertEndsWith(Object actual, Object expected) {
+        return assertEndsWith(actual, expected, null);
+    }
     boolean assertEndsWith(Object actual, Object expected, Object message);
 }

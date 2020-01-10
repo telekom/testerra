@@ -26,12 +26,12 @@ public abstract class AbstractAssertion implements Assertion {
     @Override
     public String format(Object actual, Object expected, Object message) {
         StringBuilder builder = new StringBuilder();
-        String subject;
+        String subject = null;
         if (message instanceof Message) {
             builder.append(((Message) message).prefixMessage);
             builder.append(": ");
             subject = ((Message) message).subject;
-        } else {
+        } else if (message != null) {
             subject = message.toString();
         }
         builder.append("Expected");

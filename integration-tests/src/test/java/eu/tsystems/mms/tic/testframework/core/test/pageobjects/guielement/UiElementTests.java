@@ -38,7 +38,6 @@ import org.testng.annotations.Test;
 
 public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
-    private final static InstantAssertion instantAssertion = Testerra.injector.getInstance(InstantAssertion.class);
     private WebTestPage page;
 
     @BeforeMethod
@@ -108,6 +107,25 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
     public void test_Page_url() {
         page.url().beginsWith("http");
         page.url().endsWith("input.html");
+        page.url().length().isGreaterEqualThan(10);
+    }
+
+    @Test()
+    public void test_Page_url_fails() {
+        try {
+            page.url().endsWith("nonexistingfile.html", "Wrong URL");
+        } catch (AssertionError e) {
+            Assert.assertBeginsWith(e.getMessage(), "Wrong URL");
+            Assert.assertEndsWith(e.getMessage(), "ends with [nonexistingfile.html]");
+        }
+
+        try {
+            page.url().length().isGreaterEqualThan(10000, "URL is too short");
+        } catch (AssertionError e) {
+            Assert.assertBeginsWith(e.getMessage(), "URL is too short");
+            Assert.assertEndsWith(e.getMessage(), "is greater or equal than [10000]");
+        }
+
     }
 
     @Test
@@ -115,17 +133,6 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
         UiElement element = page.findById(5);
         element.sendKeys("Test");
         element.clear().text().is("");
-    }
-
-    @Test()
-    public void test_Page_url_endsWith_fails() {
-        String msg = null;
-        try {
-            page.url().endsWith("nonexistingfile.html");
-        } catch (AssertionError e) {
-           msg = e.getMessage();
-        }
-        instantAssertion.assertEndsWith(msg, "ends with [nonexistingfile.html]", AssertionError.class.toString());
     }
 
     @Test
@@ -144,8 +151,8 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
         try {
             page.notDisplayedElement().displayed().isTrue("Missing visible element here");
         } catch (AssertionError e) {
-            instantAssertion.assertBeginsWith(e.getMessage(), "Missing visible element here");
-            instantAssertion.assertContains(e.getMessage(), page.notDisplayedElement().toString());
+            Assert.assertBeginsWith(e.getMessage(), "Missing visible element here");
+            Assert.assertContains(e.getMessage(), page.notDisplayedElement().toString());
         }
     }
 
@@ -188,7 +195,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
         } catch (AssertionError e) {
             msg = e.getMessage();
         }
-        instantAssertion.assertEndsWith(msg, "is one of [true, 'on', '1', 'yes']", AssertionError.class.toString());
+        Assert.assertEndsWith(msg, "is one of [true, 'on', '1', 'yes']", AssertionError.class.toString());
     }
 
     @Test
@@ -204,7 +211,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
         } catch (AssertionError e) {
             msg = e.getMessage();
         }
-        instantAssertion.assertEndsWith(msg, "not found", AssertionError.class.toString());
+        Assert.assertEndsWith(msg, "not found", AssertionError.class.toString());
     }
 
     @Test
@@ -221,7 +228,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
         } catch (ElementNotFoundException e) {
             msg = e.getMessage();
         }
-        instantAssertion.assertEndsWith(msg, "not found", ElementNotFoundException.class.toString());
+        Assert.assertEndsWith(msg, "not found", ElementNotFoundException.class.toString());
     }
 
     @Test

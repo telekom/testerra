@@ -257,7 +257,7 @@ page.anyElementContainsText("You see me").numberOfElements().is(1); <3>
 
 Custom failure messages
 ```java
-uiElement.displayed().isTrue("This element should be displayed, which is ${actual}");
+uiElement.displayed().isTrue("This element should be displayed");
 ```
 
 ==== Screenshot based Assertions

@@ -25,8 +25,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
@@ -237,7 +237,7 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
         try {
             WebDriverManager.getWebDriver().getWindowHandles();
-        } catch (NoSuchSessionException s) {
+        } catch (WebDriverException s) {
             WebDriverManager.forceShutdown(); // shutdown all threwad drivers.
         }
 

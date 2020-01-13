@@ -461,7 +461,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 chromeOptions.addArguments("--no-sandbox");
                 if (browser.equals(Browsers.chromeHeadless)) {
                     chromeOptions.setHeadless(true);
-                    chromeOptions.addArguments("--disable-dev-shm-usage");
                 }
                 finalCapabilities = chromeOptions;
                 driverClass = ChromeDriver.class;

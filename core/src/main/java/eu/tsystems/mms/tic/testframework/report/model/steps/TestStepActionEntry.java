@@ -34,32 +34,24 @@ public class TestStepActionEntry implements Serializable {
     private static final long serialVersionUID = Serial.SERIAL;
 
     public final LogMessage logMessage;
-    public Screenshot beforeScreenshot;
-    public Screenshot afterScreenshot;
+    public final Screenshot screenshot;
     public final ClickPathEvent clickPathEvent;
 
     public TestStepActionEntry(LogMessage logMessage) {
-
         this.logMessage = logMessage;
-        this.beforeScreenshot = null;
-        this.afterScreenshot = null;
+        this.screenshot = null;
         this.clickPathEvent = null;
     }
 
     public TestStepActionEntry(ClickPathEvent event) {
-
         this.clickPathEvent = event;
-        this.beforeScreenshot = null;
-        this.afterScreenshot = null;
+        this.screenshot = null;
         this.logMessage = null;
     }
 
-    public TestStepActionEntry(Screenshot afterScreenShot) {
-
-        this.afterScreenshot = afterScreenShot;
-        this.beforeScreenshot = null;
+    public TestStepActionEntry(Screenshot screenshot) {
+        this.screenshot = screenshot;
         this.logMessage = null;
         this.clickPathEvent = null;
     }
-
 }

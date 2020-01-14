@@ -16,7 +16,8 @@
 
                         #set($stepName = $step.getName())
                         <a href="#" class="listlayer2 list-group-item listitem"
-                           onclick="javascript:showDetailsLog('viewclass_${stepNumber}', '${testMethod.methodRunIndex}');">${stepNumber})
+                           onclick="javascript:showDetailsLog('viewclass_${stepNumber}', '${testMethod.methodRunIndex}');">${stepNumber}
+                            )
                             ${stepName}</a><br/>
 
                         #foreach ($action in $step.getTestStepActions())
@@ -28,11 +29,12 @@
                             #set($actionName = "<i class='fa fa-clone' aria-hidden='true' style='padding: 5px;'></i>")
                             #if ($action.getName())
                                 #set($actionName = "<i class='fa fa-clone' aria-hidden='true' style='padding: 5px;'></i>" +
-                                $action.getName())
+                                    $action.getName())
                             #end
                             <a id="link_${viewclass}" href="#" class="listlayer3 list-group-item listitem"
                                style="padding-left:10px; opacity: 1;"
-                               onclick="javascript:showDetailsLog('$viewclass', '${testMethod.methodRunIndex}');">${stepNumber}.${actionNumber})
+                               onclick="javascript:showDetailsLog('$viewclass', '${testMethod.methodRunIndex}');">${stepNumber}
+                                .${actionNumber})
                                 ${actionName}</a><br/>
 
                         #end
@@ -41,116 +43,118 @@
                 </div>
             </div>
         </td>
-    <td>
-        <!-- log -->
-        <div class="testOutput" id="logging-${testMethod.methodRunIndex}">
-            <table id="logging-${testMethod.methodRunIndex}-table" class="dataTable">
-                <thead>
-                <tr>
-                    <th>
-                        Action
-                    </th>
-                    <th>
-                        Level
-                    </th>
-                    <th>
-                        Date
-                    </th>
-                    <th>
-                        Thread
-                    </th>
-                    <th>
-                        Logger
-                    </th>
-                    <th>
-                        Message
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="logging-${testMethod.methodRunIndex}-tbody">
-                #foreach ($step in $testSteps)
+        <td>
+            <!-- log -->
+            <div class="testOutput" id="logging-${testMethod.methodRunIndex}">
+                <table id="logging-${testMethod.methodRunIndex}-table" class="dataTable">
+                    <thead>
+                    <tr>
+                        <th>
+                            Action
+                        </th>
+                        <th>
+                            Level
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Thread
+                        </th>
+                        <th>
+                            Logger
+                        </th>
+                        <th>
+                            Message
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="logging-${testMethod.methodRunIndex}-tbody">
+                        #foreach ($step in $testSteps)
 
-                    #set($stepNumber = $testSteps.indexOf($step))
-                    #foreach ($action in $step.getTestStepActions())
+                            #set($stepNumber = $testSteps.indexOf($step))
+                            #foreach ($action in $step.getTestStepActions())
 
-                        #set($actionNumber = $step.getTestStepActions().indexOf($action))
-                        #set($viewclass = "viewclass_${stepNumber}_${actionNumber}")
+                                #set($actionNumber = $step.getTestStepActions().indexOf($action))
+                                #set($viewclass = "viewclass_${stepNumber}_${actionNumber}")
 
-                        #foreach ($entry in $action.getTestStepActionEntries())
+                                #foreach ($entry in $action.getTestStepActionEntries())
 
-                            #set($entryNumber = $action.getTestStepActionEntries().indexOf($entry))
+                                    #set($entryNumber = $action.getTestStepActionEntries().indexOf($entry))
 
-                            #if ($entry.logMessage)
+                                    #if ($entry.logMessage)
 
-                                #set($logMessage = $entry.logMessage)
-                                #set ($ll = $logMessage.logLevel.toString())
+                                        #set($logMessage = $entry.logMessage)
+                                        #set ($ll = $logMessage.logLevel.toString())
 
-                                #if ($ll.contains("WARN"))
-                                <tr class="logentry viewclass_${stepNumber} $viewclass ll_warning">
-                                #elseif ($ll.contains("ERROR"))
-                                <tr class="logentry viewclass_${stepNumber} $viewclass ll_error">
-                                #elseif ($ll.contains("DEBUG"))
-                                <tr class="logentry viewclass_${stepNumber} $viewclass ll_debug">
-                                #elseif ($ll.contains("TRACE"))
-                                <tr class="logentry viewclass_${stepNumber} $viewclass ll_trace">
-                                #else
-                                <tr class="logentry viewclass_${stepNumber} $viewclass">
-                                #end
-                                    <td class="top textleft"> <!-- action -->
-                                        <a href="#" onclick="javascript:$('#link_${viewclass}').click();">${stepNumber}.${actionNumber}</a>
-                                    </td>
-                                    <td class="top textleft"> <!-- level -->
-                                        $ll
-                                    </td>
-                                    <td class="top textleft"> <!-- date -->
-                                        $dateFormatter.format("dd.MM.yyyy-HH:mm:ss.SSS", $logMessage.date)
-                                    </td>
-                                    <td class="top maxwidth textleft"> <!-- thread -->
-                                        $logMessage.threadName
-                                    </td>
-                                    <td class="top logMessage textleft"> <!-- logger -->
-                                        $logMessage.loggerName
-                                    </td>
-                                    <td class="top logMessage textleft"> <!-- message -->
-                                        <pre>$logMessage.message</pre>
-                                    </td>
-                                </tr>
-
-                                #end
-
-                                #if ($entry.beforeScreenshot || $entry.afterScreenshot)
-                                <tr class="logentry viewclass_${stepNumber} $viewclass">
-                                    <td class="top textleft">
-                                        <!--<a href="#" onclick="javascript:$('#link_${viewclass}').click();">${stepNumber}.${actionNumber}</a>-->
-                                    </td>
-                                    <td></td>
-                                    <td colspan="2" style="position: relative;">
-                                        <!-- before -->
-                                        #if ($entry.beforeScreenshot)
-                                        <a href="../../screenshots/${entry.beforeScreenshot.filename}" target="_blank">
-                                            <img alt="before" src="../../screenshots/${entry.beforeScreenshot.filename}" width="300px"/>
-                                        </a>
-                                        <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;"><h6>
-                                            Screenshot before</h6></div>
+                                        #if ($ll.contains("WARN"))
+                                        <tr class="logentry viewclass_${stepNumber} $viewclass ll_warning">
+                                        #elseif ($ll.contains("ERROR"))
+                                        <tr class="logentry viewclass_${stepNumber} $viewclass ll_error">
+                                        #elseif ($ll.contains("DEBUG"))
+                                        <tr class="logentry viewclass_${stepNumber} $viewclass ll_debug">
+                                        #elseif ($ll.contains("TRACE"))
+                                        <tr class="logentry viewclass_${stepNumber} $viewclass ll_trace">
+                                        #else
+                                        <tr class="logentry viewclass_${stepNumber} $viewclass">
                                         #end
-                                    </td>
-                                    <td colspan="2" style="position: relative;">
-                                        <!-- after -->
-                                        #if ($entry.afterScreenshot)
-                                        <a href="../../screenshots/${entry.afterScreenshot.filename}" target="_blank">
-                                            <img alt="after" src="../../screenshots/${entry.afterScreenshot.filename}" width="300px"/>
-                                        </a>
-                                        <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;"><h6>
-                                            Screenshot after</h6></div>
-                                        #end
-                                    </td>
-                                </tr>
+                                        <td class="top textleft"> <!-- action -->
+                                            <a href="#" onclick="javascript:$('#link_${viewclass}').click();">${stepNumber}
+                                                .${actionNumber}</a>
+                                        </td>
+                                        <td class="top textleft"> <!-- level -->
+                                            $ll
+                                        </td>
+                                        <td class="top textleft"> <!-- date -->
+                                            $dateFormatter.format("dd.MM.yyyy-HH:mm:ss.SSS", $logMessage.date)
+                                        </td>
+                                        <td class="top maxwidth textleft"> <!-- thread -->
+                                            $logMessage.threadName
+                                        </td>
+                                        <td class="top logMessage textleft"> <!-- logger -->
+                                            $logMessage.loggerName
+                                        </td>
+                                        <td class="top logMessage textleft"> <!-- message -->
+                                            <pre>$logMessage.message</pre>
+                                        </td>
+                                    </tr>
+
+                                    #end
+
+                                    #if ($entry.screenshot)
+                                    <tr class="logentry viewclass_${stepNumber} $viewclass">
+                                        <td class="top textleft">
+                                            <!--<a href="#" onclick="javascript:$('#link_${viewclass}').click();">${stepNumber}.${actionNumber}</a>-->
+                                        </td>
+                                        <td></td>
+                                        <td colspan="2" style="position: relative;">
+                                            <!-- screen -->
+                                            #if ($entry.screenshot)
+                                                <a href="../../screenshots/${entry.screenshot.filename}" target="_blank">
+                                                    <img alt="screenshot" src="../../screenshots/${entry.screenshot.filename}"
+                                                         width="300px"/>
+                                                </a>
+                                                <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;">
+                                                    <h6>Screenshot</h6>
+                                                </div>
+                                            #end
+                                        </td>
+                                        ##                                    <td colspan="2" style="position: relative;">
+                                        ##                                        <!-- after -->
+                                        ##                                        #if ($entry.afterScreenshot)
+                                        ##                                        <a href="../../screenshots/${entry.afterScreenshot.filename}" target="_blank">
+                                        ##                                            <img alt="after" src="../../screenshots/${entry.afterScreenshot.filename}" width="300px"/>
+                                        ##                                        </a>
+                                        ##                                        <div style="position: absolute; padding: 5px;background: #ff7777; bottom: 10px; opacity: 0.8;"><h6>
+                                        ##                                            Screenshot after</h6></div>
+                                        ##                                        #end
+                                        ##                                    </td>
+                                    </tr>
+                                    #end
+                                #end
                             #end
                         #end
-                    #end
-                #end
-
-                </tbody>
+                    </tbody>
                 </table>
             </div>
         </td>

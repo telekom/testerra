@@ -23,7 +23,7 @@ Git: Setup `git config --global core.autocrlf input` to prevent any commited CRL
 Supporting multiple profiles is useful, for different environments or test suites.
 
 .build.gradle
-[source, gradle, role="primary"]
+[source,gradle,role="primary"]
 ----
 test {
     def profiles = [
@@ -45,7 +45,7 @@ test {
 ----
 
 .pom.xml
-[source, xml, role="secondary"]
+[source,xml,role="secondary"]
 ----
 <project>
    <profiles>
@@ -70,19 +70,21 @@ test {
 ----
 
 .Gradle
-[source, bash, role="primary"]
+[source,bash,role="primary"]
 ----
 gradle test -PmySuite
 ----
+
 .Maven
-[source, bash, role="secondary"]
+[source,bash,role="secondary"]
 ----
 mvn test -PmySuite
 ----
 
 == Quality Assurance Attributes
 
-As we know, things changing all the time. And in the context of a website, it may also change in several ways
+As we know, things changing all the time.
+And in the context of a website, it may also change in several ways
 
 * Layout
 * Design
@@ -90,8 +92,9 @@ As we know, things changing all the time. And in the context of a website, it ma
 
 === Problem
 
-The features of a website are covered by functional tests based on GuiElements. But GuiElements are using identifiers based
-on the Document Object Model (DOM) of the website. The DOM is based on HTML elements and can vary between static and highly dynamic.
+The features of a website are covered by functional tests based on GuiElements.
+But GuiElements are using identifiers based on the Document Object Model (DOM) of the website.
+The DOM is based on HTML elements and can vary between static and highly dynamic.
 That means, if the layout or design changes, the DOM may also change and in consequence also the identifiers of the GuiElements which affects the functionality of the tests.
 
 WARNING: Tests covering features may break if the layout or design changes.
@@ -136,13 +139,13 @@ Where `name` and `id` are free to define, `type` is not and should be one of the
 ----
 | input | Interactive input elements
 |
-[source, html]
+[source,html]
 ----
 <input data-qa="input/searchQuery"/>
 ----
 | action | Interative elements that performs an action
 |
-[source, html]
+[source,html]
 ----
 <button data-qa="action/login">Login</button>
 <a href="https://google.com" data-qa="action/gotoGoogle">Search at Google</a>
@@ -151,7 +154,7 @@ Where `name` and `id` are free to define, `type` is not and should be one of the
 
 ==== Example
 
-[source, html]
+[source,html]
 ----
 <ul>
     <li data-qa="section/animal/ape">
@@ -163,7 +166,8 @@ Where `name` and `id` are free to define, `type` is not and should be one of the
 ----
 
 You can select this item by using the `Locate` extension.
-[source, java]
+
+[source,java]
 ----
 new GuiElement(driver, Locate.by().qa("section/animal/ape"));
 ----
@@ -185,11 +189,9 @@ element.asserts().assertText("Search results");
 Assert.assertTrue(element.getText().contains("Search results"));
 ----
 
-
 == Always describe your asserts
 
-In that specific case where you can't use `asserts()`,
-then use the extended <<Assert Utilities>> to more precise in your statement and pass a proper description text.
+In that specific case where you can't use `asserts()`, then use the extended <<Assert Utilities>> to more precise in your statement and pass a proper description text.
 
 [source,java]
 ----
@@ -201,7 +203,6 @@ AssertUtils.assertGreaterThan(actualSearchResultCount, 5, "Search results count"
 // Bad practice
 Assert.assertTrue(actualSearchResultCount > 5);
 ----
-
 
 == Working with HTML elements
 
@@ -215,7 +216,8 @@ Since radio buttons share the same name, as the following example shows
 <input type="radio" name="beverage" value="coffee">
 ----
 
-It's not a good practice to select it `By.name`. Its better to select both options separately.
+It's not a good practice to select it `By.name`.
+Its better to select both options separately.
 
 [source,java]
 ----
@@ -265,4 +267,29 @@ GuiElement inputName = shadowRootElement.getSubElement(By.cssSelector("#custom-c
 ----
 
 IMPORTANT: Calling `isDisplayed()` on `shadowRoot()`-notated `GuiElement` will always return false, but `isPresent()` will work as designed.
+
+=== Useful browser options / browser capabilities
+
+=== Chrome
+
+If using Selenium with Chrome in a Docker container it may comes to some random `WebDriverException`, because of some internal container limits.
+
+If you are getting random "selenium.common.exceptions.WebDriverException: Message: unknown error: session deleted because of page crash", may this code snippet will solve your problem, by disabling the usage of `dev/shm` memory and enabling the usage of `/tmp` instead.
+This will may slow down your execution time, because you are using disk instead of memory.
+The reason is, that chrome / chrome driver leads to errors when `/dev/shm` is too small.
+
+.Java Snippet for test classes
+[source,java]
+----
+@BeforeSuite
+void configureChromeOptions() {
+    WebDriverManager.setUserAgentConfig(Browsers.chromeHeadless, new ChromeConfig() {
+        @Override
+        public void configure(ChromeOptions options) {
+            options.addArguments("--disable-dev-shm-usage");
+        }
+    });
+}
+----
+
 

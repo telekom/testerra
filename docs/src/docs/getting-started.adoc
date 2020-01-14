@@ -108,11 +108,14 @@ The GuiElement describes the elements like links, buttons, etc. on your page. Le
 
 === Create Test Class and Test Method
 
-Next create a simple test class with a test method. The test class needs to extend from `TesterraTest`. It should be located at path `src\test\java\<package>`. To stick to the example above, here is a very simple test class which navigates to exampe.org and clicks on the link defined on the example page. Again, probably imports must be made in IDE.
+The easiest way to create a new test, is by creating a new class in the path of `src\test\java\<package>` and let it extend from `TesterraTest`. If you already have test classes that extend, you can add the `TesterraListener` manually. Both ways do basically the same.
+To stick to the example above, here is a very simple test class which navigates to example.org and clicks on the link defined on the example page. Again, probably imports must be made in IDE.
 
-.New test class
-[source, java]
+.TesterraTest
+[source, java, role="primary"]
 ----
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+
 public class ExampleTest extends TesterraTest {
 
     @Test
@@ -124,7 +127,16 @@ public class ExampleTest extends TesterraTest {
 }
 ----
 
-NOTE: By extending from `TesterraTest` all runtime features are loaded automatically.
+.TesterraListener
+[source, java, role="secondary"]
+----
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import org.testng.annotations.Listeners;
+
+@Listeners(TesterraListener.class)
+public class ExampleTest {
+}
+----
 
 === Setup Selenium
 

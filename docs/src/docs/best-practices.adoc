@@ -270,7 +270,7 @@ IMPORTANT: Calling `isDisplayed()` on `shadowRoot()`-notated `GuiElement` will a
 
 === Useful browser options / browser capabilities
 
-=== Chrome
+==== Chrome
 
 If using Selenium with Chrome in a Docker container it may comes to some random `WebDriverException`, because of some internal container limits.
 

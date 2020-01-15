@@ -1,0 +1,62 @@
+= Working with HTML elements
+
+== Radio buttons
+
+Since radio buttons share the same name, as the following example shows
+
+[source, html]
+----
+<input type="radio" name="beverage" value="tee">
+<input type="radio" name="beverage" value="coffee">
+----
+
+It's not a good practice to select it `By.name`. Its better to select both options separately.
+
+[source, java]
+----
+// Good practice
+Locate locator = Locate.prepare("//input[@name='%s' and @value='%s']").unique();
+GuiElement teeOption = new GuiElement(driver, locator.with("beverage", "tee"));
+GuiElement coffeeOption = new GuiElement(driver, locator.with("beverage", "coffee"));
+
+// Bad practice
+GuiElement options = new GuiElement(driver, By.name("beverage"));
+----
+
+== Shadow Roots
+
+Modern web applications are allowed to use some third-party components, which can be integrated with Shadow DOM.
+This is the modern art of an iframe, because the components will be loaded via asynchronous JavaScript.
+
+Each embedded Shadow DOM component will have it's own shadow root.
+To work with shadow root elements Testerra provide the method `shadowRoot()` on the `GuiElement` class.
+
+Given the following HTML code snippet it will be easier how to get the corresponding `GuiElement` of the Shadow DOM component.
+
+.HTML Code
+[source, html]
+----
+<body>
+    <div id="wrapper">
+    <!-- HTML code-->
+    <my-custom-shadow-root-element>
+    <!-- #shadowRoot -->
+        <div class="custom-component">
+            <input id="custom-component-login-name" name="name">
+        </div>
+    </my-custom-shadow-root-element>
+    </div>
+    <!-- HTML code-->
+</body>
+----
+
+.Java Code
+[source,java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
+
+GuiElement shadowRootElement = new GuiElement(driver, By.cssSelector("my-custom-shadow-root-element")).shadowRoot();
+GuiElement inputName = shadowRootElement.getSubElement(By.cssSelector("#custom-component-login-name"));
+----
+
+IMPORTANT: Calling `isDisplayed()` on `shadowRoot()`-notated `GuiElement` will always return false, but `isPresent()` will work as designed.

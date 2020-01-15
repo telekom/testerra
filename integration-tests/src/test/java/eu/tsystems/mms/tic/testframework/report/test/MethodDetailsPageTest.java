@@ -224,6 +224,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Tests the shown method details on a failed method with screenshots.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @Fails(description = "No screenshot available in prepared reports")
     public void testT09_checkScreenshotTab() throws Exception {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "My_Context", "test_FailedInheritedMinor2");
         MethodScreenshotPage screenshotPage = GeneralWorkflow.doOpenReportMethodScreenshotPage(methodDetailsPage);

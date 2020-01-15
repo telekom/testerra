@@ -479,7 +479,7 @@
                                     <a href="javascript:void(0);"
                                        onclick="toggleElement('non-functional-exception-$velocityCountNF')"
                                        title="Click to expand/collapse" style="color:SkyBlue; font-weight: bold;">
-                                        $nfi.readableErrorMessage
+                                        ${nfi.readableErrorMessage}
                                     </a>
                                     <div style="display: none;" id="non-functional-exception-$velocityCountNF">
                                         <div style="margin-left: 10px;">
@@ -533,7 +533,7 @@
                                     <a href="javascript:void(0);"
                                        onclick="toggleElement('collected-assert-exception-$velocityCountCA')"
                                        title="Click to expand/collapse" style="color:red; font-weight: bold;">
-                                        $ai.readableErrorMessage
+                                        ${ai.readableErrorMessage}
                                     </a>
                                     <div style="display: none;" id="collected-assert-exception-$velocityCountCA">
                                         <div style="margin-left: 10px;">

@@ -217,7 +217,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
         AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().isDisplayed(), "The method details page indicates that the shown method is repaired.");
         AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("ticketId=1"), "The indicator for the repaired fails annotation contains the correct ticketId.");
-        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("description=Does not actually fail."), "The indicator for the repaired fails annotation contains the correct description.");
+        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("description=\"Does not actually fail.\""), "The indicator for the repaired fails annotation contains the correct description.");
     }
 
     /**

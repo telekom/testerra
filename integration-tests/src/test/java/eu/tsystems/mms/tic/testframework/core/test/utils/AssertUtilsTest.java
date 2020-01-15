@@ -43,6 +43,7 @@ public class AssertUtilsTest extends AbstractTest {
 
     /**
      * checks if string contains expected content but fails. checks if assertionError is correct
+     *
      * @throws AssertionError .
      */
     @Test
@@ -51,7 +52,7 @@ public class AssertUtilsTest extends AbstractTest {
         try {
             AssertUtils.assertContains(string, "DresdenX");
         } catch (AssertionError e) {
-           Assert.assertTrue(e.getMessage().contains("String contains " + "DresdenX" + "\nactual: " + string));
+            Assert.assertTrue(e.getMessage().contains("expected [Dresden] contains [DresdenX]"));
             return;
         }
         Assert.fail("");
@@ -67,8 +68,9 @@ public class AssertUtilsTest extends AbstractTest {
     }
 
 
-     /**
+    /**
      * checks if string contains expected content but fails. checks if assertionError is correct
+     *
      * @throws AssertionError .
      */
     @Test

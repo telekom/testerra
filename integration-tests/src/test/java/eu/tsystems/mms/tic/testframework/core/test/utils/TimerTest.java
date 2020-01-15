@@ -113,13 +113,14 @@ public class TimerTest extends AbstractTest implements Loggable {
 
     @Test
     public void testT04_ExecuteSequence_WithException() throws Exception {
+
         Timer timer = new Timer(SLEEP_TIME_IN_MS, DURATION_IN_MS);
 
         final long timeMillisBegin = System.currentTimeMillis();
 
         Throwable throwable = new Throwable();
         ThrowablePackedResponse<String> out = new ThrowablePackedResponse<String>(null, throwable, false, new TimeoutException(throwable));
-        TimeoutException timeoutException = null;
+        TimeoutException thrownAndCatchedTimeoutException = null;
         TesterraRuntimeException testerraRuntimeException;
 
         try {
@@ -131,19 +132,21 @@ public class TimerTest extends AbstractTest implements Loggable {
                 }
             });
         } catch (TimeoutException e) {
-            timeoutException = e;
+            thrownAndCatchedTimeoutException = e;
         }
 
         final long timeMillisDuration = System.currentTimeMillis() - timeMillisBegin;
-        String response = out.getResponse();
+        final String response = out.getResponse();
+        final TimeoutException internalTimeoutException = out.getTimeoutException();
 
         Assert.assertTrue(timer.isTimeOver(), msgCorrectPass);
         Assert.assertTrue(timeMillisDuration >= DURATION_IN_MS, msgMinimumTime);
         Assert.assertTrue(timeMillisDuration <= DURATION_IN_MS + UPPER_BOUND_IN_MS, msgMaximumTime);
-        Assert.assertNull(response, msgCorrectResponse);
-        Assert.assertNotNull(timeoutException, msgTimeoutExceptionThrown);
+        Assert.assertNotNull(response, msgCorrectResponse);
+        Assert.assertNotNull(internalTimeoutException, msgTimeoutExceptionThrown);
+        Assert.assertNull(thrownAndCatchedTimeoutException, msgTimeoutExceptionThrown);
 
-        testerraRuntimeException = (TesterraRuntimeException) timeoutException.getCause();
+        testerraRuntimeException = (TesterraRuntimeException) internalTimeoutException.getCause();
 
         Assert.assertNotNull(testerraRuntimeException, msgTesterraRuntimeExceptionThrown);
         Assert.assertEquals(testerraRuntimeException.getMessage(), msgTesterraRuntimeException, msgTesterraRuntimeExceptionThrown);

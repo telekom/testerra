@@ -10,19 +10,19 @@ import java.util.List;
 
 /**
  * Created by sagu on 04.05.2017.
- * // TODO rework of DataProvider necessary
+ *
  */
 public class TestResultHelper {
 
     /**
-     * Enum for all possible TestResult Values that are possible within the xeta report.
+     * Enum for all possible TestResult Values that are possible within the Testerra report.
      * <p>
      * TODO: unify xPath-Header -> Jira-Ticket: XETA-572
      */
     public enum TestResult {
-        //TODO sagu rework
         PASSED("green", "PASSED", "header passed", "Passed", "test passed"),
         PASSEDMINOR("SkyBlue", "PASSEDMINOR", "header nf", "Minor", "test nf"),
+        PASSEDRETRY("#6abd00", "PASSED_RETRY", "todo xpath header", "Passed after Retry", "todo xpathTest"),
         SKIPPED("orange", "SKIPPED", "header skipped", "Skipped", "test skipped"),
         FAILED("red", "FAILED", "header broken", "Failed", "test broken"),
         FAILEDMINOR("DeepPink", "FAILEDMINOR", "header brokennf", "Failed with Minor", "test brokennf"),
@@ -68,6 +68,7 @@ public class TestResultHelper {
         ALL(""),
         PASSED(".//*[@title='Passed']"),
         PASSEDMINOR(".//*[@title='Minor']"),
+        PASSEDRETRY(".//*[@title='Passed after Retry']"),
         SKIPPED(".//*[@title='Skipped']"),
         FAILED(".//td[@title='Failed']"),
         FAILEDMINOR(".//*[@title='Failed with Minor']"),

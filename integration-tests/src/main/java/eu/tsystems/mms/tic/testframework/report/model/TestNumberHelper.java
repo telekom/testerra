@@ -20,6 +20,7 @@ public interface TestNumberHelper {
     int getAllSuccessful();
     int getPassed();
     int getPassedMinor();
+    int getPassedRetry();
     int getAllSkipped();
     int getSkipped();
     int getAllBroken();

@@ -360,6 +360,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * It runs once for every test status that is not inherited in report 3. 5 times in total.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @Fails(description = "Needs a local webserver. Chrome blocks showing steps if site is loaded from file")
     public void testT16_checkStepsTab() throws Exception {
         String testmethod = "test_TestStatePassed1";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), testmethod);

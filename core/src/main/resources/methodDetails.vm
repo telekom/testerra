@@ -24,12 +24,13 @@
     <!-- http://www.1001fonts.com/pwfreearrows-font.html#character-map -->
     <style type="text/css">
         @font-face {
-        font-family: 'DancingScript';
-        src: url('style/font/DancingScript.ttf');
+            font-family: 'DancingScript';
+            src: url('style/font/DancingScript.ttf');
         }
+
         @font-face {
-        font-family: 'PWFreeArrows';
-        src: url('style/font/PWFreeArrows.ttf');
+            font-family: 'PWFreeArrows';
+            src: url('style/font/PWFreeArrows.ttf');
         }
 
     </style>
@@ -37,15 +38,15 @@
 </head>
 
 <body>
-#set($cols = 3)
+    #set($cols = 3)
 
 <!--<body onload="loadComments('$!{testStatistics.startTime}')">-->
 
-#set($velocityCount1 = 1)
-#set($velocityCount2 = 1)
+    #set($velocityCount1 = 1)
+    #set($velocityCount2 = 1)
 
-#set($pagetitle = "Method Details")
-#parse("headerrelative.vm")
+    #set($pagetitle = "Method Details")
+    #parse("headerrelative.vm")
 
 <table width="100%" style="margin-top:14px;">
     <tbody>
@@ -69,42 +70,43 @@
             </div>
 
             #if ($testMethod.errorContext().stackTrace)
-            <div id="buttonstack" onclick="toggleDetailsView('exception', 'toggleview', 'buttonstack', 'togglebutton');"
-                 title="Show Stacktrace" class="detailsmenu togglebutton">
-                <h6><i class="symbols fa fa-align-left fa-2x fa-flip-vertical"></i>Stack</h6>
-            </div>
+                <div id="buttonstack" onclick="toggleDetailsView('exception', 'toggleview', 'buttonstack', 'togglebutton');"
+                     title="Show Stacktrace" class="detailsmenu togglebutton">
+                    <h6><i class="symbols fa fa-align-left fa-2x fa-flip-vertical"></i>Stack</h6>
+                </div>
             #end
 
             <!-- collected assertions -->
             #if (${testMethod.collectedAssertions.size()} > 0)
-            <div id="buttoncollectedasserts" onclick="toggleDetailsView('collectedAsserts', 'toggleview', 'buttoncollectedasserts', 'togglebutton');"
-                 title="Show Collected Assertions" class="detailsmenu togglebutton">
-                <h6><i class="symbols fa fa-dot-circle-o fa-2x"></i>Assertions</h6>
-            </div>
+                <div id="buttoncollectedasserts"
+                     onclick="toggleDetailsView('collectedAsserts', 'toggleview', 'buttoncollectedasserts', 'togglebutton');"
+                     title="Show Collected Assertions" class="detailsmenu togglebutton">
+                    <h6><i class="symbols fa fa-dot-circle-o fa-2x"></i>Assertions</h6>
+                </div>
             #end
 
             <!-- minor errors -->
             #if (${testMethod.nonFunctionalInfos.size()} > 0)
-            <div id="buttonminor" onclick="toggleDetailsView('minorError', 'toggleview', 'buttonminor', 'togglebutton');"
-                 title="Show Minor Error" class="detailsmenu togglebutton">
-                <h6><i class="symbols fa fa-eye fa-2x"></i>Minor Errors</h6>
-            </div>
+                <div id="buttonminor" onclick="toggleDetailsView('minorError', 'toggleview', 'buttonminor', 'togglebutton');"
+                     title="Show Minor Error" class="detailsmenu togglebutton">
+                    <h6><i class="symbols fa fa-eye fa-2x"></i>Minor Errors</h6>
+                </div>
             #end
 
             <!-- screens link-->
             #if (${testMethod.screenshots.size()} > 0)
-            <div id="buttonscreen" onclick="toggleDetailsView('screenshotarea', 'toggleview', 'buttonscreen', 'togglebutton');"
-                 title="Show screenshots" class="detailsmenu togglebutton">
-                <h6><i class="symbols fa fa-photo fa-2x"></i>Screenshots</h6>
-            </div>
+                <div id="buttonscreen" onclick="toggleDetailsView('screenshotarea', 'toggleview', 'buttonscreen', 'togglebutton');"
+                     title="Show screenshots" class="detailsmenu togglebutton">
+                    <h6><i class="symbols fa fa-photo fa-2x"></i>Screenshots</h6>
+                </div>
             #end
 
             <!-- video -->
             #if (${testMethod.videos.size()} > 0)
-            <div id="buttonvideo" onclick="toggleDetailsView('videoarea', 'toggleview', 'buttonvideo', 'togglebutton');"
-                 title="Show video" class="detailsmenu togglebutton">
-                <h6><i class="symbols fa fa-file-video-o fa-2x"></i>Videos</h6>
-            </div>
+                <div id="buttonvideo" onclick="toggleDetailsView('videoarea', 'toggleview', 'buttonvideo', 'togglebutton');"
+                     title="Show video" class="detailsmenu togglebutton">
+                    <h6><i class="symbols fa fa-file-video-o fa-2x"></i>Videos</h6>
+                </div>
             #end
 
             <!-- dependencies -->
@@ -160,17 +162,17 @@
                                 <div style="color:${testMethod.status.color};">${testMethod.status.title}</div>
 
                                 #if ($testMethod.isRetry())
-                                <img src="../style/retry.png" alt="Retry" style="width:40px;" title="Retry"/>
+                                    <img src="../style/retry.png" alt="Retry" style="width:40px;" title="Retry"/>
                                 #end
 
                                 #if ($testMethod.getLastFailedStep())
-                                <div class="dashboardTextSmall">
-                                    <br/>
-                                    in
-                                    <br/>
-                                    $testMethod.getLastFailedStep()
-                                    <br/>
-                                </div>
+                                    <div class="dashboardTextSmall">
+                                        <br/>
+                                        in
+                                        <br/>
+                                        $testMethod.getLastFailedStep()
+                                        <br/>
+                                    </div>
                                 #end
                             </div>
                         </td>
@@ -181,7 +183,8 @@
 
                         <td class="cellTop">
                             <h5>Duration</h5>
-                            <div class="dashboardTextBig" id="actualRunDuration">$!{testMethod.getDuration(${testMethod.startTime}, ${testMethod.endTime})}</div>
+                            <div class="dashboardTextBig"
+                                 id="actualRunDuration">$!{testMethod.getDuration(${testMethod.startTime}, ${testMethod.endTime})}</div>
                             <div class="dashboardTextVerySmall"></div>
                             <br/>
                             <div class="dashboardTextSmall">Start $!{testMethod.startTime}</div>
@@ -196,12 +199,13 @@
                             <div>
                                 <h5>
                                     <a href="#" onclick="toggleElement('context');" title="Show Fingerprint">
-                                        Context  <i class="fa fa-hand-pointer-o" style="opacity: 0.6;"></i>
+                                        Context <i class="fa fa-hand-pointer-o" style="opacity: 0.6;"></i>
                                     </a>
                                 </h5>
 
                                 <div id="context" class="dashboardTextVerySmall hidden" style="line-height: 22px; color:#888;">
-                                    Class: <a href="../classes/${testMethod.getEffectiveClassContext().id}.html" title="Jump to class">${testMethod.getEffectiveClassContext().name}</a><br/>
+                                    Class: <a href="../classes/${testMethod.getEffectiveClassContext().id}.html"
+                                              title="Jump to class">${testMethod.getEffectiveClassContext().name}</a><br/>
                                     Test: ${testMethod.testContextModel.name}<br/>
                                     Suite: ${testMethod.suiteContext.name}<br/>
                                     <br/>
@@ -221,57 +225,57 @@
 
                             <!-- priority extra message -->
                             #if ($testMethod.priorityMessage)
-                            <div class="skipped">
-                                $testMethod.priorityMessage
-                            </div>
+                                <div class="skipped">
+                                    $testMethod.priorityMessage
+                                </div>
                             #end
 
-                            <div style="font-size: 30px;">
+                        <div style="font-size: 30px;">
                             #if ($testMethod.isFailed())
-                            <!-- retry -->
+                                <!-- retry -->
 
-                            <div>
-                                <!-- error infos -->
                                 <div>
-                                    #set($fingerprint = $testMethod.errorContext().errorFingerprint)
+                                    <!-- error infos -->
                                     <div>
-                                        <h5 style="position:relative;">
-                                            <a href="#" onclick="toggleElement('fingerprint');" title="Show Fingerprint">
-                                                Error Message <i class="fa fa-hand-pointer-o" style="opacity: 0.6;"></i>
-                                            </a>
-                                        </h5>
+                                        #set($fingerprint = $testMethod.errorContext().errorFingerprint)
+                                        <div>
+                                            <h5 style="position:relative;">
+                                                <a href="#" onclick="toggleElement('fingerprint');" title="Show Fingerprint">
+                                                    Error Message <i class="fa fa-hand-pointer-o" style="opacity: 0.6;"></i>
+                                                </a>
+                                            </h5>
 
-                                        #if (${testMethod.status} == $status_FAILED_EXPECTED)
+                                            #if (${testMethod.status} == $status_FAILED_EXPECTED)
                                             <div style="color: Grey; font-size: 30px; padding: 25px; line-height: 40px;">
-                                        #else
-                                                <div style="color: red; font-size: 30px; padding: 25px; line-height: 40px;">
-                                        #end
+                                            #else
+                                            <div style="color: red; font-size: 30px; padding: 25px; line-height: 40px;">
+                                            #end
 
-                                        #if ($testMethod.errorContext().readableErrorMessage)
-                                            $testMethod.errorContext().readableErrorMessage
-                                        #end
-                                        #if ($testMethod.priorityMessage)
-                                            <div class="skipped">
-                                                $testMethod.priorityMessage
-                                            </div>
-                                        #end
-
+                                            #if ($testMethod.errorContext().readableErrorMessage)
+                                                $testMethod.errorContext().readableErrorMessage
+                                            #end
+                                            #if ($testMethod.priorityMessage)
+                                                <div class="skipped">
+                                                    $testMethod.priorityMessage
                                                 </div>
+                                            #end
 
-                                            </div>
-
-                                        <!-- exit fingerprint -->
-                                        #if ($fingerprint)
-                                        <div id="fingerprint" class="hidden">
-                                            <div style="opacity: 0.4;">
-                                                <br/>
-                                                <h5>Fingerprint</h5>
-                                                <div class="error">
-                                                    $fingerprint
-                                                </div>
-                                            </div>
                                         </div>
-                                        #end
+
+                                        </div>
+
+                                            <!-- exit fingerprint -->
+                                            #if ($fingerprint)
+                                                <div id="fingerprint" class="hidden">
+                                                    <div style="opacity: 0.4;">
+                                                        <br/>
+                                                        <h5>Fingerprint</h5>
+                                                        <div class="error">
+                                                            $fingerprint
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            #end
 
                                             <div style="padding: 20px;">
                                                 <div class="dashboardHorizontalSpacer"></div>
@@ -288,42 +292,44 @@
                                                     <tr>
                                                         <td class="cellCenter">
                                                             #if ($testMethod.errorContext().scriptSource)
-                                                            <div id="sourceScript" style="text-align: initial">
-#set ($source=$testMethod.errorContext().scriptSource)
-<pre><code>  // $source.fileName
+                                                                <div id="sourceScript" style="text-align: initial">
+                                                                    #set ($source=$testMethod.errorContext().scriptSource)
+                                                                    <pre><code>  // $source.fileName
 
-#foreach($s in $source.lines)
-#if ($s.mark)
-&#8623; $s.lineNumber : $s.line
-#else
-  $s.lineNumber : $s.line
-#end
-#end
+                                                                        #foreach($s in $source.lines)
+                                                                            #if ($s.mark)
+                                                                                &#8623; $s.lineNumber : $s.line
+                                                                            #else
+                                                                                $s.lineNumber : $s.line
+                                                                            #end
+                                                                        #end
 </code></pre>
-                                                            </div>
+                                                                </div>
                                                             #else
-                                                            No test sources
+                                                                No test sources
                                                             #end
                                                         </td>
                                                         <td class="cellCenter">
                                                             #if ($testMethod.errorContext().executionObjectSource)
-                                                            <div id="sourcePage" style="text-align: initial">
-                                                                <div id="sourceScript" style="text-align: initial">
-#set ($source=$testMethod.errorContext().executionObjectSource)
-<pre><code>  // $source.fileName
+                                                                <div id="sourcePage" style="text-align: initial">
+                                                                    <div id="sourceScript" style="text-align: initial">
+                                                                        #set ($source=$testMethod.errorContext().executionObjectSource)
+                                                                        <pre><code>  // $source.fileName
 
-#foreach($s in $source.lines)
-#if ($s.mark)
-&#8623; $s.lineNumber : $s.line.replace($source.methodName, $String.format("<mark>%s</mark>", $source.methodName));
-#else
-  $s.lineNumber : $s.line
-#end
-#end
+                                                                            #foreach($s in $source.lines)
+                                                                                #if ($s.mark)
+                                                                                    &#8623; $s.lineNumber
+                                                                                    : $s.line.replace($source.methodName, $String.format(
+                                                                                    "<mark>%s</mark>", $source.methodName));
+                                                                                #else
+                                                                                    $s.lineNumber : $s.line
+                                                                                #end
+                                                                            #end
 </code></pre>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
                                                             #else
-                                                            No page object sources
+                                                                No page object sources
                                                             #end
                                                         </td>
                                                     </tr>
@@ -351,9 +357,12 @@
                                              data-width="40%"
                                         >
 
-                                                <img src="../../screenshots/$customError.expectedScreenshot.filename" data-caption="Expected"/>
-                                                <img src="../../screenshots/$customError.actualScreenshot.filename" data-caption="Actual"/>
-                                                <img src="../../screenshots/$customError.distanceScreenshot.filename" data-caption="Distance"/>
+                                            <img src="../../screenshots/$customError.expectedScreenshot.filename"
+                                                 data-caption="Expected"/>
+                                            <img src="../../screenshots/$customError.actualScreenshot.filename"
+                                                 data-caption="Actual"/>
+                                            <img src="../../screenshots/$customError.distanceScreenshot.filename"
+                                                 data-caption="Distance"/>
                                         </div>
                                     #end
                                 #end
@@ -361,16 +370,17 @@
 
                             #set ($size = ${testMethod.nonFunctionalInfos.size()})
                             #if ($size > 0)
-                            <!-- minor -->
-                            <div style="font-size: 30px;">
-                                <div class="error clickable" style="color:SkyBlue;" onclick="toggleDetailsView('minorError', 'toggleview', 'buttonminor', 'togglebutton')">
-                                    #if ($size > 1)
-                                    There are $size MINOR errors.
-                                    #else
-                                    There is $size MINOR error.
-                                    #end
+                                <!-- minor -->
+                                <div style="font-size: 30px;">
+                                    <div class="error clickable" style="color:SkyBlue;"
+                                         onclick="toggleDetailsView('minorError', 'toggleview', 'buttonminor', 'togglebutton')">
+                                        #if ($size > 1)
+                                            There are $size MINOR errors.
+                                        #else
+                                            There is $size MINOR error.
+                                        #end
+                                    </div>
                                 </div>
-                            </div>
                             #end
 
                         </td>
@@ -380,27 +390,27 @@
         </td>
     </tr>
 
-     <!-- videos -->
+    <!-- videos -->
     <tr id="videoarea" class="hidden toggleview">
         <td colspan="2">
             #if ($testMethod.hasVideo())
-            <div>
-                <br/>
-                <br/>
+                <div>
+                    <br/>
+                    <br/>
                     #foreach($video in ${testMethod.videos})
-                    <div style="margin: 10px; float: left;">
-                        <div>
-                            <video width="1024" height="512" controls autoplay>
-                                <source src="../../videos/$video.filename" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
+                        <div style="margin: 10px; float: left;">
+                            <div>
+                                <video width="1024" height="512" controls autoplay>
+                                    <source src="../../videos/$video.filename" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <div>
+                                <a href="../../videos/$video" download="../../videos/$video.filename" title="Video">Download</a>
+                            </div>
                         </div>
-                        <div>
-                            <a href="../../videos/$video" download="../../videos/$video.filename" title="Video">Download</a>
-                        </div>
-                    </div>
                     #end
-            </div>
+                </div>
             #end
         </td>
     </tr>
@@ -413,7 +423,7 @@
             <script type="text/javascript">
                 var methods = [];
 
-                #parse('methodDependencies.vm')
+                    #parse('methodDependencies.vm')
             </script>
             <script type="text/javascript" src="../js/dependencies-tree-view.js"></script>
         </td>
@@ -466,9 +476,10 @@
                             #end
                             <tr class="standardTable tr" style="background-color: $backgroundColor">
                                 <td width="100%" style="text-align:left;">
-                                    <a href="javascript:void(0);" onclick="toggleElement('non-functional-exception-$velocityCountNF')"
+                                    <a href="javascript:void(0);"
+                                       onclick="toggleElement('non-functional-exception-$velocityCountNF')"
                                        title="Click to expand/collapse" style="color:SkyBlue; font-weight: bold;">
-                                        $nfi.errorContext().readableErrorMessage
+                                        $nfi.readableErrorMessage
                                     </a>
                                     <div style="display: none;" id="non-functional-exception-$velocityCountNF">
                                         <div style="margin-left: 10px;">
@@ -479,13 +490,13 @@
                                         </div>
                                     </div>
                                 </td>
-##                                <td width="" style="">
-##                                          <span class="screenshots">
-##                                              <!-- screenshots -->
-##                                              #set($methodInfo=$nfi)
-##                                              #parse("screenshotsSmall.vm")
-##                                          </span>
-##                                </td>
+                                ##                                <td width="" style="">
+                                ##                                          <span class="screenshots">
+                                ##                                              <!-- screenshots -->
+                                ##                                              #set($methodInfo=$nfi)
+                                ##                                              #parse("screenshotsSmall.vm")
+                                ##                                          </span>
+                                ##                                </td>
                             </tr>
                             #set($velocityCountNF = $velocityCountNF + 1)
                         #end
@@ -519,9 +530,10 @@
                             #end
                             <tr class="standardTable tr" style="background-color: $backgroundColor">
                                 <td width="100%" style="text-align:left;">
-                                    <a href="javascript:void(0);" onclick="toggleElement('collected-assert-exception-$velocityCountCA')"
+                                    <a href="javascript:void(0);"
+                                       onclick="toggleElement('collected-assert-exception-$velocityCountCA')"
                                        title="Click to expand/collapse" style="color:red; font-weight: bold;">
-                                        $ai.errorContext().readableErrorMessage
+                                        $ai.readableErrorMessage
                                     </a>
                                     <div style="display: none;" id="collected-assert-exception-$velocityCountCA">
                                         <div style="margin-left: 10px;">
@@ -558,20 +570,20 @@
 </table>
 
 <script type="text/javascript">
-toggleDetailsView('details', 'toggleview', 'buttondetails', 'togglebutton');
+    toggleDetailsView('details', 'toggleview', 'buttondetails', 'togglebutton');
 </script>
 
-#if (!$testMethod.isConfigMethod())
+    #if (!$testMethod.isConfigMethod())
     <script type="text/javascript">
         function showHistoryGraph() {
         }
     </script>
-#end
+    #end
 
 <script type="text/javascript">
     var e = "#logstd";
     $(e).empty();
-    $(e).load("steps${testMethod.methodRunIndex}.html", function() {
+    $(e).load("steps${testMethod.methodRunIndex}.html", function () {
         // nothing so far
     });
 </script>

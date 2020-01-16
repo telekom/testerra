@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 public class GuiElementListTests extends AbstractTestSitesTest {
 
     private GuiElementListPage preparePage() {
-        WebDriverManager.getWebDriver().get(getStartPage().getUrl());
         return PageFactory.create(GuiElementListPage.class, WebDriverManager.getWebDriver());
     }
 

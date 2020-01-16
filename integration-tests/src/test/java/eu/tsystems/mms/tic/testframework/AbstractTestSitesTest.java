@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework;
 import eu.tsystems.mms.tic.testframework.core.test.Server;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +32,15 @@ import org.testng.annotations.BeforeTest;
 public abstract class AbstractTestSitesTest extends AbstractTest {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractTestSitesTest.class);
+    private Server server = new Server(FileUtils.getResourceFile("testsites"));
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         POConfig.setUiElementTimeoutInSeconds(1);
-        Server.start();
-        WebDriverManager.setBaseURL(getStartPage().getUrl());
+        int port = server.start();
+        String baseUrl = String.format("http://localhost:%d/%s", port, getStartPage().getUrl());
+        WebDriverManager.setBaseURL(baseUrl);
+        LOGGER.info("base url: "+ baseUrl);
     }
 
     protected TestPage getStartPage() {
@@ -45,6 +49,6 @@ public abstract class AbstractTestSitesTest extends AbstractTest {
 
     @AfterTest(alwaysRun = true)
     public void tearDown() throws Exception {
-        Server.stop();
+        server.stop();
     }
 }

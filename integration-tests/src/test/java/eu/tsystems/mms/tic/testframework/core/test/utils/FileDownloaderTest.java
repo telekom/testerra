@@ -107,7 +107,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath() + "/foo/bar\\test", true, true);
 
-        String download = downloader.download(driver, TestPage.INPUT_TEST_PAGE.getUrl() + "#",
+        String download = downloader.download(driver, WebDriverManager.getBaseURL() + "#",
                 "test03_downloadFileToLongLocation.htm");
         File file = FileUtils.getFile(download);
 

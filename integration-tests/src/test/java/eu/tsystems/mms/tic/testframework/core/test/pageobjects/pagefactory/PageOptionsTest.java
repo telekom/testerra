@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithPageOptions;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
@@ -8,15 +9,11 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class PageOptionsTest {
+public class PageOptionsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT01_PageOptions_ElementTimeout() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-
-        driver.get(TestPage.INPUT_TEST_PAGE.getUrl());
-
-        PageWithPageOptions page = PageFactory.create(PageWithPageOptions.class, driver);
+        PageWithPageOptions page = PageFactory.create(PageWithPageOptions.class, WebDriverManager.getWebDriver());
 
         Assert.assertEquals(page.existingElement.getTimeoutInSeconds(), 3, "Timeout value from page options");
     }

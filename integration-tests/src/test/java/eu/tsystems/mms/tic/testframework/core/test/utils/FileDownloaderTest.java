@@ -67,7 +67,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
 
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true);
 
-        String download = downloader.download(driver, TestPage.INPUT_TEST_PAGE.getUrl() + "#",
+        String download = downloader.download(driver, WebDriverManager.getBaseURL() + "#",
                 "testT01_downloadFile.htm");
         File file = FileUtils.getFile(download);
 

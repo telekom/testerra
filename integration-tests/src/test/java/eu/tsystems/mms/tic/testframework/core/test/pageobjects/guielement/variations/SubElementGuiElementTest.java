@@ -40,11 +40,6 @@ public class SubElementGuiElementTest extends AbstractGuiElementNonFunctionalAss
         return parentElement.getSubElement(locator);
     }
 
-    @Override
-    protected TestPage getTestPage() {
-        return TestPage.INPUT_TEST_PAGE;
-    }
-
     /**
      * negative test some methods for getSubElement.
      */

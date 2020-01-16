@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.utils.XMLUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -31,7 +31,7 @@ import javax.xml.xpath.XPathExpressionException;
 /**
  * Created by pele on 20.11.2014.
  */
-public class XMLUtilsTest extends AbstractTest {
+public class XMLUtilsTest extends AbstractWebDriverTest {
 
     String xml1 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><AuthenticationResult><authInfo><accountName>-LWQyJq8qWlVKqJYdanTyFkYcAQqg5SAxAQD04JIrgc</accountName><accountUuid>c99738f1-437b-41c1-993c-9354da167c60</accountUuid><userName>TAAccount11</userName><userUuid>b44bac92-2302-4f9a-8608-8c0911f1dce7</userUuid><authLevel>NORMAL</authLevel><authMethod>USERNAME_PASSWORD</authMethod><steps>USER</steps></authInfo><authTimestamp>2014-11-20T09:23:34.057+01:00</authTimestamp><nextPWChange>2015-11-20T09:23:31.254+01:00</nextPWChange><externalReferenceID>3287850142</externalReferenceID></AuthenticationResult>";
     String xml2 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +

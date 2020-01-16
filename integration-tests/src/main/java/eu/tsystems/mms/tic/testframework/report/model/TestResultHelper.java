@@ -3,31 +3,31 @@ package eu.tsystems.mms.tic.testframework.report.model;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import org.testng.annotations.DataProvider;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by sagu on 04.05.2017.
- * // TODO rework of DataProvider necessary
+ *
  */
 public class TestResultHelper {
 
     /**
-     * Enum for all possible TestResult Values that are possible within the xeta report.
+     * Enum for all possible TestResult Values that are possible within the Testerra report.
      * <p>
      * TODO: unify xPath-Header -> Jira-Ticket: XETA-572
      */
     public enum TestResult {
-        //TODO sagu rework
         PASSED("green", "PASSED", "header passed", "Passed", "test passed"),
         PASSEDMINOR("SkyBlue", "PASSEDMINOR", "header nf", "Minor", "test nf"),
-        SKIPPED("orange","SKIPPED", "header skipped", "Skipped", "test skipped"),
+        PASSEDRETRY("#6abd00", "PASSED_RETRY", "todo xpath header", "Passed after Retry", "todo xpathTest"),
+        SKIPPED("orange", "SKIPPED", "header skipped", "Skipped", "test skipped"),
         FAILED("red", "FAILED", "header broken", "Failed", "test broken"),
-        FAILEDMINOR("DeepPink","FAILEDMINOR", "header brokennf", "Failed with Minor", "test brokennf"),
-        RETRIED("pink","RETRIED", "header retried", "Retried", "test retried"),
-        FAILEDEXPECTED("grey","FAILEDEXPECTED", "header expectedFailed", "Expected Failed", "test expectedFailed");
+        FAILEDMINOR("DeepPink", "FAILEDMINOR", "header brokennf", "Failed with Minor", "test brokennf"),
+        RETRIED("pink", "RETRIED", "header retried", "Retried", "test retried"),
+        FAILEDEXPECTED("grey", "FAILEDEXPECTED", "header expectedFailed", "Expected Failed", "test expectedFailed");
 
         private final String color;
         private final String testState;
@@ -68,8 +68,9 @@ public class TestResultHelper {
         ALL(""),
         PASSED(".//*[@title='Passed']"),
         PASSEDMINOR(".//*[@title='Minor']"),
+        PASSEDRETRY(".//*[@title='Passed after Retry']"),
         SKIPPED(".//*[@title='Skipped']"),
-        FAILED("(.//*[@title='Failed'])[2]"),
+        FAILED(".//td[@title='Failed']"),
         FAILEDMINOR(".//*[@title='Failed with Minor']"),
         RETRIED(".//*[@title='Retried']"),
         FAILEDEXPECTED(".//*[@title='Expected Failed']");
@@ -146,9 +147,9 @@ public class TestResultHelper {
             case FAILEDMINOR:
                 return new Color(255, 20, 147);
             case RETRIED:
-                return new Color(255,182,193);
+                return new Color(255, 182, 193);
             case FAILEDEXPECTED:
-                return new Color(0,0,0);
+                return new Color(0, 0, 0);
             default:
                 throw new TesterraRuntimeException("Color not implemented: " + testResult.getColor() + " for TestResult: " + testResult.toString());
         }

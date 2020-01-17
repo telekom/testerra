@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import org.testng.annotations.Test;
 
@@ -29,7 +29,7 @@ import java.math.BigDecimal;
  * Created by toku on 13.01.2015.
  */
 
-public class AssertUtilsTest extends AbstractTest {
+public class AssertUtilsTest extends AbstractWebDriverTest {
 
     /**
      * checks if string contains expected content
@@ -42,6 +42,7 @@ public class AssertUtilsTest extends AbstractTest {
 
     /**
      * checks if string contains expected content but fails. checks if assertionError is correct
+     *
      * @throws AssertionError .
      */
     @Test
@@ -50,7 +51,7 @@ public class AssertUtilsTest extends AbstractTest {
         try {
             AssertUtils.assertContains(string, "DresdenX");
         } catch (AssertionError e) {
-           Assert.assertTrue(e.getMessage().contains("String contains " + "DresdenX" + "\nactual: " + string));
+            Assert.assertTrue(e.getMessage().contains("expected [Dresden] contains [DresdenX]"));
             return;
         }
         Assert.fail("");
@@ -66,8 +67,9 @@ public class AssertUtilsTest extends AbstractTest {
     }
 
 
-     /**
+    /**
      * checks if string contains expected content but fails. checks if assertionError is correct
+     *
      * @throws AssertionError .
      */
     @Test

@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.general;
 
+import eu.tsystems.mms.tic.testframework.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFailurePointsPage;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFailureEntry;
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by riwa on 12.04.2017.
  */
-public abstract class AbstractReportFailuresTest extends AbstractTest {
+public abstract class AbstractReportFailuresTest extends AbstractReportTest {
 
     protected ResultTableFailureType failurePointType;
     protected String reportFilter;

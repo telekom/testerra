@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.utils.RandomUtils;
 import org.testng.annotations.Test;
 
@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 /**
  * Created by toku on 09.01.2015.
  */
-public class RandomUtilsTest extends AbstractTest {
+public class RandomUtilsTest extends AbstractWebDriverTest {
 
     private String stringContainsChars = "String contains not only ";
     private String stringLength = "String has not expected length";

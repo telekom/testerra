@@ -22,6 +22,7 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
     public final GuiElement numberOfAllSuccessfulTests = new GuiElement(this.driver, By.id("totalNumberOfSuccessfulMethods"), mainFrame);
     public final GuiElement numberPassedTests = new GuiElement(this.driver, By.id("numberOfPASSED"), mainFrame);
     public final GuiElement numberPassedMinorTests = new GuiElement(this.driver, By.id("numberOfMINOR"), mainFrame);
+    public final GuiElement numberPassedRetryTests = new GuiElement(this.driver, By.id("numberOfPASSED_RETRY"), mainFrame);
 
     public final GuiElement numberAllSkippedTests = new GuiElement(this.driver, By.id("totalNumberOfSkippedMethods"), mainFrame);
     public final GuiElement numberSkippedTests = new GuiElement(this.driver, By.id("numberOfSKIPPED"), mainFrame);
@@ -31,7 +32,6 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
     public final GuiElement numberFailedMinorTests = new GuiElement(this.driver, By.id("numberOfFAILED_MINOR"), mainFrame);
     public final GuiElement numberFailedRetriedTests = new GuiElement(this.driver, By.id("numberOfFAILED_RETRIED"), mainFrame);
     public final GuiElement numberFailedExpectedTests = new GuiElement(this.driver, By.id("numberOfFAILED_EXPECTED"), mainFrame);
-
 
     public final GuiElement numberExitPoints = new GuiElement(this.driver, By.xpath("//*[@id='exitPointsLink']/a"), mainFrame);
     public final GuiElement numberFailureAspects = new GuiElement(this.driver, By.xpath("//*[@id='failureAspectsLink']/a"), mainFrame);
@@ -66,6 +66,9 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
                 break;
             case PASSEDMINOR:
                 isDisplayed = numberPassedMinorTests.isDisplayed();
+                break;
+            case PASSEDRETRY:
+                isDisplayed = numberPassedRetryTests.isDisplayed();
                 break;
             case SKIPPED:
                 isDisplayed = numberSkippedTests.isDisplayed();
@@ -113,7 +116,7 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
     /**
      * Triggers a given Event for a number depending on a given testresult category.
      *
-     * @param testResult  the result category (Passed, Failed, Failed Inherited, ...)
+     * @param testResult the result category (Passed, Failed, Failed Inherited, ...)
      * @param mouseAction the intended mouseAction
      * @return an updated DashboardPage Object
      * @throws
@@ -144,7 +147,8 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
                 counter = numberFailedExpectedTests;
                 break;
             default:
-                throw new TesterraRuntimeException("Unsupported Test Counter for TestResult: " + testResult);        }
+                throw new TesterraRuntimeException("Unsupported Test Counter for TestResult: " + testResult);
+        }
         switch (mouseAction) {
             case CLICK:
                 counter.click();
@@ -170,7 +174,6 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
 
     }
 
-
     public void assertCoreTestNumbers(TestNumberHelper testNumberHelper) {
 
         /* ALL */
@@ -193,6 +196,13 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
                 String passedMinorString = numberPassedMinorTests.getText();
                 int actualPassedMinor = Integer.parseInt(passedMinorString.substring(1, passedMinorString.indexOf("M") - 1));
                 AssertCollector.assertEquals(actualPassedMinor, testNumberHelper.getPassedMinor(), "The number of passed with minor tests is NOT correct.");
+            }
+
+            //check retry
+            if (testNumberHelper.getPassedRetry() > 0) {
+                String passedRetryString = numberPassedRetryTests.getText();
+                int actualPassedRetry = Integer.parseInt(passedRetryString.substring(1, passedRetryString.indexOf("P") - 1));
+                AssertCollector.assertEquals(actualPassedRetry, testNumberHelper.getPassedRetry(), "The number of passed with retry tests is NOT correct");
             }
         }
 

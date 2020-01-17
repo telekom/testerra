@@ -51,7 +51,7 @@ public class FrameAwareGuiElementTest extends AbstractGuiElementNonFunctionalAss
     }
 
     @Override
-    protected TestPage getTestPage() {
+    protected TestPage getStartPage() {
         return TestPage.FRAME_TEST_PAGE;
     }
 }

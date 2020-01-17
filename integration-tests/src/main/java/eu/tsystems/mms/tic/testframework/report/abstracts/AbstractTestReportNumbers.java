@@ -22,6 +22,7 @@ public abstract class AbstractTestReportNumbers implements TestNumberHelper {
     protected int allSuccessful = 0;
     protected int passed = 0;
     protected int passedMinor = 0;
+    protected int passedRetry = 0;
     protected int allSkipped = 0;
     protected int skipped = 0;
     protected int allBroken = 0;
@@ -96,6 +97,9 @@ public abstract class AbstractTestReportNumbers implements TestNumberHelper {
         return passedMinor;
     }
 
+    public int getPassedRetry() {
+        return passedRetry;
+    }
 
     public int getAllSkipped() {
         return allSkipped;

@@ -18,7 +18,5 @@ public abstract class AbstractFramePage extends Page {
     public AbstractFramePage(WebDriver driver) {
         super(driver);
         mainFrame = new GuiElement(driver, By.cssSelector("frame[name='main']"));
-
-
     }
 }

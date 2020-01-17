@@ -9,15 +9,11 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
-public class PageOptionsTest extends AbstractTestSitesTest implements IPageFactoryTest {
+public class PageOptionsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT01_PageOptions_ElementTimeout() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-
-        driver.get(TestPage.INPUT_TEST_PAGE.getUrl());
-
-        PageWithPageOptions page = getPage();
+        PageWithPageOptions page = PageFactory.create(PageWithPageOptions.class, WebDriverManager.getWebDriver());
 
         Assert.assertEquals(page.existingElement.getTimeoutInSeconds(), 3, "Timeout value from page options");
     }

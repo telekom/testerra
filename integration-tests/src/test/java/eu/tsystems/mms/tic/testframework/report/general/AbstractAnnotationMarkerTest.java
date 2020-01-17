@@ -1,5 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.general;
 
+import eu.tsystems.mms.tic.testframework.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.model.IReportAnnotationVerifier;
 import eu.tsystems.mms.tic.testframework.report.model.ReportAnnotationType;
 
@@ -9,7 +10,7 @@ import java.util.Map;
 /**
  * Created by fakr on 11.09.2017
  */
-public abstract class AbstractAnnotationMarkerTest extends AbstractTest {
+public abstract class AbstractAnnotationMarkerTest extends AbstractReportTest {
 
     protected void checkAnnotationsAreDisplayed(IReportAnnotationVerifier verifier, Map<String,List<ReportAnnotationType>> methodTestObjects) {
         for (String methodName: methodTestObjects.keySet()) {

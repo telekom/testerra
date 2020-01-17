@@ -44,9 +44,6 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
             driver = WebDriverManager.getWebDriver();
         }
 
-        String url = TestPage.INPUT_TEST_PAGE.getUrl();
-        driver.get(url);
-
         return driver;
     }
 

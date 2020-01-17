@@ -21,9 +21,30 @@ package eu.tsystems.mms.tic.testframework;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.annotations.BeforeMethod;
 
-public abstract class AbstractTest extends TesterraTest {
+/**
+ * Abstract test class for tests using a WebDriver
+ */
+public abstract class AbstractWebDriverTest extends TesterraTest {
+
+    /**
+     * Fixing up testing issues when /dev/shm becomes to small for test execution
+     * this will fix "session deleted because of page crash"
+     * https://stackoverflow.com/questions/53902507/unknown-error-session-deleted-because-of-page-crash-from-unknown-error-cannot
+     */
+    @BeforeMethod(alwaysRun = true)
+    public void configureChromeOptions() {
+        WebDriverManager.setUserAgentConfig(Browsers.chromeHeadless, new ChromeConfig() {
+            @Override
+            public void configure(ChromeOptions options) {
+                options.addArguments("--disable-dev-shm-usage");
+            }
+        });
+    }
 
     /**
      * Sets the unsupportedBrowser=true flag for the @Fails annotation

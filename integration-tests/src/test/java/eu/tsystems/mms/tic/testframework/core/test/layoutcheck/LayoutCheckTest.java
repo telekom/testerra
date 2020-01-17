@@ -41,11 +41,6 @@ public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
         return TestPage.LAYOUT;
     }
 
-    @BeforeMethod
-    public void gotoStartSite() {
-        WebDriverManager.getWebDriver().navigate().to(getStartPage().getUrl());
-    }
-
     private GuiElement getGuiElementQa(final String qaTag) {
         return new GuiElement(WebDriverManager.getWebDriver(), Locate.by().qa(qaTag));
     }

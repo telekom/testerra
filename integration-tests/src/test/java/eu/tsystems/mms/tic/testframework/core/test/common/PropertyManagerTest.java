@@ -19,14 +19,14 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.common;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import org.testng.annotations.Test;
 
 /**
  * Created by pele on 28.05.2014.
  */
-public class PropertyManagerTest extends AbstractTest {
+public class PropertyManagerTest extends AbstractWebDriverTest {
 
     /**
      * property test with system properties and replacement system

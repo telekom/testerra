@@ -12,13 +12,13 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodScreenshotPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodStackPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodStepsPage;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.net.URISyntaxException;
 
 /**
  * Created by sagu on 22.04.2017.
@@ -29,9 +29,12 @@ public class GeneralWorkflow {
 
     public static URI getURIForReport(String reportDirectory) {
         LOGGER.debug("Calling getURIForReport method for report directory " + reportDirectory);
-
-        Path path = Paths.get(System.getProperty("user.dir"), reportDirectory, PropertyManager.getProperty("fileName"));
-        return path.toUri();
+        try {
+            return new URI(String.format("%s/%s/%s",WebDriverManager.getBaseURL(), reportDirectory, PropertyManager.getProperty("fileName")));
+        } catch (URISyntaxException e) {
+            LOGGER.error("Unable to create report url", e);
+        }
+        return null;
     }
 
     /**

@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.exceptions.FileNotFoundException;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.PdfUtils;
@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
  * @author wakr
  *
  */
-public class PdfUtilsTest extends AbstractTest {
+public class PdfUtilsTest extends AbstractWebDriverTest {
 
     private final String errorMessage = "Error while opening pdf and reading the target text";
     private final String testfile = "testfiles/Test.pdf";

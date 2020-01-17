@@ -21,6 +21,7 @@ import org.openqa.selenium.WebDriver;
  * Created by riwa on 25.10.2016.
  */
 public class DashboardPage extends AbstractReportPage implements IReportAnnotationVerifier {
+
     @Check
     public final GuiElement testerraLogo = new GuiElement(this.driver, By.cssSelector("img[alt='testerra']"), mainFrame);
     public final DashboardModuleTestResultPieChart dashboardModuleTestResultPieChart = PageFactory.create(DashboardModuleTestResultPieChart.class, driver);
@@ -103,7 +104,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
      */
     public GuiElement getResultTableHeaderForTestResult(TestResultHelper.TestResult testResult) {
         String testState = testResult.getTestState();
-        GuiElement testResultTableHeader = new GuiElement(driver, By.xpath("(//*[@class='header']/../tr[@class='test testbar"+testState+" filterMethods filter"+testState+"'])[1]"), mainFrame);
+        GuiElement testResultTableHeader = new GuiElement(driver, By.xpath("(//*[@class='header']/../tr[@class='test testbar" + testState + " filterMethods filter" + testState + "'])[1]"), mainFrame);
         testResultTableHeader.setName("testResultTableHeader");
 
         return testResultTableHeader;
@@ -119,7 +120,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
      * Check for the visibility of a annotation type for a method name.
      *
      * @param annotationType the type to be checked.
-     * @param methodName a given method which is assumed to be annotated.
+     * @param methodName     a given method which is assumed to be annotated.
      */
     @Override
     public void assertAnnotationMarkIsDisplayed(ReportAnnotationType annotationType, String methodName) {
@@ -156,7 +157,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
         return PageFactory.create(MethodDetailsPage.class, this.driver);
     }
 
-    public MethodDetailsPage goToMethodDetailsPageUsingTestNumberFilter(TestResultHelper.TestResult testResult, String className, String methodName) throws Exception{
+    public MethodDetailsPage goToMethodDetailsPageUsingTestNumberFilter(TestResultHelper.TestResult testResult, String className, String methodName) throws Exception {
         dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);
         GuiElement barChartElement = dashboardModuleClassBarChart.getBarChartElementByClassName(className);
         barChartElement.click();

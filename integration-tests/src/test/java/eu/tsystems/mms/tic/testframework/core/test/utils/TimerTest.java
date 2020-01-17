@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 /**
  * Created by nigr on 04.09.2015.
  */
-public class TimerTest extends AbstractTest implements Loggable {
+public class TimerTest extends AbstractWebDriverTest implements Loggable {
 
     public static final int DURATION_IN_MS = 1000;
     public static final int SLEEP_TIME_IN_MS = 50;
@@ -43,6 +43,8 @@ public class TimerTest extends AbstractTest implements Loggable {
     private final String msgCorrectPass = "Timer passed sequence correctly";
     private final String msgCorrectResponse = "Response was returned correctly";
     private final String msgCorrectThrowable = "Throwable was returned correctly";
+
+    private final String msgReturningObject = "Returning string";
 
     private final String msgTimeout = "Sequence execution timed out " + DURATION_IN_MS + " ms (polling every " + SLEEP_TIME_IN_MS + " ms)";
     private final String msgTimeoutExceptionThrown = "TimeoutException was thrown";
@@ -96,7 +98,7 @@ public class TimerTest extends AbstractTest implements Loggable {
         ThrowablePackedResponse<String> out = timer.executeSequence(new Timer.Sequence<String>() {
             @Override
             public void run() {
-                setReturningObject("huhu");
+                setReturningObject(msgReturningObject);
                 setPassState(true);
             }
         });
@@ -107,31 +109,66 @@ public class TimerTest extends AbstractTest implements Loggable {
         Assert.assertFalse(timer.isTimeOver(), msgCorrectPass);
         Assert.assertTrue(timeMillisDuration < UPPER_BOUND_IN_MS, "Timer passed sequence in less than 200ms");
         Assert.assertNotNull(response, msgCorrectResponse);
-        Assert.assertEquals(response, "huhu", msgCorrectResponse);
+        Assert.assertEquals(response, msgReturningObject, msgCorrectResponse);
     }
 
     @Test
     public void testT04_ExecuteSequence_WithException() throws Exception {
+
         Timer timer = new Timer(SLEEP_TIME_IN_MS, DURATION_IN_MS);
 
         final long timeMillisBegin = System.currentTimeMillis();
 
         Throwable throwable = new Throwable();
         ThrowablePackedResponse<String> out = new ThrowablePackedResponse<String>(null, throwable, false, new TimeoutException(throwable));
-        TimeoutException timeoutException = null;
+        TimeoutException thrownAndCatchedTimeoutException = null;
         TesterraRuntimeException testerraRuntimeException;
 
         try {
             out = timer.executeSequence(new Timer.Sequence<String>() {
                 @Override
                 public void run() {
-                    setReturningObject("huhu");
                     throw new TesterraRuntimeException(msgTesterraRuntimeException);
                 }
             });
         } catch (TimeoutException e) {
-            timeoutException = e;
+            thrownAndCatchedTimeoutException = e;
         }
+
+        final long timeMillisDuration = System.currentTimeMillis() - timeMillisBegin;
+        final String response = out.getResponse();
+        final TimeoutException internalTimeoutException = out.getTimeoutException();
+
+        Assert.assertTrue(timer.isTimeOver(), msgCorrectPass);
+        Assert.assertTrue(timeMillisDuration >= DURATION_IN_MS, msgMinimumTime);
+        Assert.assertTrue(timeMillisDuration <= DURATION_IN_MS + UPPER_BOUND_IN_MS, msgMaximumTime);
+        Assert.assertNotNull(response, msgCorrectResponse);
+        Assert.assertNotNull(internalTimeoutException, msgTimeoutExceptionThrown);
+        Assert.assertNull(thrownAndCatchedTimeoutException, msgTimeoutExceptionThrown);
+
+        testerraRuntimeException = (TesterraRuntimeException) internalTimeoutException.getCause();
+
+        Assert.assertNotNull(testerraRuntimeException, msgTesterraRuntimeExceptionThrown);
+        Assert.assertEquals(testerraRuntimeException.getMessage(), msgTesterraRuntimeException, msgTesterraRuntimeExceptionThrown);
+    }
+
+    @Test
+    public void testT05_ExecuteSequence_WithExceptionReturningObject() throws Exception {
+        Timer timer = new Timer(SLEEP_TIME_IN_MS, DURATION_IN_MS);
+
+        final long timeMillisBegin = System.currentTimeMillis();
+
+        Throwable throwable = new Throwable();
+        ThrowablePackedResponse<String> out = new ThrowablePackedResponse<String>(null, throwable, false, new TimeoutException(throwable));
+        TesterraRuntimeException testerraRuntimeException;
+
+        out = timer.executeSequence(new Timer.Sequence<String>() {
+            @Override
+            public void run() {
+                setReturningObject(msgReturningObject);
+                throw new TesterraRuntimeException(msgTesterraRuntimeException);
+            }
+        });
 
         final long timeMillisDuration = System.currentTimeMillis() - timeMillisBegin;
         String response = out.getResponse();
@@ -139,17 +176,12 @@ public class TimerTest extends AbstractTest implements Loggable {
         Assert.assertTrue(timer.isTimeOver(), msgCorrectPass);
         Assert.assertTrue(timeMillisDuration >= DURATION_IN_MS, msgMinimumTime);
         Assert.assertTrue(timeMillisDuration <= DURATION_IN_MS + UPPER_BOUND_IN_MS, msgMaximumTime);
-        Assert.assertNull(response, msgCorrectResponse);
-        Assert.assertNotNull(timeoutException, msgTimeoutExceptionThrown);
-
-        testerraRuntimeException = (TesterraRuntimeException) timeoutException.getCause();
-
-        Assert.assertNotNull(testerraRuntimeException, msgTesterraRuntimeExceptionThrown);
-        Assert.assertEquals(testerraRuntimeException.getMessage(), msgTesterraRuntimeException, msgTesterraRuntimeExceptionThrown);
+        Assert.assertNotNull(response, msgCorrectResponse);
+        Assert.assertEquals(response, msgReturningObject, msgCorrectResponse);
     }
 
     @Test
-    public void testT05_ExecuteSequence_PassStateFalse() throws Exception {
+    public void testT06_ExecuteSequence_PassStateFalse() throws Exception {
         Timer timer = new Timer(SLEEP_TIME_IN_MS, DURATION_IN_MS);
 
         final long timeMillisBegin = System.currentTimeMillis();
@@ -181,7 +213,7 @@ public class TimerTest extends AbstractTest implements Loggable {
     }
 
     @Test
-    public void testT06_ExecuteSequence_PassStateFalseAndReturningObject() throws Exception {
+    public void testT07_ExecuteSequence_PassStateFalseAndReturningObject() throws Exception {
         Timer timer = new Timer(SLEEP_TIME_IN_MS, DURATION_IN_MS);
 
         final long timeMillisBegin = System.currentTimeMillis();
@@ -194,7 +226,7 @@ public class TimerTest extends AbstractTest implements Loggable {
             out = timer.executeSequence(new Timer.Sequence<String>() {
                 @Override
                 public void run() {
-                    setReturningObject("huhu");
+                    setReturningObject(msgReturningObject);
                     setPassState(false);
                 }
             });
@@ -210,11 +242,11 @@ public class TimerTest extends AbstractTest implements Loggable {
         Assert.assertTrue(timeMillisDuration <= DURATION_IN_MS + UPPER_BOUND_IN_MS, msgMaximumTime);
         Assert.assertFalse(isTimeoutExceptionThrown, msgTimeoutExceptionThrown);
         Assert.assertNotNull(response, msgCorrectResponse);
-        Assert.assertEquals(response, "huhu", msgCorrectResponse);
+        Assert.assertEquals(response, msgReturningObject, msgCorrectResponse);
     }
 
     @Test
-    public void testT07_ExecuteSequence_SkipThrowingException() {
+    public void testT08_ExecuteSequence_SkipThrowingException() {
         Timer timer = new Timer(SLEEP_TIME_IN_MS, DURATION_IN_MS);
         Throwable throwable = new Throwable();
         ThrowablePackedResponse<String> out = new ThrowablePackedResponse<String>(null, throwable, false, new TimeoutException(throwable));
@@ -227,7 +259,37 @@ public class TimerTest extends AbstractTest implements Loggable {
                 @Override
                 public void run() {
                     setSkipThrowingException(true);
-                    setReturningObject("huhu");
+                    throw new TesterraRuntimeException(msgTesterraRuntimeException);
+                }
+            });
+        } catch (TimeoutException e) {
+            isTimeoutExceptionThrown = true;
+        }
+
+        String response = out.getResponse();
+        testerraRuntimeException = (TesterraRuntimeException) out.getThrowable();
+
+        Assert.assertFalse(isTimeoutExceptionThrown, msgTimeoutExceptionThrown);
+        Assert.assertNull(response, msgCorrectResponse);
+        Assert.assertNotNull(testerraRuntimeException, msgCorrectThrowable);
+        Assert.assertEquals(testerraRuntimeException.getMessage(), msgTesterraRuntimeException, msgCorrectThrowable);
+    }
+
+    @Test
+    public void testT09_ExecuteSequence_SkipThrowingExceptionReturningObject() {
+        Timer timer = new Timer(SLEEP_TIME_IN_MS, DURATION_IN_MS);
+        Throwable throwable = new Throwable();
+        ThrowablePackedResponse<String> out = new ThrowablePackedResponse<String>(null, throwable, false, new TimeoutException(throwable));
+        TesterraRuntimeException testerraRuntimeException;
+
+        boolean isTimeoutExceptionThrown = false;
+
+        try {
+            out = timer.executeSequence(new Timer.Sequence<String>() {
+                @Override
+                public void run() {
+                    setSkipThrowingException(true);
+                    setReturningObject(msgReturningObject);
                     throw new TesterraRuntimeException(msgTesterraRuntimeException);
                 }
             });
@@ -241,12 +303,12 @@ public class TimerTest extends AbstractTest implements Loggable {
         Assert.assertFalse(isTimeoutExceptionThrown, msgTimeoutExceptionThrown);
         Assert.assertNotNull(response, msgCorrectResponse);
         Assert.assertNotNull(testerraRuntimeException, msgCorrectThrowable);
-        Assert.assertEquals(response, "huhu", msgCorrectResponse);
+        Assert.assertEquals(response, msgReturningObject, msgCorrectResponse);
         Assert.assertEquals(testerraRuntimeException.getMessage(), msgTesterraRuntimeException, msgCorrectThrowable);
     }
 
     @Test
-    public void testT08_ExecuteSequenceInThread() {
+    public void testT10_ExecuteSequenceInThread() {
 
         final Timer.Sequence<Object> sequenceToRun = new Timer.Sequence<Object>() {
 
@@ -282,7 +344,7 @@ public class TimerTest extends AbstractTest implements Loggable {
     }
 
     @Test
-    public void testT09_ExecuteSequenceInThreadHittingTimeout() {
+    public void testT11_ExecuteSequenceInThreadHittingTimeout() {
 
         final Timer.Sequence<Object> sequenceToRun = new Timer.Sequence<Object>() {
 

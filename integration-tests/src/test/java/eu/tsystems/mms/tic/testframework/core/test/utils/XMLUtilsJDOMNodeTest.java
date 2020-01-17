@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.helper.XMLUtilTestSupport;
 import eu.tsystems.mms.tic.testframework.utils.XMLUtils;
 import org.jdom2.Document;
@@ -33,7 +33,7 @@ import java.io.IOException;
  *
  * @author mgn
  */
-public class XMLUtilsJDOMNodeTest extends AbstractTest {
+public class XMLUtilsJDOMNodeTest extends AbstractWebDriverTest {
 
     @Test
     public void testT01_XMLUtilsJDOM_getNodeValue() throws IOException, JDOMException {

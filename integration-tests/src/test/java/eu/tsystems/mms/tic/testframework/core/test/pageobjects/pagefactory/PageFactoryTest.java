@@ -28,6 +28,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 public class PageFactoryTest extends AbstractPageFactoryTest {
 
     public ResponsiveWebTestPage getPage() {
-        return pageFactory.createPage(ResponsiveWebTestPage.class, WebDriverManager.getWebDriver());
+        return pageFactory.createPage(ResponsiveWebTestPage.class);
     }
 }

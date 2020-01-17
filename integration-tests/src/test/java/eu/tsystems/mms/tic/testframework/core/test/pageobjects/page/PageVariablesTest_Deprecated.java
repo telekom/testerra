@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
  * To test that checkpage() is executed, a not existing, check-annotated element is used.
  *
  */
-public class PageVariablesTest extends AbstractTestSitesTest implements PageFactoryTest {
+public class PageVariablesTest_Deprecated extends AbstractTestSitesTest implements PageFactoryTest {
     @Override
     public WebTestPage getPage() {
         return PageFactory.create(WebTestPage.class, WebDriverManager.getWebDriver(), new MyVariables(1));

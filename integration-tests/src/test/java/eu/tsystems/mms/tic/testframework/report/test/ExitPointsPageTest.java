@@ -23,17 +23,6 @@ import java.util.List;
 public class ExitPointsPageTest extends AbstractReportFailuresTest {
     //TODO restructure tests: find exit points with the help of method names and not with index
 
-    /**
-     * This test checks the listed METHOD for a single failure point entry in the list
-     */
-//    @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
-//    public void testT06_ListedTestsForSingleFailure() {
-//        final int failurePointPositionToCheck = 2;
-//        AbstractResultTableFailureEntry expectedEntry = failurePointEntryTestObjects.get(failurePointPositionToCheck - 1);
-//        AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
-//        failurePointsPage.assertTestMethodInformation(expectedEntry);
-//    }
-
     @BeforeMethod(alwaysRun = true)
     @Override
     public void initTestObjects() {

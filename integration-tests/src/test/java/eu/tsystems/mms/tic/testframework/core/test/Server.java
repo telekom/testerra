@@ -20,15 +20,8 @@ public class Server {
         this.rootDir = rootDir;
     }
 
-    public int start() throws Exception {
-        int port;
-        try (
-            ServerSocket socket = new ServerSocket(0);
-        ) {
-            port = socket.getLocalPort();
-            server = new org.seleniumhq.jetty9.server.Server(port);
-        }
-
+    public void start(int port) throws Exception {
+        server = new org.seleniumhq.jetty9.server.Server(port);
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(true);
         resourceHandler.setResourceBase(rootDir.getAbsolutePath());
@@ -38,6 +31,16 @@ public class Server {
 
         server.setStopAtShutdown(true);
         server.start();
+    }
+
+    public int start() throws Exception {
+        int port;
+        try (
+            ServerSocket socket = new ServerSocket(0);
+        ) {
+            port = socket.getLocalPort();
+        }
+        start(port);
         return port;
     }
 

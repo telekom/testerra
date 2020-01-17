@@ -17,6 +17,10 @@ public class Server {
     private File rootDir;
     private int port;
 
+    public Server() {
+        this(new File(System.getProperty("user.dir")));
+    }
+
     public Server(File rootDir) {
         this.rootDir = rootDir;
     }
@@ -45,8 +49,9 @@ public class Server {
             ServerSocket socket = new ServerSocket(0);
         ) {
             port = socket.getLocalPort();
+            socket.close();
+            start(port);
         }
-        start(port);
     }
 
     public void stop() throws Exception {

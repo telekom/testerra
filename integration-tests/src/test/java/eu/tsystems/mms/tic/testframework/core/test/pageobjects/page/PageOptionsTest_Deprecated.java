@@ -7,7 +7,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
-public class PageOptionsTest extends AbstractTestSitesTest implements PageFactoryTest {
+public class PageOptionsTest_Deprecated extends AbstractTestSitesTest implements PageFactoryTest {
 
     @Test
     public void testT01_PageOptions_ElementTimeout() {

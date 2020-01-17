@@ -5,13 +5,11 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
-import java.io.File;
-
 /**
  * Abstract test classes which using generated local report directories
  */
 public abstract class AbstractReportTest extends AbstractWebDriverTest {
-    private Server server = new Server(new File(System.getProperty("user.dir")));
+    private Server server = new Server();
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {

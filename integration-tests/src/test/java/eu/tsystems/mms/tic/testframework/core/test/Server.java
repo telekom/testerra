@@ -26,6 +26,7 @@ public class Server {
     }
 
     public void start(int port) throws Exception {
+        this.port = port;
         server = new org.seleniumhq.jetty9.server.Server(port);
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(true);
@@ -36,8 +37,6 @@ public class Server {
 
         server.setStopAtShutdown(true);
         server.start();
-
-        this.port = port;
     }
 
     public void start() throws Exception {

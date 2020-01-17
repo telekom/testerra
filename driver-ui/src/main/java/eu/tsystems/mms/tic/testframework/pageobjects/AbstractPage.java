@@ -371,7 +371,12 @@ public abstract class AbstractPage {
     public void assertPageIsNotShown() {
     }
 
+    @Deprecated
     public WebDriver getDriver() {
+        return driver;
+    }
+
+    public WebDriver getWebDriver() {
         return driver;
     }
 }

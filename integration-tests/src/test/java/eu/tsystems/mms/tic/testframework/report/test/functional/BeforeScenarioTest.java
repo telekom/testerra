@@ -2,7 +2,7 @@ package eu.tsystems.mms.tic.testframework.report.test.functional;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.BeforeConfiguration;
@@ -21,7 +21,7 @@ import org.testng.annotations.Test;
  * Created by fakr on 07.11.2017
  */
 @TestContext(name = "Functional-TestNGBefore")
-public class BeforeScenarioTest extends AbstractTest {
+public class BeforeScenarioTest extends AbstractReportTest {
 
     private final String passedControlMethod = "controlMethodAfterBeforeScenarioPassed";
     private final String failedControlMethod = "controlMethodAfterBeforeScenarioFailed";

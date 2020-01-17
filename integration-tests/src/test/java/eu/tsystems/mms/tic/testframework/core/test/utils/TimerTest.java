@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 /**
  * Created by nigr on 04.09.2015.
  */
-public class TimerTest extends AbstractTest implements Loggable {
+public class TimerTest extends AbstractWebDriverTest implements Loggable {
 
     public static final int DURATION_IN_MS = 1000;
     public static final int SLEEP_TIME_IN_MS = 50;

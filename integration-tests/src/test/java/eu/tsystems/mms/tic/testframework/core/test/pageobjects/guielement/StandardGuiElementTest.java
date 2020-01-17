@@ -19,11 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
-
-import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -35,10 +32,5 @@ public class StandardGuiElementTest extends AbstractGuiElementNonFunctionalAsser
     public GuiElement getGuiElementBy(Locate locator) {
         WebDriver driver = getWebDriver();
         return new GuiElement(driver, locator);
-    }
-
-    @Override
-    protected TestPage getTestPage() {
-        return TestPage.INPUT_TEST_PAGE;
     }
 }

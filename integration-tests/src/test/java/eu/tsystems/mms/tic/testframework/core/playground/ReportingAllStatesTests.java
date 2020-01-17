@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.core.playground;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.InDevelopment;
 import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Method;
 
 @TestContext(name = "MyClass")
-public class ReportingAllStatesTests extends AbstractTest {
+public class ReportingAllStatesTests extends AbstractWebDriverTest {
 
     static {
         System.setProperty("test.foobar.fails.annotation.test.property.one", "one");

@@ -23,17 +23,17 @@ package eu.tsystems.mms.tic.testframework.core.test;
  * Created by rnhb on 02.06.2015.
  */
 public enum TestPage {
-    INPUT_TEST_PAGE("http://localhost:80/testsites/Input/input.html",
+    INPUT_TEST_PAGE("Input/input.html",
             "Open again",
             new String[]{"Ope", "en agai", "ain"},
             "Button2",
             "value"),
-    FRAME_TEST_PAGE("http://localhost:80/testsites/FrameSimple/frame.html", INPUT_TEST_PAGE),
-    DRAG_AND_DROP("http://localhost:80/testsites/DragAndDrop/index.html", INPUT_TEST_PAGE),
-    DRAG_AND_DROP_OVER_FRAMES("http://localhost:80/testsites/DragAndDropFrame/index.html", INPUT_TEST_PAGE),
-    MULTISELECT("http://localhost:80/testsites/Multiselect/index.html", INPUT_TEST_PAGE),
-    LAYOUT("http://localhost:80/testsites/Layout/index.html", INPUT_TEST_PAGE),
-    LIST("http://localhost:80/testsites/GuiElementList/index.html", INPUT_TEST_PAGE)
+    FRAME_TEST_PAGE("FrameSimple/frame.html", INPUT_TEST_PAGE),
+    DRAG_AND_DROP("DragAndDrop/index.html", INPUT_TEST_PAGE),
+    DRAG_AND_DROP_OVER_FRAMES("DragAndDropFrame/index.html", INPUT_TEST_PAGE),
+    MULTISELECT("Multiselect/index.html", INPUT_TEST_PAGE),
+    LAYOUT("Layout/index.html", INPUT_TEST_PAGE),
+    LIST("GuiElementList/index.html", INPUT_TEST_PAGE)
     ;
 
     private String url;

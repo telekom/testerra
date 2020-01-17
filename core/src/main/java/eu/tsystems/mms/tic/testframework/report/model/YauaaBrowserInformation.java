@@ -26,7 +26,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model;
 
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import nl.basjes.parse.useragent.UserAgent;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import nl.basjes.parse.useragent.UserAgentAnalyzerDirect;

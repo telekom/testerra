@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.events;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.events.*;
 import eu.tsystems.mms.tic.testframework.events.test.TesterraEventUserDataTestListener;
 import eu.tsystems.mms.tic.testframework.events.test.UserDataTypes;
@@ -44,7 +44,7 @@ import java.util.List;
  *
  * @author pele
  */
-public class TesterraEventsUserDataTest extends AbstractTest {
+public class TesterraEventsUserDataTest extends AbstractWebDriverTest {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

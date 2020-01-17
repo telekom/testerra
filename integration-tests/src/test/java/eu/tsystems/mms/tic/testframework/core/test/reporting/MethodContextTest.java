@@ -19,19 +19,17 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.reporting;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.StackTrace;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.testng.annotations.Test;
 
-import java.util.List;
-
 /**
  * Created by pele on 19.10.2016.
  */
-public class MethodContextTest extends AbstractTest {
+public class MethodContextTest extends AbstractWebDriverTest {
 
     String level0String = "level 0";
 

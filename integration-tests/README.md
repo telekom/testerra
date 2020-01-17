@@ -1,23 +1,10 @@
-# project
-project is a simple maven pom project providing links to sub modules.
+# Integration tests
 
-## Installation / Usage
+## Report tests
 
-For maven:
+```shell script
+for i in {1..9}
+do
+  gradle test -P nr=$(i) -Dtt.report.name=pretest0$(i)
 
-```xml
-<parent>
-    <groupId>eu.tsystems.mms.tic.testerra</groupId>
-    <artifactId>parent</artifactId>
-    <version>1-SNAPSHOT</version>
-</parent>
-```
-
-For gradle:
-```text
-???
-```
-
-***
-
-Documentation pending
+done

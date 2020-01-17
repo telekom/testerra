@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -30,7 +30,7 @@ import java.math.BigDecimal;
  * Created by toku on 13.01.2015.
  */
 
-public class AssertUtilsTest extends AbstractTest {
+public class AssertUtilsTest extends AbstractWebDriverTest {
 
     /**
      * checks if string contains expected content

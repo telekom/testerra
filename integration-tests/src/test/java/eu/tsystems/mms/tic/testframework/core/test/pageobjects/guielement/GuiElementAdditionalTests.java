@@ -35,8 +35,6 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
     @Test
     public void testUpload() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        driver.get(TestPage.INPUT_TEST_PAGE.getUrl());
-
         final File resourceFile = FileUtils.getResourceFile("testfiles/Test.txt");
         final String absoluteFilePath = resourceFile.getAbsolutePath();
 

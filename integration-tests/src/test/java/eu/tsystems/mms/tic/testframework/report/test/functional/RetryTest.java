@@ -5,7 +5,7 @@ import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
@@ -26,7 +26,7 @@ import java.util.List;
  * Created by fakr on 09.10.2017
  */
 @TestContext(name = "Functional-Retry")
-public class RetryTest extends AbstractTest {
+public class RetryTest extends AbstractReportTest {
 
     /**
      * Tests whether the data provider produced the expected number of test methods

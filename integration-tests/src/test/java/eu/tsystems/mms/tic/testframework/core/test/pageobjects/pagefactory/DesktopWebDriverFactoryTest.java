@@ -19,13 +19,11 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
-import eu.tsystems.mms.tic.testframework.constants.Browsers;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
@@ -34,7 +32,7 @@ import org.testng.annotations.Test;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class DesktopWebDriverFactoryTest extends AbstractTest {
+public class DesktopWebDriverFactoryTest extends AbstractWebDriverTest {
 
     @Test
     public void testT01_BaseURL() throws Exception {

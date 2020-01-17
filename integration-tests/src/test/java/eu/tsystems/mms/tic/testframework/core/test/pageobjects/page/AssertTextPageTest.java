@@ -43,109 +43,61 @@ import org.testng.annotations.Test;
 public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFactoryTest {
 
     @Override
-    public WebTestPage getPage() {
-        return PageFactory.create(WebTestPage.class, WebDriverManager.getWebDriver(), new WebTestPage.MyVariables(1));
+    protected TestPage getStartPage() {
+        return TestPage.FRAME_TEST_PAGE;
     }
 
-    public WebTestFramedPage getFramePage() {
+    @Override
+    public WebTestFramedPage getPage() {
         return PageFactory.create(WebTestFramedPage.class, WebDriverManager.getWebDriver());
     }
 
     @Test
     public void testT11_assertIsTextPresent() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
-        WebTestFramedPage page = getFramePage();
+        WebTestFramedPage page = getPage();
         page.assertIsTextPresent("Frame1234");
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT12F_assertIsTextPresent() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
-        WebTestFramedPage page = getFramePage();
+        WebTestFramedPage page = getPage();
         page.assertIsTextPresent("Bifi");
     }
 
     @Test
     public void testT13_assertIsNotTextPresent() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
-        WebTestFramedPage page = getFramePage();
+        WebTestFramedPage page = getPage();
         page.assertIsNotTextPresent("Bifi");
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT14F_assertIsNotTextPresent() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
-        WebTestFramedPage page = getFramePage();
+        WebTestFramedPage page = getPage();
         page.assertIsNotTextPresent("Frame1234");
     }
 
     @Test
     public void testT21_assertIsTextDisplayed() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
-        WebTestFramedPage page = getFramePage();
+        WebTestFramedPage page = getPage();
         page.assertIsTextDisplayed("Frame1234");
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT22F_assertIsTextDisplayed() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
-        WebTestFramedPage page = getFramePage();
+        WebTestFramedPage page = getPage();
         page.assertIsTextDisplayed("Bifi");
     }
 
     @Test
     public void testT23_assertIsNotTextDisplayed() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
-        WebTestFramedPage page = getFramePage();
+        WebTestFramedPage page = getPage();
         page.assertIsNotTextDisplayed("Bifi");
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void testT24F_assertIsNotTextDisplayed() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
-        WebTestFramedPage page = getFramePage();
+        WebTestFramedPage page = getPage();
         page.assertIsNotTextDisplayed("Frame1234");
-    }
-
-    @Test
-    public void testT25F_assertIsNotTextDisplayed_butPresent() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.INPUT_TEST_PAGE.getUrl();
-        driver.get(url);
-
-        WebTestPage page = getPage();
-
-
-        GuiElement input = new GuiElement(driver, By.xpath("//label[@for='inputMillis']"));
-        WebElement webElement = input.getWebElement();
-
-        page.assertIsTextDisplayed("in Millis");
-        JSUtils.executeScript(driver, "arguments[0].style.visibility='hidden';", webElement);
-        page.assertIsNotTextDisplayed("in Millis");
     }
 
 }

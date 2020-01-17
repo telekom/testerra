@@ -63,9 +63,7 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
      */
     @BeforeMethod(alwaysRun = true)
     protected void initDriverAndWebsite(Method method) {
-        testPage = getTestPage();
-        WebDriver driver = getWebDriver();
-        driver.get(testPage.getUrl());
+        testPage = getStartPage();
     }
 
     @AfterSuite(alwaysRun = true)
@@ -245,7 +243,4 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
     }
 
     public abstract GuiElement getGuiElementBy(Locate locate);
-
-    protected abstract TestPage getTestPage();
-
 }

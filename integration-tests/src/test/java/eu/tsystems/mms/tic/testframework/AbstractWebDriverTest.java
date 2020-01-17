@@ -26,7 +26,10 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.BeforeMethod;
 
-public abstract class AbstractTest extends TesterraTest {
+/**
+ * Abstract test class for tests using a WebDriver
+ */
+public abstract class AbstractWebDriverTest extends TesterraTest {
 
     /**
      * Fixing up testing issues when /dev/shm becomes to small for test execution

@@ -38,12 +38,6 @@ import java.lang.reflect.Method;
  */
 public class CheckPageTest extends AbstractTestSitesTest {
 
-    @BeforeMethod
-    public void before(Method method) {
-        WebDriver webDriver = WebDriverManager.getWebDriver();
-        webDriver.get(TestPage.INPUT_TEST_PAGE.getUrl());
-    }
-
     @Test
     public void testT01_checkExistingElement() throws Exception {
         new PageWithExistingElement(WebDriverManager.getWebDriver());

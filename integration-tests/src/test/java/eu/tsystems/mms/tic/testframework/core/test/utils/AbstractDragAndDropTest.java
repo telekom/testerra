@@ -37,17 +37,17 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
     final By sourceLocatorSimple = By.id("dragLogo");
     final By sourceLocatorFrames = By.xpath(".//img[@alt='Ringo Starr']");
 
+    @Override
+    protected TestPage getStartPage() {
+        return TestPage.DRAG_AND_DROP;
+    }
+
     private WebDriver getDriver() {
         return WebDriverManager.getWebDriver();
     }
 
     private GuiElement[] beforeDragAndDropSimple() {
         final WebDriver driver = getDriver();
-
-        String url = TestPage.DRAG_AND_DROP.getUrl();
-
-        driver.get(url);
-
         GuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorSimple);
         GuiElement destinationGuiElement = new GuiElement(driver, By.id("divRectangle"));
         return new GuiElement[] { sourceGuiElement, destinationGuiElement };
@@ -55,9 +55,6 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
 
     private GuiElement[] beforeDragAndDropFrames() {
         final WebDriver driver = getDriver();
-
-        String url = TestPage.DRAG_AND_DROP_OVER_FRAMES.getUrl();
-        driver.get(url);
 
         GuiElement leftFrame = new GuiElement(driver, By.id("draggableNodes"));
         GuiElement rightFrame = new GuiElement(driver, By.id("dropTargets"));

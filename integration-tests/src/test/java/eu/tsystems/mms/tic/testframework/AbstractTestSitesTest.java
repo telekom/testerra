@@ -25,7 +25,9 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
 import java.net.BindException;
@@ -45,11 +47,18 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
         } catch (BindException e) {
             log().warn(e.getMessage());
         }
-        String baseUrl = String.format("http://localhost:%d/%s", port, getStartPage().getUrl());
-        WebDriverManager.setBaseURL(baseUrl);
     }
 
-    protected TestPage getStartPage() {
+    @BeforeMethod()
+    public void visitTestPage() {
+        WebDriver webDriver = getWebDriver();
+        String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), getTestPage().getPath());
+        if (!webDriver.getCurrentUrl().contains(baseUrl)) {
+            webDriver.get(baseUrl);
+        }
+    }
+
+    protected TestPage getTestPage() {
         return TestPage.INPUT_TEST_PAGE;
     }
 

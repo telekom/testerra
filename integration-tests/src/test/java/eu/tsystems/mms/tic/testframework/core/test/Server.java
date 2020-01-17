@@ -15,9 +15,14 @@ import java.net.ServerSocket;
 public class Server {
     private org.seleniumhq.jetty9.server.Server server;
     private File rootDir;
+    private int port;
 
     public Server(File rootDir) {
         this.rootDir = rootDir;
+    }
+
+    public int getPort() {
+        return port;
     }
 
     public void start(int port) throws Exception {
@@ -31,9 +36,11 @@ public class Server {
 
         server.setStopAtShutdown(true);
         server.start();
+
+        this.port = port;
     }
 
-    public int start() throws Exception {
+    public void start() throws Exception {
         int port;
         try (
             ServerSocket socket = new ServerSocket(0);
@@ -41,7 +48,6 @@ public class Server {
             port = socket.getLocalPort();
         }
         start(port);
-        return port;
     }
 
     public void stop() throws Exception {

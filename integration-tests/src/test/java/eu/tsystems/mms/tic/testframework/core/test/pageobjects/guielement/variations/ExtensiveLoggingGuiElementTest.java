@@ -39,7 +39,7 @@ public class ExtensiveLoggingGuiElementTest extends AbstractGuiElementNonFunctio
     }
 
     @Override
-    protected TestPage getStartPage() {
+    protected TestPage getTestPage() {
         return TestPage.INPUT_TEST_PAGE;
     }
 }

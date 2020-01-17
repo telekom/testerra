@@ -36,7 +36,7 @@ import java.net.BindException;
  * Abstract test class for tests based on static test site resources
  */
 public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implements Loggable {
-    private Server server = new Server(FileUtils.getResourceFile("testsites"));
+    private static Server server = new Server(FileUtils.getResourceFile("testsites"));
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
@@ -44,7 +44,7 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
         try {
             server.start(80);
         } catch (BindException e) {
-            log().warn(e.getMessage());
+            log().warn("Use already running WebServer: " + e.getMessage());
         }
     }
 
@@ -59,10 +59,5 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
 
     protected TestPage getTestPage() {
         return TestPage.INPUT_TEST_PAGE;
-    }
-
-    @AfterTest(alwaysRun = true)
-    public void tearDown() throws Exception {
-        server.stop();
     }
 }

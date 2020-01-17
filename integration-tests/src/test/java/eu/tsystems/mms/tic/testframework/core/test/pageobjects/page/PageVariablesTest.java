@@ -20,8 +20,9 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.IPageFactoryTest;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.MyVariables;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
@@ -37,10 +38,10 @@ import org.testng.annotations.Test;
  * To test that checkpage() is executed, a not existing, check-annotated element is used.
  *
  */
-public class PageVariablesTest extends AbstractTestSitesTest implements IPageFactoryTest {
+public class PageVariablesTest extends AbstractTestSitesTest implements PageFactoryTest {
     @Override
     public WebTestPage getPage() {
-        return PageFactory.create(WebTestPage.class, WebDriverManager.getWebDriver(), new WebTestPage.MyVariables(1));
+        return PageFactory.create(WebTestPage.class, WebDriverManager.getWebDriver(), new MyVariables(1));
     }
 
     @Test

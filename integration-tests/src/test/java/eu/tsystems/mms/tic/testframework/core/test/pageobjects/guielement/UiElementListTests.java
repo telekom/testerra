@@ -21,48 +21,49 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementListPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.components.TableRow;
 import org.testng.annotations.Test;
 
-public class UiElementListTests extends AbstractTestSitesTest {
-    private UiElementListPage preparePage() {
+public class UiElementListTests extends AbstractTestSitesTest implements PageFactoryTest {
+    public UiElementListPage getPage() {
         return pageFactory.createPage(UiElementListPage.class);
     }
 
     @Test
     public void test_getSubElement_getList_byTagName() {
-        UiElementListPage page = preparePage();
+        UiElementListPage page = getPage();
         UiElement items = page.getNavigationSubElementsByTagName();
         testNavigationItems(items);
     }
 
     @Test
     public void test_getSubElement_getList_byChildrenXPath() {
-        UiElementListPage page = preparePage();
+        UiElementListPage page = getPage();
         UiElement items = page.getNavigationSubElementsByChildrenXPath();
         testNavigationItems(items);
     }
 
     @Test
     public void test_getSubElement_getList_byDescendantsXPath() {
-        UiElementListPage page = preparePage();
+        UiElementListPage page = getPage();
         UiElement items = page.getNavigationSubElementsByDescendantsXPath();
         testNavigationItems(items);
     }
 
     @Test
     public void test_getList_byAbsoluteChildrenXPath() {
-        UiElementListPage page = preparePage();
+        UiElementListPage page = getPage();
         UiElement items = page.getNavigationSubElementsByAbsoluteChildrenXPath();
         testNavigationItems(items);
     }
 
     @Test
     public void test_getList_byAbsoluteDescendantsXPath() {
-        UiElementListPage page = preparePage();
+        UiElementListPage page = getPage();
         UiElement items = page.getNavigationSubElementsByAbsoluteDescendantsXPath();
         testNavigationItems(items);
     }
@@ -77,7 +78,7 @@ public class UiElementListTests extends AbstractTestSitesTest {
 
     @Test
     public void test_getSubElement_getList_tableRowsByTagName() {
-        UiElementListPage page = preparePage();
+        UiElementListPage page = getPage();
         TableRow rows = page.getTableRowsByTagName();
         rows.numberOfElements().is(4);
 
@@ -89,7 +90,7 @@ public class UiElementListTests extends AbstractTestSitesTest {
 
     @Test
     public void test_getSubElement_getList_tableRowsByDescendantsXPath() {
-        UiElementListPage page = preparePage();
+        UiElementListPage page = getPage();
         TableRow rows = page.getTableRowsByTagName();
         rows.numberOfElements().is(4);
 

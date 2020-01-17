@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.IPageFactoryTest;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.BasePage;
 import eu.tsystems.mms.tic.testframework.pageobjects.BasePage2016;
@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
 /**
  * Tests the responsive page factory for correct instantiated classes.
  */
-public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest implements IPageFactoryTest {
+public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest implements PageFactoryTest {
 
     String baseURL = "unset";
 
@@ -64,7 +64,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT01_InRange_1() {
-        PageFactoryPrefixedTest_Deprecated.setViewportSize(WebDriverManager.getWebDriver(), 799, 1000);
+        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 799, 1000);
         Page blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
@@ -72,7 +72,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT02_InRange_2() {
-        PageFactoryPrefixedTest_Deprecated.setViewportSize(WebDriverManager.getWebDriver(), 1024, 1000);
+        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 1024, 1000);
         Page blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_801px_1234px.class.getSimpleName(), "Instantiated correct page.");
@@ -80,7 +80,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT03_ClassPerfectMatch_LowerValue() {
-        PageFactoryPrefixedTest_Deprecated.setViewportSize(WebDriverManager.getWebDriver(), 601, 1000);
+        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 601, 1000);
         Page blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
@@ -88,7 +88,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT04_ClassPerfectMatch_UpperValue() {
-        PageFactoryPrefixedTest_Deprecated.setViewportSize(WebDriverManager.getWebDriver(), 800, 1000);
+        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 800, 1000);
         Page blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
@@ -96,7 +96,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT05_Match_Min() {
-        PageFactoryPrefixedTest_Deprecated.setViewportSize(WebDriverManager.getWebDriver(), 599, 1000);
+        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 599, 1000);
         Page blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_Min_600px.class.getSimpleName(), "Instantiated correct page.");
@@ -104,7 +104,7 @@ public abstract class AbstractPageFactoryTest extends AbstractTestSitesTest impl
 
     @Test
     public void testT06_Match_Max() {
-        PageFactoryPrefixedTest_Deprecated.setViewportSize(WebDriverManager.getWebDriver(), 1600, 1000);
+        PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 1600, 1000);
         Page blaPage = getPage();
 
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_1235px_Max.class.getSimpleName(), "Instantiated correct page.");

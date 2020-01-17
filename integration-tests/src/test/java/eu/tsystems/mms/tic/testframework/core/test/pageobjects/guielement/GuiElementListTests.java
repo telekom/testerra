@@ -21,51 +21,47 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElementListPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class GuiElementListTests extends AbstractTestSitesTest {
-
-    private GuiElementListPage preparePage() {
-        return PageFactory.create(GuiElementListPage.class, WebDriverManager.getWebDriver());
-    }
+public class GuiElementListTests extends AbstractTestSitesTest implements PageFactoryTest {
 
     @Test
     public void test_getSubElement_getList_byTagName() {
-        GuiElementListPage page = preparePage();
+        GuiElementListPage page = getPage();
         GuiElement items = page.getNavigationSubElementsByTagName();
         testNavigationItems(items);
     }
 
     @Test
     public void test_getSubElement_getList_byChildrenXPath() {
-        GuiElementListPage page = preparePage();
+        GuiElementListPage page = getPage();
         GuiElement items = page.getNavigationSubElementsByChildrenXPath();
         testNavigationItems(items);
     }
 
     @Test
     public void test_getSubElement_getList_byDescendantsXPath() {
-        GuiElementListPage page = preparePage();
+        GuiElementListPage page = getPage();
         GuiElement items = page.getNavigationSubElementsByDescendantsXPath();
         testNavigationItems(items);
     }
 
     @Test
     public void test_getList_byAbsoluteChildrenXPath() {
-        GuiElementListPage page = preparePage();
+        GuiElementListPage page = getPage();
         GuiElement items = page.getNavigationSubElementsByAbsoluteChildrenXPath();
         testNavigationItems(items);
     }
 
     @Test
     public void test_getList_byAbsoluteDescendantsXPath() {
-        GuiElementListPage page = preparePage();
+        GuiElementListPage page = getPage();
         GuiElement items = page.getNavigationSubElementsByAbsoluteDescendantsXPath();
         testNavigationItems(items);
     }
@@ -79,7 +75,7 @@ public class GuiElementListTests extends AbstractTestSitesTest {
 
     @Test
     public void test_getSubElement_getList_tableRowsByTagName() {
-        GuiElementListPage page = preparePage();
+        GuiElementListPage page = getPage();
         GuiElement rows = page.getTableRowsByTagName();
         Assert.assertEquals(rows.getNumberOfFoundElements(), 4);
 
@@ -92,7 +88,7 @@ public class GuiElementListTests extends AbstractTestSitesTest {
 
     @Test
     public void test_getSubElement_getList_tableRowsByDescendantsXPath() {
-        GuiElementListPage page = preparePage();
+        GuiElementListPage page = getPage();
         GuiElement rows = page.getTableRowsByTagName();
         Assert.assertEquals(rows.getNumberOfFoundElements(), 4);
 
@@ -106,5 +102,10 @@ public class GuiElementListTests extends AbstractTestSitesTest {
     @Override
     protected TestPage getStartPage() {
         return TestPage.LIST;
+    }
+
+    @Override
+    public GuiElementListPage getPage() {
+        return PageFactory.create(GuiElementListPage.class, WebDriverManager.getWebDriver());
     }
 }

@@ -404,8 +404,4 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
     public WebDriver getWebDriver() {
         return driver;
     }
-
-    public WebDriver getWebDriver() {
-        return driver;
-    }
 }

@@ -37,18 +37,7 @@ import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by rnhb on 29.12.2015.
- */
-public class CheckPageTest_IoC extends AbstractTestSitesTest {
-
-    private static final PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
-
-    @BeforeMethod
-    public void before(Method method) {
-        WebDriver webDriver = WebDriverManager.getWebDriver();
-        webDriver.get(TestPage.INPUT_TEST_PAGE.getUrl());
-    }
+public class CheckPageTest extends AbstractTestSitesTest {
 
     @Test
     public void testT01_checkExistingElement() throws Exception {

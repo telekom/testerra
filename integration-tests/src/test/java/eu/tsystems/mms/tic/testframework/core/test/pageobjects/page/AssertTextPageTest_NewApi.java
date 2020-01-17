@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.IPageFactoryTest;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestFramedPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
@@ -39,126 +39,79 @@ import org.testng.annotations.Test;
  * To test that checkpage() is executed, a not existing, check-annotated element is used.
  *
  */
-public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements IPageFactoryTest {
+public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements PageFactoryTest {
 
     @Override
-    public WebTestPage getPage() {
-        return pageFactory.createPage(WebTestPage.class);
+    protected TestPage getStartPage() {
+        return TestPage.FRAME_TEST_PAGE;
     }
 
-    public WebTestFramedPage getFramePage() {
+    @Override
+    public WebTestFramedPage getPage() {
         return pageFactory.createPage(WebTestFramedPage.class);
     }
 
     @Test
     public void testT11_assertIsTextPresent() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
         Control.withElementTimeout(0, () -> {
-            WebTestFramedPage page = getFramePage();
+            WebTestFramedPage page = getPage();
             page.anyElementContainsText("Frame1234").present().isTrue();
         });
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_assertIsTextPresent_fails() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
         Control.withElementTimeout(0, () -> {
-            WebTestFramedPage page = getFramePage();
+            WebTestFramedPage page = getPage();
             page.anyElementContainsText("Bifi").present().isTrue();
         });
     }
 
     @Test
     public void testT13_assertIsNotTextPresent() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
         Control.withElementTimeout(0, () -> {
-            WebTestFramedPage page = getFramePage();
+            WebTestFramedPage page = getPage();
             page.anyElementContainsText("Bifi").present().isFalse();
         });
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_assertIsNotTextPresent_fails() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
         Control.withElementTimeout(0, () -> {
-            WebTestFramedPage page = getFramePage();
+            WebTestFramedPage page = getPage();
             page.anyElementContainsText("Frame1234").present().isFalse();
         });
     }
 
     @Test
     public void testT21_assertIsTextDisplayed() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
         Control.withElementTimeout(0, () -> {
-            WebTestFramedPage page = getFramePage();
+            WebTestFramedPage page = getPage();
             page.anyElementContainsText("Frame1234").displayed().isTrue();
         });
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_assertIsTextDisplayed_fails() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
         Control.withElementTimeout(0, () -> {
-            WebTestFramedPage page = getFramePage();
+            WebTestFramedPage page = getPage();
             page.anyElementContainsText("Bifi").displayed().isTrue();
         });
     }
 
     @Test
     public void testT23_assertIsNotTextDisplayed() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
         Control.withElementTimeout(0, () -> {
-            WebTestFramedPage page = getFramePage();
+            WebTestFramedPage page = getPage();
             page.anyElementContainsText("Bifi").displayed().isFalse();
         });
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_assertIsNotTextDisplayed_fails() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.FRAME_TEST_PAGE.getUrl();
-        driver.get(url);
-
         Control.withElementTimeout(0, () -> {
-            WebTestFramedPage page = getFramePage();
+            WebTestFramedPage page = getPage();
             page.anyElementContainsText("Frame1234").displayed().isFalse();
         });
     }
-
-    @Test
-    public void testT25F_assertIsNotTextDisplayed_butPresent() {
-        WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.INPUT_TEST_PAGE.getUrl();
-        driver.get(url);
-
-        WebTestPage page = getPage();
-        UiElement input = page.find(By.xpath("//label[@for='inputMillis']"));
-        input.displayed().isTrue();
-        WebElement webElement = input.getWebElement();
-
-        page.anyElementContainsText("in Millis").displayed().isTrue();
-        JSUtils.executeScript(driver, "arguments[0].style.visibility='hidden';", webElement);
-        page.anyElementContainsText("in Millis").displayed().isFalse();
-    }
-
 }

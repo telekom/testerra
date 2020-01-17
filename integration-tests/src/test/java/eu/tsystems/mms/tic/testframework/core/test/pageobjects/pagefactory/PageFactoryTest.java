@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 /**
  * Tests the responsive page factory for correct instantiated classes.
  */
-public class PageFactoryTest_IoC extends AbstractPageFactoryTest {
+public class PageFactoryTest extends AbstractPageFactoryTest {
 
     public ResponsiveWebTestPage getPage() {
         return pageFactory.createPage(ResponsiveWebTestPage.class, WebDriverManager.getWebDriver());

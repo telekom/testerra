@@ -370,7 +370,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             }
 
         } else {
-            LOGGER.warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
+            log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
             /*
              ##### Local
              */

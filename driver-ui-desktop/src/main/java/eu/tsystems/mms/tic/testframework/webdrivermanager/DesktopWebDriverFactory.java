@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
@@ -84,7 +85,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by pele on 19.07.2017.
  */
-public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> {
+public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> implements Loggable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverFactory.class);
 
@@ -145,21 +146,22 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
          */
         WebDriver driver = startSession(request, desiredCapabilities);
 
-        /*
-        Open url
-         */
-        final String baseUrl = request.baseUrl;
-        LOGGER.info("Opening baseUrl: " + baseUrl);
-        StopWatch.startPageLoad(driver);
-        try {
-            driver.get(baseUrl);
-        } catch (Exception e) {
-            if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                throw new TesterraRuntimeException("Could not start driver session, because of unreachable url: " + request.baseUrl, e);
+        if (request.baseUrl != null && !request.baseUrl.isEmpty()) {
+            URL baseUrl;
+            try {
+                baseUrl = new URL(request.baseUrl);
+                log().info("Opening baseUrl: " + baseUrl.toString());
+                StopWatch.startPageLoad(driver);
+                driver.get(baseUrl.toString());
+            } catch (MalformedURLException e) {
+                log().warn(String.format("Won't open baseUrl: '%s': %s", request.baseUrl, e.getMessage()), e);
+            } catch (Exception e) {
+                if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
+                    throw new TesterraRuntimeException("Could not start driver session, because of unreachable url: " + request.baseUrl, e);
+                }
+                throw e;
             }
-            throw e;
         }
-
         return driver;
     }
 

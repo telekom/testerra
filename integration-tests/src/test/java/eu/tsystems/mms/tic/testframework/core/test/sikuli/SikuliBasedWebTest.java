@@ -39,7 +39,7 @@ import java.net.URL;
 public class SikuliBasedWebTest extends AbstractTestSitesTest {
 
     @Override
-    protected TestPage getStartPage() {
+    protected TestPage getTestPage() {
         return TestPage.DRAG_AND_DROP_OVER_FRAMES;
     }
 

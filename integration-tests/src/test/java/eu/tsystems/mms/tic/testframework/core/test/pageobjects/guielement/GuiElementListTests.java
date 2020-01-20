@@ -104,7 +104,7 @@ public class GuiElementListTests extends AbstractTestSitesTest {
     }
 
     @Override
-    protected TestPage getStartPage() {
+    protected TestPage getTestPage() {
         return TestPage.LIST;
     }
 }

@@ -38,7 +38,7 @@ import java.math.BigDecimal;
 public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
 
     @Override
-    protected TestPage getStartPage() {
+    protected TestPage getTestPage() {
         return TestPage.LAYOUT;
     }
 

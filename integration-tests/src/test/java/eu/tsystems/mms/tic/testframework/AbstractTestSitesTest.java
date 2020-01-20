@@ -25,7 +25,9 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
 import java.net.BindException;
@@ -34,27 +36,29 @@ import java.net.BindException;
  * Abstract test class for tests based on static test site resources
  */
 public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implements Loggable {
-    private Server server = new Server(FileUtils.getResourceFile("testsites"));
+    private static Server server = new Server(FileUtils.getResourceFile("testsites"));
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         POConfig.setUiElementTimeoutInSeconds(1);
-        int port = 80;
         try {
-            server.start(port);
+            server.start(80);
         } catch (BindException e) {
-            log().warn(e.getMessage());
+            log().warn("Use already running WebServer: " + e.getMessage());
         }
-        String baseUrl = String.format("http://localhost:%d/%s", port, getStartPage().getUrl());
-        WebDriverManager.setBaseURL(baseUrl);
     }
 
-    protected TestPage getStartPage() {
+    @BeforeMethod()
+    public void visitTestPage() {
+        WebDriver webDriver = getWebDriver();
+
+        if (!webDriver.getCurrentUrl().contains(getTestPage().getPath())) {
+            String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), getTestPage().getPath());
+            webDriver.get(baseUrl);
+        }
+    }
+
+    protected TestPage getTestPage() {
         return TestPage.INPUT_TEST_PAGE;
-    }
-
-    @AfterTest(alwaysRun = true)
-    public void tearDown() throws Exception {
-        server.stop();
     }
 }

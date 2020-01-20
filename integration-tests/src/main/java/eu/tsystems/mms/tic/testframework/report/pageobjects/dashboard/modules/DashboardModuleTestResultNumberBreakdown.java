@@ -130,10 +130,12 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
             case PASSEDMINOR:
                 counter = numberPassedMinorTests;
                 break;
+            case PASSEDRETRY:
+                counter = numberPassedRetryTests;
+                break;
             case SKIPPED:
                 counter = numberSkippedTests;
                 break;
-
             case FAILED:
                 counter = numberFailedTests;
                 break;

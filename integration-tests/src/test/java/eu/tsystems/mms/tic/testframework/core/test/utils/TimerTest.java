@@ -143,11 +143,11 @@ public class TimerTest extends AbstractWebDriverTest implements Loggable {
         Assert.assertTrue(timer.isTimeOver(), msgCorrectPass);
         Assert.assertTrue(timeMillisDuration >= DURATION_IN_MS, msgMinimumTime);
         Assert.assertTrue(timeMillisDuration <= DURATION_IN_MS + UPPER_BOUND_IN_MS, msgMaximumTime);
-        Assert.assertNotNull(response, msgCorrectResponse);
+        Assert.assertNull(response, msgCorrectResponse);
         Assert.assertNotNull(internalTimeoutException, msgTimeoutExceptionThrown);
-        Assert.assertNull(thrownAndCatchedTimeoutException, msgTimeoutExceptionThrown);
+        Assert.assertNotNull(thrownAndCatchedTimeoutException, msgTimeoutExceptionThrown);
 
-        testerraRuntimeException = (TesterraRuntimeException) internalTimeoutException.getCause();
+        testerraRuntimeException = (TesterraRuntimeException) thrownAndCatchedTimeoutException.getCause();
 
         Assert.assertNotNull(testerraRuntimeException, msgTesterraRuntimeExceptionThrown);
         Assert.assertEquals(testerraRuntimeException.getMessage(), msgTesterraRuntimeException, msgTesterraRuntimeExceptionThrown);

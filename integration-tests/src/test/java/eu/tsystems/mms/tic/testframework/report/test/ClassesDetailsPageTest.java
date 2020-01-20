@@ -9,7 +9,12 @@ import eu.tsystems.mms.tic.testframework.report.model.ReportAnnotationType;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
-import eu.tsystems.mms.tic.testframework.report.testundertest.*;
+import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestAnnotations;
+import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorMid;
+import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestFailed;
+import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestPassed;
+import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestRetry;
+import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestSkipped;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
@@ -117,8 +122,10 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT05_checkAnnotationsAreDisplayed() {
         //TODO use DataProvider for this, enhanced to Minor Errors
-        HashMap<String,List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
-        methodsTestObjects.put("testAllMarkers", Arrays.asList(ReportAnnotationType.NEW, ReportAnnotationType.READY_FOR_APPROVAL, ReportAnnotationType.SUPPORT_METHOD, ReportAnnotationType.IN_DEVELOPMENT, ReportAnnotationType.NO_RETRY));
+        HashMap<String, List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
+        methodsTestObjects.put("testAllMarkers",
+                Arrays.asList(ReportAnnotationType.NEW, ReportAnnotationType.READY_FOR_APPROVAL, ReportAnnotationType.SUPPORT_METHOD, ReportAnnotationType.IN_DEVELOPMENT,
+                        ReportAnnotationType.NO_RETRY));
         methodsTestObjects.put("testNewMarkerFailure", Collections.singletonList(ReportAnnotationType.NEW));
         methodsTestObjects.put("testNewMarkerSuccess", Collections.singletonList(ReportAnnotationType.NEW));
         methodsTestObjects.put("testReadyForApprovalMarker", Collections.singletonList(ReportAnnotationType.READY_FOR_APPROVAL));
@@ -127,9 +134,9 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         methodsTestObjects.put("testInDevelopmentMarker", Collections.singletonList(ReportAnnotationType.IN_DEVELOPMENT));
 
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
-            WebDriverManager.getWebDriver(),
-            PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),
-            ReportTestUnderTestAnnotations.class.getSimpleName());
+                WebDriverManager.getWebDriver(),
+                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()),
+                ReportTestUnderTestAnnotations.class.getSimpleName());
         checkAnnotationsAreDisplayed(classesDetailsPage, methodsTestObjects);
     }
 
@@ -145,8 +152,8 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()),
                 ReportTestUnderTestRetry.class.getSimpleName());
 
-        HashMap<String,List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
-        methodsTestObjects.put("test_TestRetryExceptionTrigger (1/2)", Collections.singletonList(ReportAnnotationType.RETRIED));
+        HashMap<String, List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
+        methodsTestObjects.put("test_TestRetryExceptionTrigger-01", Collections.singletonList(ReportAnnotationType.RETRIED));
         checkAnnotationsAreDisplayed(classesDetailsPage, methodsTestObjects);
     }
 

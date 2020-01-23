@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Rectangle;
 import org.testng.ITestNGMethod;
 
@@ -40,5 +41,19 @@ public interface Formatter {
             .append(method.getMethodName())
             .append(")");
         return sb.toString();
+    }
+
+    default String byToXPath(By by) {
+        String[] split = by.toString().split("\\: ", 2);
+        if (split[0].startsWith("By.name")) {
+            return String.format("//*[@name='%s']", split[1]);
+        } else if (split[0].startsWith("By.className")) {
+            return String.format("//*[@class='%s']", split[1]);
+        } else if (split[0].startsWith("By.Id")) {
+            return String.format("//*[@id='%s']", split[1]);
+        } else if (split[0].startsWith("By.xpath")) {
+            return split[1];
+        }
+        return "";
     }
 }

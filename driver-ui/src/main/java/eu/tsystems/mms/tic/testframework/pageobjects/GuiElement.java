@@ -67,6 +67,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.simulation.UserSimulator;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.By;
@@ -992,11 +993,12 @@ public class GuiElement implements
 
     @Override
     public String createXPath() {
+        Formatter formatter = Testerra.injector.getInstance(Formatter.class);
         ArrayList<String> xPathes = new ArrayList<>();
         HasParent element = this;
         do {
             if (element instanceof UiElement) {
-                xPathes.add(0, ((UiElement) element).getLocate().getBy().toString());
+                xPathes.add(0, formatter.byToXPath(((UiElement) element).getLocate().getBy()));
             }
             element = element.getParent();
         } while (element instanceof BasicUiElement);

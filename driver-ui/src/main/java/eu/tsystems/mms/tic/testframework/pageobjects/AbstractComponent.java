@@ -35,6 +35,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAs
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -69,6 +70,21 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     public BasicUiElement highlight() {
         rootElement.highlight();
         return this;
+    }
+
+    @Override
+    public String createXPath() {
+        return rootElement.createXPath();
+    }
+
+    @Override
+    public Locate getLocate() {
+        return rootElement.getLocate();
+    }
+
+    @Override
+    public WebElement getWebElement() {
+        return rootElement.getWebElement();
     }
 
     @Override

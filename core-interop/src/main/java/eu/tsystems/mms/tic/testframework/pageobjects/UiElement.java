@@ -99,10 +99,6 @@ public interface UiElement extends
     @Deprecated
     Dimension getSize();
 
-    Locate getLocate();
-
-    WebElement getWebElement();
-
     UiElement find(Locate locate);
 
     default UiElement find(By by) {

@@ -1,10 +1,12 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
+import org.openqa.selenium.WebElement;
 
 /**
  * Contains basic GuiElement features which every GuiElement needs to have.
@@ -22,4 +24,7 @@ public interface BasicUiElement {
      */
     ImageAssertion screenshot();
     BasicUiElement highlight();
+    String createXPath();
+    Locate getLocate();
+    WebElement getWebElement();
 }

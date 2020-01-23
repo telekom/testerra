@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.simulation;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
@@ -8,6 +9,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAsser
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
+import org.openqa.selenium.WebElement;
 
 public class AbstractSimulator implements UiElementActions {
     protected final GuiElement guiElement;
@@ -84,6 +86,21 @@ public class AbstractSimulator implements UiElementActions {
     @Override
     public TestableUiElement highlight() {
         return guiElement.highlight();
+    }
+
+    @Override
+    public String createXPath() {
+        return guiElement.createXPath();
+    }
+
+    @Override
+    public Locate getLocate() {
+        return guiElement.getLocate();
+    }
+
+    @Override
+    public WebElement getWebElement() {
+        return guiElement.getWebElement();
     }
 
     @Override

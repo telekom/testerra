@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
@@ -987,6 +988,20 @@ public class GuiElement implements
     public TestableUiElement waitFor() {
         propertyAssertionFactory.shouldWait();
         return this;
+    }
+
+    @Override
+    public String createXPath() {
+        ArrayList<String> xPathes = new ArrayList<>();
+        HasParent element = this;
+        do {
+            if (element instanceof UiElement) {
+                xPathes.add(0, ((UiElement) element).getLocate().getBy().toString());
+            }
+            element = element.getParent();
+        } while (element instanceof BasicUiElement);
+
+        return String.join("", xPathes);
     }
 
     @Override

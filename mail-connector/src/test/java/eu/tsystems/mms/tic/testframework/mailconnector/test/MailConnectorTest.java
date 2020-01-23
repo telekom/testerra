@@ -58,38 +58,42 @@ public class MailConnectorTest {
      * Constant PATH_HOME
      */
     private static final String PATH_HOME = System.getProperty("user.dir");
-    /**
-     * Constant PATH_RES
-     */
-    private static final String PATH_RES = PATH_HOME +  /*"/mail-connector" +*/ "/src/test/resources/";
+
     /**
      * Constant STR_MAIL_SUBJECT
      */
     private static final String STR_MAIL_SUBJECT = "Test mail for TC:";
+
     /**
      * Constant STR_MAIL_TEXT
      */
     private static final String STR_MAIL_TEXT = "I am a test mail!";
+
     /**
      * Constant ERR_CONTENT_DIFFERS
      */
     private static final String ERR_CONTENT_DIFFERS = "Content of sent and received message is not the same!";
+
     /**
      * Constant ERR_HEADERS_DIFFER
      */
     private static final String ERR_HEADERS_DIFFER = "Headers of sent and received message are not the same!";
+
     /**
      * Constant ERR_NO_MSG_RECEIVED
      */
     private static final String ERR_NO_MSG_RECEIVED = "No Message was received!";
+
     /**
      * Constant ERR_NO_ATTACHMENT
      */
     private static final String ERR_NO_ATTACHMENT = "Message contains no attachment!";
+
     /**
      * Constant RECIPIENT
      */
     private static final String RECIPIENT = "test@localhost.com";
+
     /**
      * Constant SENDER
      */
@@ -100,10 +104,12 @@ public class MailConnectorTest {
      * LOGGER
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(MailConnectorTest.class);
+
     /**
      * SMTPMailConnector
      */
     private SMTPMailConnector smtp; // Mail connector using the SMTP protocol
+
     /**
      * POP3MailConnector
      */
@@ -312,13 +318,14 @@ public class MailConnectorTest {
     public void testT05_sendAndWaitForMessageEncryptedWithCertificate() throws Exception {
 
         final String subject = STR_MAIL_SUBJECT + "testT05_sendAndWaitForMessageEncryptedWithCertificate";
-        final String pathCertificate = PATH_RES + "test_certificate.cer";
+
+        final File testCertificateFile = FileUtils.getResourceFile("test_certificate.cer");
 
         // SETUP - Create message.
         MimeMessage msg = createDefaultMessage(session, subject);
 
         // EXECUTION 1 - Encrypt message.
-        MimeMessage encryptedMsg = MailUtils.encryptMessageWithCert(msg, session, pathCertificate);
+        MimeMessage encryptedMsg = MailUtils.encryptMessageWithCert(msg, session, testCertificateFile.getAbsolutePath());
 
         // TEST 1 - Check encryption.
         final String expContentType = "application/pkcs7-mime; name=\"smime.p7m\"; smime-type=enveloped-data";
@@ -335,7 +342,6 @@ public class MailConnectorTest {
 
         // CLEAN UP - Delete message.
         deleteMessage(receivedMsg, pop3);
-
         // Decryption functionality has not been implemented, thus cannot be tested.
     }
 

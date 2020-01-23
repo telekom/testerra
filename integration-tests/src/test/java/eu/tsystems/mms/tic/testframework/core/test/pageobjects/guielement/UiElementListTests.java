@@ -100,7 +100,7 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
     }
 
     @Override
-    protected TestPage getStartPage() {
+    protected TestPage getTestPage() {
         return TestPage.LIST;
     }
 }

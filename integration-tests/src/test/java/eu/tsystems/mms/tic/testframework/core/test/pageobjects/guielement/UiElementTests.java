@@ -21,7 +21,6 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
@@ -40,7 +39,6 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
     @BeforeMethod
     private WebTestPage prepareTestPage() {
         page = pageFactory.createPage(WebTestPage.class);
-        page.getWebDriver().navigate().to(TestPage.INPUT_TEST_PAGE.getUrl());
         return page;
     }
 

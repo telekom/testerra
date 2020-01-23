@@ -17,7 +17,6 @@ public class LocateTest extends AbstractTestSitesTest {
     @BeforeMethod
     private void createPage() {
         page = pageFactory.createPage(WebTestPage.class);
-        page.getWebDriver().navigate().to(TestPage.INPUT_TEST_PAGE.getUrl());
     }
 
     @Test

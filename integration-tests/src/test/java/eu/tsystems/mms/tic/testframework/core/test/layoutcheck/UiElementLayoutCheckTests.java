@@ -31,15 +31,13 @@ import org.testng.annotations.Test;
 public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements Loggable {
 
     @Override
-    protected TestPage getStartPage() {
+    protected TestPage getTestPage() {
         return TestPage.LAYOUT;
     }
 
     @BeforeMethod
     private WebTestPage preparePage() {
-        WebTestPage page = pageFactory.createPage(WebTestPage.class);
-        page.getWebDriver().navigate().to(TestPage.LAYOUT.getUrl());
-        return page;
+        return pageFactory.createPage(WebTestPage.class);
     }
 
     @Test

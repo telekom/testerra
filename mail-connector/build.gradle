@@ -8,5 +8,5 @@ dependencies {
 }
 
 test {
-    exclude '**'
+//    exclude '**'
 }

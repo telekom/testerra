@@ -18,6 +18,7 @@ import eu.tsystems.mms.tic.testframework.mailconnector.util.MessageUtils;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteria;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteriaType;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.TesterraMail;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,6 +121,7 @@ public class MailConnectorTest {
      */
     @AfterMethod
     public void clearMailBox(Method method) {
+
         pop3.deleteAllMessages();
 
         final boolean inboxEmpty = (pop3.getMessageCount() == 0);
@@ -136,6 +138,7 @@ public class MailConnectorTest {
      */
     @BeforeClass
     public void initProperties() {
+
         PropertyManager.loadProperties("mailconnection.properties");
 
         Security.setProperty("ssl.SocketFactory.provider", DummySSLSocketFactory.class.getName());
@@ -157,6 +160,7 @@ public class MailConnectorTest {
      */
     @Test
     public void testT01_saveAndLoadMessage() throws Exception {
+
         final String subject = STR_MAIL_SUBJECT + "testT01_saveAndLoadMessage";
         final String pathMail = PATH_HOME + "/target/mail.eml";
 
@@ -181,6 +185,7 @@ public class MailConnectorTest {
      */
     @Test
     public void testT02_sendAndWaitForMessageWithoutAttachement() {
+
         final String subject = STR_MAIL_SUBJECT + "testT02_sendAndWaitForMessage";
 
         // SETUP - Create message.
@@ -209,12 +214,13 @@ public class MailConnectorTest {
      */
     @Test
     public void testT03_sendAndWaitForMessageWithAttachment() throws Exception {
+
         final String subject = STR_MAIL_SUBJECT + "testT03_sendAndWaitForMessageWithAttachment";
-        final String attachmentFile = "attachment.txt";
+        final File attachmentFile = FileUtils.getResourceFile("attachment.txt");
 
         // SETUP - Create message, add attachment.
         MimeMessage msg = this.createDefaultMessage(session, subject);
-        MimeBodyPart attachment = smtp.createAttachment(new File(PATH_RES + attachmentFile));
+        MimeBodyPart attachment = smtp.createAttachment(attachmentFile);
         MimeBodyPart[] attachments = {attachment};
         smtp.addAttachmentsToMessage(attachments, msg);
 
@@ -249,7 +255,7 @@ public class MailConnectorTest {
         }
 
         Assert.assertEquals(text, STR_MAIL_TEXT);
-        Assert.assertEquals(attachmentFileName, attachmentFile);
+        Assert.assertEquals(attachmentFileName, attachmentFile.getName());
 
         // CLEAN UP - Delete message.
 
@@ -259,11 +265,13 @@ public class MailConnectorTest {
     /**
      * Tests the correct creating and sending of mails, encrypted with a key store file.
      */
-    @Test(enabled = false)
+    @Test
     public void testT04_sendAndWaitForMessageEncryptedWithKeyStore() throws Exception {
+
         final String subject = STR_MAIL_SUBJECT + "testT04_sendAndWaitForMessageEncryptedWithKeyStore";
-        final String pahtKeyStore = PATH_RES + "cacert.p12";
-        final String password = "mastest";
+        final File resourceFile = FileUtils.getResourceFile("cacert.p12");
+        final String pahtKeyStore = resourceFile.getAbsolutePath();
+        final String password = "123456";
         MimeMessage msg = createDefaultMessage(session, subject);
 
         // EXECUTION 1 - Encrypt message.
@@ -302,6 +310,7 @@ public class MailConnectorTest {
      */
     @Test(enabled = false)
     public void testT05_sendAndWaitForMessageEncryptedWithCertificate() throws Exception {
+
         final String subject = STR_MAIL_SUBJECT + "testT05_sendAndWaitForMessageEncryptedWithCertificate";
         final String pathCertificate = PATH_RES + "test_certificate.cer";
 
@@ -336,6 +345,7 @@ public class MailConnectorTest {
      */
     @Test
     public void testT06_sendAndWaitForSSLMessage() {
+
         final String subject = STR_MAIL_SUBJECT + "testT06_sendAndWaitForSSLMessage";
         final String sslPortPop3 = PropertyManager.getProperty("POP3_SERVER_PORT_SSL", null);
         final String sslPortSmtp = PropertyManager.getProperty("SMTP_SERVER_PORT_SSL", null);
@@ -385,15 +395,17 @@ public class MailConnectorTest {
      */
     @Test
     public void testT07_signMessage() {
-        final String pathKeyStore = PATH_RES + "cacert.p12";
-        final String pasword = "mastest";
+
+        final File resourceFile = FileUtils.getResourceFile("cacert.p12");
+        final String pathKeyStore = resourceFile.getAbsolutePath();
+        final String password = "123456";
 
         try {
             // SETUP - Create message.
             MimeMessage msg = this.createDefaultMessage(session, STR_MAIL_SUBJECT + "testT07_signMessage");
 
             // EXECUTION - Sign message.
-            MimeMessage signedMsg = MailUtils.signMessageWithKeystore(msg, session, pathKeyStore, pasword);
+            MimeMessage signedMsg = MailUtils.signMessageWithKeystore(msg, session, pathKeyStore, password);
 
             // TEST 1 - Check content.
             String expectedContent = "multipart/signed; protocol=\"application/pkcs7-signature\"; micalg=sha-1;";
@@ -410,8 +422,9 @@ public class MailConnectorTest {
                 }
             }
         } catch (final Exception e) {
+
             LOGGER.error(e.getMessage());
-            Assert.assertTrue(false, e.getMessage());
+            Assert.fail(e.getMessage());
         }
     }
 
@@ -422,6 +435,7 @@ public class MailConnectorTest {
      */
     @Test
     public void testT08_sendAndWaitForMessageWithoutAttachement_SubjectSenderRecipient() throws Exception {
+
         String subject = "testT08_sendAndWaitForMessageWithoutAttachement_SubjectSenderRecipient"
                 + StringUtils.getRandomStringWithLength(5);
 
@@ -440,6 +454,7 @@ public class MailConnectorTest {
      */
     @Test
     public void testT09_sendAndWaitForMessageWithoutAttachement_SubjectRecipient() throws Exception {
+
         String subject = "testT09_sendAndWaitForMessageWithoutAttachement_SubjectRecipient"
                 + StringUtils.getRandomStringWithLength(5);
 
@@ -457,6 +472,7 @@ public class MailConnectorTest {
      */
     @Test
     public void testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender() throws Exception {
+
         String subject = "testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender"
                 + StringUtils.getRandomStringWithLength(5);
 
@@ -474,6 +490,7 @@ public class MailConnectorTest {
      */
     @Test
     public void testT12_sendAndWaitForMessageWithoutAttachement_SubjectSentDate() throws Exception {
+
         String subject = "testT10_sendAndWaitForMessageWithoutAttachement_SubjectSender";
 
         final List<SearchCriteria> searchCriterias = new ArrayList<>();
@@ -490,6 +507,7 @@ public class MailConnectorTest {
      */
     @Test
     public void testT11_deleteAllMessages() {
+
         pop3.deleteMessage(null, null, null, null);
         final boolean inboxEmpty = (pop3.getMessageCount() == 0);
         Assert.assertTrue(inboxEmpty, "Mail box is empty");
@@ -497,6 +515,7 @@ public class MailConnectorTest {
 
     private void sendAndWaitForMessageWithoutAttachement(final String testname,
                                                          final List<SearchCriteria> searchCriterias) throws MessagingException, IOException {
+
         final String subject = STR_MAIL_SUBJECT + testname;
 
         // SETUP - Create message.
@@ -529,6 +548,7 @@ public class MailConnectorTest {
      * @return MimeMessage object.
      */
     private MimeMessage createDefaultMessage(Session mailSession, String subject) {
+
         MimeMessage msg = new MimeMessage(mailSession);
         try {
             msg.addRecipients(RecipientType.TO, RECIPIENT);

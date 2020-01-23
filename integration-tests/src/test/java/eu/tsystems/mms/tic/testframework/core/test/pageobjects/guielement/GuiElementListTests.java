@@ -100,7 +100,7 @@ public class GuiElementListTests extends AbstractTestSitesTest implements PageFa
     }
 
     @Override
-    protected TestPage getStartPage() {
+    protected TestPage getTestPage() {
         return TestPage.LIST;
     }
 

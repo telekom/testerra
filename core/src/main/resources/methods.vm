@@ -57,7 +57,7 @@
                         #end
 
                         #if ($testMethod.isRetry())
-                            <tr id="row-$index" class="test">
+                            <tr id="${testMethod.name}-${index}" class="test">
                         #else
                             <tr id="$testMethod.name" class="test">
                         #end

@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 public class AssertTextPageTest extends AbstractTestSitesTest implements PageFactoryTest {
 
     @Override
-    protected TestPage getStartPage() {
+    protected TestPage getTestPage() {
         return TestPage.FRAME_TEST_PAGE;
     }
 

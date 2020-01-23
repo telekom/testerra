@@ -262,8 +262,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
      */
     @Test
     public void testT22_GuiElement_waitForText() {
-
-        getElementWithText().waits().waitForText(testPage.getElementText());
+        getElementWithText().waits().waitForText(getTestPage().getElementText());
     }
 
     /**
@@ -297,7 +296,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
      */
     @Test
     public void testT25_GuiElement_waitForTextContains() {
-        boolean found = getElementWithText().waits().waitForTextContains(testPage.getElementTextArray()[0]);
+        boolean found = getElementWithText().waits().waitForTextContains(getTestPage().getElementTextArray()[0]);
         Assert.assertTrue(found, "The Element is found");
     }
 

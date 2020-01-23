@@ -39,7 +39,7 @@ public class DeepFrameAwareGuiElementTest extends AbstractGuiElementNonFunctiona
     }
 
     @Override
-    protected TestPage getStartPage() {
+    protected TestPage getTestPage() {
         return TestPage.FRAME_TEST_PAGE;
     }
 }

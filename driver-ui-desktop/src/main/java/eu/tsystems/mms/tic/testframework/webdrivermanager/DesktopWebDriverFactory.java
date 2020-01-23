@@ -149,21 +149,22 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
          */
         WebDriver driver = startSession(request, desiredCapabilities);
 
-        /*
-        Open url
-         */
-        final String baseUrl = request.baseUrl;
-        log().info("Opening: " + baseUrl);
-        StopWatch.startPageLoad(driver);
-        try {
-            driver.get(baseUrl);
-        } catch (Exception e) {
-            if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
-                throw new TesterraRuntimeException("Could not start driver session, because of unreachable url: " + request.baseUrl, e);
+        if (request.baseUrl != null && !request.baseUrl.isEmpty()) {
+            URL baseUrl;
+            try {
+                baseUrl = new URL(request.baseUrl);
+                log().info("Opening: " + baseUrl.toString());
+                StopWatch.startPageLoad(driver);
+                driver.get(baseUrl.toString());
+            } catch (MalformedURLException e) {
+                log().warn(String.format("Won't open baseUrl: '%s': %s", request.baseUrl, e.getMessage()), e);
+            } catch (Exception e) {
+                if (StringUtils.containsAll(e.getMessage(), true, "Reached error page", "connectionFailure")) {
+                    throw new TesterraRuntimeException("Could not start driver session, because of unreachable url: " + request.baseUrl, e);
+                }
+                throw e;
             }
-            throw e;
         }
-
         return driver;
     }
 

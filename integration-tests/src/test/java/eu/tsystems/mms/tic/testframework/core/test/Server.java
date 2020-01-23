@@ -15,12 +15,22 @@ import java.net.ServerSocket;
 public class Server {
     private org.seleniumhq.jetty9.server.Server server;
     private File rootDir;
+    private int port;
+
+    public Server() {
+        this(new File(System.getProperty("user.dir")));
+    }
 
     public Server(File rootDir) {
         this.rootDir = rootDir;
     }
 
+    public int getPort() {
+        return port;
+    }
+
     public void start(int port) throws Exception {
+        this.port = port;
         server = new org.seleniumhq.jetty9.server.Server(port);
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(true);
@@ -33,15 +43,15 @@ public class Server {
         server.start();
     }
 
-    public int start() throws Exception {
+    public void start() throws Exception {
         int port;
         try (
             ServerSocket socket = new ServerSocket(0);
         ) {
             port = socket.getLocalPort();
+            socket.close();
+            start(port);
         }
-        start(port);
-        return port;
     }
 
     public void stop() throws Exception {

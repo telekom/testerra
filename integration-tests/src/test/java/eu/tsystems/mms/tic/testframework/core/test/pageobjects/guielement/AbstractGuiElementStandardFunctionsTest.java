@@ -47,7 +47,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      */
     @Test
     public void testT01_GuiElement_assertContainsText() {
-        getElementWithText().asserts().assertContainsText(testPage.getElementText());
+        getElementWithText().asserts().assertContainsText(getTestPage().getElementText());
     }
 
     /**
@@ -55,7 +55,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      */
     @Test
     public void testT01_GuiElement_assertTextContains() {
-        getElementWithText().asserts().assertTextContains(testPage.getElementText());
+        getElementWithText().asserts().assertTextContains(getTestPage().getElementText());
     }
 
     /**
@@ -71,7 +71,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      */
     @Test
     public void testT03_GuiElement_assertContainsText() {
-        String[] elementTextArray = testPage.getElementTextArray();
+        String[] elementTextArray = getTestPage().getElementTextArray();
         GuiElement elementWithText = getElementWithText();
         for (String s : elementTextArray) {
             elementWithText.asserts().assertContainsText(s);
@@ -83,7 +83,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      */
     @Test(expectedExceptions = {AssertionError.class, TimeoutException.class})
     public void testT04N_GuiElement_assertContainsText() {
-        String[] strings = {"yxyxyxya", "zzzzzzzxzzzzxzzz", testPage.getElementText()};
+        String[] strings = {"yxyxyxya", "zzzzzzzxzzzzxzzz", getTestPage().getElementText()};
         for (String s : strings) {
             getElementWithText().asserts().assertContainsText(s);
         }
@@ -94,7 +94,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      */
     @Test
     public void testT05_GuiElement_assertText() {
-        getElementWithText().asserts().assertText(testPage.getElementText());
+        getElementWithText().asserts().assertText(getTestPage().getElementText());
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      */
     @Test
     public void testT07_GuiElement_assertAttributeText() {
-        getElementWithAttribute().asserts().assertAttributeValue(testPage.getAttributeName(), testPage.getAttributeValue());
+        getElementWithAttribute().asserts().assertAttributeValue(getTestPage().getAttributeName(), getTestPage().getAttributeValue());
     }
 
     /**
@@ -118,7 +118,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      */
     @Test(expectedExceptions = {AssertionError.class})
     public void testT08N_GuiElement_assertAttributeText() {
-        getElementWithAttribute().asserts().assertAttributeValue(testPage.getAttributeName(), "blurp012zyx");
+        getElementWithAttribute().asserts().assertAttributeValue(getTestPage().getAttributeName(), "blurp012zyx");
     }
 
     /**
@@ -126,7 +126,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      */
     @Test
     public void testT09_GuiElement_assertAttributeContains() {
-        getElementWithAttribute().asserts().assertAttributeContains(testPage.getAttributeName(), testPage.getAttributeValuePart());
+        getElementWithAttribute().asserts().assertAttributeContains(getTestPage().getAttributeName(), getTestPage().getAttributeValuePart());
     }
 
     /**
@@ -134,7 +134,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      */
     @Test
     public void testT09_GuiElement_assertAttributeContainsNot() {
-        getElementWithAttribute().asserts().assertTextContainsNot(testPage.getAttributeName(), "inexistent");
+        getElementWithAttribute().asserts().assertTextContainsNot(getTestPage().getAttributeName(), "inexistent");
     }
 
     /**
@@ -142,7 +142,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      */
     @Test(expectedExceptions = {AssertionError.class})
     public void testT10N_GuiElement_assertAttributeContains() {
-        getElementWithAttribute().asserts().assertAttributeContains(testPage.getAttributeName(), "blurp012zyx");
+        getElementWithAttribute().asserts().assertAttributeContains(getTestPage().getAttributeName(), "blurp012zyx");
     }
 
     /**
@@ -235,7 +235,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
      */
     @Test
     public void testT21_GuiElement_assertAnyFollowingTextNodeContains() {
-        getParent2().asserts().assertAnyFollowingTextNodeContains(testPage.getElementText());
+        getParent2().asserts().assertAnyFollowingTextNodeContains(getTestPage().getElementText());
     }
 
     /**

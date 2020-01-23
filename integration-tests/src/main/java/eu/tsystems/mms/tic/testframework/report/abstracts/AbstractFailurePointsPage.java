@@ -66,6 +66,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
 
     /**
      * Alternate Methods used for the new exit points
+     *
      * @param entry
      * @param index
      * @return
@@ -106,7 +107,7 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
 
     public GuiElement getIntoReportInformationAlternativeForExitpoints(AbstractResultTableFailureEntry entry, int index, boolean intoReport) {
 
-        if(intoReport) {
+        if (intoReport) {
             GuiElement extendButton = new GuiElement(driver, By.xpath(String.format(
                     LOCATOR_FAILUREPOINT_INTO_REPORT_YES,
                     failurePointType.getLabel(),
@@ -338,11 +339,11 @@ public abstract class AbstractFailurePointsPage extends AbstractReportPage {
             methodDetailElement.asserts().assertIsDisplayed();
             boolean isFound;
             int i = 0;
-            do{
+            do {
                 String expectedTestMethod = entry.getMethodDetailPathSimpleMethodNames().get(i);
                 isFound = methodDetailElement.getText().contains(expectedTestMethod);
                 i++;
-            }while(!isFound && i < entry.getMethodDetailPathSimpleMethodNames().size());
+            } while (!isFound && i < entry.getMethodDetailPathSimpleMethodNames().size());
 
             Assert.assertTrue(isFound, "Element " + methodDetailElement.getText() + " does NOT contain one of the following test methods: " + entry.getMethodDetailPathSimpleMethodNames());
 

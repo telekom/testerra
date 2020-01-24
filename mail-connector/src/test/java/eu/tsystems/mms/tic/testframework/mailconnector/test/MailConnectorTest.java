@@ -595,7 +595,7 @@ public class MailConnectorTest {
 
         // TEST - Fail, if no message was received.
         try {
-            receivedMsg = pop3.waitForTesterraMails(searchCriterias).get(0);
+            receivedMsg = pop3.waitForMails(searchCriterias).get(0);
         } catch (Exception e) {
             Assert.fail(ERR_NO_MSG_RECEIVED);
         }

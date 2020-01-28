@@ -296,9 +296,9 @@ public abstract class AbstractMailConnector {
      *
      * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      */
-    public List<TesterraMail> waitForTesterraMails(List<SearchCriteria> searchCriterias) {
+    public List<TesterraMail> waitForMails(List<SearchCriteria> searchCriterias) {
 
-        return waitForTesterraMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
+        return waitForMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
     }
 
     /**
@@ -312,7 +312,7 @@ public abstract class AbstractMailConnector {
      *
      * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      */
-    public List<TesterraMail> waitForTesterraMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
+    public List<TesterraMail> waitForMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
 
         List<MimeMessage> messages = pWaitForMessage(searchCriterias, maxReadTries, pollingTimerSeconds);
         List<TesterraMail> out = new LinkedList<>();

@@ -444,6 +444,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
         final AtomicReference<Screenshot> atomicScreenshot = new AtomicReference<>();
 
         Screenshot screenshot = new Screenshot(self.toString());
+        WebDriver driver = this.getWebDriver();
         UITestUtils.takeScreenshot(driver, screenshot);
         atomicScreenshot.set(screenshot);
 

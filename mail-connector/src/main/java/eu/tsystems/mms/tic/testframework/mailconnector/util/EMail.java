@@ -48,12 +48,12 @@ import java.util.Map;
  *
  * @author sepr, clgr
  */
-public class TesterraMail {
+public class EMail {
 
     /**
      * Logger.
      */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(TesterraMail.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(EMail.class);
 
     /**
      * Liste von Anhängen der Mail.
@@ -165,7 +165,7 @@ public class TesterraMail {
      *
      * @param javaMessage zu wandelndes Message-Objekt.
      */
-    public TesterraMail(final MimeMessage javaMessage) {
+    public EMail(final MimeMessage javaMessage) {
         attachments = new HashMap<>();
         this.message = javaMessage;
 

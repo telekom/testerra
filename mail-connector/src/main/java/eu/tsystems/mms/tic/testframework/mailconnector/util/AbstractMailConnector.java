@@ -287,32 +287,8 @@ public abstract class AbstractMailConnector {
         this.session = session;
     }
 
-    public List<TesterraMail> waitForEMails(List<SearchCriteria> searchCriterias) {
-        return waitForTesterraMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
-    }
-
-    /**
-     * Wait until messages with search criteria are received.
-     *
-     * @param searchCriterias The subject which message should contain.
-     *
-     * @return The message.
-     *
-     * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
-     * @deprecated Use {@link #waitForEMails(List)} instead
-     */
-    @Deprecated
-    public List<TesterraMail> waitForTesterraMails(List<SearchCriteria> searchCriterias) {
+    public List<EMail> waitForEMails(List<SearchCriteria> searchCriterias) {
         return waitForEMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
-    }
-
-    public List<TesterraMail> waitForEMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
-        List<MimeMessage> messages = pWaitForMessage(searchCriterias, maxReadTries, pollingTimerSeconds);
-        List<TesterraMail> out = new LinkedList<>();
-        for (MimeMessage message : messages) {
-            out.add(new TesterraMail(message));
-        }
-        return out;
     }
 
     /**
@@ -327,9 +303,13 @@ public abstract class AbstractMailConnector {
      * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      * @deprecated Use {@link #waitForEMails(List)} instead
      */
-    @Deprecated
-    public List<TesterraMail> waitForTesterraMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
-        return waitForEMails(searchCriterias, maxReadTries, pollingTimerSeconds);
+    public List<EMail> waitForEMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
+        List<MimeMessage> messages = pWaitForMessage(searchCriterias, maxReadTries, pollingTimerSeconds);
+        List<EMail> out = new LinkedList<>();
+        for (MimeMessage message : messages) {
+            out.add(new EMail(message));
+        }
+        return out;
     }
 
     private List<MimeMessage> pWaitForMessage(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) throws TesterraSystemException {
@@ -667,11 +647,11 @@ public abstract class AbstractMailConnector {
     /**
      * deletes tt. mail by it's message id from inbox.
      *
-     * @param mail {@link TesterraMail} object with messageId set.
+     * @param mail {@link EMail} object with messageId set.
      *
      * @return true if message has been deleted.
      */
-    public boolean deleteMessage(TesterraMail mail) {
+    public boolean deleteMessage(EMail mail) {
         return deleteMessage(null, Message.RecipientType.TO, null, mail.getMessageID());
     }
 
@@ -718,11 +698,11 @@ public abstract class AbstractMailConnector {
      * move given message into folder with given name.
      *
      * @param targetFolder Name of folder to move into.
-     * @param message {@link TesterraMail} to move (compared by messageId)
+     * @param message {@link EMail} to move (compared by messageId)
      *
      * @return true if moved.
      */
-    public boolean moveMessage(String targetFolder, TesterraMail message) {
+    public boolean moveMessage(String targetFolder, EMail message) {
         SearchCriteria searchCriteria = new SearchCriteria(SearchCriteriaType.MESSAGEID, message.getMessageID());
         return pMoveMessage(targetFolder, searchCriteria) == 1;
     }

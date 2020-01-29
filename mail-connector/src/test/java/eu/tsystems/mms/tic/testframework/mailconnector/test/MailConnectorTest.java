@@ -17,7 +17,7 @@ import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.MessageUtils;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteria;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteriaType;
-import eu.tsystems.mms.tic.testframework.mailconnector.util.TesterraMail;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.Email;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -200,7 +200,7 @@ public class MailConnectorTest extends TesterraTest {
 
         // EXECUTION - Send and receive message.
         smtp.sendMessage(msg);
-        TesterraMail receivedMsg = waitForMessage(subject);
+        Email receivedMsg = waitForMessage(subject);
 
         // TEST - Compare sent message with received message (content & headers).
 
@@ -234,7 +234,7 @@ public class MailConnectorTest extends TesterraTest {
         // EXECUTION - Send and receive message.
         smtp.sendMessage(msg);
 
-        TesterraMail receivedMsg = waitForMessage(subject);
+        Email receivedMsg = waitForMessage(subject);
 
         // TEST 1 - Fail, if the message contains no attachment (content is plain text).
         if (!(receivedMsg.getMessage().getContent() instanceof MimeMultipart)) {
@@ -291,7 +291,7 @@ public class MailConnectorTest extends TesterraTest {
 
         // EXECUTION 2 - Send and retrieve encrypted message.
         smtp.sendMessage(encryptedMsg);
-        TesterraMail receivedMsg = waitForMessage(subject);
+        Email receivedMsg = waitForMessage(subject);
 
         // TEST 2 - Content should be encrypted (not equal to original message).
         boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
@@ -335,7 +335,7 @@ public class MailConnectorTest extends TesterraTest {
 
         // EXECUTION 2 - Send and retrieve encrypted message.
         smtp.sendMessage(encryptedMsg);
-        TesterraMail receivedMsg = waitForMessage(subject);
+        Email receivedMsg = waitForMessage(subject);
 
         // TEST 2 - Content should be encrypted (not equal to original message).
         boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
@@ -377,7 +377,7 @@ public class MailConnectorTest extends TesterraTest {
 
         // EXECUTION - Send and receive message.
         smtpSSL.sendMessage(msg);
-        TesterraMail receivedMsg = waitForMessage(subject);
+        Email receivedMsg = waitForMessage(subject);
 
         // TEST - Compare sent message with received message (content & headers).
         boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(msg, receivedMsg);
@@ -530,7 +530,7 @@ public class MailConnectorTest extends TesterraTest {
 
         // EXECUTION - Send and receive message.
         smtp.sendMessage(msg);
-        TesterraMail receivedMsg = waitForMessage(searchCriterias);
+        Email receivedMsg = waitForMessage(searchCriterias);
 
         // get content
         receivedMsg.getMessage().getContent();
@@ -576,7 +576,7 @@ public class MailConnectorTest extends TesterraTest {
      * @return the received TesterraMail-message
      * @throws AssertionError in case no message was received at all
      */
-    private TesterraMail waitForMessage(String subject) throws AssertionError {
+    private Email waitForMessage(String subject) throws AssertionError {
 
         final List<SearchCriteria> searchCriteria = new ArrayList<>();
         searchCriteria.add(new SearchCriteria(SearchCriteriaType.SUBJECT, subject));
@@ -590,9 +590,9 @@ public class MailConnectorTest extends TesterraTest {
      * @return the received TesterraMail-message
      * @throws AssertionError in case no message was received at all
      */
-    private TesterraMail waitForMessage(final List<SearchCriteria> searchCriterias) throws AssertionError {
+    private Email waitForMessage(final List<SearchCriteria> searchCriterias) throws AssertionError {
 
-        TesterraMail receivedMsg = null;
+        Email receivedMsg = null;
 
         // TEST - Fail, if no message was received.
         try {
@@ -611,7 +611,7 @@ public class MailConnectorTest extends TesterraTest {
      * @param pop3Instance mailclient to use.
      * @throws AssertionError if the inbox is not empty after deleting the message
      */
-    private void deleteMessage(TesterraMail msg, POP3MailConnector pop3Instance) throws AssertionError {
+    private void deleteMessage(Email msg, POP3MailConnector pop3Instance) throws AssertionError {
 
         RecipientType to = RecipientType.TO;
         String recipient = msg.getRecipients().get(0);

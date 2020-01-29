@@ -15,7 +15,7 @@ public class DashboardModuleTestResultPieChart extends AbstractFramePage {
 
     // Actual Run Pie Chart
     @Check
-    private GuiElement actualPieChart = new GuiElement(this.driver, By.id("methodsPie"), mainFrame);
+    private GuiElement actualPieChart = new GuiElement(this.getWebDriver(), By.id("methodsPie"), mainFrame);
     private GuiElement passedPieSegment = actualPieChart.getSubElement(By.id("Passed"));
     private GuiElement passedMinorPieSegment = actualPieChart.getSubElement(By.id("Minor"));
     private GuiElement failedPieSegment = actualPieChart.getSubElement(By.id("Failed"));
@@ -37,7 +37,7 @@ public class DashboardModuleTestResultPieChart extends AbstractFramePage {
     public DashboardPage clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult testResult) throws Exception {
         GuiElement pie = getActualRunPieSegment(testResult);
         triggerGuiElement(pie.getSubElement(By.xpath("./../*[@class='lightPie']")), MouseAction.CLICK);
-        return PageFactory.create(DashboardPage.class, this.driver);
+        return PageFactory.create(DashboardPage.class, this.getWebDriver());
     }
 
     /**
@@ -50,7 +50,7 @@ public class DashboardModuleTestResultPieChart extends AbstractFramePage {
     public DashboardPage hoverActualRunPieSegmentForTestResult(TestResultHelper.TestResult testResult) throws Exception {
         GuiElement pie = getActualRunPieSegment(testResult);
         triggerGuiElement(pie, MouseAction.MOUSE_OVER);
-        return PageFactory.create(DashboardPage.class, this.driver);
+        return PageFactory.create(DashboardPage.class, this.getWebDriver());
     }
 
     /**

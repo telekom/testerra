@@ -23,13 +23,13 @@ import org.openqa.selenium.WebDriver;
 public class DashboardPage extends AbstractReportPage implements IReportAnnotationVerifier {
 
     @Check
-    public final GuiElement testerraLogo = new GuiElement(this.driver, By.cssSelector("img[alt='testerra']"), mainFrame);
+    public final GuiElement testerraLogo = new GuiElement(this.getWebDriver(), By.cssSelector("img[alt='testerra']"), mainFrame);
     public final DashboardModuleTestResultPieChart dashboardModuleTestResultPieChart = PageFactory.create(DashboardModuleTestResultPieChart.class, driver);
     public final DashboardModuleTestResultNumberBreakdown dashboardModuleTestResultNumberBreakdown = PageFactory.create(DashboardModuleTestResultNumberBreakdown.class, driver);
     public final DashboardModuleFailureCorridor dashboardModuleFailureCorridor = PageFactory.create(DashboardModuleFailureCorridor.class, driver);
     public final DashboardModuleInformationCorridor dashboardModuleInformationCorridor = PageFactory.create(DashboardModuleInformationCorridor.class, driver);
     public final DashboardModuleClassBarChart dashboardModuleClassBarChart = PageFactory.create(DashboardModuleClassBarChart.class, driver);
-    public final GuiElement screenShotInfoButton = new GuiElement(this.driver, By.xpath("//*[contains(text(),'test_testMidCorridorFailed1')]"), mainFrame);
+    public final GuiElement screenShotInfoButton = new GuiElement(this.getWebDriver(), By.xpath("//*[contains(text(),'test_testMidCorridorFailed1')]"), mainFrame);
 
     public DashboardPage(WebDriver driver) {
         super(driver);
@@ -62,7 +62,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
      */
     public DashboardPage click(GuiElement element) {
         element.click();
-        return PageFactory.create(DashboardPage.class, this.driver);
+        return PageFactory.create(DashboardPage.class, this.getWebDriver());
     }
 
     /*
@@ -93,7 +93,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
      */
     public MethodDetailsPage clickMethodDetail(GuiElement methodDetail) {
         methodDetail.click();
-        return PageFactory.create(MethodDetailsPage.class, this.driver);
+        return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());
     }
 
     /**
@@ -154,7 +154,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
         barChartElement.click();
         GuiElement methodChartElement = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
         methodChartElement.click();
-        return PageFactory.create(MethodDetailsPage.class, this.driver);
+        return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());
     }
 
     public MethodDetailsPage goToMethodDetailsPageUsingTestNumberFilter(TestResultHelper.TestResult testResult, String className, String methodName) throws Exception {
@@ -163,7 +163,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
         barChartElement.click();
         GuiElement methodChartElement = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
         methodChartElement.click();
-        return PageFactory.create(MethodDetailsPage.class, this.driver);
+        return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());
     }
 
 }

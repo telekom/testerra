@@ -54,8 +54,9 @@ import java.util.Set;
 public abstract class AbstractPage extends AbstractPageObject implements Loggable {
     /**
      * The webdriver object.
-     * @todo This should be final
+     * @deprecated Use {@link #getWebDriver()} instead
      */
+    @Deprecated
     protected WebDriver driver;
 
     /**
@@ -171,7 +172,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
         String classSimpleName = this.getClass().getSimpleName();
         log().debug("Perform element checks");
 
-        handleDemoMode(this.driver);
+        handleDemoMode(getWebDriver());
 
         /*
         page checks
@@ -395,6 +396,10 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
     public void assertPageIsNotShown() {
     }
 
+    /**
+     * @deprecated Use {@link #getWebDriver()} instead
+     * @return
+     */
     @Deprecated
     public WebDriver getDriver() {
         return getWebDriver();

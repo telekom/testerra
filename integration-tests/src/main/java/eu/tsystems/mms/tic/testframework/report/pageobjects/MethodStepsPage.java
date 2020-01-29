@@ -15,15 +15,15 @@ public class MethodStepsPage extends MethodDetailsPage {
     private final String INTERNAL_STEP_LOCATOR = "//a[@id='link_viewclass_";
     private final String BROWSER_LOG_INDICATOR = "Browser:";
 
-    private GuiElement button1Point1 = new GuiElement(this.driver, By.xpath(INTERNAL_STEP_LOCATOR + "1_1']"), mainFrame);
-    private GuiElement button2Point1 = new GuiElement(this.driver, By.xpath(INTERNAL_STEP_LOCATOR + "2_1']"), mainFrame);
-    private GuiElement button3Point1 = new GuiElement(this.driver, By.xpath(INTERNAL_STEP_LOCATOR + "3_1']"), mainFrame);
+    private GuiElement button1Point1 = new GuiElement(this.getWebDriver(), By.xpath(INTERNAL_STEP_LOCATOR + "1_1']"), mainFrame);
+    private GuiElement button2Point1 = new GuiElement(this.getWebDriver(), By.xpath(INTERNAL_STEP_LOCATOR + "2_1']"), mainFrame);
+    private GuiElement button3Point1 = new GuiElement(this.getWebDriver(), By.xpath(INTERNAL_STEP_LOCATOR + "3_1']"), mainFrame);
 
     private final String EXTERNAL_STEP_LOCATOR = "//div[@class='list-group textleft listitems']//a[contains(text(),";
 
-    private GuiElement testStep1Button = new GuiElement(this.driver, By.xpath(EXTERNAL_STEP_LOCATOR + "'Test-Step-1')]"), mainFrame);
-    private GuiElement testStep2Button = new GuiElement(this.driver, By.xpath(EXTERNAL_STEP_LOCATOR + "'Test-Step-2')]"), mainFrame);
-    private GuiElement testStep3Button = new GuiElement(this.driver, By.xpath(EXTERNAL_STEP_LOCATOR + "'Test-Step-3')]"), mainFrame);
+    private GuiElement testStep1Button = new GuiElement(this.getWebDriver(), By.xpath(EXTERNAL_STEP_LOCATOR + "'Test-Step-1')]"), mainFrame);
+    private GuiElement testStep2Button = new GuiElement(this.getWebDriver(), By.xpath(EXTERNAL_STEP_LOCATOR + "'Test-Step-2')]"), mainFrame);
+    private GuiElement testStep3Button = new GuiElement(this.getWebDriver(), By.xpath(EXTERNAL_STEP_LOCATOR + "'Test-Step-3')]"), mainFrame);
 
 
     public MethodStepsPage(WebDriver driver) {

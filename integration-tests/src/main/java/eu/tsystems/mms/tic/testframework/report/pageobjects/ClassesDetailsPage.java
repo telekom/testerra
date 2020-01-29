@@ -33,11 +33,11 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     private String testResultLocatorPattern = "//th[text()='%s']";
 
     @Check
-    private GuiElement headLine = new GuiElement(this.driver, By.xpath("//div[@class='dashboardTextBig']"), mainFrame);
+    private GuiElement headLine = new GuiElement(this.getWebDriver(), By.xpath("//div[@class='dashboardTextBig']"), mainFrame);
 
-    private GuiElement configMethodsButton = new GuiElement(this.driver, By.id("toggleSuccessfulConfigMethodsView"), mainFrame);
+    private GuiElement configMethodsButton = new GuiElement(this.getWebDriver(), By.id("toggleSuccessfulConfigMethodsView"), mainFrame);
 
-    private GuiElement successfulConfigMethodsHeader = new GuiElement(this.driver, By.id("successfulConfigMethods"), mainFrame);
+    private GuiElement successfulConfigMethodsHeader = new GuiElement(this.getWebDriver(), By.id("successfulConfigMethods"), mainFrame);
 
     public ClassesDetailsPage(WebDriver driver) {
         super(driver);

@@ -145,7 +145,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
      * Execute loadtestspecific
      */
     private void perfTestExtras() {
-        StopWatch.stopPageLoad(driver, this.getClass());
+        StopWatch.stopPageLoad(getWebDriver(), this.getClass());
 
         if (Testerra.Properties.PERF_TEST.asBool()) {
             executeThinkTime();
@@ -223,7 +223,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
      */
     @Deprecated
     public Page refresh(boolean checkPage) {
-        driver.navigate().refresh();
+        getWebDriver().navigate().refresh();
         if (checkPage) {
             pCheckPage(false, false, false);
         }
@@ -232,6 +232,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
     @Deprecated
     public boolean isTextPresent(String text) {
+        WebDriver driver = getWebDriver();
         driver.switchTo().defaultContent();
 
         // check frames recursive
@@ -244,6 +245,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
     @Deprecated
     public boolean isTextDisplayed(String text) {
+        WebDriver driver = getWebDriver();
         driver.switchTo().defaultContent();
 
         // check frames recursive
@@ -262,6 +264,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
             isDisplayed && textElement.displayed().getActual()
             || textElement.present().getActual()
         ) {
+            WebDriver driver = getWebDriver();
             WebElement webElement = textElement.getWebElement();
             JSUtils.highlightWebElementStatic(driver, webElement, new Color(0, 255, 0));
             return true;

@@ -8,5 +8,7 @@ dependencies {
 }
 
 test {
-//    exclude '**'
+    useTestNG() {
+        suites 'src/test/resources/testSuite.xml'
+    }
 }

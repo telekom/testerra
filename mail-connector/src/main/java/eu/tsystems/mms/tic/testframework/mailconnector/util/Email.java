@@ -48,12 +48,12 @@ import java.util.Map;
  *
  * @author sepr, clgr
  */
-public class EMail {
+public class Email {
 
     /**
      * Logger.
      */
-    protected static final Logger LOGGER = LoggerFactory.getLogger(EMail.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(Email.class);
 
     /**
      * Liste von Anhängen der Mail.
@@ -165,7 +165,7 @@ public class EMail {
      *
      * @param javaMessage zu wandelndes Message-Objekt.
      */
-    public EMail(final MimeMessage javaMessage) {
+    public Email(final MimeMessage javaMessage) {
         attachments = new HashMap<>();
         this.message = javaMessage;
 

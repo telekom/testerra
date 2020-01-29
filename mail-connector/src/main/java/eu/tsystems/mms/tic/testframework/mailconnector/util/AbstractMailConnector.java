@@ -287,7 +287,7 @@ public abstract class AbstractMailConnector {
         this.session = session;
     }
 
-    public List<EMail> waitForEMails(List<SearchCriteria> searchCriterias) {
+    public List<Email> waitForEMails(List<SearchCriteria> searchCriterias) {
         return waitForEMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
     }
 
@@ -303,11 +303,11 @@ public abstract class AbstractMailConnector {
      * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      * @deprecated Use {@link #waitForEMails(List)} instead
      */
-    public List<EMail> waitForEMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
+    public List<Email> waitForEMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
         List<MimeMessage> messages = pWaitForMessage(searchCriterias, maxReadTries, pollingTimerSeconds);
-        List<EMail> out = new LinkedList<>();
+        List<Email> out = new LinkedList<>();
         for (MimeMessage message : messages) {
-            out.add(new EMail(message));
+            out.add(new Email(message));
         }
         return out;
     }
@@ -647,11 +647,11 @@ public abstract class AbstractMailConnector {
     /**
      * deletes tt. mail by it's message id from inbox.
      *
-     * @param mail {@link EMail} object with messageId set.
+     * @param mail {@link Email} object with messageId set.
      *
      * @return true if message has been deleted.
      */
-    public boolean deleteMessage(EMail mail) {
+    public boolean deleteMessage(Email mail) {
         return deleteMessage(null, Message.RecipientType.TO, null, mail.getMessageID());
     }
 
@@ -698,11 +698,11 @@ public abstract class AbstractMailConnector {
      * move given message into folder with given name.
      *
      * @param targetFolder Name of folder to move into.
-     * @param message {@link EMail} to move (compared by messageId)
+     * @param message {@link Email} to move (compared by messageId)
      *
      * @return true if moved.
      */
-    public boolean moveMessage(String targetFolder, EMail message) {
+    public boolean moveMessage(String targetFolder, Email message) {
         SearchCriteria searchCriteria = new SearchCriteria(SearchCriteriaType.MESSAGEID, message.getMessageID());
         return pMoveMessage(targetFolder, searchCriteria) == 1;
     }

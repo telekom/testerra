@@ -92,7 +92,7 @@ public abstract class Page extends AbstractPage {
      * Execute loadtestspecific
      */
     private void perfTestExtras() {
-        StopWatch.stopPageLoad(driver, this.getClass());
+        StopWatch.stopPageLoad(getWebDriver(), this.getClass());
 
         if (PropertyManager.getBooleanProperty(TesterraProperties.PERF_TEST, false)) {
             executeThinkTime();
@@ -169,13 +169,14 @@ public abstract class Page extends AbstractPage {
      * Send F5 to the browser.
      */
     public void refresh(boolean checkPage) {
-        driver.navigate().refresh();
+        getWebDriver().navigate().refresh();
         if (checkPage) {
             pCheckPage(false, false, false);
         }
     }
 
     public boolean isTextPresent(String text) {
+        WebDriver driver = getWebDriver();
         driver.switchTo().defaultContent();
 
         // check frames recursive
@@ -187,6 +188,7 @@ public abstract class Page extends AbstractPage {
     }
 
     public boolean isTextDisplayed(String text) {
+        WebDriver driver = getWebDriver();
         driver.switchTo().defaultContent();
 
         // check frames recursive
@@ -207,6 +209,7 @@ public abstract class Page extends AbstractPage {
 
         String textFinderXpath = TEXT_FINDER_XPATH.replace(TEXT_FINDER_PLACEHOLDER, text);
 
+        WebDriver driver = getWebDriver();
         textElement = new GuiElement(driver, By.xpath(textFinderXpath));
         if (isDisplayed) {
             textElement.withWebElementFilter(WebElementFilter.DISPLAYED.is(true));

@@ -10,8 +10,8 @@ import org.openqa.selenium.WebDriver;
  */
 public class MethodMinorErrorsPage extends MethodDetailsPage {
     //TODO need IDs here, the xpaths are terrible -> Jira-Ticket: XETA-573
-    GuiElement assertion = new GuiElement(this.driver, By.cssSelector(".standardTable.tr>td>a"), mainFrame);
-    GuiElement assertionMessage = new GuiElement(this.driver, By.cssSelector("#non-functional-exception-0>div"), mainFrame);
+    GuiElement assertion = new GuiElement(this.getWebDriver(), By.cssSelector(".standardTable.tr>td>a"), mainFrame);
+    GuiElement assertionMessage = new GuiElement(this.getWebDriver(), By.cssSelector("#non-functional-exception-0>div"), mainFrame);
 
     public MethodMinorErrorsPage(WebDriver driver) {
         super(driver);
@@ -24,7 +24,7 @@ public class MethodMinorErrorsPage extends MethodDetailsPage {
 
     public MethodMinorErrorsPage clickAssertion() {
         assertion.click();
-        return PageFactory.create(MethodMinorErrorsPage.class, this.driver);
+        return PageFactory.create(MethodMinorErrorsPage.class, this.getWebDriver());
     }
 
     public String getAssertionMessage() {

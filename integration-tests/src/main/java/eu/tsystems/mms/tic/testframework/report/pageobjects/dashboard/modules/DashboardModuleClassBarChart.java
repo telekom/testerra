@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 public class DashboardModuleClassBarChart extends AbstractFramePage {
 
     @Check
-    private GuiElement barChart = new GuiElement(this.driver, By.id("classesBars"), mainFrame);
+    private GuiElement barChart = new GuiElement(this.getWebDriver(), By.id("classesBars"), mainFrame);
 
     //bar chart elements
-    public final GuiElement barChartBars = new GuiElement(this.driver, By.xpath("//*[@class='highcharts-series-group']"), mainFrame);
-    public final GuiElement barChartClassNames = new GuiElement(this.driver, By.className("highcharts-xaxis-labels"), mainFrame);
+    public final GuiElement barChartBars = new GuiElement(this.getWebDriver(), By.xpath("//*[@class='highcharts-series-group']"), mainFrame);
+    public final GuiElement barChartClassNames = new GuiElement(this.getWebDriver(), By.className("highcharts-xaxis-labels"), mainFrame);
 
     public DashboardModuleClassBarChart(WebDriver driver) {
         super(driver);

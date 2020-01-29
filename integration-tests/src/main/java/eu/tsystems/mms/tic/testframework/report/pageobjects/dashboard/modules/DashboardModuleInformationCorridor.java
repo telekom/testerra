@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 public class DashboardModuleInformationCorridor extends AbstractFramePage {
 
 
-    public final GuiElement repairedFailsIndicationButton = new GuiElement(this.driver, By.xpath("//div[@class='dashboardInfo']"), mainFrame);
+    public final GuiElement repairedFailsIndicationButton = new GuiElement(this.getWebDriver(), By.xpath("//div[@class='dashboardInfo']"), mainFrame);
 
     public DashboardModuleInformationCorridor(WebDriver driver) {
         super(driver);

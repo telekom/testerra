@@ -17,35 +17,35 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
 
     // Test Numbers
     @Check
-    public final GuiElement numberAllTests = new GuiElement(this.driver, By.id("totalNumberOfTestMethods"), mainFrame);
+    public final GuiElement numberAllTests = new GuiElement(this.getWebDriver(), By.id("totalNumberOfTestMethods"), mainFrame);
 
-    public final GuiElement numberOfAllSuccessfulTests = new GuiElement(this.driver, By.id("totalNumberOfSuccessfulMethods"), mainFrame);
-    public final GuiElement numberPassedTests = new GuiElement(this.driver, By.id("numberOfPASSED"), mainFrame);
-    public final GuiElement numberPassedMinorTests = new GuiElement(this.driver, By.id("numberOfMINOR"), mainFrame);
-    public final GuiElement numberPassedRetryTests = new GuiElement(this.driver, By.id("numberOfPASSED_RETRY"), mainFrame);
+    public final GuiElement numberOfAllSuccessfulTests = new GuiElement(this.getWebDriver(), By.id("totalNumberOfSuccessfulMethods"), mainFrame);
+    public final GuiElement numberPassedTests = new GuiElement(this.getWebDriver(), By.id("numberOfPASSED"), mainFrame);
+    public final GuiElement numberPassedMinorTests = new GuiElement(this.getWebDriver(), By.id("numberOfMINOR"), mainFrame);
+    public final GuiElement numberPassedRetryTests = new GuiElement(this.getWebDriver(), By.id("numberOfPASSED_RETRY"), mainFrame);
 
-    public final GuiElement numberAllSkippedTests = new GuiElement(this.driver, By.id("totalNumberOfSkippedMethods"), mainFrame);
-    public final GuiElement numberSkippedTests = new GuiElement(this.driver, By.id("numberOfSKIPPED"), mainFrame);
+    public final GuiElement numberAllSkippedTests = new GuiElement(this.getWebDriver(), By.id("totalNumberOfSkippedMethods"), mainFrame);
+    public final GuiElement numberSkippedTests = new GuiElement(this.getWebDriver(), By.id("numberOfSKIPPED"), mainFrame);
 
-    public final GuiElement numberOfAllBrokenTests = new GuiElement(this.driver, By.id("totalNumberOfFailedMethods"), mainFrame);
-    public final GuiElement numberFailedTests = new GuiElement(this.driver, By.id("numberOfFAILED"), mainFrame);
-    public final GuiElement numberFailedMinorTests = new GuiElement(this.driver, By.id("numberOfFAILED_MINOR"), mainFrame);
-    public final GuiElement numberFailedRetriedTests = new GuiElement(this.driver, By.id("numberOfFAILED_RETRIED"), mainFrame);
-    public final GuiElement numberFailedExpectedTests = new GuiElement(this.driver, By.id("numberOfFAILED_EXPECTED"), mainFrame);
+    public final GuiElement numberOfAllBrokenTests = new GuiElement(this.getWebDriver(), By.id("totalNumberOfFailedMethods"), mainFrame);
+    public final GuiElement numberFailedTests = new GuiElement(this.getWebDriver(), By.id("numberOfFAILED"), mainFrame);
+    public final GuiElement numberFailedMinorTests = new GuiElement(this.getWebDriver(), By.id("numberOfFAILED_MINOR"), mainFrame);
+    public final GuiElement numberFailedRetriedTests = new GuiElement(this.getWebDriver(), By.id("numberOfFAILED_RETRIED"), mainFrame);
+    public final GuiElement numberFailedExpectedTests = new GuiElement(this.getWebDriver(), By.id("numberOfFAILED_EXPECTED"), mainFrame);
 
-    public final GuiElement numberExitPoints = new GuiElement(this.driver, By.xpath("//*[@id='exitPointsLink']/a"), mainFrame);
-    public final GuiElement numberFailureAspects = new GuiElement(this.driver, By.xpath("//*[@id='failureAspectsLink']/a"), mainFrame);
+    public final GuiElement numberExitPoints = new GuiElement(this.getWebDriver(), By.xpath("//*[@id='exitPointsLink']/a"), mainFrame);
+    public final GuiElement numberFailureAspects = new GuiElement(this.getWebDriver(), By.xpath("//*[@id='failureAspectsLink']/a"), mainFrame);
 
     // Test time-data
     @Check
-    public final GuiElement testDurationString = new GuiElement(this.driver, By.id("actualRunDuration"), mainFrame);
+    public final GuiElement testDurationString = new GuiElement(this.getWebDriver(), By.id("actualRunDuration"), mainFrame);
     @Check
-    public final GuiElement testStartTimeString = new GuiElement(this.driver, By.id("actualRunStartTime"), mainFrame);
+    public final GuiElement testStartTimeString = new GuiElement(this.getWebDriver(), By.id("actualRunStartTime"), mainFrame);
     @Check
-    public final GuiElement testEndTimeString = new GuiElement(this.driver, By.id("actualRunEndTime"), mainFrame);
+    public final GuiElement testEndTimeString = new GuiElement(this.getWebDriver(), By.id("actualRunEndTime"), mainFrame);
 
     // Percentages
-    public final GuiElement testPercentageString = new GuiElement(this.driver, By.id("actualRunPassRate"), mainFrame);
+    public final GuiElement testPercentageString = new GuiElement(this.getWebDriver(), By.id("actualRunPassRate"), mainFrame);
 
     public DashboardModuleTestResultNumberBreakdown(WebDriver driver) {
         super(driver);
@@ -160,7 +160,7 @@ public class DashboardModuleTestResultNumberBreakdown extends AbstractFramePage 
                 throw new TesterraRuntimeException("Unsupported mouseAction: " + mouseAction.name());
         }
         counter.click();
-        return PageFactory.create(DashboardPage.class, this.driver);
+        return PageFactory.create(DashboardPage.class, this.getWebDriver());
     }
 
     public void assertTestNumbers(TestNumberHelper testNumberHelper) {

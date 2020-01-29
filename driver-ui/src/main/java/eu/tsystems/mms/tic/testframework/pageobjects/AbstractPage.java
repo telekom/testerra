@@ -42,7 +42,9 @@ public abstract class AbstractPage {
 
     /**
      * The webdriver object.
+     * @deprecated Use {@link #getWebDriver()} instead
      */
+    @Deprecated
     protected WebDriver driver;
 
     /**
@@ -161,7 +163,7 @@ public abstract class AbstractPage {
         String classSimpleName = this.getClass().getSimpleName();
         logger.info("Checking mandatory elements for " + classSimpleName);
 
-        handleDemoMode(this.driver);
+        handleDemoMode(getWebDriver());
 
         /*
         page checks
@@ -357,7 +359,7 @@ public abstract class AbstractPage {
      * taking screenshot from all open windows
      */
     public void takeScreenshot() {
-        UITestUtils.takeScreenshot(driver, true);
+        UITestUtils.takeScreenshot(getWebDriver(), true);
     }
 
     public abstract void waitForPageToLoad();
@@ -371,6 +373,10 @@ public abstract class AbstractPage {
     public void assertPageIsNotShown() {
     }
 
+    /**
+     * @deprecated Use {@link #getWebDriver()} instead
+     * @return
+     */
     @Deprecated
     public WebDriver getDriver() {
         return driver;

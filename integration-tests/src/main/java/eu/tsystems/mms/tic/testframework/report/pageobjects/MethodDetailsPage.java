@@ -23,53 +23,53 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
     private String HISTORY_DATE_LOCATOR = ("");
 
     @Check
-    private GuiElement backTab = new GuiElement(this.driver, By.xpath("//div[@class='detailsmenu']"), mainFrame);
-    private GuiElement detailsTab = new GuiElement(this.driver, By.id("buttondetails"), mainFrame);
-    private GuiElement stepsTab = new GuiElement(this.driver, By.id("buttonlogs"), mainFrame);
-    private GuiElement stackTab = new GuiElement(this.driver, By.id("buttonstack"), mainFrame);
-    private GuiElement screenShotTab = new GuiElement(this.driver, By.id("buttonscreen"), mainFrame);
-    private GuiElement minorErrorTab = new GuiElement(this.driver, By.id("buttonminor"), mainFrame);
-    private GuiElement dependenciesTab = new GuiElement(this.driver, By.id("buttondeps"), mainFrame);
-    private GuiElement evolutionTab = new GuiElement(this.driver, By.id("buttonhistory"), mainFrame);
+    private GuiElement backTab = new GuiElement(this.getWebDriver(), By.xpath("//div[@class='detailsmenu']"), mainFrame);
+    private GuiElement detailsTab = new GuiElement(this.getWebDriver(), By.id("buttondetails"), mainFrame);
+    private GuiElement stepsTab = new GuiElement(this.getWebDriver(), By.id("buttonlogs"), mainFrame);
+    private GuiElement stackTab = new GuiElement(this.getWebDriver(), By.id("buttonstack"), mainFrame);
+    private GuiElement screenShotTab = new GuiElement(this.getWebDriver(), By.id("buttonscreen"), mainFrame);
+    private GuiElement minorErrorTab = new GuiElement(this.getWebDriver(), By.id("buttonminor"), mainFrame);
+    private GuiElement dependenciesTab = new GuiElement(this.getWebDriver(), By.id("buttondeps"), mainFrame);
+    private GuiElement evolutionTab = new GuiElement(this.getWebDriver(), By.id("buttonhistory"), mainFrame);
 
-    private GuiElement historyElementsGraph = new GuiElement(this.driver, By.id("gitGraph"), mainFrame);
+    private GuiElement historyElementsGraph = new GuiElement(this.getWebDriver(), By.id("gitGraph"), mainFrame);
 
     /**
      * Method
      */
     //TODO  IDs einfügen -> Jira-Ticket: XETA-524
-    private GuiElement methodNameString = new GuiElement(this.driver, By.xpath("(//*[@class='dashboardTextSmall'])[1]"), mainFrame);
-    private GuiElement classNameString = new GuiElement(this.driver, By.xpath("//tbody/tr[1]/td[3]/*[4]"), mainFrame);
-    private GuiElement methodResultString = new GuiElement(this.driver, By.xpath("//tbody/tr[1]/td[3]/*[5]/*[1]"), mainFrame);
-    private GuiElement stepString = new GuiElement(this.driver, By.xpath("//tbody/tr[1]/td[3]/*[5]/*[2]"), mainFrame);
+    private GuiElement methodNameString = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='dashboardTextSmall'])[1]"), mainFrame);
+    private GuiElement classNameString = new GuiElement(this.getWebDriver(), By.xpath("//tbody/tr[1]/td[3]/*[4]"), mainFrame);
+    private GuiElement methodResultString = new GuiElement(this.getWebDriver(), By.xpath("//tbody/tr[1]/td[3]/*[5]/*[1]"), mainFrame);
+    private GuiElement stepString = new GuiElement(this.getWebDriver(), By.xpath("//tbody/tr[1]/td[3]/*[5]/*[2]"), mainFrame);
 
     /**
      * Context
      */
-    private GuiElement contextButton = new GuiElement(this.driver, By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('context');\"]"), mainFrame);
-    private GuiElement context = new GuiElement(this.driver, By.id("context"), mainFrame);
+    private GuiElement contextButton = new GuiElement(this.getWebDriver(), By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('context');\"]"), mainFrame);
+    private GuiElement context = new GuiElement(this.getWebDriver(), By.id("context"), mainFrame);
 
-    private GuiElement repairedFailsIndication = new GuiElement(this.driver, By.xpath("//div[@class='skipped']"), mainFrame);
+    private GuiElement repairedFailsIndication = new GuiElement(this.getWebDriver(), By.xpath("//div[@class='skipped']"), mainFrame);
 
     //TODO  IDs einfügen -> Jira-Ticket: XETA-524
     public String durationLocator = "//*[@class='cellTop']//*[contains(text(), 'Duration')]/..";
-    private GuiElement duration = new GuiElement(this.driver, By.id("actualRunDuration"), mainFrame);
-    private GuiElement startTime = new GuiElement(this.driver, By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][1]"), mainFrame);
-    private GuiElement finishTime = new GuiElement(this.driver, By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][2]"), mainFrame);
+    private GuiElement duration = new GuiElement(this.getWebDriver(), By.id("actualRunDuration"), mainFrame);
+    private GuiElement startTime = new GuiElement(this.getWebDriver(), By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][1]"), mainFrame);
+    private GuiElement finishTime = new GuiElement(this.getWebDriver(), By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][2]"), mainFrame);
 
     //TODO  IDs einfügen -> Jira-Ticket: XETA-524
-    private GuiElement evolutionEntry1 = new GuiElement(this.driver, By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[1]"), mainFrame);
-    private GuiElement evolutionEntry2 = new GuiElement(this.driver, By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[2]"), mainFrame);
+    private GuiElement evolutionEntry1 = new GuiElement(this.getWebDriver(), By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[1]"), mainFrame);
+    private GuiElement evolutionEntry2 = new GuiElement(this.getWebDriver(), By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[2]"), mainFrame);
 
     //TODO  IDs einfügen
-    private GuiElement minorCount = new GuiElement(this.driver, By.xpath("//td[@class='cellTop']//div[@class='error clickable']"), mainFrame);
+    private GuiElement minorCount = new GuiElement(this.getWebDriver(), By.xpath("//td[@class='cellTop']//div[@class='error clickable']"), mainFrame);
 
     //TODO  IDs einfügen
-    private GuiElement errorMessageString = new GuiElement(this.driver, By.xpath("//div[@style='color: red; font-size: 30px; padding: 25px; line-height: 40px;']"), mainFrame);
-    private GuiElement fingerprintButton = new GuiElement(this.driver, By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('fingerprint');\"]"), mainFrame);
-    private GuiElement fingerprintString = new GuiElement(this.driver, By.xpath("//div[@id='fingerprint']//div[@class='error']"), mainFrame);
+    private GuiElement errorMessageString = new GuiElement(this.getWebDriver(), By.xpath("//div[@style='color: red; font-size: 30px; padding: 25px; line-height: 40px;']"), mainFrame);
+    private GuiElement fingerprintButton = new GuiElement(this.getWebDriver(), By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('fingerprint');\"]"), mainFrame);
+    private GuiElement fingerprintString = new GuiElement(this.getWebDriver(), By.xpath("//div[@id='fingerprint']//div[@class='error']"), mainFrame);
 
-    public GuiElement durationEvo = new GuiElement(this.driver, By.xpath("//*[@class=' highcharts-background']"), mainFrame);
+    public GuiElement durationEvo = new GuiElement(this.getWebDriver(), By.xpath("//*[@class=' highcharts-background']"), mainFrame);
     public String DurEvoPoint_LOCATOR = ("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']//*[%d]");
 
     public MethodDetailsPage(WebDriver driver) {
@@ -111,7 +111,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     public MethodDetailsPage toggleContext() {
         contextButton.click();
-        return PageFactory.create(MethodDetailsPage.class, this.driver);
+        return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());
     }
 
     public String getContextClassString() {
@@ -167,7 +167,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     public MethodDetailsPage toggleFingerprint() {
         fingerprintButton.click();
-        return PageFactory.create(MethodDetailsPage.class, this.driver);
+        return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());
     }
 
     /**
@@ -191,7 +191,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     public String getDateforHistoryElementByPosition(int position) {
         String dateLocator = String.format(HISTORY_DATE_LOCATOR, position + 1);
-        GuiElement historyDateElement = new GuiElement(this.driver, By.xpath(dateLocator), mainFrame);
+        GuiElement historyDateElement = new GuiElement(this.getWebDriver(), By.xpath(dateLocator), mainFrame);
         return historyDateElement.getText();
     }
 
@@ -205,7 +205,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
             throw new TesterraRuntimeException("Invalid position in HISTORY of " + MethodDetailsPage.class.getSimpleName() + ": " + position);
         }
         String elementLocator = String.format(HISTORY_ELEMENT_LOCATOR, position + positionOffsetDOM);
-        GuiElement historyElement = new GuiElement(this.driver, By.xpath(elementLocator), mainFrame);
+        GuiElement historyElement = new GuiElement(this.getWebDriver(), By.xpath(elementLocator), mainFrame);
         historyElement.setName("historyEntry Position # " + position);
         return historyElement;
     }
@@ -221,7 +221,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     public MethodDetailsPage mouseOverDurEvoPoint(int parameter) {
         String LOCATOR = String.format(DurEvoPoint_LOCATOR, parameter);
-        GuiElement DurEvoPoint = new GuiElement(this.driver, By.xpath(LOCATOR));
+        GuiElement DurEvoPoint = new GuiElement(this.getWebDriver(), By.xpath(LOCATOR));
         DurEvoPoint.mouseOver();
         return PageFactory.create(MethodDetailsPage.class, driver);
     }
@@ -256,42 +256,42 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     public DashboardPage clickBackTab() {
         backTab.click();
-        return PageFactory.create(DashboardPage.class, this.driver);
+        return PageFactory.create(DashboardPage.class, this.getWebDriver());
     }
 
     public MethodDetailsPage clickDetailsTab() {
         detailsTab.click();
-        return PageFactory.create(MethodDetailsPage.class, this.driver);
+        return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());
     }
 
     public MethodStepsPage clickStepsTab() {
         stepsTab.click();
-        return PageFactory.create(MethodStepsPage.class, this.driver);
+        return PageFactory.create(MethodStepsPage.class, this.getWebDriver());
     }
 
     public MethodStackPage clickStackTab() {
         stackTab.click();
-        return PageFactory.create(MethodStackPage.class, this.driver);
+        return PageFactory.create(MethodStackPage.class, this.getWebDriver());
     }
 
     public MethodScreenshotPage clickScreenShotTab() {
         screenShotTab.click();
-        return PageFactory.create(MethodScreenshotPage.class, this.driver);
+        return PageFactory.create(MethodScreenshotPage.class, this.getWebDriver());
     }
 
     public MethodMinorErrorsPage clickMinorErrorsTab() {
         minorErrorTab.click();
-        return PageFactory.create(MethodMinorErrorsPage.class, this.driver);
+        return PageFactory.create(MethodMinorErrorsPage.class, this.getWebDriver());
     }
 
     public MethodDependenciesPage clickDependenciesTab() {
         dependenciesTab.click();
-        return PageFactory.create(MethodDependenciesPage.class, this.driver);
+        return PageFactory.create(MethodDependenciesPage.class, this.getWebDriver());
     }
 
     public MethodEvolutionPage clickEvolutionTab() {
         evolutionTab.click();
-        return PageFactory.create(MethodEvolutionPage.class, this.driver);
+        return PageFactory.create(MethodEvolutionPage.class, this.getWebDriver());
     }
 
     @Override

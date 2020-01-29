@@ -24,7 +24,7 @@ class ExamplePage extends Page {
     ...
 
     public void doAnything() {
-        UITestUtils.takeScreenshot(this.driver, true);
+        UITestUtils.takeScreenshot(this.getWebDriver(), true);
     }
 }
 ----

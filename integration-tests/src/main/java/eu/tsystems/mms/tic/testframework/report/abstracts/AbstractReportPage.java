@@ -14,13 +14,13 @@ import org.openqa.selenium.WebDriver;
 public abstract class AbstractReportPage extends AbstractFramePage {
 
     @Check
-    private GuiElement burgerMenu = new GuiElement(this.driver, By.id("menuToggle"), mainFrame);
+    private GuiElement burgerMenu = new GuiElement(this.getWebDriver(), By.id("menuToggle"), mainFrame);
 
-    private GuiElement dashBoardLink = new GuiElement(this.driver, By.linkText("DASHBOARD"), mainFrame);
-    private GuiElement classesLink = new GuiElement(this.driver, By.partialLinkText("CLASSES"), mainFrame);
-    private GuiElement failureAspectsLink = new GuiElement(this.driver, By.partialLinkText("FAILURE ASPECTS"), mainFrame);
-    private GuiElement threadsLink = new GuiElement(this.driver, By.partialLinkText("THREADS"), mainFrame);
-    private GuiElement stateChangesLink = new GuiElement(this.driver, By.partialLinkText("STATE CHANGES"), mainFrame);
+    private GuiElement dashBoardLink = new GuiElement(this.getWebDriver(), By.linkText("DASHBOARD"), mainFrame);
+    private GuiElement classesLink = new GuiElement(this.getWebDriver(), By.partialLinkText("CLASSES"), mainFrame);
+    private GuiElement failureAspectsLink = new GuiElement(this.getWebDriver(), By.partialLinkText("FAILURE ASPECTS"), mainFrame);
+    private GuiElement threadsLink = new GuiElement(this.getWebDriver(), By.partialLinkText("THREADS"), mainFrame);
+    private GuiElement stateChangesLink = new GuiElement(this.getWebDriver(), By.partialLinkText("STATE CHANGES"), mainFrame);
 
     /**
      * Constructor called bei PageFactory
@@ -33,12 +33,12 @@ public abstract class AbstractReportPage extends AbstractFramePage {
 
     public DashboardPage goToDashboard() throws InterruptedException {
         this.dashBoardLink.click();
-        return PageFactory.create(DashboardPage.class, this.driver);
+        return PageFactory.create(DashboardPage.class, this.getWebDriver());
     }
 
     public ClassesPage goToClasses() {
         this.classesLink.click();
-        return PageFactory.create(ClassesPage.class, this.driver);
+        return PageFactory.create(ClassesPage.class, this.getWebDriver());
     }
 
     public ExitPointsPage goToExitPoints() {
@@ -47,13 +47,13 @@ public abstract class AbstractReportPage extends AbstractFramePage {
 
     public FailureAspectsPage goToFailureAspects() {
         this.failureAspectsLink.click();
-        return PageFactory.create(FailureAspectsPage.class, this.driver);
+        return PageFactory.create(FailureAspectsPage.class, this.getWebDriver());
     }
 
     public BurgerMenu openBurgerMenu() {
         GuiElement burgerMenuButton = burgerMenu.getSubElement(By.xpath(".//input"));
         burgerMenuButton.setName("burgerMenuButton");
         burgerMenuButton.click();
-        return PageFactory.create(BurgerMenu.class, this.driver);
+        return PageFactory.create(BurgerMenu.class, this.getWebDriver());
     }
 }

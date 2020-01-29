@@ -28,22 +28,22 @@ public class ClassesPage extends AbstractReportPage {
 
     //legend iterator
     @Check
-    private GuiElement testsPassedLegendIndicator = new GuiElement(this.driver, By.xpath("//span[@title='Passed']"), mainFrame);
+    private GuiElement testsPassedLegendIndicator = new GuiElement(this.getWebDriver(), By.xpath("//span[@title='Passed']"), mainFrame);
 
-    private GuiElement testsRetriedLegendIndicator = new GuiElement(this.driver, By.xpath("//span[@title='Passed after Retry']"), mainFrame);
+    private GuiElement testsRetriedLegendIndicator = new GuiElement(this.getWebDriver(), By.xpath("//span[@title='Passed after Retry']"), mainFrame);
 
-    private GuiElement testsFailedLegendIndicator = new GuiElement(this.driver, By.xpath("//span[@title='Failed']"), mainFrame);
+    private GuiElement testsFailedLegendIndicator = new GuiElement(this.getWebDriver(), By.xpath("//span[@title='Failed']"), mainFrame);
 
-    private GuiElement configMethodsIndicator = new GuiElement(this.driver, By.xpath("//font[@class='configMethods']"), mainFrame);
+    private GuiElement configMethodsIndicator = new GuiElement(this.getWebDriver(), By.xpath("//font[@class='configMethods']"), mainFrame);
 
     //additional functions on class page
-    private GuiElement hidePassedTestsCheckbox = new GuiElement(this.driver, By.id("hidePassed"), mainFrame);
+    private GuiElement hidePassedTestsCheckbox = new GuiElement(this.getWebDriver(), By.id("hidePassed"), mainFrame);
 
-    private GuiElement buildUserString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[1]/td[2]"), mainFrame);
+    private GuiElement buildUserString = new GuiElement(this.getWebDriver(), By.xpath("//tbody[@id='tests-3']/tr[1]/td[2]"), mainFrame);
 
-    private GuiElement buildVerionString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[2]/td[2]"), mainFrame);
+    private GuiElement buildVerionString = new GuiElement(this.getWebDriver(), By.xpath("//tbody[@id='tests-3']/tr[2]/td[2]"), mainFrame);
 
-    private GuiElement buildTimeStampString = new GuiElement(this.driver, By.xpath("//tbody[@id='tests-3']/tr[3]/td[2]"), mainFrame);
+    private GuiElement buildTimeStampString = new GuiElement(this.getWebDriver(), By.xpath("//tbody[@id='tests-3']/tr[3]/td[2]"), mainFrame);
 
     public ClassesPage(WebDriver driver) {
         super(driver);
@@ -111,7 +111,7 @@ public class ClassesPage extends AbstractReportPage {
      * @return GuiElement classTableRow
      */
     private GuiElement getClassTableRowForPosition(int position) {
-        GuiElement classTableRow = new GuiElement(this.driver, By.xpath("//*[@class='columnHeadings']/following-sibling::tr[" + position + "]"), mainFrame);
+        GuiElement classTableRow = new GuiElement(this.getWebDriver(), By.xpath("//*[@class='columnHeadings']/following-sibling::tr[" + position + "]"), mainFrame);
         classTableRow.setName("classTableRow");
         return classTableRow;
     }

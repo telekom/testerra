@@ -13,12 +13,12 @@ import org.openqa.selenium.WebDriver;
 public class BurgerMenu extends AbstractReportPage {
 
     @Check
-    private GuiElement exitPointsLink = new GuiElement(this.driver, By.id("ExitPoints"), mainFrame);
-    private GuiElement logsLink = new GuiElement(this.driver, By.id("Logs"), mainFrame);
-    private GuiElement timingsLink = new GuiElement(this.driver, By.id("Timings"), mainFrame);
-    private GuiElement memoryLink = new GuiElement(this.driver, By.id("Memory"), mainFrame);
-    private GuiElement exportLink = new GuiElement(this.driver, By.id("Export"), mainFrame);
-    private GuiElement metricsLink = new GuiElement(this.driver, By.id("Metrics"), mainFrame);
+    private GuiElement exitPointsLink = new GuiElement(this.getWebDriver(), By.id("ExitPoints"), mainFrame);
+    private GuiElement logsLink = new GuiElement(this.getWebDriver(), By.id("Logs"), mainFrame);
+    private GuiElement timingsLink = new GuiElement(this.getWebDriver(), By.id("Timings"), mainFrame);
+    private GuiElement memoryLink = new GuiElement(this.getWebDriver(), By.id("Memory"), mainFrame);
+    private GuiElement exportLink = new GuiElement(this.getWebDriver(), By.id("Export"), mainFrame);
+    private GuiElement metricsLink = new GuiElement(this.getWebDriver(), By.id("Metrics"), mainFrame);
 
     /**
      * Constructor called bei PageFactory
@@ -37,7 +37,7 @@ public class BurgerMenu extends AbstractReportPage {
     public ExitPointsPage openExitPointsPage() {
         exitPointsLink = exitPointsLink.getSubElement(By.xpath("./a"));
         exitPointsLink.click();
-        return PageFactory.create(ExitPointsPage.class, this.driver);
+        return PageFactory.create(ExitPointsPage.class, this.getWebDriver());
     }
 
 }

@@ -1,0 +1,7 @@
+dependencies {
+    compile driver_ui_desktop
+}
+
+test {
+    exclude '**'
+}

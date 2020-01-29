@@ -1,6 +1,7 @@
 rootProject.name = 'testerra'
 include 'core'
 include 'core-interop'
+include 'compat'
 include 'driver-ui'
 include 'driver-ui-desktop'
 include 'bmp'

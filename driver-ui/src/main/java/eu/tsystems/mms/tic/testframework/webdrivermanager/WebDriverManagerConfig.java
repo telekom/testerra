@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.MaximizePosition;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -71,6 +72,18 @@ public class WebDriverManagerConfig {
      * Default constructor.
      */
     public WebDriverManagerConfig() {
+    }
+
+    /**
+     * @deprecated Use {@link #browser()} instead
+     */
+    @Deprecated
+    public String getDefaultBrowser() {
+        return browser();
+    }
+
+    public WebDriverMode getWebDriverMode() {
+        return webDriverMode;
     }
 
     public String browser() {

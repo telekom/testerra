@@ -262,7 +262,7 @@ public class GuiElement implements
      * @param filters Filters to be applied
      *
      * @return The same GuiElement
-     * @deprecated Use TesterraBy instead
+     * @deprecated Use {@link Locate} instead
      */
     @Deprecated
     public GuiElement withWebElementFilter(WebElementFilter... filters) {
@@ -277,7 +277,7 @@ public class GuiElement implements
      *
      * @param description A very short description of this GuiElement, for example "Continue Shopping Button"
      *
-     * @deprecated use setName() instead.
+     * @deprecated Use {@link #setName(String)} instead
      */
     @Deprecated
     public GuiElement setDescription(String description) {

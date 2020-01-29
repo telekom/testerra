@@ -1,5 +1,6 @@
 dependencies {
-    compile driver_ui_desktop
+    compile project(':driver-ui-desktop')
+    compile project(':mail-connector')
 }
 
 test {

@@ -287,6 +287,10 @@ public abstract class AbstractMailConnector {
         this.session = session;
     }
 
+    public List<TesterraMail> waitForEMails(List<SearchCriteria> searchCriterias) {
+        return waitForTesterraMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
+    }
+
     /**
      * Wait until messages with search criteria are received.
      *
@@ -295,10 +299,20 @@ public abstract class AbstractMailConnector {
      * @return The message.
      *
      * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
+     * @deprecated Use {@link #waitForEMails(List)} instead
      */
+    @Deprecated
     public List<TesterraMail> waitForTesterraMails(List<SearchCriteria> searchCriterias) {
+        return waitForEMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
+    }
 
-        return waitForTesterraMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
+    public List<TesterraMail> waitForEMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
+        List<MimeMessage> messages = pWaitForMessage(searchCriterias, maxReadTries, pollingTimerSeconds);
+        List<TesterraMail> out = new LinkedList<>();
+        for (MimeMessage message : messages) {
+            out.add(new TesterraMail(message));
+        }
+        return out;
     }
 
     /**
@@ -311,15 +325,11 @@ public abstract class AbstractMailConnector {
      * @return The message.
      *
      * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
+     * @deprecated Use {@link #waitForEMails(List)} instead
      */
+    @Deprecated
     public List<TesterraMail> waitForTesterraMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
-
-        List<MimeMessage> messages = pWaitForMessage(searchCriterias, maxReadTries, pollingTimerSeconds);
-        List<TesterraMail> out = new LinkedList<>();
-        for (MimeMessage message : messages) {
-            out.add(new TesterraMail(message));
-        }
-        return out;
+        return waitForEMails(searchCriterias, maxReadTries, pollingTimerSeconds);
     }
 
     private List<MimeMessage> pWaitForMessage(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) throws TesterraSystemException {

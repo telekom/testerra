@@ -23,12 +23,12 @@ public class XPath {
         this.selector = selector;
         pos = 0;
     }
-    public static XPath node(String selector) {
+    public static XPath from(String selector) {
         XPath xPath = new XPath(translateSubSelection(selector));
         xPath.root = xPath;
         return xPath;
     }
-    public static XPath node(String selector, int position) {
+    public static XPath from(String selector, int position) {
         XPath xPath = new XPath(translateSubSelection(selector), position);
         xPath.root = xPath;
         return xPath;

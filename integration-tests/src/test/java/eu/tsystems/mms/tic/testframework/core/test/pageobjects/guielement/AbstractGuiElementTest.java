@@ -20,7 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -30,10 +30,6 @@ import org.openqa.selenium.WebDriverException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-
-import java.lang.reflect.Method;
 
 /**
  * Test of GuiElement methods
@@ -42,34 +38,8 @@ import java.lang.reflect.Method;
  */
 public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
+    @Deprecated
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
-
-//    static {
-//        WebDriverManager.config().closeWindowsAfterTestMethod = false;
-//    }
-//
-//    @AfterTest(alwaysRun = true)
-//    public void resetWDCloseWindowsMode() {
-//        WebDriverManager.config().closeWindowsAfterTestMethod = true;
-//    }
-
-    /**
-     * testpage of the website
-     */
-    protected TestPage testPage;
-
-    /**
-     * Initialize the WebDriver as local and with a testPage
-     */
-    @BeforeMethod(alwaysRun = true)
-    protected void initDriverAndWebsite(Method method) {
-        testPage = getStartPage();
-    }
-
-    @AfterSuite(alwaysRun = true)
-    private void closeBrowsers() {
-        WebDriverManager.forceShutdownAllThreads();
-    }
 
     /**
      * abstract methods to get specific GuiElement (e.g. FrameAwareInternalGuiElementDecorator) in a specific state
@@ -229,17 +199,6 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
 
     public GuiElement getGuiElementBy(By locator) {
         return getGuiElementBy(Locate.by(locator));
-    }
-
-    public WebDriver getWebDriver() {
-
-        try {
-            WebDriverManager.getWebDriver().getWindowHandles();
-        } catch (WebDriverException s) {
-            WebDriverManager.forceShutdown(); // shutdown all threwad drivers.
-        }
-
-        return WebDriverManager.getWebDriver();
     }
 
     public abstract GuiElement getGuiElementBy(Locate locate);

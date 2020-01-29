@@ -287,8 +287,18 @@ public abstract class AbstractMailConnector {
         this.session = session;
     }
 
-    public List<Email> waitForEMails(List<SearchCriteria> searchCriterias) {
-        return waitForEMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
+    /**
+     * Wait until messages with search criteria are received.
+     *
+     * @param searchCriterias The subject which message should contain.
+     *
+     * @return The message.
+     *
+     * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
+     */
+    public List<Email> waitForMails(List<SearchCriteria> searchCriterias) {
+
+        return waitForMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
     }
 
     /**
@@ -301,9 +311,10 @@ public abstract class AbstractMailConnector {
      * @return The message.
      *
      * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
-     * @deprecated Use {@link #waitForEMails(List)} instead
+     * @deprecated Use {@link #waitForMails(List)} instead
      */
-    public List<Email> waitForEMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
+    public List<Email> waitForMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
+
         List<MimeMessage> messages = pWaitForMessage(searchCriterias, maxReadTries, pollingTimerSeconds);
         List<Email> out = new LinkedList<>();
         for (MimeMessage message : messages) {

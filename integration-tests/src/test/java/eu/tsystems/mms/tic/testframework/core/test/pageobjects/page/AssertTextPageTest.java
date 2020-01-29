@@ -21,16 +21,10 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.IPageFactoryTest;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestFramedPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 /**
@@ -40,10 +34,10 @@ import org.testng.annotations.Test;
  * To test that checkpage() is executed, a not existing, check-annotated element is used.
  *
  */
-public class AssertTextPageTest extends AbstractTestSitesTest implements IPageFactoryTest {
+public class AssertTextPageTest extends AbstractTestSitesTest implements PageFactoryTest {
 
     @Override
-    protected TestPage getStartPage() {
+    protected TestPage getTestPage() {
         return TestPage.FRAME_TEST_PAGE;
     }
 

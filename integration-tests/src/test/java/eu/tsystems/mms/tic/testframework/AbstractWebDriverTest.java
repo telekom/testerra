@@ -23,13 +23,31 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 
 /**
  * Abstract test class for tests using a WebDriver
  */
 public abstract class AbstractWebDriverTest extends TesterraTest {
+
+
+//    static {
+//        WebDriverManager.config().closeWindowsAfterTestMethod = false;
+//    }
+//
+//    @AfterTest(alwaysRun = true)
+//    public void resetWDCloseWindowsMode() {
+//        WebDriverManager.config().closeWindowsAfterTestMethod = true;
+//    }
+
+    @AfterSuite(alwaysRun = true)
+    private void closeBrowsers() {
+        WebDriverManager.forceShutdownAllThreads();
+    }
 
     /**
      * Fixing up testing issues when /dev/shm becomes to small for test execution
@@ -53,6 +71,16 @@ public abstract class AbstractWebDriverTest extends TesterraTest {
         if (Browsers.phantomjs.equals(WebDriverManager.config().browser())) {
             System.setProperty("unsupportedBrowser", "true");
         }
+    }
+
+    protected WebDriver getWebDriver() {
+        try {
+            WebDriverManager.getWebDriver().getWindowHandles();
+        } catch (WebDriverException s) {
+            WebDriverManager.forceShutdown(); // shutdown all threwad drivers.
+        }
+
+        return WebDriverManager.getWebDriver();
     }
 
     static {

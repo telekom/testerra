@@ -38,7 +38,7 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
     final By sourceLocatorFrames = By.xpath(".//img[@alt='Ringo Starr']");
 
     @Override
-    protected TestPage getStartPage() {
+    protected TestPage getTestPage() {
         return TestPage.DRAG_AND_DROP;
     }
 

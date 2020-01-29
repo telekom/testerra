@@ -474,6 +474,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
         if (textElements.numberOfElements().getActual()>0) {
             return textElements;
         }
+        WebDriver driver = this.getWebDriver();
 
         WebDriverRequest request = WebDriverManager.getRelatedWebDriverRequest(driver);
         if (Browsers.safari.equalsIgnoreCase(request.browser) || Browsers.phantomjs.equalsIgnoreCase(request.browser)) {

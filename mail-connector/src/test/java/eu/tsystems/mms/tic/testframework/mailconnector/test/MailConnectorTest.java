@@ -18,6 +18,7 @@ import eu.tsystems.mms.tic.testframework.mailconnector.util.MessageUtils;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteria;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteriaType;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.TesterraMail;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.slf4j.Logger;
@@ -51,7 +52,7 @@ import java.util.List;
  *
  * @author mrgi, tbmi
  */
-public class MailConnectorTest {
+public class MailConnectorTest extends TesterraTest {
 
     // CONSTANTS
     /**

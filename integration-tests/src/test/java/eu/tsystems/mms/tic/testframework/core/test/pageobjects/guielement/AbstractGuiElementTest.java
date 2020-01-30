@@ -20,25 +20,20 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.testing.UiElementCreator;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.AfterSuite;
 
 /**
  * Test of GuiElement methods
  *
  * @author rnhb
  */
-public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
+public abstract class AbstractGuiElementTest extends AbstractTestSitesTest implements UiElementCreator {
 
     @Deprecated
     protected Logger logger = LoggerFactory.getLogger(this.getClass());

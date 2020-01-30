@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework;
 
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
+import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.useragents.ChromeConfig;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -32,7 +33,7 @@ import org.testng.annotations.BeforeMethod;
 /**
  * Abstract test class for tests using a WebDriver
  */
-public abstract class AbstractWebDriverTest extends TesterraTest {
+public abstract class AbstractWebDriverTest extends TesterraTest implements WebDriverRetainer {
 
 
 //    static {
@@ -73,7 +74,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest {
         }
     }
 
-    protected WebDriver getWebDriver() {
+    public WebDriver getWebDriver() {
         try {
             WebDriverManager.getWebDriver().getWindowHandles();
         } catch (WebDriverException s) {

@@ -15,10 +15,10 @@ public abstract class AbstractPageObject implements
 {
 
     protected <T extends Component> T createComponent(Class<T> componentClass, UiElement rootElement) {
-        return PAGE_FACTORY.createComponent(componentClass, rootElement);
+        return pageFactory.createComponent(componentClass, rootElement);
     }
 
     protected <T extends PageObject> T createPage(final Class<T> pageClass) {
-        return PAGE_FACTORY.createPage(pageClass, getWebDriver());
+        return pageFactory.createPage(pageClass, getWebDriver());
     }
 }

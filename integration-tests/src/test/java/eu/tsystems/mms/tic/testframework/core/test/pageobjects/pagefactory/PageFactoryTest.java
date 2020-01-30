@@ -27,6 +27,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.ResponsiveWebTestPage;
 public class PageFactoryTest extends AbstractPageFactoryTest {
 
     public ResponsiveWebTestPage getPage() {
-        return PAGE_FACTORY.createPage(ResponsiveWebTestPage.class);
+        return pageFactory.createPage(ResponsiveWebTestPage.class);
     }
 }

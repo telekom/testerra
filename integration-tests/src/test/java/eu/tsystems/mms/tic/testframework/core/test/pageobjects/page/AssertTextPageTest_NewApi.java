@@ -41,7 +41,7 @@ public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements 
 
     @Override
     public WebTestFramedPage getPage() {
-        return PAGE_FACTORY.createPage(WebTestFramedPage.class);
+        return pageFactory.createPage(WebTestFramedPage.class);
     }
 
     @Test

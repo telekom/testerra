@@ -8,5 +8,5 @@ import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
  * @author Mike Reiche
  */
 public interface PageObjectCreator {
-    PageObjectFactory PAGE_FACTORY = Testerra.injector.getInstance(PageObjectFactory.class);
+    PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
 }

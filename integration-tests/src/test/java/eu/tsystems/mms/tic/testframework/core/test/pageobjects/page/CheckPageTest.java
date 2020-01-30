@@ -33,26 +33,26 @@ public class CheckPageTest extends AbstractTestSitesTest {
 
     @Test
     public void testT01_checkExistingElement() throws Exception {
-        PAGE_FACTORY.createPage(PageWithExistingElement.class);
+        pageFactory.createPage(PageWithExistingElement.class);
     }
 
     @Test(expectedExceptions = PageNotFoundException.class)
     public void testT02_checkNotExistingElement() throws Exception {
-        PAGE_FACTORY.createPage(PageWithNotExistingElement.class);
+        pageFactory.createPage(PageWithNotExistingElement.class);
     }
 
     @Test(expectedExceptions = TesterraRuntimeException.class)
     public void testT03_checkNullElement() throws Exception {
-        PAGE_FACTORY.createPage(PageWithNullElement.class);
+        pageFactory.createPage(PageWithNullElement.class);
     }
 
     @Test(expectedExceptions = TesterraRuntimeException.class)
     public void testT04_checkStaticElement() throws Exception {
-        PAGE_FACTORY.createPage(PageWithExistingStaticElement.class);
+        pageFactory.createPage(PageWithExistingStaticElement.class);
     }
 
     @Test(expectedExceptions = TesterraRuntimeException.class)
     public void testT05_checkNonCheckableElement() throws Exception {
-        PAGE_FACTORY.createPage(PageWithNonCheckableCheck.class);
+        pageFactory.createPage(PageWithNonCheckableCheck.class);
     }
 }

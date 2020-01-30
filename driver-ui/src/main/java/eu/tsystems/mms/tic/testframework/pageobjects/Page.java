@@ -82,7 +82,7 @@ public abstract class Page extends AbstractPage implements TestablePage, UiEleme
 
     @Override
     public UiElement find(Locate locate) {
-        return UI_ELEMENT_FACTORY.createWithPage(this, locate);
+        return uiElementFactory.createWithPage(this, locate);
     }
 
     @Override
@@ -101,7 +101,7 @@ public abstract class Page extends AbstractPage implements TestablePage, UiEleme
             this.frame = frame;
         }
         public UiElement find(Locate locator) {
-            return UI_ELEMENT_FACTORY.createWithFrames(locator, frame);
+            return uiElementFactory.createWithFrames(locator, frame);
         }
     }
 

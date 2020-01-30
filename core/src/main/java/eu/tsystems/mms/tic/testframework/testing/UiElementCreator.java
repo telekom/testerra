@@ -16,10 +16,10 @@ public interface UiElementCreator extends
     UiElementFinder,
     WebDriverRetainer
 {
-    UiElementFactory UI_ELEMENT_FACTORY = Testerra.injector.getInstance(UiElementFactory.class);
+    UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
 
     @Override
     default UiElement find(Locate locator) {
-        return UI_ELEMENT_FACTORY.createWithWebDriver(getWebDriver(), locator);
+        return uiElementFactory.createWithWebDriver(getWebDriver(), locator);
     }
 }

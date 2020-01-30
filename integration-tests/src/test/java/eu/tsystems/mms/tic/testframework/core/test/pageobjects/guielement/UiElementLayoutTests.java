@@ -256,6 +256,6 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
 
     @Override
     public WebTestPage getPage() {
-        return PAGE_FACTORY.createPage(WebTestPage.class);
+        return pageFactory.createPage(WebTestPage.class);
     }
 }

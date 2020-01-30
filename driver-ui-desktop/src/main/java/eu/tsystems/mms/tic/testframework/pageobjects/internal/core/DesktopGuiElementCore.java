@@ -353,7 +353,10 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
             LOGGER.trace("Standard click on: " + guiElementCore.toString());
             // Start the StopWatch for measuring the loading time of a Page
             StopWatch.startPageLoad(driver);
-            webElement.click();
+            Actions actions = new Actions(driver);
+            actions.moveToElement(webElement);
+            actions.click(webElement);
+            actions.perform();
         }
     }
 

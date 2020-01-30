@@ -26,7 +26,7 @@ import org.openqa.selenium.WebDriver;
 /**
  *
  */
-public class StandardGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
+public class GuiElementStandardTests extends AbstractGuiElementNonFunctionalAssertionTest {
 
     @Override
     public GuiElement getGuiElementBy(Locate locator) {

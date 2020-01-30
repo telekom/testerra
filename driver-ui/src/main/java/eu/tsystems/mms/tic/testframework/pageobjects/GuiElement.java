@@ -561,8 +561,16 @@ public class GuiElement implements
         return decoratedFacade.getNumberOfFoundElements();
     }
 
-    @Override
+    /**
+     * @deprecated Use {@link #contextClick()} instead
+     */
+    @Deprecated
     public UiElement rightClick() {
+        return this.contextClick();
+    }
+
+    @Override
+    public UiElement contextClick() {
         decoratedFacade.rightClick();
         return this;
     }

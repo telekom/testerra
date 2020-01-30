@@ -116,8 +116,8 @@ public class AbstractSimulator implements UiElementActions {
     }
 
     @Override
-    public UiElementActions rightClick() {
-        guiElement.rightClick();
+    public UiElementActions contextClick() {
+        guiElement.contextClick();
         return this;
     }
 

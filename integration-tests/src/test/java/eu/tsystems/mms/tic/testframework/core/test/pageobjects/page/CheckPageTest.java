@@ -20,47 +20,39 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingStaticElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNonCheckableCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNotExistingElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNullElement;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.WebDriver;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.lang.reflect.Method;
 
 public class CheckPageTest extends AbstractTestSitesTest {
 
     @Test
     public void testT01_checkExistingElement() throws Exception {
-        pageFactory.createPage(PageWithExistingElement.class);
+        PAGE_FACTORY.createPage(PageWithExistingElement.class);
     }
 
     @Test(expectedExceptions = PageNotFoundException.class)
     public void testT02_checkNotExistingElement() throws Exception {
-        pageFactory.createPage(PageWithNotExistingElement.class);
+        PAGE_FACTORY.createPage(PageWithNotExistingElement.class);
     }
 
     @Test(expectedExceptions = TesterraRuntimeException.class)
     public void testT03_checkNullElement() throws Exception {
-        pageFactory.createPage(PageWithNullElement.class);
+        PAGE_FACTORY.createPage(PageWithNullElement.class);
     }
 
     @Test(expectedExceptions = TesterraRuntimeException.class)
     public void testT04_checkStaticElement() throws Exception {
-        pageFactory.createPage(PageWithExistingStaticElement.class);
+        PAGE_FACTORY.createPage(PageWithExistingStaticElement.class);
     }
 
     @Test(expectedExceptions = TesterraRuntimeException.class)
     public void testT05_checkNonCheckableElement() throws Exception {
-        pageFactory.createPage(PageWithNonCheckableCheck.class);
+        PAGE_FACTORY.createPage(PageWithNonCheckableCheck.class);
     }
 }

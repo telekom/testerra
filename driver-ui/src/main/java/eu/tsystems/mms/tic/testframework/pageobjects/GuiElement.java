@@ -182,7 +182,6 @@ public class GuiElement implements
         this(driver, by, null);
     }
 
-    @Deprecated
     public GuiElement(WebDriver driver, Locate locate) {
         this(driver, locate, null);
     }

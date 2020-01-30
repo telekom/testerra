@@ -22,14 +22,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestFramedPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
-import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 /**
@@ -48,7 +41,7 @@ public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements 
 
     @Override
     public WebTestFramedPage getPage() {
-        return pageFactory.createPage(WebTestFramedPage.class);
+        return PAGE_FACTORY.createPage(WebTestFramedPage.class);
     }
 
     @Test

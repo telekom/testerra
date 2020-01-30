@@ -15,7 +15,7 @@ public class LocateTest extends AbstractTestSitesTest {
 
     @BeforeMethod
     private void createPage() {
-        page = pageFactory.createPage(WebTestPage.class);
+        page = PAGE_FACTORY.createPage(WebTestPage.class);
     }
 
     @Test

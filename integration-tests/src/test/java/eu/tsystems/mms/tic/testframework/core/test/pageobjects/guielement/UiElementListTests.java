@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 public class UiElementListTests extends AbstractTestSitesTest implements PageFactoryTest {
     public UiElementListPage getPage() {
-        return pageFactory.createPage(UiElementListPage.class);
+        return PAGE_FACTORY.createPage(UiElementListPage.class);
     }
 
     @Test

@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import org.openqa.selenium.WebDriver;
 
 public class DefaultUiElementFactory implements
     UiElementFactory,
@@ -62,5 +63,10 @@ public class DefaultUiElementFactory implements
         Locate locator
     ) {
         return new GuiElement(page, locator);
+    }
+
+    @Override
+    public UiElement createWithWebDriver(WebDriver webDriver, Locate locator) {
+        return new GuiElement(webDriver, locator);
     }
 }

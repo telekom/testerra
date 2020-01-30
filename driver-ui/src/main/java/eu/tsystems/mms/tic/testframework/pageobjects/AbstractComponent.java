@@ -96,7 +96,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    protected UiElement find(Locate locate) {
+    public UiElement find(Locate locate) {
         return rootElement.find(locate);
     }
 

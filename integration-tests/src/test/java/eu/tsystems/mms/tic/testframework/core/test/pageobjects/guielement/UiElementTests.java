@@ -38,7 +38,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @BeforeMethod
     private WebTestPage prepareTestPage() {
-        page = pageFactory.createPage(WebTestPage.class);
+        page = PAGE_FACTORY.createPage(WebTestPage.class);
         return page;
     }
 

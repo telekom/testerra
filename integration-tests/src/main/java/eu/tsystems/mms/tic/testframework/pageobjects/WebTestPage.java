@@ -118,20 +118,4 @@ public class WebTestPage extends AbstractWebTestPage {
     public TestableUiElement nonExistentElement() {
         return findById("schnullifacks");
     }
-
-    public UiElement find(By by) {
-        return super.find(by);
-    }
-    public UiElement findById(Object id) {
-        return super.findById(id);
-    }
-    public UiElement findByQa(String qa) {
-        return super.findByQa(qa);
-    }
-    public UiElement find(Locate locate) {
-        return super.find(locate);
-    }
-    public UiElement findByXPath(XPath xPath) {
-        return find(Locate.by(xPath));
-    }
 }

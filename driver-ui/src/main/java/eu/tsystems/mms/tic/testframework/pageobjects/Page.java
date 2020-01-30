@@ -47,6 +47,7 @@ import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.testing.UiElementCreator;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
@@ -75,26 +76,12 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Peter Lehmann
  * @author Mike Reiche
  */
-public abstract class Page extends AbstractPage implements TestablePage {
+public abstract class Page extends AbstractPage implements TestablePage, UiElementCreator {
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
-    private static final UiElementFactory UI_ELEMENT_FACTORY = Testerra.injector.getInstance(UiElementFactory.class);
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
 
-    protected interface Finder {
-        UiElement find(Locate locator);
-        default UiElement findById(String id) {
-            return find(Locate.by().id(id));
-        }
-        default UiElement findByQa(String qa) {
-            return find(Locate.by().qa(qa));
-        }
-        default UiElement find(By by) {
-            return find(Locate.by(by));
-        }
-    }
-
     @Override
-    protected UiElement find(Locate locate) {
+    public UiElement find(Locate locate) {
         return UI_ELEMENT_FACTORY.createWithPage(this, locate);
     }
 
@@ -108,7 +95,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
         return getClass().getSimpleName();
     }
 
-    private static class FrameFinder implements Finder {
+    private static class FrameFinder implements UiElementFinder {
         private final UiElement frame;
         private FrameFinder(UiElement frame) {
             this.frame = frame;
@@ -118,7 +105,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
         }
     }
 
-    protected Finder inFrame(UiElement frame) {
+    protected UiElementFinder inFrame(UiElement frame) {
         return new FrameFinder(frame);
     }
 

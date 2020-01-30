@@ -38,7 +38,70 @@ import java.util.List;
  * Provides basic {@link UiElement} features
  * and acts as adapter for {@link WebDriver} implementations
  */
-public interface GuiElementCore extends GuiElementStatusCheck {
+public interface GuiElementCore {
+    /**
+     * Checks if an element is found by webdriver.
+     *
+     * @return true if found, false otherwise.
+     */
+    boolean isPresent();
+
+    /**
+     * WebElement.isEnabled.
+     *
+     * @return true if element is enabled.
+     */
+    boolean isEnabled();
+
+    /**
+     * WebElement.isDisplayed.
+     *
+     * @return true if element is displayed.
+     */
+    boolean isDisplayed();
+
+    /**
+     * Checks if the element is visible in the current viewport
+     * @return
+     */
+    boolean isVisible(final boolean complete);
+
+    /**
+     * WebElement.isSelected.
+     *
+     * @return true if element is selected.
+     */
+    boolean isSelected();
+
+    /**
+     * Calls WebElement.getText. Please note that this will only return a String, if the elements text is actually
+     * visible.
+     *
+     * @return text of the element.
+     */
+    String getText();
+
+    /**
+     * WebElement.getAttribute.
+     *
+     * @param attributeName Name of the attribute.
+     * @return The value of the attribute.
+     */
+    String getAttribute(String attributeName);
+
+    /**
+     * Calls isDisplayed on the underlying WebElement.
+     *
+     * @return isDisplayed from WebElement
+     */
+    boolean isDisplayedFromWebElement();
+
+    /**
+     * Checks if the element is selectable.
+     *
+     * @return ture, if the element is selectable
+     */
+    boolean isSelectable();
 
     /**
      * Returns the Webelement.

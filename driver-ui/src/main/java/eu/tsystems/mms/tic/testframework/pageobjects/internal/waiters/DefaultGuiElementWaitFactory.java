@@ -20,18 +20,11 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheckFrameAwareDecorator;
 
 public class DefaultGuiElementWaitFactory implements GuiElementWaitFactory {
 
     @Override
     public GuiElementWait create(GuiElementData data) {
-        GuiElementStatusCheck guiElementStatusCheck = data.getGuiElement().core;
-        if (data.hasFrameLogic()) {
-            // if frames are set, the waiter should use frame switches when executing its sequences
-            guiElementStatusCheck = new GuiElementStatusCheckFrameAwareDecorator(guiElementStatusCheck, data);
-        }
-        return new DefaultGuiElementWait(data, guiElementStatusCheck);
+        return new DefaultGuiElementWait(data, data.getGuiElement().core);
     }
 }

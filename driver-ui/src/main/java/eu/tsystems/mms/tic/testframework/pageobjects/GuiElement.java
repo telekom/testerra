@@ -793,7 +793,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return core.findWebElement().getTagName();
+                return core.getTagName();
             }
 
             @Override
@@ -809,7 +809,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return core.findWebElement().getText();
+                return core.getText();
             }
 
             @Override
@@ -834,7 +834,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return core.findWebElement().getAttribute(finalAttribute);
+                return core.getAttribute(finalAttribute);
             }
 
             @Override
@@ -903,7 +903,7 @@ public class GuiElement implements
             @Override
             public Boolean getActual() {
                 try {
-                    return core.findWebElement().isDisplayed();
+                    return core.isDisplayed();
                 } catch (ElementNotFoundException e) {
                     return false;
                 }
@@ -923,7 +923,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return core.findWebElement().isEnabled();
+                return core.isEnabled();
             }
 
             @Override
@@ -939,7 +939,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return core.findWebElement().isSelected();
+                return core.isSelected();
             }
 
             @Override

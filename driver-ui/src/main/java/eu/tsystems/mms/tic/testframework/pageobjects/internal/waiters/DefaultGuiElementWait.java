@@ -23,21 +23,21 @@ import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 
 public class DefaultGuiElementWait implements GuiElementWait, Loggable {
 
-    private final GuiElementStatusCheck guiElementStatusCheck;
+    private final GuiElementCore core;
     private final GuiElementData guiElementData;
 
     @Inject
-    public DefaultGuiElementWait(GuiElementData data, GuiElementStatusCheck guiElementStatusCheck) {
+    public DefaultGuiElementWait(GuiElementData data, GuiElementCore core) {
         this.guiElementData = data;
-        this.guiElementStatusCheck = guiElementStatusCheck;
+        this.core = core;
     }
 
     private TimerWrapper getTimerWrapper() {
@@ -61,7 +61,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(!checkForPresent); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                boolean present = guiElementStatusCheck.isPresent();
+                boolean present = core.isPresent();
                 final boolean sequenceStatus = present == checkForPresent;
                 setReturningObject(sequenceStatus);
                 setPassState(sequenceStatus);
@@ -88,7 +88,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(!checkForEnabled); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                boolean isEnabled = guiElementStatusCheck.isEnabled();
+                boolean isEnabled = core.isEnabled();
                 boolean sequenceStatus = isEnabled == checkForEnabled;
                 setPassState(sequenceStatus);
                 setReturningObject(sequenceStatus);
@@ -132,7 +132,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(!checkForDisplayed); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                boolean displayed = guiElementStatusCheck.isDisplayed();
+                boolean displayed = core.isDisplayed();
                 boolean sequenceStatus = displayed == checkForDisplayed;
                 setPassState(sequenceStatus);
                 setReturningObject(sequenceStatus);
@@ -160,7 +160,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(!visible); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                boolean displayed = guiElementStatusCheck.isVisible(complete);
+                boolean displayed = core.isVisible(complete);
                 boolean sequenceStatus = displayed == visible;
                 setPassState(sequenceStatus);
                 setReturningObject(sequenceStatus);
@@ -188,7 +188,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(!checkForDisplayed); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                boolean displayed = guiElementStatusCheck.isDisplayedFromWebElement();
+                boolean displayed = core.isDisplayedFromWebElement();
                 boolean sequenceStatus = displayed == checkForDisplayed;
                 setPassState(sequenceStatus);
                 setReturningObject(sequenceStatus);
@@ -215,7 +215,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(!checkForSelected); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                boolean selected = guiElementStatusCheck.isSelected();
+                boolean selected = core.isSelected();
                 boolean sequenceStatus = selected == checkForSelected;
                 setPassState(sequenceStatus);
                 setReturningObject(sequenceStatus);
@@ -238,7 +238,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                String trimmedActualText = guiElementStatusCheck.getText().trim();
+                String trimmedActualText = core.getText().trim();
                 boolean equals = trimmedActualText.equals(trimmedExpectedText);
                 setPassState(equals);
                 setReturningObject(equals);
@@ -260,7 +260,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                String currentText = guiElementStatusCheck.getText();
+                String currentText = core.getText();
                 boolean contains = true;
                 for (String text : texts) {
                     if (!currentText.contains(text)) {
@@ -284,7 +284,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                String currentText = guiElementStatusCheck.getText();
+                String currentText = core.getText();
                 boolean gone = true;
                 for (String text : texts) {
                     if (currentText.contains(text)) {
@@ -308,7 +308,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                boolean hasAttribute = guiElementStatusCheck.getAttribute(attributeName) != null;
+                boolean hasAttribute = core.getAttribute(attributeName) != null;
                 setPassState(hasAttribute);
                 setReturningObject(hasAttribute);
             }
@@ -326,7 +326,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                String attributeValue = guiElementStatusCheck.getAttribute(attributeName);
+                String attributeValue = core.getAttribute(attributeName);
                 boolean hasAttribute = attributeValue != null && trimmedExpectedAttributeValue.equals(attributeValue.trim());
                 setPassState(hasAttribute);
                 setReturningObject(hasAttribute);
@@ -344,7 +344,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                String attribute = guiElementStatusCheck.getAttribute(attributeName);
+                String attribute = core.getAttribute(attributeName);
                 boolean hasAttribute = attribute != null && attribute.contains(value);
                 setPassState(hasAttribute);
                 setReturningObject(hasAttribute);
@@ -362,7 +362,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                String attribute = guiElementStatusCheck.getAttribute(attributeName);
+                String attribute = core.getAttribute(attributeName);
                 boolean hasNotAttribute = attribute == null || attribute.contains(value) == false;
                 setPassState(hasNotAttribute);
                 setReturningObject(hasNotAttribute);
@@ -390,7 +390,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                boolean selectable = guiElementStatusCheck.isSelectable();
+                boolean selectable = core.isSelectable();
                 setPassState(selectable);
                 setReturningObject(selectable);
             }
@@ -407,7 +407,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                boolean notSelectable = !guiElementStatusCheck.isSelectable();
+                boolean notSelectable = !core.isSelectable();
                 setPassState(notSelectable);
                 setReturningObject(notSelectable);
             }

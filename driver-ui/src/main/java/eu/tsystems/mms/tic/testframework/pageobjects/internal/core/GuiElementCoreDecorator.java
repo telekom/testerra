@@ -31,13 +31,80 @@ import java.util.List;
 /**
  * Created by rnhb on 13.08.2015.
  */
-public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecorator implements GuiElementCore {
+public abstract class GuiElementCoreDecorator implements GuiElementCore {
 
     private GuiElementCore decoratedGuiElementCore;
 
     public GuiElementCoreDecorator(GuiElementCore decoratedGuiElementCore) {
-        super(decoratedGuiElementCore);
         this.decoratedGuiElementCore = decoratedGuiElementCore;
+    }
+
+    protected abstract void beforeDelegation();
+
+    protected abstract void afterDelegation();
+
+    @Override
+    public boolean isPresent() {
+        beforeDelegation();
+        boolean present = decoratedGuiElementCore.isPresent();
+        afterDelegation();
+        return present;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        beforeDelegation();
+        boolean enabled = decoratedGuiElementCore.isEnabled();
+        afterDelegation();
+        return enabled;
+    }
+
+    @Override
+    public boolean isDisplayed() {
+        beforeDelegation();
+        boolean displayed = decoratedGuiElementCore.isDisplayed();
+        afterDelegation();
+        return displayed;
+    }
+
+    @Override
+    public boolean isSelected() {
+        beforeDelegation();
+        boolean selected = decoratedGuiElementCore.isSelected();
+        afterDelegation();
+        return selected;
+    }
+
+    @Override
+    public String getText() {
+        beforeDelegation();
+        String text = decoratedGuiElementCore.getText();
+        afterDelegation();
+        return text;
+    }
+
+    @Override
+    public String getAttribute(String attributeName) {
+        beforeDelegation();
+        String attributeValue = decoratedGuiElementCore.getAttribute(attributeName);
+        afterDelegation();
+        return attributeValue;
+    }
+
+    @Override
+    public boolean isDisplayedFromWebElement() {
+        beforeDelegation();
+        boolean displayedFromWebElement = decoratedGuiElementCore.isDisplayedFromWebElement();
+        afterDelegation();
+        return displayedFromWebElement;
+    }
+
+    @Override
+    public boolean isSelectable() {
+        beforeDelegation();
+        boolean selectable = decoratedGuiElementCore.isSelectable();
+        afterDelegation();
+        return selectable;
     }
 
     @Override

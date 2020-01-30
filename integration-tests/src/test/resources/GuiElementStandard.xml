@@ -8,7 +8,7 @@
             </run>
         </groups>
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.StandardGuiElementTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.GuiElementTests"/>
         </classes>
     </test>
 

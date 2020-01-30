@@ -455,11 +455,6 @@ public class GuiElement implements
         return guiElementFacade.isVisible(complete);
     }
 
-    @Override
-    public boolean isDisplayedFromWebElement() {
-        return guiElementFacade.isDisplayedFromWebElement();
-    }
-
     /**
      * Checks if the element is selectable.
      * <p>

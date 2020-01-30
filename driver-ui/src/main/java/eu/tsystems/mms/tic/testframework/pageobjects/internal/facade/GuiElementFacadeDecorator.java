@@ -324,14 +324,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public boolean isDisplayedFromWebElement() {
-        beforeDelegation("isDisplayedFromWebElement");
-        boolean displayedFromWebElement = decoratedFacade.isDisplayedFromWebElement();
-        afterDelegation("isDisplayedFromWebElement() = " + displayedFromWebElement);
-        return displayedFromWebElement;
-    }
-
-    @Override
     public boolean isSelectable() {
         beforeDelegation("isSelectable");
         boolean selectable = decoratedFacade.isSelectable();

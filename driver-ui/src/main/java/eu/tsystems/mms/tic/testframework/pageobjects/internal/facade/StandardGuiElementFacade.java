@@ -172,11 +172,6 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public boolean isDisplayedFromWebElement() {
-        return guiElementCore.isDisplayedFromWebElement();
-    }
-
-    @Override
     public boolean isSelectable() {
         return guiElementCore.isSelectable();
     }

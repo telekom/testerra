@@ -23,6 +23,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -354,6 +355,15 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final boolean displayedFromWebElement = decoratedFacade.isDisplayedFromWebElement();
         afterDelegation(String.format("%s() = %s", methodName, displayedFromWebElement));
         return displayedFromWebElement;
+    }
+
+    @Override
+    public Rectangle getRect() {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        Rectangle rect = decoratedFacade.getRect();
+        afterDelegation(String.format("%s() = %s", methodName, rect));
+        return rect;
     }
 
     @Override

@@ -68,7 +68,6 @@ public final class PropertyManager {
         // set static properties
         String propertyFile = "test.properties";
         pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
-        System.out.println("Loaded boot time properties from: " + propertyFile);
 
         parser.properties.add(FILEPROPERTIES);
         parser.properties.add(System.getProperties());

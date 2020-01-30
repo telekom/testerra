@@ -87,6 +87,7 @@ public class TesterraCommons {
             final String loggerDefinitionsFilename = "test-log4j.xml";
             final URL log4jConfig = ClassLoader.getSystemResource(loggerDefinitionsFilename);
             if (log4jConfig != null) {
+                System.out.println("Initialize logging by: " + log4jConfig);
                 System.setProperty("log4j.configuration", loggerDefinitionsFilename);
                 DOMConfigurator.configure(log4jConfig);
             } else {

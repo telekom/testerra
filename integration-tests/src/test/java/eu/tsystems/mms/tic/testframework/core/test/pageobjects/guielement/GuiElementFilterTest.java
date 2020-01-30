@@ -136,7 +136,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
     @Test
     public void testT09_Attribute_Exists() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath("//div[@class='className']/input"))
+        GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath("//div[@class='box'][1]/input"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.exists("disabled"));
         elementsWithAttributes.asserts().assertAttributeContains("id", "7");
 

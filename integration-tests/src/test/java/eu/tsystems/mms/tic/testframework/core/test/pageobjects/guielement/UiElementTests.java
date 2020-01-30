@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
@@ -29,21 +30,14 @@ import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class UiElementTests extends AbstractTestSitesTest implements Loggable {
-
-    private WebTestPage page;
-
-    @BeforeMethod
-    private WebTestPage prepareTestPage() {
-        page = PAGE_FACTORY.createPage(WebTestPage.class);
-        return page;
-    }
+public class UiElementTests extends AbstractTestSitesTest implements Loggable, PageFactoryTest {
 
     @Test
     public void test_Page_title() {
+        WebTestPage page = getPage();
+
         StringAssertion<String> title = page.title();
 
         title.is("Input test");
@@ -62,6 +56,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void test_Page_waitFor() {
+        WebTestPage page = getPage();
         Control.withElementTimeout(0, () -> {
             if (page.waitFor().title().contains("Katzentitel")) {
                 Assert.assertFalse(true);
@@ -75,32 +70,38 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void test_Page_title_matches() {
+        WebTestPage page = getPage();
         page.title().matches("input\\s+.es.").isTrue();
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_Page_title_matches_fails() {
+        WebTestPage page = getPage();
         page.title().matches("input\\s+.es.").isFalse();
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_Page_title_length_fails() {
+        WebTestPage page = getPage();
         page.title().length().isGreaterThan(10);
     }
 
     @Test
     @Fails(description = "The test itself passes, but collected assertions will always fail")
     public void test_Page_title_length_fails_collected() {
+        WebTestPage page = getPage();
         Control.collectAssertions(() -> page.title().length().isGreaterThan(10));
     }
 
     @Test
     public void test_Page_title_length_fails_nonFunctional() {
+        WebTestPage page = getPage();
         Control.nonFunctionalAssertions(()-> page.title().length().isGreaterThan(10));
     }
 
     @Test
     public void test_Page_url() {
+        WebTestPage page = getPage();
         page.url().beginsWith("http");
         page.url().endsWith("input.html");
         page.url().length().isGreaterEqualThan(10);
@@ -108,6 +109,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test()
     public void test_Page_url_fails() {
+        WebTestPage page = getPage();
         try {
             page.url().endsWith("nonexistingfile.html", "Wrong URL");
         } catch (AssertionError e) {
@@ -126,6 +128,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void test_GuiElement_clear() {
+        WebTestPage page = getPage();
         UiElement element = page.findById(5);
         element.sendKeys("Test");
         element.clear().text().is("");
@@ -133,17 +136,20 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void test_GuiElement_displayed_false() {
+        WebTestPage page = getPage();
         page.notDisplayedElement().value(Attribute.STYLE).contains("display: none");
         page.notDisplayedElement().displayed().isFalse();
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_GuiElement_displayed_false_fails() {
+        WebTestPage page = getPage();
         page.notDisplayedElement().displayed().isTrue();
     }
 
     @Test
     public void test_GuiElement_displayed_false_fails_with_message() {
+        WebTestPage page = getPage();
         try {
             page.notDisplayedElement().displayed().isTrue("Missing visible element here");
         } catch (AssertionError e) {
@@ -154,6 +160,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void test_GuiElement_visible_false() {
+        WebTestPage page = getPage();
         page.notVisibleElement().value(Attribute.STYLE).contains("hidden");
         page.notVisibleElement().value("style").contains("hidden");
         page.notVisibleElement().visible(true).isFalse();
@@ -163,6 +170,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void test_GuiElement_waitFor() {
+        WebTestPage page = getPage();
         Control.withElementTimeout(0, () -> {
             if (page.notVisibleElement().waitFor().value(Attribute.STYLE).is("humbug")) {
                 Assert.assertFalse(true);
@@ -175,16 +183,19 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_GuiElement_visible_false_fails() {
+        WebTestPage page = getPage();
         page.notVisibleElement().visible(true).isTrue();
     }
 
     @Test
     public void test_NonExistent_GuiElement_present() {
+        WebTestPage page = getPage();
         page.nonExistentElement().present().isFalse();
     }
 
     @Test
     public void test_NonExistent_GuiElement_present_fails() {
+        WebTestPage page = getPage();
         String msg = null;
         try {
             page.nonExistentElement().present().isTrue();
@@ -201,6 +212,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void test_NonExistent_GuiElement_displayed_fails() {
+        WebTestPage page = getPage();
         String msg=null;
         try {
             page.nonExistentElement().displayed().isFalse();
@@ -212,12 +224,14 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void test_GuiElement_screenshot() {
+        WebTestPage page = getPage();
         ImageAssertion screenshot = page.notVisibleElement().screenshot();
         screenshot.file().exists().isTrue();
     }
 
     @Test
     public void test_NonExistent_GuiElement_screenshot_fails() {
+        WebTestPage page = getPage();
         String msg=null;
         try {
             page.nonExistentElement().screenshot().file().exists().isTrue();
@@ -230,6 +244,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
     @Test
     public void test_Component() {
         final String input = "Ich gebe etwas ein";
+        WebTestPage page = getPage();
         page.inputForm().button().value().is("Button1");
         page.inputForm().input().clear().sendKeys(input).value().is(input);
         page.inputForm().button().numberOfElements().is(1);
@@ -237,17 +252,24 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
 
     @Test
     public void test_User_sendKeys() {
+        WebTestPage page = getPage();
         final String input = "Ich bin langsam im Tippen";
         page.inputForm().input().asUser().clear().sendKeys(input).value().is(input);
     }
 
     @Test
     public void test_Attributes() {
+        WebTestPage page = getPage();
         UiElement attributes = page.findByQa("section/attributeTest");
 
         //attributes.value("ariaExpanded").is("true");
         attributes.value("aria-expanded").is("true");
         //attributes.value("dataCompletelyCustomAttribute").is("true");
         attributes.value("data-completely-custom-attribute").is("yes");
+    }
+
+    @Override
+    public WebTestPage getPage() {
+        return PAGE_FACTORY.createPage(WebTestPage.class);
     }
 }

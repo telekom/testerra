@@ -311,7 +311,6 @@ public abstract class AbstractMailConnector {
      * @return The message.
      *
      * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
-     * @deprecated Use {@link #waitForMails(List)} instead
      */
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
 

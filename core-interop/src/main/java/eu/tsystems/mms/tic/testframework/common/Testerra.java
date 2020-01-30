@@ -25,7 +25,7 @@ public class Testerra {
         @Deprecated
         SELENIUM_SERVER_PORT("tt.selenium.server.port", 4444),
         SELENIUM_SERVER_URL("tt.selenium.server.url", String.format("http://%s:%s/wd/hub", SELENIUM_SERVER_HOST, SELENIUM_SERVER_PORT)),
-        BASEURL("tt.baseurl", "about:_blank"),
+        BASEURL("tt.baseurl", null),
         LOG_LEVEL("tt.loglevel", "INFO"),
         WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD("webdriver.timeouts.seconds.pageload", 120),
         WEBDRIVER_TIMEOUT_SECONDS_SCRIPT("webdriver.timeouts.seconds.script", 120),

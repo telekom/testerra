@@ -91,7 +91,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         Exception cause = null;
         try {
             if (guiElementData.hasParent()) {
-                elements = guiElementData.getParent().getGuiElement().core.findWebElement().findElements(locate.getBy());
+                elements = guiElementData.getParent().getGuiElement().getCore().findWebElement().findElements(locate.getBy());
             } else {
                 elements = guiElementData.getWebDriver().findElements(locate.getBy());
             }

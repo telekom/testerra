@@ -101,14 +101,9 @@ public class GuiElement implements
     private GuiElementAssert collectableAssert;
     private GuiElementAssert nonFunctionalAssert;
 
-    public final GuiElementCore core;
-    public final GuiElementData guiElementData;
-
-    /**
-     * Facade for all parts of the lowest GuiElement
-     */
+    private GuiElementCore core;
+    private final GuiElementData guiElementData;
     private GuiElementFacade decoratedFacade;
-    private GuiElementCore decoratedCore;
     private GuiElementWait decoratedWait;
 
     protected HasParent parent;
@@ -123,6 +118,14 @@ public class GuiElement implements
         guiElementData.setGuiElement(this);
         IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(guiElementData.getBrowser());
         core = factory.createCore(guiElementData);
+    }
+
+    public GuiElementCore getCore() {
+        return this.core;
+    }
+
+    public GuiElementData getData() {
+        return this.guiElementData;
     }
 
     /**
@@ -199,19 +202,17 @@ public class GuiElement implements
     }
 
     private void createDecoratorFacades() {
-        decoratedCore = core;
-
         if (guiElementData.hasFrameLogic()) {
             // if frames are set, the waiter should use frame switches when executing its sequences
-            decoratedCore = new GuiElementCoreFrameAwareDecorator(decoratedCore, guiElementData);
+            core = new GuiElementCoreFrameAwareDecorator(core, guiElementData);
         }
+
         // Wrap the core with sequence decorator, such that its methods are executed with sequence
-        decoratedCore = new GuiElementCoreSequenceDecorator(decoratedCore, guiElementData);
+        GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(core, guiElementData);
 
         GuiElementWaitFactory waitFactory = Testerra.injector.getInstance(GuiElementWaitFactory.class);
         decoratedWait = waitFactory.create(guiElementData);
-
-        decoratedFacade = createFacade(decoratedCore);
+        decoratedFacade = createFacade(sequenceCore);
     }
 
     /**
@@ -335,7 +336,7 @@ public class GuiElement implements
 
     public UiElement type(String text) {
         guiElementData.setLogLevel(LogLevel.INFO);
-        decoratedCore.type(text);
+        decoratedFacade.type(text);
         guiElementData.resetLogLevel();
         return this;
     }

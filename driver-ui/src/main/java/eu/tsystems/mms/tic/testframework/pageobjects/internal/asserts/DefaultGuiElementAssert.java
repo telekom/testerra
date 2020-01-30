@@ -47,7 +47,7 @@ public class DefaultGuiElementAssert implements GuiElementAssert {
         Assertion configuredAssert
     ) {
         this.guiElementWait = guiElementWait;
-        this.guiElementCore = guiElementData.getGuiElement().core;
+        this.guiElementCore = guiElementData.getGuiElement().getCore();
         this.configuredAssert = configuredAssert;
         this.guiElementData = guiElementData;
     }

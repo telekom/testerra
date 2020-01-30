@@ -25,6 +25,6 @@ public class DefaultGuiElementWaitFactory implements GuiElementWaitFactory {
 
     @Override
     public GuiElementWait create(GuiElementData data) {
-        return new DefaultGuiElementWait(data, data.getGuiElement().core);
+        return new DefaultGuiElementWait(data, data.getGuiElement().getCore());
     }
 }

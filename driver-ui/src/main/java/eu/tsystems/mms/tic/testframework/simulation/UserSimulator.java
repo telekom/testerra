@@ -21,7 +21,7 @@ public class UserSimulator extends AbstractSimulator {
         float cps = UiElement.Properties.USER_INPUT_CPM.asLong()/60;
         if (cps <= 0) cps = 1;
         int cpsSleepMs = Math.round(1000/cps);
-        final WebElement webElement = guiElement.core.findWebElement();
+        final WebElement webElement = guiElement.getCore().findWebElement();
         for (CharSequence charSequence : charSequences) {
             charSequence.codePoints().forEach(codePoint -> {
                 webElement.sendKeys(new String(Character.toChars(codePoint)));

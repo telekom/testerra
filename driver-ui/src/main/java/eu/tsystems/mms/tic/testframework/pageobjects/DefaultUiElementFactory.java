@@ -38,8 +38,8 @@ public class DefaultUiElementFactory implements
         Locate locator
     ) {
         GuiElement parentGuiElement = (GuiElement)parent;
-        IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(parentGuiElement.guiElementData.getBrowser());
-        GuiElementCore core = factory.createCoreFromParent(parentGuiElement.guiElementData, locator);
+        IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(parentGuiElement.getData().getBrowser());
+        GuiElementCore core = factory.createCoreFromParent(parentGuiElement.getData(), locator);
         GuiElement guiElement = new GuiElement(core);
         guiElement.setParent(parentGuiElement);
         return guiElement;

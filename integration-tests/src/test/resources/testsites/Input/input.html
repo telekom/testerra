@@ -42,6 +42,29 @@
 		log(out);
 	}
 
+	function showClickPosition(ev) {
+		var pos = [];
+		var rect =  ev.target.getBoundingClientRect();
+
+		if (ev.offsetY < rect.height/3) {
+			pos.push("top");
+		} else if (ev.offsetY > rect.height/3*2) {
+			pos.push("bottom");
+		} else {
+			pos.push("center");
+		}
+
+		if (ev.offsetX < rect.width/3) {
+			pos.push("left");
+		} else if (ev.offsetX > rect.width/3*2) {
+			pos.push("right");
+		} else {
+			pos.push("center");
+		}
+
+		document.getElementById("clickPosition").innerText = pos.join(" ");
+	}
+
 
 	function show_elementsTimeOut(){
 		timeOut = document.getElementById("inputMillis").value;
@@ -238,6 +261,11 @@
 		<button id="SelectRDButton" type="button" onClick="selectRDButton_TimeOut()">Select Radio Button mit Verz&ouml;gerung</button>
 		<button id="DeselectRDButton" type="button" onClick="deselectRDButton_TimeOut()">Deselect Radio Button mit Verz&ouml;gerung</button>
 		<input id="enabledSwitchRDButton" name="radioBtn" type="radio" DISABLED> <br>
+	</div>
+
+	<div class="box">
+		<button onclick="showClickPosition(event)">Please touch me</button>
+		<div id="clickPosition"></div>
 	</div>
 
 	<div>

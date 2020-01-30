@@ -352,4 +352,41 @@ public final class WebDriverUtils {
         final ArrayList<Long> list = (ArrayList<Long>) JSUtils.executeScript(driver, "return [window.pageXOffset, window.pageYOffset, window.innerWidth, window.innerHeight];");
         return new Rectangle(list.get(0).intValue(), list.get(1).intValue(), list.get(2).intValue(), list.get(3).intValue());
     }
+
+    /**
+     * Initialize a {@link WebDriverKeepAliveSequence} and runs it with {@link Timer} in given interval.
+     * This will keep the {@link WebDriver} alive, when acting with another driver in same test or waiting for something to happen in main thread.
+     * NOTE: Please use this method with care AND clean up your Sequence by calling {@link WebDriverUtils#removeKeepAliveForWebDriver(WebDriver)}
+     *
+     * @param driver                     {@link WebDriver}
+     * @param intervalSleepTimeInSeconds int
+     * @param durationInSeconds          int
+     * @return WebDriverKeepAliveSequence
+     */
+    public static WebDriverKeepAliveSequence keepWebDriverAlive(final WebDriver driver, final int intervalSleepTimeInSeconds, int durationInSeconds) {
+
+        if (durationInSeconds > WebDriverKeepAliveSequence.GLOBAL_KEEP_ALIVE_TIMEOUT_IN_SECONDS) {
+            LOGGER.warn(String.format("Your duration %s is higher than the global duration. We will set your duration to %s to avoid abuse.",
+                    durationInSeconds,
+                    WebDriverKeepAliveSequence.GLOBAL_KEEP_ALIVE_TIMEOUT_IN_SECONDS));
+
+            durationInSeconds = WebDriverKeepAliveSequence.GLOBAL_KEEP_ALIVE_TIMEOUT_IN_SECONDS;
+        }
+
+        final WebDriverKeepAliveSequence webDriverKeepAliveSequence = new WebDriverKeepAliveSequence(driver);
+        new Timer(intervalSleepTimeInSeconds * 1000, durationInSeconds * 1000).executeSequenceThread(webDriverKeepAliveSequence);
+
+        return webDriverKeepAliveSequence;
+    }
+
+    /**
+     * Removes an active {@link WebDriverKeepAliveSequence} if present.
+     *
+     * @param driver {@link WebDriver} the current driver
+     */
+    public static void removeKeepAliveForWebDriver(final WebDriver driver) {
+
+        new WebDriverKeepAliveSequence().removeKeepAliveForDriver(driver);
+    }
+
 }

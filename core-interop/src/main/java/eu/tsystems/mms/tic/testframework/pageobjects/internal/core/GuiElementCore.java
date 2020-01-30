@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElement
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -95,6 +96,11 @@ public interface GuiElementCore {
      * @return isDisplayed from WebElement
      */
     boolean isDisplayedFromWebElement();
+
+    /**
+     * Gets the element's rectangle
+     */
+    Rectangle getRect();
 
     /**
      * Checks if the element is selectable.

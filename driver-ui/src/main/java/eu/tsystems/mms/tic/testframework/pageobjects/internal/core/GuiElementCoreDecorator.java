@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -33,10 +34,10 @@ import java.util.List;
  */
 public abstract class GuiElementCoreDecorator implements GuiElementCore {
 
-    private GuiElementCore decoratedGuiElementCore;
+    protected final GuiElementCore core;
 
-    public GuiElementCoreDecorator(GuiElementCore decoratedGuiElementCore) {
-        this.decoratedGuiElementCore = decoratedGuiElementCore;
+    public GuiElementCoreDecorator(GuiElementCore decoratedCore) {
+        this.core = decoratedCore;
     }
 
     protected abstract void beforeDelegation();
@@ -46,7 +47,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public boolean isPresent() {
         beforeDelegation();
-        boolean present = decoratedGuiElementCore.isPresent();
+        boolean present = core.isPresent();
         afterDelegation();
         return present;
     }
@@ -54,7 +55,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public boolean isEnabled() {
         beforeDelegation();
-        boolean enabled = decoratedGuiElementCore.isEnabled();
+        boolean enabled = core.isEnabled();
         afterDelegation();
         return enabled;
     }
@@ -62,7 +63,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public boolean isDisplayed() {
         beforeDelegation();
-        boolean displayed = decoratedGuiElementCore.isDisplayed();
+        boolean displayed = core.isDisplayed();
         afterDelegation();
         return displayed;
     }
@@ -70,7 +71,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public boolean isSelected() {
         beforeDelegation();
-        boolean selected = decoratedGuiElementCore.isSelected();
+        boolean selected = core.isSelected();
         afterDelegation();
         return selected;
     }
@@ -78,7 +79,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public String getText() {
         beforeDelegation();
-        String text = decoratedGuiElementCore.getText();
+        String text = core.getText();
         afterDelegation();
         return text;
     }
@@ -86,7 +87,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public String getAttribute(String attributeName) {
         beforeDelegation();
-        String attributeValue = decoratedGuiElementCore.getAttribute(attributeName);
+        String attributeValue = core.getAttribute(attributeName);
         afterDelegation();
         return attributeValue;
     }
@@ -94,15 +95,23 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public boolean isDisplayedFromWebElement() {
         beforeDelegation();
-        boolean displayedFromWebElement = decoratedGuiElementCore.isDisplayedFromWebElement();
+        boolean displayedFromWebElement = core.isDisplayedFromWebElement();
         afterDelegation();
         return displayedFromWebElement;
     }
 
     @Override
+    public Rectangle getRect() {
+        beforeDelegation();
+        Rectangle rect = core.getRect();
+        afterDelegation();
+        return rect;
+    }
+
+    @Override
     public boolean isSelectable() {
         beforeDelegation();
-        boolean selectable = decoratedGuiElementCore.isSelectable();
+        boolean selectable = core.isSelectable();
         afterDelegation();
         return selectable;
     }
@@ -110,21 +119,21 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public WebElement getWebElement() {
         beforeDelegation();
-        WebElement webElement = decoratedGuiElementCore.getWebElement();
+        WebElement webElement = core.getWebElement();
         afterDelegation();
         return webElement;
     }
 
     @Override
     public By getBy() {
-        By by = decoratedGuiElementCore.getBy();
+        By by = core.getBy();
         return by;
     }
 
     @Override
     public GuiElementCore scrollToElement() {
         beforeDelegation();
-        decoratedGuiElementCore.scrollToElement();
+        core.scrollToElement();
         afterDelegation();
         return this;
     }
@@ -132,7 +141,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore scrollToElement(int yOffset) {
         beforeDelegation();
-        decoratedGuiElementCore.scrollToElement(yOffset);
+        core.scrollToElement(yOffset);
         afterDelegation();
         return this;
     }
@@ -140,7 +149,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore select() {
         beforeDelegation();
-        decoratedGuiElementCore.select();
+        core.select();
         afterDelegation();
         return this;
     }
@@ -148,7 +157,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore deselect() {
         beforeDelegation();
-        decoratedGuiElementCore.deselect();
+        core.deselect();
         afterDelegation();
         return this;
     }
@@ -156,7 +165,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore type(String text) {
         beforeDelegation();
-        decoratedGuiElementCore.type(text);
+        core.type(text);
         afterDelegation();
         return this;
     }
@@ -164,7 +173,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore click() {
         beforeDelegation();
-        decoratedGuiElementCore.click();
+        core.click();
         afterDelegation();
         return this;
     }
@@ -172,7 +181,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore clickJS() {
         beforeDelegation();
-        decoratedGuiElementCore.clickJS();
+        core.clickJS();
         afterDelegation();
         return this;
     }
@@ -180,7 +189,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore rightClick() {
         beforeDelegation();
-        decoratedGuiElementCore.rightClick();
+        core.rightClick();
         afterDelegation();
         return this;
     }
@@ -188,7 +197,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore rightClickJS() {
         beforeDelegation();
-        decoratedGuiElementCore.rightClickJS();
+        core.rightClickJS();
         afterDelegation();
         return this;
     }
@@ -196,7 +205,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore clickAbsolute() {
         beforeDelegation();
-        decoratedGuiElementCore.clickAbsolute();
+        core.clickAbsolute();
         afterDelegation();
         return this;
     }
@@ -204,7 +213,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore mouseOverAbsolute2Axis() {
         beforeDelegation();
-        decoratedGuiElementCore.mouseOverAbsolute2Axis();
+        core.mouseOverAbsolute2Axis();
         afterDelegation();
         return this;
     }
@@ -212,7 +221,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore submit() {
         beforeDelegation();
-        decoratedGuiElementCore.submit();
+        core.submit();
         afterDelegation();
         return this;
     }
@@ -220,7 +229,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore sendKeys(CharSequence... charSequences) {
         beforeDelegation();
-        decoratedGuiElementCore.sendKeys(charSequences);
+        core.sendKeys(charSequences);
         afterDelegation();
         return this;
     }
@@ -228,7 +237,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore clear() {
         beforeDelegation();
-        decoratedGuiElementCore.clear();
+        core.clear();
         afterDelegation();
         return this;
     }
@@ -236,7 +245,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public String getTagName() {
         beforeDelegation();
-        String tagName = decoratedGuiElementCore.getTagName();
+        String tagName = core.getTagName();
         afterDelegation();
         return tagName;
     }
@@ -244,7 +253,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public Point getLocation() {
         beforeDelegation();
-        Point location = decoratedGuiElementCore.getLocation();
+        Point location = core.getLocation();
         afterDelegation();
         return location;
     }
@@ -252,7 +261,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public Dimension getSize() {
         beforeDelegation();
-        Dimension size = decoratedGuiElementCore.getSize();
+        Dimension size = core.getSize();
         afterDelegation();
         return size;
     }
@@ -260,7 +269,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public String getCssValue(String cssIdentifier) {
         beforeDelegation();
-        String cssValue = decoratedGuiElementCore.getCssValue(cssIdentifier);
+        String cssValue = core.getCssValue(cssIdentifier);
         afterDelegation();
         return cssValue;
     }
@@ -268,7 +277,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore mouseOver() {
         beforeDelegation();
-        decoratedGuiElementCore.mouseOver();
+        core.mouseOver();
         afterDelegation();
         return this;
     }
@@ -276,7 +285,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore mouseOverJS() {
         beforeDelegation();
-        decoratedGuiElementCore.mouseOverJS();
+        core.mouseOverJS();
         afterDelegation();
         return this;
     }
@@ -284,7 +293,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public Select getSelectElement() {
         beforeDelegation();
-        Select select = decoratedGuiElementCore.getSelectElement();
+        Select select = core.getSelectElement();
         afterDelegation();
         return select;
     }
@@ -292,7 +301,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public List<String> getTextsFromChildren() {
         beforeDelegation();
-        List<String> textsFromChildren = decoratedGuiElementCore.getTextsFromChildren();
+        List<String> textsFromChildren = core.getTextsFromChildren();
         afterDelegation();
         return textsFromChildren;
     }
@@ -300,7 +309,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore doubleClick() {
         beforeDelegation();
-        decoratedGuiElementCore.doubleClick();
+        core.doubleClick();
         afterDelegation();
         return this;
     }
@@ -308,7 +317,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore doubleClickJS() {
         beforeDelegation();
-        decoratedGuiElementCore.doubleClickJS();
+        core.doubleClickJS();
         afterDelegation();
         return this;
     }
@@ -316,7 +325,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore highlight() {
         beforeDelegation();
-        decoratedGuiElementCore.highlight();
+        core.highlight();
         afterDelegation();
         return this;
     }
@@ -324,7 +333,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public int getLengthOfValueAfterSendKeys(String textToInput) {
         beforeDelegation();
-        int lengthOfValueAfterSendKeys = decoratedGuiElementCore.getLengthOfValueAfterSendKeys(textToInput);
+        int lengthOfValueAfterSendKeys = core.getLengthOfValueAfterSendKeys(textToInput);
         afterDelegation();
         return lengthOfValueAfterSendKeys;
     }
@@ -332,7 +341,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public GuiElementCore swipe(int offsetX, int offSetY) {
         beforeDelegation();
-        decoratedGuiElementCore.swipe(offsetX, offSetY);
+        core.swipe(offsetX, offSetY);
         afterDelegation();
         return this;
     }
@@ -340,7 +349,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public int getNumberOfFoundElements() {
         beforeDelegation();
-        int numberOfFoundElements = decoratedGuiElementCore.getNumberOfFoundElements();
+        int numberOfFoundElements = core.getNumberOfFoundElements();
         afterDelegation();
         return numberOfFoundElements;
     }
@@ -348,7 +357,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public File takeScreenshot() {
         beforeDelegation();
-        File screenshot = decoratedGuiElementCore.takeScreenshot();
+        File screenshot = core.takeScreenshot();
         afterDelegation();
         return screenshot;
     }
@@ -356,7 +365,7 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     @Override
     public boolean isVisible(boolean complete) {
         beforeDelegation();
-        boolean visible = decoratedGuiElementCore.isVisible(complete);
+        boolean visible = core.isVisible(complete);
         afterDelegation();
         return visible;
     }

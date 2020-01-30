@@ -955,7 +955,7 @@ public class GuiElement implements
         return propertyAssertionFactory.create(DefaultRectAssertion.class, new AssertionProvider<Rectangle>() {
             @Override
             public Rectangle getActual() {
-                return core.findWebElement().getRect();
+                return core.getRect();
             }
 
             @Override

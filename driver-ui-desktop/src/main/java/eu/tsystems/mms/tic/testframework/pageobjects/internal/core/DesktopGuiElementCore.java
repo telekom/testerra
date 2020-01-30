@@ -475,43 +475,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         if (!isPresent()) {
             return false;
         }
-
-        // in isPresent(), find() was executed which should set "webElement" or throw an exception
-        WebElement webElement = guiElementData.getWebElement();
-        if (webElement == null) {
-            throw new TesterraSystemException("Internal error. This state should not be reached.");
-        }
-
-        if (webElement.isDisplayed()) {
-            return true;
-            /*
-            Locatable item = (Locatable) webElement;
-
-            int x;
-            int y;
-            try {
-                y = item.getCoordinates().inViewPort().getY();
-                x = item.getCoordinates().inViewPort().getX();
-            } catch (WebDriverException e) {
-                LOGGER.debug("Error getting location of webElement.", e);
-                return false;
-            }
-
-            // Philosophical Question: Is a WebElement displayed, if only one Pixel of it is displayed? Currently, yes.
-            Dimension size = webElement.getSize();
-            Dimension screenSize = guiElementData.webDriver.manage().window().getSize();
-            boolean inViewportHorizontally = x + size.width >= 0 && x <= screenSize.getWidth();
-            boolean inViewportVertically = y + size.height >= 0 && y <= screenSize.getHeight();
-            if (inViewportHorizontally && inViewportVertically) {
-                guiElementData.executionLog.addMessage("isInViewport(" + x + ", " + y + ") = true");
-                return true;
-            } else {
-                guiElementData.executionLog.addMessage("isInViewport" + x + ", " + y + " = false");
-            }
-            */
-        } else {
-            return false;
-        }
+        return guiElementData.getWebElement().isDisplayed();
     }
 
     @Override
@@ -521,6 +485,11 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
             return false;
         }
         return guiElementData.getWebElement().isDisplayed();
+    }
+
+    @Override
+    public Rectangle getRect() {
+        return findWebElement().getRect();
     }
 
     @Override

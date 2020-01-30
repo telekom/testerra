@@ -32,12 +32,10 @@ import java.util.List;
  */
 public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
 
-    private GuiElementCore decoratedGuiElementCore;
     private final GuiElementData guiElementData;
 
-    public GuiElementCoreFrameAwareDecorator(GuiElementCore decoratedGuiElementCore, GuiElementData guiElementData) {
-        super(decoratedGuiElementCore);
-        this.decoratedGuiElementCore = decoratedGuiElementCore;
+    public GuiElementCoreFrameAwareDecorator(GuiElementCore core, GuiElementData guiElementData) {
+        super(core);
         this.guiElementData = guiElementData;
     }
 
@@ -56,24 +54,24 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
 
     @Override
     public List<WebElement> findWebElements() {
-        return decoratedGuiElementCore.findWebElements();
+        return core.findWebElements();
     }
 
     @Override
     public WebElement findWebElement() {
-        return decoratedGuiElementCore.findWebElement();
+        return core.findWebElement();
     }
 
     @Override
     public By getBy() {
-        By by = decoratedGuiElementCore.getBy();
+        By by = core.getBy();
         return by;
     }
 
     @Override
     public Select getSelectElement() {
         beforeDelegation();
-        WebElement webElement = decoratedGuiElementCore.findWebElement();
+        WebElement webElement = core.findWebElement();
         Select select = new Select(webElement);
         Select frameAwareSelect = new FrameAwareSelect(select, webElement, guiElementData.getFrameLogic().getFrames(), guiElementData.getWebDriver() );
         afterDelegation();

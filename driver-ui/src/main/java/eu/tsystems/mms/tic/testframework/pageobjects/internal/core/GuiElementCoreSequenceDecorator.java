@@ -44,13 +44,12 @@ import java.util.List;
  * Created by rnhb on 12.08.2015.
  */
 @Deprecated
-public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable {
+public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator implements Loggable {
 
     private final GuiElementData guiElementData;
-    private final GuiElementCore decoratedCore;
 
-    public GuiElementCoreSequenceDecorator(GuiElementCore decoratedCore, GuiElementData guiElementData) {
-        this.decoratedCore = decoratedCore;
+    public GuiElementCoreSequenceDecorator(GuiElementCore core, GuiElementData guiElementData) {
+        super(core);
         this.guiElementData = guiElementData;
     }
 
@@ -63,7 +62,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<WebElement> sequence = new Timer.Sequence<WebElement>() {
             @Override
             public void run() {
-                WebElement webElement = decoratedCore.getWebElement();
+                WebElement webElement = core.getWebElement();
                 setReturningObject(webElement);
             }
         };
@@ -74,17 +73,17 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
 
     @Override
     public List<WebElement> findWebElements() {
-        return decoratedCore.findWebElements();
+        return core.findWebElements();
     }
 
     @Override
     public WebElement findWebElement() {
-        return decoratedCore.findWebElement();
+        return core.findWebElement();
     }
 
     @Override
     public By getBy() {
-        return decoratedCore.getBy();
+        return core.getBy();
     }
 
     @Override
@@ -92,7 +91,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.scrollToElement();
+                core.scrollToElement();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -106,7 +105,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.scrollToElement(yOffset);
+                core.scrollToElement(yOffset);
             }
         };
         sequence.setSkipThrowingException(true);
@@ -120,8 +119,8 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.select();
-                setPassState(decoratedCore.isSelected());
+                core.select();
+                setPassState(core.isSelected());
             }
         };
         sequence.setSkipThrowingException(true);
@@ -135,8 +134,8 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.deselect();
-                setPassState(!decoratedCore.isSelected());
+                core.deselect();
+                setPassState(!core.isSelected());
             }
         };
         sequence.setSkipThrowingException(true);
@@ -150,7 +149,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.type(text);
+                core.type(text);
             }
         };
         sequence.setSkipThrowingException(true);
@@ -165,19 +164,19 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             @Override
             public void run() {
                 setSkipThrowingException(true);
-                decoratedCore.click();
+                core.click();
             }
         };
         ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "click", decoratedCore::clickJS);
+        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "click", core::clickJS);
         return this;
     }
 
     private void checkForClickingJSAlternativeOrExit(ThrowablePackedResponse throwablePackedResponse, String action, Runnable runnable) {
         if (throwablePackedResponse.hasTimeoutException()) {
 
-            if (!UseJSAlternatives.class.isAssignableFrom(decoratedCore.getClass()) || !UiElement.Properties.USE_JS_ALTERNATIVES.asBool()) {
+            if (!UseJSAlternatives.class.isAssignableFrom(core.getClass()) || !UiElement.Properties.USE_JS_ALTERNATIVES.asBool()) {
                 // we cannot use clickJS()
                 throwablePackedResponse.finalizeTimer();
                 return;
@@ -211,7 +210,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
                     ||
                     message.contains("not clickable at point") // another chrome message (maybe FF with native events (emulation), too)
                     ) {
-                log().warn(action + "() failed on " + decoratedCore + ". Trying fallback " + action + "JS().");
+                log().warn(action + "() failed on " + core + ". Trying fallback " + action + "JS().");
                 runnable.run();
                 return;
             }
@@ -225,7 +224,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.clickJS();
+                core.clickJS();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -239,7 +238,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.clickAbsolute();
+                core.clickAbsolute();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -253,7 +252,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.mouseOverAbsolute2Axis();
+                core.mouseOverAbsolute2Axis();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -267,7 +266,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.submit();
+                core.submit();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -281,7 +280,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.sendKeys(charSequences);
+                core.sendKeys(charSequences);
             }
         };
         sequence.setSkipThrowingException(true);
@@ -295,7 +294,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.clear();
+                core.clear();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -309,7 +308,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
             @Override
             public void run() {
-                String tagName = decoratedCore.getTagName();
+                String tagName = core.getTagName();
                 setReturningObject(tagName);
             }
         };
@@ -323,7 +322,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<Point> sequence = new Timer.Sequence<Point>() {
             @Override
             public void run() {
-                Point point = decoratedCore.getLocation();
+                Point point = core.getLocation();
                 setReturningObject(point);
             }
         };
@@ -337,7 +336,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<Dimension> sequence = new Timer.Sequence<Dimension>() {
             @Override
             public void run() {
-                Dimension dimension = decoratedCore.getSize();
+                Dimension dimension = core.getSize();
                 setReturningObject(dimension);
             }
         };
@@ -351,7 +350,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
             @Override
             public void run() {
-                String cssValue = decoratedCore.getCssValue(cssIdentifier);
+                String cssValue = core.getCssValue(cssIdentifier);
                 setReturningObject(cssValue);
             }
         };
@@ -366,7 +365,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             @Override
             public void run() {
                 setSkipThrowingException(true);
-                decoratedCore.mouseOver();
+                core.mouseOver();
             }
         };
         ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
@@ -379,7 +378,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.mouseOverJS();
+                core.mouseOverJS();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -393,7 +392,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<Select> sequence = new Timer.Sequence<Select>() {
             @Override
             public void run() {
-                Select select = decoratedCore.getSelectElement();
+                Select select = core.getSelectElement();
                 setReturningObject(select);
             }
         };
@@ -407,7 +406,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<List<String>> sequence = new Timer.Sequence<List<String>>() {
             @Override
             public void run() {
-                List<String> stringList = decoratedCore.getTextsFromChildren();
+                List<String> stringList = core.getTextsFromChildren();
                 setReturningObject(stringList);
             }
         };
@@ -421,13 +420,13 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.doubleClick();
+                core.doubleClick();
             }
         };
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "doubleClick", decoratedCore::doubleClickJS);
+        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "doubleClick", core::doubleClickJS);
         return this;
     }
 
@@ -436,7 +435,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.highlight();
+                core.highlight();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -450,7 +449,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.swipe(offsetX, offSetY);
+                core.swipe(offsetX, offSetY);
             }
         };
         sequence.setSkipThrowingException(true);
@@ -464,7 +463,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<Integer> sequence = new Timer.Sequence<Integer>() {
             @Override
             public void run() {
-                Integer integer = decoratedCore.getLengthOfValueAfterSendKeys(textToInput);
+                Integer integer = core.getLengthOfValueAfterSendKeys(textToInput);
                 setReturningObject(integer);
             }
         };
@@ -479,7 +478,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
             @Override
             public void run() {
                 setReturningObject(0);
-                int numberOfFoundElements = decoratedCore.getNumberOfFoundElements();
+                int numberOfFoundElements = core.getNumberOfFoundElements();
                 setReturningObject(numberOfFoundElements);
             }
         };
@@ -493,13 +492,13 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.rightClick();
+                core.rightClick();
             }
         };
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "rightClick", decoratedCore::rightClickJS);
+        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "rightClick", core::rightClickJS);
         return this;
     }
 
@@ -508,7 +507,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.rightClickJS();
+                core.rightClickJS();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -522,7 +521,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                decoratedCore.doubleClickJS();
+                core.doubleClickJS();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -533,7 +532,17 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
 
     @Override
     public File takeScreenshot() {
-        return decoratedCore.takeScreenshot();
+        return core.takeScreenshot();
+    }
+
+    @Override
+    protected void beforeDelegation() {
+
+    }
+
+    @Override
+    protected void afterDelegation() {
+
     }
 
     @Override
@@ -544,7 +553,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean present = decoratedCore.isPresent();
+                boolean present = core.isPresent();
                 setReturningObject(present);
                 setPassState(present);
             }
@@ -562,7 +571,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean enabled = decoratedCore.isEnabled();
+                boolean enabled = core.isEnabled();
                 setReturningObject(enabled);
                 setPassState(enabled);
             }
@@ -580,7 +589,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean displayed = decoratedCore.isDisplayed();
+                boolean displayed = core.isDisplayed();
                 setReturningObject(displayed);
                 setPassState(displayed);
             }
@@ -598,7 +607,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean visible = decoratedCore.isVisible(complete);
+                boolean visible = core.isVisible(complete);
                 setReturningObject(visible);
                 setPassState(visible);
             }
@@ -616,7 +625,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean selected = decoratedCore.isSelected();
+                boolean selected = core.isSelected();
                 setReturningObject(selected);
                 setPassState(selected);
             }
@@ -631,7 +640,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
             @Override
             public void run() {
-                String text = decoratedCore.getText();
+                String text = core.getText();
                 setReturningObject(text);
             }
         };
@@ -645,7 +654,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
         Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
             @Override
             public void run() {
-                String attributeValue = decoratedCore.getAttribute(attributeName);
+                String attributeValue = core.getAttribute(attributeName);
                 setReturningObject(attributeValue);
             }
         };
@@ -662,7 +671,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean displayedFromWebElement = decoratedCore.isDisplayedFromWebElement();
+                boolean displayedFromWebElement = core.isDisplayedFromWebElement();
                 setReturningObject(displayedFromWebElement);
                 setPassState(displayedFromWebElement);
             }
@@ -680,7 +689,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, Loggable
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean selectable = decoratedCore.isSelectable();
+                boolean selectable = core.isSelectable();
                 setReturningObject(selectable);
                 setPassState(selectable);
             }

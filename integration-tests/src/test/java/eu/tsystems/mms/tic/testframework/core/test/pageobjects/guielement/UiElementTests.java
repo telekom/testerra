@@ -47,6 +47,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable {
         StringAssertion<String> title = page.title();
 
         title.is("Input test");
+        title.isNot("Affentest");
         title.contains("Input");
         title.containsNot("SuperTestPage");
 

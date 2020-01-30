@@ -15,11 +15,16 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
     public DefaultStringAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
     }
-
-    @Override
-    public boolean is(String expected, String message) {
-        return super.is(expected, message);
-    }
+//
+//    @Override
+//    public boolean is(String expected, String message) {
+//        return super.is(expected, message);
+//    }
+//
+//    @Override
+//    public boolean is(String expected, String message) {
+//        return super.is(expected, message);
+//    }
 
     @Override
     public boolean contains(String expected, String message) {

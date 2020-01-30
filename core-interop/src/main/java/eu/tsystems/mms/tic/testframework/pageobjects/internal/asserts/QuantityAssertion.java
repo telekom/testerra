@@ -12,6 +12,11 @@ public interface QuantityAssertion<T> extends BinaryAssertion<T> {
     }
     boolean is(Object expected, String message);
 
+    default boolean isNot(Object expected) {
+        return isNot(expected, null);
+    }
+    boolean isNot(Object expected, String message);
+
     default boolean isGreaterThan(long expected) {
         return isGreaterThan(new BigDecimal(expected));
     }

@@ -16,6 +16,11 @@ public class DefaultQuantityAssertion<T> extends DefaultBinaryAssertion<T> imple
     }
 
     @Override
+    public boolean isNot(Object expected, String message) {
+        return testTimer(t -> instantAssertion.assertNotEquals(provider.getActual(), expected, new Assertion.Message(message, traceSubjectString())));
+    }
+
+    @Override
     public boolean isGreaterThan(BigDecimal expected, String message) {
         return testTimer(t -> instantAssertion.assertGreaterThan(new BigDecimal(provider.getActual().toString()), expected, new Assertion.Message(message, traceSubjectString())));
     }

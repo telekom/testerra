@@ -8,10 +8,10 @@ import java.util.regex.Pattern;
  */
 public interface StringAssertion<T> extends QuantityAssertion<T>
 {
-    default boolean is(String expected) {
-        return is(expected, null);
-    }
-    boolean is(String expected, String message);
+//    default boolean is(String expected) {
+//        return is(expected, null);
+//    }
+//    boolean is(String expected, String message);
 
     default boolean contains(String expected) {
         return contains(expected, null);

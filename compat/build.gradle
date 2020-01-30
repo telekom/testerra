@@ -1,8 +1,0 @@
-dependencies {
-    compile project(':driver-ui-desktop')
-    compile project(':mail-connector')
-}
-
-test {
-    exclude '**'
-}

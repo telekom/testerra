@@ -102,7 +102,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_Page_url() {
         WebTestPage page = getPage();
-        page.url().beginsWith("http");
+        page.url().startsWith("http");
         page.url().endsWith("input.html");
         page.url().length().isGreaterEqualThan(10);
     }

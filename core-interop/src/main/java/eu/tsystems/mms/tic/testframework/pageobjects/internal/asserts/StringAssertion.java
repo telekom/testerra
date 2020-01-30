@@ -23,10 +23,10 @@ public interface StringAssertion<T> extends QuantityAssertion<T>
     }
     boolean containsNot(String expected, String message);
 
-    default boolean beginsWith(String expected) {
-        return beginsWith(expected, null);
+    default boolean startsWith(String expected) {
+        return startsWith(expected, null);
     }
-    boolean beginsWith(String expected, String message);
+    boolean startsWith(String expected, String message);
 
     default boolean endsWith(String expected) {
         return endsWith(expected, null);

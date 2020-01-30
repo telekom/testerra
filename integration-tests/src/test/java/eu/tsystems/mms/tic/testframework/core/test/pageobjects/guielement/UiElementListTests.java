@@ -85,7 +85,7 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
         rows.list().first().linkByName().value(Attribute.HREF).endsWith("mkri");
         rows.list().get(1).linkByName().value(Attribute.HREF).endsWith("joku");
         rows.list().last().linkByName().value(Attribute.HREF).endsWith("erku");
-        rows.list().forEach(tableRow -> tableRow.linkByName().value(Attribute.HREF).beginsWith("http"));
+        rows.list().forEach(tableRow -> tableRow.linkByName().value(Attribute.HREF).startsWith("http"));
     }
 
     @Test

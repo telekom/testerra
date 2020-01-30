@@ -37,7 +37,7 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
     }
 
     @Override
-    public boolean beginsWith(String expected, String message) {
+    public boolean startsWith(String expected, String message) {
         return testTimer(t -> instantAssertion.assertBeginsWith(provider.getActual(), expected, new Assertion.Message(message, traceSubjectString())));
     }
 

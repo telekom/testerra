@@ -3,7 +3,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.components;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.IteractiveUiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveUiElement;
 import org.openqa.selenium.By;
 
 public class InputForm extends AbstractComponent<InputForm> {
@@ -22,11 +22,11 @@ public class InputForm extends AbstractComponent<InputForm> {
         return this;
     }
 
-    public IteractiveUiElement button() {
+    public InteractiveUiElement button() {
         return button;
     }
 
-    public IteractiveUiElement input() {
+    public InteractiveUiElement input() {
         return input;
     }
 }

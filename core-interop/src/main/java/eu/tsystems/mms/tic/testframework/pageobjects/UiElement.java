@@ -35,7 +35,7 @@ import org.openqa.selenium.WebElement;
  * @author Mike Reiche
  */
 public interface UiElement extends
-    IteractiveUiElement,
+    InteractiveUiElement,
     Nameable<UiElement>,
     WebDriverRetainer,
     HasParent

@@ -6,7 +6,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
  * Provides more action features which cannot be chained
  * @author Mike Reiche
  */
-public interface IteractiveUiElement extends
+public interface InteractiveUiElement extends
     TestableUiElement,
     UiElementActions
 {

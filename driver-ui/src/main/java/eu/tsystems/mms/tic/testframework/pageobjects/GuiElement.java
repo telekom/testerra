@@ -395,7 +395,7 @@ public class GuiElement implements
     }
 
     @Override
-    public IteractiveUiElement hover() {
+    public InteractiveUiElement hover() {
         return mouseOver();
     }
 

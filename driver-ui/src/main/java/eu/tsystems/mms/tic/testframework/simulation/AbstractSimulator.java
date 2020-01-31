@@ -140,6 +140,12 @@ public class AbstractSimulator implements UiElementActions {
     }
 
     @Override
+    public UiElementActions type(String text) {
+        guiElement.type(text);
+        return this;
+    }
+
+    @Override
     public UiElementActions clear() {
         guiElement.clear();
         return this;

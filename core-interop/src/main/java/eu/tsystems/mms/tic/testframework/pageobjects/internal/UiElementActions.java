@@ -24,6 +24,7 @@ public interface UiElementActions extends TestableUiElement {
     UiElementActions select();
     UiElementActions deselect();
     UiElementActions sendKeys(CharSequence... charSequences);
+    UiElementActions type(String text);
     UiElementActions clear();
     UiElementActions hover();
     /**

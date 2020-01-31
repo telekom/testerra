@@ -333,6 +333,7 @@ public class GuiElement implements
         return this;
     }
 
+    @Override
     public UiElement type(String text) {
         guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.type(text);

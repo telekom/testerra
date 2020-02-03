@@ -22,6 +22,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AbstractTestedPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
@@ -33,6 +34,7 @@ import org.openqa.selenium.WebDriver;
 
 /**
  * Created by rnhb on 14.08.2015.
+ * @deprecated No more needed since {@link AbstractTestedPropertyAssertion}
  */
 @Deprecated
 public class TimerWrapper implements Loggable {

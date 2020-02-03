@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverKeepAliveSequence;
@@ -33,6 +34,7 @@ import org.testng.annotations.Test;
 /**
  * Created by nigr on 07.09.2015.
  */
+@TestContext(name = "WebDriverUtilsTest")
 public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     private final String msgSwitchSuccessfully = "Find and switch to window successful";
@@ -42,6 +44,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
         if (extraSession) {
             driver = WebDriverManager.getWebDriver("test");
+            visitTestPage(driver);
         } else {
             driver = WebDriverManager.getWebDriver();
         }

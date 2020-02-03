@@ -349,15 +349,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public boolean isDisplayedFromWebElement() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeDelegation(methodName);
-        final boolean displayedFromWebElement = decoratedFacade.isDisplayedFromWebElement();
-        afterDelegation(String.format("%s() = %s", methodName, displayedFromWebElement));
-        return displayedFromWebElement;
-    }
-
-    @Override
     public Rectangle getRect() {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);

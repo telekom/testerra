@@ -112,7 +112,7 @@ public final class MailUtils {
      * @return FALSE if the Content is not equal, the Content Types differs or the Content cannot be read.
      * @throws TesterraSystemException thrown if exception during comparing is thrown.
      */
-    public static boolean compareSentAndReceivedEmailContents(final MimeMessage sent, final TesterraMail received)
+    public static boolean compareSentAndReceivedEmailContents(final MimeMessage sent, final Email received)
             throws TesterraSystemException {
         return pCompareSentAndReceivedEmailContents(sent, received);
     }
@@ -142,7 +142,7 @@ public final class MailUtils {
      * @return FALSE if the Content is not equal, the Content Types differs or the Content cannot be read.
      * @throws TesterraSystemException thrown if exception during comparing is thrown.
      */
-    private static boolean pCompareSentAndReceivedEmailContents(final MimeMessage sent, final TesterraMail received)
+    private static boolean pCompareSentAndReceivedEmailContents(final MimeMessage sent, final Email received)
             throws TesterraSystemException {
 
         try {
@@ -410,7 +410,7 @@ public final class MailUtils {
      * @param filename The path to write the message.
      * @throws TesterraSystemException thrown if message can't be saved.
      */
-    public static void saveEmail(final TesterraMail message, final String filename) throws TesterraSystemException {
+    public static void saveEmail(final Email message, final String filename) throws TesterraSystemException {
         pSaveEmailX(message, filename);
     }
 
@@ -421,7 +421,7 @@ public final class MailUtils {
      * @param filename The path to write the message.
      * @throws TesterraSystemException thrown if message can't be saved.
      */
-    private static void pSaveEmailX(final TesterraMail message, final String filename) throws TesterraSystemException {
+    private static void pSaveEmailX(final Email message, final String filename) throws TesterraSystemException {
         if (new File(filename).exists()) {
             new File(filename).delete();
         }

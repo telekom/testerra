@@ -1,0 +1,29 @@
+= WebDriver Utilities
+
+== Keep a session alive
+
+Sometimes when interacting with a remote selenium grid provider you will get in touch with the given session timeout of the provider.
+If your session is idle, the grid provider will close your session due to resource reasons after a timeout set by the provider itself.
+This is a helpful feature for selenium grid providers, but maybe you just want to set your WebDriver session on hold, because you are interacting with some other WebDriver session in the same thread.
+
+To keep a session alive while processing some other tasks in the main thread you have to send some interactions.
+For this you can use the managed methods in Testerra framework.
+This will help you to get your things done and will ensure that you can't keep sessions alive forever to avoid grid abuse.
+
+.Keep a driver alive while interacting with second session
+[source,java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
+// Do some test stuff with session your session
+
+// Starting a second session for example to test concurrent interactions.
+WebDriver driverWithOtherUser = WebDriverManager.getWebDriver("Session2");
+
+// Keep alive driver while doing actions on driverWithOtherUser for 90 seconds, while refreshing all 10 seconds
+final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 10, 90);
+
+// Do your things with your second driver
+
+// NOTE: Please release your WebDriverKeepAliveSequence as you dont need the lock
+WebDriverUtils.removeKeepAliveForWebDriver(driver);
+----

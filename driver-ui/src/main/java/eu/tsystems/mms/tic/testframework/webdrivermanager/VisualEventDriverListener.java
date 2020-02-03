@@ -34,8 +34,6 @@ import java.awt.*;
  */
 public class VisualEventDriverListener implements WebDriverEventListener {
 
-    private WebElement lastClickedElement;
-
     @Override
     public void beforeAlertAccept(WebDriver webDriver) {
 
@@ -63,7 +61,6 @@ public class VisualEventDriverListener implements WebDriverEventListener {
 
     @Override
     public void afterNavigateTo(String s, WebDriver webDriver) {
-
     }
 
     @Override
@@ -120,7 +117,7 @@ public class VisualEventDriverListener implements WebDriverEventListener {
 //                }
 
                 JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 0, 255));
-                lastClickedElement = webElement;
+                //lastClickedElement = webElement;
             }
         }
     }

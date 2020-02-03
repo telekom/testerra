@@ -20,8 +20,9 @@
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.utils.WebDriverKeepAliveSequence;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -149,6 +150,45 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
     public void testT10_linkChecker() throws Exception {
         final WebDriver driver = createWebDriver(false);
         WebDriverUtils.linkChecker("Test", driver);
+    }
+
+
+    @Test
+    public void testT11_WebDriverKeepAliveTimedOut() {
+
+        WebDriver driver = createWebDriver(true);
+        final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 1, 10);
+
+        TimerUtils.sleep(15_000);
+        final WebDriverKeepAliveSequence.KeepAliveState returningObject = webDriverKeepAliveSequence.getReturningObject();
+        Assert.assertEquals(returningObject, WebDriverKeepAliveSequence.KeepAliveState.REMOVED_BY_TIMEOUT);
+    }
+
+    @Test
+    public void testT12_WebDriverKeepAliveRemovedByUser() {
+
+        WebDriver driver = createWebDriver(true);
+        final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 1, 10);
+
+        TimerUtils.sleep(5_000);
+        WebDriverUtils.removeKeepAliveForWebDriver(driver);
+
+        TimerUtils.sleep(10_000);
+        final WebDriverKeepAliveSequence.KeepAliveState returningObject = webDriverKeepAliveSequence.getReturningObject();
+        Assert.assertEquals(returningObject, WebDriverKeepAliveSequence.KeepAliveState.REMOVED_BY_USER);
+    }
+
+    @Test
+    public void testT13_WebDriverKeepAliveRemovedByDriverShutdown() {
+
+        final WebDriver driver = createWebDriver(false);
+        final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 1, 10);
+        TimerUtils.sleep(3_000);
+
+        WebDriverManager.shutdown();
+        TimerUtils.sleep(10_000);
+        final WebDriverKeepAliveSequence.KeepAliveState returningObject = webDriverKeepAliveSequence.getReturningObject();
+        Assert.assertEquals(returningObject, WebDriverKeepAliveSequence.KeepAliveState.REMOVED_BY_DRIVER_SHUTDOWN);
     }
 
 }

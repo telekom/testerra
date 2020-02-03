@@ -895,4 +895,10 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         element.asserts().assertCssClassIsPresent("active");
     }
 
+    @Test
+    public void test_pageChangeOnAnchorClick() {
+        GuiElement element = getGuiElementBy(Locate.by().qa("action/pageChangeAnchor"));
+        element.click();
+        Assert.assertTrue(element.getWebDriver().getCurrentUrl().endsWith("form.html"));
+    }
 }

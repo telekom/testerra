@@ -97,12 +97,18 @@ public interface GuiElementAssert {
     /**
      * Assert is displayed from webelement with wait
      */
-    void assertIsDisplayedFromWebElement();
+    @Deprecated
+    default void assertIsDisplayedFromWebElement() {
+        assertIsDisplayed();
+    }
 
     /**
      * Assert is not displayed from webelement with wait
      */
-    void assertIsNotDisplayedFromWebElement();
+    @Deprecated
+    default void assertIsNotDisplayedFromWebElement() {
+        assertIsNotDisplayed();
+    }
 
     /**
      * Checks if GuiElement contains the given text. Please note that this will only assert successfully, if the
@@ -120,7 +126,9 @@ public interface GuiElementAssert {
      * @param text Strings that should be contained in text. Will NOT be trimmed.
      */
     @Deprecated
-    void assertContainsText(String... text);
+    default void assertContainsText(String... text) {
+        assertTextContains(text);
+    }
 
     /**
      * Checks if the GuiElement, contains the given texts. Please note that this will only assert successfully, if the

@@ -10,4 +10,5 @@ include::utilities/pdf-utilities.adoc[leveloffset=+1]
 include::utilities/proxy-utilities.adoc[leveloffset=+1]
 include::utilities/testui-utilities.adoc[leveloffset=+1]
 include::utilities/timer-utilities.adoc[leveloffset=+1]
+include::utilities/webdriver-utilities.adoc[leveloffset=+1]
 

@@ -150,18 +150,6 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
     }
 
     @Override
-    public void assertIsNotDisplayedFromWebElement() {
-        callBeforeAssertion();
-        AssertionError thrownAssertionError = null;
-        try {
-            decoratedAssert.assertIsNotDisplayedFromWebElement();
-        } catch (AssertionError e) {
-            thrownAssertionError = e;
-        }
-        handleAfterAssertion("assertIsNotDisplayedFromWebElement", thrownAssertionError);
-    }
-
-    @Override
     public void assertText(String text) {
         callBeforeAssertion();
         AssertionError thrownAssertionError = null;
@@ -171,12 +159,6 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
             thrownAssertionError = e;
         }
         handleAfterAssertion("assertText \"" + text + "\"", thrownAssertionError);
-    }
-
-    @Override
-    @Deprecated
-    public void assertContainsText(String... text) {
-        assertTextContains(text);
     }
 
     @Override

@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
-import eu.tsystems.mms.tic.testframework.enums.MaximizePosition;
+import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSetupException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
@@ -231,7 +231,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 Dimension originWindowSize = window.getSize();
                 // Maximize to detect window size
                 window.maximize();
-                if (config.maximizePosition != MaximizePosition.SELF) {
+                if (config.maximizePosition != Position.CENTER) {
                     log().info(String.format("Setting maximized window position to: %s", config.maximizePosition));
                     Point targetPosition = new Point(0, 0);
                     switch (config.maximizePosition) {

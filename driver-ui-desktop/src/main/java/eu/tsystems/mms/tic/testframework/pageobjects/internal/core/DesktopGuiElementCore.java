@@ -353,13 +353,25 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
 
     private void pClickAbsolute(GuiElementCore guiElementCore, WebDriver driver, WebElement webElement) {
         LOGGER.trace("Absolute navigation and click on: " + guiElementCore.toString());
-        guiElementCore.mouseOverAbsolute2Axis();
-        Actions action = new Actions(driver);
-        action.moveByOffset(1, 1);
+
+        checkAndWarnIfIE();
 
         // Start the StopWatch for measuring the loading time of a Page
         StopWatch.startPageLoad(driver);
 
+        Point point = webElement.getLocation();
+
+        Actions action = new Actions(driver);
+
+        // goto 0,0
+        action.moveToElement(webElement, 1 + -point.getX(), 1 + -point.getY());
+
+        // move y, then x
+        action.moveByOffset(0, point.getY()).moveByOffset(point.getX(), 0);
+
+        // move to webElement
+        action.moveToElement(webElement);
+        action.moveByOffset(1, 1);
         action.click().perform();
     }
 
@@ -473,15 +485,6 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
 
     private boolean pIsDisplayed() {
         if (!isPresent()) {
-            return false;
-        }
-        return guiElementData.getWebElement().isDisplayed();
-    }
-
-    @Override
-    public boolean isDisplayedFromWebElement() {
-        if (!isPresent()) {
-            LOGGER.debug("isDisplayedFromWebElement(): WebElement is not present");
             return false;
         }
         return guiElementData.getWebElement().isDisplayed();

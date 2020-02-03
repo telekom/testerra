@@ -68,6 +68,7 @@ public class TesterraCommons {
     private static void initializeLogging() {
         URL log4jConfig = FileUtils.getResourceURL("test-log4j.xml");
         if (log4jConfig != null) {
+            System.out.println("Initialize logging by: " + log4jConfig);
             DOMConfigurator.configure(log4jConfig);
         } else {
             Appender appender = Testerra.injector.getInstance(LogAppender.class);

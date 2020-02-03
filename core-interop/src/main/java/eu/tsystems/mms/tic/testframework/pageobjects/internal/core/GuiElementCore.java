@@ -91,13 +91,6 @@ public interface GuiElementCore {
     String getAttribute(String attributeName);
 
     /**
-     * Calls isDisplayed on the underlying WebElement.
-     *
-     * @return isDisplayed from WebElement
-     */
-    boolean isDisplayedFromWebElement();
-
-    /**
      * Gets the element's rectangle
      */
     Rectangle getRect();

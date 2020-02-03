@@ -1042,4 +1042,15 @@ public class GuiElement implements
          */
         return scrollToElement(yOffset*-1);
     }
+
+    /**
+     * Calls isDisplayed on the underlying WebElement.
+     *
+     * @return isDisplayed from WebElement
+     * @deprecated Use {@link #isDisplayed()} instead
+     */
+    @Deprecated
+    public boolean isDisplayedFromWebElement() {
+        return this.isDisplayed();
+    }
 }

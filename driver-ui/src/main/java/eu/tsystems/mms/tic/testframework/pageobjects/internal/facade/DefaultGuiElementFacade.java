@@ -176,11 +176,6 @@ public class DefaultGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public boolean isDisplayedFromWebElement() {
-        return core.isDisplayedFromWebElement();
-    }
-
-    @Override
     public Rectangle getRect() {
         return core.getRect();
     }

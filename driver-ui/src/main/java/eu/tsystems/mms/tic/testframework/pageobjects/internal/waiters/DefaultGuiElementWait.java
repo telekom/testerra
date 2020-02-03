@@ -188,7 +188,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(!checkForDisplayed); // in case of an error while executing webelement method -> no exception has to be thrown
                 setSkipThrowingException(true);
 
-                boolean displayed = core.isDisplayedFromWebElement();
+                boolean displayed = core.isDisplayed();
                 boolean sequenceStatus = displayed == checkForDisplayed;
                 setPassState(sequenceStatus);
                 setReturningObject(sequenceStatus);

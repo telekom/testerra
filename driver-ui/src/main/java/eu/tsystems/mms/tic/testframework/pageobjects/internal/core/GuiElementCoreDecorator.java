@@ -93,14 +93,6 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     }
 
     @Override
-    public boolean isDisplayedFromWebElement() {
-        beforeDelegation();
-        boolean displayedFromWebElement = core.isDisplayedFromWebElement();
-        afterDelegation();
-        return displayedFromWebElement;
-    }
-
-    @Override
     public Rectangle getRect() {
         beforeDelegation();
         Rectangle rect = core.getRect();

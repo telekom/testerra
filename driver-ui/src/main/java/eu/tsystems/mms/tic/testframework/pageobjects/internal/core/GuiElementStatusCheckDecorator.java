@@ -98,14 +98,6 @@ public abstract class GuiElementStatusCheckDecorator implements GuiElementStatus
     }
 
     @Override
-    public boolean isDisplayedFromWebElement() {
-        beforeDelegation();
-        boolean displayedFromWebElement = decoratedGuiElementStatusCheck.isDisplayedFromWebElement();
-        afterDelegation();
-        return displayedFromWebElement;
-    }
-
-    @Override
     public boolean isSelectable() {
         beforeDelegation();
         boolean selectable = decoratedGuiElementStatusCheck.isSelectable();

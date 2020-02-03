@@ -85,8 +85,12 @@ public interface GuiElementStatusCheck {
      * Calls isDisplayed on the underlying WebElement.
      *
      * @return isDisplayed from WebElement
+     * @deprecated Use {@link #isDisplayed()} instead
      */
-    boolean isDisplayedFromWebElement();
+    @Deprecated
+    default boolean isDisplayedFromWebElement() {
+        return isDisplayed();
+    }
 
     /**
      * Checks if the element is selectable.

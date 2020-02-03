@@ -664,24 +664,6 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public boolean isDisplayedFromWebElement() {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false);
-                setSkipThrowingException(true);
-
-                boolean displayedFromWebElement = guiElementCore.isDisplayedFromWebElement();
-                setReturningObject(displayedFromWebElement);
-                setPassState(displayedFromWebElement);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = timerWrapper.executeShortIntervalSequence(sequence);
-        return response.logThrowableAndReturnResponse();
-    }
-
-    @Override
     public boolean isSelectable() {
         Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
             @Override

@@ -49,6 +49,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TestStart
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TesterraEventsStartWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
 import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
@@ -97,11 +98,9 @@ public class TesterraListener implements
     IConfigurable,
     IMethodInterceptor,
     ITestListener,
-    ISuiteListener
+    ISuiteListener,
+    Loggable
 {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TesterraListener.class);
-
     /**
      * Global marker for positive test execution.
      */
@@ -142,9 +141,6 @@ public class TesterraListener implements
         if (Flags.MONITOR_MEMORY) {
             TesterraEventService.addListener(new JVMMonitor());
         }
-
-        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        LOGGER.info("Context ClassLoader for TesterraListener: " + contextClassLoader);
 
         // start test for xml
         XML_REPORTER = new JUnitXMLReporter(true, Report.XML_DIRECTORY);
@@ -272,7 +268,7 @@ public class TesterraListener implements
         try {
             pBeforeInvocation(method, testResult, context);
         } catch (Throwable t) {
-            LOGGER.error("FATAL INTERNAL ERROR in beforeInvocation for " + method + ", " + testResult + ", " + context, t);
+            log().error("FATAL INTERNAL ERROR in beforeInvocation for " + method + ", " + testResult + ", " + context, t);
             ReportInfo.getDashboardWarning().addInfo(1, "FATAL INTERNAL ERROR during execution! Please analyze the build logs for this error!");
         }
     }
@@ -313,7 +309,7 @@ public class TesterraListener implements
                 methodName +
                 " - " + Thread.currentThread().getName();
 
-        LOGGER.trace(infoText);
+        log().trace(infoText);
 
 
         MethodWorkerExecutor workerExecutor = new MethodWorkerExecutor();
@@ -395,7 +391,7 @@ public class TesterraListener implements
          */
         final String infoText = "afterInvocation: " + testClassName + "." + methodName + " - " + Thread.currentThread().getName();
 
-        LOGGER.trace(infoText);
+        log().trace(infoText);
 
         /*
          * Get test method container
@@ -425,9 +421,9 @@ public class TesterraListener implements
          */
         TestStep step = methodContext.steps().announceTestStep(TestStep.TEARDOWN);
         if (testResult.isSuccess()) {
-            LOGGER.info(methodName + " PASSED");
+            log().info(methodName + " PASSED");
         } else if (testResult.getStatus() == ITestResult.FAILURE) {
-            LOGGER.error(methodName + " FAILED", testResult.getThrowable());
+            log().error(methodName + " FAILED", testResult.getThrowable());
         }
 
         /*

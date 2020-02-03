@@ -85,16 +85,6 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
-    public void assertIsDisplayedFromWebElement() {
-        configuredAssert.assertTrue(guiElementWait.waitForIsDisplayedFromWebElement(), guiElementData + " is displayed.");
-    }
-
-    @Override
-    public void assertIsNotDisplayedFromWebElement() {
-        configuredAssert.assertFalse(!guiElementWait.waitForIsNotDisplayedFromWebElement(), guiElementData + " is displayed.");
-    }
-
-    @Override
     public void assertIsSelected() {
         configuredAssert.assertTrue(guiElementWait.waitForIsSelected(), guiElementData + " is selected.");
     }
@@ -125,11 +115,6 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     private String getTextOrEmpty() {
         String text = guiElementCore.getText();
         return text == null ? "" : text.trim();
-    }
-
-    @Override
-    public void assertContainsText(String... text) {
-        assertTextContains(text);
     }
 
     @Override

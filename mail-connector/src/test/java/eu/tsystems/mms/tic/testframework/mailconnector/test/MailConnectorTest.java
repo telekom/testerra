@@ -612,7 +612,6 @@ public class MailConnectorTest extends TesterraTest {
      * @throws AssertionError if the inbox is not empty after deleting the message
      */
     private void deleteMessage(Email msg, POP3MailConnector pop3Instance) throws AssertionError {
-
         RecipientType to = RecipientType.TO;
         String recipient = msg.getRecipients().get(0);
         String subject = msg.getSubject();

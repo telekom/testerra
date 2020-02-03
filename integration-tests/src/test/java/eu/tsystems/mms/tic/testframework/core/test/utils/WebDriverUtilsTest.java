@@ -76,7 +76,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
         Assert.assertFalse(out, msgSwitchSuccessfully);
     }
 
-    @Test
+    @Test(groups = "SEQUENTIAL")
     public void testT03_WebDriverUtils_findWindowAndSwitchTo_Fast() throws Exception {
         WebDriver driver = createWebDriver(false);
 
@@ -88,6 +88,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
         long timeMillisDuration = System.currentTimeMillis() - timeMillisBegin;
 
+        this.log().info("Window switch took about " + timeMillisDuration + " ms.");
         Assert.assertTrue(out, msgSwitchSuccessfully);
         Assert.assertTrue(timeMillisDuration < 300, "Find and switch to Window need less than 1000 ms");
     }

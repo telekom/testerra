@@ -621,7 +621,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
             LOGGER.debug("isPresent(): trying to find WebElement");
             find();
         } catch (Exception e) {
-            LOGGER.debug("isPresent(): Element not found: " + guiElementData.getLocate(), e);
+            LOGGER.error("isPresent(): Element not found: " + guiElementData.getLocate(), e);
             return false;
         }
         return true;

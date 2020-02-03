@@ -46,7 +46,7 @@ public class WebTestPage extends AbstractWebTestPage {
     private GuiElement specialElementFromVariable;
 
     @Check
-    private InputForm inputForm = createComponent(InputForm.class, find(By.className("className")));
+    private InputForm inputForm = createComponent(InputForm.class, find(By.className("box")));
 
     /** The output text field. */
     @Check

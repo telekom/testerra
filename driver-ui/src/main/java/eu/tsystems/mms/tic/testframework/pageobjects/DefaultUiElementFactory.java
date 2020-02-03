@@ -58,7 +58,7 @@ public class DefaultUiElementFactory implements
     }
 
     @Override
-    public UiElement createWithPage(
+    public UiElement createFromPage(
         PageObject page,
         Locate locator
     ) {

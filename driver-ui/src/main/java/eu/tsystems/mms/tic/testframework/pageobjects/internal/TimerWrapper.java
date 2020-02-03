@@ -34,6 +34,7 @@ import org.openqa.selenium.WebDriver;
 /**
  * Created by rnhb on 14.08.2015.
  */
+@Deprecated
 public class TimerWrapper implements Loggable {
 
     private final static PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);

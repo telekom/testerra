@@ -32,10 +32,8 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionsAfterMethodWorker;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
@@ -52,14 +50,14 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Provides threadsafe WebDriver and Selenium objects. These objects are needed for correct logging and reporting.
  *
  * @author sepr
+ * @todo Migrate to {@link DefaultWebDriverManager}
  */
-public final class WebDriverManager implements IWebDriverManager {
+public final class WebDriverManager {
 
     static {
         UITestUtils.initializePerfTest();
@@ -81,8 +79,6 @@ public final class WebDriverManager implements IWebDriverManager {
      * Executing selenium hosts. Package local access for WDInternal class.
      */
     static final ThreadLocal<String> EXECUTING_SELENIUM_HOSTS_PER_THREAD = new ThreadLocal<String>();
-
-    private final Map<WebDriver, TimerWrapper>TIMER_WRAPPERS = new ConcurrentHashMap<>();
 
     /**
      * The preset baseURL. Set by setBaseURL().
@@ -496,12 +492,6 @@ public final class WebDriverManager implements IWebDriverManager {
         return WebDriverSessionsManager.DRIVER_REQUEST_MAP.get(driver);
     }
 
-    public TimerWrapper getTimerWrapper(WebDriver webDriver) {
-        if (TIMER_WRAPPERS.containsKey(webDriver)==false) {
-            TIMER_WRAPPERS.put(webDriver, new TimerWrapper(webDriver));
-        }
-        return TIMER_WRAPPERS.get(webDriver);
-    }
 
     public static SessionContext getSessionContextFromWebDriver(WebDriver driver) {
         String sessionId = WebDriverUtils.getSessionId(driver);

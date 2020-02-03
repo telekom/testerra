@@ -24,7 +24,7 @@ import org.testng.annotations.Listeners;
 
 @Listeners(TesterraListener.class)
 public abstract class TesterraTest implements
-    PageObjectCreator,
+    PageFactoryProvider,
     TestFeatures
 {
 }

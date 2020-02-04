@@ -48,13 +48,7 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
 
     @BeforeMethod()
     public void visitTestPage() {
-//        visitTestPage(getWebDriver());
-        WebDriver webDriver = getWebDriver();
-
-        if (!webDriver.getCurrentUrl().contains(getTestPage().getPath())) {
-            String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), getTestPage().getPath());
-            webDriver.get(baseUrl);
-        }
+        visitTestPage(getWebDriver());
     }
 
     /**

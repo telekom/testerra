@@ -2,6 +2,10 @@ dependencies {
     compile core
     compile image_processing
 
+    // <Guava Bugfix?>
+    compile 'com.google.guava:guava:25.0-jre'
+    // </Guava Bugfix?>
+
     // <UITestUtils>
     compile 'org.sikuli:sikuli-api:1.2.0'
     // </UITestUtils>

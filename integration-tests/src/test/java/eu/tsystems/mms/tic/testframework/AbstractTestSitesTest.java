@@ -24,9 +24,7 @@ import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
@@ -58,7 +56,7 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
      *
      * @param driver
      */
-    public void visitTestPage(WebDriver driver) {
+    public synchronized void visitTestPage(WebDriver driver) {
         if (!driver.getCurrentUrl().contains(getTestPage().getPath())) {
             String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), getTestPage().getPath());
             driver.get(baseUrl);

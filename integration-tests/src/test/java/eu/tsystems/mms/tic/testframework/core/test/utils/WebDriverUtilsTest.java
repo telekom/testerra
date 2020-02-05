@@ -109,7 +109,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT05_WebDriverUtils_findWindowAndSwitchTo_Driver() throws Exception {
-        WebDriver driver = createWebDriver(true);
+        WebDriver driver = createWebDriver(false);
 
         openPopUpWindow(driver);
 
@@ -120,7 +120,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT06_WebDriverUtils_findWindowAndSwitchTo_DriverWrongTitle() throws Exception {
-        WebDriver driver = createWebDriver(true);
+        WebDriver driver = createWebDriver(false);
 
         openPopUpWindow(driver);
 
@@ -131,7 +131,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT07_WebDriverUtils_findWindowAndSwitchTo_ContainsURL() throws Exception {
-        WebDriver driver = createWebDriver(true);
+        WebDriver driver = createWebDriver(false);
 
         openPopUpWindow(driver);
 
@@ -142,7 +142,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT08_WebDriverUtils_findWindowAndSwitchTo_ContainsWrongURL() throws Exception {
-        WebDriver driver = createWebDriver(true);
+        WebDriver driver = createWebDriver(false);
 
         openPopUpWindow(driver);
 
@@ -161,7 +161,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
     @Test
     public void testT11_WebDriverKeepAliveTimedOut() {
 
-        WebDriver driver = createWebDriver(true);
+        WebDriver driver = createWebDriver(false);
         final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 1, 10);
 
         TimerUtils.sleep(15_000);
@@ -172,7 +172,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
     @Test
     public void testT12_WebDriverKeepAliveRemovedByUser() {
 
-        WebDriver driver = createWebDriver(true);
+        WebDriver driver = createWebDriver(false);
         final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 1, 10);
 
         TimerUtils.sleep(5_000);

@@ -38,7 +38,7 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
-        POConfig.setUiElementTimeoutInSeconds(1);
+        POConfig.setUiElementTimeoutInSeconds(3);
         try {
             server.start(80);
         } catch (BindException e) {

@@ -39,18 +39,18 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     private final String msgSwitchSuccessfully = "Find and switch to window successful";
 
-    private WebDriver createWebDriver(boolean extraSession) {
-        WebDriver driver;
-
-        if (extraSession) {
-            driver = WebDriverManager.getWebDriver("test");
-            visitTestPage(driver);
-        } else {
-            driver = WebDriverManager.getWebDriver();
-        }
-
-        return driver;
-    }
+//    private WebDriver createWebDriver(boolean extraSession) {
+//        WebDriver driver;
+//
+//        if (extraSession) {
+//            driver = WebDriverManager.getWebDriver("test");
+//            visitTestPage(driver);
+//        } else {
+//            driver = WebDriverManager.getWebDriver();
+//        }
+//
+//        return driver;
+//    }
 
     private void openPopUpWindow(WebDriver driver) {
         GuiElement guiElement = new GuiElement(driver, By.linkText("Open pop up"));

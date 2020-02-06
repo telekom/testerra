@@ -23,10 +23,12 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.ConsoleAppender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.Properties;
 
 /**
@@ -34,12 +36,10 @@ import java.util.Properties;
  */
 public class TesterraCommons {
     private static final Logger LOGGER = LoggerFactory.getLogger(TesterraCommons.class);
-    private static final String p = "eu.tsystems.mms.tic.testframework";
-
     private static boolean proxySettingsLoaded = false;
 
     public static final String DEFAULT_PACKAGE_NAME = "eu.tsystems.mms.tic";
-
+    public static final String FRAMEWORK_PACKAGE=DEFAULT_PACKAGE_NAME+".testframework";
     private static final String SYSTEM_PROPERTIES_FILE = "system.properties";
 
     private TesterraCommons() {}
@@ -50,6 +50,18 @@ public class TesterraCommons {
      */
     private static void initializeLogging() {
         BasicConfigurator.configure();
+        org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
+        /**
+         * We have to remove the default {@link ConsoleAppender},
+         * because the {@link TesterraLogger} already logs to System.out
+         */
+        Enumeration allAppenders = root.getAllAppenders();
+        while (allAppenders.hasMoreElements()) {
+            Object appender = allAppenders.nextElement();
+            if (appender instanceof ConsoleAppender) {
+                root.removeAppender((ConsoleAppender)appender);
+            }
+        }
     }
 
     /**

@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
@@ -173,7 +174,11 @@ public class TesterraListener implements
         if (testerraLogger == null) {
             testerraLogger = new TesterraLogger();
             root.addAppender(testerraLogger);
-            root.setLevel(Level.INFO);
+            //root.setLevel(Level.INFO);
+            /**
+             * We set the default log level for the whole framework
+             */
+            Logger.getLogger(TesterraCommons.FRAMEWORK_PACKAGE).setLevel(Level.INFO);
         }
     }
 

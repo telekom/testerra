@@ -166,7 +166,9 @@ public class TesterraListener implements
     }
 
     /**
-     * Makes sure that the {@link TesterraLogger} is appended
+     * Makes sure that the {@link TesterraLogger} is appended.
+     * This is done here and not in {@link TesterraCommons#initializeLogging()} because
+     * the required classes are only part of the core package.
      */
     public static void initTesterraLogger() {
         Logger root = Logger.getRootLogger();

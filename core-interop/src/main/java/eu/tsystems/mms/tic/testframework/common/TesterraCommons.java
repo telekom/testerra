@@ -50,11 +50,11 @@ public class TesterraCommons {
      */
     private static void initializeLogging() {
         BasicConfigurator.configure();
-        org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
         /**
          * We have to remove the default {@link ConsoleAppender},
          * because the {@link TesterraLogger} already logs to System.out
          */
+        org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
         Enumeration allAppenders = root.getAllAppenders();
         while (allAppenders.hasMoreElements()) {
             Object appender = allAppenders.nextElement();

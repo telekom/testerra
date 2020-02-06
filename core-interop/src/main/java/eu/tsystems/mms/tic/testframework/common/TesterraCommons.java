@@ -44,8 +44,8 @@ public class TesterraCommons {
     private TesterraCommons() {}
 
     /**
-     * Log4j initialization WITHOUT TesterraLogger,
-     * which is done in TesterraListener later
+     * Log4j initialization with TesterraLogger,
+     * and remove all duplicate ConsoleLoggers
      */
     private static void initializeLogging() {
         BasicConfigurator.configure();

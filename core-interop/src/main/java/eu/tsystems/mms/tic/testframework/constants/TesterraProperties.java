@@ -83,8 +83,6 @@ public final class TesterraProperties {
     public static final String REPORTDIR = "tt.report.dir";
     public static final String REPORTNAME = "tt.report.name";
 
-    public static final String LOG_LEVEL = "tt.loglevel";
-
     /**
      * Failed tests maximum number of retries.
      */

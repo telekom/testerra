@@ -63,8 +63,9 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Appender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
 import org.testng.IHookCallBack;
@@ -127,6 +128,9 @@ public class TesterraListener implements
     private static final Object LOCK = new Object();
 
     static {
+
+        initTesterraLogger();
+
         /*
         Call Booter
          */
@@ -160,6 +164,18 @@ public class TesterraListener implements
         }
     }
 
+    /**
+     * Makes sure that the {@link TesterraLogger} is appended
+     */
+    public static void initTesterraLogger() {
+        Logger root = Logger.getRootLogger();
+        Appender testerraLogger = root.getAppender(TesterraLogger.class.getSimpleName());
+        if (testerraLogger == null) {
+            testerraLogger = new TesterraLogger();
+            root.addAppender(testerraLogger);
+            root.setLevel(Level.INFO);
+        }
+    }
 
     /**
      * Determines whether there was an error in the current test. This is necessary to not synchronize a test result

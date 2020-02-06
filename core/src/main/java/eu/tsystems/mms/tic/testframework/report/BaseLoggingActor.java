@@ -28,7 +28,6 @@ package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.interop.LoggingActor;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
-import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -51,7 +50,7 @@ public class BaseLoggingActor extends AppenderSkeleton {
 
     @Deprecated
     private static final List<LoggingActor> LOGGING_ACTORS = new LinkedList<>();
-    public static final Layout CONSOLE_LAYOUT = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss.SSS} [%t] [%-5p]: %c{2} -%X{ids} %m");
+    public static final Layout CONSOLE_LAYOUT = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss.SSS} [%t] [%-5p]%X{ids}: %c{2} - %m");
 
     @Override
     public void close() {

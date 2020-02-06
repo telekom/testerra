@@ -169,6 +169,7 @@ public class TesterraListener implements
      * Makes sure that the {@link TesterraLogger} is appended.
      * This is done here and not in {@link TesterraCommons#initializeLogging()} because
      * the required classes are only part of the core package.
+     * @todo Change this with dependency inject of Testerra 2
      */
     public static void initTesterraLogger() {
         Logger root = Logger.getRootLogger();
@@ -181,6 +182,7 @@ public class TesterraListener implements
              * We set the default log level for the whole framework
              */
             Logger.getLogger(TesterraCommons.FRAMEWORK_PACKAGE).setLevel(Level.INFO);
+            TesterraCommons.removeAllConsoleLoggers();
         }
     }
 

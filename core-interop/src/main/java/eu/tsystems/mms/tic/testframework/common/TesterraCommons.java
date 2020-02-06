@@ -55,11 +55,18 @@ public class TesterraCommons {
          * because the {@link TesterraLogger} already logs to System.out
          */
         org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
+        if (root.getAppender("TesterraLogger") != null) {
+            removeAllConsoleLoggers();
+        }
+    }
+
+    public static void removeAllConsoleLoggers() {
+        org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
         Enumeration allAppenders = root.getAllAppenders();
         while (allAppenders.hasMoreElements()) {
             Object appender = allAppenders.nextElement();
             if (appender instanceof ConsoleAppender) {
-                root.removeAppender((ConsoleAppender)appender);
+                root.removeAppender((ConsoleAppender) appender);
             }
         }
     }

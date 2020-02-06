@@ -79,10 +79,8 @@ public class TesterraCommons {
      * If no log4j configuration is set. We try to set it with the file test-log4j or through the BasicConfigurator.
      * Another Method is called, which reads the tt.loglevel from Systemproperties and may overrides an existing
      * value.
-     *
-     * @param basicConfigFallback If true, BasicConfigurator is called when no logging config is found.
      */
-    private static void initializeLogging(final boolean basicConfigFallback) {
+    private static void initializeLogging() {
         if (!loggingInitialized) {
             final String loggerDefinitionsFilename = "test-log4j.xml";
             final URL log4jConfig = ClassLoader.getSystemResource(loggerDefinitionsFilename);
@@ -91,9 +89,7 @@ public class TesterraCommons {
                 System.setProperty("log4j.configuration", loggerDefinitionsFilename);
                 DOMConfigurator.configure(log4jConfig);
             } else {
-                if (basicConfigFallback) {
-                    BasicConfigurator.configure();
-                }
+                BasicConfigurator.configure();
             }
             loggingInitialized = true;
         }
@@ -168,7 +164,7 @@ public class TesterraCommons {
 
     public static void init() {
 
-        TesterraCommons.initializeLogging(true);
+        TesterraCommons.initializeLogging();
 
         // implicit calls PropertyManager static block - init all the properties, load property file as well!
         TesterraCommons.setTesterraLogLevel();

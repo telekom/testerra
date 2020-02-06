@@ -63,8 +63,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
 import org.testng.IHookCallBack;
@@ -159,7 +157,6 @@ public class TesterraListener implements
             instances++;
         }
     }
-
 
     /**
      * Determines whether there was an error in the current test. This is necessary to not synchronize a test result

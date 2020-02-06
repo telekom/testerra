@@ -23,79 +23,50 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.log4j.ConsoleAppender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.net.URL;
+import java.util.Enumeration;
 import java.util.Properties;
 
 /**
  * Created by pele on 05.02.2015.
  */
 public class TesterraCommons {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(TesterraCommons.class);
-
-    private static final String p = "eu.tsystems.mms.tic.testframework";
-
-    private static boolean loggingInitialized = false;
     private static boolean proxySettingsLoaded = false;
 
     public static final String DEFAULT_PACKAGE_NAME = "eu.tsystems.mms.tic";
-
     private static final String SYSTEM_PROPERTIES_FILE = "system.properties";
 
     private TesterraCommons() {}
 
     /**
-     * If the System Property tt.loglevel is set, this method tries to change the appropriate Log4j Level.
+     * Log4j initialization WITHOUT TesterraLogger,
+     * which is done in TesterraListener later
      */
-    public static void setTesterraLogLevel(Level level) {
-        org.apache.log4j.Logger TesterraLogger = org.apache.log4j.Logger.getLogger(p);
-        TesterraLogger.setLevel(level);
-    }
-
-    public static void setTesterraLogLevel() {
-
-        // load from file
-        String testerraLogLevelString = PropertyManager.getProperty(TesterraProperties.LOG_LEVEL, "INFO");
-
-        /*
-        Patch log level
+    private static void initializeLogging() {
+        BasicConfigurator.configure();
+        /**
+         * We have to remove the default {@link ConsoleAppender},
+         * because the {@link TesterraLogger} already logs to System.out
          */
-        if (testerraLogLevelString != null) {
-            org.apache.log4j.Logger TesterraLogger = org.apache.log4j.Logger.getLogger(p);
-            testerraLogLevelString = testerraLogLevelString.trim().toUpperCase();
-
-            Level level = Level.toLevel(testerraLogLevelString); // is debug when conversion fails
-            TesterraLogger.setLevel(level);
+        org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
+        if (root.getAppender("TesterraLogger") != null) {
+            removeAllConsoleLoggers();
         }
     }
 
-    /**
-     * If no log4j configuration is set. We try to set it with the file test-log4j or through the BasicConfigurator.
-     * Another Method is called, which reads the tt.loglevel from Systemproperties and may overrides an existing
-     * value.
-     *
-     * @param basicConfigFallback If true, BasicConfigurator is called when no logging config is found.
-     */
-    private static void initializeLogging(final boolean basicConfigFallback) {
-        if (!loggingInitialized) {
-            final String loggerDefinitionsFilename = "test-log4j.xml";
-            final URL log4jConfig = ClassLoader.getSystemResource(loggerDefinitionsFilename);
-            if (log4jConfig != null) {
-                System.out.println("Initialize logging by: " + log4jConfig);
-                System.setProperty("log4j.configuration", loggerDefinitionsFilename);
-                DOMConfigurator.configure(log4jConfig);
-            } else {
-                if (basicConfigFallback) {
-                    BasicConfigurator.configure();
-                }
+    public static void removeAllConsoleLoggers() {
+        org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
+        Enumeration allAppenders = root.getAllAppenders();
+        while (allAppenders.hasMoreElements()) {
+            Object appender = allAppenders.nextElement();
+            if (appender instanceof ConsoleAppender) {
+                root.removeAppender((ConsoleAppender) appender);
             }
-            loggingInitialized = true;
         }
     }
 
@@ -167,14 +138,8 @@ public class TesterraCommons {
     }
 
     public static void init() {
-
-        TesterraCommons.initializeLogging(true);
-
-        // implicit calls PropertyManager static block - init all the properties, load property file as well!
-        TesterraCommons.setTesterraLogLevel();
-
-        // calls LOGGING - Ensure we have Logging initialized before calling!
-        TesterraCommons.initializeSystemProperties();
-        TesterraCommons.initializeProxySettings();
+        initializeLogging();
+        initializeSystemProperties();
+        initializeProxySettings();
     }
 }

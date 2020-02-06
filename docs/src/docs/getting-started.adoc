@@ -302,14 +302,13 @@ These properties are automatically loaded by the `PropertyManager` and set up as
 
 IMPORTANT: Setting up the Testerra proxy will not setup a proxy for Gradle nor a browser.
 
-=== Extended Logging
+=== Customize Logging
 
-To get more details in the Testerra report, you should create a log4j config file. Create a new file `test-log4j.xml` in the directory `src/test/resources`. As a example for this configuration, you can copy the following into this file.
+The `TesterraLogger` logs to `System.out` by default.
+If you want to have more control over several log levels of classes, add a `log4j.xml` to your `resources/`.
 
-.test-log4j.xml
+.log4j.xml
 [source, xml]
 ----
-include::../res/test-log4j.xml[]
+include::../res/log4j.xml[]
 ----
-
-Now the log in the console output is more readable and also the log gets added in the Testerra report.

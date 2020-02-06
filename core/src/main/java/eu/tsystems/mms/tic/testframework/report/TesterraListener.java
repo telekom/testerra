@@ -27,7 +27,6 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
@@ -64,9 +63,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
-import org.apache.log4j.Appender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
 import org.testng.IHookCallBack;
@@ -129,9 +125,6 @@ public class TesterraListener implements
     private static final Object LOCK = new Object();
 
     static {
-
-        initTesterraLogger();
-
         /*
         Call Booter
          */
@@ -162,27 +155,6 @@ public class TesterraListener implements
         synchronized (LOCK) {
             // increment instance counter
             instances++;
-        }
-    }
-
-    /**
-     * Makes sure that the {@link TesterraLogger} is appended.
-     * This is done here and not in {@link TesterraCommons#initializeLogging()} because
-     * the required classes are only part of the core package.
-     * @todo Change this with dependency inject of Testerra 2
-     */
-    public static void initTesterraLogger() {
-        Logger root = Logger.getRootLogger();
-        Appender testerraLogger = root.getAppender(TesterraLogger.class.getSimpleName());
-        if (testerraLogger == null) {
-            testerraLogger = new TesterraLogger();
-            root.addAppender(testerraLogger);
-            //root.setLevel(Level.INFO);
-            /**
-             * We set the default log level for the whole framework
-             */
-            Logger.getLogger(TesterraCommons.FRAMEWORK_PACKAGE).setLevel(Level.INFO);
-            TesterraCommons.removeAllConsoleLoggers();
         }
     }
 

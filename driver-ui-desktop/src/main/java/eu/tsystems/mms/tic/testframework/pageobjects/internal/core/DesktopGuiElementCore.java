@@ -24,19 +24,22 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.*;
+import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import eu.tsystems.mms.tic.testframework.utils.MouseActions;
+import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
@@ -59,7 +62,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -83,9 +86,9 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     private final GuiElementData guiElementData;
 
     public DesktopGuiElementCore(
-        By by,
-        WebDriver webDriver,
-        GuiElementData guiElementData
+            By by,
+            WebDriver webDriver,
+            GuiElementData guiElementData
     ) {
         this.by = by;
         this.webDriver = webDriver;
@@ -338,9 +341,9 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     }
 
     private void pClickRelative(
-        GuiElementCore guiElementCore,
-        WebDriver driver,
-        WebElement webElement
+            GuiElementCore guiElementCore,
+            WebDriver driver,
+            WebElement webElement
     ) {
         By by = guiElementCore.getBy();
         if (by instanceof ByImage) {
@@ -716,12 +719,10 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
             int y = byImage.getCenterY();
             LOGGER.info("Image Double Click on image webElement at " + x + "," + y);
             JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, x, y);
-        }
-        else if (Browsers.safari.equalsIgnoreCase(driverRequest.browser)) {
+        } else if (Browsers.safari.equalsIgnoreCase(driverRequest.browser)) {
             LOGGER.info("Safari double click workaround");
             JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
-        }
-        else {
+        } else {
             Actions actions = new Actions(webDriver);
             final Action action = actions.doubleClick(webElement).build();
 
@@ -739,7 +740,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     public void highlight() {
         LOGGER.debug("highlight(): starting highlight");
         find();
-        highlightWebElement(new Color(0,0,255));
+        highlightWebElement(new Color(0, 0, 255));
         LOGGER.debug("highlight(): finished highlight");
     }
 
@@ -758,7 +759,12 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
 
     @Override
     public int getNumberOfFoundElements() {
-        return find();
+
+        if (isPresent()) {
+            return find();
+        }
+
+        return 0;
     }
 
     /**
@@ -824,7 +830,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
             }
             Rectangle viewport = WebDriverUtils.getViewport(webDriver);
             try {
-                final TakesScreenshot driver = ((TakesScreenshot)guiElementData.webDriver);
+                final TakesScreenshot driver = ((TakesScreenshot) guiElementData.webDriver);
 
                 File screenshot = driver.getScreenshotAs(OutputType.FILE);
                 BufferedImage fullImg = ImageIO.read(screenshot);
@@ -834,10 +840,10 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
                 int eleHeight = element.getSize().getHeight();
 
                 BufferedImage eleScreenshot = fullImg.getSubimage(
-                    point.getX()-viewport.getX(),
-                    point.getY()-viewport.getY(),
-                    eleWidth,
-                    eleHeight
+                        point.getX() - viewport.getX(),
+                        point.getY() - viewport.getY(),
+                        eleWidth,
+                        eleHeight
                 );
                 ImageIO.write(eleScreenshot, "png", screenshot);
                 return screenshot;

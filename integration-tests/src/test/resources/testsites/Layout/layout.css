@@ -1,6 +1,8 @@
 @font-face {
-    font-family: "OpenSans Light";
     src:local("fonts/OpenSans-Light.ttf");
+    font-family: 'OpenSans Light';
+    font-style: normal;
+    font-weight: 400;
 }
 
 body {
@@ -8,6 +10,10 @@ body {
 }
 section {
     width: 700px;
+}
+
+h1 {
+    font-weight: bold;
 }
 .article {
     background: #3c763d;

@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
@@ -63,6 +64,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
+import org.apache.log4j.Appender;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
 import org.testng.IHookCallBack;
@@ -129,6 +131,12 @@ public class TesterraListener implements
         Call Booter
          */
         Booter.bootOnce();
+
+        /**
+         * Enable report formatter here
+         * @todo Move this to core module hook or module config in Testerra 2
+         */
+        TesterraCommons.getTesterraLogger().setFormatter(new StaticReportLogFormatter());
 
         /*
          * Add monitoring event listeners

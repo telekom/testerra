@@ -89,13 +89,35 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      * @return InputStream
      *
      * @implNote avoid logging here!
+     * @deprecated Use {@link #getLocalOrResourceFile(String)} instead
      */
+    @Deprecated
     public static InputStream getLocalFileOrResourceInputStream(final String filePathAndName) throws TesterraSystemException{
         try {
             return getLocalFileInputStream(filePathAndName);
             // throws FileNotFound, when not present! --> Try to get the resource file instead.
         } catch (FileNotFoundException e) {
             return getLocalResourceInputStream(filePathAndName); // throws a TesterraException
+        }
+    }
+
+    /**
+     * Gets a local or a resource file
+     * @param filePath
+     * @return
+     * @throws java.io.FileNotFoundException Thrown when the file hasn't been found or is not a local file
+     */
+    public File getLocalOrResourceFile(final String filePath) throws java.io.FileNotFoundException {
+        final File relativeFile = new File(filePath);
+
+        if (relativeFile.exists()) {
+            return relativeFile;
+        } else {
+            URL resourceUrl = currentThread().getContextClassLoader().getResource(filePath);
+            if (resourceUrl == null || !resourceUrl.toString().startsWith("file:")) {
+                throw new java.io.FileNotFoundException("No local resource file: "+ filePath);
+            }
+            return new File(resourceUrl.getFile());
         }
     }
 
@@ -108,6 +130,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      *
      * @throws FileNotFoundException Exception, when file not existing
      */
+    @Deprecated
     public static InputStream getLocalFileInputStream(final String filePathAndName) throws FileNotFoundException {
 
         final File relativeFile = new File(filePathAndName);

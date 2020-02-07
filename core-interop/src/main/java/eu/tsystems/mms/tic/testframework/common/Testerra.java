@@ -6,6 +6,8 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
@@ -13,6 +15,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public class Testerra {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(Testerra.class);
 
     public final static Injector injector = initIoc();
 
@@ -93,7 +97,7 @@ public class Testerra {
                     Constructor<?> ctor = moduleClass.getConstructor();
                     sortedModules.put(moduleClass.getSimpleName(), (Module) ctor.newInstance());
                 }
-                System.out.println(String.format("%s - Register IoC modules: %s", Testerra.class.getCanonicalName(), sortedModules.keySet()));
+                LOGGER.info(String.format("Register IoC modules: %s", sortedModules.keySet()));
 
                 // Override each module with next
                 Module prevModule = null;

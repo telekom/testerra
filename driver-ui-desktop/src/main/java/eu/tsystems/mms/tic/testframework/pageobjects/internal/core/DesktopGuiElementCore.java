@@ -712,10 +712,11 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
 
     @Override
     public int getNumberOfFoundElements() {
-
         if (isPresent()) {
             return find();
         }
+        return 0;
+    }
 
     /**
      * Build a nice string.

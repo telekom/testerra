@@ -30,6 +30,9 @@ import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -78,24 +81,22 @@ public final class PropertyManager {
     LOADERS section
      */
     private static void pLoadPropertiesFromResource(final Properties properties, final String resourceFile, String charset) {
-
-        final InputStream propertiesInputStream = FileUtils.getLocalFileOrResourceInputStream(resourceFile);
-
-        if (charset == null) {
-            charset = Charset.defaultCharset().name();
-        }
-
+        FileUtils fileUtils = new FileUtils();
         try {
+            File file = fileUtils.getLocalOrResourceFile(resourceFile);
+            LOGGER.info("Load " + file.getAbsolutePath());
+            final InputStream propertiesInputStream = new FileInputStream(file);
+            if (charset == null) {
+                charset = Charset.defaultCharset().name();
+            }
             InputStreamReader inputStreamReader = new InputStreamReader(propertiesInputStream, charset);
             properties.load(inputStreamReader);
+        } catch (FileNotFoundException e) {
+            LOGGER.error(e.getMessage());
         } catch (final IOException ioEx) {
-            throw new IllegalStateException(String.format("An error occurred during reading from properties file %s.",
-                    resourceFile), ioEx);
+            throw new IllegalStateException(String.format("An error occurred during reading from properties file %s.", resourceFile), ioEx);
         } catch (final IllegalArgumentException illArgEx) {
-            throw new IllegalStateException(String.format("The properties file %s contains illegal characters!",
-                    resourceFile), illArgEx);
-        } catch (final Exception e) {
-            LOGGER.error("Error loading properties file " + resourceFile, e);
+            throw new IllegalStateException(String.format("The properties file %s contains illegal characters!", resourceFile), illArgEx);
         }
     }
 

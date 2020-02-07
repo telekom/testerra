@@ -17,19 +17,21 @@
  *     Peter Lehmann
  *     pele
  */
-package eu.tsystems.mms.tic.testframework.interop;
+/*
+ * Created on 01.01.2012
+ *
+ * Copyright(c) 2012 - 2014 T-Systems Multimedia Solutions GmbH
+ * Riesaer Str. 5, 01129 Dresden
+ * All rights reserved.
+ */
+package eu.tsystems.mms.tic.testframework.report;
 
-import org.apache.log4j.spi.LoggingEvent;
+import org.apache.log4j.Appender;
 
-@Deprecated
-public interface LoggingActor {
-
-    /**
-     *
-     * @param event - the log event
-     * @param message - the formatted message
-     * @param withMCID - flag for logging with MCID (MethodContext ID)
-     */
-    void process(LoggingEvent event, String message, boolean withMCID);
-
+/**
+ * Interface for Testerras log appender
+ * @author Mike Reiche
+ */
+public interface TesterraLogger extends Appender {
+    TesterraLogger setFormatter(LogFormatter formatter);
 }

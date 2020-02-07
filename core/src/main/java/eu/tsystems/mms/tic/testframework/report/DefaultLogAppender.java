@@ -26,24 +26,20 @@
  */
 package eu.tsystems.mms.tic.testframework.report;
 
-import eu.tsystems.mms.tic.testframework.logging.LogAppender;
-import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Layout;
 import org.apache.log4j.Level;
-import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
 
 /**
- * Allows to use log4j logs for HTML Reports.
+ * BaseLoggingActor allows to use log4j logs for HTML Reports.
  */
-public abstract class BaseLoggingActor extends AppenderSkeleton implements LogAppender {
-    protected final Formatter formatter;
-    private final Layout CONSOLE_LAYOUT;
+public class DefaultLogAppender extends AppenderSkeleton implements TesterraLogger {
+    private LogFormatter formatter = new DefaultLogFormatter();
 
-    public BaseLoggingActor(Formatter formatter) {
+    @Override
+    public DefaultLogAppender setFormatter(LogFormatter formatter) {
         this.formatter = formatter;
-        CONSOLE_LAYOUT = new PatternLayout("%d{"+formatter.DATE_TIME_FORMAT()+"} [%t] [%-5p]: %c{2} - %m");
+        return this;
     }
 
     @Override
@@ -68,8 +64,7 @@ public abstract class BaseLoggingActor extends AppenderSkeleton implements LogAp
      */
     @Override
     protected void append(final LoggingEvent event) {
-        // enhance with method context id
-        String formattedMessage = CONSOLE_LAYOUT.format(event);
+        String formattedMessage = this.formatter.format(event);
 
         // append for console
         if (event.getLevel().isGreaterOrEqual(Level.ERROR)) {

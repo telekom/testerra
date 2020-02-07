@@ -24,13 +24,12 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -332,9 +331,9 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
 
 
     private void pClickRelative(
-        GuiElementCore guiElementCore,
-        WebDriver driver,
-        WebElement webElement
+            GuiElementCore guiElementCore,
+            WebDriver driver,
+            WebElement webElement
     ) {
         By by = guiElementCore.getBy();
         if (by instanceof ByImage) {
@@ -670,12 +669,10 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
             int y = byImage.getCenterY();
             LOGGER.info("Image Double Click on image webElement at " + x + "," + y);
             JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, x, y);
-        }
-        else if (Browsers.safari.equalsIgnoreCase(driverRequest.browser)) {
+        } else if (Browsers.safari.equalsIgnoreCase(driverRequest.browser)) {
             LOGGER.info("Safari double click workaround");
             JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
-        }
-        else {
+        } else {
             Actions actions = new Actions(guiElementData.getWebDriver());
             final Action action = actions.doubleClick(webElement).build();
 
@@ -694,7 +691,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
     public GuiElementCore highlight() {
         LOGGER.debug("highlight(): starting highlight");
         find();
-        highlightWebElement(new Color(0,0,255));
+        highlightWebElement(new Color(0, 0, 255));
         LOGGER.debug("highlight(): finished highlight");
         return this;
     }
@@ -715,8 +712,10 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
 
     @Override
     public int getNumberOfFoundElements() {
-        return find();
-    }
+
+        if (isPresent()) {
+            return find();
+        }
 
     /**
      * Build a nice string.
@@ -770,7 +769,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
             }
             Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
             try {
-                final TakesScreenshot driver = ((TakesScreenshot)guiElementData.getWebDriver());
+                final TakesScreenshot driver = ((TakesScreenshot) guiElementData.getWebDriver());
 
                 File screenshot = driver.getScreenshotAs(OutputType.FILE);
                 BufferedImage fullImg = ImageIO.read(screenshot);
@@ -780,10 +779,10 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
                 int eleHeight = element.getSize().getHeight();
 
                 BufferedImage eleScreenshot = fullImg.getSubimage(
-                    point.getX()-viewport.getX(),
-                    point.getY()-viewport.getY(),
-                    eleWidth,
-                    eleHeight
+                        point.getX() - viewport.getX(),
+                        point.getY() - viewport.getY(),
+                        eleWidth,
+                        eleHeight
                 );
                 ImageIO.write(eleScreenshot, "png", screenshot);
                 return screenshot;

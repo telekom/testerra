@@ -19,6 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.testing;
 
+import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.testng.annotations.Listeners;
 
@@ -27,4 +28,12 @@ public abstract class TesterraTest implements
     PageFactoryProvider,
     TestFeatures
 {
+    static {
+        /**
+         * Make sure the framework is initialized before any other
+         * This is already called in {@link TesterraListener}
+         * @todo Remove this when everything is based on objects without any static context
+         */
+        Booter.bootOnce();
+    }
 }

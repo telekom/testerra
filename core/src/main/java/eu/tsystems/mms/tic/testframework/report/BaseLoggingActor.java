@@ -75,7 +75,6 @@ public class BaseLoggingActor extends AppenderSkeleton {
     @Override
     protected void append(final LoggingEvent event) {
         StringBuilder sb = new StringBuilder();
-        sb.append(" ");
 
         // enhance with method context id
         SessionContext currentSessionContext = ExecutionContextController.getCurrentSessionContext();

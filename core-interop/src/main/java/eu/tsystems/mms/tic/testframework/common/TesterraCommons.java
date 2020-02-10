@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.log4j.Appender;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,6 +61,7 @@ public class TesterraCommons {
             TesterraLogger testerraLogger = new DefaultLogAppender();
             testerraLogger.setName(TesterraLogger.class.getSimpleName());
             root.addAppender(testerraLogger);
+            root.setLevel(Level.INFO);
         }
 
         /**

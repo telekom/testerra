@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.report.DefaultLogAppender;
 import eu.tsystems.mms.tic.testframework.report.TesterraLogger;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -53,12 +54,24 @@ public class TesterraCommons {
      */
     private static void initializeLogging() {
         BasicConfigurator.configure();
+
+        org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
+        if (getTesterraLogger() == null) {
+            TesterraLogger testerraLogger = new DefaultLogAppender();
+            testerraLogger.setName(TesterraLogger.class.getSimpleName());
+            root.addAppender(testerraLogger);
+        }
+
         /**
          * We have to remove the default {@link ConsoleAppender},
          * because the {@link TesterraLogger} already logs to System.out
          */
-        if (getTesterraLogger()!=null) {
-            removeAllConsoleLoggers();
+        Enumeration allAppenders = root.getAllAppenders();
+        while (allAppenders.hasMoreElements()) {
+            Object appender = allAppenders.nextElement();
+            if (appender instanceof ConsoleAppender) {
+                root.removeAppender((ConsoleAppender) appender);
+            }
         }
     }
 
@@ -68,17 +81,6 @@ public class TesterraCommons {
             return (TesterraLogger)testerraLogger;
         } else {
             return null;
-        }
-    }
-
-    public static void removeAllConsoleLoggers() {
-        org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
-        Enumeration allAppenders = root.getAllAppenders();
-        while (allAppenders.hasMoreElements()) {
-            Object appender = allAppenders.nextElement();
-            if (appender instanceof ConsoleAppender) {
-                root.removeAppender((ConsoleAppender) appender);
-            }
         }
     }
 

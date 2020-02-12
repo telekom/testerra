@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementListPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.components.TableRow;
+import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
 public class UiElementListTests extends AbstractTestSitesTest implements PageFactoryTest {
@@ -36,67 +37,76 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
     @Test
     public void test_getSubElement_getList_byTagName() {
         UiElementListPage page = getPage();
-        UiElement items = page.getNavigationSubElementsByTagName();
-        testNavigationItems(items);
+        UiElement anchors = page.getNavigationSubElementsByTagName();
+        testNavigationAnchors(anchors);
     }
 
     @Test
     public void test_getSubElement_getList_byChildrenXPath() {
         UiElementListPage page = getPage();
-        UiElement items = page.getNavigationSubElementsByChildrenXPath();
-        testNavigationItems(items);
+        UiElement anchors = page.getNavigationSubElementsByChildrenXPath();
+        testNavigationAnchors(anchors);
     }
 
     @Test
     public void test_getSubElement_getList_byDescendantsXPath() {
         UiElementListPage page = getPage();
-        UiElement items = page.getNavigationSubElementsByDescendantsXPath();
-        testNavigationItems(items);
+        UiElement anchors = page.getNavigationSubElementsByDescendantsXPath();
+        testNavigationAnchors(anchors);
     }
 
     @Test
     public void test_getList_byAbsoluteChildrenXPath() {
         UiElementListPage page = getPage();
-        UiElement items = page.getNavigationSubElementsByAbsoluteChildrenXPath();
-        testNavigationItems(items);
+        UiElement anchors = page.getNavigationSubElementsByAbsoluteChildrenXPath();
+        testNavigationAnchors(anchors);
     }
 
     @Test
     public void test_getList_byAbsoluteDescendantsXPath() {
         UiElementListPage page = getPage();
-        UiElement items = page.getNavigationSubElementsByAbsoluteDescendantsXPath();
-        testNavigationItems(items);
+        UiElement anchors = page.getNavigationSubElementsByAbsoluteDescendantsXPath();
+        testNavigationAnchors(anchors);
     }
 
-    private void testNavigationItems(UiElement items) {
-        items.numberOfElements().is(3);
+    private void testNavigationAnchors(UiElement anchors) {
+        anchors.numberOfElements().is(3);
 
-        items.list().first().text().is("First");
-        items.list().get(1).text().is("Second");
-        items.list().last().text().is("Third");
+        anchors.list().first().text().is("First");
+        anchors.list().get(1).text().is("Second");
+        anchors.list().last().text().is("Third");
+    }
+
+    private void testTableRowsAndData(TableRow tableRows) {
+        tableRows.numberOfElements().is(4);
+        UiElement tableDataUnspecified = tableRows.find(By.tagName("td"));
+        tableDataUnspecified.numberOfElements().is(2);
+
+        UiElement tableDataSpecified = tableRows.list().get(1).find(By.tagName("td"));
+        tableDataSpecified.numberOfElements().is(2);
     }
 
     @Test
     public void test_getSubElement_getList_tableRowsByTagName() {
         UiElementListPage page = getPage();
-        TableRow rows = page.getTableRowsByTagName();
-        rows.numberOfElements().is(4);
+        TableRow tableRows = page.getTableRowsByTagName();
+        testTableRowsAndData(tableRows);
 
-        rows.list().first().linkByName().value(Attribute.HREF).endsWith("mkri");
-        rows.list().get(1).linkByName().value(Attribute.HREF).endsWith("joku");
-        rows.list().last().linkByName().value(Attribute.HREF).endsWith("erku");
-        rows.list().forEach(tableRow -> tableRow.linkByName().value(Attribute.HREF).startsWith("http"));
+        tableRows.list().first().linkByName().value(Attribute.HREF).endsWith("mkri");
+        tableRows.list().get(1).linkByName().value(Attribute.HREF).endsWith("joku");
+        tableRows.list().last().linkByName().value(Attribute.HREF).endsWith("erku");
+        tableRows.list().forEach(tableRow -> tableRow.linkByName().value(Attribute.HREF).startsWith("http"));
     }
 
     @Test
     public void test_getSubElement_getList_tableRowsByDescendantsXPath() {
         UiElementListPage page = getPage();
-        TableRow rows = page.getTableRowsByTagName();
-        rows.numberOfElements().is(4);
+        TableRow tableRows = page.getTableRowsByTagName();
+        testTableRowsAndData(tableRows);
 
-        rows.list().first().linkByXPath().value(Attribute.HREF).endsWith("mkri");
-        rows.list().get(1).linkByXPath().value(Attribute.HREF).endsWith("joku");
-        rows.list().last().linkByXPath().value(Attribute.HREF).endsWith("erku");
+        tableRows.list().first().linkByXPath().value(Attribute.HREF).endsWith("mkri");
+        tableRows.list().get(1).linkByXPath().value(Attribute.HREF).endsWith("joku");
+        tableRows.list().last().linkByXPath().value(Attribute.HREF).endsWith("erku");
     }
 
     @Override

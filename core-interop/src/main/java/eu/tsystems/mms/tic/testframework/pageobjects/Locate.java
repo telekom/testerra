@@ -46,19 +46,39 @@ public class Locate {
     private By by;
     private String preparedFormat;
 
-    private Locate() {
-
+    Locate() {
     }
 
+    Locate(By by) {
+        this.by = by;
+    }
+
+    Locate(XPath xPath) {
+        this.xpath(xPath.toString());
+    }
+
+    /**
+     * @deprecated Use {@link LocateBuilder} instead
+     */
+    @Deprecated
     public static Locate by() {
         return new Locate();
     }
+
+    /**
+     * @deprecated Use {@link LocateBuilder} instead
+     */
+    @Deprecated
     public static Locate by(By by) {
         Locate locate = new Locate();
         locate.by = by;
         return locate;
     }
 
+    /**
+     * @deprecated Use {@link LocateBuilder} instead
+     */
+    @Deprecated
     public static Locate by(XPath xPath) {
         return by().xpath(xPath.toString());
     }
@@ -67,6 +87,7 @@ public class Locate {
      * @param id The value of the "id" attribute to search for.
      * @return A By which locates elements by the value of the "id" attribute.
      */
+    @Deprecated
     public Locate id(Object id) {
         this.by = new By.ById(id.toString());
         return this;
@@ -76,6 +97,7 @@ public class Locate {
      * @param linkText The exact text to match against.
      * @return A By which locates A elements by the exact text it displays.
      */
+    @Deprecated
     public Locate linkText(String linkText) {
         by = new By.ByLinkText(linkText);
         return this;
@@ -85,6 +107,7 @@ public class Locate {
      * @param partialLinkText The partial text to match against
      * @return a By which locates elements that contain the given link text.
      */
+    @Deprecated
     public Locate partialLinkText(String partialLinkText) {
         by = new By.ByPartialLinkText(partialLinkText);
         return this;
@@ -94,6 +117,7 @@ public class Locate {
      * @param name The value of the "name" attribute to search for.
      * @return A By which locates elements by the value of the "name" attribute.
      */
+    @Deprecated
     public Locate name(String name) {
         by = new By.ByName(name);
         return this;
@@ -103,6 +127,7 @@ public class Locate {
      * @param tagName The element's tag name.
      * @return A By which locates elements by their tag name.
      */
+    @Deprecated
     public Locate tagName(String tagName) {
         by = new By.ByTagName(tagName);
         return this;
@@ -112,6 +137,7 @@ public class Locate {
      * @param xpathExpression The XPath to use.
      * @return A By which locates elements via XPath.
      */
+    @Deprecated
     public Locate xpath(String xpathExpression) {
         by = new By.ByXPath(xpathExpression);
         return this;
@@ -125,6 +151,7 @@ public class Locate {
      * @param className The value of the "class" attribute to search for.
      * @return A By which locates elements by the value of the "class" attribute.
      */
+    @Deprecated
     public Locate className(String className) {
         by = new By.ByClassName(className);
         return this;
@@ -138,11 +165,13 @@ public class Locate {
      * @param cssSelector CSS expression.
      * @return A By which locates elements by CSS.
      */
+    @Deprecated
     public Locate cssSelector(String cssSelector) {
         by = new By.ByCssSelector(cssSelector);
         return this;
     }
 
+    @Deprecated
     public Locate qa(String string) {
         by = new By.ByXPath(String.format("//*[@%s='%s']", UiElement.Properties.QA_ATTRIBUTE.asString(), string));
         return this;
@@ -197,6 +226,7 @@ public class Locate {
      * @param format
      * @return
      */
+    @Deprecated
     public static Locate prepare(final String format) {
         final Locate locate = new Locate();
         locate.preparedFormat = format;
@@ -208,6 +238,7 @@ public class Locate {
      * @param args
      * @return
      */
+    @Deprecated
     public Locate with(Object... args) {
         Locate locate = by();
         locate.unique = unique;

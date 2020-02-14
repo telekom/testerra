@@ -165,7 +165,6 @@ public final class PropertyManager {
      */
     public static Properties loadProperties(final String resourceFile, final String charset) {
         pLoadPropertiesFromResource(FILEPROPERTIES, resourceFile, charset);
-        LOGGER.info("Global Properties: " + FILEPROPERTIES);
         return FILEPROPERTIES;
     }
 

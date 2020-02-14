@@ -100,17 +100,22 @@ public class TesterraCommons {
 
         final boolean loadProxySettings = PropertyManager.getBooleanProperty(TesterraProperties.PROXY_SETTINGS_LOAD, true);
         if (!loadProxySettings) {
-            LOGGER.info("Skipping loading of Proxy Settings.");
+            LOGGER.debug("Skipping loading of Proxy Settings.");
             return;
         }
 
+        FileUtils fileUtils = new FileUtils();
         String filename = PropertyManager.getProperty(TesterraProperties.PROXY_SETTINGS_FILE, "proxysettings.properties");
         Properties props = new Properties();
         try {
-            InputStream inputStream = FileUtils.getLocalFileOrResourceInputStream(filename);
+            File proxySettings = fileUtils.getLocalOrResourceFile(filename);
+            if (proxySettings.exists()) {
+                LOGGER.info("Load proxy settings: " + proxySettings.getAbsolutePath());
+            }
+            InputStream inputStream = new FileInputStream(proxySettings);
             props.load(inputStream);
         } catch (Exception e) {
-            LOGGER.warn(String.format("Not loaded proxy settings from file: %s", e.getMessage()), e);
+            //LOGGER.warn(String.format("Not loaded proxy settings from file: %s", e.getMessage()), e);
             return;
         }
 
@@ -119,7 +124,7 @@ public class TesterraCommons {
             if (StringUtils.isStringEmpty(systemPropertyValue)) {
                 final String propertyValue = props.getProperty(property);
                 System.setProperty(property, propertyValue);
-                LOGGER.info("Setting system property " + property + " = " + propertyValue);
+                LOGGER.debug("Setting system property " + property + " = " + propertyValue);
             } else {
                 LOGGER.warn("System property " + property + " is NOT set because it was already set to "
                         + systemPropertyValue);
@@ -136,14 +141,12 @@ public class TesterraCommons {
             FileInputStream is = new FileInputStream(file);
             systemProperties.load(is);
             systemProperties.stringPropertyNames().forEach(key -> {
-                final String value = System.getProperty(key);
-                final String newValue = "" + systemProperties.get(key);
-                if (!StringUtils.isStringEmpty(value)) {
-                    LOGGER.warn("SystemProperty - Overwriting " + key + "=" + value + " << " + newValue);
-                } else {
-                    LOGGER.info("SystemProperty - Setting " + key + "=" + newValue);
+                String existingValue = System.getProperty(key);
+                if (StringUtils.isStringEmpty(existingValue)) {
+                    String newValue = "" + systemProperties.get(key);
+                    LOGGER.debug("SystemProperty - Setting " + key + "=" + newValue);
+                    System.setProperty(key, newValue);
                 }
-                System.setProperty(key, newValue);
             });
         } catch (Exception e) {
             //LOGGER.warn("Not loaded: " + SYSTEM_PROPERTIES_FILE, e);

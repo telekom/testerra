@@ -11,8 +11,8 @@ It will lookg for the property definitions in the following order.
 
 - `PropertyManager.getThreadLocalProperties()`
 - `PropertyManager.getGlobalProperties()`
-- `system.properties`
 - `System.getProperties()`
+- `system.properties`
 - `test.properties`
 
 When it's still not defined, in will fall back to the given `default` value.

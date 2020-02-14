@@ -1,16 +1,18 @@
 = PropertyManager
 
-Standard loading of property files:
+The `PropertyManager` provides a static interfaces for reading properties.
 
-* test.properties
-* proxysettings.properties
-* system.properties
-
-#In which order?#
-
-[source,java]
+[source, java]
 ----
-PropertyManager.loadProperties("file");
-
-PropertyManager.loadThreadLocalProperties("file");
+String property = PropertyManager.getProperty("my.property", "default");
 ----
+
+It will lookg for the property definitions in the following order.
+
+- `PropertyManager.getThreadLocalProperties()`
+- `PropertyManager.getGlobalProperties()`
+- `system.properties`
+- `System.getProperties()`
+- `test.properties`
+
+When it's still not defined, in will fall back to the given `default` value.

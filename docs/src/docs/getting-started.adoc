@@ -148,17 +148,14 @@ If you don't have a remote selenium yet, you can easily install it by the packag
 choco install selenium selenium-chrome-driver
 ----
 
-And setup the Selenium server address in `test.properties`
+And setup the Selenium server address in `system.properties`
 
 .test.properties
 [source, properties, subs="attributes"]
 ----
 {webdriver_mode}=remote
-{selenium_server_host}=localhost
-{selenium_server_port}=4444
+{selenium_server_url}=http://localhost:4444/wd/hub
 ----
-
-TIP: Testerra uses as default values 'localhost' ({selenium_server_host}) and '4444' ({selenium_server_port}) if the properties are not defined.
 
 === Setup a test suite
 

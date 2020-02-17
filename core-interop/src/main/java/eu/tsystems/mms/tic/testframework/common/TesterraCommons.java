@@ -141,12 +141,9 @@ public class TesterraCommons {
             FileInputStream is = new FileInputStream(file);
             systemProperties.load(is);
             systemProperties.stringPropertyNames().forEach(key -> {
-                String existingValue = System.getProperty(key);
-                if (StringUtils.isStringEmpty(existingValue)) {
-                    String newValue = "" + systemProperties.get(key);
-                    LOGGER.debug("SystemProperty - Setting " + key + "=" + newValue);
-                    System.setProperty(key, newValue);
-                }
+                String newValue = "" + systemProperties.get(key);
+                LOGGER.debug("SystemProperty: " + key + "=" + newValue);
+                System.setProperty(key, newValue);
             });
         } catch (Exception e) {
             //LOGGER.warn("Not loaded: " + SYSTEM_PROPERTIES_FILE, e);

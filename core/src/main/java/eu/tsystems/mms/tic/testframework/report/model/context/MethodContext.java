@@ -26,7 +26,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import com.google.common.collect.Lists;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;

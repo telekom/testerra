@@ -18,6 +18,8 @@ For using a remote Selenium server (e.g. a Selenium Grid) you only to tell Teste
 [source,properties,subs="attributes"]
 ----
 {webdriver_mode}=remote
+{selenium_server_host}=localhost
+{selenium_server_port}=4444
 {selenium_server_url}=http://localhost:4444/wd/hub
 ----
 

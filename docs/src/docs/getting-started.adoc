@@ -154,7 +154,8 @@ And setup the Selenium server address in `system.properties`
 [source, properties, subs="attributes"]
 ----
 {webdriver_mode}=remote
-{selenium_server_url}=http://localhost:4444/wd/hub
+{selenium_server_host}=localhost
+{selenium_server_port}=4444
 ----
 
 === Setup a test suite

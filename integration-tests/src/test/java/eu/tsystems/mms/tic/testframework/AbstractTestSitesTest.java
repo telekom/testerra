@@ -28,6 +28,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
+import java.lang.reflect.Method;
 import java.net.BindException;
 
 /**
@@ -47,7 +48,7 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
     }
 
     @BeforeMethod()
-    public void visitTestPage() {
+    public void visitTestPage(Method method) {
         visitTestPage(getWebDriver());
     }
 

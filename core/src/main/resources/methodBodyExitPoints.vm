@@ -41,6 +41,12 @@
                     $testMethod.priorityMessage
                 </div>
                 #end
+
+                #if ($testMethod.errorContext().additionalErrorMessage)
+                    <div style="color: Grey;">
+                    $testMethod.errorContext().additionalErrorMessage
+                    </div>
+                #end
             </b>
         </font>
     </div>

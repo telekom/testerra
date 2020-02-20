@@ -43,6 +43,6 @@ public class LocateBuilder {
     }
 
     public Locate byQa(String string) {
-        return by(XPath.from("*").attribute(UiElement.Properties.QA_ATTRIBUTE.asString(), string));
+        return by(XPath.from("*").attributeIs(UiElement.Properties.QA_ATTRIBUTE.asString(), string));
     }
 }

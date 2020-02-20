@@ -20,7 +20,7 @@ public class LocateTest extends AbstractTestSitesTest implements UiElementCreato
     @Test(expectedExceptions = AssertionError.class)
     public void locateByText_fails() {
         UiElement realA = findByQa("action/linkWithFormattedText");
-        UiElement a = find(XPath.from("a").text(textToFind));
+        UiElement a = find(XPath.from("a").textIs(textToFind));
         a.text().is(realA.text().getActual());
     }
 

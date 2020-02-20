@@ -60,11 +60,11 @@ public class XPath {
         }
     }
 
-    public XPath attribute(Attribute attribute, Object string) {
-        return attribute(attribute.toString(), string);
+    public XPath attributeIs(Attribute attribute, Object string) {
+        return attributeIs(attribute.toString(), string);
     }
 
-    public XPath attribute(String attribute, Object string) {
+    public XPath attributeIs(String attribute, Object string) {
         somethingIs(String.format("@%s", attribute), string);
         return this;
     }
@@ -87,18 +87,18 @@ public class XPath {
         return this;
     }
 
-    public XPath text(Object string) {
-        somethingIs("text()", string);
+    public XPath textIs(Object string) {
+        somethingIs(".//text()", string);
         return this;
     }
 
     public XPath textContains(Object string) {
-        somethingContains("text()", string);
+        somethingContains(".//text()", string);
         return this;
     }
 
     public XPath textWords(Object ... words) {
-        somethingContainsWords("text()", words);
+        somethingContainsWords(".//text()", words);
         return this;
     }
 

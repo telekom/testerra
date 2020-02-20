@@ -44,6 +44,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         title.isNot("Affentest");
         title.contains("Input");
         title.containsNot("SuperTestPage");
+        title.containsWords("Input", "test").isTrue();
 
         QuantityAssertion<Integer> length = page.title().length();
         length.is(10);

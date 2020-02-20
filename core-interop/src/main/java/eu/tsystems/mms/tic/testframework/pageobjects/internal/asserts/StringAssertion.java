@@ -6,13 +6,7 @@ import java.util.regex.Pattern;
  * Allows string based assertions
  * @author Mike Reiche
  */
-public interface StringAssertion<T> extends QuantityAssertion<T>
-{
-//    default boolean is(String expected) {
-//        return is(expected, null);
-//    }
-//    boolean is(String expected, String message);
-
+public interface StringAssertion<T> extends QuantityAssertion<T> {
     default boolean contains(String expected) {
         return contains(expected, null);
     }
@@ -37,6 +31,8 @@ public interface StringAssertion<T> extends QuantityAssertion<T>
         return matches(Pattern.compile(pattern, Pattern.CASE_INSENSITIVE|Pattern.MULTILINE));
     }
     PatternAssertion matches(Pattern pattern);
+
+    BinaryAssertion <Boolean> containsWords(String...words);
 
     QuantityAssertion<Integer> length();
 }

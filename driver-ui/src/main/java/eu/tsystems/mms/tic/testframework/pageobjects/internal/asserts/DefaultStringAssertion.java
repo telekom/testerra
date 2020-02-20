@@ -61,6 +61,27 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
         });
     }
 
+    @Override
+    public BinaryAssertion<Boolean> containsWords(String... words) {
+        final String wordsList = String.join("|", words);
+        final Pattern wordsPattern = Pattern.compile("\\b(" + wordsList + ")\\b", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+
+        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, this, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                int found = 0;
+                Matcher matcher = wordsPattern.matcher(provider.getActual().toString());
+                while (matcher.find()) found++;
+                return found >= words.length;
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("\"%s\".containsWords(%s)", getStringSubject(), wordsList);
+            }
+        });
+    }
+
     private String getStringSubject() {
         return formatter.cutString(provider.getActual().toString(), 30);
     }

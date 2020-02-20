@@ -35,4 +35,15 @@
             <package name="eu.tsystems.mms.tic.testframework.core.test.events"/>
         </packages>
     </test>
+
+    <test name="Sequential tests" parallel="false">
+        <groups>
+            <run>
+                <include name="SEQUENTIAL" />
+            </run>
+        </groups>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.utils"></package>
+        </packages>
+    </test>
 </suite>

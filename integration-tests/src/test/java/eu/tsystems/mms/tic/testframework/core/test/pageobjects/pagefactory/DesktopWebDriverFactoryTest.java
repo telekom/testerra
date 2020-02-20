@@ -54,7 +54,8 @@ public class DesktopWebDriverFactoryTest extends AbstractWebDriverTest {
 
         WebDriver driver = WebDriverManager.getWebDriver(request);
         String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue(currentUrl.contains("localhost"), "Current URL is invalid - actual: " + currentUrl);
+        // Empty baseUrl of Chrome
+        Assert.assertTrue(currentUrl.contains("data"), "Current URL is invalid - actual: " + currentUrl);
     }
 
     @Test

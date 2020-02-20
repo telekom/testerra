@@ -29,6 +29,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 
+import java.lang.reflect.Method;
+
 /**
  * Abstract test class for tests using a WebDriver
  */
@@ -55,7 +57,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest {
      * https://stackoverflow.com/questions/53902507/unknown-error-session-deleted-because-of-page-crash-from-unknown-error-cannot
      */
     @BeforeMethod(alwaysRun = true)
-    public void configureChromeOptions() {
+    public void configureChromeOptions(Method method) {
         WebDriverManager.setUserAgentConfig(Browsers.chromeHeadless, new ChromeConfig() {
             @Override
             public void configure(ChromeOptions options) {

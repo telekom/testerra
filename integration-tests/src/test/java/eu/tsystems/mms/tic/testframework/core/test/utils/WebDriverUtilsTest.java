@@ -79,7 +79,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
         Assert.assertFalse(out, msgSwitchSuccessfully);
     }
 
-    @Test(groups = "SEQUENTIAL")
+    @Test
     public void testT03_WebDriverUtils_findWindowAndSwitchTo_Fast() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
 

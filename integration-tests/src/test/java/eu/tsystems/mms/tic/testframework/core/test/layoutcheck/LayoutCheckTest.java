@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 
-public class LayoutCheckTest extends AbstractTestSitesTest implements Loggable {
+public class LayoutCheckTest extends AbstractTestSitesTest {
 
     @Override
     protected TestPage getTestPage() {

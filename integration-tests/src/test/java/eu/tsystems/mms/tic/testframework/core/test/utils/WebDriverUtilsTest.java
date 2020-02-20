@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverKeepAliveSequence;
@@ -32,21 +33,23 @@ import org.testng.annotations.Test;
 /**
  * Created by nigr on 07.09.2015.
  */
+@TestContext(name = "WebDriverUtilsTest")
 public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     private final String msgSwitchSuccessfully = "Find and switch to window successful";
 
-    private WebDriver createWebDriver(boolean extraSession) {
-        WebDriver driver;
-
-        if (extraSession) {
-            driver = WebDriverManager.getWebDriver("test");
-        } else {
-            driver = WebDriverManager.getWebDriver();
-        }
-
-        return driver;
-    }
+//    private WebDriver createWebDriver(boolean extraSession) {
+//        WebDriver driver;
+//
+//        if (extraSession) {
+//            driver = WebDriverManager.getWebDriver("test");
+//            visitTestPage(driver);
+//        } else {
+//            driver = WebDriverManager.getWebDriver();
+//        }
+//
+//        return driver;
+//    }
 
     private void openPopUpWindow(WebDriver driver) {
         GuiElement guiElement = new GuiElement(driver, By.linkText("Open pop up"));
@@ -55,7 +58,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT01_WebDriverUtils_findWindowAndSwitchTo() throws Exception {
-        WebDriver driver = createWebDriver(false);
+        WebDriver driver = WebDriverManager.getWebDriver();
 
         openPopUpWindow(driver);
 
@@ -66,7 +69,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT02_WebDriverUtils_findWindowAndSwitchTo_WrongTitle() throws Exception {
-        WebDriver driver = createWebDriver(false);
+        WebDriver driver = WebDriverManager.getWebDriver();
 
         openPopUpWindow(driver);
 
@@ -77,7 +80,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT03_WebDriverUtils_findWindowAndSwitchTo_Fast() throws Exception {
-        WebDriver driver = createWebDriver(false);
+        WebDriver driver = WebDriverManager.getWebDriver();
 
         openPopUpWindow(driver);
 
@@ -87,13 +90,14 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
         long timeMillisDuration = System.currentTimeMillis() - timeMillisBegin;
 
+        this.log().info("Window switch took about " + timeMillisDuration + " ms.");
         Assert.assertTrue(out, msgSwitchSuccessfully);
         Assert.assertTrue(timeMillisDuration < 300, "Find and switch to Window need less than 1000 ms");
     }
 
     @Test
     public void testT04_WebDriverUtils_findWindowAndSwitchTo_FastWrongTitle() throws Exception {
-        WebDriver driver = createWebDriver(false);
+        WebDriver driver = WebDriverManager.getWebDriver();
 
         openPopUpWindow(driver);
 
@@ -104,7 +108,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT05_WebDriverUtils_findWindowAndSwitchTo_Driver() throws Exception {
-        WebDriver driver = createWebDriver(true);
+        WebDriver driver = WebDriverManager.getWebDriver();
 
         openPopUpWindow(driver);
 
@@ -115,7 +119,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT06_WebDriverUtils_findWindowAndSwitchTo_DriverWrongTitle() throws Exception {
-        WebDriver driver = createWebDriver(true);
+        WebDriver driver = WebDriverManager.getWebDriver();
 
         openPopUpWindow(driver);
 
@@ -126,7 +130,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT07_WebDriverUtils_findWindowAndSwitchTo_ContainsURL() throws Exception {
-        WebDriver driver = createWebDriver(true);
+        WebDriver driver = WebDriverManager.getWebDriver();
 
         openPopUpWindow(driver);
 
@@ -137,7 +141,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT08_WebDriverUtils_findWindowAndSwitchTo_ContainsWrongURL() throws Exception {
-        WebDriver driver = createWebDriver(true);
+        WebDriver driver = WebDriverManager.getWebDriver();
 
         openPopUpWindow(driver);
 
@@ -148,7 +152,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT10_linkChecker() throws Exception {
-        final WebDriver driver = createWebDriver(false);
+        WebDriver driver = WebDriverManager.getWebDriver();
         WebDriverUtils.linkChecker("Test", driver);
     }
 
@@ -156,7 +160,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
     @Test
     public void testT11_WebDriverKeepAliveTimedOut() {
 
-        WebDriver driver = createWebDriver(true);
+        WebDriver driver = WebDriverManager.getWebDriver();
         final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 1, 10);
 
         TimerUtils.sleep(15_000);
@@ -166,8 +170,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT12_WebDriverKeepAliveRemovedByUser() {
-
-        WebDriver driver = createWebDriver(true);
+        WebDriver driver = WebDriverManager.getWebDriver();
         final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 1, 10);
 
         TimerUtils.sleep(5_000);
@@ -180,8 +183,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     @Test
     public void testT13_WebDriverKeepAliveRemovedByDriverShutdown() {
-
-        final WebDriver driver = createWebDriver(false);
+        WebDriver driver = WebDriverManager.getWebDriver();
         final WebDriverKeepAliveSequence webDriverKeepAliveSequence = WebDriverUtils.keepWebDriverAlive(driver, 1, 10);
         TimerUtils.sleep(3_000);
 

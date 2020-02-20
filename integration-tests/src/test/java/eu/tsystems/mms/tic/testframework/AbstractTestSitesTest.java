@@ -24,23 +24,22 @@ import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
+import java.lang.reflect.Method;
 import java.net.BindException;
 
 /**
  * Abstract test class for tests based on static test site resources
  */
 public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implements Loggable {
-    private static Server server = new Server(FileUtils.getResourceFile("testsites"));
+    protected static Server server = new Server(FileUtils.getResourceFile("testsites"));
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
-        POConfig.setUiElementTimeoutInSeconds(1);
+        POConfig.setUiElementTimeoutInSeconds(3);
         try {
             server.start(80);
         } catch (BindException e) {
@@ -49,12 +48,19 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
     }
 
     @BeforeMethod()
-    public void visitTestPage() {
-        WebDriver webDriver = getWebDriver();
+    public void visitTestPage(Method method) {
+        visitTestPage(getWebDriver());
+    }
 
-        if (!webDriver.getCurrentUrl().contains(getTestPage().getPath())) {
+    /**
+     * Open a custom Webdriver session with the default test page.
+     *
+     * @param driver
+     */
+    public synchronized void visitTestPage(WebDriver driver) {
+        if (!driver.getCurrentUrl().contains(getTestPage().getPath())) {
             String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), getTestPage().getPath());
-            webDriver.get(baseUrl);
+            driver.get(baseUrl);
         }
     }
 

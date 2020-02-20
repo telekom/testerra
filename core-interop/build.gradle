@@ -8,7 +8,7 @@ dependencies {
     implementation 'de.idyl:winzipaes:1.0.1'
     implementation 'org.mongodb:bson:3.7.0'
     compile 'org.testng:testng:6.14.3'
-    implementation 'org.reflections:reflections:0.9.11'
+    implementation 'org.reflections:reflections:0.9.12'
     compile 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
 
     // @see https://github.com/google/guice/issues/1256
@@ -16,7 +16,7 @@ dependencies {
     compile 'com.google.inject.extensions:guice-assistedinject:4.2.2'
 
     // Required for java.lang.NoSuchMethodError: 'java.util.stream.Collector com.google.common.collect.ImmutableSortedSet.toImmutableSortedSet(java.util.Comparator)'
-    compile 'com.google.guava:guava:25.1-jre'
+    //compile 'com.google.guava:guava:25.1-jre'
 }
 
 test {

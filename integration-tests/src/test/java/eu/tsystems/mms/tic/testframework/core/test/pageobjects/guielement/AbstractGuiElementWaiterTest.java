@@ -346,7 +346,7 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
         getShowWithTimeOutButton().click();
 
         GuiElement g = getDynamicTextElement();
-        g.setTimeoutInSeconds(3);
+        g.setTimeoutInSeconds(4);
 
         boolean result = g.waits().waitForIsDisplayed();
         Assert.assertTrue(result, "Text was found after TimeOut");

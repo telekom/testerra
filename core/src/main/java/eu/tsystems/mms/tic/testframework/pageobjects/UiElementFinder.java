@@ -18,7 +18,7 @@ public interface UiElementFinder {
     default UiElement find(By by) {
         return find(Locator.by(by));
     }
-    default UiElement findByXPath(XPath xPath) {
+    default UiElement find(XPath xPath) {
         return find(Locator.by(xPath));
     }
 //    default UiElement findByCaption(String caption) {

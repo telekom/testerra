@@ -148,15 +148,7 @@ If you don't have a remote selenium yet, you can easily install it by the packag
 choco install selenium selenium-chrome-driver
 ----
 
-And setup the Selenium server address in `system.properties`
-
-.test.properties
-[source, properties, subs="attributes"]
-----
-{webdriver_mode}=remote
-{selenium_server_host}=localhost
-{selenium_server_port}=4444
-----
+Read here, if you want to setup <<WebDriver sessions,another Selenium configuration>>.
 
 === Setup a test suite
 

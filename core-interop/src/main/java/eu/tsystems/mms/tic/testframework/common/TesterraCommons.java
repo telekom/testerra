@@ -133,10 +133,10 @@ public class TesterraCommons {
     }
 
     private static void initializeSystemProperties() {
-        final Properties systemProperties = new Properties();
+        FileUtils fileUtils = new FileUtils();
         try {
-            FileUtils fileUtils = new FileUtils();
             File file = fileUtils.getLocalOrResourceFile(SYSTEM_PROPERTIES_FILE);
+            Properties systemProperties = new Properties();
             LOGGER.info("Load system properties: " + file.getAbsolutePath());
             FileInputStream is = new FileInputStream(file);
             systemProperties.load(is);

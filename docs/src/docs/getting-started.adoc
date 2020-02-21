@@ -306,7 +306,7 @@ These properties are automatically loaded by the `PropertyManager` and set up as
 IMPORTANT: Setting up the Testerra proxy will not setup a proxy for Gradle nor a browser.
 
 === Logging
-If you're on Gradle the logging of testerra should work out of the box. But if you're on Maven you MUST add the following SLF4J-dependency to your `pom.xml`.
+If you're on Gradle, the logging of Testerra should work out of the box. But if you're on Maven you MUST add the following SLF4J-dependency to your main `pom.xml`.
 
 .pom.xml
 [source, xml]

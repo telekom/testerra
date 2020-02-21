@@ -142,10 +142,22 @@ public class ExampleTest {
 
 If you don't have a remote selenium yet, you can easily install it by the package manager of your choice.
 
-.https://chocolatey.org[chocolately] for Windows (recommended)
-[source, cmd]
+.https://chocolatey.org[chocolately] for Windows
+[source, cmd, role="primary"]
 ----
 choco install selenium selenium-chrome-driver
+----
+
+.Ubuntu/Debian
+[source, cmd, role="secondary"]
+----
+apt-get install chromium-chromedriver
+----
+
+.https://brew.sh[homebrew] for Mac
+[source, cmd, role="secondary"]
+----
+brew install selenium-server-standalone chromedriver
 ----
 
 And setup the Selenium server address in `test.properties`

@@ -12,9 +12,9 @@ Before you can use `WebDriver` sessions, you have to setup a Selenium-compatible
 
 === Setup remote sessions
 
-For using a remote Selenium server (e.g. a Selenium Grid) you only to tell Testerra where it can be find.
+For using a remote Selenium server (e.g. a Selenium Grid) you only have to tell Testerra where it can be find.
 
-.Additional settings in system.properties
+.Additional settings in test.properties
 [source,properties,subs="attributes"]
 ----
 {webdriver_mode}=remote
@@ -33,7 +33,7 @@ We won't recommend to use that, because we've experienced some slightly differen
 But there could be reasons for using local sessions like using an unsupported Browser.
 However, Testerra still supports these when you tell it where your `WebDriver` binaries are located:
 
-.system.properties
+.test.properties
 [source,properties,subs="attributes"]
 ----
 {webdriver_mode}=local

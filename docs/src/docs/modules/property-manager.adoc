@@ -11,7 +11,6 @@ It will look for the property definition appearance in the following order.
 
 - `PropertyManager.getThreadLocalProperties()`
 - `PropertyManager.getGlobalProperties()`
-- `system.properties`
 - `System.getProperties()`
 - `test.properties`
 
@@ -21,8 +20,4 @@ When it's still not defined, in will fall back to the given `default` value.
 
 Testerra supports and loads automatically `.properties` files located under  `test/resources`.
 
-The `test.properties` is called the Test Configuration and  contains everything required by the test, like Browser setup, SUT credentials or Layout test thresholds.
-
-On the other hand, the `system.properties` file contains everything required by the testing environment like Selenium configuration. Tapas is using this file for passing infrastructure related settings.
-
-NOTE: Properties defined in `system.properties` override `System.getProperties()`. That means you cannot override these Java system properties as command line parameters `-D[...]`.
+The `test.properties` is called the Test Configuration and contains everything required by the test, like Browser setup, SUT credentials or Layout test thresholds.

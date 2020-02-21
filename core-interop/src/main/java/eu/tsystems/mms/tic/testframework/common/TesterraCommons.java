@@ -45,7 +45,6 @@ public class TesterraCommons {
     private static boolean proxySettingsLoaded = false;
 
     public static final String DEFAULT_PACKAGE_NAME = "eu.tsystems.mms.tic";
-    private static final String SYSTEM_PROPERTIES_FILE = "system.properties";
 
     private TesterraCommons() {}
 
@@ -132,27 +131,8 @@ public class TesterraCommons {
         }
     }
 
-    private static void initializeSystemProperties() {
-        FileUtils fileUtils = new FileUtils();
-        try {
-            File file = fileUtils.getLocalOrResourceFile(SYSTEM_PROPERTIES_FILE);
-            Properties systemProperties = new Properties();
-            LOGGER.info("Load system properties: " + file.getAbsolutePath());
-            FileInputStream is = new FileInputStream(file);
-            systemProperties.load(is);
-            systemProperties.stringPropertyNames().forEach(key -> {
-                String newValue = "" + systemProperties.get(key);
-                LOGGER.debug("SystemProperty: " + key + "=" + newValue);
-                System.setProperty(key, newValue);
-            });
-        } catch (Exception e) {
-            //LOGGER.warn("Not loaded: " + SYSTEM_PROPERTIES_FILE, e);
-        }
-    }
-
     public static void init() {
         initializeLogging();
-        initializeSystemProperties();
         initializeProxySettings();
     }
 }

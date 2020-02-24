@@ -317,7 +317,7 @@
                                                                         <pre><code>  // $source.fileName
 
                                                                             #foreach($s in $source.lines)
-                                                                                #if ($s.mark && $s.line && $source.methodName)
+                                                                                #if ($s.mark)
                                                                                     &#8623; $s.lineNumber
                                                                                     : $s.line.replace($source.methodName, $String.format(
                                                                                     "<mark>%s</mark>", $source.methodName));

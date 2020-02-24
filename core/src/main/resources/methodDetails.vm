@@ -319,8 +319,7 @@
                                                                             #foreach($s in $source.lines)
                                                                                 #if ($s.mark)
                                                                                     &#8623; $s.lineNumber
-                                                                                    : $s.line.replace($source.methodName, $String.format(
-                                                                                    "<mark>%s</mark>", $source.methodName));
+                                                                                    : $s.line.replace($source.methodName, "<mark>${source.methodName}</mark>")
                                                                                 #else
                                                                                     $s.lineNumber : $s.line
                                                                                 #end

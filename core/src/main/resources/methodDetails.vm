@@ -281,6 +281,24 @@
                                                 <div class="dashboardHorizontalSpacer"></div>
                                             </div>
 
+#macro(displayLines $source $id)
+#if ($source)
+<div id="$id" style="text-align: initial">
+<pre><code>  // $source.fileName
+#foreach($s in $source.lines)
+#if ($s.mark)
+&#8623; $s.lineNumber : $s.line
+#else
+$s.lineNumber : $s.line
+#end
+#end
+</code></pre>
+</div>
+#else
+No test sources
+#end
+#end
+
                                             <div style="font-size:15px;">
                                                 <table class="dashboardBorder">
                                                     <thead class="dashboardTextVerySmall">
@@ -290,47 +308,11 @@
                                                     </tr>
                                                     </thead>
                                                     <tr>
-                                                        <td class="cellCenter">
-                                                            #if ($testMethod.errorContext().scriptSource)
-                                                                <div id="sourceScript" style="text-align: initial">
-                                                                    #set ($source=$testMethod.errorContext().scriptSource)
-                                                                    <pre><code>  // $source.fileName
-
-                                                                        #foreach($s in $source.lines)
-                                                                            #if ($s.mark)
-                                                                                &#8623; $s.lineNumber : $s.line
-                                                                            #else
-                                                                                $s.lineNumber : $s.line
-                                                                            #end
-                                                                        #end
-</code></pre>
-                                                                </div>
-                                                            #else
-                                                                No test sources
-                                                            #end
+                                                        <td width="50%">
+                                                            #displayLines($testMethod.errorContext().scriptSource, "scriptSource")
                                                         </td>
-                                                        <td class="cellCenter">
-                                                            #if ($testMethod.errorContext().executionObjectSource)
-                                                                <div id="sourcePage" style="text-align: initial">
-                                                                    <div id="sourceScript" style="text-align: initial">
-                                                                        #set ($source=$testMethod.errorContext().executionObjectSource)
-                                                                        <pre><code>  // $source.fileName
-
-                                                                            #foreach($s in $source.lines)
-                                                                                #if ($s.mark)
-                                                                                    &#8623; $s.lineNumber
-                                                                                    : $s.line.replace($source.methodName, $String.format(
-                                                                                    "<mark>%s</mark>", $source.methodName));
-                                                                                #else
-                                                                                    $s.lineNumber : $s.line
-                                                                                #end
-                                                                            #end
-</code></pre>
-                                                                    </div>
-                                                                </div>
-                                                            #else
-                                                                No page object sources
-                                                            #end
+                                                        <td width="50%">
+                                                            #displayLines($testMethod.errorContext().executionObjectSource, "executionObjectSource")
                                                         </td>
                                                     </tr>
                                                 </table>

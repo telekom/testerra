@@ -1,5 +1,5 @@
-# testerra
-testerra is an open source test automation library for web frontend testing. It provides a tool suite for many use cases: 
+# Testerra
+Testerra is an open source test automation library for web frontend testing. It provides a tool suite for many use cases: 
 a base API for Page Object Pattern (including responsive layouts) and GuiElements (smarter WebElements (Selenium)), 
 enhanced reporting functionality, a utility collection and some additional helpful modules.
 
@@ -23,6 +23,8 @@ Additional modules:
 
 ## Installation / Usage
 
+Check out our comprehensive [Testerra documentation](https://tapas-docs.s3.eu-central-1.amazonaws.com/testerra/latest/index.html)!
+
 At least you have to put the core module into your project dependencies:
 
 For maven:
@@ -31,7 +33,7 @@ For maven:
 <dependencies>
     <dependency>
         <groupId>eu.tsystems.mms.tic.testerra</groupId>
-        <artifactId>core</artifactId>
+        <artifactId>driver-ui-desktop</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
 </dependencies>
@@ -39,7 +41,7 @@ For maven:
 
 For gradle:
 ```text
-compile 'eu.tsystems.mms.tic.testerra:core:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
 ```
 
 ###### Parent module:
@@ -60,7 +62,7 @@ Create a Test Class and extend the TesterraTest class:
 public class MyTest extends TesterraTest {
     
     @Test
-    public void testT01_My_first_tt._test() {
+    public void testT01_My_first_tt_test() {
         // ...
     }
 }
@@ -68,4 +70,3 @@ public class MyTest extends TesterraTest {
 
 ***
 
-Documentation pending

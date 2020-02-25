@@ -32,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import org.openqa.selenium.WebDriver;
@@ -466,7 +465,7 @@ public final class WebDriverSessionsManager {
     }
 
     static void registerWebDriverFactory(WebDriverFactory webDriverFactory, String... browsers) {
-        LOGGER.info("Registering " + webDriverFactory.getClass().getSimpleName() + " for browsers " + ArrayUtils.join(browsers, ","));
+        LOGGER.info("Registering " + webDriverFactory.getClass().getSimpleName() + " for browsers " + String.join(",", browsers));
 
         for (String browser : browsers) {
             WEB_DRIVER_FACTORIES.put(browser, webDriverFactory);

@@ -142,10 +142,22 @@ public class ExampleTest {
 
 If you don't have a remote selenium yet, you can easily install it by the package manager of your choice.
 
-.https://chocolatey.org[chocolately] for Windows (recommended)
-[source, cmd]
+.https://chocolatey.org[chocolately] for Windows
+[source, cmd, role="primary"]
 ----
 choco install selenium selenium-chrome-driver
+----
+
+.Ubuntu/Debian
+[source, cmd, role="secondary"]
+----
+apt-get install chromium-chromedriver
+----
+
+.https://brew.sh[homebrew] for Mac
+[source, cmd, role="secondary"]
+----
+brew install selenium-server-standalone chromedriver
 ----
 
 And setup the Selenium server address in `test.properties`
@@ -306,7 +318,7 @@ These properties are automatically loaded by the `PropertyManager` and set up as
 IMPORTANT: Setting up the Testerra proxy will not setup a proxy for Gradle nor a browser.
 
 === Logging
-If you're on Gradle the logging of testerra should work out of the box. But if you're on Maven you MUST add the following SLF4J-dependency to your `pom.xml`.
+If you're on Gradle, the logging of Testerra should work out of the box. But if you're on Maven you MUST add the following SLF4J-dependency to your main `pom.xml`.
 
 .pom.xml
 [source, xml]

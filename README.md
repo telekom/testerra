@@ -44,17 +44,7 @@ For gradle:
 compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
 ```
 
-###### Parent module:
-Or, for maven you can use the "parent" project, to have all modules at once:
-```xml
-<parent>
-    <groupId>eu.tsystems.mms.tic.testerra</groupId>
-    <artifactId>parent</artifactId>
-    <version>1-SNAPSHOT</version>
-</parent>
-```
-
-###### Using testerra functionality:
+## Using testerra functionality:
 
 Create a Test Class and extend the TesterraTest class:
 

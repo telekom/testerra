@@ -14,13 +14,14 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -56,18 +57,6 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      */
     void scrollToElement();
     void scrollToElement(int yOffset);
-
-    /**
-     * Returns the window's horizontal scroll position
-     * @return
-     */
-    long getScrollX();
-
-    /**
-     * Returns the window's vertical scroll position
-     * @return
-     */
-    long getScrollY();
 
     /**
      * Select a selectable element.
@@ -155,7 +144,22 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @param description Description for GuiElement
      * @return GuiElement
      */
+    @Deprecated
     GuiElement getSubElement(By byLocator, String description);
+
+    /**
+     * Get sub element by new locator
+     * @param locator
+     * @return
+     */
+    GuiElement getSubElement(Locate locator);
+
+    /**
+     * Get sub element by Selenium By
+     * @param by
+     * @return
+     */
+    GuiElement getSubElement(By by);
 
     /**
      * WebElement.getLocation.

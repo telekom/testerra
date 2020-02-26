@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
@@ -66,6 +66,14 @@ public abstract class GuiElementStatusCheckDecorator implements GuiElementStatus
     }
 
     @Override
+    public boolean isVisible(boolean complete) {
+        beforeDelegation();
+        boolean visible = decoratedGuiElementStatusCheck.isVisible(complete);
+        afterDelegation();
+        return visible;
+    }
+
+    @Override
     public boolean isSelected() {
         beforeDelegation();
         boolean selected = decoratedGuiElementStatusCheck.isSelected();
@@ -87,14 +95,6 @@ public abstract class GuiElementStatusCheckDecorator implements GuiElementStatus
         String attributeValue = decoratedGuiElementStatusCheck.getAttribute(attributeName);
         afterDelegation();
         return attributeValue;
-    }
-
-    @Override
-    public boolean isDisplayedFromWebElement() {
-        beforeDelegation();
-        boolean displayedFromWebElement = decoratedGuiElementStatusCheck.isDisplayedFromWebElement();
-        afterDelegation();
-        return displayedFromWebElement;
     }
 
     @Override

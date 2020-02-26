@@ -14,11 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.report.model.steps;
 
+import eu.tsystems.mms.tic.testframework.clickpath.ClickPathEvent;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
@@ -32,18 +33,25 @@ public class TestStepActionEntry implements Serializable {
 
     private static final long serialVersionUID = Serial.SERIAL;
 
-    public LogMessage logMessage = null;
-    public Screenshot beforeScreenshot;
-    public Screenshot afterScreenshot;
+    public final LogMessage logMessage;
+    public final Screenshot screenshot;
+    public final ClickPathEvent clickPathEvent;
 
-    private int number;
-
-    public TestStepActionEntry(int number) {
-        this.number = number;
+    public TestStepActionEntry(LogMessage logMessage) {
+        this.logMessage = logMessage;
+        this.screenshot = null;
+        this.clickPathEvent = null;
     }
 
-    public int getNumber() {
-        return number;
+    public TestStepActionEntry(ClickPathEvent event) {
+        this.clickPathEvent = event;
+        this.screenshot = null;
+        this.logMessage = null;
     }
 
+    public TestStepActionEntry(Screenshot screenshot) {
+        this.screenshot = screenshot;
+        this.logMessage = null;
+        this.clickPathEvent = null;
+    }
 }

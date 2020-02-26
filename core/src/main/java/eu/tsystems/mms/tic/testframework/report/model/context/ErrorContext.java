@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
@@ -29,7 +29,7 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 /**
  * Created by sagu on 21.09.2016.
  */
-public class ErrorContext extends Context {
+public class ErrorContext extends AbstractContext {
 
     public String readableErrorMessage;
     public String additionalErrorMessage;

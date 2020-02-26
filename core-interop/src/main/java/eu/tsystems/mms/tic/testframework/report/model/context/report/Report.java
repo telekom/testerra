@@ -14,15 +14,14 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.report.model.context.report;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
@@ -32,7 +31,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 public class Report {
@@ -52,20 +50,9 @@ public class Report {
         /*
         Initialize report directory
          */
-        final String relativeReportDir = PropertyManager.getProperty(TesterraProperties.REPORTDIR, DEFAULT_REPORTDIR);
-        REPORT_DIRECTORY = new File(relativeReportDir);
-
-        // cleanup
-        try {
-            FileUtils.deleteDirectory(REPORT_DIRECTORY);
-        } catch (IOException e) {
-            throw new TesterraRuntimeException("Could not clean report dir.", e);
-        }
-        if (!REPORT_DIRECTORY.mkdirs()) {
-            throw new TesterraSystemException(
-                    "Error cleaning report dir: " + REPORT_DIRECTORY +
-                            "\nCheck consoles or other directory and file accesses for locks.");
-        }
+        FileUtils fileUtils = new FileUtils();
+        REPORT_DIRECTORY = fileUtils.createTempDir(DEFAULT_REPORTDIR);
+        LOGGER.info("Preparing report in " + Report.REPORT_DIRECTORY.getAbsolutePath());
     }
 
     public static final File FRAMES_DIRECTORY = new File(REPORT_DIRECTORY, FRAMES_FOLDER_NAME);
@@ -88,6 +75,18 @@ public class Report {
     public enum Mode {
         COPY,
         MOVE
+    }
+
+    public static File finalizeReport() {
+        String relativeReportDirString = PropertyManager.getProperty(TesterraProperties.REPORTDIR, DEFAULT_REPORTDIR);
+        File finalReportDirectory = new File(relativeReportDirString);
+        try {
+            FileUtils.deleteDirectory(finalReportDirectory);
+            FileUtils.moveDirectory(REPORT_DIRECTORY, finalReportDirectory);
+        } catch (IOException e) {
+            throw new TesterraRuntimeException("Could not move report dir: " + e.getMessage(), e);
+        }
+        return finalReportDirectory;
     }
 
     /**

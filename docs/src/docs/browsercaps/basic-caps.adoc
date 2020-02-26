@@ -1,0 +1,38 @@
+= Setting global capabilities
+
+You can customize your browser session by setting so called capabilities for every browser type before
+the WebDriver has been initialized.
+
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.useragents.FirefoxConfig;
+
+class MyTest extends TesterraTest {
+    @BeforeSuite
+    void setupBrowsers() {
+        WebDriverManager.setUserAgentConfig(Browsers.firefox, (FirefoxConfig) options -> {
+            options.addPreference("intl.accept_languages", "de-DE");
+        });
+    }
+}
+----
+
+== Setting local capabilities
+
+A local defined capability means its only available in the current test execution (current TestNG testmethod).
+
+[source,java]
+----
+WebDriverManager.addThreadCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+----
+
+== Useful browser configurations
+
+=== Prevent Firefox download confirmation dialog
+
+```java
+// You have to add every mimetype you want no confirmation for
+firefoxOptions.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/zip");
+firefoxOptions.addPreference("browser.download.manager.showAlertOnComplete", false);
+firefoxOptions.addPreference("browser.download.manager.showWhenStarting", false);
+```

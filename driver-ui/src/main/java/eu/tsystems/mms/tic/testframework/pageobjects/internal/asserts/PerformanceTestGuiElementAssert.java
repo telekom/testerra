@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
@@ -163,6 +163,16 @@ public class PerformanceTestGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
+
+    }
+
+    @Override
+    public void assertVisible(boolean complete) {
+
+    }
+
+    @Override
+    public void assertNotVisible() {
 
     }
 }

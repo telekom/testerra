@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.testing;
 
@@ -25,9 +25,12 @@ import org.testng.annotations.Listeners;
 
 @Listeners(TesterraListener.class)
 public abstract class TesterraTest {
-
     static {
+        /**
+         * Make sure the framework is initialized before any other
+         * This is already called in {@link TesterraListener}
+         * @todo Remove this when everything is based on objects without any static context
+         */
         Booter.bootOnce();
     }
-
 }

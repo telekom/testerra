@@ -24,14 +24,16 @@ a| Browser label, the following browsers are possible
 | {selenium_server_url} | na. | The complete URL to a remote Selenium server. +
 (e.g.: `http://localhost:4444/wd/hub`)
 
-This setting overriedes the following two properties.
+This setting overrides the following two properties.
 | {selenium_server_host} | localhost | The host name of the remote Selenium server.
 | {selenium_server_port} | 4444 | The port of the remote Selenium server.
 | {browser_maximize} | false | Try to maximize the browser window.
+| {browser_maximize_position} | self | Screen position for the window to maximize. If you have several screens and want to maximize the window on another screen than your default screen, you can choose between (left, right, top or bottom)
 | {display_resolution} | 1920x1200 | Fall-back resolution, if maximize does not work. +
 For custom window browser size use `driver.manage().window().setSize(new Dimensions(x, y))`
 | {wdm_closewindows_aftertestmethods} | true | If true, after every test method all open browser windows are closed.
 | {wdm_closewindows_onfailure} | true | If true, after failed test methods all open browser windows are closed
+| {wdm_timeouts_selenium_command_stuck} | 300 | Kills a stuck selenium command after this timeout
 | {takeAutomaticScreenshot} | true | If true and test methods fail, a screenshot is created automatically
 | {webdriver_timeouts_seconds_pageload} | 120 | Defines the Selenium timeout for page load seconds. +
 (`driver.manage().timeouts().pageLoadTimeout()`)

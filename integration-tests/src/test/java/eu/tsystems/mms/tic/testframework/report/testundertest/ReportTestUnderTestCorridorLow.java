@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.report.testundertest;
 
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.general.TestsUnderTestGroup;
@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 /**
  * Created by jlma on 14.11.2016.
  */
-@TesterraClassContext
+@TestContext
 public class ReportTestUnderTestCorridorLow extends AbstractTest {
 
     @FailureCorridor.Low

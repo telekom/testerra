@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 08.11.2012
@@ -31,17 +31,29 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.mail.*;
+import javax.mail.Address;
+import javax.mail.Flags;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessageRemovedException;
+import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Session;
+import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * abstract class to handle mail connector
@@ -284,9 +296,9 @@ public abstract class AbstractMailConnector {
      *
      * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      */
-    public List<TesterraMail> waitForTesterraMails(List<SearchCriteria> searchCriterias) {
+    public List<Email> waitForMails(List<SearchCriteria> searchCriterias) {
 
-        return waitForTesterraMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
+        return waitForMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
     }
 
     /**
@@ -300,12 +312,12 @@ public abstract class AbstractMailConnector {
      *
      * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      */
-    public List<TesterraMail> waitForTesterraMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
+    public List<Email> waitForMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
 
         List<MimeMessage> messages = pWaitForMessage(searchCriterias, maxReadTries, pollingTimerSeconds);
-        List<TesterraMail> out = new LinkedList<>();
+        List<Email> out = new LinkedList<>();
         for (MimeMessage message : messages) {
-            out.add(new TesterraMail(message));
+            out.add(new Email(message));
         }
         return out;
     }
@@ -645,11 +657,11 @@ public abstract class AbstractMailConnector {
     /**
      * deletes tt. mail by it's message id from inbox.
      *
-     * @param mail {@link TesterraMail} object with messageId set.
+     * @param mail {@link Email} object with messageId set.
      *
      * @return true if message has been deleted.
      */
-    public boolean deleteMessage(TesterraMail mail) {
+    public boolean deleteMessage(Email mail) {
         return deleteMessage(null, Message.RecipientType.TO, null, mail.getMessageID());
     }
 
@@ -696,11 +708,11 @@ public abstract class AbstractMailConnector {
      * move given message into folder with given name.
      *
      * @param targetFolder Name of folder to move into.
-     * @param message {@link TesterraMail} to move (compared by messageId)
+     * @param message {@link Email} to move (compared by messageId)
      *
      * @return true if moved.
      */
-    public boolean moveMessage(String targetFolder, TesterraMail message) {
+    public boolean moveMessage(String targetFolder, Email message) {
         SearchCriteria searchCriteria = new SearchCriteria(SearchCriteriaType.MESSAGEID, message.getMessageID());
         return pMoveMessage(targetFolder, searchCriteria) == 1;
     }

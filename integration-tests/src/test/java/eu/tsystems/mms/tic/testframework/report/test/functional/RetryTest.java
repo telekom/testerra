@@ -1,11 +1,11 @@
 package eu.tsystems.mms.tic.testframework.report.test.functional;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
@@ -25,8 +25,8 @@ import java.util.List;
 /**
  * Created by fakr on 09.10.2017
  */
-@TesterraClassContext("Functional-Retry")
-public class RetryTest extends AbstractTest {
+@TestContext(name = "Functional-Retry")
+public class RetryTest extends AbstractReportTest {
 
     /**
      * Tests whether the data provider produced the expected number of test methods
@@ -127,12 +127,12 @@ public class RetryTest extends AbstractTest {
 
             GuiElement methodRetryTag = currentMethod.getSubElement(By.xpath("((./../font)[2])"));
 
-            if (currentMethod.getText().contains("test_DataProviderTest (2/2)") && methodRetryTag.isDisplayed() ) {
+            if (currentMethod.getText().contains("test_DataProviderTest (2/2)") && methodRetryTag.isDisplayed()) {
 
                 String testMethodTagName = methodRetryTag.getText();
-                int counter =  retryOccurrenceCounter+1;
+                int counter = retryOccurrenceCounter + 1;
 
-                if (testMethodTagName.equals("(1) Retry"+counter)) {
+                if (testMethodTagName.equals("(1) Retry" + counter)) {
                     retryOccurrenceCounter++;
                 }
 
@@ -187,5 +187,15 @@ public class RetryTest extends AbstractTest {
         }
         AssertCollector.assertEquals(retryOccurrenceCounter - 1, numberOfRetryMethods, "All Retry Methods are correctly displayed in Method Details Page");
     }
+
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
+    public void testT07_checkMethodThatDependsOnPassedRetryIsSuccessful() throws Exception {
+
+        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
+        dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.PASSED);
+        dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(1));
+        Assert.assertTrue(dashboardPage.getMethodChartModule().methodChartSuccessfulRetried.getText().contains("test_MethodDependsOnMethodThatPassesInRetry"), "The test 'test_MethodDependsOnMethodThatPassesInRetry' does not exist in the passed method chart.");
+    }
+
 
 }

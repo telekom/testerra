@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 15.05.2017
@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.reporting;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
 import org.testng.Assert;
@@ -40,7 +40,7 @@ import org.testng.annotations.Test;
  *
  * @author erku
  */
-public class FailsAnnotationFilterTest extends AbstractTest {
+public class FailsAnnotationFilterTest extends AbstractWebDriverTest {
 
     private static String PROPERTY_ONE = "test.foobar.fails.annotation.test.property.one";
     private static String PROPERTY_TWO = "test.foobar.fails.annotation.test.property.two";

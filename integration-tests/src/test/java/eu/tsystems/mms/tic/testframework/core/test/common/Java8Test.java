@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.core.test.common;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 /**
  * Created by pele on 04.07.2016.
  */
-public class Java8Test extends AbstractTest {
+public class Java8Test extends AbstractWebDriverTest {
 
     @FunctionalInterface
     private interface LambaInterface {

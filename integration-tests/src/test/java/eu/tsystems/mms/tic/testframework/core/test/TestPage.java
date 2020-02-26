@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.core.test;
 
@@ -23,27 +23,28 @@ package eu.tsystems.mms.tic.testframework.core.test;
  * Created by rnhb on 02.06.2015.
  */
 public enum TestPage {
-    INPUT_TEST_PAGE("http://localhost:80/testsites/Input/input.html",
+    INPUT_TEST_PAGE("Input/input.html",
             "Open again",
             new String[]{"Ope", "en agai", "ain"},
             "Button2",
             "value"),
-    FRAME_TEST_PAGE("http://localhost:80/testsites/FrameSimple/frame.html", INPUT_TEST_PAGE),
-    DRAG_AND_DROP("http://localhost:80/testsites/DragAndDrop/index.html", INPUT_TEST_PAGE),
-    DRAG_AND_DROP_OVER_FRAMES("http://localhost:80/testsites/DragAndDropFrame/index.html", INPUT_TEST_PAGE),
-    MULTISELECT("http://localhost:80/testsites/Multiselect/index.html", INPUT_TEST_PAGE),
-    LAYOUT("http://localhost:80/testsites/Layout/index.html", INPUT_TEST_PAGE)
+    FRAME_TEST_PAGE("FrameSimple/frame.html", INPUT_TEST_PAGE),
+    DRAG_AND_DROP("DragAndDrop/index.html", INPUT_TEST_PAGE),
+    DRAG_AND_DROP_OVER_FRAMES("DragAndDropFrame/index.html", INPUT_TEST_PAGE),
+    MULTISELECT("Multiselect/index.html", INPUT_TEST_PAGE),
+    LAYOUT("Layout/index.html", INPUT_TEST_PAGE),
+    LIST("GuiElementList/index.html", INPUT_TEST_PAGE)
     ;
 
-    private String url;
+    private String path;
     private String elementText;
     private String[] elementTextArray;
     private String attributeValue;
     private String attributeValuePart;
     private String attributeName;
 
-    TestPage(String url, TestPage parentPage) {
-        this.url = url;
+    TestPage(String path, TestPage parentPage) {
+        this.path = path;
         this.elementText = parentPage.elementText;
         this.elementTextArray = parentPage.elementTextArray;
         this.attributeValue = parentPage.attributeValue;
@@ -51,8 +52,8 @@ public enum TestPage {
         this.attributeValuePart = attributeValue.substring(1, 4);
     }
 
-    TestPage(String url, String elementText, String[] elementTextArray, String attributeValue, String attributeName) {
-        this.url = url;
+    TestPage(String path, String elementText, String[] elementTextArray, String attributeValue, String attributeName) {
+        this.path = path;
         this.elementText = elementText;
         this.elementTextArray = elementTextArray;
         this.attributeValue = attributeValue;
@@ -60,26 +61,31 @@ public enum TestPage {
         this.attributeValuePart = attributeValue.substring(1, 4);
     }
 
-    public String getUrl() {
-        return url;
+    public String getPath() {
+        return path;
     }
 
+    @Deprecated
     public String getElementText() {
         return elementText;
     }
 
+    @Deprecated
     public String[] getElementTextArray() {
         return elementTextArray;
     }
 
+    @Deprecated
     public String getAttributeValue() {
         return attributeValue;
     }
 
+    @Deprecated
     public String getAttributeValuePart() {
         return attributeValuePart;
     }
 
+    @Deprecated
     public String getAttributeName() {
         return attributeName;
     }

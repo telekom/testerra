@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 14.08.2013
@@ -26,7 +26,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.testdata;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.testdata.XLSTestDataReader;
@@ -44,7 +44,7 @@ import java.util.Map;
  *
  * @author pele
  */
-public class XLSWriterTest extends AbstractTest {
+public class XLSWriterTest extends AbstractWebDriverTest {
 
     public static final String XLS = "testfiles/TestXLSWriter.xls";
     public static final String XLSX = "testfiles/TestXLSWriter.xlsx";
@@ -55,7 +55,7 @@ public class XLSWriterTest extends AbstractTest {
 
     /**
      * Executes content verification tests
-     * 
+     *
      * @param filename name of the file in resources
      * @param col column number to write in
      * @param dataName dataname
@@ -173,7 +173,7 @@ public class XLSWriterTest extends AbstractTest {
 
     /**
      * Writes new testdata into the documents(.xls or .xlsx) given by the Data Provider
-     * 
+     *
      * @throws IOException Error saving file.
      */
     @Test
@@ -194,7 +194,7 @@ public class XLSWriterTest extends AbstractTest {
 
     /**
      * Writes new testdata into the documents(.xls or .xlsx) given by the Data Provider
-     * 
+     *
      * @throws IOException Error saving file.
      */
     @Test

@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 13.06.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -49,9 +49,9 @@ import org.testng.annotations.BeforeSuite;
 /**
  * Abstract class for DBConnector Tests that provides a DBConnector object and fills the test db with some data, which
  * will be removed after the tests again.
- * 
+ *
  * @author sepr
- * 
+ *
  */
 public abstract class AbstractDBConnectorTest extends TesterraTest {
 
@@ -74,7 +74,7 @@ public abstract class AbstractDBConnectorTest extends TesterraTest {
 
     /**
      * Before method fills the testdb with some values.
-     * 
+     *
      * @throws SQLException Error while querying the db.
      */
     @BeforeSuite(alwaysRun = true)
@@ -117,7 +117,7 @@ public abstract class AbstractDBConnectorTest extends TesterraTest {
 
     /**
      * Getter for the encapsulated ThreadLocal DBConnector object.
-     * 
+     *
      * @return DBConnector object for test db.
      */
     protected DBConnector<?> getDBConnector() {
@@ -129,7 +129,7 @@ public abstract class AbstractDBConnectorTest extends TesterraTest {
 
     /**
      * After method, that empties the test db.
-     * 
+     *
      * @throws SQLException Error while querying the db.
      */
     @AfterSuite(alwaysRun = true)
@@ -142,7 +142,7 @@ public abstract class AbstractDBConnectorTest extends TesterraTest {
 
     /**
      * Sends log messages of the result to the logger.
-     * 
+     *
      * @param resAfter ArrayList containing the result of a db query.
      */
     protected void printTableToLog(final List<HashMap<String, String>> resAfter) {

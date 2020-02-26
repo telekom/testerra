@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
 
@@ -69,10 +69,18 @@ public interface GuiElementWait {
 
     /**
      * Wait till this element disappears.
-     *
-     * @return this.
      */
     boolean waitForIsNotDisplayed();
+
+    /**
+     * Wait till element is not visible within the viewport
+     */
+    boolean waitForIsVisible(final boolean complete);
+
+    /**
+     * Wait till element is not more visible within the viewport
+     */
+    boolean waitForIsNotVisible();
 
     /**
      * Wait for isDisplayed() to be true

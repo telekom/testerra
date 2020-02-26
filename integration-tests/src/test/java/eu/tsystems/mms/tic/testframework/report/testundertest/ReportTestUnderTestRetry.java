@@ -12,7 +12,8 @@ import java.sql.SQLRecoverableException;
  */
 public class ReportTestUnderTestRetry extends AbstractTest {
 
-    private static int counter = 0;
+    private static int countertest_ExceptionRetryTest = 0;
+    private static int countertest_MethodWillPassOnRetry = 0;
 
     @Test
     public void test_TestRetryExceptionTrigger() throws SQLRecoverableException {
@@ -26,9 +27,10 @@ public class ReportTestUnderTestRetry extends AbstractTest {
 
     @Test
     public void test_ExceptionRetryTest() throws Exception {
-        counter++;
-        if (counter < 2)
+        countertest_ExceptionRetryTest++;
+        if (countertest_ExceptionRetryTest < 2) {
             throw new Exception("RetryUnderTest");
+        }
     }
 
     @Test
@@ -58,8 +60,22 @@ public class ReportTestUnderTestRetry extends AbstractTest {
         throw new Exception("RetryUnderTest " + retryDPLabel);
     }
 
+    @Test()
+    public void test_MethodWillPassOnRetry() throws Exception {
+
+        if (countertest_MethodWillPassOnRetry == 0) {
+            countertest_MethodWillPassOnRetry++;
+            throw new Exception("RetryUnderTest");
+        }
+    }
+
+    @Test(dependsOnMethods = "test_MethodWillPassOnRetry")
+    public void test_MethodDependsOnMethodThatPassesInRetry() {
+        Assert.assertTrue(true);
+    }
+
     @AfterMethod(alwaysRun = true)
-    public void test_AlwaysRunAfterMethod(){
+    public void test_AlwaysRunAfterMethod() {
         Assert.assertTrue(true);
     }
 

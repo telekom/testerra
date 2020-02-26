@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 24.11.2016
@@ -30,7 +30,11 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.InDevelopment;
 import eu.tsystems.mms.tic.testframework.annotations.SupportMethod;
 import eu.tsystems.mms.tic.testframework.report.model.context.StackTrace;
-import javassist.*;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMethod;
+import javassist.LoaderClassPath;
+import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IMethodInstance;
@@ -39,7 +43,14 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
@@ -65,7 +76,6 @@ public final class ExecutionUtils {
      * Determines if there is a @Fails annotated method in StackTrace
      *
      * @param stackTrace {@link StackTraceElement}
-     *
      * @return Fails
      */
     public static Fails getFailsAnnotationInStackTrace(StackTraceElement[] stackTrace) {
@@ -112,8 +122,7 @@ public final class ExecutionUtils {
 
                         if (next >= size) {
                             itsTheOne = true;
-                        }
-                        else {
+                        } else {
                             int nextKey = keys[next];
                             if (lineNumberFromStackTrace >= key && lineNumberFromStackTrace < nextKey) {
                                 itsTheOne = true;
@@ -128,7 +137,7 @@ public final class ExecutionUtils {
                     }
                 }
             } catch (RuntimeException | ClassNotFoundException | NotFoundException e) {
-                LOGGER.warn("Stack Trace Analysis - Checking fails annotation. Got an error, but never mind: ", e);
+                LOGGER.debug("Stack Trace Analysis - Checking fails annotation. Got an error, but never mind: ", e);
             }
         }
 
@@ -143,19 +152,18 @@ public final class ExecutionUtils {
      * * or is precondition for other
      *
      * @param testMethod {@link Method}
-     *
      * @return boolean
      */
-    public static boolean isMethodInExecutionScope(final Method testMethod, final ITestContext testContext, final ITestResult testResult,  boolean withFailed) {
+    public static boolean isMethodInExecutionScope(final Method testMethod, final ITestContext testContext, final ITestResult testResult, boolean withFailed) {
         final SupportMethod supportMethod = testMethod.getAnnotation(SupportMethod.class);
 
         // given method is a support method -> run it!
-        if(supportMethod !=  null) {
+        if (supportMethod != null) {
             return true;
         }
 
         // this method is a precondition -> run it!
-        if(ExecutionUtils.pIsMethodPreconditionForOther(testMethod)) {
+        if (ExecutionUtils.pIsMethodPreconditionForOther(testMethod)) {
             LOGGER.info("Executing method because another method depends on it");
             return true;
         }
@@ -183,6 +191,7 @@ public final class ExecutionUtils {
 
     /**
      * Determines if given method is pre-condition for another method
+     *
      * @param method {@link Method}
      * @return boolean
      */
@@ -195,21 +204,20 @@ public final class ExecutionUtils {
      * Recursive dependency analysis
      * Add all methods to execution which are need to run a method that match the current execution filter
      *
-     * @param map {@link HashMap}
+     * @param map          {@link HashMap}
      * @param testNGMethod {@link ITestNGMethod}
      */
     private static void pAddDependencies(final HashMap<String, ITestNGMethod> map, final ITestNGMethod testNGMethod) {
 
         List<String> methodsDependedUpon = Arrays.asList(testNGMethod.getMethodsDependedUpon());
 
-        if(methodsDependedUpon.size() > 0) {
+        if (methodsDependedUpon.size() > 0) {
             methodsDependedUpon.forEach(method -> {
-                if(!dependsOnMethods.contains(method)) {
+                if (!dependsOnMethods.contains(method)) {
                     dependsOnMethods.add(method);
                     if (map.containsKey(method)) {
                         pAddDependencies(map, map.get(method));
-                    }
-                    else {
+                    } else {
                         LOGGER.warn("Method " + method + " is not planned for execution");
                     }
                 }

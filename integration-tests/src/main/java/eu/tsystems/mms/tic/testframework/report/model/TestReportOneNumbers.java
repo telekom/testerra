@@ -14,8 +14,9 @@ public class TestReportOneNumbers extends AbstractTestReportNumbers {
         lowCorridorActual = 5;
         all = 102;
         allSuccessful = 38;
-        passed = 25;
+        passed = 22;
         passedMinor = 13;
+        passedRetry = 3;
         allSkipped = 22;
         skipped = 22;
         allBroken = 42;

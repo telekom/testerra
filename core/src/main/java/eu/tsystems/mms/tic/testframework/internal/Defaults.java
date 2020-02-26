@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Deprecated
 public final class Defaults {
 
     private static String load(String property, String defaultValue, String pattern) {

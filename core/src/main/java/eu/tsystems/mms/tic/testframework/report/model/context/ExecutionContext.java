@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
@@ -27,14 +27,14 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class ExecutionContext extends Context implements SynchronizableContext {
+public class ExecutionContext extends AbstractContext implements SynchronizableContext {
 
     public final List<SuiteContext> suiteContexts = new LinkedList<>();
     public final List<ClassContext> mergedClassContexts = new LinkedList<>();
@@ -81,21 +81,22 @@ public class ExecutionContext extends Context implements SynchronizableContext {
                 return TestStatusController.Status.FAILED;
             }
         } else {
-            return getStatusFromContexts(suiteContexts.toArray(new Context[0]));
+            return getStatusFromContexts(suiteContexts.toArray(new AbstractContext[0]));
         }
     }
 
     public int getNumberOfRepresentationalTests() {
-        IntRef i = new IntRef();
+        final AtomicReference<Integer> i = new AtomicReference<>();
+        i.set(0);
         List<SuiteContext> suiteContexts = copyOfSuiteContexts();
         suiteContexts.forEach(suiteContext -> {
             suiteContext.copyOfTestContexts().forEach(testContext -> {
                 testContext.copyOfClassContexts().forEach(classContext -> {
-                    i.increaseBy(classContext.getRepresentationalMethods().length);
+                    i.set(i.get()+classContext.getRepresentationalMethods().length);
                 });
             });
         });
-        return i.getI();
+        return i.get();
     }
 
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
@@ -148,14 +149,16 @@ public class ExecutionContext extends Context implements SynchronizableContext {
         /*
         sort
          */
+        final AtomicReference<Integer> i1 = new AtomicReference<>();
+        final AtomicReference<Integer> i2 = new AtomicReference<>();
         Comparator<? super Map> comp = (Comparator<Map>) (m1, m2) -> {
-            IntRef i1 = new IntRef();
-            m1.keySet().forEach(status -> i1.increaseBy((int) m1.get(status)));
+            i1.set(0);
+            m1.keySet().forEach(status -> i1.set(i1.get()+((int)m1.get(status))));
 
-            IntRef i2 = new IntRef();
-            m2.keySet().forEach(status -> i2.increaseBy((int) m2.get(status)));
+            i2.set(0);
+            m2.keySet().forEach(status -> i2.set(i2.get()+((int)m2.get(status))));
 
-            return i2.getI() - i1.getI();
+            return i2.get()-i1.get();
         };
         final Map sortedMap = methodStatsPerClass.entrySet().stream().sorted(Map.Entry.comparingByValue(comp))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,

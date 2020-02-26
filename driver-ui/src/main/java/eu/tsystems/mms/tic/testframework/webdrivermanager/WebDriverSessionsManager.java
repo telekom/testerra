@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
@@ -32,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import org.openqa.selenium.WebDriver;
@@ -41,7 +40,14 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverFactory.wrapRawWebDriverWithEventFiringWebDriver;
@@ -287,7 +293,7 @@ public final class WebDriverSessionsManager {
         /*
         introduce session context to execution context
          */
-        String sessionId = WebDriverManagerUtils.getSessionId(eventFiringWebDriver);
+        String sessionId = WebDriverUtils.getSessionId(eventFiringWebDriver);
         SessionContext sessionContext = ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.get(sessionId);
         ExecutionContextController.EXECUTION_CONTEXT.exclusiveSessionContexts.add(sessionContext);
         sessionContext.parentContext = ExecutionContextController.EXECUTION_CONTEXT;
@@ -459,7 +465,7 @@ public final class WebDriverSessionsManager {
     }
 
     static void registerWebDriverFactory(WebDriverFactory webDriverFactory, String... browsers) {
-        LOGGER.info("Registering " + webDriverFactory.getClass().getSimpleName() + " for browsers " + ArrayUtils.join(browsers, ","));
+        LOGGER.info("Registering " + webDriverFactory.getClass().getSimpleName() + " for browsers " + String.join(",", browsers));
 
         for (String browser : browsers) {
             WEB_DRIVER_FACTORIES.put(browser, webDriverFactory);

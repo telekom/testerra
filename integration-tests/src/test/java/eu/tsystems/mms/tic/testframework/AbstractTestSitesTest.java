@@ -14,36 +14,57 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework;
 
 import eu.tsystems.mms.tic.testframework.core.test.Server;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.AfterTest;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
-public abstract class AbstractTestSitesTest extends AbstractTest {
+import java.lang.reflect.Method;
+import java.net.BindException;
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractTestSitesTest.class);
+/**
+ * Abstract test class for tests based on static test site resources
+ */
+public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implements Loggable {
+    protected static Server server = new Server(FileUtils.getResourceFile("testsites"));
 
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
-        Server.start();
-
-        WebDriverManager.setBaseURL(getStartPage().getUrl());
+        POConfig.setUiElementTimeoutInSeconds(3);
+        try {
+            server.start(80);
+        } catch (BindException e) {
+            log().warn("Use already running WebServer: " + e.getMessage());
+        }
     }
 
-    protected TestPage getStartPage() {
+    @BeforeMethod()
+    public void visitTestPage(Method method) {
+        visitTestPage(getWebDriver());
+    }
+
+    /**
+     * Open a custom Webdriver session with the default test page.
+     *
+     * @param driver
+     */
+    public synchronized void visitTestPage(WebDriver driver) {
+        if (!driver.getCurrentUrl().contains(getTestPage().getPath())) {
+            String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), getTestPage().getPath());
+            driver.get(baseUrl);
+        }
+    }
+
+    protected TestPage getTestPage() {
         return TestPage.INPUT_TEST_PAGE;
-    }
-
-    @AfterTest(alwaysRun = true)
-    public void tearDown() throws Exception {
-        Server.stop();
     }
 }

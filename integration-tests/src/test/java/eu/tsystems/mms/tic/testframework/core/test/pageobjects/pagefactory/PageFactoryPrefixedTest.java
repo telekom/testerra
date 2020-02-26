@@ -14,20 +14,23 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.*;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -36,7 +39,9 @@ import org.testng.annotations.Test;
 /**
  * Tests the responsive page factory for correct instantiated classes.
  */
-public class PageFactoryPrefixedTest extends AbstractTestSitesTest {
+public class PageFactoryPrefixedTest extends AbstractTestSitesTest implements Loggable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PageFactoryPrefixedTest.class);
 
     /**
      * Set the browser size by adjusting it to the given viewport size.

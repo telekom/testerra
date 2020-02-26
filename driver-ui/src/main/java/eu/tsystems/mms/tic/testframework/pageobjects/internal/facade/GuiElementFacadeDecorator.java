@@ -14,13 +14,14 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 import java.io.File;
@@ -120,26 +121,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         decoratedFacade.scrollToElement(yOffset);
         afterDelegation();
         afterActionDelegation();
-    }
-
-    @Override
-    public long getScrollX() {
-        beforeActionDelegation("getScrollX");
-        beforeDelegation("getScrollX");
-        long offset = decoratedFacade.getScrollX();
-        afterDelegation();
-        afterActionDelegation();
-        return offset;
-    }
-
-    @Override
-    public long getScrollY() {
-        beforeActionDelegation("getScrollY");
-        beforeDelegation("getScrollY");
-        long offset = decoratedFacade.getScrollY();
-        afterDelegation();
-        afterActionDelegation();
-        return offset;
     }
 
     @Override
@@ -317,6 +298,16 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
+    public GuiElement getSubElement(Locate locator) {
+        return decoratedFacade.getSubElement(locator);
+    }
+
+    @Override
+    public GuiElement getSubElement(By by) {
+        return decoratedFacade.getSubElement(by);
+    }
+
+    @Override
     public boolean isDisplayed() {
         beforeDelegation("isDisplayed");
         boolean displayed = decoratedFacade.isDisplayed();
@@ -325,11 +316,11 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public boolean isDisplayedFromWebElement() {
-        beforeDelegation("isDisplayedFromWebElement");
-        boolean displayedFromWebElement = decoratedFacade.isDisplayedFromWebElement();
-        afterDelegation("isDisplayedFromWebElement() = " + displayedFromWebElement);
-        return displayedFromWebElement;
+    public boolean isVisible(boolean complete) {
+        beforeDelegation("isVisible");
+        boolean visible = decoratedFacade.isVisible(complete);
+        afterDelegation("isVisible() = " + visible);
+        return visible;
     }
 
     @Override
@@ -500,6 +491,22 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         beforeDelegation("waitForIsNotDisplayed");
         boolean b = decoratedFacade.waitForIsNotDisplayed();
         afterDelegation("waitForIsNotDisplayed() = " + b);
+        return b;
+    }
+
+    @Override
+    public boolean waitForIsVisible(boolean complete) {
+        beforeDelegation("waitForIsVisible");
+        boolean b = decoratedFacade.waitForIsVisible(complete);
+        afterDelegation("waitForIsVisible() = " + b);
+        return b;
+    }
+
+    @Override
+    public boolean waitForIsNotVisible() {
+        beforeDelegation("waitForIsNotVisible");
+        boolean b = decoratedFacade.waitForIsNotVisible();
+        afterDelegation("waitForIsNotVisible() = " + b);
         return b;
     }
 

@@ -7,17 +7,8 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import org.slf4j.Logger;
 
 class ProxyUtils {
-
-    static void log(Logger logger, SessionContext sessionContext, String msg) {
-        String scid = "unrelated";
-        if (sessionContext != null) {
-            scid = sessionContext.id;
-        }
-        logger.info("[SCID:" + scid + "] - " + msg);
-    }
 
     static void updateSessionContextRelations(SessionContext sessionContext) {
         /*

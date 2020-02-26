@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
@@ -53,6 +53,12 @@ public interface GuiElementStatusCheck {
     boolean isDisplayed();
 
     /**
+     * Checks if the element is visible in the current viewport
+     * @return
+     */
+    boolean isVisible(final boolean complete);
+
+    /**
      * WebElement.isSelected.
      *
      * @return true if element is selected.
@@ -79,8 +85,12 @@ public interface GuiElementStatusCheck {
      * Calls isDisplayed on the underlying WebElement.
      *
      * @return isDisplayed from WebElement
+     * @deprecated Use {@link #isDisplayed()} instead
      */
-    boolean isDisplayedFromWebElement();
+    @Deprecated
+    default boolean isDisplayedFromWebElement() {
+        return isDisplayed();
+    }
 
     /**
      * Checks if the element is selectable.

@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 25.01.2011
@@ -34,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.testng.ITestContext;
@@ -50,7 +51,7 @@ import java.util.List;
  *
  * @author mibu
  */
-public class MethodContext extends Context implements SynchronizableContext {
+public class MethodContext extends AbstractContext implements SynchronizableContext {
 
     public ITestResult testResult;
     public ITestContext iTestContext;
@@ -63,11 +64,11 @@ public class MethodContext extends Context implements SynchronizableContext {
     public int retryNumber = 0;
     public int methodRunIndex = -1;
     public String threadName = "unrelated";
-    public TestStep failedStep;
+    private TestStep lastFailedStep;
     public FailureCorridor.Value failureCorridorValue = FailureCorridor.Value.HIGH;
 
     public ClassContext classContext;
-    public TestContext testContext;
+    public TestContextModel testContextModel;
     public SuiteContext suiteContext;
     public final ExecutionContext executionContext;
 
@@ -95,18 +96,18 @@ public class MethodContext extends Context implements SynchronizableContext {
      * @param methodType  method type.
      * @param classContext .
      * @param suiteContext .
-     * @param testContext .
+     * @param testContextModel .
      * @param executionContext .
      */
     public MethodContext(
         final String name,
         final MethodType methodType,
         final ClassContext classContext,
-        final TestContext testContext,
+        final TestContextModel testContextModel,
         final SuiteContext suiteContext,
         final ExecutionContext executionContext
     ) {
-        this.testContext = testContext;
+        this.testContextModel = testContextModel;
         this.suiteContext = suiteContext;
         this.executionContext = executionContext;
 
@@ -116,12 +117,21 @@ public class MethodContext extends Context implements SynchronizableContext {
         this.methodType = methodType;
     }
 
-    public void addLogMessage(LogMessage logMessage) {
-        testStepController.addLogMessage(logMessage);
+    public TestStepAction addLogMessage(LogMessage logMessage) {
+        return testStepController.addLogMessage(logMessage);
     }
 
     public TestStepController steps() {
         return testStepController;
+    }
+
+    public TestStep getLastFailedStep() {
+        return this.lastFailedStep;
+    }
+
+    public MethodContext setFailedStep(TestStep step) {
+        this.lastFailedStep = step;
+        return this;
     }
 
     public ErrorContext errorContext() {

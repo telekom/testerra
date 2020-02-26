@@ -3,20 +3,16 @@ include::properties/property-attributes.adoc[]
 
 == System requirements
 
-...
-
+* Testerra is based on Java. You need a *JDK 8* or later.
+* Execute your tests with *Maven* or *Gradle*
 
 == Mandatory steps
 
-=== Create Maven or Gradle Project
+=== Testerra setup
 
-As a prequisite, Maven or Gradle need to be installed and configured. There a lot of manuals are on the internet, so this is not described here. The Testerra libs are deployed to https://bintray.com/bintray/jcenter. Please add this to your local settings.
+The Testerra framework is deployed to https://bintray.com/bintray/jcenter.
 
-Then create a new Maven or Gradle project. Usally the IDE can do this comfortably.
-
-=== Add Testerra dependencies
-
-For Testerra you need at least the following dependencies you add to your `build.gradle` or `pom.xml` file.
+For Testerra you need at least the following dependencies for Gradle or Maven.
 
 .build.gradle
 [source, gradle, role="primary"]
@@ -67,16 +63,17 @@ Create a new file at `src/test/resources` with the name `test.properties`.
 .test.properties
 [source, properties, subs="attributes"]
 ----
-// Setting the browser
+# Setting the browser
 {browser}=firefox
 
-// Setting the start page
+# Setting the start page
 {baseurl}=http://example.org
 ----
 
-TIP: All defined properties can be overwritten later by adding system parameters to your command (e.a `-D{browser}=chrome`)
+TIP: All defined properties can be overwritten later by adding system parameters to your command +
+ (e.a `-D{browser}=chrome`)
 
-There are more supported `.properties` files described in the <<PropertyManager>> section.
+All supported browsers are listed in <<WebdriverManager properties>>
 
 === Create Page Class
 
@@ -90,7 +87,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 public class ExamplePage extends Page {
 
     @Check
-    private GuiElement moreInformationLink = new GuiElement(driver, By.partialLinkText("More information"));
+    private GuiElement moreInformationLink = new GuiElement(this.getWebDriver(), By.partialLinkText("More information"));
 
     public ExamplePage(WebDriver driver) {
         super(driver);
@@ -111,11 +108,14 @@ The GuiElement describes the elements like links, buttons, etc. on your page. Le
 
 === Create Test Class and Test Method
 
-Next create a simple test class with a test method. The test class needs to extend from `TesterraTest`. It should be located at path `src\test\java\<package>`. To stick to the example above, here is a very simple test class which navigates to exampe.org and clicks on the link defined on the example page. Again, probably imports must be made in IDE.
+The easiest way to create a new test, is by creating a new class in the path of `src\test\java\<package>` and let it extend from `TesterraTest`. If you already have test classes that extend, you can add the `TesterraListener` manually. Both ways do basically the same.
+To stick to the example above, here is a very simple test class which navigates to example.org and clicks on the link defined on the example page. Again, probably imports must be made in IDE.
 
-.New test class
-[source, java]
+.TesterraTest
+[source, java, role="primary"]
 ----
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+
 public class ExampleTest extends TesterraTest {
 
     @Test
@@ -127,16 +127,37 @@ public class ExampleTest extends TesterraTest {
 }
 ----
 
-NOTE: By extending from `TesterraTest` all runtime features are loaded automatically.
+.TesterraListener
+[source, java, role="secondary"]
+----
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import org.testng.annotations.Listeners;
+
+@Listeners(TesterraListener.class)
+public class ExampleTest {
+}
+----
 
 === Setup Selenium
 
 If you don't have a remote selenium yet, you can easily install it by the package manager of your choice.
 
-.https://chocolatey.org[chocolately] for Windows (recommended)
-[source, cmd]
+.https://chocolatey.org[chocolately] for Windows
+[source, cmd, role="primary"]
 ----
 choco install selenium selenium-chrome-driver
+----
+
+.Ubuntu/Debian
+[source, cmd, role="secondary"]
+----
+apt-get install chromium-chromedriver
+----
+
+.https://brew.sh[homebrew] for Mac
+[source, cmd, role="secondary"]
+----
+brew install selenium-server-standalone chromedriver
 ----
 
 And setup the Selenium server address in `test.properties`
@@ -214,6 +235,9 @@ test {
     <profiles>
         <profile>
             <id>mySuite</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -275,6 +299,8 @@ IMPORTANT: Setting the System proxy will override the Testerra proxy settings.
 
 If you want to setup a proxy for Testerra, including TestNG and the JVM, just add `proxysettings.properties` to your resource bundle at `src/test/resources` with the following content
 
+For example Testerra requires this setting to connect to a Selenium grid, if you are in a corporate network.
+
 .Example of proxysettings.properties
 [source,properties]
 ----
@@ -291,14 +317,26 @@ These properties are automatically loaded by the `PropertyManager` and set up as
 
 IMPORTANT: Setting up the Testerra proxy will not setup a proxy for Gradle nor a browser.
 
-=== Extended Logging
+=== Logging
+If you're on Gradle, the logging of Testerra should work out of the box. But if you're on Maven you MUST add the following SLF4J-dependency to your main `pom.xml`.
 
-To get more details in the Testerra report, you should create a log4j config file. Create a new file `test-log4j.xml` in the directory `src/test/resources`. As a example for this configuration, you can copy the following into this file.
-
-.test-log4j.xml
+.pom.xml
 [source, xml]
 ----
-include::../res/test-log4j.xml[]
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-log4j12</artifactId>
+    <version>1.8.0-beta2</version>
+    <scope>test</scope>
+</dependency>
 ----
 
-Now the log in the console output is more readable and also the log gets added in the Testerra report.
+==== Customize Logging
+The `TesterraLogger` logs to `System.out` by default.
+If you want to have more control over several log levels of classes, add a `log4j.xml` to your `resources/`.
+
+.log4j.xml
+[source, xml]
+----
+include::../res/log4j.xml[]
+----

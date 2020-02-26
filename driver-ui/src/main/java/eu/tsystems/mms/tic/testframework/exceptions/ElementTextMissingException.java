@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 04.01.2013
@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 
 /**
  * Exception stating that a GUI element misses some text.
- * 
+ *
  * @author pele
  */
 public class ElementTextMissingException extends RuntimeException {
@@ -42,7 +42,7 @@ public class ElementTextMissingException extends RuntimeException {
 
     /**
      * Constructor, creating this exception based on the GUI Element and the missing text.
-     * 
+     *
      * @param guiElement GuiElement that misses some text.
      * @param text Text that is missing.
      */
@@ -53,7 +53,7 @@ public class ElementTextMissingException extends RuntimeException {
 
     /**
      * Constructor, creating this exception based on the GUI Element, the missing text and the actual text.
-     * 
+     *
      * @param guiElement GuiElement that misses some text.
      * @param text Text that is missing.
      * @param actualText Text that is there instead.
@@ -66,7 +66,7 @@ public class ElementTextMissingException extends RuntimeException {
 
     /**
      * Default constructor, inherited from {@link RuntimeException}.
-     * 
+     *
      * @param message Exception message.
      */
     public ElementTextMissingException(final String message) {
@@ -75,7 +75,7 @@ public class ElementTextMissingException extends RuntimeException {
 
     /**
      * Default constructor, inherited from {@link RuntimeException}.
-     * 
+     *
      * @param message Message to append to exception.
      * @param cause Throwable that causes the exception.
      */
@@ -85,7 +85,7 @@ public class ElementTextMissingException extends RuntimeException {
 
     /**
      * Default constructor, inherited from {@link RuntimeException}.
-     * 
+     *
      * @param cause Throwable that causes this Exception.
      */
     public ElementTextMissingException(final Throwable cause) {

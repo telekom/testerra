@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 27.06.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -82,7 +82,7 @@ public final class MailUtils {
 
     /**
      * Encodes the String as base64.
-     * 
+     *
      * @param password The String to encode.
      * @return The encoded String.
      */
@@ -92,7 +92,7 @@ public final class MailUtils {
 
     /**
      * Encodes the String as base64.
-     * 
+     *
      * @param password The String to encode.
      * @return The encoded String.
      */
@@ -105,14 +105,14 @@ public final class MailUtils {
     /**
      * This method compares the Content of a sent and received email. It will be differ between an instance of
      * BASE64DecoderStream, MimeMultipart and String which is processed differently.
-     * 
+     *
      * @param sent The sent message.
      * @param received The received message.
-     * 
+     *
      * @return FALSE if the Content is not equal, the Content Types differs or the Content cannot be read.
      * @throws TesterraSystemException thrown if exception during comparing is thrown.
      */
-    public static boolean compareSentAndReceivedEmailContents(final MimeMessage sent, final TesterraMail received)
+    public static boolean compareSentAndReceivedEmailContents(final MimeMessage sent, final Email received)
             throws TesterraSystemException {
         return pCompareSentAndReceivedEmailContents(sent, received);
     }
@@ -120,10 +120,10 @@ public final class MailUtils {
     /**
      * This method compares the Content of a sent and received email. It will be differ between an instance of
      * BASE64DecoderStream, MimeMultipart and String which is processed differently.
-     * 
+     *
      * @param sent The sent message.
      * @param received The received message.
-     * 
+     *
      * @return FALSE if the Content is not equal, the Content Types differs or the Content cannot be read.
      * @throws TesterraSystemException thrown if exception during comparing is thrown.
      */
@@ -135,14 +135,14 @@ public final class MailUtils {
     /**
      * This method compares the Content of a sent and received email. It will be differ between an instance of
      * BASE64DecoderStream, MimeMultipart and String which is processed differently.
-     * 
+     *
      * @param sent The sent message.
      * @param received The received message.
-     * 
+     *
      * @return FALSE if the Content is not equal, the Content Types differs or the Content cannot be read.
      * @throws TesterraSystemException thrown if exception during comparing is thrown.
      */
-    private static boolean pCompareSentAndReceivedEmailContents(final MimeMessage sent, final TesterraMail received)
+    private static boolean pCompareSentAndReceivedEmailContents(final MimeMessage sent, final Email received)
             throws TesterraSystemException {
 
         try {
@@ -214,10 +214,10 @@ public final class MailUtils {
     /**
      * This method compares the Content of a sent and received email. It will be differ between an instance of
      * BASE64DecoderStream, MimeMultipart and String which is processed differently.
-     * 
+     *
      * @param sent The sent message.
      * @param received The received message.
-     * 
+     *
      * @return FALSE if the Content is not equal, the Content Types differs or the Content cannot be read.
      * @throws TesterraSystemException thrown if exception during comparing is thrown.
      */
@@ -289,7 +289,7 @@ public final class MailUtils {
 
     /**
      * Compares the header of two emails.
-     * 
+     *
      * @param sent The sent message.
      * @param received The received message.
      * @return True if Headers match, else false.
@@ -302,7 +302,7 @@ public final class MailUtils {
 
     /**
      * Compares the header of two emails.
-     * 
+     *
      * @param sent The sent message.
      * @param received The received message.
      * @return True if Headers match, else false.
@@ -342,7 +342,7 @@ public final class MailUtils {
 
     /**
      * Load an email file.
-     * 
+     *
      * @param filename The path to the file to load.
      * @throws TesterraSystemException thrown if mail can't load.
      * @return The loaded MimeMessage.
@@ -353,7 +353,7 @@ public final class MailUtils {
 
     /**
      * Load an email file.
-     * 
+     *
      * @param filename The path to the file to load.
      * @throws TesterraSystemException thrown if mail can't load.
      * @return The loaded MimeMessage.
@@ -372,7 +372,7 @@ public final class MailUtils {
 
     /**
      * Saves an email to file.
-     * 
+     *
      * @param message The message to save.
      * @param filename The path to write the message.
      * @throws TesterraSystemException thrown if message can't be saved.
@@ -383,7 +383,7 @@ public final class MailUtils {
 
     /**
      * Saves an email to file.
-     * 
+     *
      * @param message The message to save.
      * @param filename The path to write the message.
      * @throws TesterraSystemException thrown if message can't be saved.
@@ -405,23 +405,23 @@ public final class MailUtils {
 
     /**
      * Saves an email to file.
-     * 
+     *
      * @param message TesterraMail The message to save.
      * @param filename The path to write the message.
      * @throws TesterraSystemException thrown if message can't be saved.
      */
-    public static void saveEmail(final TesterraMail message, final String filename) throws TesterraSystemException {
+    public static void saveEmail(final Email message, final String filename) throws TesterraSystemException {
         pSaveEmailX(message, filename);
     }
 
     /**
      * Saves an email to file.
-     * 
+     *
      * @param message TesterraMail The message to save.
      * @param filename The path to write the message.
      * @throws TesterraSystemException thrown if message can't be saved.
      */
-    private static void pSaveEmailX(final TesterraMail message, final String filename) throws TesterraSystemException {
+    private static void pSaveEmailX(final Email message, final String filename) throws TesterraSystemException {
         if (new File(filename).exists()) {
             new File(filename).delete();
         }
@@ -438,7 +438,7 @@ public final class MailUtils {
 
     /**
      * Loads an email with InputStream.
-     * 
+     *
      * @param inputStream The InputStream to load the email.
      * @return The loaded message.
      * @throws TesterraSystemException thrown if mail can't load.
@@ -449,7 +449,7 @@ public final class MailUtils {
 
     /**
      * Loads an email with InputStream.
-     * 
+     *
      * @param inputStream The InputStream to load the email.
      * @return The loaded message.
      * @throws TesterraSystemException thrown if mail can't load.
@@ -468,7 +468,7 @@ public final class MailUtils {
 
     /**
      * Displays the message.
-     * 
+     *
      * @param message The message to display.
      * @throws TesterraSystemException thrown if content of message can't read.
      */
@@ -478,7 +478,7 @@ public final class MailUtils {
 
     /**
      * Displays the message from file.
-     * 
+     *
      * @param filename The path to message.
      * @throws TesterraSystemException thrown if content of message can't read.
      */
@@ -488,7 +488,7 @@ public final class MailUtils {
 
     /**
      * Displays the message.
-     * 
+     *
      * @param message The message to display.
      * @throws TesterraSystemException thrown if content of message can't read.
      */
@@ -508,11 +508,11 @@ public final class MailUtils {
 
     /**
      * Encrypt a MimeMessage with certification file.
-     * 
+     *
      * @param message The message to encrypt.
      * @param mailSession The session for the message.
      * @param certFile The path to certification file.
-     * 
+     *
      * @return The encrypted MimeMessage.
      * @throws TesterraSystemException thrown if message can't encrypted
      */
@@ -523,11 +523,11 @@ public final class MailUtils {
 
     /**
      * Encrypt a MimeMessage with certification file.
-     * 
+     *
      * @param message The message to encrypt.
      * @param mailSession The session for the message.
      * @param certFile The path to certification file.
-     * 
+     *
      * @return The encrypted MimeMessage.
      * @throws TesterraSystemException thrown if message can't encrypted
      */
@@ -598,7 +598,7 @@ public final class MailUtils {
 
     /**
      * Encrypts the message with certification file and saves them to storage.
-     * 
+     *
      * @param message The message to encrypt and save.
      * @param filename The path to file, where message should be stored.
      * @param certfile The path to certfile to encrypt the message.
@@ -611,7 +611,7 @@ public final class MailUtils {
 
     /**
      * Encrypts the message with certification file and saves them to storage.
-     * 
+     *
      * @param message The message to encrypt and save.
      * @param filename The path to file, where message should be stored.
      * @param certfile The path to certfile to encrypt the message.
@@ -626,14 +626,14 @@ public final class MailUtils {
 
     /**
      * Encrypts the message with keystore.
-     * 
+     *
      * @param message The message to encrypt.
      * @param mailSession The session for the message.
      * @param keyfile The path to the keyfile.
      * @param password The password of the keyfile.
-     * 
+     *
      * @return The encrypted MimeMessage.
-     * 
+     *
      * @throws TesterraSystemException thrown if message can't encrypted.
      */
     public static MimeMessage encryptMessageWithKeystore(final MimeMessage message, final Session mailSession,
@@ -643,14 +643,14 @@ public final class MailUtils {
 
     /**
      * Encrypts the message with keystore.
-     * 
+     *
      * @param message The message to encrypt.
      * @param mailSession The session for the message.
      * @param keyfile The path to the keyfile.
      * @param password The password of the keyfile.
-     * 
+     *
      * @return The encrypted MimeMessage.
-     * 
+     *
      * @throws TesterraSystemException thrown if message can't encrypted.
      */
     private static MimeMessage pEncryptMessageWithKeystore(final MimeMessage message, final Session mailSession,
@@ -685,12 +685,12 @@ public final class MailUtils {
 
     /**
      * Signs a message with keystore.
-     * 
+     *
      * @param message The message to sign.
      * @param mailSession The session of the message.
      * @param keyfile The path to keystore file to sign the message.
      * @param password The keystore file password.
-     * 
+     *
      * @return The signed message.
      * @throws TesterraSystemException thrown if message can't sign.
      */
@@ -701,12 +701,12 @@ public final class MailUtils {
 
     /**
      * Signs a message with keystore.
-     * 
+     *
      * @param message The message to sign.
      * @param mailSession The session of the message.
      * @param keyfile The path to keystore file to sign the message.
      * @param password The keystore file password.
-     * 
+     *
      * @return The signed message.
      * @throws TesterraSystemException thrown if message can't sign.
      */
@@ -761,12 +761,12 @@ public final class MailUtils {
 
     /**
      * Decrypt message from keystore.
-     * 
+     *
      * @param message The message to decrypt.
      * @param mailSession The session of the message.
      * @param keyfile The path to the keystore file.
      * @param password The password of the keystore file.
-     * 
+     *
      * @return The decrypted message.
      * @throws TesterraSystemException thrown if message can't decrypt.
      */
@@ -777,12 +777,12 @@ public final class MailUtils {
 
     /**
      * Decrypt message from keystore.
-     * 
+     *
      * @param message The message to decrypt.
      * @param mailSession The session of the message.
      * @param keyfile The path to the keystore file.
      * @param password The password of the keystore file.
-     * 
+     *
      * @return The decrypted message.
      * @throws TesterraSystemException thrown if message can't decrypt.
      */
@@ -834,7 +834,7 @@ public final class MailUtils {
 
     /**
      * Encrypts the message with keystore and saves them to storage.
-     * 
+     *
      * @param message The message.
      * @param mailsession The session.
      * @param keyfile The path to keystore file.
@@ -849,7 +849,7 @@ public final class MailUtils {
 
     /**
      * Encrypts the message with keystore and saves them to storage.
-     * 
+     *
      * @param message The message.
      * @param mailsession The session.
      * @param keyfile The path to keystore file.

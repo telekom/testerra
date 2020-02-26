@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 14.12.2015
@@ -26,13 +26,11 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.utils.FileDownloader;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -50,27 +48,11 @@ import java.lang.reflect.Method;
  *
  * @author erku
  */
-public class FileDownloaderTest extends AbstractTest {
-
-    private WebDriver createWebDriver(boolean extraSession) {
-        WebDriverRequest r = new DesktopWebDriverRequest();
-        WebDriver driver;
-
-        if (extraSession) {
-            r.sessionKey = "test";
-        }
-
-        driver = WebDriverManager.getWebDriver(r);
-        String url = TestPage.INPUT_TEST_PAGE.getUrl();
-        driver.get(url);
-
-        return driver;
-    }
+public class FileDownloaderTest extends AbstractTestSitesTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(Method method) {
-
-        FileDownloader.deleteDownloads();
+        new FileDownloader().cleanup();
     }
 
     /**
@@ -81,17 +63,17 @@ public class FileDownloaderTest extends AbstractTest {
     @Test()
     public void testT01_downloadFileAndDelete() throws IOException {
 
-        final WebDriver driver = createWebDriver(false);
+        final WebDriver driver = WebDriverManager.getWebDriver();
 
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true);
 
-        String download = downloader.download(driver, TestPage.INPUT_TEST_PAGE.getUrl() + "#",
+        String download = downloader.download(driver, WebDriverManager.getWebDriver().getCurrentUrl(),
                 "testT01_downloadFile.htm");
         File file = FileUtils.getFile(download);
 
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
 
-        FileDownloader.deleteDownloads();
+        downloader.cleanup();
         Assert.assertFalse(file.exists(), "File deleted.");
     }
 
@@ -103,7 +85,7 @@ public class FileDownloaderTest extends AbstractTest {
     @Test
     public void testT02_downloadFileOfHttpsUrl() throws IOException {
 
-        final WebDriver driver = createWebDriver(false);
+        final WebDriver driver = WebDriverManager.getWebDriver();
         driver.get("https://google.de");
 
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true);
@@ -122,14 +104,30 @@ public class FileDownloaderTest extends AbstractTest {
     @Test()
     public void test03_downloadFileToLongLocation() throws IOException {
 
-        final WebDriver driver = createWebDriver(false);
+        final WebDriver driver = WebDriverManager.getWebDriver();
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath() + "/foo/bar\\test", true, true);
 
-        String download = downloader.download(driver, TestPage.INPUT_TEST_PAGE.getUrl() + "#",
+        String download = downloader.download(driver, WebDriverManager.getWebDriver().getCurrentUrl(),
                 "test03_downloadFileToLongLocation.htm");
         File file = FileUtils.getFile(download);
 
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
+    }
+
+    @Test
+    public void test04_readFileNameFromResponseHeader() throws IOException {
+        WebDriver driver = WebDriverManager.getWebDriver();
+        FileDownloader downloader = new FileDownloader();
+        File file = downloader.download(driver, "https://upload.wikimedia.org/wikipedia/de/thumb/e/e1/Java-Logo.svg/800px-Java-Logo.svg.png");
+        Assert.assertEquals(file.getName(), "800px-Java-Logo.svg");
+    }
+
+    @Test
+    public void test05_readFileFromUrl() throws IOException {
+        WebDriver driver = WebDriverManager.getWebDriver();
+        FileDownloader downloader = new FileDownloader();
+        File file = downloader.download(driver, "https://httpbin.org/image/png");
+        Assert.assertEquals(file.getName(), "png");
     }
 
 }

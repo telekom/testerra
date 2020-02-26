@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.core.test.sikuli;
 
@@ -38,7 +38,12 @@ import java.net.URL;
  */
 public class SikuliBasedWebTest extends AbstractTestSitesTest {
 
-//    @Test
+    @Override
+    protected TestPage getTestPage() {
+        return TestPage.DRAG_AND_DROP_OVER_FRAMES;
+    }
+
+    //    @Test
     public void testT01_ByImage() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
 
@@ -62,9 +67,6 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
 //    @Test
     public void testT03a_ByImage_InFrames_FindElementInFrame() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.DRAG_AND_DROP_OVER_FRAMES.getUrl();
-        driver.get(url);
-
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");
         GuiElement guiElement = new GuiElement(driver, SikuliBy.image(driver, resourceURL));
 
@@ -75,9 +77,6 @@ public class SikuliBasedWebTest extends AbstractTestSitesTest {
 //    @Test
     public void testT03b_ByImage_InFrames_FindElementInFrame_withObsoleteGuiElementFrame() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
-        String url = TestPage.DRAG_AND_DROP_OVER_FRAMES.getUrl();
-        driver.get(url);
-
         GuiElement frame = new GuiElement(driver, By.id("draggableNodes"));
 
         URL resourceURL = FileUtils.getResourceURL("sikuli/ringo.png");

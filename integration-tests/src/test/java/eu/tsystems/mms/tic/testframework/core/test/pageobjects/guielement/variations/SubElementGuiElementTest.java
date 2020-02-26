@@ -14,14 +14,14 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
 
-import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.AbstractGuiElementNonFunctionalAssertionTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
@@ -29,18 +29,13 @@ import org.testng.annotations.Test;
 /**
  * Created by rnhb on 13.05.2015.
  */
-public class SubElementGuiElementTest extends GuiElementTestCollector {
+public class SubElementGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
 
     @Override
-    public GuiElement getGuiElementBy(By locator) {
-        final WebDriver driver = WebDriverManager.getWebDriver();
+    public GuiElement getGuiElementBy(Locate locator) {
+        WebDriver driver = getWebDriver();
         GuiElement parentElement = new GuiElement(driver, By.xpath("//body"));
         return parentElement.getSubElement(locator);
-    }
-
-    @Override
-    protected TestPage getTestPage() {
-        return TestPage.INPUT_TEST_PAGE;
     }
 
     /**
@@ -77,6 +72,11 @@ public class SubElementGuiElementTest extends GuiElementTestCollector {
     @Test
     public void testT04N_GuiElement_GetSubElement_NoSubElement_xPath() {
         checkGetSubElementWithLocatorIsNotPresent(By.xpath(".//a[@id='11']"));
+    }
+
+    @Test
+    public void testT04N_GuiElement_GetSubElement_NoSubElement_Absolute_xPath() {
+        checkGetSubElementWithLocatorIsNotPresent(By.xpath("//a[@id='11']"));
     }
 
     /**

@@ -31,7 +31,7 @@ public class WebElementProxy extends ObjectUtils.PassThroughProxy<WebElement> {
             if (args != null) {
                 msg += " " + Arrays.stream(args).map(Object::toString).collect(Collectors.joining(" "));
             }
-            ProxyUtils.log(LOGGER, sessionContext, msg);
+            LOGGER.info(msg);;
         }
 
         ProxyUtils.updateSessionContextRelations(sessionContext);

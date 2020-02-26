@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
@@ -32,7 +32,7 @@ public class SearchCriteria {
 
     /**
      * Create search criteria
-     * 
+     *
      * @param searchCriteriaType {@link SearchCriteriaType}
      * @param value java.util.Date for {@link SearchCriteriaType#AFTER_DATE}, String for others.
      */
@@ -50,7 +50,7 @@ public class SearchCriteria {
     }
 
     /**
-     * @return value as String or Runtime exception if it's not a string. 
+     * @return value as String or Runtime exception if it's not a string.
      */
     public String getStringValue() {
         if(!(value instanceof String)) {

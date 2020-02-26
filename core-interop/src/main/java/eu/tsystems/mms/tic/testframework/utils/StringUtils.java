@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 17.05.2010
- * 
+ *
  * Copyright(c) 1995 - 2010 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 /**
  * Sammlung von StringUtils.
  */
-public final class StringUtils extends org.apache.commons.lang.StringUtils {
+public final class StringUtils extends  org.apache.commons.lang3.StringUtils {
 
     /** Generator für Pseudozufallszahlen. */
     private static final Random GENERATOR = new Random();
@@ -68,7 +68,7 @@ public final class StringUtils extends org.apache.commons.lang.StringUtils {
 
     /**
      * Util-Methode zum Entfernen alle HTML Tags aus einem String.
-     * 
+     *
      * @param input Der zu untersuchende HTML-String
      * @return Der gestrippte String
      */
@@ -78,7 +78,7 @@ public final class StringUtils extends org.apache.commons.lang.StringUtils {
 
     /**
      * Util Methode, die alle Tabulatoren, Zeichenumbrüche und HTML Tags aus einem String entfernt.
-     * 
+     *
      * @param input Der zu untersuchende Text.
      * @return txt Der Plaintext.
      */
@@ -97,7 +97,7 @@ public final class StringUtils extends org.apache.commons.lang.StringUtils {
 
     /**
      * Hilfsmethode zum String konkatinieren.
-     * 
+     *
      * @param strings Die Strings als Liste.
      * @return string Der zusammengesetzte String.
      */
@@ -146,7 +146,7 @@ public final class StringUtils extends org.apache.commons.lang.StringUtils {
 
     /**
      * Die Funktion liefert einen zufälligen String der Länge length. Es handelt sich um reguläre Sonderzeichen.
-     * 
+     *
      * @param length Länge des Strings
      * @return zufälliger String
      */
@@ -156,7 +156,7 @@ public final class StringUtils extends org.apache.commons.lang.StringUtils {
 
     /**
      * Die Funktion liefert einen zufälligen String der Länge length. Es handelt sich um Buchstaben A-Z und a-z.
-     * 
+     *
      * @param length Länge des Strings
      * @return zufälliger String
      */
@@ -188,7 +188,7 @@ public final class StringUtils extends org.apache.commons.lang.StringUtils {
 
     /**
      * Die Funktion liefert einen zufälligen String der Länge length. Es handelt sich um reguläre Sonderzeichen.
-     * 
+     *
      * @param length Länge des Strings
      * @return zufälliger String
      */
@@ -221,7 +221,7 @@ public final class StringUtils extends org.apache.commons.lang.StringUtils {
 
     /**
      * Entfernt aus einem Selektor String den anstehenden Typ Präfix.
-     * 
+     *
      * @param selektor Selektor.
      * @return selektor ohne Präfix.
      */
@@ -240,7 +240,7 @@ public final class StringUtils extends org.apache.commons.lang.StringUtils {
 
     /**
      * Entfernt das "&" sowie den Platzhalter.
-     * 
+     *
      * @param selektor Selektor
      * @return Selektor ohne "&" oder Platzhalter
      */
@@ -259,7 +259,7 @@ public final class StringUtils extends org.apache.commons.lang.StringUtils {
 
     /**
      * Enthält ein Selektor eine maxlength information, so wird sie mit dieser Funktion entfernt.
-     * 
+     *
      * @param selector Selektor mit maxlength Information.
      * @return Selektor ohne maxlength Information.
      */
@@ -269,7 +269,7 @@ public final class StringUtils extends org.apache.commons.lang.StringUtils {
 
     /**
      * Formates a template with given bugIds.
-     * 
+     *
      * @param formatStr template
      * @param replaceID replace bugIds
      * @return formattes String
@@ -280,7 +280,7 @@ public final class StringUtils extends org.apache.commons.lang.StringUtils {
 
     /**
      * Hilfsmethode welche einen String entgegen nimmt und überprüft ob dieser zu einem Integer geparsed werden kann.
-     * 
+     *
      * @param input Stringeingabe.
      * @return true wenn parsebar, sonst false.
      */

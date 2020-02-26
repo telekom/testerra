@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 25.01.2011
@@ -43,6 +43,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.velocity.tools.generic.DateTool;
 
 import java.io.*;
 import java.util.Collection;
@@ -221,33 +222,39 @@ public class ReportFormatter {
      * @param testClass A test class.
      * @param template  The template file to use.
      */
-    public static void createMethodsView(final File logFile, final ClassContext testClass,
-                                         final String template) {
-
+    public static void createMethodsView(
+        File logFile,
+        ClassContext testClass,
+        String template
+    ) {
         try {
             pFormatWithTestClass(logFile, testClass, template);
-        } catch (IOException e) {
+        } catch (Exception e) {
             out(e);
         }
     }
 
     private static void out(Exception e) {
-        LOGGER.error("Could not create html", e);
+        LOGGER.error("Could not create html: " + e, e);
     }
 
-    public static void createMethodsFrame(final File logFile, final MethodContext methodContext,
-                                          final String template) {
-
+    public static void createMethodsFrame(
+        File logFile,
+        MethodContext methodContext,
+        String template
+    ) {
         try {
             pFormatWithTestMethod(logFile, methodContext, template);
-        } catch (IOException e) {
+        } catch (Exception e) {
             out(e);
         }
     }
 
-    public static void createMultiMethodsHtml(final ReportingData reportingData, final File logFile,
-                                              final String template) {
-
+    public static void createMultiMethodsHtml(
+        ReportingData reportingData,
+        File logFile,
+        String template
+    ) {
         try {
             pFormatWithFailuresAndHistory(reportingData, logFile, template);
         } catch (IOException e) {
@@ -262,8 +269,11 @@ public class ReportFormatter {
      * @param testClass A test class.
      * @param template  The template file to use.
      */
-    private static void pFormatWithTestClass(final File logFile, final ClassContext testClass,
-                                             final String template) throws IOException {
+    private static void pFormatWithTestClass(
+        File logFile,
+        ClassContext testClass,
+        String template
+    ) throws IOException {
 
         Template htmlLogTemplate = Velocity.getTemplate(template, "UTF-8");
         htmlLogTemplate.setEncoding("UTF-8");
@@ -285,9 +295,11 @@ public class ReportFormatter {
      * @param methodContext A test class.
      * @param template            The template file to use.
      */
-    private static void pFormatWithTestMethod(final File logFile, final MethodContext methodContext,
-                                              final String template) throws IOException {
-
+    private static void pFormatWithTestMethod(
+        File logFile,
+        MethodContext methodContext,
+        String template
+    ) throws IOException {
         Template htmlLogTemplate = Velocity.getTemplate(template, "UTF-8");
         htmlLogTemplate.setEncoding("UTF-8");
 
@@ -352,6 +364,7 @@ public class ReportFormatter {
         htmlLogTemplate.setEncoding("UTF-8");
         VelocityContext context = getVelocityContext();
 
+        context.put("classContexts", reportingData.classContexts);
         context.put("dashboardInfos", ReportInfo.getDashboardInfo().getInfos());
         context.put("dashboardWarnings", ReportInfo.getDashboardWarning().getInfos());
 
@@ -365,6 +378,7 @@ public class ReportFormatter {
         context.put("reportScreenshotsPreview", Flags.REPORT_SCREENSHOTS_PREVIEW);
         context.put("reportName", ReportUtils.getReportName());
         context.put("dryrun", Flags.DRY_RUN);
+        context.put("dateFormatter", new DateTool());
 
         context.put("filter", FilterUtils.getInstance());
         context.put("fcActive", Flags.FAILURE_CORRIDOR_ACTIVE);

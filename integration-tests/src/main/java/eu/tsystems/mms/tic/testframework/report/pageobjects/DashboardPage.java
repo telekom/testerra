@@ -7,25 +7,30 @@ import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractReportPage;
 import eu.tsystems.mms.tic.testframework.report.model.IReportAnnotationVerifier;
 import eu.tsystems.mms.tic.testframework.report.model.ReportAnnotationType;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.*;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.DashboardModuleClassBarChart;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.DashboardModuleFailureCorridor;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.DashboardModuleHistoryAreaChart;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.DashboardModuleInformationCorridor;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.DashboardModuleMethodChart;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.DashboardModuleTestResultNumberBreakdown;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.DashboardModuleTestResultPieChart;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 
 /**
  * Created by riwa on 25.10.2016.
  */
 public class DashboardPage extends AbstractReportPage implements IReportAnnotationVerifier {
+
     @Check
-    public final GuiElement testerraLogo = new GuiElement(this.driver, By.cssSelector("img[alt='testerra']"), mainFrame);
+    public final GuiElement testerraLogo = new GuiElement(this.getWebDriver(), By.cssSelector("img[alt='testerra']"), mainFrame);
     public final DashboardModuleTestResultPieChart dashboardModuleTestResultPieChart = PageFactory.create(DashboardModuleTestResultPieChart.class, driver);
     public final DashboardModuleTestResultNumberBreakdown dashboardModuleTestResultNumberBreakdown = PageFactory.create(DashboardModuleTestResultNumberBreakdown.class, driver);
     public final DashboardModuleFailureCorridor dashboardModuleFailureCorridor = PageFactory.create(DashboardModuleFailureCorridor.class, driver);
     public final DashboardModuleInformationCorridor dashboardModuleInformationCorridor = PageFactory.create(DashboardModuleInformationCorridor.class, driver);
     public final DashboardModuleClassBarChart dashboardModuleClassBarChart = PageFactory.create(DashboardModuleClassBarChart.class, driver);
-    public final GuiElement screenShotInfoButton = new GuiElement(this.driver, By.xpath("//*[contains(text(),'test_testMidCorridorFailed1')]"), mainFrame);
+    public final GuiElement screenShotInfoButton = new GuiElement(this.getWebDriver(), By.xpath("//*[contains(text(),'test_testMidCorridorFailed1')]"), mainFrame);
 
     public DashboardPage(WebDriver driver) {
         super(driver);
@@ -58,7 +63,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
      */
     public DashboardPage click(GuiElement element) {
         element.click();
-        return PageFactory.create(DashboardPage.class, this.driver);
+        return PageFactory.create(DashboardPage.class, this.getWebDriver());
     }
 
     /*
@@ -89,7 +94,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
      */
     public MethodDetailsPage clickMethodDetail(GuiElement methodDetail) {
         methodDetail.click();
-        return PageFactory.create(MethodDetailsPage.class, this.driver);
+        return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());
     }
 
     /**
@@ -100,7 +105,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
      */
     public GuiElement getResultTableHeaderForTestResult(TestResultHelper.TestResult testResult) {
         String testState = testResult.getTestState();
-        GuiElement testResultTableHeader = new GuiElement(driver, By.xpath("(//*[@class='header']/../tr[@class='test testbar"+testState+" filterMethods filter"+testState+"'])[1]"), mainFrame);
+        GuiElement testResultTableHeader = new GuiElement(driver, By.xpath("(//*[@class='header']/../tr[@class='test testbar" + testState + " filterMethods filter" + testState + "'])[1]"), mainFrame);
         testResultTableHeader.setName("testResultTableHeader");
 
         return testResultTableHeader;
@@ -116,7 +121,7 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
      * Check for the visibility of a annotation type for a method name.
      *
      * @param annotationType the type to be checked.
-     * @param methodName a given method which is assumed to be annotated.
+     * @param methodName     a given method which is assumed to be annotated.
      */
     @Override
     public void assertAnnotationMarkIsDisplayed(ReportAnnotationType annotationType, String methodName) {
@@ -150,16 +155,16 @@ public class DashboardPage extends AbstractReportPage implements IReportAnnotati
         barChartElement.click();
         GuiElement methodChartElement = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
         methodChartElement.click();
-        return PageFactory.create(MethodDetailsPage.class, this.driver);
+        return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());
     }
 
-    public MethodDetailsPage goToMethodDetailsPageUsingTestNumberFilter(TestResultHelper.TestResult testResult, String className, String methodName) throws Exception{
+    public MethodDetailsPage goToMethodDetailsPageUsingTestNumberFilter(TestResultHelper.TestResult testResult, String className, String methodName) throws Exception {
         dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResult);
         GuiElement barChartElement = dashboardModuleClassBarChart.getBarChartElementByClassName(className);
         barChartElement.click();
         GuiElement methodChartElement = getMethodChartModule().getMethodChartElementRowByMethodName(methodName);
         methodChartElement.click();
-        return PageFactory.create(MethodDetailsPage.class, this.driver);
+        return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());
     }
 
 }

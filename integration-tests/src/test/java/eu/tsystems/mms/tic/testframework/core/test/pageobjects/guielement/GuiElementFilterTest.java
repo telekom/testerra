@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -37,12 +37,6 @@ import org.testng.annotations.Test;
  */
 public class GuiElementFilterTest extends AbstractTestSitesTest {
 
-    public void goToTestPage() {
-        TestPage testPage = TestPage.INPUT_TEST_PAGE;
-        WebDriver driver = WebDriverManager.getWebDriver();
-        driver.get(testPage.getUrl());
-    }
-
     private void assertLogFieldContains(String textToBeContained) {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement logField = new GuiElement(driver, By.xpath(".//*[@id='99']"));
@@ -53,7 +47,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT01_Telxt_Is() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.TEXT.is("Open again"));
@@ -64,7 +57,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT02_Text_IsNot() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id='11']"))
                 .withWebElementFilter(WebElementFilter.TEXT.isNot("Open again"));
@@ -74,7 +66,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT03_Text_Contains() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.TEXT.contains("Open a"));
@@ -85,7 +76,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT04_Text_ContainsNot() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id='11']"))
                 .withWebElementFilter(WebElementFilter.TEXT.containsNot("Open a"));
@@ -95,7 +85,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT05_Displayed_Is() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement nonVisibleTable = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.DISPLAYED.is(false));
@@ -104,7 +93,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT05_Displayed_Is_As_Selector() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().notDisplayed().xpath(".//*[@id]"));
         nonVisibleTable.asserts().assertIsNotDisplayed();
@@ -112,7 +100,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT06_Size_IsBetween() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement submitButton = new GuiElement(driver, By.xpath("//input[@type='submit']"));
         Dimension dimSubmitButton = submitButton.getSize();
@@ -127,7 +114,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT07_Attribute_Contains() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement button2 = new GuiElement(driver, By.xpath("//input[@value='Button2']"));
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath(".//*[@id]"))
@@ -140,7 +126,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT08_Attribute_ContainsNot() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath(".//*[@id='6']"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.containsNot("value", "Button2"));
@@ -150,9 +135,8 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT09_Attribute_Exists() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath("//div[@class='className']/input"))
+        GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath("//div[@class='box'][1]/input"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.exists("disabled"));
         elementsWithAttributes.asserts().assertAttributeContains("id", "7");
 
@@ -160,7 +144,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT10_Attribute_ExistsNot() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath("//input[@type='radio']"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.existsNot("disabled"));
@@ -170,7 +153,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT11_Attribute_Is() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath(".//*"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.is("type", "submit"));
@@ -179,7 +161,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT12_Attribute_IsNot() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithAttributes = new GuiElement(driver, By.xpath(".//input[@value]"))
                 .withWebElementFilter(WebElementFilter.ATTRIBUTE.isNot("type", "button"));
@@ -188,7 +169,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT13_CSS_Contains() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.contains("visibility", "hid"));
@@ -197,7 +177,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT14_CSS_ContainsNot() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id='100']"))
                 .withWebElementFilter(WebElementFilter.CSS.containsNot("visibility", "den"));
@@ -207,7 +186,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT15_CSS_Exists() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.exists("visibility"));
@@ -216,7 +194,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT16N_CSS_Exists() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath("//*"))
                 .withWebElementFilter(WebElementFilter.CSS.exists("wabilibuu"));
@@ -225,7 +202,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT17_CSS_ExistsNot() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*"))
                 .withWebElementFilter(WebElementFilter.CSS.existsNot("visibility"));
@@ -235,7 +211,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT18_CSS_Is() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.is("visibility", "hidden"));
@@ -245,7 +220,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT19N_CSS_Is() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementWithCSS = new GuiElement(driver, By.xpath(".//*[@id]"))
                 .withWebElementFilter(WebElementFilter.CSS.is("background-color", "black"));
@@ -255,7 +229,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT20_CSS_IsNot() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementWithCSS = new GuiElement(driver, By.xpath(".//*[@id='100']"))
                 .withWebElementFilter(WebElementFilter.CSS.isNot("visibility", "hidden"));
@@ -265,7 +238,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT21_Tag_Contains() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithTag = new GuiElement(driver, By.xpath("//*[@onclick]"))
                 .withWebElementFilter(WebElementFilter.TAG.contains("inp"));
@@ -274,7 +246,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT22_Tag_ContainsNot() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithTag = new GuiElement(driver, By.xpath("//input"))
                 .withWebElementFilter(WebElementFilter.TAG.containsNot("inp"));
@@ -284,7 +255,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT23_Tag_Is() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementsWithTag = new GuiElement(driver, By.xpath(".//*"))
                 .withWebElementFilter(WebElementFilter.TAG.is("select"));
@@ -293,7 +263,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT24_Tag_IsNot() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement elementWithTag = new GuiElement(driver, By.xpath(".//*[@id='6']"))
                 .withWebElementFilter(WebElementFilter.TAG.isNot("input"));
@@ -303,7 +272,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT25_Position_Is() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement submitButton = new GuiElement(driver, By.xpath("//input[@type='submit']"));
         Point pointSubmitButton = submitButton.getLocation();
@@ -316,7 +284,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT26_Position_IsBetween() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement submitButton = new GuiElement(driver, By.xpath("//input[@type='submit']"));
         Point pointSubmitButton = submitButton.getLocation();
@@ -332,7 +299,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     @Test
     public void testT27_Size_Is() {
-        goToTestPage();
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id='11']"));
         Dimension dimensionOPenAgainLink = openAgainLink.getSize();

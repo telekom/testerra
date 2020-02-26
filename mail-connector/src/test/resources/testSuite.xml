@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Mail Connector Tests" verbose="1" parallel="false">
+    <test name="Mail Connector Tests">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.mailconnector.test.MailConnectorTest"/>
+        </classes>
+    </test>
+</suite>

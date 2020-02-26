@@ -14,12 +14,13 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.bmp;
 
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 
 public abstract class AbstractTest extends TesterraTest {
+
 }

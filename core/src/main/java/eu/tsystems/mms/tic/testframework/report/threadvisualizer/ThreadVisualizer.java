@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 04.01.2013
- * 
+ *
  * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -47,7 +47,7 @@ public class ThreadVisualizer {
 
     /**
      * Check if ThreadVisualizer DataStorage has Data.
-     * 
+     *
      * @return true if DataStorage is not empty, false otherwise.
      */
     public static boolean hasData() {

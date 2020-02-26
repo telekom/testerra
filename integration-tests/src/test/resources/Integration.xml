@@ -1,0 +1,49 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Testerra Integration Test Suite" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="false">
+
+    <test name="Core" parallel="methods">
+        <groups>
+            <run>
+                <exclude name="SEQUENTIAL"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.common"/>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.testdata"/>
+        </packages>
+    </test>
+
+    <suite-files>
+        <suite-file path="GuiElementStandard.xml"></suite-file>
+        <suite-file path="GuiElementVariations.xml"></suite-file>
+        <suite-file path="PageObjects.xml"></suite-file>
+    </suite-files>
+
+    <test name="Utils" parallel="methods">
+        <groups>
+            <run>
+                <exclude name="SEQUENTIAL"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.utils"/>
+        </packages>
+    </test>
+
+    <test name="Events" parallel="methods">
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.events"/>
+        </packages>
+    </test>
+
+    <test name="Sequential tests" parallel="false">
+        <groups>
+            <run>
+                <include name="SEQUENTIAL" />
+            </run>
+        </groups>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.utils"></package>
+        </packages>
+    </test>
+</suite>

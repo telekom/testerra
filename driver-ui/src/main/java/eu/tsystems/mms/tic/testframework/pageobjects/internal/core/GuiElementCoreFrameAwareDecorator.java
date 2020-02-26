@@ -14,12 +14,11 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameAwareSelect;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
@@ -45,19 +44,13 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
     protected void beforeDelegation() {
         if (guiElementData.hasFrameLogic()) {
             FrameLogic frameLogic = guiElementData.frameLogic;
-            ExecutionLog executionLog = guiElementData.executionLog;
-            executionLog.addMessage("Switching to frames " + frameLogic);
             frameLogic.switchToCorrectFrame();
-            executionLog.addMessage("Switching to frames successful.");
         }
     }
 
     @Override
     protected void afterDelegation() {
-        ExecutionLog executionLog = guiElementData.executionLog;
-        executionLog.addMessage("Switching to DefaultFrame.");
         guiElementData.frameLogic.switchToDefaultFrame();
-        executionLog.addMessage("Switching to DefaultFrame successful.");
     }
 
     @Override

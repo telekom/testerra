@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 28.03.2013
@@ -35,8 +35,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.model.HostInfo;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
-import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.YauaaBrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.json.JSONException;
@@ -44,7 +43,11 @@ import org.json.JSONObject;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.*;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.CommandExecutor;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.HttpCommandExecutor;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,16 +111,6 @@ public final class WebDriverManagerUtils {
 
         String browserInfo = pLogUserAgent(driver);
 
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        if (methodContext != null) {
-            ClassContext classContext = methodContext.classContext;
-            String context = classContext.name + "." + methodContext.name + " : " + sessionKey + " on " + hostInfo;
-            BrowserInformation.setBrowserInfoWithContext(browserInfo, context);
-        }
-        else {
-            LOGGER.warn("You started the web driver session not from inside a method, YOU SHALL NOT DO THIS ;)");
-        }
-
         SessionContext sessionContext = ExecutionContextController.getCurrentSessionContext();
         if (sessionContext != null) {
             sessionContext.metaData.put("browserInfo", browserInfo);
@@ -176,12 +169,12 @@ public final class WebDriverManagerUtils {
                 userAgentString = (String) ((JavascriptExecutor) realDriver).executeScript("return navigator.userAgent;");
             } catch (Exception e) {
                 LOGGER.error("Error requesting user agent", e);
-
             }
-            browserInformation = new BrowserInformation(userAgentString);
+
+            browserInformation = new YauaaBrowserInformation(userAgentString);
         }
         else {
-            browserInformation = new BrowserInformation(null);
+            browserInformation = new YauaaBrowserInformation(null);
         }
 
         CACHED_BROWSER_INFOS.put(driver, browserInformation);
@@ -392,12 +385,14 @@ public final class WebDriverManagerUtils {
      *
      * @return DesiredCapabilities.
      */
+    @Deprecated
     public static DesiredCapabilities generateNewDesiredCapabilities() {
         DesiredCapabilities cap = new DesiredCapabilities();
         return cap;
     }
 
-    public static String getSessionId(WebDriver driver) {
+    public static String getSessionKey(WebDriver driver) {
+
         return WebDriverSessionsManager.getSessionKey(driver);
     }
 

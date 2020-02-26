@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 04.01.2013
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
@@ -38,8 +37,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiElementTimeoutFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroupAction;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.groups.GuiElementGroups;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -51,6 +48,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,12 +60,7 @@ import java.util.Random;
  * @author pele
  */
 public abstract class Page extends AbstractPage {
-
-    public static final String CHECKPAGE_METHOD_NAME = "checkPage";
-    private final GuiElementGroups guiElementGroups;
-
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
-
     public static void registerPageLoadHandler(PageLoadHandler h) {
         pageLoadHandlers.add(h);
     }
@@ -93,18 +86,15 @@ public abstract class Page extends AbstractPage {
         for (PageLoadHandler pageLoadHandler : pageLoadHandlers) {
             pageLoadHandler.run(this);
         }
-
-        // initialize ge groups
-        guiElementGroups = new GuiElementGroups();
     }
 
     /**
      * Execute loadtestspecific
      */
     private void perfTestExtras() {
-        StopWatch.stopPageLoad(driver, this.getClass());
+        StopWatch.stopPageLoad(getWebDriver(), this.getClass());
 
-        if (UITestUtils.getGuiElementType() == GuiElementType.perf) {
+        if (PropertyManager.getBooleanProperty(TesterraProperties.PERF_TEST, false)) {
             executeThinkTime();
         }
 
@@ -157,14 +147,12 @@ public abstract class Page extends AbstractPage {
         for (FieldWithActionConfig field : fields) {
             GuiElementCheckFieldAction guiElementCheckFieldAction = new GuiElementCheckFieldAction(field, declaringPage);
             SetNameFieldAction setNameFieldAction = new SetNameFieldAction(field.field, declaringPage);
-            GuiElementGroupAction guiElementGroupAction = new GuiElementGroupAction(field.field, declaringPage, guiElementGroups);
 
             /*
             Priority List!!
              */
             fieldActions.add(setNameFieldAction);
             fieldActions.add(new SetGuiElementTimeoutFieldAction(field.field, declaringPage));
-            fieldActions.add(guiElementGroupAction);
             fieldActions.add(guiElementCheckFieldAction);
         }
         return fieldActions;
@@ -181,13 +169,14 @@ public abstract class Page extends AbstractPage {
      * Send F5 to the browser.
      */
     public void refresh(boolean checkPage) {
-        driver.navigate().refresh();
+        getWebDriver().navigate().refresh();
         if (checkPage) {
             pCheckPage(false, false, false);
         }
     }
 
     public boolean isTextPresent(String text) {
+        WebDriver driver = getWebDriver();
         driver.switchTo().defaultContent();
 
         // check frames recursive
@@ -199,6 +188,7 @@ public abstract class Page extends AbstractPage {
     }
 
     public boolean isTextDisplayed(String text) {
+        WebDriver driver = getWebDriver();
         driver.switchTo().defaultContent();
 
         // check frames recursive
@@ -219,6 +209,7 @@ public abstract class Page extends AbstractPage {
 
         String textFinderXpath = TEXT_FINDER_XPATH.replace(TEXT_FINDER_PLACEHOLDER, text);
 
+        WebDriver driver = getWebDriver();
         textElement = new GuiElement(driver, By.xpath(textFinderXpath));
         if (isDisplayed) {
             textElement.withWebElementFilter(WebElementFilter.DISPLAYED.is(true));
@@ -228,7 +219,7 @@ public abstract class Page extends AbstractPage {
         if (textElement.isPresent()) {
             // highlight
             WebElement webElement = textElement.getWebElement();
-            JSUtils.highlightWebElementStatic(driver, webElement, 0, 255, 0);
+            JSUtils.highlightWebElementStatic(driver, webElement, new Color(0, 255, 0));
             return true;
         }
 
@@ -394,30 +385,5 @@ public abstract class Page extends AbstractPage {
     @Override
     public String toString() {
         return this.getClass().getSimpleName();
-    }
-
-    public GuiElementGroups getGuiElementGroups() {
-        return guiElementGroups;
-    }
-
-    /**
-     * This method returns the steps string.
-     * @param simpleClassName .
-     * @param actionName .
-     * @return .
-     */
-    public static String getPageContext(final String simpleClassName, String actionName) {
-        if (StringUtils.isStringEmpty(actionName)) {
-            return simpleClassName;
-        }
-        else if ("<init>".equals(actionName)) {
-//            actionName = "Initialization";
-            return simpleClassName;
-        }
-        else if (actionName.equals(Page.CHECKPAGE_METHOD_NAME)) {
-            return simpleClassName;
-        }
-
-        return simpleClassName + " -> " + actionName;
     }
 }

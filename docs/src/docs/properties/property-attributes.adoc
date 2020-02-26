@@ -4,8 +4,6 @@
 // Testerra core
 :proxy_settings_load:               tt.proxy.settings.load
 :proxy_settings_file:               tt.proxy.settings.file
-:test_properties_file:              tt.test.properties.file
-:loglevel:                          tt.loglevel
 
 // webdriver
 :browser:                           tt.browser
@@ -17,9 +15,11 @@
 :selenium_server_host:              tt.selenium.server.host
 :selenium_server_port:              tt.selenium.server.port
 :browser_maximize:                  tt.browser.maximize
+:browser_maximize_position:                  tt.browser.maximize.position
 :display_resolution:                tt.display.resolution
 :wdm_closewindows_aftertestmethods: tt.wdm.closewindows.aftertestmethods
 :wdm_closewindows_onfailure:        tt.wdm.closewindows.onfailure
+:wdm_timeouts_selenium_command_stuck: tt.wdm.timeouts.seconds.selenium.command.stuck
 :takeAutomaticScreenshot:           tt.takeAutomaticScreenshot
 :webdriver_timeouts_seconds_pageload:   webdriver.timeouts.seconds.pageload
 :webdriver_timeouts_seconds_script:     webdriver.timeouts.seconds.script
@@ -30,7 +30,6 @@
 
 // guielement
 :element_timeout_seconds:           tt.element.timeout.seconds
-:guielement_type:                   tt.guielement.type
 :guielement_default_assertcollector: tt.guielement.default.assertcollector
 :guielement_use_js_alternatives:    tt.guielement.use.js.alternatives
 :guielement_checkrule:              tt.guielement.checkrule
@@ -39,8 +38,8 @@
 :delay_after_guielement_action_millis:      tt.delay.after.guielement.action.millis
 
 // report
-:reportdir:                         tt.reportdir
-:reportname:                        tt.reportname
+:reportdir:                         tt.report.dir
+:reportname:                        tt.report.name
 :runcfg:                            tt.runcfg
 :screenshotter_active:              tt.screenshotter.active
 :report_screenshots_preview:        tt.report.screenshots.preview
@@ -56,7 +55,6 @@
 :failed_tests_if_throwable_classes:         tt.failed.tests.if.throwable.classes
 :failed_tests_if_throwable_messages:        tt.failed.tests.if.throwable.messages
 :failed_tests_max_retries:          tt.failed.tests.max.retries
-:failed_tests_retry_flapping:       tt.failed.tests.retry.flapping
 :reuse_dataprovider_driver_by_thread:       tt.reuse.dataprovider.driver.by.thread
 :watchdog_enable:                   tt.watchdog.enable
 :watchdog_timeout_seconds:          tt.watchdog.timeout.seconds

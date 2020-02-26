@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 07.08.2012
@@ -28,21 +28,15 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Class holding configuration settings for the WebDriverManager. Some are writable. This class is not ThreadSafe, some
  * settings may not be valid.
  */
 public class WebDriverManagerConfig {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverManagerConfig.class);
 
     /*
      * Default values.
@@ -55,7 +49,7 @@ public class WebDriverManagerConfig {
     /**
      * WebDriverMode that is used.
      */
-    public WebDriverMode webDriverMode = WebDriverMode.local;
+    public WebDriverMode webDriverMode = WebDriverMode.valueOf(PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, WebDriverMode.local.name()));
 
     /**
      * Close windows after Test Methods.
@@ -71,25 +65,27 @@ public class WebDriverManagerConfig {
             true);
 
     public boolean maximize = PropertyManager.getBooleanProperty(TesterraProperties.BROWSER_MAXIMIZE, false);
+    public Position maximizePosition = Position.valueOf(PropertyManager.getProperty(TesterraProperties.BROWSER_MAXIMIZE_POSITION, Position.CENTER.toString()).toUpperCase());
 
     /**
      * Default constructor.
      */
     public WebDriverManagerConfig() {
-        init();
     }
 
     /**
-     * Init config values.
+     * @deprecated Use {@link #browser()} instead
      */
-    public void init() {
-        /*
-        set remote
-         */
-        initWebDriverMode();
+    @Deprecated
+    public String getDefaultBrowser() {
+        return browser();
     }
 
-    public static String browser() {
+    public WebDriverMode getWebDriverMode() {
+        return webDriverMode;
+    }
+
+    public String browser() {
         String browser = PropertyManager.getProperty(TesterraProperties.BROWSER, null);
 
         String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
@@ -101,7 +97,7 @@ public class WebDriverManagerConfig {
         return browser;
     }
 
-    public static String browserVersion() {
+    public String browserVersion() {
         String browserVersion = PropertyManager.getProperty(TesterraProperties.BROWSER_VERSION, null);
         String browserSetting = PropertyManager.getProperty(TesterraProperties.BROWSER_SETTING);
         if (!StringUtils.isStringEmpty(browserSetting) && browserSetting.contains(":")) {
@@ -109,17 +105,6 @@ public class WebDriverManagerConfig {
             browserVersion = split[1];
         }
         return browserVersion;
-    }
-
-    /**
-     * Returns the webdriver mode.
-     * 
-     * @return the webDriverMode
-     */
-    private WebDriverMode initWebDriverMode() {
-        String modeString = PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, webDriverMode.name()).trim();
-        webDriverMode = WebDriverMode.valueOf(modeString);
-        return webDriverMode;
     }
 
     public boolean areSessionsClosedAfterTestMethod() {

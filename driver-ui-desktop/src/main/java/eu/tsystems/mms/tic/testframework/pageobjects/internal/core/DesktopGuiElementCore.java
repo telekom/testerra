@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
@@ -24,25 +24,37 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
+import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
@@ -50,6 +62,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -60,7 +73,7 @@ import java.util.List;
 /**
  * Created by rnhb on 12.08.2015.
  */
-public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives {
+public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives, Loggable {
 
     private By by;
 
@@ -73,9 +86,9 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     private final GuiElementData guiElementData;
 
     public DesktopGuiElementCore(
-        By by,
-        WebDriver webDriver,
-        GuiElementData guiElementData
+            By by,
+            WebDriver webDriver,
+            GuiElementData guiElementData
     ) {
         this.by = by;
         this.webDriver = webDriver;
@@ -88,11 +101,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
      * @return the WebElement located by by-locator.
      */
     private int find() {
-        return find(false);
-    }
-
-    private int find(final boolean enableHighlight) {
-        guiElementData.executionLog.addMessage("Executing find().");
         int findCounter = -1;
         int numberOfFoundElements = 0;
         long start = System.currentTimeMillis();
@@ -107,7 +115,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
                 elements = webDriver.findElements(by);
             }
             if (elements != null) {
-                guiElementData.executionLog.addMessage("Found " + elements.size() + " WebElements for the locator " + by);
                 final Locate selector = guiElementData.guiElement.getLocator();
                 if (selector.isUnique() && elements.size() > 1) {
                     throw new Exception("To many WebElements found (" + elements.size() + ")");
@@ -124,10 +131,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         throwExceptionIfWebElementIsNull(notFoundCause);
 
         logTimings(start, findCounter);
-
-        if (enableHighlight) {
-            highlightWebElement();
-        }
 
         if (delayAfterFindInMilliSeconds > 0) {
             TimerUtils.sleep(delayAfterFindInMilliSeconds);
@@ -160,6 +163,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
             // set webelement
             guiElementData.webElement = webElement;
+            GuiElementData.WEBELEMENT_MAP.put(webElement, guiElementData.guiElement);
 
             // find timings
             int findCounter = Timings.raiseFindCounter();
@@ -201,7 +205,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
                 }
             }
             LOGGER.debug("Before Filtering: " + foundElements.size() + " WebElements, After Filtering: " + filteredElements.size() + " WebElements.");
-            guiElementData.executionLog.addMessage(filteredElements.size() + " WebElements remaining after filtering. Removed " + (foundElements.size() - filteredElements.size() + " WebElements."));
             return filteredElements;
         }
     }
@@ -219,12 +222,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         }
     }
 
-    private void highlightWebElement() {
-        if (POConfig.isDemoMode()) {
-            LOGGER.debug("find(): Highlighting WebElement");
-            JSUtils.highlightWebElement(webDriver, guiElementData.webElement, 0, 0, 255); // blue
-            LOGGER.debug("find(): Done highlighting WebElement");
-        }
+    private void highlightWebElement(Color color) {
+        JSUtils.highlightWebElement(webDriver, guiElementData.webElement, color);
     }
 
     private void logTimings(long start, int findCounter) {
@@ -247,7 +246,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     @Override
     public WebElement getWebElement() {
-        find(false);
+        find();
         return guiElementData.webElement;
     }
 
@@ -266,24 +265,11 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         pScrollToElement(yOffset);
     }
 
-    @Override
-    public long getScrollX() {
-        Object data = JSUtils.executeScript(webDriver, "return window.pageXOffset;");
-        return (long)data;
-    }
-
-    @Override
-    public long getScrollY() {
-        Object data = JSUtils.executeScript(webDriver, "return window.pageYOffset;");
-        return (long)data;
-    }
-
     /**
      * Private scroll to element.
      */
     private void pScrollToElement(int yOffset) {
-        find();
-        final Point location = guiElementData.webElement.getLocation();
+        final Point location = getWebElement().getLocation();
         final int x = location.getX();
         final int y = location.getY() - yOffset;
         LOGGER.trace("Scrolling into view: " + x + ", " + y);
@@ -355,9 +341,9 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     private void pClickRelative(
-        GuiElementCore guiElementCore,
-        WebDriver driver,
-        WebElement webElement
+            GuiElementCore guiElementCore,
+            WebDriver driver,
+            WebElement webElement
     ) {
         By by = guiElementCore.getBy();
         if (by instanceof ByImage) {
@@ -376,13 +362,25 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     private void pClickAbsolute(GuiElementCore guiElementCore, WebDriver driver, WebElement webElement) {
         LOGGER.trace("Absolute navigation and click on: " + guiElementCore.toString());
-        guiElementCore.mouseOverAbsolute2Axis();
-        Actions action = new Actions(driver);
-        action.moveByOffset(1, 1);
+
+        checkAndWarnIfIE();
 
         // Start the StopWatch for measuring the loading time of a Page
         StopWatch.startPageLoad(driver);
 
+        Point point = webElement.getLocation();
+
+        Actions action = new Actions(driver);
+
+        // goto 0,0
+        action.moveToElement(webElement, 1 + -point.getX(), 1 + -point.getY());
+
+        // move y, then x
+        action.moveByOffset(0, point.getY()).moveByOffset(point.getX(), 0);
+
+        // move to webElement
+        action.moveToElement(webElement);
+        action.moveByOffset(1, 1);
         action.click().perform();
     }
 
@@ -435,20 +433,17 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     @Override
     public void submit() {
-        find();
-        guiElementData.webElement.submit();
+        getWebElement().submit();
     }
 
     @Override
     public void sendKeys(CharSequence... charSequences) {
-        find();
-        guiElementData.webElement.sendKeys(charSequences);
+        getWebElement().sendKeys(charSequences);
     }
 
     @Override
     public void clear() {
-        find();
-        guiElementData.webElement.clear();
+        getWebElement().clear();
     }
 
     @Override
@@ -487,32 +482,42 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     @Override
-    public GuiElement getSubElement(By byLocator, String description) {
+    public GuiElement getSubElement(By by, String description) {
+        return getSubElement(by).setName(description);
+    }
+
+    public GuiElement getSubElement(Locate locate) {
         FrameLogic frameLogic = guiElementData.frameLogic;
         GuiElement[] frames = null;
         if (frameLogic != null) {
             frames = frameLogic.getFrames();
         }
 
-        String locatorToString = byLocator.toString();
-        if (locatorToString.toLowerCase().contains("xpath")) {
-            int i = locatorToString.indexOf(":") + 1;
-            String locator = locatorToString.substring(i).trim();
+        String abstractLocatorString = locate.getBy().toString();
+        if (abstractLocatorString.toLowerCase().contains("xpath")) {
+            int i = abstractLocatorString.indexOf(":") + 1;
+            String xpath = abstractLocatorString.substring(i).trim();
+            String prevXPath = xpath;
             // Check if locator does not start with dot, ignoring a leading parenthesis for choosing the n-th element
-            if (locator.startsWith("/")) {
-                LOGGER.warn("GetSubElement: Forced replacement of / to ./ at startTime of By.xpath locator, because / would not be relative: " + locator);
-                byLocator = By.xpath(locator);
-            } else if (!locator.startsWith(".") && !(locator.length() >= 2 && locator.startsWith("(") && locator.substring(1, 2).equals("."))) {
-                LOGGER.warn("Apparently, getSubElement is called with an By.xpath locator that does not startTime with a dot. " +
-                        "This will most likely lead to unexpected and potentially quiet errors. Locator is \"" +
-                        locatorToString + "\".");
+            if (xpath.startsWith("/")) {
+                xpath = xpath.replaceFirst("/", "./");
+                log().warn(String.format("Replaced absolute xpath locator \"%s\" to relative: \"%s\"", prevXPath, xpath));
+                locate = Locate.by(By.xpath(xpath));
+            } else if (!xpath.startsWith(".")) {
+                xpath = "./" + xpath;
+                log().warn(String.format("Added relative xpath locator for children to \"%s\": \"%s\"", prevXPath, xpath));
+                locate = Locate.by(By.xpath(xpath));
             }
         }
 
-        GuiElement subElement = new GuiElement(webDriver, byLocator, frames);
-        subElement.setName(description);
+        GuiElement subElement = new GuiElement(webDriver, locate, frames);
         subElement.setParent(this);
         return subElement;
+    }
+
+    @Override
+    public GuiElement getSubElement(By by) {
+        return getSubElement(Locate.by(by));
     }
 
     @Override
@@ -521,62 +526,26 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     private boolean pIsDisplayed() {
-        guiElementData.executionLog.addMessage("Checking for isDisplayed. Expecting 3 things: Element is Present, " +
-                "webElement.isDisplayed() is true and the element is inside the viewport.");
         if (!isPresent()) {
-            guiElementData.executionLog.addMessage("WebElement is not present");
             return false;
         }
 
         // in isPresent(), find() was executed which should set "webElement" or throw an exception
         WebElement webElement = guiElementData.webElement;
-        if (webElement == null) {
-            throw new TesterraSystemException("Internal error. This state should not be reached.");
-        }
-
-        if (webElement.isDisplayed()) {
-            guiElementData.executionLog.addMessage("isDisplayedFromWebElement = true");
-            return true;
-            /*
-            Locatable item = (Locatable) webElement;
-
-            int x;
-            int y;
-            try {
-                y = item.getCoordinates().inViewPort().getY();
-                x = item.getCoordinates().inViewPort().getX();
-            } catch (WebDriverException e) {
-                LOGGER.debug("Error getting location of webElement.", e);
-                return false;
-            }
-
-            // Philosophical Question: Is a WebElement displayed, if only one Pixel of it is displayed? Currently, yes.
-            Dimension size = webElement.getSize();
-            Dimension screenSize = webDriver.manage().window().getSize();
-            boolean inViewportHorizontally = x + size.width >= 0 && x <= screenSize.getWidth();
-            boolean inViewportVertically = y + size.height >= 0 && y <= screenSize.getHeight();
-            if (inViewportHorizontally && inViewportVertically) {
-                guiElementData.executionLog.addMessage("isInViewport(" + x + ", " + y + ") = true");
-                return true;
-            } else {
-                guiElementData.executionLog.addMessage("isInViewport" + x + ", " + y + " = false");
-            }
-            */
-        } else {
-            guiElementData.executionLog.addMessage("isDisplayedFromWebElement = false");
-            return false;
-        }
+        return webElement.isDisplayed();
     }
 
     @Override
-    public boolean isDisplayedFromWebElement() {
-        if (!isPresent()) {
-            LOGGER.debug("isDisplayedFromWebElement(): WebElement is not present");
-            return false;
-        }
-        boolean displayed = guiElementData.webElement.isDisplayed();
-        guiElementData.executionLog.addMessage("isDisplayedFromWebElement = " + displayed);
-        return displayed;
+    public boolean isVisible(final boolean complete) {
+        if (!isDisplayed()) return false;
+        Rectangle viewport = WebDriverUtils.getViewport(webDriver);
+        final WebElement webElement = getWebElement();
+        // getRect doesn't work
+        Point elementLocation = webElement.getLocation();
+        Dimension elementSize = webElement.getSize();
+        java.awt.Rectangle viewportRect = new java.awt.Rectangle(viewport.x, viewport.y, viewport.width, viewport.height);
+        java.awt.Rectangle elementRect = new java.awt.Rectangle(elementLocation.x, elementLocation.y, elementSize.width, elementSize.height);
+        return ((complete && viewportRect.contains(elementRect)) || viewportRect.intersects(elementRect));
     }
 
     @Override
@@ -650,7 +619,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
      */
     private void demoMouseOver() {
         if (POConfig.isDemoMode()) {
-            JSUtils.highlightWebElement(webDriver, guiElementData.webElement, 0, 255, 255); // yellow
+            highlightWebElement(new Color(255, 255, 0));
         }
     }
 
@@ -693,10 +662,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
         try {
             LOGGER.debug("isPresent(): trying to find WebElement");
             find();
-            guiElementData.executionLog.addMessage("isPresent = true");
         } catch (Exception e) {
             LOGGER.debug("isPresent(): Element not found: " + by, e);
-            guiElementData.executionLog.addMessage("isPresent = false");
             return false;
         }
         return true;
@@ -716,6 +683,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     }
 
     private List<String> pGetTextsFromChildren() {
+        find();
         // find() not necessary here, because findElements() is called, which calls find().
         List<WebElement> childElements = guiElementData.webElement.findElements(By.xpath(".//*"));
 
@@ -751,12 +719,10 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
             int y = byImage.getCenterY();
             LOGGER.info("Image Double Click on image webElement at " + x + "," + y);
             JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, x, y);
-        }
-        else if (Browsers.safari.equalsIgnoreCase(driverRequest.browser)) {
+        } else if (Browsers.safari.equalsIgnoreCase(driverRequest.browser)) {
             LOGGER.info("Safari double click workaround");
             JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
-        }
-        else {
+        } else {
             Actions actions = new Actions(webDriver);
             final Action action = actions.doubleClick(webElement).build();
 
@@ -773,7 +739,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
     @Override
     public void highlight() {
         LOGGER.debug("highlight(): starting highlight");
-        JSUtils.highlightWebElement(webDriver, getWebElement(), 0, 0, 255);
+        find();
+        highlightWebElement(new Color(0, 0, 255));
         LOGGER.debug("highlight(): finished highlight");
     }
 
@@ -792,7 +759,12 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     @Override
     public int getNumberOfFoundElements() {
-        return find();
+
+        if (isPresent()) {
+            return find();
+        }
+
+        return 0;
     }
 
     /**
@@ -847,18 +819,18 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
 
     @Override
     public File takeScreenshot() {
-
-        this.scrollToElement();
-
-        final WebElement element = guiElementData.webElement;
+        final WebElement element = getWebElement();
         final boolean isSelenium4 = false;
 
         if (isSelenium4) {
             return element.getScreenshotAs(OutputType.FILE);
         } else {
+            if (!isVisible(false)) {
+                this.scrollToElement();
+            }
+            Rectangle viewport = WebDriverUtils.getViewport(webDriver);
             try {
-                find();
-                final TakesScreenshot driver = ((TakesScreenshot)guiElementData.webDriver);
+                final TakesScreenshot driver = ((TakesScreenshot) guiElementData.webDriver);
 
                 File screenshot = driver.getScreenshotAs(OutputType.FILE);
                 BufferedImage fullImg = ImageIO.read(screenshot);
@@ -868,10 +840,10 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives 
                 int eleHeight = element.getSize().getHeight();
 
                 BufferedImage eleScreenshot = fullImg.getSubimage(
-                    point.getX()-(int)getScrollX(),
-                    point.getY()-(int)getScrollY(),
-                    eleWidth,
-                    eleHeight
+                        point.getX() - viewport.getX(),
+                        point.getY() - viewport.getY(),
+                        eleWidth,
+                        eleHeight
                 );
                 ImageIO.write(eleScreenshot, "png", screenshot);
                 return screenshot;

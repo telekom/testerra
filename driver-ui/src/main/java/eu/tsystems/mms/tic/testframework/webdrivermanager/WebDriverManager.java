@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 09.01.2012
@@ -36,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
+import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
@@ -45,9 +46,8 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,21 +73,18 @@ public final class WebDriverManager {
     /**
      * WebDriverManager configuration set. Modify by config() call!
      */
-    private static WebDriverManagerConfig webdriverManagerConfig = new WebDriverManagerConfig();
+    private static WebDriverManagerConfig webdriverManagerConfig;
     /**
      * Executing selenium hosts. Package local access for WDInternal class.
      */
-    static final ThreadLocal<String> EXECUTING_SELENIUM_HOSTS_PER_THREAD = new ThreadLocal<String>();
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverManager.class);
+    static final ThreadLocal<String> EXECUTING_SELENIUM_HOSTS_PER_THREAD = new ThreadLocal<>();
 
     /**
      * The preset baseURL. Set by setBaseURL().
      */
     private static String presetBaseURL = null;
+
+    private static final HashMap<String, UserAgentConfig> userAgentConfigurators = new HashMap<>();
 
     /**
      * Private constructor to hide the public one since this a static only class.
@@ -320,6 +317,9 @@ public final class WebDriverManager {
      * @return .
      */
     public static WebDriverManagerConfig config() {
+        if (webdriverManagerConfig==null) {
+            webdriverManagerConfig = new WebDriverManagerConfig();
+        }
         return webdriverManagerConfig;
     }
 
@@ -497,4 +497,11 @@ public final class WebDriverManager {
         return null;
     }
 
+    public static void setUserAgentConfig(String browser, UserAgentConfig configurator) {
+        userAgentConfigurators.put(browser, configurator);
+    }
+
+    static UserAgentConfig getUserAgentConfig(String browser) {
+        return userAgentConfigurators.get(browser);
+    }
 }

@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.remote;
 
@@ -73,7 +73,7 @@ public final class SupervisorRestClient {
     /**
      * Set host and port from webdriver session
      * This will only work for supervised nodes.
-     * 
+     *
      * @param driver driver to get info from
      * @return {@link NodeInfo}
      */

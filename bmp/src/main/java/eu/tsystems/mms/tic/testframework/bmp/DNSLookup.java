@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 10.02.14
@@ -27,7 +27,11 @@
 package eu.tsystems.mms.tic.testframework.bmp;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import org.xbill.DNS.*;
+import org.xbill.DNS.Lookup;
+import org.xbill.DNS.Record;
+import org.xbill.DNS.SimpleResolver;
+import org.xbill.DNS.TextParseException;
+import org.xbill.DNS.Type;
 
 import java.net.UnknownHostException;
 
@@ -46,7 +50,7 @@ public final class DNSLookup {
     }
 
     public static Record[] lookup(String name, String dnsServer) throws TextParseException, UnknownHostException {
-//        Lookup lookup = new Lookup(name, Type.TXT, DClass.CH);
+        //        Lookup lookup = new Lookup(name, Type.TXT, DClass.CH);
         Lookup lookup = new Lookup(name, Type.ANY);
 
         if (dnsServer != null) {
@@ -57,8 +61,7 @@ public final class DNSLookup {
         if (lookup.getResult() == Lookup.SUCCESSFUL) {
             Record[] records = lookup.getAnswers();
             return records;
-        }
-        else {
+        } else {
             String msg = "DNS Lookup was not successful. Lookup result code was: ";
             switch (lookup.getResult()) {
                 case Lookup.HOST_NOT_FOUND:
@@ -78,6 +81,6 @@ public final class DNSLookup {
             }
             throw new TesterraSystemException(msg);
         }
-        
+
     }
 }

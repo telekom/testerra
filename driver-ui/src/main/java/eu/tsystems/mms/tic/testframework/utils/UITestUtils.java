@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 23.02.2012
@@ -28,16 +28,11 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
-import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
-import eu.tsystems.mms.tic.testframework.constants.TestOS;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
-import eu.tsystems.mms.tic.testframework.remote.RemoteDownloadPath;
 import eu.tsystems.mms.tic.testframework.report.Shot;
-import eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
@@ -69,7 +64,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Helper class containing some util methods for tt.
@@ -92,10 +86,6 @@ public class UITestUtils {
      * A date format for files like screenshots.
      */
     private static final DateFormat FILES_DATE_FORMAT = new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss");
-
-    private static final String BROWSER_DOWNLOAD_PATH_UUID = UUID.randomUUID().toString();
-
-    private static final boolean STITCH = PropertyManager.getBooleanProperty(TesterraProperties.STITCH_CHROME_SCREENSHOTS, true);
 
     public static Screenshot takeScreenshot(
             final WebDriver driver,
@@ -140,8 +130,9 @@ public class UITestUtils {
          */
         if (eventFiringWebDriver != null) {
             try {
-                final File screenShotTargetFile = FileUtils.createTempFileName("screenshot.png");
-                final File sourceTargetFile = FileUtils.createTempFileName("pagesource.html");
+                FileUtils fileUtis = new FileUtils();
+                final File screenShotTargetFile = fileUtis.createTempFileName("screenshot.png");
+                final File sourceTargetFile = fileUtis.createTempFileName("pagesource.html");
                 takeWebDriverScreenshotToFile(eventFiringWebDriver, screenShotTargetFile);
 
                 // get page source (webdriver)
@@ -229,7 +220,7 @@ public class UITestUtils {
                  * add AFTER path to action log
                  */
                 for (Screenshot screenshot : screenshots) {
-                    methodContext.steps().getCurrentTestStep().getCurrentTestStepAction().addScreenshots(null, screenshot);
+                    methodContext.steps().getCurrentTestStep().getCurrentTestStepAction().addScreenshot(screenshot);
                 }
 
                 LOGGER.info("Linked screenshots: " + screenshots);
@@ -255,10 +246,7 @@ public class UITestUtils {
          */
         WebDriverRequest relatedWebDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
         String browser = relatedWebDriverRequest.browser;
-        if (Browsers.chrome.equalsIgnoreCase(browser) && STITCH) {
-            makeStitchedChromeScreenshot(driver, screenShotTargetFile);
-            return;
-        } else if (Browsers.ie.equalsIgnoreCase(browser)) {
+        if (Browsers.ie.equalsIgnoreCase(browser)) {
             Viewport viewport = JSUtils.getViewport(driver);
 
             if (viewport.height > Constants.IE_SCREENSHOT_LIMIT) {
@@ -280,14 +268,6 @@ public class UITestUtils {
                 LOGGER.error("Error moving screenshot: " + e.getLocalizedMessage());
             }
         }
-    }
-
-    private static void makeStitchedChromeScreenshot(WebDriver driver, File screenShotTargetFile) {
-        /*
-        deactivated since it is not working correctly - pele 05.12.2017
-         */
-
-        makeSimpleScreenshot(driver, screenShotTargetFile);
     }
 
     /**
@@ -368,56 +348,6 @@ public class UITestUtils {
         } else {
             LOGGER.error("Could not take native screenshot, screen region is missing");
         }
-    }
-
-    /**
-     * Return the browser download Directory for this session. This contains a uuid which is statically created.
-     *
-     * @param platform OS the browser will run on
-     *
-     * @return session based download path.
-     */
-    public static RemoteDownloadPath getStaticBrowserDownloadDirectory(TestOS platform) {
-        String uuid = BROWSER_DOWNLOAD_PATH_UUID;
-        String fullPath = eu.tsystems.mms.tic.testframework.constants.RTConstants.getDownloadPathByOS(platform) + uuid;
-        return new RemoteDownloadPath(fullPath, uuid);
-    }
-
-    /**
-     * Return the browser download Directory for this session. This contains a uuid which is created from string parameter.
-     *
-     * @param platform OS the browser will run on
-     *
-     * @return session based download path.
-     */
-    public static RemoteDownloadPath generateBrowserDownloadDirectory(TestOS platform) {
-        String uuid = UUID.randomUUID().toString();
-        String fullPath = eu.tsystems.mms.tic.testframework.constants.RTConstants.getDownloadPathByOS(platform) + uuid;
-        return new RemoteDownloadPath(fullPath, uuid);
-    }
-
-    private static GuiElementType guiElementType = null;
-
-    public static void loadGuiElementType() {
-        String guiElementTypeProperty = PropertyManager.getProperty(TesterraProperties.GUIELEMENT_TYPE, "sequence");
-        try {
-            guiElementType = GuiElementType.valueOf(guiElementTypeProperty);
-        } catch (IllegalArgumentException e) {
-            String errorMessage = "GuiElementType not supported: " + guiElementTypeProperty;
-            throw new TesterraSystemException(errorMessage);
-        }
-    }
-
-    /**
-     * checks if gui element type gets supported
-     *
-     * @return gui element type
-     */
-    public static GuiElementType getGuiElementType() {
-        if (guiElementType == null) {
-            loadGuiElementType();
-        }
-        return guiElementType;
     }
 
     public static List<Screenshot> takeScreenshotsFromSessions(
@@ -515,9 +445,6 @@ public class UITestUtils {
 
             value = fileProperties.getProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, "false");
             fileProperties.setProperty(TesterraProperties.CLOSE_WINDOWS_AFTER_TEST_METHODS, value);
-
-            value = fileProperties.getProperty(TesterraProperties.GUIELEMENT_TYPE, "perf");
-            fileProperties.setProperty(TesterraProperties.GUIELEMENT_TYPE, value);
 
             // in case of perfTest reuse driver instances for dataprovider threads
             value = fileProperties.getProperty(TesterraProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, "true");

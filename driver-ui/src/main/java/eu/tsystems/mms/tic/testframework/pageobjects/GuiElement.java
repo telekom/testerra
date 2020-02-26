@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 04.01.2013
@@ -27,7 +27,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.constants.GuiElementType;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
@@ -36,25 +35,42 @@ import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.*;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.*;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ConfigurableGuiElementAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PerformanceTestGuiElementAssert;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheckFrameAwareDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.creation.GuiElementCoreFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.*;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacadeLoggingDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
-import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
-import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * GuiElement is the access point for most tests and is an extension of WebElement.
@@ -70,7 +86,7 @@ public class GuiElement implements
     private static final Map<String, GuiElementCoreFactory> coreFactories = new HashMap<>();
 
     public static void registerGuiElementCoreFactory(GuiElementCoreFactory guiElementCoreFactory, String... browsers) {
-        LOGGER.info("Registering " + guiElementCoreFactory.getClass().getSimpleName() + " for browsers " + ArrayUtils.join(browsers, ","));
+        LOGGER.info("Registering " + guiElementCoreFactory.getClass().getSimpleName() + " for browsers " + String.join(",", browsers));
 
         for (String browser : browsers) {
             coreFactories.put(browser, guiElementCoreFactory);
@@ -102,14 +118,9 @@ public class GuiElement implements
     private Locate locator;
     private final GuiElementData guiElementData;
 
-    private GuiElement(GuiElementData guiElementData, int index) {
-        this.guiElementData = guiElementData.copy();
-        this.guiElementData.index = index;
-        if (!StringUtils.isEmpty(guiElementData.name)) {
-            this.guiElementData.name = guiElementData.name + "_" + index;
-        }
+    private GuiElement(GuiElementData guiElementData) {
+        this.guiElementData = guiElementData;
         buildInternals(guiElementData.webDriver, guiElementData.by);
-
     }
 
     /**
@@ -219,17 +230,13 @@ public class GuiElement implements
                                                  GuiElementCore guiElementCore,
                                                  GuiElementWait guiElementWait,
                                                  GuiElementData guiElementData) {
-        GuiElementType guiElementType = GuiElementType.sequence;
         GuiElementAssert guiElementAssert;
-        switch (guiElementType) {
-            case perf:
-                guiElementAssert = new PerformanceTestGuiElementAssert();
-                break;
-            default:
-                ConfiguredAssert configuredAssert = new ConfiguredAssert(functional, collected);
-                guiElementAssert = new ConfigurableGuiElementAssert(guiElementCore, guiElementWait, configuredAssert, guiElementData);
-                guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, guiElementData);
-                guiElementAssert = new GuiElementAssertExecutionLogDecorator(guiElementAssert, guiElementData);
+        if (PropertyManager.getBooleanProperty(TesterraProperties.PERF_TEST, false)) {
+            guiElementAssert = new PerformanceTestGuiElementAssert();
+        } else {
+            ConfiguredAssert configuredAssert = new ConfiguredAssert(functional, collected);
+            guiElementAssert = new ConfigurableGuiElementAssert(guiElementCore, guiElementWait, configuredAssert, guiElementData);
+            guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, guiElementData);
         }
         return guiElementAssert;
     }
@@ -238,7 +245,6 @@ public class GuiElement implements
         GuiElementFacade guiElementFacade;
         guiElementFacade = new StandardGuiElementFacade(guiElementCore, guiElementWait, guiElementAssert);
         guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
-        guiElementFacade = new GuiElementFace(guiElementFacade, guiElementData);
 
         int delayAfterAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_AFTER_GUIELEMENT_ACTION_MILLIS);
         int delayBeforeAction = PropertyManager.getIntProperty(TesterraProperties.DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS);
@@ -255,7 +261,7 @@ public class GuiElement implements
      * @param filters Filters to be applied
      *
      * @return The same GuiElement
-     * @deprecated Use TesterraBy instead
+     * @deprecated Use {@link Locate} instead
      */
     @Deprecated
     public GuiElement withWebElementFilter(WebElementFilter... filters) {
@@ -270,7 +276,7 @@ public class GuiElement implements
      *
      * @param description A very short description of this GuiElement, for example "Continue Shopping Button"
      *
-     * @deprecated use setName() instead.
+     * @deprecated Use {@link #setName(String)} instead
      */
     @Deprecated
     public GuiElement setDescription(String description) {
@@ -282,25 +288,33 @@ public class GuiElement implements
      * Get sub element by locator. Using this executes a find on the parent element and the parent.findElement for the
      * given locator. It does not wait for the subelement if the parent has been found!
      *
-     * @param byLocator Locator of new element.
+     * @param by Locator of new element.
      *
      * @return GuiElement
      */
-    public GuiElement getSubElement(By byLocator) {
-        return getSubElement(byLocator, null);
+    @Override
+    public GuiElement getSubElement(By by) {
+        return getSubElement(by, null);
     }
 
     /**
      * Get sub element by locator. Using this executes a find on the parent element and the parent.findElement for the
      * given locator. It does not wait for the subelement if the parent has been found!
      *
-     * @param byLocator   Locator of new element.
+     * @param by   Locator of new element.
      * @param description Description for GuiElement
      *
      * @return GuiElement
      */
-    public GuiElement getSubElement(By byLocator, String description) {
-        return guiElementFacade.getSubElement(byLocator, description);
+    @Deprecated
+    @Override
+    public GuiElement getSubElement(By by, String description) {
+        return guiElementFacade.getSubElement(by, description);
+    }
+
+    @Override
+    public GuiElement getSubElement(Locate locator) {
+        return guiElementFacade.getSubElement(locator);
     }
 
     @Override
@@ -321,16 +335,6 @@ public class GuiElement implements
     @Override
     public void scrollToElement(int yOffset) {
         guiElementFacade.scrollToElement(yOffset);
-    }
-
-    @Override
-    public long getScrollX() {
-        return guiElementCore.getScrollX();
-    }
-
-    @Override
-    public long getScrollY() {
-        return guiElementCore.getScrollY();
     }
 
     @Override
@@ -446,8 +450,8 @@ public class GuiElement implements
     }
 
     @Override
-    public boolean isDisplayedFromWebElement() {
-        return guiElementFacade.isDisplayedFromWebElement();
+    public boolean isVisible(final boolean complete) {
+        return guiElementFacade.isVisible(complete);
     }
 
     /**
@@ -579,6 +583,10 @@ public class GuiElement implements
         return guiElementData.frameLogic;
     }
 
+    public boolean hasFrameLogic() {
+        return guiElementData.hasFrameLogic();
+    }
+
     /**
      * Get the parent element of this element, from getSubElement().
      *
@@ -593,8 +601,9 @@ public class GuiElement implements
      *
      * @param parent Object that should act as parent.
      */
-    public void setParent(GuiElementCore parent) {
+    public GuiElement setParent(GuiElementCore parent) {
         guiElementData.parent = parent;
+        return this;
     }
 
     @Deprecated
@@ -607,8 +616,9 @@ public class GuiElement implements
         return guiElementData.toString();
     }
 
+    @Deprecated
     public WebDriver getDriver() {
-        return guiElementData.webDriver;
+        return getWebDriver();
     }
 
     public boolean hasSensibleData() {
@@ -621,8 +631,9 @@ public class GuiElement implements
     }
 
     @Override
-    public void setName(String name) {
+    public GuiElement setName(String name) {
         guiElementData.name = name;
+        return this;
     }
 
     @Override
@@ -703,7 +714,7 @@ public class GuiElement implements
         int numberOfFoundElements = getNumberOfFoundElements();
         List<GuiElement> guiElements = new ArrayList<>(numberOfFoundElements);
         for (int i = 0; i < numberOfFoundElements; i++) {
-            GuiElement guiElement = new GuiElement(guiElementData, i);
+            GuiElement guiElement = new GuiElement(new GuiElementData(guiElementData, i));
             guiElements.add(guiElement);
         }
         return guiElements;

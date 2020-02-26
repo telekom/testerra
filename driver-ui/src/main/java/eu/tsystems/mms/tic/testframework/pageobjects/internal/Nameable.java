@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
@@ -24,6 +24,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
  */
 public interface Nameable {
 
-    void setName(String name);
+    Object setName(String name);
     String getName();
 }

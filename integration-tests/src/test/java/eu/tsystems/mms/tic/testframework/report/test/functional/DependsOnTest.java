@@ -1,10 +1,10 @@
 package eu.tsystems.mms.tic.testframework.report.test.functional;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
-import eu.tsystems.mms.tic.testframework.report.general.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.general.MethodDependency;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
@@ -20,8 +20,8 @@ import org.testng.annotations.Test;
 /**
  * Created by fakr on 09.10.2017
  */
-@TesterraClassContext("Functional-DependsOn")
-public class DependsOnTest extends AbstractTest {
+@TestContext(name = "Functional-DependsOn")
+public class DependsOnTest extends AbstractReportTest {
 
     /**
      * Checks whether the depends on test result is displayed correctly

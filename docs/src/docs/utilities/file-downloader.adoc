@@ -1,0 +1,41 @@
+= Download Utilities
+
+== FileDownloader
+
+The `FileDownloader` utility provides methods for downloading resources from web sites.
+
+.Basic example how to use the FileDownloader
+[source,java]
+----
+// define the url where to download the resource from
+String downloadUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/"+
+	"S%C3%A5g_med_arm_av_valn%C3%B6t_-_Skoklosters_slott_-_92588.tif/"+
+	"lossy-page1-1024px-S%C3%A5g_med_arm_av_valn%C3%B6t_-_Skoklosters_slott_-_92588.tif.jpg";
+
+// request access to the current web driver instance
+WebDriver driver = WebDriverManager.getWebDriver();
+
+// construct the downloader
+FileDownloader downloader = new FileDownloader();
+
+// perform the download
+File downloadFile = downloader.download(driver, downloadUrl);
+
+System.out.println("downloaded file exists:" + downloadFile.exists());
+----
+
+.File downloading settings.
+[source,java]
+----
+FileDownloader downloader = new FileDownloader();
+downloader.setDownloadLocation("/some/directory");
+downloader.setImitateCookies(true);
+downloader.setTrustAllCertificates(true);
+downloader.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("123.0.0.1", 8080)));
+----
+
+.Delete all downloaded files.
+[source,java]
+----
+downloader.cleanup();
+----

@@ -14,11 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -28,15 +29,26 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class WebDriverCapabilities {
 
     /**
      * Extra capabilities.
      */
     protected static final Map<String, Object> GLOBALCAPABILITIES = new HashMap<>();
-    protected static final ThreadLocal<Map<String, Object>> THREAD_CAPABILITIES = new ThreadLocal<Map<String, Object>>();
+    protected static final ThreadLocal<Map<String, Object>> THREAD_CAPABILITIES = new ThreadLocal<>();
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(WebDriverCapabilities.class);
+
+    protected static void safelyAddCapsValue(DesiredCapabilities caps, String key, Object value) {
+        if (value == null) {
+            return;
+        }
+        if (StringUtils.isStringEmpty("" + value)) {
+            return;
+        }
+        caps.setCapability(key, value);
+    }
 
     /**
      * Adds a capability.
@@ -52,24 +64,19 @@ public class WebDriverCapabilities {
         GLOBALCAPABILITIES.put(key, value);
     }
 
-    private static void checkThreadCapabilities() {
-        if (THREAD_CAPABILITIES.get() == null) {
-            THREAD_CAPABILITIES.set(new HashMap<String, Object>());
-        }
-    }
-
     static void addThreadCapability(String key, Object value) {
         if (CapabilityType.BROWSER_NAME.equals(key)) {
             LOGGER.warn("Skipping extra desired capability " + key);
             return;
         }
 
-        checkThreadCapabilities();
-        THREAD_CAPABILITIES.get().put(key, value);
+        getThreadCapabilities().put(key, value);
     }
 
     public static Map<String, Object> getThreadCapabilities() {
-        checkThreadCapabilities();
+        if (THREAD_CAPABILITIES.get() == null) {
+            THREAD_CAPABILITIES.set(new HashMap<>());
+        }
         return THREAD_CAPABILITIES.get();
     }
 
@@ -80,15 +87,6 @@ public class WebDriverCapabilities {
      */
     static void removeGlobalExtraCapability(final String key) {
         GLOBALCAPABILITIES.remove(key);
-    }
-
-    /**
-     * Logs selenium proxy settings.
-     *
-     * @param proxy .
-     */
-    static void logProxySettings(Proxy proxy) {
-        LOGGER.info("Proxy settings: " + "http: " + proxy.getHttpProxy() + " ssl: " + proxy.getSslProxy());
     }
 
     /**

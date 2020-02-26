@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
@@ -27,12 +27,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 
+import java.awt.*;
+
 /**
- * Created by pele on 02.03.2016.
+ * Highlights some WebDriver events in Demo Mode
  */
 public class VisualEventDriverListener implements WebDriverEventListener {
-
-    private WebElement lastClickedElement;
 
     @Override
     public void beforeAlertAccept(WebDriver webDriver) {
@@ -61,7 +61,6 @@ public class VisualEventDriverListener implements WebDriverEventListener {
 
     @Override
     public void afterNavigateTo(String s, WebDriver webDriver) {
-
     }
 
     @Override
@@ -117,8 +116,8 @@ public class VisualEventDriverListener implements WebDriverEventListener {
 //                    JSUtils.highlightWebElementClick(webDriver, webElement);
 //                }
 
-                JSUtils.highlightWebElement(webDriver, webElement, 0, 0, 255); // blue
-                lastClickedElement = webElement;
+                JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 0, 255));
+                //lastClickedElement = webElement;
             }
         }
     }
@@ -131,7 +130,7 @@ public class VisualEventDriverListener implements WebDriverEventListener {
     public void beforeChangeValueOf(WebElement webElement, WebDriver webDriver, CharSequence[] charSequences) {
         if (webElement != null) {
             if (POConfig.isDemoMode()) {
-                JSUtils.highlightWebElement(webDriver, webElement, 0, 255, 0); // green
+                JSUtils.highlightWebElement(webDriver, webElement, new Color(0, 255, 0));
             }
         }
     }

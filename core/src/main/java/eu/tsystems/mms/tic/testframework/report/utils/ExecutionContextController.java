@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.TestContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.TestContextModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IInvokedMethod;
@@ -71,15 +71,15 @@ public class ExecutionContextController {
      */
     public static ClassContext getClassContextFromTestResult(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
         SuiteContext suiteContext = EXECUTION_CONTEXT.getSuiteContext(testResult, iTestContext);
-        TestContext testContext = suiteContext.getTestContext(testResult, iTestContext);
-        ClassContext classContext = testContext.getClassContext(testResult, iTestContext, invokedMethod);
+        TestContextModel testContextModel = suiteContext.getTestContext(testResult, iTestContext);
+        ClassContext classContext = testContextModel.getClassContext(testResult, iTestContext, invokedMethod);
         return classContext;
     }
 
     public static ClassContext getClassContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod) {
         SuiteContext suiteContext = EXECUTION_CONTEXT.getSuiteContext(iTestContext);
-        TestContext testContext = suiteContext.getTestContext(iTestContext);
-        ClassContext classContext = testContext.getClassContext(iTestNgMethod);
+        TestContextModel testContextModel = suiteContext.getTestContext(iTestContext);
+        ClassContext classContext = testContextModel.getClassContext(iTestNgMethod);
         return classContext;
     }
 
@@ -147,10 +147,10 @@ public class ExecutionContextController {
 
         LOGGER.info(prefix + "ExecutionContext: " + EXECUTION_CONTEXT.name);
         LOGGER.info(prefix + "SuiteContexts:  " + EXECUTION_CONTEXT.suiteContexts.size());
-        LOGGER.info(prefix + "TestContexts:   " + EXECUTION_CONTEXT.suiteContexts.stream().mapToInt(s -> s.testContexts.size()).sum());
-        LOGGER.info(prefix + "ClassContexts:  " + EXECUTION_CONTEXT.suiteContexts.stream().flatMap(s -> s.testContexts.stream()).mapToInt(t -> t.classContexts.size()).sum());
+        LOGGER.info(prefix + "TestContexts:   " + EXECUTION_CONTEXT.suiteContexts.stream().mapToInt(s -> s.testContextModels.size()).sum());
+        LOGGER.info(prefix + "ClassContexts:  " + EXECUTION_CONTEXT.suiteContexts.stream().flatMap(s -> s.testContextModels.stream()).mapToInt(t -> t.classContexts.size()).sum());
 
-        List<MethodContext> allMethodContexts = EXECUTION_CONTEXT.suiteContexts.stream().flatMap(s -> s.testContexts.stream()).flatMap(t -> t.classContexts.stream()).flatMap(c -> c.methodContexts.stream()).collect(Collectors.toList());
+        List<MethodContext> allMethodContexts = EXECUTION_CONTEXT.suiteContexts.stream().flatMap(s -> s.testContextModels.stream()).flatMap(t -> t.classContexts.stream()).flatMap(c -> c.methodContexts.stream()).collect(Collectors.toList());
 
         LOGGER.info(prefix + "MethodContexts: " + allMethodContexts.size());
 

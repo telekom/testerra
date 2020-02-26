@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
-/* 
+/*
  * Created on 13.06.2012
- * 
+ *
  * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
  * Riesaer Str. 5, 01129 Dresden
  * All rights reserved.
@@ -28,9 +28,9 @@ package eu.tsystems.mms.tic.testframework.dbconnector.test.connectors;
 
 /**
  * Class containing structure of largeobjects table in db Testerradbconnector.
- * 
+ *
  * @author sepr
- * 
+ *
  */
 public class LobTable extends TableDefinitions {
 
@@ -45,7 +45,7 @@ public class LobTable extends TableDefinitions {
 
     /**
      * Constructor for this table.
-     * 
+     *
      * @param table Name of the table.
      */
     public LobTable(final String table) {

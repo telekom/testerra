@@ -14,14 +14,13 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
-import eu.tsystems.mms.tic.testframework.internal.ExecutionLog;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -41,13 +40,11 @@ public class Timer {
     private long durationInMs = 15000;
     private static final long DURATION_IN_MS_MINIMAL = 100;
     private String errorMessage;
-    private final ExecutionLog executionLog;
 
     /**
      * starts timer
      */
     public Timer() {
-        executionLog = null;
     }
 
     /**
@@ -57,17 +54,12 @@ public class Timer {
      * @param durationInMs  .
      */
     public Timer(long sleepTimeInMs, long durationInMs) {
-        this(sleepTimeInMs, durationInMs, null);
-    }
-
-    public Timer(long sleepTimeInMs, long durationInMs, ExecutionLog executionLog) {
         if (sleepTimeInMs > durationInMs) {
             LOGGER.error("SleepTime should not be greater than Duration of Timer. It will result in only one execution: " +
                     sleepTimeInMs + " > " + durationInMs);
         }
         this.sleepTimeInMs = sleepTimeInMs;
         this.durationInMs = durationInMs;
-        this.executionLog = executionLog;
     }
 
     /**
@@ -150,9 +142,6 @@ public class Timer {
 
     private void logMessage(String message) {
         LOGGER.debug(message);
-        if (executionLog != null) {
-            executionLog.addMessage(message);
-        }
     }
 
     /**

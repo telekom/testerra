@@ -1,0 +1,28 @@
+= Proxy setup
+
+If you want that the browser uses a proxy for the SUT, you can just configure that by default Selenium capabilites.
+
+IMPORTANT: Make sure that your WebDriver supports the Proxy-Capability. Some WebDrivers, like the MicrosoftWebDriver, don't (see https://docs.microsoft.com/en-us/microsoft-edge/webdriver#w3c-webdriver[Edge WebDriver Capabilities]).
+
+NOTE: If you want to setup a proxy for the whole runtime environment, you have to follow the instructions at <<Using a proxy>>
+
+[source,java]
+----
+import org.testng.annotations.BeforeSuite;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
+import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
+
+public abstract class AbstractTest extends TesterraTest {
+    @BeforeSuite
+    public void proxySetup() {
+
+        URL proxyUrl = ProxyUtils.getSystemHttpProxyUrl();
+        if (proxyUrl != null) {
+            DesiredCapabilities dc = new DesiredCapabilities();
+            WebDriverManagerUtils.addProxyToCapabilities(dc, proxyUrl.toString());
+            WebDriverManager.setGlobalExtraCapabilities(dc);
+        }
+    }
+}
+----

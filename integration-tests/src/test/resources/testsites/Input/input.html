@@ -42,6 +42,29 @@
 		log(out);
 	}
 
+	function showClickPosition(ev) {
+		var pos = [];
+		var rect =  ev.target.getBoundingClientRect();
+
+		if (ev.offsetY < rect.height/3) {
+			pos.push("top");
+		} else if (ev.offsetY > rect.height/3*2) {
+			pos.push("bottom");
+		} else {
+			pos.push("center");
+		}
+
+		if (ev.offsetX < rect.width/3) {
+			pos.push("left");
+		} else if (ev.offsetX > rect.width/3*2) {
+			pos.push("right");
+		} else {
+			pos.push("center");
+		}
+
+		document.getElementById("clickPosition").innerText = pos.join(" ");
+	}
+
 
 	function show_elementsTimeOut(){
 		timeOut = document.getElementById("inputMillis").value;
@@ -170,7 +193,7 @@
 <body style="margin:8px">
     <h1>Input test</h1>
     <hr>
-	<div class="className" style="border:1px solid black;position:absolute;top:100;left:10;width:300;height:300;padding:8px">
+	<div class="box">
 	    <input id="1" maxlength="5" type="text" onfocus="log('Input 1 Focus')"
 		       onkeydown="log('Input 1 Key down')"
 		       onkeypress="log('Input 1 Key press')" onkeyup="log('Input 1 Key up')"> <br>
@@ -189,7 +212,7 @@
 	    <input id="10" type="radio" name=""> <br>
 	</div>
 
-	<div style="border:1px solid black;position:absolute;top:100;left:330;width:300;height:300;text-align:center;padding:8px">
+	<div class="box" style="text-align:center;">
 	   <a href="input.html#" id="11" onclick="log('Open again clicked')">Open again</a> <br>
        <a href="#" id="12" onclick="showConfirm()">Show confirm</a> <br>
        <a href="#" id="13" onclick="openPopUp()">Open pop up</a> <br>
@@ -198,12 +221,12 @@
        <form onsubmit="log('Form 16 submit');return false" id="16"><input type="submit" value="Submit" /></form>
 	</div>
 
-	<div style="border:1px solid black;position:absolute;top:100;left:650;width:300;height:300;overflow:auto;padding:8px">
-        <p id="99"></p>
+	<div class="box" style="overflow:auto;">
+        <p id="99">&nbsp;</p>
         <table id="100"></table>
 	</div>
 
-	<div style="border:1px solid black;position:absolute;top:100;left:970;width:300;height:300;overflow:auto;padding:8px">
+	<div class="box" style="overflow:auto;">
 		<p id="hidden" hidden>hiddenElement</p>
 		<p>multiple</p>
 	   <select name="extras_multiple" size="3" multiple>
@@ -223,7 +246,7 @@
 		</select>
 	</div>
 
-	<div id="waiterDIV" style="border:1px solid black;position:absolute;top:100;left:1290;width:300;height:400;overflow:auto;padding:8px">
+	<div id="waiterDIV" class="box" style="overflow:auto;">
 		<p>TimeOut bezieht sich auf alle Schaltflächen in diesem DIV</p>
 		<label for="inputMillis"> TimeOut in Millis (0-inf) </label>
 		<input type="text" id="inputMillis" name="timeOutMillis"/>
@@ -240,8 +263,25 @@
 		<input id="enabledSwitchRDButton" name="radioBtn" type="radio" DISABLED> <br>
 	</div>
 
+	<div class="box">
+		<button onclick="showClickPosition(event)">Please touch me</button>
+		<div id="clickPosition"></div>
+	</div>
+
 	<div>
 		<button data-qa="action/toggleClass" class="btn" onclick="this.classList.toggle('active')">Toggle class</button>
+	</div>
+
+	<div id="notDisplayedElement" style="display: none">
+		Im not displayed
+	</div>
+
+	<div id="notVisibleElement" style="visibility: hidden">
+		Im not visible
+	</div>
+
+	<div>
+		<a data-qa="action/pageChangeAnchor" href="form.html">Goto Form</a>
 	</div>
 
 </body>

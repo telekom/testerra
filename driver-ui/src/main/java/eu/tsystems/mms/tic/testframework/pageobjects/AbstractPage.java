@@ -14,13 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
@@ -28,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithAc
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -44,7 +42,9 @@ public abstract class AbstractPage {
 
     /**
      * The webdriver object.
+     * @deprecated Use {@link #getWebDriver()} instead
      */
+    @Deprecated
     protected WebDriver driver;
 
     /**
@@ -57,40 +57,7 @@ public abstract class AbstractPage {
      */
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    /**
-     * Page storage.
-     */
-    private static final ThreadLocal<AbstractPage> STORED_PAGES = new ThreadLocal<AbstractPage>();
-
     private boolean forcedGuiElementStandardAsserts = false;
-
-    /**
-     * Restore a stored page class.
-     * <p/>
-     * A page class can be stored with a Page.store() call.
-     * <p/>
-     * The current page object is then stored thread safe and can be reloaded with a Page.restore(T) call, where T is a
-     * class of expected page type T. If a correct object is stored, you will get it.
-     *
-     * @param c   class of expected page type
-     * @param <T> expected page type
-     * @return stored instance
-     */
-    @SuppressWarnings("unchecked")
-    public static <T extends Page> T restore(final Class<T> c) {
-        AbstractPage page = STORED_PAGES.get();
-
-        if (page == null) {
-            throw new TesterraRuntimeException("There is no page object stored. Call store() before!");
-        }
-
-        if (c.isInstance(page)) {
-            page.handleDemoMode(WebDriverManager.getWebDriver());
-            return (T) page;
-        } else {
-            throw new TesterraRuntimeException("The page object is not of expected type.");
-        }
-    }
 
     /**
      * Setter.
@@ -196,7 +163,7 @@ public abstract class AbstractPage {
         String classSimpleName = this.getClass().getSimpleName();
         logger.info("Checking mandatory elements for " + classSimpleName);
 
-        handleDemoMode(this.driver);
+        handleDemoMode(getWebDriver());
 
         /*
         page checks
@@ -275,16 +242,6 @@ public abstract class AbstractPage {
 
     public int getElementTimeoutInSeconds() {
         return elementTimeoutInSeconds;
-    }
-
-    /**
-     * Store a page class.
-     * <p/>
-     * The current page object is then stored thread safe and can be reloaded with a Page.restore(T) call, where T is a
-     * class of expected page type T. If a correct object is stored, you will get it.
-     */
-    public void store() {
-        STORED_PAGES.set(this);
     }
 
     private PageOptions getPageOptions(List<Class<? extends AbstractPage>> allClasses) {
@@ -402,7 +359,7 @@ public abstract class AbstractPage {
      * taking screenshot from all open windows
      */
     public void takeScreenshot() {
-        UITestUtils.takeScreenshot(driver, true);
+        UITestUtils.takeScreenshot(getWebDriver(), true);
     }
 
     public abstract void waitForPageToLoad();
@@ -416,7 +373,16 @@ public abstract class AbstractPage {
     public void assertPageIsNotShown() {
     }
 
+    /**
+     * @deprecated Use {@link #getWebDriver()} instead
+     * @return
+     */
+    @Deprecated
     public WebDriver getDriver() {
+        return driver;
+    }
+
+    public WebDriver getWebDriver() {
         return driver;
     }
 }

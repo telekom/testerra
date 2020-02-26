@@ -1,23 +1,26 @@
-# project
-project is a simple maven pom project providing links to sub modules.
+# Integration tests
 
-## Installation / Usage
+## Start Report prepare tests
 
-For maven:
+Generate the demo Testerra reports for report tests
 
-```xml
-<parent>
-    <groupId>eu.tsystems.mms.tic.testerra</groupId>
-    <artifactId>parent</artifactId>
-    <version>1-SNAPSHOT</version>
-</parent>
-```
+```shell script
+for i in {1..9}
+do
+  gradle test -P nr=$(i) -Dtt.report.name=pretest0$(i)
 
-For gradle:
-```text
-???
-```
+done
+````
 
-***
+## Start complete integration testset
 
-Documentation pending
+```shell script
+gradle test
+````
+
+## Start a predefined suite
+
+Start the smoke test
+```shell script
+gradle test -P smoke=true
+````

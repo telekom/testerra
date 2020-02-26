@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
@@ -33,7 +33,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.IResultMap;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -204,11 +203,10 @@ public class RetryAnalyzer implements IRetryAnalyzer {
 
             RETRIED_METHODS.add(methodContext);
 
-            LOGGER.error(retryReason + ", send signal for retrying the test " + retryMessageString +
-                    "\n" + methodContext);
+            LOGGER.error(retryReason + ", send signal for retrying the test " + retryMessageString + "\n" + methodContext);
 
-            IResultMap skippedTests = testResult.getTestContext().getFailedTests();
-            skippedTests.removeResult(testResult);
+            testResult.getTestContext().getFailedTests().removeResult(testResult);
+            testResult.getTestContext().getSkippedTests().removeResult(testResult);
             return true;
         }
 
@@ -273,7 +271,6 @@ public class RetryAnalyzer implements IRetryAnalyzer {
      * checks if test results contain throwable results
      *
      * @param testResult .
-     *
      * @return .
      */
     public static boolean isTestResultContainingFilteredThrowable(final ITestResult testResult) {
@@ -304,7 +301,6 @@ public class RetryAnalyzer implements IRetryAnalyzer {
      * Returns a retryCause when a stacktrace match was found, otherwise null, which means, that we do not want a retry.
      *
      * @param throwable The throwable to check.
-     *
      * @return a cause or null
      */
     private static Throwable checkThrowable(Throwable throwable) {

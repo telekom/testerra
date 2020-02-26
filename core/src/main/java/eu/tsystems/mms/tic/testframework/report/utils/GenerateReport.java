@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
@@ -41,13 +41,13 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.utils.reference.IntRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ISuite;
 import org.testng.xml.XmlSuite;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Created by piet on 08.12.16.
@@ -60,8 +60,6 @@ public class GenerateReport {
         // flush run contexts
         MethodRelations.flushAll();
 
-        LOGGER.info("*** Generating Report ***");
-        LOGGER.info("Preparing report in " + Report.REPORT_DIRECTORY.getAbsolutePath());
         JVMMonitor.label("Tests Finished");
 
         JVMMonitor.stop();
@@ -244,7 +242,8 @@ public class GenerateReport {
         System.out.println(" ## List of all test methods in this steps ##");
         System.out.println("");
 
-        IntRef testMethodsCount = new IntRef();
+        final AtomicReference<Integer> testMethodsCount = new AtomicReference<>();
+        testMethodsCount.set(0);
         ExecutionContextController.EXECUTION_CONTEXT.copyOfSuiteContexts().forEach(
                 suiteContext -> {
                     System.out.println("Suite: " + suiteContext.name);
@@ -260,7 +259,7 @@ public class GenerateReport {
                                                     .forEach(
                                                         methodContext -> {
                                                             System.out.println("Method: " + methodContext.name);
-                                                            testMethodsCount.increase();
+                                                            testMethodsCount.set(testMethodsCount.get()+1);
                                                         }
                                                     );
                                         }
@@ -270,7 +269,7 @@ public class GenerateReport {
         );
 
         System.out.println("");
-        System.out.println("Number of tests: " + testMethodsCount.getI());
+        System.out.println("Number of tests: " + testMethodsCount.get());
         System.out.println("");
     }
 

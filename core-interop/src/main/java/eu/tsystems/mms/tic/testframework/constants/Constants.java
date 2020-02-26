@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.constants;
 
@@ -40,13 +40,6 @@ public final class Constants {
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT_DATE;
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT_DELTA;
     public static final int PAGE_LOAD_TIMEOUT_SECONDS = PropertyManager.getIntProperty(TesterraProperties.WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD, 120);
-
-    /*
-    Download paths
-     */
-    static final String DOWNLOAD_DIRECTORY_WIN = "C:\\TesterraDownloads\\";
-    static final String DOWNLOAD_DIRECTORY_LINUX = "/tmp/TesterraDownloads/";
-
 
     static {
         try {

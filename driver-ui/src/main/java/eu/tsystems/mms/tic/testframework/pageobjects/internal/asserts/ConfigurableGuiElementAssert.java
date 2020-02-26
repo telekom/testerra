@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
@@ -85,16 +85,6 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
-    public void assertIsDisplayedFromWebElement() {
-        configuredAssert.assertTrue(guiElementWait.waitForIsDisplayedFromWebElement(), guiElementData + " is displayed.");
-    }
-
-    @Override
-    public void assertIsNotDisplayedFromWebElement() {
-        configuredAssert.assertFalse(!guiElementWait.waitForIsNotDisplayedFromWebElement(), guiElementData + " is displayed.");
-    }
-
-    @Override
     public void assertIsSelected() {
         configuredAssert.assertTrue(guiElementWait.waitForIsSelected(), guiElementData + " is selected.");
     }
@@ -128,19 +118,15 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     }
 
     @Override
-    public void assertContainsText(String... text) {
-        configuredAssert.assertTrue(guiElementWait.waitForTextContains(text), guiElementData + " text does not contain the requested text\n " +
-                "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
-    }
-
-    @Override
     public void assertTextContains(String... text) {
-
+        configuredAssert.assertTrue(guiElementWait.waitForTextContains(text), guiElementData + " text does not contain the requested text\n " +
+            "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
     }
 
     @Override
     public void assertTextContainsNot(String... text) {
-
+        configuredAssert.assertTrue(guiElementWait.waitForTextContainsNot(text), guiElementData + " text does contain the requested text\n " +
+            "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
     }
 
     @Override
@@ -258,5 +244,15 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
         if (matchStep!=null && matchStep.takeReferenceOnly == false) {
             LayoutCheck.toReport(matchStep);
         }
+    }
+
+    @Override
+    public void assertVisible(boolean complete) {
+        configuredAssert.assertTrue(guiElementWait.waitForIsVisible(complete), guiElementData + " is "+(complete?"complete ":"")+"visible");
+    }
+
+    @Override
+    public void assertNotVisible() {
+        configuredAssert.assertTrue(guiElementWait.waitForIsNotVisible(), guiElementData + " is not visible");
     }
 }

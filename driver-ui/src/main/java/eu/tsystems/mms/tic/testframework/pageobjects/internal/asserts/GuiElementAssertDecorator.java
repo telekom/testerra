@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
@@ -150,18 +150,6 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
     }
 
     @Override
-    public void assertIsNotDisplayedFromWebElement() {
-        callBeforeAssertion();
-        AssertionError thrownAssertionError = null;
-        try {
-            decoratedAssert.assertIsNotDisplayedFromWebElement();
-        } catch (AssertionError e) {
-            thrownAssertionError = e;
-        }
-        handleAfterAssertion("assertIsNotDisplayedFromWebElement", thrownAssertionError);
-    }
-
-    @Override
     public void assertText(String text) {
         callBeforeAssertion();
         AssertionError thrownAssertionError = null;
@@ -171,12 +159,6 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
             thrownAssertionError = e;
         }
         handleAfterAssertion("assertText \"" + text + "\"", thrownAssertionError);
-    }
-
-    @Override
-    @Deprecated
-    public void assertContainsText(String... text) {
-        assertTextContains(text);
     }
 
     @Override
@@ -395,5 +377,29 @@ public abstract class GuiElementAssertDecorator implements GuiElementAssert {
             thrownAssertionError = e;
         }
         handleAfterAssertion("assertScreenshot", thrownAssertionError);
+    }
+
+    @Override
+    public void assertVisible(boolean complete) {
+        callBeforeAssertion();
+        AssertionError thrownAssertionError = null;
+        try {
+            decoratedAssert.assertVisible(complete);
+        } catch (AssertionError e) {
+            thrownAssertionError = e;
+        }
+        handleAfterAssertion("assertVisible", thrownAssertionError);
+    }
+
+    @Override
+    public void assertNotVisible() {
+        callBeforeAssertion();
+        AssertionError thrownAssertionError = null;
+        try {
+            decoratedAssert.assertNotVisible();
+        } catch (AssertionError e) {
+            thrownAssertionError = e;
+        }
+        handleAfterAssertion("assertNotVisible", thrownAssertionError);
     }
 }

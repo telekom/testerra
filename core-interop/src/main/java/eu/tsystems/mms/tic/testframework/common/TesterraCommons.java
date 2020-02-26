@@ -14,87 +14,75 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.report.DefaultLogAppender;
+import eu.tsystems.mms.tic.testframework.report.TesterraLogger;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.apache.log4j.Appender;
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URL;
+import java.util.Enumeration;
 import java.util.Properties;
 
 /**
  * Created by pele on 05.02.2015.
  */
 public class TesterraCommons {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(TesterraCommons.class);
-
-    private static final String p = "eu.tsystems.mms.tic.testframework";
-
-    private static boolean loggingInitialized = false;
     private static boolean proxySettingsLoaded = false;
 
     public static final String DEFAULT_PACKAGE_NAME = "eu.tsystems.mms.tic";
-
     private static final String SYSTEM_PROPERTIES_FILE = "system.properties";
 
     private TesterraCommons() {}
 
     /**
-     * If the System Property tt.loglevel is set, this method tries to change the appropriate Log4j Level.
+     * Log4j initialization with TesterraLogger,
+     * and remove all duplicate ConsoleLoggers
      */
-    public static void setTesterraLogLevel(Level level) {
-        org.apache.log4j.Logger TesterraLogger = org.apache.log4j.Logger.getLogger(p);
-        TesterraLogger.setLevel(level);
-    }
+    private static void initializeLogging() {
+        BasicConfigurator.configure();
 
-    public static void setTesterraLogLevel() {
+        org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
+        if (getTesterraLogger() == null) {
+            TesterraLogger testerraLogger = new DefaultLogAppender();
+            testerraLogger.setName(TesterraLogger.class.getSimpleName());
+            root.addAppender(testerraLogger);
+            root.setLevel(Level.INFO);
+        }
 
-        // load from file
-        String testerraLogLevelString = PropertyManager.getProperty(TesterraProperties.LOG_LEVEL, "INFO");
-
-        /*
-        Patch log level
+        /**
+         * We have to remove the default {@link ConsoleAppender},
+         * because the {@link TesterraLogger} already logs to System.out
          */
-        if (testerraLogLevelString != null) {
-            org.apache.log4j.Logger TesterraLogger = org.apache.log4j.Logger.getLogger(p);
-            testerraLogLevelString = testerraLogLevelString.trim().toUpperCase();
-
-            Level level = Level.toLevel(testerraLogLevelString); // is debug when conversion fails
-            TesterraLogger.setLevel(level);
+        Enumeration allAppenders = root.getAllAppenders();
+        while (allAppenders.hasMoreElements()) {
+            Object appender = allAppenders.nextElement();
+            if (appender instanceof ConsoleAppender) {
+                root.removeAppender((ConsoleAppender) appender);
+            }
         }
     }
 
-    /**
-     * If no log4j configuration is set. We try to set it with the file test-log4j or through the BasicConfigurator.
-     * Another Method is called, which reads the tt.loglevel from Systemproperties and may overrides an existing
-     * value.
-     *
-     * @param basicConfigFallback If true, BasicConfigurator is called when no logging config is found.
-     */
-    private static void initializeLogging(final boolean basicConfigFallback) {
-        if (!loggingInitialized) {
-            final String loggerDefinitionsFilename = "test-log4j.xml";
-            final URL log4jConfig = ClassLoader.getSystemResource(loggerDefinitionsFilename);
-            if (log4jConfig != null) {
-                System.setProperty("log4j.configuration", loggerDefinitionsFilename);
-                DOMConfigurator.configure(log4jConfig);
-            } else {
-                if (basicConfigFallback) {
-                    BasicConfigurator.configure();
-                }
-            }
-            loggingInitialized = true;
+    public static TesterraLogger getTesterraLogger() {
+        Appender testerraLogger = org.apache.log4j.Logger.getRootLogger().getAppender(TesterraLogger.class.getSimpleName());
+        if (testerraLogger != null) {
+            return (TesterraLogger)testerraLogger;
+        } else {
+            return null;
         }
     }
 
@@ -116,20 +104,13 @@ public class TesterraCommons {
             return;
         }
 
-        final String filename = PropertyManager.getProperty(TesterraProperties.PROXY_SETTINGS_FILE, "proxysettings.properties");
-        final InputStream inputStream = FileUtils.getLocalFileOrResourceInputStream(filename);
-
-        if (inputStream == null) {
-            LOGGER.warn("File " + filename + " not found. No proxy settings loaded.");
-            return;
-        }
-
-        final Properties props = new Properties();
-
+        String filename = PropertyManager.getProperty(TesterraProperties.PROXY_SETTINGS_FILE, "proxysettings.properties");
+        Properties props = new Properties();
         try {
+            InputStream inputStream = FileUtils.getLocalFileOrResourceInputStream(filename);
             props.load(inputStream);
         } catch (Exception e) {
-            LOGGER.warn("Not loaded: " + filename);
+            LOGGER.warn(String.format("Not loaded proxy settings from file: %s", e.getMessage()), e);
             return;
         }
 
@@ -149,13 +130,10 @@ public class TesterraCommons {
     private static void initializeSystemProperties() {
         final Properties systemProperties = new Properties();
         try {
-            InputStream is = FileUtils.getLocalResourceInputStream(SYSTEM_PROPERTIES_FILE);
-
-            if (is == null) {
-                LOGGER.warn("Not loaded: " + SYSTEM_PROPERTIES_FILE);
-                return;
-            }
-
+            FileUtils fileUtils = new FileUtils();
+            File file = fileUtils.getLocalOrResourceFile(SYSTEM_PROPERTIES_FILE);
+            LOGGER.info("Load system properties: " + file.getAbsolutePath());
+            FileInputStream is = new FileInputStream(file);
             systemProperties.load(is);
             systemProperties.stringPropertyNames().forEach(key -> {
                 final String value = System.getProperty(key);
@@ -168,19 +146,13 @@ public class TesterraCommons {
                 System.setProperty(key, newValue);
             });
         } catch (Exception e) {
-            LOGGER.warn("Not loaded: " + SYSTEM_PROPERTIES_FILE, e);
+            //LOGGER.warn("Not loaded: " + SYSTEM_PROPERTIES_FILE, e);
         }
     }
 
     public static void init() {
-
-        TesterraCommons.initializeLogging(true);
-
-        // implicit calls PropertyManager static block - init all the properties, load property file as well!
-        TesterraCommons.setTesterraLogLevel();
-
-        // calls LOGGING - Ensure we have Logging initialized before calling!
-        TesterraCommons.initializeSystemProperties();
-        TesterraCommons.initializeProxySettings();
+        initializeLogging();
+        initializeSystemProperties();
+        initializeProxySettings();
     }
 }

@@ -14,22 +14,20 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.internal.utils;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
+import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
 public class ExceptionUtils extends CoreExceptionUtils {
 
     private static final String INIT_STRING = "<init>";
 
     public static String getPageContextFromThrowable(final Throwable throwable) {
-//        return "PageClass -> myMethod";
-
         if (throwable == null) {
             return null;
         }
@@ -72,15 +70,22 @@ public class ExceptionUtils extends CoreExceptionUtils {
         /*
         in case of error in <init> of a page class, find out, if it was the checkPage
          */
-        if (INIT_STRING.equals(actionName)) {
-            position = findSubclassCallBackwards(stackTrace, position - 1, AbstractPage.class, Page.CHECKPAGE_METHOD_NAME);
-            if (position != -1) {
-                stackTraceElement = stackTrace[position];
-                actionName = stackTraceElement.getMethodName();
-                // do not overwrite the class here, it would be AbstractPage
-            }
-        }
+//        if (INIT_STRING.equals(actionName)) {
+//            position = findSubclassCallBackwards(stackTrace, position - 1, AbstractPage.class, Page.CHECKPAGE_METHOD_NAME);
+//            if (position != -1) {
+//                stackTraceElement = stackTrace[position];
+//                actionName = stackTraceElement.getMethodName();
+//                // do not overwrite the class here, it would be AbstractPage
+//            }
+//        }
 
-        return Page.getPageContext(simpleClassName, actionName);
+        if (
+            StringUtils.isStringEmpty(actionName)
+            || actionName.equals(INIT_STRING)
+        ) {
+            return String.format("Construct %s", simpleClassName);
+        } else {
+            return String.format("%s.%s", simpleClassName, actionName);
+        }
     }
 }

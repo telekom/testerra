@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
@@ -135,14 +135,9 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
         return eventFiringWebDriver;
     }
 
-    protected String logSCID() {
-        final String scid = sessionContext == null ? "unrelated" : sessionContext.id;
-        return "[SCID:" + scid + "] ";
-    }
-
     private void logSessionRequest(R finalRequest, DesiredCapabilities finalCaps) {
         StringBuffer msg = new StringBuffer();
-        msg.append(logSCID()).append("Requesting new web driver session with capabilities:");
+        msg.append("Requesting new web driver session with capabilities:");
         finalCaps.asMap().forEach((k, v) -> msg.append(",").append(k).append("=").append(v));
 
         /*

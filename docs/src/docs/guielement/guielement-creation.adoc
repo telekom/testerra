@@ -20,10 +20,14 @@ The Method `getSubElement()` generates a new GuiElement. It will only be searche
 GuiElement upper = new GuiElement(driver, By.name("upperElement"));
 
 // Create the sub elements
-GuiElement lower = upper.getSubElement(driver, By.name("lowerElement"));
-// Don't forget the dot (.) before the slashes!
-GuiElement lower2 = upper.getSubElement(driver, By.xpath(".//p[@id='element']"));
+GuiElement lower = upper.getSubElement(By.name("lowerElement"));
+GuiElement lower = upper.getSubElement(By.xpath(".//p[@id='element']")); <1>
+GuiElement lower = upper.getSubElement(By.xpath("//p[@id='element']")); <2>
+GuiElement lower = upper.getSubElement(By.xpath("./p[@id='element']")); <3>
 ----
+<1> Find any matching descendant
+<2> Corrects the selector prefix to './/'
+<3> Find any matching child
 
 == Advanced GuiElement locating
 
@@ -47,6 +51,19 @@ This will throw an exception, if not one WebElement has been found.
 [source,java]
 ----
 GuiElement myElement = new GuiElement(driver, Locate.by().displayed().xpath(".//button"));
+----
+
+=== Prepared xpath expressions
+
+Using prepared expressions makes your selectors more readable.
+
+[source,java]
+----
+Locate byText = Locate.prepare("//button[text()='%s'])");
+Locate byClass = Locate.prepare("//%s[contains(@class, '%s')][%d]");
+
+GuiElement loginButton = new GuiElement(driver, byText.with("Login"));
+GuiElement logoutButton = new GuiElement(driver, byClass.with("button", "btn-logout", 1));
 ----
 
 === Filtering elements (draft)
@@ -77,24 +94,38 @@ GuiElement button = new GuiElement(driver, Locate.by().xpath(".//button").filter
 
 === GuiElements inside frames
 
-Accessing WebElements inside frames requieres changing the active frame before any action. GuiElements can do that automatically. A frame can be the HTML element `<frame>` inside a `<frameset>` or `<iframe>`.
+Accessing WebElements inside frames requires changing the active frame before any action. GuiElements do that automatically.
 
-For creating new GuiElements within one or more frames the frames have to be passed to the constructor.
+For creating new GuiElements within one or more frames, the frames have to be passed to the constructor. A frame can be the HTML element `<frame>` inside a `<frameset>` or `<iframe>`.
 
 [source,java]
 ----
 GuiElement frame1 = new GuiElement(driver, By.id("frame1"));
-// frame2 is child of frame 1
+
+// frame2 is child of frame1
 GuiElement frame2 = new GuiElement(driver, By.id("frame2"), frame1);
 
-// either:
-// target is child of frame2 which is child of frame 1
-GuiElement target = new GuiElement(driver, By.id("target"), frame1, frame2);
-
-// or:
-// target is child of frame2 which is child of frame 1, in this case the frames are searched automatically recursively
+// target is child of frame2 which is child of frame1,
+// in this case the frames are searched recurse automatically
 GuiElement target = new GuiElement(driver, By.id("target"), frame2);
 ----
+
+When accessing the `WebElement` instance, you are responsible for frame switches by yourself.
+You can perform these as following.
+```java
+WebElement webElement = target.getWebElement();
+if (target.hasFrameLogic()) {
+    target.getFrameLogic().switchToCorrectFrame();
+}
+
+// Perform your actions on webElement here
+webElement.findElements("//div");
+
+if (target.hasFrameLogic()) {
+    target.getFrameLogic().switchToDefaultFrame();
+}
+```
+
 //
 //== GuiElement by image
 //

@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
@@ -37,12 +37,6 @@ import java.lang.reflect.Method;
  * Created by rnhb on 29.12.2015.
  */
 public class CheckPageTest extends AbstractTestSitesTest {
-
-    @BeforeMethod
-    public void before(Method method) {
-        WebDriver webDriver = WebDriverManager.getWebDriver();
-        webDriver.get(TestPage.INPUT_TEST_PAGE.getUrl());
-    }
 
     @Test
     public void testT01_checkExistingElement() throws Exception {
@@ -75,7 +69,7 @@ public class CheckPageTest extends AbstractTestSitesTest {
 
         Page page = new Page(webDriver) {
             @Check
-            GuiElement testElement = new GuiElement(driver, By.xpath("not existing"));
+            GuiElement testElement = new GuiElement(getWebDriver(), By.xpath("not existing"));
         };
 
         boolean exceptionWasThrown = false;
@@ -95,7 +89,7 @@ public class CheckPageTest extends AbstractTestSitesTest {
 
         class ParentPage extends Page {
             @Check
-            GuiElement testElement = new GuiElement(driver, By.xpath("not existing"));
+            GuiElement testElement = new GuiElement(getWebDriver(), By.xpath("not existing"));
 
             public ParentPage(WebDriver driver) {
                 super(driver);

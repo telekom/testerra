@@ -1,17 +1,15 @@
 package eu.tsystems.mms.tic.testframework.report.testundertest;
 
-import eu.tsystems.mms.tic.testframework.annotations.TesterraClassContext;
+import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.report.general.TestsUnderTestGroup;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
 /**
  * Created by jlma on 07.11.2016.
  */
-@TesterraClassContext("My_Context")
+@TestContext(name = "My_Context")
 public class ReportTestUnderTestFailed extends AbstractTest {
 
 
@@ -77,9 +75,6 @@ public class ReportTestUnderTestFailed extends AbstractTest {
     }
     @Test
     public void test_FailedInheritedMinor2() throws Exception {
-        WebDriver webDriver = WebDriverManager.getWebDriver();
-        webDriver.get("http://192.168.60.239");
-        //webDriver.close();
         NonFunctionalAssert.assertTrue(2>3);
         throw new Exception();
     }

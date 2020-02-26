@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 10.02.14
@@ -31,8 +31,12 @@ import eu.tsystems.mms.tic.testframework.sikuli.WebDriverScreen;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.*;
+import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.sikuli.api.DefaultScreenRegion;
 import org.sikuli.api.ImageTarget;
 import org.sikuli.api.ScreenLocation;
@@ -40,7 +44,7 @@ import org.sikuli.api.ScreenRegion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;

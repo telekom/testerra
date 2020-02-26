@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 21.01.2014
@@ -69,7 +69,7 @@ public class TesterraBuildInformation implements Serializable {
             if (instance == null) {
                 instance = new TesterraBuildInformation();
                 try {
-                    PropertyManager.loadProperties("testerra-build.properties");
+                    PropertyManager.loadProperties("build.properties");
                     instance.buildJavaVersion = PropertyManager.getProperty("build.java.version", instance.buildJavaVersion);
                     instance.buildOsName = PropertyManager.getProperty("build.os.name", instance.buildOsName);
                     instance.buildOsArch = PropertyManager.getProperty("build.os.arch", instance.buildOsArch);

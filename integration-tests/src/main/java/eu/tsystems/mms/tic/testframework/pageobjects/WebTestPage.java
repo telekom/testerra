@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 07.01.2013
@@ -75,6 +75,7 @@ public class WebTestPage extends AbstractWebTestPage {
     public void assertFunctionalityOfButton1() {
         final String something = "some";
         input1.type(something);
+        button1.click();
         textOutputField.asserts().assertTextContains(something);
     }
 

@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.utils.NumberUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Created by toku on 07.01.2015.
  */
-public class NumberUtilsTest extends AbstractTest {
+public class NumberUtilsTest extends AbstractWebDriverTest {
 
     /**
      * checks the average value of the list

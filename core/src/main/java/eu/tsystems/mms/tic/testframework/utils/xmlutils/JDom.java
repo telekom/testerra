@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.utils.xmlutils;
 
@@ -136,7 +136,7 @@ public class JDom extends AbstractXMLUtils {
             LOGGER.debug(String.format("Set new value '%s' to the new node '%s'.", newElementValue, newElement));
 
         }
-        
+
         for (int i = 0; i < attributes.length; i = i + 2) {
             Attribute att1 = new Attribute(attributes[i], attributes[i + 1]);
             nElement.setAttribute(att1);

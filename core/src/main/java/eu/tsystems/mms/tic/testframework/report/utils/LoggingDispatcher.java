@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 01.01.2012
@@ -28,6 +28,7 @@ package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
@@ -59,15 +60,15 @@ public final class LoggingDispatcher {
     /**
      * Collection of unrelated logs.
      */
-    static final List<LogMessage> UNRELATED_LOGS = Collections.synchronizedList(new LinkedList<LogMessage>());
+    static final List<LogMessage> UNRELATED_LOGS = Collections.synchronizedList(new LinkedList<>());
 
     /**
      * Adds a logMessage message to MethodContext. Called in TesterraListener.class
      *
      * @param logMessage The logMessage message.
      */
-    public static void addLogMessage(final LogMessage logMessage) {
-        pAddLogMessage(logMessage);
+    public static TestStepAction addLogMessage(LogMessage logMessage) {
+        return pAddLogMessage(logMessage);
     }
 
     /**
@@ -75,9 +76,9 @@ public final class LoggingDispatcher {
      *
      * @param logMessage The logMessage message.
      */
-    private static void pAddLogMessage(LogMessage logMessage) {
+    private static TestStepAction pAddLogMessage(LogMessage logMessage) {
         if (STOP_REPORT_LOGGING) {
-            return;
+            return null;
         }
 
         // check if a thread link offer exists
@@ -92,10 +93,10 @@ public final class LoggingDispatcher {
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext == null) {
             UNRELATED_LOGS.add(logMessage);
-            return;
+            return null;
         }
 
-        methodContext.addLogMessage(logMessage);
+        return methodContext.addLogMessage(logMessage);
     }
 
 

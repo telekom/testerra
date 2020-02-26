@@ -14,16 +14,21 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
 /**
  * Created by pele on 31.05.2016.
  */
-public class ArrayUtils extends org.apache.commons.lang.ArrayUtils {
+@Deprecated
+public class ArrayUtils extends  org.apache.commons.lang3.ArrayUtils {
 
+    /**
+     * @deprecated Use {@link String#join} instead
+     */
+    @Deprecated
     public static String join(final Object[] objects, String seperator) {
         if (objects == null || objects.length == 0) {
             throw new IllegalArgumentException("Parameter #1 Object[] cannot be null or empty");

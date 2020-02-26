@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 05.04.2011
@@ -27,6 +27,7 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
@@ -35,19 +36,21 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.Worker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.CQWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TesterraConnectorSyncEventsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TesterraEventsFinishWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodAnnotationCheckerWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodFinishedWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.RemoveTestMethodIfRetryPassedWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TestMethodFinishedWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TesterraEventsStartWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TesterraConnectorSyncEventsWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TesterraEventsFinishWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.LoggingStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TestStartWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TesterraEventsStartWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
 import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
@@ -61,8 +64,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Appender;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
 import org.testng.IHookCallBack;
@@ -89,11 +91,16 @@ import java.util.List;
  *
  * @author mrgi, mibu, pele, sepr
  */
-public class TesterraListener implements IInvokedMethodListener2, IReporter,
-        IHookable, IConfigurable, IMethodInterceptor, ITestListener, ISuiteListener {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TesterraListener.class);
-
+public class TesterraListener implements
+    IInvokedMethodListener2,
+    IReporter,
+    IHookable,
+    IConfigurable,
+    IMethodInterceptor,
+    ITestListener,
+    ISuiteListener,
+    Loggable
+{
     /**
      * Global marker for positive test execution.
      */
@@ -125,6 +132,12 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
          */
         Booter.bootOnce();
 
+        /**
+         * Enable report formatter here
+         * @todo Move this to core module hook or module config in Testerra 2
+         */
+        TesterraCommons.getTesterraLogger().setFormatter(new StaticReportLogFormatter());
+
         /*
          * Add monitoring event listeners
          */
@@ -134,9 +147,6 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
         if (Flags.MONITOR_MEMORY) {
             TesterraEventService.addListener(new JVMMonitor());
         }
-
-        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        LOGGER.info("Context ClassLoader for TesterraListener: " + contextClassLoader);
 
         // start test for xml
         XML_REPORTER = new JUnitXMLReporter(true, Report.XML_DIRECTORY);
@@ -155,7 +165,6 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
             instances++;
         }
     }
-
 
     /**
      * Determines whether there was an error in the current test. This is necessary to not synchronize a test result
@@ -207,7 +216,6 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
      *
      * @param list         All methods that should be run due to current XML-Test
      * @param iTestContext .
-     *
      * @return Alle mthods taht shuld be run
      */
     @Override
@@ -257,12 +265,15 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
      * @param context    steps of test.
      */
     @Override
-    public void beforeInvocation(final IInvokedMethod method, final ITestResult testResult,
-                                 final ITestContext context) {
+    public void beforeInvocation(
+            IInvokedMethod method,
+            ITestResult testResult,
+            ITestContext context
+    ) {
         try {
             pBeforeInvocation(method, testResult, context);
         } catch (Throwable t) {
-            LOGGER.error("FATAL INTERNAL ERROR in beforeInvocation for " + method + ", " + testResult + ", " + context, t);
+            log().error("FATAL INTERNAL ERROR in beforeInvocation for " + method + ", " + testResult + ", " + context, t);
             ReportInfo.getDashboardWarning().addInfo(1, "FATAL INTERNAL ERROR during execution! Please analyze the build logs for this error!");
         }
     }
@@ -274,7 +285,11 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
      * @param testResult    result of invoked method.
      * @param testContext
      */
-    private void pBeforeInvocation(final IInvokedMethod invokedMethod, final ITestResult testResult, ITestContext testContext) {
+    private void pBeforeInvocation(
+            IInvokedMethod invokedMethod,
+            ITestResult testResult,
+            ITestContext testContext
+    ) {
         /*
         check for listener duplicates
          */
@@ -287,19 +302,19 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
             return;
         }
 
-        TestStep.begin("Setup");
-
         /*
          * store testresult, create method context
          */
-        final MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
+        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
         ExecutionContextController.setCurrentMethodContext(methodContext);
+
+        methodContext.steps().announceTestStep(TestStep.SETUP);
 
         final String infoText = "beforeInvocation: " + invokedMethod.getTestMethod().getTestClass().getName() + "." +
                 methodName +
                 " - " + Thread.currentThread().getName();
 
-        LOGGER.trace(infoText);
+        log().trace(infoText);
 
 
         MethodWorkerExecutor workerExecutor = new MethodWorkerExecutor();
@@ -313,7 +328,8 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
 
         workerExecutor.run(testResult, methodName, methodContext, testContext, invokedMethod);
 
-        TestStep.end();
+        // We don't close teardown steps, because we want to collect further actions there
+        //step.close();
     }
 
     /**
@@ -354,8 +370,11 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
      * @param testContext   steps of test.
      */
     // CHECKSTYLE:OFF
-    private void pAfterInvocation(final IInvokedMethod invokedMethod, final ITestResult testResult,
-                                  final ITestContext testContext) {
+    private void pAfterInvocation(
+            IInvokedMethod invokedMethod,
+            ITestResult testResult,
+            ITestContext testContext
+    ) {
 
         final String methodName;
         final String testClassName;
@@ -377,7 +396,7 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
          */
         final String infoText = "afterInvocation: " + testClassName + "." + methodName + " - " + Thread.currentThread().getName();
 
-        LOGGER.trace(infoText);
+        log().trace(infoText);
 
         /*
          * Get test method container
@@ -405,11 +424,11 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
         /*
         add workers in workflow order
          */
-        TestStep.begin("TearDown");
+        TestStep step = methodContext.steps().announceTestStep(TestStep.TEARDOWN);
         if (testResult.isSuccess()) {
-            LOGGER.info(methodName + " PASSED");
+            log().info(methodName + " PASSED");
         } else if (testResult.getStatus() == ITestResult.FAILURE) {
-            LOGGER.error(methodName + " FAILED", testResult.getThrowable());
+            log().error(methodName + " FAILED", testResult.getThrowable());
         }
 
         /*
@@ -420,6 +439,7 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
         workerExecutor.add(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
         workerExecutor.add(new MethodAnnotationCheckerWorker()); // !! must be invoked before Container Update
         workerExecutor.add(new MethodContextUpdateWorker());
+        workerExecutor.add(new RemoveTestMethodIfRetryPassedWorker());
 
         workerExecutor.run(testResult, methodName, methodContext, testContext, invokedMethod);
 
@@ -443,12 +463,16 @@ public class TesterraListener implements IInvokedMethodListener2, IReporter,
          */
         workerExecutor.run(testResult, methodName, methodContext, testContext, invokedMethod);
 
-        TestStep.end();
+        // We don't close teardown steps, because we want to collect further actions there
+        //step.close();
     }
 
     @Override
-    public void generateReport(final List<XmlSuite> xmlSuites, final List<ISuite> suites,
-                               final String outputDirectory) {
+    public void generateReport(
+            List<XmlSuite> xmlSuites,
+            List<ISuite> suites,
+            String outputDirectory
+    ) {
         GenerateReport.runOnce(xmlSuites, suites, outputDirectory, XML_REPORTER);
     }
 

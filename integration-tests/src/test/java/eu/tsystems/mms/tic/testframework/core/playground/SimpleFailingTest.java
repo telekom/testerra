@@ -1,10 +1,10 @@
 package eu.tsystems.mms.tic.testframework.core.playground;
 
-import eu.tsystems.mms.tic.testframework.AbstractTest;
+import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class SimpleFailingTest extends AbstractTest {
+public class SimpleFailingTest extends AbstractWebDriverTest {
 
     @Test
     public void testFailing() {

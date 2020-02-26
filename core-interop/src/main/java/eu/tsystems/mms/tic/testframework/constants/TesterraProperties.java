@@ -14,9 +14,9 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     jhmr <Johannes.Maresch@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     jhmr
+ *     pele
  */
 /*
  * Created on 26.03.2012
@@ -38,6 +38,7 @@ public final class TesterraProperties {
      * Hide default constructor.
      */
     private TesterraProperties() {
+
     }
 
     /**
@@ -75,26 +76,17 @@ public final class TesterraProperties {
      * Property key stating to take automatic screenshots or not.
      */
     public static final String SCREENSHOTTER_ACTIVE = "tt.screenshotter.active";
-//    public static final String AUTOSCREENSHOTS = "tt.takeAutomaticScreenshot";
 
     /**
      * Key of reportDir Property.
      */
-    public static final String REPORTDIR = "tt.reportdir";
-    public static final String REPORTNAME = "tt.reportname";
-
-    public static final String LOG_LEVEL ="tt.loglevel";
-
-    /**
-     * tt. test property file.
-     */
-    public static final String TEST_PROPERTIES_FILE = "tt.test.properties.file";
+    public static final String REPORTDIR = "tt.report.dir";
+    public static final String REPORTNAME = "tt.report.name";
 
     /**
      * Failed tests maximum number of retries.
      */
     public static final String FAILED_TESTS_MAX_RETRIES = "tt.failed.tests.max.retries";
-    public static final String FAILED_TESTS_RETRY_FLAPPING = "tt.failed.tests.retry.flapping";
 
     /**
      * Failed tests condition: Throwable Class(~es, devided by ','.
@@ -115,6 +107,11 @@ public final class TesterraProperties {
      * WDM close windows rule.
      */
     public static final String CLOSE_WINDOWS_ON_FAILURE = "tt.wdm.closewindows.onfailure";
+
+    /**
+     * WDM: Kill WebDriver on stucking selenium command after this.
+     */
+    public static final String WEBDRIVER_TIMEOUT_SECONDS_STUCK_COMMAND = "tt.wdm.timeouts.seconds.selenium.command.stuck";
 
     /**
      * Visually marks every GuiElement that is being processed. Might break a LayoutTest.
@@ -150,10 +147,6 @@ public final class TesterraProperties {
      */
     public static final String REPORT_ACTIVATE_SOURCES = "tt.report.activate.sources";
 
-    /**
-     * Guielement easy mode.
-     */
-    public static final String GUIELEMENT_TYPE = "tt.guielement.type";
     public static final String GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = "tt.guielement.default.assertcollector";
     public static final String GUIELEMENT_USE_JS_ALTERNATIVES = "tt.guielement.use.js.alternatives";
 
@@ -170,9 +163,13 @@ public final class TesterraProperties {
      * Perf test thinktime.
      */
     public static final String PERF_PAGE_THINKTIME_MS = "tt.perf.page.thinktime.ms";
-    /** reuse existing driver for a thread of dataprovider */
+    /**
+     * reuse existing driver for a thread of dataprovider
+     */
     public static final String REUSE_DATAPROVIDER_DRIVER_BY_THREAD = "tt.reuse.dataprovider.driver.by.thread";
-    /** Perf test Property, used to set default values of a Load test */
+    /**
+     * Perf test Property, used to set default values of a Load test
+     */
     public static final String PERF_TEST = "tt.perf.test";
 
     /**
@@ -188,9 +185,8 @@ public final class TesterraProperties {
 
     public static final String GUIELEMENT_CHECK_RULE = "tt.guielement.checkrule";
 
-    public static final String SKIP_EXECUTION_WHEN_PREVIOUSLY_PASSED = "tt.skip.execution.when.previously.passed";
-
     public static final String BROWSER_MAXIMIZE = "tt.browser.maximize";
+    public static final String BROWSER_MAXIMIZE_POSITION = "tt.browser.maximize.position";
 
     public static final String WEBDRIVER_TIMEOUT_SECONDS_PAGELOAD = "webdriver.timeouts.seconds.pageload";
     public static final String WEBDRIVER_TIMEOUT_SECONDS_SCRIPT = "webdriver.timeouts.seconds.script";
@@ -198,15 +194,11 @@ public final class TesterraProperties {
     public static final String PROXY_SETTINGS_LOAD = "tt.proxy.settings.load";
     public static final String PROXY_SETTINGS_FILE = "tt.proxy.settings.file";
 
-    public static final String REPORT_DATAPROVIDER_INFOS = "tt.report.dataprovider.infos";
-
     public static final String LIST_TESTS = "tt.list.tests";
 
     public static final String DELAY_AFTER_GUIELEMENT_FIND_MILLIS = "tt.delay.after.guielement.find.millis";
     public static final String DELAY_BEFORE_GUIELEMENT_ACTION_MILLIS = "tt.delay.before.guielement.action.millis";
     public static final String DELAY_AFTER_GUIELEMENT_ACTION_MILLIS = "tt.delay.after.guielement.action.millis";
-
-    public static final String WEB_TAKE_ACTION_SCREENSHOTS = "tt.web.take.action.screenshots";
 
     public static final String RUNCFG = "tt.runcfg";
 
@@ -222,8 +214,6 @@ public final class TesterraProperties {
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID = "tt.failure.corridor.allowed.failed.tests.mid";
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_LOW = "tt.failure.corridor.allowed.failed.tests.low";
 
-    public static final String STITCH_CHROME_SCREENSHOTS = "tt.stitch.chrome.screenshots";
-
     public static final String DISPLAY_RESOLUTION = "tt.display.resolution";
 
     public static final String PAGE_FACTORY_LOOPS = "tt.page.factory.loops";
@@ -237,7 +227,9 @@ public final class TesterraProperties {
      * The mode for the screenreferencer. Values are pixel (default) or annotated.
      */
     public static final String LAYOUTCHECK_MODE = "tt.layoutcheck.mode";
+
     // if true, will use non-functional asserts
+    @Deprecated
     public static final String LAYOUTCHECK_ASSERT_INFO_MODE = "tt.layoutcheck.assert.info.mode";
 
     public static final String LAYOUTCHECK_TAKEREFERENCE = "tt.layoutcheck.takereference";

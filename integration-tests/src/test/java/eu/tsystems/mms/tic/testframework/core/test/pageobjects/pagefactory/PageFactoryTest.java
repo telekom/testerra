@@ -14,14 +14,22 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
-import eu.tsystems.mms.tic.testframework.pageobjects.*;
+import eu.tsystems.mms.tic.testframework.pageobjects.BasePage;
+import eu.tsystems.mms.tic.testframework.pageobjects.BasePage2016;
+import eu.tsystems.mms.tic.testframework.pageobjects.PrefixBasePage;
+import eu.tsystems.mms.tic.testframework.pageobjects.PrefixBasePage2016;
+import eu.tsystems.mms.tic.testframework.pageobjects.ResponsiveWebTestPage;
+import eu.tsystems.mms.tic.testframework.pageobjects.ResponsiveWebTestPage_1235px_Max;
+import eu.tsystems.mms.tic.testframework.pageobjects.ResponsiveWebTestPage_601px_800px;
+import eu.tsystems.mms.tic.testframework.pageobjects.ResponsiveWebTestPage_801px_1234px;
+import eu.tsystems.mms.tic.testframework.pageobjects.ResponsiveWebTestPage_Min_600px;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -46,10 +54,6 @@ public class PageFactoryTest extends AbstractTestSitesTest {
         baseURL = WebDriverManager.getBaseURL();
         WebDriverManager.setBaseURL("http://www.google.com");
         WebDriverManager.config().closeWindowsAfterTestMethod = false;
-
-//        DesiredCapabilities caps = new DesiredCapabilities();
-//        WebDriverManagerUtils.addProxyToCapabilities(caps, "proxy.mms-dresden.de:8080");
-//        WebDriverManager.setGlobalExtraCapabilities(caps);
     }
 
     @AfterClass

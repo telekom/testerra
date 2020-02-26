@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
@@ -52,7 +52,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
 
     //private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
-    private FileUtils() {
+    public FileUtils() {
     }
 
     /**
@@ -88,15 +88,36 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      *
      * @return InputStream
      *
-     * @throws TesterraSystemException Exception, when file not existing
      * @implNote avoid logging here!
+     * @deprecated Use {@link #getLocalOrResourceFile(String)} instead
      */
-    public static InputStream getLocalFileOrResourceInputStream(final String filePathAndName) {
+    @Deprecated
+    public static InputStream getLocalFileOrResourceInputStream(final String filePathAndName) throws TesterraSystemException{
         try {
             return getLocalFileInputStream(filePathAndName);
             // throws FileNotFound, when not present! --> Try to get the resource file instead.
         } catch (FileNotFoundException e) {
             return getLocalResourceInputStream(filePathAndName); // throws a TesterraException
+        }
+    }
+
+    /**
+     * Gets a local or a resource file
+     * @param filePath
+     * @return
+     * @throws java.io.FileNotFoundException Thrown when the file hasn't been found or is not a local file
+     */
+    public File getLocalOrResourceFile(final String filePath) throws java.io.FileNotFoundException {
+        final File relativeFile = new File(filePath);
+
+        if (relativeFile.exists()) {
+            return relativeFile;
+        } else {
+            URL resourceUrl = currentThread().getContextClassLoader().getResource(filePath);
+            if (resourceUrl == null || !resourceUrl.toString().startsWith("file:")) {
+                throw new java.io.FileNotFoundException("No local resource file: "+ filePath);
+            }
+            return new File(resourceUrl.getFile());
         }
     }
 
@@ -109,6 +130,7 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
      *
      * @throws FileNotFoundException Exception, when file not existing
      */
+    @Deprecated
     public static InputStream getLocalFileInputStream(final String filePathAndName) throws FileNotFoundException {
 
         final File relativeFile = new File(filePathAndName);
@@ -298,8 +320,14 @@ public final class FileUtils extends org.apache.commons.io.FileUtils {
         return new File(resourceUrl.getFile());
     }
 
-    public static File createTempFileName(String fileName) {
-        final String extension = FilenameUtils.getExtension(fileName);
+    public File createTempFileName(String fileName) {
+        String extension = FilenameUtils.getExtension(fileName);
         return new File(System.getProperty("java.io.tmpdir") + "/" + FilenameUtils.getBaseName(fileName) + "-" + UUID.randomUUID() + (extension.length() > 0 ? "." + extension : ""));
+    }
+
+    public File createTempDir(String dirName) {
+        File dir = new File(System.getProperty("java.io.tmpdir") + "/" + dirName + "-" + UUID.randomUUID());
+        dir.mkdirs();
+        return dir;
     }
 }

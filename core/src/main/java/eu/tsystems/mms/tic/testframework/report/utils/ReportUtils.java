@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 /*
  * Created on 05.02.2013
@@ -284,51 +284,6 @@ public final class ReportUtils {
     // HELPERS
 
     /**
-     * Returns the input stream for the resource located at a given path.
-     *
-     * @param resourcePath the relative resource path
-     * @return the input stream
-     */
-    private static InputStream getInputStream(final String resourcePath) {
-        return Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
-    }
-
-    /**
-     * Creates all needed directories. Returns the frames dir.
-     *
-     * @param reportDirectory .
-     * @return frames dir.
-     */
-    public static File createDirs(final File reportDirectory) {
-        final File framesDir = new File(reportDirectory + Report.FRAMES_FOLDER_NAME);
-        if (!framesDir.exists()) {
-            framesDir.mkdirs();
-        }
-
-        final File jsDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/js");
-        if (!jsDir.exists()) {
-            jsDir.mkdirs();
-        }
-
-        final File jsHighLightStylesDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/js/highlight-styles");
-        if (!jsHighLightStylesDir.exists()) {
-            jsHighLightStylesDir.mkdirs();
-        }
-
-        final File styleDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/style");
-        if (!styleDir.exists()) {
-            styleDir.mkdirs();
-        }
-
-        final File swfDir = new File(reportDirectory, Report.FRAMES_FOLDER_NAME + "/swf");
-        if (!swfDir.exists()) {
-            swfDir.mkdirs();
-        }
-
-        return framesDir;
-    }
-
-    /**
      * Create html output
      */
     static void createReport(ReportingData reportingData) {
@@ -440,8 +395,8 @@ public final class ReportUtils {
                 File reportFile0 = new File(classesLogDir, classContext.id + ".html");
                 ReportFormatter.createMethodsView(reportFile0, classContext, "methods.vm");
                 // short view for dashboard
-                reportFile0 = new File(classesLogDir, classContext.name + "_dashboard.html");
-                ReportFormatter.createMethodsView(reportFile0, classContext, "methodsDashboard.vm");
+                /*reportFile0 = new File(classesLogDir, classContext.name + "_dashboard.html");
+                ReportFormatter.createMethodsView(reportFile0, classContext, "methodsDashboard.vm");*/
             }
         };
         executorService.submit(createMethodsRunnable);
@@ -499,7 +454,8 @@ public final class ReportUtils {
             throw new TesterraSystemException("Report generation took too long", e);
         }
 
-        LOGGER.info("Report written to " + Report.REPORT_DIRECTORY.getAbsolutePath());
+        File finalDirectory = Report.finalizeReport();
+        LOGGER.info("Report written to " + finalDirectory.getAbsolutePath());
     }
 
     private static void createAcknowledgements(List<MethodContext> methodsWithAcknowledgements) {
@@ -594,7 +550,6 @@ public final class ReportUtils {
         File htmlOutputFile = new File(Report.FRAMES_DIRECTORY, htmlOutputFileName);
         try {
             ReportFormatter.createHtml(vmTemplateFileInResources, htmlOutputFile, velocityContext);
-            LOGGER.info("Created " + tabName + " tab view: " + htmlOutputFile);
         } catch (IOException e) {
             LOGGER.error("Could not create " + tabName + " tab", e);
         }

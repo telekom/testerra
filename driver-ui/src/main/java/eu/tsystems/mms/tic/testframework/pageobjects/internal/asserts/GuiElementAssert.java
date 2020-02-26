@@ -14,8 +14,8 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann <p.lehmann@t-systems.com>
- *     pele <p.lehmann@t-systems.com>
+ *     Peter Lehmann
+ *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
@@ -96,12 +96,18 @@ public interface GuiElementAssert {
     /**
      * Assert is displayed from webelement with wait
      */
-    void assertIsDisplayedFromWebElement();
+    @Deprecated
+    default void assertIsDisplayedFromWebElement() {
+        assertIsDisplayed();
+    }
 
     /**
      * Assert is not displayed from webelement with wait
      */
-    void assertIsNotDisplayedFromWebElement();
+    @Deprecated
+    default void assertIsNotDisplayedFromWebElement() {
+        assertIsNotDisplayed();
+    }
 
     /**
      * Checks if GuiElement contains the given text. Please note that this will only assert successfully, if the
@@ -119,7 +125,9 @@ public interface GuiElementAssert {
      * @param text Strings that should be contained in text. Will NOT be trimmed.
      */
     @Deprecated
-    void assertContainsText(String... text);
+    default void assertContainsText(String... text) {
+        assertTextContains(text);
+    }
 
     /**
      * Checks if the GuiElement, contains the given texts. Please note that this will only assert successfully, if the
@@ -220,8 +228,18 @@ public interface GuiElementAssert {
     void assertCssClassIsNotPresent(final String className);
 
     /**
-     * Asserts the pixel of this web element
+     * Asserts the pixel of this element
      */
     void assertScreenshot(final String targetImageName, final double confidenceThreshold);
 
+    /**
+     * Asserts the visibility of this element
+     * @param complete The element is completely visible
+     */
+    void assertVisible(final boolean complete);
+
+    /**
+     * Asserts the invisibility of this element
+     */
+    void assertNotVisible();
 }

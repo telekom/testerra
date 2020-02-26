@@ -321,6 +321,8 @@ public class GenerateReport {
         return methodContexts.stream()
                 .filter(expectedFailedMethodContext ->
                         expectedFailedMethodContext.isExpectedFailed()
+                        && context.errorContext().getThrowable().getMessage() != null
+                        && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage() != null
                         && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage()
                                 .equals(context.errorContext().getThrowable().getMessage()))
                 .findFirst();

@@ -31,11 +31,11 @@ public class DeepFrameAwareGuiElementTest extends AbstractGuiElementNonFunctiona
     @Override
     public GuiElement getGuiElementBy(Locate locate) {
         WebDriver driver = getWebDriver();
-        GuiElement frame1 = new GuiElement(driver, By.name("frame1")).setDescription("frame1");
-        GuiElement frame12 = new GuiElement(driver, By.name("frame12"), frame1).setDescription("frame2");
-        GuiElement frame123 = new GuiElement(driver, By.name("frame123"), frame12).setDescription("frame3");
-        GuiElement frame1234 = new GuiElement(driver, By.name("InputFrame1234"), frame123).setDescription("frame4");
-        return new GuiElement(driver, locate, frame1234).setDescription("GuiElementUnderTest");
+        GuiElement frame1 = new GuiElement(driver, By.name("frame1")).setName("frame1");
+        GuiElement frame12 = new GuiElement(driver, By.name("frame12"), frame1).setName("frame2");
+        GuiElement frame123 = new GuiElement(driver, By.name("frame123"), frame12).setName("frame3");
+        GuiElement frame1234 = new GuiElement(driver, By.name("InputFrame1234"), frame123).setName("frame4");
+        return new GuiElement(driver, locate, frame1234).setName("GuiElementUnderTest");
     }
 
     @Override

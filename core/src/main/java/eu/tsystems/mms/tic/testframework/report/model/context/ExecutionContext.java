@@ -30,7 +30,12 @@ import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -54,7 +59,9 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         swi = name;
 
         // fire context update event: create context
-        TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE).addData(TesterraEventDataType.CONTEXT, this));
+        TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                .addUserData()
+                .addData(TesterraEventDataType.CONTEXT, this));
     }
 
     public SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
@@ -92,7 +99,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         suiteContexts.forEach(suiteContext -> {
             suiteContext.copyOfTestContexts().forEach(testContext -> {
                 testContext.copyOfClassContexts().forEach(classContext -> {
-                    i.set(i.get()+classContext.getRepresentationalMethods().length);
+                    i.set(i.get() + classContext.getRepresentationalMethods().length);
                 });
             });
         });
@@ -153,12 +160,12 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         final AtomicReference<Integer> i2 = new AtomicReference<>();
         Comparator<? super Map> comp = (Comparator<Map>) (m1, m2) -> {
             i1.set(0);
-            m1.keySet().forEach(status -> i1.set(i1.get()+((int)m1.get(status))));
+            m1.keySet().forEach(status -> i1.set(i1.get() + ((int) m1.get(status))));
 
             i2.set(0);
-            m2.keySet().forEach(status -> i2.set(i2.get()+((int)m2.get(status))));
+            m2.keySet().forEach(status -> i2.set(i2.get() + ((int) m2.get(status))));
 
-            return i2.get()-i1.get();
+            return i2.get() - i1.get();
         };
         final Map sortedMap = methodStatsPerClass.entrySet().stream().sorted(Map.Entry.comparingByValue(comp))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,

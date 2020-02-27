@@ -59,7 +59,7 @@ public final class WebDriverWatchDog {
             stop = true;
 
             // dont join, its not bad when it ends with the whole process
-//            join(THREAD_JOIN_TIMEOUT_MS);
+            //            join(THREAD_JOIN_TIMEOUT_MS);
         }
 
         public boolean isStop() {
@@ -178,6 +178,7 @@ public final class WebDriverWatchDog {
                                             // update crashed execution context
                                             ExecutionContextController.EXECUTION_CONTEXT.crashed = true;
                                             TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                                                    .addUserData()
                                                     .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.EXECUTION_CONTEXT));
 
                                             System.exit(99);

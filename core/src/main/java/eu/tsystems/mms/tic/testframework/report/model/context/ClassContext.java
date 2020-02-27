@@ -177,6 +177,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
             // fire context update event: create method context
             TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                    .addUserData()
                     .addData(TesterraEventDataType.CONTEXT, methodContext)
                     .addData(TesterraEventDataType.WITH_PARENT, true));
         } else {

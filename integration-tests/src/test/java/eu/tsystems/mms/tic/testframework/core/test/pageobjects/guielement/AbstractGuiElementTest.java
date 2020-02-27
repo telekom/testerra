@@ -58,7 +58,7 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest {
     }
 
     public GuiElement getAnyElementByClassName() {
-        return getGuiElementBy(By.className("box"));
+        return getGuiElementBy(By.className("className"));
     }
 
     public GuiElement getAnyElementByLinkText() {

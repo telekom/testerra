@@ -371,6 +371,14 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
     }
 
+    /**
+     * Check if a failed test case with a failure aspect matching an expected failed test sets an extra message.
+     */
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    public void testT17_failureAspectMatchingExpectedFailedInfoMessage(){
+
+    }
+
     //TODO add tests for configuration method and other
 
 }

@@ -50,7 +50,7 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
         final WebDriver driver = getDriver();
         GuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorSimple);
         GuiElement destinationGuiElement = new GuiElement(driver, By.id("divRectangle"));
-        return new GuiElement[] { sourceGuiElement, destinationGuiElement };
+        return new GuiElement[]{sourceGuiElement, destinationGuiElement};
     }
 
     private GuiElement[] beforeDragAndDropFrames() {
@@ -61,7 +61,7 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
 
         GuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorFrames, leftFrame);
         GuiElement destinationGuiElement = new GuiElement(driver, By.id("dropTarget"), rightFrame);
-        return new GuiElement[] { sourceGuiElement, destinationGuiElement };
+        return new GuiElement[]{sourceGuiElement, destinationGuiElement};
     }
 
     private void checkResultSimple(GuiElement destinationGuiElement) {
@@ -96,18 +96,19 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
     @Test
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT2_DragAndDropOverFrames() throws Exception {
-        if (this instanceof DragAndDropWDActionsTest) {
+        if (this instanceof DragAndDropWDActionsTest || this instanceof DragAndDropCoordinatesTest) {
             throw new SkipException("Skipped. Would end up in a watchdog bite while mouseMove");
         }
+
+        WebDriver driver = getDriver();
+        visitTestPage(driver, TestPage.DRAG_AND_DROP_OVER_FRAMES);
 
         final GuiElement[] guiElements = beforeDragAndDropFrames();
 
         GuiElement sourceGuiElement = guiElements[0];
         GuiElement destinationGuiElement = guiElements[1];
 
-        WebDriver driver = getDriver();
         execute(driver, sourceGuiElement, destinationGuiElement);
-
         checkResultFrames(destinationGuiElement);
     }
 

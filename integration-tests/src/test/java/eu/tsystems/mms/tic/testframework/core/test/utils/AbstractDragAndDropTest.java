@@ -77,7 +77,8 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
     @Test
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT01_DragAndDrop() {
-        if (this instanceof DragAndDropWDActionsTest) {
+
+        if (this instanceof DragAndDropWDActionsTest || this instanceof DragAndDropCoordinatesTest) {
             throw new SkipException("Skipped. Would end up in a watchdog bite while mouseMove");
         }
 

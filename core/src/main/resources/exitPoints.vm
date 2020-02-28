@@ -140,9 +140,9 @@
 
 </html>
 
-#macro(displayLines $source $id)
+#macro(displayLines $source $class)
 #if ($source)
-<div id="$id" style="text-align: initial">
+<div class="$class" style="text-align: initial">
 <pre><code>
 // $source.fileName#[[#]]#$source.methodName
 #foreach($s in $source.lines)

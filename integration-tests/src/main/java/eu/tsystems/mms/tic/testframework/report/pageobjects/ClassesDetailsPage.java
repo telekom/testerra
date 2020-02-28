@@ -137,7 +137,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * @return the left test method info column as GuiElement
      */
     private GuiElement getInformationMethodBodyForTestMethodName(String testMethodName) {
-        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']", testMethodName)), mainFrame);
+        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[contains(@id,'%s-')]", testMethodName)), mainFrame);
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;
     }

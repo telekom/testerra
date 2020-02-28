@@ -141,20 +141,20 @@
 </html>
 
 #macro(displayLines $source $id)
-    #if ($source)
-    <div id="$id" style="text-align: initial">
-        <pre><code>
+#if ($source)
+<div id="$id" style="text-align: initial">
+<pre><code>
 // $source.fileName
 #foreach($s in $source.lines)
-    #if ($s.mark)
+#if ($s.mark)
 &#8623; $s.lineNumber : $s.line
-    #else
+#else
 $s.lineNumber : $s.line
-    #end
 #end
-        </code></pre>
-    </div>
-    #else
-    No test sources
-    #end
+#end
+</code></pre>
+</div>
+#else
+No test sources
+#end
 #end

@@ -286,7 +286,7 @@ public abstract class Page extends AbstractPage {
      * @return boolean true if success == text is not present. false otherwise.
      */
     public boolean waitForIsNotTextPresent(final String text) {
-        final Timer timer = new Timer();
+        Timer timer = new Timer(1000, elementTimeoutInSeconds * 1000);
         final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -309,7 +309,7 @@ public abstract class Page extends AbstractPage {
      * @return boolean true if success == text is not present. false otherwise.
      */
     public boolean waitForIsNotTextDisplayed(final String text) {
-        final Timer timer = new Timer();
+        Timer timer = new Timer(1000, elementTimeoutInSeconds * 1000);
         final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {

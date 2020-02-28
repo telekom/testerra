@@ -19,10 +19,13 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -39,7 +42,7 @@ public abstract class AbstractGuiElementLayoutsTest extends AbstractGuiElementSt
     public void testT01_LeftOf() throws Exception {
         GuiElement left = getGuiElementBy(By.id("1"));
         GuiElement right = getGuiElementBy(By.linkText("Open again"));
-        left.asserts().assertLayout(Layout.outer().outer().leftOf(right));
+        left.asserts().assertLayout(Layout.outer().leftOf(right));
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -125,6 +128,8 @@ public abstract class AbstractGuiElementLayoutsTest extends AbstractGuiElementSt
     public void testT41_SameTop() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11")).getSubElement(By.xpath("./.."));
+
+        getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         e1.asserts().assertLayout(Layout.outer().sameTop(e2, 0));
     }
 
@@ -139,6 +144,7 @@ public abstract class AbstractGuiElementLayoutsTest extends AbstractGuiElementSt
     public void testT43_SameTopWithDelta() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11"));
+        getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         e1.asserts().assertLayout(Layout.outer().sameTop(e2, 20));
     }
 
@@ -150,6 +156,7 @@ public abstract class AbstractGuiElementLayoutsTest extends AbstractGuiElementSt
     public void testT51_SameBottom() throws Exception {
         GuiElement e1 = getGuiElementBy(By.id("1")).getSubElement(By.xpath("./.."));
         GuiElement e2 = getGuiElementBy(By.id("11")).getSubElement(By.xpath("./.."));
+        getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         e1.asserts().assertLayout(Layout.outer().sameBottom(e2, 0));
     }
 

@@ -144,14 +144,14 @@
     #if ($source)
     <div id="$id" style="text-align: initial">
         <pre><code>
-            // $source.fileName
-            #foreach($s in $source.lines)
-                #if ($s.mark)
-            &#8623; $s.lineNumber : $s.line
-                #else
-            $s.lineNumber : $s.line
-                #end
-            #end
+// $source.fileName
+#foreach($s in $source.lines)
+    #if ($s.mark)
+&#8623; $s.lineNumber : $s.line
+    #else
+$s.lineNumber : $s.line
+    #end
+#end
         </code></pre>
     </div>
     #else

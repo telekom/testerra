@@ -17,6 +17,7 @@ import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -192,6 +193,7 @@ public class RetryTest extends AbstractReportTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
     public void testT07_checkMethodThatDependsOnPassedRetryIsSuccessful() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
+        WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         ClassesDetailsPage reportTestUnderTestRetry = dashboardPage.goToClasses().gotoClassesDetailsPageForClass("ReportTestUnderTestRetry");
         reportTestUnderTestRetry.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_MethodDependsOnMethodThatPassesInRetry", TestResultHelper.TestResult.PASSED);
     }

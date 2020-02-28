@@ -14,6 +14,7 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.Dimension;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -66,6 +67,7 @@ public class BeforeScenarioTest extends AbstractReportTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9}, dataProvider = "beforeDP")
     public void testT04_checkControlMethodsAreSkippedIfBeforeMethodsFailed(BeforeConfiguration beforeConfig) {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.getReportDirectory()));
+        WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(beforeConfig.getReportClassName());
         /* Check SKIP-causing method */
         String[] controlMethods = beforeConfig.getControlMethodName();

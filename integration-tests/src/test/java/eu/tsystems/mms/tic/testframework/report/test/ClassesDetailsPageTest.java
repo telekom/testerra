@@ -151,7 +151,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
                 WebDriverManager.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()),
                 ReportTestUnderTestRetry.class.getSimpleName());
-
+        WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         HashMap<String, List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
         methodsTestObjects.put("test_TestRetryExceptionTrigger-01", Collections.singletonList(ReportAnnotationType.RETRIED));
         checkAnnotationsAreDisplayed(classesDetailsPage, methodsTestObjects);

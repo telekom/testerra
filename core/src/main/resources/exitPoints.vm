@@ -149,7 +149,7 @@
 #if ($s.mark)
 &#8623; $s.lineNumber : $s.line
 #else
-$s.lineNumber : $s.line
+  $s.lineNumber : $s.line
 #end
 #end
 </code></pre>

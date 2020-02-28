@@ -39,18 +39,18 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     private final String msgSwitchSuccessfully = "Find and switch to window successful";
 
-//    private WebDriver createWebDriver(boolean extraSession) {
-//        WebDriver driver;
-//
-//        if (extraSession) {
-//            driver = WebDriverManager.getWebDriver("test");
-//            visitTestPage(driver);
-//        } else {
-//            driver = WebDriverManager.getWebDriver();
-//        }
-//
-//        return driver;
-//    }
+    //    private WebDriver createWebDriver(boolean extraSession) {
+    //        WebDriver driver;
+    //
+    //        if (extraSession) {
+    //            driver = WebDriverManager.getWebDriver("test");
+    //            visitTestPage(driver);
+    //        } else {
+    //            driver = WebDriverManager.getWebDriver();
+    //        }
+    //
+    //        return driver;
+    //    }
 
     private void openPopUpWindow(WebDriver driver) {
         GuiElement guiElement = new GuiElement(driver, By.linkText("Open pop up"));
@@ -79,7 +79,8 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
         Assert.assertFalse(out, msgSwitchSuccessfully);
     }
 
-    @Test
+    @Test(enabled = false)
+    @Deprecated
     public void testT03_WebDriverUtils_findWindowAndSwitchTo_Fast() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
 
@@ -96,7 +97,8 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
         Assert.assertTrue(timeMillisDuration < 300, "Find and switch to Window need less than 1000 ms");
     }
 
-    @Test
+    @Test(enabled = false)
+    @Deprecated
     public void testT04_WebDriverUtils_findWindowAndSwitchTo_FastWrongTitle() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
 

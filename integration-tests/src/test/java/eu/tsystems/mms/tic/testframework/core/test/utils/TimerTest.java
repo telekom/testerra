@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
  */
 public class TimerTest extends AbstractWebDriverTest implements Loggable {
 
-    public static final int DURATION_IN_MS = 1000;
+    public static final int DURATION_IN_MS = 2500;
     public static final int SLEEP_TIME_IN_MS = 50;
     public static final int UPPER_BOUND_IN_MS = 200;
 

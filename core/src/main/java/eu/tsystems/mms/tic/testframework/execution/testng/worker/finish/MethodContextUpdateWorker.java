@@ -120,6 +120,7 @@ public class MethodContextUpdateWorker extends MethodWorker {
         fire CONTEXT_UPDATE event
          */
         TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                .addUserData()
                 .addData(TesterraEventDataType.CONTEXT, methodContext));
     }
 }

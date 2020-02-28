@@ -299,6 +299,7 @@ public final class WebDriverSessionsManager {
         sessionContext.parentContext = ExecutionContextController.EXECUTION_CONTEXT;
         // fire sync
         TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                .addUserData()
                 .addData(TesterraEventDataType.CONTEXT, sessionContext));
 
         /*
@@ -409,7 +410,7 @@ public final class WebDriverSessionsManager {
         }
 
         /*
-        **** STARTING NEW SESSION ****
+         **** STARTING NEW SESSION ****
          */
 
         /*
@@ -432,8 +433,9 @@ public final class WebDriverSessionsManager {
 
             // fire sync
             TesterraEventService.getInstance().fireEvent(
-                new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addData(TesterraEventDataType.CONTEXT, sessionContext)
+                    new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                            .addUserData()
+                            .addData(TesterraEventDataType.CONTEXT, sessionContext)
             );
 
             /*
@@ -454,8 +456,9 @@ public final class WebDriverSessionsManager {
 
             // fire sync again, for updated sessionContext
             TesterraEventService.getInstance().fireEvent(
-                new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addData(TesterraEventDataType.CONTEXT, sessionContext)
+                    new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                            .addUserData()
+                            .addData(TesterraEventDataType.CONTEXT, sessionContext)
             );
 
             return eventFiringWebDriver;

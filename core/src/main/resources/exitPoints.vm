@@ -144,7 +144,7 @@
 #if ($source)
 <div id="$id" style="text-align: initial">
 <pre><code>
-// $source.fileName#$source.methodName
+// $source.fileName#[[#]]#$source.methodName
 #foreach($s in $source.lines)
 #if ($s.mark)
 &#8623; $s.lineNumber : $s.line

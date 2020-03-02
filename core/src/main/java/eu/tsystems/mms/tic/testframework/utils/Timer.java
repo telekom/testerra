@@ -43,7 +43,10 @@ public class Timer {
 
     /**
      * starts timer
+     *
+     * @deprecated - Please use a constructor with sleeptime and duration
      */
+    @Deprecated
     public Timer() {
     }
 
@@ -149,7 +152,6 @@ public class Timer {
      *
      * @param <T>      .
      * @param sequence .
-     *
      * @return .
      */
     public <T> ThrowablePackedResponse<T> executeSequence(Sequence<T> sequence) {

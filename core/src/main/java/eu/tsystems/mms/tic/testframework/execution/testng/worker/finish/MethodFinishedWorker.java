@@ -81,6 +81,7 @@ public class MethodFinishedWorker extends MethodWorker {
 
             // Fire CONTEXT UPDATE EVENT.
             TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                    .addUserData()
                     .addData(TesterraEventDataType.CONTEXT, methodContext));
 
             // clear method infos

@@ -57,11 +57,15 @@ public class WebDriverKeepAliveSequence extends Timer.Sequence<WebDriverKeepAliv
         // store driver
         this.driver = driver;
 
+        final WebDriver webDriverForUseInSequence = driver;
+
         // add ShutDownHandler that kills this Sequence.
         WebDriverSessionsManager.registerWebDriverShutDownHandler(new WebDriverSessionHandler() {
             @Override
             public void run(WebDriver driver) {
-                forceRemove = true;
+                if (webDriverForUseInSequence == driver) {
+                    forceRemove = true;
+                }
             }
         });
 

@@ -32,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import org.openqa.selenium.WebDriver;
@@ -300,6 +299,7 @@ public final class WebDriverSessionsManager {
         sessionContext.parentContext = ExecutionContextController.EXECUTION_CONTEXT;
         // fire sync
         TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                .addUserData()
                 .addData(TesterraEventDataType.CONTEXT, sessionContext));
 
         /*
@@ -410,7 +410,7 @@ public final class WebDriverSessionsManager {
         }
 
         /*
-        **** STARTING NEW SESSION ****
+         **** STARTING NEW SESSION ****
          */
 
         /*
@@ -433,8 +433,9 @@ public final class WebDriverSessionsManager {
 
             // fire sync
             TesterraEventService.getInstance().fireEvent(
-                new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addData(TesterraEventDataType.CONTEXT, sessionContext)
+                    new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                            .addUserData()
+                            .addData(TesterraEventDataType.CONTEXT, sessionContext)
             );
 
             /*
@@ -455,8 +456,9 @@ public final class WebDriverSessionsManager {
 
             // fire sync again, for updated sessionContext
             TesterraEventService.getInstance().fireEvent(
-                new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addData(TesterraEventDataType.CONTEXT, sessionContext)
+                    new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                            .addUserData()
+                            .addData(TesterraEventDataType.CONTEXT, sessionContext)
             );
 
             return eventFiringWebDriver;
@@ -466,7 +468,7 @@ public final class WebDriverSessionsManager {
     }
 
     static void registerWebDriverFactory(WebDriverFactory webDriverFactory, String... browsers) {
-        LOGGER.info("Registering " + webDriverFactory.getClass().getSimpleName() + " for browsers " + ArrayUtils.join(browsers, ","));
+        LOGGER.info("Registering " + webDriverFactory.getClass().getSimpleName() + " for browsers " + String.join(",", browsers));
 
         for (String browser : browsers) {
             WEB_DRIVER_FACTORIES.put(browser, webDriverFactory);

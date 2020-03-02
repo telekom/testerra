@@ -23,6 +23,7 @@ class ProxyUtils {
 
                 // fire sync of method context
                 TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                        .addUserData()
                         .addData(TesterraEventDataType.CONTEXT, methodContext));
 
             }

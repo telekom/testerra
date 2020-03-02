@@ -17,6 +17,7 @@ import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTes
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestSkipped;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.Dimension;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -151,9 +152,9 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
                 WebDriverManager.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()),
                 ReportTestUnderTestRetry.class.getSimpleName());
-
+        WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         HashMap<String, List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
-        methodsTestObjects.put("test_TestRetryExceptionTrigger-01", Collections.singletonList(ReportAnnotationType.RETRIED));
+        methodsTestObjects.put("test_TestRetryExceptionTrigger", Collections.singletonList(ReportAnnotationType.RETRIED));
         checkAnnotationsAreDisplayed(classesDetailsPage, methodsTestObjects);
     }
 

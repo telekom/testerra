@@ -1,8 +1,19 @@
+@font-face {
+    src:local("fonts/OpenSans-Light.ttf");
+    font-family: 'OpenSans Light';
+    font-style: normal;
+    font-weight: 400;
+}
+
 body {
-    font-family: 'opensans-light', sans-serif;
+    font-family: 'OpenSans Light', sans-serif;
 }
 section {
     width: 700px;
+}
+
+h1 {
+    font-weight: bold;
 }
 .article {
     background: #3c763d;

@@ -67,7 +67,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
 
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true);
 
-        String download = downloader.download(driver, WebDriverManager.getBaseURL() + "#",
+        String download = downloader.download(driver, WebDriverManager.getWebDriver().getCurrentUrl(),
                 "testT01_downloadFile.htm");
         File file = FileUtils.getFile(download);
 
@@ -107,7 +107,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath() + "/foo/bar\\test", true, true);
 
-        String download = downloader.download(driver, WebDriverManager.getBaseURL() + "#",
+        String download = downloader.download(driver, WebDriverManager.getWebDriver().getCurrentUrl(),
                 "test03_downloadFileToLongLocation.htm");
         File file = FileUtils.getFile(download);
 

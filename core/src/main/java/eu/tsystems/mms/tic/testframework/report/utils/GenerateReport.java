@@ -219,6 +219,7 @@ public class GenerateReport {
          */
         TesterraEventService.getInstance().fireEvent(
                 new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                        .addUserData()
                         .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.EXECUTION_CONTEXT)
         );
 

@@ -237,7 +237,7 @@ public final class MouseActions {
         workflow.add(() -> {
             if (dragFromXY) {
                 LOGGER.info("MoveTo drag source by x,y: " + sourcePoint.x + "," + sourcePoint.y);
-                actions.moveToElement(null, sourcePoint.x, sourcePoint.y).build().perform();
+                actions.moveToElement(sourceWebElement, sourcePoint.x, sourcePoint.y).build().perform();
                 sleep(sleepMS.get());
                 LOGGER.info("ClickAndHold");
                 actions.clickAndHold().build().perform();

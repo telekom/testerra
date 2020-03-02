@@ -17,13 +17,7 @@
  *     Peter Lehmann
  *     pele
  */
-/*
- * Created on 24.11.2016
- *
- * Copyright(c) 1995 - 2007 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+
 package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;

@@ -1,10 +1,4 @@
-/*
- * Created on 21.11.2019
- *
- * Copyright(c) 1995 - 2007 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 

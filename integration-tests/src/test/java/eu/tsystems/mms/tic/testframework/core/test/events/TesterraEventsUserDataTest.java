@@ -17,13 +17,7 @@
  *     Peter Lehmann
  *     pele
  */
-/*
- * Created on 07.01.14
- *
- * Copyright(c) 1995 - 2013 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+
 package eu.tsystems.mms.tic.testframework.core.test.events;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;

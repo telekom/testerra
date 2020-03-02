@@ -56,14 +56,30 @@ public class TestReportTwoFailureAspects implements IFailurePointEntryHelper {
     );
 
     public static final FailureAspectEntry FA6 = new FailureAspectEntry(
-            TestResultHelper.TestResultFailurePointEntryType.FAILEDEXPECTED_INTOREPORT,
+            TestResultHelper.TestResultFailurePointEntryType.FAILED,
             6,
+            1,
+            "Exception: matchting unique failure aspect:",
+            Arrays.asList("ReportTestUnderTestExpectedtoFail - test_UnexpectedFailedWithRelatedExpectedFailed"),
+            Arrays.asList("Failure aspect matches known issue:  Description: Known issue with same aspect as unmarked failed test.")
+    );
+
+    public static final FailureAspectEntry FA7 = new FailureAspectEntry(
+            TestResultHelper.TestResultFailurePointEntryType.FAILEDEXPECTED_INTOREPORT,
+            7,
+            1,
+            "Failing of test expected. Description: Known issue with same aspect as unmarked failed test."
+    );
+
+    public static final FailureAspectEntry FA8= new FailureAspectEntry(
+            TestResultHelper.TestResultFailurePointEntryType.FAILEDEXPECTED_INTOREPORT,
+            8,
             1,
             "Failing of test expected. Description: This is an unknown bug.."
     );
 
     public static List<FailureAspectEntry> getAllFailureAspectEntryTestObjects() {
-        return Arrays.asList(FA1, FA2, FA3, FA4, FA5, FA6);
+        return Arrays.asList(FA1, FA2, FA3, FA4, FA5, FA6, FA7, FA8);
     }
 
 }

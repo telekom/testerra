@@ -24,9 +24,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
-/**
- * Created by rnhb on 13.05.2015.
- */
 public class SubElementGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
 
     @Override

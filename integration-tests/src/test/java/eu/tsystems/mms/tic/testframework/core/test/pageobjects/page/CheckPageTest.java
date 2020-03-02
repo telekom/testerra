@@ -31,9 +31,6 @@ import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by rnhb on 29.12.2015.
- */
 public class CheckPageTest extends AbstractTestSitesTest {
 
     @Test

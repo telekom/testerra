@@ -36,9 +36,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created by pele on 27.05.2016.
- */
 public final class SupervisorRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SupervisorRestClient.class);

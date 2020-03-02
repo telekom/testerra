@@ -25,9 +25,6 @@ import org.testng.annotations.Test;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by toku on 09.01.2015.
- */
 public class RandomUtilsTest extends AbstractWebDriverTest {
 
     private String stringContainsChars = "String contains not only ";

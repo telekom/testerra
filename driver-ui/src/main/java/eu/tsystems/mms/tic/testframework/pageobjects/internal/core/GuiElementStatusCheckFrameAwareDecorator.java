@@ -19,9 +19,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 
-/**
- * Created by rnhb on 13.08.2015.
- */
 public class GuiElementStatusCheckFrameAwareDecorator extends GuiElementStatusCheckDecorator {
 
     private final FrameLogic frameLogic;

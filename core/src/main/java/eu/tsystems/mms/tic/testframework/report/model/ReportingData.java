@@ -24,9 +24,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by piet on 02.08.16.
- */
 public class ReportingData {
 
     public ReportingData() {

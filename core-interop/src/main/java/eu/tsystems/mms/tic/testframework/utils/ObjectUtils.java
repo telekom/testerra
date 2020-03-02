@@ -27,9 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
 
-/**
- * Created by pele on 16.03.2016.
- */
 public final class ObjectUtils {
 
     public static boolean isNull(Object... objects) {

@@ -21,9 +21,6 @@ import org.apache.http.HttpHost;
 
 import java.io.IOException;
 
-/**
- * Created by pele on 31.08.2015.
- */
 public class Proxy {
 
     public static void main(String[] args) throws NoFreePortException, IOException {

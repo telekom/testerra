@@ -6,9 +6,6 @@ import org.opencv.core.Mat;
 
 import java.util.List;
 
-/**
- * Created by joku on 03.11.2016.
- */
 public interface TemplateMatchingAlgorithm {
     List<ValuedPoint2D> findMatchingPoints(LayoutElement layoutElement, Mat imageToMatch);
 }

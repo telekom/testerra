@@ -19,9 +19,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 
 import org.openqa.selenium.WebElement;
 
-/**
- * Created by rnhb on 23.07.2015.
- */
 public class Displayed extends WebElementFilter {
 
     private boolean expectedVisibility;

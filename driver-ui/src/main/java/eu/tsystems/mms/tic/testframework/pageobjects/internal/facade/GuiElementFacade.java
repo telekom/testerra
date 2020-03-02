@@ -20,9 +20,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 
-/**
- * Created by rnhb on 11.08.2015.
- */
 public interface GuiElementFacade extends
     GuiElementCore,
     GuiElementWait

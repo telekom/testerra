@@ -19,9 +19,6 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by pele on 14.04.2015.
- */
 public final class BrowserUtils {
 
     /**

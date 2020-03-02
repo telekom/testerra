@@ -23,9 +23,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
 import java.util.List;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker {
 
     protected void collect() {

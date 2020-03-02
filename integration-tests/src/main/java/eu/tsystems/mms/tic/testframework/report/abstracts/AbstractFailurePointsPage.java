@@ -13,9 +13,6 @@ import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by riwa on 11.04.2017.
- */
 public abstract class AbstractFailurePointsPage extends AbstractReportPage {
 
     protected ResultTableFailureType failurePointType;

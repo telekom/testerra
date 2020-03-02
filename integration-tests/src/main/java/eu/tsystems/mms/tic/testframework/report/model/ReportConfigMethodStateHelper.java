@@ -1,8 +1,5 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
-/**
- * Created by fakr on 06.10.2017
- */
 public interface ReportConfigMethodStateHelper {
 
     enum ConfigMethodState {

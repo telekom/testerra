@@ -1,8 +1,5 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
-/**
- * Created by jlma on 17.05.2017.
- */
 public interface TestNumberHelper {
 
     int getHighCorridorActual();

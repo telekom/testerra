@@ -24,9 +24,6 @@ import org.testng.xml.XmlSuite;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class GenerateReportsWorkerExecutor implements WorkerExecutor {
 
     private final List<GenerateReportsWorker> workers = new LinkedList<>();

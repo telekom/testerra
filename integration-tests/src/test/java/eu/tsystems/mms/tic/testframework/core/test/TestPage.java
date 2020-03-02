@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test;
 
-/**
- * Created by rnhb on 02.06.2015.
- */
 public enum TestPage {
     INPUT_TEST_PAGE("Input/input.html",
             "Open again",

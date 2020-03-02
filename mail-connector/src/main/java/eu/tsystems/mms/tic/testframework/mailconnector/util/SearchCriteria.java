@@ -20,9 +20,6 @@ package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 
-/**
- * Created by pele on 15.10.2015.
- */
 public class SearchCriteria {
 
     private final SearchCriteriaType searchCriteriaType;

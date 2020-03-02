@@ -34,9 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by pele on 17.12.2015.
- */
 public final class WebDriverWatchDog {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverWatchDog.class);

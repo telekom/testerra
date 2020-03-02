@@ -25,9 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class WebDriverShutDownWorker extends MethodWorker {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverShutDownWorker.class);

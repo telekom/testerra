@@ -22,9 +22,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by clgr on 09.12.2014.
- */
 public final class NumberUtils {
 
     private NumberUtils() {

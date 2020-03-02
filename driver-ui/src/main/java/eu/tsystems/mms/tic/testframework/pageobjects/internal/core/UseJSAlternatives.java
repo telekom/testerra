@@ -17,8 +17,5 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-/**
- * Created by piet on 30.08.17.
- */
 public interface UseJSAlternatives {
 }

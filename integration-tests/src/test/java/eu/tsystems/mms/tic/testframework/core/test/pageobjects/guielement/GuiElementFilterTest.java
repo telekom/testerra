@@ -30,9 +30,6 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- * Created by rnhb on 29.07.2015.
- */
 public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     private void assertLogFieldContains(String textToBeContained) {

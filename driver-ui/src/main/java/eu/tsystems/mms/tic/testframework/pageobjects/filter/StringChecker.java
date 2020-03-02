@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 
-/**
- * Created by rnhb on 27.07.2015.
- */
 abstract class StringChecker {
     abstract boolean check(String expectedValue, String actualValue);
 

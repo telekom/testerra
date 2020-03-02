@@ -28,9 +28,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-/**
- * Created by pele on 07.06.2016.
- */
 public final class CertUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CertUtils.class);

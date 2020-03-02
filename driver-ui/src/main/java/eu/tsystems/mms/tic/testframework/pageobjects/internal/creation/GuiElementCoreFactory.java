@@ -22,9 +22,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by rnhb on 12.02.2016.
- */
 public interface GuiElementCoreFactory {
 
     GuiElementCore create(By by, WebDriver webDriver, GuiElementData guiElementData);

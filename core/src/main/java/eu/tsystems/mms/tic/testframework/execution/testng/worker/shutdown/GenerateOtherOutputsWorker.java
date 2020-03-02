@@ -23,9 +23,6 @@ import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import org.json.JSONObject;
 
-/**
- * Created by pele on 30.01.2017.
- */
 public class GenerateOtherOutputsWorker extends GenerateReportsWorker {
     @Override
     public void run() {

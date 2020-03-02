@@ -23,9 +23,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by pele on 19.07.2017.
- */
 public class DesktopWebDriverRequest extends WebDriverRequest {
 
     public Map<String, Object> sessionCapabilities = new HashMap<>();

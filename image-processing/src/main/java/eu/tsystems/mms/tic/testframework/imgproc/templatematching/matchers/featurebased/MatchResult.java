@@ -37,9 +37,6 @@ import java.util.*;
 
 import static eu.tsystems.mms.tic.testframework.imgproc.templatematching.matchers.featurebased.Matcher.params;
 
-/**
- * Created by joku on 30.09.2016.
- */
 class MatchResult implements FreesNativeMemory {
     private static final Logger LOGGER = LoggerFactory.getLogger(MatchResult.class);
 

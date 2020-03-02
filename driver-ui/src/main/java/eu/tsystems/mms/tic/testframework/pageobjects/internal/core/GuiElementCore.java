@@ -29,9 +29,6 @@ import org.openqa.selenium.support.ui.Select;
 import java.io.File;
 import java.util.List;
 
-/**
- * Created by rnhb on 12.08.2015.
- */
 public interface GuiElementCore extends GuiElementStatusCheck {
 
     /**

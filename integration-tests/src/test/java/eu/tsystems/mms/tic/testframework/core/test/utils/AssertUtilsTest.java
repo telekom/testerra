@@ -24,10 +24,6 @@ import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 
-/**
- * Created by toku on 13.01.2015.
- */
-
 public class AssertUtilsTest extends AbstractWebDriverTest {
 
     /**

@@ -23,9 +23,6 @@ import org.testng.ITestResult;
 
 import java.util.*;
 
-/**
- * Created by clgr on 15.09.2014.
- */
 public final class PerfTestContainer {
 
     private PerfTestContainer() {

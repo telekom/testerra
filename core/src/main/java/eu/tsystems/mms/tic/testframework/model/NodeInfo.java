@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.model;
 
-/**
- * Created by pele on 01.06.2016.
- */
 public class NodeInfo extends HostInfo {
 
     private Integer vncPort = null;

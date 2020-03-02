@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-/**
- * Created by pele on 29.11.2016.
- */
 public interface PageVariables {
 
 }

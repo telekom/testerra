@@ -24,9 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 
-/**
- * Created by rnhb on 21.12.2015.
- */
 public abstract class FieldAction extends Action {
 
     protected final Field field;

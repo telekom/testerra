@@ -20,9 +20,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import org.openqa.selenium.WebElement;
 
-/**
- * Created by rnhb on 28.07.2015.
- */
 public class Attribute extends WebElementFilter {
 
     private String attributeName;

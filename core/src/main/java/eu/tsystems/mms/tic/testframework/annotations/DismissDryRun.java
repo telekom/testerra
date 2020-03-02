@@ -20,9 +20,6 @@ package eu.tsystems.mms.tic.testframework.annotations;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Created by pele on 02.02.2016.
- */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DismissDryRun {
 }

@@ -30,9 +30,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-/**
- * Created by pele on 20.10.2014.
- */
 public class ProxyServerTest extends AbstractTest {
 
     @BeforeSuite

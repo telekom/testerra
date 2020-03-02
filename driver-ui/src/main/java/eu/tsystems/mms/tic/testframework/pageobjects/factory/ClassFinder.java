@@ -36,9 +36,6 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by piet on 02.12.16.
- */
 final class ClassFinder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClassFinder.class);

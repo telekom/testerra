@@ -20,9 +20,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Created by rnhb on 24.02.2016.
- */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Groups {
 

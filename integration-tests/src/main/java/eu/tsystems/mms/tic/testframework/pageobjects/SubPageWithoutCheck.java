@@ -19,9 +19,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by rnhb on 19.06.2015.
- */
 public class SubPageWithoutCheck extends SuperPageWithCheck {
 
     public SubPageWithoutCheck(WebDriver driver) {

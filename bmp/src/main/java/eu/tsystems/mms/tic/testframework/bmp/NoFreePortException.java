@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.bmp;
 
-/**
- * Created by pele on 30.04.2015.
- */
 public class NoFreePortException extends Exception {
 
     public NoFreePortException(String msg) {

@@ -24,9 +24,6 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
-/**
- * Created by sagu on 21.09.2016.
- */
 public class ErrorContext extends AbstractContext {
 
     public String readableErrorMessage;

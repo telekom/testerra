@@ -30,9 +30,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * Created by rnhb on 11.08.2015.
- */
 public class ConfigurableGuiElementAssert implements GuiElementAssert {
 
     private final GuiElementWait guiElementWait;

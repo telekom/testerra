@@ -21,9 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-/**
- * Created by pele on 11.04.2017.
- */
 public final class MapUtils {
 
     public static Map<String, String> propertiesToMap(Properties properties) {

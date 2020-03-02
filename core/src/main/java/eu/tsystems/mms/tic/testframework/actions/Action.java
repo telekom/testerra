@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.actions;
 
-/**
- * Created by pele on 09.02.2016.
- */
 public abstract class Action {
 
     protected abstract boolean before();

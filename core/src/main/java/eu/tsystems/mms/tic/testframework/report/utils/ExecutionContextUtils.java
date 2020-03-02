@@ -27,9 +27,6 @@ import org.testng.ITestResult;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by piet on 08.12.16.
- */
 public class ExecutionContextUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionContextUtils.class);

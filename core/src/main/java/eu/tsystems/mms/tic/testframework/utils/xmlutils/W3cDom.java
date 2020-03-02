@@ -30,9 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-/**
- * Created by pele on 06.03.2015.
- */
 public class W3cDom extends AbstractXMLUtils {
 
     /**

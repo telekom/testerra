@@ -21,9 +21,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by pele on 21.12.2015.
- */
 public class DragAndDropWDActionsTest extends AbstractDragAndDropTest {
 
     @Override

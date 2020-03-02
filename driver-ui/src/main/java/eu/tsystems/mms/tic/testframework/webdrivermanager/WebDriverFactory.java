@@ -34,9 +34,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by rnhb on 12.02.2016.
- */
 public abstract class WebDriverFactory<R extends WebDriverRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverFactory.class);

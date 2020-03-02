@@ -27,9 +27,6 @@ import org.openqa.selenium.WebDriver;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
 
-/**
- * Created by pele on 21.12.2015.
- */
 public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
 
     final By sourceLocatorSimple = By.id("dragLogo");

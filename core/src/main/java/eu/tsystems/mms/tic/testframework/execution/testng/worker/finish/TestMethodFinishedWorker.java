@@ -23,9 +23,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class TestMethodFinishedWorker extends MethodWorker {
     @Override
     public void run() {

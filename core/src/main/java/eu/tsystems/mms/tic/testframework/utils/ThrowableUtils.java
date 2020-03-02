@@ -22,9 +22,6 @@ import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by pele on 09.11.2015.
- */
 public class ThrowableUtils {
 
     public static <T extends Throwable> Throwable getThrowableContainedIn(final Throwable throwable, final Class<T> throwableToSerachFor) {

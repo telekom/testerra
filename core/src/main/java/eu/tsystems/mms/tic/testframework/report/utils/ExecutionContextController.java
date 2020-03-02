@@ -36,9 +36,6 @@ import org.testng.ITestResult;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by piet on 08.12.16.
- */
 public class ExecutionContextController {
 
     public static final ExecutionContext EXECUTION_CONTEXT = new ExecutionContext();

@@ -17,9 +17,6 @@
 */
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
-/**
- * Created by mrfs on 08.06.2016.
- */
 public enum DeleteCriteriaType {
     /**
      * criteria to delete messages

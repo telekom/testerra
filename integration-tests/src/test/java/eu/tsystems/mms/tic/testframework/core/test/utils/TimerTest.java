@@ -27,9 +27,6 @@ import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- * Created by nigr on 04.09.2015.
- */
 public class TimerTest extends AbstractWebDriverTest implements Loggable {
 
     public static final int DURATION_IN_MS = 2500;

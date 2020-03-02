@@ -26,9 +26,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 
 import java.util.Date;
 
-/**
- * Created by pele on 30.01.2017.
- */
 public class TestEndEventWorker extends GenerateReportsWorker {
     @Override
     public void run() {

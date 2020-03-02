@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-/**
- * Created by pele on 25.02.2015.
- */
 public class NewSessionMarker extends Throwable {
 
     public NewSessionMarker() {

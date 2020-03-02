@@ -23,9 +23,6 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
 import java.lang.reflect.Field;
 
-/**
- * Created by rnhb on 02.02.2016.
- */
 public class SetNameFieldAction extends FieldAction {
 
     public SetNameFieldAction(Field field, AbstractPage declaringPage) {

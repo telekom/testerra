@@ -32,9 +32,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * Created by pele on 11.12.2015.
- */
 public final class MouseActions {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MouseActions.class);

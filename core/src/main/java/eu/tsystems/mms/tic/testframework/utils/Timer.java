@@ -25,9 +25,6 @@ import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by peter on 16.06.14.
- */
 public class Timer {
 
     private static Logger LOGGER = LoggerFactory.getLogger(Timer.class);

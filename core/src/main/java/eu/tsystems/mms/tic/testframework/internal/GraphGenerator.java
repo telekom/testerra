@@ -33,9 +33,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
-/**
- * Created by pele on 26.08.2015.
- */
 public final class GraphGenerator {
 
     public enum DataType {

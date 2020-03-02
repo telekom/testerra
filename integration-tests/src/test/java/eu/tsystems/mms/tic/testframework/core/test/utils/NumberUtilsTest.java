@@ -25,9 +25,6 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by toku on 07.01.2015.
- */
 public class NumberUtilsTest extends AbstractWebDriverTest {
 
     /**

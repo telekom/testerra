@@ -21,9 +21,6 @@ import eu.tsystems.mms.tic.testframework.utils.timespans.TimeSpan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by pele on 05.02.2015.
- */
 public final class TimerUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimerUtils.class);

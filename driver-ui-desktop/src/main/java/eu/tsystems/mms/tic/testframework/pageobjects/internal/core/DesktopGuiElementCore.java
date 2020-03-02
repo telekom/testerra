@@ -68,9 +68,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by rnhb on 12.08.2015.
- */
 public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives, Loggable {
 
     private By by;

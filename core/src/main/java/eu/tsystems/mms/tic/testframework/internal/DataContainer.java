@@ -17,8 +17,5 @@
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
-/**
- * Created by rnhb on 21.02.2017.
- */
 public interface DataContainer {
 }

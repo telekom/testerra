@@ -23,9 +23,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by pele on 23.07.2015.
- */
 public class ListenerUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ListenerUtils.class);

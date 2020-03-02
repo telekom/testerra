@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.utils.timespans;
 
-/**
- * Created by ta on 10.08.2015.
- */
 public class Seconds extends TimeSpan {
 
     public Seconds(int seconds) {

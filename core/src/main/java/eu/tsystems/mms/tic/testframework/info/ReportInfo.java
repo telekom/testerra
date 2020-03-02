@@ -23,9 +23,6 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Created by pele on 31.05.2016.
- */
 public class ReportInfo {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportInfo.class);

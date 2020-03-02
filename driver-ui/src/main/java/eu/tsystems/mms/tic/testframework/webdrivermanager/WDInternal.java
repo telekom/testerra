@@ -21,9 +21,6 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
 
-/**
- * Created by pele on 07.04.2015.
- */
 public class WDInternal {
 
     public static void cleanupExecutingSeleniumHost() {

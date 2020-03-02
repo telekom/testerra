@@ -26,9 +26,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-/**
- * Created by pele on 08.01.2015.
- */
 @Deprecated
 public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 

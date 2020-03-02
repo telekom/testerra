@@ -29,9 +29,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-/**
- * Created by pele on 06.03.2015.
- */
 public class JSoup extends AbstractXMLUtils {
 
     /**

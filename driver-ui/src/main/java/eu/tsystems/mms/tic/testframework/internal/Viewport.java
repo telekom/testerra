@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
-/**
- * Created by pele on 11.11.2016.
- */
 public class Viewport {
 
     public int yPosition;

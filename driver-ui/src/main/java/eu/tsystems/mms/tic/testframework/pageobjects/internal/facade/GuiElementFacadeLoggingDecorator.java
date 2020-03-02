@@ -23,9 +23,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by rnhb on 12.08.2015.
- */
 public class GuiElementFacadeLoggingDecorator extends GuiElementFacadeDecorator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);

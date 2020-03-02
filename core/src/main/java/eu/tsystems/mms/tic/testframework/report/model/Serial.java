@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model;
 
-/**
- * Created by pele on 27.04.2017.
- */
 public final class Serial {
 
     public static final long SERIAL = 2018020900000933L;

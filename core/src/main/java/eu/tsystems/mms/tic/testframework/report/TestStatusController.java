@@ -37,9 +37,6 @@ import java.util.stream.Collectors;
 
 import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.EXECUTION_CONTEXT;
 
-/**
- * Created by pele on 31.08.2016.
- */
 public class TestStatusController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestStatusController.class);

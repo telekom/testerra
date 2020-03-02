@@ -17,10 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.perf;
 
-/**
- * Created by clgr on 12.10.2014.
- */
-
 import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.data.category.CategoryDataset;
 

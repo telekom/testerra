@@ -28,9 +28,6 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class MethodContextUpdateWorker extends MethodWorker {
 
     @Override

@@ -35,9 +35,6 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Properties;
 
-/**
- * Created by pele on 05.02.2015.
- */
 public class TesterraCommons {
     private static final Logger LOGGER = LoggerFactory.getLogger(TesterraCommons.class);
     private static boolean proxySettingsLoaded = false;

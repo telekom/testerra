@@ -4,9 +4,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import org.testng.annotations.Test;
 
-/**
- * Created by jlma on 07.12.2016.
- */
 public class ReportTestUnderTestCorridorHighExceed extends AbstractTest {
 
     @FailureCorridor.High

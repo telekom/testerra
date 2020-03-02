@@ -4,9 +4,6 @@ import eu.tsystems.mms.tic.testframework.layout.core.Point2D;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 
-/**
- * Created by rnhb on 15.01.2015.
- */
 public class XetaMat implements XetaImage {
 
     private Mat mat;

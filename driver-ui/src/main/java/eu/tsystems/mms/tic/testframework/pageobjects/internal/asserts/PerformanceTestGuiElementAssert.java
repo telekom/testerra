@@ -19,9 +19,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 
-/**
- * Created by rnhb on 13.08.2015.
- */
 public class PerformanceTestGuiElementAssert implements GuiElementAssert {
 
     @Override

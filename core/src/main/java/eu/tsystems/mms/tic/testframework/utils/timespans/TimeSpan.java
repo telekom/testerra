@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.utils.timespans;
 
-/**
- * Created by ta on 10.08.2015.
- */
 public abstract class TimeSpan {
     public final int value;
     public final int milliseconds;

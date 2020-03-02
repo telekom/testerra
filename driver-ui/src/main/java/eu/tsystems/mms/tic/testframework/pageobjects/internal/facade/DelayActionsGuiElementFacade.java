@@ -20,9 +20,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 
-/**
- * Created by rnhb on 09.02.2016.
- */
 public class DelayActionsGuiElementFacade extends GuiElementFacadeDecorator {
 
     private final int beforeActionSleepTime;

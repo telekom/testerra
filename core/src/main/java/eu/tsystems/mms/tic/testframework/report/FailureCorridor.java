@@ -30,9 +30,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Created by pele on 31.08.2016.
- */
 public final class FailureCorridor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FailureCorridor.class);

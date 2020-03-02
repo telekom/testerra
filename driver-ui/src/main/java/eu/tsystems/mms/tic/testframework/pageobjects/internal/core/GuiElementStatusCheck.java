@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-/**
- * Created by rnhb on 12.08.2015.
- */
 public interface GuiElementStatusCheck {
     /**
      * Checks if an element is found by webdriver.

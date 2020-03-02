@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.enums;
 
-/**
- * Created by pele on 28.04.2015.
- */
 public enum DragAndDropOption {
 
     DRAG_FROM_X_Y,

@@ -26,9 +26,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 
 import java.lang.reflect.Modifier;
 
-/**
- * Created by rnhb on 17.12.2015.
- */
 public abstract class CheckFieldAction extends FieldAction {
     /**
      * Readable message template.

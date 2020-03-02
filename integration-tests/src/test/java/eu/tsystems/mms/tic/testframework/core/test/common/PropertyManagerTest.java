@@ -22,9 +22,6 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- * Created by pele on 28.05.2014.
- */
 public class PropertyManagerTest extends AbstractWebDriverTest {
 
     /**

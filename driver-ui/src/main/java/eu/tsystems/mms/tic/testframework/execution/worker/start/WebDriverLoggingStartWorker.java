@@ -24,9 +24,6 @@ import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class WebDriverLoggingStartWorker extends MethodWorker {
 
     @Override

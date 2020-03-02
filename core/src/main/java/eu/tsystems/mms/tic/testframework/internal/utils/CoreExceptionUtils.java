@@ -21,9 +21,6 @@ import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
 
 import java.lang.reflect.Modifier;
 
-/**
- * Created by piet on 11.03.16.
- */
 public class CoreExceptionUtils extends ThrowableUtils {
 
     public static String getSimpleNameFromClassString(final String fullClassName) {

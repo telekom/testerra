@@ -29,9 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by pele on 24.08.2015.
- */
 public final class Timings {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Timings.class);

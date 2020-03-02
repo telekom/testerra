@@ -19,9 +19,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 
 import java.lang.reflect.Field;
 
-/**
- * Created by rnhb on 21.12.2015.
- */
 public class FieldWithActionConfig {
 
     public final Field field;

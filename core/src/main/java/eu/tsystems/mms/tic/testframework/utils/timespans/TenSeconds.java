@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.utils.timespans;
 
-/**
- * Created by ta on 10.08.2015.
- */
 public class TenSeconds extends TimeSpan {
     public TenSeconds(int tenSeconds) {
         super(tenSeconds, 10000);

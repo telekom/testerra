@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 
-/**
- * Created by rnhb on 28.07.2015.
- */
 abstract class LocationChecker {
     abstract boolean check(int x, int y);
 

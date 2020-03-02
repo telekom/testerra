@@ -24,9 +24,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-/**
- * Created by rnhb on 13.08.2015.
- */
 public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
 
     private GuiElementCore decoratedGuiElementCore;

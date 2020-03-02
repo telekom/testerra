@@ -31,9 +31,6 @@ import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 
 import java.util.Map;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class MethodFinishedWorker extends MethodWorker {
 
 

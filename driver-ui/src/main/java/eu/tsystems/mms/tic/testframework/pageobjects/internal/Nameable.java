@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-/**
- * Created by rnhb on 02.02.2016.
- */
 public interface Nameable {
 
     Object setName(String name);

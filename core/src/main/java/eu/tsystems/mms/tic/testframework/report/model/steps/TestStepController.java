@@ -29,9 +29,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by piet on 11.03.16.
- */
 public class TestStepController implements Serializable {
 
     private static final long serialVersionUID = Serial.SERIAL;

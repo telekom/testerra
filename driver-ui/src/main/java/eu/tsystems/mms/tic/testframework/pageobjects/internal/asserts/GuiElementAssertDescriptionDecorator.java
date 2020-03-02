@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-/**
- * Created by rnhb on 27.07.2016.
- */
 public class GuiElementAssertDescriptionDecorator extends GuiElementAssertDecorator {
 
     private final String description;

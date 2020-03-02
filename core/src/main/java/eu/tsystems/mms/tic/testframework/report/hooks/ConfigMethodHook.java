@@ -24,9 +24,6 @@ import org.testng.IConfigureCallBack;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
-/**
- * Created by pele on 30.01.2017.
- */
 public final class ConfigMethodHook extends Hook {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigMethodHook.class);

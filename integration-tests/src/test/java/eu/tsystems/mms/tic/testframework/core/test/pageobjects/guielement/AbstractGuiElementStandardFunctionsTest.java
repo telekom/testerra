@@ -36,9 +36,6 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by pele on 31.08.2015.
- */
 public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGuiElementTest {
 
     /**

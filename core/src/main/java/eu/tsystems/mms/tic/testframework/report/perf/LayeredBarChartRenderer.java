@@ -31,9 +31,6 @@ import org.jfree.ui.RectangleEdge;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-/**
- * Created by clgr on 04.12.2014.
- */
 public class LayeredBarChartRenderer extends LayeredBarRenderer {
 
     /**

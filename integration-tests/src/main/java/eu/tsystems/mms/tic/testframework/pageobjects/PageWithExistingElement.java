@@ -20,9 +20,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by rnhb on 29.12.2015.
- */
 public class PageWithExistingElement extends Page {
 
     @Check

@@ -24,9 +24,6 @@ import org.opencv.features2d.DMatch;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by joku on 04.10.2016.
- */
 public class Match {
     final Point centerRect;
     final Point centerAllPoints;

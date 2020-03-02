@@ -50,9 +50,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverFactory.wrapRawWebDriverWithEventFiringWebDriver;
 
-/**
- * Created by pele on 08.01.2015.
- */
 public final class WebDriverSessionsManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverSessionsManager.class);

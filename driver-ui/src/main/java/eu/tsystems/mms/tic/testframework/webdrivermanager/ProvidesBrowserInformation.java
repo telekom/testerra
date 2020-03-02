@@ -19,9 +19,6 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
 
-/**
- * Created by piet on 30.08.17.
- */
 public interface ProvidesBrowserInformation {
 
     BrowserInformation getBrowserInformation();

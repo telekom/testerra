@@ -25,9 +25,6 @@ import javax.ws.rs.core.MediaType;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by pele on 17.04.2015.
- */
 public class RESTUtils {
 
     public static final int DEFAULT_TIMEOUT = 5 * 60 * 1000;

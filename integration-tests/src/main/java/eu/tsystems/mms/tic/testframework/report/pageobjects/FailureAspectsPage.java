@@ -10,9 +10,6 @@ import org.testng.Assert;
 
 import java.util.List;
 
-/**
- * Created by riwa on 11.04.2017.
- */
 public class FailureAspectsPage extends AbstractFailurePointsPage {
 
     private final String LOCATOR_FAILURE_ASPECT_ENTRY_ID = "aspect-%d"; // counting starts with '1'

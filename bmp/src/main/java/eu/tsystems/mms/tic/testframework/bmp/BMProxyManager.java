@@ -28,9 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by pele on 30.04.2015.
- */
 public final class BMProxyManager {
 
     private static List<Integer> portPool = new ArrayList<Integer>(1);

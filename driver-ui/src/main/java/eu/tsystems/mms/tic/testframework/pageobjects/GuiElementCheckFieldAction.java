@@ -28,9 +28,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by rnhb on 17.12.2015.
- */
 public class GuiElementCheckFieldAction extends CheckFieldAction {
 
     final boolean forceStandardAssert;

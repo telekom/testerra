@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
-/**
- * Created by clgr on 15.09.2014.
- */
 public class TimingInfo {
 
     private final String context;

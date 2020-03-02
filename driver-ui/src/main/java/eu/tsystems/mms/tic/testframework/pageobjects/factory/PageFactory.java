@@ -36,9 +36,6 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by pele on 29.11.2016.
- */
 public final class PageFactory {
 
     /*

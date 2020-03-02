@@ -24,9 +24,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
 import java.io.Serializable;
 
-/**
- * Created by pele on 15.03.2016.
- */
 public class TestStepActionEntry implements Serializable {
 
     private static final long serialVersionUID = Serial.SERIAL;

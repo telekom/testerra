@@ -33,9 +33,6 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.util.*;
 
-/**
- * Created by rnhb on 24.02.2015.
- */
 public abstract class AbstractPage {
 
     /**

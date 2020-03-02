@@ -27,9 +27,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class WebDriverSessionsAfterMethodWorker extends MethodWorker {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverSessionHandler.class);

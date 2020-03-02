@@ -21,9 +21,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReports
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.DateUtils;
 
-/**
- * Created by pele on 30.01.2017.
- */
 public class GenerateTesterraReportWorker extends GenerateReportsWorker {
     @Override
     public void run() {

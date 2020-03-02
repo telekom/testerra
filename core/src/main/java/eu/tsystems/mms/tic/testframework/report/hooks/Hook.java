@@ -24,9 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.ITestNGMethod;
 import org.testng.internal.ConstructorOrMethod;
 
-/**
- * Created by pele on 30.01.2017.
- */
 public abstract class Hook {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Hook.class);

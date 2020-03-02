@@ -21,9 +21,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by pele on 02.06.2015.
- */
 public class ThrowablePackedResponse<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThrowablePackedResponse.class);

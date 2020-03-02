@@ -23,9 +23,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
-/**
- * Created by pele on 15.10.2015.
- */
 public abstract class GuiElementAssertDecorator implements GuiElementAssert {
 
     /**

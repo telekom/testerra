@@ -25,9 +25,6 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- * Created by rnhb on 11.02.2016.
- */
 public class GuiElementExceptionsTest extends AbstractTestSitesTest {
 
     /**

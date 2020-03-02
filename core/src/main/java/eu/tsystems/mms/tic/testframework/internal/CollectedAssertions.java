@@ -29,9 +29,6 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by pele on 17.10.2016.
- */
 public final class CollectedAssertions {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("AssertCollector");

@@ -23,9 +23,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by pele on 23.11.2016.
- */
 public final class TimingConstants {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimingConstants.class);

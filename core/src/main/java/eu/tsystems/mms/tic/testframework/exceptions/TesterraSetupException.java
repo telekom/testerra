@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.exceptions;
 
-/**
- * Created by pele on 12.03.2015.
- */
 public class TesterraSetupException extends RuntimeException {
 
     /**

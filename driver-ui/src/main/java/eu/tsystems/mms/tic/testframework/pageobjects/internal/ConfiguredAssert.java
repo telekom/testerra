@@ -23,9 +23,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.Layout;
 import org.testng.Assert;
 
-/**
- * Created by rnhb on 13.11.2015.
- */
 public class ConfiguredAssert {
 
     private final boolean functionalAssertions;

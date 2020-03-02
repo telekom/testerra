@@ -28,9 +28,6 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by rnhb on 14.08.2015.
- */
 public class TimerWrapper {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(TimerWrapper.class);

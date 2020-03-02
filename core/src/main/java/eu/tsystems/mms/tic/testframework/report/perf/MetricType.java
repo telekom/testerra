@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.report.perf;
 
-/**
- * Created by clgr on 15.10.2014.
- */
 public enum MetricType {
     AVERAGE_RESPONSETIMES_PER_TESTSTEP,
     MAX_RESPONSETIME_PER_TESTSTEP,

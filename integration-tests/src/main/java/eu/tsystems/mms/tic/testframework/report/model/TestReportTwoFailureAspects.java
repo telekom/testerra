@@ -3,9 +3,6 @@ package eu.tsystems.mms.tic.testframework.report.model;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by fakr on 16.08.2017
- */
 public class TestReportTwoFailureAspects implements IFailurePointEntryHelper {
 
     public static final FailureAspectEntry FA1 = new FailureAspectEntry(

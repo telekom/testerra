@@ -19,9 +19,6 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class LoggingStartWorker extends MethodWorker {
 
     @Override

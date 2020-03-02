@@ -21,9 +21,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by rnhb on 29.12.2015.
- */
 public class PageWithExistingStaticElement extends Page {
 
     @Check

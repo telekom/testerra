@@ -23,9 +23,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by clgr on 01.11.2014.
- */
 public final class DriverStorage {
 
     private DriverStorage() {

@@ -5,9 +5,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 
 import java.lang.reflect.Field;
 
-/**
- * Created by rnhb on 02.02.2016.
- */
 public class SetGuiElementTimeoutFieldAction extends FieldAction {
 
     public SetGuiElementTimeoutFieldAction(Field field, AbstractPage declaringPage) {

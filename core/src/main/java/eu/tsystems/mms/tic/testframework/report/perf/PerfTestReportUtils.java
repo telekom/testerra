@@ -26,10 +26,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
-/**
- * Created by clgr on 08.10.2014.
- */
-
 public final class PerfTestReportUtils {
 
     private PerfTestReportUtils() {

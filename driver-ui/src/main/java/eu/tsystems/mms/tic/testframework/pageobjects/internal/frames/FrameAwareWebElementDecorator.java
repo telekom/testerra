@@ -22,9 +22,6 @@ import org.openqa.selenium.*;
 
 import java.util.List;
 
-/**
- * Created by rnhb on 24.02.2015.
- */
 public class FrameAwareWebElementDecorator implements WebElement {
 
     private WebElement webElement;

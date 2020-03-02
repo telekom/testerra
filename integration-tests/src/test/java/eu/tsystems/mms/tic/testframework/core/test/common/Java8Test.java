@@ -27,9 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by pele on 04.07.2016.
- */
 public class Java8Test extends AbstractWebDriverTest {
 
     @FunctionalInterface

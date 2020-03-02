@@ -26,9 +26,6 @@ import org.openqa.selenium.Point;
 
 import java.util.Map;
 
-/**
- * Created by pele on 31.08.2015.
- */
 public abstract class Layout {
 
     private boolean innerBorders = false;

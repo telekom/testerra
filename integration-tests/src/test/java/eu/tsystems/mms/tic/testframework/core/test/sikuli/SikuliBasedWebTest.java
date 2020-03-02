@@ -31,9 +31,6 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import java.net.URL;
 
-/**
- * Created by pele on 27.08.2015.
- */
 public class SikuliBasedWebTest extends AbstractTestSitesTest {
 
     @Override

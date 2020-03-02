@@ -29,9 +29,6 @@ import eu.tsystems.mms.tic.testframework.report.threadvisualizer.DataSet;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.DataStorage;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.Util;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class TesterraEventsFinishWorker extends MethodWorker {
 
     private void addThreadVisualizerDataSet() {

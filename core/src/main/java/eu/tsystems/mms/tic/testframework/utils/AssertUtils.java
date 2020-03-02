@@ -21,9 +21,6 @@ import org.testng.Assert;
 
 import java.math.BigDecimal;
 
-/**
- * Created by pele on 05.01.2015.
- */
 public final class AssertUtils {
 
     public static void assertContains(String actual, String expected) {

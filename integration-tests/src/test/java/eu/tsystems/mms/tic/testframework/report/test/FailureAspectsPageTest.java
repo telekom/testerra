@@ -15,9 +15,6 @@ import org.testng.annotations.BeforeMethod;
 
 import java.util.List;
 
-/**
- * Created by riwa on 24.11.2016.
- */
 @TestContext(name = "View-FailureAspects")
 public class FailureAspectsPageTest extends AbstractReportFailuresTest {
 

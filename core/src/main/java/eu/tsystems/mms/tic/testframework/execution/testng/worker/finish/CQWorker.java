@@ -23,9 +23,6 @@ import eu.tsystems.mms.tic.testframework.report.model.CodeInfoContainer;
 
 import java.util.List;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class CQWorker extends MethodWorker {
     @Override
     public void run() {

@@ -31,9 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by riwa on 24.11.2016.
- */
 @TestContext(name = "View-MethodDetails")
 public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 

@@ -5,10 +5,6 @@ import eu.tsystems.mms.tic.testframework.report.general.TestsUnderTestGroup;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ExitPointCreaterTestClass1;
 import org.testng.annotations.Test;
 
-/**
- * Created by riwa on 21.03.2017.
- */
-
 public class ReportTestUnderTestExpectedtoFail extends AbstractTest {
 
     @Fails(description = "This is a known bug.")

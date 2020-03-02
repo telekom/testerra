@@ -21,9 +21,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class TestMethodFinishWorker extends MethodWorker {
 
     @Override

@@ -6,9 +6,6 @@ import org.opencv.core.Scalar;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 
-/**
- * Created by rnhb on 15.01.2015.
- */
 public class XetaBufferedImage implements XetaImage {
 
     private BufferedImage bufferedImage;

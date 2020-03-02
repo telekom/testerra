@@ -17,8 +17,5 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
-/**
- * Created by rnhb on 19.02.2015.
- */
 public interface Checkable {
 }

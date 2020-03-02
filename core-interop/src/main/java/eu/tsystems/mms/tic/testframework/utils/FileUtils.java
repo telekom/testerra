@@ -41,9 +41,6 @@ import java.util.UUID;
 
 import static java.lang.Thread.currentThread;
 
-/**
- * Created by pele on 24.11.2014.
- */
 public final class FileUtils extends org.apache.commons.io.FileUtils {
 
     private static String lineBreak = "\n";

@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.exceptions;
 
-/**
- * Created by pele on 24.11.2014.
- */
 public class FileNotFoundException extends Exception {
 
     private static final String ERROR_TEXT = "File not found: ";

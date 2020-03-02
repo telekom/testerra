@@ -25,9 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by clgr on 09.09.2014.
- */
 public final class StopWatch {
 
     private StopWatch() {

@@ -27,9 +27,6 @@ import org.openqa.selenium.Dimension;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- * Created by pele on 31.08.2015.
- */
 public abstract class AbstractGuiElementLayoutsTest extends AbstractGuiElementStandardFunctionsTest {
 
     /*

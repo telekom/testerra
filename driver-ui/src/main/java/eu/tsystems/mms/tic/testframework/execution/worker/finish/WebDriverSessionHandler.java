@@ -19,9 +19,6 @@ package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by pele on 28.07.2017.
- */
 @FunctionalInterface
 public interface WebDriverSessionHandler {
     void run(WebDriver driver);

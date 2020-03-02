@@ -27,9 +27,6 @@ import org.testng.ITestResult;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class MethodWorkerExecutor implements WorkerExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodWorkerExecutor.class);

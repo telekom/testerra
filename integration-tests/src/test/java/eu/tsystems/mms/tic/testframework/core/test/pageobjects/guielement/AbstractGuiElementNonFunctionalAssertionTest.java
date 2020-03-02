@@ -23,9 +23,6 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- * Created by matz on 03.11.2015.
- */
 public abstract class AbstractGuiElementNonFunctionalAssertionTest extends AbstractGuiElementWaiterTest {
 
     @Test

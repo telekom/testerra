@@ -33,9 +33,6 @@ import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-/**
- * Created by toku on 07.01.2015.
- */
 public class FileUtilsTest extends AbstractWebDriverTest {
 
     private static final String testfile = "testfiles/Test.txt";

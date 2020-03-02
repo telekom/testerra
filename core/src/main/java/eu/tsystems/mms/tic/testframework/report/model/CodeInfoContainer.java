@@ -26,9 +26,6 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 
-/**
- * Created by pele on 16.09.2014.
- */
 public final class CodeInfoContainer {
 
     private CodeInfoContainer() {

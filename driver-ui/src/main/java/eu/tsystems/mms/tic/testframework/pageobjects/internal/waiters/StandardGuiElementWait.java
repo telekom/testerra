@@ -25,9 +25,6 @@ import eu.tsystems.mms.tic.testframework.utils.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by rnhb on 12.08.2015.
- */
 public class StandardGuiElementWait implements GuiElementWait {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StandardGuiElementWait.class);

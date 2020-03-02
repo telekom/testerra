@@ -24,9 +24,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by rnhb on 13.05.2015.
- */
 public class FrameAwareSubElementGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
 
     @Override

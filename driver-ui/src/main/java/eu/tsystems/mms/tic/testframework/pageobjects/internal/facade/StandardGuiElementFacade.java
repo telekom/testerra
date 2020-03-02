@@ -27,9 +27,6 @@ import org.openqa.selenium.support.ui.Select;
 import java.io.File;
 import java.util.List;
 
-/**
- * Created by rnhb on 12.08.2015.
- */
 public class StandardGuiElementFacade implements GuiElementFacade {
 
     private GuiElementWait guiElementWait;

@@ -31,9 +31,6 @@ import org.testng.ITestNGMethod;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class TestStartWorker extends MethodWorker {
 
     @Override

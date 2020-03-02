@@ -27,9 +27,6 @@ import org.apache.http.HttpHost;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.testng.annotations.Test;
 
-/**
- * Created by pele on 20.10.2014.
- */
 public class ProxyServerPlaygroundTest extends AbstractTest {
 
     static final String PROXY_HOST = PropertyManager.getProperty("http.proxyHost");

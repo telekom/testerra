@@ -24,9 +24,6 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class TesterraEventsStartWorker extends MethodWorker {
 
     @Override

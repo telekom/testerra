@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.exceptions;
 
-/**
- * Created by peter on 16.06.14.
- */
 public class TimeoutException extends RuntimeException {
 
     /**

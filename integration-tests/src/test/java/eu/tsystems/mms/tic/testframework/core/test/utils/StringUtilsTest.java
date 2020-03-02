@@ -25,9 +25,6 @@ import org.testng.annotations.Test;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by toku on 02.12.2014.
- */
 public class StringUtilsTest extends AbstractWebDriverTest {
 
     private String stringEmptyAssertMessage = "String is empty";

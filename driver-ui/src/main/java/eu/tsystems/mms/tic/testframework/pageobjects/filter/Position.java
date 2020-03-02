@@ -20,9 +20,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
-/**
- * Created by rnhb on 28.07.2015.
- */
 public class Position extends WebElementFilter {
 
     private LocationChecker locationChecker;

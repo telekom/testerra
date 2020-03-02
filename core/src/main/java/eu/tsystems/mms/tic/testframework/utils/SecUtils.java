@@ -20,9 +20,6 @@ package eu.tsystems.mms.tic.testframework.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * Created by pele on 02.08.2016.
- */
 public final class SecUtils {
 
     public static String hash(final String in) {

@@ -50,9 +50,6 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.*;
 
-/**
- * Created by clgr on 09.10.2014.
- */
 public class PerfTestGraphGenerator {
 
     private final int widthOfImage = 800;

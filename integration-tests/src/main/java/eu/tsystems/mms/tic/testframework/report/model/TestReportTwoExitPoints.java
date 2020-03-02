@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by fakr on 16.08.2017
- */
 public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
 
     public static final ExitPointEntry EP1 = new ExitPointEntry(

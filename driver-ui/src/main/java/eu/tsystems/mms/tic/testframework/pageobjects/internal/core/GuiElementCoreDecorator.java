@@ -25,9 +25,6 @@ import org.openqa.selenium.support.ui.Select;
 import java.io.File;
 import java.util.List;
 
-/**
- * Created by rnhb on 13.08.2015.
- */
 public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecorator implements GuiElementCore {
 
     private GuiElementCore decoratedGuiElementCore;

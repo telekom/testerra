@@ -80,9 +80,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by pele on 19.07.2017.
- */
 public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> implements Loggable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverFactory.class);

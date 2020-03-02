@@ -36,9 +36,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by pele on 06.03.2015.
- */
 public class JDom extends AbstractXMLUtils {
 
     private static final String LOGTEXT = "Changed attribute value %s from element %s from %s to %s";

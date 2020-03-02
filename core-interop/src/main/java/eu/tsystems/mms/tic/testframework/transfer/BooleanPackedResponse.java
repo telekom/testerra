@@ -17,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.transfer;
 
-/**
- * Created by pele on 02.06.2015.
- */
 public class BooleanPackedResponse<T> {
 
     private final T response;

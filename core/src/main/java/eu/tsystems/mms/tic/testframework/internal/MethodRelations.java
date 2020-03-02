@@ -24,9 +24,6 @@ import org.testng.annotations.*;
 import java.lang.reflect.Method;
 import java.util.*;
 
-/**
- * Created by pele on 25.07.2017.
- */
 public class MethodRelations {
 
     private static final Map<Long, List<MethodContext>> EXECUTION_CONTEXT = Collections.synchronizedMap(new HashMap<>());

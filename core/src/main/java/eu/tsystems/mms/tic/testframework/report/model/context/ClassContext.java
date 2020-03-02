@@ -15,8 +15,7 @@
  *     Peter Lehmann
  *     erku
  *     pele
- */
-
+*/
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;

@@ -14,8 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-
+*/
 package eu.tsystems.mms.tic.testframework.dbconnector;
 
 import eu.tsystems.mms.tic.testframework.dbconnector.connection.Driver;

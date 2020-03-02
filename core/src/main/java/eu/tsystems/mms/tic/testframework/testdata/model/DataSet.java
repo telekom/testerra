@@ -14,8 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-
+*/
 package eu.tsystems.mms.tic.testframework.testdata.model;
 
 import java.util.ArrayList;

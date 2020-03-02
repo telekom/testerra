@@ -14,8 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-
+*/
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 /** Set the SSL Configuration with ThreadLocal KeyChains. */

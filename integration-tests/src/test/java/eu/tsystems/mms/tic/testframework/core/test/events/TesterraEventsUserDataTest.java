@@ -14,8 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-
+*/
 package eu.tsystems.mms.tic.testframework.core.test.events;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;

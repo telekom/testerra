@@ -14,8 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-
+*/
 package eu.tsystems.mms.tic.testframework.pageobjects.location;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;

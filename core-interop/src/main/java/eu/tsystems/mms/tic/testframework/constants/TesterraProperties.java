@@ -15,8 +15,7 @@
  *     Peter Lehmann
  *     jhmr
  *     pele
- */
-
+*/
 package eu.tsystems.mms.tic.testframework.constants;
 
 /**

@@ -14,9 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-
-
+*/
 package eu.tsystems.mms.tic.testframework.testdata;
 
 import com.opencsv.CSVReader;

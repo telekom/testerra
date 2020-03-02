@@ -14,8 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-
+*/
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;

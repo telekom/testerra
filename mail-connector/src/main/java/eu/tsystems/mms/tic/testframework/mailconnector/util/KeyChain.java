@@ -14,8 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-
+*/
 package eu.tsystems.mms.tic.testframework.mailconnector.util;
 
 /** Creates a keychain with username, password and path to keystore file.  */

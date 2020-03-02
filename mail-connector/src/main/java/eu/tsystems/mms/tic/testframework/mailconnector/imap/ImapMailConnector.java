@@ -14,8 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-
+*/
 package eu.tsystems.mms.tic.testframework.mailconnector.imap;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;

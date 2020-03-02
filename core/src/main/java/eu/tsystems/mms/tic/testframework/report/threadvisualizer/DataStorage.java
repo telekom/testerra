@@ -23,10 +23,6 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA. User: peter Date: 16.12.12 Time: 13:49 To change this template use File | Settings | File
- * Templates.
- */
 public final class DataStorage {
 
     /** Logger instance */

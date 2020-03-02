@@ -19,10 +19,6 @@ package eu.tsystems.mms.tic.testframework.exceptions;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 
-/**
- * Created by IntelliJ IDEA. User: pele Date: 27.01.12 Time: 14:17 To change this template use File | Settings | File
- * Templates.
- */
 public class ElementStateException extends RuntimeException {
 
     /**

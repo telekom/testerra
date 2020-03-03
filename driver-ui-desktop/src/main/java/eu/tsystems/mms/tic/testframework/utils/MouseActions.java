@@ -19,27 +19,17 @@
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.enums.DragAndDropOption;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Created by pele on 11.12.2015.
  */
 public final class MouseActions {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MouseActions.class);
 
     public enum Position {
         Top_Left, Top, Top_Right, Left, Center, Right, Bottom_Left, Bottom, Bottom_Right;
@@ -67,10 +57,6 @@ public final class MouseActions {
                 return 0;
             }
         }
-    }
-
-    public static void dragAndDrop(GuiElement drag, GuiElement drop) {
-        dragAndDrop(drag, drop, new DragAndDropOption[0]);
     }
 
     public static void dragAndDropJS(GuiElement drag, GuiElement drop) {
@@ -107,12 +93,12 @@ public final class MouseActions {
      * Perfoms a drag and drop over frames using the JS selectors.
      *
      * @param driver WebDriver
-     * @param drag GuiElement
-     * @param drop GuiElement
-     * @param fromX int
-     * @param fromY int
-     * @param toX int
-     * @param toY int
+     * @param drag   GuiElement
+     * @param drop   GuiElement
+     * @param fromX  int
+     * @param fromY  int
+     * @param toX    int
+     * @param toY    int
      */
     private static void dragAndDropOverFrames(final WebDriver driver, GuiElement drag, GuiElement drop, int fromX,
                                               int fromY,
@@ -128,7 +114,7 @@ public final class MouseActions {
     }
 
     public static void dragAndDrop(final WebDriver driver, WebElement drag, WebElement drop, int fromX, int fromY,
-            int toX, int toY) {
+                                   int toX, int toY) {
 
         JSUtils.implementJavascriptOnPage(driver, "js/inject/dragAndDrop.js", "TesterraDragAndDrop");
 
@@ -139,7 +125,7 @@ public final class MouseActions {
 
     public static void swipeElement(final GuiElement elementToSwipe, int offsetX, int offsetY) {
 
-        WebDriver driver = elementToSwipe.getDriver();
+        WebDriver driver = elementToSwipe.getWebDriver();
         Point location = elementToSwipe.getLocation();
         Dimension size = elementToSwipe.getSize();
 
@@ -156,206 +142,4 @@ public final class MouseActions {
         JSUtils.executeScript(driver, script, elementToSwipe.getWebElement(), fromX, fromY, toX, toY);
     }
 
-    /**
-     * Drag and Drop with (frameaware) GuiElements on a driver session with the option for options.
-     *
-     * @param source .
-     * @param target .
-     * @param dragAndDropOptions .
-     */
-    public static void dragAndDrop(GuiElement source, GuiElement target,
-                                   DragAndDropOption... dragAndDropOptions) {
-        // assert that they are displayed
-        source.asserts("Drag source element is not displayed").assertIsDisplayed();
-        target.asserts("Drop target element is not displayed").assertIsDisplayed();
-
-        final boolean dragFromXY = dndOptionsContain(DragAndDropOption.DRAG_FROM_X_Y, dragAndDropOptions);
-        final boolean relative = dndOptionsContain(DragAndDropOption.DROP_BY_RELATIVE_X_Y, dragAndDropOptions);
-        boolean stayInDefaultFrame = false;
-        final Point sourcePoint = new Point(0,0);
-        if (dragFromXY) {
-            stayInDefaultFrame = true;
-            Point elementLocationInViewPort = JSUtils.getElementLocationInViewPort(source);
-            sourcePoint.x = elementLocationInViewPort.x;
-            sourcePoint.y = elementLocationInViewPort.y;
-        }
-
-        final Point p = new Point(0,0);
-        if (relative) {
-            /*
-            get relative x,y
-             */
-            Point relativePositionVector = JSUtils.getRelativePositionVector(source, target);
-            p.x = relativePositionVector.x;
-            p.y = relativePositionVector.y;
-        }
-
-        List<Runnable> workflow = new LinkedList<>();
-
-        WebDriver driver = source.getDriver();
-        final Actions actions = new Actions(driver);
-
-        /*
-        Get elements and frames
-         */
-        final WebElement sourceWebElement = source.getWebElement();
-        final FrameLogic sourceFrameLogic = source.getFrameLogic();
-        final WebElement destinationWebElement = target.getWebElement();
-        final FrameLogic destinationFrameLogic = target.getFrameLogic();
-
-        AtomicReference<Integer> sleepMS = new AtomicReference<>();
-        sleepMS.set(0);
-
-        if (dndOptionsContain(DragAndDropOption.EXTRA_SLEEPS, dragAndDropOptions)) {
-            sleepMS.set(1000);
-        }
-
-        /*
-        switch frame
-         */
-        if (stayInDefaultFrame) {
-            workflow.add(() -> {
-                LOGGER.info("Switch to default content frame");
-                driver.switchTo().defaultContent();
-            });
-        }
-        else {
-            workflow.add(() -> {
-                if (sourceFrameLogic != null) {
-                    LOGGER.info("Switch to source frame");
-                    sourceFrameLogic.switchToCorrectFrame();
-                } else {
-                    LOGGER.info("Switch to source frame (default content)");
-                    driver.switchTo().defaultContent();
-                }
-            });
-        }
-
-        /*
-        click and hold
-         */
-        workflow.add(() -> {
-            if (dragFromXY) {
-                LOGGER.info("MoveTo drag source by x,y: " + sourcePoint.x + "," + sourcePoint.y);
-                actions.moveToElement(sourceWebElement, sourcePoint.x, sourcePoint.y).build().perform();
-                sleep(sleepMS.get());
-                LOGGER.info("ClickAndHold");
-                actions.clickAndHold().build().perform();
-            }
-            else if (dndOptionsContain(DragAndDropOption.DRAG_MOVE_CLICKANDHOLD_SEPERATE, dragAndDropOptions)) {
-                LOGGER.info("MoveTo drag source " + source);
-                actions.moveToElement(sourceWebElement).build().perform();
-                sleep(sleepMS.get());
-                LOGGER.info("ClickAndHold");
-                actions.clickAndHold().build().perform();
-            }
-            else {
-                LOGGER.info("ClickAndHold drag source " + source);
-                actions.clickAndHold(sourceWebElement).build().perform();
-            }
-
-            sleep(sleepMS.get());
-        });
-
-        /*
-        target frame switch
-         */
-        workflow.add(() -> {
-            if (relative) {
-                /*
-                just a relative move
-                 */
-                // do nothing
-                LOGGER.debug("No frame switch");
-            }
-            else {
-                if (destinationFrameLogic != null) {
-                    LOGGER.info("Switch to target frame");
-                    destinationFrameLogic.switchToCorrectFrame();
-                } else {
-                    LOGGER.info("Switch to target frame (default content)");
-                    driver.switchTo().defaultContent();
-                }
-            }
-        });
-
-        /*
-        release on destination
-         */
-        Runnable release = () -> {
-            if (relative) {
-                LOGGER.info("MoveRelative " + p.x + ", " + p.y);
-                actions.moveByOffset(p.x, p.y).build().perform();
-
-                sleep(sleepMS.get());
-
-                LOGGER.info("Release");
-                actions.release().build().perform();
-            }
-            else if (dndOptionsContain(DragAndDropOption.EXTRA_MOVE, dragAndDropOptions)) {
-                LOGGER.info("MoveTo drop target " + target);
-                actions.moveToElement(destinationWebElement).build().perform();
-
-                sleep(sleepMS.get());
-
-                LOGGER.info("Release");
-                actions.release().build().perform();
-            }
-            else {
-                LOGGER.info("Release on " + target);
-                actions.release(destinationWebElement).build().perform();
-            }
-        };
-        workflow.add(release);
-
-        /*
-        extra release
-         */
-        if (dndOptionsContain(DragAndDropOption.DOUBLE_RELEASE, dragAndDropOptions)) {
-            workflow.add(release);
-        }
-
-        /*
-        click after release
-         */
-        if (dndOptionsContain(DragAndDropOption.CLICK_AFTER_RELEASE, dragAndDropOptions)) {
-            workflow.add(() -> {
-                LOGGER.info("Click");
-                actions.click().build().perform();
-            });
-        }
-
-        /*
-        switch to default content
-         */
-        workflow.add(() -> {
-            LOGGER.info("Switch to default content");
-            driver.switchTo().defaultContent();
-        });
-
-        /*
-        EXECUTE
-         */
-        for (Runnable runnable : workflow) {
-            runnable.run();
-        }
-
-    }
-
-    private static boolean dndOptionsContain(DragAndDropOption dragAndDropOption,
-                                             DragAndDropOption... dragAndDropOptions) {
-        if (dragAndDropOptions == null) {
-            return false;
-        }
-        for (DragAndDropOption option : dragAndDropOptions) {
-            if (option == dragAndDropOption) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static void sleep(int sleepMS) {
-        TimerUtils.sleep(sleepMS);
-    }
 }

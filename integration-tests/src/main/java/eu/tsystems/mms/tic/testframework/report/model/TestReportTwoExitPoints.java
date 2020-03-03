@@ -37,7 +37,7 @@ public class TestReportTwoExitPoints implements IFailurePointEntryHelper {
 
     public static final ExitPointEntry FailedNotIntoReport = new ExitPointEntry(
             TestResultHelper.TestResultFailurePointEntryType.FAILED,
-            0,
+            41,
             1,
             "test_FailedMinorAnnotatedWithFail_Run6",
             true,

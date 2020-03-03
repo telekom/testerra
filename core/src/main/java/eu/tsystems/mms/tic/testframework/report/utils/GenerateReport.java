@@ -44,14 +44,17 @@ import org.testng.ISuite;
 import org.testng.xml.XmlSuite;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class GenerateReport {
 
@@ -196,6 +199,11 @@ public class GenerateReport {
         failureAspects = sortTestMethodContainerMap(failureAspects);
 
         /*
+        check if failed tests have an expected failed with the same root cause and a message about it to the failed test
+         */
+        addMatchingExpextedFailedMessage(failureAspects);
+
+        /*
         Store
          */
         ExecutionContextController.EXECUTION_CONTEXT.exitPoints = exitPoints;
@@ -275,4 +283,44 @@ public class GenerateReport {
         System.out.println("");
     }
 
+    // check if failed tests have an expected failed with the same root cause and a message about it to the failed test
+    private static void addMatchingExpextedFailedMessage(Map<String, List<MethodContext>> failureAspects) {
+        List<MethodContext> expectedFailedMethodContexts =
+                failureAspects.values().stream()
+                        //only one context per expected failed required
+                        .map(e -> e.get(0))
+                        .filter(MethodContext::isExpectedFailed)
+                        .collect(Collectors.toList());
+
+        List<MethodContext> unexpectedFailedMethodContexts =
+                failureAspects.values().stream()
+                        .flatMap(Collection::stream)
+                        .filter(methodContext -> !methodContext.isExpectedFailed())
+                        .collect(Collectors.toList());
+
+        unexpectedFailedMethodContexts.stream().forEach(
+                context -> {
+                    Optional<MethodContext> methodContext =
+                            findMatchingMethodContext(context, expectedFailedMethodContexts);
+                    if (methodContext.isPresent()) {
+                        context.errorContext().additionalErrorMessage =
+                                "Failure aspect matches known issue: "
+                                    + methodContext.get().errorContext()
+                                        .getThrowable().getMessage().split("expected.")[1];
+                    }
+                });
+    }
+
+    //find method context of expected failed test where it's underlying cause matches the cause of the given context
+    private static Optional<MethodContext> findMatchingMethodContext(MethodContext context,
+                                                                     List<MethodContext> methodContexts) {
+        return methodContexts.stream()
+                .filter(expectedFailedMethodContext ->
+                        expectedFailedMethodContext.isExpectedFailed()
+                        && context.errorContext().getThrowable().getMessage() != null
+                        && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage() != null
+                        && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage()
+                                .equals(context.errorContext().getThrowable().getMessage()))
+                .findFirst();
+    }
 }

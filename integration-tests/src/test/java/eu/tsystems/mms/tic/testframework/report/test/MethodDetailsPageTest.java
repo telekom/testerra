@@ -17,6 +17,7 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodStackPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodStepsPage;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorLow;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter;
+import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExpectedtoFail;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestPassed;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -368,6 +369,14 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
     }
 
-    //TODO add tests for configuration method and other
+    /**
+     * Check if a failed test case with a failure aspect matching an expected failed test sets an extra message.
+     */
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
+    public void testT17_failureAspectMatchingExpectedFailedInfoMessage(){
+        String testMethod = "test_UnexpectedFailedWithRelatedExpectedFailed";
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()), ReportTestUnderTestExpectedtoFail.class.getSimpleName(), testMethod);
+        AssertCollector.assertEquals( methodDetailsPage.getErrorMessageExtraInfo().getText(), "Failure aspect matches known issue: Description: Known issue with same aspect as unmarked failed test.");
+    }
 
 }

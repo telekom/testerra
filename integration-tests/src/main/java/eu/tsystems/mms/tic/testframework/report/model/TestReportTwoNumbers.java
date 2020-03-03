@@ -9,7 +9,7 @@ public class TestReportTwoNumbers extends AbstractTestReportNumbers {
 
     public TestReportTwoNumbers() {
         highCorridorLimit = 19;
-        highCorridorActual = 26;
+        highCorridorActual = 27;
         midCorridorActual = 3;
         lowCorridorActual = 5;
         all = 77;

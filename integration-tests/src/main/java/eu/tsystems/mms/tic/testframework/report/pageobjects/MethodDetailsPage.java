@@ -66,6 +66,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     //TODO  IDs einfügen
     private GuiElement errorMessageString = new GuiElement(this.getWebDriver(), By.xpath("//div[@style='color: red; font-size: 30px; padding: 25px; line-height: 40px;']"), mainFrame);
+    private GuiElement errorMessageExtraInfo = errorMessageString.getSubElement(By.xpath("/div"));
     private GuiElement fingerprintButton = new GuiElement(this.getWebDriver(), By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('fingerprint');\"]"), mainFrame);
     private GuiElement fingerprintString = new GuiElement(this.getWebDriver(), By.xpath("//div[@id='fingerprint']//div[@class='error']"), mainFrame);
 
@@ -159,6 +160,10 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     public GuiElement getErrorMessageString() {
         return errorMessageString;
+    }
+
+    public GuiElement getErrorMessageExtraInfo() {
+        return errorMessageExtraInfo;
     }
 
     public GuiElement getFingerprintString() {

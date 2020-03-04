@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,14 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 04.01.2013
- *
- * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
 import org.slf4j.Logger;
@@ -32,10 +23,6 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA. User: peter Date: 16.12.12 Time: 13:49 To change this template use File | Settings | File
- * Templates.
- */
 public final class DataStorage {
 
     /** Logger instance */

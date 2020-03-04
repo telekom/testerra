@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,9 +28,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-/**
- * Created by pele on 07.06.2016.
- */
 public final class CertUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CertUtils.class);

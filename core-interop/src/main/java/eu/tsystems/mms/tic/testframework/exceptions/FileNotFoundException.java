@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.exceptions;
 
-/**
- * Created by pele on 24.11.2014.
- */
 public class FileNotFoundException extends Exception {
 
     private static final String ERROR_TEXT = "File not found: ";

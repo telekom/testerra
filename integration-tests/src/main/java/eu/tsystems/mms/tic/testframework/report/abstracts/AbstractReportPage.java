@@ -8,9 +8,6 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by jlma on 26.10.2016.
- */
 public abstract class AbstractReportPage extends AbstractFramePage {
 
     @Check

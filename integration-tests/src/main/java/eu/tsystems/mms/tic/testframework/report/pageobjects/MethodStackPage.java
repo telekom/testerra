@@ -4,9 +4,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by riwa on 04.01.2017.
- */
 public class MethodStackPage extends MethodDetailsPage {
 
     private GuiElement stackTraceString = new GuiElement(this.getWebDriver(), By.xpath("//*[@id='exception']//div[@class='textLeft']"), mainFrame);

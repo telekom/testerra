@@ -8,10 +8,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by sagu on 04.05.2017.
- *
- */
 public class TestResultHelper {
 
     /**

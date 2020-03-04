@@ -1,8 +1,5 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
-/**
- * Created by fakr on 14.11.2017
- */
 public enum BeforeConfiguration {
 
     BEFORE_SUITE("ReportTestUnderTestBeforeScenarios", "beforeSuiteFailed", null),

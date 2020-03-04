@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,9 +23,6 @@ import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import org.json.JSONObject;
 
-/**
- * Created by pele on 30.01.2017.
- */
 public class GenerateOtherOutputsWorker extends GenerateReportsWorker {
     @Override
     public void run() {

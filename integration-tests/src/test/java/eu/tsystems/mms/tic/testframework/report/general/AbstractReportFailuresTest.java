@@ -12,9 +12,6 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-/**
- * Created by riwa on 12.04.2017.
- */
 public abstract class AbstractReportFailuresTest extends AbstractReportTest {
 
     protected ResultTableFailureType failurePointType;

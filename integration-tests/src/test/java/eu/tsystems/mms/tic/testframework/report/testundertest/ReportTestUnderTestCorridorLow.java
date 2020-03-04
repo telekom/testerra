@@ -9,9 +9,6 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.ExitPointCreatorTest
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- * Created by jlma on 14.11.2016.
- */
 @TestContext
 public class ReportTestUnderTestCorridorLow extends AbstractTest {
 

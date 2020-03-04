@@ -7,9 +7,6 @@ import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
 
-/**
- * Created by fakr on 04.07.2017.
- */
 public class ReportTestUnderTestExecutionFilter extends AbstractTest {
 
     private static int retryCounter1, retryCounter2 = 0;

@@ -7,9 +7,6 @@ import org.opencv.core.Mat;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by rnhb on 24.06.2015.
- */
 public class LineDetector {
 
     private final int minLineLength = PropertyManager.getIntProperty(TesterraProperties.LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH, 25);

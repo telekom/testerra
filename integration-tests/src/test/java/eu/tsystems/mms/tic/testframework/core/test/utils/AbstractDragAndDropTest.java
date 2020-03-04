@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,9 +27,6 @@ import org.openqa.selenium.WebDriver;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
 
-/**
- * Created by pele on 21.12.2015.
- */
 public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
 
     final By sourceLocatorSimple = By.id("dragLogo");

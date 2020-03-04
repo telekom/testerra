@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,9 +25,6 @@ import org.testng.annotations.Test;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by toku on 02.12.2014.
- */
 public class StringUtilsTest extends AbstractWebDriverTest {
 
     private String stringEmptyAssertMessage = "String is empty";

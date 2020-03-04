@@ -5,9 +5,6 @@ import org.opencv.core.Mat;
 
 import java.util.List;
 
-/**
- * Created by rnhb on 24.06.2015.
- */
 public class TextLayoutErrorReport {
 
     private int correctLinePixelCount;

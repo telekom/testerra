@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,9 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
 
-/**
- * Created by pele on 16.03.2016.
- */
 public final class ObjectUtils {
 
     public static boolean isNull(Object... objects) {

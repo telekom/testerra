@@ -10,9 +10,6 @@ import org.testng.Assert;
 
 import java.util.List;
 
-/**
- * Created by riwa on 03.04.2017.
- */
 public class ExitPointsPage extends AbstractFailurePointsPage {
 
     private final String LOCATOR_EXIT_POINT_ENTRY_ID = "exit-%d"; // counting starts with '1'

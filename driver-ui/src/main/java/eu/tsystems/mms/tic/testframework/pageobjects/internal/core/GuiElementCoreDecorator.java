@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,9 +25,6 @@ import org.openqa.selenium.support.ui.Select;
 import java.io.File;
 import java.util.List;
 
-/**
- * Created by rnhb on 13.08.2015.
- */
 public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecorator implements GuiElementCore {
 
     private GuiElementCore decoratedGuiElementCore;

@@ -3,9 +3,6 @@ package eu.tsystems.mms.tic.testframework.report.model;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ExitPointsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.FailureAspectsPage;
 
-/**
- * Created by fakr on 16.08.2017
- */
 public enum ResultTableFailureType {
 
     FAILURE_ASPECT("Failure Aspect", FailureAspectsPage.class),

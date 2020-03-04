@@ -22,9 +22,6 @@ import java.time.Instant;
 import java.util.*;
 import java.util.List;
 
-/**
- * Created by jlma on 14.06.2017.
- */
 public class ClassesDetailsPage extends AbstractReportPage implements IReportAnnotationVerifier, ReportConfigMethodStateHelper {
 
     private String testResultLocatorPattern = "//th[text()='%s']";

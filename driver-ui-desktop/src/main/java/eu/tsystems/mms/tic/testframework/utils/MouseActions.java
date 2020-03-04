@@ -59,6 +59,12 @@ public final class MouseActions {
         }
     }
 
+    /**
+     * Performs an drag&drop action by using a provided JavaScript Solution to work with modern websites.
+     *
+     * @param drag {@link GuiElement} Element to drag
+     * @param drop {@link GuiElement} Drop location
+     */
     public static void dragAndDropJS(GuiElement drag, GuiElement drop) {
         final FrameLogic dragFrameLogic = drag.getFrameLogic();
         final WebElement dragWebElement = drag.getWebElement();
@@ -113,8 +119,8 @@ public final class MouseActions {
         JSUtils.executeScript(driver, script, jsSelectorDrag, jsSelectorDrop, fromX, fromY, toX, toY);
     }
 
-    public static void dragAndDrop(final WebDriver driver, WebElement drag, WebElement drop, int fromX, int fromY,
-                                   int toX, int toY) {
+    private static void dragAndDrop(final WebDriver driver, WebElement drag, WebElement drop, int fromX, int fromY,
+                                    int toX, int toY) {
 
         JSUtils.implementJavascriptOnPage(driver, "js/inject/dragAndDrop.js", "TesterraDragAndDrop");
 

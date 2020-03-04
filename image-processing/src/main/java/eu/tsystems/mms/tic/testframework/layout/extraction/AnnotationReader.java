@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -46,7 +45,7 @@ public class AnnotationReader {
      * @param annotatedImage
      * @return all points of the marking color
      */
-    public HashSet<Point2D> getMarkedPixels(XetaImage annotatedImage) {
+    public HashSet<Point2D> getMarkedPixels(Image annotatedImage) {
         Scalar markingColorBGR = annotatedImage.getColorAt(0, 0);
         HashSet<Point2D> markedPoints = new HashSet<Point2D>();
         Point2D size = annotatedImage.getSize();
@@ -78,12 +77,12 @@ public class AnnotationReader {
      * @param annotatedImage Image to extract annotation information from
      * @return List of LayoutElement
      */
-    public List<Rectangle> readAnnotationDimensions(BufferedImage annotatedImage) {
-        XetaBufferedImage xetaBufferedImage = new XetaBufferedImage(annotatedImage);
+    public List<Rectangle> readAnnotationDimensions(java.awt.image.BufferedImage annotatedImage) {
+        BufferedImage bufferedImage = new BufferedImage(annotatedImage);
 
         HashSet<Point2D> markedPoints = null;
         try {
-            markedPoints = getMarkedPixels(xetaBufferedImage);
+            markedPoints = getMarkedPixels(bufferedImage);
         } catch (TesterraSystemException e) {
             LOGGER.warn(e.getMessage());
         }

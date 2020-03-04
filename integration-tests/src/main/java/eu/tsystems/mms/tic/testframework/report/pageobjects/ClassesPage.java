@@ -188,7 +188,7 @@ public class ClassesPage extends AbstractReportPage {
     }
 
     /**
-     * Asserts the values of the "XETA INFORMATION" section are correctly displayed
+     * Asserts the values of the "INFORMATION" section are correctly displayed
      */
     public void assertTesterraInformationIsDisplayed() throws ParseException {
 

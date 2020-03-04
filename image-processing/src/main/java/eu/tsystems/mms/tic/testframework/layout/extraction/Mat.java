@@ -1,14 +1,13 @@
 package eu.tsystems.mms.tic.testframework.layout.extraction;
 
 import eu.tsystems.mms.tic.testframework.layout.core.Point2D;
-import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 
-public class XetaMat implements XetaImage {
+public class Mat implements Image {
 
-    private Mat mat;
+    private org.opencv.core.Mat mat;
 
-    public XetaMat(Mat mat) {
+    public Mat(org.opencv.core.Mat mat) {
         this.mat = mat;
     }
 

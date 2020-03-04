@@ -89,7 +89,7 @@ public class ClassesPageTest extends AbstractReportTest {
 
     /**
      * checkTesterraInformationIsDisplayed
-     * Checks whether the "XETA INFORMATION" is displayed
+     * Checks whether the "INFORMATION" is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     @Fails(ticketString = "XETA-684")

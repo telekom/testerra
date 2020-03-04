@@ -3,15 +3,14 @@ package eu.tsystems.mms.tic.testframework.layout.extraction;
 import eu.tsystems.mms.tic.testframework.layout.core.Point2D;
 import org.opencv.core.Scalar;
 
-import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 
-public class XetaBufferedImage implements XetaImage {
+public class BufferedImage implements Image {
 
-    private BufferedImage bufferedImage;
+    private java.awt.image.BufferedImage bufferedImage;
     private WritableRaster raster;
 
-    public XetaBufferedImage(BufferedImage bufferedImage) {
+    public BufferedImage(java.awt.image.BufferedImage bufferedImage) {
         this.bufferedImage = bufferedImage;
         raster = bufferedImage.getRaster();
 

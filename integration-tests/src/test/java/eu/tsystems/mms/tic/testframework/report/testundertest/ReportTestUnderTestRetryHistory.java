@@ -3,9 +3,6 @@ package eu.tsystems.mms.tic.testframework.report.testundertest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-/**
- * Created by fakr on 04.07.2017.
- */
 public class ReportTestUnderTestRetryHistory extends AbstractTest {
 
     private static int counter = 0;

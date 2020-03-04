@@ -4,9 +4,6 @@ import eu.tsystems.mms.tic.testframework.annotations.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- * Created by fakr on 30.08.2017
- */
 public class ReportTestUnderTestAnnotations extends AbstractTest {
 
     @Test

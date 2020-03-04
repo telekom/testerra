@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,9 +25,6 @@ import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by peter on 16.06.14.
- */
 public class Timer {
 
     private static Logger LOGGER = LoggerFactory.getLogger(Timer.class);
@@ -43,7 +38,10 @@ public class Timer {
 
     /**
      * starts timer
+     *
+     * @deprecated - Please use a constructor with sleeptime and duration
      */
+    @Deprecated
     public Timer() {
     }
 
@@ -149,7 +147,6 @@ public class Timer {
      *
      * @param <T>      .
      * @param sequence .
-     *
      * @return .
      */
     public <T> ThrowablePackedResponse<T> executeSequence(Sequence<T> sequence) {

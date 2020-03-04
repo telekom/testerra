@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,6 +41,7 @@ public abstract class AbstractContext implements SynchronizableContext {
 
     @FunctionalInterface
     public interface CreateDownStreamContext<T extends AbstractContext> {
+
         T create();
     }
 
@@ -78,8 +77,9 @@ public abstract class AbstractContext implements SynchronizableContext {
 
                     // fire context update event: create context
                     TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                        .addData(TesterraEventDataType.CONTEXT, context)
-                        .addData(TesterraEventDataType.WITH_PARENT, true));
+                            .addUserData()
+                            .addData(TesterraEventDataType.CONTEXT, context)
+                            .addData(TesterraEventDataType.WITH_PARENT, true));
 
                     return context;
                 } catch (Exception e) {
@@ -192,7 +192,7 @@ public abstract class AbstractContext implements SynchronizableContext {
     public void updateEndTimeRecursive(Date date) {
         AbstractContext context = this;
         while (context != null) {
-//            LOGGER.info("Updating " + context.getClass().getSimpleName() + " context " + context.name + ": " + date);
+            //            LOGGER.info("Updating " + context.getClass().getSimpleName() + " context " + context.name + ": " + date);
 
             context.endTime = date;
             context = context.parentContext;

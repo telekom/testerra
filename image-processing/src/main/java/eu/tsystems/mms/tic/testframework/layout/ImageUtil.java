@@ -1,10 +1,4 @@
-/*
- * Created on 03.13.2014
- *
- * Copyright(c) 2011 - 2014 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+
 package eu.tsystems.mms.tic.testframework.layout;
 
 import org.opencv.core.CvType;

@@ -18,9 +18,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
-/**
- * Created by riwa on 25.10.2016.
- */
 public class DashboardPage extends AbstractReportPage implements IReportAnnotationVerifier {
 
     @Check

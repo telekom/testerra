@@ -1,8 +1,5 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
-/**
- * Created by fakr on 30.08.2017
- */
 public enum ReportAnnotationType {
 
     SUPPORT_METHOD("Support Method", "SupportMethod"),

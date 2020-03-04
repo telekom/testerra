@@ -1,6 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.general;
 
 import eu.tsystems.mms.tic.testframework.AbstractReportTest;
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFailurePointsPage;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFailureEntry;
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
@@ -11,9 +12,6 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-/**
- * Created by riwa on 12.04.2017.
- */
 public abstract class AbstractReportFailuresTest extends AbstractReportTest {
 
     protected ResultTableFailureType failurePointType;
@@ -77,6 +75,7 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
     /**
      * This test checks the listed METHOD for a single failure point entry in the list
      */
+    @Fails(ticketId = 621, description = "failure be related to bad code snippet display")
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
     public void testT06_ListedTestsForSingleFailure() {
         final int failurePointPositionToCheck = 2;

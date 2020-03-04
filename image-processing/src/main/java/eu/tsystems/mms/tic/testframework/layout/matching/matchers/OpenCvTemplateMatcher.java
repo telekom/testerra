@@ -12,9 +12,6 @@ import org.opencv.imgproc.Imgproc;
 
 import java.util.LinkedList;
 
-/**
- * Created by joku on 03.11.2016.
- */
 public class OpenCvTemplateMatcher implements
     TemplateMatchingAlgorithm,
     Loggable

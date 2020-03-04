@@ -22,9 +22,6 @@ import java.time.Instant;
 import java.util.*;
 import java.util.List;
 
-/**
- * Created by jlma on 14.06.2017.
- */
 public class ClassesDetailsPage extends AbstractReportPage implements IReportAnnotationVerifier, ReportConfigMethodStateHelper {
 
     private String testResultLocatorPattern = "//th[text()='%s']";
@@ -121,9 +118,10 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * @return the left test method info column as GuiElement
      */
     private GuiElement getInformationMethodBodyForTestMethodName(String testMethodName, String configMethodName) {
-        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']", testMethodName)), mainFrame);
+//        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']", testMethodName)), mainFrame);
+        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[contains(@id,'%s-')]", testMethodName)), mainFrame);
         if (null != configMethodName) {
-            informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s <i>for %s</i>']", testMethodName, configMethodName)), mainFrame);
+            informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[contains(@id,'%s-') and .//i[contains(text(), '%s')]]", testMethodName, configMethodName)), mainFrame);
         }
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;
@@ -136,7 +134,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
      * @return the left test method info column as GuiElement
      */
     private GuiElement getInformationMethodBodyForTestMethodName(String testMethodName) {
-        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']", testMethodName)), mainFrame);
+        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[contains(@id,'%s-')]", testMethodName)), mainFrame);
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;
     }

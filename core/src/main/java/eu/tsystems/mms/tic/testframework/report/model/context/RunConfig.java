@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,9 +24,6 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 
 import java.io.File;
 
-/**
- * Created by pele on 21.12.2016.
- */
 public final class RunConfig {
 
     public final String RUNCFG = (Flags.DRY_RUN ? "DRY RUN " : "") + PropertyManager.getProperty(TesterraProperties.RUNCFG, "DEFAULT");

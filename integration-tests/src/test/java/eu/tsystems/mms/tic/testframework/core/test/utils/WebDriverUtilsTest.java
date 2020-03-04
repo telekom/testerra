@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,26 +29,23 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- * Created by nigr on 07.09.2015.
- */
 @TestContext(name = "WebDriverUtilsTest")
 public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
     private final String msgSwitchSuccessfully = "Find and switch to window successful";
 
-//    private WebDriver createWebDriver(boolean extraSession) {
-//        WebDriver driver;
-//
-//        if (extraSession) {
-//            driver = WebDriverManager.getWebDriver("test");
-//            visitTestPage(driver);
-//        } else {
-//            driver = WebDriverManager.getWebDriver();
-//        }
-//
-//        return driver;
-//    }
+    //    private WebDriver createWebDriver(boolean extraSession) {
+    //        WebDriver driver;
+    //
+    //        if (extraSession) {
+    //            driver = WebDriverManager.getWebDriver("test");
+    //            visitTestPage(driver);
+    //        } else {
+    //            driver = WebDriverManager.getWebDriver();
+    //        }
+    //
+    //        return driver;
+    //    }
 
     private void openPopUpWindow(WebDriver driver) {
         GuiElement guiElement = new GuiElement(driver, By.linkText("Open pop up"));
@@ -79,7 +74,8 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
         Assert.assertFalse(out, msgSwitchSuccessfully);
     }
 
-    @Test
+    @Test(enabled = false)
+    @Deprecated
     public void testT03_WebDriverUtils_findWindowAndSwitchTo_Fast() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
 
@@ -96,7 +92,8 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
         Assert.assertTrue(timeMillisDuration < 300, "Find and switch to Window need less than 1000 ms");
     }
 
-    @Test
+    @Test(enabled = false)
+    @Deprecated
     public void testT04_WebDriverUtils_findWindowAndSwitchTo_FastWrongTitle() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
 

@@ -7,9 +7,6 @@ import eu.tsystems.mms.tic.testframework.layout.reporting.GraphicalReporter;
 import eu.tsystems.mms.tic.testframework.report.model.Serial;
 import org.opencv.core.Scalar;
 
-/**
- * Created by rnhb on 09.12.2014.
- */
 public class CorrectMatch extends LayoutFeature {
 
     private static final long serialVersionUID = Serial.SERIAL;

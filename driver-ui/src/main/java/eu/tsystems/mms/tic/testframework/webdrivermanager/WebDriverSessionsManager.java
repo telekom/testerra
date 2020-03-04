@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -52,9 +50,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverFactory.wrapRawWebDriverWithEventFiringWebDriver;
 
-/**
- * Created by pele on 08.01.2015.
- */
 public final class WebDriverSessionsManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverSessionsManager.class);
@@ -299,6 +294,7 @@ public final class WebDriverSessionsManager {
         sessionContext.parentContext = ExecutionContextController.EXECUTION_CONTEXT;
         // fire sync
         TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                .addUserData()
                 .addData(TesterraEventDataType.CONTEXT, sessionContext));
 
         /*
@@ -409,7 +405,7 @@ public final class WebDriverSessionsManager {
         }
 
         /*
-        **** STARTING NEW SESSION ****
+         **** STARTING NEW SESSION ****
          */
 
         /*
@@ -432,8 +428,9 @@ public final class WebDriverSessionsManager {
 
             // fire sync
             TesterraEventService.getInstance().fireEvent(
-                new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addData(TesterraEventDataType.CONTEXT, sessionContext)
+                    new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                            .addUserData()
+                            .addData(TesterraEventDataType.CONTEXT, sessionContext)
             );
 
             /*
@@ -454,8 +451,9 @@ public final class WebDriverSessionsManager {
 
             // fire sync again, for updated sessionContext
             TesterraEventService.getInstance().fireEvent(
-                new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addData(TesterraEventDataType.CONTEXT, sessionContext)
+                    new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                            .addUserData()
+                            .addData(TesterraEventDataType.CONTEXT, sessionContext)
             );
 
             return eventFiringWebDriver;

@@ -9,6 +9,7 @@ import eu.tsystems.mms.tic.testframework.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.DashboardModuleMethodChart;
@@ -16,15 +17,13 @@ import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by fakr on 09.10.2017
- */
 @TestContext(name = "Functional-Retry")
 public class RetryTest extends AbstractReportTest {
 
@@ -189,13 +188,11 @@ public class RetryTest extends AbstractReportTest {
     }
 
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    public void testT07_checkMethodThatDependsOnPassedRetryIsSuccessful() throws Exception {
-
+    public void testT07_checkMethodThatDependsOnPassedRetryIsSuccessful() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
-        dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.PASSED);
-        dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(1));
-        Assert.assertTrue(dashboardPage.getMethodChartModule().methodChartSuccessfulRetried.getText().contains("test_MethodDependsOnMethodThatPassesInRetry"), "The test 'test_MethodDependsOnMethodThatPassesInRetry' does not exist in the passed method chart.");
+        WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
+        ClassesDetailsPage reportTestUnderTestRetry = dashboardPage.goToClasses().gotoClassesDetailsPageForClass("ReportTestUnderTestRetry");
+        reportTestUnderTestRetry.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_MethodDependsOnMethodThatPassesInRetry", TestResultHelper.TestResult.PASSED);
     }
-
 
 }

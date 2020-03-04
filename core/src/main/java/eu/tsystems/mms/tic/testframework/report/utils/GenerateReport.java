@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,20 +23,19 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorkerExecutor;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.TestEndEventWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateTesterraReportWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateOtherOutputsWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateTesterraReportWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.TestEndEventWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.slf4j.Logger;
@@ -46,12 +43,19 @@ import org.slf4j.LoggerFactory;
 import org.testng.ISuite;
 import org.testng.xml.XmlSuite;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
-/**
- * Created by piet on 08.12.16.
- */
 public class GenerateReport {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenerateReport.class);
@@ -195,6 +199,11 @@ public class GenerateReport {
         failureAspects = sortTestMethodContainerMap(failureAspects);
 
         /*
+        check if failed tests have an expected failed with the same root cause and a message about it to the failed test
+         */
+        addMatchingExpextedFailedMessage(failureAspects);
+
+        /*
         Store
          */
         ExecutionContextController.EXECUTION_CONTEXT.exitPoints = exitPoints;
@@ -205,6 +214,7 @@ public class GenerateReport {
          */
         TesterraEventService.getInstance().fireEvent(
                 new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                        .addUserData()
                         .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.EXECUTION_CONTEXT)
         );
 
@@ -257,10 +267,10 @@ public class GenerateReport {
                                                     .stream()
                                                     .filter(methodContext -> methodContext.status == TestStatusController.Status.PASSED)
                                                     .forEach(
-                                                        methodContext -> {
-                                                            System.out.println("Method: " + methodContext.name);
-                                                            testMethodsCount.set(testMethodsCount.get()+1);
-                                                        }
+                                                            methodContext -> {
+                                                                System.out.println("Method: " + methodContext.name);
+                                                                testMethodsCount.set(testMethodsCount.get() + 1);
+                                                            }
                                                     );
                                         }
                                 );
@@ -273,4 +283,44 @@ public class GenerateReport {
         System.out.println("");
     }
 
+    // check if failed tests have an expected failed with the same root cause and a message about it to the failed test
+    private static void addMatchingExpextedFailedMessage(Map<String, List<MethodContext>> failureAspects) {
+        List<MethodContext> expectedFailedMethodContexts =
+                failureAspects.values().stream()
+                        //only one context per expected failed required
+                        .map(e -> e.get(0))
+                        .filter(MethodContext::isExpectedFailed)
+                        .collect(Collectors.toList());
+
+        List<MethodContext> unexpectedFailedMethodContexts =
+                failureAspects.values().stream()
+                        .flatMap(Collection::stream)
+                        .filter(methodContext -> !methodContext.isExpectedFailed())
+                        .collect(Collectors.toList());
+
+        unexpectedFailedMethodContexts.stream().forEach(
+                context -> {
+                    Optional<MethodContext> methodContext =
+                            findMatchingMethodContext(context, expectedFailedMethodContexts);
+                    if (methodContext.isPresent()) {
+                        context.errorContext().additionalErrorMessage =
+                                "Failure aspect matches known issue: "
+                                    + methodContext.get().errorContext()
+                                        .getThrowable().getMessage().split("expected.")[1];
+                    }
+                });
+    }
+
+    //find method context of expected failed test where it's underlying cause matches the cause of the given context
+    private static Optional<MethodContext> findMatchingMethodContext(MethodContext context,
+                                                                     List<MethodContext> methodContexts) {
+        return methodContexts.stream()
+                .filter(expectedFailedMethodContext ->
+                        expectedFailedMethodContext.isExpectedFailed()
+                        && context.errorContext().getThrowable().getMessage() != null
+                        && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage() != null
+                        && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage()
+                                .equals(context.errorContext().getThrowable().getMessage()))
+                .findFirst();
+    }
 }

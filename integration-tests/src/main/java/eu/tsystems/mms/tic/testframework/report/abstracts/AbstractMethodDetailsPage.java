@@ -9,9 +9,6 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodStepsPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by riwa on 04.01.2017.
- */
 public abstract class AbstractMethodDetailsPage extends AbstractReportPage {
 
     protected GuiElement mainFrame = new GuiElement(driver, By.cssSelector("frame[name='main']"));

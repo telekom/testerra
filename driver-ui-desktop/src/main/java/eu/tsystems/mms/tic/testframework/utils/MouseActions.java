@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,9 +32,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * Created by pele on 11.12.2015.
- */
 public final class MouseActions {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MouseActions.class);
@@ -237,7 +232,7 @@ public final class MouseActions {
         workflow.add(() -> {
             if (dragFromXY) {
                 LOGGER.info("MoveTo drag source by x,y: " + sourcePoint.x + "," + sourcePoint.y);
-                actions.moveToElement(null, sourcePoint.x, sourcePoint.y).build().perform();
+                actions.moveToElement(sourceWebElement, sourcePoint.x, sourcePoint.y).build().perform();
                 sleep(sleepMS.get());
                 LOGGER.info("ClickAndHold");
                 actions.clickAndHold().build().perform();

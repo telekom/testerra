@@ -24,9 +24,6 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by fakr on 09.10.2017
- */
 @TestContext(name = "Functional-Retry")
 public class RetryTest extends AbstractReportTest {
 

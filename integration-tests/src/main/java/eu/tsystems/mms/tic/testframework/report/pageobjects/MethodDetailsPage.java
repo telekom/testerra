@@ -14,9 +14,6 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 
-/**
- * Created by riwa on 27.10.2016.
- */
 public class MethodDetailsPage extends AbstractMethodDetailsPage implements IReportAnnotationVerifier {
 
     private String HISTORY_ELEMENT_LOCATOR = ("//div[@class='gitgraph-inner']//div[%d]");

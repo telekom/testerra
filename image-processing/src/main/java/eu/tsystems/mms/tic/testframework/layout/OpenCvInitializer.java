@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * Created by rnhb on 19.06.2015.
- */
 public class OpenCvInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenCvInitializer.class);

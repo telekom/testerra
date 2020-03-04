@@ -6,9 +6,6 @@ import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 
-/**
- * Created by riwa on 04.01.2017.
- */
 public class MethodStepsPage extends MethodDetailsPage {
 
 

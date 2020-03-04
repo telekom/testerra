@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,9 +21,6 @@ import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
 
 import java.lang.reflect.Modifier;
 
-/**
- * Created by piet on 11.03.16.
- */
 public class CoreExceptionUtils extends ThrowableUtils {
 
     public static String getSimpleNameFromClassString(final String fullClassName) {

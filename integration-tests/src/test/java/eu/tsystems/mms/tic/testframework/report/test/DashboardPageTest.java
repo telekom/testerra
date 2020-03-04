@@ -21,9 +21,6 @@ import java.util.List;
 
 import static eu.tsystems.mms.tic.testframework.report.model.TestResultHelper.TestResult;
 
-/**
- * Created by riwa on 24.11.2016.
- */
 @TestContext(name = "View-Dashboard-General")
 public class DashboardPageTest extends AbstractTestDashboard {
 

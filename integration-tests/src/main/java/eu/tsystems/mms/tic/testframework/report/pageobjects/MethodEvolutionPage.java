@@ -4,9 +4,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by riwa on 04.01.2017.
- */
 public class MethodEvolutionPage extends MethodDetailsPage {
 
     private GuiElement graphView = new GuiElement(this.getWebDriver(), By.id("historygrapharea"), mainFrame);

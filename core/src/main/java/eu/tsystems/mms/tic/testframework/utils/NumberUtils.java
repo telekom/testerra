@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,9 +22,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by clgr on 09.12.2014.
- */
 public final class NumberUtils {
 
     private NumberUtils() {

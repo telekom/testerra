@@ -6,9 +6,6 @@ import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractReportPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by jlma on 14.06.2017.
- */
 public class TestMethodsPage extends AbstractReportPage {
 
     @Check

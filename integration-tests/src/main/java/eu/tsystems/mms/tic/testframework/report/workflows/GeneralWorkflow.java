@@ -12,9 +12,6 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-/**
- * Created by sagu on 22.04.2017.
- */
 public class GeneralWorkflow {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(GeneralWorkflow.class);

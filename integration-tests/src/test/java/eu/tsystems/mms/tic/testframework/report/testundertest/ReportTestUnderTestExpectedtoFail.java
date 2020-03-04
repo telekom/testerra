@@ -7,10 +7,6 @@ import org.testng.annotations.Test;
 
 import java.util.UUID;
 
-/**
- * Created by riwa on 21.03.2017.
- */
-
 public class ReportTestUnderTestExpectedtoFail extends AbstractTest {
 
     private String uniqueFailureAspectMessage = "matchting unique failure aspect: " + UUID.randomUUID().toString();
@@ -35,7 +31,7 @@ public class ReportTestUnderTestExpectedtoFail extends AbstractTest {
 
     @Fails(description = "This is an unknown bug.", intoReport = true)
     @Test(groups = {TestsUnderTestGroup.TESTSUNDERTESTFILTER})
-    public void test_FailedMinorAnnotatedWithFailInReport() throws Exception{
+    public void test_FailedMinorAnnotatedWithFailInReport() throws Exception {
         ExitPointCreaterTestClass1.testCreatorForDifferentExitPoints();
     }
 

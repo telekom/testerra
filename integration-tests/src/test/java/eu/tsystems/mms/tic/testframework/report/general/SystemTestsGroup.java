@@ -1,8 +1,5 @@
 package eu.tsystems.mms.tic.testframework.report.general;
 
-/**
- * Created by jlma on 14.12.2016.
- */
 public final class SystemTestsGroup {
 
     public static final String SYSTEMTESTSFILTER1 = "SYSTEMTESTSFILTER1";

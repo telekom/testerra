@@ -25,9 +25,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by fakr on 19.06.2017.
- */
 @TestContext(name = "View-ClassesDetails")
 public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
 

@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,9 +17,6 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test;
 
-/**
- * Created by rnhb on 02.06.2015.
- */
 public enum TestPage {
     INPUT_TEST_PAGE("Input/input.html",
             "Open again",

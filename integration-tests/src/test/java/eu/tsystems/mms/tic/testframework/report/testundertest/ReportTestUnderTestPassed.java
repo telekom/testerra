@@ -6,10 +6,6 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- * Created by sagu on 04.11.2016.
- */
-
 public class ReportTestUnderTestPassed extends AbstractTest {
 
     /**

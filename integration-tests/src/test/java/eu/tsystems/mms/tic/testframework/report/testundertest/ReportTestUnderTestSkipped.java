@@ -4,9 +4,6 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
 
-/**
- * Created by jlma on 05.12.2016.
- */
 public class ReportTestUnderTestSkipped extends AbstractTest {
 
 

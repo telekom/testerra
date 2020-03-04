@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,9 +24,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.StackTrace;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.testng.annotations.Test;
 
-/**
- * Created by pele on 19.10.2016.
- */
 public class MethodContextTest extends AbstractWebDriverTest {
 
     String level0String = "level 0";

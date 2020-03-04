@@ -18,9 +18,6 @@ import org.openqa.selenium.Dimension;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Created by fakr on 07.11.2017
- */
 @TestContext(name = "Functional-TestNGBefore")
 public class BeforeScenarioTest extends AbstractReportTest {
 

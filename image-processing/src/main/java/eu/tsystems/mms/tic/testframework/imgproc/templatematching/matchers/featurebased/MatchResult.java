@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,9 +37,6 @@ import java.util.*;
 
 import static eu.tsystems.mms.tic.testframework.imgproc.templatematching.matchers.featurebased.Matcher.params;
 
-/**
- * Created by joku on 30.09.2016.
- */
 class MatchResult implements FreesNativeMemory {
     private static final Logger LOGGER = LoggerFactory.getLogger(MatchResult.class);
 

@@ -2,9 +2,6 @@ package eu.tsystems.mms.tic.testframework.report.abstracts;
 
 import eu.tsystems.mms.tic.testframework.report.model.TestNumberHelper;
 
-/**
- * Created by fakr on 12.09.2017
- */
 public abstract class AbstractTestReportNumbers implements TestNumberHelper {
 
     protected int highCorridorActual = 0;

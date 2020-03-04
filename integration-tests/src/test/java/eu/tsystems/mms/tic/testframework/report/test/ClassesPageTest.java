@@ -19,9 +19,6 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by fakr on 31.05.2017.
- */
 @TestContext(name = "View-Classes")
 public class ClassesPageTest extends AbstractReportTest {
 

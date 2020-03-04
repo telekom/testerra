@@ -4,9 +4,6 @@ import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- * Created by jlma on 14.11.2016.
- */
 public class ReportTestUnderTestCorridorMid extends AbstractTest {
 
     @FailureCorridor.Mid

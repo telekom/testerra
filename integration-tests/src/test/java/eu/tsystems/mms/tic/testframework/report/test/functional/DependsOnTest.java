@@ -17,9 +17,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Created by fakr on 09.10.2017
- */
 @TestContext(name = "Functional-DependsOn")
 public class DependsOnTest extends AbstractReportTest {
 

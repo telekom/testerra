@@ -4,9 +4,6 @@ import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFai
 
 import java.util.List;
 
-/**
- * Created by fakr on 16.08.2017
- */
 public class FailureAspectEntry extends AbstractResultTableFailureEntry {
 
     public FailureAspectEntry(TestResultHelper.TestResultFailurePointEntryType failurePointEntryType, int entryNumber, int numberOfTests, String description) {

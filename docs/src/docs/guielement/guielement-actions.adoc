@@ -132,7 +132,6 @@ Source and target GuiElements can be located in different frames.
 GuiElement source = new GuiElement(driver, By.id("elem1"));
 GuiElement target = new GuiElement(driver, By.id("elem2"));
 
-MouseActions.dragAndDrop(source, target);
 MouseActions.dragAndDropJS(source, target);
 
 // You can add one or more DragAndDropActions

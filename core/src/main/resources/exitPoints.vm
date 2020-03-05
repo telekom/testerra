@@ -2,137 +2,159 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
-    <head>
-        <title>Test Results Report</title>
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-        <meta name="description" content="TestNG unit test results."/>
+<head>
+    <title>Test Results Report</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta name="description" content="TestNG unit test results."/>
 
-        #parse("styleincludesrelative.vm")
+    #parse("styleincludesrelative.vm")
 
-        <link rel="stylesheet" href="../style/fotorama.css"/>
+    <link rel="stylesheet" href="../style/fotorama.css"/>
 
-        #parse("scriptincludesrelative.vm")
-        <script type="text/javascript" src="../js/highlight.pack.js"></script>
-        <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
-        <!--<script type="text/javascript" src="../js/pace.min.js"></script>-->
+    #parse("scriptincludesrelative.vm")
+    <script type="text/javascript" src="../js/highlight.pack.js"></script>
+    <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+    <!--<script type="text/javascript" src="../js/pace.min.js"></script>-->
 
-        <script type="text/javascript" src="../js/fotorama.js"></script>
-        <script type="text/javascript" src="../js/cytoscape.min.js"></script>
-        <script type="text/javascript" src="../js/dagre.js"></script>
+    <script type="text/javascript" src="../js/fotorama.js"></script>
+    <script type="text/javascript" src="../js/cytoscape.min.js"></script>
+    <script type="text/javascript" src="../js/dagre.js"></script>
 
-    </head>
+</head>
 
-    <body>
-        #set($cols = 3)
+<body>
+    #set($cols = 3)
 
-        #set($velocityCount1 = 1)
+    #set($velocityCount1 = 1)
 
-        #set($tabcontext = "ep")
-        #set($pagetitle = "Exit Points")
-        #parse("headerrelative.vm")
+    #set($tabcontext = "ep")
+    #set($pagetitle = "Exit Points")
+    #parse("headerrelative.vm")
 
-        #set ($exitPointMap = ${executionContext.exitPoints})
+    #set ($exitPointMap = ${executionContext.exitPoints})
 
-        <br/>
+<br/>
 
-        <!-- description table -->
-        <div style="padding-left:70px; padding-right:70px; width:100%;">
-        <table width="100%">
-            <tr>
-                <td>
-                    <div class="broken">&nbsp;&nbsp;</div>
-                </td>
-                <td>
-                    Failures
-                </td>
-                <td>
-                    &nbsp;
-                </td>
-                <td>
-                    <div class="expfailed">&nbsp;&nbsp;</div>
-                </td>
-                <td>
-                    Expected Failures
-                </td>
-                <td style="width:90%">
-                    <div class="textright dashboardTextSmall">
-                        Exit Points: $exitPointMap.size()
-                    </div>
-                </td>
+<!-- description table -->
+<div style="padding-left:70px; padding-right:70px; width:100%;">
+    <table width="100%">
+        <tr>
+            <td>
+                <div class="broken">&nbsp;&nbsp;</div>
+            </td>
+            <td>
+                Failures
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                <div class="expfailed">&nbsp;&nbsp;</div>
+            </td>
+            <td>
+                Expected Failures
+            </td>
+            <td style="width:90%">
+                <div class="textright dashboardTextSmall">
+                    Exit Points: $exitPointMap.size()
+                </div>
+            </td>
 
-            </tr>
-        </table>
-        </div>
+        </tr>
+    </table>
+</div>
 
-        #if ($exitPointMap.keySet().size() > 0)
-            <!-- FAILED Tests section -->
+    #if ($exitPointMap.keySet().size() > 0)
+    <!-- FAILED Tests section -->
 
-            #set($exitPointCount = 0)
-            #foreach( $exitPoint in $exitPointMap.keySet() )
-                #set($exitPointCount = ${exitPointCount} + 1)
+        #set($exitPointCount = 0)
+        #foreach( $exitPoint in $exitPointMap.keySet() )
+            #set($exitPointCount = ${exitPointCount} + 1)
 
-                <div id="exit-$exitPointCount" style="margin-left: 70px; margin-right: 70px;">
-                <table class="textleft resultsTable broken" style="color: white;">
-                    #if ( $exitPoint == "others" )
-                        <tr class="header broken">
-                            <th style="cursor: pointer; position: relative;" colspan="$cols" onclick="toggleElements('testsForCause$exitPointCount');" class="">
-                                No explicit exit points due to collected assertions ($exitPointMap.get($exitPoint).size() Tests)
-                                <i style="position: absolute; right: 8px; top: 2px;" class="fa fa-caret-square-o-down" aria-hidden="true"></i>
-                            </th>
-                        </tr>
-                        <tr class="header broken">
-                            <td class="" style="font-size: 15px; color: black; background-color: #DDDDDD; font-weight: normal;">
+        <div id="exit-$exitPointCount" style="margin-left: 70px; margin-right: 70px;">
+            <table class="textleft resultsTable broken" style="color: white;">
+                #if ( $exitPoint == "others" )
+                    <tr class="header broken">
+                        <th style="cursor: pointer; position: relative;" colspan="$cols"
+                            onclick="toggleElements('testsForCause$exitPointCount');" class="">
+                            No explicit exit points due to collected assertions ($exitPointMap.get($exitPoint).size() Tests)
+                            <i style="position: absolute; right: 8px; top: 2px;" class="fa fa-caret-square-o-down"
+                               aria-hidden="true"></i>
+                        </th>
+                    </tr>
+                    <tr class="header broken">
+                        <td class="" style="font-size: 15px; color: black; background-color: #DDDDDD; font-weight: normal;">
+                            <div class="error">
+                                Tests that ran fully but had assertions collected
+                            </div>
+                        </td>
+                    </tr>
+                #else
+                    <tr class="header broken">
+                        <th style="cursor: pointer; position: relative;" colspan="$cols"
+                            onclick="toggleElements('testsForCause$exitPointCount');" class="">
+                            Exit Point #$exitPointCount ($exitPointMap.get($exitPoint).size() Tests)
+                            <i style="position: absolute; right: 8px; top: 2px;" class="fa fa-caret-square-o-down"
+                               aria-hidden="true"></i>
+                        </th>
+                    </tr>
+                    <tr class="header broken">
+                        <td class="" colspan="3"
+                            style="font-size: 15px; color: black; background-color: #DDDDDD; font-weight: normal;">
+                            #set ($testMethod = $exitPointMap.get($exitPoint).get(0))
+
+                            #if ($testMethod.errorContext().scriptSource)
+                                #displayLines($testMethod.errorContext().scriptSource, "scriptSource")
+                            #elseif ($testMethod.errorContext().errorFingerprint)
                                 <div class="error">
-                                    Tests that ran fully but had assertions collected
+                                    $testMethod.errorContext().errorFingerprint
                                 </div>
-                            </td>
-                        </tr>
-                    #else
-                        <tr class="header broken">
-                            <th style="cursor: pointer; position: relative;" colspan="$cols" onclick="toggleElements('testsForCause$exitPointCount');" class="">
-                                Exit Point #$exitPointCount ($exitPointMap.get($exitPoint).size() Tests)
-                                <i style="position: absolute; right: 8px; top: 2px;" class="fa fa-caret-square-o-down" aria-hidden="true"></i>
-                            </th>
-                        </tr>
-                        <tr class="header broken">
-                            <td class="" colspan="3" style="font-size: 15px; color: black; background-color: #DDDDDD; font-weight: normal;">
-                                #set ($testMethod = $exitPointMap.get($exitPoint).get(0))
-
-                                #if ($testMethod.errorContext().scriptSource)
-                                    <div id="source" style="text-align: initial">
-                                        $testMethod.errorContext().scriptSource
-                                    </div>
-                                #elseif ($testMethod.errorContext().errorFingerprint)
-                                    <div class="error">
-                                        $testMethod.errorContext().errorFingerprint
-                                    </div>
-                                #end
-                            </td>
-                        </tr>
-                    #end
-
-                    #foreach( $testMethod in $exitPointMap.get($exitPoint) )
-                        #if (!$testMethod.isConfigMethod())
-                            #if($testMethod.isFailed())
-                                #set($index = ${velocityCount} - 1)
-                                #if ($index < 10)
-                                    #set ($index = "0$index")
-                                #end
-                                <tr id="row-$index" class="hidden test testsForCause$exitPointCount broken">
-                                    <!-- methodBody -->
-                                    #parse("methodBodyExitPoints.vm")
-                                </tr>
                             #end
+                        </td>
+                    </tr>
+                #end
+
+                #foreach( $testMethod in $exitPointMap.get($exitPoint) )
+                    #if (!$testMethod.isConfigMethod())
+                        #if($testMethod.isFailed())
+                            #set($index = ${velocityCount} - 1)
+                            #if ($index < 10)
+                                #set ($index = "0$index")
+                            #end
+                            <tr id="row-$index" class="hidden test testsForCause$exitPointCount broken">
+                                <!-- methodBody -->
+                                #parse("methodBodyExitPoints.vm")
+                            </tr>
                         #end
                     #end
-                </table>
-                </div>
-            #end
-
-        #else
-            <div class="cellCenter dashboardTextSmall" style="padding:100px;">No exit points in this run</div>
+                #end
+            </table>
+        </div>
         #end
 
-    </body>
+    #else
+    <div class="cellCenter dashboardTextSmall" style="padding:100px;">No exit points in this run</div>
+    #end
+
+</body>
 
 </html>
+
+#macro(displayLines $source $class)
+#if ($source)
+<div class="$class" style="text-align: initial">
+<pre><code>
+// $source.fileName#[[#]]#$source.methodName
+#foreach($s in $source.lines)
+#if ($s.mark)
+&#8623; $s.lineNumber : $s.line
+#else
+  $s.lineNumber : $s.line
+#end
+#end
+</code></pre>
+</div>
+#else
+No test sources
+#end
+#end

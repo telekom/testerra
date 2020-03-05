@@ -73,8 +73,8 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT01_DragAndDrop() {
 
-        if (this instanceof DragAndDropWDActionsTest || this instanceof DragAndDropCoordinatesTest) {
-            throw new SkipException("Skipped. Would end up in a watchdog bite while mouseMove");
+        if (!(this instanceof DragAndDropJSTest)) {
+            throw new SkipException("Skipped. We only support DragAndDropJs");
         }
 
         final GuiElement[] guiElements = beforeDragAndDropSimple();
@@ -91,9 +91,10 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
 
     @Test
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
-    public void testT2_DragAndDropOverFrames() throws Exception {
-        if (this instanceof DragAndDropWDActionsTest || this instanceof DragAndDropCoordinatesTest) {
-            throw new SkipException("Skipped. Would end up in a watchdog bite while mouseMove");
+    public void testT2_DragAndDropOverFrames() {
+
+        if (!(this instanceof DragAndDropJSTest)) {
+            throw new SkipException("Skipped. We only support DragAndDropJs");
         }
 
         WebDriver driver = getDriver();

@@ -62,8 +62,8 @@ MAX_READ_TRIES=20
 ----
 
 == AbstractMailConnector
-This abtstract class provides some general methods for working with mailboxes. There are getter and setter methods for accessing and adjusting the server parameters,
-reading, moving and deleting messages from the inbox as well as means to poll the inbox until an email is received. The default maximum nummber of polls is 20 or set by MAX_READ_TRIES
+This abstract class provides some general methods for working with mailboxes. There are getter and setter methods for accessing and adjusting the server parameters,
+reading, moving and deleting messages from the inbox as well as means to poll the inbox until an email is received. The default maximum number of polls is 20 or set by MAX_READ_TRIES
 The default timeout between polls is 50s or set by POLLING_TIMER_SECONDS.
 
 == POP3MailConnector
@@ -125,7 +125,7 @@ try {
 
 == SMTPMailConnector
 This entity allows sending emails via the SMTP protocol. Server name, port and, if applicable, username, password must be set in mailconnection.properties.
-Due to the fact that the class inherits from AbstractMailConnector, it also has all functions of the MailConnector class.
+Due to the fact that the class inherits from AbstractMailConnector, it also has all functions of the AbstractMailConnector.
 
 .Sending Mails
 [source,java,role="secondary"]
@@ -153,4 +153,4 @@ smtpMailConnector.sendMessage(existingMessage);
 The IMAPMailConnector operates as the POP3MailConnector with an additional method to mark all mails as seen.
 
 == MailUtils
-This helper class contains methods which facilitate reoccurring task when working with mails, e.g. encoding, encrypting, decrypting, saving to file and comparing.
+This helper class contains methods which facilitate reoccurring tasks when working with mails, e.g. encoding, encrypting, decrypting, saving to file and comparing.

@@ -42,6 +42,7 @@ import org.bouncycastle.operator.OutputEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -846,5 +847,108 @@ public final class MailUtils {
             final String password, final String filename) throws TesterraSystemException {
         final MimeMessage mimeMessage = pEncryptMessageWithKeystore(message, mailsession, keyfile, password);
         pSaveEmail(mimeMessage, filename);
+    }
+
+    /**
+     * Get Email headers (as String[]) from a mime message.
+     *
+     * @param message The message to get the headers.
+     * @return A string array containing the headers.
+     * @throws TesterraSystemException thrown if email headers can't read.
+     */
+    public static String[] getEmailHeaders(final MimeMessage message) throws TesterraSystemException {
+        return pGetEmailHeaders(message);
+    }
+
+    /**
+     * Get Email headers (as String[]) from a mime message.
+     *
+     * @param message The message to get the headers.
+     * @return A string array containing the headers.
+     * @throws TesterraSystemException thrown if email headers can't read.
+     */
+    private static String[] pGetEmailHeaders(final MimeMessage message) throws TesterraSystemException {
+        ArrayList<String> headersAsStrings;
+        try {
+            final Enumeration<?> headers = message.getAllHeaderLines();
+            headersAsStrings = new ArrayList<String>();
+            while (headers.hasMoreElements()) {
+                headersAsStrings.add((String) headers.nextElement());
+            }
+        } catch (final Exception e) {
+            throw new TesterraSystemException(e);
+        }
+        return headersAsStrings.toArray(new String[headersAsStrings.size()]);
+    }
+
+    /**
+     * Sets the header for the message.
+     *
+     * @param message The message to set the header.
+     * @param subject The subject to set.
+     * @param fromAddresses The FROM Address/Addresses.
+     * @param sender The sender value.
+     * @param toAddresses The TO Address/Addresses.
+     * @param ccAddresses The CC Address/Addresses.
+     * @param bccAddresses The BCC Address/Addresses.
+     * @return The message set with headers.
+     */
+    // CHECKSTYLE:OFF
+    public static MimeMessage setMimeMessageHeaders(final MimeMessage message, final String subject,
+                                                    final Address[] fromAddresses, final String sender,
+                                                    final Address[] toAddresses, final Address[] ccAddresses, final Address[] bccAddresses) {
+        return pSetMimeMessageHeaders(message, subject, fromAddresses, sender, toAddresses, ccAddresses, bccAddresses);
+    }
+
+    /**
+     * Sets the header for the message.
+     *
+     * @param message The message to set the header.
+     * @param subject The subject to set.
+     * @param fromAddresses The FROM Address/Addresses.
+     * @param sender The sender value.
+     * @param toAddresses The TO Address/Addresses.
+     * @param ccAddresses The CC Address/Addresses.
+     * @param bccAddresses The BCC Address/Addresses.
+     * @return The message set with headers.
+     */
+    private static MimeMessage pSetMimeMessageHeaders(final MimeMessage message, final String subject,
+                                                      final Address[] fromAddresses, final String sender,
+                                                      final Address[] toAddresses, final Address[] ccAddresses, final Address[] bccAddresses) {
+        // CHECKSTYLE:ON
+        try {
+            if (subject != null && subject.length() > 0) {
+                message.setSubject(subject);
+            }
+
+            // from, to, cc, bcc
+            if (fromAddresses != null && fromAddresses.length != 0) {
+                message.removeHeader("From");
+                message.addFrom(fromAddresses);
+            }
+
+            if (sender != null && !"".equals(sender)) {
+                message.setHeader("Sender", sender);
+            }
+
+            // TO
+            if (toAddresses != null && toAddresses.length > 0) {
+                message.removeHeader("To");
+                message.addRecipients(Message.RecipientType.TO, toAddresses);
+            }
+
+            if (ccAddresses != null && ccAddresses.length > 0) {
+                message.addRecipients(Message.RecipientType.CC, ccAddresses);
+            }
+            if (bccAddresses != null && bccAddresses.length > 0) {
+                message.addRecipients(Message.RecipientType.BCC, bccAddresses);
+            }
+
+            message.saveChanges();
+
+        } catch (final MessagingException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return message;
     }
 }

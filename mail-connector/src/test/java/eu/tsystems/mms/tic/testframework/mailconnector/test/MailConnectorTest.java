@@ -8,7 +8,6 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.mailconnector.pop3.POP3MailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.smtp.SMTPMailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
-import eu.tsystems.mms.tic.testframework.mailconnector.util.MessageUtils;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteria;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteriaType;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.Email;
@@ -173,8 +172,8 @@ public class MailConnectorTest extends TesterraTest {
         MimeMessage loadedMsg = MailUtils.loadEmailFile(pathMail);
 
         // TEST - Compare message headers for equality.
-        String[] headersSavedMsg = MessageUtils.getEmailHeaders(msg);
-        String[] headersLoadedMsg = MessageUtils.getEmailHeaders(loadedMsg);
+        String[] headersSavedMsg = MailUtils.getEmailHeaders(msg);
+        String[] headersLoadedMsg = MailUtils.getEmailHeaders(loadedMsg);
 
         Assert.assertEquals(headersLoadedMsg, headersSavedMsg);
         Assert.assertEquals(loadedMsg.getContent(), msg.getContent());

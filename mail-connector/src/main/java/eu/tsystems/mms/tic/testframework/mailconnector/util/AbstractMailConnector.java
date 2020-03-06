@@ -380,7 +380,6 @@ public abstract class AbstractMailConnector {
                         */
                         // copy message to fetch all data, bc we close the store at the end and then everything must be fetched
                         MimeMessage mimeMessage = new MimeMessage((MimeMessage) messages[j]);
-                        MessageUtils.multiPartBugfix(mimeMessage);
 
                         out.add(mimeMessage);
                     }
@@ -613,7 +612,6 @@ public abstract class AbstractMailConnector {
             logger.info("Fetched messages from " + getInboxFolder() + ":");
             if (messages.length > 0) {
                 for (final Message message : messages) {
-                    MessageUtils.multiPartBugfix(message);
                     mimes.add((MimeMessage) message);
                 }
             } else {
@@ -892,7 +890,6 @@ public abstract class AbstractMailConnector {
                                             final String messageId) throws TesterraSystemException {
 
         try {
-            MessageUtils.multiPartBugfix(message);
             boolean found = false;
 
             if ((subject == null || message.getSubject() == null) && recipient != null) {

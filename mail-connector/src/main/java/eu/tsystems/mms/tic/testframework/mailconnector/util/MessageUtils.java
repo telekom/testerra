@@ -69,7 +69,6 @@ public final class MessageUtils {
     private static String[] pGetEmailHeaders(final MimeMessage message) throws TesterraSystemException {
         ArrayList<String> headersAsStrings;
         try {
-            multiPartBugfix(message);
             final Enumeration<?> headers = message.getAllHeaderLines();
             headersAsStrings = new ArrayList<String>();
             while (headers.hasMoreElements()) {
@@ -79,81 +78,6 @@ public final class MessageUtils {
             throw new TesterraSystemException(e);
         }
         return headersAsStrings.toArray(new String[headersAsStrings.size()]);
-    }
-
-    /**
-     * Bugfix for MultiPart messages. Any method must called.
-     *
-     * @param message The message to fix.
-     */
-    public static void multiPartBugfix(final Message message) {
-        pMultiPartBugfix(message);
-    }
-
-    /**
-     * Bugfix for MultiPart messages. Any method must called.
-     *
-     * @param message The message to fix.
-     */
-    private static void pMultiPartBugfix(final Message message) {
-        try {
-            final Object content = message.getContent();
-            if (content instanceof Multipart) {
-                LOGGER.debug("_MultiPartBugfix: mp getCount:"
-                        + ((Multipart) content).getCount());
-            }
-        } catch (final Exception e) {
-            LOGGER.warn("_MultiPartBugfix: " + e);
-        }
-    }
-
-    /**
-     * Messages filter. Filter criteria are: subject and from
-     *
-     * @param map The treemap containing subjects or from values. e.g. TreeMap<"subject", "Our Meeting"> or
-     *            TreeMap<"from","info@example.org">
-     * @param messages An array containing all the messages to search.
-     *
-     * @return An array containing only the filtered messages.
-     * @throws TesterraSystemException thrown if messages can't be filtered.
-     */
-    public static Message[] messagesFilter(final Map<String, String> map,
-            final Message[] messages) throws TesterraSystemException {
-        return pMessagesFilter(map, messages);
-    }
-
-    /**
-     * Messages filter. Filter criteria are: subject and from
-     *
-     * @param map The treemap containing subjects or from values. e.g. TreeMap<"subject", "Our Meeting"> or
-     *            TreeMap<"from","info@example.org">
-     * @param messages An array containing all the messages to search.
-     *
-     * @return An array containing only the filtered messages.
-     * @throws TesterraSystemException thrown if messages can't be filtered.
-     */
-    private static Message[] pMessagesFilter(final Map<String, String> map,
-            final Message[] messages) throws TesterraSystemException {
-        final ArrayList<Message> messageList = new ArrayList<Message>();
-        for (final Message m : messages) {
-            try {
-                Boolean equals = true;
-                if ((!m.getSubject().equalsIgnoreCase(map.get("subject")))) {
-                    equals = false;
-                }
-                if (equals && !Arrays.toString(m.getFrom()).equalsIgnoreCase(map.get("from"))) {
-                    equals = false;
-                }
-                if (equals) {
-                    messageList.add(m);
-                }
-            } catch (final MessagingException e) {
-                throw new TesterraSystemException(e);
-            }
-        }
-        final Message[] ret = new Message[messageList.size()];
-        messageList.toArray(ret);
-        return ret;
     }
 
     /**

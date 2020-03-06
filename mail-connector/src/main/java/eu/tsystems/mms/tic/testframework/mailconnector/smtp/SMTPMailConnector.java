@@ -137,7 +137,6 @@ public class SMTPMailConnector extends AbstractMailConnector {
         Transport transport = null;
         try {
             transport = getSession().getTransport();
-            MessageUtils.multiPartBugfix(message);
 
             // send
             transport.connect();

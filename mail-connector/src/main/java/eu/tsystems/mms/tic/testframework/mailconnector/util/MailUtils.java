@@ -354,7 +354,6 @@ public final class MailUtils {
         try {
             final Session mailSession = Session.getInstance(new Properties());
             message = new MimeMessage(mailSession, new FileInputStream(filename));
-            MessageUtils.multiPartBugfix(message);
         } catch (final Exception e) {
             throw new TesterraSystemException("Error loading email.", e);
         }
@@ -450,7 +449,6 @@ public final class MailUtils {
         try {
             final Session mailSession = Session.getInstance(new Properties());
             message = new MimeMessage(mailSession, inputStream);
-            MessageUtils.multiPartBugfix(message);
         } catch (final Exception e) {
             throw new TesterraSystemException("Error loading email.", e);
         }
@@ -485,7 +483,6 @@ public final class MailUtils {
      */
     private static void pDisplayMail(final Message message) throws TesterraSystemException {
         final MimeMessage mimeMessage = (MimeMessage) message;
-        MessageUtils.multiPartBugfix(mimeMessage);
         try {
             final Enumeration<?> headerLines = mimeMessage.getAllHeaderLines();
             while (headerLines.hasMoreElements()) {
@@ -524,7 +521,6 @@ public final class MailUtils {
      */
     private static MimeMessage pEncryptMessageWithCert(final MimeMessage message, final Session mailSession,
             final String certFile) throws TesterraSystemException {
-        MessageUtils.multiPartBugfix(message);
         // load old mail headers
         Enumeration<?> headerEnum;
 
@@ -646,7 +642,6 @@ public final class MailUtils {
      */
     private static MimeMessage pEncryptMessageWithKeystore(final MimeMessage message, final Session mailSession,
             final String keyfile, final String password) throws TesterraSystemException {
-        MessageUtils.multiPartBugfix(message);
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         MimeMessage smimeEncryptedMsg = null;
         try {
@@ -703,7 +698,6 @@ public final class MailUtils {
      */
     private static MimeMessage pSignMessageWithKeystore(final MimeMessage message,
             final Session mailSession, final String keyfile, final String password) throws TesterraSystemException {
-        MessageUtils.multiPartBugfix(message);
 
         MimeMessage signedMessage = null;
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
@@ -780,7 +774,6 @@ public final class MailUtils {
     private static MimeMessage pDecryptMessageWithKeystore(final MimeMessage message,
             final Session mailSession, final String keyfile, final String password) throws TesterraSystemException {
         try {
-            MessageUtils.multiPartBugfix(message);
             Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
             final KeyStore keyStore = KeyStore.getInstance("PKCS12", "BC");
             final String keyAlias = ExampleUtils.findKeyAlias(keyStore, keyfile, password.toCharArray());

@@ -72,7 +72,7 @@ public class TestStartWorker extends MethodWorker {
                 if (method.isAnnotationPresent(NoRetry.class)) {
                     LOGGER.debug("Not adding testerra RetryAnalyzer for @NoRetry " + method.getName());
                 } else {
-                    testNGMethod.setRetryAnalyzer(new RetryAnalyzer());
+                    testNGMethod.setRetryAnalyzerClass(RetryAnalyzer.class);
                     LOGGER.info("Adding testerra RetryAnalyzer for " + method.getName());
                 }
             } else {

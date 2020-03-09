@@ -1,0 +1,128 @@
+= XML Utilities
+
+XMLUtilities provide the helper classes JDom, JSoup, W3CDom for working with XML Documents. The XMlUtils class provides methods for accessing instances of the aforementioned classes, XPath Evaluation and Mapping to Java Objects.
+
+== XMLUtils
+The core class for working with XML Documents
+
+.Evaluating XPaths
+[source,java]
+----
+String validXMLString =
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+    "<AuthenticationResult>" +
+        "<accountName>test-account</accountName>" +
+    "</AuthenticationResult>";
+
+
+// get first node in document matching a XPath
+String result = XMLUtils.evaluateXPath(validXMLString, "/AuthenticationResult/accountName");
+
+// get all nodes in document matching a XPath
+NodeList nodeList = XMLUtils.evaluateXPathNodes(validXMLString, "//accountName");
+----
+
+The evaluation methods are also executable on Jdom, Jsoup and W3CDom Documents. These XML-Implementations are via Accessor in the XMLUtils class and are explained in the following sections
+
+.Parsing XML to Java Class
+[source,java]
+----
+String xmlString =
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+    "<book>" +
+        "<author>Abc def</author> +
+        "<isbn>1234-5-6789-0</isbn>" +
+        "<title>Ghi</title>\n" +
+    "</book>\n";
+
+Book book = XMLUtils.jaxbXMLToObject(xmlString, Book.class);
+----
+
+== JDom
+This class allows the creation of JDom Documents as well as manipulating them.
+
+.JDom Example
+[source,java]
+----
+// creating a JDom Document from XML-String
+Document jdomDocument = XMLUtils.jdom().createDocumentFromString(String xmlFromString)
+
+// adding a node in the Document
+XMLUtils.jdom().addNode(jdomDocument, "parentNode", "newNode", "newNodeValue")
+
+// Replacing all values of a given attribute, all attributes matching the given name will be replaced
+XMLUtils.jdom().changeAttributeValues(jdomDocument, "attributeName", "newValue");
+
+// changeing a node value
+XMLUtils.jdom().changeNodeValue(jdomDocument, "nodeNamde", "newNodeValue");
+
+// reading JDom Document to String
+String stringFromJdomDocument XMLUtils.jdom().documentToString(jdomDocument);
+
+// creating also possible from Path to File as String
+Document jdomDocumentFromFile = XMLUtils.jdom().createDocumentFromString(String pathToFile)
+----
+
+== JSoup
+This class allows the creation of JSoup Documents as well as accessing them via XPath.
+
+.JSoup Example
+[source,java]
+----
+// creating a JDom Document from String
+Document jsoupDocument = XMLUtils.jsoup().createJsoupDocument(String htmlString);
+
+// get first node in document matching a XPath
+String matchedNode = XMLUtils.jsoup().evaluateXPath(jsoupDocument, "//body");
+
+// get all nodes in document matching a XPath
+NodeList nodeList = XMLUtils.jsoup().evaluateXPathNodes(jsoupDocument, "//h1");
+
+// creating also possible from File and URL
+XMLUtils.jsoup().createJsoupDocument(File file);
+XMLUtils.jsoup().createJsoupDocument(URL url);
+----
+
+== W3CDom
+This class allows the creation of W3CDom Documents as well as accessing them via XPath.
+
+.W3CDom Example
+[source,java]
+----
+String validXMLString =
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+    "<AuthenticationResult>" +
+        "<accountName>test-account</accountName>" +
+    "</AuthenticationResult>";
+
+// creating a W3CDom document from String
+Document w3CDocument = XMLUtils.w3cdom().createW3cDocument(String validXMLString);
+
+// get first node in document matching a XPath
+String result = XMLUtils.w3cdom().evaluateXPath(validXMLString, "/AuthenticationResult/accountName");
+
+// get all nodes in document matching a XPath
+NodeList nodeList = XMLUtils.w3cdom().evaluateXPathNodes(validXMLString, "//accountName");
+
+// creating Docmuent from File or URL
+XMLUtils.w3cdom().createW3cDocument(File file);
+XMLUtils.w3cdom().createW3cDocument(URL url);
+----
+
+== Java Classes and XML
+There are two methods for Java and XML Conversion
+
+.Marshall and Unmarshall JAXB to Java Objects
+[source,java]
+----
+String xmlString =
+"<?xml version=\"1.0\"?>" +
+    "<book>" +
+        "<author>Abc def</author>" +
+        "<isbn>1234-5-6789-0</isbn>" +
+        "<title>Ghi</title>" +
+    "</book>";
+
+Book book = XMLUtils.jaxbXMLToObject(xmlString, Book.class);
+String result = XMLUtils.jaxbObjectToXML(Book.class, book);
+----

@@ -1,0 +1,26 @@
+= JVM Utilities
+
+This is an utility class that gives you access to the jvm system performance indicators.
+
+.Example on how to use the JVM utility.
+[source,java]
+----
+
+// the jvm's performance indicators  
+int cpuPercent = JVMUtils.getCPUUsagePercent();
+int memoryPercent = JVMUtils.getMemoryUsagePercent();
+long usedMemory = JVMUtils.getUsedMemory();
+long maximumMemory = JVMUtils.getUsedMemory();
+
+System.out.println("cpu usage: " + cpuPercent + " %");
+System.out.println("memory usage: " + memoryPercent + " %");
+System.out.println("used memory: " + usedMemory);
+System.out.println("maximum memory: " + maximumMemory);
+
+// a typical output of these utility methods would be:
+//
+// cpu usage: 33 %
+// memory usage: 20 %
+// used memory: 370
+// maximum memory: 370
+----

@@ -362,7 +362,7 @@ public class MailConnectorTest extends TesterraTest {
         pop3SSL.setPort(sslPortPop3);
         pop3SSL.setSslEnabled(true);
 
-        System.setProperty("POP3_SERVER_PORT", "3995");
+        System.setProperty("POP3_SERVER_PORT", sslPortPop3);
         System.setProperty("POP3_SSL_ENABLED", "true");
 
         // SETUP 2 - Create message.

@@ -78,11 +78,11 @@ public class AnnotationReader {
      * @return List of LayoutElement
      */
     public List<Rectangle> readAnnotationDimensions(java.awt.image.BufferedImage annotatedImage) {
-        BufferedImage bufferedImage = new BufferedImage(annotatedImage);
+        BufImage bufImage = new BufImage(annotatedImage);
 
         HashSet<Point2D> markedPoints = null;
         try {
-            markedPoints = getMarkedPixels(bufferedImage);
+            markedPoints = getMarkedPixels(bufImage);
         } catch (TesterraSystemException e) {
             LOGGER.warn(e.getMessage());
         }

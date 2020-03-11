@@ -13,7 +13,6 @@ public class TestResultHelper {
     /**
      * Enum for all possible TestResult Values that are possible within the Testerra report.
      * <p>
-     * TODO: unify xPath-Header -> Jira-Ticket: XETA-572
      */
     public enum TestResult {
         PASSED("green", "PASSED", "header passed", "Passed", "test passed"),

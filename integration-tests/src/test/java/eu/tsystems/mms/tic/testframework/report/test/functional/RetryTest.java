@@ -31,7 +31,7 @@ public class RetryTest extends AbstractReportTest {
      * Tests whether the data provider produced the expected number of test methods
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "XETA-679")
+    @Fails(ticketString = "668")
     public void testT01_checkRetryDataProviderRunsTheExpectedNumberOfTestMethods() {
         final String retryClassName = "ReportTestUnderTestRetry";
 
@@ -50,7 +50,7 @@ public class RetryTest extends AbstractReportTest {
      * @throws Exception
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "XETA-677")
+    @Fails(ticketString = "667")
     public void testT02_checkFailedRetriedTestsOnlySecondRetryIsDisplayed() throws Exception {
 
         List<String> testNames = new ArrayList<>();
@@ -94,7 +94,7 @@ public class RetryTest extends AbstractReportTest {
      * @throws Exception
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "XETA-677")
+    @Fails(ticketString = "667")
     public void testT03_checkSuccessfulRetriedTestsAreDisplayed() throws Exception {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.PASSED);
@@ -106,7 +106,7 @@ public class RetryTest extends AbstractReportTest {
      * Tests the number of retries of a retried test method
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "XETA-679")
+    @Fails(ticketString = "668")
     public void testT04_checkRetriedTestsWithDataProviderHaveTheExpectedNumberOfRetries() {
         final int numberOfFailedMethods = 7;
         final int numberOfPassedMethods = 1;
@@ -147,7 +147,7 @@ public class RetryTest extends AbstractReportTest {
      * @throws Exception
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "XETA-677")
+    @Fails(ticketString = "667")
     public void testT05_checkRetriedTestHistoryViewHasNoHistory() throws Exception {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.FAILED);
@@ -163,7 +163,7 @@ public class RetryTest extends AbstractReportTest {
      * Tests whether the name of retried test with data provider has the expected structure
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "XETA-679")
+    @Fails(ticketString = "668")
     public void testT06_checkRetriedTestsWithDataProviderTestMethodsHaveTheCorrectName() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         final int numberOfRetryMethods = 3;

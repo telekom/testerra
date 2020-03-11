@@ -9,7 +9,7 @@ import java.net.URL;
 public abstract class SikuliBy extends By {
 
     /**
-     * xeta by image with webdriver and url
+     * By image with webdriver and url
      *
      * @param driver .
      * @param url .

@@ -89,10 +89,10 @@ public class ClassesPageTest extends AbstractReportTest {
 
     /**
      * checkTesterraInformationIsDisplayed
-     * Checks whether the "XETA INFORMATION" is displayed
+     * Checks whether the "INFORMATION" is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(ticketString = "XETA-684")
+    @Fails(ticketString = "666")
     public void testT05_checkTesterraInformationIsDisplayed() throws ParseException {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertTesterraInformationIsDisplayed();

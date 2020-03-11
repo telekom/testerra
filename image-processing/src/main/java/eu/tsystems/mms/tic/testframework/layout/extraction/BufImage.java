@@ -19,6 +19,7 @@ package eu.tsystems.mms.tic.testframework.layout.extraction;
 import eu.tsystems.mms.tic.testframework.layout.core.Point2D;
 import org.opencv.core.Scalar;
 
+import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 
 public class BufImage implements Image {
@@ -26,7 +27,7 @@ public class BufImage implements Image {
     private java.awt.image.BufferedImage bufferedImage;
     private WritableRaster raster;
 
-    public BufImage(java.awt.image.BufferedImage bufferedImage) {
+    public BufImage(BufferedImage bufferedImage) {
         this.bufferedImage = bufferedImage;
         raster = bufferedImage.getRaster();
 

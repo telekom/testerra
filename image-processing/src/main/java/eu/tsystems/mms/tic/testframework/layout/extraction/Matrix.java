@@ -17,13 +17,14 @@
 package eu.tsystems.mms.tic.testframework.layout.extraction;
 
 import eu.tsystems.mms.tic.testframework.layout.core.Point2D;
+import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 
 public class Matrix implements Image {
 
     private org.opencv.core.Mat mat;
 
-    public Matrix(org.opencv.core.Mat mat) {
+    public Matrix(Mat mat) {
         this.mat = mat;
     }
 

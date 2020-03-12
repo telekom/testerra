@@ -457,45 +457,6 @@ public final class MailUtils {
     }
 
     /**
-     * Displays the message.
-     *
-     * @param message The message to display.
-     * @throws TesterraSystemException thrown if content of message can't read.
-     */
-    public static void displayMail(final Message message) throws TesterraSystemException {
-        pDisplayMail(message);
-    }
-
-    /**
-     * Displays the message from file.
-     *
-     * @param filename The path to message.
-     * @throws TesterraSystemException thrown if content of message can't read.
-     */
-    public static void displayMail(final String filename) throws TesterraSystemException {
-        pDisplayMail(loadEmailFile(filename));
-    }
-
-    /**
-     * Displays the message.
-     *
-     * @param message The message to display.
-     * @throws TesterraSystemException thrown if content of message can't read.
-     */
-    private static void pDisplayMail(final Message message) throws TesterraSystemException {
-        final MimeMessage mimeMessage = (MimeMessage) message;
-        try {
-            final Enumeration<?> headerLines = mimeMessage.getAllHeaderLines();
-            while (headerLines.hasMoreElements()) {
-                LOGGER.info("Header: " + headerLines.nextElement().toString());
-            }
-            LOGGER.info("Content: " + mimeMessage.getContent().toString());
-        } catch (final Exception e) {
-            throw new TesterraSystemException("Error get headers and content from message.", e);
-        }
-    }
-
-    /**
      * Encrypt a MimeMessage with certification file.
      *
      * @param message The message to encrypt.

@@ -18,7 +18,7 @@
 package eu.tsystems.mms.tic.testframework.mailconnector.pop3;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractMailConnector;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ import java.util.Properties;
  *
  * @author pele, mrgi
  */
-public class POP3MailConnector extends AbstractMailConnector {
+public class POP3MailConnector extends AbstractInboxConnector {
 
     /**
      * The Logger.

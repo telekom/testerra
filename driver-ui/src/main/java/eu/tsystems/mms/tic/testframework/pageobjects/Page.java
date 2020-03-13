@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,14 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 04.01.2013
- *
- * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
@@ -286,7 +277,7 @@ public abstract class Page extends AbstractPage {
      * @return boolean true if success == text is not present. false otherwise.
      */
     public boolean waitForIsNotTextPresent(final String text) {
-        final Timer timer = new Timer();
+        Timer timer = new Timer(1000, elementTimeoutInSeconds * 1000);
         final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -309,7 +300,7 @@ public abstract class Page extends AbstractPage {
      * @return boolean true if success == text is not present. false otherwise.
      */
     public boolean waitForIsNotTextDisplayed(final String text) {
-        final Timer timer = new Timer();
+        Timer timer = new Timer(1000, elementTimeoutInSeconds * 1000);
         final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {

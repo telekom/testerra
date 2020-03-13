@@ -19,9 +19,6 @@ import java.util.Locale;
 import java.util.Map;
 
 
-/**
- * Created by jlma on 26.10.2016.
- */
 public class ClassesPage extends AbstractReportPage {
 
     private static final String SYNC_FAILED_WARNING_INDICATOR_TITLE = "Sync failed, see console log for details";
@@ -191,7 +188,7 @@ public class ClassesPage extends AbstractReportPage {
     }
 
     /**
-     * Asserts the values of the "XETA INFORMATION" section are correctly displayed
+     * Asserts the values of the "INFORMATION" section are correctly displayed
      */
     public void assertTesterraInformationIsDisplayed() throws ParseException {
 

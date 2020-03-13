@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,14 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 14.12.2015
- *
- * Copyright(c) 1995 - 2007 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
@@ -67,7 +58,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
 
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true);
 
-        String download = downloader.download(driver, WebDriverManager.getBaseURL() + "#",
+        String download = downloader.download(driver, WebDriverManager.getWebDriver().getCurrentUrl(),
                 "testT01_downloadFile.htm");
         File file = FileUtils.getFile(download);
 
@@ -107,7 +98,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
         final WebDriver driver = WebDriverManager.getWebDriver();
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath() + "/foo/bar\\test", true, true);
 
-        String download = downloader.download(driver, WebDriverManager.getBaseURL() + "#",
+        String download = downloader.download(driver, WebDriverManager.getWebDriver().getCurrentUrl(),
                 "test03_downloadFileToLongLocation.htm");
         File file = FileUtils.getFile(download);
 

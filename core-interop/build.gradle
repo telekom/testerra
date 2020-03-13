@@ -7,7 +7,7 @@ dependencies {
     implementation 'de.idyl:winzipaes:1.0.1'
     implementation 'org.mongodb:bson:3.7.0'
     compile 'org.testng:testng:6.14.3'
-    implementation 'org.reflections:reflections:0.9.11'
+    implementation 'org.reflections:reflections:0.9.12'
 }
 
 test {

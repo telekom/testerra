@@ -1,4 +1,5 @@
 testerra-report
+**/report-testsundertest-*
 .gradle
 gradle
 *.iml

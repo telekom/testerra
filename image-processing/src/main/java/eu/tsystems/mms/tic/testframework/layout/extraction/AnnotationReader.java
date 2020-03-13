@@ -1,9 +1,18 @@
 /*
- * Created on 03.13.2014
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Copyright(c) 2011 - 2014 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contributors:
+ *     Peter Lehmann
  */
 package eu.tsystems.mms.tic.testframework.layout.extraction;
 
@@ -21,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -52,7 +60,7 @@ public class AnnotationReader {
      * @param annotatedImage
      * @return all points of the marking color
      */
-    public HashSet<Point2D> getMarkedPixels(XetaImage annotatedImage) {
+    public HashSet<Point2D> getMarkedPixels(Image annotatedImage) {
         Scalar markingColorBGR = annotatedImage.getColorAt(0, 0);
         HashSet<Point2D> markedPoints = new HashSet<Point2D>();
         Point2D size = annotatedImage.getSize();
@@ -84,12 +92,12 @@ public class AnnotationReader {
      * @param annotatedImage Image to extract annotation information from
      * @return List of LayoutElement
      */
-    public List<Rectangle> readAnnotationDimensions(BufferedImage annotatedImage) {
-        XetaBufferedImage xetaBufferedImage = new XetaBufferedImage(annotatedImage);
+    public List<Rectangle> readAnnotationDimensions(java.awt.image.BufferedImage annotatedImage) {
+        BufImage bufImage = new BufImage(annotatedImage);
 
         HashSet<Point2D> markedPoints = null;
         try {
-            markedPoints = getMarkedPixels(xetaBufferedImage);
+            markedPoints = getMarkedPixels(bufImage);
         } catch (TesterraSystemException e) {
             LOGGER.warn(e.getMessage());
         }

@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,9 +31,6 @@ import org.jfree.ui.RectangleEdge;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-/**
- * Created by clgr on 04.12.2014.
- */
 public class LayeredBarChartRenderer extends LayeredBarRenderer {
 
     /**

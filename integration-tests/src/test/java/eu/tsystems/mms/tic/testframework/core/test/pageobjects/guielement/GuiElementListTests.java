@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,68 +36,77 @@ public class GuiElementListTests extends AbstractTestSitesTest {
     @Test
     public void test_getSubElement_getList_byTagName() {
         GuiElementListPage page = preparePage();
-        GuiElement items = page.getNavigationSubElementsByTagName();
-        testNavigationItems(items);
+        GuiElement anchors = page.getNavigationSubElementsByTagName();
+        testNavigationAnchors(anchors);
     }
 
     @Test
     public void test_getSubElement_getList_byChildrenXPath() {
         GuiElementListPage page = preparePage();
-        GuiElement items = page.getNavigationSubElementsByChildrenXPath();
-        testNavigationItems(items);
+        GuiElement anchors = page.getNavigationSubElementsByChildrenXPath();
+        testNavigationAnchors(anchors);
     }
 
     @Test
     public void test_getSubElement_getList_byDescendantsXPath() {
         GuiElementListPage page = preparePage();
-        GuiElement items = page.getNavigationSubElementsByDescendantsXPath();
-        testNavigationItems(items);
+        GuiElement anchors = page.getNavigationSubElementsByDescendantsXPath();
+        testNavigationAnchors(anchors);
     }
 
     @Test
     public void test_getList_byAbsoluteChildrenXPath() {
         GuiElementListPage page = preparePage();
-        GuiElement items = page.getNavigationSubElementsByAbsoluteChildrenXPath();
-        testNavigationItems(items);
+        GuiElement anchors = page.getNavigationSubElementsByAbsoluteChildrenXPath();
+        testNavigationAnchors(anchors);
     }
 
     @Test
     public void test_getList_byAbsoluteDescendantsXPath() {
         GuiElementListPage page = preparePage();
-        GuiElement items = page.getNavigationSubElementsByAbsoluteDescendantsXPath();
-        testNavigationItems(items);
+        GuiElement anchors = page.getNavigationSubElementsByAbsoluteDescendantsXPath();
+        testNavigationAnchors(anchors);
     }
 
-    private void testNavigationItems(GuiElement items) {
-        Assert.assertEquals(items.getNumberOfFoundElements(), 3);
-        Assert.assertEquals(items.getList().size(), 3);
-        Assert.assertEquals(items.getList().get(0).getText(), "First");
-        Assert.assertEquals(items.getList().get(items.getNumberOfFoundElements() - 1).getText(), "Third");
+    private void testNavigationAnchors(GuiElement anchors) {
+        Assert.assertEquals(anchors.getNumberOfFoundElements(), 3);
+        Assert.assertEquals(anchors.getList().size(), 3);
+        Assert.assertEquals(anchors.getList().get(0).getText(), "First");
+        Assert.assertEquals(anchors.getList().get(anchors.getNumberOfFoundElements() - 1).getText(), "Third");
+    }
+
+    private void testTableRowsAndData(GuiElement tableRows) {
+        Assert.assertEquals(tableRows.getNumberOfFoundElements(), 4);
+        GuiElement tableDataUnspecified = tableRows.getSubElement(By.tagName("td"));
+        Assert.assertEquals(tableDataUnspecified.getNumberOfFoundElements(), 2);
+
+        GuiElement tableDataSpecified = tableRows.getList().get(1).getSubElement(By.tagName("td"));
+        Assert.assertEquals(tableDataSpecified.getNumberOfFoundElements(), 2);
     }
 
     @Test
     public void test_getSubElement_getList_tableRowsByTagName() {
         GuiElementListPage page = preparePage();
-        GuiElement rows = page.getTableRowsByTagName();
-        Assert.assertEquals(rows.getNumberOfFoundElements(), 4);
+        GuiElement tableRows = page.getTableRowsByTagName();
+        testTableRowsAndData(tableRows);
 
-        GuiElement mkriProfileLink = rows.getList().get(0).getSubElement(By.tagName("a"));
+        GuiElement mkriProfileLink = tableRows.getList().get(0).getSubElement(By.tagName("a"));
         mkriProfileLink.asserts().assertAttributeContains("href", "mkri");
 
-        GuiElement erkuProfileLink = rows.getList().get(rows.getNumberOfFoundElements() - 1).getSubElement(By.tagName("a"));
+        GuiElement erkuProfileLink = tableRows.getList().get(tableRows.getNumberOfFoundElements() - 1).getSubElement(By.tagName("a"));
         erkuProfileLink.asserts().assertAttributeContains("href", "erku");
     }
 
     @Test
     public void test_getSubElement_getList_tableRowsByDescendantsXPath() {
         GuiElementListPage page = preparePage();
-        GuiElement rows = page.getTableRowsByTagName();
-        Assert.assertEquals(rows.getNumberOfFoundElements(), 4);
+        GuiElement tableRows = page.getTableRowsByTagName();
+        testTableRowsAndData(tableRows);
 
-        GuiElement mkriProfileLink = rows.getList().get(0).getSubElement(By.xpath(".//a"));
+        GuiElement mkriProfileLink = tableRows.getList().get(0).getSubElement(By.xpath(".//a"));
         mkriProfileLink.asserts().assertAttributeContains("href", "mkri");
 
-        GuiElement erkuProfileLink = rows.getList().get(rows.getNumberOfFoundElements() - 1).getSubElement(By.xpath(".//a"));
+        GuiElement erkuProfileLink = tableRows.getList().get(tableRows.getNumberOfFoundElements() - 1).getSubElement(By.xpath(".//a"));
         erkuProfileLink.asserts().assertAttributeContains("href", "erku");
     }
 

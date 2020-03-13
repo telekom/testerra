@@ -5,9 +5,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by fakr on 11.10.2017
- */
 public class MethodDependenciesPage extends MethodDetailsPage {
 
     private GuiElement details = new GuiElement(driver, By.id("details"), mainFrame);

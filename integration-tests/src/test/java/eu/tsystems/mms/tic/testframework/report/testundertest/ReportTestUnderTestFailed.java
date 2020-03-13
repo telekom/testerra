@@ -6,9 +6,6 @@ import eu.tsystems.mms.tic.testframework.report.general.TestsUnderTestGroup;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import org.testng.annotations.Test;
 
-/**
- * Created by jlma on 07.11.2016.
- */
 @TestContext(name = "My_Context")
 public class ReportTestUnderTestFailed extends AbstractTest {
 

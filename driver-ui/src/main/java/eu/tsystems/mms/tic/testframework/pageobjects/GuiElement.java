@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,14 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 04.01.2013
- *
- * Copyright(c) 2012 - 2012 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
@@ -54,7 +45,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.StandardGui
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
-import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
@@ -87,7 +77,7 @@ public class GuiElement implements
     private static final Map<String, GuiElementCoreFactory> coreFactories = new HashMap<>();
 
     public static void registerGuiElementCoreFactory(GuiElementCoreFactory guiElementCoreFactory, String... browsers) {
-        LOGGER.info("Registering " + guiElementCoreFactory.getClass().getSimpleName() + " for browsers " + ArrayUtils.join(browsers, ","));
+        LOGGER.info("Registering " + guiElementCoreFactory.getClass().getSimpleName() + " for browsers " + String.join(",", browsers));
 
         for (String browser : browsers) {
             coreFactories.put(browser, guiElementCoreFactory);

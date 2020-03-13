@@ -1,10 +1,4 @@
-/*
- * Created on 14.08.2012
- *
- * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+
 package eu.tsystems.mms.tic.testframework.mailconnector.test;
 
 import com.icegreen.greenmail.util.DummySSLSocketFactory;

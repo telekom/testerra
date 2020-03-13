@@ -19,9 +19,6 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by fakr on 31.05.2017.
- */
 @TestContext(name = "View-Classes")
 public class ClassesPageTest extends AbstractReportTest {
 
@@ -92,10 +89,10 @@ public class ClassesPageTest extends AbstractReportTest {
 
     /**
      * checkTesterraInformationIsDisplayed
-     * Checks whether the "XETA INFORMATION" is displayed
+     * Checks whether the "INFORMATION" is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(ticketString = "XETA-684")
+    @Fails(ticketString = "666")
     public void testT05_checkTesterraInformationIsDisplayed() throws ParseException {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertTesterraInformationIsDisplayed();

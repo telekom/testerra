@@ -63,10 +63,10 @@ Create a new file at `src/test/resources` with the name `test.properties`.
 .test.properties
 [source, properties, subs="attributes"]
 ----
-// Setting the browser
+# Setting the browser
 {browser}=firefox
 
-// Setting the start page
+# Setting the start page
 {baseurl}=http://example.org
 ----
 
@@ -87,7 +87,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 public class ExamplePage extends Page {
 
     @Check
-    private GuiElement moreInformationLink = new GuiElement(driver, By.partialLinkText("More information"));
+    private GuiElement moreInformationLink = new GuiElement(this.getWebDriver(), By.partialLinkText("More information"));
 
     public ExamplePage(WebDriver driver) {
         super(driver);
@@ -142,10 +142,22 @@ public class ExampleTest {
 
 If you don't have a remote selenium yet, you can easily install it by the package manager of your choice.
 
-.https://chocolatey.org[chocolately] for Windows (recommended)
-[source, cmd]
+.https://chocolatey.org[chocolately] for Windows
+[source, cmd, role="primary"]
 ----
 choco install selenium selenium-chrome-driver
+----
+
+.Ubuntu/Debian
+[source, cmd, role="secondary"]
+----
+apt-get install chromium-chromedriver
+----
+
+.https://brew.sh[homebrew] for Mac
+[source, cmd, role="secondary"]
+----
+brew install selenium-server-standalone chromedriver
 ----
 
 Read here, if you want to setup <<WebDriver sessions,another Selenium configuration>>.
@@ -213,6 +225,9 @@ test {
     <profiles>
         <profile>
             <id>mySuite</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -292,8 +307,21 @@ These properties are automatically loaded by the `PropertyManager` and set up as
 
 IMPORTANT: Setting up the Testerra proxy will not setup a proxy for Gradle nor a browser.
 
-=== Customize Logging
+=== Logging
+If you're on Gradle, the logging of Testerra should work out of the box. But if you're on Maven you MUST add the following SLF4J-dependency to your main `pom.xml`.
 
+.pom.xml
+[source, xml]
+----
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-log4j12</artifactId>
+    <version>1.8.0-beta2</version>
+    <scope>test</scope>
+</dependency>
+----
+
+==== Customize Logging
 The `TesterraLogger` logs to `System.out` by default.
 If you want to have more control over several log levels of classes, add a `log4j.xml` to your `resources/`.
 

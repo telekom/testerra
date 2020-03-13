@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -54,7 +52,8 @@ public class DesktopWebDriverFactoryTest extends AbstractWebDriverTest {
 
         WebDriver driver = WebDriverManager.getWebDriver(request);
         String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue(currentUrl.contains("localhost"), "Current URL is invalid - actual: " + currentUrl);
+        // Empty baseUrl of Chrome
+        Assert.assertTrue(currentUrl.contains("data"), "Current URL is invalid - actual: " + currentUrl);
     }
 
     @Test

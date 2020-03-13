@@ -5,11 +5,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by riwa on 04.01.2017.
- */
 public class MethodMinorErrorsPage extends MethodDetailsPage {
-    //TODO need IDs here, the xpaths are terrible -> Jira-Ticket: XETA-573
+
     GuiElement assertion = new GuiElement(this.getWebDriver(), By.cssSelector(".standardTable.tr>td>a"), mainFrame);
     GuiElement assertionMessage = new GuiElement(this.getWebDriver(), By.cssSelector("#non-functional-exception-0>div"), mainFrame);
 

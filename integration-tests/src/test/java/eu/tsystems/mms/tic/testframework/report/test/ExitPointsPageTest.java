@@ -16,9 +16,6 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-/**
- * Created by riwa on 04.04.2017.
- */
 @TestContext(name = "View-ExitPoints")
 public class ExitPointsPageTest extends AbstractReportFailuresTest {
     //TODO restructure tests: find exit points with the help of method names and not with index

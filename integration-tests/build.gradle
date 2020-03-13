@@ -34,6 +34,11 @@ test {
         s = ['src/test/resources/Smoke.xml']
     }
 
+    def playground = findProperty("play")
+    if (playground) {
+        s = ['src/test/resources/testng/playground/Playground1.xml']
+    }
+
     useTestNG() {
         suites s
         configFailurePolicy "continue"

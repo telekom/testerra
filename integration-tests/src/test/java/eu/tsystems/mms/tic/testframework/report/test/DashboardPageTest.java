@@ -21,9 +21,6 @@ import java.util.List;
 
 import static eu.tsystems.mms.tic.testframework.report.model.TestResultHelper.TestResult;
 
-/**
- * Created by riwa on 24.11.2016.
- */
 @TestContext(name = "View-Dashboard-General")
 public class DashboardPageTest extends AbstractTestDashboard {
 
@@ -31,7 +28,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * Clicks the desired pie segment and tests the provided bars of the bar chart for correct colors.
      * It runs once for every test status in report 3. 8 times in total.
      */
-    @Fails(ticketString = "XETA-677")
+    @Fails(ticketString = "667")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
     public void testT01_clickActualPieAndCheckBarColors(TestResult testResult) throws Exception {
         //TODO try out other locator or using java script
@@ -71,7 +68,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * Tests the desired pie chart segment and its displayed bars for the correct test method names.
      * It runs once for every test status in every report. 48 times in total.
      */
-    @Fails(ticketString = "XETA-677")
+    @Fails(ticketString = "667")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
     public void testT04_checkListedMethodsAfterClickingPieAndBar(TestResult testResults) throws Exception {
         //TODO try out other locator or using java script
@@ -107,7 +104,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * Tests a failed method for the 'info' symbol which indicates that there is a screenshot for the test.
      * It runs once in the 1st report.
      */
-    @Fails(ticketString = "XETA-677")
+    @Fails(ticketString = "667")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     public void testT06_checksScreenshotForFailedMethod() throws Exception {
         //TODO try out other locator or using java script
@@ -127,7 +124,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
     /**
      * Tests whether a passing under test that is annotated with @Fails causes the dashboard page to indicate it
      */
-    @Fails(ticketString = "XETA-677")
+    @Fails(ticketString = "667")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
     public void testT07_checkDashboardIndicationThatPassedTestIsAnnotatedWithFails() throws Exception {
         //TODO try out other locator or using java script

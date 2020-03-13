@@ -14,9 +14,6 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 
-/**
- * Created by riwa on 27.10.2016.
- */
 public class MethodDetailsPage extends AbstractMethodDetailsPage implements IReportAnnotationVerifier {
 
     private String HISTORY_ELEMENT_LOCATOR = ("//div[@class='gitgraph-inner']//div[%d]");
@@ -37,7 +34,6 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
     /**
      * Method
      */
-    //TODO  IDs einfügen -> Jira-Ticket: XETA-524
     private GuiElement methodNameString = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='dashboardTextSmall'])[1]"), mainFrame);
     private GuiElement classNameString = new GuiElement(this.getWebDriver(), By.xpath("//tbody/tr[1]/td[3]/*[4]"), mainFrame);
     private GuiElement methodResultString = new GuiElement(this.getWebDriver(), By.xpath("//tbody/tr[1]/td[3]/*[5]/*[1]"), mainFrame);
@@ -51,13 +47,11 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     private GuiElement repairedFailsIndication = new GuiElement(this.getWebDriver(), By.xpath("//div[@class='skipped']"), mainFrame);
 
-    //TODO  IDs einfügen -> Jira-Ticket: XETA-524
     public String durationLocator = "//*[@class='cellTop']//*[contains(text(), 'Duration')]/..";
     private GuiElement duration = new GuiElement(this.getWebDriver(), By.id("actualRunDuration"), mainFrame);
     private GuiElement startTime = new GuiElement(this.getWebDriver(), By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][1]"), mainFrame);
     private GuiElement finishTime = new GuiElement(this.getWebDriver(), By.xpath(durationLocator + "//div[@class='dashboardTextSmall'][2]"), mainFrame);
 
-    //TODO  IDs einfügen -> Jira-Ticket: XETA-524
     private GuiElement evolutionEntry1 = new GuiElement(this.getWebDriver(), By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[1]"), mainFrame);
     private GuiElement evolutionEntry2 = new GuiElement(this.getWebDriver(), By.xpath("//*[@class='highcharts-markers highcharts-series-0 highcharts-tracker']/*[2]"), mainFrame);
 
@@ -66,6 +60,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     //TODO  IDs einfügen
     private GuiElement errorMessageString = new GuiElement(this.getWebDriver(), By.xpath("//div[@style='color: red; font-size: 30px; padding: 25px; line-height: 40px;']"), mainFrame);
+    private GuiElement errorMessageExtraInfo = errorMessageString.getSubElement(By.xpath("/div"));
     private GuiElement fingerprintButton = new GuiElement(this.getWebDriver(), By.xpath("//*[@title=\"Show Fingerprint\" and @onclick=\"toggleElement('fingerprint');\"]"), mainFrame);
     private GuiElement fingerprintString = new GuiElement(this.getWebDriver(), By.xpath("//div[@id='fingerprint']//div[@class='error']"), mainFrame);
 
@@ -159,6 +154,10 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
 
     public GuiElement getErrorMessageString() {
         return errorMessageString;
+    }
+
+    public GuiElement getErrorMessageExtraInfo() {
+        return errorMessageExtraInfo;
     }
 
     public GuiElement getFingerprintString() {

@@ -8,16 +8,11 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by sagu on 04.05.2017.
- *
- */
 public class TestResultHelper {
 
     /**
      * Enum for all possible TestResult Values that are possible within the Testerra report.
      * <p>
-     * TODO: unify xPath-Header -> Jira-Ticket: XETA-572
      */
     public enum TestResult {
         PASSED("green", "PASSED", "header passed", "Passed", "test passed"),

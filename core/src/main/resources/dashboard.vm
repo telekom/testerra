@@ -61,13 +61,14 @@
             </tr>
 
             <tr>
-                <td align="center">
-                    <div class="dashboardHeader">
-                        Previous Run
-                    </div>
-                </td>
-                <td></td> <!-- percent -->
-                <td></td> <!-- spacer -->
+##                No history available
+##                <td align="center">
+##                    <div class="dashboardHeader">
+##                        Previous Run
+##                    </div>
+##                </td>
+##                <td></td> <!-- percent -->
+##                <td></td> <!-- spacer -->
                 <td align="center">
                     <div class="dashboardHeader">
                         This Run
@@ -95,21 +96,22 @@
             </tr>
 
             <tr>
-                <!-- previous run -->
-                    <td class="cellCenter" style="opacity:0.7;">
-                        <div class="dashboardTextVerySmall">No history data</div>
-                        <div class="hidden">
-                            <input type="checkbox" id="lastRunBarsVisibleCheckbox"/>
-                        </div>
-                    </td>
-                    <td class="cellCenter" style="opacity:0.7;">
-                        <div class="responsive">
-                            <div class="dashboardTextVerySmall" id="lastRunPassRate">No history data</div>
-                        </div>
-                    </td>
+##                No history available
+##                <!-- previous run -->
+##                    <td class="cellCenter" style="opacity:0.7;">
+##                        <div class="dashboardTextVerySmall">No history data</div>
+##                        <div class="hidden">
+##                            <input type="checkbox" id="lastRunBarsVisibleCheckbox"/>
+##                        </div>
+##                    </td>
+##                    <td class="cellCenter" style="opacity:0.7;">
+##                        <div class="responsive">
+##                            <div class="dashboardTextVerySmall" id="lastRunPassRate">No history data</div>
+##                        </div>
+##                    </td>
 
 
-                <td class="cellCenter"><div class="dashboardVerticalSpacer"></div></td> <!-- spacer -->
+##                <td class="cellCenter"><div class="dashboardVerticalSpacer"></div></td> <!-- spacer -->
 
                 <!-- this run -->
                 <td class="cellCenter">

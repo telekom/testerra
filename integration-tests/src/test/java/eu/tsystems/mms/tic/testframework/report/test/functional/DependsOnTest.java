@@ -17,9 +17,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Created by fakr on 09.10.2017
- */
 @TestContext(name = "Functional-DependsOn")
 public class DependsOnTest extends AbstractReportTest {
 
@@ -27,7 +24,7 @@ public class DependsOnTest extends AbstractReportTest {
      * Checks whether the depends on test result is displayed correctly
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "dependsOnParallel")
-    @Fails(ticketString = "XETA-658")
+    @Fails(ticketString = "669")
     public void testT01_checkDependsOnMethodChartDisplaysTheExpectedTestResults(String dependsOnClassName) {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         int barChartPosition = dashboardPage.dashboardModuleClassBarChart.getBarChartElementNumberByClassName(dependsOnClassName);
@@ -40,7 +37,7 @@ public class DependsOnTest extends AbstractReportTest {
     }
 
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "dependsOnTestObjects")
-    @Fails(ticketString = "XETA-658")
+    @Fails(ticketString = "669")
     public void testT02_checkDependsOnMethodChartEntryStates(MethodDependency dependsOnTestObject) {
 
         final String testClassName = "ReportTestUnderTestDependsOn__Report__TestsUnderTest__Parallel__2";

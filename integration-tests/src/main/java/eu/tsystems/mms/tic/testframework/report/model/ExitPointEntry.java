@@ -5,9 +5,6 @@ import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFai
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by fakr on 16.08.2017
- */
 public class ExitPointEntry extends AbstractResultTableFailureEntry {
 
     private static final String TITLE_LABEL_NOT_EXPLICIT = "No explicit exit points due to collected assertions";

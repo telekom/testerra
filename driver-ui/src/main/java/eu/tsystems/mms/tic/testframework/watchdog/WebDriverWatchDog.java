@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,9 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by pele on 17.12.2015.
- */
 public final class WebDriverWatchDog {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverWatchDog.class);
@@ -59,7 +54,7 @@ public final class WebDriverWatchDog {
             stop = true;
 
             // dont join, its not bad when it ends with the whole process
-//            join(THREAD_JOIN_TIMEOUT_MS);
+            //            join(THREAD_JOIN_TIMEOUT_MS);
         }
 
         public boolean isStop() {
@@ -178,6 +173,7 @@ public final class WebDriverWatchDog {
                                             // update crashed execution context
                                             ExecutionContextController.EXECUTION_CONTEXT.crashed = true;
                                             TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                                                    .addUserData()
                                                     .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.EXECUTION_CONTEXT));
 
                                             System.exit(99);

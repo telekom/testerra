@@ -31,7 +31,7 @@ dependencies {
     implementation 'com.opencsv:opencsv:3.9'
     implementation 'nl.basjes.parse.useragent:yauaa:4.5'
     implementation 'org.json:json:20140107'
-    implementation 'org.reflections:reflections:0.9.11'
+    implementation 'org.reflections:reflections:0.9.12'
 }
 
 processResources {

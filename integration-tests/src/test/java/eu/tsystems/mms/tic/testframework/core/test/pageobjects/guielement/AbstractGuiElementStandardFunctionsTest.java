@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,7 +23,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -33,9 +36,6 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by pele on 31.08.2015.
- */
 public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGuiElementTest {
 
     /**
@@ -543,7 +543,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     /**
      * Test if GuiElement.asserts().assertInputFieldLength returns right length of input field
      */
-//    @Test
+    //    @Test
     public void testT50_GuiElement_assertInputFieldLength() {
         GuiElement element = getTextBoxElement();
         element.asserts().assertInputFieldLength(5);
@@ -799,7 +799,8 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
 
     @Test
     public void test_GuiElement_NotVisible_IsDisplayed() {
-        GuiElement element =  getGuiElementBy(By.id("notVisibleElement"));;
+        GuiElement element = getGuiElementBy(By.id("notVisibleElement"));
+        ;
         Assert.assertFalse(element.isDisplayed(), "The Element is displayed.");
     }
 
@@ -893,8 +894,11 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
 
     @Test
     public void test_pageChangeOnAnchorClick() {
-        GuiElement element = getGuiElementBy(Locate.by().qa("action/pageChangeAnchor"));
-        element.click();
-        Assert.assertTrue(element.getWebDriver().getCurrentUrl().endsWith("form.html"));
+
+        final GuiElement elementToClick = getGuiElementBy(Locate.by().qa("action/pageChangeAnchor"));
+        elementToClick.click();
+
+        final GuiElement guiElementShownAfterClick = getGuiElementBy(Locate.by().cssSelector("input[type='submit']"));
+        Assert.assertTrue(guiElementShownAfterClick.isDisplayed());
     }
 }

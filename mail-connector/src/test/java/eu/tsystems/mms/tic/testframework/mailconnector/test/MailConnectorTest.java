@@ -8,7 +8,6 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.mailconnector.pop3.POP3MailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.smtp.SMTPMailConnector;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.MailUtils;
-import eu.tsystems.mms.tic.testframework.mailconnector.util.MessageUtils;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteria;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.SearchCriteriaType;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.Email;
@@ -173,8 +172,8 @@ public class MailConnectorTest extends TesterraTest {
         MimeMessage loadedMsg = MailUtils.loadEmailFile(pathMail);
 
         // TEST - Compare message headers for equality.
-        String[] headersSavedMsg = MessageUtils.getEmailHeaders(msg);
-        String[] headersLoadedMsg = MessageUtils.getEmailHeaders(loadedMsg);
+        String[] headersSavedMsg = MailUtils.getEmailHeaders(msg);
+        String[] headersLoadedMsg = MailUtils.getEmailHeaders(loadedMsg);
 
         Assert.assertEquals(headersLoadedMsg, headersSavedMsg);
         Assert.assertEquals(loadedMsg.getContent(), msg.getContent());
@@ -363,7 +362,7 @@ public class MailConnectorTest extends TesterraTest {
         pop3SSL.setPort(sslPortPop3);
         pop3SSL.setSslEnabled(true);
 
-        System.setProperty("POP3_SERVER_PORT", "3995");
+        System.setProperty("POP3_SERVER_PORT", sslPortPop3);
         System.setProperty("POP3_SSL_ENABLED", "true");
 
         // SETUP 2 - Create message.

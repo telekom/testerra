@@ -19,12 +19,18 @@ package eu.tsystems.mms.tic.testframework.mailconnector.imap;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractMailConnector;
+import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractInboxConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.mail.Flags.Flag;
-import javax.mail.*;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Store;
 import java.util.Properties;
 
 /**
@@ -32,7 +38,7 @@ import java.util.Properties;
  *
  * @author mibu
  */
-public class ImapMailConnector extends AbstractMailConnector {
+public class ImapMailConnector extends AbstractInboxConnector {
 
     /** The Logger. */
     private static final Logger LOGGER = LoggerFactory

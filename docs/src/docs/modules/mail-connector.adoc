@@ -70,7 +70,7 @@ This abstract class extends the AbstractMailConnector by adding methods for work
 The POP3MailConnector provides access to a POP3 server. Emails are read and processed by using methods of the superclass AbstractInboxConnector.
 
 .Reading and Deleting Mails
-[source,java,role="secondary"]
+[source,java]
 ----
 POP3MailConnector pop3MailConnector = new POP3MailConnector();
 // fetch all emails from Server
@@ -97,7 +97,7 @@ pop3MailConnector.deleteMessage(recipient, RecipientType.TO, subject, messageId)
 ----
 
 .Working with attachments
-[source,java,role="secondary"]
+[source,java]
 ----
 final List<SearchCriteria> searchCriteria = new ArrayList<>();
 searchCriteria.add(new SearchCriteria(SearchCriteriaType.SUBJECT, "test"));
@@ -127,7 +127,7 @@ try {
 This entity allows sending emails via the SMTP protocol.
 
 .Sending Mails
-[source,java,role="secondary"]
+[source,java]
 ----
 SMTPMailConnector smtpMailConnector = new SMTPMailConnector();
 
@@ -152,7 +152,7 @@ smtpMailConnector.sendMessage(existingMessage);
 The IMAPMailConnector operates as the POP3MailConnector with an additional method to mark all mails as seen.
 
 .Working with Mails using ImapMailConnector
-[source,java,role="secondary"]
+[source,java]
 ----
 ImapMailConnector imapMailConnector = new ImapMailConnector();
 
@@ -173,7 +173,7 @@ imapMailConnector.deleteAllMessages();
 This helper class contains methods which facilitate reoccurring tasks when working with mails, e.g. encrypting, decrypting, and comparing mails.
 
 .Encryption, Decryption and Comparison
-[source,java,role=""secondary"]
+[source,java]
 ----
 String pahtKeyStore = "your/path/to/cacert.p12";
 String password = "123456";

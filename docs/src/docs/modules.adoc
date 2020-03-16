@@ -5,3 +5,5 @@ include::modules/csv-reader.adoc[leveloffset=+1]
 include::modules/layout-check.adoc[leveloffset=+1]
 include::modules/localization.adoc[leveloffset=+1]
 include::modules/property-manager.adoc[leveloffset=+1]
+include::modules/mail-connector.adoc[leveloffset=+1]
+

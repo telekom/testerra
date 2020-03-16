@@ -21,7 +21,6 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractMailConnector;
-import eu.tsystems.mms.tic.testframework.mailconnector.util.MessageUtils;
 import net.iharder.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,7 +136,6 @@ public class SMTPMailConnector extends AbstractMailConnector {
         Transport transport = null;
         try {
             transport = getSession().getTransport();
-            MessageUtils.multiPartBugfix(message);
 
             // send
             transport.connect();

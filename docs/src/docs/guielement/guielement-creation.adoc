@@ -134,7 +134,7 @@ if (target.hasFrameLogic()) {
 //[source,java]
 //----
 //
-//// The second parameter for TesterraBy.image() needs a Url object to the image
+// //The second parameter for TesterraBy.image() needs a Url object to the image
 //GuiElement byimage = new GuiElement(driver,
 //        TesterraBy.image(driver, ClassLoader.getSystemResource("gui-elements/button.png")));
 //----

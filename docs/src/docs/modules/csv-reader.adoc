@@ -1,6 +1,6 @@
 = CSV Reader
 
-The CSV Reader class provides a basic reader for CSV files to handle.
+The CSV Reader class provides a basic reader for CSV files.
 This is useful to handle testdata.
 It provides two ways to read a csv file.
 

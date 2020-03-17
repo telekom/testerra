@@ -25,7 +25,7 @@ compile 'eu.tsystems.mms.tic.testerra:bmp:1-SNAPSHOT'
 
 == External BMP server (recommended)
 
-Best practice for using a Testerra with a Proxy, is to use a dedicated BMP instance.
+Best practice for using a Testerra with a proxy, is to use a dedicated BMP instance.
 
 [source,java]
 ----
@@ -80,7 +80,7 @@ final int proxyPort = bmpClient.startServer(customPort);
 
 == Basic Auth
 
-If your SUT is located behind a restricted are, protected by HTTP basic auth, you can setup these credentials as following.
+If your SUT is protected by HTTP basic auth, you can setup these credentials as following.
 
 [source,java]
 ----

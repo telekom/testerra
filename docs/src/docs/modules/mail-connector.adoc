@@ -60,14 +60,8 @@ MAX_READ_TRIES=20
 If you want to use an SSL-encrypted connection, you  need to set `SMTP_SSL_ENABLED` / `POP3_SSL_ENABLED` to true. The ports must then be adjusted according to the server.
 The actual connection to the mail server is implicitly opened within each `MailConnector` class.
 
-== AbstractMailConnector
-General methods for accessing and adjusting the server parameters are provided within this class.
-
-== AbstractInboxConnector
-This abstract class extends the AbstractMailConnector by adding methods for working with mailboxes like reading, moving and deleting messages from the inbox as well as means to poll the inbox until an email is received.
-
 == POP3MailConnector
-The POP3MailConnector provides access to a POP3 server. Emails are read and processed by using methods of the superclass AbstractInboxConnector.
+The `POP3MailConnector` provides access to a POP3 server. Emails are read and processed by using methods of the superclass `AbstractInboxConnector`.
 
 .Reading and Deleting Mails
 [source,java]

@@ -10,5 +10,4 @@ include::property-attributes.adoc[]
 | {report_screenshots_preview} | true | If true a screenshots preview is added to the test methods in the report
 | {screenshot_on_pageload} | false | If true, screenshot after page is loaded will be taken
 | {screencaster_active} | true | If true, all screencasts are fetchted and added to the report. +
-{platform_badge}
 |===

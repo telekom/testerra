@@ -41,7 +41,7 @@ test {
 
     useTestNG() {
         suites s
-        configFailurePolicy "continue"
+//        configFailurePolicy "continue"
     }
     options {
         systemProperties(System.getProperties())

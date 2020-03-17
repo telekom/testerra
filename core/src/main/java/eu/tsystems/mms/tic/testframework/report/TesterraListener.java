@@ -14,7 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
@@ -55,13 +55,12 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
-import org.apache.log4j.Appender;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
 import org.testng.IHookCallBack;
 import org.testng.IHookable;
 import org.testng.IInvokedMethod;
-import org.testng.IInvokedMethodListener2;
+import org.testng.IInvokedMethodListener;
 import org.testng.IMethodInstance;
 import org.testng.IMethodInterceptor;
 import org.testng.IReporter;
@@ -83,15 +82,15 @@ import java.util.List;
  * @author mrgi, mibu, pele, sepr
  */
 public class TesterraListener implements
-    IInvokedMethodListener2,
-    IReporter,
-    IHookable,
-    IConfigurable,
-    IMethodInterceptor,
-    ITestListener,
-    ISuiteListener,
-    Loggable
-{
+        IInvokedMethodListener,
+        IReporter,
+        IHookable,
+        IConfigurable,
+        IMethodInterceptor,
+        ITestListener,
+        ISuiteListener,
+        Loggable {
+
     /**
      * Global marker for positive test execution.
      */

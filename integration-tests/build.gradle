@@ -26,6 +26,7 @@ test {
 
     def taskState = findProperty("taskState")
     if (taskState) {
+        setReportDir("report-tapastasktest-" + taskState)
         s = ['src/test/resources/testng/tapas/TapasTask' + taskState + '.xml']
     }
 

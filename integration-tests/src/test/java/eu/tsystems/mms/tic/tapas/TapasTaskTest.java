@@ -1,17 +1,15 @@
 package eu.tsystems.mms.tic.tapas;
 
-import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.report.testundertest.AbstractTest;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
-import org.testng.internal.ExitCode;
-import org.testng.internal.thread.ThreadUtil;
 
 /**
  * Created by sagu on 30.08.2019
  **/
-public class TapasTaskTest {
+public class TapasTaskTest extends AbstractTest {
 
     @Test
     public void test_TestStatePassed() {

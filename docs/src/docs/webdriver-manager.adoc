@@ -354,7 +354,7 @@ The session id is an internal id of Selenium itself.
 ----
 WebDriver driver = WebDriverManager.getWebDriver("mySession");
 
-// interal uuid of selenium session
+// Returns generated UUID of the Selenium session
 String sessionId = WebDriverUtils.getSessionId(driver);
 
 // will be "mySession"

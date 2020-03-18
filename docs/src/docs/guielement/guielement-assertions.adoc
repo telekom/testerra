@@ -65,7 +65,7 @@ GuiElements can be checked for their relative layouts.
 GuiElement left = new GuiElement(driver, By.id("left"));
 GuiElement right = new GuiElement(driver, By.id("right"));
 
-left.assertLayout(Layout.outer().leftOf(right));
+left.asserts().assertLayout(Layout.outer().leftOf(right));
 ----
 
 The following checks are available in the `Layout` class:

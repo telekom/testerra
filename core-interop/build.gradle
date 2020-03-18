@@ -6,7 +6,7 @@ dependencies {
     implementation 'net.lingala.zip4j:zip4j:1.3.2'
     implementation 'de.idyl:winzipaes:1.0.1'
     implementation 'org.mongodb:bson:3.7.0'
-    compile 'org.testng:testng:7.1.1'
+    compile 'org.testng:testng:7.2.0'
     implementation 'org.reflections:reflections:0.9.12'
 }
 

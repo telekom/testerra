@@ -91,7 +91,7 @@ You can also use a simple way to define browser type and version:
 {browser_version}=65
 
 # ... you can use the following
-{browser_setting}=firefox_65
+{browser_setting}=firefox:65
 ----
 ======
 

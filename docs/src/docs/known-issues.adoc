@@ -4,6 +4,13 @@ Because we depend on other frameworks and tools like TestNG and Selenium we may 
 
 Every known issue in our dependencies that will lead to an error, an unexpected or unsightly behaviour in Testerra framework will be documented here, as well as a solution or a workaround.
 
+== Issues with Selenium
+
+=== Closing `WebDriver` sessions without using Testerra `WebDriverManager`
+
+When closing `WebDriver` sessions without using Testerra <<WebDriverManager>> you will may encounter problems or some kind of unexpected issues, because the session is not marked as closed in Testerra `WebDriverManager` session store.
+Therefore we always suggest to use `WebDriverManager.shutdown()` instead of `WebDriverManager.getWebDriver().close()`.
+
 == Issues with TestNG
 
 === RetryAnalyzer not set properly with Data Provider

@@ -4,35 +4,39 @@ include::properties/property-attributes.adoc[]
 
 == Overview
 
-WebDriverManager is the central component to create or close your WebDriver session.
-
-WebDriverManager uses the standard Selenium Webdriver but it is easier to configure your.
-To create a new browser session you only need a single call.
+`WebDriverManager` is the central component to create and close your `WebDriver` sessions.
 
 == WebDriver sessions
 
-=== Create a local session
+Before you can use `WebDriver` sessions, you have to setup a Selenium-compatible server.
 
-With a local session you don't need a remote Selenium server.
-Testerra is using its build-in Selenium libary to create a new browser session.
+=== Setup remote sessions
 
-You need at least the following settings:
+For using a remote Selenium server (e.g. a Selenium Grid) you only have to tell Testerra where it can be find.
+
+.Additional settings in test.properties
+[source,properties,subs="attributes"]
+----
+{webdriver_mode}=remote
+{selenium_server_host}=localhost
+{selenium_server_port}=4444
+{selenium_server_url}=http://localhost:4444/wd/hub
+----
+
+NOTE: The browser support depends on the remote selenium setup.
+
+=== Create a local session (not recommended)
+
+Regulary, there is no reason to use local Selenium sessions based on binaries.
+We won't recommend to use that, because we've experienced some slightly differences between the local and remote behaviour.
+
+But there could be reasons for using local sessions like using an unsupported Browser.
+However, Testerra still supports these when you tell it where your `WebDriver` binaries are located:
 
 .test.properties
 [source,properties,subs="attributes"]
 ----
-// Setting the browser
-{browser}=firefox
-
-// Setting the start page
-{baseurl}=http://example.org
-----
-
-To tell Selenium where the Webdriver binary is located, use the `system.properties` file
-
-.system.properties
-[source,properties]
-----
+{webdriver_mode}=local
 webdriver.gecko.driver=path/to/your/binary/geckodriver.exe
 
 # or for other browsers
@@ -41,63 +45,22 @@ webdriver.edge.driver=...
 webdriver.ie.driver=...
 ----
 
-.Usage in your test method
-[source,java]
-----
-WebDriver driver = WebDriverManager.getWebDriver();
-----
-
-The `driver` object points to a new browser session and the site `http://example.org` was loaded.
-
-=== Create a remote session
-
-For using a remote Selenium server (e.g. a Selenium Grid) you only have to add some properties.
-
-.Additional settings in test.properties
-[source,properties,subs="attributes"]
-----
-{webdriver_mode}=remote
-
-// Define the remote Selenium server
-// The shown values are default
-{selenium_server_host}=localhost
-{selenium_server_port}=4444
-
-// In a grid you should specify a browser version if you have more then one version per browser type
-{browser_version}=65
-----
-
-You don't need a Webdriver binary definition in your `system.properties` because your remote Selenium server needs a configuration for the Webdriver binaries.
-
-There is no need to change your test method to create a new session.
-
-.Usage in your test method
-[source,java]
-----
-WebDriver driver = WebDriverManager.getWebDriver();
-----
-
-TIP: Use as often as possible a remote Selenium server, also for development.
-So your project is independed from any Webdriver configuration and needed Webdriver binary files.
-
-[TIP]
-======
-You can also use a simpel way to define browser type and version:
-
-[source,properties,subs="attributes"]
-----
-# Instead of both single properties...
-{browser}=firefox
-{browser_version}=65
-
-# ... you can use the following
-{browser_setting}=firefox_65
-----
-======
-
 === Usage of WebDriver sessions
 
-For the first call of `getWebDriver()` Selenium is triggered to open a new Browser windows with the defined URL.
+Before starting a `WebDriver` session, you should configure your desired browser like.
+[source,properties,subs="attributes"]
+----
+{browser_setting}=firefox:65
+----
+
+On the first call of
+
+[source,java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
+----
+
+Selenium is triggered to open a new Browser windows with the defined URL.
 
 For every other call of `getWebDriver()` in the *same test context* WebDriverManager always returns the existing session.
 
@@ -109,7 +72,7 @@ The WebDriverManager can handle more than one session in one test context.
 Every session has a defined session key.
 If no key was set, the default session key is called `default`.
 
-The following example creates two unindependend browser sessions:
+The following example creates two independent browser sessions:
 
 [source,java]
 ----

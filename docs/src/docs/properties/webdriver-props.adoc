@@ -20,7 +20,7 @@ a| Browser label, the following browsers are possible
 | {browser_version} | na. | Version label
 | {browser_setting} | | You can combine browser type and version as single string like `firefox_65`
 | {baseurl} | na. | URL of the first site called in a new browser session
-| {webdriver_mode} | local | Sets the webdriver mode. remote uses an external Selenium server
+| {webdriver_mode} | remote | Sets the webdriver mode. remote uses an external Selenium server
 | {selenium_server_url} | na. | The complete URL to a remote Selenium server. +
 (e.g.: `http://localhost:4444/wd/hub`)
 

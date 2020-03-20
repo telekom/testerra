@@ -267,11 +267,4 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
 
         Assert.assertEquals(property, "test_value1_value5_value4_value3_value2_value1", "SystemProperty Replacement works");
     }
-
-    @Test
-    public void testT41SystemPropertyFromFile() {
-        // should load the system property tt.test.system.prop=tt.tt. from system.properties
-        String property = PropertyManager.getProperty("tt.test.system.prop");
-        Assert.assertEquals(property, "tt.tt.", "should load the system property tt.test.system.prop=tt.tt. from system.properties");
-    }
 }

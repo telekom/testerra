@@ -36,3 +36,4 @@ include::properties.adoc[leveloffset=+1]
 [glossary]
 = Glossary
 SUT:: System under test
+Tapas:: Test Automation Platform as a Service (https://tapa-as.io)

@@ -1,16 +1,23 @@
 = PropertyManager
 
-Standard loading of property files:
+The `PropertyManager` provides a static interfaces for reading properties.
 
-* test.properties
-* proxysettings.properties
-* system.properties
-
-#In which order?#
-
-[source,java]
+[source, java]
 ----
-PropertyManager.loadProperties("file");
-
-PropertyManager.loadThreadLocalProperties("file");
+String property = PropertyManager.getProperty("my.property", "default");
 ----
+
+It will look for the property definition appearance in the following order.
+
+- `PropertyManager.getThreadLocalProperties()`
+- `PropertyManager.getGlobalProperties()`
+- `System.getProperties()`
+- `test.properties`
+
+When it's still not defined, in will fall back to the given `default` value.
+
+== Property files
+
+Testerra supports and loads automatically `.properties` files located under  `test/resources`.
+
+The `test.properties` is called the Test Configuration and contains everything required by the test, like Browser setup, SUT credentials or Layout test thresholds.

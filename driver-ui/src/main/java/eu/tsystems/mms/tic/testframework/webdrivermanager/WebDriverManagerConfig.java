@@ -40,7 +40,7 @@ public class WebDriverManagerConfig {
     /**
      * WebDriverMode that is used.
      */
-    public WebDriverMode webDriverMode = WebDriverMode.valueOf(PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, WebDriverMode.local.name()));
+    public WebDriverMode webDriverMode = WebDriverMode.valueOf(PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, WebDriverMode.remote.name()));
 
     /**
      * Close windows after Test Methods.

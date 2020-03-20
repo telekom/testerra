@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestNGMethod;
+import org.testng.internal.annotations.DisabledRetryAnalyzer;
 
 import java.lang.reflect.Method;
 
@@ -66,13 +67,13 @@ public class TestStartWorker extends MethodWorker {
          * analyzer.
          */
         if (testNGMethod != null) {
-            final IRetryAnalyzer retryAnalyzer = testNGMethod.getRetryAnalyzer();
-            if (retryAnalyzer == null) {
+            final IRetryAnalyzer retryAnalyzer = testNGMethod.getRetryAnalyzer(testResult);
+            if (retryAnalyzer == null || retryAnalyzer instanceof DisabledRetryAnalyzer) {
 
                 if (method.isAnnotationPresent(NoRetry.class)) {
                     LOGGER.debug("Not adding testerra RetryAnalyzer for @NoRetry " + method.getName());
                 } else {
-                    testNGMethod.setRetryAnalyzer(new RetryAnalyzer());
+                    testNGMethod.setRetryAnalyzerClass(RetryAnalyzer.class);
                     LOGGER.info("Adding testerra RetryAnalyzer for " + method.getName());
                 }
             } else {

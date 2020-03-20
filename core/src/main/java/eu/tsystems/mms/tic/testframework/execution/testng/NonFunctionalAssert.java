@@ -549,7 +549,7 @@ public class NonFunctionalAssert {
         if (message != null) {
             formatted = message + " ";
         }
-        fail(formatted + ASSERT_LEFT + expected + ASSERT_MIDDLE + actual + ASSERT_RIGHT);
+        fail(formatted + ASSERT_EQUAL_LEFT + expected + ASSERT_MIDDLE + actual + ASSERT_RIGHT);
     }
 
     static private void failNotEquals(Object actual, Object expected, String message) {
@@ -562,7 +562,7 @@ public class NonFunctionalAssert {
             formatted = message + " ";
         }
 
-        return formatted + ASSERT_LEFT + expected + ASSERT_MIDDLE + actual + ASSERT_RIGHT;
+        return formatted + ASSERT_EQUAL_LEFT + expected + ASSERT_MIDDLE + actual + ASSERT_RIGHT;
     }
 
     /**

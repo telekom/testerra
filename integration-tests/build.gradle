@@ -26,6 +26,7 @@ test {
 
     def taskState = findProperty("taskState")
     if (taskState) {
+        setReportDir("report-tapastasktest-" + taskState)
         s = ['src/test/resources/testng/tapas/TapasTask' + taskState + '.xml']
     }
 
@@ -41,7 +42,7 @@ test {
 
     useTestNG() {
         suites s
-        configFailurePolicy "continue"
+//        configFailurePolicy "continue"
     }
     options {
         systemProperties(System.getProperties())

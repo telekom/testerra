@@ -48,6 +48,7 @@ webdriver.ie.driver=...
 === Usage of WebDriver sessions
 
 Before starting a `WebDriver` session, you should configure your desired browser like.
+
 [source,properties,subs="attributes"]
 ----
 {browser_setting}=firefox:65
@@ -118,6 +119,9 @@ WebDriverManager.forceShutdownAllThreads()
 Testerra calls `WebDriverManager.shutdown()` automatically at the end of every test method.
 
 At the end of the test run Testerra always calls `WebDriverManager.forceShutdown()` to cleanup all sessions.
+
+Please do not use Selenium provided methods to close `WebDriver` sessions.
+Have a further read in our known issue section: <<Closing `WebDriver` sessions without using Testerra `WebDriverManager`>>.
 ====
 
 === Shared sessions in one thread

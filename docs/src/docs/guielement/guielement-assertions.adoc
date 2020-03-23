@@ -2,8 +2,6 @@
 
 GuiElements provide many kinds of assertion methods to verify your elements.
 
-NOTE: The following chapters only contains a selection of existing assertion methods. Please have a look to the #JavaDoc# for a complete list.
-
 == Functional asserts
 
 If a functional assert fails, it will make the whole test fail and abort.
@@ -67,7 +65,7 @@ GuiElements can be checked for their relative layouts.
 GuiElement left = new GuiElement(driver, By.id("left"));
 GuiElement right = new GuiElement(driver, By.id("right"));
 
-left.assertLayout(Layout.outer().leftOf(right));
+left.asserts().assertLayout(Layout.outer().leftOf(right));
 ----
 
 The following checks are available in the `Layout` class:

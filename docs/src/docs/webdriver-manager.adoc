@@ -6,6 +6,9 @@ include::properties/property-attributes.adoc[]
 
 `WebDriverManager` is the central component to create and close your `WebDriver` sessions.
 
+WebDriverManager uses the standard Selenium Webdriver but it is easier to configure your.
+To create a new browser session you only need a single call.
+
 == WebDriver sessions
 
 Before you can use `WebDriver` sessions, you have to setup a Selenium-compatible server.
@@ -27,7 +30,7 @@ NOTE: The browser support depends on the remote selenium setup.
 
 === Create a local session (not recommended)
 
-Regulary, there is no reason to use local Selenium sessions based on binaries.
+Regularly, there is no reason to use local Selenium sessions based on binaries.
 We won't recommend to use that, because we've experienced some slightly differences between the local and remote behaviour.
 
 But there could be reasons for using local sessions like using an unsupported Browser.
@@ -51,6 +54,11 @@ Before starting a `WebDriver` session, you should configure your desired browser
 
 [source,properties,subs="attributes"]
 ----
+# ...this way
+{browser}=firefox
+{browser_version}=65
+
+# ... or that way
 {browser_setting}=firefox:65
 ----
 
@@ -62,6 +70,9 @@ WebDriver driver = WebDriverManager.getWebDriver();
 ----
 
 Selenium is triggered to open a new Browser windows with the defined URL.
+
+TIP: Use remote Selenium server as often as possible, also for development.
+So your project is independent from any `WebDriver` configuration and needed Webdriver binary files.
 
 For every other call of `getWebDriver()` in the *same test context* WebDriverManager always returns the existing session.
 
@@ -289,11 +300,27 @@ WebDriver driver = WebDriverManager.getWebDriver(myRequest);
 
 == Working with sessions
 
-#Other stuff# you can do To interact with your WebDriver session you can use the utilities provided by Testerra.
+If you want to interact with your `WebDriver` session you can use the utilities provided by Testerra:
 
-WebDriverManagerUtils
+* WebDriverManagerUtils
+* WebDriverUtils
 
-WebDriverUtils
+=== Working with cookies
+If you want get and store the cookies of your current `WebDriver` session you can use `WebDriverUtils.getCookieString(WebDriver driver)`.
+It will give you access to the complete cookie string, which you can use to open plain HTTP connections or make HTTP calls with your actual session cookies.
+
+To delete all the cookies of your current `WebDriver` session just call `WebDriverManagerUtils.deleteAllCookies(WebDriver driver)`.
+
+=== Switching windows
+Sometimes you will come across testing websites with multiple windows, such as popups or something similar.
+To switch windows in a easy way Testerra provides some methods.
+
+[source, jaava]
+----
+// Switch to a window by matching title
+// Use `withoutWait` if you don't want to use retry
+WebDriverUtils.findWindowAndSwitchTo(String windowTitle, boolean withoutWait)
+----
 
 === Difference in session key and session id
 
@@ -305,11 +332,9 @@ The session id is an internal id of Selenium itself.
 ----
 WebDriver driver = WebDriverManager.getWebDriver("mySession");
 
-// interal uuid of selenium session
+// Returns generated UUID of the Selenium session
 String sessionId = WebDriverUtils.getSessionId(driver);
 
 // will be "mySession"
 String sessionKey = WebDriverManagerUtils.getSessionKey(driver);
 ----
-
-https://testautomation-mms.atlassian.net/wiki/spaces/XETA/pages/327794/01+-+WebDriverManager#id-01-WebDriverManager-Other

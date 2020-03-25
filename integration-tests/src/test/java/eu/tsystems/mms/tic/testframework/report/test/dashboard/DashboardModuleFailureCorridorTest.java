@@ -45,7 +45,6 @@ public class DashboardModuleFailureCorridorTest extends AbstractTestDashboard {
     /**
      * This test checks the numbers of the failure corridor.
      */
-    @Fails(ticketId = 2267, description = "TestNG-bug, fixed with 7.1.2: https://github.com/cbeust/testng/issues/2267")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1},dataProvider = "testResultNumbers")
     public void testT02_checkFailureCorridorNumbers(ReportDirectory report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = getDashboardPage(report);

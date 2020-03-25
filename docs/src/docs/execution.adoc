@@ -10,5 +10,3 @@
 
 // failed_tests_if_throwable_classes/methods
 
-== Retry
-{platform_badge}

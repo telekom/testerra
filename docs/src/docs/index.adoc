@@ -30,8 +30,10 @@ include::utilities.adoc[leveloffset=+1]
 '''
 = Appendix
 include::best-practices.adoc[leveloffset=+1]
+include::known-issues.adoc[leveloffset=+1]
 include::properties.adoc[leveloffset=+1]
 
 [glossary]
 = Glossary
 SUT:: System under test
+Tapas:: Test Automation Platform as a Service (https://tapa-as.io)

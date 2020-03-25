@@ -20,11 +20,11 @@ image::PageFlowExample.png[]
 
 === Example
 
-The following page contains two `GuiElements` and one method for a user action 'search a string.
+The following page contains two `GuiElements` and one method for a user action 'search a string'.
 
 Within the method `search` the defined GuiElements are used to execute a search.
 
-The annoation `Check` marks the GuiElements which a mandatory for the page. Testerra automatically verifies these elements when this page is instantiated (<<Check Annotations>>).
+The annoation `Check` marks the GuiElements as mandatory for the page. Testerra automatically verifies these elements when this page is instantiated (<<Check Annotations>>).
 
 [source,java]
 ----
@@ -133,14 +133,14 @@ MyPage myPage = PageFactory.create(MyPage.class, driver, pageVariablesObject);
 
 ===	Page Prefixes
 
-Page Prefixes can influence which concrete classes get instantiated by the `PageFactory`. They work together with a inheritance scheme of page classes. This can be useful if there is a base page which can come in diffrent concrete variations. Example:
+Page Prefixes can influence which concrete classes get instantiated by the `PageFactory`. They work together with a inheritance scheme of page classes. This can be useful if there is a base page which can come in different concrete variations. Example:
 
-There is a `BaseClass` which inherits from the `Page` class and contains the basic funtionallity of a page.
-Then the `Page` can come in 2 different Variations.
-We can represent this as Variation1BaseClass and Variation2BaseClass.
+There is a `BaseClass` which inherits from the `Page` class and contains the basic functionality of a page.
+Then the `Page` can come in 2 different variations.
+We can represent this as `Variation1BaseClass` and `Variation2BaseClass`.
 They both inherit from `BaseClass`.
-Before instatiation, we can set the Prefix using the `PageFactory`.
-Then we instatiate it and we can get our Variation of the base class.
+Before instantiation, we can set the prefix using the `PageFactory`.
+Then we instantiate it and we can get our variation of the base class.
 [source,java]
 ----
 PageFactory.setGlobalPagesPrefix("Variation1");
@@ -164,14 +164,14 @@ PageFactory.clearThreadLocalPagesPrefix();
 ----
 
 == Responsive Page Objects
-Sometimes responsive web pages are designed in a way that they change their structure depending on the browser viewport. To represent this behavior for tests, responsive page objects can be used. With this feature, diffrent page objects can be created to represent the page using diffrent window sizes. This allows the tests to respond to the varying page structures.
+Sometimes responsive web pages are designed in a way that they change their structure depending on the browsers viewport. To represent this behavior for tests, responsive page objects can be used. With this feature, different page objects can be created to represent the page using different window sizes. This allows the tests to respond to varying page structures.
 
 The `PageFactory` will instantiate the correct page class automatically based on the current viewport.
 
 === Page structure
 To use this feature, the page classes must follow a special naming and inheritance scheme.
 
-First a base class is needed. It represents the responsive page in general. This base class inherits from the page class. Then classes for special viewports are created, which inherit from the base class. They represent the page in a defined viewport range.
+First a base class is needed. It represents the responsive page in general. This base class inherits from the `Page` class. Then classes for special viewports are created, which inherit from the base class. They represent the page in a defined viewport range.
 
 The name scheme for size depended classes is
 
@@ -221,9 +221,9 @@ include::properties/pagefactory-props.adoc[]
 
 == Check Annotations
 The `@Check` annotation is used to verify the actual presence of an element on the site.
-All `GuiElements` that are marked with the `@Check` annotation are automatically checked when instatiated by the `PageFactory`.
+All `GuiElements` that are marked with the `@Check` annotation are automatically checked when instantiated by the `PageFactory`.
 
-In the example, the first `GuiElement` has the `@Check` annotation, the second doesn't. The result is, that the precense of the first element will be checked by the constructor, the second won't. If a checked Element is not found, the constructor will throw a PageNotFoundException.
+In the example, the first `GuiElement` has the `@Check` annotation, the second doesn't. The result is, that the presence of the first element will be checked by the constructor, the second won't. If a checked element is not found, the constructor will throw a `PageNotFoundException`.
 
 [source,java]
 ----
@@ -233,7 +233,7 @@ private GuiElement checked = new GuiElement(driver, By.name("checked"));
 private GuiElement unchecked = new GuiElement(driver, By.name("unchecked"));
 ----
 
-The `@Check` annotation will use the default checkrule defined in test.properties. It is also possible to change the checkrule for a single `@Check` annotation to overwrite the default.
+The `@Check` annotation will use the default `CheckRule` defined in `test.properties`. It is also possible to overwrite the default `CheckRule` for a single `@Check` annotation.
 
 [source,java]
 ----
@@ -241,7 +241,7 @@ The `@Check` annotation will use the default checkrule defined in test.propertie
 private GuiElement checked = new GuiElement(driver, By.name("checked"));
 ----
 
-Available Checkrules are
+Available CheckRules are
 
 * IS_DISPLAYED
 * IS_NOT_DISPLAYED
@@ -250,7 +250,7 @@ Available Checkrules are
 
 The default is IS_DISPLAYED.
 
-With nonFunctional attribute the check only occurs a warning in Testerra report.
+With nonFunctional attribute the check only adds a warning in Testerra report.
 The test will not interrupted at this position.
 
 [source,java]
@@ -268,7 +268,7 @@ private GuiElement checked = new GuiElement(driver, By.name("checked"));
 ----
 
 == Error handling
-Exceptions caused by `@Check` annotations can be catched by overwriting the checkPageErrorState method in the concrete page class.
+Exceptions caused by `@Check` annotations can be catched by overwriting the `checkPageErrorState()` method in the concrete page class.
 This is an example how to overwrite the checkpage error inside a created page class.
 
 [source,java]
@@ -284,9 +284,7 @@ protected void checkPageErrorState(Throwable throwable) throws Throwable {
 This method body for example could throw other exceptions or write something in the log.
 
 == Timeout Setting
-The checks are performed with a timeout.
-
-#Link to "element.timeout.seconds" properties#
+The checks are performed with a timeout. The default timeout is set by the property {element_timeout_seconds} in `test.properties`
 
 With the following annotation the GuiElement timeout can be changed for all GuiElements in one page:
 [source,java]

@@ -160,17 +160,7 @@ apt-get install chromium-chromedriver
 brew install selenium-server-standalone chromedriver
 ----
 
-And setup the Selenium server address in `test.properties`
-
-.test.properties
-[source, properties, subs="attributes"]
-----
-{webdriver_mode}=remote
-{selenium_server_host}=localhost
-{selenium_server_port}=4444
-----
-
-TIP: Testerra uses as default values 'localhost' ({selenium_server_host}) and '4444' ({selenium_server_port}) if the properties are not defined.
+Read here, if you want to setup <<WebDriver sessions,another Selenium configuration>>.
 
 === Setup a test suite
 

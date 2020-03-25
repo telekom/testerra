@@ -4,15 +4,16 @@
 
 Since radio buttons share the same name, as the following example shows
 
-[source, html]
+[source,html]
 ----
 <input type="radio" name="beverage" value="tee">
 <input type="radio" name="beverage" value="coffee">
 ----
 
-It's not a good practice to select it `By.name`. Its better to select both options separately.
+It's not a good practice to select it `By.name`.
+Its better to select both options separately.
 
-[source, java]
+[source,java]
 ----
 // Good practice
 Locate locator = Locate.prepare("//input[@name='%s' and @value='%s']").unique();
@@ -34,7 +35,7 @@ To work with shadow root elements Testerra provide the method `shadowRoot()` on 
 Given the following HTML code snippet it will be easier how to get the corresponding `GuiElement` of the Shadow DOM component.
 
 .HTML Code
-[source, html]
+[source,html]
 ----
 <body>
     <div id="wrapper">
@@ -60,3 +61,7 @@ GuiElement inputName = shadowRootElement.getSubElement(By.cssSelector("#custom-c
 ----
 
 IMPORTANT: Calling `isDisplayed()` on `shadowRoot()`-notated `GuiElement` will always return false, but `isPresent()` will work as designed.
+
+IMPORTANT: Because of technical limitations in Selenium it is not possible to use any other `By`Selector-type than `By.cssSelector()` working with `getSubElement()` on a shadow root.
+To workaround this issue, please do a `getSubElement(By.cssSelector())` on the highest available root-element in your shadow root.
+Then you can work on the subelement with any other `By`-selector typ as well.

@@ -4,7 +4,6 @@ include::property-attributes.adoc[]
 |===
 | Property | default | Description
 | {element_timeout_seconds} | 8 | GuiElement timeout in seconds
-| {guielement_type} | sequence | `sequence` type is the default type for functional testing +
 `perf` is used for the Performance indicator module
 | {guielement_default_assertcollector} | false | Sets the behavior of `GuiElement.asserts()`: +
 `true` asserts() reacts like assertCollector() (Continue at FAIL) +

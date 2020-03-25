@@ -58,5 +58,9 @@ public class MyTest extends TesterraTest {
 }
 ```
 
-***
+## Contributing
+Thank you for considering contributing to the Testerra framework! The contribution guide can be found here: [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+The Testerra framework is open-sourced software licensed under the [Apache License Version 2.0](LICENSE).
 

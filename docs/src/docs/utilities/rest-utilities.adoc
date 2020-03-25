@@ -1,6 +1,7 @@
 = REST Utilities
 
-This is a static helper class facilitating the usage of REST Services by providing several methods for creating valid HTML requests. The Default TimeOut for all Http Connections is 5 minutes.
+This is a static helper class facilitating the usage of REST Services by providing several methods for creating valid HTTP requests.
+The default timeout for all http connections is 5 minutes.
 
 .GET Request
 [source,java]

@@ -40,7 +40,8 @@ public class Report {
     /**
      * Temporary report directory
      */
-    public static final File REPORT_DIRECTORY;
+    @Deprecated
+    private static File REPORT_DIRECTORY;
 
     public static final String FRAMES_FOLDER_NAME = "frames";
     public static final String METHODS_FOLDER_NAME = "methods";
@@ -57,10 +58,15 @@ public class Report {
         LOGGER.info("Preparing report in " + Report.REPORT_DIRECTORY.getAbsolutePath());
     }
 
+    @Deprecated
     public static final File FRAMES_DIRECTORY = new File(REPORT_DIRECTORY, FRAMES_FOLDER_NAME);
+    @Deprecated
     public static final File METHODS_DIRECTORY = new File(FRAMES_DIRECTORY, METHODS_FOLDER_NAME);
+    @Deprecated
     public static final File SCREENSHOTS_DIRECTORY = new File(REPORT_DIRECTORY, SCREENSHOTS_FOLDER_NAME);
+    @Deprecated
     public static final File VIDEO_DIRECTORY = new File(REPORT_DIRECTORY, VIDEO_FOLDER_NAME);
+    @Deprecated
     public static final File XML_DIRECTORY = new File(REPORT_DIRECTORY, XML_FOLDER_NAME);
 
     static {
@@ -80,10 +86,12 @@ public class Report {
     }
 
     public File finalizeReport() {
-        File finalReportDirectory = getFinalReportDirectory();
+        String relativeReportDirString = PropertyManager.getProperty(TesterraProperties.REPORTDIR, DEFAULT_REPORTDIR);
+        File finalReportDirectory = new File(relativeReportDirString);
         try {
             FileUtils.deleteDirectory(finalReportDirectory);
             FileUtils.moveDirectory(REPORT_DIRECTORY, finalReportDirectory);
+            REPORT_DIRECTORY = finalReportDirectory;
         } catch (IOException e) {
             throw new TesterraRuntimeException("Could not move report dir: " + e.getMessage(), e);
         }
@@ -93,17 +101,16 @@ public class Report {
     /**
      * @return Final report directory defined by the user
      */
-    public File getFinalReportDirectory() {
-        String relativeReportDirString = PropertyManager.getProperty(TesterraProperties.REPORTDIR, DEFAULT_REPORTDIR);
-        return new File(relativeReportDirString);
+    public File getReportDirectory() {
+       return REPORT_DIRECTORY;
     }
 
     /**
-     * @param folderName Child directory name
+     * @param childName Child directory or file name
      * @return Final report sub directory defined by the user
      */
-    public File getFinalReportDirectory(String folderName) {
-        return new File(getFinalReportDirectory(), folderName);
+    public File getReportDirectory(String childName) {
+        return new File(getReportDirectory(), childName);
     }
 
     /**

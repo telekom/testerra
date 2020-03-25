@@ -445,7 +445,8 @@ public final class ReportUtils {
             throw new TesterraSystemException("Report generation took too long", e);
         }
 
-        File finalDirectory = Report.finalizeReport();
+        Report report = new Report();
+        File finalDirectory = report.finalizeReport();
         LOGGER.info("Report written to " + finalDirectory.getAbsolutePath());
     }
 

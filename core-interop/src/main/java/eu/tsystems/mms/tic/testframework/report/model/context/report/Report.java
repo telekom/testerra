@@ -36,6 +36,10 @@ public class Report {
     private static final Logger LOGGER = LoggerFactory.getLogger(Report.class);
 
     private static final String DEFAULT_REPORTDIR = "testerra-report";
+
+    /**
+     * Temporary report directory
+     */
     public static final File REPORT_DIRECTORY;
 
     public static final String FRAMES_FOLDER_NAME = "frames";
@@ -75,9 +79,8 @@ public class Report {
         MOVE
     }
 
-    public static File finalizeReport() {
-        String relativeReportDirString = PropertyManager.getProperty(TesterraProperties.REPORTDIR, DEFAULT_REPORTDIR);
-        File finalReportDirectory = new File(relativeReportDirString);
+    public File finalizeReport() {
+        File finalReportDirectory = getFinalReportDirectory();
         try {
             FileUtils.deleteDirectory(finalReportDirectory);
             FileUtils.moveDirectory(REPORT_DIRECTORY, finalReportDirectory);
@@ -85,6 +88,22 @@ public class Report {
             throw new TesterraRuntimeException("Could not move report dir: " + e.getMessage(), e);
         }
         return finalReportDirectory;
+    }
+
+    /**
+     * @return Final report directory defined by the user
+     */
+    public File getFinalReportDirectory() {
+        String relativeReportDirString = PropertyManager.getProperty(TesterraProperties.REPORTDIR, DEFAULT_REPORTDIR);
+        return new File(relativeReportDirString);
+    }
+
+    /**
+     * @param folderName Child directory name
+     * @return Final report sub directory defined by the user
+     */
+    public File getFinalReportDirectory(String folderName) {
+        return new File(getFinalReportDirectory(), folderName);
     }
 
     /**

@@ -18,6 +18,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheckException;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
@@ -28,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.utils.Timer;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ConfigurableGuiElementAssert implements GuiElementAssert {
 
@@ -225,20 +225,23 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
         Timer timer = new Timer(LAYOUT_CHECK_UI_WAIT,LAYOUT_CHECK_UI_WAIT*LAYOUT_CHECK_MAX_TRIES);
         final BigDecimal expectedDistanceThreshold = new BigDecimal(confidenceThreshold);
         final String assertMessage = String.format("%s image '%s' pixel distance percent", guiElementData, targetImageName);
-        final AtomicReference<LayoutCheck.MatchStep> atomicMatchStep = new AtomicReference<>();
         timer.executeSequence(new Timer.Sequence() {
             @Override
             public void run() {
-                LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels(guiElementCore.takeScreenshot(), targetImageName);
-                AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance), expectedDistanceThreshold, assertMessage);
-                atomicMatchStep.set(matchStep);
+                LayoutCheck.MatchStep matchStep;
+                try {
+                    matchStep = LayoutCheck.matchPixels(guiElementCore.takeScreenshot(), targetImageName);
+                    if (!matchStep.takeReferenceOnly) {
+                        LayoutCheck.toReport(matchStep);
+                    }
+                    AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance), expectedDistanceThreshold, assertMessage);
+                } catch (LayoutCheckException e) {
+                    matchStep = e.getMatchStep();
+                    LayoutCheck.toReport(matchStep);
+                    throw e;
+                }
             }
         });
-
-        LayoutCheck.MatchStep matchStep = atomicMatchStep.get();
-        if (matchStep!=null && matchStep.takeReferenceOnly == false) {
-            LayoutCheck.toReport(matchStep);
-        }
     }
 
     @Override

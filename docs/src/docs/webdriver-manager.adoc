@@ -306,20 +306,21 @@ If you want to interact with your `WebDriver` session you can use the utilities 
 * WebDriverUtils
 
 === Working with cookies
+
 If you want get and store the cookies of your current `WebDriver` session you can use `WebDriverUtils.getCookieString(WebDriver driver)`.
 It will give you access to the complete cookie string, which you can use to open plain HTTP connections or make HTTP calls with your actual session cookies.
 
 To delete all the cookies of your current `WebDriver` session just call `WebDriverManagerUtils.deleteAllCookies(WebDriver driver)`.
 
 === Switching windows
-Sometimes you will come across testing websites with multiple windows, such as popups or something similar.
-To switch windows in a easy way Testerra provides some methods.
 
-[source, jaava]
+Sometimes you will come across testing websites with multiple windows, such as popups or something similar.
+To switch windows in a easy way Testerra provides some methods, which will automatically retry the window switching for maximum of seconds you can define with `{wdm_timeouts_window_switch}`.
+
+[source,jaava]
 ----
 // Switch to a window by matching title
-// Use `withoutWait` if you don't want to use retry
-WebDriverUtils.findWindowAndSwitchTo(String windowTitle, boolean withoutWait)
+WebDriverUtils.findWindowAndSwitchTo(String windowTitle)
 ----
 
 === Difference in session key and session id

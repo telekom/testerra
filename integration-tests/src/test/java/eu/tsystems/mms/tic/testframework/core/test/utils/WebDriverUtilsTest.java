@@ -13,7 +13,7 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
+ *     Eric Kubenka
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
@@ -58,7 +58,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
         openPopUpWindow(driver);
 
-        WebDriverUtils.findWindowAndSwitchTo("List", false);
+        WebDriverUtils.findWindowAndSwitchTo("List");
 
         Assert.assertEquals(driver.getTitle(), "List", msgSwitchSuccessfully);
     }
@@ -69,37 +69,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
         openPopUpWindow(driver);
 
-        boolean out = WebDriverUtils.findWindowAndSwitchTo("abc", false);
-
-        Assert.assertFalse(out, msgSwitchSuccessfully);
-    }
-
-    @Test(enabled = false)
-    @Deprecated
-    public void testT03_WebDriverUtils_findWindowAndSwitchTo_Fast() throws Exception {
-        WebDriver driver = WebDriverManager.getWebDriver();
-
-        openPopUpWindow(driver);
-
-        long timeMillisBegin = System.currentTimeMillis();
-
-        boolean out = WebDriverUtils.findWindowAndSwitchTo("List", true);
-
-        long timeMillisDuration = System.currentTimeMillis() - timeMillisBegin;
-
-        this.log().info("Window switch took about " + timeMillisDuration + " ms.");
-        Assert.assertTrue(out, msgSwitchSuccessfully);
-        Assert.assertTrue(timeMillisDuration < 300, "Find and switch to Window need less than 1000 ms");
-    }
-
-    @Test(enabled = false)
-    @Deprecated
-    public void testT04_WebDriverUtils_findWindowAndSwitchTo_FastWrongTitle() throws Exception {
-        WebDriver driver = WebDriverManager.getWebDriver();
-
-        openPopUpWindow(driver);
-
-        boolean out = WebDriverUtils.findWindowAndSwitchTo("abc", true);
+        boolean out = WebDriverUtils.findWindowAndSwitchTo("abc");
 
         Assert.assertFalse(out, msgSwitchSuccessfully);
     }
@@ -110,7 +80,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
         openPopUpWindow(driver);
 
-        boolean out = WebDriverUtils.findWindowAndSwitchTo("List", true, driver);
+        boolean out = WebDriverUtils.findWindowAndSwitchTo("List", driver);
 
         Assert.assertTrue(out, msgSwitchSuccessfully);
     }
@@ -121,7 +91,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
         openPopUpWindow(driver);
 
-        boolean out = WebDriverUtils.findWindowAndSwitchTo("abc", true, driver);
+        boolean out = WebDriverUtils.findWindowAndSwitchTo("abc", driver);
 
         Assert.assertFalse(out, msgSwitchSuccessfully);
     }
@@ -132,7 +102,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
         openPopUpWindow(driver);
 
-        boolean out = WebDriverUtils.findWindowAndSwitchTo("List", "Input", true, driver);
+        boolean out = WebDriverUtils.findWindowAndSwitchTo("List", "Input", driver);
 
         Assert.assertTrue(out, msgSwitchSuccessfully);
     }
@@ -143,7 +113,7 @@ public class WebDriverUtilsTest extends AbstractTestSitesTest {
 
         openPopUpWindow(driver);
 
-        boolean out = WebDriverUtils.findWindowAndSwitchTo("List", "Output", true, driver);
+        boolean out = WebDriverUtils.findWindowAndSwitchTo("List", "Output", driver);
 
         Assert.assertFalse(out, msgSwitchSuccessfully);
     }

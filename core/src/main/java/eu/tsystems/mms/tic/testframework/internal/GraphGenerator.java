@@ -117,7 +117,8 @@ public final class GraphGenerator {
      * @throws IOException
      */
     public static File saveGraphAsJPEG(JFreeChart chart, String relativeFileName, int width, int height) throws IOException {
-        File graphFile = new File(Report.REPORT_DIRECTORY, relativeFileName);
+        Report report = new Report();
+        File graphFile = report.getReportDirectory(relativeFileName);
         File dir = graphFile.getParentFile();
         if (!dir.exists()) {
             dir.mkdirs();

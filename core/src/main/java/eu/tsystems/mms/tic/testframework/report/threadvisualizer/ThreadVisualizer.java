@@ -65,8 +65,9 @@ public class ThreadVisualizer {
         }
 
         // copy
-        ReportUtils.copyFile(css, Report.REPORT_DIRECTORY);
-        ReportUtils.copyFile(js, Report.REPORT_DIRECTORY);
+        Report report = new Report();
+        ReportUtils.copyFile(css, report.getReportDirectory());
+        ReportUtils.copyFile(js, report.getReportDirectory());
 
         /*
          #### Velocity merge

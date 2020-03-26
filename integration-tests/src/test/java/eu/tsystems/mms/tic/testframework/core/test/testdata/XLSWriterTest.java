@@ -63,20 +63,21 @@ public class XLSWriterTest extends AbstractWebDriverTest {
             xlsWriter.writeCell(id, col, data);
 
             filecounter++;
-            final String fullFileName = Report.REPORT_DIRECTORY + "/xls/out-" + filecounter + "-" + filename;
+            Report report = new Report();
+            final File fullFile = report.getReportDirectory("xls/out-" + filecounter + "-" + filename);
 
             // check dirs
-            File dir = new File(fullFileName).getParentFile();
+            File dir = fullFile.getParentFile();
             if (!dir.exists()) {
                 dir.mkdirs();
             }
 
             // save
-            xlsWriter.saveAs(fullFileName);
+            xlsWriter.saveAs(fullFile.getAbsolutePath());
 
             XLSTestDataReader xlsTestDataReader = new XLSTestDataReader();
             xlsTestDataReader.setHeaderRow(1);
-            Map<String, String> dataSet = xlsTestDataReader.readXLSTestDataFromFile(fullFileName,
+            Map<String, String> dataSet = xlsTestDataReader.readXLSTestDataFromFile(fullFile.getAbsolutePath(),
                     sheetname, id);
             Assert.assertEquals(dataSet.get(dataName), data, "Content verification");
         }

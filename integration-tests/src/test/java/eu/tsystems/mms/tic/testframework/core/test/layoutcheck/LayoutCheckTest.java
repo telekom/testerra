@@ -23,12 +23,8 @@ import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.TakesScreenshot;
 import org.testng.annotations.Test;
-
-import java.math.BigDecimal;
 
 public class LayoutCheckTest extends AbstractTestSitesTest {
 
@@ -72,7 +68,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
         guiElement.asserts().assertScreenshot("TestArticleFailed", 1);
     }
 
-    @Test()
+    @Test(expectedExceptions = TimeoutException.class)
     public void testCheckElementLayoutSize_fails() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("TestArticle-90-percent-width", 1);
@@ -80,8 +76,6 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
 
     @Test
     public void testCheckPageLayout() {
-        LayoutCheck.MatchStep matchStep = LayoutCheck.matchPixels((TakesScreenshot) WebDriverManager.getWebDriver(), "LayoutTestPage");
-        AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance), new BigDecimal(1), "LayoutTestPage pixel distance");
+        LayoutCheck.assertScreenshot(WebDriverManager.getWebDriver(), "LayoutTestPage", 1);
     }
-
 }

@@ -9,6 +9,7 @@ import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -22,6 +23,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -398,7 +400,7 @@ public final class LayoutCheck {
         Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
 
         if (!actualImageDimension.equals(expectedImageDimension)) {
-            throw new RuntimeException(String.format("The actual screenshot (width=%dpx,height=%dpx) has a different size than the reference (width=%dpx,height=%dpx)",
+            throw new RuntimeException(String.format("The actual screenshot (width=%dpx, height=%dpx) has a different size than the reference (width=%dpx, height=%dpx)",
                 actualImageDimension.width,
                 actualImageDimension.height,
                 expectedImageDimension.width,
@@ -578,5 +580,20 @@ public final class LayoutCheck {
         }
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.customContexts.add(context);
+    }
+
+    public static void assertScreenshot(WebDriver webDriver, String targetImageName, double confidenceThreshold) {
+        LayoutCheck.MatchStep matchStep;
+        try {
+            matchStep  = LayoutCheck.matchPixels((TakesScreenshot)webDriver, targetImageName);
+            if (!matchStep.takeReferenceOnly) {
+                LayoutCheck.toReport(matchStep);
+            }
+            AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance), new BigDecimal(confidenceThreshold), String.format("Pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName));
+        } catch (LayoutCheckException e) {
+            matchStep = e.getMatchStep();
+            LayoutCheck.toReport(matchStep);
+            throw e;
+        }
     }
 }

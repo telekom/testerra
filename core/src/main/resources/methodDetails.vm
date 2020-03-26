@@ -333,23 +333,35 @@ No test sources
                             #if ($testMethod.customContexts.size()>0)
                                 #foreach ($customError in $testMethod.customContexts)
                                     #if ($customError.class.simpleName == "LayoutCheckContext")
-                                        <h3>$customError.getName(): $customError.image</h3>
+                                        <div style="padding: 20px;">
+                                            <div class="dashboardHorizontalSpacer"></div>
+                                        </div>
+                                        <h5>$customError.getName(): $customError.image</h5>
                                         <div class="fotorama"
                                              data-navposition="top"
                                              data-allowfullscreen="native"
                                              data-nav="thumbs"
                                              data-thumbwidth="64"
                                              data-thumbheight="64"
-                                             data-height="40%"
-                                             data-width="40%"
+                                             data-width="90%"
                                         >
+                                            #set($imageNames=[$customError.actualScreenshot.filename,$customError.expectedScreenshot.filename,$customError.distanceScreenshot.filename])
+                                            #set($imageCaptions=["Actual","Expected reference", "Distance"])
 
-                                            <img src="../../screenshots/$customError.expectedScreenshot.filename"
-                                                 data-caption="Expected"/>
-                                            <img src="../../screenshots/$customError.actualScreenshot.filename"
-                                                 data-caption="Actual"/>
-                                            <img src="../../screenshots/$customError.distanceScreenshot.filename"
-                                                 data-caption="Distance"/>
+                                            #foreach ($imageName in $imageNames)
+                                                #if ($imageName)
+                                                    <div data-img="../../screenshots/$imageName" data-caption="$imageCaptions[$foreach.index]">
+                                                        <!-- Fullscreen -->
+                                                        <div style="margin: 0 45%;">
+                                                            <a class="gallerybutton" href="#" title="Fullscreen"
+                                                               onclick="if ($('.fotorama.fotorama--fullscreen').length == 0) { $('.fotorama').fotorama().data('fotorama').requestFullScreen(); } else { $('.fotorama').fotorama().data('fotorama').cancelFullScreen(); }"
+                                                               style="margin-right:25px;">
+                                                                <i class="bgwhite fa fa-arrows-alt"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                #end
+                                            #end
                                         </div>
                                     #end
                                 #end

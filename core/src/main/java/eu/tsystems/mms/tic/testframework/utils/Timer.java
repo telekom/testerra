@@ -13,7 +13,7 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
+ *     Eric Kubenka
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
@@ -29,27 +29,19 @@ public class Timer {
 
     private static Logger LOGGER = LoggerFactory.getLogger(Timer.class);
 
-    private long startTime = 0;
-    private long sleepTimeInMs = 1000;
     private static final long SLEEP_TIME_IN_MS_MININMAL = 50;
-    private long durationInMs = 15000;
     private static final long DURATION_IN_MS_MINIMAL = 100;
+
+    private long startTime = 0;
+    private long sleepTimeInMs;
+    private long durationInMs;
     private String errorMessage;
 
     /**
-     * starts timer
+     * Creates new {@link Timer}. Will sleep for sleepTimeInMs for maximum durationInMs
      *
-     * @deprecated - Please use a constructor with sleeptime and duration
-     */
-    @Deprecated
-    public Timer() {
-    }
-
-    /**
-     * timer with sleeptime
-     *
-     * @param sleepTimeInMs .
-     * @param durationInMs  .
+     * @param sleepTimeInMs How long to sleep in milliseconds
+     * @param durationInMs  Maximum Duration of Sleep
      */
     public Timer(long sleepTimeInMs, long durationInMs) {
         if (sleepTimeInMs > durationInMs) {
@@ -61,7 +53,8 @@ public class Timer {
     }
 
     /**
-     * The Sequence abstract to define a sequence within the run method. The Type declaration defines the return object type.
+     * The Sequence abstract to define a sequence within the run method.
+     * The Type declaration defines the return object type.
      *
      * @param <T>
      */

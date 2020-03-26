@@ -21,14 +21,11 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.TakesScreenshot;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
@@ -70,9 +67,15 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
     }
 
     @Test(expectedExceptions = TimeoutException.class)
-    public void testCheckElementLayoutDistance() {
+    public void testCheckElementLayoutDistance_fails() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertScreenshot("TestArticleFailed", 1);
+    }
+
+    @Test()
+    public void testCheckElementLayoutSize_fails() {
+        GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
+        guiElement.asserts().assertScreenshot("TestArticle-90-percent-width", 1);
     }
 
     @Test

@@ -3,7 +3,6 @@ package eu.tsystems.mms.tic.testframework.layout;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
@@ -93,8 +92,7 @@ public final class LayoutCheck {
      * @return Percents of pixels that are different
      */
     public static double run(WebDriver webDriver, String targetImageName) {
-        String modeString = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_MODE, "pixel").trim()
-                .toUpperCase();
+        String modeString = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_MODE, "pixel").trim().toUpperCase();
         Mode mode = Mode.valueOf(modeString);
 
         return run(webDriver, targetImageName, mode);
@@ -129,8 +127,7 @@ public final class LayoutCheck {
      */
     @Deprecated
     public static double run(final TakesScreenshot driver, final String targetImageName) {
-        String modeString = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_MODE, "pixel").trim()
-                .toUpperCase();
+        String modeString = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_MODE, "pixel").trim().toUpperCase();
         Mode mode = Mode.valueOf(modeString);
 
         return pRun(driver, targetImageName, mode).distance;
@@ -172,16 +169,17 @@ public final class LayoutCheck {
         return step;
     }
 
-    private static void matchAnnotations(final MatchStep step) {
+    private static void matchAnnotations(MatchStep matchStep) {
         // read images
-        String referenceAbsoluteFileName = step.referenceFileName.toAbsolutePath().toString();
-        String annotatedAbsoluteFileName = step.annotatedReferenceFileName.toAbsolutePath().toString();
-        String actualAbsoluteFileName = step.actualFileName.toAbsolutePath().toString();
-        String distanceAbsoluteFileName = step.distanceFileName.toAbsolutePath().toString();
-        String annotationDataAbsoluteFileName = step.annotationDataFileName.toAbsolutePath().toString();
+        String referenceAbsoluteFileName = matchStep.referenceFileName.toAbsolutePath().toString();
+        String annotatedAbsoluteFileName = matchStep.annotatedReferenceFileName.toAbsolutePath().toString();
+        String actualAbsoluteFileName = matchStep.actualFileName.toAbsolutePath().toString();
+        String distanceAbsoluteFileName = matchStep.distanceFileName.toAbsolutePath().toString();
+        String annotationDataAbsoluteFileName = matchStep.annotationDataFileName.toAbsolutePath().toString();
 
         // create distance image to given reference
         LayoutComparator layoutComparator = new LayoutComparator();
+        matchStep.layoutComparator = layoutComparator;
         try {
             layoutComparator.compareImages(
                 referenceAbsoluteFileName,
@@ -190,13 +188,11 @@ public final class LayoutCheck {
                 distanceAbsoluteFileName,
                 annotationDataAbsoluteFileName
             );
-        } catch (FileNotFoundException e) {
-            LOGGER.error(e.getMessage());
-            throw new TesterraSystemException("Error reading images", e);
+        } catch (Exception e) {
+            throw new LayoutCheckException(matchStep, e);
         }
 
-        step.distance = layoutComparator.getErrorRelation();
-        step.layoutComparator = layoutComparator;
+        matchStep.distance = layoutComparator.getErrorRelation();
     }
 
     /**
@@ -292,17 +288,17 @@ public final class LayoutCheck {
         return step;
     }
 
-    private static void matchPixels(final MatchStep step) {
+    private static void matchPixels(final MatchStep matchStep) {
         try {
             // read images
-            File refFile = step.referenceFileName.toFile();
-            File actualFile = step.actualFileName.toFile();
+            File refFile = matchStep.referenceFileName.toFile();
+            File actualFile = matchStep.actualFileName.toFile();
 
             if (!refFile.exists()) {
-                throw new FileNotFoundException(step.referenceFileName.toString());
+                throw new FileNotFoundException(matchStep.referenceFileName.toString());
             }
             if (!actualFile.exists()) {
-                throw new FileNotFoundException(step.actualFileName.toString());
+                throw new FileNotFoundException(matchStep.actualFileName.toString());
             }
 
             final BufferedImage referenceImage = ImageIO.read(refFile);
@@ -314,15 +310,14 @@ public final class LayoutCheck {
             );
 
             // create distance image to given reference
-            step.distance = generateDistanceImage(
+            matchStep.distance = generateDistanceImage(
                 referenceImage,
                 actualImage,
-                step.distanceFileName.toAbsolutePath().toString(),
+                matchStep.distanceFileName.toAbsolutePath().toString(),
                 useIgnoreColor
             );
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-            throw new TesterraSystemException("Error reading images", e);
+        } catch (Exception e) {
+            throw new LayoutCheckException(matchStep, e);
         }
     }
 
@@ -403,11 +398,13 @@ public final class LayoutCheck {
         Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
 
         if (!actualImageDimension.equals(expectedImageDimension)) {
-            NonFunctionalAssert.fail("The actual screenshot has a different size than the reference. Actual = " +
-                    actualImageDimension +
-                    ", Reference = " +
-                    expectedImageDimension +
-                    ".");
+            throw new RuntimeException(String.format("The actual screenshot (width=%dpx,height=%dpx) has a different size than the reference (width=%dpx,height=%dpx)",
+                actualImageDimension.width,
+                actualImageDimension.height,
+                expectedImageDimension.width,
+                expectedImageDimension.height
+                )
+            );
         }
 
         List<Rectangle> markedRectangles = null;

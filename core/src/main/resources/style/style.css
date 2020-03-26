@@ -1473,3 +1473,9 @@ tree:
 .notrelevant {
     opacity: 0.6;
 }
+
+.centeredItems {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

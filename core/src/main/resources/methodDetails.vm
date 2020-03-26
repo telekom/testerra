@@ -35,6 +35,22 @@
 
     </style>
 
+    <script type="application/javascript">
+        function toggleFotoramaFullscreen(fotoramaContainerSelector) {
+            var fotoramaContainer = $(fotoramaContainerSelector);
+            if (!fotoramaContainer.hasClass("fotorama--fullscreen")) {
+                fotoramaContainer.fotorama().data('fotorama').requestFullScreen();
+            } else {
+                fotoramaContainer.fotorama().data('fotorama').cancelFullScreen();
+            }
+        }
+
+        $('.fotorama').on('fotorama:load', function() {
+            //console.log("layoutCheck$customError.image loaded");
+            $('.fotorama').fotorama().resize();
+        });
+    </script>
+
 </head>
 
 <body>
@@ -337,13 +353,17 @@ No test sources
                                             <div class="dashboardHorizontalSpacer"></div>
                                         </div>
                                         <h5>$customError.getName(): $customError.image</h5>
-                                        <div class="fotorama"
+                                        <div class="fotorama layoutCheck$customError.image"
                                              data-navposition="top"
                                              data-allowfullscreen="native"
+                                             data-arrows="false"
                                              data-nav="thumbs"
                                              data-thumbwidth="64"
                                              data-thumbheight="64"
                                              data-width="90%"
+                                             data-swipe="true"
+                                             data-click="false"
+                                             data-fit="scaledown"
                                         >
                                             #set($imageNames=[$customError.actualScreenshot.filename,$customError.expectedScreenshot.filename,$customError.distanceScreenshot.filename])
                                             #set($imageCaptions=["Actual","Expected reference", "Distance"])
@@ -351,11 +371,9 @@ No test sources
                                             #foreach ($imageName in $imageNames)
                                                 #if ($imageName)
                                                     <div data-img="../../screenshots/$imageName" data-caption="$imageCaptions[$foreach.index]">
-                                                        <!-- Fullscreen -->
-                                                        <div style="margin: 0 45%;">
+                                                        <div class="centeredItems">
                                                             <a class="gallerybutton" href="#" title="Fullscreen"
-                                                               onclick="if ($('.fotorama.fotorama--fullscreen').length == 0) { $('.fotorama').fotorama().data('fotorama').requestFullScreen(); } else { $('.fotorama').fotorama().data('fotorama').cancelFullScreen(); }"
-                                                               style="margin-right:25px;">
+                                                               onclick="toggleFotoramaFullscreen('.layoutCheck$customError.image')">
                                                                 <i class="bgwhite fa fa-arrows-alt"></i>
                                                             </a>
                                                         </div>

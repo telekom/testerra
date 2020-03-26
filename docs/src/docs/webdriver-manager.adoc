@@ -315,7 +315,7 @@ To delete all the cookies of your current `WebDriver` session just call `WebDriv
 === Switching windows
 
 Sometimes you will come across testing websites with multiple windows, such as popups or something similar.
-To switch windows in a easy way Testerra provides some methods, which will automatically retry the window switching for maximum of seconds you can define with {wdm_timeouts_window_switch}.
+To switch windows in a easy way Testerra provides some methods, which will automatically retry the window switching for maximum of seconds you can define with `{wdm_timeouts_window_switch}`.
 
 [source,jaava]
 ----

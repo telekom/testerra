@@ -14,15 +14,16 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.internal;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Properties;
 
 /**
  * Holds information about out the built version and other build information.
@@ -38,7 +39,9 @@ public class TesterraBuildInformation implements Serializable {
      */
     private static final long serialVersionUID = 7085358508783947090L;
 
-    /** The singleton instance. */
+    /**
+     * The singleton instance.
+     */
     private static TesterraBuildInformation instance = null;
 
     final String localBuild = "local build";
@@ -60,14 +63,20 @@ public class TesterraBuildInformation implements Serializable {
             if (instance == null) {
                 instance = new TesterraBuildInformation();
                 try {
-                    PropertyManager.loadProperties("testerra-build.properties");
-                    instance.buildJavaVersion = PropertyManager.getProperty("build.java.version", instance.buildJavaVersion);
-                    instance.buildOsName = PropertyManager.getProperty("build.os.name", instance.buildOsName);
-                    instance.buildOsArch = PropertyManager.getProperty("build.os.arch", instance.buildOsArch);
-                    instance.buildOsVersion = PropertyManager.getProperty("build.os.version", instance.buildOsVersion);
-                    instance.buildUserName = PropertyManager.getProperty("build.user.name", instance.buildUserName);
-                    instance.buildTimestamp = PropertyManager.getProperty("build.timestamp", instance.buildTimestamp);
-                    instance.buildVersion = PropertyManager.getProperty("build.version", instance.buildVersion);
+                    final Properties properties = new Properties();
+                    final InputStream propertiesInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("testerra-build.properties");
+
+                    if (propertiesInputStream != null) {
+                        properties.load(propertiesInputStream);
+                    }
+
+                    instance.buildJavaVersion = properties.getProperty("build.java.version", instance.buildJavaVersion);
+                    instance.buildOsName = properties.getProperty("build.os.name", instance.buildOsName);
+                    instance.buildOsArch = properties.getProperty("build.os.arch", instance.buildOsArch);
+                    instance.buildOsVersion = properties.getProperty("build.os.version", instance.buildOsVersion);
+                    instance.buildUserName = properties.getProperty("build.user.name", instance.buildUserName);
+                    instance.buildTimestamp = properties.getProperty("build.timestamp", instance.buildTimestamp);
+                    instance.buildVersion = properties.getProperty("build.version", instance.buildVersion);
                 } catch (Exception e) {
                     LOGGER.info("No pre-set build information");
                 }

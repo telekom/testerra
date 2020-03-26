@@ -1,4 +1,11 @@
 dependencies {
+
+    compile('org.testng:testng:7.2.0') {
+        // We have to exclude this here, because testng is using 25.1-android in dependency com.google.inject:guice:4.1.0
+        // This will lead to a version clash with selenium and this will produce ImmutableMapErrors on WebDriverManager.getWebDriver
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+
     compile 'commons-io:commons-io:2.6'
     compile 'org.apache.commons:commons-lang3:3.9'
     compile 'org.slf4j:slf4j-log4j12:1.8.0-beta2'
@@ -6,10 +13,26 @@ dependencies {
     implementation 'net.lingala.zip4j:zip4j:1.3.2'
     implementation 'de.idyl:winzipaes:1.0.1'
     implementation 'org.mongodb:bson:3.7.0'
-    compile 'org.testng:testng:7.1.1'
     implementation 'org.reflections:reflections:0.9.12'
 }
 
 test {
     exclude '**'
 }
+
+//
+//configurations.all {
+//    resolutionStrategy {
+//
+//        // fail eagerly on version conflict (includes transitive dependencies)
+//        // e.g. multiple different versions of the same dependency (group and name are equal)
+////        failOnVersionConflict()
+//
+//        // prefer modules that are part of this build (multi-project or composite build) over external modules
+////        preferProjectModules()
+//
+//        // force certain versions of dependencies (including transitive)
+//        //  *append new forced modules:
+//        force 'com.google.guava:guava:25.1-jre'
+//    }
+//}

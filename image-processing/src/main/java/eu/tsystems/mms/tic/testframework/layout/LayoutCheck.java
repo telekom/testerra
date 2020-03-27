@@ -3,6 +3,7 @@ package eu.tsystems.mms.tic.testframework.layout;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
@@ -341,7 +342,7 @@ public final class LayoutCheck {
         final File screenshot = driver.getScreenshotAs(OutputType.FILE);
         final MatchStep step = prepare(screenshot, targetImageName);
 
-        if (step.takeReferenceOnly == false) {
+        if (!step.takeReferenceOnly) {
             step.mode = mode;
             switch (mode) {
                 case PIXEL:
@@ -401,11 +402,13 @@ public final class LayoutCheck {
         Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
 
         if (!actualImageDimension.equals(expectedImageDimension)) {
-            throw new RuntimeException(String.format("The actual screenshot (width=%dpx, height=%dpx) has a different size than the reference (width=%dpx, height=%dpx)",
-                actualImageDimension.width,
-                actualImageDimension.height,
-                expectedImageDimension.width,
-                expectedImageDimension.height
+            NonFunctionalAssert.fail(
+                String.format(
+                    "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",
+                    actualImageDimension.width,
+                    actualImageDimension.height,
+                    expectedImageDimension.width,
+                    expectedImageDimension.height
                 )
             );
         }

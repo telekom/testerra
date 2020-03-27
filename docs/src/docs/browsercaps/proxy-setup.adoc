@@ -17,7 +17,7 @@ public abstract class AbstractTest extends TesterraTest {
     @BeforeSuite
     public void proxySetup() {
 
-        String proxyUrl = ProxyUtils.getSystemHttpProxyString();
+        URL proxyUrl = ProxyUtils.getSystemHttpProxyUrl();
         if (proxyUrl != null) {
             DesiredCapabilities dc = new DesiredCapabilities();
             WebDriverManagerUtils.addProxyToCapabilities(dc, proxyUrl);

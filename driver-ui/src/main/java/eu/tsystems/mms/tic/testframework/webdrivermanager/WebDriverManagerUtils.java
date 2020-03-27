@@ -14,7 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import com.sun.jersey.api.client.Client;
@@ -72,7 +72,7 @@ public final class WebDriverManagerUtils {
     /**
      * Computes the baseUrl to use from the possible sources.
      *
-     * @param presetBaseURL                        A manually set baseUrl
+     * @param presetBaseURL A manually set baseUrl
      * @return BaseUrl to use.
      */
     protected static String getBaseUrl(final String presetBaseURL) {
@@ -98,15 +98,14 @@ public final class WebDriverManagerUtils {
      * @param driver WebDriver or Selenium to get info from.
      */
     protected static void logUserAgent(final String sessionKey, final WebDriver driver,
-            final HostInfo hostInfo) {
+                                       final HostInfo hostInfo) {
 
         String browserInfo = pLogUserAgent(driver);
 
         SessionContext sessionContext = ExecutionContextController.getCurrentSessionContext();
         if (sessionContext != null) {
             sessionContext.metaData.put("browserInfo", browserInfo);
-        }
-        else {
+        } else {
             LOGGER.error("Something is wrong, I don't have a session context, but I'm in a session");
         }
     }
@@ -153,8 +152,7 @@ public final class WebDriverManagerUtils {
 
         if (ProvidesBrowserInformation.class.isAssignableFrom(realDriver.getClass())) {
             browserInformation = ((ProvidesBrowserInformation) realDriver).getBrowserInformation();
-        }
-        else if (JavascriptExecutor.class.isAssignableFrom(realDriver.getClass())) {
+        } else if (JavascriptExecutor.class.isAssignableFrom(realDriver.getClass())) {
             String userAgentString = "unknown";
             try {
                 userAgentString = (String) ((JavascriptExecutor) realDriver).executeScript("return navigator.userAgent;");
@@ -163,8 +161,7 @@ public final class WebDriverManagerUtils {
             }
 
             browserInformation = new YauaaBrowserInformation(userAgentString);
-        }
-        else {
+        } else {
             browserInformation = new YauaaBrowserInformation(null);
         }
 
@@ -182,15 +179,15 @@ public final class WebDriverManagerUtils {
     public static NodeInfo getExecutingRemoteWebDriverNode(WebDriver driver) {
         return new NodeInfo("grid", 3);
         //        if (driver instanceof EventFiringWebDriver) {
-//            driver = ((EventFiringWebDriver) driver).getWrappedDriver();
-//        }
-//
-//        if (driver instanceof RemoteWebDriver) {
-//            return getExecutingRemoteWebDriverNode((RemoteWebDriver) driver);
-//        } else {
-//            // local mode without supervisor
-//            return null;
-//        }
+        //            driver = ((EventFiringWebDriver) driver).getWrappedDriver();
+        //        }
+        //
+        //        if (driver instanceof RemoteWebDriver) {
+        //            return getExecutingRemoteWebDriverNode((RemoteWebDriver) driver);
+        //        } else {
+        //            // local mode without supervisor
+        //            return null;
+        //        }
     }
 
     /**
@@ -206,8 +203,7 @@ public final class WebDriverManagerUtils {
         final URL url;
         if (commandExecutor instanceof HttpCommandExecutor) {
             url = ((HttpCommandExecutor) commandExecutor).getAddressOfRemoteServer();
-        }
-        else {
+        } else {
             return new NodeInfo("local_mode", 0);
         }
         String host = url.getHost();
@@ -351,24 +347,43 @@ public final class WebDriverManagerUtils {
      * @param capabilities  .
      * @param proxyString   .
      * @param noProxyString .
+     * @see WebDriverManagerUtils#addProxyToCapabilities(DesiredCapabilities, URL)
+     * @deprecated see {@link WebDriverManagerUtils#addProxyToCapabilities(DesiredCapabilities, URL)}
      */
     @Deprecated
     public static void addProxyToCapabilities(final DesiredCapabilities capabilities, final String proxyString, final String noProxyString) {
         addProxyToCapabilities(capabilities, proxyString);
     }
 
+    /**
+     * Add proxy settings to capabilities. proxyString may be "proxyhost:8080".
+     *
+     * @param capabilities {@link DesiredCapabilities}
+     * @param proxyUrl     {@link URL}
+     */
+    public static void addProxyToCapabilities(final DesiredCapabilities capabilities, final URL proxyUrl) {
+
+        final String proxyString = WebDriverProxyUtils.toProxyString(proxyUrl);
+        addProxyToCapabilities(capabilities, proxyString);
+    }
+
+    /**
+     * Add proxy settings to capabilities. proxyString may be "proxyhost:8080".
+     *
+     * @param capabilities {@link DesiredCapabilities}
+     * @param proxyString  {@link String}
+     */
     public static void addProxyToCapabilities(final DesiredCapabilities capabilities, final String proxyString) {
+
         Proxy proxy = new Proxy();
         proxy.setHttpProxy(proxyString);
         proxy.setFtpProxy(proxyString);
         proxy.setSslProxy(proxyString);
-//        proxy.setSocksProxy(proxyString);
+        //        proxy.setSocksProxy(proxyString);
 
-//        JSONArray a = new JSONArray();
-//        a.put(noProxyString);
-//        proxy.setNoProxy(a + "");
-
-
+        //        JSONArray a = new JSONArray();
+        //        a.put(noProxyString);
+        //        proxy.setNoProxy(a + "");
         capabilities.setCapability(CapabilityType.PROXY, proxy);
     }
 

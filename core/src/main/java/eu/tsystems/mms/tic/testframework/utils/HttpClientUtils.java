@@ -52,7 +52,10 @@ public final class HttpClientUtils {
         if (proxyAutoMode) {
             final URL systemProxy = ProxyUtils.getSystemHttpProxyUrl();
 
-            if (systemProxy != null) {
+            // Check for
+            // 1. Proxy was configured in general
+            // 2. Proxy Port is set, because HttpHost will get in trouble with por tof -1
+            if (systemProxy != null && systemProxy.getPort() != -1) {
                 proxy = new HttpHost(systemProxy.getHost(), systemProxy.getPort(), systemProxy.getProtocol());
             }
         }

@@ -30,25 +30,6 @@ public class ProxyUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxyUtils.class);
 
     /**
-     * Will return proxy url like {http.proxyHost}:{http.proxyPort}
-     *
-     * @return null If there is no URL configured
-     */
-    public static String getSystemHttpProxyString() {
-
-        return getSpecificProxyTypeString("http");
-    }
-
-    /**
-     * Will return proxy url like {https.proxyHost}:{https.proxyPort}
-     *
-     * @return null If there is no URL configured
-     */
-    public static String getSystemHttpsProxyString() {
-        return getSpecificProxyTypeString("https");
-    }
-
-    /**
      * Will return proxy url like http://{http.proxyUser}:{http.proxyPassword}@{http.proxyHost}:{http.proxyPort}
      *
      * @return null If there is no URL configured

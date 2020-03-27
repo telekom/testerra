@@ -18,6 +18,7 @@ package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxyUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -26,7 +27,7 @@ import org.testng.annotations.Test;
 import java.net.URL;
 
 /**
- * Tests class ProxyUtils
+ * Tests class for {@link ProxyUtils} and {@link WebDriverProxyUtils}
  * <p>
  * Date: 27.03.2020
  * Time: 07:31
@@ -77,7 +78,10 @@ public class ProxyUtilsTest extends TesterraTest {
 
         final String expectedUrlString = PROXY_HOST_HTTP + ":" + PROXY_PORT_HTTP;
 
-        final String actualProxyString = ProxyUtils.getSystemHttpProxyString();
+        final URL actualProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
+        Assert.assertNotNull(actualProxyUrl, "Proxy url generated!");
+
+        final String actualProxyString = WebDriverProxyUtils.toProxyString(actualProxyUrl);
         Assert.assertEquals(actualProxyString, expectedUrlString, "Generated proxy string equals.");
     }
 
@@ -86,7 +90,10 @@ public class ProxyUtilsTest extends TesterraTest {
 
         final String expectedUrlString = PROXY_HOST_HTTPS + ":" + PROXY_PORT_HTTPS;
 
-        final String actualProxyString = ProxyUtils.getSystemHttpsProxyString();
+        final URL actualProxyUrl = ProxyUtils.getSystemHttpsProxyUrl();
+        Assert.assertNotNull(actualProxyUrl, "Proxy url generated!");
+
+        final String actualProxyString = WebDriverProxyUtils.toProxyString(actualProxyUrl);
         Assert.assertEquals(actualProxyString, expectedUrlString, "Generated proxy string equals.");
     }
 

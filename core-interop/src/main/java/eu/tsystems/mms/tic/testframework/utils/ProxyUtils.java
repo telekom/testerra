@@ -81,16 +81,16 @@ public class ProxyUtils {
         try {
 
             final String user = System.getProperty(proxyType + ".proxyUser");
-            if (user != null) {
+            if (StringUtils.isNotBlank(user)) {
                 proxyUrlString += URLEncoder.encode(user, urlEncoding);
             }
 
             final String password = System.getProperty(proxyType + ".proxyPassword");
-            if (password != null) {
+            if (StringUtils.isNotBlank(password)) {
                 proxyUrlString += ":" + URLEncoder.encode(password, urlEncoding);
             }
 
-            if (user != null) {
+            if (StringUtils.isNotBlank(user)) {
                 proxyUrlString += "@";
             }
 

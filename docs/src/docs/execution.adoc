@@ -2,16 +2,12 @@
 
 == Demo mode
 In the demo mode actions on pages are marked with distinctive coloured frames around the element of the action. This mechanism is set by a property
+
+.test.properties
 [source, properties]
 ----
 # activate demo mode, default = false
 demomode=true
-----
-
-or explicitly in the code
-[source, java]
-----
-POConfig.setDemoMode(true);
 ----
 The following colours are used for highlighting
 

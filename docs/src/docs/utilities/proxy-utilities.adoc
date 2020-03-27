@@ -7,8 +7,11 @@ This is a static helper class based for reading the proxy configuration from sys
 import java.net.URL;
 import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
 
-URL proxyUrl;
+String proxyString; // Format: {http.proxyHost}:{http.proxyPort}
+URL proxyUrl; // Format e.g.: http://{http.proxyHost}:{http.proxyPort}
 proxyUrl = ProxyUtils.getSystemHttpProxyUrl();
+proxyString = ProxyUtils.getSystemHttpProxyString();
+
 proxyUrl = ProxyUtils.getSystemHttpsProxyUrl();
-proxyUrl = ProxyUtils.getSystemFtpProxyUrl();
+proxyString = ProxyUtils.getSystemHttpsProxyString();
 ----

@@ -1,4 +1,24 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contributors:
+ *      Mike Reiche
+ *      Eric Kubenka
+ */
 package eu.tsystems.mms.tic.testframework.utils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -7,38 +27,84 @@ import java.net.URLEncoder;
 
 public class ProxyUtils {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProxyUtils.class);
+
     /**
+     * Will return proxy url like {http.proxyHost}:{http.proxyPort}
+     *
+     * @return null If there is no URL configured
+     */
+    public static String getSystemHttpProxyString() {
+
+        return getSpecificProxyTypeString("http");
+    }
+
+    /**
+     * Will return proxy url like {https.proxyHost}:{https.proxyPort}
+     *
+     * @return null If there is no URL configured
+     */
+    public static String getSystemHttpsProxyString() {
+        return getSpecificProxyTypeString("https");
+    }
+
+    /**
+     * Will return proxy url like http://{http.proxyUser}:{http.proxyPassword}@{http.proxyHost}:{http.proxyPort}
+     *
      * @return null If there is no URL configured
      */
     public static URL getSystemHttpProxyUrl() {
-        return getSystemProxyUrlWithPrefix("http");
+        return getSpecificProxyTypeUrlWithPrefix("http", "http");
     }
 
     /**
+     * Will return proxy url like http://{https.proxyUser}:{https.proxyPassword}@{https.proxyHost}:{https.proxyPort}
+     *
      * @return null If there is no URL configured
      */
     public static URL getSystemHttpsProxyUrl() {
-        return getSystemProxyUrlWithPrefix("https");
+        return getSpecificProxyTypeUrlWithPrefix("https", "http");
+    }
+
+    private static String getSpecificProxyTypeString(final String proxyType) {
+
+        String proxyString = "";
+
+        final String proxyHost = System.getProperty(proxyType + ".proxyHost");
+        if (proxyHost != null) {
+            proxyString += proxyHost;
+        } else {
+            return null;
+        }
+
+        final String proxyPort = System.getProperty(proxyType + ".proxyPort");
+        if (proxyPort != null) {
+            proxyString += ":" + proxyPort;
+        }
+
+        return proxyString;
     }
 
     /**
-     * @return null If there is no URL configured
+     * ProxyType can be "http" or "https" according to java env properties proxy.httpHost or proxy.httpsHost
+     *
+     * @param proxyType {@link String} http or https
+     * @param prefix    {@link String} Prefix for URL Scheme
+     * @return URL
      */
-    public static URL getSystemFtpProxyUrl() {
-        return getSystemProxyUrlWithPrefix("ftp");
-    }
-
-    private static URL getSystemProxyUrlWithPrefix(String prefix) {
-
+    private static URL getSpecificProxyTypeUrlWithPrefix(final String proxyType, final String prefix) {
 
         final String urlEncoding = "UTF-8";
         String proxyUrlString = prefix + "://";
+
         try {
-            String user = System.getProperty(prefix + ".proxyUser");
+
+            final String user = System.getProperty(proxyType + ".proxyUser");
             if (user != null) {
                 proxyUrlString += URLEncoder.encode(user, urlEncoding);
             }
-            String password = System.getProperty(prefix + ".proxyPassword");
+
+            final String password = System.getProperty(proxyType + ".proxyPassword");
             if (password != null) {
                 proxyUrlString += ":" + URLEncoder.encode(password, urlEncoding);
             }
@@ -47,22 +113,18 @@ public class ProxyUtils {
                 proxyUrlString += "@";
             }
 
-            final String proxyHost = System.getProperty(prefix + ".proxyHost");
-            if (proxyHost != null) {
-                proxyUrlString += proxyHost;
-            } else {
+            final String specificProxyTypeString = getSpecificProxyTypeString(proxyType);
+            if (specificProxyTypeString == null) {
                 return null;
             }
 
-            final String proxyPort = System.getProperty(prefix + ".proxyPort");
-            if (proxyPort != null) {
-                proxyUrlString += ":" + proxyPort;
-            }
+            proxyUrlString += specificProxyTypeString;
 
             return new URL(proxyUrlString);
         } catch (UnsupportedEncodingException | MalformedURLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error receiving Proxy URL", e);
         }
+
         return null;
     }
 }

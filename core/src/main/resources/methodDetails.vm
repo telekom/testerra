@@ -353,7 +353,7 @@ No test sources
                                             <div class="dashboardHorizontalSpacer"></div>
                                         </div>
                                         <h3>Layout check: $customError.image</h3>
-                                        <div>Current distance: $customError.distance (Threshold: $customError.threshold)</div>
+                                        <div class="dashboardTextSmall">Current distance: $customError.distance% (Threshold: $customError.threshold%)</div>
                                         <div class="fotorama layoutCheck$customError.image"
                                              data-navposition="top"
                                              data-allowfullscreen="native"

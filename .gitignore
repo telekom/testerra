@@ -14,3 +14,4 @@ gradlew
 /.classpath
 /.project
 **/*.settings
+/integration-tests/src/test/resources/screenreferences/

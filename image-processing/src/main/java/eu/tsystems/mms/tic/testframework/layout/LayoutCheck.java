@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -589,7 +590,7 @@ public final class LayoutCheck {
             if (!matchStep.takeReferenceOnly) {
                 LayoutCheck.toReport(matchStep);
             }
-            AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance), new BigDecimal(confidenceThreshold), String.format("Pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName));
+            AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP), new BigDecimal(confidenceThreshold), String.format("Pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName));
         } catch (LayoutCheckException e) {
             matchStep = e.getMatchStep();
             LayoutCheck.toReport(matchStep);

@@ -1,12 +1,97 @@
 = Test execution
 
 == Demo mode
+In the demo mode actions on pages are marked with distinctive coloured frames around the element of the action. This mechanism is set by a property
+[source, properties]
+----
+# activate demo mode, default = false
+demomode=true
+----
 
-// demomode and guiElement highlight
+or explicitly in the code
+[source, java]
+----
+POConfig.setDemoMode(true);
+----
+The following colours are used for highlighting
+
+* [red]#red#: failed visibility checks and asserts
+* [green]#green#: successful visibility checks and asserts
+* [yellow]#yellow#: mouseOver
+* [blue]#blue#: click
+
+== Explicit Highlighting
+For debugging purposes a `GuiElement` can call its highlight method to activate the demo mode and highlight the Element just for the current page.
+
+[source, java]
+GuiElement loginButton = new GuiElement(driver, By.id('login'));
+loginButton.highlight();
+// renders a green frame around the loginButton Element of the current Page
+
+== Retry analyzer
+This is an internal class, which provides a mechanism to automatically retry failed tests when matching certain criteria.
+The filtering process contains of checks of classes and messages matching the thrown Exception, which are set within the test.properties file.
+
+.test.properties
+[source, properties]
+----
+# set additional classes that engage a retry,
+# instances of TimeoutException are always retried
+failed.tests.if.throwable.classes=java.sql.SQLRecoverableException
+
+# set additional messages of Throwable that engage a retry,
+# by default the following messages are evaluated
+#           "Error communicating with the remote browser. It may have died",
+#           "was terminated due to TIMEOUT",
+#           "was terminated due to SO_TIMEOUT",
+#           "The requested URL could not be retrieved",
+#           "Squid is unable to create a TCP socket"
+
+failed.tests.if.throwable.messages=failed to connect, error communicating with database
+
+# sets the maximum number of retries, default = 1
+failed.tests.max.retries=5
+----
+
+The retry mechanism always ignores testcase, which have a valid Fails annotation. For further adjustment additional analyzers can be registered
+
+.Defining AddtionalRetryAnalyzer
+[source, java]
+----
+// custom Retryanalyzers need to implement the functional interface AdditionalRetryAnalyzer
+public class InstantiationExceptionRetryAnalyzer implements AdditionalRetryAnalyzer {
+
+    final String message = "failed instantiation";
+
+    @Override
+    public Throwable analyzeThrowable(Throwable throwable, String tMessage) {
+        if (throwable instanceof InstantiationException) {
+            if (tMessage != null) {
+                final String tMessageLC = tMessage.toLowerCase();
+                boolean match = tMessageLC.contains(message);
+                if (match) {
+                return throwable;
+                }
+            }
+        }
+
+        return null;
+    }
+}
+
+// register the additional Analyzer, which checks for "InstantiationException" and the message "failed instantiation"
+RetryAnalyzer.registerAdditionalRetryAnalyzer(new InstantiationExceptionRetryAnalyzer());
+----
 
 == Conditional behaviour
+For managing the execution behaviour of tests in suites there are means to skip tests and avoid closing browser windows after failures.
 
-== Custom throwable failed tests
+.test.properties
+[source, properties]
+----
+# all browser windows remain open after first failure, default = false
+tt.on.state.testfailed.skip.shutdown=true
 
-// failed_tests_if_throwable_classes/methods
-
+# skip all tests after first failure, default = false
+tt.on.state.testfailed.skip.following.tests=true
+----

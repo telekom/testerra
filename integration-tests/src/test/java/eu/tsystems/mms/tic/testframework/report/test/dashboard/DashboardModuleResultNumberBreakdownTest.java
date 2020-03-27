@@ -164,7 +164,6 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     /**
      * This test tests the numbers and deltas of the different status.
      */
-    @Fails(ticketId = 2267, description = "TestNG-bug, fixed with 7.1.2: https://github.com/cbeust/testng/issues/2267")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1},dataProvider = "testResultNumbers")
     public void testT12_checkTestNumbers(String report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(report));

@@ -15,7 +15,7 @@
  *     Peter Lehmann
  *     jhmr
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.constants;
 
 /**
@@ -98,6 +98,11 @@ public final class TesterraProperties {
      * WDM close windows rule.
      */
     public static final String CLOSE_WINDOWS_ON_FAILURE = "tt.wdm.closewindows.onfailure";
+
+    /**
+     * WDM: Timeout / Duration Setting for Window Switching
+     */
+    public static final String WEBDRIVER_WINDOW_SWITCH_MAX_DURATION = "tt.wdm.timeouts.seconds.window.switch.duration";
 
     /**
      * WDM: Kill WebDriver on stucking selenium command after this.

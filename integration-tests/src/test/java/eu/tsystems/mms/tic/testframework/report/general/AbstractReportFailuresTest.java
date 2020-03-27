@@ -75,7 +75,6 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
     /**
      * This test checks the listed METHOD for a single failure point entry in the list
      */
-    @Fails(ticketId = 621, description = "failure be related to bad code snippet display")
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
     public void testT06_ListedTestsForSingleFailure() {
         final int failurePointPositionToCheck = 2;

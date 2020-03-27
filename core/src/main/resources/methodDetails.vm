@@ -352,7 +352,8 @@ No test sources
                                         <div style="padding: 20px;">
                                             <div class="dashboardHorizontalSpacer"></div>
                                         </div>
-                                        <h5>$customError.getName(): $customError.image</h5>
+                                        <h3>Layout check: $customError.image</h3>
+                                        <div>Current distance: $customError.distance (Threshold: $customError.threshold)</div>
                                         <div class="fotorama layoutCheck$customError.image"
                                              data-navposition="top"
                                              data-allowfullscreen="native"
@@ -360,6 +361,7 @@ No test sources
                                              data-nav="thumbs"
                                              data-thumbwidth="64"
                                              data-thumbheight="64"
+                                             data-height="80%"
                                              data-width="90%"
                                              data-swipe="true"
                                              data-click="false"

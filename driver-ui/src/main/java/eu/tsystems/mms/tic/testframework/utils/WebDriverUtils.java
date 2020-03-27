@@ -13,11 +13,13 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
-*/
+ *     Eric Kubenka
+ */
 package eu.tsystems.mms.tic.testframework.utils;
 
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Constants;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -46,7 +48,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <Beschreibung der Klasse>
+ * Provides some utilities for handling the Selenium {@link WebDriver}
  *
  * @author pele
  */
@@ -58,59 +60,55 @@ public final class WebDriverUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverUtils.class);
 
     /**
+     * Timeout / maximum duration for Window Switching
+     */
+    private static long WINDOW_SWITCH_MAX_DURATION_TIME_SECONDS = PropertyManager.getLongProperty(TesterraProperties.WEBDRIVER_WINDOW_SWITCH_MAX_DURATION, 3);
+
+    /**
      * Hidden constructor.
      */
     private WebDriverUtils() {
     }
 
     /**
-     * Does what the name says.
+     * Finds a window by matching title and will switch to it.
      *
-     * @param windowTitle Title of the window to switch to.
-     * @param withoutWait True for don't wait and don't get a second chance.
+     * @param windowTitle {@link String} Title of the window to switch to.
      * @return true if switching was successful.
      */
-    public static boolean findWindowAndSwitchTo(final String windowTitle, final boolean withoutWait) {
-        return findWindowAndSwitchTo(windowTitle, withoutWait, null);
+    public static boolean findWindowAndSwitchTo(final String windowTitle) {
+        return findWindowAndSwitchTo(windowTitle, null);
     }
 
     /**
-     * Does what the name says.
+     * Finds a window by matching title and will switch to it.
      *
-     * @param windowTitle          Title of the window to switch to.
-     * @param fast                 True for don't wait and don't get a second chance.
-     * @param driver               Webdriver object or null (then the default session will be used)
-     * @param excludeWindowHandles .
+     * @param windowTitle          {@link String} Title of the window to switch to.
+     * @param driver               {@link WebDriver} object or null (then the default session will be used)
+     * @param excludeWindowHandles {@link String} array of window handles that should not be switch to.
      * @return true if switching was successful.
      */
-    public static boolean findWindowAndSwitchTo(final String windowTitle, final boolean fast, WebDriver driver,
+    public static boolean findWindowAndSwitchTo(final String windowTitle, WebDriver driver,
                                                 final String... excludeWindowHandles) {
-        return findWindowAndSwitchTo(windowTitle, null, fast, driver, excludeWindowHandles);
+        return findWindowAndSwitchTo(windowTitle, null, driver, excludeWindowHandles);
     }
 
     /**
-     * Does what the name says.
+     * Finds a window by matching title and will switch to it.
      *
-     * @param windowTitle          Title of the window to switch to.
-     * @param fast                 True for don't wait and don't get a second chance.
-     * @param driver               Webdriver object or null (then the default session will be used)
-     * @param excludeWindowHandles .
+     * @param windowTitle          {@link String}Title of the window to switch to.
+     * @param driver               {@link WebDriver} object or null (then the default session will be used)
+     * @param excludeWindowHandles {@link String} array of window handles that should not be switch to.
      * @return true if switching was successful.
      */
-    public static boolean findWindowAndSwitchTo(final String windowTitle, final String urlContains, final boolean fast, WebDriver driver,
+    public static boolean findWindowAndSwitchTo(final String windowTitle, final String urlContains, WebDriver driver,
                                                 final String... excludeWindowHandles) {
         if (driver == null) {
             driver = WebDriverManager.getWebDriver();
         }
 
         final WebDriver wdRef = driver;
-
-        Timer timer;
-        if (fast) {
-            timer = new Timer(500, 1000);
-        } else {
-            timer = new Timer();
-        }
+        final Timer timer = new Timer(500, WINDOW_SWITCH_MAX_DURATION_TIME_SECONDS * 1000);
 
         final String expectedCriteriaMsg =
                 "\ntitle: " + windowTitle +
@@ -184,6 +182,14 @@ public final class WebDriverUtils {
         return WebDriverManagerUtils.generateNewDesiredCapabilities();
     }
 
+    /**
+     * Finds an element by it's location using  Selenium features and utilities
+     *
+     * @param driver {@link WebDriver}
+     * @param x      int - coordinate
+     * @param y      int - coordinate
+     * @return org.openqa.selenium.WebElement
+     */
     public static WebElement findElementByLocation(WebDriver driver, int x, int y) {
         /*
         TODO: x and y are switched sometimes, i really dont know why this is. I have changed this multiple times... :(
@@ -252,7 +258,7 @@ public final class WebDriverUtils {
             }
 
             final Object o = JSUtils.executeScript(driver, "return arguments[0].href;", link);
-            if (o != null && o instanceof String) {
+            if (o instanceof String) {
                 hrefs.put(linkname, (String) o);
             } else {
                 hrefs.put(linkname, null);
@@ -304,6 +310,12 @@ public final class WebDriverUtils {
         }
     }
 
+    /**
+     * Will search for the deepest {@link WebDriver} in the Wrapped-WebDriver-Chain
+     *
+     * @param driver {@link WebDriver}
+     * @return WebDriver
+     */
     public static WebDriver getLowestWebDriver(WebDriver driver) {
         if (driver instanceof EventFiringWebDriver) {
             EventFiringWebDriver efWd = (EventFiringWebDriver) driver;
@@ -329,6 +341,12 @@ public final class WebDriverUtils {
         return driver;
     }
 
+    /**
+     * Will return Selenium session UUID of {@link WebDriver} session
+     *
+     * @param driver {@link WebDriver}
+     * @return String
+     */
     public static String getSessionId(WebDriver driver) {
         driver = getLowestWebDriver(driver);
         if (driver instanceof RemoteWebDriver) {
@@ -339,6 +357,12 @@ public final class WebDriverUtils {
         return null;
     }
 
+    /**
+     * Will get the viewport by executing JavaScript to determine innerwith and offsets
+     *
+     * @param driver {@link WebDriver}
+     * @return Rectangle
+     */
     public static Rectangle getViewport(WebDriver driver) {
         final ArrayList<Long> list = (ArrayList<Long>) JSUtils.executeScript(driver, "return [window.pageXOffset, window.pageYOffset, window.innerWidth, window.innerHeight];");
         return new Rectangle(list.get(0).intValue(), list.get(1).intValue(), list.get(2).intValue(), list.get(3).intValue());

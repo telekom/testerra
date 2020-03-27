@@ -106,9 +106,6 @@ public class UITestUtils {
             String originalWindowHandle,
             String sessionKey
     ) {
-        if (!Flags.SCREENSHOTTER_ACTIVE) {
-            return null;
-        }
 
         WebDriverRequest webDriverRequest = WebDriverManager.getRelatedWebDriverRequest(eventFiringWebDriver);
         if (Browsers.htmlunit.equalsIgnoreCase(webDriverRequest.browser)) {

@@ -72,7 +72,8 @@ public final class ReportUtils {
      */
     public static void copyReportResources() {
 
-        final File targetDir = new File(Report.REPORT_DIRECTORY, Report.FRAMES_FOLDER_NAME);
+        Report report = new Report();
+        final File targetDir = report.getReportDirectory(Report.FRAMES_FOLDER_NAME);
 
         String[] resources = new String[]{
                 "js/kis/main.js",
@@ -324,7 +325,8 @@ public final class ReportUtils {
         /*
          * main report index.html
          */
-        final File reportFileIndex = new File(Report.REPORT_DIRECTORY, "index.html");
+        Report report = new Report();
+        final File reportFileIndex = report.getReportDirectory("index.html");
         ReportFormatter.createTestClassesView(reportFileIndex, reportingData.classContexts, "index.vm", null, null);
 
         /*
@@ -352,7 +354,7 @@ public final class ReportUtils {
         final File reportFileDashboard = new File(framesDir, "dashboard.html");
         ReportFormatter.createDashboardHtml(reportingData, reportFileDashboard, "dashboard.vm");
 
-        final File reportFileEmailable = new File(Report.REPORT_DIRECTORY, "emailable-report.html");
+        final File reportFileEmailable = report.getReportDirectory("emailable-report.html");
         ReportFormatter.createEmailableReportHtml(reportingData, reportFileEmailable, "emailable-report.vm");
 
         /*
@@ -445,7 +447,7 @@ public final class ReportUtils {
             throw new TesterraSystemException("Report generation took too long", e);
         }
 
-        File finalDirectory = Report.finalizeReport();
+        File finalDirectory = report.finalizeReport();
         LOGGER.info("Report written to " + finalDirectory.getAbsolutePath());
     }
 

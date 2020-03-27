@@ -20,6 +20,7 @@
 :wdm_closewindows_aftertestmethods: tt.wdm.closewindows.aftertestmethods
 :wdm_closewindows_onfailure:        tt.wdm.closewindows.onfailure
 :wdm_timeouts_selenium_command_stuck: tt.wdm.timeouts.seconds.selenium.command.stuck
+:wdm_timeouts_window_switch: tt.wdm.timeouts.seconds.window.switch.duration
 :takeAutomaticScreenshot:           tt.takeAutomaticScreenshot
 :webdriver_timeouts_seconds_pageload:   webdriver.timeouts.seconds.pageload
 :webdriver_timeouts_seconds_script:     webdriver.timeouts.seconds.script

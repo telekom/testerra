@@ -8,7 +8,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
-class ProxyUtils {
+class WebDriverProxyUtils {
 
     static void updateSessionContextRelations(SessionContext sessionContext) {
         /*

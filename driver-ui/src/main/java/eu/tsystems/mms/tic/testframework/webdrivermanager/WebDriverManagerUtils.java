@@ -368,6 +368,7 @@ public final class WebDriverManagerUtils {
 //        a.put(noProxyString);
 //        proxy.setNoProxy(a + "");
 
+
         capabilities.setCapability(CapabilityType.PROXY, proxy);
     }
 

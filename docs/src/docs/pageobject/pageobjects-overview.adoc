@@ -1,11 +1,11 @@
-== Overview
+= Overview
 
-=== What is a page object?
+== What is a page object?
 A page objects represents a HTML pages and or a subpage. It contains GuiElements with describe the actual page and methods to provide actions on them.
 
 In your test you only uses the provided actions of your page like an API. The page object himself uses the GuiElements as an API to interact with the website.
 
-=== Navigation Principle
+== Navigation Principle
 In a regular Web Application there is a defined navigation flow. This means there are pages with actions on it that let you navigate to other pages.
 
 In the example below we have a search dialog with a search action on it that lets you navigate to a `ResultPage` with the search result.
@@ -16,7 +16,7 @@ This new page object is used for the next steps in your test.
 .Example of a page flow
 image::../images/PageFlowExample.png[]
 
-=== Example
+== Example
 
 The following page contains two `GuiElements` and one method for a user action 'search a string'.
 

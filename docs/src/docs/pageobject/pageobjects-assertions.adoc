@@ -1,4 +1,4 @@
-== Assertions
+= Assertions
 `Pages objects` offer some `assertions` which mostly work like their equivalents on `GuiElements`.
 In difference to `GuiElements` here the whole page is searched for the given element in recursive order.
 [source,java]

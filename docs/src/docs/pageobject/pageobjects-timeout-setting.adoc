@@ -1,4 +1,4 @@
-== Timeout Setting
+= Timeout Setting
 
 The checks are performed with a timeout. The default timeout is set by the property {element_timeout_seconds} in `test.properties`
 

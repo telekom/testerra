@@ -1,4 +1,4 @@
-== Check Annotations
+= Check Annotations
 The `@Check` annotation is used to verify the actual presence of an element on the site.
 All `GuiElements` that are marked with the `@Check` annotation are automatically checked when instantiated by the `PageFactory`.
 

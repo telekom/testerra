@@ -1,6 +1,6 @@
-== Instantiation
+= Instantiation
 
-=== PageFactory
+== PageFactory
 Instead of creating Pages with the page constructor pages should created by using the `PageFactory` as demonstrated in the example.
 
 When the page is instantiated, Testerra automatically checks its annotated elements.
@@ -18,7 +18,7 @@ PageFactory.checkNot(searchPage.class, driver);
 ----
 The checkNot is successful if at least one mandatory GuiElement ("@Check") is not shown.
 
-=== Inject additional objects
+== Inject additional objects
 
 In some cases you need to provide dynamic information to the page, which are only known at runtime.
 
@@ -60,7 +60,7 @@ pageVariablesObject.value = "some information";
 MyPage myPage = PageFactory.create(MyPage.class, driver, pageVariablesObject);
 ----
 
-===	Page Prefixes
+==	Page Prefixes
 
 Page Prefixes can influence which concrete classes get instantiated by the `PageFactory`. They work together with a inheritance scheme of page classes. This can be useful if there is a base page which can come in different concrete variations. Example:
 

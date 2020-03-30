@@ -1,4 +1,4 @@
-== Additional Page Methods
+= Additional Page Methods
 [source,java]
 ----
 ResultPage resultPage = PageFactory.create(ResultPage.class, driver);

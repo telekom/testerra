@@ -1,10 +1,10 @@
 = PageObjects
 
-include::pageobject/pageobjects-overview.adoc[]
-include::pageobject/pageobjects-instantiation.adoc[]
-include::pageobject/pageobjects-responsive.adoc[]
-include::pageobject/pageobjects-check-annotations.adoc[]
-include::pageobject/pageobjects-error-handling.adoc[]
-include::pageobject/pageobjects-timeout-setting.adoc[]
-include::pageobject/pageobjects-assertions.adoc[]
-include::pageobject/pageobjects-additional-methods.adoc[]
+include::pageobject/pageobjects-overview.adoc[leveloffset=+1]
+include::pageobject/pageobjects-instantiation.adoc[leveloffset=+1]
+include::pageobject/pageobjects-responsive.adoc[leveloffset=+1]
+include::pageobject/pageobjects-check-annotations.adoc[leveloffset=+1]
+include::pageobject/pageobjects-error-handling.adoc[leveloffset=+1]
+include::pageobject/pageobjects-timeout-setting.adoc[leveloffset=+1]
+include::pageobject/pageobjects-assertions.adoc[leveloffset=+1]
+include::pageobject/pageobjects-additional-methods.adoc[leveloffset=+1]

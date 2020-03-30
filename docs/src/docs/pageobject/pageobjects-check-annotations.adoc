@@ -1,8 +1,13 @@
 = Check Annotations
+
+include::../properties/property-attributes.adoc[]
+
 The `@Check` annotation is used to verify the actual presence of an element on the site.
 All `GuiElements` that are marked with the `@Check` annotation are automatically checked when instantiated by the `PageFactory`.
 
-In the example, the first `GuiElement` has the `@Check` annotation, the second doesn't. The result is, that the presence of the first element will be checked by the constructor, the second won't. If a checked element is not found, the constructor will throw a `PageNotFoundException`.
+In the example, the first `GuiElement` has the `@Check` annotation, the second doesn't.
+The result is, that the presence of the first element will be checked by the constructor, the second won't.
+If a checked element is not found, the constructor will throw a `PageNotFoundException`.
 
 [source,java]
 ----
@@ -12,12 +17,21 @@ private GuiElement checked = new GuiElement(driver, By.name("checked"));
 private GuiElement unchecked = new GuiElement(driver, By.name("unchecked"));
 ----
 
-The `@Check` annotation will use the default `CheckRule` defined in `test.properties`. It is also possible to overwrite the default `CheckRule` for a single `@Check` annotation.
+The `@Check` annotation will use the default `CheckRule` defined in `test.properties`.
+It is also possible to overwrite the default `CheckRule` for a single `@Check` annotation.
 
 [source,java]
 ----
 @Check(checkRule = CheckRule.IS_PRESENT)
 private GuiElement checked = new GuiElement(driver, By.name("checked"));
+----
+
+Change the check rules for the whole project (global) with the following:
+
+.test.properties
+[source,properties,subs="attributes"]
+----
+{guielement_checkrule}=IS_PRESENT
 ----
 
 Available CheckRules are

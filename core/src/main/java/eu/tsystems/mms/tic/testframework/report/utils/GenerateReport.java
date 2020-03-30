@@ -300,13 +300,15 @@ public class GenerateReport {
 
         unexpectedFailedMethodContexts.stream().forEach(
                 context -> {
-                    Optional<MethodContext> methodContext =
-                            findMatchingMethodContext(context, expectedFailedMethodContexts);
+                    final Optional<MethodContext> methodContext = findMatchingMethodContext(context, expectedFailedMethodContexts);
+
                     if (methodContext.isPresent()) {
-                        context.errorContext().additionalErrorMessage =
-                                "Failure aspect matches known issue: "
-                                    + methodContext.get().errorContext()
-                                        .getThrowable().getMessage().split("expected.")[1];
+
+                        final String[] throwableMessageSplit = methodContext.get().errorContext().getThrowable().getMessage().split("expected.");
+
+                        if (throwableMessageSplit.length > 1) {
+                            context.errorContext().additionalErrorMessage = "Failure aspect matches known issue: " + throwableMessageSplit[1];
+                        }
                     }
                 });
     }
@@ -317,9 +319,9 @@ public class GenerateReport {
         return methodContexts.stream()
                 .filter(expectedFailedMethodContext ->
                         expectedFailedMethodContext.isExpectedFailed()
-                        && context.errorContext().getThrowable().getMessage() != null
-                        && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage() != null
-                        && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage()
+                                && context.errorContext().getThrowable().getMessage() != null
+                                && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage() != null
+                                && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage()
                                 .equals(context.errorContext().getThrowable().getMessage()))
                 .findFirst();
     }

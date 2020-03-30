@@ -35,6 +35,22 @@
 
     </style>
 
+    <script type="application/javascript">
+        function toggleFotoramaFullscreen(fotoramaContainerSelector) {
+            var fotoramaContainer = $(fotoramaContainerSelector);
+            if (!fotoramaContainer.hasClass("fotorama--fullscreen")) {
+                fotoramaContainer.fotorama().data('fotorama').requestFullScreen();
+            } else {
+                fotoramaContainer.fotorama().data('fotorama').cancelFullScreen();
+            }
+        }
+
+        $('.fotorama').on('fotorama:load', function() {
+            //console.log("layoutCheck$customError.image loaded");
+            $('.fotorama').fotorama().resize();
+        });
+    </script>
+
 </head>
 
 <body>
@@ -333,23 +349,39 @@ No test sources
                             #if ($testMethod.customContexts.size()>0)
                                 #foreach ($customError in $testMethod.customContexts)
                                     #if ($customError.class.simpleName == "LayoutCheckContext")
-                                        <h3>$customError.getName(): $customError.image</h3>
-                                        <div class="fotorama"
+                                        <div style="padding: 20px;">
+                                            <div class="dashboardHorizontalSpacer"></div>
+                                        </div>
+                                        <h3>Layout check: $customError.image</h3>
+                                        <div class="dashboardTextSmall">Pixel distance: $customError.distance%</div>
+                                        <div class="fotorama layoutCheck$customError.image"
                                              data-navposition="top"
                                              data-allowfullscreen="native"
+                                             data-arrows="false"
                                              data-nav="thumbs"
                                              data-thumbwidth="64"
                                              data-thumbheight="64"
-                                             data-height="40%"
-                                             data-width="40%"
+                                             data-height="80%"
+                                             data-width="90%"
+                                             data-swipe="true"
+                                             data-click="false"
+                                             data-fit="scaledown"
                                         >
+                                            #set($imageNames=[$customError.actualScreenshot.filename,$customError.expectedScreenshot.filename,$customError.distanceScreenshot.filename])
+                                            #set($imageCaptions=["Actual","Expected reference", "Distance"])
 
-                                            <img src="../../screenshots/$customError.expectedScreenshot.filename"
-                                                 data-caption="Expected"/>
-                                            <img src="../../screenshots/$customError.actualScreenshot.filename"
-                                                 data-caption="Actual"/>
-                                            <img src="../../screenshots/$customError.distanceScreenshot.filename"
-                                                 data-caption="Distance"/>
+                                            #foreach ($imageName in $imageNames)
+                                                #if ($imageName)
+                                                    <div data-img="../../screenshots/$imageName" data-caption="$imageCaptions[$foreach.index]">
+                                                        <div class="centeredItems">
+                                                            <a class="gallerybutton" href="#" title="Fullscreen"
+                                                               onclick="toggleFotoramaFullscreen('.layoutCheck$customError.image')">
+                                                                <i class="bgwhite fa fa-arrows-alt"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                #end
+                                            #end
                                         </div>
                                     #end
                                 #end

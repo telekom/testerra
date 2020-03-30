@@ -5,13 +5,18 @@ import eu.tsystems.mms.tic.testframework.annotator.AnnotationContainer;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.layout.core.DistanceGraphInterpreter;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.matching.GraphBasedTemplateMatcher;
 import eu.tsystems.mms.tic.testframework.layout.matching.LayoutMatch;
 import eu.tsystems.mms.tic.testframework.layout.matching.TemplateMatcher;
-import eu.tsystems.mms.tic.testframework.layout.matching.detection.*;
+import eu.tsystems.mms.tic.testframework.layout.matching.detection.AmbiguousMatchDetector;
+import eu.tsystems.mms.tic.testframework.layout.matching.detection.AmbiguousMovementDetector;
+import eu.tsystems.mms.tic.testframework.layout.matching.detection.CorrectMatchDetector;
+import eu.tsystems.mms.tic.testframework.layout.matching.detection.ElementMissingDetector;
+import eu.tsystems.mms.tic.testframework.layout.matching.detection.GroupMovementDetector;
 import eu.tsystems.mms.tic.testframework.layout.matching.error.LayoutFeature;
 import eu.tsystems.mms.tic.testframework.layout.matching.graph.DistanceGraph;
 import eu.tsystems.mms.tic.testframework.layout.matching.matchers.OpenCvTemplateMatcher;
@@ -144,9 +149,17 @@ public class LayoutComparator {
         }
 
         if (referenceImage.height() > actualImage.height() || referenceImage.width() > actualImage.width()) {
-            LOGGER.warn("Reference Image (" + referenceImage.size() + ") is bigger than the actual Image (" +
-                    actualImage.size() + "). This should not happen, as it is ignored by the algorithm and will " +
-                    "probably lead to falsely positive movement errors.");
+            NonFunctionalAssert.fail(
+                String.format(
+                    "The actual image (width=%fpx, height=%fpx) is smaller than the reference image (width=%fpx, height=%fpx)." +
+                    "This should not happen, as it is ignored by the algorithm and will " +
+                    "probably lead to falsely positive movement errors.",
+                    actualImage.size().width,
+                    actualImage.size().height,
+                    referenceImage.size().width,
+                    referenceImage.size().height
+                )
+            );
         }
 
         // Adjustments have to be made, if the reference image is only a part of the original screenshot.

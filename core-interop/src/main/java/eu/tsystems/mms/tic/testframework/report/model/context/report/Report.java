@@ -125,16 +125,16 @@ public class Report {
         File screenshotSourceFileOrNull,
         Mode mode
     ) throws IOException {
+        final Screenshot screenshot = new Screenshot();
+
         if (!screenshotFile.exists()) {
             LOGGER.error("Cannot provide screenshot: " + screenshotFile + " does not exist");
-            return null;
+            return screenshot;
         }
         if (screenshotSourceFileOrNull != null && !screenshotSourceFileOrNull.exists()) {
             LOGGER.warn("Cannot provide screenshot source: " + screenshotSourceFileOrNull + " does not exist");
             screenshotSourceFileOrNull = null;
         }
-
-        final Screenshot screenshot = new Screenshot();
 
         /*
         provide screenshot

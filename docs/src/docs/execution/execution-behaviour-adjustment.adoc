@@ -1,15 +1,16 @@
 = Execution Behaviour Adjustment
+include::../properties/property-attributes.adoc[]
 
 == Retry analyzer
 This class provides an adjustable mechanism to automatically retry failed tests when matching certain criteria.
 The filtering process contains of checks of classes and messages matching the thrown Exception, which are set within the test.properties file.
 
 .test.properties
-[source, properties]
+[source, properties, subs="attributes"]
 ----
 # set additional classes that engage a retry,
 # instances of TimeoutException are always retried
-failed.tests.if.throwable.classes=java.sql.SQLRecoverableException
+{failed_tests_if_throwable_classes}=java.sql.SQLRecoverableException
 
 # set additional messages of Throwable that engage a retry,
 # by default the following messages are evaluated
@@ -19,10 +20,10 @@ failed.tests.if.throwable.classes=java.sql.SQLRecoverableException
 #           "The requested URL could not be retrieved",
 #           "Squid is unable to create a TCP socket"
 
-failed.tests.if.throwable.messages=failed to connect, error communicating with database
+{failed_tests_if_throwable_messages}=failed to connect, error communicating with database
 
 # sets the maximum number of retries, default = 1
-failed.tests.max.retries=5
+{failed_tests_max_retries}=5
 ----
 
 The retry mechanism always ignores testcase, which have a valid Fails annotation. For further adjustment additional analyzers can be registered expanding the default behaviour.
@@ -59,11 +60,11 @@ RetryAnalyzer.registerAdditionalRetryAnalyzer(new InstantiationExceptionRetryAna
 For managing the execution behaviour of tests in suites there are means to skip tests and avoid closing browser windows after failures.
 
 .test.properties
-[source, properties]
+[source, properties, subs="attributes"]
 ----
 # all browser windows remain open after first failure, default = false
-tt.on.state.testfailed.skip.shutdown=true
+{on_state_testfailed_skip_shutdown}=true
 
 # skip all tests after first failure, default = false
-tt.on.state.testfailed.skip.following.tests=true
+{on_state_testfailed_skip_following_tests}=true
 ----

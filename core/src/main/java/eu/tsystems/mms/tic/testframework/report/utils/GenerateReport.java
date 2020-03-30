@@ -13,7 +13,8 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
+ *     Sebastian Kiehne
+ *     Eric Kubenka
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 

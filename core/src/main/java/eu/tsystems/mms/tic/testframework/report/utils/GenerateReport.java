@@ -306,11 +306,18 @@ public class GenerateReport {
 
                     if (methodContext.isPresent()) {
 
-                        final Fails annotation = methodContext.get().testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
+                        final Fails failsAnnotation = methodContext.get().testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
+                        String additionalErrorMessage = "Failure aspect matches known issue:";
 
-                        if (annotation.ticketId() > 0) {
-                            context.errorContext().additionalErrorMessage = "Failure aspect matches known issue: " + annotation.ticketId();
+                        if (StringUtils.isNotBlank(failsAnnotation.description())) {
+                            additionalErrorMessage += " Description: " + failsAnnotation.description();
                         }
+
+                        if (failsAnnotation.ticketId() > 0) {
+                            additionalErrorMessage += " Ticket: " + failsAnnotation.ticketId();
+                        }
+
+                        context.errorContext().additionalErrorMessage = additionalErrorMessage;
                     }
                 });
     }

@@ -202,7 +202,7 @@ public class GenerateReport {
         /*
         check if failed tests have an expected failed with the same root cause and a message about it to the failed test
          */
-        addMatchingExpextedFailedMessage(failureAspects);
+        addMatchingExpectedFailedMessage(failureAspects);
 
         /*
         Store
@@ -285,7 +285,7 @@ public class GenerateReport {
     }
 
     // check if failed tests have an expected failed with the same root cause and a message about it to the failed test
-    private static void addMatchingExpextedFailedMessage(Map<String, List<MethodContext>> failureAspects) {
+    private static void addMatchingExpectedFailedMessage(Map<String, List<MethodContext>> failureAspects) {
         List<MethodContext> expectedFailedMethodContexts =
                 failureAspects.values().stream()
                         //only one context per expected failed required

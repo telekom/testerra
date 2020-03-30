@@ -13,10 +13,12 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
+ *     Sebastian Kiehne
+ *     Eric Kubenka
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
@@ -201,7 +203,7 @@ public class GenerateReport {
         /*
         check if failed tests have an expected failed with the same root cause and a message about it to the failed test
          */
-        addMatchingExpextedFailedMessage(failureAspects);
+        addMatchingExpectedFailedMessage(failureAspects);
 
         /*
         Store
@@ -284,7 +286,7 @@ public class GenerateReport {
     }
 
     // check if failed tests have an expected failed with the same root cause and a message about it to the failed test
-    private static void addMatchingExpextedFailedMessage(Map<String, List<MethodContext>> failureAspects) {
+    private static void addMatchingExpectedFailedMessage(Map<String, List<MethodContext>> failureAspects) {
         List<MethodContext> expectedFailedMethodContexts =
                 failureAspects.values().stream()
                         //only one context per expected failed required
@@ -298,15 +300,24 @@ public class GenerateReport {
                         .filter(methodContext -> !methodContext.isExpectedFailed())
                         .collect(Collectors.toList());
 
-        unexpectedFailedMethodContexts.stream().forEach(
+        unexpectedFailedMethodContexts.forEach(
                 context -> {
-                    Optional<MethodContext> methodContext =
-                            findMatchingMethodContext(context, expectedFailedMethodContexts);
+                    final Optional<MethodContext> methodContext = findMatchingMethodContext(context, expectedFailedMethodContexts);
+
                     if (methodContext.isPresent()) {
-                        context.errorContext().additionalErrorMessage =
-                                "Failure aspect matches known issue: "
-                                    + methodContext.get().errorContext()
-                                        .getThrowable().getMessage().split("expected.")[1];
+
+                        final Fails failsAnnotation = methodContext.get().testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
+                        String additionalErrorMessage = "Failure aspect matches known issue:";
+
+                        if (StringUtils.isNotBlank(failsAnnotation.description())) {
+                            additionalErrorMessage += " Description: " + failsAnnotation.description();
+                        }
+
+                        if (failsAnnotation.ticketId() > 0) {
+                            additionalErrorMessage += " Ticket: " + failsAnnotation.ticketId();
+                        }
+
+                        context.errorContext().additionalErrorMessage = additionalErrorMessage;
                     }
                 });
     }
@@ -317,9 +328,9 @@ public class GenerateReport {
         return methodContexts.stream()
                 .filter(expectedFailedMethodContext ->
                         expectedFailedMethodContext.isExpectedFailed()
-                        && context.errorContext().getThrowable().getMessage() != null
-                        && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage() != null
-                        && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage()
+                                && context.errorContext().getThrowable().getMessage() != null
+                                && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage() != null
+                                && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage()
                                 .equals(context.errorContext().getThrowable().getMessage()))
                 .findFirst();
     }

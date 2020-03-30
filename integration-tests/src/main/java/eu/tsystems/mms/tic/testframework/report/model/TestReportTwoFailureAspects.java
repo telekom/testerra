@@ -58,14 +58,14 @@ public class TestReportTwoFailureAspects implements IFailurePointEntryHelper {
             1,
             "Exception: matchting unique failure aspect:",
             Arrays.asList("ReportTestUnderTestExpectedtoFail - test_UnexpectedFailedWithRelatedExpectedFailed"),
-            Arrays.asList("Failure aspect matches known issue:  Description: Known issue with same aspect as unmarked failed test.")
+            Arrays.asList("Failure aspect matches known issue:  Description: Known issue with same aspect as unmarked failed test")
     );
 
     public static final FailureAspectEntry FA7 = new FailureAspectEntry(
             TestResultHelper.TestResultFailurePointEntryType.FAILEDEXPECTED_INTOREPORT,
             7,
             1,
-            "Failing of test expected. Description: Known issue with same aspect as unmarked failed test."
+            "Failing of test expected. Description: Known issue with same aspect as unmarked failed test"
     );
 
     public static final FailureAspectEntry FA8= new FailureAspectEntry(

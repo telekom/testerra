@@ -376,7 +376,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     public void testT17_failureAspectMatchingExpectedFailedInfoMessage(){
         String testMethod = "test_UnexpectedFailedWithRelatedExpectedFailed";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()), ReportTestUnderTestExpectedtoFail.class.getSimpleName(), testMethod);
-        AssertCollector.assertEquals( methodDetailsPage.getErrorMessageExtraInfo().getText(), "Failure aspect matches known issue: Description: Known issue with same aspect as unmarked failed test.");
+        AssertCollector.assertEquals( methodDetailsPage.getErrorMessageExtraInfo().getText(), "Failure aspect matches known issue: Description: Known issue with same aspect as unmarked failed test");
     }
 
 }

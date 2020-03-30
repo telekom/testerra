@@ -17,6 +17,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
@@ -298,16 +299,16 @@ public class GenerateReport {
                         .filter(methodContext -> !methodContext.isExpectedFailed())
                         .collect(Collectors.toList());
 
-        unexpectedFailedMethodContexts.stream().forEach(
+        unexpectedFailedMethodContexts.forEach(
                 context -> {
                     final Optional<MethodContext> methodContext = findMatchingMethodContext(context, expectedFailedMethodContexts);
 
                     if (methodContext.isPresent()) {
 
-                        final String[] throwableMessageSplit = methodContext.get().errorContext().getThrowable().getMessage().split("expected.");
+                        final Fails annotation = methodContext.get().testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
 
-                        if (throwableMessageSplit.length > 1) {
-                            context.errorContext().additionalErrorMessage = "Failure aspect matches known issue: " + throwableMessageSplit[1];
+                        if (annotation.ticketId() > 0) {
+                            context.errorContext().additionalErrorMessage = "Failure aspect matches known issue: " + annotation.ticketId();
                         }
                     }
                 });

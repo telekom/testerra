@@ -1,0 +1,93 @@
+== Instantiation
+
+=== PageFactory
+Instead of creating Pages with the page constructor pages should created by using the `PageFactory` as demonstrated in the example.
+
+When the page is instantiated, Testerra automatically checks its annotated elements.
+
+[source,java]
+----
+HomePage homePage = PageFactory.create(HomePage.class, driver);
+----
+
+With the PageFactory you can also perform to check a page was gone. With this you can make sure, that your page is NOT shown any more. For example, you want to verify a dialog windows was closed after a click.
+
+[source,java]
+----
+PageFactory.checkNot(searchPage.class, driver);
+----
+The checkNot is successful if at least one mandatory GuiElement ("@Check") is not shown.
+
+=== Inject additional objects
+
+In some cases you need to provide dynamic information to the page, which are only known at runtime.
+
+This information is an object implements `PageVariables`.
+
+[source,java]
+----
+class MyData implements PageVariables {
+    public String value;
+}
+----
+
+For example you can can use that additional information for custom GuiElements.
+
+[source,java]
+----
+class MyPage extends Page {
+
+    @Check
+    private GuiElement customElement;
+
+    public MyPage(WebDriver driver, MyData data) {
+        super(driver);
+        this.customElement =
+            new GuiElement(driver, By.xpath("//*[@text = '" + data.value + "']"));
+    }
+}
+----
+
+In your test method you define your `PageVariable` object and create the page with the `PageFactory`.
+
+Testerra verifies all the GuiElements _after_ all GuiElements were instantiated and the constructor was executed.
+
+[source,java]
+----
+MyData pageVariablesObject = new MyData();
+pageVariablesObject.value = "some information";
+
+MyPage myPage = PageFactory.create(MyPage.class, driver, pageVariablesObject);
+----
+
+===	Page Prefixes
+
+Page Prefixes can influence which concrete classes get instantiated by the `PageFactory`. They work together with a inheritance scheme of page classes. This can be useful if there is a base page which can come in different concrete variations. Example:
+
+There is a `BaseClass` which inherits from the `Page` class and contains the basic functionality of a page.
+Then the `Page` can come in 2 different variations.
+We can represent this as `Variation1BaseClass` and `Variation2BaseClass`.
+They both inherit from `BaseClass`.
+Before instantiation, we can set the prefix using the `PageFactory`.
+Then we instantiate it and we can get our variation of the base class.
+[source,java]
+----
+PageFactory.setGlobalPagesPrefix("Variation1");
+//this actualy creates a Variation1BaseClass
+BaseClass baseClass = PageFactory.create(BaseClass.class, driver);
+----
+Default is no prefix.
+
+Usage:
+[source,java]
+----
+// Set a global Prefix
+PageFactory.setGlobalPagesPrefix("prefix");
+
+// Set a thread local prefix. See next row about cleaning this prefix.
+PageFactory.setThreadLocalPagesPrefix("prefix");
+
+// The thread local pages prefix is not cleared automatically,
+// be sure to always set the correct one or clear  itafter using.
+PageFactory.clearThreadLocalPagesPrefix();
+----

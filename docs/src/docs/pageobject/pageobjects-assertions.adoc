@@ -1,0 +1,24 @@
+== Assertions
+`Pages objects` offer some `assertions` which mostly work like their equivalents on `GuiElements`.
+In difference to `GuiElements` here the whole page is searched for the given element in recursive order.
+[source,java]
+----
+ResultPage resultPage = PageFactory.create(ResultPage.class, driver);
+
+String text = "Expected Text";
+
+// Asserts if text is present or not.
+boolean isTextPresent = resultPage.assertIsTextPresent(text);
+boolean isNotTextPresent = resultPage.assertIsNotTextPresent(text);
+
+// Asserts if text is displayed or not.
+boolean isTextDisplayed = resultPage.assertIsTextDispayed(text);
+boolean isTextNotDisplayed = resultPage.assertIsNotTextDisplayed(text);
+
+// Work like the methods above. In addition, the description String
+// is added to the exception if the assert fails.
+String errorTextNotPresent = text + " is not present on this page.";
+String errorTextNotDisplayed = text + " is not displayed on this page.";
+resultPage.assertIsTextPresent(text, errorTextNotPresent);
+resultPage.assertIsTextDisplayed(text, errorTextNotDisplayed);
+----

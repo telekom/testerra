@@ -1,0 +1,68 @@
+== Overview
+
+=== What is a page object?
+A page objects represents a HTML pages and or a subpage. It contains GuiElements with describe the actual page and methods to provide actions on them.
+
+In your test you only uses the provided actions of your page like an API. The page object himself uses the GuiElements as an API to interact with the website.
+
+=== Navigation Principle
+In a regular Web Application there is a defined navigation flow. This means there are pages with actions on it that let you navigate to other pages.
+
+In the example below we have a search dialog with a search action on it that lets you navigate to a `ResultPage` with the search result.
+When a search is performed the browser will navigate to the `ResultPage`. In your page you create a new object of your next page.
+
+This new page object is used for the next steps in your test.
+
+.Example of a page flow
+image::../images/PageFlowExample.png[]
+
+=== Example
+
+The following page contains two `GuiElements` and one method for a user action 'search a string'.
+
+Within the method `search` the defined GuiElements are used to execute a search.
+
+The annoation `Check` marks the GuiElements as mandatory for the page. Testerra automatically verifies these elements when this page is instantiated (<<Check Annotations>>).
+
+[source,java]
+----
+public class SearchPage extends Page {
+
+    @Check
+    private final GuiElement searchButton = new GuiElement(driver, By.name("searchButton"));
+
+    @Check
+    private final GuiElement inputField = new GuiElement(driver, By.name("inputField"));
+
+    // constructor
+    public SearchPage(WebDriver driver) {
+        super(driver);
+    }
+
+    // search action on page
+    public ResultPage search(String text){
+        inputField.type(text);
+        searchButton.click();
+        return PageFactory.create(ResultPage.class, driver);
+    }
+}
+----
+
+The following lines demonstrate how to use page objects in your test method.
+
+[source,java]
+----
+import ...
+
+public class TestClass extends TesterraTest {
+
+    @Test
+    public void myTest() {
+        HomePage homePage = PageFactory.create(HomePage.class, driver);
+        SearchPage searchPage = homePage.openSearch();
+        ResultPage resultPage = searchPage.search("search text");
+        resultPage.assertResultSetIsNotEmpty();
+        homePage = resultPage.close();
+    }
+}
+----

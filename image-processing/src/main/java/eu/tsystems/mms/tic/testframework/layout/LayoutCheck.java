@@ -49,7 +49,6 @@ public final class LayoutCheck {
         String consecutiveTargetImageName;
         public boolean takeReferenceOnly;
         public double distance = NO_DISTANCE;
-        public double threshold = 0;
         public LayoutComparator layoutComparator;
     }
 
@@ -569,7 +568,6 @@ public final class LayoutCheck {
         LayoutCheckContext context = new LayoutCheckContext();
         context.image = name;
         context.mode = step.mode.name();
-        context.threshold = step.threshold;
         // For readable report
         context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
         try {
@@ -594,7 +592,6 @@ public final class LayoutCheck {
 
         try {
             matchStep  = LayoutCheck.matchPixels((TakesScreenshot)webDriver, targetImageName);
-            matchStep.threshold = confidenceThreshold;
             if (!matchStep.takeReferenceOnly) {
                 LayoutCheck.toReport(matchStep);
             }
@@ -602,7 +599,6 @@ public final class LayoutCheck {
             AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP), new BigDecimal(confidenceThreshold), String.format("Pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName));
         } catch (LayoutCheckException e) {
             matchStep = e.getMatchStep();
-            matchStep.threshold = confidenceThreshold;
             LayoutCheck.toReport(matchStep);
             throw e;
         }

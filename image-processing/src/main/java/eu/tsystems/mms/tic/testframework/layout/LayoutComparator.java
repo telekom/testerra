@@ -18,6 +18,7 @@ import eu.tsystems.mms.tic.testframework.layout.matching.matchers.OpenCvTemplate
 import eu.tsystems.mms.tic.testframework.layout.matching.matchers.TemplateMatchingAlgorithm;
 import eu.tsystems.mms.tic.testframework.layout.reporting.GraphicalReporter;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +80,7 @@ public class LayoutComparator {
     private int minimalSizeDifferenceOfSubImages;
 
     static {
-        OpenCvInitializer.init();
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
     /**

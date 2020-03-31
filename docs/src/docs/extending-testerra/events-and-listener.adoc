@@ -2,7 +2,7 @@
 
 Testerra provides it own event service called `TesterraEventService` which basically fires events of type `ITesterraEventType`.
 By default Testerra will register the `TesterraEventListener` by itself.
-This basic implementation fill fire the following events by default.
+This basic implementation will fire the following events by default.
 
 .TesterraEventType
 |===

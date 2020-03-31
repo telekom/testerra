@@ -1,0 +1,9 @@
+dependencies {
+    compile core_interop
+    compile 'commons-net:commons-net:3.2'
+    compile 'com.jcraft:jsch:0.1.54'
+}
+
+test {
+    exclude '**'
+}

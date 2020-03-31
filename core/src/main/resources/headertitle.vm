@@ -1,0 +1,13 @@
+#set($reportNameDisplay = " ")
+#if ($reportName)
+    #if ($reportName != "")
+        #set($reportNameDisplay = " - " + $reportName + " - ")
+    #end
+#end
+#set($reportNameDisplay = $reportNameDisplay + ${executionContext.runConfig.RUNCFG})
+<td class="textleft">
+    <div style="padding-left: 10px; padding-top: 12px;">
+        <h2 style="display:inline;">$pagetitle</h2>
+        <h5 style="display:inline;">$reportNameDisplay</h5>
+    </div>
+</td>

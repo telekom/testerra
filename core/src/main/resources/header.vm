@@ -1,0 +1,49 @@
+<nav id="nav-wrap">
+    <div class="row">
+        <ul class="nav" id="nav" style="right: 50px;">
+            #foreach ($tab in $topLevelTabs)
+                #if (!$tab.isHamburger())
+                    <li id="${tab.getTabId()}"
+                        #if ($tabcontext == "${tab.getTabId()}")
+                            class="current"
+                        #end
+                        >
+                        <a href="${tab.getRelativeHtmlFilePath()}">${tab.getTabName()}</a>
+                    </li>
+                #end
+            #end
+        </ul> <!-- end #nav -->
+    </div>
+</nav>
+
+<nav role="navigation">
+    <!--<a id="toggle-btn" title="Menu" href="#">Menu</a>-->
+    <div id="menuToggle" class="row pull-right">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <ul id="menu">
+
+            #foreach ($tab in $topLevelTabs)
+                #if ($tab.isHamburger())
+                    <li id="${tab.getTabId()}"
+                        #if ($tabcontext == "${tab.getTabId()}")
+                            class="current"
+                        #end
+                        >
+                        <a href="${tab.getRelativeHtmlFilePath()}">${tab.getTabName()}</a>
+                    </li>
+                #end
+            #end
+
+        </ul> <!-- end #nav -->
+    </div>
+</nav>
+
+<table>
+    <tr>
+        #parse("headertitle.vm")
+    </tr>
+</table>

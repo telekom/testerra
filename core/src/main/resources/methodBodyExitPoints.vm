@@ -1,0 +1,65 @@
+<!-- left col -->
+<!-- left col -->
+
+#set($class1 = "")
+#set($style2 = "")
+#if ($testMethod.status == $status_FAILED_EXPECTED)
+        #set($class1 = "expfailed")
+        #set($style2 = "color:white;")
+#end
+
+<td class="method $class1">
+
+    <a class="tooltip" title="Test: ${testMethod.name}">
+        <font style="opacity:0.7;">${testMethod.classContext.name} - </font><b>$testMethod.name</b>
+
+        #if ($testMethod.infos)
+            <i>
+                #foreach ($i in $testMethod.infos)
+                    $i<br>
+                #end
+            </i>
+        #end
+
+        #if ($testMethod.classContext.merged)
+            (in $testMethod.suiteContext.name - $testMethod.testContextModel.name)
+        #end
+    </a>
+
+    #parse("methodTags.vm")
+
+    <!-- readable message -->
+    <div>
+        <font class="message" style="$style2">
+            <b>
+                #if ($testMethod.errorContext().readableErrorMessage)
+                    $testMethod.errorContext().readableErrorMessage
+                #end
+
+                #if ($testMethod.priorityMessage)
+                <div class="skipped">
+                    $testMethod.priorityMessage
+                </div>
+                #end
+
+                #if ($testMethod.errorContext().additionalErrorMessage)
+                    <div style="color: Grey;">
+                    $testMethod.errorContext().additionalErrorMessage
+                    </div>
+                #end
+            </b>
+        </font>
+    </div>
+
+    <!-- buttons -->
+    <div style="">
+
+        <h6>
+            <a onclick='showLoadingIn(null);' href="../methods/${testMethod.methodRunIndex}.html" title="Details">
+                <i class="symbols fa fa-search-plus fa-2x"></i>Details
+            </a>
+        </h6>
+
+    </div>
+
+</td>

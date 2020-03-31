@@ -1,0 +1,11 @@
+dependencies {
+    compile core_interop
+    testCompile core
+    testCompile 'com.h2database:h2:1.4.197'
+}
+
+test {
+    useTestNG() {
+        suites 'src/test/resources/testSuite.xml'
+    }
+}

@@ -1,0 +1,38 @@
+= REST Utilities
+
+This is a static helper class facilitating the usage of REST Services by providing several methods for creating valid HTTP requests.
+The default timeout for all http connections is 5 minutes.
+
+.GET Request
+[source,java]
+----
+// Call URL via GET
+String response = RESTUtils.requestGET("https://test.rest.com/results");
+
+// Call URL via GET and cast response to given class (Results)
+Result response = RESTUtils.requestGET("https://test.rest.com/results", Result.class);
+
+// Call URL via GET with Connection Timeout in milliseconds
+Result response = RESTUtils.requestGET("https://test.rest.com/results", 1000 Result.class);
+----
+
+.POST Request
+[source,java]
+----
+String urlAsString = "https://test.rest.com/results";
+String requestParameters = "{\"title\":\"test_1\", \"result\":\"success\"}";
+
+// Call URL via POST with parameters for request
+String response = RESTUtils.requestPOST(urlAsString, requestParameters);
+
+// Call URL via POST with parameters for request, expected MediaType
+Result response = RESTUtils.requestPOST(urlAsString, requestParameters, MediaType.MULTIPART_FORM_DATA_TYPE, Result.class);
+----
+
+.DELETE Request
+[source,java]
+----
+String urlAsString = "https://test.rest.com/results";
+// Call URL via DELETE
+String response = RESTUtils.requestDELETE(urlAsString);
+----

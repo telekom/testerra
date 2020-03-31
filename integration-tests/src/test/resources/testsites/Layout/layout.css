@@ -1,0 +1,48 @@
+@font-face {
+    src:local("fonts/OpenSans-Light.ttf");
+    font-family: 'OpenSans Light';
+    font-style: normal;
+    font-weight: 400;
+}
+
+body {
+    font-family: 'OpenSans Light', sans-serif;
+}
+section {
+    width: 700px;
+}
+
+h1 {
+    font-weight: bold;
+}
+.article {
+    background: #3c763d;
+    color: white;
+    padding: 0;
+    border-style: double;
+    border-color: rebeccapurple;
+    border-width: thick;
+}
+
+.article ul.list {
+    color:#00afea;
+}
+
+.article > .header {
+    background-color: #2b542c;
+}
+
+.article > .body {
+    padding: 1em;
+}
+
+.article > .footer {
+    background-color: #2b542c;
+}
+
+.huge-spacer {
+    height: 4000px;
+    background-color: #3d4145;
+}
+
+

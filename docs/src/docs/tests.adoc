@@ -1,0 +1,5 @@
+= Tests
+
+This section describes how to implement tests.
+
+include::tests/annotations.adoc[leveloffset=+1]

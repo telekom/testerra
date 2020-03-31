@@ -1,0 +1,13 @@
+= Proxy Utilities
+
+This is a static helper class based for reading the proxy configuration from system properties.
+
+[source,java]
+----
+import java.net.URL;
+import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
+
+URL proxyUrl; // Format e.g.: http://{http.proxyHost}:{http.proxyPort}
+proxyUrl = ProxyUtils.getSystemHttpProxyUrl();
+proxyUrl = ProxyUtils.getSystemHttpsProxyUrl();
+----

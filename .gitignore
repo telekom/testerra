@@ -1,0 +1,17 @@
+testerra-report
+**/report-testsundertest-*
+.gradle
+gradle
+*.iml
+.idea
+target
+licenses
+*.zip
+out
+build
+gradlew
+/bin/
+/.classpath
+/.project
+**/*.settings
+/integration-tests/src/test/resources/screenreferences/

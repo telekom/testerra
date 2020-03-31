@@ -1,0 +1,23 @@
+/*if (hasProperty("free")) {
+    doNotPublish(this)
+}*/
+
+def opencv = [
+        //'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9',
+        'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:windows-x86',
+        'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:windows-x86_64',
+        'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86',
+        'org.bytedeco.javacpp-presets:opencv:2.4.9-0.9:linux-x86_64',
+        'nu.pattern:opencv:2.4.9-7',
+        'org.javatuples:javatuples:1.2'
+]
+
+dependencies {
+    compile core
+    implementation opencv
+    compile 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
+
+    // <LayoutCheck>
+    implementation 'com.google.code.gson:gson:2.6.2'
+    // </LayoutCheck>
+}

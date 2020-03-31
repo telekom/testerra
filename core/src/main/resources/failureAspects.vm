@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
+    <head>
+        <title>Test Results Report</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+        <meta name="description" content="TestNG unit test results."/>
+
+        #parse("styleincludesrelative.vm")
+
+        <link rel="stylesheet" href="../style/fotorama.css"/>
+
+        #parse("scriptincludesrelative.vm")
+        <script type="text/javascript" src="../js/highlight.pack.js"></script>
+        <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+        <!--<script type="text/javascript" src="../js/pace.min.js"></script>-->
+
+        <script type="text/javascript" src="../js/fotorama.js"></script>
+        <script type="text/javascript" src="../js/cytoscape.min.js"></script>
+        <script type="text/javascript" src="../js/dagre.js"></script>
+
+    </head>
+
+    <body>
+        #set($cols = 3)
+
+        #set($velocityCount1 = 1)
+
+        #set($tabcontext = "f")
+        #set($pagetitle = "Failure Aspects")
+        #parse("headerrelative.vm")
+
+        #set ($failureAspectMap = ${executionContext.failureAspects})
+
+        <br/>
+
+        <div style="padding-left:70px; padding-right:70px; width:100%;">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="broken">&nbsp;&nbsp;</div>
+                </td>
+                <td>
+                    Failures
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    <div class="expfailed">&nbsp;&nbsp;</div>
+                </td>
+                <td>
+                    Expected Failures
+                </td>
+                <td style="width:90%">
+                    <div class="textright dashboardTextSmall">
+                        Failure Aspects: $failureAspectMap.size()
+                    </div>
+                </td>
+            </tr>
+        </table>
+        </div>
+
+
+        #if ($failureAspectMap.keySet().size() > 0)
+
+            #set($failureAspectCount = 0)
+            #foreach( $failureAspect in $failureAspectMap.keySet() )
+                #set($failureAspectCount = ${failureAspectCount} + 1)
+                #set ($testMethod = $failureAspectMap.get($failureAspect).get(0))
+
+                #set ($type = "broken")
+                #if ($testMethod.status == $status_FAILED_EXPECTED)
+                    #set ($type = "broken expfailed")
+                #end
+                <div id="aspect-$failureAspectCount" style="margin-left: 70px; margin-right: 70px;">
+
+                <!-- aspects table -->
+                <table class="textleft resultsTable $type" style="color: white;">
+                    #if ( $failureAspect == "others" )
+                        <tr class="header broken">
+                            <th style="cursor: pointer; position: relative;" colspan="$cols" onclick="toggleElements('testsForCause$failureAspectCount');" class="">
+                                Other Failure Aspects ($failureAspectMap.get($failureAspect).size() Tests)
+                                <i style="position: absolute; right: 8px; top: 2px;" class="fa fa-caret-square-o-down" aria-hidden="true"></i>
+                            </th>
+                        </tr>
+                        <tr class="header $type">
+                            <td colspan="$cols" class=""></td>
+                        </tr>
+                    #else
+                        <tr class="header $type">
+                            <th style="cursor: pointer; position: relative;" colspan="$cols" onclick="toggleElements('testsForCause$failureAspectCount');" class="">
+                                Failure Aspect #$failureAspectCount ($failureAspectMap.get($failureAspect).size() Tests)
+                                <i style="position: absolute; right: 8px; top: 2px;" class="fa fa-caret-square-o-down" aria-hidden="true"></i>
+                            </th>
+                        </tr>
+                        <tr class="header $type">
+                            <td class="" colspan="3" style="font-size: 15px; color: black; background-color: #DDDDDD; font-weight: normal;">
+                                <div class="error">
+                                    $testMethod.errorContext().readableErrorMessage
+                                </div>
+                            </td>
+                        </tr>
+                    #end
+
+                    #foreach( $testMethod in $failureAspectMap.get($failureAspect) )
+                        #if (!$testMethod.isConfigMethod())
+                            #if($testMethod.isFailed())
+                                #set($index = ${velocityCount} - 1)
+                                #if ($index < 10)
+                                    #set ($index = "0$index")
+                                #end
+                                <tr id="row-$index" class="hidden test testsForCause$failureAspectCount $type">
+                                    <!-- methodBody -->
+                                    #parse("methodBodyExitPoints.vm")
+                                </tr>
+                            #end
+                        #end
+                    #end
+                </table>
+                </div>
+            #end
+
+        #else
+            <div class="cellCenter dashboardTextSmall" style="padding:100px;">No failure aspects in this run</div>
+        #end
+
+    </body>
+
+</html>

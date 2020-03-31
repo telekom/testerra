@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="suite1" parallel="methods" thread-count="20">
+
+    <test name="test1">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.ReportingAllStatesTests"/>
+        </classes>
+    </test>
+
+    <test name="test2">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.ReportingAllStatesTests"/>
+        </classes>
+    </test>
+
+    <test name="test3">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.core.playground.SimplePassingTest"/>
+        </classes>
+    </test>
+
+    <test name="test4">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.core.test.layoutcheck.LayoutCheckTest"></class>
+        </classes>
+    </test>
+
+</suite>

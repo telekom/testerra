@@ -1,0 +1,10 @@
+        <link rel="stylesheet" href="style/jquery-ui.css"/>
+        <link rel="stylesheet" href="style/easy.css" media="screen"/>
+        <link rel="stylesheet" href="style/easyprint.css" media="print"/>
+        <link rel="stylesheet" href="style/style.css" type="text/css"/>
+        <link rel="stylesheet" href="style/kis/default.css" type="text/css"/>
+        <link rel="stylesheet" href="style/kis/fonts.css" type="text/css"/>
+        <link rel="stylesheet" href="style/kis/layout.css" type="text/css"/>
+        <link rel="stylesheet" href="style/dataTables.tableTools.css" type="text/css"/>
+        <link rel="stylesheet" href="js/highlight-styles/zenburn.css"/>
+        <link rel="stylesheet" href="style/font-awesome/css/font-awesome.min.css"/>

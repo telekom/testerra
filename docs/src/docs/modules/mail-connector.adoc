@@ -1,0 +1,199 @@
+= Mail-Connector
+
+The module mail-connector allows you to send and receive/read emails as well as solve mail surrounding tasks like encoding or encrypting.
+
+== Project setup
+
+.build.gradle
+[source,gradle,role="primary"]
+----
+compile 'eu.tsystems.mms.tic.testerra:mail-connoctor:1-SNAPSHOT'
+----
+
+.pom.xml
+[source,xml,role="secondary"]
+----
+<dependencies>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>mail-connector</artifactId>
+        <version>1-SNAPSHOT</version>
+    </dependency>
+</dependencies>
+----
+=== Configuration Parameters
+All MailConnector classes need parameters to connect to the corresponding server. These are set within the `mailconnection.properties` file or by system properties. The following parameters must be set.
+
+.mailconnection.properties
+[source, properties]
+----
+#SMTP
+SMTP_SERVER=smtp.mailserver.com
+SMTP_SERVER_PORT=25
+SMTP_USERNAME=user
+SMTP_PASSWORD=password
+SMTP_SSL_ENABLED=false
+
+#POP3
+POP3_SERVER=pop.mailserver.com
+POP3_SERVER_PORT=110
+POP3_FOLDER_INBOX=inbox
+POP3_USERNAME=user
+POP3_PASSWORD=password
+POP3_SSL_ENABLED=false
+DEBUG_SETTING=false
+
+# IMAP
+IMAP_SERVER=imap.mailserver.com
+IMAP_SERVER_PORT=143
+IMAP_FOLDER_INBOX=INBOX
+IMAP_USERNAME=user
+IMAP_PASSWORD=password
+IMAP_SSL_ENABLED=false
+
+# TIMING for POP3 and IMAP
+# sets the timeout between polls, default = 50s
+POLLING_TIMER_SECONDS=10
+# sets the maximum number of polls, default = 20
+MAX_READ_TRIES=20
+----
+If you want to use an SSL-encrypted connection, you  need to set `SMTP_SSL_ENABLED` / `POP3_SSL_ENABLED` to true. The ports must then be adjusted according to the server.
+The actual connection to the mail server is implicitly opened within each `MailConnector` class.
+
+== POP3MailConnector
+The `POP3MailConnector` provides access to a POP3 server. Emails are read and processed by using methods of the superclass `AbstractInboxConnector`.
+
+.Reading and Deleting Mails
+[source,java]
+----
+POP3MailConnector pop3MailConnector = new POP3MailConnector();
+// fetch all emails from Server
+MimeMessage[] messages = pop3MailConnector.getMessages();
+
+// wait until the email with subject 'test' arrived
+final List<SearchCriteria> searchCriteria = new ArrayList<>();
+searchCriteria.add(new SearchCriteria(SearchCriteriaType.SUBJECT, "test"));
+
+Email email = pop3MailConnector.waitForMails(searchCriteria).get(0));
+
+// delete all emails with this subject from the server while setting timeout and max number of polls explicitly
+int maxPolls = 5;
+int timeoutInSeconds = 2
+
+Email email = pop3MailConnector.waitForMails(searchCriteria).get(0), maxPolls, timeoutInSeconds);
+
+// delete mails matching the given criteria
+String recipient = email.getRecipients().get(0));
+String subject = email.getSubject();
+String messageId = null;
+
+pop3MailConnector.deleteMessage(recipient, RecipientType.TO, subject, messageId);
+----
+
+.Working with attachments
+[source,java]
+----
+final List<SearchCriteria> searchCriteria = new ArrayList<>();
+searchCriteria.add(new SearchCriteria(SearchCriteriaType.SUBJECT, "test"));
+Email email = pop3MailConnector.waitForMails(searchCriteria).get(0);
+
+try {
+    Multipart content = (Multipart) email.getMessage().getContent();
+    int contentCnt = content.getCount();
+    String attachmentFileName = null;
+
+    for (int i = 0; i < contentCnt; i++) {
+        Part part = content.getBodyPart(i);
+
+        // Retrieve attachment
+        if (part.getDisposition().equals(Part.ATTACHMENT)) {
+            attachmentFileName = part.getFileName();
+        }
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+} catch (MessagingException e) {
+    e.printStackTrace();
+}
+----
+
+== SMTPMailConnector
+This entity allows sending emails via the SMTP protocol.
+
+.Sending Mails
+[source,java]
+----
+SMTPMailConnector smtpMailConnector = new SMTPMailConnector();
+
+// send a created message
+MimeMessage createdMessage = new MimeMessage(session);
+try {
+    msg.addRecipients(RecipientType.TO, RECIPIENT);
+    msg.addFrom(new Address[]{new InternetAddress(SENDER)});
+    msg.setSubject("testerra");
+    msg.setText("mail text");
+} catch (MessagingException e) {
+    LOGGER.error(e.toString());
+}
+smtpMailConnector.sendMessage(createdMessage);
+
+// send an existing message
+MimeMessage existingMessage = MailUtils.loadEmailFile("test-mail.eml");
+smtpMailConnector.sendMessage(existingMessage);
+----
+
+== ImapMailConnector
+The IMAPMailConnector operates as the <<POP3MailConnector>> with an additional method to mark all mails as seen.
+
+.Working with Mails using ImapMailConnector
+[source,java]
+----
+ImapMailConnector imapMailConnector = new ImapMailConnector();
+
+// wait until the email with subject 'test' arrived
+final List<SearchCriteria> searchCriteria = new ArrayList<>();
+searchCriteria.add(new SearchCriteria(SearchCriteriaType.SUBJECT, "test"));
+
+Email email = imapMailConnector.waitForMails(searchCriteria).get(0);
+
+// mark all mails in inbox as seen
+imapMailConnector.markAllMailsAsSeen();
+
+// delete all mails in inbox
+imapMailConnector.deleteAllMessages();
+----
+
+== MailUtils
+This helper class contains methods which facilitate reoccurring tasks when working with mails, e.g. encrypting, decrypting, and comparing mails.
+
+.Encryption, Decryption and Comparison
+[source,java]
+----
+String pahtKeyStore = "your/path/to/cacert.p12";
+String password = "123456";
+String subject = "test";
+String sentContent = "Testerra Testmail"
+
+SMTPMailConnector smtpMailConnector = new SMTPMailConnector();
+Session session = smtpMailConnector.getSession();
+
+MimeMessage sentMessage = new MimeMessage(session);
+sentMessage.setText(sentContent);
+sentMessage.setSubject(subject);
+
+// encrypt message
+MimeMessage encryptedMsg = MailUtils.encryptMessageWithKeystore(sentMessage, session, pahtKeyStore, password);
+
+smtpMailConnector.sendMessage(encryptedMsg);
+Email receivedMsg = waitForMessage(subject);
+
+// compare Mails and verify difference due to encryption
+boolean areContentsEqual = MailUtils.compareSentAndReceivedEmailContents(sentMessage, receivedMsg);
+Assert.assertFalse(areContentsEqual);
+
+// decrypt message
+MimeMessage decryptedMsg = MailUtils.decryptMessageWithKeystore(encryptedMsg, session, pahtKeyStore, password);
+// verify receivedContent is equal to sentContent
+String receivedContent = ((Multipart) decryptedMsg.getContent()).getBodyPart(0).getContent().toString();
+Assert.assertEquals(receivedContent, sentContent);
+----

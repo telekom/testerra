@@ -1,0 +1,90 @@
+plugins {
+    id 'com.github.jk1.dependency-license-report' version '1.13'
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
+
+ext {
+    /*
+    module stuff
+     */
+    core_interop = project(':core-interop')
+    driver_ui = project(':driver-ui')
+    driver_ui_desktop = project(':driver-ui-desktop')
+    image_processing = project(':image-processing')
+    core = project(':core')
+
+    seleniumVersion = '3.141.59'
+    /*
+    Flags
+     */
+    doNotPublish = this.&dnp
+}
+
+def dnp(prj) {
+    prj.jar.enabled = true
+    prj.publish.enabled = false
+    prj.publishToMavenLocal.enabled = false
+
+    println("Do not publish stuff from " + prj)
+}
+
+allprojects {
+    group 'eu.tsystems.mms.tic.testerra'
+    version '1-SNAPSHOT'
+
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+
+    sourceCompatibility = 1.8
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+
+        repositories {
+            maven {
+                url System.getProperty("deployUrl", "none")
+                credentials {
+                    username System.getProperty("deployUsername", "none")
+                    password System.getProperty("deployPassword", "none")
+                }
+            }
+        }
+    }
+
+    tasks.whenTaskAdded { t ->
+        if (t.name.startsWith("publish")) {
+            boolean e = t.project.publish.enabled
+            if (!e) {
+                println "Not running publish for " + t.project.name
+                t.enabled = false
+            }
+        }
+    }
+
+    test {
+        ignoreFailures = true
+        useTestNG()
+        testLogging {
+            outputs.upToDateWhen { false }
+            showStandardStreams = true
+        }
+        options {
+            systemProperties(System.getProperties())
+        }
+    }
+
+}

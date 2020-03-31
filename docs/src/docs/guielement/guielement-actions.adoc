@@ -1,0 +1,156 @@
+= Actions
+
+GuiElement provides a variety of action methods.
+Beside the known WebElement methods there are some more useful methods to interact with the web site.
+
+== Click on elements
+
+[source,java]
+----
+GuiElement element = new GuiElement(driver, By.id("button"));
+
+// Standard click actions on elements
+element.click();
+element.doubleClick();
+element.rightClick();
+
+// With 'JS' click methods JavaScript is used for click instead of Selenium click.
+// It could be useful if elements are hidden or not reachable by Selenium.
+element.clickJS();
+element.doubleClickJS();
+element.rightClickJS();
+
+// This method uses a special mouse navigation path like 'mouseOverAbsolute2Axis()'.
+element.clickAbsolute();
+----
+
+See <<Mouse over>> for more details about the `mouseOverAbsolute2Axis` method.
+
+== Enter text
+
+[source,java]
+----
+GuiElement element = new GuiElement(driver, By.id("input"));
+
+// Enters the given text in a input or textfield.
+// Any old values are automatically deleted before input.
+// The type method has a value check. If the given string is NULL or empty, the method does nothing.
+element.type("my text");
+
+// The standard Selenium method is used.
+// You can also use the Selenim Keys class to enter special keys.
+element.sendKeys("my text");
+element.sendKeys("my text" + Keys.ENTER);
+
+// Delete the content of an input field.
+element.clear();
+----
+
+== Use select boxes
+
+[source,java]
+----
+GuiElement element = new GuiElement(driver, By.id("select"));
+
+// Get the Select WebElement of a GuiElement
+Select select = element.getSelectElement();
+
+// You can use all Selenium Select methods interact.
+select.selectByIndex(2);
+select.selectByVisibleText("option");
+List<WebElements> list = select.getAllSelectedOptions();
+
+----
+
+== Use check boxes
+
+[source,java]
+----
+GuiElement element = new GuiElement(driver, By.id("checkbox"));
+
+// Only check boxes returns true, all other elements return false
+boolean check = element.isSelectable();
+
+// Check and uncheck the check box
+element.select();
+element.deselect();
+
+// true = check, false = uncheck
+element.select(true);
+
+----
+
+== Scrolling
+
+You can scroll the browser viewport until the element is on the upper edge of the viewport if possible.
+
+[source,java]
+----
+GuiElement element = new GuiElement(driver, By.id("image"));
+
+element.scrollToElement()
+
+// Lets offset pixel distance from the top of the viewport
+element.scrollToElement(int yOffset)
+
+----
+
+== Mouse over
+
+You can simulate the mouse pointer is moved over an element.
+
+[source,java]
+----
+GuiElement element = new GuiElement(driver, By.id("label"));
+
+// Standard mouse move
+element.mouseOver();
+element.mouseOverJS();
+
+// Move the mouse pinter not relative from the last position.
+element.mouseOverAbsolute2Axis();
+
+----
+
+The following graphic shows 2 different mouse pointer paths beginning at the upper right image to the button 1.
+
+.Two possible mouse paths
+image::absolute2Axis.png[]
+
+The standard path (green) goes over a menu with hover effects.
+This could hide your target element.
+The blue path variant always goes first to the point (0,0) of the viewport, then in x and y direction the the target element.
+
+== Drag and drop actions
+
+With the utils class `MouseActions` you can execute a drag-and-drop actions.
+Source and target GuiElements can be located in different frames.
+
+[source,java]
+----
+
+GuiElement source = new GuiElement(driver, By.id("elem1"));
+GuiElement target = new GuiElement(driver, By.id("elem2"));
+
+MouseActions.dragAndDropJS(source, target);
+
+// You can add one or more DragAndDropActions
+MouseActions.dragAndDropJS(source, target, DragAndDropOption.CLICK_AFTER_RELEASE);
+
+// This method provides a swipe of an element to a relative position from the element.
+int offsetX = 50;   // Pixel
+int offsetY = 125;  // Pixel
+MouseActions.swipeElement(source, offsetX, offsetY);
+
+----
+
+== Highlight elements
+
+This mdethod draws a coloured frame around the GuiElement.
+
+[source,java]
+----
+GuiElement element = new GuiElement(driver, By.id("button"));
+
+element.highlight();
+----

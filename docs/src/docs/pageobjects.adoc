@@ -1,0 +1,345 @@
+= PageObjects
+
+== Overview
+
+=== What is a page object?
+A page objects represents a HTML pages and or a subpage. It contains GuiElements with describe the actual page and methods to provide actions on them.
+
+In your test you only uses the provided actions of your page like an API. The page object himself uses the GuiElements as an API to interact with the website.
+
+=== Navigation Principle
+In a regular Web Application there is a defined navigation flow. This means there are pages with actions on it that let you navigate to other pages.
+
+In the example below we have a search dialog with a search action on it that lets you navigate to a `ResultPage` with the search result.
+When a search is performed the browser will navigate to the `ResultPage`. In your page you create a new object of your next page.
+
+This new page object is used for the next steps in your test.
+
+.Example of a page flow
+image::PageFlowExample.png[]
+
+=== Example
+
+The following page contains two `GuiElements` and one method for a user action 'search a string'.
+
+Within the method `search` the defined GuiElements are used to execute a search.
+
+The annoation `Check` marks the GuiElements as mandatory for the page. Testerra automatically verifies these elements when this page is instantiated (<<Check Annotations>>).
+
+[source,java]
+----
+public class SearchPage extends Page {
+
+    @Check
+    private final GuiElement searchButton = new GuiElement(driver, By.name("searchButton"));
+
+    @Check
+    private final GuiElement inputField = new GuiElement(driver, By.name("inputField"));
+
+    // constructor
+    public SearchPage(WebDriver driver) {
+        super(driver);
+    }
+
+    // search action on page
+    public ResultPage search(String text){
+        inputField.type(text);
+        searchButton.click();
+        return PageFactory.create(ResultPage.class, driver);
+    }
+}
+----
+
+The following lines demonstrate how to use page objects in your test method.
+
+[source,java]
+----
+import ...
+
+public class TestClass extends TesterraTest {
+
+    @Test
+    public void myTest() {
+        HomePage homePage = PageFactory.create(HomePage.class, driver);
+        SearchPage searchPage = homePage.openSearch();
+        ResultPage resultPage = searchPage.search("search text");
+        resultPage.assertResultSetIsNotEmpty();
+        homePage = resultPage.close();
+    }
+}
+----
+
+== Instantiation
+
+=== PageFactory
+Instead of creating Pages with the page constructor pages should created by using the `PageFactory` as demonstrated in the example.
+
+When the page is instantiated, Testerra automatically checks its annotated elements.
+
+[source,java]
+----
+HomePage homePage = PageFactory.create(HomePage.class, driver);
+----
+
+With the PageFactory you can also perform to check a page was gone. With this you can make sure, that your page is NOT shown any more. For example, you want to verify a dialog windows was closed after a click.
+
+[source,java]
+----
+PageFactory.checkNot(searchPage.class, driver);
+----
+The checkNot is successful if at least one mandatory GuiElement ("@Check") is not shown.
+
+=== Inject additional objects
+
+In some cases you need to provide dynamic information to the page, which are only known at runtime.
+
+This information is an object implements `PageVariables`.
+
+[source,java]
+----
+class MyData implements PageVariables {
+    public String value;
+}
+----
+
+For example you can can use that additional information for custom GuiElements.
+
+[source,java]
+----
+class MyPage extends Page {
+
+    @Check
+    private GuiElement customElement;
+
+    public MyPage(WebDriver driver, MyData data) {
+        super(driver);
+        this.customElement =
+            new GuiElement(driver, By.xpath("//*[@text = '" + data.value + "']"));
+    }
+}
+----
+
+In your test method you define your `PageVariable` object and create the page with the `PageFactory`.
+
+Testerra verifies all the GuiElements _after_ all GuiElements were instantiated and the constructor was executed.
+
+[source,java]
+----
+MyData pageVariablesObject = new MyData();
+pageVariablesObject.value = "some information";
+
+MyPage myPage = PageFactory.create(MyPage.class, driver, pageVariablesObject);
+----
+
+===	Page Prefixes
+
+Page Prefixes can influence which concrete classes get instantiated by the `PageFactory`. They work together with a inheritance scheme of page classes. This can be useful if there is a base page which can come in different concrete variations. Example:
+
+There is a `BaseClass` which inherits from the `Page` class and contains the basic functionality of a page.
+Then the `Page` can come in 2 different variations.
+We can represent this as `Variation1BaseClass` and `Variation2BaseClass`.
+They both inherit from `BaseClass`.
+Before instantiation, we can set the prefix using the `PageFactory`.
+Then we instantiate it and we can get our variation of the base class.
+[source,java]
+----
+PageFactory.setGlobalPagesPrefix("Variation1");
+//this actualy creates a Variation1BaseClass
+BaseClass baseClass = PageFactory.create(BaseClass.class, driver);
+----
+Default is no prefix.
+
+Usage:
+[source,java]
+----
+// Set a global Prefix
+PageFactory.setGlobalPagesPrefix("prefix");
+
+// Set a thread local prefix. See next row about cleaning this prefix.
+PageFactory.setThreadLocalPagesPrefix("prefix");
+
+// The thread local pages prefix is not cleared automatically,
+// be sure to always set the correct one or clear  itafter using.
+PageFactory.clearThreadLocalPagesPrefix();
+----
+
+== Responsive Page Objects
+Sometimes responsive web pages are designed in a way that they change their structure depending on the browsers viewport. To represent this behavior for tests, responsive page objects can be used. With this feature, different page objects can be created to represent the page using different window sizes. This allows the tests to respond to varying page structures.
+
+The `PageFactory` will instantiate the correct page class automatically based on the current viewport.
+
+=== Page structure
+To use this feature, the page classes must follow a special naming and inheritance scheme.
+
+First a base class is needed. It represents the responsive page in general. This base class inherits from the `Page` class. Then classes for special viewports are created, which inherit from the base class. They represent the page in a defined viewport range.
+
+The name scheme for size depended classes is
+
+<BaseClass>_<minimun-resolution>_<maximum-resolution>.
+
+Possible values for resolutions are numbers in pixels with added "px" and "Min" or "Max".
+
+This example should help making things clear.
+The base class should contain the common functions of that page,
+[source,java]
+----
+/** base page class */
+abstract class ResponsiveTestPage extends Page { ... }
+----
+
+while inherited classes contain elements and functions special to that specific screen resolution.
+[source,java]
+----
+/**	page instantiated for width 600px or less. */
+class ResponsiveTestPage_Min_600px extends ResponsiveTestPage { ... }
+
+/** page is instantiated for width from 601 to 1199 px */
+class ResponsiveTestPage_601px_1199px extends ResponsiveTestPage { ... }
+
+/** page instantiated for width  1200 px or more. */
+class ResponsiveTestPage_1200px_Max extends ResponsiveTestPage { ... }
+----
+Responsive Page Objects work also together with Page Prefixes.
+
+=== Usage
+
+In the test method only the base class will be instantiated. The `PageFactory` will detect the naming scheme and then use the correct classes automatically. Instantiating a responsive page in the example above would look like this:
+
+[source,java]
+----
+ResponsiveTestPage testPage = Pagefactory.create(ResponsiveTestPage.class, driver);
+----
+
+The parameters for the factory are the base class and the current webdriver instance.
+
+When a page is first instantiated, the factory searches for all subclasses of this page. The filtering is then performed using the naming scheme. The current viewport width of the WebDriver object is then determined. On the basis of the determined value, the system searches for the class that offers the next smallest resolution in relation to the current browser width.
+
+The package where the factory searches the resolution specific page classes can be configured by a property setting.
+
+include::properties/pagefactory-props.adoc[]
+
+
+== Check Annotations
+The `@Check` annotation is used to verify the actual presence of an element on the site.
+All `GuiElements` that are marked with the `@Check` annotation are automatically checked when instantiated by the `PageFactory`.
+
+In the example, the first `GuiElement` has the `@Check` annotation, the second doesn't. The result is, that the presence of the first element will be checked by the constructor, the second won't. If a checked element is not found, the constructor will throw a `PageNotFoundException`.
+
+[source,java]
+----
+@Check
+private GuiElement checked = new GuiElement(driver, By.name("checked"));
+//no @Check here
+private GuiElement unchecked = new GuiElement(driver, By.name("unchecked"));
+----
+
+The `@Check` annotation will use the default `CheckRule` defined in `test.properties`. It is also possible to overwrite the default `CheckRule` for a single `@Check` annotation.
+
+[source,java]
+----
+@Check(checkRule = CheckRule.IS_PRESENT)
+private GuiElement checked = new GuiElement(driver, By.name("checked"));
+----
+
+Available CheckRules are
+
+* IS_DISPLAYED
+* IS_NOT_DISPLAYED
+* IS_PRESENT
+* IS_NOT_PRESENT
+
+The default is IS_DISPLAYED.
+
+With nonFunctional attribute the check only adds a warning in Testerra report.
+The test will not interrupted at this position.
+
+[source,java]
+----
+@Check(nonFunctional = true)
+private GuiElement checked = new GuiElement(driver, By.name("checked"));
+----
+
+With following `@Check` annotation you can define a special error message.
+
+[source,java]
+----
+@Check(prioritizedErrorMessage = "My error message.")
+private GuiElement checked = new GuiElement(driver, By.name("checked"));
+----
+
+== Error handling
+Exceptions caused by `@Check` annotations can be catched by overwriting the `checkPageErrorState()` method in the concrete page class.
+This is an example how to overwrite the checkpage error inside a created page class.
+
+[source,java]
+----
+
+@Override
+protected void checkPageErrorState(Throwable throwable) throws Throwable {
+    // insert your code
+}
+
+----
+
+This method body for example could throw other exceptions or write something in the log.
+
+== Timeout Setting
+The checks are performed with a timeout. The default timeout is set by the property {element_timeout_seconds} in `test.properties`
+
+With the following annotation the GuiElement timeout can be changed for all GuiElements in one page:
+[source,java]
+----
+@PageOptions(elementTimeoutInSeconds = 60)
+public class ExamplePage extends Page {
+	// insert your code
+}
+
+----
+
+== Assertions
+`Pages objects` offer some `assertions` which mostly work like their equivalents on `GuiElements`.
+In difference to `GuiElements` here the whole page is searched for the given element in recursive order.
+[source,java]
+----
+ResultPage resultPage = PageFactory.create(ResultPage.class, driver);
+
+String text = "Expected Text";
+
+// Asserts if text is present or not.
+boolean isTextPresent = resultPage.assertIsTextPresent(text);
+boolean isNotTextPresent = resultPage.assertIsNotTextPresent(text);
+
+// Asserts if text is displayed or not.
+boolean isTextDisplayed = resultPage.assertIsTextDispayed(text);
+boolean isTextNotDisplayed = resultPage.assertIsNotTextDisplayed(text);
+
+// Work like the methods above. In addition, the description String
+// is added to the exception if the assert fails.
+String errorTextNotPresent = text + " is not present on this page.";
+String errorTextNotDisplayed = text + " is not displayed on this page.";
+resultPage.assertIsTextPresent(text, errorTextNotPresent);
+resultPage.assertIsTextDisplayed(text, errorTextNotDisplayed);
+----
+
+== Additional Page Methods
+[source,java]
+----
+ResultPage resultPage = PageFactory.create(ResultPage.class, driver);
+
+// Reload the page (sends F5 to the browser).
+resultPage.refresh();
+
+// Reload like above and if the passed boolean is true checkPage() is called.
+resultPage.refresh(true);
+
+// Checks on the whole page if the text is displayed.
+boolean isTextDisplayed = resultPage.isTextDisplayed(String text);
+
+// Checks on whole page if the text is present.
+boolean isTextPresent = resultPage.isTextPresent(String text);
+
+WebDriver myDriver = resultPage.getDriver();
+----
+
+For more documenation about the method `getGuiElementGroups` see <<Groups of GuiElements>>.
+

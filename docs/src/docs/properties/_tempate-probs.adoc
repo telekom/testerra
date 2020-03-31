@@ -1,0 +1,6 @@
+include::property-attributes.adoc[]
+
+[cols="2,^1,4a",options="header"]
+|===
+| Property | default | Description
+|===

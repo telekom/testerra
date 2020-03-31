@@ -1,0 +1,61 @@
+= Support multiple profiles
+
+Supporting multiple profiles is useful, for different environments or test suites.
+
+.build.gradle
+[source, gradle, role="primary"]
+----
+test {
+    def profiles = [
+        "mySuite": "suite.xml"
+    ]
+
+    def suiteFiles = []
+    profiles.each { k, v ->
+        if (project.hasProperty("" + k)) {
+            def f = 'src/test/resources/' + v
+            suiteFiles << f
+        }
+    }
+
+    useTestNG() {
+        suites(suiteFiles as String[])
+    }
+}
+----
+
+.pom.xml
+[source, xml, role="secondary"]
+----
+<project>
+   <profiles>
+        <profile>
+            <id>mySuite</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skip>false</skip>
+                            <suiteXmlFiles>
+                                <suiteXmlFile>src/test/resources/suite.xml</suiteXmlFile>
+                            </suiteXmlFiles>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
+----
+
+.Gradle
+[source, bash, role="primary"]
+----
+gradle test -PmySuite
+----
+.Maven
+[source, bash, role="secondary"]
+----
+mvn test -PmySuite
+----

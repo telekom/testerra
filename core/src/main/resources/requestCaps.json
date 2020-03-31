@@ -1,0 +1,17 @@
+{
+	"capabilities": [ 
+	{		
+		"desktop": "Aero",
+		"programs": [
+			{
+				"name": "MSOutlook",
+				"version": "2010"
+			},
+			{
+				"name": "notepad++",
+				"version": "5"
+			}
+		]
+	}
+	]
+}

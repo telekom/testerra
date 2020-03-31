@@ -1,0 +1,26 @@
+#if (${methodInfo.screenshots.size()} > 0)
+    <div class="spacy shadow">
+        <div class="fotorama"
+             data-height="90"
+             data-width="150"
+             data-navposition="top"
+             data-allowfullscreen="native"
+             data-nav="thumbs"
+             data-arrows="true"
+             data-click="true"
+             data-swipe="true"
+             data-fit="scaledown"
+             data-thumbwidth="32"
+             data-thumbheight="32">
+            #foreach( $screenshot in $methodInfo.screenshots )
+                <div data-img="../../screenshots/${screenshot.filename}">
+                    <!-- Fullscreen -->
+                    <a class="gallerybutton" href="#" title="Fullscreen" onclick="fotorama.cancelFullScreen();">
+                        <i class="bgwhite fa fa-arrows-alt"></i>
+                    </a>
+                </div>
+            #end
+        </div>
+    </div>
+    <script>var fotorama = $('.fotorama').fotorama().data('fotorama');</script>
+#end

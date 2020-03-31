@@ -1,0 +1,79 @@
+= Localization
+
+Websites come in many languages, where the functionality may not change, but labels of buttons, input or other interactive elements.
+Testerra provides an easy and simple way to support the localization of GuiElements.
+
+== Add localization resource bundle
+
+The localization is based on Unicode `.properties` files loaded during runtime.
+To add such files, create a new resource bundle `lang` in `src/main/resources` and add all required locales.
+
+.lang_en.properties
+[source, properties, role="primary"]
+----
+BTN_LOGIN=Login
+----
+
+.lang_de.properties
+[source, properties, role="secondary"]
+----
+BTN_LOGIN=Anmelden
+----
+
+NOTE: You can change the default encoding for `.properties` files in IntellJ at _File -> Settings -> File Encodings_
+
+== Access localization text
+
+Now you can instance GuiElements by localized strings.
+
+[source, java]
+----
+import eu.tsystems.mms.tic.testframework.l10n.SimpleLocalization;
+
+enum Localization {
+    BTN_LOGIN;
+
+    public String toString() {
+        return SimpleLocalization.getText(this.name());
+    }
+}
+
+GuiElement loginBtn = new GuiElement(By.linkText(Localization.BTN_LOGIN));
+----
+
+== Change runtime locale
+
+The best way to change the locale for your tests is, to pass the language property as command line argument.
+
+[source, bash]
+----
+gradle test -Duser.language=de
+----
+
+For Maven, you need some extra configuration
+
+.pom.xml
+[source, xml]
+----
+<project>
+    <properties>
+        <user.language>de</user.language>
+        <user.country>DE</user.country>
+        <argLine>-Duser.language=${user.language} -Duser.country=${user.country}</argLine>
+    </properties>
+</project>
+----
+
+before running the command
+[source, bash]
+----
+mvn test -Duser.language=de -Duser.country=DE
+----
+
+## Change browser locale
+
+The WebDriver API official doesn't support changing the language of a browser session. But there exists
+non-standard or experimental ways on https://stackoverflow.com/questions/33016300/selenium-change-language-browser-chrome-firefox[Stackoverflow]
+to change your browser locale.
+
+Anyways, it's currently the better way to visit your SUT with an undefined language and change it there with the ability it's providing for that.

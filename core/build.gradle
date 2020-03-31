@@ -1,0 +1,53 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.internal.jvm.Jvm
+
+dependencies {
+    compile core_interop
+    implementation 'org.apache.poi:poi-ooxml:3.17'
+    implementation 'org.apache.pdfbox:pdfbox:1.8.10'
+    implementation 'org.apache.httpcomponents:httpcore:4.4.1'
+    implementation 'org.apache.httpcomponents:httpclient:4.5'
+    implementation 'com.sun.jersey:jersey-client:1.19.3'
+
+    // <XML>
+    // These dependencies are exposed by XMLUtils.java
+    compile 'org.jsoup:jsoup:1.7.2'
+    compile 'org.jdom:jdom2:2.0.6'
+    compile "javax.xml.bind:jaxb-api:2.3.0"
+    compile "com.sun.xml.bind:jaxb-core:2.3.0"
+    compile "com.sun.xml.bind:jaxb-impl:2.3.0"
+    compile "javax.activation:activation:1.1"
+    compile "xerces:xercesImpl:2.8.0"
+    // </XML
+
+    implementation 'org.codehaus.plexus:plexus-utils:2.1'
+
+    // <Report>
+    implementation 'org.apache.velocity:velocity:1.7'
+    implementation group: 'org.apache.velocity', name: 'velocity-tools', version: '2.0'
+    implementation 'org.jfree:jfreechart:1.0.19'
+    // </Report>
+
+    implementation 'com.opencsv:opencsv:3.9'
+    implementation 'nl.basjes.parse.useragent:yauaa:4.5'
+    implementation 'org.json:json:20140107'
+    implementation 'org.reflections:reflections:0.9.12'
+}
+
+processResources {
+    filesMatching('**/testerra-build.properties') {
+        filter ReplaceTokens, tokens: [
+                'build.java.version': Jvm.current().javaVersion.toString(),
+                'build.os.name'     : System.getProperty("os.name"),
+                'build.os.arch'     : System.getProperty("os.arch"),
+                'build.os.version'  : System.getProperty("os.version"),
+                'build.user.name'   : System.getProperty("user.name"),
+                'build.version'     : project.version.toString(),
+                'build.timestamp'   : new Date().toString()
+        ]
+    }
+}
+
+test {
+    exclude '**'
+}

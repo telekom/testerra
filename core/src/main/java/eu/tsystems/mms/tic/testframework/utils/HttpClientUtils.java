@@ -12,12 +12,11 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann
- *     pele
+ *      Peter Lehmann
+ *      Eric Kubenka
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
@@ -28,12 +27,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URL;
 
 public final class HttpClientUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);
 
     public abstract static class ResponseCallBack {
+
         public abstract String run(HttpResponse response);
     }
 
@@ -43,20 +44,23 @@ public final class HttpClientUtils {
 
     public static String request(String requestUrl, boolean proxyAutoMode, HttpHost proxy, int connectionTimeoutMillis,
                                  ResponseCallBack responseCallBack, boolean suppressLogging) throws IOException {
-            return pRequest(requestUrl, proxyAutoMode, proxy, connectionTimeoutMillis, responseCallBack, suppressLogging);
+        return pRequest(requestUrl, proxyAutoMode, proxy, connectionTimeoutMillis, responseCallBack, suppressLogging);
     }
 
     private static String pRequest(String requestUrl, boolean proxyAutoMode, HttpHost proxy, int connectionTimeoutMillis,
-                                 ResponseCallBack responseCallBack, boolean suppressLogging) throws IOException {
+                                   ResponseCallBack responseCallBack, boolean suppressLogging) throws IOException {
         if (proxyAutoMode) {
-            String proxyHost = PropertyManager.getProperty("http.proxyHost");
-            int proxyPort = PropertyManager.getIntProperty("http.proxyPort", -1);
-            if (proxyHost != null && proxyPort != -1) {
-                proxy = new HttpHost(proxyHost, proxyPort, "http");
+            final URL systemProxy = ProxyUtils.getSystemHttpProxyUrl();
+
+            // Check for
+            // 1. Proxy was configured in general
+            // 2. Proxy Port is set, because HttpHost will get in trouble with por tof -1
+            if (systemProxy != null && systemProxy.getPort() != -1) {
+                proxy = new HttpHost(systemProxy.getHost(), systemProxy.getPort(), systemProxy.getProtocol());
             }
         }
 
-         /*
+        /*
          * Build httpClient.
          */
         if (!suppressLogging) {
@@ -73,8 +77,7 @@ public final class HttpClientUtils {
             final HttpGet request = new HttpGet(requestUrl);
             final HttpResponse response = httpClient.execute(request);
             return responseCallBack.run(response);
-        }
-        finally {
+        } finally {
             httpClient.close();
         }
     }

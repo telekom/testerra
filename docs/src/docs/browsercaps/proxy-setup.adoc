@@ -20,7 +20,7 @@ public abstract class AbstractTest extends TesterraTest {
         URL proxyUrl = ProxyUtils.getSystemHttpProxyUrl();
         if (proxyUrl != null) {
             DesiredCapabilities dc = new DesiredCapabilities();
-            WebDriverManagerUtils.addProxyToCapabilities(dc, proxyUrl.toString());
+            WebDriverManagerUtils.addProxyToCapabilities(dc, proxyUrl);
             WebDriverManager.setGlobalExtraCapabilities(dc);
         }
     }

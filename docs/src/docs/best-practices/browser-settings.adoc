@@ -1,6 +1,22 @@
-= Chrome Options
+= Useful browser capabilities
 
-== Useful options
+== Firefox Options
+
+=== Prevent Firefox download confirmation dialog
+
+[source,java]
+----
+FirefoxOptions firefoxOptions = new FirefoxOptions();
+// You have to add every mimetype you want no confirmation for
+firefoxOptions.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/zip");
+firefoxOptions.addPreference("browser.download.manager.showAlertOnComplete", false);
+firefoxOptions.addPreference("browser.download.manager.showWhenStarting", false);
+----
+
+
+== Chrome Options
+
+=== Chrome in a container
 
 If using Selenium with Chrome in a Docker container it may comes to some random `WebDriverException`, because of some internal container limits.
 

@@ -3,12 +3,6 @@
 ----
 ResultPage resultPage = PageFactory.create(ResultPage.class, driver);
 
-// Reload the page (sends F5 to the browser).
-resultPage.refresh();
-
-// Reload like above and if the passed boolean is true checkPage() is called.
-resultPage.refresh(true);
-
 // Checks on the whole page if the text is displayed.
 boolean isTextDisplayed = resultPage.isTextDisplayed(String text);
 

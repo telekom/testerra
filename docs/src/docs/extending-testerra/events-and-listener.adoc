@@ -1,0 +1,271 @@
+= Hooks
+
+The interface `ModuleHook` of Testerra framework offers you an entry point to extend the framework and register listeners, add workers or apply filters to methods.
+All you have to do is to implement the interfaces `ModuleHook.init()` and `ModuleHook.terminate()` methods.
+Testerra will then search for all present implementations of `ModuleHook` in the class path and will register it.
+
+While the `init()` method is called on startup of Testerra as one of the earliest steps, you are able to make your customizations as soon as possible and you are able to register to all <<Events>> of Testerra framework as well.
+
+The `terminate()` method of your custom module hook is called at the most latest point for Testerra right before terminating the execution.
+You should use this method to cleanup your module, if necessary, for example closing database connections in a database module.
+
+.Simple Testerra ModuleHook
+[source,java,subs="module-hook"]
+----
+import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
+
+public class SimpleCustomHook implements ModuleHook {
+
+    @Override
+    public void init() {
+        //
+    }
+
+    @Override
+    public void terminate() {
+        //
+    }
+}
+----
+
+== Events and Listener
+
+Testerra provides it own event service called `TesterraEventService` which basically fires events of type `ITesterraEventType`.
+By default Testerra will register the `TesterraEventListener` by itself.
+This basic implementation fill fire the following events by default.
+
+.TesterraEventType
+|===
+|Event |Description |Associated data
+
+|TEST_METHOD_START
+|Called on start of every test method annotated by TestNG `@Test` annotation, but before the execution of registered <<Before Method Worker>> and after all TestNG configuration methods like `@BeforeMethod`.
+|#WIP#
+
+|TEST_METHOD_END
+|Called at the end of every test method annotated by TestNG `@Test` annotation, but before the execution of registered <<After Method Worker>> and the execution fo all TestNG configuration methods like `@AfterMethod`.
+|#WIP#
+
+|CONFIGURATION_METHOD_START
+|Called on start of every test configuration method annotated by TestNG `@BeforeMethod` annotation or similar, but before the execution of registered <<Before Method Worker>>.
+|#WIP#
+
+|CONFIGURATION_METHOD_END
+|Called at the end of every test configuration method annotated by TestNG `@BeforeMethod` annotation or similar, but before the execution of registered <<After Method Worker>>.
+|#WIP#
+
+|TEST_START
+|Called on start of every test method annotated by TestNG `@Test` annotation and every test configuration method annotated by TestNG `@BeforeMethod` or similar, but before the execution of registered <<Before Method Worker>>
+|#WIP#
+
+|TEST_END
+|Called at the end of every test method annotated by TestNG `@Test` annotation and every test configuration method annotated by TestNG `@BeforeMethod` or similar, but before the execution of registered <<After Method Worker>>
+|#WIP#
+
+|RETRYING_METHOD
+| #NOT called anywhere#
+|#WIP#
+
+|FIRST_FAILED_TEST
+|Called on the first failing test of your test run.
+|#WIP#
+
+|TEST_WITH_FILTERED_THROWABLE
+|Called on every failed test method when Testerra `RetryAnalyzer`found a cause to retry the test.
+|#WIP#
+
+|SYNC_METHOD_RESULT
+|Called after every test method to determine a state where you can use the delivered data of the event to synchronize test results to test management system or issue tracker.
+|#WIP#
+
+|TAKE_SCREENSHOTS
+| #NOT called anywhere#
+|#WIP#
+
+|CONTEXT_UPDATE
+|Called on every context update of Testerra underlying data model.
+|#WIP#
+
+|===
+
+=== Create Custom Event Listeners
+
+The simplest way to get in touch with the `TesterraEventServiuce` eco system is to write and register your own implementation of `TesterraEventListener`.
+Listening to events and reacting to them will give your module the power to provide real time information of your test executions.
+
+For a simple example we will add a `TesterraEventListener` that will log each event that was fired during the test execution.
+
+.Simple LogEventListener
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.events.TesterraEventListener;
+
+public class LogEventListener implements TesterraEventListener {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(LogEventListener.class);
+
+    @Override
+    public void fireEvent(TesterraEvent e) {
+        LOGGER.info("Testerra Event logged: " + e.getTesterraEventType().name());
+    }
+}
+
+----
+
+As you noticed, the main part of your implementation of `TesterraEventListener` is done in the `fireEvent()` method, that you need to override.
+If you only want to react to some event types, you can just filter by the `ITesterraEventType`.
+
+.Filter events by event type
+[source,java]
+----
+@Override
+public void fireEvent(TesterraEvent e) {
+    if (e.getTesterraEventType() == TesterraEventType.TEST_METHOD_START) {
+        LOGGER.info("Testerra Test Method Start Event fired");
+    }
+}
+----
+
+Further more, events can provide some data, that can be retrieved by calling `getData()` on the `TesterraEvent` object.
+To give you the best flexibility, this data is defined by an interface `ITesterraEventDataType`.
+Testerra will come with a default set of event data types defined in `TesterraEventDataType`.
+
+.Receive data
+[source,java]
+----
+@Override
+public void fireEvent(TesterraEvent e) {
+    if (e.getTesterraEventType() == TesterraEventType.TEST_METHOD_START) {
+        final String methodName = (String) e.getData().get(TesterraEventDataType.METHOD_NAME);
+        LOGGER.info("Testerra Test Method Start Event fired for method: " + methodName);
+    }
+}
+----
+
+=== Register custom event listener
+
+After you defined your first custom `TesterraEventListener` you now have to register it to Testerra.
+Think about it in a simple way.
+You want to get a notice, when a Testerra event is fired, so you have to tell Testerra, that your module is waiting and listening to events.
+
+While The <<Hook>> works automatically it is best practice to use the `init()` method of a `ModuleHook` to register custom `TesterraEventListener` implementations.
+
+.Registering your listener
+[source,java]
+----
+TesterraEventService.addListener(new LogEventListener());
+----
+
+=== Create Custom Event Types
+#WIP#
+
+=== Fire Custom Event Types
+#WIP#
+
+[source,java]
+----
+ TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.SYNC_METHOD_RESULT)
+                    .addUserData()
+                    .addData(TesterraEventDataType.METHOD_NAME, methodName)
+                    .addData(TesterraEventDataType.TESTRESULT_STATUS, testResult.getStatus())
+                    .addData(TesterraEventDataType.ITestResult, testResult)
+                    .addData(TesterraEventDataType.IInvokedMethod, invokedMethod)
+----
+
+== Worker
+
+Testerra implements the `beforeInvocation()` and `afterInvocation()` methods of the TestNG `IInvokedMethodListener` interface and allows you to drop in concrete `Worker` classes to extend the functionality of the named methods.
+
+Testerra itself uses a worker pattern / approach to get things done in an ordered way.
+Therefore Testerra gives you the opportunity to implement the `Worker` interface and pass your concrete implementation into the framework to allow modifications or actions right before a test method will start or end.
+But there are some more points where you are able to inject a `Worker` implementation to get your own things done.
+
+.A simple Worker
+[source,java,]
+----
+
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.Worker;
+
+public class CustomWorker implements Worker {
+    //..
+}
+
+----
+
+For adding specified `Worker` implementation, Testerra provides some abstract Worker classes that you can extend, e.g. `MethodWorker`.
+
+=== Before Method Worker
+
+"Before Method Worker" are based on the `MethodWorker` and executed right before your test method or test configuration method starts.
+For example we will print the test method name to our console log before the test starts.
+
+[source,java,]
+----
+
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+
+public class LogStartWorker extends MethodWorker {
+
+    @Override
+    public void run() {
+
+        final String testClassName = testMethod.getTestClass().getName();
+
+        if (isTest()) {
+            /*
+             * Test method
+             */
+            LOGGER.info("Starting test method: " + testClassName + "." + methodName);
+        } else {
+            /*
+             * Configuration methods
+             */
+            LOGGER.info("Starting configuration method: " + testClassName + "." + methodName);
+        }
+    }
+}
+----
+
+As you can see, the abstract class `MethodWorker` will ship with some helper methods like `isTest()` to determine if a test or a test configuration method was invoked.
+As you mention as well, you can use an already instantiated LOGGER object to use the default logger of Testerra.
+The `MethodWorker` will also give you some accessible class members, like `methodName` or the underlying TestNG `ITestResult`, which you can access with `testResult`.
+
+==== Register a Before Method Worker
+
+To register your implementation of a `MethodWorker` you have to call the TesterraListerner.
+It is best practice to register your worker as early as possible.
+So please take a look at the <<Hook>> section and register your `MethodWorker` in the `init()` method like shown below.
+
+.Registering a Before Method Worker
+[source,java]
+----
+TesterraListener.registerBeforeMethodWorker(LogStartWorker.class);
+----
+
+=== After Method Worker
+
+The "After Method Worker" will work like the <<Before Method Worker>>, but at least they are called after the test method or test configuration method execution.
+
+NOTE: Please keep in mind, that any annotated `@AfterMethod` or similar configuration methods of TestNG will be called after your Worker!
+
+==== Register a After Method Worker
+
+You can register the After Method Worker by calling:
+
+[source,java]
+----
+TesterraListener.registerAfterMethodWorker(LogStartWorker.class);
+----
+
+=== Generate Report Worker
+
+#WIP#
+
+== Filter
+
+#WIP# - TestMethodInterceptor - We have to reimplement this in Testerra.
+
+
+
+
+

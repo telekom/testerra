@@ -1,0 +1,97 @@
+= Worker
+
+Testerra implements the `beforeInvocation()` and `afterInvocation()` methods of the TestNG `IInvokedMethodListener` interface and allows you to drop in concrete `Worker` classes to extend the functionality of the named methods.
+
+Testerra itself uses a worker pattern / approach to get things done in an ordered way.
+Therefore Testerra gives you the opportunity to implement the `Worker` interface and pass your concrete implementation into the framework to allow modifications or actions right before a test method will start or end.
+But there are some more points where you are able to inject a `Worker` implementation to get your own things done.
+
+.A simple Worker
+[source,java,]
+----
+
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.Worker;
+
+public class CustomWorker implements Worker {
+    //..
+}
+
+----
+
+For adding specified `Worker` implementation, Testerra provides some abstract Worker classes that you can extend, e.g. `MethodWorker`.
+
+== Before Method Worker
+
+"Before Method Worker" are based on the `MethodWorker` and executed right before your test method or test configuration method starts.
+For example we will print the test method name to our console log before the test starts.
+
+[source,java,]
+----
+
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+
+public class LogStartWorker extends MethodWorker {
+
+    @Override
+    public void run() {
+
+        final String testClassName = testMethod.getTestClass().getName();
+
+        if (isTest()) {
+            /*
+             * Test method
+             */
+            LOGGER.info("Starting test method: " + testClassName + "." + methodName);
+        } else {
+            /*
+             * Configuration methods
+             */
+            LOGGER.info("Starting configuration method: " + testClassName + "." + methodName);
+        }
+    }
+}
+----
+
+As you can see, the abstract class `MethodWorker` will ship with some helper methods like `isTest()` to determine if a test or a test configuration method was invoked.
+As you mention as well, you can use an already instantiated LOGGER object to use the default logger of Testerra.
+The `MethodWorker` will also give you some accessible class members, like `methodName` or the underlying TestNG `ITestResult`, which you can access with `testResult`.
+
+=== Register a Before Method Worker
+
+To register your implementation of a `MethodWorker` you have to call the TesterraListerner.
+It is best practice to register your worker as early as possible.
+So please take a look at the <<Hook>> section and register your `MethodWorker` in the `init()` method like shown below.
+
+.Registering a Before Method Worker
+[source,java]
+----
+TesterraListener.registerBeforeMethodWorker(LogStartWorker.class);
+----
+
+== After Method Worker
+
+The "After Method Worker" will work like the <<Before Method Worker>>, but at least they are called after the test method or test configuration method execution.
+
+NOTE: Please keep in mind, that any annotated `@AfterMethod` or similar configuration methods of TestNG will be called after your Worker!
+
+=== Register a After Method Worker
+
+You can register the After Method Worker by calling:
+
+[source,java]
+----
+TesterraListener.registerAfterMethodWorker(LogStartWorker.class);
+----
+
+== Generate Report Worker
+
+#WIP#
+
+== Filter
+
+#WIP# - TestMethodInterceptor - We have to reimplement this in Testerra.
+
+
+
+
+

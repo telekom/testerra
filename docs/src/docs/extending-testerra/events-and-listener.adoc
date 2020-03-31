@@ -126,18 +126,35 @@ While The <<Hook>> works automatically it is best practice to use the `init()` m
 TesterraEventService.addListener(new LogEventListener());
 ----
 
-== Create Custom Event Types
-#WIP#
+== Fire Events by yourself
 
-== Fire Custom Event Types
-#WIP#
+While Implementing your own Testerra module you may reach a point, where you want to inform other components of Testerra or other Testerra modules about an important change or an event.
+You can achieve this by just telling the `TesterraEventService` that an event should be fired.
+
+For example, if your Testerra module changes some data in the underlying data model, you have to inform all other "participants" of the `TesterraEventService` eco system about your change by firing an `TesterraEventType.CONTEXT_UPDATE` event.
+
+You may want to add some data, that other registered implementations of the `TesterraEventListener` can work on.
 
 [source,java]
 ----
- TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.SYNC_METHOD_RESULT)
+// Update some data in data model...
+methodContext.name = "new_Test_Method_Name";
+
+ TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
                     .addUserData()
-                    .addData(TesterraEventDataType.METHOD_NAME, methodName)
-                    .addData(TesterraEventDataType.TESTRESULT_STATUS, testResult.getStatus())
-                    .addData(TesterraEventDataType.ITestResult, testResult)
-                    .addData(TesterraEventDataType.IInvokedMethod, invokedMethod)
+                    .addData(TesterraEventDataType.CONTEXT, methodContext));
 ----
+
+By calling the `addUserData()` method on the event, Testerra will automatically add the global and thread-local user data to the event, provided by `TesterraEventUserDataManager` covered in the section "<<Adding user data>>".
+
+== Create Custom Event Types
+
+As you may already know, Testerra comes with some default `ITesterraEventType` that are stored in `TesterraEventType`.
+#WIP#
+
+== Adding user data
+
+#WIP#
+TesterraEventUserDataManager
+
+Need example for this.

@@ -1,0 +1,168 @@
+/*
+ * Created on 05.11.2012
+ *
+ * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
+ * Riesaer Str. 5, 01129 Dresden
+ * All rights reserved.
+ */
+package eu.tsystems.mms.tic.testframework.connectors.util;
+
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.utils.MapUtils;
+import org.apache.maven.surefire.providerapi.AbstractProvider;
+import org.apache.maven.surefire.providerapi.ProviderParameters;
+import org.apache.maven.surefire.report.ReporterFactory;
+import org.apache.maven.surefire.suite.RunResult;
+import org.apache.maven.surefire.testset.TestRequest;
+import org.apache.maven.surefire.testset.TestSetFailedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.LinkedList;
+import java.util.Properties;
+
+/**
+ * Abstract class encapsulating common tasks for surefire providers of testerra.
+ *
+ * @author sepr
+ */
+public abstract class AbstractCommonProvider extends AbstractProvider {
+
+    static {
+        TesterraCommons.init();
+    }
+
+    /**
+     * The logger.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommonProvider.class);
+
+    /**
+     * The class loader used to find the test classes.
+     */
+    protected ClassLoader testClassLoader;
+
+    /**
+     * Parameters provided by surefire.
+     */
+    protected ProviderParameters providerParameters;
+
+    /**
+     * The type mapping to Quality Center.
+     */
+    protected SyncType syncType;
+
+    /**
+     * The package including the testclasses.
+     */
+    protected String packageName;
+
+    /**
+     * Enables or disables the synchronization to QC.
+     */
+    protected boolean syncToProvider;
+
+    /**
+     * Properties provided by surefire
+     */
+    protected Properties providerProperties;
+
+    /**
+     * The TestRequest provided by surefire.
+     */
+    protected TestRequest testRequest;
+
+    /**
+     * File name to be used for provider properties.
+     */
+    protected String propertiesFile;
+
+    /**
+     * String literal 'test', cause it appears very often in this class.
+     */
+    private static final String TEST = "test";
+
+    /**
+     * String literal 'test_', cause it appears very often in this class.
+     */
+    private static final String TEST2 = "test_";
+
+    /**
+     * Public constructor. Creates a new <code>QualityCenterSurefireProvider</code> object.
+     *
+     * @param parameters The parameters given by surefire.
+     */
+    public AbstractCommonProvider(final ProviderParameters parameters) {
+        this.providerParameters = parameters;
+        this.testClassLoader = parameters.getTestClassLoader();
+        this.providerProperties = MapUtils.mapToProperties(parameters.getProviderProperties());
+        this.testRequest = parameters.getTestRequest();
+    }
+
+    /**
+     * Don't know why this here is needed. For Tests?
+     */
+    public AbstractCommonProvider() {
+    }
+
+    /**
+     * Calculates the tests to run, runs the tests and returns the result.
+     *
+     * @param forkTestSet Ignored. Calculation of tests to run is performed separately.
+     *
+     * @return The result from test run.
+     *
+     * @throws TestSetFailedException thrown if Testset could not be executed.
+     */
+    @Override
+    public RunResult invoke(final Object forkTestSet) throws TestSetFailedException {
+        return invokeInternal(forkTestSet);
+    }
+
+    /**
+     * Impl of invoke method.
+     *
+     * @param forkTestSet Ignored. Calculation of tests to run is performed separately.
+     *
+     * @return The result from test run.
+     *
+     * @throws TestSetFailedException thrown if Testset could not be executed.
+     */
+    private RunResult invokeInternal(final Object forkTestSet) throws TestSetFailedException {
+
+        final ReporterFactory reporterFactory = providerParameters.getReporterFactory();
+        providerProperties.put("reportsDirectory", providerParameters.getReporterConfiguration().getReportsDirectory().getAbsolutePath());
+
+        if (syncType == SyncType.ANNOTATION) {
+            if (SyncUtils.isTestNGXmlSuite(testRequest)) {
+                TestngTestExecutor.execute(providerProperties, testRequest.getSuiteXmlFiles(), reporterFactory, syncToProvider);
+            } else {
+                LOGGER.error("No Suite XML was set! You must set a suite.xml in the pom " + "or use the Standard Surefire Junit/TestNG Provider! ");
+            }
+        }
+
+        return reporterFactory.close();
+    }
+
+    /**
+     * Simply returns an empty list because tests are calculated when invoking the method <code>invoke</code>.
+     *
+     * @return Empty list, as mentioned earlier.
+     */
+    @Override
+    public Iterable<Class<?>> getSuites() {
+        return new LinkedList<>();
+    }
+
+
+    /**
+     * Implementing providers must tell the path to a config file, containing property TestsToRunFile.
+     *
+     * @return Resource name of property file.
+     */
+    public abstract String getPropertiesFile();
+
+    public void setSyncType(final SyncType syncType) {
+        this.syncType = syncType;
+    }
+}

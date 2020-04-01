@@ -193,7 +193,7 @@ All registered implementations of `TestMethodInterceptWorker` will be executed a
 To make anything clear: In the example below, all registered `TestMethodInterceptWorker` will be executed twice.
 Once per `<test>` block in this xml.
 
-The `TesterraListener` implements the TestNG interface `IMethodInterceptor` and will register its own TestMethodInterceptWorker at the beginning, before adding custom implementations.
+NOTE: The `TesterraListener` implements the TestNG interface `IMethodInterceptor` and will register its own TestMethodInterceptWorker at the beginning, before adding custom implementations.
 
 .suite.xml
 [source,xml]

@@ -242,7 +242,7 @@ As best practices stated out, you should register your `TestMethodInterceptWorke
 .Register TestMethodInterceptWorker
 [source,java]
 ----
-TesterraListener.registerTestMethodInterceptWorker(new LogMethodInterceptor());
+TesterraListener.registerTestMethodInterceptWorker(LogMethodInterceptor.class);
 ----
 
 

@@ -10,51 +10,79 @@ This basic implementation will fire the following events by default.
 
 |TEST_METHOD_START
 |Called on start of every test method annotated by TestNG `@Test` annotation, but before the execution of registered <<Before Method Worker>> and after all TestNG configuration methods like `@BeforeMethod`.
-|#WIP#
+|METHOD_NAME +
+TIMESTAMP +
+ITestResult +
+IInvokedMethod
 
 |TEST_METHOD_END
 |Called at the end of every test method annotated by TestNG `@Test` annotation, but before the execution of registered <<After Method Worker>> and the execution fo all TestNG configuration methods like `@AfterMethod`.
-|#WIP#
+|METHOD_NAME +
+TIMESTAMP +
+TESTRESULT_STATUS +
+DURATION +
+ITestResult +
+IInvokedMethod
 
 |CONFIGURATION_METHOD_START
 |Called on start of every test configuration method annotated by TestNG `@BeforeMethod` annotation or similar, but before the execution of registered <<Before Method Worker>>.
-|#WIP#
+|METHOD_NAME +
+TIMESTAMP +
+ITestResult +
+IInvokedMethod
 
 |CONFIGURATION_METHOD_END
 |Called at the end of every test configuration method annotated by TestNG `@BeforeMethod` annotation or similar, but before the execution of registered <<After Method Worker>>.
-|#WIP#
+|METHOD_NAME +
+TIMESTAMP +
+TESTRESULT_STATUS +
+ITestResult +
+IInvokedMethod
 
 |TEST_START
 |Called on start of every test method annotated by TestNG `@Test` annotation and every test configuration method annotated by TestNG `@BeforeMethod` or similar, but before the execution of registered <<Before Method Worker>>
-|#WIP#
+|TIMESTAMP+
+ITestResult +
+IInvokedMethod
 
 |TEST_END
 |Called at the end of every test method annotated by TestNG `@Test` annotation and every test configuration method annotated by TestNG `@BeforeMethod` or similar, but before the execution of registered <<After Method Worker>>
-|#WIP#
+|TIMESTAMP +
+DURATION
 
-|RETRYING_METHOD
-| #NOT called anywhere#
-|#WIP#
+//|RETRYING_METHOD
+//| #NOT called anywhere#
+//|#WIP#
 
 |FIRST_FAILED_TEST
 |Called on the first failing test of your test run.
-|#WIP#
+|TIMESTAMP +
+METHOD_NAME +
+ITestResult +
+IInvokedMethod
 
 |TEST_WITH_FILTERED_THROWABLE
 |Called on every failed test method when Testerra `RetryAnalyzer`found a cause to retry the test.
-|#WIP#
+|TIMESTAMP +
+METHOD_NAME +
+ITestResult +
+IInvokedMethod
 
 |SYNC_METHOD_RESULT
 |Called after every test method to determine a state where you can use the delivered data of the event to synchronize test results to test management system or issue tracker.
-|#WIP#
+|METHOD_NAME +
+TESTRESULT_STATUS +
+ITestResult +
+IInvokedMethod
 
-|TAKE_SCREENSHOTS
-| #NOT called anywhere#
-|#WIP#
+//|TAKE_SCREENSHOTS
+//| #NOT called anywhere#
+//|#WIP#
 
 |CONTEXT_UPDATE
 |Called on every context update of Testerra underlying data model.
-|#WIP#
+|It is so often called internally, but at least following should be provided: +
+CONTEXT
 
 |===
 

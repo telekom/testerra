@@ -83,9 +83,108 @@ You can register the After Method Worker by calling:
 TesterraListener.registerAfterMethodWorker(LogStartWorker.class);
 ----
 
-== Generate Report Worker
+== Generate Reports Worker
 
-#WIP#
+The abstract class `GenerateReportsWorker` allows you to hop in the report creation process of Testerra and TestNG.
+This is the ideal point to create your own module reports, if you want to create them, and extending the default Testerra report.
+
+NOTE: The Testerra Report will be created AFTER all custom implementations of `GenerateReportsWorker` ran.
+
+.Create a own GenerateReportsWorker
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker
+
+public class CustomReportWorker extends GenerateReportsWorker {
+    @Override
+    public void run() {
+        /*
+         * Generate Report Methods here
+         */
+
+        // get test execution overall status
+        TestStatusController.Status status = ExecutionContextController.EXECUTION_CONTEXT.getStatus();
+    }
+}
+----
+
+The abstract `GenerateReportsWorker` provides you all information needed for creating custom reports based on TestNG objects.
+If you need to go deeper or need some more information about statistics, please feel free to use Testerra `ExecutionContextController` class.
+This controller class will give you access to all information about the test methods and the Testerra data model.
+
+=== Extending Testerra Report
+
+The Testerra default report is historically grown and built upon Velocity template engine and some outdated HTML design patterns.
+Right at the moment you're reading this, we have a ticket in our Backlog to create a new default report.
+Therefore this section of our documentation will only cover the current available basic functions.
+If you need something else, please feel free to create an issue.
+
+At first you have to store a Velocity template file in your project resource directory `src/main/resources`.
+In the example below you can see a basic template file, which includes all related Testerra resources and just print a Velocity context value.
+
+.template.vm
+[source,html]
+----
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>$tabTitle</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+        #parse("styleincludes.vm")
+        #parse("scriptincludes.vm")
+    </head>
+    <body>
+
+        #set($tabcontext = "t")
+        #parse("header.vm")
+
+        <div id="custom-tab-body">
+            <p>$tabExampleIntro</p>
+        </div>
+
+    </body>
+</html>
+----
+
+Now you can add value to your new template by creating and filling a new `VelocityContext` object.
+After filling up your context object, you can now add your custom report file to the Testerra.
+The Best Practice here is, to use the `ReportUtils` in your `GenerateReportsWorker`.
+
+.GenerateReportsWorker
+[source,java]
+----
+public class CustomReportWorker extends GenerateReportsWorker {
+    @Override
+    public void run() {
+
+        // Fill up the velocity context
+        final VelocityContext context = new VelocityContext();
+        context.put("tabTitle", "My Custom Title");
+        context.put("tabExampleIntro", "My Custom Intro Message");
+
+        // append it to Testerra report
+        ReportUtils.addExtraTopLevelTab(
+                "template.vm", // Your template file
+                "template.html", // Relative target in report
+                "Custom", // Name of Tab displayed in report
+                "custom-tab", // HTML id of the navigation tab.
+                context, // Velocity Context object
+                true); // If true, your custom report is hidden in the hamburger menu int the top right corner.
+    }
+}
+----
+
+=== Register your custom reporting
+
+The last thing you have to do after creating your `GenerateReportsWorker` and your custom report files, is to inform Testerra about your worker.
+The Best Practice is as well as for any other `Worker` to use the `init()` method of your `ModuleHook`
+
+.ModuleHook
+[source,java]
+----
+TesterraListener.registerGenerateReportsWorker(CustomReportWorker.class);
+----
 
 == Filter
 

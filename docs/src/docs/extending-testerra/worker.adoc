@@ -148,7 +148,8 @@ In the example below you can see a basic template file, which includes all relat
 ----
 
 Now you can add value to your new template by creating and filling a new `VelocityContext` object.
-After filling up your context object, you can now add your custom report file to the Testerra.
+After filling up your context object, you should now add your custom report file to the Testerra report.
+
 The Best Practice here is, to use the `ReportUtils` in your `GenerateReportsWorker`.
 
 .GenerateReportsWorker

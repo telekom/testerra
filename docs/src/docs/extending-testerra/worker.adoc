@@ -187,9 +187,64 @@ The Best Practice is as well as for any other `Worker` to use the `init()` metho
 TesterraListener.registerGenerateReportsWorker(CustomReportWorker.class);
 ----
 
-== Filter
+== Test Method Intercept Worker
 
-#WIP# - TestMethodInterceptor - We have to reimplement this in Testerra.
+All registered implementations of `TestMethodInterceptWorker` will be executed at the very beginning of executing a TestNG `Test` block, defined in TestNG suite files.
+To make anything clear: In the example below, all registered `TestMethodInterceptWorker` will be executed twice.
+Once per `<test>` block in this xml.
+
+The `TesterraListener` implements the TestNG interface `IMethodInterceptor` and will register its own TestMethodInterceptWorker at the beginning, before adding custom implementations.
+
+.suite.xml
+[source,xml]
+----
+<suite name="UnitTestSuite" verbose="1" parallel="false">
+    <test name="testblock-one">
+        <!-- ... -->
+    </test>
+    <test name="testblock-two">
+        <!-- ... -->
+    </test>
+</suite>
+----
+
+With a implementation of `TestMethodInterceptWorker` you will be able to sort, filter, remove or add methods to the upcoming execution.
+By default Testerra will register the `OmitInDevelopmentMethodIntercept`, which is handling the passed in property value of {execution_omit_indevelopment}.
+
+.Custom TestMethoInterceptWorker
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.TestMethodInterceptWorker
+
+public class LogMethodInterceptor extends TestMethodInterceptWorker {
+
+    @Override
+    public List<IMethodInstance> run() {
+
+        LOGGER.info("Will executing following methods in Test context: " + iTestContext.getName());
+
+        for (IMethodInstance iMethodInstance : iMethodInstanceList) {
+            LOGGER.info("Method will be executed, because not removed from list: "
+                    + iMethodInstance.getMethod().getConstructorOrMethod().getName());
+        }
+
+        return iMethodInstanceList;
+    }
+}
+----
+
+As you can see in the example code snippet, Testerra will you give access to the current method list and the current test context as well as to a already instantiated logger.
+
+=== Register a Test Method Intercept Worker
+
+As best practices stated out, you should register your `TestMethodInterceptWorker` by implementing a <<Hook>> and implementing its `init()` method.
+
+.Register TestMethodInterceptWorker
+[source,java]
+----
+TesterraListener.registerTestMethodInterceptWorker(new LogMethodInterceptor());
+----
+
 
 
 

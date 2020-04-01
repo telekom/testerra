@@ -13,7 +13,7 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
+ *     Eric Kubenka
  */
 package eu.tsystems.mms.tic.testframework.report;
 
@@ -25,6 +25,8 @@ import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorkerExecutor;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.TestMethodInterceptWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.TestMethodInterceptWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.Worker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.CQWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
@@ -37,6 +39,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.Testerra
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TesterraEventsFinishWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.LoggingStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TestStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TesterraEventsStartWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
@@ -52,7 +55,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
 import org.testng.IConfigurable;
@@ -106,8 +108,8 @@ public class TesterraListener implements
     private static final List<Class<? extends Worker>> BEFORE_INVOCATION_WORKERS = new LinkedList<>();
     private static final List<Class<? extends Worker>> AFTER_INVOCATION_WORKERS = new LinkedList<>();
     public static final List<Class<? extends Worker>> GENERATE_REPORTS_WORKERS = new LinkedList<>();
+    public static final List<Class<? extends Worker>> METHOD_INTERCEPT_WORKERS = new LinkedList<>();
 
-    private static List<IMethodInterceptor> METHOD_EXECUTION_FILTERS = new LinkedList<>();
     private static List<ISuiteListener> SUITE_LISTENERS = new LinkedList<>();
 
     /**
@@ -201,7 +203,7 @@ public class TesterraListener implements
 
     /**
      * This method INTERCEPTs THE XML_TEST not the methods
-     * It is possible to filter methods an remove them completly from execution
+     * It is possible to filter methods an remove them completely from execution
      * Or you do a dependency analysis for execution filter
      *
      * @param list         All methods that should be run due to current XML-Test
@@ -211,21 +213,12 @@ public class TesterraListener implements
     @Override
     public List<IMethodInstance> intercept(List<IMethodInstance> list, final ITestContext iTestContext) {
 
-        if (Flags.EXECUTION_OMIT_IN_DEVELOPMENT) {
-            ExecutionUtils.removeInDevelopmentMethods(list, iTestContext);
-        }
+        final TestMethodInterceptWorkerExecutor workerExecutor = new TestMethodInterceptWorkerExecutor();
 
-        // apply method interceptors - no lambda, because list is not final
-        for (final IMethodInterceptor methodInterceptor : METHOD_EXECUTION_FILTERS) {
-            list = methodInterceptor.intercept(list, iTestContext);
-        }
+        workerExecutor.add(new OmitInDevelopmentMethodInterceptor());
+        FrameworkUtils.addWorkersToExecutor(METHOD_INTERCEPT_WORKERS, workerExecutor);
 
-        return list;
-    }
-
-
-    public static void registerMethodExecutionFilter(IMethodInterceptor mi) {
-        METHOD_EXECUTION_FILTERS.add(mi);
+        return workerExecutor.run(list, iTestContext);
     }
 
     /**
@@ -573,6 +566,10 @@ public class TesterraListener implements
 
     public static void registerGenerateReportsWorker(Class<? extends GenerateReportsWorker> worker) {
         GENERATE_REPORTS_WORKERS.add(worker);
+    }
+
+    public static void registerTestMethodInterceptWorker(Class<? extends TestMethodInterceptWorker> worker) {
+        METHOD_INTERCEPT_WORKERS.add(worker);
     }
 
 }

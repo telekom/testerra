@@ -147,14 +147,100 @@ methodContext.name = "new_Test_Method_Name";
 
 By calling the `addUserData()` method on the event, Testerra will automatically add the global and thread-local user data to the event, provided by `TesterraEventUserDataManager` covered in the section "<<Adding user data>>".
 
-== Create Custom Event Types
+== Create custom event types and data types
 
 As you may already know, Testerra comes with some default `ITesterraEventType` that are stored in `TesterraEventType`.
-#WIP#
+While playing around with the option of firing events by yourself, you may need more than the default event types.
+So you can just create new ones by implementing the `ITesterraEventType` interface.
+
+.Creating custom event types
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.events.ITesterraEventType;
+
+public enum CustomEventTypes implements ITesterraEventType {
+
+    CUSTOM_EVENT_START,
+    CUSTOM_EVENT_END
+}
+----
+
+With your `CustomEventTypes` created, you now can fire these events or react to them in the way described in the sections "<<Fire Events by yourself>>" and "<<Create Custom Event Listeners>>".
+
+.CustomEventTypes Listener Example
+[source,java]
+----
+@Override
+public void fireEvent(TesterraEvent e) {
+    if (e.getTesterraEventType() == CustomEventTypes.CUSTOM_EVENT_START) {
+        LOGGER.info("Custom Event started!");
+    }
+}
+----
+
+.Fire events with CustomEventTypes
+[source,java]
+----
+final List<String> propertyList = new ArrayList();
+
+TesterraEventService.getInstance().fireEvent(new TesterraEvent(CustomEventTypes.CUSTOM_EVENT_START)
+                    .addUserData()
+                    .addData(CustomEventDataTypes.PROPERTY_LIST, propertyList));
+----
+
+As you noticed, in the code snippet above some data of type `CustomEventDataTypes` was added to the event.
+To use your own data types and models when using the `TesterraEventService` you can implement the `ITesterraEventDataType` interface.
+
+.Creating CustomEventDataTypes
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.events.ITesterraEventDataType;
+
+public enum CustomEventDataTypes implements ITesterraEventDataType {
+
+    NAME(String.class),
+    PROPERTY_LIST(List.class);
+
+    private Class typeClass;
+
+    CustomEventDataTypes(Class<?> typeClass) {
+        this.typeClass = typeClass;
+    }
+
+    public Class getTypeClass() {
+        return typeClass;
+    }
+}
+----
 
 == Adding user data
 
-#WIP#
-TesterraEventUserDataManager
+Testerra will add global and thread-local user data to all events that where fired by itself.
+So foreach internally fired event, the `addUserData()` method is called on event creation.
+If you want to make sure, that Testerra adds your module data to all internally fired events, you have to add these data with the `TesterraEventUserDataManager`.
 
-Need example for this.
+The `TesterraEventUserDataManager` will come across with two managed maps, which will work in the same way, with one important difference.
+
+=== Global user data
+
+Testerra allows you to add global data with this command.
+
+[source,java]
+----
+TesterraEventUserDataManager.getGlobalData().put(ITesterraEventDataType , value);
+----
+
+This data will be added to every event that is fired up by Testerra istself and every event that where `addUserData()` called on.
+This data can be written and read by any thread and should therefore only used for real GLOBAL data, that per definition will not change.
+
+=== Threadsafe user data
+
+But in the case, you use parallelization and custom thread data needs to be written to the `TesterraEvent`, you can use the thread-safe way by adding your data with the thread local data map.
+This data will as well be appended to every internal `TesterraEvent` and events that where created with `addUserData()`, but instead of sending global values it will append thread local data.
+
+[source,java]
+----
+TesterraEventUserDataManager.getThreadLocalData().put(ITesterraEventDataType , value);
+----
+
+

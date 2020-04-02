@@ -96,6 +96,7 @@ NOTE: The Testerra Report will be created AFTER all custom implementations of `G
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker
 
 public class CustomReportWorker extends GenerateReportsWorker {
+
     @Override
     public void run() {
         /*
@@ -156,6 +157,7 @@ The Best Practice here is, to use the `ReportUtils` in your `GenerateReportsWork
 [source,java]
 ----
 public class CustomReportWorker extends GenerateReportsWorker {
+
     @Override
     public void run() {
 
@@ -173,6 +175,7 @@ public class CustomReportWorker extends GenerateReportsWorker {
                 context, // Velocity Context object
                 true); // If true, your custom report is hidden in the hamburger menu int the top right corner.
     }
+
 }
 ----
 
@@ -221,7 +224,8 @@ public class LogMethodInterceptor extends TestMethodInterceptWorker {
     @Override
     public List<IMethodInstance> run() {
 
-        LOGGER.info("Will executing following methods in Test context: " + iTestContext.getName());
+        LOGGER.info("Will executing following methods in Test context: "
+            + iTestContext.getName());
 
         for (IMethodInstance iMethodInstance : iMethodInstanceList) {
             LOGGER.info("Method will be executed, because not removed from list: "

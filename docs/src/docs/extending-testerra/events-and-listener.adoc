@@ -168,7 +168,7 @@ You may want to add some data, that other registered implementations of the `Tes
 // Update some data in data model...
 methodContext.name = "new_Test_Method_Name";
 
- TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
                     .addUserData()
                     .addData(TesterraEventDataType.CONTEXT, methodContext));
 ----
@@ -193,7 +193,7 @@ public enum CustomEventTypes implements ITesterraEventType {
 }
 ----
 
-With your `CustomEventTypes` created, you now can fire these events or react to them in the way described in the sections "<<Fire Events by yourself>>" and "<<Create Custom Event Listeners>>".
+With your `CustomEventTypes` created, you now can fire these events or react to them in the way described in the sections <<Fire Events by yourself>> and <<Create Custom Event Listeners>>.
 
 .CustomEventTypes Listener Example
 [source,java]

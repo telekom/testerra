@@ -1,0 +1,54 @@
+= Responsive Page Objects
+Sometimes responsive web pages are designed in a way that they change their structure depending on the browsers viewport. To represent this behavior for tests, responsive page objects can be used. With this feature, different page objects can be created to represent the page using different window sizes. This allows the tests to respond to varying page structures.
+
+The `PageFactory` will instantiate the correct page class automatically based on the current viewport.
+
+== Page structure
+To use this feature, the page classes must follow a special naming and inheritance scheme.
+
+First a base class is needed. It represents the responsive page in general. This base class inherits from the `Page` class. Then classes for special viewports are created, which inherit from the base class. They represent the page in a defined viewport range.
+
+The name scheme for size depended classes is
+
+<BaseClass>_<minimun-resolution>_<maximum-resolution>.
+
+Possible values for resolutions are numbers in pixels with added "px" and "Min" or "Max".
+
+This example should help making things clear.
+The base class should contain the common functions of that page,
+[source,java]
+----
+/** base page class */
+abstract class ResponsiveTestPage extends Page { ... }
+----
+
+while inherited classes contain elements and functions special to that specific screen resolution.
+[source,java]
+----
+/**	page instantiated for width 600px or less. */
+class ResponsiveTestPage_Min_600px extends ResponsiveTestPage { ... }
+
+/** page is instantiated for width from 601 to 1199 px */
+class ResponsiveTestPage_601px_1199px extends ResponsiveTestPage { ... }
+
+/** page instantiated for width  1200 px or more. */
+class ResponsiveTestPage_1200px_Max extends ResponsiveTestPage { ... }
+----
+Responsive Page Objects work also together with Page Prefixes.
+
+== Usage
+
+In the test method only the base class will be instantiated. The `PageFactory` will detect the naming scheme and then use the correct classes automatically. Instantiating a responsive page in the example above would look like this:
+
+[source,java]
+----
+ResponsiveTestPage testPage = Pagefactory.create(ResponsiveTestPage.class, driver);
+----
+
+The parameters for the factory are the base class and the current webdriver instance.
+
+When a page is first instantiated, the factory searches for all subclasses of this page. The filtering is then performed using the naming scheme. The current viewport width of the WebDriver object is then determined. On the basis of the determined value, the system searches for the class that offers the next smallest resolution in relation to the current browser width.
+
+The package where the factory searches the resolution specific page classes can be configured by a property setting.
+
+include::../properties/pagefactory-props.adoc[]

@@ -26,13 +26,7 @@ A local defined capability means its only available in the current test executio
 WebDriverManager.addThreadCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 ----
 
-== Useful browser configurations
-
-=== Prevent Firefox download confirmation dialog
-
-```java
-// You have to add every mimetype you want no confirmation for
-firefoxOptions.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/zip");
-firefoxOptions.addPreference("browser.download.manager.showAlertOnComplete", false);
-firefoxOptions.addPreference("browser.download.manager.showWhenStarting", false);
-```
+[NOTE]
+=====
+Have a look into <<Useful browser capabilities>> for specific browser options.
+=====

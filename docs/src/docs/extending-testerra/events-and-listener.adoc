@@ -146,7 +146,7 @@ After you defined your first custom `TesterraEventListener` you now have to regi
 Think about it in a simple way.
 You want to get a notice, when a Testerra event is fired, so you have to tell Testerra, that your module is waiting and listening to events.
 
-While The <<Hook>> works automatically it is best practice to use the `init()` method of a `ModuleHook` to register custom `TesterraEventListener` implementations.
+While the <<Hooks>> works automatically it is best practice to use the `init()` method of a `ModuleHook` to register custom `TesterraEventListener` implementations.
 
 .Registering your listener
 [source,java]
@@ -173,7 +173,7 @@ methodContext.name = "new_Test_Method_Name";
                     .addData(TesterraEventDataType.CONTEXT, methodContext));
 ----
 
-By calling the `addUserData()` method on the event, Testerra will automatically add the global and thread-local user data to the event, provided by `TesterraEventUserDataManager` covered in the section "<<Adding user data>>".
+By calling the `addUserData()` method on the event, Testerra will automatically add the global and thread-local user data to the event, provided by `TesterraEventUserDataManager` covered in the section <<Adding user data>>.
 
 == Create custom event types and data types
 

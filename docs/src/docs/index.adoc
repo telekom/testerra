@@ -31,6 +31,10 @@ include::modules.adoc[leveloffset=+1]
 include::utilities.adoc[leveloffset=+1]
 
 '''
+= Extending Testerra
+include::extending-testerra.adoc[leveloffset=+1]
+
+'''
 = Appendix
 include::best-practices.adoc[leveloffset=+1]
 include::known-issues.adoc[leveloffset=+1]

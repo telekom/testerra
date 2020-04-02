@@ -12,13 +12,12 @@
  * limitations under the License.
  *
  * Contributors:
+ *     Eric Kubenka
  *     Peter Lehmann
- *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.annotations.InDevelopment;
 import eu.tsystems.mms.tic.testframework.annotations.SupportMethod;
 import eu.tsystems.mms.tic.testframework.report.model.context.StackTrace;
 import javassist.ClassPool;
@@ -28,7 +27,6 @@ import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.IMethodInstance;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
@@ -38,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -50,7 +47,7 @@ import java.util.stream.Collectors;
  * Date: 24.11.2016
  * Time: 07:19
  *
- * @author erku
+ * @author Eric Kubenka
  */
 public final class ExecutionUtils {
 
@@ -160,24 +157,6 @@ public final class ExecutionUtils {
         }
 
         return true;
-    }
-
-    public static void removeInDevelopmentMethods(final List<IMethodInstance> list, final ITestContext iTestContext) {
-        List<IMethodInstance> toRemove = new LinkedList<>();
-
-        // collect
-        list.stream().forEach(methodInstance -> {
-            Method method = methodInstance.getMethod().getConstructorOrMethod().getMethod();
-            if (method.isAnnotationPresent(InDevelopment.class)) {
-                if (isMethodInExecutionScope(method, iTestContext, null, false)) {
-                    LOGGER.info("Removing @" + InDevelopment.class.getSimpleName() + " " + method + " from execution");
-                    toRemove.add(methodInstance);
-                }
-            }
-        });
-
-        // remove them
-        toRemove.stream().forEach(methodInstance -> list.remove(methodInstance));
     }
 
     /**

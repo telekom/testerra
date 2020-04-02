@@ -1,6 +1,10 @@
 = Conditional behaviour
 include::../properties/property-attributes.adoc[]
-For managing the execution behaviour of tests in suites there are means to skip tests and avoid closing browser windows after failures.
+
+For managing the execution behaviour of tests in suites the following features are provided.
+
+== Behaviour after failure
+There are means to skip tests and avoid closing browser windows after failures.
 
 .test.properties
 [source, properties, subs="attributes"]
@@ -11,3 +15,86 @@ For managing the execution behaviour of tests in suites there are means to skip 
 # skip all tests after first failure, default = false
 {on_state_testfailed_skip_following_tests}=true
 ----
+
+== Failure Corridor
+This mechanism is used to define the test goal of test runs so that the test suite only fails with a broken failure corridor.
+
+=== General
+Activating the corridor is done with the following property.
+
+[source, properties, subs="attributes"]
+----
+{failure_corridor_active}=true
+# default is false
+----
+
+=== Maximum Allowed Failures
+The simplest variant is to define the maximum number of allowed test failures.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+{failure_corridor_active}=true
+{failure_corridor_allowed_failed_tests}=2
+# if less than two methods fail the suite will be marked as passed
+----
+
+=== Custom Failure Corridor
+For further adjustment test methods can be weighted while defining the maximum number of failures for the corresponding weightings in the `test.properties`.
+
+.Method Weighting
+[source, java]
+----
+@FailureCorridor.High
+@Test
+public void test1() throws Exception {
+    Assert.fail();
+}
+
+@Test
+public void test2() throws Exception {
+    Assert.fail();
+}
+
+@FailureCorridor.Mid
+@Test
+public void test3() throws Exception {
+    Assert.fail();
+}
+
+@Fails
+@FailureCorridor.Mid
+@Test
+public void test4() throws Exception {
+    Assert.fail();
+}
+
+@FailureCorridor.Low
+@Test
+public void test5() throws Exception {
+    Assert.fail();
+}
+----
+
+NOTE: Non-weighted methods have high weight by default.
+Testcases with valid Fails annotation are ignored.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+{failure_corridor_allowed_failed_tests_high}=0
+{failure_corridor_allowed_failed_tests_mid}=1
+{failure_corridor_allowed_failed_tests_low}=2
+----
+
+This setting allows
+
+* high: no failed methods
+* mid : one failed method
+* low : two failed methods
+
+leading to the status failed for the whole suite as per Code
+
+* high: two methods fail
+* mid : one method fails, another isn't taken into account
+* low : one method fails

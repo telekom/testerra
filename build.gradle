@@ -39,12 +39,6 @@ allprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
 
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        jcenter()
-    }
-
     sourceCompatibility = 1.8
 
     publishing {

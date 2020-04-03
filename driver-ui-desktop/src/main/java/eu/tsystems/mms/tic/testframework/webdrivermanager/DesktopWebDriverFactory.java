@@ -68,8 +68,6 @@ import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,8 +79,6 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> implements Loggable {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverFactory.class);
 
     public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
 
@@ -120,7 +116,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             host = url1.getHost();
             port = url1.getPort() + "";
         } catch (MalformedURLException e) {
-            LOGGER.error("INTERNAL ERROR: Could not parse URL", e);
+            log().error("INTERNAL ERROR: Could not parse URL", e);
         }
         r.seleniumServerHost = host;
         r.seleniumServerPort = port;
@@ -172,7 +168,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             if (testMethodName != null) {
                 WebDriver driver = DriverStorage.getDriverByTestMethodName(testMethodName, threadName);
                 if (driver != null) {
-                    LOGGER.info("Re-Using WebDriver for " + testMethodName + ": " + threadName + " driver: " + driver);
+                    log().info("Re-Using WebDriver for " + testMethodName + ": " + threadName + " driver: " + driver);
 
                     // cleanup session
                     driver.manage().deleteAllCookies();
@@ -181,7 +177,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     Open url
                      */
                     final String baseUrl = WebDriverManagerUtils.getBaseUrl(desktopWebDriverRequest.baseUrl);
-                    LOGGER.info("Opening baseUrl with reused driver: " + baseUrl);
+                    log().info("Opening baseUrl with reused driver: " + baseUrl);
                     StopWatch.startPageLoad(driver);
                     driver.get(baseUrl);
 
@@ -219,13 +215,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
          Maximize
          */
         if (config.maximize) {
-            LOGGER.info("Trying to maximize window");
+            log().info("Trying to maximize window");
             try {
                 Dimension originWindowSize = window.getSize();
                 // Maximize to detect window size
                 window.maximize();
                 if (config.maximizePosition != Position.CENTER) {
-                    LOGGER.info(String.format("Setting maximized window position to: %s", config.maximizePosition));
+                    log().info(String.format("Setting maximized window position to: %s", config.maximizePosition));
                     Point targetPosition = new Point(0, 0);
                     switch (config.maximizePosition) {
                         case LEFT:
@@ -241,13 +237,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                             targetPosition.y = window.getSize().height + 1;
                             break;
                     }
-                    LOGGER.info(String.format("Move window to: %s", targetPosition));
+                    log().info(String.format("Move window to: %s", targetPosition));
                     window.setPosition(targetPosition);
                     // Re-maximize
                     window.maximize();
                 }
             } catch (Throwable t1) {
-                LOGGER.info("Could not maximize window", t1);
+                log().info("Could not maximize window", t1);
                 setWindowSizeBasedOnDisplayResolution(window, browser);
             }
         } else {
@@ -260,50 +256,50 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             try {
                 eventFiringWebDriver.manage().timeouts().pageLoadTimeout(pageLoadTimeout, TimeUnit.SECONDS);
             } catch (Exception e) {
-                LOGGER.error("Could not set Page Load Timeout", e);
+                log().error("Could not set Page Load Timeout", e);
             }
             try {
                 eventFiringWebDriver.manage().timeouts().setScriptTimeout(scriptTimeout, TimeUnit.SECONDS);
             } catch (Exception e) {
-                LOGGER.error("Could not set Script Timeout", e);
+                log().error("Could not set Script Timeout", e);
             }
         } else {
-            LOGGER.warn("Not setting timeouts for Safari.");
+            log().warn("Not setting timeouts for Safari.");
         }
     }
 
     private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, String browser) {
-        LOGGER.info("Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
+        log().info("Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
         String[] split = Defaults.DISPLAY_RESOLUTION.split("x");
         int width = Integer.valueOf(split[0]);
         int height = Integer.valueOf(split[1]);
         try {
             window.setSize(new Dimension(width, height));
         } catch (Throwable t2) {
-            LOGGER.error("Could not set window size", t2);
+            log().error("Could not set window size", t2);
 
             if (Browsers.edge.equals(browser)) {
-                LOGGER.info("Edge Browser was requested, trying a second workaround");
+                log().info("Edge Browser was requested, trying a second workaround");
 
                 Timer timer = new Timer(500, 5000);
                 ThrowablePackedResponse<Object> response = timer.executeSequence(new Timer.Sequence<Object>() {
                     @Override
                     public void run() throws Throwable {
                         setSkipThrowingException(true);
-                        LOGGER.info("Trying setPosition() and setSize()");
+                        log().info("Trying setPosition() and setSize()");
                         try {
                             window.setPosition(new Point(0, 0));
                             window.setSize(new Dimension(width, height));
-                            LOGGER.info("Yup, success!");
+                            log().info("Yup, success!");
                         } catch (Exception e) {
-                            LOGGER.warn("Nope. Got error: " + e.getMessage());
+                            log().warn("Nope. Got error: " + e.getMessage());
                             throw e;
                         }
                     }
                 });
 
                 if (!response.isSuccessful()) {
-                    LOGGER.error("Finally, could not set Edge Window size", response.getThrowable());
+                    log().error("Finally, could not set Edge Window size", response.getThrowable());
                 }
             }
         }
@@ -352,21 +348,21 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 if (browser.equals(Browsers.htmlunit)) {
                     capabilities.setBrowserName(BrowserType.HTMLUNIT);
                     capabilities.setJavascriptEnabled(false);
-                    LOGGER.info("Starting HtmlUnitRemoteWebDriver.");
+                    log().info("Starting HtmlUnitRemoteWebDriver.");
                     newDriver = new RemoteWebDriver(remoteAddress, capabilities);
                 } else {
                     newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
                 }
             } catch (final TesterraSetupException e) {
                 int ms = Constants.WEBDRIVER_START_RETRY_TIME_IN_MS;
-                LOGGER.error("Error starting WebDriver. Trying again in "
+                log().error("Error starting WebDriver. Trying again in "
                         + (ms / 1000) + " seconds.", e);
                 TimerUtils.sleep(ms);
                 newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
             }
 
         } else {
-            LOGGER.warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
+            log().warn("Local WebDriver setups may cause side effects. It's highly recommended to use a remote Selenium configurations for all environments!");
             /*
              ##### Local
              */
@@ -380,14 +376,14 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         SessionId webDriverSessionId = ((RemoteWebDriver) newDriver).getSessionId();
         desktopWebDriverRequest.storedSessionId = webDriverSessionId.toString();
         desktopWebDriverRequest.sessionContext.sessionId = desktopWebDriverRequest.storedSessionId;
-        LOGGER.info("Remote Session ID: " + webDriverSessionId);
+        log().info("Remote Session ID: " + webDriverSessionId);
 
         /*
         Log User Agent and executing host
          */
         NodeInfo nodeInfo = DesktopWebDriverUtils.getNodeInfo(desktopWebDriverRequest);
         desktopWebDriverRequest.storedExecutingNode = nodeInfo;
-        LOGGER.info("Executing Node " + nodeInfo.toString());
+        log().info("Executing Node " + nodeInfo.toString());
         WebDriverManager.addExecutingSeleniumHostInfo(sessionKey + ": " + nodeInfo.toString());
         WebDriverManagerUtils.logUserAgent(sessionKey, newDriver, nodeInfo);
 
@@ -409,7 +405,9 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             String msg,
             String sessionKey
     ) {
-        LOGGER.info("Starting WebDriver (" + sessionKey + ") " + msg, new NewSessionMarker());
+        log().info(String.format("Starting %s (%s) %s", TesterraWebDriver.class.getSimpleName(), sessionKey, msg));
+        log().debug("Started session here", new Throwable());
+
         org.apache.commons.lang3.time.StopWatch sw = new org.apache.commons.lang3.time.StopWatch();
         sw.start();
 
@@ -515,7 +513,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         }
 
         sw.stop();
-        LOGGER.info("Session startup time: " + sw.toString());
+        log().info("Session startup time: " + sw.toString());
         STARTUP_TIME_COLLECTOR.add(new TimingInfo("SessionStartup", "", sw.getTime(TimeUnit.MILLISECONDS), System.currentTimeMillis()));
 
         return driver;
@@ -523,7 +521,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
     private File getPhantomJSBinary() {
         if (phantomjsFile == null) {
-            LOGGER.info("Unpacking phantomJS...");
+            log().info("Unpacking phantomJS...");
             try {
                 phantomjsFile = Phanbedder.unpack(); //Phanbedder to the rescue!
             } catch (Exception e) {
@@ -534,7 +532,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     throw e;
                 }
             }
-            LOGGER.info("Unpacked phantomJS to: " + phantomjsFile);
+            log().info("Unpacked phantomJS to: " + phantomjsFile);
         }
         return phantomjsFile;
     }

@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.testng.IRetryAnalyzer;
@@ -32,7 +33,7 @@ import org.testng.internal.annotations.DisabledRetryAnalyzer;
 
 import java.lang.reflect.Method;
 
-public class TestStartWorker extends MethodWorker {
+public class TestStartWorker extends MethodWorker implements Loggable {
 
     @Override
     public void run() {
@@ -71,13 +72,13 @@ public class TestStartWorker extends MethodWorker {
             if (retryAnalyzer == null || retryAnalyzer instanceof DisabledRetryAnalyzer) {
 
                 if (method.isAnnotationPresent(NoRetry.class)) {
-                    LOGGER.debug("Not adding testerra RetryAnalyzer for @NoRetry " + method.getName());
+                    log().debug("Not adding testerra RetryAnalyzer for @NoRetry " + method.getName());
                 } else {
                     testNGMethod.setRetryAnalyzerClass(RetryAnalyzer.class);
-                    LOGGER.info("Adding testerra RetryAnalyzer for " + method.getName());
+                    log().info("Adding testerra RetryAnalyzer for " + method.getName());
                 }
             } else {
-                LOGGER.info("Using a non-testerra retry analyzer: " + retryAnalyzer + " on " + method.getName());
+                log().info("Using a non-testerra retry analyzer: " + retryAnalyzer + " on " + method.getName());
             }
         }
 

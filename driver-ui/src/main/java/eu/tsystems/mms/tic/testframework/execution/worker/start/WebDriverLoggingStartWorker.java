@@ -18,13 +18,14 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.start;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 
-public class WebDriverLoggingStartWorker extends MethodWorker {
+public class WebDriverLoggingStartWorker extends MethodWorker implements Loggable {
 
     @Override
     public void run() {
@@ -42,7 +43,7 @@ public class WebDriverLoggingStartWorker extends MethodWorker {
                 if (executingSeleniumHost.contains("\n")) {
                     msg += "\n";
                 }
-                LOGGER.info(msg + executingSeleniumHost);
+                log().debug(msg + executingSeleniumHost);
 
                 // log browser
                 long threadId = Thread.currentThread().getId();

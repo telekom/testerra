@@ -22,8 +22,9 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventUserDataManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.internal.Counters;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 
-public class TestMethodFinishedWorker extends MethodWorker {
+public class TestMethodFinishedWorker extends MethodWorker implements Loggable {
     @Override
     public void run() {
         String msg = "";
@@ -58,13 +59,13 @@ public class TestMethodFinishedWorker extends MethodWorker {
          */
 
         if (isSuccess()) {
-            LOGGER.info(msg);
+            log().info(msg);
         } else if (isFailed()) {
             if (throwable != null) {
-                LOGGER.error(msg, throwable);
+                log().error(msg, throwable);
             }
             else {
-                LOGGER.error(msg);
+                log().error(msg);
             }
         }
 

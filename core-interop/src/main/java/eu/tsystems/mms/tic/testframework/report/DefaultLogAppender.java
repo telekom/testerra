@@ -55,13 +55,20 @@ public class DefaultLogAppender extends AppenderSkeleton implements TesterraLogg
      */
     @Override
     protected void append(final LoggingEvent event) {
-        String formattedMessage = this.formatter.format(event);
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.formatter.format(event));
 
+        if (event.getThrowableInformation() != null) {
+            for (String stackTraceString : event.getThrowableInformation().getThrowableStrRep()) {
+                sb.append("\n");
+                sb.append(stackTraceString);
+            }
+        }
         // append for console
         if (event.getLevel().isGreaterOrEqual(Level.ERROR)) {
-            System.err.println(formattedMessage);
+            System.err.println(sb.toString());
         } else {
-            System.out.println(formattedMessage);
+            System.out.println(sb.toString());
         }
     }
 }

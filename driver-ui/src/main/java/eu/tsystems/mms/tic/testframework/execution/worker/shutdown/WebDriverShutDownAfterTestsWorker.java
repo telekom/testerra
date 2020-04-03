@@ -18,14 +18,15 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.shutdown;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
-public class WebDriverShutDownAfterTestsWorker extends GenerateReportsWorker {
+public class WebDriverShutDownAfterTestsWorker extends GenerateReportsWorker implements Loggable {
 
     @Override
     public void run() {
-        LOGGER.info("Forcing all WebDrivers to shutdown (close all windows)");
+        log().info("Forcing all WebDrivers to shutdown (close all windows)");
         WebDriverManager.forceShutdownAllThreads();
         WebDriverWatchDog.stop();
     }

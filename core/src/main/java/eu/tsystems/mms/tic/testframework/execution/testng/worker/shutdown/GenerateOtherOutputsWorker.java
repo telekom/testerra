@@ -18,25 +18,26 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import org.json.JSONObject;
 
-public class GenerateOtherOutputsWorker extends GenerateReportsWorker {
+public class GenerateOtherOutputsWorker extends GenerateReportsWorker implements Loggable {
     @Override
     public void run() {
         /*
         Create status json
          */
         JSONObject statusJSON = TestStatusController.createStatusJSON();
-        LOGGER.info("Status:\n" + statusJSON);
+        log().debug("Status:\n" + statusJSON);
 
         /*
         Create surefire and testng results xml
          */
         // generate xml reports for surefire
-        LOGGER.info("Generating xml reports...");
+        log().info("Generating xml reports...");
         jUnitXMLReporter.testSetCompleted(new SimpleReportEntry("", "Results"));
         // generate testng-results.xml
         org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();

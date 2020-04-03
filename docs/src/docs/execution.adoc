@@ -3,6 +3,7 @@
 Testerra has several features to handle and adjust a test execution, which are described in the following paragraphs.
 
 include::execution/execution-behaviour-adjustment.adoc[leveloffset=+1]
+include::execution/execution-failure-corridor.adoc[leveloffset=+1]
 include::execution/execution-highlighting.adoc[leveloffset=+1]
 include::execution/execution-fail-annotation.adoc[leveloffset=+1]
 include::execution/execution-retry-analyzer.adoc[leveloffset=+1]

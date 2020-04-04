@@ -14,7 +14,7 @@ You can change the default by the following property.
 {failed_tests_max_retries}=1
 ----
 
-NOTE: The retry mechanism always ignores testcase which have a valid Fails annotation.
+NOTE: The retry mechanism always ignores testcase with a valid Fails annotation.
 
 == Specific retry count for test methods
 
@@ -52,7 +52,7 @@ The filtering process contains of checks of classes and messages matching the th
 {failed_tests_if_throwable_messages}=failed to connect, error communicating with database
 ----
 
-== Customize retry behavoiur
+== Customize retry behaviour
 
 For further adjustment additional analyzers can be registered expanding the default behaviour.
 

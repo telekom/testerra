@@ -18,9 +18,9 @@ This is useful to check your TestNG suite without executing real testcode.
 | {execution_omit_indevelopment} | false | If `true` Testerra will remove all `@InDevelopment` annotated test methods from execution.
 | {watchdog_enable} |  |
 | {watchdog_timeout_seconds} |  |
-| {failure_corridor_active} |  |
-| {failure_corridor_allowed_failed_tests} |  |
-| {failure_corridor_allowed_failed_tests_high} |  |
-| {failure_corridor_allowed_failed_tests_mid} |  |
-| {failure_corridor_allowed_failed_tests_low} |  |
+| {failure_corridor_active} |   false |   activate failure corridor
+| {failure_corridor_allowed_failed_tests} | -1 |    number of test methods allowed to fail to still mark the suite as passed
+| {failure_corridor_allowed_failed_tests_high} | -1 |   number of test methods with weighting high allowed to fail to still mark the suite as passed
+| {failure_corridor_allowed_failed_tests_mid} | -1 |    number of test methods with weighting mid allowed to fail to still mark the suite as passed
+| {failure_corridor_allowed_failed_tests_low} | -1 |    number of test methods with weighting low allowed to fail to still mark the suite as passed
 |===

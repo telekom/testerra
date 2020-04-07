@@ -1,0 +1,15 @@
+= Error handling
+Exceptions caused by `@Check` annotations can be catched by overwriting the `checkPageErrorState()` method in the concrete page class.
+This is an example how to overwrite the checkpage error inside a created page class.
+
+[source,java]
+----
+
+@Override
+protected void checkPageErrorState(Throwable throwable) throws Throwable {
+    // insert your code
+}
+
+----
+
+This method body for example could throw other exceptions or write something in the log. +

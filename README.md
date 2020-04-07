@@ -57,6 +57,23 @@ public class MyTest extends TesterraTest {
     }
 }
 ```
+## Publishing
+
+Create a `gradle.properties` file with the following content.
+```properties
+systemProp.deployUrl=https://example.com
+systemProp.deployUsername=user
+systemProp.deployPassword=password
+```
+and run
+```shell script
+gradle publish
+```
+or pass then properties via. CLI
+```shell script
+gradle publish -DdeployUrl=https://example.com -DdeployUsername=user -DdeployPassword=password
+```
+
 
 ## Contributing
 Thank you for considering contributing to the Testerra framework! The contribution guide can be found here: [CONTRIBUTING.md](CONTRIBUTING.md).

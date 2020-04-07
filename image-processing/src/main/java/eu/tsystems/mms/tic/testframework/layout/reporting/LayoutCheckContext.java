@@ -8,7 +8,6 @@ public class LayoutCheckContext implements CustomContext {
     public String image;
     public String mode;
     public double distance;
-    public double threshold;
     public Screenshot expectedScreenshot;
     public Screenshot actualScreenshot;
     public Screenshot distanceScreenshot;

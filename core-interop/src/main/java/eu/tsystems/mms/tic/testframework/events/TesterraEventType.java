@@ -35,6 +35,7 @@ public enum TesterraEventType implements ITesterraEventType {
     TEST_START,
     TEST_END,
 
+    @Deprecated
     RETRYING_METHOD,
 
     FIRST_FAILED_TEST,
@@ -42,6 +43,7 @@ public enum TesterraEventType implements ITesterraEventType {
 
     SYNC_METHOD_RESULT,
 
+    @Deprecated
     TAKE_SCREENSHOTS,
 
     CONTEXT_UPDATE

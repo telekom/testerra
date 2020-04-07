@@ -77,7 +77,7 @@ public class GuiElement implements
     private static final Map<String, GuiElementCoreFactory> coreFactories = new HashMap<>();
 
     public static void registerGuiElementCoreFactory(GuiElementCoreFactory guiElementCoreFactory, String... browsers) {
-        LOGGER.info("Registering " + guiElementCoreFactory.getClass().getSimpleName() + " for browsers " + String.join(",", browsers));
+        LOGGER.debug("Registering " + guiElementCoreFactory.getClass().getSimpleName() + " for browsers " + String.join(",", browsers));
 
         for (String browser : browsers) {
             coreFactories.put(browser, guiElementCoreFactory);

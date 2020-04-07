@@ -43,7 +43,7 @@ public class WebDriverLoggingStartWorker extends MethodWorker implements Loggabl
                 if (executingSeleniumHost.contains("\n")) {
                     msg += "\n";
                 }
-                log().debug(msg + executingSeleniumHost);
+                log().info(msg + executingSeleniumHost);
 
                 // log browser
                 long threadId = Thread.currentThread().getId();

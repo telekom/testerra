@@ -118,21 +118,19 @@ public final class Booter {
             Set<Class<? extends ModuleHook>> hooks = reflections.getSubTypesOf(ModuleHook.class);
 
             if (hooks.isEmpty()) {
-                LOGGER.warn("No Init Hooks found");
+                LOGGER.info("No Init Hooks found");
             }
 
             hooks.forEach(aClass -> {
                 try {
                     ModuleHook moduleHook = aClass.getConstructor().newInstance();
-                    LOGGER.debug("Calling Init Hook " + aClass.getSimpleName() + "...");
+                    LOGGER.info("Initialize " + ModuleHook.class.getSimpleName() + ": " + aClass.getSimpleName());
                     moduleHook.init();
                     MODULE_HOOKS.add(moduleHook);
                 } catch (Exception e) {
                     LOGGER.error("Could not load Init Hook " + aClass.getSimpleName());
                 }
             });
-
-            LOGGER.debug("Done processing Init Hooks.");
         }
     }
 

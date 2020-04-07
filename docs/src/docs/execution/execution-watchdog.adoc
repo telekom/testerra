@@ -1,0 +1,23 @@
+= WebDriverWatchDog
+include::../properties/property-attributes.adoc[]
+
+The `WebDriverWatchDog` is your vigilant pet watching the test execution and reacting on blocked tasks. With two properties it is set up.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+{watchdog_enable} = true
+# default = true
+{watchdog_timeout_seconds} = 500
+# default = 300
+----
+
+== The Mechanism
+With the first Usage of `WedDriverManager` the `WebDriverWatchDog` is initiated.
+It internally starts a Thread running in parallel to the current test execution checking the stacktrace every ten seconds for
+stacktrace entries with thread name "Forwarding" containing an Element "java.net.SocketInputStream".
+These potentially blocking stacktrace entries are updated every time found.
+Upon reaching the maximum timeout of 500 seconds the whole test execution is terminated with exit code 99 and a readable error output.
+
+== Further Adjustment
+The `WebDriverWatchDog` can be started or stopped via code with the provided public methods `WebDriverWatchDog.start()` and `WebDriverWatchDog.stop()`.

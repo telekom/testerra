@@ -6,4 +6,3 @@
     |_|\___||___/\__\___|_|  |_|  \__,_|
 
         Test Automation Framework
-TAP2

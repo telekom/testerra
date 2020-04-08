@@ -240,7 +240,7 @@ public final class ReportUtils {
                 "style/font/PWFreeArrows.ttf",
 
                 //logo
-                "logo.png"
+                //"logo.png"
         };
 
         for (String resource : resources) {

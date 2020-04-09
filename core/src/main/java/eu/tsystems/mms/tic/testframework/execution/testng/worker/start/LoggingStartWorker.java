@@ -31,13 +31,13 @@ public class LoggingStartWorker extends MethodWorker implements Loggable {
              * Test method
              */
 
-            log().info("Starting test method: " + testClassName + "." + methodName);
+            log().info("Run test method: " + testClassName + "." + methodName);
         } else {
             /*
              * Configuration methods
              */
 
-            log().info("Starting configuration method: " + testClassName + "." + methodName);
+            log().info("Run configuration method: " + testClassName + "." + methodName);
         }
 
     }

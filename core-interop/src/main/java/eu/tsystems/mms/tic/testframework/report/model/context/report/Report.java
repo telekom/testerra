@@ -55,7 +55,7 @@ public class Report {
          */
         FileUtils fileUtils = new FileUtils();
         REPORT_DIRECTORY = fileUtils.createTempDir(DEFAULT_REPORTDIR);
-        LOGGER.info("Preparing report in " + Report.REPORT_DIRECTORY.getAbsolutePath());
+        LOGGER.debug("Prepare report in " + Report.REPORT_DIRECTORY.getAbsolutePath());
     }
 
     @Deprecated

@@ -100,9 +100,8 @@ public final class TestEvidenceCollector {
     }
 
     public static void logInfo() {
-        LOGGER.info("Screenshots: " + SCREENSHOT_COLLECTORS.size() + " screenshot collectors, " + SOURCE_COLLECTORS.size() + " source collectors");
-        LOGGER.info("Videos: " + VIDEO_COLLECTORS.size() + " video collectors");
-        LOGGER.info("Videos: ScreenCaster enabled=" + Flags.SCREENCASTER_ACTIVE);
+        LOGGER.trace("Collectors: Screenshots=" + SCREENSHOT_COLLECTORS.size() + ", Sources=" + SOURCE_COLLECTORS.size() + ", Videos: " + VIDEO_COLLECTORS.size());
+        LOGGER.debug("ScreenCaster enabled=" + Flags.SCREENCASTER_ACTIVE + ", Screenshotter enabled=" + Flags.SCREENSHOTTER_ACTIVE);
     }
 
 }

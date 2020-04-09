@@ -40,6 +40,7 @@ public class TesterraCommons {
     private static boolean proxySettingsLoaded = false;
 
     public static final String DEFAULT_PACKAGE_NAME = "eu.tsystems.mms.tic";
+    public static final String FRAMEWORK_PACKAGE=DEFAULT_PACKAGE_NAME+".testframework";
 
     private TesterraCommons() {}
 

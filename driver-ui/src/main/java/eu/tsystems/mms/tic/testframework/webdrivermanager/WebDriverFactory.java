@@ -17,27 +17,17 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Proxy;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.HasInputDevices;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.List;
-
-public abstract class WebDriverFactory<R extends WebDriverRequest> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverFactory.class);
-
+public abstract class WebDriverFactory<R extends WebDriverRequest> implements Loggable {
     private SessionContext sessionContext = null;
 
     protected abstract R buildRequest(WebDriverRequest webDriverRequest);
@@ -113,7 +103,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
             Class[] interfaces = ObjectUtils.getAllInterfacesOf(rawDriver);
             rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class, interfaces);
         } catch (Exception e) {
-            LOGGER.error("Could not create proxy for raw webdriver", e);
+            log().error("Could not create proxy for raw webdriver", e);
         }
         EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(rawDriver);
 
@@ -131,19 +121,8 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
     }
 
     private void logSessionRequest(R finalRequest, DesiredCapabilities finalCaps) {
-        StringBuffer msg = new StringBuffer();
-        msg.append("Requesting new web driver session with capabilities:");
-        finalCaps.asMap().forEach((k, v) -> msg.append(",").append(k).append("=").append(v));
-
-        /*
-        log proxy
-         */
-        Proxy proxy = (Proxy) finalCaps.getCapability(CapabilityType.PROXY);
-        if (proxy != null) {
-            msg.append("\n").append(proxy.toJson());
-        }
-
-        LOGGER.info(msg.toString());
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        log().info("Requesting new web driver session with capabilities:\n" + gson.toJson(finalCaps.asMap()));
     }
 
     /**

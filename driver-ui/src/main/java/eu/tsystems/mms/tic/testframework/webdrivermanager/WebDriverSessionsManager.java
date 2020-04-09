@@ -357,9 +357,6 @@ public final class WebDriverSessionsManager {
             webDriverRequest.sessionKey = sessionKey;
         }
 
-        /*
-        get browser
-         */
         /**
          * Browser global setting.
          */
@@ -367,18 +364,14 @@ public final class WebDriverSessionsManager {
         String browserVersion = WebDriverManager.config().browserVersion();
 
         if (webDriverRequest.browser != null) {
-            LOGGER.info("Using explicit browser: " + browser);
             browser = webDriverRequest.browser;
         } else {
-            LOGGER.info("Using default browser: " + browser);
             webDriverRequest.browser = browser;
         }
 
         if (webDriverRequest.browserVersion != null) {
-            LOGGER.info("Using explicit browserVersion: " + browserVersion);
             browserVersion = webDriverRequest.browserVersion;
         } else {
-            LOGGER.info("Using default browserVersion: " + browserVersion);
             webDriverRequest.browserVersion = browserVersion;
         }
 

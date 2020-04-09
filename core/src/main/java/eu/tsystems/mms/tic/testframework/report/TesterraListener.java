@@ -407,15 +407,7 @@ public class TesterraListener implements
         /*
         add workers in workflow order
          */
-        TestStep step = methodContext.steps().announceTestStep(TestStep.TEARDOWN);
-        if (testResult.isSuccess()) {
-            /**
-             * @todo Remove duplicate log output
-             */
-            log().info(methodName + " PASSED");
-        } else if (testResult.getStatus() == ITestResult.FAILURE) {
-            log().error(methodName + " FAILED", testResult.getThrowable());
-        }
+        methodContext.steps().announceTestStep(TestStep.TEARDOWN);
 
         /*
         Workers #1

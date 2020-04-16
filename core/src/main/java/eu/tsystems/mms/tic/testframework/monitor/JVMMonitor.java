@@ -128,7 +128,7 @@ public class JVMMonitor implements TesterraEventListener {
     }
 
     public static void logJVMUsageInfo() {
-        LOGGER.info(getJVMUsageInfo());
+        LOGGER.debug(getJVMUsageInfo());
     }
 
     @Override

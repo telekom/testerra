@@ -37,7 +37,7 @@ public class GenerateOtherOutputsWorker extends GenerateReportsWorker implements
         Create surefire and testng results xml
          */
         // generate xml reports for surefire
-        log().info("Generating xml reports...");
+        log().debug("Generating xml reports...");
         jUnitXMLReporter.testSetCompleted(new SimpleReportEntry("", "Results"));
         // generate testng-results.xml
         org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();

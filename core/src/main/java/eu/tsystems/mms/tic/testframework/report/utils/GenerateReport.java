@@ -146,7 +146,7 @@ public class GenerateReport {
         /*
          * Build maps for exit points and failure aspects
          */
-        LOGGER.info("Build maps for exit points and failure aspects...");
+        LOGGER.trace("Build maps for exit points and failure aspects...");
         Map<String, List<MethodContext>> exitPoints = new TreeMap<>();
         Map<String, List<MethodContext>> failureAspects = new TreeMap<>();
         int unknownCounter = 0;
@@ -223,7 +223,7 @@ public class GenerateReport {
         /*
          * Create report
          */
-        LOGGER.info("Create Report...");
+        LOGGER.debug("Create Report...");
         ReportingData reportingData = new ReportingData();
         reportingData.executionContext = ExecutionContextController.EXECUTION_CONTEXT;
         reportingData.failureCorridorMatched = FailureCorridor.isCorridorMatched();

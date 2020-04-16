@@ -155,7 +155,7 @@ public final class WebDriverSessionsManager {
             i++;
         }
         msg += "\n => " + i + " sessions (map: " + ALL_EVENTFIRING_WEBDRIVER_SESSIONS.size() + " mapInv: " + ALL_EVENTFIRING_WEBDRIVER_SESSIONS_INVERSE.size() + ")";
-        LOGGER.info(msg);
+        LOGGER.debug(msg);
     }
 
     /**
@@ -199,8 +199,8 @@ public final class WebDriverSessionsManager {
         List<WebDriver> webDriversFromThread = getWebDriversFromThread(threadId);
 
         for (WebDriver eventFiringWebDriver : webDriversFromThread) {
-            String sessionId = getSessionKey(eventFiringWebDriver);
-            LOGGER.info("Shutting down WebDriver session >>" + sessionId + "<<");
+            String sessionKey = getSessionKey(eventFiringWebDriver);
+            LOGGER.info(String.format("Shutting down %s (session key=%s)", eventFiringWebDriver.getClass().getSimpleName(), sessionKey));
 
             beforeQuitActions.forEach(webDriverSessionHandler -> {
                 try {
@@ -214,7 +214,7 @@ public final class WebDriverSessionsManager {
             WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
 
             // remove links
-            removeWebDriverSession(sessionId, eventFiringWebDriver, null);
+            removeWebDriverSession(sessionKey, eventFiringWebDriver, null);
 
             afterQuitActions.forEach(runnable -> {
                 try {

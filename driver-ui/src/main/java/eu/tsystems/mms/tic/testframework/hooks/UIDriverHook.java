@@ -19,12 +19,20 @@ package eu.tsystems.mms.tic.testframework.hooks;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.WebDriverRetryAnalyzer;
-import eu.tsystems.mms.tic.testframework.execution.worker.finish.*;
+import eu.tsystems.mms.tic.testframework.execution.worker.finish.ConditionalBehaviourWorker;
+import eu.tsystems.mms.tic.testframework.execution.worker.finish.LogWDSessionsWorker;
+import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeInSessionEvidencesWorker;
+import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeOutOfSessionsEvidencesWorker;
+import eu.tsystems.mms.tic.testframework.execution.worker.finish.TestMethodFinishWorker;
+import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionsAfterMethodWorker;
+import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverShutDownWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.shutdown.WebDriverShutDownAfterTestsWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceStartWorker;
-import eu.tsystems.mms.tic.testframework.execution.worker.start.WebDriverLoggingStartWorker;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
-import eu.tsystems.mms.tic.testframework.report.*;
+import eu.tsystems.mms.tic.testframework.report.ScreenshotGrabber;
+import eu.tsystems.mms.tic.testframework.report.SourceGrabber;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.report.UITestStepIntegration;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +53,7 @@ public class UIDriverHook implements ModuleHook {
          */
         //start
         TesterraListener.registerBeforeMethodWorker(PerformanceStartWorker.class);
-        TesterraListener.registerBeforeMethodWorker(WebDriverLoggingStartWorker.class);
+        //TesterraListener.registerBeforeMethodWorker(WebDriverLoggingStartWorker.class);
 
         //finish
         TesterraListener.registerAfterMethodWorker(ConditionalBehaviourWorker.class);

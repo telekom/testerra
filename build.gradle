@@ -22,6 +22,14 @@ ext {
     Flags
      */
     doNotPublish = this.&dnp
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+
+    developerId = 'MMS'
+    developerName = 'T-Systems MMS'
+    developerEmail = 'dev@testerra.io'
 }
 
 def dnp(prj) {
@@ -35,7 +43,7 @@ def dnp(prj) {
 allprojects {
     group 'eu.tsystems.mms.tic.testerra'
 //    version '1-SNAPSHOT'
-    version '0.1'
+    version '0.3'
 
 
 }
@@ -123,7 +131,7 @@ subprojects {
             name = project.getName()
             websiteUrl = 'https://testerra.io'
             issueTrackerUrl = 'https://github.com/T-Systems-MMS/testerra/issues'
-            licenses = ['Apache-2.0']
+            licenses = allLicenses
             vcsUrl = 'https://github.com/T-Systems-MMS/testerra.git'
             labels = ['java', 'test', 'testautomation', 'framework']
             publicDownloadNumbers = true

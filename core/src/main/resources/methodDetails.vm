@@ -412,7 +412,7 @@ No test sources
     <!-- videos -->
     <tr id="videoarea" class="hidden toggleview">
         <td colspan="2">
-            #if ($testMethod.hasVideo())
+            #if (${testMethod.videos.size()} > 0)
                 <div>
                     <br/>
                     <br/>

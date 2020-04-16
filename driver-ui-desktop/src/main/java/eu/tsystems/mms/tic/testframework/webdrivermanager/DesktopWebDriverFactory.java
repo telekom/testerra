@@ -216,13 +216,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
          Maximize
          */
         if (config.maximize) {
-            log().info("Trying to maximize window");
+            log().debug("Trying to maximize window");
             try {
                 Dimension originWindowSize = window.getSize();
                 // Maximize to detect window size
                 window.maximize();
                 if (config.maximizePosition != Position.CENTER) {
-                    log().info(String.format("Setting maximized window position to: %s", config.maximizePosition));
+                    log().debug(String.format("Setting maximized window position to: %s", config.maximizePosition));
                     Point targetPosition = new Point(0, 0);
                     switch (config.maximizePosition) {
                         case LEFT:
@@ -238,13 +238,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                             targetPosition.y = window.getSize().height + 1;
                             break;
                     }
-                    log().info(String.format("Move window to: %s", targetPosition));
+                    log().debug(String.format("Move window to: %s", targetPosition));
                     window.setPosition(targetPosition);
                     // Re-maximize
                     window.maximize();
                 }
             } catch (Throwable t1) {
-                log().info("Could not maximize window", t1);
+                log().error("Could not maximize window", t1);
                 setWindowSizeBasedOnDisplayResolution(window, browser);
             }
         } else {
@@ -270,7 +270,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     }
 
     private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, String browser) {
-        log().info("Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
+        log().debug("Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
         String[] split = Defaults.DISPLAY_RESOLUTION.split("x");
         int width = Integer.valueOf(split[0]);
         int height = Integer.valueOf(split[1]);
@@ -280,18 +280,18 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             log().error("Could not set window size", t2);
 
             if (Browsers.edge.equals(browser)) {
-                log().info("Edge Browser was requested, trying a second workaround");
+                log().debug("Edge Browser was requested, trying a second workaround");
 
                 Timer timer = new Timer(500, 5000);
                 ThrowablePackedResponse<Object> response = timer.executeSequence(new Timer.Sequence<Object>() {
                     @Override
                     public void run() throws Throwable {
                         setSkipThrowingException(true);
-                        log().info("Trying setPosition() and setSize()");
+                        log().debug("Trying setPosition() and setSize()");
                         try {
                             window.setPosition(new Point(0, 0));
                             window.setSize(new Dimension(width, height));
-                            log().info("Yup, success!");
+                            log().debug("Yup, success!");
                         } catch (Exception e) {
                             log().warn("Nope. Got error: " + e.getMessage());
                             throw e;

@@ -72,13 +72,13 @@ public class TestStartWorker extends MethodWorker implements Loggable {
             if (retryAnalyzer == null || retryAnalyzer instanceof DisabledRetryAnalyzer) {
 
                 if (method.isAnnotationPresent(NoRetry.class)) {
-                    log().debug("Not adding testerra RetryAnalyzer for @NoRetry " + method.getName());
+                    log().trace("Not adding "+ RetryAnalyzer.class.getSimpleName() +" for @NoRetry " + method.getName());
                 } else {
                     testNGMethod.setRetryAnalyzerClass(RetryAnalyzer.class);
-                    log().info("Adding testerra RetryAnalyzer for " + method.getName());
+                    log().trace("Adding " + RetryAnalyzer.class.getSimpleName() + " for " + method.getName());
                 }
             } else {
-                log().info("Using a non-testerra retry analyzer: " + retryAnalyzer + " on " + method.getName());
+                log().info("Using a non-default retry analyzer: " + retryAnalyzer + " on " + method.getName());
             }
         }
 

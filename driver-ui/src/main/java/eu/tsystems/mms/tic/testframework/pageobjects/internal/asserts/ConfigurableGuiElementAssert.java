@@ -13,7 +13,6 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
@@ -28,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 
 public class ConfigurableGuiElementAssert implements GuiElementAssert {
@@ -38,10 +38,10 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     private final GuiElementData guiElementData;
 
     public ConfigurableGuiElementAssert(
-        GuiElementCore guiElementCore,
-        GuiElementWait guiElementWait,
-        ConfiguredAssert configuredAssert,
-        GuiElementData guiElementData
+            GuiElementCore guiElementCore,
+            GuiElementWait guiElementWait,
+            ConfiguredAssert configuredAssert,
+            GuiElementData guiElementData
     ) {
         this.guiElementWait = guiElementWait;
         this.guiElementCore = guiElementCore;
@@ -115,13 +115,13 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     @Override
     public void assertTextContains(String... text) {
         configuredAssert.assertTrue(guiElementWait.waitForTextContains(text), guiElementData + " text does not contain the requested text\n " +
-            "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
+                "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
     }
 
     @Override
     public void assertTextContainsNot(String... text) {
         configuredAssert.assertTrue(guiElementWait.waitForTextContainsNot(text), guiElementData + " text does contain the requested text\n " +
-            "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
+                "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
     }
 
     @Override
@@ -144,16 +144,16 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     @Override
     public void assertAttributeContains(String attributeName, String textContainedByAttribute) {
         configuredAssert.assertTrue(
-            guiElementWait.waitForAttributeContains(attributeName, textContainedByAttribute),
-            String.format("%s does not contain the requested text\n Expected: %s\n Actual: %s", guiElementData, textContainedByAttribute, guiElementCore.getAttribute(attributeName))
+                guiElementWait.waitForAttributeContains(attributeName, textContainedByAttribute),
+                String.format("%s does not contain the requested text\n Expected: %s\n Actual: %s", guiElementData, textContainedByAttribute, guiElementCore.getAttribute(attributeName))
         );
     }
 
     @Override
     public void assertAttributeContainsNot(final String attributeName, final String textNotContainedByAttribute) {
         configuredAssert.assertTrue(
-            guiElementWait.waitForAttributeContainsNot(attributeName, textNotContainedByAttribute),
-            String.format("%s does not contain the requested text\n Expected: %s\n Actual: %s", guiElementData, textNotContainedByAttribute, guiElementCore.getAttribute(attributeName))
+                guiElementWait.waitForAttributeContainsNot(attributeName, textNotContainedByAttribute),
+                String.format("%s does not contain the requested text\n Expected: %s\n Actual: %s", guiElementData, textNotContainedByAttribute, guiElementCore.getAttribute(attributeName))
         );
     }
 
@@ -222,9 +222,9 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
     public void assertScreenshot(final String targetImageName, final double confidenceThreshold) {
         final int LAYOUT_CHECK_UI_WAIT = 300;
         final int LAYOUT_CHECK_MAX_TRIES = 3;
-        Timer timer = new Timer(LAYOUT_CHECK_UI_WAIT,LAYOUT_CHECK_UI_WAIT*LAYOUT_CHECK_MAX_TRIES);
+        Timer timer = new Timer(LAYOUT_CHECK_UI_WAIT, LAYOUT_CHECK_UI_WAIT * LAYOUT_CHECK_MAX_TRIES);
         final BigDecimal expectedDistanceThreshold = new BigDecimal(confidenceThreshold);
-        final String assertMessage = String.format("Pixel distance (%%) of %s screenshot to image '%s'", guiElementData, targetImageName);
+        final String assertMessage = String.format("Expected that pixel distance (%%) of GuiElement screenshot %s to image '%s'", guiElementData, targetImageName);
         timer.executeSequence(new Timer.Sequence() {
             @Override
             public void run() {
@@ -234,7 +234,7 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
                     if (!matchStep.takeReferenceOnly) {
                         LayoutCheck.toReport(matchStep);
                     }
-                    AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance), expectedDistanceThreshold, assertMessage);
+                    AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP), expectedDistanceThreshold.setScale(2, RoundingMode.HALF_UP), assertMessage);
                 } catch (LayoutCheckException e) {
                     matchStep = e.getMatchStep();
                     LayoutCheck.toReport(matchStep);
@@ -246,7 +246,7 @@ public class ConfigurableGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertVisible(boolean complete) {
-        configuredAssert.assertTrue(guiElementWait.waitForIsVisible(complete), guiElementData + " is "+(complete?"complete ":"")+"visible");
+        configuredAssert.assertTrue(guiElementWait.waitForIsVisible(complete), guiElementData + " is " + (complete ? "complete " : "") + "visible");
     }
 
     @Override

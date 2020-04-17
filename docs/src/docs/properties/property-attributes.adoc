@@ -67,124 +67,53 @@
 :failure_corridor_allowed_failed_tests_high:    tt.failure.corridor.allowed.failed.tests.high
 :failure_corridor_allowed_failed_tests_mid:     tt.failure.corridor.allowed.failed.tests.mid
 :failure_corridor_allowed_failed_tests_low:     tt.failure.corridor.allowed.failed.tests.low
+
 :jvm_monitor_enabled:                           tt.monitor.memory
+
 :layoutcheck_takereference:                     tt.layoutcheck.takereference
 :layoutcheck_reference_path:                    tt.layoutcheck.reference.path
 :layoutcheck_reference_nametemplate:            tt.layoutcheck.reference.nametemplate
 :layoutcheck_ignore_color:                      tt.layoutcheck.use.ignore.color
 
-// existing in Testerra??
-// -> no = dlete
-// yes: add in property file and here
+:layoutcheck_use_area_color:                    tt.layoutcheck.use.area.color
+:layoutcheck_mode:                              tt.layoutcheck.mode
+:layoutcheck_actual_template:                   tt.layoutcheck.actual.nametemplate
+:layoutcheck_distance_template:                 tt.layoutcheck.distance.nametemplate
+:layoutcheck_distance_path:                     tt.layoutcheck.distance.path
+:layoutcheck_actual_path:                       tt.layoutcheck.actual.path
+:layoutcheck_pixel_rgb_deviation_percent:       tt.layout.pixel.rgb.deviation.percent
 
-//public static final String MODULE_SOURCE_ROOT = "tt.module.source.root";
-// **
-//* tt.source.lines.prefetch
-//*/
-//public static final String SOURCE_LINES_PREFETCH = "tt.source.lines.prefetch";
-//**
-//* tt.report.activate.sources
-//*/
-//public static final String REPORT_ACTIVATE_SOURCES = "tt.report.activate.sources";
-//**
-//* .
-//*/
+:layoutcheck_pixel_rgb_deviation_percent:       tt.layoutcheck.match.threshold
+:layoutcheck_displacement_threshold:            tt.layoutcheck.displacement.threshold
+:layoutcheck_intra_grouping_threshold:          tt.layoutcheck.intra.grouping.threshold
+:layoutcheck_matching_algorithm:                tt.layoutcheck.matching.algorithm
+:layoutcheck_internal_parameter1:               tt.layoutcheck.internal.parameter.1
+:layoutcheck_internal_parameter2:               tt.layoutcheck.internal.parameter.2
+:layoutcheck_internal_parameter4:               tt.layoutcheck.internal.parameter.4
 
+// error classes
+:layoutcheck_ignore_ambiguous_movement:         tt.layoutcheck.ignore.ambiguous.movement
+:layoutcheck_ignore_movement:                   tt.layoutcheck.ignore.movement
+:layoutcheck_ignore_group_movement:             tt.layoutcheck.ignore.group.movement
+:layoutcheck_ignore_mssing_elements:            tt.layoutcheck.ignore.missing.elements
+:layoutcheck_ignore_ambiguous_match:            tt.layoutcheck.ignore.ambiguous.match
 
+// annotated mode related
+:layoutcheck_annotated_nametemplate:            tt.layoutcheck.annotated.nametemplate
+:layoutcheck_annotationdata_nametemplate:       tt.layoutcheck.annotationdata.nametemplate
+:layoutcheck_internal_parameter3:               tt.layoutcheck.internal.parameter.3
+:layoutcheck_min_marked_pixels:                 tt.layoutcheck.minimum.marked.pixels
+:layoutcheck_max_marked_pixels_ratio:           tt.layoutcheck.maximum.marked.pixels.ratio
 
+// source utils
+:source_utils_root:                             tt.module.source.root
+:source_utils_line_prefetch:                    tt.source.lines.prefetch
+:source_utils_activate_sources:                 tt.report.activate.sources
 
-// --> new stuff
+// perf
+:perf_test:                          tt.perf.test
+:perf_generate_statistics:           tt.perf.generate.statistics
+:perf_thinktime_ms:                  tt.perf.page.thinktime.ms
 
-
-
-
-
-
-
-// Layout test: some are used for annotated --> should not be documented,
-// annotated: move to layout-probs --> no description
-
-// others aren't used anymore
-// Layout Check --> Mike Reiche
-
-//*
-//* The mode for the screenreferencer. Values are pixel (default) or annotated.
-//*/
-//public static final String LAYOUTCHECK_MODE = "tt.layoutcheck.mode";
-// if true, will use non-functional asserts
-//public static final String LAYOUTCHECK_ASSERT_INFO_MODE = "tt.layoutcheck.assert.info.mode";
-//
-//public static final String LAYOUTCHECK_ANNOTATED_NAMETEMPLATE = "tt.layoutcheck.annotated.nametemplate";
-//public static final String LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE = "tt.layoutcheck.annotationdata.nametemplate";
-//public static final String LAYOUTCHECK_ACTUAL_NAMETEMPLATE = "tt.layoutcheck.actual.nametemplate";
-//public static final String LAYOUTCHECK_DISTANCE_NAMETEMPLATE = "tt.layoutcheck.distance.nametemplate";
-//public static final String LAYOUTCHECK_DISTANCE_PATH = "tt.layoutcheck.distance.path";
-//public static final String LAYOUTCHECK_ACTUAL_PATH = "tt.layoutcheck.actual.path";
-//public static final String LAYOUTCHECK_USE_AREA_COLOR = "tt.layoutcheck.use.area.color";
-//public static final String LAYOUTCHECK_PIXEL_RGB_DEVIATION_PERCENT = "tt.layout.pixel.rgb.deviation.percent";
-
-
-// Properties for the layout comparator working with
-//public static final String LAYOUTCHECK_MATCH_THRESHOLD = "tt.layoutcheck.match.threshold";
-//public static final String LAYOUTCHECK_DISPLACEMENT_THRESHOLD = "tt.layoutcheck.displacement.threshold";
-//public static final String LAYOUTCHECK_INTRA_GROUPING_THRESHOLD = "tt.layoutcheck.intra.grouping.threshold";
-//public static final String LAYOUTCHECK_MINIMUM_MARKED_PIXELS = "tt.layoutcheck.minimum.marked.pixels";
-//public static final String LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO = "tt.layoutcheck.maximum.marked.pixels.ratio";
-//public static final String LAYOUTCHECK_MATCHING_ALGORITHM = "tt.layoutcheck.matching.algorithm";
-//**
-// * minimalDistanceBetweenMatches
-// */
-//public static final String LAYOUTCHECK_INTERNAL_PARAMETER_1 = "tt.layoutcheck.internal.parameter.1";
-//**
-// * minimalSizeDifferenceOfSubImages
-// */
-//public static final String LAYOUTCHECK_INTERNAL_PARAMETER_2 = "tt.layoutcheck.internal.parameter.2";
-//**
-// * minimumSimilarMovementErrorsForDisplacementCorrection
-// */
-//public static final String LAYOUTCHECK_INTERNAL_PARAMETER_3 = "tt.layoutcheck.internal.parameter.3";
-//**
-// * distanceBetweenMultipleMatchesToProduceWarning
-// */
-//public static final String LAYOUTCHECK_INTERNAL_PARAMETER_4 = "tt.layoutcheck.internal.parameter.4";
-//public static final String LAYOUTCHECK_IGNORE_AMBIGUOUS_MOVEMENT = "tt.layoutcheck.ignore.ambiguous.movement";
-//public static final String LAYOUTCHECK_IGNORE_MOVEMENT = "tt.layoutcheck.ignore.movement";
-//public static final String LAYOUTCHECK_IGNORE_GROUP_MOVEMENT = "tt.layoutcheck.ignore.group.movement";
-//public static final String LAYOUTCHECK_IGNORE_MISSING_ELEMENTS = "tt.layoutcheck.ignore.missing.elements";
-//public static final String LAYOUTCHECK_IGNORE_AMBIGUOUS_MATCH = "tt.layoutcheck.ignore.ambiguous.match";
-//
-//**
-// * If below 1, the value is regarded as percent threshold for erroneous pixels / all edge and text pixel. If 1 or
-// * greater, it is regarded as absolute error pixel count.
-// */
-//public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_ERROR_THRESHOLD = "tt.layoutcheck.text.error.detector.error.threshold";
-//public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH = "tt.layoutcheck.text.error.detector.minimal.line.length";
-//public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGESTRENGTH = "tt.layoutcheck.text.error.detector.minimal.edge.strength";
-
-
-// decision needed for documentation
-// Performance indicator
-// **
-//* Flag for Perf Test Statistics generation.
-//*/
-//public static final String PERF_GENERATE_STATISTICS = "tt.perf.generate.statistics";
-//**
-//* Perf test thinktime.
-//*/
-//public static final String PERF_PAGE_THINKTIME_MS = "tt.perf.page.thinktime.ms";
-//** Perf test Property, used to set default values of a Load test */
-//public static final String PERF_TEST = "tt.perf.test";
-
-
-
-// unknown stuff
-
-// JDBC: might be deleted
-//    public static final String DB_TIMEOUT = "tt.db.timeout";
-
-// JVMMonitor: add to execution-probs.adoc, add section to execution.adoc
-//    public static final String MONITOR_MEMORY = "tt.monitor.memory";
-//
-//
-// erku: OmitInDevelopmentMethodInterceptor
-//    public static final String EXECUTION_OMIT_IN_DEVELOPMENT = "tt.execution.omit.indevelopment";
+// JDBC Connector
+:jdbc_connector_timeout:             tt.db.timeout

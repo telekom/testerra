@@ -24,4 +24,7 @@ This is useful to check your TestNG suite without executing real testcode.
 | {failure_corridor_allowed_failed_tests_mid} | -1 |    number of test methods with weighting mid allowed to fail to still mark the suite as passed
 | {failure_corridor_allowed_failed_tests_low} | -1 |    number of test methods with weighting low allowed to fail to still mark the suite as passed
 | {jvm_monitor_enabled} | true |  activate JVMMonitor
+| {perf_test} | false |  If true, activates performance test related behaviour sets default values for the performance test
+| {perf_thinktime_ms} | 0 |  Sets a thinktime in ms for each page load
+| {perf_generate_statistics} | false |  If true, activates generation of graphs for the performance measurements
 |===

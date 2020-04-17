@@ -1,0 +1,34 @@
+/**
+ * Bintray release configuration
+ * */
+ext {
+  bintrayRepo = 'Testerra_Test'
+  bintrayName = POM_BINTRAY_NAME
+
+  publishedGroupId = 'eu.tsystems.mms.tic.testerra'
+  libraryName = 'Testerra'
+  artifact = POM_ARTIFACT_ID
+  packagingType = POM_PACKAGING
+
+  libraryDescription = POM_DESCRIPTION
+
+  siteUrl = 'https://testerra.io'
+  gitUrl = 'https://github.com/T-Systems-MMS/testerra.git'
+
+//  libraryVersion = POM_VERSION
+  libraryVersion = project.getVersion()
+
+  developerId = 'MMS'
+  developerName = 'Testerra Team T-Systems MMS'
+  developerEmail = 'dev@testerra.io'
+
+  licenseName = 'The Apache Software License, Version 2.0'
+  licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+  allLicenses = ["Apache-2.0"]
+}
+
+// Set up the Android Maven publication.
+apply from: rootProject.file('jcenter/maven-install.gradle')
+
+// Publish on Bintray.
+apply from: rootProject.file('jcenter/bintray.gradle')

@@ -1,0 +1,59 @@
+apply plugin: 'com.jfrog.bintray'
+
+version = libraryVersion
+
+//// Java libraries
+//task sourcesJar(type: Jar, dependsOn: classes) {
+//    classifier = 'sources'
+//    from sourceSets.main.allSource
+//}
+
+//apply plugin: "org.jetbrains.dokka"
+//task dokkaJavadoc(type: dokka.getClass()) {
+//    outputFormat = 'javadoc'
+//    outputDirectory = "$buildDir/javadoc"
+//}
+
+//task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+//    classifier = 'javadoc'
+//    from "$buildDir/javadoc"
+//}
+
+
+bintrayUpload.dependsOn assemble
+bintrayUpload.dependsOn sourcesJar
+//bintrayUpload.dependsOn javadocJar
+
+//artifacts {
+////    archives javadocJar
+//    archives sourcesJar
+//}
+
+
+bintray {
+    //        user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+//        key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    user = 'martingrossmann'
+    key = 'db2299d555b009a15e55df970864ba3a72fc6df8'
+
+    configurations = ['archives']
+    pkg {
+        repo = bintrayRepo
+        name = bintrayName
+        desc = libraryDescription
+
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = allLicenses
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = libraryDescription
+//            gpg {
+//                sign = true //Determines whether to GPG sign the files. The default is false
+//                passphrase = properties.getProperty("bintray.gpg.password")
+//                //Optional. The passphrase for GPG signing'
+//            }
+        }
+    }
+}

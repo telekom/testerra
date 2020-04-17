@@ -26,10 +26,6 @@ ext {
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
-
-    developerId = 'MMS'
-    developerName = 'T-Systems MMS'
-    developerEmail = 'dev@testerra.io'
 }
 
 def dnp(prj) {
@@ -43,16 +39,14 @@ def dnp(prj) {
 allprojects {
     group 'eu.tsystems.mms.tic.testerra'
 //    version '1-SNAPSHOT'
-    version '0.3'
-
-
+    version '0.4b'
 }
 
 subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
-    apply plugin: 'com.jfrog.bintray'
+//    apply plugin: 'com.jfrog.bintray'
 
     // important!
     repositories {
@@ -116,57 +110,43 @@ subprojects {
         }
     }
 
-    bintray {
-//        user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-//        key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-        user = 'martingrossmann'
-        key = 'db2299d555b009a15e55df970864ba3a72fc6df8'
-        publications = ['mavenJava'] //When uploading Maven-based publication files
-        dryRun = false //Whether to run this as dry-run, without deploying
-        publish = true //If version should be auto published after an upload
-
-        pkg {
-            repo = 'Testerra_Test'
-            desc = 'A Test automation framework'
-            name = project.getName()
-            websiteUrl = 'https://testerra.io'
-            issueTrackerUrl = 'https://github.com/T-Systems-MMS/testerra/issues'
-            licenses = allLicenses
-            vcsUrl = 'https://github.com/T-Systems-MMS/testerra.git'
-            labels = ['java', 'test', 'testautomation', 'framework']
-            publicDownloadNumbers = true
-//            attributes= ['a': ['ay1', 'ay2'], 'b': ['bee'], c: 'cee'] //Optional package-level attributes
-            version {
-                name = project.getVersion()
-                desc = 'Testerra Pre-release'
-//                released  = 'optional, date of the version release' //2 possible values: date in the format of 'yyyy-MM-dd'T'HH:mm:ss.SSSZZ' OR a java.util.Date instance
-//                vcsTag = '1.3.0'
-//                attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin'] //Optional version-level attributes
-//                gpg {
-//                    sign = true //Determines whether to GPG sign the files. The default is false
-//                    passphrase = 'passphrase' //Optional. The passphrase for GPG signing'
-//                }
-//                mavenCentralSync {
-//                    sync = false //Optional (true by default). Determines whether to sync the version to Maven Central.
-//                    user = 'userToken' //OSS user token
-//                    password = 'paasword' //OSS user password
-//                    close = '1' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
-//                }
-            }
-        }
-    }
-}
-
-bintray {
-    publications = []
-    configurations = []
-}
-
-
-gradle.taskGraph.whenReady { graph ->
-    if (graph.hasTask("bintray")) {
-        println "Setting bintray credentials..."
-        System.setProperty('BINTRAY_USER', 'martingrossmann')
-        System.setProperty('BINTRAY_API_KEY', 'db2299d555b009a15e55df970864ba3a72fc6df8')
-    }
+//    bintray {
+////        user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+////        key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+//        user = 'martingrossmann'
+//        key = 'db2299d555b009a15e55df970864ba3a72fc6df8'
+//        publications = ['mavenJava'] //When uploading Maven-based publication files
+//        dryRun = false //Whether to run this as dry-run, without deploying
+//        publish = true //If version should be auto published after an upload
+//
+//        pkg {
+//            repo = 'Testerra_Test'
+//            desc = 'A Test automation framework'
+//            name = project.getName()
+//            websiteUrl = 'https://testerra.io'
+//            issueTrackerUrl = 'https://github.com/T-Systems-MMS/testerra/issues'
+//            licenses = allLicenses
+//            vcsUrl = 'https://github.com/T-Systems-MMS/testerra.git'
+//            labels = ['java', 'test', 'testautomation', 'framework']
+//            publicDownloadNumbers = true
+////            attributes= ['a': ['ay1', 'ay2'], 'b': ['bee'], c: 'cee'] //Optional package-level attributes
+//            version {
+//                name = project.getVersion()
+//                desc = 'Testerra Pre-release'
+////                released  = 'optional, date of the version release' //2 possible values: date in the format of 'yyyy-MM-dd'T'HH:mm:ss.SSSZZ' OR a java.util.Date instance
+////                vcsTag = '1.3.0'
+////                attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin'] //Optional version-level attributes
+////                gpg {
+////                    sign = true //Determines whether to GPG sign the files. The default is false
+////                    passphrase = 'passphrase' //Optional. The passphrase for GPG signing'
+////                }
+////                mavenCentralSync {
+////                    sync = false //Optional (true by default). Determines whether to sync the version to Maven Central.
+////                    user = 'userToken' //OSS user token
+////                    password = 'paasword' //OSS user password
+////                    close = '1' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+////                }
+//            }
+//        }
+//    }
 }

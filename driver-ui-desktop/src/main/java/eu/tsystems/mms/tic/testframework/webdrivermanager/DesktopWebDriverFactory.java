@@ -20,7 +20,6 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.Constants;
-import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
@@ -496,7 +495,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 driverClass = EdgeDriver.class;
                 break;
             default:
-                throw new TesterraSystemException(ErrorMessages.browserNotSupportedHere(browser));
+                throw new TesterraSystemException("Browser must be set through SystemProperty 'browser' or in test.properties file! + is: " + browser);
         }
 
         WebDriver driver;

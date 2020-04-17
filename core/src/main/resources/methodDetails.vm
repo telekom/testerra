@@ -372,11 +372,16 @@ No test sources
 
                                             #foreach ($imageName in $imageNames)
                                                 #if ($imageName)
-                                                    <div data-img="../../screenshots/$imageName" data-caption="$imageCaptions[$foreach.index]">
+                                                    #set ($path = "../../screenshots/$imageName")
+                                                    <div data-img="$path" data-caption="$imageCaptions[$foreach.index]">
                                                         <div class="centeredItems">
                                                             <a class="gallerybutton" href="#" title="Fullscreen"
                                                                onclick="toggleFotoramaFullscreen('.layoutCheck$customError.image')">
                                                                 <i class="bgwhite fa fa-arrows-alt"></i>
+                                                            </a>
+                                                            <!-- pic download link -->
+                                                            <a class="gallerybutton" target="_blank" title="Download" href="$path">
+                                                                <i class="bgwhite fa fa-cloud-download"></i>
                                                             </a>
                                                         </div>
                                                     </div>

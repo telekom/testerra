@@ -1,0 +1,3 @@
+= Architecture
+
+image::architecture.png[]

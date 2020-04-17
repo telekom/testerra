@@ -16,11 +16,11 @@ This is useful to check your TestNG suite without executing real testcode.
 | {failed_tests_max_retries} | 1 | How often tests should be retried by the Testerra RetryAnalyzer
 | {reuse_dataprovider_driver_by_thread} | false | Reuse existing Webdriver session for a thread of dataprovider
 | {execution_omit_indevelopment} | false | If `true` Testerra will remove all `@InDevelopment` annotated test methods from execution.
-| {watchdog_enable} |  |
-| {watchdog_timeout_seconds} |  |
-| {failure_corridor_active} |  |
-| {failure_corridor_allowed_failed_tests} |  |
-| {failure_corridor_allowed_failed_tests_high} |  |
-| {failure_corridor_allowed_failed_tests_mid} |  |
-| {failure_corridor_allowed_failed_tests_low} |  |
+| {watchdog_enable} | true | Enables/Disables the `WebDriverWatchDog`
+| {watchdog_timeout_seconds} | 300 | Sets the timeout in seconds after the `WebDriverWatchDog` terminates the test execution (with System.exit(99) terminated).
+| {failure_corridor_active} |   false |   activate failure corridor
+| {failure_corridor_allowed_failed_tests} | -1 |    number of test methods allowed to fail to still mark the suite as passed
+| {failure_corridor_allowed_failed_tests_high} | -1 |   number of test methods with weighting high allowed to fail to still mark the suite as passed
+| {failure_corridor_allowed_failed_tests_mid} | -1 |    number of test methods with weighting mid allowed to fail to still mark the suite as passed
+| {failure_corridor_allowed_failed_tests_low} | -1 |    number of test methods with weighting low allowed to fail to still mark the suite as passed
 |===

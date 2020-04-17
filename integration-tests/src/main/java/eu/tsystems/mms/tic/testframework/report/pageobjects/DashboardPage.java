@@ -20,7 +20,7 @@ import org.testng.Assert;
 
 public class DashboardPage extends AbstractReportPage implements IReportAnnotationVerifier {
 
-    @Check
+//    @Check
     public final GuiElement testerraLogo = new GuiElement(this.getWebDriver(), By.cssSelector("img[alt='testerra']"), mainFrame);
     public final DashboardModuleTestResultPieChart dashboardModuleTestResultPieChart = PageFactory.create(DashboardModuleTestResultPieChart.class, driver);
     public final DashboardModuleTestResultNumberBreakdown dashboardModuleTestResultNumberBreakdown = PageFactory.create(DashboardModuleTestResultNumberBreakdown.class, driver);

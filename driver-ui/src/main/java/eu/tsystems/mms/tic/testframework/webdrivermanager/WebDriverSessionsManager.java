@@ -235,10 +235,19 @@ public final class WebDriverSessionsManager {
             WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
         }
 
+        for (String key : ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.keySet()) {
+            LOGGER.info("Quitting exclusive ebdriver session: " + key);
+            WebDriver eventFiringWebDriver = ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.get(key);
+
+            WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
+        }
+
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS.clear();
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_INVERSE.clear();
 
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID.clear();
+
+        ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.clear();
     }
 
     /**

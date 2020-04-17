@@ -37,6 +37,7 @@ bintray {
     key = 'db2299d555b009a15e55df970864ba3a72fc6df8'
 
     configurations = ['archives']
+    publish = true //If version should be auto published after an upload
     pkg {
         repo = bintrayRepo
         name = bintrayName
@@ -44,8 +45,9 @@ bintray {
 
         websiteUrl = siteUrl
         vcsUrl = gitUrl
+        issueTrackerUrl = issueUrl
         licenses = allLicenses
-        publish = true
+//        publish = true
         publicDownloadNumbers = true
         version {
             desc = libraryDescription

@@ -14,6 +14,7 @@ ext {
 
   siteUrl = 'https://testerra.io'
   gitUrl = 'https://github.com/T-Systems-MMS/testerra.git'
+  issueUrl = 'https://github.com/T-Systems-MMS/testerra/issues'
 
 //  libraryVersion = POM_VERSION
   libraryVersion = project.getVersion()

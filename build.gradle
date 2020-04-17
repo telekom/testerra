@@ -39,7 +39,7 @@ def dnp(prj) {
 allprojects {
     group 'eu.tsystems.mms.tic.testerra'
 //    version '1-SNAPSHOT'
-    version '0.4b'
+    version '0.4d'
 }
 
 subprojects {

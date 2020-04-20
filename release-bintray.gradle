@@ -2,7 +2,7 @@
  * Bintray release configuration
  * */
 ext {
-  bintrayRepo = 'Testerra_Test'
+  bintrayRepo = 'Testerra'
   bintrayName = POM_BINTRAY_NAME
 
   publishedGroupId = 'eu.tsystems.mms.tic.testerra'

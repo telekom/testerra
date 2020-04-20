@@ -39,7 +39,7 @@ def dnp(prj) {
 allprojects {
     group 'eu.tsystems.mms.tic.testerra'
 //    version '1-SNAPSHOT'
-    version '0.4d'
+    version '0.1'
 }
 
 subprojects {
@@ -149,4 +149,8 @@ subprojects {
 //            }
 //        }
 //    }
+}
+
+task uploadTTCore(type: GradleBuild) {
+    tasks = ['core:bintrayUpload']
 }

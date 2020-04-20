@@ -14,7 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
@@ -83,20 +83,21 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
-     *  @param name        The test method name.
-     * @param methodType  method type.
-     * @param classContext .
-     * @param suiteContext .
+     *
+     * @param name             The test method name.
+     * @param methodType       method type.
+     * @param classContext     .
+     * @param suiteContext     .
      * @param testContextModel .
      * @param executionContext .
      */
     public MethodContext(
-        final String name,
-        final MethodType methodType,
-        final ClassContext classContext,
-        final TestContextModel testContextModel,
-        final SuiteContext suiteContext,
-        final ExecutionContext executionContext
+            final String name,
+            final MethodType methodType,
+            final ClassContext classContext,
+            final TestContextModel testContextModel,
+            final SuiteContext suiteContext,
+            final ExecutionContext executionContext
     ) {
         this.testContextModel = testContextModel;
         this.suiteContext = suiteContext;
@@ -172,7 +173,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     /**
      * Add non functional infos.
      *
-     * @param throwable         .
+     * @param throwable .
      */
     public AssertionInfo addNonFunctionalInfo(final Throwable throwable) {
         AssertionInfo assertionInfo = new AssertionInfo(throwable);
@@ -319,9 +320,12 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public ClassContext getEffectiveClassContext() {
         if (classContext.merged) {
             return classContext.mergedIntoClassContext;
-        }
-        else {
+        } else {
             return classContext;
         }
+    }
+
+    public List<Video> getVideos() {
+        return this.videos;
     }
 }

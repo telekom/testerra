@@ -13,7 +13,6 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
@@ -60,7 +59,7 @@ public final class AssertUtils {
     }
 
     public static void assertGreaterThan(BigDecimal actual, BigDecimal expected, String description) {
-        if (actual.compareTo(expected)!=1) {
+        if (actual.compareTo(expected) != 1) {
             Assert.fail(String.format("%s [%s] is greater than [%s]", description, actual, expected));
         }
     }
@@ -72,7 +71,7 @@ public final class AssertUtils {
     }
 
     public static void assertLowerThan(BigDecimal actual, BigDecimal expected, String description) {
-        if (actual.compareTo(expected)!=-1) {
+        if (actual.compareTo(expected) != -1) {
             Assert.fail(String.format("%s [%s] is lower than [%s]", description, actual, expected));
         }
     }

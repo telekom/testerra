@@ -104,6 +104,7 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         return desiredCapabilities;
     }
 
+    @Deprecated
     private static void addEndPointCapabilities(DesktopWebDriverRequest desktopWebDriverRequest) {
         for (Pattern pattern : ENDPOINT_CAPABILITIES.keySet()) {
             if (pattern.matcher(desktopWebDriverRequest.seleniumServerHost).find()) {
@@ -115,6 +116,7 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         }
     }
 
+    @Deprecated
     public static void registerEndPointCapabilities(Pattern endPointSelector, Capabilities capabilities) {
         ENDPOINT_CAPABILITIES.put(endPointSelector, capabilities);
     }

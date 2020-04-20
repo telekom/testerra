@@ -1,16 +1,8 @@
-                          .    .         
-                         ,k,  ...        
-                        .o;:..''.        
-                        .. .'''''.       
-                     ..''''''''''.       
-                  ..''''''''''''''       
-                 .''''''''',,,,,,,,'.    
-                ..',,,,,,,,,,,,,,,,.   
-                      ',,,,,,,,,,,   
-       .....               ',,;;;;;;;;.  
-   .,ldddooool;.          ',.;;;;;;;;;.  
-  ,dddddddooooool;.      'cc:.;;;;;;;,   
- ;xddddddddoooooooll;,,:lllcc;.;::::;    
-.xxxddddddddoooooooollllllllcc.,:::,     
-:xxxxddddddddoooooooollllllllc.;:;;l     
-lxxxxxddo:'.......:ooollllllc'';cdOOl'''.
+  _______        _
+ |__   __|      | |
+    | | ___  ___| |_ ___ _ __ _ __ __ _
+    | |/ _ \/ __| __/ _ \ '__| '__/ _` |
+    | |  __/\__ \ ||  __/ |  | | | (_| |
+    |_|\___||___/\__\___|_|  |_|  \__,_|
+
+        Test Automation Framework

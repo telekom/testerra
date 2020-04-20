@@ -55,6 +55,6 @@
         font-weight: bold;
         font-family: sans-serif;
         background: lightblue;
-        border-radius: 10px;">($i) $param</font>
+        border-radius: 10px;">($i) $param.toString()</font>
     #end
 #end

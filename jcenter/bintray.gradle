@@ -2,7 +2,8 @@ apply plugin: 'com.jfrog.bintray'
 
 version = libraryVersion
 
-//// Java libraries
+// Java libraries
+// Moved to main Gradle file
 //task sourcesJar(type: Jar, dependsOn: classes) {
 //    classifier = 'sources'
 //    from sourceSets.main.allSource
@@ -47,7 +48,6 @@ bintray {
         vcsUrl = gitUrl
         issueTrackerUrl = issueUrl
         licenses = allLicenses
-//        publish = true
         publicDownloadNumbers = true
         version {
             desc = libraryDescription

@@ -86,18 +86,11 @@ _Preparation_
   // ...
   apply from: rootProject.file('release-bintray.gradle')
   ````
-* Create/update the ``gradle.properties`` of the module (here: ``core`` module)
-  ````
-  POM_NAME=core
-  POM_DESCRIPTION=Testerra Core modul
-  POM_BINTRAY_NAME=eu.tsystems.mms.tic.testerra:core
-  POM_ARTIFACT_ID=core
-  POM_PACKAGING=jar
-  ````
 
 _Configuration_
 
-All basic publish settings are located in ``release-bintray.gradle``
+All publish settings are located in ``release-bintray.gradle``.
+
 
 _Upload and publish_
 

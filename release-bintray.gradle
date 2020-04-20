@@ -3,14 +3,18 @@
  * */
 ext {
   bintrayRepo = 'Testerra'
-  bintrayName = POM_BINTRAY_NAME
+//  bintrayName = POM_BINTRAY_NAME
+  bintrayName = "eu.tsystems.mms.tic.testerra:${project.getName()}"
 
   publishedGroupId = 'eu.tsystems.mms.tic.testerra'
   libraryName = 'Testerra'
-  artifact = POM_ARTIFACT_ID
-  packagingType = POM_PACKAGING
+//  artifact = POM_ARTIFACT_ID
+  artifact = project.getName()
+//  packagingType = POM_PACKAGING
+  packagingType = 'jar'
 
-  libraryDescription = POM_DESCRIPTION
+//  libraryDescription = POM_DESCRIPTION
+  libraryDescription = "Testerra ${project.getName()} module"
 
   siteUrl = 'https://testerra.io'
   gitUrl = 'https://github.com/T-Systems-MMS/testerra.git'

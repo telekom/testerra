@@ -39,7 +39,7 @@ def dnp(prj) {
 allprojects {
     group 'eu.tsystems.mms.tic.testerra'
 //    version '1-SNAPSHOT'
-    version '0.1a'
+    version '0.1d'
 }
 
 subprojects {
@@ -157,6 +157,7 @@ task uploadTTCore(type: GradleBuild) {
             'image-processing:bintrayUpload',
             'driver-ui:bintrayUpload',
             'driver-ui-desktop:bintrayUpload',
-            'surefire-connector:bintrayUpload'
+            'surefire-connector:bintrayUpload',
+            'bmp:bintrayUpload'
     ]
 }

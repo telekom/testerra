@@ -105,6 +105,10 @@
 :layoutcheck_min_marked_pixels:                 tt.layoutcheck.minimum.marked.pixels
 :layoutcheck_max_marked_pixels_ratio:           tt.layoutcheck.maximum.marked.pixels.ratio
 
+:layoutcheck_error_detector_min_line_length:    tt.layoutcheck.text.error.detector.minimal.line.length
+// :layoutcheck_error_detector_min_edge_strength:  tt.layoutcheck.text.error.detector.minimal.edge.strength
+:layoutcheck_assert_info_mode:                  tt.layoutcheck.assert.info.mode
+
 // source utils
 :source_utils_root:                             tt.module.source.root
 :source_utils_line_prefetch:                    tt.source.lines.prefetch

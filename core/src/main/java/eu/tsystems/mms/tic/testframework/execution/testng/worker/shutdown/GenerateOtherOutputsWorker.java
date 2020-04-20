@@ -35,11 +35,13 @@ public class GenerateOtherOutputsWorker extends GenerateReportsWorker {
         /*
         Create surefire and testng results xml
          */
+
+        Report report = new Report();
         // generate xml reports for surefire
         LOGGER.info("Generating xml reports...");
         jUnitXMLReporter.testSetCompleted(new SimpleReportEntry("", "Results"));
         // generate testng-results.xml
         org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();
-        testNgXmlReporter.generateReport(xmlSuites, suites, Report.XML_DIRECTORY.getAbsolutePath());
+        testNgXmlReporter.generateReport(xmlSuites, suites, report.getReportDirectory(Report.XML_FOLDER_NAME).toString());
     }
 }

@@ -25,7 +25,6 @@ public class WebDriverShutDownAfterTestsWorker extends GenerateReportsWorker {
 
     @Override
     public void run() {
-        LOGGER.info("Forcing all WebDrivers to shutdown (close all windows)");
         WebDriverManager.forceShutdownAllThreads();
         WebDriverWatchDog.stop();
     }

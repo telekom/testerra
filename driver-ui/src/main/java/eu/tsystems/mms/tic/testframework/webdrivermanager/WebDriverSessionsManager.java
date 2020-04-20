@@ -106,7 +106,7 @@ public final class WebDriverSessionsManager {
         final String sessionId = WebDriverUtils.getSessionId(eventFiringWebDriver);
         if (sessionId != null) {
             ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.put(sessionId, sessionContext);
-            LOGGER.info("Stored SessionContext " + sessionContext + " for session " + sessionId);
+            LOGGER.trace("Stored SessionContext " + sessionContext + " for session " + sessionId);
         } else {
             LOGGER.error("Could not store SessionContext, could not get SessionId");
         }
@@ -155,7 +155,7 @@ public final class WebDriverSessionsManager {
             i++;
         }
         msg += "\n => " + i + " sessions (map: " + ALL_EVENTFIRING_WEBDRIVER_SESSIONS.size() + " mapInv: " + ALL_EVENTFIRING_WEBDRIVER_SESSIONS_INVERSE.size() + ")";
-        LOGGER.info(msg);
+        LOGGER.debug(msg);
     }
 
     /**
@@ -199,8 +199,8 @@ public final class WebDriverSessionsManager {
         List<WebDriver> webDriversFromThread = getWebDriversFromThread(threadId);
 
         for (WebDriver eventFiringWebDriver : webDriversFromThread) {
-            String sessionId = getSessionKey(eventFiringWebDriver);
-            LOGGER.info("Shutting down WebDriver session >>" + sessionId + "<<");
+            String sessionKey = getSessionKey(eventFiringWebDriver);
+            LOGGER.info(String.format("Shutting down %s (session key=%s)", eventFiringWebDriver.getClass().getSimpleName(), sessionKey));
 
             beforeQuitActions.forEach(webDriverSessionHandler -> {
                 try {
@@ -214,7 +214,7 @@ public final class WebDriverSessionsManager {
             WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
 
             // remove links
-            removeWebDriverSession(sessionId, eventFiringWebDriver, null);
+            removeWebDriverSession(sessionKey, eventFiringWebDriver, null);
 
             afterQuitActions.forEach(runnable -> {
                 try {
@@ -366,9 +366,6 @@ public final class WebDriverSessionsManager {
             webDriverRequest.sessionKey = sessionKey;
         }
 
-        /*
-        get browser
-         */
         /**
          * Browser global setting.
          */
@@ -376,18 +373,14 @@ public final class WebDriverSessionsManager {
         String browserVersion = WebDriverManager.config().browserVersion();
 
         if (webDriverRequest.browser != null) {
-            LOGGER.info("Using explicit browser: " + browser);
             browser = webDriverRequest.browser;
         } else {
-            LOGGER.info("Using default browser: " + browser);
             webDriverRequest.browser = browser;
         }
 
         if (webDriverRequest.browserVersion != null) {
-            LOGGER.info("Using explicit browserVersion: " + browserVersion);
             browserVersion = webDriverRequest.browserVersion;
         } else {
-            LOGGER.info("Using default browserVersion: " + browserVersion);
             webDriverRequest.browserVersion = browserVersion;
         }
 
@@ -472,7 +465,7 @@ public final class WebDriverSessionsManager {
     }
 
     static void registerWebDriverFactory(WebDriverFactory webDriverFactory, String... browsers) {
-        LOGGER.info("Registering " + webDriverFactory.getClass().getSimpleName() + " for browsers " + String.join(",", browsers));
+        LOGGER.debug("Register " + webDriverFactory.getClass().getSimpleName() + " for browsers " + String.join(", ", browsers));
 
         for (String browser : browsers) {
             WEB_DRIVER_FACTORIES.put(browser, webDriverFactory);

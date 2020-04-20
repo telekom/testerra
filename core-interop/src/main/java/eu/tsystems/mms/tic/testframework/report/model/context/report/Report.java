@@ -55,7 +55,7 @@ public class Report {
          */
         FileUtils fileUtils = new FileUtils();
         REPORT_DIRECTORY = fileUtils.createTempDir(DEFAULT_REPORTDIR);
-        LOGGER.info("Preparing report in " + Report.REPORT_DIRECTORY.getAbsolutePath());
+        LOGGER.debug("Prepare report in " + Report.REPORT_DIRECTORY.getAbsolutePath());
     }
 
     @Deprecated
@@ -170,7 +170,7 @@ public class Report {
 
         }
 
-        LOGGER.info("Provided screenshot " + screenshotFile + " as " + targetScreenshotFile);
+        LOGGER.debug("Provided screenshot " + screenshotFile + " as " + targetScreenshotFile);
 
         return screenshot;
     }
@@ -199,7 +199,7 @@ public class Report {
         Video video = new Video();
         video.filename = fileName;
 
-        LOGGER.info("Provided video " + file + " as " + targetFile);
+        LOGGER.debug("Provided video " + file + " as " + targetFile);
 
         return video;
     }

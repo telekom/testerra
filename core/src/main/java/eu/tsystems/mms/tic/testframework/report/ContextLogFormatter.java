@@ -12,11 +12,16 @@ import org.apache.log4j.spi.LoggingEvent;
  * @author Mike Reiche
  */
 public class ContextLogFormatter implements LogFormatter {
-    private final Layout layout = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss.SSS} [%t] [%-5p]%X{ids}: %c{2} - %m");
+    private final Layout layout = new PatternLayout("%d{dd.MM.yyyy HH:mm:ss.SSS} [%t][%p]%X{ids}: %c{2} - %m");
 
     @Override
     public String format(LoggingEvent event) {
         StringBuilder sb = new StringBuilder();
+
+        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+        if (methodContext != null) {
+            sb.append("[MCID:").append(methodContext.id).append("]");
+        }
 
         // enhance with method context id
         SessionContext currentSessionContext = ExecutionContextController.getCurrentSessionContext();
@@ -24,10 +29,6 @@ public class ContextLogFormatter implements LogFormatter {
             sb.append("[SCID:").append(currentSessionContext.id).append("]");
         }
 
-        MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-        if (methodContext != null) {
-            sb.append("[MCID:").append(methodContext.id).append("]");
-        }
         event.setProperty("ids", sb.toString());
         return layout.format(event);
     }

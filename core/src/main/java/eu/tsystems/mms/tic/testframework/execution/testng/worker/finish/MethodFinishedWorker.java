@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
@@ -31,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 
 import java.util.Map;
 
-public class MethodFinishedWorker extends MethodWorker {
+public class MethodFinishedWorker extends MethodWorker implements Loggable {
 
 
     @Override
@@ -70,7 +71,7 @@ public class MethodFinishedWorker extends MethodWorker {
             try {
                 ReportUtils.createMethodDetailsStepsView(methodContext);
             } catch (Throwable e) {
-                LOGGER.error("FATAL: Could not create html", e);
+                log().error("FATAL: Could not create html", e);
             }
         } finally {
 

@@ -37,6 +37,8 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +50,8 @@ import java.util.Map;
  * @author sepr
  */
 public final class WebDriverManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverManager.class);
 
     static {
         UITestUtils.initializePerfTest();
@@ -427,6 +431,7 @@ public final class WebDriverManager {
      * Are you sure you want do that?? This action quits all browser sessions in all threads.
      */
     public static void forceShutdownAllThreads() {
+        LOGGER.debug("Forcing all WebDrivers to shutdown (close all windows)");
         pRealShutdownAllThreads(true);
     }
 

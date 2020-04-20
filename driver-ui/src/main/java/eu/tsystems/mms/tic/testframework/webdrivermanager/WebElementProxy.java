@@ -1,19 +1,16 @@
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class WebElementProxy extends ObjectUtils.PassThroughProxy<WebElement> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebElementProxy.class);
+public class WebElementProxy extends ObjectUtils.PassThroughProxy<WebElement> implements Loggable {
 
     private final WebDriver driver;
 
@@ -31,7 +28,7 @@ public class WebElementProxy extends ObjectUtils.PassThroughProxy<WebElement> {
             if (args != null) {
                 msg += " " + Arrays.stream(args).map(Object::toString).collect(Collectors.joining(" "));
             }
-            LOGGER.info(msg);;
+            log().trace(msg);
         }
 
         WebDriverProxyUtils.updateSessionContextRelations(sessionContext);

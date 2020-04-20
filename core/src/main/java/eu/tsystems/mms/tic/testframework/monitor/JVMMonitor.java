@@ -17,10 +17,10 @@
  */
 package eu.tsystems.mms.tic.testframework.monitor;
 
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventListener;
 import eu.tsystems.mms.tic.testframework.events.ITesterraEventType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventListener;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.internal.ConsumptionMeasurementsCollector;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.JVMUtils;
@@ -128,7 +128,7 @@ public class JVMMonitor implements TesterraEventListener {
     }
 
     public static void logJVMUsageInfo() {
-        LOGGER.info(getJVMUsageInfo());
+        LOGGER.debug(getJVMUsageInfo());
     }
 
     @Override
@@ -168,7 +168,7 @@ public class JVMMonitor implements TesterraEventListener {
 
     private static void init() {
         MONITOR_THREAD = new Thread(() -> {
-            LOGGER.info("JVM Monitor started.");
+            LOGGER.debug("Started");
             long start = System.currentTimeMillis();
             long now;
             while (!threadStop) {
@@ -185,7 +185,7 @@ public class JVMMonitor implements TesterraEventListener {
                     start = System.currentTimeMillis();
 
                     if (lastValue > GC_THRESHOLD) {
-                        LOGGER.info("Used Mem over threshold (" + GC_THRESHOLD + "), triggering GC");
+                        LOGGER.debug("Used Mem over threshold (" + GC_THRESHOLD + "), triggering GC");
                         System.gc();
                     }
                 }
@@ -194,7 +194,6 @@ public class JVMMonitor implements TesterraEventListener {
     }
 
     public static void start() {
-        LOGGER.info("Starting JVM Monitor...");
         if (MONITOR_THREAD != null && (MONITOR_THREAD.isAlive() || MONITOR_THREAD.isDaemon())) {
             stop();
         }
@@ -208,7 +207,6 @@ public class JVMMonitor implements TesterraEventListener {
     }
 
     public static void stop() {
-        LOGGER.info("Stopping Memory Monitor...");
         threadStop = true;
         try {
             MONITOR_THREAD.join(30000);
@@ -216,7 +214,7 @@ public class JVMMonitor implements TesterraEventListener {
             LOGGER.error("Error joining monitor thread", e);
         }
         logJVMUsageInfo();
-        LOGGER.info("JVM Monitor stopped.");
+        LOGGER.debug("Stopped");
     }
 
     public static Map<Long, Long> getMeasurements() {

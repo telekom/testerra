@@ -108,7 +108,8 @@ _Upload and publish_
   ````
 * Publish Testerra Framework
   ````
-  gradle 
+  # Testerra core modules
+  gradle uploadTTCore
   ````
 
 ## Contributing

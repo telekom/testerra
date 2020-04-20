@@ -39,14 +39,13 @@ def dnp(prj) {
 allprojects {
     group 'eu.tsystems.mms.tic.testerra'
 //    version '1-SNAPSHOT'
-    version '0.1'
+    version '0.1a'
 }
 
 subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
-//    apply plugin: 'com.jfrog.bintray'
 
     // important!
     repositories {
@@ -152,5 +151,12 @@ subprojects {
 }
 
 task uploadTTCore(type: GradleBuild) {
-    tasks = ['core:bintrayUpload']
+    tasks = [
+            'core:bintrayUpload',
+            'core-interop:bintrayUpload',
+            'image-processing:bintrayUpload',
+            'driver-ui:bintrayUpload',
+            'driver-ui-desktop:bintrayUpload',
+            'surefire-connector:bintrayUpload'
+    ]
 }

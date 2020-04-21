@@ -95,7 +95,7 @@
 :layoutcheck_ignore_ambiguous_movement:         tt.layoutcheck.ignore.ambiguous.movement
 :layoutcheck_ignore_movement:                   tt.layoutcheck.ignore.movement
 :layoutcheck_ignore_group_movement:             tt.layoutcheck.ignore.group.movement
-:layoutcheck_ignore_mssing_elements:            tt.layoutcheck.ignore.missing.elements
+:layoutcheck_ignore_missing_elements:            tt.layoutcheck.ignore.missing.elements
 :layoutcheck_ignore_ambiguous_match:            tt.layoutcheck.ignore.ambiguous.match
 
 // annotated mode related

@@ -25,7 +25,7 @@ include::property-attributes.adoc[]
 | {layoutcheck_ignore_ambiguous_movement}       | - | when true ignore ambiguous movement, which means for a template, several matches were found at different positions and it is unclear to which match the template belongs to.
 | {layoutcheck_ignore_movement}       | - | when true ignore movement, which mean exactly one match was found for a template, but it is in the wrong position.
 | {layoutcheck_ignore_group_movement}       | false | when true ignore group movement, which means for a set of templates, displacement errors have been found which have the same displacement vector.
-| {layoutcheck_ignore_mssing_elements}       | - | when true ignore missing elements, which mean no match was found for a template.
+| {layoutcheck_ignore_missing_elements}       | - | when true ignore missing elements, which mean no match was found for a template.
 | {layoutcheck_ignore_ambiguous_match}       | - | when true ignore ambiguous match, which means several templates have been matched to this position, but only one template can be correct.
 
 | {layoutcheck_annotated_nametemplate}       | - | -

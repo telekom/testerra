@@ -38,6 +38,7 @@ import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.slf4j.Logger;
@@ -45,6 +46,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.ISuite;
 import org.testng.xml.XmlSuite;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -107,6 +109,10 @@ public class GenerateReport {
 
             // run workers
             workerExecutor.run(xmlSuites, suites, outputDirectory, xmlReporter);
+
+            Report report = new Report();
+            File finalDirectory = report.finalizeReport();
+            LOGGER.info("Report written to " + finalDirectory.getAbsolutePath());
 
             /*
              * Shutdown local services and hooks

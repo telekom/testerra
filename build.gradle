@@ -5,6 +5,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
+apply plugin: 'jacoco' // code-coverage
 
 ext {
     /*
@@ -77,6 +78,12 @@ allprojects {
     }
 
     test {
+
+        jacoco {
+            toolVersion = "0.8.5"
+            reportsDir = file("$buildDir/jacoco-report")
+        }
+
         ignoreFailures = true
         useTestNG()
         testLogging {
@@ -85,6 +92,14 @@ allprojects {
         }
         options {
             systemProperties(System.getProperties())
+        }
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled false
+            html.destination file("${buildDir}/jacocoHtml")
         }
     }
 

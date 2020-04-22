@@ -5,7 +5,6 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
-apply plugin: 'jacoco' // code-coverage
 
 ext {
     /*
@@ -33,12 +32,14 @@ def dnp(prj) {
 }
 
 allprojects {
+
     group 'eu.tsystems.mms.tic.testerra'
     version '1-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
+    apply plugin: 'jacoco' // code-coverage
 
     // important!
     repositories {
@@ -77,11 +78,15 @@ allprojects {
         }
     }
 
+    jacoco {
+        toolVersion = "0.8.5"
+        reportsDir = file("$buildDir/jacoco-report")
+    }
+
     test {
 
         jacoco {
-            toolVersion = "0.8.5"
-            reportsDir = file("$buildDir/jacoco-report")
+            enabled = true
         }
 
         ignoreFailures = true

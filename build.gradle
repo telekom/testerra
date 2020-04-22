@@ -48,6 +48,10 @@ allprojects {
         jcenter()
     }
 
+    jacoco {
+        toolVersion = "0.8.5"
+    }
+
     sourceCompatibility = 1.8
 
     publishing {
@@ -78,11 +82,6 @@ allprojects {
         }
     }
 
-    jacoco {
-        toolVersion = "0.8.5"
-        reportsDir = file("$buildDir/jacoco-report")
-    }
-
     test {
 
         jacoco {
@@ -100,12 +99,25 @@ allprojects {
         }
     }
 
-    jacocoTestReport {
-        reports {
-            xml.enabled false
-            csv.enabled false
-            html.destination file("${buildDir}/jacocoHtml")
-        }
-    }
+}
 
+task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
+
+    additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(subprojects.sourceSets.main.output)
+    executionData = files(subprojects.jacocoTestReport.executionData)
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+    }
+    onlyIf = {
+        true
+    }
+    doFirst {
+        executionData = files(executionData.findAll {
+            it.exists()
+        })
+    }
 }

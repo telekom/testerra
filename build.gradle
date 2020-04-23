@@ -98,11 +98,13 @@ allprojects {
 
 task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 
-    additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
+    additionalSourceDirs(files(subprojects.sourceSets.main.allSource.srcDirs))
+//    sourceDirectories(files(subprojects.sourceSets.main.allSource.srcDirs))
+
     sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
     classDirectories = files(subprojects.sourceSets.main.output)
 
-    executionData = project.fileTree(dir: '.', include: '**/build/jacoco/test.exec')
+    executionData(project.fileTree(dir: '.', include: '**/build/jacoco/test.exec'))
 
     reports {
         html.enabled = true

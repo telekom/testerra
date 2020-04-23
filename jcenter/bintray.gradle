@@ -32,10 +32,8 @@ bintrayUpload.dependsOn sourcesJar
 
 
 bintray {
-    //        user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-//        key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-    user = 'martingrossmann'
-    key = 'db2299d555b009a15e55df970864ba3a72fc6df8'
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getProperty('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getProperty('BINTRAY_API_KEY')
 
     configurations = ['archives']
     publish = true //If version should be auto published after an upload
@@ -49,7 +47,7 @@ bintray {
         vcsUrl = gitUrl
         issueTrackerUrl = issueUrl
         licenses = allLicenses
-        labels = ['testerra', 'java', 'test', 'testautomation', 'framework']
+        labels = ['testerra', 'java', 'selenium', 'testng', 'test', 'testautomation', 'framework']
         publicDownloadNumbers = true
 //      attributes= ['a': ['ay1', 'ay2'], 'b': ['bee'], c: 'cee'] //Optional package-level attributes
         version {

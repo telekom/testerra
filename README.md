@@ -76,6 +76,11 @@ or pass then properties via. CLI
 gradle publish -DdeployUrl=https://example.com -DdeployUsername=user -DdeployPassword=password
 ```
 
+Set a custom version
+```shell script
+gradle publish -DttVersion=<version>
+```
+
 ### ... to Bintray
 
 _Preparation_
@@ -97,13 +102,16 @@ _Upload and publish_
 * Before publishing, please note for Testerra version. You can only upload every version once!
 * Publish one module (but not recommended)
   ````
-  gradle gradle core:bintrayUpload
+  gradle gradle core:bintrayUpload -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
   ````
-* Publish Testerra Framework
+* Publish Testerra Framework with default version `1-SNAPSHOT`
   ````
-  # Testerra core modules
-  gradle uploadTTCore
+  gradle publishToBintray -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
   ````
+* Publish Testerra Framework with specific version
+  ````
+  gradle publishToBintray -DttVersion=<version> -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
+  ```` 
 
 ## Contributing
 Thank you for considering contributing to the Testerra framework! The contribution guide can be found here: [CONTRIBUTING.md](CONTRIBUTING.md).

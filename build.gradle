@@ -99,10 +99,14 @@ allprojects {
 task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 
     additionalSourceDirs(files(subprojects.sourceSets.main.allSource.srcDirs))
-//    sourceDirectories(files(subprojects.sourceSets.main.allSource.srcDirs))
 
-    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
-    classDirectories = files(subprojects.sourceSets.main.output)
+    def srcdirs = files(subprojects.sourceSets.main.allSource.srcDirs)
+    def classdirs = files(subprojects.sourceSets.main.output)
+    sourceDirectories.setFrom(srcdirs)
+    classDirectories.setFrom(classdirs)
+
+//    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+//    classDirectories = files(subprojects.sourceSets.main.output)
 
     executionData(project.fileTree(dir: '.', include: '**/build/jacoco/test.exec'))
 

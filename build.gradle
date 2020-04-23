@@ -105,10 +105,7 @@ task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
     sourceDirectories.setFrom(srcdirs)
     classDirectories.setFrom(classdirs)
 
-//    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
-//    classDirectories = files(subprojects.sourceSets.main.output)
-
-    executionData.setFrom(project.fileTree(dir: '.', include: '**/build/jacoco/test.exec'))
+    executionData(project.fileTree(dir: '.', include: '**/build/jacoco/test.exec'))
 
     reports {
         html.enabled = true
@@ -118,9 +115,10 @@ task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
     onlyIf = {
         true
     }
+
     doFirst {
-        executionData = files(executionData.findAll {
+        executionData(files(executionData.findAll {
             it.exists()
-        })
+        }))
     }
 }

@@ -43,7 +43,7 @@ def dnp(prj) {
 
 allprojects {
 
-    group 'eu.tsystems.mms.tic.testerra'
+    group 'eu.tsystems.mms.tic.testerra'gr
     version moduleVersion
 }
 
@@ -60,12 +60,12 @@ subprojects {
         jcenter()
     }
 
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
     jacoco {
         toolVersion = "0.8.5"
     }
-
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
 
     // custom tasks for creating source/javadoc jars
     task sourcesJar(type: Jar, dependsOn: classes) {

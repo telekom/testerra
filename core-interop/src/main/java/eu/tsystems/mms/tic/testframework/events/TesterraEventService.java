@@ -60,7 +60,7 @@ public final class TesterraEventService implements TesterraEventListener {
             }
         }
 
-        LOGGER.info("Adding listener to TesterraEventService: " + TesterraEventListenerName);
+        LOGGER.debug("Add listener: " + TesterraEventListenerName);
         listeners.add(TesterraEventListener);
     }
 

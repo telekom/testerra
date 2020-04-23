@@ -18,17 +18,12 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker;
 
 import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.ISuite;
 import org.testng.xml.XmlSuite;
 
 import java.util.List;
 
 public abstract class GenerateReportsWorker implements Worker {
-
-    protected static final Logger LOGGER = LoggerFactory.getLogger("ResultHandler");
-
     protected List<XmlSuite> xmlSuites;
     protected List<ISuite> suites;
     protected String outputDirectory;

@@ -19,8 +19,6 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
@@ -29,9 +27,6 @@ import org.testng.ITestResult;
 import java.lang.reflect.Method;
 
 public abstract class MethodWorker implements Worker {
-
-    protected static final Logger LOGGER = LoggerFactory.getLogger("ResultHandler");
-
     protected ITestResult testResult;
     protected ITestNGMethod testMethod;
     protected Method method;

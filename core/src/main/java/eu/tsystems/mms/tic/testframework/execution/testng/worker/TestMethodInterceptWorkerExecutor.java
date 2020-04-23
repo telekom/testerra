@@ -16,8 +16,7 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng.worker;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.testng.IMethodInstance;
 import org.testng.ITestContext;
 
@@ -32,9 +31,7 @@ import java.util.List;
  *
  * @author Eric Kubenka
  */
-public class TestMethodInterceptWorkerExecutor implements WorkerExecutor {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TestMethodInterceptWorkerExecutor.class);
+public class TestMethodInterceptWorkerExecutor implements WorkerExecutor, Loggable {
 
     private final List<TestMethodInterceptWorker> workers = new LinkedList<>();
 
@@ -49,10 +46,10 @@ public class TestMethodInterceptWorkerExecutor implements WorkerExecutor {
             worker.init(list, context);
 
             try {
-                LOGGER.debug("Executing worker " + worker);
+                log().debug("Executing worker " + worker);
                 list = worker.run();
             } catch (Throwable t) {
-                LOGGER.error("Error executing TestMethodFilterWorker", t);
+                log().error("Error executing TestMethodFilterWorker", t);
             }
         }
 

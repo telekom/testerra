@@ -49,8 +49,6 @@ public class ExecutionContextUtils {
 
                     final String info = "for " + method.getName();
                     if (!testMethodName.contains(info)) {
-                        LOGGER.info("Config method -" + testResult.getMethod().getMethodName() + "- called for "
-                                + method.getName());
                         methodContext.infos.add(info);
                     }
 

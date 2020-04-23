@@ -17,6 +17,7 @@
             <class name="eu.tsystems.mms.tic.testframework.report.test.ClassesPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.ClassesDetailsPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.functional.DependsOnTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.report.test.ReportExportTest"/>
         </classes>
     </test>
 

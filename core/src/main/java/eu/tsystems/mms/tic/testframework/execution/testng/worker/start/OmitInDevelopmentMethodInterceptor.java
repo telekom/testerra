@@ -19,12 +19,14 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 import eu.tsystems.mms.tic.testframework.annotations.InDevelopment;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.TestMethodInterceptWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import org.testng.IMethodInstance;
 
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Omit all methods annotated with {@link eu.tsystems.mms.tic.testframework.annotations.InDevelopment} annotation
@@ -34,18 +36,10 @@ import java.util.List;
  *
  * @author Eric Kubenka
  */
-public class OmitInDevelopmentMethodInterceptor extends TestMethodInterceptWorker {
+public class OmitInDevelopmentMethodInterceptor extends TestMethodInterceptWorker implements Loggable {
 
     @Override
     public List<IMethodInstance> run() {
-
-        LOGGER.info("Will executing following methods in Test context: " + iTestContext.getName());
-
-        for (IMethodInstance iMethodInstance : iMethodInstanceList) {
-            LOGGER.info("Method will be executed, because not removed from list: "
-                    + iMethodInstance.getMethod().getConstructorOrMethod().getName());
-        }
-
 
         if (Flags.EXECUTION_OMIT_IN_DEVELOPMENT) {
             final List<IMethodInstance> toRemove = new LinkedList<>();
@@ -55,7 +49,7 @@ public class OmitInDevelopmentMethodInterceptor extends TestMethodInterceptWorke
                 final Method method = methodInstance.getMethod().getConstructorOrMethod().getMethod();
                 if (method.isAnnotationPresent(InDevelopment.class)) {
                     if (ExecutionUtils.isMethodInExecutionScope(method, iTestContext, null, false)) {
-                        LOGGER.info("Removing @" + InDevelopment.class.getSimpleName() + " " + method + " from execution");
+                        log().trace("Removing @" + InDevelopment.class.getSimpleName() + " " + method + " from execution");
                         toRemove.add(methodInstance);
                     }
                 }
@@ -64,6 +58,8 @@ public class OmitInDevelopmentMethodInterceptor extends TestMethodInterceptWorke
             // remove them
             toRemove.forEach(methodInstance -> iMethodInstanceList.remove(methodInstance));
         }
+
+        log().info("Execution plan for test context \"" + iTestContext.getName() + "\": " + iMethodInstanceList.stream().map(iMethodInstance -> iMethodInstance.getMethod().getConstructorOrMethod().getName()).collect(Collectors.joining(", ")));
 
         return iMethodInstanceList;
     }

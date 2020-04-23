@@ -100,7 +100,7 @@ public final class PropertiesParser {
                     if (sensible) {
                         value = "###########";
                     }
-                    LOGGER.info("Replacing " + match + " with >" + value + "<");
+                    LOGGER.trace("Replace '" + match + "' by '" + value + "'");
                 }
             }
         }

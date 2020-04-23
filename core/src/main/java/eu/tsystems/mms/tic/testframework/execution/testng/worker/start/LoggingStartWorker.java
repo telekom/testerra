@@ -18,26 +18,16 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 
-public class LoggingStartWorker extends MethodWorker {
+public class LoggingStartWorker extends MethodWorker implements Loggable {
+
+    private final Formatter formatter = new DefaultFormatter();
 
     @Override
     public void run() {
-        String testClassName = testMethod.getTestClass().getName();
-
-        if (isTest()) {
-            /*
-             * Test method
-             */
-
-            LOGGER.info("Starting test method: " + testClassName + "." + methodName);
-        } else {
-            /*
-             * Configuration methods
-             */
-
-            LOGGER.info("Starting configuration method: " + testClassName + "." + methodName);
-        }
-
+        log().info("Run " + formatter.toString(testMethod));
     }
 }

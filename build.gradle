@@ -43,7 +43,7 @@ def dnp(prj) {
 
 allprojects {
 
-    group 'eu.tsystems.mms.tic.testerra'gr
+    group 'eu.tsystems.mms.tic.testerra'
     version moduleVersion
 }
 

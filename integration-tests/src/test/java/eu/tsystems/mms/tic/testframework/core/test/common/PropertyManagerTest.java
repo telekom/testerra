@@ -73,6 +73,24 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
     }
 
     /**
+     * property test without default boolean
+     */
+    @Test
+    public void testT04b_BooleanWithoutDefault() {
+        boolean prop = PropertyManager.getBooleanProperty("pm.test.boolean1");
+        Assert.assertTrue(prop, "Boolean property default");
+    }
+
+    /**
+     * property test without default boolean
+     */
+    @Test
+    public void testT04c_BooleanWithoutDefaultAndNotSet() {
+        boolean prop = PropertyManager.getBooleanProperty("pm.test.boolean3");
+        Assert.assertFalse(prop, "Boolean property default");
+    }
+
+    /**
      * property test with boolean from system properties
      */
     @Test
@@ -240,6 +258,46 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
     public void testt21Stringfiledefault() {
         String property = PropertyManager.getProperty("pm.test.str8", "Test");
         Assert.assertEquals(property, "Test", "property default");
+    }
+
+    @Test
+    public void testT22_DoublePropertyWithDefault() {
+
+        double doubleProperty = PropertyManager.getDoubleProperty("pm.test.double1", 10.0);
+        Assert.assertEquals(doubleProperty, 10.11, "Double Property equals value of file property.");
+    }
+
+    @Test
+    public void testT23_DoublePropertyWithDefaultNotSet() {
+
+        double doubleProperty = PropertyManager.getDoubleProperty("pm.test.double2", 10.0);
+        Assert.assertEquals(doubleProperty, 10.0, "Double Property equals value of default.");
+    }
+
+    @Test
+    public void testT24_DoublePropertyWithoutDefaultNotSet() {
+        double doubleProperty = PropertyManager.getDoubleProperty("pm.test.double2");
+        Assert.assertEquals(doubleProperty, -1, "Double Property equals default value.");
+    }
+
+    @Test
+    public void testT25_LongPropertyWithDefault() {
+
+        long longProperty = PropertyManager.getLongProperty("pm.test.long1", 10L);
+        Assert.assertEquals(longProperty, 2147483648L, "Long Property equals value of file property.");
+    }
+
+    @Test
+    public void testT26_LongPropertyWithDefaultNotSet() {
+
+        long longProperty = PropertyManager.getLongProperty("pm.test.long2", 10L);
+        Assert.assertEquals(longProperty, 10L, "Long Property equals value of default.");
+    }
+
+    @Test
+    public void testT27_LongPropertyWithoutDefaultNotSet() {
+        long longProperty = PropertyManager.getLongProperty("pm.test.long2");
+        Assert.assertEquals(longProperty, -1L, "Long Property equals default value.");
     }
 
     @Test

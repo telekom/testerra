@@ -5,7 +5,9 @@
         <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=utf-8" />
         <meta http-equiv="Content-Style-Type" content="text/css" />
         <title>Test Results</title>
+		<link rel="icon" type="image/png" href="frames/Testerra_favicon.png">
     </head>
+
     <!--<frameset rows="20%,80%">-->
     <frameset frameborder="0" border="0">
         <frame src="frames/dashboard.html" name="main" />

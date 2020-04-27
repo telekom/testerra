@@ -325,4 +325,64 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
 
         Assert.assertEquals(property, "test_value1_value5_value4_value3_value2_value1", "SystemProperty Replacement works");
     }
+
+    @Test
+    public void testT40_ThreadLocalProperty() {
+
+        PropertyManager.getThreadLocalProperties().put("thread.property", "1");
+
+        final Runnable runnable = () -> PropertyManager.getThreadLocalProperties().put("thread.property", "runnable");
+        Thread thread = new Thread(runnable);
+        thread.start();
+
+        final String value = PropertyManager.getProperty("thread.property");
+        Assert.assertEquals(value, "1", "Thread Local property not overridden.");
+
+    }
+
+    @Test
+    public void testT41_ClearThreadLocalProperty() {
+
+        PropertyManager.getThreadLocalProperties().put("thread.property", "1");
+
+        final Runnable runnable = () -> {
+            PropertyManager.getThreadLocalProperties().put("thread.property", "runnable");
+            Assert.assertEquals(PropertyManager.getProperty("thread.property"), "runnable", "Thread Local property not overridden.");
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "1", "Thread Local property not overridden.");
+
+        PropertyManager.clearThreadlocalProperties();
+        Assert.assertNull(PropertyManager.getProperty("thread.property"), "Thread properties cleared.");
+    }
+
+    @Test
+    public void testT42_LoadThreadLocalPropertyFile() {
+
+        PropertyManager.loadThreadLocalProperties("propertyfiles/threadlocal.properties");
+
+        final Runnable runnable = () -> {
+            PropertyManager.getThreadLocalProperties().put("thread.property", "runnable");
+            Assert.assertEquals(PropertyManager.getProperty("thread.property"), "runnable", "Thread Local property not overridden.");
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
+
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "file", "Thread Local property not overridden.");
+    }
+
+    @Test
+    public void testT43_LocalPropertyOverrides() {
+
+        PropertyManager.loadProperties("propertyfiles/threadlocal.properties");
+        Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
+
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "file", "Thread Local property not overridden.");
+
+        PropertyManager.getThreadLocalProperties().put("thread.property", "new");
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "new", "Thread Local property not overridden.");
+    }
 }

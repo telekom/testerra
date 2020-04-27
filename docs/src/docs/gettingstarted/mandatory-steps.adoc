@@ -4,13 +4,57 @@ include::../properties/property-attributes.adoc[]
 
 == Testerra setup
 
-The Testerra framework is deployed to https://bintray.com/bintray/jcenter.
+The Testerra framework is deployed to a https://bintray.com/testerra-io/Testerra[Bintray repository].
 
-For Testerra you need at least the following dependencies for Gradle or Maven.
-
-.build.gradle
+.Gradle
 [source, gradle, role="primary"]
 ----
+// Update your gradle configuration
+repositories {
+    maven {
+        url  "https://dl.bintray.com/testerra-io/Testerra"
+    }
+}
+----
+
+.Maven
+[source, xml, role="secondary"]
+----
+<!-- settings.xml - Update your current profile -->
+<profile>
+    ...
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-testerra-io-Testerra</id>
+            <name>bintray</name>
+            <url>https://dl.bintray.com/testerra-io/Testerra</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-testerra-io-Testerra</id>
+            <name>bintray-plugins</name>
+            <url>https://dl.bintray.com/testerra-io/Testerra</url>
+        </pluginRepository>
+    </pluginRepositories>
+    ...
+</profile>
+
+----
+
+For Testerra you need at least the following dependencies.
+
+.Gradle
+[source, gradle, role="primary"]
+----
+// build.gradle
+
 apply plugin: 'java'
 
 // Its highly recommended to normalize your project to Unicode
@@ -22,9 +66,10 @@ dependencies {
 }
 ----
 
-.pom.xml
+.Maven
 [source, xml, role="secondary"]
 ----
+<!-- pom.xml -->
 <project>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

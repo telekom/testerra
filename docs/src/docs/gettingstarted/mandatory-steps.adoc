@@ -222,9 +222,10 @@ To customize the executing of your tests, you have to create a TestNG suite file
 
 In order to get tests to work, you need to setup a build target `test` in your project.
 
-.build.gradle
+.Gradle
 [source, gradle, role="primary"]
 ----
+// build.gradle
 test {
     useTestNG() {
         suites file('src/test/resources/suite.xml')
@@ -245,9 +246,10 @@ test {
 }
 ----
 
-.pom.xml
+.Maven
 [source, xml, role="secondary"]
 ----
+<!-- pom.xml -->
 <project>
     <build>
         <plugins>

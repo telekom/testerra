@@ -18,7 +18,7 @@ package eu.tsystems.mms.tic.testframework.core.test.events;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.test.TesterraEventUserDataTestListener;
+import eu.tsystems.mms.tic.testframework.events.test.BasicEventListener;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -34,16 +34,16 @@ public class TesterraEventServiceTest extends AbstractWebDriverTest implements L
     public void testT01_TesterraEventListenerLifeCycle() {
 
         // add listener
-        TesterraEventUserDataTestListener testerraEventUserDataTestListener = new TesterraEventUserDataTestListener();
-        TesterraEventService.addListener(testerraEventUserDataTestListener);
+        BasicEventListener basicEventListener = new BasicEventListener();
+        TesterraEventService.addListener(basicEventListener);
 
         // assert its registered
-        final boolean hasListener = TesterraEventService.hasListenerOfThisType(testerraEventUserDataTestListener);
+        final boolean hasListener = TesterraEventService.hasListenerOfThisType(basicEventListener);
         Assert.assertTrue(hasListener, "Listener successfully added.");
 
         // remove
-        TesterraEventService.removeListener(testerraEventUserDataTestListener);
-        final boolean hasListenerAfterRemove = TesterraEventService.hasListenerOfThisType(testerraEventUserDataTestListener);
+        TesterraEventService.removeListener(basicEventListener);
+        final boolean hasListenerAfterRemove = TesterraEventService.hasListenerOfThisType(basicEventListener);
         Assert.assertFalse(hasListenerAfterRemove, "Listener successfully added.");
     }
 

@@ -30,7 +30,7 @@
         </packages>
     </test>
 
-    <test name="Events" parallel="methods">
+    <test name="Events" parallel="false">
         <packages>
             <package name="eu.tsystems.mms.tic.testframework.core.test.events"/>
         </packages>

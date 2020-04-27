@@ -49,17 +49,17 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * Clicks the desired 'number' and tests the provided bars of the bar chart for correct colors.
      * It runs once for every test status in report 4. 8 times in total.
      */
-    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @Fails(ticketString = "667")
+    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
     public void testT03_clickTestNumberAndCheckBarColors(TestResult testResults) throws Exception {
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_1);
         if (dashboardPage.dashboardModuleTestResultNumberBreakdown.isNumberDisplayed(testResults)) {
             dashboardPage = dashboardPage.dashboardModuleTestResultNumberBreakdown.clickNumberForTestResult(testResults);
-            //TODO sagu try to read out canvas
-            //List<GuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
-            //for (GuiElement bar : bars) {
-             //   String color = bar.getAttribute("fill");
-               // AssertCollector.assertEquals(color, testResults.getColor(), "The " + testResults.toString() + " bar chart in the fourth report has the correct color.");
-            //}
+            List<GuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
+            for (GuiElement bar : bars) {
+                String color = bar.getAttribute("fill");
+                AssertCollector.assertEquals(color, testResults.getColor(), "The " + testResults.toString() + " bar chart in the fourth report has the correct color.");
+            }
         }
 
     }

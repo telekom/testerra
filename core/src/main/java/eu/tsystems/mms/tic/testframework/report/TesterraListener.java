@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorkerExe
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.TestMethodInterceptWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.TestMethodInterceptWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.Worker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.CQWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodAnnotationCheckerWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
@@ -428,7 +427,6 @@ public class TesterraListener implements
 
         workerExecutor.add(new TesterraEventsFinishWorker());
         workerExecutor.add(new TestMethodFinishedWorker());
-        workerExecutor.add(new CQWorker());
         workerExecutor.add(new TesterraConnectorSyncEventsWorker());
 
         FrameworkUtils.addWorkersToExecutor(AFTER_INVOCATION_WORKERS, workerExecutor);

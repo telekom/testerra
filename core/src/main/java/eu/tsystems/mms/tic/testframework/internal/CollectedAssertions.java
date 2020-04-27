@@ -34,6 +34,10 @@ public final class CollectedAssertions {
     private static final Logger LOGGER = LoggerFactory.getLogger("AssertCollector");
     private static final ThreadLocal<List<AssertionInfo>> ASSERTION_INFOS = new ThreadLocal<>();
 
+    private CollectedAssertions() {
+
+    }
+
     public synchronized static void store(Throwable throwable) {
         if (ASSERTION_INFOS.get() == null) {
             ASSERTION_INFOS.set(new LinkedList<>());

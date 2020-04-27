@@ -38,6 +38,10 @@ public final class Timings {
 
     private static int findCounter = 0;
 
+    private Timings() {
+        
+    }
+
     public static synchronized int raiseFindCounter() {
         findCounter++;
         return findCounter;

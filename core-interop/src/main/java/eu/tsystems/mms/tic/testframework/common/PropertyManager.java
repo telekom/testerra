@@ -64,7 +64,6 @@ public final class PropertyManager {
         pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
 
         getPropertiesParser();
-
     }
 
     /*
@@ -276,6 +275,7 @@ public final class PropertyManager {
         THREAD_LOCAL_PROPERTIES.remove();
         FILEPROPERTIES.clear();
         GLOBALPROPERTIES.clear();
+        PROPERTIES_PARSER.remove();
     }
 
     public static Properties getFileProperties() {

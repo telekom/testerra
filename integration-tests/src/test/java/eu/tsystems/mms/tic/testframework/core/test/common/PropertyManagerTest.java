@@ -337,7 +337,6 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
 
         final String value = PropertyManager.getProperty("thread.property");
         Assert.assertEquals(value, "1", "Thread Local property not overridden.");
-
     }
 
     @Test
@@ -355,10 +354,10 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
         Assert.assertEquals(PropertyManager.getProperty("thread.property"), "1", "Thread Local property not overridden.");
 
         PropertyManager.clearThreadlocalProperties();
-        Assert.assertNull(PropertyManager.getProperty("thread.property"), "Thread properties cleared.");
+        Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"), "Thread properties cleared.");
     }
 
-    @Test
+    @Test()
     public void testT42_LoadThreadLocalPropertyFile() {
 
         PropertyManager.loadThreadLocalProperties("propertyfiles/threadlocal.properties");
@@ -371,13 +370,13 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
         Thread thread = new Thread(runnable);
         thread.start();
 
-        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "file", "Thread Local property not overridden.");
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "thread_file", "Thread Local property not overridden.");
     }
 
     @Test
     public void testT43_LocalPropertyOverrides() {
 
-        PropertyManager.loadProperties("propertyfiles/threadlocal.properties");
+        PropertyManager.loadProperties("propertyfiles/file.properties");
         Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
 
         Assert.assertEquals(PropertyManager.getProperty("thread.property"), "file", "Thread Local property not overridden.");
@@ -389,13 +388,36 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
     @Test
     public void testT50_GetDifferentPropertyMaps() {
 
+        PropertyManager.loadProperties("propertyfiles/file.properties");
         PropertyManager.loadThreadLocalProperties("propertyfiles/threadlocal.properties");
         PropertyManager.getGlobalProperties().put("thread.property", "global");
 
-        Assert.assertEquals(PropertyManager.getThreadLocalProperties().getProperty("thread.property"), "file");
+        Assert.assertEquals(PropertyManager.getThreadLocalProperties().getProperty("thread.property"), "thread_file");
         Assert.assertEquals(PropertyManager.getGlobalProperties().getProperty("thread.property"), "global");
-        Assert.assertNull(PropertyManager.getFileProperties().getProperty("thread.property"));
+        Assert.assertEquals(PropertyManager.getFileProperties().getProperty("thread.property"), "file");
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "thread_file");
+
+        // clear
+        PropertyManager.clearThreadlocalProperties();
+        Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
+
+        PropertyManager.clearGlobalProperties();
+        Assert.assertNull(PropertyManager.getGlobalProperties().getProperty("thread.property"));
 
         Assert.assertEquals(PropertyManager.getProperty("thread.property"), "file");
+    }
+
+    // Disabled because it will break everything
+    @Test(enabled = false)
+    public void testT51_ClearAllProperties() {
+
+        PropertyManager.loadThreadLocalProperties("propertyfiles/threadlocal.properties");
+        PropertyManager.getGlobalProperties().put("thread.property", "global");
+
+        // clear -
+        PropertyManager.clearProperties();
+        Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
+        Assert.assertNull(PropertyManager.getGlobalProperties().getProperty("thread.property"));
+        Assert.assertNull(PropertyManager.getProperty("thread.property"));
     }
 }

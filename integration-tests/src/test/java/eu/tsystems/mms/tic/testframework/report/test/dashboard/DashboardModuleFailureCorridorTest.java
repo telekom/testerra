@@ -1,6 +1,5 @@
 package eu.tsystems.mms.tic.testframework.report.test.dashboard;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -10,6 +9,7 @@ import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.*;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
+import eu.tsystems.mms.tic.testframework.testmanagement.annotation.XrayTest;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -34,6 +34,7 @@ public class DashboardModuleFailureCorridorTest extends AbstractTestDashboard {
      * This test checks the color of the label that indicates whether the failure corridor is matched or not.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testResultNumbers")
+    @XrayTest(key = "TAP2DEV-852")
     public void testT01_checkFailureCorridorMatchingForColor(ReportDirectory report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = getDashboardPage(report);
         GuiElement corridorMatch = dashboardPage.dashboardModuleFailureCorridor.failureCorridorDescription;
@@ -46,6 +47,7 @@ public class DashboardModuleFailureCorridorTest extends AbstractTestDashboard {
      * This test checks the numbers of the failure corridor.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1},dataProvider = "testResultNumbers")
+    @XrayTest(key = "TAP2DEV-424")
     public void testT02_checkFailureCorridorNumbers(ReportDirectory report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = getDashboardPage(report);
 

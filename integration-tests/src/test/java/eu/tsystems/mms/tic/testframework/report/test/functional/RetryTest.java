@@ -50,7 +50,7 @@ public class RetryTest extends AbstractReportTest {
      * @throws Exception
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "667")
+    @Fails(ticketString = "TAP2DEV-667")
     public void testT02_checkFailedRetriedTestsOnlySecondRetryIsDisplayed() throws Exception {
 
         List<String> testNames = new ArrayList<>();
@@ -94,7 +94,7 @@ public class RetryTest extends AbstractReportTest {
      * @throws Exception
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "667")
+    @Fails(ticketString = "TAP2DEV-667")
     public void testT03_checkSuccessfulRetriedTestsAreDisplayed() throws Exception {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.PASSED);
@@ -147,7 +147,7 @@ public class RetryTest extends AbstractReportTest {
      * @throws Exception
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "667")
+    @Fails(ticketString = "TAP2DEV-667")
     public void testT05_checkRetriedTestHistoryViewHasNoHistory() throws Exception {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.FAILED);

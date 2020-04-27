@@ -12,6 +12,7 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesPage;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestDependsOn;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestPassed;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
+import eu.tsystems.mms.tic.testframework.testmanagement.annotation.XrayTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
@@ -28,6 +29,7 @@ public class ClassesPageTest extends AbstractReportTest {
      * Checks whether the numbers of all testresults columns for a single testclass are correct
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @XrayTest(key = "TAP2DEV-825")
     public void testT01_checkAllNumbersOfOneTest() {
         //TODO sagu check all rows
         final String className = ReportTestUnderTestDependsOn.class.getSimpleName();
@@ -52,6 +54,7 @@ public class ClassesPageTest extends AbstractReportTest {
      *
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @XrayTest(key = "TAP2DEV-826")
     public void testT02_checkClassIndicators() {
 
         final String successClass = ReportTestUnderTestPassed.class.getSimpleName();
@@ -67,6 +70,7 @@ public class ClassesPageTest extends AbstractReportTest {
      * Checks whether the "Hide passed Tests" Checkbox on the CLASSES Page is working.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @XrayTest(key = "TAP2DEV-827")
     public void testT03_checkHidePassedFilter() {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.hidePassedTests();
@@ -78,6 +82,7 @@ public class ClassesPageTest extends AbstractReportTest {
      * Checks whether the pageflow to ClassesDetailsPage by clicking on a testundertest class works
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @XrayTest(key = "TAP2DEV-828")
     public void testT04_checkLinkToClassesDetails() {
         final String className = ReportTestUnderTestPassed.class.getSimpleName();
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
@@ -92,6 +97,7 @@ public class ClassesPageTest extends AbstractReportTest {
      * Checks whether the "INFORMATION" is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @XrayTest(key = "TAP2DEV-829")
     public void testT05_checkTesterraInformationIsDisplayed() throws ParseException {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertTesterraInformationIsDisplayed();
@@ -102,6 +108,7 @@ public class ClassesPageTest extends AbstractReportTest {
      * Checks whether the legend symbols in the class table footer are displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @XrayTest(key = "TAP2DEV-830")
     public void testT06_checkLegendSymbolsAreDisplayed() {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertAllLegendSymbolsAreDisplayed();

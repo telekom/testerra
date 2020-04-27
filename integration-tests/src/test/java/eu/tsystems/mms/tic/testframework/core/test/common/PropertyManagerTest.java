@@ -385,4 +385,17 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
         PropertyManager.getThreadLocalProperties().put("thread.property", "new");
         Assert.assertEquals(PropertyManager.getProperty("thread.property"), "new", "Thread Local property not overridden.");
     }
+
+    @Test
+    public void testT50_GetDifferentPropertyMaps() {
+
+        PropertyManager.loadThreadLocalProperties("propertyfiles/threadlocal.properties");
+        PropertyManager.getGlobalProperties().put("thread.property", "global");
+
+        Assert.assertEquals(PropertyManager.getThreadLocalProperties().getProperty("thread.property"), "file");
+        Assert.assertEquals(PropertyManager.getGlobalProperties().getProperty("thread.property"), "global");
+        Assert.assertNull(PropertyManager.getFileProperties().getProperty("thread.property"));
+
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "file");
+    }
 }

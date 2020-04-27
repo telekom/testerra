@@ -23,14 +23,14 @@ import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebTestFramedPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.junit.Assert;
 import org.testng.annotations.Test;
 
 /**
  * Created by rnhb on 19.06.2015.
- *
+ * <p>
  * Tests for correct execution of checkpage().
  * To test that checkpage() is executed, a not existing, check-annotated element is used.
- *
  */
 public class AssertTextPageTest extends AbstractTestSitesTest implements PageFactoryTest {
 
@@ -66,6 +66,18 @@ public class AssertTextPageTest extends AbstractTestSitesTest implements PageFac
     public void testT14F_assertIsNotTextPresent() {
         WebTestFramedPage page = getPage();
         page.assertIsNotTextPresent("Frame1234");
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testT15F_waitIsNotTextPresentWithDelay() {
+        WebTestFramedPage page = getPage();
+        Assert.assertTrue(page.waitForIsNotTextPresentWithDelay("Frame1234", 1));
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testT16F_waitIsNotTextDisplayedWithDelay() {
+        WebTestFramedPage page = getPage();
+        Assert.assertTrue(page.waitForIsNotTextDisplayedWithDelay("Frame1234", 1));
     }
 
     @Test

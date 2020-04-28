@@ -87,9 +87,9 @@
 :layoutcheck_displacement_threshold:            tt.layoutcheck.displacement.threshold
 :layoutcheck_intra_grouping_threshold:          tt.layoutcheck.intra.grouping.threshold
 :layoutcheck_matching_algorithm:                tt.layoutcheck.matching.algorithm
-:layoutcheck_internal_parameter1:               tt.layoutcheck.internal.parameter.1
-:layoutcheck_internal_parameter2:               tt.layoutcheck.internal.parameter.2
-:layoutcheck_internal_parameter4:               tt.layoutcheck.internal.parameter.4
+:layoutcheck_min_match_distance:                tt.layoutcheck.min.match.distance
+:layoutcheck_min_size_difference_sub_images:    tt.layoutcheck.min.size.difference.sub.images
+:layoutcheck_distance_multiple_matches:         tt.layoutcheck.distance.multiple.matches
 
 // error classes
 :layoutcheck_ignore_ambiguous_movement:         tt.layoutcheck.ignore.ambiguous.movement
@@ -101,7 +101,7 @@
 // annotated mode related
 :layoutcheck_annotated_nametemplate:            tt.layoutcheck.annotated.nametemplate
 :layoutcheck_annotationdata_nametemplate:       tt.layoutcheck.annotationdata.nametemplate
-:layoutcheck_internal_parameter3:               tt.layoutcheck.internal.parameter.3
+:layoutcheck_min_similar_movement_errors:       tt.layoutcheck.min.similar.movement.errors
 :layoutcheck_min_marked_pixels:                 tt.layoutcheck.minimum.marked.pixels
 :layoutcheck_max_marked_pixels_ratio:           tt.layoutcheck.maximum.marked.pixels.ratio
 

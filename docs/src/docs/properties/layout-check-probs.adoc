@@ -19,9 +19,9 @@ include::property-attributes.adoc[]
 | {layoutcheck_displacement_threshold}       | 5 | Displacement distance of matches that is considered as error (when distance > {layoutcheck_displacement_threshold})
 | {layoutcheck_intra_grouping_threshold}       | 5 | Threshold for grouping movement errors (errors <= {layoutcheck_intra_grouping_threshold} are grouped)
 | {layoutcheck_matching_algorithm}       | opencvtemplatematcher | algorithm to use for layout check
-| {layoutcheck_internal_parameter1}       | 5 | Max distance for grouping multiple matches as single match (distance of matches < {layoutcheck_internal_parameter1} are marked as single match)
-| {layoutcheck_internal_parameter2}       | 10 | Minimal difference in size of the reference and actual image, to consider the reference image as sub image.
-| {layoutcheck_internal_parameter4}       | 14 | Max distance between matches until a warning message about the parameter setting is logged. (matches have distance < {layoutcheck_internal_parameter4} a warning is logged)
+| {layoutcheck_min_match_distance}       | 5 | Max distance for grouping multiple matches as single match (distance of matches < {layoutcheck_min_match_distance} are marked as single match)
+| {layoutcheck_min_size_difference_sub_images}       | 10 | Minimal difference in size of the reference and actual image, to consider the reference image as sub image.
+| {layoutcheck_distance_multiple_matches}       | 14 | Max distance between matches until a warning message about the parameter setting is logged. (matches have distance < {layoutcheck_distance_multiple_matches} a warning is logged)
 | {layoutcheck_ignore_ambiguous_movement}       | - | when true ignore ambiguous movement, which means for a template, several matches were found at different positions and it is unclear to which match the template belongs to.
 | {layoutcheck_ignore_movement}       | - | when true ignore movement, which mean exactly one match was found for a template, but it is in the wrong position.
 | {layoutcheck_ignore_group_movement}       | false | when true ignore group movement, which means for a set of templates, displacement errors have been found which have the same displacement vector.
@@ -30,7 +30,7 @@ include::property-attributes.adoc[]
 
 | {layoutcheck_annotated_nametemplate}       | - | -
 | {layoutcheck_annotationdata_nametemplate}       | - | -
-| {layoutcheck_internal_parameter3}       | - | -
+| {layoutcheck_min_similar_movement_errors}       | - | -
 | {layoutcheck_min_marked_pixels}       | - | -
 | {layoutcheck_max_marked_pixels_ratio}       | - | -
 

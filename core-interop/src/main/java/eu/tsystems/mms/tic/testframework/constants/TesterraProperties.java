@@ -251,19 +251,19 @@ public final class TesterraProperties {
     /**
      * minimalDistanceBetweenMatches
      */
-    public static final String LAYOUTCHECK_INTERNAL_PARAMETER_1 = "tt.layoutcheck.internal.parameter.1";
+    public static final String LAYOUTCHECK_MIN_MATCH_DISTANCE = "tt.layoutcheck.min.match.distance";
     /**
      * minimalSizeDifferenceOfSubImages
      */
-    public static final String LAYOUTCHECK_INTERNAL_PARAMETER_2 = "tt.layoutcheck.internal.parameter.2";
+    public static final String LAYOUTCHECK_MIN_SIZE_DIFFERENCE_SUB_IMAGES = "tt.layoutcheck.min.size.difference.sub.images";
     /**
      * minimumSimilarMovementErrorsForDisplacementCorrection
      */
-    public static final String LAYOUTCHECK_INTERNAL_PARAMETER_3 = "tt.layoutcheck.internal.parameter.3";
+    public static final String LAYOUTCHECK_MIN_SIMULAR_MOVEMENT_ERRORS = "tt.layoutcheck.min.similar.movement.errors";
     /**
      * distanceBetweenMultipleMatchesToProduceWarning
      */
-    public static final String LAYOUTCHECK_INTERNAL_PARAMETER_4 = "tt.layoutcheck.internal.parameter.4";
+    public static final String LAYOUTCHECK_DISTANCE_MULTIPLE_MATCHES = "tt.layoutcheck.distance.multiple.matches";
     public static final String LAYOUTCHECK_IGNORE_AMBIGUOUS_MOVEMENT = "tt.layoutcheck.ignore.ambiguous.movement";
     public static final String LAYOUTCHECK_IGNORE_MOVEMENT = "tt.layoutcheck.ignore.movement";
     public static final String LAYOUTCHECK_IGNORE_GROUP_MOVEMENT = "tt.layoutcheck.ignore.group.movement";

@@ -70,7 +70,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
 
     /**
      * Tests the desired pie chart segment and its displayed bars for the correct test method names.
-     * It runs once for every test status in every report. 48 times in total.
+     * It runs once for every test status in the second report.
      */
     @Fails(ticketString = "TAP2DEV-667")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})

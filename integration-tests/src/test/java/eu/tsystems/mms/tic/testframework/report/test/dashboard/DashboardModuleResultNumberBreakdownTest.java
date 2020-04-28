@@ -7,13 +7,11 @@ import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractTestReportNumb
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTestDashboard;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
-import eu.tsystems.mms.tic.testframework.report.model.*;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.testmanagement.annotation.XrayTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.text.DateFormat;
@@ -33,7 +31,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     @XrayTest(key = "TAP2DEV-855")
-    public void testT01_checkTestDuration() {
+    public void testT01_checkTestDuration(){
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_1);
         String duration = dashboardPage.dashboardModuleTestResultNumberBreakdown.testDurationString.getText();
         Assert.assertTrue(duration.contains("s") && duration.contains("ms"), "Time Format of test duration is correct");
@@ -113,86 +111,22 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
     /**
      * This test tests the passed percentages of the current and the last report.
      */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testResultNumbers")
     @XrayTest(key = "TAP2DEV-858")
-    public void testT04_reportPercentages() throws Exception {
-        TestReportOneNumbers testReportOneNumbers = new TestReportOneNumbers();
-        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), testReportOneNumbers);
-    }
-
-    /**
-     * This test tests the passed percentages of the current and the last report.
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    public void testT05_reportPercentages() throws Exception {
-        TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
-        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()), testReportTwoNumbers);
-    }
-
-    /**
-     * This test tests the passed percentages of the current and the last report.
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
-    public void testT06_reportPercentages() throws Exception {
-        TestReportThreeNumbers testReportThreeNumbers = new TestReportThreeNumbers();
-        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_3.getReportDirectory()), testReportThreeNumbers);
-    }
-
-    /**
-     * This test tests the passed percentages of the current and the last report.
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
-    public void testT07_reportPercentages() throws Exception {
-        TestReportFourNumbers testReportFourNumbers = new TestReportFourNumbers();
-        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.getReportDirectory()), testReportFourNumbers);
-    }
-
-    /**
-     * This test tests the passed percentages of the current and the last reportFilter.
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER5})
-    public void testT08_reportPercentages() throws Exception {
-        TestReportFiveNumbers testReportFiveNumbers = new TestReportFiveNumbers();
-        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_5.getReportDirectory()), testReportFiveNumbers);
-    }
-
-    /**
-     * This  test tests the passed percentages of the current and the last reportFilter.
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    public void testT09_reportPercentages() throws Exception {
-        TestReportSixNumbers testReportSixNumbers = new TestReportSixNumbers();
-        assertReportPercentages(PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()), testReportSixNumbers);
+    public void testT04_testReportPercentages(ReportDirectory report, AbstractTestReportNumbers numbers) throws Exception {
+        DashboardPage dashboardPage = getDashboardPage(report);
+        final String expectedPercentage = numbers.getPercentage();
+        final String actualPercentage = dashboardPage.dashboardModuleTestResultNumberBreakdown.testPercentageString.getText();
+        NonFunctionalAssert.assertTrue(actualPercentage.contains(expectedPercentage), "reportFilter percentage is correct. expected: " + expectedPercentage + " but found " + actualPercentage);
     }
 
     /**
      * This test tests the numbers and deltas of the different status.
      */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1},dataProvider = "testResultNumbers")
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testResultNumbers")
     @XrayTest(key = "TAP2DEV-859")
-    public void testT04_checkTestNumbers(String report, AbstractTestReportNumbers numbers) {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(report));
+    public void testT05_checkTestNumbers(ReportDirectory report, AbstractTestReportNumbers numbers) {
+        DashboardPage dashboardPage = getDashboardPage(report);
         dashboardPage.dashboardModuleTestResultNumberBreakdown.assertTestNumbers(numbers);
-    }
-
-    @DataProvider(parallel = true)
-    public Object[][] testResultNumbers(){
-        Object[][] result = new Object[][]{
-                new Object[]{ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory(),new TestReportOneNumbers()},
-                new Object[]{ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory(),new TestReportTwoNumbers()},
-                new Object[]{ReportDirectory.REPORT_DIRECTORY_3.getReportDirectory(),new TestReportThreeNumbers()},
-                new Object[]{ReportDirectory.REPORT_DIRECTORY_4.getReportDirectory(),new TestReportFourNumbers()},
-                new Object[]{ReportDirectory.REPORT_DIRECTORY_5.getReportDirectory(),new TestReportFiveNumbers()},
-                new Object[]{ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory(),new TestReportSixNumbers()}
-        };
-        return result;
-    }
-
-
-    private void assertReportPercentages(String reportDirectory, TestNumberHelper testNumberHelper) throws Exception {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), reportDirectory);
-        final String expectedPercentage = testNumberHelper.getPercentage();
-        final String actualPercentage = dashboardPage.dashboardModuleTestResultNumberBreakdown.testPercentageString.getText();
-        NonFunctionalAssert.assertTrue(actualPercentage.contains(expectedPercentage), "reportFilter percentage is correct. expected: " + expectedPercentage + " but found " + actualPercentage);
     }
 }

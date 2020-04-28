@@ -21,7 +21,7 @@ public class GraphBasedTemplateMatcher extends TemplateMatcher {
 
     private double minimalDistanceBetweenMatches = PropertyManager.getIntProperty(
             TesterraProperties.LAYOUTCHECK_MIN_MATCH_DISTANCE,
-            DefaultParameter.LAYOUTCHECK_INTERNAL_PARAMETER_1);
+            DefaultParameter.LAYOUTCHECK_MIN_MATCH_DISTANCE);
 
     private final TemplateMatchingAlgorithm templateMatchingAlgorithm;
 

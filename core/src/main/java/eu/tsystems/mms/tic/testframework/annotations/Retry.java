@@ -21,7 +21,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Marks methods to be not be retried if a failure occurs.
+ * Marks methods to be retried if a failure occurs.
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Retry {

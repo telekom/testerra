@@ -1,0 +1,113 @@
+= Annotations
+include::../properties/property-attributes.adoc[]
+
+The test class and test methods can be marked by several provided Annotations, which are described in the following paragraphs.
+
+== @Fails
+This annotation marks a test method as failing, counting it as passed in the report and showing the result in the section `Expected Failed`.
+Additional information like ticketId, ticketString and description can be provided and are shown in the report as well.
+However, passed tests will be correctly allocated to the corresponding section with an additional information about the invalidity of the `@Fails` annotation.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+# activate watchdog, default = true
+environment=test
+country=de
+
+----
+
+[source, java]
+----
+@Test
+@Fails(ticketString = "TST-742", description = "Failing for 'test' and coutry 'de'", validFor = {"environment=test", "country=de"})
+public void testExpectedFailed() {
+    Assert.fail();
+}
+----
+
+The test fails and is shown in the section `ExpectedFailed` because the validFor check is true. The property `environment` has the value 'test' and the property `country` has the value 'de'.
+Additionally, the `description` and the `ticketString` are shown in the report. For other values of environment and country the test will be shown as `Failed`.
+
+[source, java]
+----
+@Test
+@Fails(ticketId = 742, description = "Failed Login", intoReport = true)
+public void testExpectedFailed() {
+    Assert.fail();
+}
+----
+With the `intoReport` attribute you can control the display of failed tests. As its true the failing test isn't shown separately as `Expected Failed` but as `Failed`.
+
+[source, java]
+----
+@Test
+@Fails(ticketId = 742, description = "Failed Login", intoReport = true)
+public void testExpectedFailed() {
+    Assert.assertTrue(true);
+}
+----
+As the test passes it is shown in the section `Passed` in the report with the notice of an invalid `@Fails` annotation.
+
+== @DismissDryRun
+When this is annotated at a method it will be executed completely regardless of the value of {dryrun}.
+
+== @InDevelopment
+This marks a test method as in process, which is characteristically shown with the text `In Development` in the report. Customization is possible with the two attributes name and color in the annotation.
+
+* name: change the shown text in the report. Default is `In Development`
+* color: change the background color of the shown text. Default is `#a7a5a5`. Values need to be valid for html colors:
+** name of the color, e.g. red
+** RGB values, e.g. rgb(255, 236, 139)
+** RGBA values, e.g. rgba(252, 156, 249, 0.75)
+** HSL values, e.g. hsl(217, 97%, 57%)
+** Hex values, e.g. #57c0ff
+
+In conjunction with an activated <<Test Method Intercept Worker, OmitInDevelopmentMethodInterceptor>> (activated with {execution_omit_indevelopment} = true, default = false) methods with <<InDevelopment, @InDevelopment>> will be excluded from execution completely.
+
+== @New
+This marks a test method as `New`, which is shown with this text in the report. Customization is possible with two attributes name and color in the annotation.
+
+* name: change the shown text in the report. Default is `New`
+* color: change the background color of the shown text. Default is `cadetblue`. Values need to be valid for html colors.
+See <<InDevelopment, @InDevelopment>> for explanation.
+
+== @ReadyForApproval
+This marks a test method as `Ready For Approval`, which is characteristically shown with this text the report. Customization is possible with the two attributes name and color in the annotation.
+
+* name: change the shown text in the report. Default is `Ready For Approval`
+* color: change the background color of the shown text. Default is `indianred`. Values need to be valid for html colors.
+See <<InDevelopment, @InDevelopment>> for explanation.
+
+== @SupportMethod
+This marks a test method as `Support Method`, which is characteristically shown with this text the report. Retests won't skip these methods if previously passed. Customization is possible with the two attributes name and color in the annotation.
+
+* name: change the shown text in the report. Default is `Support Method`
+* color: change the background color of the shown text. Default is `#848282`. Values need to be valid for html colors.
+See <<InDevelopment, @InDevelopment>> for explanation.
+
+== @NoRetry
+This marks a test method as `No Retry`, which is characteristically shown with this text the report. Retests won't retry these methods if previously failed. Customization is possible with the two attributes name and color in the annotation.
+
+* name: change the shown text in the report. Default is `No Retry`
+* color: change the background color of the shown text. Default is `grey`. Values need to be valid for html colors.
+See <<InDevelopment, @InDevelopment>> for explanation.
+
+== @Retry
+This annotation allows you to change the default max number of retries. Retried methods are shown in the section `Retried` of the report.
+
+See <<Retry analyzer, RetryAnalyzer>> for further Information.
+
+== @InfoMethod
+Methods marked with this annotation are shown in the section `Info` of the report.
+
+== @SkipMetrics
+This annotation avoid processing metrics checks on this method.
+
+== @TestContext
+With this annotation you can set the TestContext for the given test class. There two attributes for adjustments.
+
+* name: name of the Context, default = ""
+* mode: TestContext.Mode.ONE_FOR_ALL or TestContext.Mode.ONE_FOR_EACH, default = TestContext.Mode.ONE_FOR_ALL
+
+The Executed tests are then shown in the classes overview of the report as a entry labeled with `name` from <<TestContext, @TestContext>>.

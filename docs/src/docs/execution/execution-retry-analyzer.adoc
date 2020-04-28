@@ -4,9 +4,9 @@ include::../properties/property-attributes.adoc[]
 == Common
 Testerra provides an adjustable mechanism to automatically retry failed tests.
 
-The default retry count is `1`. Each failed method is executed exactly one more time.
+The default retry count is `1`. Each failed method is executed exactly one more time, when matching the <<Specific retries, retry criteria>>.
 
-You can change the default by the following property.
+You can change the default with the following property.
 
 .test.properties
 [source, properties, subs="attributes"]

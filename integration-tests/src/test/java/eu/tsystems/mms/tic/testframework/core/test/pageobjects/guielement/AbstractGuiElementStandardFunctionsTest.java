@@ -270,6 +270,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         }
     }
 
+
     @Test
     public void test_GuiElement_findPrepared() {
         final Locate locator = Locate.prepare("//*[@id='%s']");
@@ -304,6 +305,13 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         Assert.assertNotNull(webElement);
     }
 
+    @Test
+    public void testT26a_GuiElement_locateByLinkText() {
+
+        final GuiElement linkOpenAgain = getGuiElementBy(Locate.by().linkText("Open again"));
+        Assert.assertNotNull(linkOpenAgain.getWebElement());
+    }
+
     /**
      * Test if GuiElement.find() works for an existing link found by its link text
      */
@@ -312,6 +320,14 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         WebElement webElement = getAnyElementByPartialLinkText().getWebElement();
         Assert.assertNotNull(webElement);
     }
+
+    @Test
+    public void test27a_GuiElement_locateByPartialLinkText() {
+
+        final GuiElement linkOpenAgain = getGuiElementBy(Locate.by().partialLinkText("again"));
+        Assert.assertNotNull(linkOpenAgain.getWebElement());
+    }
+
 
     /**
      * Test if GuiElement.find() works for a named element

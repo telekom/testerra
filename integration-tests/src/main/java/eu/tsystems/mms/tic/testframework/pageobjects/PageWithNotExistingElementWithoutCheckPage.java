@@ -15,16 +15,22 @@
  *     Peter Lehmann
  *     pele
  */
-package eu.tsystems.mms.tic.testframework.report;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.interop.VideoCollector;
-import eu.tsystems.mms.tic.testframework.report.model.context.Video;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 
-import java.util.List;
+public class PageWithNotExistingElementWithoutCheckPage extends Page {
 
-public class DummyVideoGrabber implements VideoCollector {
-    @Override
-    public List<Video> getVideos() {
-        return null;
+    @Check
+    private GuiElement notExistingElement = new GuiElement(this.getWebDriver(), By.id("NOT_EXISTING_WUWUWUWU"));
+
+    /**
+     * Constructor for existing sessions.
+     *
+     * @param driver .
+     */
+    public PageWithNotExistingElementWithoutCheckPage(WebDriver driver) {
+        super(driver);
     }
 }

@@ -19,7 +19,6 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.BasePage2016;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithExistingElement;
@@ -31,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.Responsi
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.ResponsiveWebTestPage_601px_800px;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.ResponsiveWebTestPage_801px_1234px;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.ResponsiveWebTestPage_Min_600px;
+import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -61,6 +61,7 @@ public class PageFactoryTest extends AbstractTestSitesTest {
     public void after() {
         WebDriverManager.setBaseURL(baseURL);
         WebDriverManager.config().closeWindowsAfterTestMethod = true;
+        PageFactory.setErrorHandler(null);
     }
 
     @Test
@@ -129,6 +130,22 @@ public class PageFactoryTest extends AbstractTestSitesTest {
 
         final PageWithExistingElement pageWithExistingElement = PageFactory.create(PageWithExistingElement.class, driver);
         final PageWithNotExistingElementWithoutCheckPage pageWithNotExistingElement = PageFactory.checkNot(PageWithNotExistingElementWithoutCheckPage.class, driver);
+    }
+
+    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = ".*?testT09_SetErrorHandler-ErrorHandler.*?")
+    public void testT09_SetErrorHandler() {
+
+        WebDriver driver = WebDriverManager.getWebDriver();
+        visitTestPage(driver, TestPage.INPUT_TEST_PAGE);
+
+        PageFactory.setErrorHandler(new PageFactory.ErrorHandler() {
+            @Override
+            public void run(WebDriver driver, Throwable throwableFromPageFactory) {
+                throw new RuntimeException("testT09_SetErrorHandler-ErrorHandler");
+            }
+        });
+
+        final PageWithNotExistingElementWithoutCheckPage pageWithExistingElement = PageFactory.create(PageWithNotExistingElementWithoutCheckPage.class, driver);
     }
 
 }

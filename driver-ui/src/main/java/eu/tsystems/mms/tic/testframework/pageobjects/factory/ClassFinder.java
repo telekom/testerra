@@ -17,13 +17,13 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -33,7 +33,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 final class ClassFinder {
@@ -54,6 +58,10 @@ final class ClassFinder {
 
     private static final String PROJECT_PACKAGE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE,
             TesterraCommons.DEFAULT_PACKAGE_NAME);
+
+    private ClassFinder() {
+
+    }
 
     private static class Caches {
 
@@ -145,13 +153,11 @@ final class ClassFinder {
             if (matchesOurAnyOfPatterns(resPart)) {
                 // prefixed classes with existing and matching res part
                 prioritizedClassInfos.getPrefixedClasses().add(new ResolutionClassInfo<>(subClass, resPart));
-            }
-            else if (StringUtils.isStringEmpty(resPart)) {
+            } else if (StringUtils.isStringEmpty(resPart)) {
                 // prefixed classes without res part
                 prioritizedClassInfos.setPrefixedBaseClass(subClass);
             }
-        }
-        else if (classname.startsWith(baseClassName)) {
+        } else if (classname.startsWith(baseClassName)) {
             String resPart = classname.replace(baseClassName, "");
             if (matchesOurAnyOfPatterns(resPart)) {
                 // non-prefixed classes with existing and matching res part
@@ -164,11 +170,11 @@ final class ClassFinder {
         if (StringUtils.isStringEmpty(resPartOfClassName)) {
             return false;
         }
-        if (    resPartOfClassName.matches(PATTERN_LOW) ||
+        if (resPartOfClassName.matches(PATTERN_LOW) ||
                 resPartOfClassName.matches(PATTERN_MID) ||
                 resPartOfClassName.matches(PATTERN_HI) ||
                 resPartOfClassName.matches(PATTERN_RES)
-                ) {
+        ) {
             return true;
         }
         return false;
@@ -252,7 +258,7 @@ final class ClassFinder {
 
         // base class
         if (bestMatchingClass == null) {
-            if (prioritizedClassInfos.baseClass!= null) {
+            if (prioritizedClassInfos.baseClass != null) {
                 bestMatchingClass = (Class<T>) prioritizedClassInfos.baseClass;
             }
         }
@@ -278,6 +284,7 @@ final class ClassFinder {
     }
 
     private static class PrioritizedClassInfos<T extends Page> {
+
         List<ResolutionClassInfo<T>> prefixedClasses = new LinkedList<>();
         Class<T> prefixedBaseClass;
         List<ResolutionClassInfo<T>> nonPrefixedClasses = new LinkedList<>();
@@ -289,10 +296,6 @@ final class ClassFinder {
 
         public List<ResolutionClassInfo<T>> getNonPrefixedClasses() {
             return nonPrefixedClasses;
-        }
-
-        public Class<T> getBaseClass() {
-            return baseClass;
         }
 
         public void setBaseClass(Class<T> baseClass) {
@@ -334,6 +337,7 @@ final class ClassFinder {
     }
 
     private static class ResolutionClassInfo<T extends Page> {
+
         int resLowerLimit = -1;
         int resUpperLimit = -1;
 
@@ -354,8 +358,7 @@ final class ClassFinder {
             String rightValue = split[2];
             if (KEYWORD_RES.equals(leftValue)) {
                 throw new NotYetImplementedException();
-            }
-            else {
+            } else {
                 if (!KEYWORD_MIN.equals(leftValue)) {
                     resLowerLimit = Integer.valueOf(leftValue.replace(KEYWORD_PIXEL, ""));
                 }

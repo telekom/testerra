@@ -4,8 +4,11 @@ include::../properties/property-attributes.adoc[]
 The test class and test methods can be marked by several provided Annotations, which are described in the following paragraphs.
 
 == @Fails
-This annotation marks a test method as failing, counting it as passed in the report and showing the result in the section `Expected Failed`.
-Additional information like ticketId, ticketString and description can be provided and are shown in the report as well.
+For known issues on the SUT this annotation is used to mark a test method as failing, showing the result in the section `Expected Failed` in case of failure.
+
+NOTE: The result is technically still a failure and only visually elevated to facilitate the evaluation of the report.
+
+Additional information like `ticketId`, `ticketString` and `description` can be provided and are shown in the report as well.
 However, passed tests will be correctly allocated to the corresponding section with an additional information about the invalidity of the `@Fails` annotation.
 
 .test.properties
@@ -20,7 +23,7 @@ country=de
 [source, java]
 ----
 @Test
-@Fails(ticketString = "TST-742", description = "Failing for 'test' and coutry 'de'", validFor = {"environment=test", "country=de"})
+@Fails(ticketString = "TST-742", description = "Failing for environment 'test' and coutry 'de'", validFor = {"environment=test", "country=de"})
 public void testExpectedFailed() {
     Assert.fail();
 }
@@ -87,7 +90,7 @@ This marks a test method as `Support Method`, which is characteristically shown 
 See <<InDevelopment, @InDevelopment>> for explanation.
 
 == @NoRetry
-This marks a test method as `No Retry`, which is characteristically shown with this text the report. Retests won't retry these methods if previously failed. Customization is possible with the two attributes name and color in the annotation.
+This marks a test method as `No Retry`, which is characteristically shown with this text the report. <<Retry analyzer, RetryAnalyzers>> won't retry these methods if previously failed. Customization is possible with the two attributes name and color in the annotation.
 
 * name: change the shown text in the report. Default is `No Retry`
 * color: change the background color of the shown text. Default is `grey`. Values need to be valid for html colors.
@@ -107,7 +110,7 @@ This annotation avoid processing metrics checks on this method.
 == @TestContext
 With this annotation you can set the TestContext for the given test class. There two attributes for adjustments.
 
-* name: name of the Context, default = ""
-* mode: TestContext.Mode.ONE_FOR_ALL or TestContext.Mode.ONE_FOR_EACH, default = TestContext.Mode.ONE_FOR_ALL
+* name: name of the Context, default = `""`
+* mode: TestContext.Mode.ONE_FOR_ALL or TestContext.Mode.ONE_FOR_EACH, default = `TestContext.Mode.ONE_FOR_ALL`
 
 The Executed tests are then shown in the classes overview of the report as a entry labeled with `name` from <<TestContext, @TestContext>>.

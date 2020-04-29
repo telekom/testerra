@@ -18,7 +18,7 @@ package eu.tsystems.mms.tic.testframework.core.test.events;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.test.BasicEventListener;
+import eu.tsystems.mms.tic.testframework.core.test.events.implementation.BasicEventListener;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.testng.Assert;
 import org.testng.annotations.Test;

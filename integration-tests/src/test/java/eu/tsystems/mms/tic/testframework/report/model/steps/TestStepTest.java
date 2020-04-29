@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.model.steps;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.pageobjects.WebTestPage;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.AfterClass;

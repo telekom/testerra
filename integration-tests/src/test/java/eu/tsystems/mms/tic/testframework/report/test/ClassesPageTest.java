@@ -1,14 +1,13 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjetcs.ClassesDetailsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjetcs.ClassesPage;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestDependsOn;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestPassed;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;

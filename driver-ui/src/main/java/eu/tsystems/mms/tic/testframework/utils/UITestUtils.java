@@ -199,7 +199,7 @@ public class UITestUtils {
             /*
             only add if we can NOT find any screenshots for this error context
              */
-            long count = methodContext.screenshots.stream().filter(s -> s.errorContextId == methodContext.id).count();
+            long count = methodContext.screenshots.stream().filter(s -> s.errorContextId.equals(methodContext.id)).count();
 
             if (count == 0) {
                 methodContext.screenshots.addAll(screenshots);

@@ -240,7 +240,8 @@ public final class ReportUtils {
                 "style/font/PWFreeArrows.ttf",
 
                 //logo
-                //"logo.png"
+                "Testerra_Logo_0512px.png",
+                "Testerra_favicon.png"
         };
 
         for (String resource : resources) {

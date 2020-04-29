@@ -8,6 +8,9 @@ dependencies {
     // </XML
 
     testCompile 'org.seleniumhq.selenium:selenium-server:' + seleniumVersion
+    // https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock
+    testCompile "com.github.tomakehurst:wiremock-jre8:2.26.3"
+
 }
 
 test {

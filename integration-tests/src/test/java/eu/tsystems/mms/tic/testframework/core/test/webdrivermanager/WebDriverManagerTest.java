@@ -77,6 +77,7 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
         final WebDriver exclusiveDriverActual = WebDriverManager.getWebDriver(sessionId);
 
         Assert.assertEquals(exclusiveDriver, exclusiveDriverActual, "Got the same WebDriver!");
+        WebDriverManager.shutdownExclusiveSession(sessionId);
     }
 
     @Test

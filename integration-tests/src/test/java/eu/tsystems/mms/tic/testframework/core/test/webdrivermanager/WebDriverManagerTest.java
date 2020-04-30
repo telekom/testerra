@@ -98,4 +98,16 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
         Assert.assertFalse(globalExtraCapabilities.containsKey("foo"));
     }
 
+    @Test
+    public void testT05_ManageThreadCapabilities() {
+
+        WebDriverManager.addThreadCapability("foo", "bar");
+
+        Assert.assertTrue(WebDriverManager.getThreadCapabilities().containsKey("foo"));
+        Assert.assertEquals(WebDriverManager.getThreadCapabilities().get("foo"), "bar");
+
+        WebDriver driver = WebDriverManager.getWebDriver();
+        WebDriverManager.getThreadCapabilities().clear();
+    }
+
 }

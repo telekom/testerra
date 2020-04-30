@@ -31,6 +31,10 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 
     private static final Map<Pattern, Capabilities> ENDPOINT_CAPABILITIES = new LinkedHashMap<>();
 
+    private DesktopWebDriverCapabilities() {
+        
+    }
+
     static void addContextCapabilities(DesiredCapabilities baseCapabilities, DesktopWebDriverRequest desktopWebDriverRequest) {
         /*
         priority:

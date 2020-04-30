@@ -26,4 +26,10 @@
             <package name="eu.tsystems.mms.tic.testframework.core.test.layoutcheck"/>
         </packages>
     </test>
+
+    <test name="GuiElement Shadow Root Feature" parallel="methods">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.GuiElementShadowRootTest"/>
+        </classes>
+    </test>
 </suite>

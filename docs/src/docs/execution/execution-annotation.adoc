@@ -36,9 +36,6 @@ See <<New, @New>> for explanation.
 == @InfoMethod
 Methods marked with this annotation are shown in the section `Info` of the report.
 
-== @SkipMetrics
-This annotation avoid processing metrics checks on this method.
-
 == @TestContext
 With this annotation you can set the TestContext for the given test class. There two attributes for adjustments.
 

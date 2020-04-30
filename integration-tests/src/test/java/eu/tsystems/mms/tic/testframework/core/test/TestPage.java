@@ -28,7 +28,8 @@ public enum TestPage {
     DRAG_AND_DROP_OVER_FRAMES("DragAndDropFrame/index.html", INPUT_TEST_PAGE),
     MULTISELECT("Multiselect/index.html", INPUT_TEST_PAGE),
     LAYOUT("Layout/index.html", INPUT_TEST_PAGE),
-    LIST("GuiElementList/index.html", INPUT_TEST_PAGE)
+    LIST("GuiElementList/index.html", INPUT_TEST_PAGE),
+    SHADOW_ROOT("GuiElementShadowRoot/shadow_root.html", INPUT_TEST_PAGE)
     ;
 
     private String path;

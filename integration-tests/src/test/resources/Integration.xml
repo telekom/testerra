@@ -10,6 +10,8 @@
         <packages>
             <package name="eu.tsystems.mms.tic.testframework.core.test.common"/>
             <package name="eu.tsystems.mms.tic.testframework.core.test.testdata"/>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.l10n"/>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.reporting"/>
         </packages>
     </test>
 
@@ -50,11 +52,11 @@
     <test name="Sequential tests" parallel="false">
         <groups>
             <run>
-                <include name="SEQUENTIAL" />
+                <include name="SEQUENTIAL"/>
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.utils"></package>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.utils"/>
         </packages>
     </test>
 </suite>

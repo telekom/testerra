@@ -581,13 +581,13 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     }
 
     @Test
-    public void testT55_GuiElement_assertAttributIsPresent() {
+    public void testT55_GuiElement_assertAttributeIsPresent() {
         GuiElement element = getDisplayedElement();
         element.asserts().assertAttributeIsPresent("href");
     }
 
     @Test(expectedExceptions = {AssertionError.class})
-    public void testT56N_GuiElement_assertAttributIsPresent() {
+    public void testT56N_GuiElement_assertAttributeIsPresent() {
         GuiElement element = getDisplayedElement();
         element.asserts().assertAttributeIsPresent("label");
     }
@@ -909,7 +909,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     }
 
     @Test
-    public void test_pageChangeOnAnchorClick() {
+    public void testT99_pageChangeOnAnchorClick() {
 
         final GuiElement elementToClick = getGuiElementBy(Locate.by().qa("action/pageChangeAnchor"));
         elementToClick.click();

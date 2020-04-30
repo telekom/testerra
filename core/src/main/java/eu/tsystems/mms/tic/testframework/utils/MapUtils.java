@@ -23,6 +23,10 @@ import java.util.Properties;
 
 public final class MapUtils {
 
+    private MapUtils() {
+
+    }
+
     public static Map<String, String> propertiesToMap(Properties properties) {
         Map<String, String> out = new HashMap<>();
         if (properties != null) {

@@ -78,6 +78,10 @@ public class UITestUtils {
      */
     private static final DateFormat FILES_DATE_FORMAT = new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss");
 
+    private UITestUtils() {
+
+    }
+
     public static Screenshot takeScreenshot(
             final WebDriver driver,
             boolean intoReport

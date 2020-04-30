@@ -22,6 +22,10 @@ import java.math.BigDecimal;
 
 public final class AssertUtils {
 
+    private AssertUtils() {
+
+    }
+
     public static void assertContains(String actual, String expected) {
         assertContains(actual, expected, "expected");
     }

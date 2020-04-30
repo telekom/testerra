@@ -5,6 +5,7 @@ include::../properties/property-attributes.adoc[]
 Testerra provides an adjustable mechanism to automatically retry failed tests.
 
 The default retry count is `1`. Each failed method is executed exactly one more time, when matching the <<Specific retries, retry criteria>>.
+Retried methods are shown in the section `Retried` of the report.
 
 You can change the default with the following property.
 
@@ -16,6 +17,7 @@ You can change the default with the following property.
 
 NOTE: The retry mechanism always ignores testcase with a valid Fails annotation.
 
+[#Retry]
 == Specific retry count for test methods
 
 You can change the retry count for specific test methods.
@@ -94,3 +96,15 @@ public class AbstractTest extends TesterraTest {
 
 }
 ----
+
+[#NoRetry]
+== @NoRetry
+This marks a test method as `No Retry`, which is characteristically shown with this text the report. RetryAnalyzers won't retry these methods if previously failed. Customization is possible with the two attributes name and color in the annotation.
+
+* name: change the shown text in the report. Default is `No Retry`
+* color: change the background color of the shown text. Default is `grey`. Values need to be valid for html colors.
+** name of the color, e.g. red
+** RGB values, e.g. rgb(255, 236, 139)
+** RGBA values, e.g. rgba(252, 156, 249, 0.75)
+** HSL values, e.g. hsl(217, 97%, 57%)
+** Hex values, e.g. #57c0ff

@@ -239,6 +239,7 @@ public class LogMethodInterceptor extends TestMethodInterceptWorker {
 
 As you can see in the example code snippet, Testerra will you give access to the current method list and the current test context as well as to a already instantiated logger.
 
+[#InDevelopment]
 == @InDevelopment
 This aforementioned annotations is further adjustable with the two attributes name and color.
 

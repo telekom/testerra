@@ -49,6 +49,8 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
 
         // create new options
         final ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--no-sandbox");
+        chromeOptions.addArguments("--disable-dev-shm-usage");
 
         if (browser.equalsIgnoreCase(Browsers.chromeHeadless)) {
             chromeOptions.setHeadless(true);

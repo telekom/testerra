@@ -63,7 +63,7 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
         Assert.assertFalse(WebDriverManager.hasSessionsActiveInThisThread(), "WebDriver Session active in this thread.");
 
         // introduce it.
-        WebDriverManager.introduceDrivers(driver);
+        WebDriverManager.introduceWebDriver(driver);
 
         // assert that webdrivermanager does know about the session.
         Assert.assertTrue(WebDriverManager.hasSessionsActiveInThisThread(), "WebDriver Session active in this thread.");

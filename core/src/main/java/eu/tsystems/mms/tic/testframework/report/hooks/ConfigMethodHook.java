@@ -28,6 +28,10 @@ public final class ConfigMethodHook extends Hook {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigMethodHook.class);
 
+    private ConfigMethodHook() {
+        
+    }
+
     public static void runHook(IConfigureCallBack callBack, ITestResult testResult) {
 
         final ITestNGMethod testNGMethod = testResult.getMethod();

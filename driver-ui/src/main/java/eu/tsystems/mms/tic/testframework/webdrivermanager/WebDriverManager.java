@@ -217,26 +217,6 @@ public final class WebDriverManager {
         WebDriverSessionsAfterMethodWorker.register(webDriverSessionHandler);
     }
 
-
-    /**
-     * Introduce own Webdriver and Selenium drivers.
-     *
-     * @param sessionKey .
-     * @param driver     .
-     */
-    public static void introduceDrivers(final String sessionKey, final WebDriver driver) {
-        introduceWebDriver(sessionKey, driver);
-    }
-
-    /**
-     * Introduce own Webdriver and Selenium drivers.
-     *
-     * @param driver .
-     */
-    public static void introduceDrivers(final WebDriver driver) {
-        introduceDrivers(DEFAULT_SESSION_KEY, driver);
-    }
-
     /**
      * Introduce an own webdriver object. Selenium session will be released in this case.
      *

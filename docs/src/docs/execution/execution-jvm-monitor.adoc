@@ -1,0 +1,21 @@
+= JVMMonitor
+include::../properties/property-attributes.adoc[]
+
+The `JVMMonitor` is the Observer of the hardware utilization for memory and cpu.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+# activate the Monitoring, default = true
+{jvm_monitor_enabled} = true
+----
+
+== How does it work?
+With the start of a test while using the `TesterraListener` the latter implicitly starts the `JVMMonitor`.
+Thus a concurrent thread for monitoring purposes only is initiated next to the actual test execution. Every ten seconds the following parameters are logged
+
+* JVM Memory usage      in MB
+* JVM Memory reserved   in MB
+* JVM CPU usage         in per cent
+
+The `JVMMonitor` is automatically terminated after the test execution and a graph showing the memory consumption is put into the report.

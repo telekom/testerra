@@ -28,11 +28,11 @@ include::property-attributes.adoc[]
 | {layoutcheck_ignore_missing_elements}       | - | when true ignore missing elements, which mean no match was found for a template.
 | {layoutcheck_ignore_ambiguous_match}       | - | when true ignore ambiguous match, which means several templates have been matched to this position, but only one template can be correct.
 
-| {layoutcheck_annotated_nametemplate}       | - | -
-| {layoutcheck_annotationdata_nametemplate}       | - | -
-| {layoutcheck_min_similar_movement_errors}       | - | -
-| {layoutcheck_min_marked_pixels}       | - | -
-| {layoutcheck_max_marked_pixels_ratio}       | - | -
+//| {layoutcheck_annotated_nametemplate}       | - | -
+//| {layoutcheck_annotationdata_nametemplate}       | - | -
+//| {layoutcheck_min_similar_movement_errors}       | - | -
+//| {layoutcheck_min_marked_pixels}       | - | -
+//| {layoutcheck_max_marked_pixels_ratio}       | - | -
 
 | {layoutcheck_error_detector_min_line_length}       | 25 |  Minimum length of a found line to be considered relevant in the LineDetection
 //| {layoutcheck_error_detector_min_edge_strength}       | 5 |  Minimum strength of an edge to be considered relevant in the LineDetection

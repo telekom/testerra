@@ -118,6 +118,3 @@
 :perf_test:                          tt.perf.test
 :perf_generate_statistics:           tt.perf.generate.statistics
 :perf_thinktime_ms:                  tt.perf.page.thinktime.ms
-
-// JDBC Connector
-:jdbc_connector_timeout:             tt.db.timeout

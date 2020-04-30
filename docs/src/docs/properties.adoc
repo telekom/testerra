@@ -29,7 +29,3 @@ include::properties/report-probs.adoc[leveloffset=+1]
 == Layout Check properties
 
 include::properties/layout-check-probs.adoc[leveloffset=+1]
-
-== JDBC Connector properties
-
-include::properties/jdbc-probs.adoc[leveloffset=+1]

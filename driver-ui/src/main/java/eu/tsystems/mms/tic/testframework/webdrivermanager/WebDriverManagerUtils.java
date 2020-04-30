@@ -372,7 +372,9 @@ public final class WebDriverManagerUtils {
      *
      * @param capabilities {@link DesiredCapabilities}
      * @param proxyString  {@link String}
+     * @deprecated see {@link #addProxyToCapabilities(DesiredCapabilities, URL)}
      */
+    @Deprecated
     public static void addProxyToCapabilities(final DesiredCapabilities capabilities, final String proxyString) {
 
         Proxy proxy = new Proxy();
@@ -387,16 +389,6 @@ public final class WebDriverManagerUtils {
         capabilities.setCapability(CapabilityType.PROXY, proxy);
     }
 
-    /**
-     * Generate DesiredCapabilities.
-     *
-     * @return DesiredCapabilities.
-     */
-    @Deprecated
-    public static DesiredCapabilities generateNewDesiredCapabilities() {
-        DesiredCapabilities cap = new DesiredCapabilities();
-        return cap;
-    }
 
     public static String getSessionKey(WebDriver driver) {
 

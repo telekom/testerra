@@ -11,6 +11,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Map;
+
 /**
  * Tests for WebDriverManager
  * <p>
@@ -63,6 +65,34 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
 
         // assert that webdrivermanager does know about the session.
         Assert.assertTrue(WebDriverManager.hasSessionsActiveInThisThread(), "WebDriver Session active in this thread.");
+    }
+
+    @Test
+    public void testT03_MakeSessionExclusive() {
+
+        final WebDriver exclusiveDriver = WebDriverManager.getWebDriver();
+        final String sessionId = WebDriverManager.makeSessionExclusive(exclusiveDriver);
+
+        final WebDriver driver2 = WebDriverManager.getWebDriver("Session2");
+        final WebDriver exclusiveDriverActual = WebDriverManager.getWebDriver(sessionId);
+
+        Assert.assertEquals(exclusiveDriver, exclusiveDriverActual, "Got the same WebDriver!");
+    }
+
+    @Test
+    public void testT04_ManageGlobalCapabilities() {
+
+        WebDriverManager.setGlobalExtraCapability("foo", "bar");
+
+        Map<String, Object> globalExtraCapabilities = WebDriverManager.getGlobalExtraCapabilities();
+        Assert.assertTrue(globalExtraCapabilities.containsKey("foo"));
+        Assert.assertEquals(globalExtraCapabilities.get("foo"), "bar");
+
+        WebDriver driver = WebDriverManager.getWebDriver();
+
+        WebDriverManager.removeGlobalExtraCapability("foo");
+        globalExtraCapabilities = WebDriverManager.getGlobalExtraCapabilities();
+        Assert.assertFalse(globalExtraCapabilities.containsKey("foo"));
     }
 
 }

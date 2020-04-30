@@ -19,6 +19,17 @@
         <suite-file path="PageObjects.xml"></suite-file>
     </suite-files>
 
+    <test name="WebDriver" parallel="methods">
+        <groups>
+            <run>
+                <exclude name="SEQUENTIAL"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.webdrivermanager"/>
+        </packages>
+    </test>
+
     <test name="Utils" parallel="methods">
         <groups>
             <run>

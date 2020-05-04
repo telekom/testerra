@@ -74,6 +74,10 @@ public final class WebDriverSessionsManager {
 
     static final Map<EventFiringWebDriver, WebDriverRequest> DRIVER_REQUEST_MAP = new ConcurrentHashMap<>();
 
+    private WebDriverSessionsManager() {
+        
+    }
+
     private static String getFullSessionKey(String sessionKey) {
         Thread currentThread = Thread.currentThread();
         return currentThread.getId() + FULL_SESSION_KEY_SPLIT_MARKER + sessionKey;

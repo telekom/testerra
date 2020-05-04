@@ -142,19 +142,6 @@
                 <table class="standardTable">
 
                     <tr>
-                        <td colspan="2" rowspan="3" class="cellTop">
-                            <h5>History</h5>
-
-                            <div>
-                                No history in<br/>
-                                Free Edition
-                            </div>
-                        </td>
-
-                        <td class="cellCenter">
-                            <div class="dashboardVerticalSpacer"></div>
-                        </td> <!-- spacer -->
-
                         <td class="cellTop" colspan="2">
                             <h5>Method</h5>
                             <br/>
@@ -597,14 +584,6 @@
 <script type="text/javascript">
     toggleDetailsView('details', 'toggleview', 'buttondetails', 'togglebutton');
 </script>
-
-    #if (!$testMethod.isConfigMethod())
-    <script type="text/javascript">
-        function showHistoryGraph() {
-        }
-    </script>
-    #end
-
 <script type="text/javascript">
     var e = "#logstd";
     $(e).empty();

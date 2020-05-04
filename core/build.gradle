@@ -51,3 +51,5 @@ processResources {
 test {
     exclude '**'
 }
+
+apply from: rootProject.file('release-bintray.gradle')

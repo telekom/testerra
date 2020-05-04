@@ -14,7 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.core.test.reporting;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
@@ -55,7 +55,6 @@ public class FailsAnnotationFilterTest extends AbstractWebDriverTest {
 
     @Test
     @Fails(validFor = {"test.foobar.fails.annotation.test.property.one=one", "test.foobar.fails.annotation.test.property.two=true"})
-
     public void testValidForWithTwoKeyValues() {
 
         final String[] validFor = {"test.foobar.fails.annotation.test.property.one=one", "test.foobar.fails.annotation.test.property.two=true"};

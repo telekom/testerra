@@ -30,6 +30,10 @@ public final class TestMethodHook extends Hook {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestMethodHook.class);
 
+    private TestMethodHook() {
+
+    }
+
     public static void runHook(IHookCallBack callBack, ITestResult testResult) {
 
         if (TesterraListener.isSkipAllMethods()) {
@@ -42,8 +46,7 @@ public final class TestMethodHook extends Hook {
             LOGGER.info("Dry run for list tests: " + testNGMethod.getMethodName());
             // no sleep
             return;
-        }
-        else if (Flags.DRY_RUN) {
+        } else if (Flags.DRY_RUN) {
             if (dryRun(testNGMethod)) {
                 return;
             }

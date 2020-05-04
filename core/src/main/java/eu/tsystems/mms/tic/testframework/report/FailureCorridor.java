@@ -37,16 +37,19 @@ public final class FailureCorridor {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface High {
+
     }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface Mid {
+
     }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface Low {
+
     }
 
     public enum Value {
@@ -61,6 +64,10 @@ public final class FailureCorridor {
             this.show = show;
             this.color = color;
         }
+    }
+
+    private FailureCorridor() {
+
     }
 
     private static int allowedTestFailures = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS, -1);
@@ -96,8 +103,7 @@ public final class FailureCorridor {
          */
         if (testsSkipped > 0) {
             return false;
-        }
-        else if (testsSuccessful + testsFailed + testsSkipped == 0) {
+        } else if (testsSuccessful + testsFailed + testsSkipped == 0) {
             return false;
         }
 
@@ -116,12 +122,10 @@ public final class FailureCorridor {
         if (allowedTestFailuresHIGH > -1 && allowedTestFailuresMID > -1 && allowedTestFailuresLOW > -1) {
             if (testsFailedHIGH > allowedTestFailuresHIGH) {
                 return false;
-            }
-            else {
+            } else {
                 if (testsFailedMID > allowedTestFailuresMID) {
                     return false;
-                }
-                else {
+                } else {
                     if (testsFailedLOW > allowedTestFailuresLOW) {
                         return false;
                     }
@@ -137,8 +141,7 @@ public final class FailureCorridor {
         // -NOT OK-
         if (isCorridorMatched()) {
             return "-OK-";
-        }
-        else {
+        } else {
             return "-NOT OK-";
         }
     }
@@ -165,12 +168,12 @@ public final class FailureCorridor {
         }
 
         if (allowedTestFailures > -1) {
-//            int testsFailed = TestStatusController.getTestsFailed();
-//            out += "  X: " + testsFailed;
-//            if (testsFailed > allowedTestFailures) {
-//                out += badMarker;
-//            }
-//            out += " (" + allowedTestFailures + ") ";
+            //            int testsFailed = TestStatusController.getTestsFailed();
+            //            out += "  X: " + testsFailed;
+            //            if (testsFailed > allowedTestFailures) {
+            //                out += badMarker;
+            //            }
+            //            out += " (" + allowedTestFailures + ") ";
 
             // failed allowed is not needed atm - pele 05.09.2016
         }
@@ -180,7 +183,7 @@ public final class FailureCorridor {
             if (testsFailedHIGH > allowedTestFailuresHIGH) {
                 out += badMarker;
             }
-            out+= "-" + testsFailedMID;
+            out += "-" + testsFailedMID;
             if (testsFailedMID > allowedTestFailuresMID) {
                 out += badMarker;
             }
@@ -188,7 +191,7 @@ public final class FailureCorridor {
             if (testsFailedLOW > allowedTestFailuresLOW) {
                 out += badMarker;
             }
-            out += " (" + allowedTestFailuresHIGH + "-" + allowedTestFailuresMID + "-" + allowedTestFailuresLOW + ")" ;
+            out += " (" + allowedTestFailuresHIGH + "-" + allowedTestFailuresMID + "-" + allowedTestFailuresLOW + ")";
         }
 
         if (testsSkipped > 0) {

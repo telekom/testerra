@@ -8,7 +8,7 @@ import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.ReportAnnotationType;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjetcs.ClassesDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestAnnotations;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorMid;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestFailed;

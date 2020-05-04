@@ -91,3 +91,8 @@ def setFailureCorridor(nr) {
 def setCloseWindows() {
     System.setProperty("tt.wdm.closeWindows.afterTestMethods", "false")
 }
+
+bintray {
+    publications = []
+    configurations = []
+}

@@ -59,6 +59,8 @@ public class MyTest extends TesterraTest {
 ```
 ## Publishing
 
+### ... to local Maven repo
+
 Create a `gradle.properties` file with the following content.
 ```properties
 systemProp.deployUrl=https://example.com
@@ -74,6 +76,42 @@ or pass then properties via. CLI
 gradle publish -DdeployUrl=https://example.com -DdeployUsername=user -DdeployPassword=password
 ```
 
+Set a custom version
+```shell script
+gradle publish -DttVersion=<version>
+```
+
+### ... to Bintray
+
+_Preparation_
+
+* Folder jcenter contains basic Bintray publish files
+* For publishing a module, add the following line to the module's ``build.gradle``
+  ````
+  // ...
+  apply from: rootProject.file('release-bintray.gradle')
+  ````
+
+_Configuration_
+
+All publish settings are located in ``release-bintray.gradle``.
+
+
+_Upload and publish_
+
+* Before publishing, please note for Testerra version. You can only upload every version once!
+* Publish one module (but not recommended)
+  ````
+  gradle gradle core:bintrayUpload -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
+  ````
+* Publish Testerra Framework with default version `1-SNAPSHOT`
+  ````
+  gradle publishToBintray -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
+  ````
+* Publish Testerra Framework with specific version
+  ````
+  gradle publishToBintray -DttVersion=<version> -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
+  ```` 
 
 ## Contributing
 Thank you for considering contributing to the Testerra framework! The contribution guide can be found here: [CONTRIBUTING.md](CONTRIBUTING.md).

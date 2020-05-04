@@ -53,12 +53,6 @@ public class ReportTestUnderTestAnnotations extends AbstractTest {
     }
 
     //@Test
-    @SkipMetrics
-    // TODO how is this displayed in report?
-    public void testSkipMetricsMarker() {
-    }
-
-    //@Test
     @DismissDryRun
     // TODO how is this displayed in report?
     public void testDismissDryRunMarker() {

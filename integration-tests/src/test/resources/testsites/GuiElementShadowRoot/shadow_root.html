@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+    <title>Shadow DOM / Shadow Root Example!</title>
+</head>
+
+<style>
+    #container {
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    #content {
+        border: 1px solid red;
+        padding: 5px;
+    }
+
+    #shadow-host, #normal-content {
+        border: 1px dashed red;
+        padding: 5px;
+        margin: 10px;
+    }
+
+
+
+</style>
+
+<body>
+
+<div id="container">
+
+    <p>Here is a container with css selector '#container'</p>
+
+    <div id="content">
+        <div id="normal-content">
+            <p>This is normal content, with css selector '#normal-content p'</p>
+        </div>
+
+        <p>Below this a shadow root will start with selector '#shadow-host'</p>
+        <div id="shadow-host">
+        </div>
+    </div>
+</div>
+
+<script>
+    var shadow = document.querySelector('#shadow-host').attachShadow({mode: 'open'});
+    shadow.innerHTML = '<div id="shadow-content"><p>This text is inside of the shadow-host, its selector is "#shadow-content p"</p><input></div>';
+    shadow.innerHTML += '<style>p { color: red; border: 1px dotted; }</style>';
+</script>
+</body>
+</html>

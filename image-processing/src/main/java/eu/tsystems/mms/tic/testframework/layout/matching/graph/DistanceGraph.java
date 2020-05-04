@@ -171,8 +171,8 @@ public class DistanceGraph {
      */
     public void checkForParameterWarnings() {
          distanceBetweenMultipleMatchesToProduceWarning = PropertyManager.getDoubleProperty(
-                 TesterraProperties.LAYOUTCHECK_INTERNAL_PARAMETER_4,
-                 DefaultParameter.LAYOUTCHECK_INTERNAL_PARAMETER_4);
+                 TesterraProperties.LAYOUTCHECK_DISTANCE_MULTIPLE_MATCHES,
+                 DefaultParameter.LAYOUTCHECK_DISTANCE_MULTIPLE_MATCHES);
 
         HashSet<Edge> warnedEdges = new HashSet<Edge>();
         for (TemplateNode templateNode : templateNodes) {
@@ -208,8 +208,8 @@ public class DistanceGraph {
      */
     public void incorporateSubImageDisplacement() {
         minimumSimilarMovementErrorsForDisplacementCorrection = PropertyManager.getDoubleProperty(
-                TesterraProperties.LAYOUTCHECK_INTERNAL_PARAMETER_3,
-                DefaultParameter.LAYOUTCHECK_INTERNAL_PARAMETER_3);
+                TesterraProperties.LAYOUTCHECK_MIN_SIMULAR_MOVEMENT_ERRORS,
+                DefaultParameter.LAYOUTCHECK_MIN_SIMULAR_MOVEMENT_ERRORS);
 
         GroupMovementDetector groupMovementDetector = new GroupMovementDetector();
         List<List<ElementMovedError>> movementErrorGroups = groupMovementDetector.getMovementErrorGroups(this);

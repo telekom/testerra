@@ -432,7 +432,7 @@ function pieClickEventCallBack(elementId, category, activated) {
 function defaultMethodsDetailsView() {
     var e = "#detailsView";
     $(e).empty();
-    $(e).append('<div style="text-align: center;">Testerra Test Automation Framework<br>(c) Copyright T-Systems Multimedia Solutions GmbH 2020</div>');
+    $(e).append('<div><a href="" style="font-size: 3;"><img src="Testerra_Logo_0512px.png" alt="testerra" width="300"></a><div><div style="text-align: center;">Testerra Test Automation Framework<br>(c) Copyright T-Systems Multimedia Solutions GmbH 2020</div>');
 }
 
 defaultMethodsDetailsView();

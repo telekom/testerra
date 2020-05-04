@@ -149,23 +149,6 @@ public abstract class Page extends AbstractPage {
         return fieldActions;
     }
 
-    /**
-     * Send F5 to the browser.
-     */
-    public void refresh() {
-        refresh(false);
-    }
-
-    /**
-     * Send F5 to the browser.
-     */
-    public void refresh(boolean checkPage) {
-        getWebDriver().navigate().refresh();
-        if (checkPage) {
-            pCheckPage(false, false, false);
-        }
-    }
-
     public boolean isTextPresent(String text) {
         WebDriver driver = getWebDriver();
         driver.switchTo().defaultContent();

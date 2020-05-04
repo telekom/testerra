@@ -14,7 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.core.test.events;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
@@ -23,11 +23,12 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventUserDataManager;
-import eu.tsystems.mms.tic.testframework.events.test.TesterraEventUserDataTestListener;
-import eu.tsystems.mms.tic.testframework.events.test.UserDataTypes;
+import eu.tsystems.mms.tic.testframework.core.test.events.implementation.TesterraEventUserDataTestListener;
+import eu.tsystems.mms.tic.testframework.core.test.events.implementation.UserDataTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -51,6 +52,7 @@ public class TesterraEventsUserDataTest extends AbstractWebDriverTest {
         TesterraEventUserDataManager.getGlobalData().put(UserDataTypes.UMGEBUNG, "U1");
     }
 
+    @AfterClass
     public void afterClass() {
         TesterraEventService.removeListener(testerraEventListener);
     }
@@ -91,6 +93,8 @@ public class TesterraEventsUserDataTest extends AbstractWebDriverTest {
         boolean method2EventFired = false;
         for (TesterraEvent event : events) {
             logger.info(event.getTesterraEventType() + " Method: " + event.getData().get(TesterraEventDataType.METHOD_NAME));
+
+            logger.info(event.getData().toString());
 
             Assert.assertTrue(event.getData().containsKey(UserDataTypes.UMGEBUNG), "Every event contains UMGEBUNG data. Failed on Event: " + event.getTesterraEventType());
             Assert.assertEquals(event.getData().get(UserDataTypes.UMGEBUNG), "U1", "Every event contains UMGEBUNG -U1- data. Failed on Event: " + event.getTesterraEventType());

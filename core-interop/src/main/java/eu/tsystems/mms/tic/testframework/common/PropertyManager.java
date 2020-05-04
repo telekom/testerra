@@ -14,7 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.common;
 
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
@@ -51,7 +51,7 @@ public final class PropertyManager {
 
     static final Properties GLOBALPROPERTIES = new Properties();
 
-    public static final PropertiesParser parser = new PropertiesParser();
+    public static ThreadLocal<PropertiesParser> PROPERTIES_PARSER = new ThreadLocal<>();
 
     /*
      * Static constructor, creating static Properties object.
@@ -63,9 +63,7 @@ public final class PropertyManager {
         String propertyFile = "test.properties";
         pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
 
-        parser.properties.add(FILEPROPERTIES);
-        parser.properties.add(System.getProperties());
-        parser.properties.add(GLOBALPROPERTIES);
+        getPropertiesParser();
     }
 
     /*
@@ -103,7 +101,6 @@ public final class PropertyManager {
      * Loads a local property file.
      *
      * @param resourceFile
-     *
      * @return
      */
     public static Properties loadThreadLocalProperties(final String resourceFile) {
@@ -115,7 +112,6 @@ public final class PropertyManager {
      *
      * @param resourceFile
      * @param charset
-     *
      * @return
      */
     public static Properties loadThreadLocalProperties(final String resourceFile, final String charset) {
@@ -127,7 +123,6 @@ public final class PropertyManager {
      *
      * @param resourceFile The property file to load.
      * @param localOnly    Deprecated, Testerra only loads local files
-     *
      * @return Return loaded properties.
      */
     @Deprecated
@@ -139,7 +134,6 @@ public final class PropertyManager {
      * Loads a local property file.
      *
      * @param resourceFile
-     *
      * @return
      */
     public static Properties loadProperties(final String resourceFile) {
@@ -151,7 +145,6 @@ public final class PropertyManager {
      *
      * @param resourceFile
      * @param charset
-     *
      * @return
      */
     public static Properties loadProperties(final String resourceFile, final String charset) {
@@ -173,11 +166,10 @@ public final class PropertyManager {
      * Gets the value of the property identified by its key.
      *
      * @param key The properties key.
-     *
      * @return The properties value.
      */
     public static String getProperty(final String key) {
-        return parser.getProperty(key);
+        return getPropertiesParser().getProperty(key);
     }
 
     /**
@@ -185,11 +177,10 @@ public final class PropertyManager {
      *
      * @param key          The properties key.
      * @param defaultValue default value
-     *
      * @return The properties value.
      */
     public static String getProperty(final String key, final String defaultValue) {
-        return parser.getProperty(key, defaultValue);
+        return getPropertiesParser().getProperty(key, defaultValue);
     }
 
     /**
@@ -197,22 +188,20 @@ public final class PropertyManager {
      *
      * @param key          key of the property
      * @param defaultValue default value
-     *
      * @return property value
      */
     public static int getIntProperty(final String key, final int defaultValue) {
-        return parser.getIntProperty(key, defaultValue);
+        return getPropertiesParser().getIntProperty(key, defaultValue);
     }
 
     /**
      * Gets the value of the property identified by its key.
      *
      * @param key key of the property
-     *
      * @return property value or -1 if value cannot be parsed.
      */
     public static int getIntProperty(final String key) {
-        return parser.getIntProperty(key);
+        return getPropertiesParser().getIntProperty(key);
     }
 
     /**
@@ -220,22 +209,20 @@ public final class PropertyManager {
      *
      * @param key          key of the property
      * @param defaultValue default value
-     *
      * @return property value
      */
     public static double getDoubleProperty(String key, double defaultValue) {
-        return parser.getDoubleProperty(key, defaultValue);
+        return getPropertiesParser().getDoubleProperty(key, defaultValue);
     }
 
     /**
      * Gets the value of the property identified by its key.
      *
      * @param key key of the property
-     *
      * @return property value or -1 if value cannot be parsed or is not set.
      */
     public static double getDoubleProperty(final String key) {
-        return parser.getDoubleProperty(key);
+        return getPropertiesParser().getDoubleProperty(key);
     }
 
     /**
@@ -243,35 +230,31 @@ public final class PropertyManager {
      *
      * @param key          key of the property
      * @param defaultValue default value
-     *
      * @return property value
      */
     public static long getLongProperty(String key, long defaultValue) {
-        return parser.getLongProperty(key, defaultValue);
+        return getPropertiesParser().getLongProperty(key, defaultValue);
     }
 
     /**
      * Gets the value of the property identified by its key.
      *
      * @param key key of the property
-     *
      * @return property value or -1 if value cannot be parsed or is not set.
      */
     public static long getLongProperty(final String key) {
-        return parser.getLongProperty(key);
+        return getPropertiesParser().getLongProperty(key);
     }
 
     /**
      * Get boolean property.
      *
      * @param key true or false.
-     *
      * @return boolean property value or default false, if property is not set
-     *
      * @see java.lang.Boolean#parseBoolean(String)
      */
     public static boolean getBooleanProperty(final String key) {
-        return parser.getBooleanProperty(key);
+        return getPropertiesParser().getBooleanProperty(key);
     }
 
     /**
@@ -279,11 +262,10 @@ public final class PropertyManager {
      *
      * @param key          key of the property
      * @param defaultValue default value
-     *
      * @return property value
      */
     public static boolean getBooleanProperty(final String key, final boolean defaultValue) {
-        return parser.getBooleanProperty(key, defaultValue);
+        return getPropertiesParser().getBooleanProperty(key, defaultValue);
     }
 
     /**
@@ -293,6 +275,7 @@ public final class PropertyManager {
         THREAD_LOCAL_PROPERTIES.remove();
         FILEPROPERTIES.clear();
         GLOBALPROPERTIES.clear();
+        PROPERTIES_PARSER.remove();
     }
 
     public static Properties getFileProperties() {
@@ -307,7 +290,7 @@ public final class PropertyManager {
     public static Properties getThreadLocalProperties() {
         if (THREAD_LOCAL_PROPERTIES.get() == null) {
             THREAD_LOCAL_PROPERTIES.set(new Properties());
-            parser.properties.add(THREAD_LOCAL_PROPERTIES.get());
+            getPropertiesParser().properties.add(THREAD_LOCAL_PROPERTIES.get());
         }
         return THREAD_LOCAL_PROPERTIES.get();
     }
@@ -316,6 +299,11 @@ public final class PropertyManager {
      * clear the local thread properties
      */
     public static void clearThreadlocalProperties() {
+
+        if (THREAD_LOCAL_PROPERTIES.get() != null) {
+            getPropertiesParser().properties.remove(THREAD_LOCAL_PROPERTIES.get());
+        }
+
         THREAD_LOCAL_PROPERTIES.remove();
     }
 
@@ -325,6 +313,21 @@ public final class PropertyManager {
 
     public static Properties getGlobalProperties() {
         return GLOBALPROPERTIES;
+    }
+
+    private static PropertiesParser getPropertiesParser() {
+
+        if (PROPERTIES_PARSER.get() == null) {
+
+            final PropertiesParser propertiesParser = new PropertiesParser();
+            propertiesParser.properties.add(FILEPROPERTIES);
+            propertiesParser.properties.add(System.getProperties());
+            propertiesParser.properties.add(GLOBALPROPERTIES);
+
+            PROPERTIES_PARSER.set(propertiesParser);
+        }
+
+        return PROPERTIES_PARSER.get();
     }
 
 }

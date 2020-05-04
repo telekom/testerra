@@ -14,7 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.report;
 
 import org.apache.log4j.AppenderSkeleton;
@@ -25,6 +25,7 @@ import org.apache.log4j.spi.LoggingEvent;
  * BaseLoggingActor allows to use log4j logs for HTML Reports.
  */
 public class DefaultLogAppender extends AppenderSkeleton implements TesterraLogger {
+
     private LogFormatter formatter = new DefaultLogFormatter();
 
     @Override

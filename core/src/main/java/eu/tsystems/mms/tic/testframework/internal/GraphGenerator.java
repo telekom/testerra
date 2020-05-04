@@ -28,7 +28,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.ui.RectangleInsets;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -38,6 +38,10 @@ public final class GraphGenerator {
     public enum DataType {
         DATE,
         NUMBER
+    }
+
+    private GraphGenerator() {
+
     }
 
     /**
@@ -51,7 +55,7 @@ public final class GraphGenerator {
      * @throws IOException
      */
     public static JFreeChart createLineChart(XYDataset xyDataset, String title, String xLabel,
-                                       String yLabel, DataType dataTypeXAxis) {
+                                             String yLabel, DataType dataTypeXAxis) {
         final JFreeChart chart = ChartFactory.createTimeSeriesChart(
                 title,
                 xLabel,
@@ -90,13 +94,13 @@ public final class GraphGenerator {
         yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         plot.setRangeAxis(yAxis);
 
-        switch(dataTypeXAxis) {
+        switch (dataTypeXAxis) {
             case DATE: {
                 final DateAxis xAxis = new DateAxis(xLabel);
                 xAxis.setDateFormatOverride(new SimpleDateFormat("HH:mm:ss"));
                 plot.setDomainAxis(xAxis);
             }
-                break;
+            break;
             case NUMBER: {
                 final NumberAxis xAxis = new NumberAxis(xLabel);
                 xAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
@@ -104,7 +108,7 @@ public final class GraphGenerator {
                 xAxis.setAutoRange(true);
                 plot.setDomainAxis(xAxis);
             }
-                break;
+            break;
         }
 
         return chart;

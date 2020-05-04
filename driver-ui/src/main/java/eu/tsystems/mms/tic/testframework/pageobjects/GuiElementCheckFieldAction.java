@@ -64,11 +64,11 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                 break;
             case IS_NOT_PRESENT:
                 if (findNot) {
-//                    if (fast) {
-//                        assertGuiElement.assertIsPresentFast();
-//                    } else {
-//                        assertGuiElement.assertIsPresent();
-//                    }
+                    //                    if (fast) {
+                    //                        assertGuiElement.assertIsPresentFast();
+                    //                    } else {
+                    //                        assertGuiElement.assertIsPresent();
+                    //                    }
                     logger.warn(errorMessageNotNot);
                 } else {
                     if (fast) {
@@ -110,7 +110,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
 
                 try {
                     if (findNot) {
-//                            assertGuiElement.assertIsDisplayed();
+                        //                            assertGuiElement.assertIsDisplayed();
                         logger.warn(errorMessageNotNot);
                     } else {
                         GuiElementAssert.assertIsNotDisplayed();
@@ -160,12 +160,10 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                 String prioritizedErrorMessage = check.prioritizedErrorMessage();
                 if (!StringUtils.isStringEmpty(prioritizedErrorMessage)) {
                     throw new AssertionError(prioritizedErrorMessage, pageNotFoundException);
-                }
-                else {
+                } else {
                     throw pageNotFoundException;
                 }
-            }
-            finally {
+            } finally {
                 // reset standard asserts setting
                 if (forceStandardAssert) {
                     guiElement.resetDefaultAsserts();
@@ -182,12 +180,12 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             if (checkableInstance != null && checkableInstance instanceof GuiElement) {
                 // get the web driver session
                 GuiElement guiElement = (GuiElement) checkableInstance;
-                WebDriver driver = guiElement.getDriver();
+                WebDriver driver = guiElement.getWebDriver();
                 String sessionId = WebDriverManagerUtils.getSessionKey(driver);
 
                 if (!StringUtils.isStringEmpty(sessionId)) {
                     // do only search for the gui element if JS is disabled
-                    if (WebDriverManager.isJavaScriptActivated(sessionId)) {
+                    if (WebDriverManager.isJavaScriptActivated(driver)) {
                         execute = false;
                     }
                 }

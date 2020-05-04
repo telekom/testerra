@@ -27,7 +27,13 @@ public class ReportInfo {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportInfo.class);
 
+    // private
+    private ReportInfo() {
+
+    }
+
     public static abstract class Info {
+
         public abstract boolean hasInfos();
     }
 
@@ -160,15 +166,19 @@ public class ReportInfo {
     }
 
     public static class MethodInfo extends KeyValueInfo {
+
     }
 
     public static class RunInfo extends KeyValueInfo {
+
     }
 
     public static class DashboardInfo extends PriorityInfo {
+
     }
 
     public static class DashboardWarning extends PriorityInfo {
+
     }
 
     private static final ThreadLocal<MethodInfo> currentMethodInfo = new ThreadLocal<>();

@@ -24,14 +24,12 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
@@ -170,16 +168,6 @@ public final class WebDriverUtils {
             }
         });
         return response.getResponse();
-    }
-
-    /**
-     * Generate DesiredCapabilities.
-     *
-     * @return DesiredCapabilities.
-     */
-    @Deprecated
-    public static DesiredCapabilities generateNewDesiredCapabilities() {
-        return WebDriverManagerUtils.generateNewDesiredCapabilities();
     }
 
     /**

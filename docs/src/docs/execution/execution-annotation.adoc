@@ -1,10 +1,8 @@
-= Annotations
+= Annotations for Report adjustment
+
 include::../properties/property-attributes.adoc[]
-
-The test class and test methods can be marked by several provided Annotations, which are described in the following paragraphs and in <<#Fails, @Fails>>, <<#Retry, @Retry>>, <<#InDevelopment, @InDevelopment>> and <<#NoRetry, @NoRetry>>
-
-== @DismissDryRun
-When this is annotated at a method it will be executed completely regardless of the value of {dryrun}.
+To improve the readability and clarity of the report there are several annotations for marking the test class and test methods,
+which are described in the following paragraphs as well as in <<#Fails, @Fails>>, <<#Retry, @Retry>>, <<#InDevelopment, @InDevelopment>> and <<#NoRetry, @NoRetry>>.
 
 == @New
 This marks a test method as `New`, which is shown with this text in the report. Customization is possible with two attributes name and color in the annotation.

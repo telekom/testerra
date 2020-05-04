@@ -1,5 +1,6 @@
 = Conditional behaviour
 include::../properties/property-attributes.adoc[]
+
 For managing the execution behaviour of tests in suites there are means to skip tests and avoid closing browser windows after failures.
 
 .test.properties

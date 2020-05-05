@@ -36,7 +36,8 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
      */
     private GuiElement methodNameString = new GuiElement(this.getWebDriver(), By.xpath("(//*[@class='dashboardTextSmall'])[1]"), mainFrame);
     private GuiElement classNameString = new GuiElement(this.getWebDriver(), By.xpath("//tbody/tr[1]/td[3]/*[4]"), mainFrame);
-    private GuiElement methodResultString = new GuiElement(this.getWebDriver(), By.xpath("//tbody/tr[1]/td[1]/*[5]/*[1]"), mainFrame);
+//    private GuiElement methodResultString = new GuiElement(this.getWebDriver(), By.xpath("//tbody/tr[1]/td[1]/*[5]/*[1]"), mainFrame);
+    private GuiElement methodResultString = new GuiElement(this.getWebDriver(), By.xpath("//*[@data-qa='methodTestStatus']"), mainFrame);
     private GuiElement stepString = new GuiElement(this.getWebDriver(), By.xpath("//tbody/tr[1]/td[3]/*[5]/*[2]"), mainFrame);
 
     /**

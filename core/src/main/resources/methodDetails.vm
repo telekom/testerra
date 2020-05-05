@@ -162,7 +162,7 @@
                             <br/>
 
                             <div style="font-size: 30px; margin:10px;">
-                                <div style="color:${testMethod.status.color};">${testMethod.status.title}</div>
+                                <div data-qa="methodTestStatus" style="color:${testMethod.status.color};">${testMethod.status.title}</div>
 
                                 #if ($testMethod.isRetry())
                                     <img src="../style/retry.png" alt="Retry" style="width:40px;" title="Retry"/>

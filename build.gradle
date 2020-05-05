@@ -6,6 +6,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
+apply plugin: 'jacoco'
 
 ext {
     /*

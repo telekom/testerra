@@ -46,7 +46,6 @@
         }
 
         $('.fotorama').on('fotorama:load', function () {
-            //console.log("layoutCheck$customError.image loaded");
             $('.fotorama').fotorama().resize();
         });
     </script>
@@ -342,7 +341,8 @@
                                         </div>
                                         <h3>Layout check: $customError.image</h3>
                                         <div class="dashboardTextSmall">Pixel distance: $customError.distance%</div>
-                                        <div class="fotorama layoutCheck$customError.image"
+                                        #set($fotoramaClassName="layoutCheck$foreach.count")
+                                        <div class="fotorama $fotoramaClassName"
                                              data-navposition="top"
                                              data-allowfullscreen="native"
                                              data-arrows="false"
@@ -364,7 +364,7 @@
                                                     <div data-img="$path" data-caption="$imageCaptions[$foreach.index]">
                                                         <div class="centeredItems">
                                                             <a class="gallerybutton" href="#" title="Fullscreen"
-                                                               onclick="toggleFotoramaFullscreen('.layoutCheck$customError.image')">
+                                                               onclick="toggleFotoramaFullscreen('.$fotoramaClassName')">
                                                                 <i class="bgwhite fa fa-arrows-alt"></i>
                                                             </a>
                                                             <!-- pic download link -->

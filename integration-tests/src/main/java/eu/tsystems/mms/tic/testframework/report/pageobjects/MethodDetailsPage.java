@@ -7,6 +7,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractMethodDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.model.IReportAnnotationVerifier;
 import eu.tsystems.mms.tic.testframework.report.model.ReportAnnotationType;
+import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -241,6 +242,10 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
         return methodResultString.getText();
     }
 
+    public GuiElement getMethodResultElement() {
+        return methodResultString;
+    }
+
     public String getStepString() {
         return stepString.getText();
     }
@@ -306,6 +311,11 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
         for (ReportAnnotationType annotationType : ReportAnnotationType.values()) {
             assertAnnotationMarkIsDisplayed(annotationType, methodName);
         }
+    }
+
+    public void assertCorrectTestMethodIsDisplayed(String methodName, TestResultHelper.TestResult methodResult) {
+        getMethodNameElement().asserts().assertText(methodName);
+        getMethodResultElement().asserts().assertText(methodResult.getXpathClassesDetailsHeader());
     }
 
     //@Override

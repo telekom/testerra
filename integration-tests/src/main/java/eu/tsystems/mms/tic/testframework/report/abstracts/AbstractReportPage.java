@@ -17,7 +17,6 @@ public abstract class AbstractReportPage extends AbstractFramePage {
     private GuiElement classesLink = new GuiElement(this.getWebDriver(), By.partialLinkText("CLASSES"), mainFrame);
     private GuiElement failureAspectsLink = new GuiElement(this.getWebDriver(), By.partialLinkText("FAILURE ASPECTS"), mainFrame);
     private GuiElement threadsLink = new GuiElement(this.getWebDriver(), By.partialLinkText("THREADS"), mainFrame);
-    private GuiElement stateChangesLink = new GuiElement(this.getWebDriver(), By.partialLinkText("STATE CHANGES"), mainFrame);
 
     /**
      * Constructor called bei PageFactory
@@ -46,6 +45,25 @@ public abstract class AbstractReportPage extends AbstractFramePage {
         this.failureAspectsLink.click();
         return PageFactory.create(FailureAspectsPage.class, this.getWebDriver());
     }
+
+    public ThreadsPage goToThreads() {
+        this.threadsLink.click();
+        return PageFactory.create(ThreadsPage.class, this.getWebDriver());
+    }
+
+    public LogsPage goToLogs() {
+        return this.openBurgerMenu().openLogsPage();
+    }
+
+    public TimingsPage goToTimings() {
+        return this.openBurgerMenu().openTimingsPage();
+    }
+
+    public MonitorPage goToMonitor() {
+        return this.openBurgerMenu().openMonitorPage();
+    }
+
+
 
     public BurgerMenu openBurgerMenu() {
         GuiElement burgerMenuButton = burgerMenu.getSubElement(By.xpath(".//input"));

@@ -16,9 +16,9 @@ public class BurgerMenu extends AbstractReportPage {
     private GuiElement exitPointsLink = new GuiElement(this.getWebDriver(), By.id("ExitPoints"), mainFrame);
     private GuiElement logsLink = new GuiElement(this.getWebDriver(), By.id("Logs"), mainFrame);
     private GuiElement timingsLink = new GuiElement(this.getWebDriver(), By.id("Timings"), mainFrame);
-    private GuiElement memoryLink = new GuiElement(this.getWebDriver(), By.id("Memory"), mainFrame);
-    private GuiElement exportLink = new GuiElement(this.getWebDriver(), By.id("Export"), mainFrame);
-    private GuiElement metricsLink = new GuiElement(this.getWebDriver(), By.id("Metrics"), mainFrame);
+    private GuiElement monitorLink = new GuiElement(this.getWebDriver(), By.id("JVM Monitor"), mainFrame);
+
+
 
     /**
      * Constructor called bei PageFactory
@@ -39,5 +39,39 @@ public class BurgerMenu extends AbstractReportPage {
         exitPointsLink.click();
         return PageFactory.create(ExitPointsPage.class, this.getWebDriver());
     }
+
+    /**
+     * Method to navigate to the LogsPage
+     *
+     * @return
+     */
+    public LogsPage openLogsPage() {
+        logsLink = logsLink.getSubElement(By.xpath("./a"));
+        logsLink.click();
+        return PageFactory.create(LogsPage.class, this.getWebDriver());
+    }
+
+    /**
+     * Method to navigate to the TimingsPage
+     *
+     * @return
+     */
+    public TimingsPage openTimingsPage() {
+        timingsLink = timingsLink.getSubElement(By.xpath("./a"));
+        timingsLink.click();
+        return PageFactory.create(TimingsPage.class, this.getWebDriver());
+    }
+
+    /**
+     * Method to navigate to the MonitorPage
+     *
+     * @return
+     */
+    public MonitorPage openMonitorPage() {
+        monitorLink = monitorLink.getSubElement(By.xpath("./a"));
+        monitorLink.click();
+        return PageFactory.create(MonitorPage.class, this.getWebDriver());
+    }
+
 
 }

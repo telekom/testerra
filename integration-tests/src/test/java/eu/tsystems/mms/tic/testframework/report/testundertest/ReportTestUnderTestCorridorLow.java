@@ -5,7 +5,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.general.TestsUnderTestGroup;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.ExitPointCreatorTestClass2;
+import eu.tsystems.mms.tic.testframework.report.pageobjetcs.ExitPointCreatorTestClass2;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

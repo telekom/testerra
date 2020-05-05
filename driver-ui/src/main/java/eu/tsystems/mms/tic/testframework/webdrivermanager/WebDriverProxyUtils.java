@@ -30,6 +30,10 @@ import java.net.URL;
 
 public class WebDriverProxyUtils {
 
+    private WebDriverProxyUtils() {
+
+    }
+
     static void updateSessionContextRelations(SessionContext sessionContext) {
         /*
         assign usage in current method

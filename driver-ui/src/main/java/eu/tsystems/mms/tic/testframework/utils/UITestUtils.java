@@ -78,6 +78,10 @@ public class UITestUtils {
      */
     private static final DateFormat FILES_DATE_FORMAT = new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss");
 
+    private UITestUtils() {
+
+    }
+
     public static Screenshot takeScreenshot(
             final WebDriver driver,
             boolean intoReport
@@ -199,7 +203,7 @@ public class UITestUtils {
             /*
             only add if we can NOT find any screenshots for this error context
              */
-            long count = methodContext.screenshots.stream().filter(s -> s.errorContextId == methodContext.id).count();
+            long count = methodContext.screenshots.stream().filter(s -> s.errorContextId.equals(methodContext.id)).count();
 
             if (count == 0) {
                 methodContext.screenshots.addAll(screenshots);

@@ -14,7 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
@@ -48,7 +48,4 @@ public final class Flags {
 
     public static boolean SCREENSHOTTER_ACTIVE = p(TesterraProperties.SCREENSHOTTER_ACTIVE, true);
     public static boolean SCREENCASTER_ACTIVE = p(TesterraProperties.SCREENCASTER_ACTIVE, true);
-
-    public static final boolean SCREENSHOT_ON_PAGELOAD = p(TesterraProperties.SCREENSHOT_ON_PAGELOAD, false);
-
 }

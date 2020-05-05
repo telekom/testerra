@@ -1,16 +1,21 @@
 package eu.tsystems.mms.tic.testframework.report.test.dashboard;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
-import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractTestReportNumbers;
+import eu.tsystems.mms.tic.testframework.report.pageobjetcs.abstracts.AbstractTestReportNumbers;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTestDashboard;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
-import eu.tsystems.mms.tic.testframework.report.model.*;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjetcs.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
+import eu.tsystems.mms.tic.testframework.report.model.TestNumberHelper;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportFiveNumbers;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportFourNumbers;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportOneNumbers;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportSixNumbers;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportThreeNumbers;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoNumbers;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;

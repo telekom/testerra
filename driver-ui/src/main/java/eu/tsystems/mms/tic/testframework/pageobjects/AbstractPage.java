@@ -18,25 +18,31 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 public abstract class AbstractPage {
 
     /**
      * The webdriver object.
+     *
      * @deprecated Use {@link #getWebDriver()} instead
      */
     @Deprecated
@@ -67,7 +73,7 @@ public abstract class AbstractPage {
      * Executes a screenshot when the specific property is set.
      */
     private void screenShotOnPageLoad() {
-        if (Flags.SCREENSHOT_ON_PAGELOAD) {
+        if (PropertyManager.getBooleanProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, false)) {
             takeScreenshot();
         }
     }
@@ -226,15 +232,6 @@ public abstract class AbstractPage {
     protected void checkPageErrorState(Throwable throwable) throws Throwable {
     }
 
-    /**
-     * Shortcut for throwing a TimeoutException.
-     *
-     * @param message .
-     */
-    public void exitWithTimeoutException(final String message) {
-        throw new TimeoutException(message);
-    }
-
     public int getElementTimeoutInSeconds() {
         return elementTimeoutInSeconds;
     }
@@ -333,8 +330,7 @@ public abstract class AbstractPage {
                         running = false;
                     } else {
                         if (clazz != AbstractPage.class) {
-                            @SuppressWarnings("unchecked")
-                            final Class<? extends AbstractPage> pageClass = (Class<? extends AbstractPage>) clazz;
+                            @SuppressWarnings("unchecked") final Class<? extends AbstractPage> pageClass = (Class<? extends AbstractPage>) clazz;
                             allClasses.add(pageClass);
                         }
                     }
@@ -369,8 +365,8 @@ public abstract class AbstractPage {
     }
 
     /**
-     * @deprecated Use {@link #getWebDriver()} instead
      * @return
+     * @deprecated Use {@link #getWebDriver()} instead
      */
     @Deprecated
     public WebDriver getDriver() {

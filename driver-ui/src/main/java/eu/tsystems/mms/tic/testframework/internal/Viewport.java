@@ -13,7 +13,6 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
@@ -27,10 +26,5 @@ public class Viewport {
         this.yPosition = yPosition;
         this.width = width;
         this.height = height;
-    }
-
-    public void modify(int scaleFactor) {
-        width = width / scaleFactor;
-        height = height / scaleFactor;
     }
 }

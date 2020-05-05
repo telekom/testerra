@@ -36,3 +36,5 @@ test {
 //        force 'com.google.guava:guava:25.1-jre'
 //    }
 //}
+
+apply from: rootProject.file('release-bintray.gradle')

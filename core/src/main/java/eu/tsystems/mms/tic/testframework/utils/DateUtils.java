@@ -35,6 +35,10 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     private static String duration = "unknown";
 
+    private DateUtils() {
+
+    }
+
     public static String getDate() {
 
         return SIMPLE_DATE_FORMAT.format(new Date());

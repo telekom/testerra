@@ -14,7 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
@@ -56,9 +56,9 @@ public final class JSUtils {
     /**
      * try to implement javascript on page
      *
-     * @param driver .
+     * @param driver       .
      * @param resourceFile .
-     * @param id .
+     * @param id           .
      */
     public static void implementJavascriptOnPage(final WebDriver driver, final String resourceFile, final String id) {
 
@@ -113,8 +113,8 @@ public final class JSUtils {
     /**
      * executing async script
      *
-     * @param driver .
-     * @param script .
+     * @param driver     .
+     * @param script     .
      * @param parameters .
      * @return .
      */
@@ -126,8 +126,8 @@ public final class JSUtils {
     /**
      * Try to execute javascript. If an error occurs it will be thrown.
      *
-     * @param driver .
-     * @param script .
+     * @param driver     .
+     * @param script     .
      * @param parameters .
      * @return .
      */
@@ -148,8 +148,8 @@ public final class JSUtils {
     /**
      * Try to execute javascript. If an error occurs it will be logged only.
      *
-     * @param driver .
-     * @param script .
+     * @param driver     .
+     * @param script     .
      * @param parameters .
      * @return .
      */
@@ -157,7 +157,7 @@ public final class JSUtils {
         try {
             return executeScriptWOCatch(driver, script, parameters);
         } catch (Exception e) {
-            LOGGER.error("Error executing javascript: "+e.getMessage(), e);
+            LOGGER.error("Error executing javascript: " + e.getMessage(), e);
             return null;
         }
     }
@@ -165,30 +165,30 @@ public final class JSUtils {
     /**
      * Highlight a webelement on an actual driver session
      *
-     * @param driver .
+     * @param driver     .
      * @param webElement .
-     * @param r .
-     * @param g .
-     * @param b .
+     * @param r          .
+     * @param g          .
+     * @param b          .
      */
     @Deprecated
     public static void highlightWebElement(
-        final WebDriver driver,
-        final WebElement webElement,
-        final int r,
-        final int g,
-        final int b
+            final WebDriver driver,
+            final WebElement webElement,
+            final int r,
+            final int g,
+            final int b
     ) {
-       highlightWebElement(driver, webElement, new Color(r,g,b));
+        highlightWebElement(driver, webElement, new Color(r, g, b));
     }
 
     /**
      * Highlights an element for a specified time.
      */
     public static void highlightWebElement(
-        WebDriver driver,
-        WebElement webElement,
-        Color color
+            WebDriver driver,
+            WebElement webElement,
+            Color color
     ) {
         /*
          * Try to inject JS for demo mode before executing highlight
@@ -196,30 +196,30 @@ public final class JSUtils {
         turnOnDemoModeForCurrentPage(driver);
 
         executeScript(
-            driver,
-            String.format("highlightElement(arguments[0],%d,%d,%d)", color.getRed(), color.getGreen(), color.getBlue()),
-            webElement
+                driver,
+                String.format("highlightElement(arguments[0],%d,%d,%d)", color.getRed(), color.getGreen(), color.getBlue()),
+                webElement
         );
     }
 
     /**
      * Highlight a webelement on an actual driver session
      *
-     * @param driver .
+     * @param driver     .
      * @param webElement .
-     * @param r .
-     * @param g .
-     * @param b .
+     * @param r          .
+     * @param g          .
+     * @param b          .
      */
     @Deprecated
     public static void highlightWebElementStatic(
-        final WebDriver driver,
-        final WebElement webElement,
-        final int r,
-        final int g,
-        final int b
+            final WebDriver driver,
+            final WebElement webElement,
+            final int r,
+            final int g,
+            final int b
     ) {
-       highlightWebElementStatic(driver, webElement, new Color(r,g,b));
+        highlightWebElementStatic(driver, webElement, new Color(r, g, b));
     }
 
 
@@ -227,9 +227,9 @@ public final class JSUtils {
      * Static element highlight doesn't fade out.
      */
     public static void highlightWebElementStatic(
-        WebDriver driver,
-        WebElement webElement,
-        Color color
+            WebDriver driver,
+            WebElement webElement,
+            Color color
     ) {
         /*
          * Try to inject JS for demo mode before executing highlight
@@ -238,9 +238,9 @@ public final class JSUtils {
 
         LOGGER.debug("Static highlighting WebElement " + webElement);
         executeScript(
-            driver,
-            String.format("highlightElementStatic(arguments[0],%d,%d,%d)",color.getRed(),color.getGreen(),color.getBlue()),
-            webElement
+                driver,
+                String.format("highlightElementStatic(arguments[0],%d,%d,%d)", color.getRed(), color.getGreen(), color.getBlue()),
+                webElement
         );
         LOGGER.debug("Finished static highlighting WebElement" + webElement);
     }
@@ -262,11 +262,11 @@ public final class JSUtils {
     /**
      * Execute a JS MouseAction on a driver session.
      *
-     * @param driver .
+     * @param driver              .
      * @param containerWebElement .
-     * @param type .
-     * @param x .
-     * @param y .
+     * @param type                .
+     * @param x                   .
+     * @param y                   .
      */
     public static void executeJavaScriptMouseAction(
             final WebDriver driver,
@@ -289,7 +289,7 @@ public final class JSUtils {
     /**
      * Gets the inner html string from an element with the specified id.
      *
-     * @param driver WebDriver instance.
+     * @param driver    WebDriver instance.
      * @param elementId Id of element to get innerhtml from.
      * @return innerhtml as String.
      */
@@ -302,7 +302,7 @@ public final class JSUtils {
     /**
      * Gets the inner html string from an element with the specified name.
      *
-     * @param driver WebDriver instance.
+     * @param driver      WebDriver instance.
      * @param elementName Name of element to get innerhtml from.
      * @return innerhtml as String.
      */
@@ -353,7 +353,7 @@ public final class JSUtils {
     /**
      * Gets the selector without frame hierarchy
      *
-     * @param element GuiElement
+     * @param element          GuiElement
      * @param documentSelector String Current Selector
      * @return String
      */
@@ -517,7 +517,7 @@ public final class JSUtils {
             script = "var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);" +
                     "return w;";
             Object jswidth = executeScript(driver, script, "");
-            if (jswidth!= null) {
+            if (jswidth != null) {
                 width = Integer.valueOf("" + jswidth);
             }
 
@@ -627,5 +627,27 @@ public final class JSUtils {
         Point end = getElementLocationInViewPort(to);
 
         return new Point(end.x - start.x, end.y - start.y);
+    }
+
+    public static Long executeScriptAndCastToLong(final WebDriver driver, final String statement) {
+
+        try {
+            final String value = (String) executeScript(driver, statement);
+            return Long.parseLong(value);
+        } catch (Exception e) {
+        }
+
+        try {
+            final Double value = (Double) executeScript(driver, statement);
+            return value.longValue();
+        } catch (Exception e) {
+        }
+
+        try {
+            return (Long) executeScript(driver, statement);
+        } catch (Exception e) {
+        }
+
+        return 0L;
     }
 }

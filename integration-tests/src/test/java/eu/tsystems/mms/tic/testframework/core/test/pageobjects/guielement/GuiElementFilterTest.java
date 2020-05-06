@@ -101,6 +101,14 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
     }
 
     @Test
+    public void testT05c_Displayed_Is() {
+
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").displayed());
+        nonVisibleTable.asserts().assertIsNotDisplayed();
+    }
+
+    @Test
     public void testT06_Size_IsBetween() {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement submitButton = new GuiElement(driver, By.xpath("//input[@type='submit']"));

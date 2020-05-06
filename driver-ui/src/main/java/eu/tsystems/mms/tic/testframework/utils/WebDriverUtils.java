@@ -39,7 +39,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -352,9 +351,16 @@ public final class WebDriverUtils {
      * @return Rectangle
      */
     public static Rectangle getViewport(WebDriver driver) {
-        final ArrayList<Long> list = (ArrayList<Long>) JSUtils.executeScript(driver, "return [window.pageXOffset, window.pageYOffset, window.innerWidth, window.innerHeight];");
-        return new Rectangle(list.get(0).intValue(), list.get(1).intValue(), list.get(2).intValue(), list.get(3).intValue());
+
+        // we have to do this step by step because of missmatching types..
+        final Long x = JSUtils.executeScriptAndCastToLong(driver, "return window.pageXOffset;");
+        final Long y = JSUtils.executeScriptAndCastToLong(driver, "return window.pageYOffset;");
+        final Long height = JSUtils.executeScriptAndCastToLong(driver, "return window.innerHeight;");
+        final Long width = JSUtils.executeScriptAndCastToLong(driver, "return window.innerWidth;");
+
+        return new Rectangle(x.intValue(), y.intValue(), height.intValue(), width.intValue());
     }
+
 
     /**
      * Initialize a {@link WebDriverKeepAliveSequence} and runs it with {@link Timer} in given interval.

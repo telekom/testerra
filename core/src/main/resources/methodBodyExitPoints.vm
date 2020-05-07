@@ -31,23 +31,27 @@
     <!-- readable message -->
     <div>
         <font class="message" style="$style2">
-            <b>
-                #if ($testMethod.errorContext().readableErrorMessage)
-                    $testMethod.errorContext().readableErrorMessage
+                #if ($testMethod.errorContext().getReadableMessageFormatted())
+                    <b>
+                        $testMethod.errorContext().getReadableMessageFormatted()
+                    </b>
                 #end
 
                 #if ($testMethod.priorityMessage)
-                <div class="skipped">
-                    $testMethod.priorityMessage
-                </div>
-                #end
-
-                #if ($testMethod.errorContext().additionalErrorMessage)
-                    <div style="color: Grey;">
-                    $testMethod.errorContext().additionalErrorMessage
+                    <div class="skipped">
+                        <b>
+                            $testMethod.priorityMessage
+                        </b>
                     </div>
                 #end
-            </b>
+
+                #if ($testMethod.errorContext().getAdditionalErrorMessageFormatted())
+                    <div style="color: Grey;">
+                        <b>
+                            $testMethod.errorContext().getAdditionalErrorMessageFormatted()
+                        </b>
+                    </div>
+                #end
         </font>
     </div>
 

@@ -247,7 +247,6 @@ public final class TesterraProperties {
     public static final String LAYOUTCHECK_INTRA_GROUPING_THRESHOLD = "tt.layoutcheck.intra.grouping.threshold";
     public static final String LAYOUTCHECK_MINIMUM_MARKED_PIXELS = "tt.layoutcheck.minimum.marked.pixels";
     public static final String LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO = "tt.layoutcheck.maximum.marked.pixels.ratio";
-    public static final String LAYOUTCHECK_MATCHING_ALGORITHM = "tt.layoutcheck.matching.algorithm";
     /**
      * minimalDistanceBetweenMatches
      */

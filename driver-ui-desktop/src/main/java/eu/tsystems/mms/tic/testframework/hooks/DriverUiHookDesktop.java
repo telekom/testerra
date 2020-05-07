@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiEle
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
-public class DesktopDriverHook implements ModuleHook {
+public class DriverUiHookDesktop implements ModuleHook {
 
     private static final String[] browsers = {
             Browsers.safari,

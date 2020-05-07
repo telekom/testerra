@@ -629,6 +629,17 @@ public final class JSUtils {
         return new Point(end.x - start.x, end.y - start.y);
     }
 
+    /**
+     * Executes a JavaScript snippet like 'return window.innerHeight;' for given {@link WebDriver} and parse it to a {@link Long} value.
+     * Will cast return values of JavaScript Snippet in following order
+     * 1. String
+     * 2. Double
+     * 3. Long
+     *
+     * @param driver    WebDriver instance
+     * @param statement JavaScript code to execute
+     * @return casted Long value!
+     */
     public static Long executeScriptAndCastToLong(final WebDriver driver, final String statement) {
 
         try {

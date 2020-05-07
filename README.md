@@ -15,7 +15,6 @@ UI Testing modules:
 
 Connectors:
 * [console-connector](console-connector/README.md)
-* [db-connector](db-connector/README.md)
 * [mail-connector](mail-connector/README.md)
 
 Additional modules:

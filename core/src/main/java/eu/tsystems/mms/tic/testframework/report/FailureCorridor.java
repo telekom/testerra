@@ -214,7 +214,7 @@ public final class FailureCorridor {
     }
 
     public static void printStatusToStdOut() {
-        String statusMessage = ReportUtils.getReportName() + " " + ExecutionContextController.EXECUTION_CONTEXT.runConfig + ": ";
+        String statusMessage = ReportUtils.getReportName() + " " + ExecutionContextController.getCurrentExecutionContext().runConfig + ": ";
         if (!FailureCorridor.isCorridorMatched()) {
             // show error first
             statusMessage += TestStatusController.getFinalCountersMessage() + " ";

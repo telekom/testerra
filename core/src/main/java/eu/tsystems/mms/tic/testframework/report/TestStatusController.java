@@ -179,8 +179,8 @@ public class TestStatusController {
                 throw new TesterraSystemException("Not implemented: " + status);
         }
 
-        // update team city progress
-        reportCountersToTeamCity();
+        // print out current test execution state
+        writeCounterToLog();
     }
 
     private static void levelFC(MethodContext methodContext, boolean raise) {
@@ -246,11 +246,11 @@ public class TestStatusController {
         return out;
     }
 
-    public static void reportCountersToTeamCity() {
+    public static void writeCounterToLog() {
         String counterInfoMessage = getCounterInfoMessage();
-        String teamCityMessage = ReportUtils.getReportName() + " " + EXECUTION_CONTEXT.runConfig.RUNCFG + ": " + counterInfoMessage;
+        String logMessage = ReportUtils.getReportName() + " " + EXECUTION_CONTEXT.runConfig.RUNCFG + ": " + counterInfoMessage;
 
-        LOGGER.info(teamCityMessage);
+        LOGGER.info(logMessage);
     }
 
     public static int getTestsFailed() {

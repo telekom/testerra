@@ -214,7 +214,7 @@ public final class FailureCorridor {
     }
 
     public static void printStatusToStdOut() {
-        String statusMessage = ReportUtils.getReportName() + " " + ExecutionContextController.EXECUTION_CONTEXT.runConfig.RUNCFG + ": ";
+        String statusMessage = ReportUtils.getReportName() + " " + ExecutionContextController.getCurrentExecutionContext().runConfig.RUNCFG + ": ";
         statusMessage += TestStatusController.getFinalCountersMessage() + " ";
         statusMessage += FailureCorridor.getStatusMessage();
 

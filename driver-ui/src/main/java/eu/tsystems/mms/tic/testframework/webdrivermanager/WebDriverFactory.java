@@ -69,7 +69,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
          */
         final DesiredCapabilities caps = new DesiredCapabilities();
         DesiredCapabilities tapOptions = new DesiredCapabilities();
-        ExecutionContextController.EXECUTION_CONTEXT.metaData.forEach(tapOptions::setCapability);
+        ExecutionContextController.getCurrentExecutionContext().metaData.forEach(tapOptions::setCapability);
         tapOptions.setCapability("scid", finalRequest.sessionContext.id);
         sessionContext.metaData.forEach(tapOptions::setCapability);
         tapOptions.setCapability("sessionKey", sessionContext.sessionKey);

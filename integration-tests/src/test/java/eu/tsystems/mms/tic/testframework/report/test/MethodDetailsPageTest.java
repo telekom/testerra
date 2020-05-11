@@ -227,7 +227,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
         AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().isDisplayed(), "The method details page indicates that the shown method is repaired.");
         AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("ticketId=1"), "The indicator for the repaired fails annotation contains the correct ticketId.");
-        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("description=\"Does not actually fail.\""), "The indicator for the repaired fails annotation contains the correct description.");
+        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("description=Does not actually fail."), "The indicator for the repaired fails annotation contains the correct description.");
     }
 
     /**
@@ -239,7 +239,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     public void testT09_checkScreenshotTab() {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "My_Context", "test_FailedInheritedMinor2");
         MethodScreenshotPage screenshotPage = GeneralWorkflow.doOpenReportMethodScreenshotPage(methodDetailsPage);
-        AssertCollector.assertTrue(screenshotPage.getScreenShot().isDisplayed(), "There is no screenshot in the methodDetailsPage of the first report.");
+        Assert.assertTrue(screenshotPage.getScreenShot().isDisplayed(), "There is no screenshot in the methodDetailsPage of the first report.");
     }
 
     /**

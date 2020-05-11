@@ -59,17 +59,19 @@ public class DashboardPageTest extends AbstractTestDashboard {
         if (dashboardPage.dashboardModuleTestResultNumberBreakdown.isNumberDisplayed(testResults)) {
             dashboardPage = dashboardPage.dashboardModuleTestResultNumberBreakdown.clickNumberForTestResult(testResults);
             //TODO sagu try to read out canvas
-            //List<GuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
-            //for (GuiElement bar : bars) {
-             //   String color = bar.getAttribute("fill");
-               // AssertCollector.assertEquals(color, testResults.getColor(), "The " + testResults.toString() + " bar chart in the fourth report has the correct color.");
-            //}
+            List<GuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
+            for (GuiElement bar : bars) {
+                String color = bar.getAttribute("fill");
+                AssertCollector.assertEquals(color, testResults.getColor(), "The " + testResults.toString() + " bar chart in the fourth report has the correct color.");
+            }
         }
-
     }
 
     /**
-     * Tests the desired pie chart segment and its displayed bars for the correct test method names.
+     * Tests the desired pie cha    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
+     *     @XrayTest(key="TAP2DEV-848")
+     *     public void testT03_checkListedMethodsAfterClickingPieAndBar(TestResult testResults) throws Exception {
+     *         //TODO try out other locator or using java scriptrt segment and its displayed bars for the correct test method names.
      * It runs once for every test status in the second report.
      */
     @Fails(ticketString = "TAP2DEV-667")

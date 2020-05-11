@@ -4,6 +4,8 @@ import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.report.general.TestsUnderTestGroup;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
 @TestContext(name = "My_Context")
@@ -20,6 +22,7 @@ public class ReportTestUnderTestFailed extends AbstractTest {
     }
     @Test
     public void test_FailedMinor2() throws Exception {
+
 
         NonFunctionalAssert.assertTrue(2>3);
         throw new Exception();
@@ -72,6 +75,10 @@ public class ReportTestUnderTestFailed extends AbstractTest {
     }
     @Test
     public void test_FailedInheritedMinor2() throws Exception {
+        WebDriver driver = WebDriverManager.getWebDriver();
+        driver.get("https://tap-as.io");
+        // Please don't delete this again without letting us know why.
+        // It is needed to create a screenshot for this test method.
         NonFunctionalAssert.assertTrue(2>3);
         throw new Exception();
     }

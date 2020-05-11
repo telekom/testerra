@@ -30,7 +30,6 @@ public class ClassesPageTest extends AbstractReportTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     @XrayTest(key = "TAP2DEV-825")
     public void testT01_checkAllNumbersOfOneTest() {
-        //TODO sagu check all rows
         final String className = ReportTestUnderTestDependsOn.class.getSimpleName();
 
         final Map<TestResultHelper.TestResultClassesColumn, String> expectedClassesTableRowNumbers = new HashMap<>();

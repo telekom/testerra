@@ -147,31 +147,12 @@ public class RetryTest extends AbstractReportTest {
     }
 
     /**
-     * Tests whether the retried test has no history entry
-     *
-     * @throws Exception
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "TAP2DEV-667")
-    @XrayTest(key = "TAP2DEV-795")
-    public void testT05_checkRetriedTestHistoryViewHasNoHistory() throws Exception {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
-        dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.FAILED);
-        dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
-        GuiElement methodDetail = dashboardPage.getMethodChartModule().getCurrentMethods().get(0);
-        MethodDetailsPage retryDetailsPage = GeneralWorkflow.doOpenReportMethodDetailsPage(dashboardPage, methodDetail);
-        GuiElement latestHistoryEntry = retryDetailsPage.getHistoryElementByPosition(1); // Latest
-        latestHistoryEntry.assertCollector().assertIsNotDisplayed();
-
-    }
-
-    /**
      * Tests whether the name of retried test with data provider has the expected structure
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
     @Fails(ticketString = "TAP2DEV-668")
     @XrayTest(key = "TAP2DEV-796")
-    public void testT06_checkRetriedTestsWithDataProviderTestMethodsHaveTheCorrectName() {
+    public void testT05_checkRetriedTestsWithDataProviderTestMethodsHaveTheCorrectName() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         final int numberOfRetryMethods = 3;
 
@@ -196,7 +177,7 @@ public class RetryTest extends AbstractReportTest {
 
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
     @XrayTest(key = "TAP2DEV-797")
-    public void testT07_checkMethodThatDependsOnPassedRetryIsSuccessful() {
+    public void testT06_checkMethodThatDependsOnPassedRetryIsSuccessful() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         ClassesDetailsPage reportTestUnderTestRetry = dashboardPage.goToClasses().gotoClassesDetailsPageForClass("ReportTestUnderTestRetry");

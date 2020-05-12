@@ -45,8 +45,9 @@
                     #if ($testMethod.errorContext().readableErrorMessage)
                         $testMethod.errorContext().readableErrorMessage
                     #end
-                    #if ($testMethod.errorContext().additionalErrorMessage)
-                        $testMethod.errorContext().additionalErrorMessage
+                    #if ($testMethod.errorContext().getAdditionalErrorMessageFormatted())
+                        <br>
+                        $testMethod.errorContext().getAdditionalErrorMessageFormatted()
                     #end
                 </b>
             </font>

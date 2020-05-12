@@ -214,22 +214,14 @@ public final class FailureCorridor {
     }
 
     public static void printStatusToStdOut() {
-        String statusMessage = ReportUtils.getReportName() + " " + ExecutionContextController.EXECUTION_CONTEXT.runConfig + ": ";
-        if (!FailureCorridor.isCorridorMatched()) {
-            // show error first
-            statusMessage += TestStatusController.getFinalCountersMessage() + " ";
-            statusMessage += FailureCorridor.getStatusMessage();
-        } else {
-            // show passed first
-            statusMessage += TestStatusController.getFinalCountersMessage() + " ";
-            statusMessage += FailureCorridor.getStatusMessage();
-        }
-
+        String statusMessage = ReportUtils.getReportName() + " " + ExecutionContextController.getCurrentExecutionContext().runConfig.RUNCFG + ": ";
+        statusMessage += TestStatusController.getFinalCountersMessage() + " ";
+        statusMessage += FailureCorridor.getStatusMessage();
 
         String statistics = getStatistics();
         System.out.println(statistics);
 
-        String stdOutMessage = "\n\ntesterra: " + statusMessage + "\n\n";
+        String stdOutMessage = "\n\nTesterra: " + statusMessage + "\n\n";
         System.out.println(stdOutMessage);
     }
 }

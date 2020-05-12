@@ -171,10 +171,10 @@ public final class WebDriverWatchDog {
 
 
                                             // update crashed execution context
-                                            ExecutionContextController.EXECUTION_CONTEXT.crashed = true;
+                                            ExecutionContextController.getCurrentExecutionContext().crashed = true;
                                             TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
                                                     .addUserData()
-                                                    .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.EXECUTION_CONTEXT));
+                                                    .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.getCurrentExecutionContext()));
 
                                             System.exit(99);
                                         }

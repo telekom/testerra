@@ -39,7 +39,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.EXECUTION_CONTEXT;
+import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.getCurrentExecutionContext;
 
 public class TestStatusController {
 
@@ -75,11 +75,11 @@ public class TestStatusController {
         statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
         statusMap.put("DryRun", Flags.DRY_RUN);
 
-        statusMap.put("Status", EXECUTION_CONTEXT.getStatus());
-        statusMap.put("StatusBool", EXECUTION_CONTEXT.getStatus() == Status.PASSED);
+        statusMap.put("Status", getCurrentExecutionContext().getStatus());
+        statusMap.put("StatusBool", getCurrentExecutionContext().getStatus() == Status.PASSED);
 
-        statusMap.put("RunCfg", EXECUTION_CONTEXT.runConfig.RUNCFG);
-        statusMap.put("Date", EXECUTION_CONTEXT.startTime.toString());
+        statusMap.put("RunCfg", getCurrentExecutionContext().runConfig.RUNCFG);
+        statusMap.put("Date", getCurrentExecutionContext().startTime.toString());
 
         return new JSONObject(statusMap);
     }
@@ -179,8 +179,8 @@ public class TestStatusController {
                 throw new TesterraSystemException("Not implemented: " + status);
         }
 
-        // update team city progress
-        reportCountersToTeamCity();
+        // print out current test execution state
+        writeCounterToLog();
     }
 
     private static void levelFC(MethodContext methodContext, boolean raise) {
@@ -246,11 +246,11 @@ public class TestStatusController {
         return out;
     }
 
-    public static void reportCountersToTeamCity() {
+    public static void writeCounterToLog() {
         String counterInfoMessage = getCounterInfoMessage();
-        String teamCityMessage = ReportUtils.getReportName() + " " + EXECUTION_CONTEXT.runConfig.RUNCFG + ": " + counterInfoMessage;
+        String logMessage = ReportUtils.getReportName() + " " + getCurrentExecutionContext().runConfig.RUNCFG + ": " + counterInfoMessage;
 
-        LOGGER.info(teamCityMessage);
+        LOGGER.info(logMessage);
     }
 
     public static int getTestsFailed() {

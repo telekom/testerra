@@ -75,7 +75,7 @@ public final class WebDriverSessionsManager {
     static final Map<EventFiringWebDriver, WebDriverRequest> DRIVER_REQUEST_MAP = new ConcurrentHashMap<>();
 
     private WebDriverSessionsManager() {
-        
+
     }
 
     private static String getFullSessionKey(String sessionKey) {
@@ -303,8 +303,8 @@ public final class WebDriverSessionsManager {
          */
         String sessionId = WebDriverUtils.getSessionId(eventFiringWebDriver);
         SessionContext sessionContext = ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.get(sessionId);
-        ExecutionContextController.EXECUTION_CONTEXT.exclusiveSessionContexts.add(sessionContext);
-        sessionContext.parentContext = ExecutionContextController.EXECUTION_CONTEXT;
+        ExecutionContextController.getCurrentExecutionContext().exclusiveSessionContexts.add(sessionContext);
+        sessionContext.parentContext = ExecutionContextController.getCurrentExecutionContext();
         // fire sync
         TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
                 .addUserData()

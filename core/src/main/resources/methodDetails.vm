@@ -46,7 +46,6 @@
         }
 
         $('.fotorama').on('fotorama:load', function () {
-            //console.log("layoutCheck$customError.image loaded");
             $('.fotorama').fotorama().resize();
         });
     </script>
@@ -162,7 +161,7 @@
                             <br/>
 
                             <div style="font-size: 30px; margin:10px;">
-                                <div style="color:${testMethod.status.color};">${testMethod.status.title}</div>
+                                <div data-qa="methodTestStatus" style="color:${testMethod.status.color};">${testMethod.status.title}</div>
 
                                 #if ($testMethod.isRetry())
                                     <img src="../style/retry.png" alt="Retry" style="width:40px;" title="Retry"/>
@@ -254,12 +253,12 @@
                                             <div style="color: red; font-size: 30px; padding: 25px; line-height: 40px;">
                                             #end
 
-                                            #if ($testMethod.errorContext().readableErrorMessage)
-                                                $testMethod.errorContext().readableErrorMessage
+                                            #if ($testMethod.errorContext().getReadableMessageFormatted())
+                                                $testMethod.errorContext().getReadableMessageFormatted()
                                             #end
-                                            #if ($testMethod.errorContext().additionalErrorMessage)
+                                            #if ($testMethod.errorContext().getAdditionalErrorMessageFormatted())
                                                 <div style="color: Grey; font-size: 30px; padding: 25px; line-height: 40px;">
-                                                    $testMethod.errorContext().additionalErrorMessage
+                                                    $testMethod.errorContext().getAdditionalErrorMessageFormatted()
                                                 </div>
                                             #end
                                             #if ($testMethod.priorityMessage)
@@ -342,7 +341,8 @@
                                         </div>
                                         <h3>Layout check: $customError.image</h3>
                                         <div class="dashboardTextSmall">Pixel distance: $customError.distance%</div>
-                                        <div class="fotorama layoutCheck$customError.image"
+                                        #set($fotoramaClassName="layoutCheck$foreach.count")
+                                        <div class="fotorama $fotoramaClassName"
                                              data-navposition="top"
                                              data-allowfullscreen="native"
                                              data-arrows="false"
@@ -364,7 +364,7 @@
                                                     <div data-img="$path" data-caption="$imageCaptions[$foreach.index]">
                                                         <div class="centeredItems">
                                                             <a class="gallerybutton" href="#" title="Fullscreen"
-                                                               onclick="toggleFotoramaFullscreen('.layoutCheck$customError.image')">
+                                                               onclick="toggleFotoramaFullscreen('.$fotoramaClassName')">
                                                                 <i class="bgwhite fa fa-arrows-alt"></i>
                                                             </a>
                                                             <!-- pic download link -->

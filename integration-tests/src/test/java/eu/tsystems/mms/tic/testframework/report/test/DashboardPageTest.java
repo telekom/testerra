@@ -102,7 +102,6 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * Tests if the tt. logo is displayed.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(ticketString = "TAP2DEV-623", description = "https://jira.t-systems-mms.eu/browse/TAP2DEV-623: Testerra Logo Decision outstanding.")
     @XrayTest(key = "TAP2DEV-849")
     public void testT04_checksIfTesterraLogoIsDisplayed() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));

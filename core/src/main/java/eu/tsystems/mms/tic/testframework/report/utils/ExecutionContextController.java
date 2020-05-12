@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 
 public class ExecutionContextController {
 
-    public static final ExecutionContext EXECUTION_CONTEXT = new ExecutionContext();
+    private static ExecutionContext EXECUTION_CONTEXT;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionContextController.class);
 
@@ -55,6 +55,13 @@ public class ExecutionContextController {
         return CURRENT_TEST_RESULT.get();
     }
 
+    public static ExecutionContext getCurrentExecutionContext() {
+        if (EXECUTION_CONTEXT == null) {
+            EXECUTION_CONTEXT = new ExecutionContext();
+        }
+        return EXECUTION_CONTEXT;
+    }
+
     public static boolean testRunFinished = false;
 
     /**
@@ -65,14 +72,14 @@ public class ExecutionContextController {
      * @return the ClassContext for the result.
      */
     public static ClassContext getClassContextFromTestResult(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
-        SuiteContext suiteContext = EXECUTION_CONTEXT.getSuiteContext(testResult, iTestContext);
+        SuiteContext suiteContext = getCurrentExecutionContext().getSuiteContext(testResult, iTestContext);
         TestContextModel testContextModel = suiteContext.getTestContext(testResult, iTestContext);
         ClassContext classContext = testContextModel.getClassContext(testResult, iTestContext, invokedMethod);
         return classContext;
     }
 
     public static ClassContext getClassContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod) {
-        SuiteContext suiteContext = EXECUTION_CONTEXT.getSuiteContext(iTestContext);
+        SuiteContext suiteContext = getCurrentExecutionContext().getSuiteContext(iTestContext);
         TestContextModel testContextModel = suiteContext.getTestContext(iTestContext);
         ClassContext classContext = testContextModel.getClassContext(iTestNgMethod);
         return classContext;
@@ -136,6 +143,7 @@ public class ExecutionContextController {
     }
 
     public static void printExecutionStatistics() {
+        final ExecutionContext EXECUTION_CONTEXT = getCurrentExecutionContext();
         final String prefix = "*** Stats: ";
 
         LOGGER.info(prefix + "**********************************************");
@@ -178,7 +186,7 @@ public class ExecutionContextController {
 
     public static void setEstimatedTestMethodCount(final int estimatedTestMethodCount) {
 
-        EXECUTION_CONTEXT.estimatedTestMethodCount = estimatedTestMethodCount;
+        getCurrentExecutionContext().estimatedTestMethodCount = estimatedTestMethodCount;
     }
 
 }

@@ -43,7 +43,7 @@ public class TestStartWorker extends MethodWorker implements Loggable {
                 // fire event for test start
                 TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.TEST_START)
                         .addUserData()
-                        .addData(TesterraEventDataType.TIMESTAMP, ExecutionContextController.EXECUTION_CONTEXT.startTime.getTime())
+                        .addData(TesterraEventDataType.TIMESTAMP, ExecutionContextController.getCurrentExecutionContext().startTime.getTime())
                         .addData(TesterraEventDataType.ITestResult, testResult)
                         .addData(TesterraEventDataType.IInvokedMethod, method)
                 );

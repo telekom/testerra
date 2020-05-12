@@ -76,7 +76,7 @@
 :layoutcheck_ignore_color:                      tt.layoutcheck.use.ignore.color
 
 :layoutcheck_use_area_color:                    tt.layoutcheck.use.area.color
-:layoutcheck_mode:                              tt.layoutcheck.mode
+// :layoutcheck_mode:                              tt.layoutcheck.mode
 :layoutcheck_actual_template:                   tt.layoutcheck.actual.nametemplate
 :layoutcheck_distance_template:                 tt.layoutcheck.distance.nametemplate
 :layoutcheck_distance_path:                     tt.layoutcheck.distance.path
@@ -86,7 +86,6 @@
 :layoutcheck_pixel_rgb_deviation_percent:       tt.layoutcheck.match.threshold
 :layoutcheck_displacement_threshold:            tt.layoutcheck.displacement.threshold
 :layoutcheck_intra_grouping_threshold:          tt.layoutcheck.intra.grouping.threshold
-:layoutcheck_matching_algorithm:                tt.layoutcheck.matching.algorithm
 :layoutcheck_min_match_distance:                tt.layoutcheck.min.match.distance
 :layoutcheck_min_size_difference_sub_images:    tt.layoutcheck.min.size.difference.sub.images
 :layoutcheck_distance_multiple_matches:         tt.layoutcheck.distance.multiple.matches
@@ -105,9 +104,9 @@
 // :layoutcheck_min_marked_pixels:                 tt.layoutcheck.minimum.marked.pixels
 // :layoutcheck_max_marked_pixels_ratio:           tt.layoutcheck.maximum.marked.pixels.ratio
 
-:layoutcheck_error_detector_min_line_length:    tt.layoutcheck.text.error.detector.minimal.line.length
+// :layoutcheck_error_detector_min_line_length:    tt.layoutcheck.text.error.detector.minimal.line.length
 // :layoutcheck_error_detector_min_edge_strength:  tt.layoutcheck.text.error.detector.minimal.edge.strength
-:layoutcheck_assert_info_mode:                  tt.layoutcheck.assert.info.mode
+// :layoutcheck_assert_info_mode:                  tt.layoutcheck.assert.info.mode
 
 // source utils
 :source_utils_root:                             tt.module.source.root

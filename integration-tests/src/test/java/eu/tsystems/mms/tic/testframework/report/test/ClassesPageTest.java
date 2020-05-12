@@ -71,8 +71,13 @@ public class ClassesPageTest extends AbstractReportTest {
     @XrayTest(key = "TAP2DEV-827")
     public void testT03_checkHidePassedFilter() {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
-        classesPage.hidePassedTests();
-        classesPage.assertClassesAreDisplayedForHidePassedTestFilter();
+
+        classesPage.assertAllPassedClassesAreDisplayed();
+        classesPage.assertAllFailedClassesAreDisplayed();
+
+        classesPage.clickButtonToHidePassedTests();
+        classesPage.assertAllPassedClassesAreNotDisplayed();
+        classesPage.assertAllFailedClassesAreDisplayed();
     }
 
     /**

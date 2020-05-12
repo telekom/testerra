@@ -9,12 +9,7 @@ import eu.tsystems.mms.tic.testframework.report.model.ReportAnnotationType;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.pageobjetcs.ClassesDetailsPage;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestAnnotations;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorMid;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestFailed;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestPassed;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestRetry;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestSkipped;
+import eu.tsystems.mms.tic.testframework.report.testundertest.*;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.testmanagement.annotation.XrayTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -63,6 +58,17 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.SKIPPED);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStateSkippedInherited1", TestResultHelper.TestResult.SKIPPED);
 
+        classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestExecutionFilter.class.getSimpleName());
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDEXPECTED);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedMinorAnnotatedWithFail_Run3", TestResultHelper.TestResult.FAILEDEXPECTED);
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILED); //failed after retry
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedNoMinorWithFailedRetry (2/2)", TestResultHelper.TestResult.FAILED);
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDRETRY);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithPassedRetry ", TestResultHelper.TestResult.PASSEDRETRY);
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.RETRIED); //retry of method which will fail next retry
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithFailedRetry (1/2)", TestResultHelper.TestResult.RETRIED);
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.RETRIED); //retry of method which will pass next retry
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithPassedRetry (1/2)", TestResultHelper.TestResult.RETRIED);
     }
 
     /**
@@ -106,11 +112,11 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
 
     /**
      * checkScreenShotSymbol
-     * Checks whether the SCREENSHOT symbol is displayed
+     * Checks whether the SCREENSHOT symbol is not displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
     @XrayTest(key = "TAP2DEV-834")
-    public void testT04_checkScreenShotSymbol() {
+    public void testT04_checkScreenShotSymbolIsNotDisplayed() {
         final String testundertestMethodName = "test_FailedInheritedMinor2";
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),

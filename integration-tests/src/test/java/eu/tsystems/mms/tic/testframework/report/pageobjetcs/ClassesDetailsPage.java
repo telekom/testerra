@@ -308,18 +308,16 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
     /**
      * Utility method to convert the CSS report representation of a color to java.awt Color Object.
      *
-     * @param cssColorString the css value of 'background-color' in report CSS. Example cssColorString: "rgba(255, 136, 136, 1)"
+     * @param cssColorString the css value of 'background-color' in report CSS. Example cssColorString: "rgb(255, 136, 136)"
      * @return java.awt.Color with four channels
      */
     private static Color toColorFromCSSColorString(String cssColorString) {
-        // Example cssColorString: "rgba(255, 136, 136, 1)"
+        // Example cssColorString: "rgb(255, 136, 136)"
         String[] colorValues = cssColorString.split(",");
         int redChannel = Integer.parseInt(colorValues[0].substring(colorValues[0].indexOf("(") + 1).trim());
         int greenChannel = Integer.parseInt(colorValues[1].trim());
-        int blueChannel = Integer.parseInt(colorValues[2].trim());
-        int alphaChannel = Integer.parseInt(colorValues[3].replace(")", "").trim());
-        alphaChannel = (int) (alphaChannel * 255 + 0.5); // from java Color(float...) constructor
-        return new Color(redChannel, greenChannel, blueChannel, alphaChannel);
+        int blueChannel = Integer.parseInt(colorValues[2].replace(")", "").trim());
+        return new Color(redChannel, greenChannel, blueChannel);
     }
 
     @Override

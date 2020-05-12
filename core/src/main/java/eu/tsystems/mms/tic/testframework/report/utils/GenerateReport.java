@@ -138,7 +138,7 @@ public class GenerateReport {
      * Stops logging of TesterraCommands. Statistics are filled and reports are generated.
      */
     public static void generateReport() {
-        ExecutionContextController.EXECUTION_CONTEXT.endTime = new Date();
+        ExecutionContextController.getCurrentExecutionContext().endTime = new Date();
         JVMMonitor.label("Report");
         pGenerateReport();
     }
@@ -147,7 +147,7 @@ public class GenerateReport {
         /*
         get ALL ClassContexts
          */
-        final List<ClassContext> allClassContexts = new ArrayList<>(ExecutionContextController.EXECUTION_CONTEXT.getMethodStatsPerClass(true, false).keySet());
+        final List<ClassContext> allClassContexts = new ArrayList<>(ExecutionContextController.getCurrentExecutionContext().getMethodStatsPerClass(true, false).keySet());
 
         /*
          * Build maps for exit points and failure aspects
@@ -214,8 +214,8 @@ public class GenerateReport {
         /*
         Store
          */
-        ExecutionContextController.EXECUTION_CONTEXT.exitPoints = exitPoints;
-        ExecutionContextController.EXECUTION_CONTEXT.failureAspects = failureAspects;
+        ExecutionContextController.getCurrentExecutionContext().exitPoints = exitPoints;
+        ExecutionContextController.getCurrentExecutionContext().failureAspects = failureAspects;
 
         /*
         final execution context sync
@@ -223,7 +223,7 @@ public class GenerateReport {
         TesterraEventService.getInstance().fireEvent(
                 new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
                         .addUserData()
-                        .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.EXECUTION_CONTEXT)
+                        .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.getCurrentExecutionContext())
         );
 
         /*
@@ -231,7 +231,7 @@ public class GenerateReport {
          */
         LOGGER.debug("Create Report...");
         ReportingData reportingData = new ReportingData();
-        reportingData.executionContext = ExecutionContextController.EXECUTION_CONTEXT;
+        reportingData.executionContext = ExecutionContextController.getCurrentExecutionContext();
         reportingData.failureCorridorMatched = FailureCorridor.isCorridorMatched();
         reportingData.classContexts = allClassContexts;
 
@@ -262,7 +262,7 @@ public class GenerateReport {
 
         final AtomicReference<Integer> testMethodsCount = new AtomicReference<>();
         testMethodsCount.set(0);
-        ExecutionContextController.EXECUTION_CONTEXT.copyOfSuiteContexts().forEach(
+        ExecutionContextController.getCurrentExecutionContext().copyOfSuiteContexts().forEach(
                 suiteContext -> {
                     System.out.println("Suite: " + suiteContext.name);
                     suiteContext.copyOfTestContexts().forEach(

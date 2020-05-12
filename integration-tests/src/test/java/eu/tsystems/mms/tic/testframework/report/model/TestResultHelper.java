@@ -135,6 +135,8 @@ public class TestResultHelper {
                 return new Color(0, 128, 0);
             case PASSEDMINOR:
                 return new Color(135, 206, 235);
+            case PASSEDRETRY:
+                return new Color(106, 189, 0);
             case SKIPPED:
                 return new Color(255, 165, 0);
             case FAILED:
@@ -144,7 +146,7 @@ public class TestResultHelper {
             case RETRIED:
                 return new Color(255, 182, 193);
             case FAILEDEXPECTED:
-                return new Color(0, 0, 0);
+                return new Color(128, 128, 128);
             default:
                 throw new TesterraRuntimeException("Color not implemented: " + testResult.getColor() + " for TestResult: " + testResult.toString());
         }

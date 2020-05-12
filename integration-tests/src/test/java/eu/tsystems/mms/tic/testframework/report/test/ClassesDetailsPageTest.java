@@ -36,8 +36,6 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
                 "My_Context");
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDMINOR);
-        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedInheritedMinor1", TestResultHelper.TestResult.FAILEDMINOR);
-        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDMINOR);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedMinor1", TestResultHelper.TestResult.FAILEDMINOR);
 
         classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestCorridorMid.class.getSimpleName());
@@ -48,25 +46,22 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSED);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStatePassed1", TestResultHelper.TestResult.PASSED);
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDMINOR);
-        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_PassedInheritedMinor1", TestResultHelper.TestResult.PASSEDMINOR);
-        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDMINOR);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_PassedMinor1", TestResultHelper.TestResult.PASSEDMINOR);
 
         classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestSkipped.class.getSimpleName());
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.SKIPPED);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStateSkipped1", TestResultHelper.TestResult.SKIPPED);
-        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.SKIPPED);
-        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStateSkippedInherited1", TestResultHelper.TestResult.SKIPPED);
 
         classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestExecutionFilter.class.getSimpleName());
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDEXPECTED);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedMinorAnnotatedWithFail_Run3", TestResultHelper.TestResult.FAILEDEXPECTED);
-        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILED); //failed after retry
-        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedNoMinorWithFailedRetry (2/2)", TestResultHelper.TestResult.FAILED);
+
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDRETRY);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithPassedRetry ", TestResultHelper.TestResult.PASSEDRETRY);
+
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.RETRIED); //retry of method which will fail next retry
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithFailedRetry (1/2)", TestResultHelper.TestResult.RETRIED);
+
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.RETRIED); //retry of method which will pass next retry
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithPassedRetry (1/2)", TestResultHelper.TestResult.RETRIED);
     }

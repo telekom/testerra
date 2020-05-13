@@ -16,7 +16,7 @@
 
                         #set($stepName = $step.getName())
                         <a href="#" class="listlayer2 list-group-item listitem"
-                           onclick="javascript:showDetailsLog('viewclass_${stepNumber}', '${testMethod.methodRunIndex}');">${stepNumber}
+                           onclick="javascript:showDetailsLog('viewclass_${stepNumber}', '${testMethod.methodRunIndex}');" title="${stepNumber}) ${stepName}">${stepNumber}
                             )
                             ${stepName}</a><br/>
 
@@ -26,16 +26,15 @@
                             #set($viewclass = "viewclass_${stepNumber}_${actionNumber}")
 
                             <!-- default action symbol -->
-                            #set($actionName = "<i class='fa fa-clone' aria-hidden='true' style='padding: 5px;'></i>")
+                            #set($actionSymbol = "<i class='fa fa-clone' aria-hidden='true' style='padding: 5px;'></i>")
                             #if ($action.getName())
-                                #set($actionName = "<i class='fa fa-clone' aria-hidden='true' style='padding: 5px;'></i>" +
-                                    $action.getName())
+                                #set($actionName = $action.getName())
                             #end
                             <a id="link_${viewclass}" href="#" class="listlayer3 list-group-item listitem"
                                style="padding-left:10px; opacity: 1;"
-                               onclick="javascript:showDetailsLog('$viewclass', '${testMethod.methodRunIndex}');">${stepNumber}
+                               onclick="javascript:showDetailsLog('$viewclass', '${testMethod.methodRunIndex}');" title="${stepNumber}.${actionNumber})) ${actionName}">${stepNumber}
                                 .${actionNumber})
-                                ${actionName}</a><br/>
+                                $actionSymbol ${actionName}</a><br/>
 
                         #end
                     #end

@@ -762,10 +762,20 @@ background-color:#b0bed9 !important;
 
 .listlayer2 {
     padding-left: 20px !important;
+    display:inline-block;
+    max-width: 300px;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .listlayer3 {
     padding-left: 35px !important;
+    display:inline-block;
+    overflow:hidden;
+    max-width: 300px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .listitem:hover {

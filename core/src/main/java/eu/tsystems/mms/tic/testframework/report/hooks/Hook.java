@@ -26,10 +26,6 @@ import org.testng.internal.ConstructorOrMethod;
 
 public abstract class Hook {
 
-    private Hook() {
-
-    }
-
     private static final Logger LOGGER = LoggerFactory.getLogger(Hook.class);
 
     protected static boolean dryRun(ITestNGMethod testNGMethod) {

@@ -1,7 +1,7 @@
 <!-- tree -->
-<table width="100%" style="margin-right: 10px;">
+<table width="100%" style="margin-right: 10px; table-layout:fixed;">
     <tr>
-        <td style="min-width:100px; max-width:400px;">
+        <td width="20%">
             <div class="selectList">
                 <div class="list-group textleft listitems">
                     <a style="text-align: center; display: block; width: 100%; padding: 3px;" href="#"
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </td>
-        <td>
+        <td width="80%">
             <!-- log -->
             <div class="testOutput" id="logging-${testMethod.methodRunIndex}">
                 <table id="logging-${testMethod.methodRunIndex}-table" class="dataTable">

@@ -684,7 +684,6 @@ background-color:#b0bed9 !important;
 
 .selectList {
   margin-top: 2rem;
-  min-width: 300px;
   box-shadow: 0 0 12px rgba(0,0,0,.07);
   line-height: 30px;
 
@@ -763,7 +762,7 @@ background-color:#b0bed9 !important;
 .listlayer2 {
     padding-left: 20px !important;
     display:inline-block;
-    max-width: 300px;
+    max-width: 100%;
     overflow:hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -773,7 +772,7 @@ background-color:#b0bed9 !important;
     padding-left: 35px !important;
     display:inline-block;
     overflow:hidden;
-    max-width: 300px;
+    max-width: 100%;
     text-overflow: ellipsis;
     white-space: nowrap;
 }

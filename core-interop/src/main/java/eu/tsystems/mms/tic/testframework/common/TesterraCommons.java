@@ -22,17 +22,19 @@ import eu.tsystems.mms.tic.testframework.report.DefaultLogAppender;
 import eu.tsystems.mms.tic.testframework.report.TesterraLogger;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.apache.log4j.Appender;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.appender.ConsoleAppender;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Enumeration;
+import java.util.Map;
 import java.util.Properties;
 
 public class TesterraCommons {
@@ -49,12 +51,14 @@ public class TesterraCommons {
      * and remove all duplicate ConsoleLoggers
      */
     private static void initializeLogging() {
-        BasicConfigurator.configure();
+        Configurator.initialize(new DefaultConfiguration());
 
-        org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
+        org.apache.logging.log4j.core.Logger root = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
         if (getTesterraLogger() == null) {
-            TesterraLogger testerraLogger = new DefaultLogAppender();
-            testerraLogger.setName(TesterraLogger.class.getSimpleName());
+            DefaultLogAppender.Builder builder = new DefaultLogAppender.Builder();
+            builder.setName(TesterraLogger.class.getSimpleName());
+            TesterraLogger testerraLogger = builder.build();
+
             root.addAppender(testerraLogger);
             root.setLevel(Level.INFO);
         }
@@ -63,19 +67,19 @@ public class TesterraCommons {
          * We have to remove the default {@link ConsoleAppender},
          * because the {@link TesterraLogger} already logs to System.out
          */
-        Enumeration allAppenders = root.getAllAppenders();
-        while (allAppenders.hasMoreElements()) {
-            Object appender = allAppenders.nextElement();
+        Map<String, Appender> allAppenders = root.getAppenders();
+        for (Appender appender : allAppenders.values()) {
             if (appender instanceof ConsoleAppender) {
-                root.removeAppender((ConsoleAppender) appender);
+                root.removeAppender(appender);
             }
         }
     }
 
     public static TesterraLogger getTesterraLogger() {
-        Appender testerraLogger = org.apache.log4j.Logger.getRootLogger().getAppender(TesterraLogger.class.getSimpleName());
+        org.apache.logging.log4j.core.Logger root = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
+        Appender testerraLogger = root.getAppenders().get(TesterraLogger.class.getSimpleName());
         if (testerraLogger != null) {
-            return (TesterraLogger)testerraLogger;
+            return (TesterraLogger) testerraLogger;
         } else {
             return null;
         }

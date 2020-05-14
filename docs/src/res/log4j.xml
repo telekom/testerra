@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
-    <!-- Define your own log level for your packages -->
-    <logger name="eu.tsystems.mms.my.package">
-        <level value="DEBUG" />
-    </logger>
-</log4j:configuration>
+<Configuration>
+    <Loggers>
+        <Logger name="eu.tsystems.mms.my.package" level="debug">
+        </Logger>
+    </Loggers>
+</Configuration>

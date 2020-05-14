@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report;
 
-import org.apache.log4j.spi.LoggingEvent;
+import org.apache.logging.log4j.core.LogEvent;
 
 public interface LogFormatter {
-    String format(final LoggingEvent event);
+    String format(final LogEvent event);
 }

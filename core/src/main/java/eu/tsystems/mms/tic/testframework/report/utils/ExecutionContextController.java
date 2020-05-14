@@ -55,7 +55,7 @@ public class ExecutionContextController {
         return CURRENT_TEST_RESULT.get();
     }
 
-    public static ExecutionContext getCurrentExecutionContext() {
+    public static synchronized ExecutionContext getCurrentExecutionContext() {
         if (EXECUTION_CONTEXT == null) {
             EXECUTION_CONTEXT = new ExecutionContext();
         }
@@ -68,7 +68,6 @@ public class ExecutionContextController {
      * Gets the ClassContext for TestNG ITestResult. If no ClassContext for result exists, it will set.
      *
      * @param testResult The ITestResult to set.
-     *
      * @return the ClassContext for the result.
      */
     public static ClassContext getClassContextFromTestResult(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
@@ -90,7 +89,6 @@ public class ExecutionContextController {
      * created.
      *
      * @param iTestResult The ITestResult to set.
-     *
      * @return the MethodContext for the result.
      */
     public static MethodContext getMethodContextFromTestResult(final ITestResult iTestResult, final ITestContext testContext) {
@@ -143,17 +141,17 @@ public class ExecutionContextController {
     }
 
     public static void printExecutionStatistics() {
-        final ExecutionContext EXECUTION_CONTEXT = getCurrentExecutionContext();
+        final ExecutionContext executionContext = getCurrentExecutionContext();
         final String prefix = "*** Stats: ";
 
         LOGGER.info(prefix + "**********************************************");
 
-        LOGGER.info(prefix + "ExecutionContext: " + EXECUTION_CONTEXT.name);
-        LOGGER.info(prefix + "SuiteContexts:  " + EXECUTION_CONTEXT.suiteContexts.size());
-        LOGGER.info(prefix + "TestContexts:   " + EXECUTION_CONTEXT.suiteContexts.stream().mapToInt(s -> s.testContextModels.size()).sum());
-        LOGGER.info(prefix + "ClassContexts:  " + EXECUTION_CONTEXT.suiteContexts.stream().flatMap(s -> s.testContextModels.stream()).mapToInt(t -> t.classContexts.size()).sum());
+        LOGGER.info(prefix + "ExecutionContext: " + executionContext.name);
+        LOGGER.info(prefix + "SuiteContexts:  " + executionContext.suiteContexts.size());
+        LOGGER.info(prefix + "TestContexts:   " + executionContext.suiteContexts.stream().mapToInt(s -> s.testContextModels.size()).sum());
+        LOGGER.info(prefix + "ClassContexts:  " + executionContext.suiteContexts.stream().flatMap(s -> s.testContextModels.stream()).mapToInt(t -> t.classContexts.size()).sum());
 
-        List<MethodContext> allMethodContexts = EXECUTION_CONTEXT.suiteContexts.stream().flatMap(s -> s.testContextModels.stream()).flatMap(t -> t.classContexts.stream()).flatMap(c -> c.methodContexts.stream()).collect(Collectors.toList());
+        List<MethodContext> allMethodContexts = executionContext.suiteContexts.stream().flatMap(s -> s.testContextModels.stream()).flatMap(t -> t.classContexts.stream()).flatMap(c -> c.methodContexts.stream()).collect(Collectors.toList());
 
         LOGGER.info(prefix + "MethodContexts: " + allMethodContexts.size());
 
@@ -169,7 +167,7 @@ public class ExecutionContextController {
 
         LOGGER.info(prefix + "**********************************************");
 
-        LOGGER.info(prefix + "ExecutionContext Status: " + EXECUTION_CONTEXT.getStatus());
+        LOGGER.info(prefix + "ExecutionContext Status: " + executionContext.getStatus());
         LOGGER.info(prefix + "FailureCorridor Enabled: " + Flags.FAILURE_CORRIDOR_ACTIVE);
 
         if (Flags.FAILURE_CORRIDOR_ACTIVE) {
@@ -179,7 +177,7 @@ public class ExecutionContextController {
 
         LOGGER.info(prefix + "**********************************************");
 
-        LOGGER.info(prefix + "Duration: " + EXECUTION_CONTEXT.getDuration(EXECUTION_CONTEXT.startTime, EXECUTION_CONTEXT.endTime));
+        LOGGER.info(prefix + "Duration: " + executionContext.getDuration(executionContext.startTime, executionContext.endTime));
 
         LOGGER.info(prefix + "**********************************************");
     }

@@ -32,7 +32,7 @@
                             #end
                             <a id="link_${viewclass}" href="#" class="listlayer3 list-group-item listitem"
                                style="padding-left:10px; opacity: 1;"
-                               onclick="javascript:showDetailsLog('$viewclass', '${testMethod.methodRunIndex}');" title="${stepNumber}.${actionNumber})) ${actionName}">${stepNumber}
+                               onclick="javascript:showDetailsLog('$viewclass', '${testMethod.methodRunIndex}');" title="${stepNumber}.${actionNumber}) ${actionName}">${stepNumber}
                                 .${actionNumber})
                                 $actionSymbol ${actionName}</a><br/>
 

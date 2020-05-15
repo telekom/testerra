@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.ConsoleAppender;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
@@ -51,26 +52,28 @@ public class TesterraCommons {
      * and remove all duplicate ConsoleLoggers
      */
     private static void initializeLogging() {
-        Configurator.initialize(new DefaultConfiguration());
+        DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
+        LoggerContext loggerContext = Configurator.initialize(defaultConfiguration);
+        Configurator.setRootLevel(Level.INFO);
+        org.apache.logging.log4j.core.Logger rootLogger = loggerContext.getRootLogger();
 
-        org.apache.logging.log4j.core.Logger root = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
         if (getTesterraLogger() == null) {
             DefaultLogAppender.Builder builder = new DefaultLogAppender.Builder();
             builder.setName(TesterraLogger.class.getSimpleName());
             TesterraLogger testerraLogger = builder.build();
 
-            root.addAppender(testerraLogger);
-            root.setLevel(Level.INFO);
+            rootLogger.addAppender(testerraLogger);
         }
 
         /**
          * We have to remove the default {@link ConsoleAppender},
          * because the {@link TesterraLogger} already logs to System.out
          */
-        Map<String, Appender> allAppenders = root.getAppenders();
-        for (Appender appender : allAppenders.values()) {
-            if (appender instanceof ConsoleAppender) {
-                root.removeAppender(appender);
+        Map<String, Appender> allAppenders = rootLogger.getAppenders();
+
+        for (Map.Entry<String, Appender> appender : allAppenders.entrySet()) {
+            if (appender.getValue() instanceof ConsoleAppender) {
+                rootLogger.removeAppender(appender.getValue());
             }
         }
     }

@@ -64,6 +64,7 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
                 sb.append(ste);
             }
         }
+
         // append for console
         if (event.getLevel().isMoreSpecificThan(Level.ERROR)) {
             System.err.println(sb.toString());

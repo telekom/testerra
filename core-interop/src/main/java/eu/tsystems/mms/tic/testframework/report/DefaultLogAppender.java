@@ -34,11 +34,11 @@ import java.io.Serializable;
  * BaseLoggingActor allows to use log4j logs for HTML Reports.
  */
 @Plugin(name = "DefaultLog", category = Core.CATEGORY_NAME, elementType = Appender.ELEMENT_TYPE, printObject = true)
-public class DefaultLogAppender extends AbstractOutputStreamAppender<OutputStreamManager> implements TesterraLogger {
+public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogAppenderOutputStreamManager> implements TesterraLogger {
 
     private LogFormatter formatter = new DefaultLogFormatter();
 
-    protected DefaultLogAppender(String name, Layout<? extends Serializable> layout, Filter filter, boolean ignoreExceptions, boolean immediateFlush, Property[] properties, OutputStreamManager manager) {
+    protected DefaultLogAppender(String name, Layout<? extends Serializable> layout, Filter filter, boolean ignoreExceptions, boolean immediateFlush, Property[] properties, eu.tsystems.mms.tic.testframework.report.DefaultLogAppenderOutputStreamManager manager) {
         super(name, layout, filter, ignoreExceptions, immediateFlush, properties, manager);
     }
 
@@ -112,7 +112,7 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<OutputStrea
         }
     }
 
-    private static class OutputStreamManagerFactory implements ManagerFactory<OutputStreamManager, DefaultLogAppender.FactoryData> {
+    private static class DefaultLogAppenderOutputStreamManagerFactory implements ManagerFactory<DefaultLogAppenderOutputStreamManager, DefaultLogAppender.FactoryData> {
 
         /**
          * Creates an OutputStreamManager.
@@ -124,12 +124,12 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<OutputStrea
          * @return The OutputStreamManager
          */
         @Override
-        public OutputStreamManager createManager(final String name, final DefaultLogAppender.FactoryData data) {
-            return AbstractManager.getManager(name, factory, data);
+        public DefaultLogAppenderOutputStreamManager createManager(final String name, final FactoryData data) {
+            return new DefaultLogAppenderOutputStreamManager(data.os, data.name, data.layout, true);
         }
     }
 
-    private static DefaultLogAppender.OutputStreamManagerFactory factory = new DefaultLogAppender.OutputStreamManagerFactory();
+    private static DefaultLogAppenderOutputStreamManagerFactory factory = new DefaultLogAppenderOutputStreamManagerFactory();
 
     @PluginFactory
     public static DefaultLogAppender createAppender(Layout<? extends Serializable> layout, final Filter filter,
@@ -144,12 +144,12 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<OutputStrea
         return new DefaultLogAppender(name, layout, filter, ignore, true, null, getManager(target, follow, layout));
     }
 
-    private static OutputStreamManager getManager(final OutputStream target, final boolean follow,
-                                                  final Layout<? extends Serializable> layout) {
+    private static DefaultLogAppenderOutputStreamManager getManager(final OutputStream target, final boolean follow,
+                                                                                                             final Layout<? extends Serializable> layout) {
         final OutputStream os = target == null ? NullOutputStream.getInstance() : new CloseShieldOutputStream(target);
         final OutputStream targetRef = target == null ? os : target;
         final String managerName = targetRef.getClass().getName() + "@" + Integer.toHexString(targetRef.hashCode())
                 + '.' + follow;
-        return OutputStreamManager.getManager(managerName, new DefaultLogAppender.FactoryData(os, managerName, layout), factory);
+        return DefaultLogAppenderOutputStreamManager.getManager(managerName, new DefaultLogAppender.FactoryData(os, managerName, layout), factory);
     }
 }

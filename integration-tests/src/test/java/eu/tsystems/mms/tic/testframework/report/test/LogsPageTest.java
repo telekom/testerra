@@ -36,11 +36,13 @@ public class LogsPageTest extends AbstractReportTest {
     @XrayTest(key = "TAP2DEV-427")
     public void testT02_checkForCorrectDisplayOfLogs() {
         LogsPage logsPage = GeneralWorkflow.doOpenBrowserAndReportLogsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
-        logsPage.assertLogMessageIsDisplayed(
+        logsPage.insertSerachTermInInSearchBar(
                 PropertyManager.getProperty("logsPageTestLogLevelValue"),
                 PropertyManager.getProperty("logsPageTestLogMessageValue"),
                 PropertyManager.getProperty("logsPageTestLogLoggerValue"),
                 PropertyManager.getProperty("logsPageTestLogThreadValue")
         );
+        
+        logsPage.assertLogMessageIsDisplayed();
     }
 }

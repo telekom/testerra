@@ -51,11 +51,14 @@ public class LogsPage extends AbstractReportPage {
         includeFilter.asserts().assertIsDisplayed();
     }
 
-    public void assertLogMessageIsDisplayed(String level, String message, String logger, String thread){
-        GuiElement includeFilterInputField = includeFilter.getSubElement(By.xpath(".//input[@type='search']"));
-        includeFilterInputField.type(thread + ' ' + logger + ' ' + message + ' ' + level);
-
+    public void assertLogMessageIsDisplayed(){
         GuiElement errorMessage = new GuiElement (this.getWebDriver(), By.xpath("//td[text()='No matching records found']"), mainFrame);
         errorMessage.asserts().assertIsNotDisplayed();
+    }
+
+    public void insertSerachTermInInSearchBar(String level, String message, String logger, String thread){
+        GuiElement includeFilterInputField = includeFilter.getSubElement(By.xpath(".//input[@type='search']"));
+        includeFilterInputField.clear();
+        includeFilterInputField.type(thread + ' ' + logger + ' ' + message + ' ' + level);
     }
 }

@@ -389,7 +389,6 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     @XrayTest(key = "TAP2DEV-823")
-    @Fails(ticketString = "TAP2DEV-924")
     public void testT17_checkStepsTab() {
         String testmethod = "test_TestStatePassed1";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), testmethod);

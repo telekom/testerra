@@ -42,7 +42,7 @@ public class LogsPageTest extends AbstractReportTest {
                 PropertyManager.getProperty("logsPageTestLogLoggerValue"),
                 PropertyManager.getProperty("logsPageTestLogThreadValue")
         );
-        
+
         logsPage.assertLogMessageIsDisplayed();
     }
 }

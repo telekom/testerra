@@ -8,6 +8,7 @@ public final class SystemTestsGroup {
     public static final String SYSTEMTESTSFILTER4 = "SYSTEMTESTSFILTER4";
     public static final String SYSTEMTESTSFILTER5 = "SYSTEMTESTSFILTER5";
     public static final String SYSTEMTESTSFILTER6 = "SYSTEMTESTSFILTER6";
+    public static final String SYSTEMTESTSFILTER7 = "SYSTEMTESTSFILTER7";
     public static final String SYSTEMTESTSFILTER8 = "SYSTEMTESTSFILTER8";
     public static final String SYSTEMTESTSFILTER9 = "SYSTEMTESTSFILTER9";
 

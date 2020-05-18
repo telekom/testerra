@@ -113,6 +113,17 @@
         </classes>
     </test>
 
+    <test name="7th Report Test">
+        <groups>
+            <run>
+                <include name="SYSTEMTESTSFILTER7"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.test.ThreadsPageTest"/>
+        </classes>
+    </test>
+
     <test name="8th Report Test">
         <groups>
             <run>

@@ -13,7 +13,7 @@ public class ThreadsPage extends AbstractReportPage {
     private GuiElement headLine = new GuiElement(this.getWebDriver(), By.xpath("//h2[text()='Threads']"), mainFrame);
     private GuiElement threadsDataTable = new GuiElement(this.getWebDriver(), By.id("mytimeline"), mainFrame);
 
-    private String LOCATOR_METHOD_NAME_LINK = "//font[text()='%s']/..";
+    private String LOCATOR_METHOD_NAME_LINK = "(//font[text()='%s']/..)[last()]";
 
     public ThreadsPage(WebDriver driver) {
         super(driver);
@@ -26,8 +26,6 @@ public class ThreadsPage extends AbstractReportPage {
     public MethodDetailsPage clickMethodAndOpenMethodDetailsPage(String methodName) {
         GuiElement methodNameLink = new GuiElement(this.getWebDriver(), By.xpath(String.format(LOCATOR_METHOD_NAME_LINK, methodName)), mainFrame);
         methodNameLink.scrollToElement();
-        //TODO horizontal scroll is needed until the element is clickable. The Method scrollToElement only scrolls vertically
-
         methodNameLink.click();
 
         return PageFactory.create(MethodDetailsPage.class, this.getWebDriver());

@@ -50,10 +50,10 @@ public class ThreadsPageTest extends AbstractReportTest {
      * This test checks for every test status whether the link from the threads page corresponds to the correct methodDetailsPage.
      * It runs once for each possible test status.
      */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testMethods")
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER7}, dataProvider = "testMethods")
     @XrayTest(key = "TAP2DEV-913")
     public void testT02_checkCorrectLinksFromThreadsPageToMethodDetailsPage(String methodName, TestResultHelper.TestResult methodResult) {
-        ThreadsPage threadsPage = GeneralWorkflow.doOpenBrowserAndReportThreadsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
+        ThreadsPage threadsPage = GeneralWorkflow.doOpenBrowserAndReportThreadsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_7.getReportDirectory()));
         MethodDetailsPage methodDetailsPage = threadsPage.clickMethodAndOpenMethodDetailsPage(methodName);
         methodDetailsPage.assertCorrectTestMethodIsDisplayed(methodName, methodResult);
     }

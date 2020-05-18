@@ -18,6 +18,10 @@
             <class name="eu.tsystems.mms.tic.testframework.report.test.ClassesDetailsPageTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.functional.DependsOnTest"/>
             <class name="eu.tsystems.mms.tic.testframework.report.test.ReportExportTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.report.test.MonitorPageTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.report.test.TimingsPageTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.report.test.ThreadsPageTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.report.test.LogsPageTest"/>
         </classes>
     </test>
 

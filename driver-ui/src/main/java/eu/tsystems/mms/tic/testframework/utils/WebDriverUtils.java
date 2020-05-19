@@ -352,9 +352,11 @@ public final class WebDriverUtils {
      * @return Rectangle
      */
     public static Rectangle getViewport(WebDriver driver) {
-        final ArrayList<Long> list = (ArrayList<Long>) JSUtils.executeScript(driver, "return [window.pageXOffset, window.pageYOffset, window.innerWidth, window.innerHeight];");
-        return new Rectangle(list.get(0).intValue(), list.get(1).intValue(), list.get(2).intValue(), list.get(3).intValue());
+
+        final ArrayList<String> list = (ArrayList<String>) JSUtils.executeScript(driver, "return [window.pageXOffset.toString(), window.pageYOffset.toString(), window.innerWidth.toString(), window.innerHeight.toString()];");
+        return new Rectangle(Integer.valueOf(list.get(0)), Integer.valueOf(list.get(1)), Integer.valueOf(list.get(2)), Integer.valueOf(list.get(3)));
     }
+
 
     /**
      * Initialize a {@link WebDriverKeepAliveSequence} and runs it with {@link Timer} in given interval.

@@ -1,5 +1,8 @@
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;

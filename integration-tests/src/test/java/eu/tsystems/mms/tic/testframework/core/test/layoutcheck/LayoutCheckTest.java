@@ -24,6 +24,9 @@ import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class LayoutCheckTest extends AbstractTestSitesTest {
@@ -50,15 +53,18 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
     public void testCheckElementVisibility() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertVisible(true);
+        Assert.assertTrue(guiElement.isVisible(true));
 
         guiElement = getGuiElementQa("section/invisibleTestArticle");
         guiElement.asserts().assertNotVisible();
+        Assert.assertFalse(guiElement.isVisible(true));
 
         // Scroll to offset doesn't work
         //guiElement.scrollToElement(300);
         //Assert.assertFalse(guiElement.isVisible(true));
 
         guiElement.scrollToElement();
+        Assert.assertTrue(guiElement.isVisible(true));
         guiElement.asserts().assertVisible(true);
     }
 
@@ -78,4 +84,5 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
     public void testCheckPageLayout() {
         LayoutCheck.assertScreenshot(WebDriverManager.getWebDriver(), "LayoutTestPage", 1);
     }
+
 }

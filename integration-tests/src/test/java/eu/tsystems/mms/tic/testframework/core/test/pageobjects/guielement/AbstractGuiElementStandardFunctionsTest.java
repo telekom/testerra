@@ -338,6 +338,12 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         Assert.assertNotNull(webElement);
     }
 
+    @Test
+    public void testT28a_GuiElement_findByName() {
+        final GuiElement linkOpenAgain = getGuiElementBy(Locate.by().name("radioBtn"));
+        Assert.assertNotNull(linkOpenAgain.getWebElement());
+    }
+
     /**
      * Test if mouseOver() works with TesterraProperties "false"
      */
@@ -816,7 +822,6 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     @Test
     public void test_GuiElement_NotVisible_IsDisplayed() {
         GuiElement element = getGuiElementBy(By.id("notVisibleElement"));
-        ;
         Assert.assertFalse(element.isDisplayed(), "The Element is displayed.");
     }
 
@@ -826,6 +831,13 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         String tagName = element.getTagName();
 
         Assert.assertEquals(tagName, "a", "Expected Tagname was found");
+    }
+
+    @Test
+    public void testT85a_GuiElement_getTagName() {
+        GuiElement element = getGuiElementBy(Locate.by().tagName("a"));
+        Assert.assertTrue(element.isDisplayed(), "The Element is displayed.");
+        Assert.assertEquals(element.getTagName(), "a", "Expected Tagname was found");
     }
 
     @Test

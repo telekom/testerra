@@ -18,12 +18,13 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.core.utils.LogAssertUtils;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -31,7 +32,7 @@ import java.io.File;
 public class GuiElementAdditionalTests extends AbstractTestSitesTest {
 
     @Test
-    public void testUpload() {
+    public void testT01_Upload() {
         final WebDriver driver = WebDriverManager.getWebDriver();
         final File resourceFile = FileUtils.getResourceFile("testfiles/Test.txt");
         final String absoluteFilePath = resourceFile.getAbsolutePath();
@@ -40,5 +41,21 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
         GuiElement input = new GuiElement(driver, By.id("2"));
         input.sendKeys(absoluteFilePath);
     }
+
+    @Test
+    public void testT02_SensibleData() {
+
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement input = new GuiElement(driver, By.id("1")).sensibleData();
+
+        Assert.assertTrue(input.isDisplayed());
+        Assert.assertTrue(input.hasSensibleData());
+
+        input.type("testT02_SensibleData");
+        // pageobjects.GuiElement - type "*****************" on By.id: 1
+        LogAssertUtils.assertEntryInLogFile("pageobjects.GuiElement - type \"*****************\" on By.id: 1");
+        LogAssertUtils.assertEntryNotInLogFile("pageobjects.GuiElement - type \"testT02_SensibleData\" on By.id: 1");
+    }
+
 
 }

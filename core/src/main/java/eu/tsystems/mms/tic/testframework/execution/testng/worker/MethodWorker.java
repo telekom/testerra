@@ -27,6 +27,7 @@ import org.testng.ITestResult;
 import java.lang.reflect.Method;
 
 public abstract class MethodWorker implements Worker {
+
     protected ITestResult testResult;
     protected ITestNGMethod testMethod;
     protected Method method;
@@ -39,6 +40,9 @@ public abstract class MethodWorker implements Worker {
     }
 
     public static class SharedTestResultAttributes {
+
+        private SharedTestResultAttributes() { }
+
         public static final String failsFromCollectedAssertsOnly = "failsFromCollectedAssertsOnly";
         public static final String expectedFailed = "expectedFailed";
     }
@@ -67,7 +71,7 @@ public abstract class MethodWorker implements Worker {
     }
 
     protected boolean isFailed() {
-        return (!isSuccess()&& !isSkipped());
+        return (!isSuccess() && !isSkipped());
     }
 
     public abstract void run();

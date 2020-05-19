@@ -18,8 +18,8 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import org.apache.log4j.Level;
-import org.apache.log4j.spi.LoggingEvent;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.LogEvent;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -40,10 +40,10 @@ public class LogMessage implements Serializable, Loggable {
         this.message = message;
     }
 
-    public LogMessage(LoggingEvent event) {
+    public LogMessage(LogEvent event) {
         this.level = event.getLevel();
         this.threadName = event.getThreadName();
-        this.timestamp = event.getTimeStamp();
+        this.timestamp = event.getTimeMillis();
         this.loggerName = event.getLoggerName();
         this.message = event.getMessage().toString();
     }

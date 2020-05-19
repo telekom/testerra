@@ -92,13 +92,8 @@ public class LayoutComparator {
      * Public constructor
      */
     public LayoutComparator() {
-        String matcherProperty = PropertyManager.getProperty(TesterraProperties.LAYOUTCHECK_MATCHING_ALGORITHM, "opencvtemplatematcher");
-        TemplateMatchingAlgorithm templateMatchingAlgorithm;
-        if (matcherProperty.equals("opencvtemplatematcher")) {
-            templateMatchingAlgorithm = new OpenCvTemplateMatcher(OpenCvTemplateMatcher.MatchingMode.CCOEFF_NORMED);
-        } else {
-            throw new RuntimeException("Template Matching Algorithm \"" + matcherProperty + "\" not known, can't match with it.");
-        }
+
+        final TemplateMatchingAlgorithm templateMatchingAlgorithm = new OpenCvTemplateMatcher(OpenCvTemplateMatcher.MatchingMode.CCOEFF_NORMED);
 
         templateMatcher = new GraphBasedTemplateMatcher(templateMatchingAlgorithm);
         annotationReader = new AnnotationReader();

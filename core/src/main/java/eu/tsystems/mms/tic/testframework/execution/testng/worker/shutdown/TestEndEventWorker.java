@@ -30,7 +30,7 @@ public class TestEndEventWorker extends GenerateReportsWorker {
     @Override
     public void run() {
         // fire event
-        long startTime = ExecutionContextController.EXECUTION_CONTEXT.startTime.getTime();
+        long startTime = ExecutionContextController.getCurrentExecutionContext().startTime.getTime();
         long endTime = new Date().getTime();
         TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.TEST_END)
                 .addUserData()

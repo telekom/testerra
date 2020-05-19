@@ -1,0 +1,43 @@
+= Annotations for Report adjustment
+
+include::../properties/property-attributes.adoc[]
+To improve the readability and clarity of the report there are several annotations for marking the test class and test methods,
+which are described in the following paragraphs as well as in <<#Fails, @Fails>>, <<#Retry, @Retry>>, <<#InDevelopment, @InDevelopment>> and <<#NoRetry, @NoRetry>>.
+
+== @New
+This marks a test method as `New`, which is shown with this text in the report. Customization is possible with two attributes name and color in the annotation.
+
+* name: change the shown text in the report. Default is `New`
+* color: change the background color of the shown text. Default is `cadetblue`. Values need to be valid for html colors.
+** name of the color, e.g. red
+** RGB values, e.g. rgb(255, 236, 139)
+** RGBA values, e.g. rgba(252, 156, 249, 0.75)
+** HSL values, e.g. hsl(217, 97%, 57%)
+** Hex values, e.g. #57c0ff
+
+== @ReadyForApproval
+This marks a test method as `Ready For Approval`, which is characteristically shown with this text the report. Customization is possible with the two attributes name and color in the annotation.
+
+* name: change the shown text in the report. Default is `Ready For Approval`
+* color: change the background color of the shown text. Default is `indianred`. Values need to be valid for html colors.
+
+See <<New, @New>> for explanation.
+
+== @SupportMethod
+This marks a test method as `Support Method`, which is characteristically shown with this text the report. Retests won't skip these methods if previously passed. Customization is possible with the two attributes name and color in the annotation.
+
+* name: change the shown text in the report. Default is `Support Method`
+* color: change the background color of the shown text. Default is `#848282`. Values need to be valid for html colors.
+
+See <<New, @New>> for explanation.
+
+== @InfoMethod
+Methods marked with this annotation are shown in the section `Info` of the report.
+
+== @TestContext
+With this annotation you can set the TestContext for the given test class. There two attributes for adjustments.
+
+* name: name of the Context, default = `""`
+* mode: TestContext.Mode.ONE_FOR_ALL or TestContext.Mode.ONE_FOR_EACH, default = `TestContext.Mode.ONE_FOR_ALL`
+
+The Executed tests are then shown in the classes overview of the report as a entry labeled with `name` from <<TestContext, @TestContext>>.

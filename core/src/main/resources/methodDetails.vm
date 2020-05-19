@@ -253,12 +253,12 @@
                                             <div style="color: red; font-size: 30px; padding: 25px; line-height: 40px;">
                                             #end
 
-                                            #if ($testMethod.errorContext().readableErrorMessage)
-                                                $testMethod.errorContext().readableErrorMessage
+                                            #if ($testMethod.errorContext().getReadableMessageFormatted())
+                                                $testMethod.errorContext().getReadableMessageFormatted()
                                             #end
-                                            #if ($testMethod.errorContext().additionalErrorMessage)
+                                            #if ($testMethod.errorContext().getAdditionalErrorMessageFormatted())
                                                 <div style="color: Grey; font-size: 30px; padding: 25px; line-height: 40px;">
-                                                    $testMethod.errorContext().additionalErrorMessage
+                                                    $testMethod.errorContext().getAdditionalErrorMessageFormatted()
                                                 </div>
                                             #end
                                             #if ($testMethod.priorityMessage)

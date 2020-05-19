@@ -37,9 +37,9 @@ import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UIDriverHook implements ModuleHook {
+public class DriverUiHook implements ModuleHook {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UIDriverHook.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DriverUiHook.class);
 
     @Override
     public void init() {

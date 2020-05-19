@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -114,23 +115,26 @@ public final class Booter {
         configurationBuilder.forPackages("eu.tsystems.mms.tic");
 
         synchronized (Locks.REFLECTIONS) {
-            Reflections reflections = new Reflections(configurationBuilder);
-            Set<Class<? extends ModuleHook>> hooks = reflections.getSubTypesOf(ModuleHook.class);
+            final Reflections reflections = new Reflections(configurationBuilder);
+            final Set<Class<? extends ModuleHook>> hooks = reflections.getSubTypesOf(ModuleHook.class);
 
             if (hooks.isEmpty()) {
                 LOGGER.debug("No Init Hooks found");
             }
 
-            hooks.forEach(aClass -> {
-                try {
-                    ModuleHook moduleHook = aClass.getConstructor().newInstance();
-                    LOGGER.debug("Initialize " + ModuleHook.class.getSimpleName() + ": " + aClass.getSimpleName());
-                    moduleHook.init();
-                    MODULE_HOOKS.add(moduleHook);
-                } catch (Exception e) {
-                    LOGGER.error("Could not load Init Hook " + aClass.getSimpleName());
-                }
-            });
+            // init hooks in alphabetical order to avoid random initialization
+            hooks.stream()
+                    .sorted(Comparator.comparing(Class::getSimpleName))
+                    .forEach(aClass -> {
+                        try {
+                            final ModuleHook moduleHook = aClass.getConstructor().newInstance();
+                            LOGGER.debug("Initialize " + ModuleHook.class.getSimpleName() + ": " + aClass.getSimpleName());
+                            moduleHook.init();
+                            MODULE_HOOKS.add(moduleHook);
+                        } catch (Exception e) {
+                            LOGGER.error("Could not load Init Hook " + aClass.getSimpleName());
+                        }
+                    });
         }
     }
 

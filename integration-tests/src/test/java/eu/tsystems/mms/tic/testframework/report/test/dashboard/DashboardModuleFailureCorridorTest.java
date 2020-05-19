@@ -25,7 +25,7 @@ public class DashboardModuleFailureCorridorTest extends AbstractTestDashboard {
      * This test checks the color of the label that indicates whether the failure corridor is matched or not.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testResultNumbers")
-    @XrayTest(key = "TAP2DEV-852")
+    // Test case #852
     public void testT01_checkFailureCorridorMatchingForColor(ReportDirectory report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = getDashboardPage(report);
         GuiElement corridorMatch = dashboardPage.dashboardModuleFailureCorridor.failureCorridorDescription;
@@ -38,7 +38,7 @@ public class DashboardModuleFailureCorridorTest extends AbstractTestDashboard {
      * This test checks the numbers of the failure corridor.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testResultNumbers")
-    @XrayTest(key = "TAP2DEV-424")
+    // Test case #424
     public void testT02_checkFailureCorridorNumbers(ReportDirectory report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = getDashboardPage(report);
 

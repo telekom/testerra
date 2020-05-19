@@ -29,7 +29,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the color of test results are correct
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    @XrayTest(key="TAP2DEV-831")
+    // Test case #831
     public void testT01_checkTestResultsColorsAreDisplayedAndTestResultCategoryIsCorrect() {
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
@@ -70,7 +70,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks the displayed method information for passed tests. Concerns method name and Details Button.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    @XrayTest(key="TAP2DEV-832")
+    // Test case #832
     public void testT02_checkTestMethodInformationForPassedTests() {
 
         Class<ReportTestUnderTestPassed> classWithPassedMethods = ReportTestUnderTestPassed.class;
@@ -88,7 +88,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks the displayed method information for failed tests. Concerns method name, stack trace and Details Button.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    @XrayTest(key = "TAP2DEV-833")
+    // Test case #833
     public void testT03_checkTestMethodInformationForFailedTests() {
 
         Class<ReportTestUnderTestFailed> classWithFailedMethods = ReportTestUnderTestFailed.class;
@@ -110,7 +110,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the SCREENSHOT symbol is not displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @XrayTest(key = "TAP2DEV-834")
+    // Test case #834
     public void testT04_checkScreenShotSymbolIsNotDisplayed() {
         final String testundertestMethodName = "test_FailedInheritedMinor2";
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
@@ -124,7 +124,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the annotation marks are displayed correctly on Classes Details Page
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-835")
+    // Test case #835
     public void testT05_checkAnnotationsAreDisplayed() {
         //TODO use DataProvider for this, enhanced to Minor Errors
         HashMap<String, List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
@@ -150,7 +150,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the RETRY symbol is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @XrayTest(key = "TAP2DEV-836")
+    // Test case #836
     public void testT06_checkAnnotationsForRetry() {
         TestStep.begin("Check Retried Annotation");
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(

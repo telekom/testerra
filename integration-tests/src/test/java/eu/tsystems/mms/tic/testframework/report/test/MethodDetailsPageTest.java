@@ -43,7 +43,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * It runs once for a test that passed in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-805")
+    // Test case #805
     public void testT01_checkMethodDetailsForPassedTest() {
         String methodName = "test_FilterPassedNoMinor";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
@@ -63,7 +63,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * It runs once for a test that passed with minor in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-806")
+    // Test case #806
     public void testT02_checkMethodDetailsForPassedMinorTest() {
         String methodName = "test_FilterPassedMinor";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
@@ -94,7 +94,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * It runs once for a test that failed in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-807")
+    // Test case #807
     public void testT03_checkMethodDetailsForFailedTest() {
         String methodName = "test_FailedInheritedFilter";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
@@ -115,7 +115,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * It runs once for a test that failed with minor in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-808")
+    // Test case #808
     public void testT04_checkMethodDetailsForFailedMinorTest() {
         String methodName = "test_FilterFailedMinor";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
@@ -142,7 +142,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * It runs once for a test that skipped in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-809")
+    // Test case #809
     public void testT05_checkMethodDetailsForSkippedTest() {
         String methodName = "test_FilterSkipped";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
@@ -163,7 +163,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * It runs once for a test that retried in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-810")
+    // Test case #810
     public void testT06_checkMethodDetailsForRetriedTest() {
         String methodName = "test_FilterFailedNoMinorWithFailedRetry (1/2)";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
@@ -191,7 +191,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * It runs once for a test that expected failed in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-811")
+    // Test case #811
     public void testT07_checkMethodDetailsForExpectedFailedTest() {
         String methodName = "test_FailedMinorAnnotatedWithFail_Run1";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
@@ -234,7 +234,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks the information provided for tests that are marked with @Fails but passed.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-812")
+    // Test case #812
     public void testT09_checkRepairedFailsIndication() {
         String methodName = "test_TestStatePassed2";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), methodName);
@@ -248,7 +248,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Tests the shown method details on a failed method with screenshots.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-814")
+    // Test case #814
     public void testT10_checkScreenshotTab() {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "My_Context", "test_FailedInheritedMinor2");
         MethodScreenshotPage screenshotPage = GeneralWorkflow.doOpenReportMethodScreenshotPage(methodDetailsPage);
@@ -260,7 +260,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * the provided stackstrace is correct.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-816")
+    // Test case #816
     public void testT11_checkStackTraceTab() {
         String methodName = "test_FailedInheritedFilter";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
@@ -275,7 +275,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * details in report 1
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-817")
+    // Test case #817
     public void testT12_checkMinorErrorsTab() {
         String methodName = "test_FilterPassedMinor";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
@@ -293,7 +293,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the navigation to the DEPENDENCIES tab works as expected
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-819")
+    // Test case #819
     public void testT13_checkDependenciesTab() {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
         MethodDependenciesPage dependenciesPage = methodDetailsPage.clickDependenciesTab();
@@ -304,7 +304,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks the infos shown in the context view of the method details in report 1.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-820")
+    // Test case #820
     public void testT14_checkContext(){
         TestStep.begin("Checks Context for classes without using TesterraClassContext");
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
@@ -325,7 +325,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Check the infos shown in the duration view in report 1
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-821")
+    // Test case #821
     public void testT15_checkDuration() {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
 
@@ -363,7 +363,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks the error message in the method details for correctnes.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-822")
+    // Test case #822
     public void testT16_checkErrorMessage() {
         TestStep.begin("Checks error Message from a failed test");
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestCorridorLow.class.getSimpleName(), "test_testLowCorridorFailed3");
@@ -388,7 +388,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * It runs once for every test status that is not inherited in report 3. 5 times in total.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-823")
+    // Test case #823
     public void testT17_checkStepsTab() {
         String testmethod = "test_TestStatePassed1";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), testmethod);
@@ -403,7 +403,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Check if a failed test case with a failure aspect matching an expected failed test sets an extra message.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    @XrayTest(key = "TAP2DEV-824")
+    // Test case #824
     public void testT18_failureAspectMatchingExpectedFailedInfoMessage(){
         String testMethod = "test_UnexpectedFailedWithRelatedExpectedFailed";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()), ReportTestUnderTestExpectedtoFail.class.getSimpleName(), testMethod);

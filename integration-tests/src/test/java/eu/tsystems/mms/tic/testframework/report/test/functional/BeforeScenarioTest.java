@@ -29,7 +29,7 @@ public class BeforeScenarioTest extends AbstractReportTest {
      * Checks whether the core test numbers for BeforeSuite test report are as expected
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER8})
-    @XrayTest(key = "TAP2DEV-798")
+    // Test case #798
     public void testT01_beforeSuiteScenario_dashboardPage_checkTestNumbers() {
         TestReportEightNumbers testReportEightNumbers = new TestReportEightNumbers();
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_8.getReportDirectory()));
@@ -40,7 +40,7 @@ public class BeforeScenarioTest extends AbstractReportTest {
      * Checks whether the core test numbers for all Before[...] (excl. BeforeSuite) test reports are as expected
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9})
-    @XrayTest(key = "TAP2DEV-799")
+    // Test case #799
     public void testT02_beforeScenario_dashboardPage_checkTestNumbers() {
         TestReportNineNumbers testReportNineNumbers = new TestReportNineNumbers();
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.getReportDirectory()));
@@ -51,7 +51,7 @@ public class BeforeScenarioTest extends AbstractReportTest {
      * Checks whether the BeforeSuite method causes the skipping of the control methods
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER8})
-    @XrayTest(key = "TAP2DEV-800")
+    // Test case #800
     public void testT03_checkControlMethodsAreSkippedIfBeforeSuiteMethodsFailed() {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_8.getReportDirectory()));
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(BeforeConfiguration.BEFORE_SUITE.getReportClassName());
@@ -66,7 +66,7 @@ public class BeforeScenarioTest extends AbstractReportTest {
      * Checks whether the Before[...] methods cause the skipping of the control methods
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9}, dataProvider = "beforeDP")
-    @XrayTest(key = "TAP2DEV-801")
+    // Test case #801
     public void testT04_checkControlMethodsAreSkippedIfBeforeMethodsFailed(BeforeConfiguration beforeConfig) {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.getReportDirectory()));
         WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
@@ -88,7 +88,7 @@ public class BeforeScenarioTest extends AbstractReportTest {
      * Checks whether the control methods run as expected if all Before[...] methods pass
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9})
-    @XrayTest(key = "TAP2DEV-802")
+    // Test case #802
     public void testT05_checkControlMethodsRunIfBeforeMethodsPassed() {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.getReportDirectory()));
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(BeforeConfiguration.ALL.getReportClassName());

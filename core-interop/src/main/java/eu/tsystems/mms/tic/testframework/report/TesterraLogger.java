@@ -17,7 +17,7 @@
 */
 package eu.tsystems.mms.tic.testframework.report;
 
-import org.apache.log4j.Appender;
+import org.apache.logging.log4j.core.Appender;
 
 /**
  * Interface for Testerras log appender

@@ -39,6 +39,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -352,13 +353,8 @@ public final class WebDriverUtils {
      */
     public static Rectangle getViewport(WebDriver driver) {
 
-        // we have to do this step by step because of missmatching types..
-        final Long x = JSUtils.executeScriptAndCastToLong(driver, "return window.pageXOffset;");
-        final Long y = JSUtils.executeScriptAndCastToLong(driver, "return window.pageYOffset;");
-        final Long height = JSUtils.executeScriptAndCastToLong(driver, "return window.innerHeight;");
-        final Long width = JSUtils.executeScriptAndCastToLong(driver, "return window.innerWidth;");
-
-        return new Rectangle(x.intValue(), y.intValue(), height.intValue(), width.intValue());
+        final ArrayList<String> list = (ArrayList<String>) JSUtils.executeScript(driver, "return [window.pageXOffset.toString(), window.pageYOffset.toString(), window.innerWidth.toString(), window.innerHeight.toString()];");
+        return new Rectangle(Integer.valueOf(list.get(0)), Integer.valueOf(list.get(1)), Integer.valueOf(list.get(2)), Integer.valueOf(list.get(3)));
     }
 
 

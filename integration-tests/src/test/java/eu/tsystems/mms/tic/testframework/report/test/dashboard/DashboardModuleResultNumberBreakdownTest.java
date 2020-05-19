@@ -37,7 +37,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
      * It runs once in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-855")
+    // Test case #855
     public void testT01_checkTestDuration(){
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_1);
         String duration = dashboardPage.dashboardModuleTestResultNumberBreakdown.testDurationString.getText();
@@ -49,7 +49,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
      * It runs once in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-856")
+    // Test case #856
     public void testT02_checkTestStartDateAndTime() throws Exception {
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_1);
         String elementString = dashboardPage.dashboardModuleTestResultNumberBreakdown.testStartTimeString.getText();
@@ -84,7 +84,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
      * It runs once in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key="TAP2DEV-857")
+    // Test case #857
     public void testT03_checkTestFinishDateAndTime() throws Exception {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         String elementString = dashboardPage.dashboardModuleTestResultNumberBreakdown.testEndTimeString.getText();
@@ -119,7 +119,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
      * This test tests the passed percentages of the current and the last report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testResultNumbers")
-    @XrayTest(key = "TAP2DEV-858")
+    // Test case #858
     public void testT04_testReportPercentages(ReportDirectory report, AbstractTestReportNumbers numbers) throws Exception {
         DashboardPage dashboardPage = getDashboardPage(report);
         final String expectedPercentage = numbers.getPercentage();
@@ -131,7 +131,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
      * This test tests the numbers and deltas of the different status.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testResultNumbers")
-    @XrayTest(key = "TAP2DEV-859")
+    // Test case #859
     public void testT05_checkTestNumbers(ReportDirectory report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = getDashboardPage(report);
         dashboardPage.dashboardModuleTestResultNumberBreakdown.assertTestNumbers(numbers);

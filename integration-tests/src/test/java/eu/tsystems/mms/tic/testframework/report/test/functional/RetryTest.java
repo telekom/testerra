@@ -32,8 +32,8 @@ public class RetryTest extends AbstractReportTest {
      * Tests whether the data provider produced the expected number of test methods
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "TAP2DEV-668")
-    @XrayTest(key = "TAP2DEV-791")
+    @Fails(ticketString = "668")
+    // Test case #791
     public void testT01_checkRetryDataProviderRunsTheExpectedNumberOfTestMethods() {
         final String retryClassName = "ReportTestUnderTestRetry";
 
@@ -52,8 +52,8 @@ public class RetryTest extends AbstractReportTest {
      * @throws Exception
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "TAP2DEV-667")
-    @XrayTest(key = "TAP2DEV-792")
+    @Fails(ticketString = "667")
+    // Test case #792
     public void testT02_checkFailedRetriedTestsOnlySecondRetryIsDisplayed() throws Exception {
 
         List<String> testNames = new ArrayList<>();
@@ -97,8 +97,8 @@ public class RetryTest extends AbstractReportTest {
      * @throws Exception
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "TAP2DEV-667")
-    @XrayTest(key = "TAP2DEV-793")
+    @Fails(ticketString = "667")
+    // Test case #793
     public void testT03_checkSuccessfulRetriedTestsAreDisplayed() throws Exception {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.PASSED);
@@ -110,8 +110,8 @@ public class RetryTest extends AbstractReportTest {
      * Tests the number of retries of a retried test method
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "TAP2DEV-668")
-    @XrayTest(key = "TAP2DEV-794")
+    @Fails(ticketString = "668")
+    // Test case #794
     public void testT04_checkRetriedTestsWithDataProviderHaveTheExpectedNumberOfRetries() {
         final int numberOfFailedMethods = 7;
         final int numberOfPassedMethods = 1;
@@ -150,8 +150,8 @@ public class RetryTest extends AbstractReportTest {
      * Tests whether the name of retried test with data provider has the expected structure
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "TAP2DEV-668")
-    @XrayTest(key = "TAP2DEV-796")
+    @Fails(ticketString = "668")
+    // Test case #796
     public void testT05_checkRetriedTestsWithDataProviderTestMethodsHaveTheCorrectName() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         final int numberOfRetryMethods = 3;
@@ -176,7 +176,7 @@ public class RetryTest extends AbstractReportTest {
     }
 
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @XrayTest(key = "TAP2DEV-797")
+    // Test case #797
     public void testT06_checkMethodThatDependsOnPassedRetryIsSuccessful() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));

@@ -29,9 +29,9 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * Clicks the desired pie segment and tests the provided bars of the bar chart for correct colors.
      * It runs once for every test status in report 3. 8 times in total.
      */
-    @Fails(ticketString = "TAP2DEV-667")
+    @Fails(ticketString = "667")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
-    @XrayTest(key = "TAP2DEV-846")
+    // Test case #846
     public void testT01_clickActualPieAndCheckBarColors(TestResult testResult) throws Exception {
         //TODO try out other locator or using java script
         try {
@@ -52,8 +52,8 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * It runs once for every test status in report 4. 8 times in total.
      */
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(ticketString = "TAP2DEV-667")
-    @XrayTest(key = "TAP2DEV-847")
+    @Fails(ticketString = "667")
+    // Test case #847
     public void testT02_clickTestNumberAndCheckBarColors(TestResult testResults) throws Exception {
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_1);
         if (dashboardPage.dashboardModuleTestResultNumberBreakdown.isNumberDisplayed(testResults)) {
@@ -68,15 +68,12 @@ public class DashboardPageTest extends AbstractTestDashboard {
     }
 
     /**
-     * Tests the desired pie cha    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-     *     @XrayTest(key="TAP2DEV-848")
-     *     public void testT03_checkListedMethodsAfterClickingPieAndBar(TestResult testResults) throws Exception {
-     *         //TODO try out other locator or using java scriptrt segment and its displayed bars for the correct test method names.
+     * Tests the desired pie chart.
      * It runs once for every test status in the second report.
      */
-    @Fails(ticketString = "TAP2DEV-667")
+    @Fails(ticketString = "667")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    @XrayTest(key="TAP2DEV-848")
+    // Test case #848
     public void testT03_checkListedMethodsAfterClickingPieAndBar(TestResult testResults) throws Exception {
         //TODO try out other locator or using java script
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_2);
@@ -102,7 +99,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * Tests if the tt. logo is displayed.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-849")
+    // Test case #849
     public void testT04_checksIfTesterraLogoIsDisplayed() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         Assert.assertTrue(dashboardPage.testerraLogo.isDisplayed(), "Testerra logo is displayed on dashboard page.");
@@ -112,9 +109,9 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * Tests a failed method for the 'info' symbol which indicates that there is a screenshot for the test.
      * It runs once in the 1st report.
      */
-    @Fails(ticketString = "TAP2DEV-667")
+    @Fails(ticketString = "667")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-850")
+    // Test case #850
     public void testT05_checksScreenshotForFailedMethod() throws Exception {
         //TODO try out other locator or using java script
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
@@ -133,9 +130,9 @@ public class DashboardPageTest extends AbstractTestDashboard {
     /**
      * Tests whether a passing under test that is annotated with @Fails causes the dashboard page to indicate it
      */
-    @Fails(ticketString = "TAP2DEV-667")
+    @Fails(ticketString = "667")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
-    @XrayTest(key="TAP2DEV-851")
+    // Test case #851
     public void testT06_checkDashboardIndicationThatPassedTestIsAnnotatedWithFails() throws Exception {
         //TODO try out other locator or using java script
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.getReportDirectory()));

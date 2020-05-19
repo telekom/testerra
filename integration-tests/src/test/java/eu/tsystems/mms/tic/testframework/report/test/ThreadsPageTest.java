@@ -40,8 +40,8 @@ public class ThreadsPageTest extends AbstractReportTest {
      * Checks whether the threadsPage will be displayed correctly
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-334")
     public void testT01_checkCorrectDisplayOfThreadsPage() {
+        // Test case #334
         ThreadsPage threadsPage = GeneralWorkflow.doOpenBrowserAndReportThreadsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         threadsPage.assertPageIsDisplayedCorrectly();
     }
@@ -51,8 +51,8 @@ public class ThreadsPageTest extends AbstractReportTest {
      * It runs once for each possible test status.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER7}, dataProvider = "testMethods")
-    @XrayTest(key = "TAP2DEV-913")
     public void testT02_checkCorrectLinksFromThreadsPageToMethodDetailsPage(String methodName, TestResultHelper.TestResult methodResult) {
+        // Test case #913
         ThreadsPage threadsPage = GeneralWorkflow.doOpenBrowserAndReportThreadsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_7.getReportDirectory()));
         MethodDetailsPage methodDetailsPage = threadsPage.clickMethodAndOpenMethodDetailsPage(methodName);
         methodDetailsPage.assertCorrectTestMethodIsDisplayed(methodName, methodResult);

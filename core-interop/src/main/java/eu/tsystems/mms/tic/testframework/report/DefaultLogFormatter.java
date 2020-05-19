@@ -5,6 +5,7 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 
 public class DefaultLogFormatter implements LogFormatter {
+
     private final Layout layout;
 
     {

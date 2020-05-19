@@ -18,8 +18,13 @@
 package eu.tsystems.mms.tic.testframework.report;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.core.*;
-import org.apache.logging.log4j.core.appender.*;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Core;
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.Layout;
+import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.appender.AbstractOutputStreamAppender;
+import org.apache.logging.log4j.core.appender.ManagerFactory;
 import org.apache.logging.log4j.core.config.Property;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
@@ -102,6 +107,7 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
     }
 
     private static class FactoryData {
+
         private final Layout<? extends Serializable> layout;
         private final String name;
         private final OutputStream os;
@@ -118,10 +124,8 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
         /**
          * Creates an OutputStreamManager.
          *
-         * @param name
-         *            The name of the entity to manage.
-         * @param data
-         *            The data required to create the entity.
+         * @param name The name of the entity to manage.
+         * @param data The data required to create the entity.
          * @return The OutputStreamManager
          */
         @Override
@@ -134,7 +138,7 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
 
     @PluginFactory
     public static DefaultLogAppender createAppender(Layout<? extends Serializable> layout, final Filter filter,
-                                                      final OutputStream target, final String name, final boolean follow, final boolean ignore) {
+                                                    final OutputStream target, final String name, final boolean follow, final boolean ignore) {
         if (name == null) {
             LOGGER.error("No name provided for OutputStreamAppender");
             return null;
@@ -146,7 +150,7 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
     }
 
     private static DefaultLogAppenderOutputStreamManager getManager(final OutputStream target, final boolean follow,
-                                                                                                             final Layout<? extends Serializable> layout) {
+                                                                    final Layout<? extends Serializable> layout) {
         final OutputStream os = target == null ? NullOutputStream.getInstance() : new CloseShieldOutputStream(target);
         final OutputStream targetRef = target == null ? os : target;
         final String managerName = targetRef.getClass().getName() + "@" + Integer.toHexString(targetRef.hashCode())

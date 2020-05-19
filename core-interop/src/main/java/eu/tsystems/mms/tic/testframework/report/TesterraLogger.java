@@ -14,15 +14,17 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.report;
 
 import org.apache.logging.log4j.core.Appender;
 
 /**
  * Interface for Testerras log appender
+ *
  * @author Mike Reiche
  */
 public interface TesterraLogger extends Appender {
+
     TesterraLogger setFormatter(LogFormatter formatter);
 }

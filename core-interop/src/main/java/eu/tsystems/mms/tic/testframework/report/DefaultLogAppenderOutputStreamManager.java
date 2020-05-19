@@ -1,10 +1,12 @@
 package eu.tsystems.mms.tic.testframework.report;
 
-import java.io.OutputStream;
-
 import org.apache.logging.log4j.core.Layout;
-import org.apache.logging.log4j.core.appender.*;
+import org.apache.logging.log4j.core.appender.AbstractManager;
+import org.apache.logging.log4j.core.appender.ManagerFactory;
+import org.apache.logging.log4j.core.appender.OutputStreamManager;
 import org.apache.logging.log4j.core.layout.ByteBufferDestination;
+
+import java.io.OutputStream;
 
 /**
  * Manages an OutputStream so that it can be shared by multiple Appenders and will
@@ -17,7 +19,7 @@ public class DefaultLogAppenderOutputStreamManager extends OutputStreamManager i
     }
 
     public static <T> DefaultLogAppenderOutputStreamManager getManager(final String name, final T data,
-                                                               final ManagerFactory<? extends OutputStreamManager, T> factory) {
+                                                                       final ManagerFactory<? extends OutputStreamManager, T> factory) {
         return (DefaultLogAppenderOutputStreamManager) AbstractManager.getManager(name, factory, data);
     }
 }

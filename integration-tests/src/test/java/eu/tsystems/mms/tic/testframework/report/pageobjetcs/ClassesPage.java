@@ -25,13 +25,15 @@ public class ClassesPage extends AbstractReportPage {
 
     //legend iterator
     @Check
-    private GuiElement testsPassedLegendIndicator = new GuiElement(this.getWebDriver(), By.xpath("//span[@title='Passed']"), mainFrame);
+    private GuiElement legendIndicatorRow = new GuiElement(this.getWebDriver(), By.xpath("//span[@title='Passed']/parent::div"), mainFrame);
 
-    private GuiElement testsRetriedLegendIndicator = new GuiElement(this.getWebDriver(), By.xpath("//span[@title='Passed after Retry']"), mainFrame);
+    private GuiElement testsPassedLegendIndicator = legendIndicatorRow.getSubElement(By.xpath(".//span[@title='Passed']"));
 
-    private GuiElement testsFailedLegendIndicator = new GuiElement(this.getWebDriver(), By.xpath("//span[@title='Failed']"), mainFrame);
+    private GuiElement testsRetriedLegendIndicator = legendIndicatorRow.getSubElement(By.xpath(".//span[@title='Passed after Retry']"));
 
-    private GuiElement configMethodsIndicator = new GuiElement(this.getWebDriver(), By.xpath("//font[@class='configMethods']"), mainFrame);
+    private GuiElement testsFailedLegendIndicator = legendIndicatorRow.getSubElement(By.xpath(".//span[@title='Failed']"));
+
+    private GuiElement configMethodsIndicator = legendIndicatorRow.getSubElement(By.xpath(".//font[@class='configMethods']"));
 
     //additional functions on class page
     private GuiElement hidePassedTestsCheckbox = new GuiElement(this.getWebDriver(), By.id("hidePassed"), mainFrame);
@@ -47,13 +49,31 @@ public class ClassesPage extends AbstractReportPage {
     }
 
     /**
-     * Returns all test classes table rows as web elements
+     * Returns all passed test classes table rows as web elements
      *
      * @return list of web elements representing the class table row (tr)
      */
-    public List<GuiElement> getTestClasses() {
-        return new GuiElement(this.getWebDriver(), By.xpath("//*[@class='testclassrow hidden test' and @style='display: table-row;']"), mainFrame).getList();
+    public List<GuiElement> getPassedTestClasses() {
+
+        List <GuiElement> passedTestClassesList = new GuiElement(this.getWebDriver(), By.xpath("//span[@title='Passed']/../.."), mainFrame).getList();
+        passedTestClassesList.remove(0); //remove first item of the list which is the legend symbol of the page
+
+        return passedTestClassesList;
     }
+
+    /**
+     * Returns all failed test classes table rows as web elements
+     *
+     * @return list of web elements representing the class table row (tr)
+     */
+    public List<GuiElement> getFailedTestClasses() {
+
+        List <GuiElement> failedTestClassesList = new GuiElement(this.getWebDriver(), By.xpath("//span[@title='Failed']/../.."), mainFrame).getList();
+        failedTestClassesList.remove(0); //remove first item of the list which is the legend symbol of the page
+
+        return failedTestClassesList;
+    }
+
 
     /**
      * Returns the displayed numbers for the given class name for the given test result or all numbers if specified
@@ -116,12 +136,10 @@ public class ClassesPage extends AbstractReportPage {
     /**
      * Method to hide passed test class by clicking the "Hide passed Tests" checkbox
      *
-     * @return true if hiding is selected
      */
-    public boolean hidePassedTests() {
+    public void clickButtonToHidePassedTests() {
         hidePassedTestsCheckbox.asserts().assertIsDisplayed();
         hidePassedTestsCheckbox.click();
-        return hidePassedTestsCheckbox.isSelected();
     }
 
     /**
@@ -154,8 +172,30 @@ public class ClassesPage extends AbstractReportPage {
     /**
      * Asserts only failed tests with the red mark (X) are displayed
      */
-    public void assertClassesAreDisplayedForHidePassedTestFilter() {
-        List<GuiElement> testClasses = getTestClasses();
+    public void assertAllPassedClassesAreDisplayed() {
+        List<GuiElement> testClasses = getPassedTestClasses();
+        for (GuiElement currentTestClass : testClasses) {
+            String className = currentTestClass.getSubElement(By.xpath(".//a")).getText();
+            assertSuccessIndicatorIsDisplayedForClass(className);
+        }
+    }
+
+    /**
+     * Asserts only failed tests with the red mark (X) are displayed
+     */
+    public void assertAllPassedClassesAreNotDisplayed() {
+        List<GuiElement> testClasses = getPassedTestClasses();
+
+        for (GuiElement currentTestClass : testClasses) {
+            currentTestClass.asserts().assertAttributeContains("style", "display: none");
+        }
+    }
+
+    /**
+     * Asserts only failed tests with the red mark (X) are displayed
+     */
+    public void assertAllFailedClassesAreDisplayed() {
+        List<GuiElement> testClasses = getFailedTestClasses();
         for (GuiElement currentTestClass : testClasses) {
             String className = currentTestClass.getSubElement(By.xpath(".//a")).getText();
             assertBrokenIndicatorIsShownForClass(className);

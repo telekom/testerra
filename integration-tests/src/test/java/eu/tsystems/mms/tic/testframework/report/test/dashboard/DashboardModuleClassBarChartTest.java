@@ -12,6 +12,7 @@ import eu.tsystems.mms.tic.testframework.report.pageobjetcs.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestAnnotations;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
+import eu.tsystems.mms.tic.testframework.testmanagement.annotation.XrayTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
@@ -23,6 +24,7 @@ public class DashboardModuleClassBarChartTest extends AbstractTestDashboard {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
     @Fails(ticketString = "668")
+    // Test case #853
     public void testT01_checkExecutionFilter() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()));
         GuiElement testundertestExecutionFilterElement = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName(ReportTestUnderTestExecutionFilter.class.getSimpleName());
@@ -39,6 +41,7 @@ public class DashboardModuleClassBarChartTest extends AbstractTestDashboard {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     @Fails(ticketString = "668")
+    // Test case #854
     public void testT02_checkReportAnnotations() {
         final String annotationMethod = "testAllMarkers";
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));

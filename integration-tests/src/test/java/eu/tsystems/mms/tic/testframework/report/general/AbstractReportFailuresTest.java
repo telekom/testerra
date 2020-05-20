@@ -6,6 +6,7 @@ import eu.tsystems.mms.tic.testframework.report.pageobjetcs.abstracts.AbstractRe
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
 import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoNumbers;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
+import eu.tsystems.mms.tic.testframework.testmanagement.annotation.XrayTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -26,9 +27,10 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
      * The second test second highest etc.
      *
      * Furthermore it checks the possibility that the last entry could have a higher amount
-     * of tests than the others, if it contains all tests with an unspecified default error
+     * of tests than the others, if it contains all tests with an unspecified default error.
      */
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
+    // Test case #838
     public void testT01_checkFailureRanking() {
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
         failurePointsPage.assertFailurePointRanking(failurePointEntryTestObjects);
@@ -38,6 +40,7 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
      * This test checks whether the total number of ALL failure point entries is equal to expected one
      */
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
+    // Test case #839
     public void testT02_checkTotalNumberOfFailures() {
         final int expectedNumberOfFailurePoints = getNumberOfExpectedFailurePointsForReport();
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
@@ -47,6 +50,7 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
      * This test checks whether the total number of FAILED failure point entries is equal to expected one
      */
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
+    // Test case #840
     public void testT03_checkNumberOfFailedTests() {
         TestReportTwoNumbers testReportTwoNumbers = new TestReportTwoNumbers();
         int expectedNumberOfFailedTests = testReportTwoNumbers.getAllBroken() + testReportTwoNumbers.getFailedExpected();
@@ -57,6 +61,7 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
      * This test checks the HEADER INFORMATION for each single failure point entry in the listed order
      */
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
+    // Test case #841
     public void testT04_checkHeaderForEachSingleFailurePoint() {
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
         failurePointsPage.assertHeaderInformation(failurePointEntryTestObjects);
@@ -66,6 +71,7 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
      * This test checks the DESCRIPTION for each single failure point entry in the listed order
      */
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
+    // Test case #842
     public void testT05_DescriptionForSingleFailure() {
         AbstractFailurePointsPage failurePointsPage = openFailuresPointsPage(ReportDirectory.REPORT_DIRECTORY_2);
         failurePointsPage.assertDescriptionsForFailurePointsIsCorrect(failurePointEntryTestObjects);
@@ -75,6 +81,7 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
      * This test checks the listed METHOD for a single failure point entry in the list
      */
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
+    // Test case #843
     public void testT06_ListedTestsForSingleFailure() {
         final int failurePointPositionToCheck = 2;
         AbstractResultTableFailureEntry expectedEntry = failurePointEntryTestObjects.get(failurePointPositionToCheck - 1);
@@ -87,6 +94,7 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
      * It considers the cases 'intoReport = false' and 'intoReport = true'
      */
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
+    // Test case #844
     public void testT07_checkMarkExpectedFailedTests() {
         checkExpectedFailedMarkWorkflow(true);
         checkExpectedFailedMarkWorkflow(false);
@@ -96,6 +104,7 @@ public abstract class AbstractReportFailuresTest extends AbstractReportTest {
      * This test checks whether the navigation to the respective MethodDetailPage is working correctly
      */
     @Test(groups = SystemTestsGroup.SYSTEMTESTSFILTER2)
+    // Test case #845
     public void testT08_checkForwardingToMethodDetailsPage() {
         final int failurePointPositionToCheck = 2;
         final int methodPositionToCheck = 1;

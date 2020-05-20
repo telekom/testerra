@@ -86,15 +86,4 @@ public class FailureAspectsPageTest extends AbstractReportFailuresTest {
     protected AbstractFailurePointsPage openFailuresPointsPage(ReportDirectory reportDirectory) {
         return GeneralWorkflow.doOpenBrowserAndReportFailureAspectsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(reportDirectory.getReportDirectory()));
     }
-
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    public void testT09_checkInfoMessageOnRelatedFailureAspect(){
-        FailureAspectsPage failureAspectsPage = GeneralWorkflow.doOpenBrowserAndReportFailureAspectsPage(
-                WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory())
-        );
-        final AbstractResultTableFailureEntry failedEntry = failurePointEntryTestObjects.get(5);
-        failureAspectsPage.assertDescriptionsForFailurePointIsCorrect(failedEntry);
-    }
-
 }

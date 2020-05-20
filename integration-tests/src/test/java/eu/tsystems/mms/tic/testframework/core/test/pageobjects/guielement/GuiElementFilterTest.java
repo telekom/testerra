@@ -104,8 +104,8 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
     public void testT05c_Displayed_Is() {
 
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").displayed());
-        nonVisibleTable.asserts().assertIsNotDisplayed();
+        GuiElement visibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").displayed());
+        visibleTable.asserts().assertIsDisplayed();
     }
 
     @Test

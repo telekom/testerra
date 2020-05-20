@@ -17,8 +17,8 @@ public class MonitorPageTest extends AbstractReportTest {
     /**
      * Checks whether the monitorPage will be displayed correctly
      */
-    @XrayTest(key = "TAP2DEV-425")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    // Test case #425
     public void testT01_checkCorrectDisplayOfMonitorPage() {
         MonitorPage monitorPage = GeneralWorkflow.doOpenBrowserAndReportMonitorPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         monitorPage.assertPageIsDisplayedCorrectly();

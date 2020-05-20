@@ -19,7 +19,7 @@ public class TimingsPageTest extends AbstractReportTest {
      * Checks whether the timingsPage will be displayed correctly
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-426")
+    // Test case #426
     public void testT01_checkCorrectDisplayOfTimingsPage() {
         TimingsPage timingsPage = GeneralWorkflow.doOpenBrowserAndReportTimingsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         timingsPage.assertPageIsDisplayedCorrectly();

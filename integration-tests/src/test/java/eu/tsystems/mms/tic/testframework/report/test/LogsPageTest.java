@@ -23,7 +23,7 @@ public class LogsPageTest extends AbstractReportTest {
      * Checks whether the logsPage will be displayed correctly
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-428")
+    // Test case #428
     public void testT01_checkCorrectDisplayOfLogsPage() {
         LogsPage logsPage = GeneralWorkflow.doOpenBrowserAndReportLogsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         logsPage.assertPageIsDisplayedCorrectly();
@@ -33,7 +33,7 @@ public class LogsPageTest extends AbstractReportTest {
      * Checks whether a specific log can be found in the table and has the correct values
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @XrayTest(key = "TAP2DEV-427")
+    // Test case #427
     public void testT02_checkForCorrectDisplayOfLogs() {
         LogsPage logsPage = GeneralWorkflow.doOpenBrowserAndReportLogsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         logsPage.insertSerachTermInInSearchBar(

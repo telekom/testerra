@@ -763,20 +763,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     }
 
     /**
-     * Tries to parse the By-Locator to get the user defined selector string.
-     *
-     * @return Selector string if parsing is successful, complete By.toString() if not.
-     */
-    private String getSelectorString() {
-        try {
-            return by.toString().substring(by.toString().indexOf(" ") + 1);
-        } catch (final Exception e) {
-            LOGGER.warn("Error in getSelectorString.", e);
-            return by.toString();
-        }
-    }
-
-    /**
      * Build a nice string.
      *
      * @return .

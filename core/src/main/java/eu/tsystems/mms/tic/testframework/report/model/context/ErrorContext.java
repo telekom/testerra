@@ -68,7 +68,7 @@ public class ErrorContext extends AbstractContext {
         setThrowable(readableMessage, throwable, false);
     }
 
-    public void setThrowable(final String readableMessage, final Throwable throwable, boolean forceUpdateReadableMessage) {
+    public void setThrowable(final String readableMessage, Throwable throwable, boolean forceUpdateReadableMessage) {
         this.throwable = throwable;
 
         /*
@@ -90,14 +90,15 @@ public class ErrorContext extends AbstractContext {
              */
             stackTrace = ExecutionUtils.createStackTrace(throwable);
 
-            // set message
-            String message;
+
             if (throwable instanceof TimeoutException && throwable.getCause() != null) {
-                message = throwableToMessage(throwable.getCause());
+                // update throwable for reading correct "cause by" later
+                throwable = throwable.getCause();
             }
-            else {
-                message = throwableToMessage(throwable);
-            }
+
+            // set message
+            final String message = throwableToMessage(throwable);
+
 
             /*
             set readable message
@@ -159,6 +160,12 @@ public class ErrorContext extends AbstractContext {
         if (withFilter) {
             readableErrorMessage = filterReadableMessage(readableErrorMessage);
         }
+
+        // use first cause in strackTrace as additionalErrorMessage for report
+        if(stacktrace.stackTrace.cause != null) {
+            this.additionalErrorMessage = "caused by: " + stacktrace.stackTrace.cause.className + " " + stacktrace.stackTrace.cause.message;
+        }
+
         this.readableErrorMessage = readableErrorMessage;
         this.stacktraceForReadableMessage = stacktrace;
     }

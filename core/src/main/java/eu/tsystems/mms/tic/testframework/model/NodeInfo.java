@@ -19,48 +19,7 @@ package eu.tsystems.mms.tic.testframework.model;
 
 public class NodeInfo extends HostInfo {
 
-    private Integer vncPort = null;
-    private Integer mtsPort = null;
-
-    public NodeInfo(String hostIP, int nodePort, int vncPort, int mtsPort) {
-        super(hostIP, nodePort);
-        this.mtsPort = mtsPort;
-        this.vncPort = vncPort;
-    }
-
     public NodeInfo(String host, int port) {
         super(host, port);
-    }
-
-    public boolean hasVNC() {
-        return (vncPort != null && vncPort > 0);
-    }
-
-    public int getVNCPort() {
-        return vncPort;
-    }
-
-    public boolean hasMTSServer() {
-        return (mtsPort != null && mtsPort > 0);
-    }
-
-    public int getMTSPort() {
-        return mtsPort;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString()
-                + ((hasVNC()) ? (" with VNC on port " + vncPort) : "")
-                + ((hasMTSServer()) ? (" with MTSServer on port " + mtsPort) : "");
-    }
-
-    /**
-     * Set maintenance service port.
-     *
-     * @param value value to set
-     */
-    public void setMTSPort(int value) {
-        mtsPort = value;
     }
 }

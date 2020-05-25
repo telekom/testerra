@@ -32,10 +32,14 @@ import org.testng.SkipException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.EXECUTION_CONTEXT;
+import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.getCurrentExecutionContext;
 
 public class TestStatusController {
 
@@ -57,6 +61,10 @@ public class TestStatusController {
     private static int testsExpectedFailed = 0;
     private static String SEPERATOR = ",";
 
+    private TestStatusController() {
+
+    }
+
     public static JSONObject createStatusJSON() {
         Map<String, Object> statusMap = new HashMap<>();
 
@@ -67,11 +75,11 @@ public class TestStatusController {
         statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
         statusMap.put("DryRun", Flags.DRY_RUN);
 
-        statusMap.put("Status", EXECUTION_CONTEXT.getStatus());
-        statusMap.put("StatusBool", EXECUTION_CONTEXT.getStatus() == Status.PASSED);
+        statusMap.put("Status", getCurrentExecutionContext().getStatus());
+        statusMap.put("StatusBool", getCurrentExecutionContext().getStatus() == Status.PASSED);
 
-        statusMap.put("RunCfg", EXECUTION_CONTEXT.runConfig.RUNCFG);
-        statusMap.put("Date", EXECUTION_CONTEXT.startTime.toString());
+        statusMap.put("RunCfg", getCurrentExecutionContext().runConfig.RUNCFG);
+        statusMap.put("Date", getCurrentExecutionContext().startTime.toString());
 
         return new JSONObject(statusMap);
     }
@@ -100,8 +108,7 @@ public class TestStatusController {
             if (methodContext.testResult.getStatus() == ITestResult.CREATED && status == Status.FAILED) {
                 LOGGER.warn("TestNG bug - result status is CREATED, which is wrong. Method status is " + Status.FAILED + ", which is also wrong. Assuming SKIPPED.");
                 status = Status.SKIPPED;
-            }
-            else if (throwable instanceof SkipException) {
+            } else if (throwable instanceof SkipException) {
                 LOGGER.info("Found SkipException");
                 status = Status.SKIPPED;
             }
@@ -168,11 +175,12 @@ public class TestStatusController {
                 levelFC(methodContext, false);
                 break;
 
-            default: throw new TesterraSystemException("Not implemented: " + status);
+            default:
+                throw new TesterraSystemException("Not implemented: " + status);
         }
 
-        // update team city progress
-        reportCountersToTeamCity();
+        // print out current test execution state
+        writeCounterToLog();
     }
 
     private static void levelFC(MethodContext methodContext, boolean raise) {
@@ -183,24 +191,21 @@ public class TestStatusController {
                 case HIGH:
                     if (raise) {
                         testsFailedHIGH++;
-                    }
-                    else {
+                    } else {
                         testsFailedHIGH--;
                     }
                     break;
                 case MID:
                     if (raise) {
                         testsFailedMID++;
-                    }
-                    else {
+                    } else {
                         testsFailedMID--;
                     }
                     break;
                 case LOW:
                     if (raise) {
                         testsFailedLOW++;
-                    }
-                    else {
+                    } else {
                         testsFailedLOW--;
                     }
                     break;
@@ -241,11 +246,11 @@ public class TestStatusController {
         return out;
     }
 
-    public static void reportCountersToTeamCity() {
+    public static void writeCounterToLog() {
         String counterInfoMessage = getCounterInfoMessage();
-        String teamCityMessage = ReportUtils.getReportName() + " " + EXECUTION_CONTEXT.runConfig.RUNCFG + ": " + counterInfoMessage;
+        String logMessage = ReportUtils.getReportName() + " " + getCurrentExecutionContext().runConfig.RUNCFG + ": " + counterInfoMessage;
 
-        LOGGER.info(teamCityMessage);
+        LOGGER.info(logMessage);
     }
 
     public static int getTestsFailed() {
@@ -336,7 +341,8 @@ public class TestStatusController {
                 case FAILED_RETRIED:
                     return false;
 
-                default: throw new TesterraSystemException("Unhandled state: " + this);
+                default:
+                    throw new TesterraSystemException("Unhandled state: " + this);
             }
         }
 
@@ -360,14 +366,15 @@ public class TestStatusController {
                     }
                 case FAILED_EXPECTED:
                     if (!withFailedExpected) {
-                            return false;
+                        return false;
                     }
                 case FAILED:
                 case FAILED_MINOR:
                     return true;
 
 
-                default: throw new TesterraSystemException("Unhandled state: " + this);
+                default:
+                    throw new TesterraSystemException("Unhandled state: " + this);
             }
         }
 
@@ -388,7 +395,8 @@ public class TestStatusController {
                 case NO_RUN:
                     return true;
 
-                default: throw new TesterraSystemException("Unhandled state: " + this);
+                default:
+                    throw new TesterraSystemException("Unhandled state: " + this);
             }
         }
 

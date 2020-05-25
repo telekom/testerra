@@ -27,6 +27,10 @@ import java.util.regex.Pattern;
 @Deprecated
 public final class Defaults {
 
+    private Defaults() {
+
+    }
+
     private static String load(String property, String defaultValue, String pattern) {
         Pattern compile = Pattern.compile(pattern);
         String value = PropertyManager.getProperty(property, defaultValue);

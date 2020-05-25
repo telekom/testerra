@@ -35,8 +35,4 @@ public class WebElementProxy extends ObjectUtils.PassThroughProxy<WebElement> im
 
         return invoke(method, args);
     }
-
-    public WebElement getWrappedWebElement() {
-        return target;
-    }
 }

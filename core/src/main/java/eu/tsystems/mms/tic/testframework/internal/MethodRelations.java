@@ -19,26 +19,38 @@ package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeGroups;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class MethodRelations {
 
     private static final Map<Long, List<MethodContext>> EXECUTION_CONTEXT = Collections.synchronizedMap(new HashMap<>());
     private static final ThreadLocal<Boolean> TEST_WAS_HERE = new ThreadLocal<>();
 
+    private MethodRelations() {
+        
+    }
+
     private static boolean isBeforeXXMethod(Method method) {
-        if (    method.isAnnotationPresent(BeforeSuite.class) ||
+        if (method.isAnnotationPresent(BeforeSuite.class) ||
                 method.isAnnotationPresent(BeforeClass.class) ||
                 method.isAnnotationPresent(BeforeGroups.class) ||
                 method.isAnnotationPresent(BeforeMethod.class) ||
                 method.isAnnotationPresent(BeforeTest.class)
-                ) {
+        ) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -107,8 +119,7 @@ public class MethodRelations {
                  test method means new context
                 */
                 addToList = false;
-            }
-            else {
+            } else {
                 /*
                 config method: beforeXX methods will announce a new context
                  */

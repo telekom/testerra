@@ -7,7 +7,6 @@ import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.LogsPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
-import eu.tsystems.mms.tic.testframework.testmanagement.annotation.XrayTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 
@@ -36,7 +35,7 @@ public class LogsPageTest extends AbstractReportTest {
     // Test case #427
     public void testT02_checkForCorrectDisplayOfLogs() {
         LogsPage logsPage = GeneralWorkflow.doOpenBrowserAndReportLogsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
-        logsPage.insertSerachTermInInSearchBar(
+        logsPage.insertSearchTermInInSearchBar(
                 PropertyManager.getProperty("logsPageTestLogLevelValue"),
                 PropertyManager.getProperty("logsPageTestLogMessageValue"),
                 PropertyManager.getProperty("logsPageTestLogLoggerValue"),

@@ -60,9 +60,6 @@ public class TestMethodFinishedWorker extends MethodWorker implements Loggable {
             // clean thread local event user data
             TesterraEventUserDataManager.cleanupThreadLocalData();
 
-            // cleanup counters
-            Counters.cleanupThreadLocals();
-
             // cleanup thread locals from PropertyManager
             PropertyManager.clearThreadlocalProperties();
 

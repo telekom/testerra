@@ -104,7 +104,7 @@ public class CustomReportWorker extends GenerateReportsWorker {
          */
 
         // get test execution overall status
-        TestStatusController.Status status = ExecutionContextController.EXECUTION_CONTEXT.getStatus();
+        TestStatusController.Status status = ExecutionContextController.getCurrentExecutionContext().getStatus();
     }
 }
 ----
@@ -212,7 +212,7 @@ NOTE: The `TesterraListener` implements the TestNG interface `IMethodInterceptor
 ----
 
 With a implementation of `TestMethodInterceptWorker` you will be able to sort, filter, remove or add methods to the upcoming execution.
-By default Testerra will register the `OmitInDevelopmentMethodIntercept`, which is handling the passed in property value of {execution_omit_indevelopment}.
+By default Testerra will register the `OmitInDevelopmentMethodIntercept`, which is handling the passed in property value of {execution_omit_indevelopment}. Methods with <<InDevelopment, @InDevelopment>> will be excluded from execution completely.
 
 .Custom TestMethoInterceptWorker
 [source,java]
@@ -238,6 +238,18 @@ public class LogMethodInterceptor extends TestMethodInterceptWorker {
 ----
 
 As you can see in the example code snippet, Testerra will you give access to the current method list and the current test context as well as to a already instantiated logger.
+
+[#InDevelopment]
+== @InDevelopment
+This aforementioned annotations is further adjustable with the two attributes name and color.
+
+* name: change the shown text in the report. Default is `In Development`
+* color: change the background color of the shown text. Default is `#a7a5a5`. Values need to be valid for html colors:
+** name of the color, e.g. red
+** RGB values, e.g. rgb(255, 236, 139)
+** RGBA values, e.g. rgba(252, 156, 249, 0.75)
+** HSL values, e.g. hsl(217, 97%, 57%)
+** Hex values, e.g. #57c0ff
 
 === Register a Test Method Intercept Worker
 

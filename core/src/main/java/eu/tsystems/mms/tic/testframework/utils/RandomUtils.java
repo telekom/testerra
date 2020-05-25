@@ -14,7 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.utils;
 
 import java.util.Random;
@@ -25,7 +25,9 @@ import java.util.Random;
  */
 public final class RandomUtils {
 
-    /** Private constructor, to hide the public. */
+    /**
+     * Private constructor, to hide the public.
+     */
     private RandomUtils() {
     }
 
@@ -87,10 +89,5 @@ public final class RandomUtils {
         int rndInt = rnd.nextInt(max - min);
         return min + rndInt;
     }
-
-    public static boolean magischeMiesmuschel(String frage) {
-        return new Random().nextBoolean();
-    }
-
 }
 

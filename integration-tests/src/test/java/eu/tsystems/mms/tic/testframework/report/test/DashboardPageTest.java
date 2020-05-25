@@ -30,6 +30,7 @@ public class DashboardPageTest extends AbstractTestDashboard {
      */
     @Fails(ticketString = "667")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER3})
+    // Test case #846
     public void testT01_clickActualPieAndCheckBarColors(TestResult testResult) throws Exception {
         //TODO try out other locator or using java script
         try {
@@ -49,28 +50,30 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * Clicks the desired 'number' and tests the provided bars of the bar chart for correct colors.
      * It runs once for every test status in report 4. 8 times in total.
      */
+    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     @Fails(ticketString = "667")
-    @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
-    public void testT03_clickTestNumberAndCheckBarColors(TestResult testResults) throws Exception {
+    // Test case #847
+    public void testT02_clickTestNumberAndCheckBarColors(TestResult testResults) throws Exception {
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_1);
         if (dashboardPage.dashboardModuleTestResultNumberBreakdown.isNumberDisplayed(testResults)) {
             dashboardPage = dashboardPage.dashboardModuleTestResultNumberBreakdown.clickNumberForTestResult(testResults);
+            //TODO sagu try to read out canvas
             List<GuiElement> bars = dashboardPage.dashboardModuleClassBarChart.getCurrentBars();
             for (GuiElement bar : bars) {
                 String color = bar.getAttribute("fill");
                 AssertCollector.assertEquals(color, testResults.getColor(), "The " + testResults.toString() + " bar chart in the fourth report has the correct color.");
             }
         }
-
     }
 
     /**
-     * Tests the desired pie chart segment and its displayed bars for the correct test method names.
-     * It runs once for every test status in every report. 48 times in total.
+     * Tests the desired pie chart.
+     * It runs once for every test status in the second report.
      */
     @Fails(ticketString = "667")
     @Test(dataProviderClass = TestResultHelper.class, dataProvider = "getAllTestResults", groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    public void testT04_checkListedMethodsAfterClickingPieAndBar(TestResult testResults) throws Exception {
+    // Test case #848
+    public void testT03_checkListedMethodsAfterClickingPieAndBar(TestResult testResults) throws Exception {
         //TODO try out other locator or using java script
         DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_2);
         dashboardPage = dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(testResults);
@@ -95,8 +98,8 @@ public class DashboardPageTest extends AbstractTestDashboard {
      * Tests if the tt. logo is displayed.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(ticketId = 623, description = "https://jira.t-systems-mms.eu/browse/TAP2DEV-623: Testerra Logo Decision outstanding.")
-    public void testT05_checksIfTesterraLogoIsDisplayed() throws Exception {
+    // Test case #849
+    public void testT04_checksIfTesterraLogoIsDisplayed() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         Assert.assertTrue(dashboardPage.testerraLogo.isDisplayed(), "Testerra logo is displayed on dashboard page.");
     }
@@ -107,7 +110,8 @@ public class DashboardPageTest extends AbstractTestDashboard {
      */
     @Fails(ticketString = "667")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT06_checksScreenshotForFailedMethod() throws Exception {
+    // Test case #850
+    public void testT05_checksScreenshotForFailedMethod() throws Exception {
         //TODO try out other locator or using java script
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResult.FAILEDMINOR);
@@ -127,7 +131,8 @@ public class DashboardPageTest extends AbstractTestDashboard {
      */
     @Fails(ticketString = "667")
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER4})
-    public void testT07_checkDashboardIndicationThatPassedTestIsAnnotatedWithFails() throws Exception {
+    // Test case #851
+    public void testT06_checkDashboardIndicationThatPassedTestIsAnnotatedWithFails() throws Exception {
         //TODO try out other locator or using java script
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_4.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResult.PASSED);
@@ -135,14 +140,4 @@ public class DashboardPageTest extends AbstractTestDashboard {
         AssertCollector.assertTrue(dashboardPage.dashboardModuleInformationCorridor.repairedFailsIndicationButton.isDisplayed(), "The dashboard page does not show the indicator, that there is a redundant @Fails annotation.");
         AssertCollector.assertTrue(dashboardPage.getMethodChartModule().methodChartRepairedFailsIndication.isDisplayed(), "The test_TestStatePassed2 method does not indicate in the method chart, that it is annotated with a redundant @Fails.");
     }
-
-
-    /*
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    public void testT08_clickerTest(){
-        DashboardPage dashboardPage = getDashboardPage(ReportDirectory.REPORT_DIRECTORY_2);
-
-        dashboardPage.clickerTest();
-    }
-    */
 }

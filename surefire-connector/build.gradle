@@ -5,3 +5,5 @@ dependencies {
         exclude module: 'testng'
     }
 }
+
+apply from: rootProject.file('release-bintray.gradle')

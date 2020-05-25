@@ -164,7 +164,7 @@ public final class TesterraProperties {
      */
     public static final String REUSE_DATAPROVIDER_DRIVER_BY_THREAD = "tt.reuse.dataprovider.driver.by.thread";
     /**
-     * Perf test Property, used to set default values of a Load test
+     * Perf test Property, used to activate performance test related behaviour and to set default values for the performance test
      */
     public static final String PERF_TEST = "tt.perf.test";
 
@@ -247,36 +247,30 @@ public final class TesterraProperties {
     public static final String LAYOUTCHECK_INTRA_GROUPING_THRESHOLD = "tt.layoutcheck.intra.grouping.threshold";
     public static final String LAYOUTCHECK_MINIMUM_MARKED_PIXELS = "tt.layoutcheck.minimum.marked.pixels";
     public static final String LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO = "tt.layoutcheck.maximum.marked.pixels.ratio";
-    public static final String LAYOUTCHECK_MATCHING_ALGORITHM = "tt.layoutcheck.matching.algorithm";
     /**
      * minimalDistanceBetweenMatches
      */
-    public static final String LAYOUTCHECK_INTERNAL_PARAMETER_1 = "tt.layoutcheck.internal.parameter.1";
+    public static final String LAYOUTCHECK_MIN_MATCH_DISTANCE = "tt.layoutcheck.min.match.distance";
     /**
      * minimalSizeDifferenceOfSubImages
      */
-    public static final String LAYOUTCHECK_INTERNAL_PARAMETER_2 = "tt.layoutcheck.internal.parameter.2";
+    public static final String LAYOUTCHECK_MIN_SIZE_DIFFERENCE_SUB_IMAGES = "tt.layoutcheck.min.size.difference.sub.images";
     /**
      * minimumSimilarMovementErrorsForDisplacementCorrection
      */
-    public static final String LAYOUTCHECK_INTERNAL_PARAMETER_3 = "tt.layoutcheck.internal.parameter.3";
+    public static final String LAYOUTCHECK_MIN_SIMULAR_MOVEMENT_ERRORS = "tt.layoutcheck.min.similar.movement.errors";
     /**
      * distanceBetweenMultipleMatchesToProduceWarning
      */
-    public static final String LAYOUTCHECK_INTERNAL_PARAMETER_4 = "tt.layoutcheck.internal.parameter.4";
+    public static final String LAYOUTCHECK_DISTANCE_MULTIPLE_MATCHES = "tt.layoutcheck.distance.multiple.matches";
     public static final String LAYOUTCHECK_IGNORE_AMBIGUOUS_MOVEMENT = "tt.layoutcheck.ignore.ambiguous.movement";
     public static final String LAYOUTCHECK_IGNORE_MOVEMENT = "tt.layoutcheck.ignore.movement";
     public static final String LAYOUTCHECK_IGNORE_GROUP_MOVEMENT = "tt.layoutcheck.ignore.group.movement";
     public static final String LAYOUTCHECK_IGNORE_MISSING_ELEMENTS = "tt.layoutcheck.ignore.missing.elements";
     public static final String LAYOUTCHECK_IGNORE_AMBIGUOUS_MATCH = "tt.layoutcheck.ignore.ambiguous.match";
 
-    /**
-     * If below 1, the value is regarded as percent threshold for erroneous pixels / all edge and text pixel. If 1 or
-     * greater, it is regarded as absolute error pixel count.
-     */
-    public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_ERROR_THRESHOLD = "tt.layoutcheck.text.error.detector.error.threshold";
     public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH = "tt.layoutcheck.text.error.detector.minimal.line.length";
-    public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGESTRENGTH = "tt.layoutcheck.text.error.detector.minimal.edge.strength";
+    public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGE_STRENGTH = "tt.layoutcheck.text.error.detector.minimal.edge.strength";
 
     public static final String SCREENCASTER_ACTIVE = "tt.screencaster.active";
 

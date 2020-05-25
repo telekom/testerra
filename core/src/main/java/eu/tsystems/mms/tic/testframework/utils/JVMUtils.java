@@ -39,6 +39,10 @@ public final class JVMUtils {
         }
     }
 
+    private JVMUtils() {
+
+    }
+
     public static int getCPUUsagePercent() {
         // cpu
         if (osMBean == null) {

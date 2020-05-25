@@ -14,7 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.utils;
 
 import java.util.HashMap;
@@ -26,17 +26,24 @@ import java.util.regex.Pattern;
 /**
  * Sammlung von StringUtils.
  */
-public final class StringUtils extends  org.apache.commons.lang3.StringUtils {
+public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 
-    /** Generator für Pseudozufallszahlen. */
+    /**
+     * Generator für Pseudozufallszahlen.
+     */
     private static final Random GENERATOR = new Random();
 
     /** Private Konstruktor. Wird nicht gerufen. */
-    /** Regexp-Pattern eine HTML-Entity. */
+    /**
+     * Regexp-Pattern eine HTML-Entity.
+     */
     private static final Pattern HTML_ENTITY = Pattern.compile("&([a-zA-Z]{4}|(#[0-9]{1,4}));");
 
-    /** Sammlung von speziellen Sonderzeichen, Umlauten etc. */
+    /**
+     * Sammlung von speziellen Sonderzeichen, Umlauten etc.
+     */
     private static final Map<String, String> HTML_ENTITIES = new HashMap<String, String>();
+
     static {
         // CHECKSTYLE:OFF
         HTML_ENTITIES.put("&uuml;", "ü");
@@ -53,7 +60,9 @@ public final class StringUtils extends  org.apache.commons.lang3.StringUtils {
     public static final Pattern ALLHTMLTAGS = Pattern
             .compile("</?\\w+((\\s+\\w+(\\s*=\\s*(?:\".*?\"|\'.*?\'|[^\'\">\\s]+))?)+\\s*|\\s*)/?>");
 
-    /** Private Konstruktor. Wird nicht gerufen. */
+    /**
+     * Private Konstruktor. Wird nicht gerufen.
+     */
     private StringUtils() {
     }
 
@@ -104,24 +113,7 @@ public final class StringUtils extends  org.apache.commons.lang3.StringUtils {
     /**
      * Hilfsmethode zum String konkatinieren.
      *
-     * @param spacer Spacer.
-     * @param objects Die Objetcs als Liste.
-     * @return string Der zusammengesetzte String.
-     */
-    public static String concat(final char spacer, final Object... objects) {
-        String out = "";
-        for (Object object : objects) {
-            out += object + "" + spacer;
-        }
-        // remove last spacer
-        out = out.substring(0, out.length() - 1);
-        return out;
-    }
-
-    /**
-     * Hilfsmethode zum String konkatinieren.
-     *
-     * @param spacer Spacer.
+     * @param spacer  Spacer.
      * @param objects Die Objetcs als Liste.
      * @return string Der zusammengesetzte String.
      */
@@ -189,21 +181,21 @@ public final class StringUtils extends  org.apache.commons.lang3.StringUtils {
         for (int i = 0; i < length; i++) {
 
             switch (StringUtils.GENERATOR.nextInt(4)) {
-            case 0:
-                strBuffer.append(Character.toString((char) (Math.random() * ('&' - '!') + '!')));
-                break;
-            case 1:
-                strBuffer.append(Character.toString((char) (Math.random() * ('@' - ':') + ':')));
-                break;
-            case 2:
-                strBuffer.append(Character.toString((char) (Math.random() * ('`' - '[') + '[')));
-                break;
-            case 3:
-                strBuffer.append(Character.toString((char) (Math.random() * ('/' - '(') + '(')));
-                break;
-            default:
-                strBuffer.append(Character.toString((char) (Math.random() * ('~' - '{') + '{')));
-                break;
+                case 0:
+                    strBuffer.append(Character.toString((char) (Math.random() * ('&' - '!') + '!')));
+                    break;
+                case 1:
+                    strBuffer.append(Character.toString((char) (Math.random() * ('@' - ':') + ':')));
+                    break;
+                case 2:
+                    strBuffer.append(Character.toString((char) (Math.random() * ('`' - '[') + '[')));
+                    break;
+                case 3:
+                    strBuffer.append(Character.toString((char) (Math.random() * ('/' - '(') + '(')));
+                    break;
+                default:
+                    strBuffer.append(Character.toString((char) (Math.random() * ('~' - '{') + '{')));
+                    break;
             }
         }
 
@@ -211,71 +203,12 @@ public final class StringUtils extends  org.apache.commons.lang3.StringUtils {
     }
 
     /**
-     * Entfernt aus einem Selektor String den anstehenden Typ Präfix.
+     * Determine if string can be parsed to int.
      *
-     * @param selektor Selektor.
-     * @return selektor ohne Präfix.
+     * @param input .
+     * @return true
      */
-    public static String stripSelektorType(final String selektor) {
-
-        String stripped = selektor;
-        if (selektor != null) {
-            if (selektor.startsWith("css=")) {
-                stripped = selektor.replace("css=", "");
-            } else if (selektor.startsWith("xpath=")) {
-                stripped = selektor.replace("xpath=", "");
-            }
-        }
-        return stripped;
-    }
-
-    /**
-     * Entfernt das "&" sowie den Platzhalter.
-     *
-     * @param selektor Selektor
-     * @return Selektor ohne "&" oder Platzhalter
-     */
-    public static String trimTemplateSelektor(final String selektor) {
-
-        String trimmed = selektor;
-        if (selektor != null) {
-            if (selektor.endsWith("%s&']")) {
-                trimmed = selektor.replace("%s&", "");
-            }
-            trimmed = StringUtils.formatStr(selektor, "");
-        }
-        return trimmed;
-
-    }
-
-    /**
-     * Enthält ein Selektor eine maxlength information, so wird sie mit dieser Funktion entfernt.
-     *
-     * @param selector Selektor mit maxlength Information.
-     * @return Selektor ohne maxlength Information.
-     */
-    public static String extractLengthInformationFromSelector(final String selector) {
-        return selector.replaceAll("\\[maxlength='[0-9]+'\\]", "");
-    }
-
-    /**
-     * Formates a template with given bugIds.
-     *
-     * @param formatStr template
-     * @param replaceID replace bugIds
-     * @return formattes String
-     */
-    public static String formatStr(final String formatStr, final String... replaceID) {
-        return String.format(formatStr, (Object[]) replaceID);
-    }
-
-    /**
-     * Hilfsmethode welche einen String entgegen nimmt und überprüft ob dieser zu einem Integer geparsed werden kann.
-     *
-     * @param input Stringeingabe.
-     * @return true wenn parsebar, sonst false.
-     */
-    public static boolean tryParse(final String input) {
+    public static boolean tryParseToInt(final String input) {
 
         boolean isParseable = true;
         try {
@@ -385,8 +318,7 @@ public final class StringUtils extends  org.apache.commons.lang3.StringUtils {
             Matcher matcher = pattern.matcher(aChar + "");
             if (matcher.find()) {
                 out += aChar;
-            }
-            else {
+            } else {
                 out += replacement;
             }
         }
@@ -408,55 +340,11 @@ public final class StringUtils extends  org.apache.commons.lang3.StringUtils {
                 out += " ";
             }
             out += value;
-        }
-        else {
+        } else {
             out = value;
         }
 
         return out;
-    }
-
-    /**
-     * Replaces all characters not matching \d|\w with _.
-     *
-     * @param in String input.
-     * @return legalized output.
-     */
-    public static String legalizeString(final String in) {
-        return removeIllegalCharacters(in, "\\d|\\w", "_");
-    }
-
-    public static boolean equalsWithNull(String... strings) {
-        if (strings == null || strings.length <= 1) {
-            // nothing AND really nothing AND 1 String is OK
-            return true;
-        }
-
-        String first = strings[0];
-
-        /*
-        null check
-         */
-        if (first == null) {
-            for (String string : strings) {
-                if (string != null) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        /*
-        string equals
-         */
-        for (String string : strings) {
-            if (!first.equals(string)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public static String getFirstValidString(String... s) {

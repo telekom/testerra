@@ -1,10 +1,12 @@
 plugins {
     id 'com.github.jk1.dependency-license-report' version '1.13'
+    id "com.jfrog.bintray" version "1.8.5"
 }
 
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
+apply plugin: 'jacoco'
 
 ext {
     /*
@@ -21,6 +23,15 @@ ext {
     Flags
      */
     doNotPublish = this.&dnp
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+
+    moduleVersion = '1-SNAPSHOT'
+    if (System.properties.containsKey('ttVersion')) {
+        moduleVersion = System.getProperty('ttVersion')
+    }
 }
 
 def dnp(prj) {
@@ -34,8 +45,10 @@ def dnp(prj) {
 allprojects {
 
     group 'eu.tsystems.mms.tic.testerra'
-    version '1-SNAPSHOT'
+    version moduleVersion
+}
 
+subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
@@ -48,16 +61,29 @@ allprojects {
         jcenter()
     }
 
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
     jacoco {
         toolVersion = "0.8.5"
     }
 
-    sourceCompatibility = 1.8
+    // custom tasks for creating source/javadoc jars
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    // add source jar tasks as artifacts
+    artifacts {
+        archives sourcesJar
+    }
 
     publishing {
         publications {
             mavenJava(MavenPublication) {
                 from components.java
+                artifact sourcesJar
             }
         }
 
@@ -121,4 +147,18 @@ task jacocoAggregateReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
             it.exists()
         }))
     }
+}
+
+task publishToBintray(type: GradleBuild) {
+    tasks = [
+            'core:bintrayUpload',
+            'core-interop:bintrayUpload',
+            'image-processing:bintrayUpload',
+            'driver-ui:bintrayUpload',
+            'driver-ui-desktop:bintrayUpload',
+            'surefire-connector:bintrayUpload',
+            'bmp:bintrayUpload',
+            'console-connector:bintrayUpload',
+            'mail-connector:bintrayUpload'
+    ]
 }

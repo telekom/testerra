@@ -4,7 +4,7 @@ import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.utils.LoggingDispatcher;
-import org.apache.log4j.spi.LoggingEvent;
+import org.apache.logging.log4j.core.LogEvent;
 
 /**
  * Adds log events as {@link LogMessage} to {@link TestStep}
@@ -13,7 +13,7 @@ import org.apache.log4j.spi.LoggingEvent;
  */
 public class StaticReportLogFormatter extends ContextLogFormatter {
     @Override
-    public String format(LoggingEvent event) {
+    public String format(LogEvent event) {
         appendForReport(event);
         return super.format(event);
     }
@@ -22,7 +22,7 @@ public class StaticReportLogFormatter extends ContextLogFormatter {
      *
      * @param event The event to be logged.
      */
-    private TestStepAction appendForReport(final LoggingEvent event) {
+    private TestStepAction appendForReport(final LogEvent event) {
 
         /**
          * We dont log any messages from steps package,

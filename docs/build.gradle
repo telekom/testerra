@@ -76,5 +76,10 @@ task uploadContent(type: AmazonS3FileUploadTask) {
     objectMetadata = m
 }
 
+bintray {
+    publications = []
+    configurations = []
+}
+
 asciidoctor.dependsOn(clean)
 syncContents.dependsOn(asciidoctor)

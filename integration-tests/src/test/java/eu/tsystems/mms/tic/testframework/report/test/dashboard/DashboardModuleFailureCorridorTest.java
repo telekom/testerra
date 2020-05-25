@@ -1,39 +1,24 @@
 package eu.tsystems.mms.tic.testframework.report.test.dashboard;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractTestReportNumbers;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractTestReportNumbers;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractTestDashboard;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
-import eu.tsystems.mms.tic.testframework.report.model.*;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 @TestContext(name = "View-Dashboard-FailureCorridor")
 public class DashboardModuleFailureCorridorTest extends AbstractTestDashboard {
 
-    @DataProvider(parallel = true)
-    public Object[][] testResultNumbers(){
-        Object[][] result = new Object[][]{
-                new Object[]{ReportDirectory.REPORT_DIRECTORY_1,new TestReportOneNumbers()},
-                new Object[]{ReportDirectory.REPORT_DIRECTORY_2,new TestReportTwoNumbers()},
-                new Object[]{ReportDirectory.REPORT_DIRECTORY_3,new TestReportThreeNumbers()},
-                new Object[]{ReportDirectory.REPORT_DIRECTORY_4,new TestReportFourNumbers()},
-                new Object[]{ReportDirectory.REPORT_DIRECTORY_5,new TestReportFiveNumbers()},
-                new Object[]{ReportDirectory.REPORT_DIRECTORY_6,new TestReportSixNumbers()}
-        };
-        return result;
-    }
-
     /**
      * This test checks the color of the label that indicates whether the failure corridor is matched or not.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testResultNumbers")
+    // Test case #852
     public void testT01_checkFailureCorridorMatchingForColor(ReportDirectory report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = getDashboardPage(report);
         GuiElement corridorMatch = dashboardPage.dashboardModuleFailureCorridor.failureCorridorDescription;
@@ -45,7 +30,8 @@ public class DashboardModuleFailureCorridorTest extends AbstractTestDashboard {
     /**
      * This test checks the numbers of the failure corridor.
      */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1},dataProvider = "testResultNumbers")
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testResultNumbers")
+    // Test case #424
     public void testT02_checkFailureCorridorNumbers(ReportDirectory report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = getDashboardPage(report);
 

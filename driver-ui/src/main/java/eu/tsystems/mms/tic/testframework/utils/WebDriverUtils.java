@@ -24,14 +24,12 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
@@ -170,16 +168,6 @@ public final class WebDriverUtils {
             }
         });
         return response.getResponse();
-    }
-
-    /**
-     * Generate DesiredCapabilities.
-     *
-     * @return DesiredCapabilities.
-     */
-    @Deprecated
-    public static DesiredCapabilities generateNewDesiredCapabilities() {
-        return WebDriverManagerUtils.generateNewDesiredCapabilities();
     }
 
     /**
@@ -364,9 +352,11 @@ public final class WebDriverUtils {
      * @return Rectangle
      */
     public static Rectangle getViewport(WebDriver driver) {
-        final ArrayList<Long> list = (ArrayList<Long>) JSUtils.executeScript(driver, "return [window.pageXOffset, window.pageYOffset, window.innerWidth, window.innerHeight];");
-        return new Rectangle(list.get(0).intValue(), list.get(1).intValue(), list.get(2).intValue(), list.get(3).intValue());
+
+        final ArrayList<String> list = (ArrayList<String>) JSUtils.executeScript(driver, "return [window.pageXOffset.toString(), window.pageYOffset.toString(), window.innerWidth.toString(), window.innerHeight.toString()];");
+        return new Rectangle(Integer.valueOf(list.get(0)), Integer.valueOf(list.get(1)), Integer.valueOf(list.get(2)), Integer.valueOf(list.get(3)));
     }
+
 
     /**
      * Initialize a {@link WebDriverKeepAliveSequence} and runs it with {@link Timer} in given interval.

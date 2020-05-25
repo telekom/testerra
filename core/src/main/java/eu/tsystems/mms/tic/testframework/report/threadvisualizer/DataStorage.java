@@ -47,7 +47,7 @@ public final class DataStorage {
         LOGGER.trace("Adding ThreadVisualizer DataSet (" + LIST.size() + ") for: "
                 + dataSet.getStartTime() + " - "
                 + dataSet.getStopTime() +
-                " - " + dataSet.getThreadName());
+                " - " + dataSet.getContext().threadName);
         synchronized (LIST) {
             LIST.add(dataSet);
         }

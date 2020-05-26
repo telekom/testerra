@@ -18,6 +18,7 @@
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import org.apache.velocity.VelocityContext;
@@ -80,14 +81,20 @@ public class ThreadVisualizer {
         // build data
         StringBuilder sb = new StringBuilder();
         String line;
+
         final List<DataSet> list = DataStorage.getList();
         for (final DataSet dataSet : list) {
+
+            final MethodContext methodContext = dataSet.getContext();
+            // generate html formatted output for report
+            final String updatedMethodContent = ThreadVisualizerUtils.getFormattedContent(methodContext);
+
             line = "data.addRow(" +
                     "[" +
                     "new Date(" + dataSet.getStartTime() + ")," +
                     "new Date(" + dataSet.getStopTime() + ")," +
-                    "'" + dataSet.getContent() + "'," +
-                    "'" + dataSet.getThreadName() + "'" +
+                    "'" + updatedMethodContent + "'," +
+                    "'" + methodContext.threadName + "'" +
                     "]" +
                     ");";
             sb.append(line).append("\n");

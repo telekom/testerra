@@ -23,7 +23,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
  * Created with IntelliJ IDEA. User: pele Date: 04.01.13 Time: 10:14 To change this template use File | Settings | File
  * Templates.
  */
-public final class Util {
+public final class ThreadVisualizerUtils {
 
     /**
      * Html break code.
@@ -33,7 +33,7 @@ public final class Util {
     /**
      * Hide default constructor.
      */
-    private Util() {
+    private ThreadVisualizerUtils() {
 
     }
 
@@ -45,7 +45,6 @@ public final class Util {
      */
     public static String getFormattedContent(final MethodContext methodContext) {
         String html = "";
-
 
         String style = "background: linear-gradient(to top, " + methodContext.status.color + " 0%, white 100%); ";
 
@@ -85,7 +84,16 @@ public final class Util {
         html += "</a>";
         html += "</div>";
 
-        return html;
+        return formatForHtml(html);
     }
 
+    /**
+     * Format String for html.
+     *
+     * @param s String to format.
+     * @return formatted String.
+     */
+    private static String formatForHtml(final String s) {
+        return s.replaceAll("'", "\\\\'");
+    }
 }

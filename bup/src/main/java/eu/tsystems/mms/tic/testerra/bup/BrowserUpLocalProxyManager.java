@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * This little Local Proxy manager allows you to define a port range which can be used for BrowserUp proxies.
  * Date: 26.05.2020
  * Time: 11:22
  *

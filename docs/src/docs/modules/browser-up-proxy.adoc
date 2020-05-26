@@ -1,0 +1,23 @@
+= Browser Up Proxy
+
+Browser Up Proxy (BUP) is a utility for ..... // TODO!
+
+== Project setup
+
+.build.gradle
+[source,gradle,role="primary"]
+----
+compile 'eu.tsystems.mms.tic.testerra:bup:1-SNAPSHOT'
+----
+
+.pom.xml
+[source,xml,role="secondary"]
+----
+<dependencies>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>bup</artifactId>
+        <version>1-SNAPSHOT</version>
+    </dependency>
+</dependencies>
+----

@@ -57,7 +57,7 @@ import java.util.Map;
  *
  * @author Eric Kubenka
  */
-public class BrowserUpClient implements Loggable {
+public class BrowserUpRemoteProxyManager implements Loggable {
 
     private final URL baseUrl;
 
@@ -66,7 +66,7 @@ public class BrowserUpClient implements Loggable {
      *
      * @param apiUrl {@link URL} API endpoint.
      */
-    public BrowserUpClient(final URL apiUrl) {
+    public BrowserUpRemoteProxyManager(final URL apiUrl) {
 
         this.baseUrl = apiUrl;
     }
@@ -105,17 +105,17 @@ public class BrowserUpClient implements Loggable {
      *
      * @return BrowserUpRemoteProxyServer object.
      */
-    public BupRemoteProxyServer startServer() {
-        return startServer(new BupRemoteProxyServer());
+    public BrowserUpRemoteProxyServer startServer() {
+        return startServer(new BrowserUpRemoteProxyServer());
     }
 
     /**
      * Calls POST /proxy with parameters and desired port, upstream proxy and other configurational data
      *
-     * @param proxyServer {@link BupRemoteProxyServer}
+     * @param proxyServer {@link BrowserUpRemoteProxyServer}
      * @return BrowserUpRemoteProxyServer
      */
-    public BupRemoteProxyServer startServer(BupRemoteProxyServer proxyServer) {
+    public BrowserUpRemoteProxyServer startServer(BrowserUpRemoteProxyServer proxyServer) {
 
         final URIBuilder startServerUriBuilder = url().setPath("/proxy");
 
@@ -155,10 +155,10 @@ public class BrowserUpClient implements Loggable {
     /**
      * Calls DELETE /proxy/[port] of proxy to stop.
      *
-     * @param proxyServer {@link BupRemoteProxyServer}
+     * @param proxyServer {@link BrowserUpRemoteProxyServer}
      * @return true, when successfully stopped.
      */
-    public boolean stopServer(BupRemoteProxyServer proxyServer) {
+    public boolean stopServer(BrowserUpRemoteProxyServer proxyServer) {
 
         final URIBuilder deleteProxyServerUriBuilder = url().setPath("/proxy/" + proxyServer.getPort());
 
@@ -169,12 +169,12 @@ public class BrowserUpClient implements Loggable {
     }
 
     /**
-     * Determines if {@link BupRemoteProxyServer} on port is already running
+     * Determines if {@link BrowserUpRemoteProxyServer} on port is already running
      *
-     * @param proxyServer {@link BupRemoteProxyServer}
+     * @param proxyServer {@link BrowserUpRemoteProxyServer}
      * @return true, when port in use.
      */
-    public boolean isRunning(final BupRemoteProxyServer proxyServer) {
+    public boolean isRunning(final BrowserUpRemoteProxyServer proxyServer) {
 
         final List<Integer> proxies = this.getProxies();
         return proxies.contains(proxyServer.getPort());
@@ -188,7 +188,7 @@ public class BrowserUpClient implements Loggable {
      * @param username
      * @param password
      */
-    public boolean setBasicAuth(final BupRemoteProxyServer proxyServer, final String domain, final String username, final String password) {
+    public boolean setBasicAuth(final BrowserUpRemoteProxyServer proxyServer, final String domain, final String username, final String password) {
 
         final URIBuilder basicAuthUriBuilder = url().setPath("/proxy/" + proxyServer.getPort() + "/auth/basic/" + domain);
 
@@ -212,12 +212,12 @@ public class BrowserUpClient implements Loggable {
      * Calls POST /proxy/[port]/headers with parameter.
      * Sets header for all outgoing requests.
      *
-     * @param proxyServer {@link BupRemoteProxyServer}
+     * @param proxyServer {@link BrowserUpRemoteProxyServer}
      * @param key         {@link String}
      * @param value       {@link String}
      * @implNote can only be called after a BMP already started.
      */
-    public boolean addHeader(final BupRemoteProxyServer proxyServer, final String key, final String value) {
+    public boolean addHeader(final BrowserUpRemoteProxyServer proxyServer, final String key, final String value) {
 
         final URIBuilder setHeaderUriBuilder = url().setPath("/proxy/" + proxyServer.getPort() + "/headers");
 
@@ -238,12 +238,12 @@ public class BrowserUpClient implements Loggable {
      * Calls PUT /proxy/[port]/har with parameters
      * Start capturing the network traffic
      *
-     * @param proxyServer      {@link BupRemoteProxyServer} proxyserver to start capturing on
+     * @param proxyServer      {@link BrowserUpRemoteProxyServer} proxyserver to start capturing on
      * @param isCaptureHeaders Enables capture of headers.
      * @param isCaptureContent Enables capture of content
      * @param initialPageRef   Set page reference for first page, defaults to "Page 1"
      */
-    public boolean startCapture(BupRemoteProxyServer proxyServer, String initialPageRef, boolean isCaptureHeaders, boolean isCaptureContent) {
+    public boolean startCapture(BrowserUpRemoteProxyServer proxyServer, String initialPageRef, boolean isCaptureHeaders, boolean isCaptureContent) {
 
         final URIBuilder startCaptureUriBuilder = url().setPath("/proxy/" + proxyServer.getPort() + "/har");
 
@@ -271,7 +271,7 @@ public class BrowserUpClient implements Loggable {
      *
      * @return Captured traffic in JsonFormat (serialized Har)
      */
-    public JsonElement stopCapture(BupRemoteProxyServer proxyServer) {
+    public JsonElement stopCapture(BrowserUpRemoteProxyServer proxyServer) {
 
         final URIBuilder captureUriBuilder = url().setPath("/proxy/" + proxyServer.getPort() + "/har");
 
@@ -284,12 +284,12 @@ public class BrowserUpClient implements Loggable {
     /**
      * Calls PUT /proxy/[port]/har/pageRef with parameters.
      * Starts a new page in recording.
-     * Please ensure you called {@link #startCapture(BupRemoteProxyServer, String, boolean, boolean)} before.
+     * Please ensure you called {@link #startCapture(BrowserUpRemoteProxyServer, String, boolean, boolean)} before.
      *
-     * @param proxyServer {@link BupRemoteProxyServer}
+     * @param proxyServer {@link BrowserUpRemoteProxyServer}
      * @param pageRef     {@link String} pageRef
      */
-    public boolean addNewPage(final BupRemoteProxyServer proxyServer, final String pageRef) {
+    public boolean addNewPage(final BrowserUpRemoteProxyServer proxyServer, final String pageRef) {
 
         final URIBuilder pageRefUriBuilder = url().setPath("/proxy/" + proxyServer.getPort() + "/har/pageRef");
 
@@ -308,7 +308,7 @@ public class BrowserUpClient implements Loggable {
      *
      * @param hostnameIpMap Map
      */
-    public boolean setHostMapping(BupRemoteProxyServer proxyServer, Map<String, String> hostnameIpMap) {
+    public boolean setHostMapping(BrowserUpRemoteProxyServer proxyServer, Map<String, String> hostnameIpMap) {
 
         final URIBuilder hostUriBuilder = url().setPath("/proxy/" + proxyServer.getPort() + "/hosts");
 
@@ -332,7 +332,7 @@ public class BrowserUpClient implements Loggable {
         try {
             return uriBuilder.build();
         } catch (URISyntaxException e) {
-            throw new BupHttpApiException(errorMessage, e);
+            throw new BrowserUpHttpApiException(errorMessage, e);
         }
     }
 
@@ -345,7 +345,7 @@ public class BrowserUpClient implements Loggable {
             final HttpClient httpClient = HttpClients.createDefault();
             response = httpClient.execute(httpRequest);
         } catch (IOException e) {
-            throw new BupHttpApiException(
+            throw new BrowserUpHttpApiException(
                     String.format("Error executing %s for URL %s against HTTP API of browser up proxy server.",
                             httpRequest.getClass().getSimpleName(),
                             httpRequest.getURI().toString()),
@@ -353,7 +353,7 @@ public class BrowserUpClient implements Loggable {
         }
 
         if (response.getStatusLine().getStatusCode() != 200 && response.getStatusLine().getStatusCode() != 204) {
-            throw new BupHttpApiException(
+            throw new BrowserUpHttpApiException(
                     String.format("Error executing %s for URL %s against HTTP API of browser up proxy server. Response code was: %s",
                             httpRequest.getClass().getSimpleName(),
                             httpRequest.getURI().toString(),
@@ -374,7 +374,7 @@ public class BrowserUpClient implements Loggable {
             // json string conversion to array.
             return writer.toString();
         } catch (IOException e) {
-            throw new BupHttpApiException(
+            throw new BrowserUpHttpApiException(
                     String.format("Error converting response %s for URL %s from browser up proxy server.",
                             httpRequest.getClass().getSimpleName(),
                             httpRequest.getURI().toString()),

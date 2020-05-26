@@ -16,32 +16,18 @@
  */
 package eu.tsystems.mms.tic.testerra.bup;
 
-import java.net.URL;
-
 /**
- * Date: 25.05.2020
- * Time: 11:58
+ * Thrown when no free port could be allocated for {@link BrowserUpLocalProxyManager}
+ * <p>
+ * Date: 26.05.2020
+ * Time: 12:01
  *
  * @author Eric Kubenka
  */
-public class BupRemoteProxyServer {
+public class BrowserUpNoFreePortException extends Exception {
 
-    private Integer port;
-    private URL upstreamProxy;
-
-    public Integer getPort() {
-        return port;
+    public BrowserUpNoFreePortException(String msg) {
+        super(msg);
     }
 
-    public void setPort(Integer port) {
-        this.port = port;
-    }
-
-    public URL getUpstreamProxy() {
-        return upstreamProxy;
-    }
-
-    public void setUpstreamProxy(URL upstreamProxy) {
-        this.upstreamProxy = upstreamProxy;
-    }
 }

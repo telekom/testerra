@@ -19,18 +19,19 @@ package eu.tsystems.mms.tic.testerra.bup;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 
 /**
+ * Thrown on any API communication error on {@link BrowserUpRemoteProxyManager}
  * Date: 26.05.2020
  * Time: 09:01
  *
  * @author Eric Kubenka
  */
-public class BupHttpApiException extends TesterraRuntimeException {
+public class BrowserUpHttpApiException extends TesterraRuntimeException {
 
-    public BupHttpApiException(String message) {
+    public BrowserUpHttpApiException(String message) {
         super(message);
     }
 
-    public BupHttpApiException(String message, Throwable cause) {
+    public BrowserUpHttpApiException(String message, Throwable cause) {
         super(message, cause);
     }
 }

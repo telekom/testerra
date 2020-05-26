@@ -22,8 +22,8 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import eu.tsystems.mms.tic.testerra.bup.BrowserUpClient;
-import eu.tsystems.mms.tic.testerra.bup.BupRemoteProxyServer;
+import eu.tsystems.mms.tic.testerra.bup.BrowserUpRemoteProxyManager;
+import eu.tsystems.mms.tic.testerra.bup.BrowserUpRemoteProxyServer;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -49,7 +49,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 
 /**
- * Tests for {@link eu.tsystems.mms.tic.testerra.bup.BrowserUpClient}
+ * Tests for {@link BrowserUpRemoteProxyManager}
  * <p>
  * Date:25.05.2020
  * Time:10:43
@@ -57,7 +57,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
  * @author Eric Kubenka
  */
 
-public class BupClientTest extends TesterraTest {
+public class BupRemoteProxyManagerTest extends TesterraTest {
 
     private static final int WIREMOCK_SERVER_PORT = 81;
     private static final String WIREMOCK_SERVER_HOST = "localhost";
@@ -120,9 +120,9 @@ public class BupClientTest extends TesterraTest {
         // ### Test Start ###
 
         final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
-        final BrowserUpClient browserUpClient = new BrowserUpClient(apiBaseUrl);
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
-        final List<Integer> servers = browserUpClient.getProxies();
+        final List<Integer> servers = browserUpRemoteProxyManager.getProxies();
         Assert.assertEquals(servers.size(), 0, "Servers empty after start");
     }
 
@@ -144,13 +144,13 @@ public class BupClientTest extends TesterraTest {
         // ### Test Start ###
 
         final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
-        final BrowserUpClient browserUpClient = new BrowserUpClient(apiBaseUrl);
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
-        final BupRemoteProxyServer bupRemoteProxyServer = browserUpClient.startServer();
-        Assert.assertNotNull(bupRemoteProxyServer, "Browser Up Proxy started.");
-        Assert.assertEquals(bupRemoteProxyServer.getPort().intValue(), 8081, "Created proxy on first free port.");
+        final BrowserUpRemoteProxyServer browserUpRemoteProxyServer = browserUpRemoteProxyManager.startServer();
+        Assert.assertNotNull(browserUpRemoteProxyServer, "Browser Up Proxy started.");
+        Assert.assertEquals(browserUpRemoteProxyServer.getPort().intValue(), 8081, "Created proxy on first free port.");
 
-        final boolean running = browserUpClient.isRunning(bupRemoteProxyServer);
+        final boolean running = browserUpRemoteProxyManager.isRunning(browserUpRemoteProxyServer);
         Assert.assertTrue(running, "Browser Up Proxy is running.");
     }
 
@@ -172,15 +172,15 @@ public class BupClientTest extends TesterraTest {
         // ### Test Start ###
 
         final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
-        final BrowserUpClient browserUpClient = new BrowserUpClient(apiBaseUrl);
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
-        BupRemoteProxyServer bupRemoteProxyServer = new BupRemoteProxyServer();
-        bupRemoteProxyServer.setPort(8088);
+        BrowserUpRemoteProxyServer browserUpRemoteProxyServer = new BrowserUpRemoteProxyServer();
+        browserUpRemoteProxyServer.setPort(8088);
 
-        bupRemoteProxyServer = browserUpClient.startServer(bupRemoteProxyServer);
-        Assert.assertNotNull(bupRemoteProxyServer, "Proxy object generated.");
+        browserUpRemoteProxyServer = browserUpRemoteProxyManager.startServer(browserUpRemoteProxyServer);
+        Assert.assertNotNull(browserUpRemoteProxyServer, "Proxy object generated.");
 
-        Assert.assertEquals(bupRemoteProxyServer.getPort().intValue(), 8088, "Port equals desired.");
+        Assert.assertEquals(browserUpRemoteProxyServer.getPort().intValue(), 8088, "Port equals desired.");
 
         // ### Change stubbing ###
         removeStub(emptyListStub);
@@ -190,7 +190,7 @@ public class BupClientTest extends TesterraTest {
                         .withHeader("Content-Type", "text/json")
                         .withBody(Response.GET_PROXY_8088.getResponse())));
 
-        final boolean running = browserUpClient.isRunning(bupRemoteProxyServer);
+        final boolean running = browserUpRemoteProxyManager.isRunning(browserUpRemoteProxyServer);
         Assert.assertTrue(running, "Browser Up Proxy is running.");
     }
 
@@ -204,12 +204,12 @@ public class BupClientTest extends TesterraTest {
                         .withBody(Response.DELETE_PROXY_8088.getResponse())));
 
         // ### Test Start ###
-        BupRemoteProxyServer bupRemoteProxyServer = new BupRemoteProxyServer();
-        bupRemoteProxyServer.setPort(8088);
+        BrowserUpRemoteProxyServer browserUpRemoteProxyServer = new BrowserUpRemoteProxyServer();
+        browserUpRemoteProxyServer.setPort(8088);
 
         final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
-        final BrowserUpClient browserUpClient = new BrowserUpClient(apiBaseUrl);
-        browserUpClient.stopServer(bupRemoteProxyServer);
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+        browserUpRemoteProxyManager.stopServer(browserUpRemoteProxyServer);
     }
 
     @Test
@@ -225,18 +225,18 @@ public class BupClientTest extends TesterraTest {
                         .withBody(Response.POST_HEADERS_8081.getResponse())));
 
         final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
-        final BrowserUpClient browserUpClient = new BrowserUpClient(apiBaseUrl);
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
-        final BupRemoteProxyServer bup1 = new BupRemoteProxyServer();
+        final BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
         bup1.setPort(8081);
 
-        Assert.assertTrue(browserUpClient.addHeader(bup1, "foo", "bar"), "Headers set");
+        Assert.assertTrue(browserUpRemoteProxyManager.addHeader(bup1, "foo", "bar"), "Headers set");
     }
 
     @Test
     public void testT06_Capture() throws MalformedURLException {
 
-        final BupRemoteProxyServer bup1 = new BupRemoteProxyServer();
+        final BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
         bup1.setPort(8081);
 
         stubFor(put(urlEqualTo("/proxy/8081/har"))
@@ -254,11 +254,11 @@ public class BupClientTest extends TesterraTest {
 
         // create capture
         final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
-        final BrowserUpClient browserUpClient = new BrowserUpClient(apiBaseUrl);
-        browserUpClient.startCapture(bup1, null, false, false);
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+        browserUpRemoteProxyManager.startCapture(bup1, null, false, false);
 
         // stop capture
-        final JsonObject jsonHarResponse = (JsonObject) browserUpClient.stopCapture(bup1);
+        final JsonObject jsonHarResponse = (JsonObject) browserUpRemoteProxyManager.stopCapture(bup1);
         final JsonObject jsonLog = jsonHarResponse.getAsJsonObject("log");
         final JsonArray jsonPages = jsonLog.getAsJsonArray("pages");
 
@@ -278,16 +278,16 @@ public class BupClientTest extends TesterraTest {
                         .withBody(Response.POST_HOSTS_8081.getResponse())));
 
 
-        final BupRemoteProxyServer bup1 = new BupRemoteProxyServer();
+        final BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
         bup1.setPort(8081);
 
         final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
-        final BrowserUpClient browserUpClient = new BrowserUpClient(apiBaseUrl);
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
         final HashMap<String, String> hostNameMap = new HashMap<>();
         hostNameMap.put("example.com", "127.0.0.1");
 
-        boolean b = browserUpClient.setHostMapping(bup1, hostNameMap);
+        boolean b = browserUpRemoteProxyManager.setHostMapping(bup1, hostNameMap);
         Assert.assertTrue(b, "Host Mapping set.");
     }
 
@@ -301,12 +301,12 @@ public class BupClientTest extends TesterraTest {
                         .withBody(Response.GET_PROXY_8088.getResponse())));
 
         final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
-        final BrowserUpClient browserUpClient = new BrowserUpClient(apiBaseUrl);
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
-        BupRemoteProxyServer bupRemoteProxyServer = new BupRemoteProxyServer();
-        bupRemoteProxyServer.setPort(8081);
+        BrowserUpRemoteProxyServer browserUpRemoteProxyServer = new BrowserUpRemoteProxyServer();
+        browserUpRemoteProxyServer.setPort(8081);
 
-        final boolean running = browserUpClient.isRunning(bupRemoteProxyServer);
+        final boolean running = browserUpRemoteProxyManager.isRunning(browserUpRemoteProxyServer);
         Assert.assertFalse(running, "Browser Up Session running on port 8081");
     }
 
@@ -326,15 +326,15 @@ public class BupClientTest extends TesterraTest {
                         .withBody(Response.GET_HAR_8081_TWO_PAGES.getResponse())));
 
         final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
-        final BrowserUpClient browserUpClient = new BrowserUpClient(apiBaseUrl);
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
-        BupRemoteProxyServer bup1 = new BupRemoteProxyServer();
+        BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
         bup1.setPort(8081);
 
-        boolean b = browserUpClient.addNewPage(bup1, "Page 2");
+        boolean b = browserUpRemoteProxyManager.addNewPage(bup1, "Page 2");
         Assert.assertTrue(b, "New HAR page created.");
 
-        final JsonObject jsonHarResponse = (JsonObject) browserUpClient.stopCapture(bup1);
+        final JsonObject jsonHarResponse = (JsonObject) browserUpRemoteProxyManager.stopCapture(bup1);
         final JsonObject jsonLog = jsonHarResponse.getAsJsonObject("log");
         final JsonArray jsonPages = jsonLog.getAsJsonArray("pages");
 
@@ -355,12 +355,12 @@ public class BupClientTest extends TesterraTest {
 
 
         final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
-        final BrowserUpClient browserUpClient = new BrowserUpClient(apiBaseUrl);
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
-        final BupRemoteProxyServer bup1 = new BupRemoteProxyServer();
+        final BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
         bup1.setPort(8081);
 
-        boolean b = browserUpClient.setBasicAuth(bup1, "example.com", "test", "test");
+        boolean b = browserUpRemoteProxyManager.setBasicAuth(bup1, "example.com", "test", "test");
         Assert.assertTrue(b, "Basic auth set.");
     }
 

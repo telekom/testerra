@@ -147,11 +147,11 @@ public class BupRemoteProxyManagerTest extends TesterraTest {
         final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
         final BrowserUpRemoteProxyServer browserUpRemoteProxyServer = browserUpRemoteProxyManager.startServer();
-        Assert.assertNotNull(browserUpRemoteProxyServer, "Browser Up Proxy started.");
+        Assert.assertNotNull(browserUpRemoteProxyServer, "BrowserUp Proxy started.");
         Assert.assertEquals(browserUpRemoteProxyServer.getPort().intValue(), 8081, "Created proxy on first free port.");
 
         final boolean running = browserUpRemoteProxyManager.isRunning(browserUpRemoteProxyServer);
-        Assert.assertTrue(running, "Browser Up Proxy is running.");
+        Assert.assertTrue(running, "BrowserUp Proxy is running.");
     }
 
     @Test
@@ -191,7 +191,7 @@ public class BupRemoteProxyManagerTest extends TesterraTest {
                         .withBody(Response.GET_PROXY_8088.getResponse())));
 
         final boolean running = browserUpRemoteProxyManager.isRunning(browserUpRemoteProxyServer);
-        Assert.assertTrue(running, "Browser Up Proxy is running.");
+        Assert.assertTrue(running, "BrowserUp Proxy is running.");
     }
 
     @Test
@@ -307,7 +307,7 @@ public class BupRemoteProxyManagerTest extends TesterraTest {
         browserUpRemoteProxyServer.setPort(8081);
 
         final boolean running = browserUpRemoteProxyManager.isRunning(browserUpRemoteProxyServer);
-        Assert.assertFalse(running, "Browser Up Session running on port 8081");
+        Assert.assertFalse(running, "BrowserUp Session running on port 8081");
     }
 
     @Test
@@ -362,6 +362,23 @@ public class BupRemoteProxyManagerTest extends TesterraTest {
 
         boolean b = browserUpRemoteProxyManager.setBasicAuth(bup1, "example.com", "test", "test");
         Assert.assertTrue(b, "Basic auth set.");
+    }
+
+    @Test
+    public void testT11_AddUpstreamProxy() throws MalformedURLException {
+
+        stubFor(post(urlMatching("/proxy.*httpProxy=proxy.example%3A8080"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/json")
+                        .withBody(Response.POST_PROXY_8081.getResponse())));
+
+        BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
+        bup1.setUpstreamProxy(new URL("http://proxy.example:8080"));
+
+        final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+        bup1 = browserUpRemoteProxyManager.startServer(bup1);
     }
 
 }

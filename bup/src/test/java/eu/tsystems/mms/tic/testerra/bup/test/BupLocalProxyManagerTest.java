@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This little Local Proxy manager allows you to define a portrange which can be used for browser up proxies.
+ * This little Local Proxy manager allows you to define a portrange which can be used for BrowserUp proxies.
  * <p>
  * Date: 26.05.2020
  * Time: 11:36

@@ -74,11 +74,11 @@ public class BupRemoteProxyManagerPlaygroundTest extends TesterraTest {
         final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
         final BrowserUpRemoteProxyServer browserUpRemoteProxyServer = browserUpRemoteProxyManager.startServer();
-        Assert.assertNotNull(browserUpRemoteProxyServer, "Browser Up Proxy started.");
+        Assert.assertNotNull(browserUpRemoteProxyServer, "BrowserUp Proxy started.");
         Assert.assertEquals(browserUpRemoteProxyServer.getPort().intValue(), 8081, "Created proxy on first free port.");
 
         final boolean running = browserUpRemoteProxyManager.isRunning(browserUpRemoteProxyServer);
-        Assert.assertTrue(running, "Browser Up Proxy is running.");
+        Assert.assertTrue(running, "BrowserUp Proxy is running.");
     }
 
     @Test
@@ -87,16 +87,16 @@ public class BupRemoteProxyManagerPlaygroundTest extends TesterraTest {
         final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
         final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
-        BrowserUpRemoteProxyServer browserUpRemoteProxyServer = new BrowserUpRemoteProxyServer();
-        browserUpRemoteProxyServer.setPort(8088);
+        BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
+        bup1.setPort(8088);
 
-        browserUpRemoteProxyServer = browserUpRemoteProxyManager.startServer(browserUpRemoteProxyServer);
-        Assert.assertNotNull(browserUpRemoteProxyServer, "Proxy object generated.");
+        bup1 = browserUpRemoteProxyManager.startServer(bup1);
+        Assert.assertNotNull(bup1, "Proxy object generated.");
 
-        Assert.assertEquals(browserUpRemoteProxyServer.getPort().intValue(), 8088, "Port equals desired.");
+        Assert.assertEquals(bup1.getPort().intValue(), 8088, "Port equals desired.");
 
-        final boolean running = browserUpRemoteProxyManager.isRunning(browserUpRemoteProxyServer);
-        Assert.assertTrue(running, "Browser Up Proxy is running.");
+        final boolean running = browserUpRemoteProxyManager.isRunning(bup1);
+        Assert.assertTrue(running, "BrowserUp Proxy is running.");
     }
 
     @Test
@@ -106,17 +106,17 @@ public class BupRemoteProxyManagerPlaygroundTest extends TesterraTest {
         final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
         final BrowserUpRemoteProxyServer bup1 = browserUpRemoteProxyManager.startServer();
-        Assert.assertNotNull(bup1, "Browser Up Proxy Session 1 started");
+        Assert.assertNotNull(bup1, "BrowserUp Proxy Session 1 started");
 
 
         final BrowserUpRemoteProxyServer bup2 = browserUpRemoteProxyManager.startServer();
-        Assert.assertNotNull(bup2, "Browser Up Proxy Session 2 started");
+        Assert.assertNotNull(bup2, "BrowserUp Proxy Session 2 started");
 
         Assert.assertNotEquals(bup1.getPort(), bup2.getPort(), "Ports dont match.");
 
         browserUpRemoteProxyManager.stopServer(bup2);
-        Assert.assertTrue(browserUpRemoteProxyManager.isRunning(bup1), "Browser Up Proxy Session 1 running.");
-        Assert.assertFalse(browserUpRemoteProxyManager.isRunning(bup2), "Browser Up Proxy Session 2 running.");
+        Assert.assertTrue(browserUpRemoteProxyManager.isRunning(bup1), "BrowserUp Proxy Session 1 running.");
+        Assert.assertFalse(browserUpRemoteProxyManager.isRunning(bup2), "BrowserUp Proxy Session 2 running.");
     }
 
     @Test
@@ -126,7 +126,7 @@ public class BupRemoteProxyManagerPlaygroundTest extends TesterraTest {
         final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
 
         final BrowserUpRemoteProxyServer bup1 = browserUpRemoteProxyManager.startServer();
-        Assert.assertNotNull(bup1, "Browser Up Proxy Session 1 started");
+        Assert.assertNotNull(bup1, "BrowserUp Proxy Session 1 started");
         Assert.assertTrue(browserUpRemoteProxyManager.addHeader(bup1, "foo", "bar"), "Headers set");
     }
 
@@ -175,7 +175,7 @@ public class BupRemoteProxyManagerPlaygroundTest extends TesterraTest {
         browserUpRemoteProxyServer.setPort(8081);
 
         final boolean running = browserUpRemoteProxyManager.isRunning(browserUpRemoteProxyServer);
-        Assert.assertFalse(running, "Browser Up Session running on port 8081");
+        Assert.assertFalse(running, "BrowserUp Session running on port 8081");
     }
 
     @Test
@@ -209,6 +209,19 @@ public class BupRemoteProxyManagerPlaygroundTest extends TesterraTest {
 
         boolean b = browserUpRemoteProxyManager.setBasicAuth(bup1, "example.com", "test", "test");
         Assert.assertTrue(b, "Basic auth set.");
+    }
+
+    @Test
+    public void testT11_AddUpstreamProxy() throws MalformedURLException {
+
+        final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
+
+        BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
+        bup1.setUpstreamProxy(new URL("http://proxy.example:8080"));
+
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+        bup1 = browserUpRemoteProxyManager.startServer();
+
     }
 
 }

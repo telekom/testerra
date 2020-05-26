@@ -83,7 +83,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
         // prepare url
         final URIBuilder getStartedProxyServersUriBuilder = url().setPath("/proxy");
 
-        final URI uri = buildUri(getStartedProxyServersUriBuilder, "Error parsing URL for GET /proxy for browser up proxy server.");
+        final URI uri = buildUri(getStartedProxyServersUriBuilder, "Error parsing URL for GET /proxy for BrowserUp proxy server.");
         final HttpGet httpGet = new HttpGet(uri);
         final String jsonResponse = sendRequestAndConvertResponseToString(httpGet);
 
@@ -142,7 +142,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
             startServerUriBuilder.setParameter("httpProxy", String.format("%s:%d", proxyServer.getUpstreamProxy().getHost(), proxyServer.getUpstreamProxy().getPort()));
         }
 
-        final URI uri = buildUri(startServerUriBuilder, "Error parsing URL for POST /proxy for browser up proxy server.");
+        final URI uri = buildUri(startServerUriBuilder, "Error parsing URL for POST /proxy for BrowserUp proxy server.");
         final HttpPost httpPost = new HttpPost(uri);
         final String jsonResponse = sendRequestAndConvertResponseToString(httpPost);
 
@@ -162,7 +162,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
 
         final URIBuilder deleteProxyServerUriBuilder = url().setPath("/proxy/" + proxyServer.getPort());
 
-        final URI uri = buildUri(deleteProxyServerUriBuilder, "Error parsing URL for DELETE /proxy/[port] browser up proxy server.");
+        final URI uri = buildUri(deleteProxyServerUriBuilder, "Error parsing URL for DELETE /proxy/[port] BrowserUp proxy server.");
         final HttpDelete httpDelete = new HttpDelete(uri);
         final String jsonResponse = sendRequestAndConvertResponseToString(httpDelete);
         return jsonResponse != null && jsonResponse.equals("");
@@ -197,7 +197,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
         authObject.add("username", new JsonPrimitive(username));
         authObject.add("password", new JsonPrimitive(password));
 
-        final URI uri = buildUri(basicAuthUriBuilder, "Error parsing URL for POST /proxy/[port]/auth/basic/[domain] browser up proxy server.");
+        final URI uri = buildUri(basicAuthUriBuilder, "Error parsing URL for POST /proxy/[port]/auth/basic/[domain] BrowserUp proxy server.");
         final HttpPost httpPost = new HttpPost(uri);
 
         final StringEntity postPayloadEntity = new StringEntity(authObject.toString(), ContentType.create("text/plain", "UTF-8"));
@@ -224,7 +224,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
         final JsonObject jsonHeaderMap = new JsonObject();
         jsonHeaderMap.add(key, new JsonPrimitive(value));
 
-        final URI uri = buildUri(setHeaderUriBuilder, "Error parsing URL for POST /proxy/[port]/headers browser up proxy server.");
+        final URI uri = buildUri(setHeaderUriBuilder, "Error parsing URL for POST /proxy/[port]/headers BrowserUp proxy server.");
         final HttpPost httpPost = new HttpPost(uri);
 
         final StringEntity postPayloadEntity = new StringEntity(jsonHeaderMap.toString(), ContentType.create("text/plain", "UTF-8"));
@@ -259,7 +259,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
             startCaptureUriBuilder.setParameter("initialPageRef ", initialPageRef);
         }
 
-        final URI uri = buildUri(startCaptureUriBuilder, "Error parsing URL for PUT /proxy/[port]/har browser up proxy server.");
+        final URI uri = buildUri(startCaptureUriBuilder, "Error parsing URL for PUT /proxy/[port]/har BrowserUp proxy server.");
         final HttpPut httpPut = new HttpPut(uri);
         final String jsonResponse = sendRequestAndConvertResponseToString(httpPut);
         return jsonResponse != null && jsonResponse.equals("");
@@ -275,7 +275,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
 
         final URIBuilder captureUriBuilder = url().setPath("/proxy/" + proxyServer.getPort() + "/har");
 
-        final URI uri = buildUri(captureUriBuilder, "Error parsing URL for GET /proxy/[port]/har browser up proxy server.");
+        final URI uri = buildUri(captureUriBuilder, "Error parsing URL for GET /proxy/[port]/har BrowserUp proxy server.");
         final HttpGet httpGet = new HttpGet(uri);
         final String jsonResponse = sendRequestAndConvertResponseToString(httpGet);
         return JsonParser.parseString(jsonResponse);
@@ -297,7 +297,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
             pageRefUriBuilder.setParameter("pageRef", pageRef);
         }
 
-        final URI uri = buildUri(pageRefUriBuilder, "Error parsing URL for PUT /proxy/[port]/har/pageRef browser up proxy server.");
+        final URI uri = buildUri(pageRefUriBuilder, "Error parsing URL for PUT /proxy/[port]/har/pageRef BrowserUp proxy server.");
         final HttpPut httpPut = new HttpPut(uri);
         final String jsonResponse = sendRequestAndConvertResponseToString(httpPut);
         return jsonResponse != null && jsonResponse.equals("");
@@ -318,7 +318,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
             jsonHostnameIpMap.put(hostname, ip);
         }
 
-        final URI uri = buildUri(hostUriBuilder, "Error parsing URL for POST /proxy/[port]/har browser up proxy server.");
+        final URI uri = buildUri(hostUriBuilder, "Error parsing URL for POST /proxy/[port]/har BrowserUp proxy server.");
         final HttpPost httpPost = new HttpPost(uri);
 
         final StringEntity postPayloadEntity = new StringEntity(jsonHostnameIpMap.toString(), ContentType.create("text/plain", "UTF-8"));
@@ -346,7 +346,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
             response = httpClient.execute(httpRequest);
         } catch (IOException e) {
             throw new BrowserUpHttpApiException(
-                    String.format("Error executing %s for URL %s against HTTP API of browser up proxy server.",
+                    String.format("Error executing %s for URL %s against HTTP API of BrowserUp proxy server.",
                             httpRequest.getClass().getSimpleName(),
                             httpRequest.getURI().toString()),
                     e);
@@ -354,7 +354,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
 
         if (response.getStatusLine().getStatusCode() != 200 && response.getStatusLine().getStatusCode() != 204) {
             throw new BrowserUpHttpApiException(
-                    String.format("Error executing %s for URL %s against HTTP API of browser up proxy server. Response code was: %s",
+                    String.format("Error executing %s for URL %s against HTTP API of BrowserUp proxy server. Response code was: %s",
                             httpRequest.getClass().getSimpleName(),
                             httpRequest.getURI().toString(),
                             response.getStatusLine().getStatusCode()));
@@ -375,7 +375,7 @@ public class BrowserUpRemoteProxyManager implements Loggable {
             return writer.toString();
         } catch (IOException e) {
             throw new BrowserUpHttpApiException(
-                    String.format("Error converting response %s for URL %s from browser up proxy server.",
+                    String.format("Error converting response %s for URL %s from BrowserUp proxy server.",
                             httpRequest.getClass().getSimpleName(),
                             httpRequest.getURI().toString()),
                     e);

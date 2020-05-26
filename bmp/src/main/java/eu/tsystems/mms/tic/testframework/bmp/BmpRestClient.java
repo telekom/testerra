@@ -48,6 +48,10 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+/**
+ * @deprecated Please see Testerra bup module - BrowserUpRemoteProxyManager
+ */
+@Deprecated
 public class BmpRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BmpRestClient.class);

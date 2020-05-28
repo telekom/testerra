@@ -1,12 +1,11 @@
 package eu.tsystems.mms.tic.testframework.report.general;
 
 import eu.tsystems.mms.tic.testframework.AbstractReportTest;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.abstracts.AbstractFailurePointsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.abstracts.AbstractResultTableFailureEntry;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractFailurePointsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractResultTableFailureEntry;
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
 import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoNumbers;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
-import eu.tsystems.mms.tic.testframework.testmanagement.annotation.XrayTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

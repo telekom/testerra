@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.abstracts.AbstractResultTableFailureEntry;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractResultTableFailureEntry;
 
 import java.util.List;
 

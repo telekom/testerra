@@ -3,15 +3,7 @@ package eu.tsystems.mms.tic.testframework.report.workflows;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.ClassesDetailsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.ClassesPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.DashboardPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.ExitPointsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.FailureAspectsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.MethodDetailsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.MethodScreenshotPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.MethodStackPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.MethodStepsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.*;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -76,7 +68,7 @@ public class GeneralWorkflow {
     }
 
     /**
-     * Opens the ExitPointsPage of the  Report for the defined Report.
+     * Opens the ExitPointsPage of the Report for the defined Report.
      *
      * @param reportDirectory defines the REPORT_DIRECTORY for the page to open
      * @return ExitPointsPage
@@ -87,6 +79,62 @@ public class GeneralWorkflow {
 
         ExitPointsPage exitPointsPage = dashboardPage.goToExitPoints();
         return exitPointsPage;
+    }
+
+    /**
+     * Opens the LogsPage of the Report for the defined Report.
+     *
+     * @param reportDirectory defines the REPORT_DIRECTORY for the page to open
+     * @return LogsPage
+     */
+    public static LogsPage doOpenBrowserAndReportLogsPage(WebDriver webDriver, String reportDirectory) {
+        LOGGER.debug("Open the logs page for the report directory " + reportDirectory);
+        DashboardPage dashboardPage = doOpenBrowserAndReportDashboardPage(webDriver, reportDirectory);
+
+        LogsPage logsPage = dashboardPage.goToLogs();
+        return logsPage;
+    }
+
+    /**
+     * Opens the ThreadsPage of the Report for the defined Report.
+     *
+     * @param reportDirectory defines the REPORT_DIRECTORY for the page to open
+     * @return ThreadsPage
+     */
+    public static ThreadsPage doOpenBrowserAndReportThreadsPage(WebDriver webDriver, String reportDirectory) {
+        LOGGER.debug("Open the threads page for the report directory " + reportDirectory);
+        DashboardPage dashboardPage = doOpenBrowserAndReportDashboardPage(webDriver, reportDirectory);
+
+        ThreadsPage threadsPage = dashboardPage.goToThreads();
+        return threadsPage;
+    }
+
+    /**
+     * Opens the TimingsPage of the Report for the defined Report.
+     *
+     * @param reportDirectory defines the REPORT_DIRECTORY for the page to open
+     * @return TimingsPage
+     */
+    public static TimingsPage doOpenBrowserAndReportTimingsPage(WebDriver webDriver, String reportDirectory) {
+        LOGGER.debug("Open the timings page for the report directory " + reportDirectory);
+        DashboardPage dashboardPage = doOpenBrowserAndReportDashboardPage(webDriver, reportDirectory);
+
+        TimingsPage timingsPage = dashboardPage.goToTimings();
+        return timingsPage;
+    }
+
+    /**
+     * Opens the MonitorPage of the Report for the defined Report.
+     *
+     * @param reportDirectory defines the REPORT_DIRECTORY for the page to open
+     * @return MonitorPage
+     */
+    public static MonitorPage doOpenBrowserAndReportMonitorPage(WebDriver webDriver, String reportDirectory) {
+        LOGGER.debug("Open the monitor page for the report directory " + reportDirectory);
+        DashboardPage dashboardPage = doOpenBrowserAndReportDashboardPage(webDriver, reportDirectory);
+
+        MonitorPage monitorPage = dashboardPage.goToMonitor();
+        return monitorPage;
     }
 
     public static MethodDetailsPage doOpenReportMethodDetailsPage(DashboardPage dashboardPage, GuiElement method) {

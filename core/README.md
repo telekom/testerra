@@ -21,8 +21,6 @@ For gradle:
 compile 'eu.tsystems.mms.tic.testerra:core:1-SNAPSHOT'
 ```
 
-###### Using console-connector module:
-
 The main class to use is TesterraTest. With all your test classes inheriting from this class, testerra is activated
 for every test you are executing.  
 

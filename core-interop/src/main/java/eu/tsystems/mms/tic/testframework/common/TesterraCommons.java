@@ -61,7 +61,7 @@ public class TesterraCommons {
             DefaultLogAppender.Builder builder = new DefaultLogAppender.Builder();
             builder.setName(TesterraLogger.class.getSimpleName());
             TesterraLogger testerraLogger = builder.build();
-
+            testerraLogger.start();
             rootLogger.addAppender(testerraLogger);
         }
 

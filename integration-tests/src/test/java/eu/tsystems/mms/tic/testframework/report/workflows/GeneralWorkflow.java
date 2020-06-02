@@ -153,6 +153,10 @@ public class GeneralWorkflow {
         return methodDetailsPage.clickStepsTab();
     }
 
+    public static MethodAssertionsPage doOpenReportMethodAssertionsPage(MethodDetailsPage methodDetailsPage) {
+        return methodDetailsPage.clickAssertionsTab();
+    }
+
     public static FailureAspectsPage doOpenBrowserAndReportFailureAspectsPage(WebDriver webDriver, String reportDirectory) {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(webDriver, reportDirectory);
         return dashboardPage.goToFailureAspects();

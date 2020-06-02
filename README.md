@@ -14,7 +14,6 @@ UI Testing modules:
 * [driver-ui-desktop](driver-ui-desktop/README.md)
 
 Connectors:
-* [console-connector](console-connector/README.md)
 * [mail-connector](mail-connector/README.md)
 
 Additional modules:

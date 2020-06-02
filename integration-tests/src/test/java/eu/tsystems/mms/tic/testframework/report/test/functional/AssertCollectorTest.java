@@ -1,9 +1,9 @@
 package eu.tsystems.mms.tic.testframework.report.test.functional;
 
+import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodAssertionsPage;
@@ -58,6 +58,7 @@ public class AssertCollectorTest extends AbstractReportTest {
      * in the case of multiple failed assertions of the assertCollector.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @Fails(ticketString = "996")
     // Test case #995
     public void testT04_checkCorrectDisplayOfMultipleAssertionsInAssertionsTab() {
         String testMethod = "test_assertCollectorAllFailed";
@@ -66,8 +67,5 @@ public class AssertCollectorTest extends AbstractReportTest {
         MethodAssertionsPage methodAssertionsPage = GeneralWorkflow.doOpenReportMethodAssertionsPage(methodDetailsPage);
 
         //TODO write test case after bug ticket is solved
-        AssertCollector.assertTrue(false);
-
-
     }
 }

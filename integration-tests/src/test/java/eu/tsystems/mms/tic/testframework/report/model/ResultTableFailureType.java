@@ -1,8 +1,8 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.ExitPointsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.FailureAspectsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.ExitPointsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.FailureAspectsPage;
 
 public enum ResultTableFailureType {
 

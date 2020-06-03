@@ -27,13 +27,10 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.DataSet;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.DataStorage;
-import eu.tsystems.mms.tic.testframework.report.threadvisualizer.Util;
 
 public class TesterraEventsFinishWorker extends MethodWorker {
 
     private void addThreadVisualizerDataSet() {
-        final String formattedContent = Util.getFormattedContent(methodContext);
-
         long startTimeTime = methodContext.startTime.getTime();
         long endTimeTime = methodContext.endTime.getTime();
 
@@ -42,7 +39,7 @@ public class TesterraEventsFinishWorker extends MethodWorker {
         }
 
         final DataSet dataSet = new DataSet(
-                methodContext.threadName, formattedContent,
+                methodContext,
                 startTimeTime,
                 endTimeTime);
         DataStorage.addDataSet(dataSet);

@@ -12,18 +12,21 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann
- *     pele
+ *     Eric Kubenka
  */
-package eu.tsystems.mms.tic.testframework.bmp;
+package eu.tsystems.mms.tic.testerra.bup;
 
 /**
- * @deprecated Please see Testerra bup module - BrowserUpNoFreePortException
+ * Thrown when no free port could be allocated for {@link BrowserUpLocalProxyManager}
+ * <p>
+ * Date: 26.05.2020
+ * Time: 12:01
+ *
+ * @author Eric Kubenka
  */
-@Deprecated
-public class NoFreePortException extends Exception {
+public class BrowserUpNoFreePortException extends Exception {
 
-    public NoFreePortException(String msg) {
+    public BrowserUpNoFreePortException(String msg) {
         super(msg);
     }
 

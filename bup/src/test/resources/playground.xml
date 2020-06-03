@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="browserup" parallel="false" thread-count="1">
+
+    <test name="Browserup tests">
+        <packages>
+            <package name="eu.tsystems.mms.tic.testerra.bup.playground"/>
+        </packages>
+    </test>
+</suite>

@@ -12,19 +12,26 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann
- *     pele
+ *     Eric Kubenka
  */
-package eu.tsystems.mms.tic.testframework.bmp;
+package eu.tsystems.mms.tic.testerra.bup;
+
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 
 /**
- * @deprecated Please see Testerra bup module - BrowserUpNoFreePortException
+ * Thrown on any API communication error on {@link BrowserUpRemoteProxyManager}
+ * Date: 26.05.2020
+ * Time: 09:01
+ *
+ * @author Eric Kubenka
  */
-@Deprecated
-public class NoFreePortException extends Exception {
+public class BrowserUpHttpApiException extends TesterraRuntimeException {
 
-    public NoFreePortException(String msg) {
-        super(msg);
+    public BrowserUpHttpApiException(String message) {
+        super(message);
     }
 
+    public BrowserUpHttpApiException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

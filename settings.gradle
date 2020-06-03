@@ -9,3 +9,5 @@ include 'mail-connector'
 include 'integration-tests'
 include 'image-processing'
 include 'docs'
+include 'bup'
+

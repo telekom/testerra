@@ -28,6 +28,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @deprecated - Please see Testerra bup module - BrowserUpLocalProxyManager
+ */
+@Deprecated
 public final class BMProxyManager {
 
     private static List<Integer> portPool = new ArrayList<Integer>(1);

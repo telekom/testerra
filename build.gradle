@@ -158,6 +158,7 @@ task publishToBintray(type: GradleBuild) {
             'driver-ui-desktop:bintrayUpload',
             'surefire-connector:bintrayUpload',
             'bmp:bintrayUpload',
+            'bup:bintrayUpload',
             'mail-connector:bintrayUpload'
     ]
 }

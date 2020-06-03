@@ -12,19 +12,36 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann
- *     pele
+ *     Eric Kubenka
  */
-package eu.tsystems.mms.tic.testframework.bmp;
+package eu.tsystems.mms.tic.testerra.bup;
+
+import java.net.URL;
 
 /**
- * @deprecated Please see Testerra bup module - BrowserUpNoFreePortException
+ * Date: 25.05.2020
+ * Time: 11:58
+ *
+ * @author Eric Kubenka
  */
-@Deprecated
-public class NoFreePortException extends Exception {
+public class BrowserUpRemoteProxyServer {
 
-    public NoFreePortException(String msg) {
-        super(msg);
+    private Integer port;
+    private URL upstreamProxy;
+
+    public Integer getPort() {
+        return port;
     }
 
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    public URL getUpstreamProxy() {
+        return upstreamProxy;
+    }
+
+    public void setUpstreamProxy(URL upstreamProxy) {
+        this.upstreamProxy = upstreamProxy;
+    }
 }

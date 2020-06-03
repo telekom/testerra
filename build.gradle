@@ -159,7 +159,6 @@ task publishToBintray(type: GradleBuild) {
             'surefire-connector:bintrayUpload',
             'bmp:bintrayUpload',
             'bup:bintrayUpload',
-            'console-connector:bintrayUpload',
             'mail-connector:bintrayUpload'
     ]
 }

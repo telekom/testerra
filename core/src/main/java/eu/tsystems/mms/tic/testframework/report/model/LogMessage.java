@@ -45,7 +45,7 @@ public class LogMessage implements Serializable, Loggable {
         this.threadName = event.getThreadName();
         this.timestamp = event.getTimeMillis();
         this.loggerName = event.getLoggerName();
-        this.message = event.getMessage().toString();
+        this.message = event.getMessage().getFormattedMessage();
     }
 
     public Level getLogLevel() {

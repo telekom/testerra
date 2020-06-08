@@ -38,11 +38,10 @@ public class DependsOnTest extends AbstractReportTest {
     }
 
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "dependsOnTestObjects")
-    @Fails(ticketString = "668")
     // Test case #804
     public void testT02_checkDependsOnMethodChartEntryStates(MethodDependency dependsOnTestObject) {
 
-        final String testClassName = "ReportTestUnderTestDependsOn__Report__TestsUnderTest__Parallel__2";
+        final String testClassName = "ReportTestUnderTestDependsOn_Report- TestsUnderTest_Parallel";
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory())).gotoClassesDetailsPageForClass(testClassName);
 
         String tagName = dependsOnTestObject.getTagName();

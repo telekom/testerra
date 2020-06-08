@@ -24,7 +24,7 @@ public class DependsOnTest extends AbstractReportTest {
      * Checks whether the depends on test result is displayed correctly
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "dependsOnParallel")
-    @Fails(ticketString = "669")
+    @Fails(ticketString = "668")
     // Test case #803
     public void testT01_checkDependsOnMethodChartDisplaysTheExpectedTestResults(String dependsOnClassName) {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
@@ -38,7 +38,7 @@ public class DependsOnTest extends AbstractReportTest {
     }
 
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "dependsOnTestObjects")
-    @Fails(ticketString = "669")
+    @Fails(ticketString = "668")
     // Test case #804
     public void testT02_checkDependsOnMethodChartEntryStates(MethodDependency dependsOnTestObject) {
 

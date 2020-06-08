@@ -57,7 +57,7 @@ public class AssertCollectorTest extends AbstractReportTest {
      * Checks whether all the assertions texts will be correctly displayed in the in the assertionsTab
      * in the case of multiple failed assertions of the assertCollector.
      */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, enabled = false)
     @Fails(ticketString = "996")
     // Test case #995
     public void testT04_checkCorrectDisplayOfMultipleAssertionsInAssertionsTab() {
@@ -66,6 +66,6 @@ public class AssertCollectorTest extends AbstractReportTest {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestAssertCollector.class.getSimpleName(), testMethod);
         MethodAssertionsPage methodAssertionsPage = GeneralWorkflow.doOpenReportMethodAssertionsPage(methodDetailsPage);
 
-        //TODO write test case after bug ticket is solved
+        //TODO write test case after bug ticket 966 is solved
     }
 }

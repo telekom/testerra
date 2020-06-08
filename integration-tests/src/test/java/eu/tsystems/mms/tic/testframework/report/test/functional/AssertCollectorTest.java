@@ -51,8 +51,7 @@ public class AssertCollectorTest extends AbstractReportTest {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestAssertCollector.class.getSimpleName(), testMethod);
         methodDetailsPage.assertAssertionsTabIsNotDisplayed();
     }
-
-
+    
     /**
      * Checks whether all the assertions texts will be correctly displayed in the in the assertionsTab
      * in the case of multiple failed assertions of the assertCollector.

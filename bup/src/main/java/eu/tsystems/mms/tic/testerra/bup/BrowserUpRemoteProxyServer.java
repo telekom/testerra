@@ -12,20 +12,36 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann
- *     pele
+ *     Eric Kubenka
  */
-package eu.tsystems.mms.tic.testframework.report;
+package eu.tsystems.mms.tic.testerra.bup;
 
-import org.apache.logging.log4j.core.Appender;
+import java.net.URL;
 
 /**
- * Interface for Testerras log appender
+ * Date: 25.05.2020
+ * Time: 11:58
  *
- * @author Mike Reiche
+ * @author Eric Kubenka
  */
-public interface TesterraLogger extends Appender {
+public class BrowserUpRemoteProxyServer {
 
-    TesterraLogger setFormatter(LogFormatter formatter);
-    LogFormatter getFormatter();
+    private Integer port;
+    private URL upstreamProxy;
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    public URL getUpstreamProxy() {
+        return upstreamProxy;
+    }
+
+    public void setUpstreamProxy(URL upstreamProxy) {
+        this.upstreamProxy = upstreamProxy;
+    }
 }

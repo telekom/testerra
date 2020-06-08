@@ -12,20 +12,22 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann
- *     pele
+ *     Eric Kubenka
  */
-package eu.tsystems.mms.tic.testframework.report;
-
-import org.apache.logging.log4j.core.Appender;
+package eu.tsystems.mms.tic.testerra.bup;
 
 /**
- * Interface for Testerras log appender
+ * Thrown when no free port could be allocated for {@link BrowserUpLocalProxyManager}
+ * <p>
+ * Date: 26.05.2020
+ * Time: 12:01
  *
- * @author Mike Reiche
+ * @author Eric Kubenka
  */
-public interface TesterraLogger extends Appender {
+public class BrowserUpNoFreePortException extends Exception {
 
-    TesterraLogger setFormatter(LogFormatter formatter);
-    LogFormatter getFormatter();
+    public BrowserUpNoFreePortException(String msg) {
+        super(msg);
+    }
+
 }

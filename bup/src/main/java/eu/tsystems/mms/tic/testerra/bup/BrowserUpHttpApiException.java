@@ -12,20 +12,26 @@
  * limitations under the License.
  *
  * Contributors:
- *     Peter Lehmann
- *     pele
+ *     Eric Kubenka
  */
-package eu.tsystems.mms.tic.testframework.report;
+package eu.tsystems.mms.tic.testerra.bup;
 
-import org.apache.logging.log4j.core.Appender;
+import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 
 /**
- * Interface for Testerras log appender
+ * Thrown on any API communication error on {@link BrowserUpRemoteProxyManager}
+ * Date: 26.05.2020
+ * Time: 09:01
  *
- * @author Mike Reiche
+ * @author Eric Kubenka
  */
-public interface TesterraLogger extends Appender {
+public class BrowserUpHttpApiException extends TesterraRuntimeException {
 
-    TesterraLogger setFormatter(LogFormatter formatter);
-    LogFormatter getFormatter();
+    public BrowserUpHttpApiException(String message) {
+        super(message);
+    }
+
+    public BrowserUpHttpApiException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

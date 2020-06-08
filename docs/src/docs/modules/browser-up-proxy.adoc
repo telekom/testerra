@@ -1,0 +1,193 @@
+= BrowserUp Proxy
+
+https://github.com/browserup/browserup-proxy[BrowserUp Proxy (BUP)] is a simple HTTP proxy utility developed by https://browserup.com[browserup.com].
+It offers functionality to track, manipulate and modify HTTP requests and responses, as well as capture HTTP traffic for analysis.
+
+Testerra offers a simple integration to spin multiple local proxy servers or manage remote proxy servers via HTTP API.
+
+== Project setup
+
+.build.gradle
+[source,gradle,role="primary"]
+----
+compile 'eu.tsystems.mms.tic.testerra:bup:1-SNAPSHOT'
+----
+
+.pom.xml
+[source,xml,role="secondary"]
+----
+<dependencies>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>bup</artifactId>
+        <version>1-SNAPSHOT</version>
+    </dependency>
+</dependencies>
+----
+
+== External Proxy Server
+
+Best practice for using a Testerra with an external proxy, is to use a dedicated BrowserUp Instance.
+To start these instance, please have a further read on the BrowserUp documentation.
+
+[source,java]
+----
+import eu.tsystems.mms.tic.testerra.bup.BrowserUpRemoteProxyManager;
+import eu.tsystems.mms.tic.testerra.bup.BrowserUpRemoteProxyServer;
+import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
+import org.openqa.selenium.Proxy;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class AbstractTest extends TesterraTest {
+
+    private static BrowserUpRemoteProxyServer bupProxy;
+
+    @BeforeSuite
+    public void setupProxy() throws MalformedURLException {
+
+        final URL apiUrl = new URL("http://localhost:8080");
+        final BrowserUpRemoteProxyManager bupRemoteProxyManager = new BrowserUpRemoteProxyManager(apiUrl);
+        bupProxy = bupRemoteProxyManager.startServer();
+
+        /* Additional Proxy setup here */
+        final String bmpProxyAddress = String.format("%s:%d", apiUrl.getHost(), bupProxy.getPort());
+
+        // For selenium usage.
+        final Proxy proxy = new Proxy();
+        proxy.setHttpProxy(bmpProxyAddress)
+                .setFtpProxy(bmpProxyAddress)
+                .setSslProxy(bmpProxyAddress);
+
+        WebDriverManager.setGlobalExtraCapability(CapabilityType.PROXY, proxy);
+    }
+
+    @AfterSuite
+    public void tearDownProxy() throws MalformedURLException {
+
+        final URL apiBaseUrl = new URL("http://localhost:8080");
+        final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+
+        for (final Integer proxyPort : browserUpRemoteProxyManager.getProxies()) {
+            final BrowserUpRemoteProxyServer bupToStop = new BrowserUpRemoteProxyServer();
+            bupToStop.setPort(proxyPort);
+            browserUpRemoteProxyManager.stopServer(bupToStop);
+        }
+    }
+}
+----
+
+BrowserUp creates a new proxy server at the next free port beginning with port 8081 (BrowserUp default).
+
+If you need a dedicated port, use `startServer(BrowserUpRemoteProxyServer proxyServer)`method the following way.
+
+[source,java]
+----
+BrowserUpRemoteProxyServer browserUpRemoteProxyServer = new BrowserUpRemoteProxyServer();
+browserUpRemoteProxyServer.setPort(8088);
+
+browserUpRemoteProxyServer = browserUpRemoteProxyManager.startServer(browserUpRemoteProxyServer);
+----
+
+If the port already used, the `BrowserUpRemoteProxyManager` will do nothing, and just return the given config-object of type `BrowserUpRemoteProxyServer`.
+
+=== Basic Auth
+
+If your SUT is protected by HTTP basic auth, you can set up these credentials as following.
+
+[source,java]
+----
+URL baseUrl = new URL(PropertyManager.getProperty("tt.baseurl"));
+final String basicAuthUser;
+final String basicAuthPassword;
+
+final URL apiBaseUrl = new URL(LOCAL_PROXY_FOR_TEST);
+final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+final BrowserUpRemoteProxyServer bup1 = browserUpRemoteProxyManager.startServer();
+
+browserUpRemoteProxyManager.setBasicAuth(bup1, baseUrl.getHost(), basicAuthUser, basicAuthPassword);
+----
+
+=== Upstream proxy
+
+If your SUT should use a proxy, you can set up BrowserUp proxy instance to use an upstream proxy like in link:[SUT Browser Proxy]
+
+[source,java]
+----
+BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
+bup1.setUpstreamProxy(ProxyUtils.getSystemHttpProxyUrl());
+
+final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+bup1 = browserUpRemoteProxyManager.startServer();
+----
+
+=== Other features
+
+[source,java]
+----
+/*
+ Check if proxy alread runs on port...
+ */
+final BrowserUpRemoteProxyManager browserUpRemoteProxyManager = new BrowserUpRemoteProxyManager(apiBaseUrl);
+
+BrowserUpRemoteProxyServer bup1 = new BrowserUpRemoteProxyServer();
+bup1.setPort(8088);
+
+bup1 = browserUpRemoteProxyManager.startServer(bup1);
+boolean isRunning = browserUpRemoteProxyManager.isRunning(nup1);
+
+/*
+ Maps specific host names to another host names or IP adresses
+ */
+browserUpRemoteProxyManager.setHostMapping(BrowserUpRemoteProxyServer proxyServer, Map<String, String> hostNameMapping);
+
+/*
+ Capture the traffic and return it as a JsonElement
+ You can choose, if you want to capture only the headers, the content or both via the boolean flags.
+ */
+browserUpRemoteProxyManager.startCapture(BrowserUpRemoteProxyServer proxyServer, String initialPageRef, boolean isCaptureHeaders, boolean isCaptureContent);
+JsonElement stopCapture(BrowserUpRemoteProxyServer proxyServer);
+
+/*
+ Adds additional key-value pairs to the headers.
+*/
+browserUpRemoteProxyManager.addHeader(final BrowserUpRemoteProxyServer proxyServer, final String key, final String value);
+----
+
+== Local browser instances
+
+If you want to quickly spin up a proxy isntance on your local system while testing, you can use the `BrowserUpLocalProxyManager`.
+
+[source,java]
+----
+List<Integer> portPool = new ArrayList<>();
+ports.add(8090);
+ports.add(8091);
+ports.add(8092);
+ports.add(8093);
+ports.add(8094);
+ports.add(8095);
+
+BrowserUpLocalProxyManager bupLocalManager = new BrowserUpLocalProxyManager(ports);
+
+// Start instance
+BrowserUpProxyServer browserUpProxyServer = new BrowserUpProxyServer();
+browserUpProxyServer = bupLocalManager.startServer(browserUpProxyServer);
+
+// assert that a port of given port pool was used.
+Assert.assertTrue(portPool.contains(port), "Port of range was used.");
+
+// assert proxy is started.
+Assert.assertTrue(bup1.isStarted(), "Proxy started");
+
+----
+
+The local proxy manager works with a defined port pool, which has to be declared on instantiation of the manager class.
+This port pool will be used to spin up multiple proxy servers for a multi threading test execution.
+
+The port pool has to be declared by yourself, respectively your code, because, only you can know which ports are currently free to use on your local test execution machine.
+
+To use upstream proxies, add headers or do other things on the local proxy server, please take a closer look on https://github.com/browserup/browserup-proxy[BrowserUp] documentation.

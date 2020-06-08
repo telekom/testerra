@@ -17,6 +17,10 @@
  */
 package eu.tsystems.mms.tic.testframework.bmp;
 
+/**
+ * @deprecated Please see Testerra bup module - BrowserUpNoFreePortException
+ */
+@Deprecated
 public class NoFreePortException extends Exception {
 
     public NoFreePortException(String msg) {

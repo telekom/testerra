@@ -53,6 +53,11 @@ public class DefaultLogAppender extends AbstractOutputStreamAppender<DefaultLogA
         return this;
     }
 
+    @Override
+    public LogFormatter getFormatter() {
+        return this.formatter;
+    }
+
     /**
      * Appends a LoggingEvent to the HTML Report using Reporter.log().
      *

@@ -1,5 +1,5 @@
 /*
- * testerra
+ * Testerra
  *
  * (C) 2020, YOUR_NAME,  T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *

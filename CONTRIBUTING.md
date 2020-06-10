@@ -16,9 +16,22 @@ We use GitHub to manage reviews of pull requests.
 
 * If you have a trivial fix or improvement, go ahead and create a pull request, addressing (with `@...`) a suitable maintainer of this repository (see [CODEOWNERS](CODEOWNERS) of the  repository you want to contribute to) in the description of the pull request.
 
-* If you plan to do something more involved, please reach out to us and send an [email](mailto:opensource@telekom.de). This will avoid unnecessary work and surely give you and us a good deal of inspiration.
+* If you have found a bug, go ahead and follow the instructions of [Bug Reports](#bug-reports).
+
+* If you plan to do something more involved or have feature request, please feel free and create an GitHub issue describing your proposal. This will avoid unnecessary work and surely give you and us a good deal of inspiration, but please be willing to implement at least some code for the new feature.
 
 * Relevant coding style guidelines are available in the respective sub-repositories as they are programming language-dependent.
+
+## Bug Reports
+
+* Before opening a new bug in our GitHub issue tracker, please have a look at the open issues to avoid duplicates as early as possible.
+
+* If you don't find an open or - even better - already closed issue addressing your problem, please feel free to create an issue providing at least the information that will be asked in the issue template.
+
+* To give your bug more credit you may add a testcase addressing your problem to make it easier for us to reproduce your error. But, please don't worry if you don't. 
+
+* Remember that bug reports should be able to reproduce and allow other members of the community to collaborate on it.
+Please do not expect that the bug will automatically see any activity to fix it. Creating a bug just is the start of the path of fixing a problem. 
 
 ## Steps to Contribute
 
@@ -56,7 +69,7 @@ The following rule governs documentation contributions:
 
 * Create _Work In Progress [WIP]_ pull requests only if you need clarification or an explicit review before you can continue your work item.
 
-* If your patch is not getting reviewed or you need a specific person to review it, you can @-reply a reviewer asking for a review in the pull request or a comment, or you can ask for a review by contacting us via [email](mailto:opensource@telekom.de).
+* If your patch is not getting reviewed or you need a specific person to review it, you can @-reply a reviewer asking for a review in the pull request or a comment.
 
 * Post review:
   * If a review requires you to change your commit(s), please test the changes again.

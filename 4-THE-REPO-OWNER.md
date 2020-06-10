@@ -2,7 +2,7 @@
 
 By initializing your repository the TOSCom has generated some useful documents. Some of them are mandatory and must not been changed, some of them are mandatory, but should be attuned to your needs, and some of them are optional. Here is a description of the documents, their purposes, and what you may/should (not) do with them:
 
-* **4THEREPOWENER.md** :- this file
+* **4THEREPOOWNER.md** :- this file
 * **CODE_OF_CONDUCT.md** :- some well known rules how contributors should behave:
 - You may erase this file if you do not need it
 - If you are going to use it, please replace the contact address ``opensource@telekom.de`` by your own address

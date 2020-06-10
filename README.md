@@ -25,7 +25,7 @@ You may see Testerra as an open source test automation library for web frontend 
 
 ## Installation
 
-Testerra and its components are published on bintray.
+Testerra and its components are published on [bintray](https://bintray.com/testerra-io/Testerra).
 
 Maven:
 ````xml
@@ -43,9 +43,9 @@ Gradle:
 compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
 ````
 
-### Using testerra functionality:
+### Using Testerra functionality:
 
-Create a Test Class and extend the TesterraTest class:
+Create a Test Class and extend the `TesterraTest` class:
 
 ````java
 public class MyTest extends TesterraTest {

@@ -89,5 +89,11 @@
         </classes>
     </test>
 
+    <test name="AssertCollector Creator">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestAssertCollector"/>
+        </classes>
+    </test>
+
 
 </suite>

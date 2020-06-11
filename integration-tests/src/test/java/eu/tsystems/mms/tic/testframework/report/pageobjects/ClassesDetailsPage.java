@@ -94,7 +94,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
 
     public void assertMethodIsDisplayedInTheCorrectTestResultCategoryWithTag(String testundertestMethodName, TestResultHelper.TestResult expectedTestResultCategory, String tagName) {
 
-        final String expectedHeaderClassAttribute = expectedTestResultCategory.getTestXPath();
+        final String expectedHeaderClassAttribute = expectedTestResultCategory.getXpathClassesDetailsHeader();
 
         GuiElement testResultTableHeader = getTestResultTableHeaderForTestResult(expectedTestResultCategory);
         testResultTableHeader.asserts().assertIsDisplayed();
@@ -102,11 +102,11 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
         GuiElement methodTagNameElement = getInformationMethodBodyForTestMethodNameWithTag(tagName);
         methodTagNameElement.asserts().assertIsDisplayed();
 
-        GuiElement actualMethodName = methodTagNameElement.getSubElement(By.xpath("./../../a[contains(text(),'" + testundertestMethodName + "')]"));
+        GuiElement actualMethodName = methodTagNameElement.getSubElement(By.xpath("./../../td[contains(text(),'" + testundertestMethodName + "')]"));
         actualMethodName.asserts().assertIsDisplayed();
 
-        GuiElement actualHeader = methodTagNameElement.getSubElement(By.xpath("./../../.."));
-        String actualHeaderClassAttribute = actualHeader.getAttribute("class");
+        GuiElement actualHeader = methodTagNameElement.getSubElement(By.xpath("./../../..//th"));
+        String actualHeaderClassAttribute = actualHeader.getText();
         AssertCollector.assertEquals(actualHeaderClassAttribute, expectedHeaderClassAttribute,
                 "The Test method is in the correct test result category for test result + " + expectedTestResultCategory);
     }

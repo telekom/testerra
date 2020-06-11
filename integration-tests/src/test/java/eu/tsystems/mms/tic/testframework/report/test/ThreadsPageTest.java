@@ -19,20 +19,15 @@ public class ThreadsPageTest extends AbstractReportTest {
     @DataProvider(parallel = true)
     public Object[][] testMethods(){
         Object[][] result = new Object[][]{
-                new Object[]{PropertyManager.getProperty("threadsPageTestMethodNameForPassed"), TestResultHelper.TestResult.PASSED},
-                new Object[]{PropertyManager.getProperty("threadsPageTestMethodNameForFailed"), TestResultHelper.TestResult.FAILED},
-                new Object[]{PropertyManager.getProperty("threadsPageTestMethodNameForSkipped"), TestResultHelper.TestResult.SKIPPED},
-                new Object[]{PropertyManager.getProperty("threadsPageTestMethodNameForFailedMinor"), TestResultHelper.TestResult.FAILEDMINOR},
-                new Object[]{PropertyManager.getProperty("threadsPageTestMethodNameForPassedMinor"), TestResultHelper.TestResult.PASSEDMINOR},
-                new Object[]{PropertyManager.getProperty("threadsPageTestMethodNameForFailedExpected"), TestResultHelper.TestResult.FAILEDEXPECTED},
-                new Object[]{PropertyManager.getProperty("threadsPageTestMethodNameForPassedRetry"), TestResultHelper.TestResult.PASSEDRETRY}
+                new Object[]{"test_FilterPassedNoMinor", TestResultHelper.TestResult.PASSED},
+                new Object[]{"test_FilterFailedNoMinor", TestResultHelper.TestResult.FAILED},
+                new Object[]{"test_FilterSkipped", TestResultHelper.TestResult.SKIPPED},
+                new Object[]{"test_FilterFailedMinor", TestResultHelper.TestResult.FAILEDMINOR},
+                new Object[]{"test_FilterPassedMinor", TestResultHelper.TestResult.PASSEDMINOR},
+                new Object[]{"test_FilterExpectedFailed", TestResultHelper.TestResult.FAILEDEXPECTED},
+                new Object[]{"test_FilterPassedRetry", TestResultHelper.TestResult.PASSEDRETRY}
         };
         return result;
-    }
-
-    static{
-        //load systemtest property file
-        PropertyManager.loadProperties("lang_en.properties");
     }
 
     /**

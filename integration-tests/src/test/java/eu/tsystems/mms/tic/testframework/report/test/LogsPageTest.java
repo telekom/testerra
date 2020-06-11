@@ -13,11 +13,6 @@ import org.testng.annotations.Test;
 @TestContext(name = "View-Logs")
 public class LogsPageTest extends AbstractReportTest {
 
-    static{
-        //load systemtest property file
-        PropertyManager.loadProperties("lang_en.properties");
-    }
-
     /**
      * Checks whether the logsPage will be displayed correctly
      */
@@ -36,10 +31,10 @@ public class LogsPageTest extends AbstractReportTest {
     public void testT02_checkForCorrectDisplayOfLogs() {
         LogsPage logsPage = GeneralWorkflow.doOpenBrowserAndReportLogsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         logsPage.insertSearchTermInInSearchBar(
-                PropertyManager.getProperty("logsPageTestLogLevelValue"),
-                PropertyManager.getProperty("logsPageTestLogMessageValue"),
-                PropertyManager.getProperty("logsPageTestLogLoggerValue"),
-                PropertyManager.getProperty("logsPageTestLogThreadValue")
+                "WARN",
+                "Not retrying this method, because test is @Fails annotated.",
+                "eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer",
+                "TestNG-test=Execution Filter Creator-4"
         );
 
         logsPage.assertLogMessageIsDisplayed();

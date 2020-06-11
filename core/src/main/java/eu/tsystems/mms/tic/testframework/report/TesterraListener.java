@@ -73,6 +73,7 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.xml.XmlSuite;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -489,14 +490,25 @@ public class TesterraListener implements
 
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
+
+        final ITestContext testContext = iTestResult.getTestContext();
+
         /*
         Find methods that are ignored due to failed dependency
          */
-        Throwable throwable = iTestResult.getThrowable();
+        final Throwable throwable = iTestResult.getThrowable();
         if (throwable != null && throwable.toString().contains(SKIP_FAILED_DEPENDENCY_MSG)) {
-            ITestContext testContext = iTestResult.getTestContext();
             ExecutionContextController.setCurrentTestResult(iTestResult, testContext);
             pAfterInvocation(null, iTestResult, testContext);
+        }
+
+        /*
+         add missing method parameters for skipped test methods
+         */
+        final Class<?>[] parameterTypes = iTestResult.getMethod().getConstructorOrMethod().getMethod().getParameterTypes();
+        if (parameterTypes.length >0) {
+            final MethodContext methodContextFromTestResult = ExecutionContextController.getMethodContextFromTestResult(iTestResult, testContext);
+            methodContextFromTestResult.parameters.addAll(Arrays.asList(parameterTypes));
         }
     }
 

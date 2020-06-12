@@ -1,6 +1,28 @@
 = Expected Fails
 
-If you know, that a test will fail, you can mark it with an annotation and an optional description.
+For known issues on the SUT the annoation `@Fails` can used to mark a test method as failing. These test cases are marked as `Expected failed` separately in the report.
+
+If tests are passed again, you get a note in the report to remove the `Fails` annotation.
+
+[source,java]
+----
+@Test
+@Fails()
+public void testItWillFail() {
+    Assert.assertTrue(false);
+}
+----
+
+[IMPORTANT]
+====
+The result is technically still a failure and only visually elevated to facilitate the evaluation of the report.
+
+Please keep in mind that `@Fails` has an impact to <<Failure Corridor>>
+====
+
+== Add additional information
+
+You can add additional information to describe the cause in more detail. All information are added to the report.
 
 [source,java]
 ----
@@ -11,6 +33,37 @@ public void testItWillFail() {
 }
 ----
 
-In the report this tests are also marked as failed, but they are less highlighted.
+.Possible attributes for the `Fails` annotation
+[cols="2,5",options="header"]
+|===
+| Attribute | Description
+| description | Give more details about the failure.
+| ticketId | Define a bug ticket ID as an int value.
+| ticketString | Define a bug ticket ID as a String value.
+| intoReport | Define who is shown in the report. If true the failing test isn't shown separately as `Expected Failed` but as `Failed`.
+| validFor | Define the <<Define conditions, conditions>> of the expected failed.
+|===
 
-NOTE: If tests are passed again, you get a note in the report to remove the `Fails` annotation.
+== Define conditions
+
+You can specify some conditions for expected fails. Only if *_all_* conditions are true, the test is marked as `Expected failed`, otherwise as `Failed`.
+
+.The conditions are based on properties specified in `test.properties`
+[source, properties, subs="attributes"]
+----
+# test.properties
+environment=test
+country=de
+----
+
+.Usage of validFor in the `@Fails` annotation
+[source, java]
+----
+@Test
+@Fails(description = "Failing for environment 'test' and country 'de'", validFor = {"environment=test", "country=de"})
+public void testExpectedFailed() {
+    Assert.fail();
+}
+----
+
+If the test is executed with other values of the properties (like country=uk) the test will marked as `Failed`.

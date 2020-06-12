@@ -50,6 +50,7 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
     private GuiElement minorErrorTab = new GuiElement(this.getWebDriver(), By.id("buttonminor"), mainFrame);
     private GuiElement dependenciesTab = new GuiElement(this.getWebDriver(), By.id("buttondeps"), mainFrame);
     private GuiElement evolutionTab = new GuiElement(this.getWebDriver(), By.id("buttonhistory"), mainFrame);
+    private GuiElement assertionsTab = new GuiElement(this.getWebDriver(), By.id("buttoncollectedasserts"), mainFrame);
 
     private GuiElement historyElementsGraph = new GuiElement(this.getWebDriver(), By.id("gitGraph"), mainFrame);
 
@@ -317,6 +318,19 @@ public class MethodDetailsPage extends AbstractMethodDetailsPage implements IRep
     public MethodEvolutionPage clickEvolutionTab() {
         evolutionTab.click();
         return PageFactory.create(MethodEvolutionPage.class, this.getWebDriver());
+    }
+
+    public MethodAssertionsPage clickAssertionsTab() {
+        assertionsTab.click();
+        return PageFactory.create(MethodAssertionsPage.class, this.getWebDriver());
+    }
+
+    public void assertAssertionsTabIsDisplayed(){
+        assertionsTab.asserts().assertIsDisplayed();
+    }
+
+    public void assertAssertionsTabIsNotDisplayed(){
+        assertionsTab.asserts().assertIsNotDisplayed();
     }
 
     @Override

@@ -45,7 +45,7 @@ public class DependsOnTest extends AbstractReportTest {
      * Checks whether the depends on test result is displayed correctly
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "dependsOnParallel")
-    @Fails(ticketString = "669")
+    @Fails(ticketString = "668")
     // Test case #803
     public void testT01_checkDependsOnMethodChartDisplaysTheExpectedTestResults(String dependsOnClassName) {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
@@ -59,11 +59,10 @@ public class DependsOnTest extends AbstractReportTest {
     }
 
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "dependsOnTestObjects")
-    @Fails(ticketString = "669")
     // Test case #804
     public void testT02_checkDependsOnMethodChartEntryStates(MethodDependency dependsOnTestObject) {
 
-        final String testClassName = "ReportTestUnderTestDependsOn__Report__TestsUnderTest__Parallel__2";
+        final String testClassName = "ReportTestUnderTestDependsOn_Report- TestsUnderTest_Parallel";
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory())).gotoClassesDetailsPageForClass(testClassName);
 
         String tagName = dependsOnTestObject.getTagName();

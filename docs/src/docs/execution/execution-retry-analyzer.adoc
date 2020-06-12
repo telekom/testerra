@@ -127,11 +127,3 @@ public void testMethod() {
     ...
 }
 ----
-
-* name: change the shown text in the report. Default is `No Retry`
-* color: change the background color of the shown text. Default is `grey`. Values need to be valid for html colors.
-** name of the color, e.g. red
-** RGB values, e.g. rgb(255, 236, 139)
-** RGBA values, e.g. rgba(252, 156, 249, 0.75)
-** HSL values, e.g. hsl(217, 97%, 57%)
-** Hex values, e.g. #57c0ff

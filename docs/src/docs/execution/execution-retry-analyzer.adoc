@@ -99,7 +99,34 @@ public class AbstractTest extends TesterraTest {
 
 [#NoRetry]
 == @NoRetry
-This marks a test method as `No Retry`, which is characteristically shown with this text the report. RetryAnalyzers won't retry these methods if previously failed. Customization is possible with the two attributes name and color in the annotation.
+With this annoation the Retry analyzers won't retry these methods if previously failed. This is characteristically shown in the report with the badge `NoRetry`.
+
+You can customize the `NoRetry` annotation with the  attributes `name` and `color`.
+
+.Possible attributes for the `NoRetry` annotation
+[cols="2,5a",options="header"]
+|===
+| Attribute | Description
+| name | Changes the shown text in the report. Default is `No Retry`
+| color | Change the background color of the shown text. Default is `grey`. +
+Values need to be valid for HTML colors like:
+
+* name of the color, e.g. red
+* RGB values, e.g. rgb(255, 236, 139)
+* RGBA values, e.g. rgba(252, 156, 249, 0.75)
+* HSL values, e.g. hsl(217, 97%, 57%)
+* Hex values, e.g. #57c0ff
+|===
+
+.An example with customization of `NoRetry`
+[source, java]
+----
+@Test()
+@NoRetry(name = "No retry because it's not allowed.", color="rgb(255, 236, 139)")
+public void testMethod() {
+    ...
+}
+----
 
 * name: change the shown text in the report. Default is `No Retry`
 * color: change the background color of the shown text. Default is `grey`. Values need to be valid for html colors.

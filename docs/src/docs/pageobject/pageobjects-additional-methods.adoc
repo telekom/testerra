@@ -11,5 +11,3 @@ boolean isTextPresent = resultPage.isTextPresent(String text);
 
 WebDriver myDriver = resultPage.getDriver();
 ----
-
-For more documenation about the method `getGuiElementGroups` see <<Groups of GuiElements>>.

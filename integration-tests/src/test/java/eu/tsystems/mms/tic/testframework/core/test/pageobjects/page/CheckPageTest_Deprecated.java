@@ -20,24 +20,20 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithExistingElement;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithExistingStaticElement;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithNonCheckableCheck;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithNotExistingElement;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithNullElement;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingStaticElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNonCheckableCheck;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNotExistingElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNullElement;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.lang.reflect.Method;
 
 /**
  * Created by rnhb on 29.12.2015.

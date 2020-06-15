@@ -640,7 +640,7 @@ public class GuiElement implements
     }
 
     @Override
-    public UiElement setName(String name) {
+    public GuiElement setName(String name) {
         guiElementData.setName(name);
         return this;
     }

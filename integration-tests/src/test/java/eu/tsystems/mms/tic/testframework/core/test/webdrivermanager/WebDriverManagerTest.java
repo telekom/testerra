@@ -2,13 +2,13 @@ package eu.tsystems.mms.tic.testframework.core.test.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Map;
@@ -35,7 +35,7 @@ public class WebDriverManagerTest extends AbstractWebDriverTest {
     @Test
     public void testT02_introduceOwnDriver() {
 
-        final String webDriverMode = PropertyManager.getProperty(TesterraProperties.WEBDRIVERMODE, "local");
+        final String webDriverMode = Testerra.Properties.WEBDRIVER_MODE.asString();
         final String browser = PropertyManager.getProperty(TesterraProperties.BROWSER, Browsers.chromeHeadless);
 
         // Exit options for testcase

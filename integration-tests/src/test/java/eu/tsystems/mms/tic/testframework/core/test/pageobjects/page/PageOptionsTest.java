@@ -1,6 +1,6 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithPageOptions;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithPageOptions;
 
 public class PageOptionsTest extends PageOptionsTest_Deprecated {
 

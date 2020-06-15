@@ -31,10 +31,6 @@ public final class CollectedAssertions implements AssertionsCollector {
 
     private final ThreadLocal<List<AssertionInfo>> ASSERTION_INFOS = new ThreadLocal<>();
 
-    private CollectedAssertions() {
-
-    }
-
     public synchronized boolean store(Throwable throwable) {
         if (ASSERTION_INFOS.get() == null) {
             ASSERTION_INFOS.set(new LinkedList<>());

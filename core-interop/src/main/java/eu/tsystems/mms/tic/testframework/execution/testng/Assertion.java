@@ -30,6 +30,9 @@ public interface Assertion {
     boolean assertSame(Object actual, Object expected, Object message);
     boolean assertNotSame(Object actual, Object expected, Object message);
     boolean assertNull(Object object, Object message);
+    default boolean assertNull(Object object) {
+        return assertNull(object, null);
+    }
     default boolean assertNotNull(Object object) {
         return assertNotNull(object, null);
     }

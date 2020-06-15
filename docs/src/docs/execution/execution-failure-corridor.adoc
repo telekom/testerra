@@ -84,5 +84,5 @@ Define your own failure corridor with the maximum number of failed tests with th
 ====
 If you do not define any failure corridor, but activate them, Testerra uses the default value `-1`.
 
-On that case the custom failure corridor us used with `HIGH=-1, MID=-1, LOW=-1`.
+On that case the custom failure corridor is used with `HIGH=-1, MID=-1, LOW=-1`.
 ====

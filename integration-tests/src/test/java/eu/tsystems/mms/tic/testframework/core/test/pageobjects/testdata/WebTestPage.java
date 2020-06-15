@@ -18,10 +18,10 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
-import eu.tsystems.mms.tic.testframework.pageobjects.components.InputForm;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.components.InputForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

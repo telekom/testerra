@@ -1,4 +1,6 @@
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata;
+
+import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
 
 public class MyVariables implements PageVariables {
 

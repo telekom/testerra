@@ -19,7 +19,7 @@
  */
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.ResponsiveWebTestPage;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.ResponsiveWebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 

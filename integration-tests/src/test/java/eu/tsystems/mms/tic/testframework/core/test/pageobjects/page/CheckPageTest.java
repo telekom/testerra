@@ -27,21 +27,9 @@ import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWith
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithNullElement;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithExistingStaticElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNonCheckableCheck;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNotExistingElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageWithNullElement;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.pageobjects.Check;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Page;
-import eu.tsystems.mms.tic.testframework.report.general.TestsUnderTestGroup;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
@@ -77,7 +65,7 @@ public class CheckPageTest extends AbstractTestSitesTest {
     @Test
     public void testT08_CheckPage_ScreenshotOnLoad() {
 
-        final File reportScreenshotDirectory = Report.SCREENSHOTS_DIRECTORY;
+        final File reportScreenshotDirectory = StaticReport.SCREENSHOTS_DIRECTORY;
         Assert.assertNotNull(reportScreenshotDirectory);
         Assert.assertTrue(reportScreenshotDirectory.exists());
         Assert.assertTrue(reportScreenshotDirectory.isDirectory());

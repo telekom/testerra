@@ -61,9 +61,6 @@ import eu.tsystems.mms.tic.testframework.simulation.UserSimulator;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -774,7 +771,7 @@ public class GuiElement implements
     }
 
     @Deprecated
-    public UiElement shadowRoot() {
+    public GuiElement shadowRoot() {
         guiElementData.shadowRoot = true;
         return this;
     }

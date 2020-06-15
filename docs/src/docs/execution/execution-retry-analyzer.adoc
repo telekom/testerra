@@ -99,7 +99,7 @@ public class AbstractTest extends TesterraTest {
 
 [#NoRetry]
 == @NoRetry
-With this annoation the Retry analyzers won't retry these methods if previously failed. This is characteristically shown in the report with the badge `NoRetry`.
+With this annoation the Retry Analyzer won't retry these methods if previously failed. This is characteristically shown in the report by the badge `NoRetry`.
 
 You can customize the `NoRetry` annotation with the  attributes `name` and `color`.
 

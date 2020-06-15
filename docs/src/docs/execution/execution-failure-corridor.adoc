@@ -9,7 +9,7 @@ Testerra provides to kinds of a Failure corridor:
 * define for every test a weight (low, medium, high) and set specific number of allowed failed tests.
 
 == General
-The Failure corridor can activated by the following property.
+The Failure corridor can be activated by the following property.
 
 [source, properties, subs="attributes"]
 ----
@@ -70,7 +70,7 @@ public void test5() throws Exception {
 }
 ----
 
-Define your own failure corridor with the maximum number of failed tests with the following settings:
+Define your own failure corridor with the maximum number of failed tests by the following settings:
 
 .test.properties
 [source, properties, subs="attributes"]
@@ -84,5 +84,5 @@ Define your own failure corridor with the maximum number of failed tests with th
 ====
 If you do not define any failure corridor, but activate them, Testerra uses the default value `-1`.
 
-On that case the custom failure corridor is used with `HIGH=-1, MID=-1, LOW=-1`.
+In that case the custom failure corridor is used with `HIGH=-1, MID=-1, LOW=-1`.
 ====

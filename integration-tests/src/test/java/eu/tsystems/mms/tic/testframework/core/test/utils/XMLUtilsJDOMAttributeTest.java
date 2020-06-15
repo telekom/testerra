@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +18,7 @@
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
-import eu.tsystems.mms.tic.testframework.helper.XMLUtilTestSupport;
+import eu.tsystems.mms.tic.testframework.core.test.testdata.implementation.XMLUtilTestSupport;
 import eu.tsystems.mms.tic.testframework.utils.XMLUtils;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;

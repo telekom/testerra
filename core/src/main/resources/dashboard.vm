@@ -61,13 +61,14 @@
             </tr>
 
             <tr>
-                <td align="center">
-                    <div class="dashboardHeader">
-                        Previous Run
-                    </div>
-                </td>
-                <td></td> <!-- percent -->
-                <td></td> <!-- spacer -->
+##                No history available
+##                <td align="center">
+##                    <div class="dashboardHeader">
+##                        Previous Run
+##                    </div>
+##                </td>
+##                <td></td> <!-- percent -->
+##                <td></td> <!-- spacer -->
                 <td align="center">
                     <div class="dashboardHeader">
                         This Run
@@ -95,21 +96,22 @@
             </tr>
 
             <tr>
-                <!-- previous run -->
-                    <td class="cellCenter" style="opacity:0.7;">
-                        <div class="dashboardTextVerySmall">No history data</div>
-                        <div class="hidden">
-                            <input type="checkbox" id="lastRunBarsVisibleCheckbox"/>
-                        </div>
-                    </td>
-                    <td class="cellCenter" style="opacity:0.7;">
-                        <div class="responsive">
-                            <div class="dashboardTextVerySmall" id="lastRunPassRate">No history data</div>
-                        </div>
-                    </td>
+##                No history available
+##                <!-- previous run -->
+##                    <td class="cellCenter" style="opacity:0.7;">
+##                        <div class="dashboardTextVerySmall">No history data</div>
+##                        <div class="hidden">
+##                            <input type="checkbox" id="lastRunBarsVisibleCheckbox"/>
+##                        </div>
+##                    </td>
+##                    <td class="cellCenter" style="opacity:0.7;">
+##                        <div class="responsive">
+##                            <div class="dashboardTextVerySmall" id="lastRunPassRate">No history data</div>
+##                        </div>
+##                    </td>
 
 
-                <td class="cellCenter"><div class="dashboardVerticalSpacer"></div></td> <!-- spacer -->
+##                <td class="cellCenter"><div class="dashboardVerticalSpacer"></div></td> <!-- spacer -->
 
                 <!-- this run -->
                 <td class="cellCenter">
@@ -430,7 +432,7 @@ function pieClickEventCallBack(elementId, category, activated) {
 function defaultMethodsDetailsView() {
     var e = "#detailsView";
     $(e).empty();
-    $(e).append('<div><a href="" style="font-size: 3;"><img src="logo.png" alt="testerra" width="300"></a><div><div style="text-align: center;">testerra Test Automation Framework<br>(c) Copyright T-Systems Multimedia Solutions GmbH 2018...</div>');
+    $(e).append('<div><a href="" style="font-size: 3;"><img src="Testerra_Logo_0512px.png" alt="testerra" width="300"></a><div><div style="text-align: center;">Testerra Test Automation Framework<br>(c) Copyright T-Systems Multimedia Solutions GmbH 2020</div>');
 }
 
 defaultMethodsDetailsView();

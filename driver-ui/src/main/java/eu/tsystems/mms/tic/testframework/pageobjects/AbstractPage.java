@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,6 +20,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFiel
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.openqa.selenium.TimeoutException;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import org.openqa.selenium.WebDriver;
 
 import java.lang.reflect.Field;
@@ -54,6 +55,7 @@ import java.util.Set;
 public abstract class AbstractPage extends AbstractPageObject implements Loggable {
     /**
      * The webdriver object.
+     *
      * @deprecated Use {@link #getWebDriver()} instead
      */
     @Deprecated
@@ -73,6 +75,15 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
     @Deprecated
     public void setElementTimeoutInSeconds(int newElementTimeout) {
         elementTimeoutInSeconds = newElementTimeout;
+    }
+
+    /**
+     * Executes a screenshot when the specific property is set.
+     */
+    private void screenShotOnPageLoad() {
+        if (PropertyManager.getBooleanProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, false)) {
+            takeScreenshot();
+        }
     }
 
     /**
@@ -237,16 +248,6 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
     protected void checkPageErrorState(Throwable throwable) throws Throwable {
     }
 
-    /**
-     * Shortcut for throwing a TimeoutException.
-     *
-     * @param message .
-     */
-    @Deprecated
-    public void exitWithTimeoutException(final String message) {
-        throw new TimeoutException(message);
-    }
-
     public int getElementTimeoutInSeconds() {
         return elementTimeoutInSeconds;
     }
@@ -362,8 +363,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
                         running = false;
                     } else {
                         if (clazz != AbstractPage.class) {
-                            @SuppressWarnings("unchecked")
-                            final Class<? extends AbstractPage> pageClass = (Class<? extends AbstractPage>) clazz;
+                            @SuppressWarnings("unchecked") final Class<? extends AbstractPage> pageClass = (Class<? extends AbstractPage>) clazz;
                             allClasses.add(pageClass);
                         }
                     }
@@ -397,8 +397,8 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
     }
 
     /**
-     * @deprecated Use {@link #getWebDriver()} instead
      * @return
+     * @deprecated Use {@link #getWebDriver()} instead
      */
     @Deprecated
     public WebDriver getDriver() {

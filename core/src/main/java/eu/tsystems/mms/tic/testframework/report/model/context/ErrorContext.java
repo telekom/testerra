@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,9 +24,6 @@ import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 
-/**
- * Created by sagu on 21.09.2016.
- */
 public class ErrorContext extends AbstractContext {
 
     public String readableErrorMessage;
@@ -73,7 +68,7 @@ public class ErrorContext extends AbstractContext {
         setThrowable(readableMessage, throwable, false);
     }
 
-    public void setThrowable(final String readableMessage, final Throwable throwable, boolean forceUpdateReadableMessage) {
+    public void setThrowable(final String readableMessage, Throwable throwable, boolean forceUpdateReadableMessage) {
         this.throwable = throwable;
 
         /*
@@ -95,14 +90,15 @@ public class ErrorContext extends AbstractContext {
              */
             stackTrace = ExecutionUtils.createStackTrace(throwable);
 
-            // set message
-            String message;
+
             if (throwable instanceof TimeoutException && throwable.getCause() != null) {
-                message = throwableToMessage(throwable.getCause());
+                // update throwable for reading correct "cause by" later
+                throwable = throwable.getCause();
             }
-            else {
-                message = throwableToMessage(throwable);
-            }
+
+            // set message
+            final String message = throwableToMessage(throwable);
+
 
             /*
             set readable message
@@ -164,6 +160,12 @@ public class ErrorContext extends AbstractContext {
         if (withFilter) {
             readableErrorMessage = filterReadableMessage(readableErrorMessage);
         }
+
+        // use first cause in strackTrace as additionalErrorMessage for report
+        if(stacktrace.stackTrace.cause != null) {
+            this.additionalErrorMessage = "caused by: " + stacktrace.stackTrace.cause.className + " " + stacktrace.stackTrace.cause.message;
+        }
+
         this.readableErrorMessage = readableErrorMessage;
         this.stacktraceForReadableMessage = stacktrace;
     }

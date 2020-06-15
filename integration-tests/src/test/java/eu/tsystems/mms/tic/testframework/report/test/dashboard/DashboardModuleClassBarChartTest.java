@@ -22,7 +22,8 @@ public class DashboardModuleClassBarChartTest extends AbstractTestDashboard {
      * Checks whether all test results are covered by the execution filter
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    @Fails(ticketString = "XETA-679")
+    @Fails(ticketString = "668")
+    // Test case #853
     public void testT01_checkExecutionFilter() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()));
         GuiElement testundertestExecutionFilterElement = dashboardPage.dashboardModuleClassBarChart.getBarChartElementByClassName(ReportTestUnderTestExecutionFilter.class.getSimpleName());
@@ -38,7 +39,8 @@ public class DashboardModuleClassBarChartTest extends AbstractTestDashboard {
      * Checks whether the annotation marks are displayed correctly
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(ticketString = "XETA-679")
+    @Fails(ticketString = "668")
+    // Test case #854
     public void testT02_checkReportAnnotations() {
         final String annotationMethod = "testAllMarkers";
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));

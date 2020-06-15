@@ -2,9 +2,6 @@ package eu.tsystems.mms.tic.testframework.report.general;
 
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 
-/**
- * Created by fakr on 02.11.2017
- */
 public enum MethodDependency {
 
     FAILED_ALWAYS("test_FailedAlways", TestResultHelper.TestResult.FAILED, ""),

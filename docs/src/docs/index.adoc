@@ -20,7 +20,10 @@ include::webdriver-manager.adoc[leveloffset=+1]
 include::browser-caps.adoc[leveloffset=+1]
 include::guielement.adoc[leveloffset=+1]
 include::pageobjects.adoc[leveloffset=+1]
-include::tests.adoc[leveloffset=+1]
+
+'''
+= Excecution and controlling
+include::execution.adoc[leveloffset=+1]
 
 '''
 = Testerra Features
@@ -28,11 +31,18 @@ include::modules.adoc[leveloffset=+1]
 include::utilities.adoc[leveloffset=+1]
 
 '''
+= Extending Testerra
+include::extending-testerra.adoc[leveloffset=+1]
+
+'''
 = Appendix
 include::best-practices.adoc[leveloffset=+1]
 include::changes.adoc[leveloffset=+1]
+include::known-issues.adoc[leveloffset=+1]
 include::properties.adoc[leveloffset=+1]
+include::architecture.adoc[leveloffset+-1]
 
 [glossary]
 = Glossary
 SUT:: System under test
+Tapas:: Test Automation Platform as a Service (https://tapa-as.io)

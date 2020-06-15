@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,14 +24,12 @@ import org.testng.annotations.Test;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by toku on 09.01.2015.
- */
 public class RandomUtilsTest extends AbstractWebDriverTest {
 
     private String stringContainsChars = "String contains not only ";
     private String stringLength = "String has not expected length";
     private String intMax = "Number is higher than expected maximum";
+    private String intMin = "Number is lower than expected minimum";
 
     /**
      * checks if random string only contains a-z
@@ -108,6 +104,28 @@ public class RandomUtilsTest extends AbstractWebDriverTest {
         Integer number = RandomUtils.generateRandomInt(max);
 
         Assert.assertTrue(number < 10, intMax);
+
+        String a = "" + number;
+
+        String regex = "^[0-9]";
+        Pattern compile = Pattern.compile(regex);
+        Matcher matcher = compile.matcher(a);
+        Assert.assertTrue(matcher.find(), stringContainsChars + regex);
+    }
+
+    /**
+     * checks if random number only contains chars  0-9
+     */
+    @Test
+    public void testT06_randomNumbersInt03() {
+
+        int min = 10;
+        int max = 20;
+
+        final int number = RandomUtils.generateRandomInt(min, max);
+
+        Assert.assertTrue(number > min, intMin);
+        Assert.assertTrue(number < max, intMax);
 
         String a = "" + number;
 

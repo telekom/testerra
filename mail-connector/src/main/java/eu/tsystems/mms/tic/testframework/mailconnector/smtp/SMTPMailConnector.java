@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,21 +14,13 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 27.06.2012
- *
- * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.mailconnector.smtp;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.mailconnector.util.AbstractMailConnector;
-import eu.tsystems.mms.tic.testframework.mailconnector.util.MessageUtils;
 import net.iharder.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,7 +136,6 @@ public class SMTPMailConnector extends AbstractMailConnector {
         Transport transport = null;
         try {
             transport = getSession().getTransport();
-            MessageUtils.multiPartBugfix(message);
 
             // send
             transport.connect();

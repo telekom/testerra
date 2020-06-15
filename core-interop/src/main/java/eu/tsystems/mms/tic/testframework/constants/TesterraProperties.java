@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,13 +15,6 @@
  *     Peter Lehmann
  *     jhmr
  *     pele
- */
-/*
- * Created on 26.03.2012
- *
- * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
  */
 package eu.tsystems.mms.tic.testframework.constants;
 
@@ -78,6 +69,11 @@ public final class TesterraProperties {
     public static final String CLOSE_WINDOWS_ON_FAILURE = "tt.wdm.closewindows.onfailure";
 
     /**
+     * WDM: Timeout / Duration Setting for Window Switching
+     */
+    public static final String WEBDRIVER_WINDOW_SWITCH_MAX_DURATION = "tt.wdm.timeouts.seconds.window.switch.duration";
+
+    /**
      * WDM: Kill WebDriver on stucking selenium command after this.
      */
     public static final String WEBDRIVER_TIMEOUT_SECONDS_STUCK_COMMAND = "tt.wdm.timeouts.seconds.selenium.command.stuck";
@@ -110,6 +106,19 @@ public final class TesterraProperties {
      */
     @Deprecated
     public static final String PERF_PAGE_THINKTIME_MS = "tt.perf.page.thinktime.ms";
+    /**
+     * reuse existing driver for a thread of dataprovider
+     */
+    public static final String REUSE_DATAPROVIDER_DRIVER_BY_THREAD = "tt.reuse.dataprovider.driver.by.thread";
+    /**
+     * Perf test Property, used to activate performance test related behaviour and to set default values for the performance test
+     */
+    public static final String PERF_TEST = "tt.perf.test";
+
+    /**
+     * If true, screenshot after page is loaded will be taken.
+     */
+    public static final String SCREENSHOT_ON_PAGELOAD = "tt.screenshot.on.pageload";
 
     public static final String DB_TIMEOUT = "tt.db.timeout";
 
@@ -138,4 +147,64 @@ public final class TesterraProperties {
 
     public static final String PAGE_FACTORY_LOOPS = "tt.page.factory.loops";
     public static final String EXECUTION_OMIT_IN_DEVELOPMENT = "tt.execution.omit.indevelopment";
+
+    /*
+    layout stuff
+     */
+
+    /*
+     * The mode for the screenreferencer. Values are pixel (default) or annotated.
+     */
+    public static final String LAYOUTCHECK_MODE = "tt.layoutcheck.mode";
+
+    // if true, will use non-functional asserts
+    @Deprecated
+    public static final String LAYOUTCHECK_ASSERT_INFO_MODE = "tt.layoutcheck.assert.info.mode";
+
+    public static final String LAYOUTCHECK_TAKEREFERENCE = "tt.layoutcheck.takereference";
+    public static final String LAYOUTCHECK_REFERENCE_NAMETEMPLATE = "tt.layoutcheck.reference.nametemplate";
+    public static final String LAYOUTCHECK_ANNOTATED_NAMETEMPLATE = "tt.layoutcheck.annotated.nametemplate";
+    public static final String LAYOUTCHECK_ANNOTATIONDATA_NAMETEMPLATE = "tt.layoutcheck.annotationdata.nametemplate";
+    public static final String LAYOUTCHECK_ACTUAL_NAMETEMPLATE = "tt.layoutcheck.actual.nametemplate";
+    public static final String LAYOUTCHECK_DISTANCE_NAMETEMPLATE = "tt.layoutcheck.distance.nametemplate";
+    public static final String LAYOUTCHECK_REFERENCE_PATH = "tt.layoutcheck.reference.path";
+    public static final String LAYOUTCHECK_DISTANCE_PATH = "tt.layoutcheck.distance.path";
+    public static final String LAYOUTCHECK_ACTUAL_PATH = "tt.layoutcheck.actual.path";
+    public static final String LAYOUTCHECK_USE_IGNORE_COLOR = "tt.layoutcheck.use.ignore.color";
+    public static final String LAYOUTCHECK_USE_AREA_COLOR = "tt.layoutcheck.use.area.color";
+    public static final String LAYOUTCHECK_PIXEL_RGB_DEVIATION_PERCENT = "tt.layout.pixel.rgb.deviation.percent";
+
+    // Properties for the layout comparator working with
+    public static final String LAYOUTCHECK_MATCH_THRESHOLD = "tt.layoutcheck.match.threshold";
+    public static final String LAYOUTCHECK_DISPLACEMENT_THRESHOLD = "tt.layoutcheck.displacement.threshold";
+    public static final String LAYOUTCHECK_INTRA_GROUPING_THRESHOLD = "tt.layoutcheck.intra.grouping.threshold";
+    public static final String LAYOUTCHECK_MINIMUM_MARKED_PIXELS = "tt.layoutcheck.minimum.marked.pixels";
+    public static final String LAYOUTCHECK_MAXIMUM_MARKED_PIXELS_RATIO = "tt.layoutcheck.maximum.marked.pixels.ratio";
+    /**
+     * minimalDistanceBetweenMatches
+     */
+    public static final String LAYOUTCHECK_MIN_MATCH_DISTANCE = "tt.layoutcheck.min.match.distance";
+    /**
+     * minimalSizeDifferenceOfSubImages
+     */
+    public static final String LAYOUTCHECK_MIN_SIZE_DIFFERENCE_SUB_IMAGES = "tt.layoutcheck.min.size.difference.sub.images";
+    /**
+     * minimumSimilarMovementErrorsForDisplacementCorrection
+     */
+    public static final String LAYOUTCHECK_MIN_SIMULAR_MOVEMENT_ERRORS = "tt.layoutcheck.min.similar.movement.errors";
+    /**
+     * distanceBetweenMultipleMatchesToProduceWarning
+     */
+    public static final String LAYOUTCHECK_DISTANCE_MULTIPLE_MATCHES = "tt.layoutcheck.distance.multiple.matches";
+    public static final String LAYOUTCHECK_IGNORE_AMBIGUOUS_MOVEMENT = "tt.layoutcheck.ignore.ambiguous.movement";
+    public static final String LAYOUTCHECK_IGNORE_MOVEMENT = "tt.layoutcheck.ignore.movement";
+    public static final String LAYOUTCHECK_IGNORE_GROUP_MOVEMENT = "tt.layoutcheck.ignore.group.movement";
+    public static final String LAYOUTCHECK_IGNORE_MISSING_ELEMENTS = "tt.layoutcheck.ignore.missing.elements";
+    public static final String LAYOUTCHECK_IGNORE_AMBIGUOUS_MATCH = "tt.layoutcheck.ignore.ambiguous.match";
+
+    public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH = "tt.layoutcheck.text.error.detector.minimal.line.length";
+    public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGE_STRENGTH = "tt.layoutcheck.text.error.detector.minimal.edge.strength";
+
+    public static final String SCREENCASTER_ACTIVE = "tt.screencaster.active";
+
 }

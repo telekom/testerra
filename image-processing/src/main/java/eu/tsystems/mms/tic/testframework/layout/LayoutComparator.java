@@ -1,14 +1,9 @@
-/*
- * Created on 03.13.2014
- *
- * Copyright(c) 2011 - 2014 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+
 package eu.tsystems.mms.tic.testframework.layout;
 
 import eu.tsystems.mms.tic.testframework.annotator.AnnotationContainer;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
 import eu.tsystems.mms.tic.testframework.layout.core.DistanceGraphInterpreter;
 import eu.tsystems.mms.tic.testframework.layout.core.LayoutElement;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
@@ -26,6 +21,7 @@ import eu.tsystems.mms.tic.testframework.layout.matching.matchers.OpenCvTemplate
 import eu.tsystems.mms.tic.testframework.layout.matching.matchers.TemplateMatchingAlgorithm;
 import eu.tsystems.mms.tic.testframework.layout.reporting.GraphicalReporter;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,20 +83,15 @@ public class LayoutComparator {
     private int minimalSizeDifferenceOfSubImages;
 
     static {
-        OpenCvInitializer.init();
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
     /**
      * Public constructor
      */
     public LayoutComparator() {
-        String matcherProperty = LayoutCheck.Properties.MATCHING_ALGORITHM.asString();
-        TemplateMatchingAlgorithm templateMatchingAlgorithm;
-        if (matcherProperty.equals("opencvtemplatematcher")) {
-            templateMatchingAlgorithm = new OpenCvTemplateMatcher(OpenCvTemplateMatcher.MatchingMode.CCOEFF_NORMED);
-        } else {
-            throw new RuntimeException("Template Matching Algorithm \"" + matcherProperty + "\" not known, can't match with it.");
-        }
+
+        final TemplateMatchingAlgorithm templateMatchingAlgorithm = new OpenCvTemplateMatcher(OpenCvTemplateMatcher.MatchingMode.CCOEFF_NORMED);
 
         templateMatcher = new GraphBasedTemplateMatcher(templateMatchingAlgorithm);
         annotationReader = new AnnotationReader();
@@ -151,9 +142,17 @@ public class LayoutComparator {
         }
 
         if (referenceImage.height() > actualImage.height() || referenceImage.width() > actualImage.width()) {
-            LOGGER.warn("Reference Image (" + referenceImage.size() + ") is bigger than the actual Image (" +
-                    actualImage.size() + "). This should not happen, as it is ignored by the algorithm and will " +
-                    "probably lead to falsely positive movement errors.");
+            NonFunctionalAssert.fail(
+                String.format(
+                    "The actual image (width=%fpx, height=%fpx) is smaller than the reference image (width=%fpx, height=%fpx)." +
+                    "This should not happen, as it is ignored by the algorithm and will " +
+                    "probably lead to falsely positive movement errors.",
+                    actualImage.size().width,
+                    actualImage.size().height,
+                    referenceImage.size().width,
+                    referenceImage.size().height
+                )
+            );
         }
 
         // Adjustments have to be made, if the reference image is only a part of the original screenshot.
@@ -245,7 +244,9 @@ public class LayoutComparator {
     }
 
     private void loadProperties() {
-        minimalSizeDifferenceOfSubImages = LayoutCheck.Properties.INTERNAL_PARAMETER_2.asLong().intValue();
+        minimalSizeDifferenceOfSubImages = PropertyManager.getIntProperty(
+                TesterraProperties.LAYOUTCHECK_MIN_SIZE_DIFFERENCE_SUB_IMAGES,
+                DefaultParameter.LAYOUTCHECK_MIN_SIZE_DIFFERENCE_SUB_IMAGES);
     }
 
     private static Mat loadImageFromFile(final String absoluteFileName) throws FileNotFoundException {

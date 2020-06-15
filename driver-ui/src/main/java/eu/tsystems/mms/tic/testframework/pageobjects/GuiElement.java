@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,14 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 04.01.2013
- *
- * Copyright(c) 2012 - 2012 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
@@ -70,6 +61,9 @@ import eu.tsystems.mms.tic.testframework.simulation.UserSimulator;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.StandardGuiElementWait;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;

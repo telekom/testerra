@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,9 +30,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Created by pele on 31.08.2016.
- */
 public final class FailureCorridor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FailureCorridor.class);
@@ -42,16 +37,19 @@ public final class FailureCorridor {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface High {
+
     }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface Mid {
+
     }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface Low {
+
     }
 
     public enum Value {
@@ -66,6 +64,10 @@ public final class FailureCorridor {
             this.show = show;
             this.color = color;
         }
+    }
+
+    private FailureCorridor() {
+
     }
 
     private static int allowedTestFailures = PropertyManager.getIntProperty(TesterraProperties.FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS, -1);
@@ -101,8 +103,7 @@ public final class FailureCorridor {
          */
         if (testsSkipped > 0) {
             return false;
-        }
-        else if (testsSuccessful + testsFailed + testsSkipped == 0) {
+        } else if (testsSuccessful + testsFailed + testsSkipped == 0) {
             return false;
         }
 
@@ -121,12 +122,10 @@ public final class FailureCorridor {
         if (allowedTestFailuresHIGH > -1 && allowedTestFailuresMID > -1 && allowedTestFailuresLOW > -1) {
             if (testsFailedHIGH > allowedTestFailuresHIGH) {
                 return false;
-            }
-            else {
+            } else {
                 if (testsFailedMID > allowedTestFailuresMID) {
                     return false;
-                }
-                else {
+                } else {
                     if (testsFailedLOW > allowedTestFailuresLOW) {
                         return false;
                     }
@@ -142,8 +141,7 @@ public final class FailureCorridor {
         // -NOT OK-
         if (isCorridorMatched()) {
             return "-OK-";
-        }
-        else {
+        } else {
             return "-NOT OK-";
         }
     }
@@ -170,12 +168,12 @@ public final class FailureCorridor {
         }
 
         if (allowedTestFailures > -1) {
-//            int testsFailed = TestStatusController.getTestsFailed();
-//            out += "  X: " + testsFailed;
-//            if (testsFailed > allowedTestFailures) {
-//                out += badMarker;
-//            }
-//            out += " (" + allowedTestFailures + ") ";
+            //            int testsFailed = TestStatusController.getTestsFailed();
+            //            out += "  X: " + testsFailed;
+            //            if (testsFailed > allowedTestFailures) {
+            //                out += badMarker;
+            //            }
+            //            out += " (" + allowedTestFailures + ") ";
 
             // failed allowed is not needed atm - pele 05.09.2016
         }
@@ -185,7 +183,7 @@ public final class FailureCorridor {
             if (testsFailedHIGH > allowedTestFailuresHIGH) {
                 out += badMarker;
             }
-            out+= "-" + testsFailedMID;
+            out += "-" + testsFailedMID;
             if (testsFailedMID > allowedTestFailuresMID) {
                 out += badMarker;
             }
@@ -193,7 +191,7 @@ public final class FailureCorridor {
             if (testsFailedLOW > allowedTestFailuresLOW) {
                 out += badMarker;
             }
-            out += " (" + allowedTestFailuresHIGH + "-" + allowedTestFailuresMID + "-" + allowedTestFailuresLOW + ")" ;
+            out += " (" + allowedTestFailuresHIGH + "-" + allowedTestFailuresMID + "-" + allowedTestFailuresLOW + ")";
         }
 
         if (testsSkipped > 0) {
@@ -216,22 +214,14 @@ public final class FailureCorridor {
     }
 
     public static void printStatusToStdOut() {
-        String statusMessage = ReportUtils.getReportName() + " " + ExecutionContextController.EXECUTION_CONTEXT.runConfig + ": ";
-        if (!FailureCorridor.isCorridorMatched()) {
-            // show error first
-            statusMessage += TestStatusController.getFinalCountersMessage() + " ";
-            statusMessage += FailureCorridor.getStatusMessage();
-        } else {
-            // show passed first
-            statusMessage += TestStatusController.getFinalCountersMessage() + " ";
-            statusMessage += FailureCorridor.getStatusMessage();
-        }
-
+        String statusMessage = ReportUtils.getReportName() + " " + ExecutionContextController.getCurrentExecutionContext().runConfig.RUNCFG + ": ";
+        statusMessage += TestStatusController.getFinalCountersMessage() + " ";
+        statusMessage += FailureCorridor.getStatusMessage();
 
         String statistics = getStatistics();
         System.out.println(statistics);
 
-        String stdOutMessage = "\n\ntesterra: " + statusMessage + "\n\n";
+        String stdOutMessage = "\n\nTesterra: " + statusMessage + "\n\n";
         System.out.println(stdOutMessage);
     }
 }

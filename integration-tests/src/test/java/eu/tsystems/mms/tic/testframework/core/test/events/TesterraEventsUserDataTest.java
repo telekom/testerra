@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,21 +15,20 @@
  *     Peter Lehmann
  *     pele
  */
-/*
- * Created on 07.01.14
- *
- * Copyright(c) 1995 - 2013 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
 package eu.tsystems.mms.tic.testframework.core.test.events;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
-import eu.tsystems.mms.tic.testframework.events.*;
-import eu.tsystems.mms.tic.testframework.events.test.TesterraEventUserDataTestListener;
-import eu.tsystems.mms.tic.testframework.events.test.UserDataTypes;
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventUserDataManager;
+import eu.tsystems.mms.tic.testframework.core.test.events.implementation.TesterraEventUserDataTestListener;
+import eu.tsystems.mms.tic.testframework.core.test.events.implementation.UserDataTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -55,6 +52,7 @@ public class TesterraEventsUserDataTest extends AbstractWebDriverTest {
         TesterraEventUserDataManager.getGlobalData().put(UserDataTypes.UMGEBUNG, "U1");
     }
 
+    @AfterClass
     public void afterClass() {
         TesterraEventService.removeListener(testerraEventListener);
     }
@@ -62,7 +60,7 @@ public class TesterraEventsUserDataTest extends AbstractWebDriverTest {
     /**
      *
      */
-    @Test(groups = "T11_TestUnderTest")
+    @Test
     public void testT11_TesterraUserEventData_TestUnderTest1() {
         TesterraEventUserDataManager.getThreadLocalData().put(UserDataTypes.BLUBB, "BLA");
     }
@@ -70,7 +68,7 @@ public class TesterraEventsUserDataTest extends AbstractWebDriverTest {
     /**
      *
      */
-    @Test(groups = "T11_TestUnderTest")
+    @Test(dependsOnMethods = "testT11_TesterraUserEventData_TestUnderTest1")
     public void testT11_TesterraUserEventData_TestUnderTest2() {
         TesterraEventUserDataManager.getThreadLocalData().put(UserDataTypes.BLUBB, "JUHU");
     }
@@ -80,8 +78,9 @@ public class TesterraEventsUserDataTest extends AbstractWebDriverTest {
      * <p/>
      * Description: T11 TesterraUserEventData
      */
-    @Test(dependsOnGroups = "T11_TestUnderTest")
+    @Test(dependsOnMethods = "testT11_TesterraUserEventData_TestUnderTest2")
     public void testT11_TesterraUserEventData() {
+
         List<TesterraEvent> eventsFromListener = TesterraEventUserDataTestListener.getEvents();
 
         // copy
@@ -95,10 +94,10 @@ public class TesterraEventsUserDataTest extends AbstractWebDriverTest {
         for (TesterraEvent event : events) {
             logger.info(event.getTesterraEventType() + " Method: " + event.getData().get(TesterraEventDataType.METHOD_NAME));
 
-            Assert.assertTrue(event.getData().containsKey(UserDataTypes.UMGEBUNG),
-                    "Every event contains UMGEBUNG data.");
-            Assert.assertTrue("U1".equals(event.getData().get(UserDataTypes.UMGEBUNG)),
-                    "Every event contains UMGEBUNG -U1- data.");
+            logger.info(event.getData().toString());
+
+            Assert.assertTrue(event.getData().containsKey(UserDataTypes.UMGEBUNG), "Every event contains UMGEBUNG data. Failed on Event: " + event.getTesterraEventType());
+            Assert.assertEquals(event.getData().get(UserDataTypes.UMGEBUNG), "U1", "Every event contains UMGEBUNG -U1- data. Failed on Event: " + event.getTesterraEventType());
 
             if (event.getTesterraEventType() == TesterraEventType.TEST_METHOD_END) {
                 String methodName = (String) event.getData().get(TesterraEventDataType.METHOD_NAME);
@@ -110,8 +109,7 @@ public class TesterraEventsUserDataTest extends AbstractWebDriverTest {
                             "Event TEST_METHOD_END for testT11_TesterraUserEventData_TestUnderTest1 contains BLUBB -BLA- data.");
                     Assert.assertFalse("JUHU".equals(event.getData().get(UserDataTypes.BLUBB)),
                             "Event TEST_METHOD_END for testT11_TesterraUserEventData_TestUnderTest1 contains BLUBB -JUHU- data.");
-                }
-                else if (methodName.contains("testT11_TesterraUserEventData_TestUnderTest2")) {
+                } else if (methodName.contains("testT11_TesterraUserEventData_TestUnderTest2")) {
                     method2EventFired = true;
                     Assert.assertTrue(event.getData().containsKey(UserDataTypes.BLUBB),
                             "Event TEST_METHOD_END for testT11_TesterraUserEventData_TestUnderTest2 contains BLUBB data.");

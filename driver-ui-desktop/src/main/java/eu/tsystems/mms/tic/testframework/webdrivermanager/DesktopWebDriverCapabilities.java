@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,13 +26,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-/**
- * Created by pele on 08.01.2015.
- */
 @Deprecated
 public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
 
     private static final Map<Pattern, Capabilities> ENDPOINT_CAPABILITIES = new LinkedHashMap<>();
+
+    private DesktopWebDriverCapabilities() {
+        
+    }
 
     static void addContextCapabilities(DesiredCapabilities baseCapabilities, DesktopWebDriverRequest desktopWebDriverRequest) {
         /*
@@ -109,6 +108,7 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         return desiredCapabilities;
     }
 
+    @Deprecated
     private static void addEndPointCapabilities(DesktopWebDriverRequest desktopWebDriverRequest) {
         for (Pattern pattern : ENDPOINT_CAPABILITIES.keySet()) {
             if (pattern.matcher(desktopWebDriverRequest.seleniumServerHost).find()) {
@@ -120,6 +120,7 @@ public final class DesktopWebDriverCapabilities extends WebDriverCapabilities {
         }
     }
 
+    @Deprecated
     public static void registerEndPointCapabilities(Pattern endPointSelector, Capabilities capabilities) {
         ENDPOINT_CAPABILITIES.put(endPointSelector, capabilities);
     }

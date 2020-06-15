@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,14 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 14.08.2013
- *
- * Copyright(c) 1995 - 2014 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.core.test.testdata;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
@@ -71,20 +62,21 @@ public class XLSWriterTest extends AbstractWebDriverTest {
             xlsWriter.writeCell(id, col, data);
 
             filecounter++;
-            final String fullFileName = StaticReport.REPORT_DIRECTORY + "/xls/out-" + filecounter + "-" + filename;
+            Report report = new Report();
+            final File fullFile = report.getReportDirectory("xls/out-" + filecounter + "-" + filename);
 
             // check dirs
-            File dir = new File(fullFileName).getParentFile();
+            File dir = fullFile.getParentFile();
             if (!dir.exists()) {
                 dir.mkdirs();
             }
 
             // save
-            xlsWriter.saveAs(fullFileName);
+            xlsWriter.saveAs(fullFile.getAbsolutePath());
 
             XLSTestDataReader xlsTestDataReader = new XLSTestDataReader();
             xlsTestDataReader.setHeaderRow(1);
-            Map<String, String> dataSet = xlsTestDataReader.readXLSTestDataFromFile(fullFileName,
+            Map<String, String> dataSet = xlsTestDataReader.readXLSTestDataFromFile(fullFile.getAbsolutePath(),
                     sheetname, id);
             Assert.assertEquals(dataSet.get(dataName), data, "Content verification");
         }

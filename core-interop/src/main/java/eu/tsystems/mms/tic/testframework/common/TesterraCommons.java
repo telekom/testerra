@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,28 +22,27 @@ import eu.tsystems.mms.tic.testframework.report.DefaultLogAppender;
 import eu.tsystems.mms.tic.testframework.report.TesterraLogger;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.apache.log4j.Appender;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.ConsoleAppender;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Enumeration;
+import java.util.Map;
 import java.util.Properties;
 
-/**
- * Created by pele on 05.02.2015.
- */
 public class TesterraCommons {
     private static final Logger LOGGER = LoggerFactory.getLogger(TesterraCommons.class);
     private static boolean proxySettingsLoaded = false;
     public static final String DEFAULT_PACKAGE_NAME = "eu.tsystems.mms.tic";
     public static final String FRAMEWORK_PACKAGE=DEFAULT_PACKAGE_NAME+".testframework";
-    private static final String SYSTEM_PROPERTIES_FILE = "system.properties";
 
     private TesterraCommons() {}
 
@@ -54,33 +51,37 @@ public class TesterraCommons {
      * and remove all duplicate ConsoleLoggers
      */
     private static void initializeLogging() {
-        BasicConfigurator.configure();
+        DefaultConfiguration defaultConfiguration = new DefaultConfiguration();
+        LoggerContext loggerContext = Configurator.initialize(defaultConfiguration);
+        Configurator.setRootLevel(Level.INFO);
+        org.apache.logging.log4j.core.Logger rootLogger = loggerContext.getRootLogger();
 
-        org.apache.log4j.Logger root = org.apache.log4j.Logger.getRootLogger();
         if (getTesterraLogger() == null) {
-            TesterraLogger testerraLogger = new DefaultLogAppender();
-            testerraLogger.setName(TesterraLogger.class.getSimpleName());
-            root.addAppender(testerraLogger);
-            root.setLevel(Level.INFO);
+            DefaultLogAppender.Builder builder = new DefaultLogAppender.Builder();
+            builder.setName(TesterraLogger.class.getSimpleName());
+            TesterraLogger testerraLogger = builder.build();
+            testerraLogger.start();
+            rootLogger.addAppender(testerraLogger);
         }
 
         /**
          * We have to remove the default {@link ConsoleAppender},
          * because the {@link TesterraLogger} already logs to System.out
          */
-        Enumeration allAppenders = root.getAllAppenders();
-        while (allAppenders.hasMoreElements()) {
-            Object appender = allAppenders.nextElement();
-            if (appender instanceof ConsoleAppender) {
-                root.removeAppender((ConsoleAppender) appender);
+        Map<String, Appender> allAppenders = rootLogger.getAppenders();
+
+        for (Map.Entry<String, Appender> appender : allAppenders.entrySet()) {
+            if (appender.getValue() instanceof ConsoleAppender) {
+                rootLogger.removeAppender(appender.getValue());
             }
         }
     }
 
     public static TesterraLogger getTesterraLogger() {
-        Appender testerraLogger = org.apache.log4j.Logger.getRootLogger().getAppender(TesterraLogger.class.getSimpleName());
+        org.apache.logging.log4j.core.Logger root = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
+        Appender testerraLogger = root.getAppenders().get(TesterraLogger.class.getSimpleName());
         if (testerraLogger != null) {
-            return (TesterraLogger)testerraLogger;
+            return (TesterraLogger) testerraLogger;
         } else {
             return null;
         }
@@ -104,13 +105,18 @@ public class TesterraCommons {
             return;
         }
 
+        FileUtils fileUtils = new FileUtils();
         String filename = PropertyManager.getProperty(TesterraProperties.PROXY_SETTINGS_FILE, "proxysettings.properties");
         Properties props = new Properties();
         try {
-            InputStream inputStream = FileUtils.getLocalFileOrResourceInputStream(filename);
+            File proxySettings = fileUtils.getLocalOrResourceFile(filename);
+            if (proxySettings.exists()) {
+                LOGGER.info("Load proxy settings: " + proxySettings.getAbsolutePath());
+            }
+            InputStream inputStream = new FileInputStream(proxySettings);
             props.load(inputStream);
         } catch (Exception e) {
-            LOGGER.warn(String.format("Not loaded proxy settings from file: %s", e.getMessage()), e);
+            //LOGGER.warn(String.format("Not loaded proxy settings from file: %s", e.getMessage()), e);
             return;
         }
 
@@ -127,34 +133,8 @@ public class TesterraCommons {
         }
     }
 
-    private static void initializeSystemProperties() {
-        final Properties systemProperties = new Properties();
-        try {
-            FileUtils fileUtils = new FileUtils();
-            File file = fileUtils.getLocalOrResourceFile(SYSTEM_PROPERTIES_FILE);
-            LOGGER.info("Load system properties: " + file.getAbsolutePath());
-            FileInputStream is = new FileInputStream(file);
-            systemProperties.load(is);
-            systemProperties.stringPropertyNames().forEach(key -> {
-                final String value = System.getProperty(key);
-                final String newValue = "" + systemProperties.get(key);
-                if (!StringUtils.isStringEmpty(value)) {
-                    LOGGER.warn("SystemProperty - Overwriting " + key + "=" + value + " << " + newValue);
-                } else {
-                    LOGGER.debug("SystemProperty - Setting " + key + "=" + newValue);
-                }
-                System.setProperty(key, newValue);
-            });
-        } catch (Exception e) {
-            //LOGGER.warn("Not loaded: " + SYSTEM_PROPERTIES_FILE, e);
-        }
-    }
-
-
-
     public static void init() {
         initializeLogging();
-        initializeSystemProperties();
         initializeProxySettings();
     }
 }

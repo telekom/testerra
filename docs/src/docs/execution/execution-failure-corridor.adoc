@@ -1,0 +1,134 @@
+= Failure Corridor
+include::../properties/property-attributes.adoc[]
+
+This mechanism is used to define the test goal of test runs so that the test suite only fails with a broken failure corridor.
+
+== General
+Activating the corridor is done with the following property.
+
+[source, properties, subs="attributes"]
+----
+{failure_corridor_active}=true
+# default is false
+----
+
+== Maximum Allowed Failures
+The simplest variant is to define the maximum number of allowed test failures.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+{failure_corridor_active}=true
+{failure_corridor_allowed_failed_tests}=2
+# if less than two methods fail the suite will be marked as passed
+----
+
+== Custom Failure Corridor
+For further adjustment test methods can be weighted while defining the maximum number of failures for the corresponding weightings in the `test.properties`.
+
+.Method Weighting
+[source, java]
+----
+@FailureCorridor.High
+@Test
+public void test1() throws Exception {
+    Assert.fail();
+}
+
+@Test
+public void test2() throws Exception {
+    Assert.fail();
+}
+
+@FailureCorridor.Mid
+@Test
+public void test3() throws Exception {
+    Assert.fail();
+}
+
+@Fails
+@FailureCorridor.Mid
+@Test
+public void test4() throws Exception {
+    Assert.fail();
+}
+
+@FailureCorridor.Low
+@Test
+public void test5() throws Exception {
+    Assert.fail();
+}
+----
+
+NOTE: Non-weighted methods have high weight by default.
+Testcases with valid <<Fails,@Fails>> annotation are ignored.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+{failure_corridor_allowed_failed_tests_high}=0
+{failure_corridor_allowed_failed_tests_mid}=1
+{failure_corridor_allowed_failed_tests_low}=2
+----
+
+This setting allows
+
+* high: no failed methods
+* mid : one failed method
+* low : two failed methods
+
+leading to the status failed for the whole suite as per Code
+
+* high: two methods fail
+* mid : one method fails, another isn't taken into account
+* low : one method fails
+
+[#Fails]
+== @Fails
+For known issues on the SUT this annotation is used to mark a test method as failing, showing the result in the section `Expected Failed` in case of failure.
+
+NOTE: The result is technically still a failure and only visually elevated to facilitate the evaluation of the report.
+
+Additional information like `ticketId`, `ticketString` and `description` can be provided and are shown in the report as well.
+However, passed tests will be correctly allocated to the corresponding section with an additional information about the invalidity of the `@Fails` annotation.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+# activate watchdog, default = true
+environment=test
+country=de
+
+----
+
+[source, java]
+----
+@Test
+@Fails(ticketString = "TST-742", description = "Failing for environment 'test' and coutry 'de'", validFor = {"environment=test", "country=de"})
+public void testExpectedFailed() {
+    Assert.fail();
+}
+----
+
+The test fails and is shown in the section `ExpectedFailed` because the validFor check is true. The property `environment` has the value 'test' and the property `country` has the value 'de'.
+Additionally, the `description` and the `ticketString` are shown in the report. For other values of environment and country the test will be shown as `Failed`.
+
+[source, java]
+----
+@Test
+@Fails(ticketId = 742, description = "Failed Login", intoReport = true)
+public void testExpectedFailed() {
+    Assert.fail();
+}
+----
+With the `intoReport` attribute you can control the display of failed tests. As its true the failing test isn't shown separately as `Expected Failed` but as `Failed`.
+
+[source, java]
+----
+@Test
+@Fails(ticketId = 742, description = "Failed Login", intoReport = true)
+public void testExpectedFailed() {
+    Assert.assertTrue(true);
+}
+----
+As the test passes it is shown in the section `Passed` in the report with the notice of an invalid `@Fails` annotation.

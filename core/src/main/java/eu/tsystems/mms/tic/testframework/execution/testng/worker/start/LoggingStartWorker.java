@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,17 +20,15 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class LoggingStartWorker extends MethodWorker implements Loggable {
 
-    private final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
+    private final Formatter formatter = new DefaultFormatter();
 
     @Override
     public void run() {
-        log().info("Start " + formatter.toString(testMethod));
+        log().info("Run " + formatter.toString(testMethod));
     }
 }

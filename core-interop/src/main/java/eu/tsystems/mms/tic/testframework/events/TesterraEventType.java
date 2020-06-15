@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,6 +35,7 @@ public enum TesterraEventType implements ITesterraEventType {
     TEST_START,
     TEST_END,
 
+    @Deprecated
     RETRYING_METHOD,
 
     FIRST_FAILED_TEST,
@@ -44,6 +43,7 @@ public enum TesterraEventType implements ITesterraEventType {
 
     SYNC_METHOD_RESULT,
 
+    @Deprecated
     TAKE_SCREENSHOTS,
 
     CONTEXT_UPDATE

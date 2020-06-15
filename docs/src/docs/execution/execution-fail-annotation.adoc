@@ -1,0 +1,16 @@
+= Expected Fails
+
+If you know, that a test will fail, you can mark it with an annotation and an optional description.
+
+[source,java]
+----
+@Test
+@Fails(description="This test fails for reasons")
+public void testItWillFail() {
+    Assert.assertTrue(false);
+}
+----
+
+In the report this tests are also marked as failed, but they are less highlighted.
+
+NOTE: If tests are passed again, you get a note in the report to remove the `Fails` annotation.

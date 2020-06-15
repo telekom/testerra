@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -99,7 +97,7 @@ public final class PropertiesParser implements Loggable {
                     if (sensible) {
                         value = "###########";
                     }
-                    log().info("Replacing " + match + " with >" + value + "<");
+                    log().trace("Replace '" + match + "' by '" + value + "'");
                 }
             }
         }

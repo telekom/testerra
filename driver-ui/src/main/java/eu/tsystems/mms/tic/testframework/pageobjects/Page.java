@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,13 +14,6 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 04.01.2013
- *
- * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
@@ -53,6 +44,9 @@ import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
+import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import eu.tsystems.mms.tic.testframework.utils.Timer;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
@@ -181,43 +175,6 @@ public abstract class Page extends AbstractPage implements TestablePage, UiEleme
 
     }
 
-    /**
-     * Send F5 to the browser.
-     */
-    public Page refresh() {
-        return refresh(false);
-    }
-
-    /**
-     * taking screenshot from all open windows
-     */
-    @Deprecated
-    public void takeScreenshot() {
-        screenshot().toReport();
-    }
-
-    @Override
-    protected void pCheckPage(boolean findNot, boolean fast, boolean checkCaller) {
-        super.pCheckPage(findNot, fast, checkCaller);
-        if (Report.Properties.SCREENSHOT_ON_PAGELOAD.asBool()) {
-            screenshot().toReport();
-        }
-    }
-
-    /**
-     * Send F5 to the browser.
-     * @deprecated Use {@link #refresh()} and {@link #checkGuiElements(CheckRule)} instead
-     */
-    @Deprecated
-    public Page refresh(boolean checkPage) {
-        getWebDriver().navigate().refresh();
-        if (checkPage) {
-            pCheckPage(false, false, false);
-        }
-        return this;
-    }
-
-    @Deprecated
     public boolean isTextPresent(String text) {
         WebDriver driver = getWebDriver();
         driver.switchTo().defaultContent();
@@ -289,7 +246,7 @@ public abstract class Page extends AbstractPage implements TestablePage, UiEleme
      */
     @Deprecated
     public boolean waitForIsNotTextPresent(final String text) {
-        final Timer timer = new Timer();
+        Timer timer = new Timer(1000, elementTimeoutInSeconds * 1000);
         final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -313,7 +270,7 @@ public abstract class Page extends AbstractPage implements TestablePage, UiEleme
      */
     @Deprecated
     public boolean waitForIsNotTextDisplayed(final String text) {
-        final Timer timer = new Timer();
+        Timer timer = new Timer(1000, elementTimeoutInSeconds * 1000);
         final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {

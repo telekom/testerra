@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,10 +17,10 @@
  */
 package eu.tsystems.mms.tic.testframework.monitor;
 
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventListener;
 import eu.tsystems.mms.tic.testframework.events.ITesterraEventType;
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventListener;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.internal.ConsumptionMeasurementsCollector;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.JVMUtils;
@@ -32,9 +30,6 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Created by pele on 10.03.2015.
- */
 public class JVMMonitor implements TesterraEventListener {
 
     private static final int GC_THRESHOLD = 500;
@@ -133,7 +128,7 @@ public class JVMMonitor implements TesterraEventListener {
     }
 
     public static void logJVMUsageInfo() {
-        LOGGER.info(getJVMUsageInfo());
+        LOGGER.debug(getJVMUsageInfo());
     }
 
     @Override
@@ -190,7 +185,7 @@ public class JVMMonitor implements TesterraEventListener {
                     start = System.currentTimeMillis();
 
                     if (lastValue > GC_THRESHOLD) {
-                        LOGGER.info("Used Mem over threshold (" + GC_THRESHOLD + "), triggering GC");
+                        LOGGER.debug("Used Mem over threshold (" + GC_THRESHOLD + "), triggering GC");
                         System.gc();
                     }
                 }
@@ -199,7 +194,6 @@ public class JVMMonitor implements TesterraEventListener {
     }
 
     public static void start() {
-        LOGGER.debug("Starting...");
         if (MONITOR_THREAD != null && (MONITOR_THREAD.isAlive() || MONITOR_THREAD.isDaemon())) {
             stop();
         }
@@ -213,7 +207,6 @@ public class JVMMonitor implements TesterraEventListener {
     }
 
     public static void stop() {
-        LOGGER.debug("Stopping...");
         threadStop = true;
         try {
             MONITOR_THREAD.join(30000);

@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,15 +27,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,11 +47,16 @@ public final class PageFactory {
     private static final ThreadLocal<CircularFifoBuffer> LOOP_DETECTION_LOGGER = new ThreadLocal<>();
     private static final int NR_OF_LOOPS = PropertyManager.getIntProperty(TesterraProperties.PAGE_FACTORY_LOOPS, 20);
 
+    private PageFactory() {
+
+    }
+
     public static abstract class ErrorHandler {
 
         /**
          * Run the things you want to do when a page object could not be instantiated. Throw a new throwable by yourself!
-         * @param driver .
+         *
+         * @param driver                   .
          * @param throwableFromPageFactory .
          */
         public abstract void run(WebDriver driver, Throwable throwableFromPageFactory);
@@ -144,12 +144,10 @@ public final class PageFactory {
             // check page
             if (positiveCheck) {
                 t.checkPage();
-            }
-            else {
+            } else {
                 t.checkPage(true, false);
             }
-        }
-        catch (Throwable overAllThrowable) {
+        } catch (Throwable overAllThrowable) {
             if (errorHandler != null) {
                 // should throw a new RuntimeException or Error ...
                 try {

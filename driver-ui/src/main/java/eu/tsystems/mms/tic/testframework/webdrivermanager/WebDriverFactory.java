@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +17,9 @@
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
@@ -30,12 +31,8 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by rnhb on 12.02.2016.
- */
-public abstract class WebDriverFactory<R extends WebDriverRequest> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverFactory.class);
+public abstract class WebDriverFactory<R extends WebDriverRequest> implements Loggable {
+    private SessionContext sessionContext = null;
 
     protected abstract R buildRequest(WebDriverRequest webDriverRequest);
 
@@ -74,7 +71,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
          */
         final DesiredCapabilities caps = new DesiredCapabilities();
         DesiredCapabilities tapOptions = new DesiredCapabilities();
-        ExecutionContextController.EXECUTION_CONTEXT.metaData.forEach(tapOptions::setCapability);
+        ExecutionContextController.getCurrentExecutionContext().metaData.forEach(tapOptions::setCapability);
         tapOptions.setCapability("scid", finalRequest.sessionContext.id);
         sessionContext.metaData.forEach(tapOptions::setCapability);
         tapOptions.setCapability("sessionKey", sessionContext.sessionKey);
@@ -108,7 +105,7 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
             Class[] interfaces = ObjectUtils.getAllInterfacesOf(rawDriver);
             rawDriver = ObjectUtils.simpleProxy(WebDriver.class, rawDriver, WebDriverProxy.class, interfaces);
         } catch (Exception e) {
-            LOGGER.error("Could not create proxy for raw webdriver", e);
+            log().error("Could not create proxy for raw webdriver", e);
         }
         EventFiringWebDriver eventFiringWebDriver = wrapRawWebDriverWithEventFiringWebDriver(rawDriver);
 
@@ -126,19 +123,8 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> {
     }
 
     private void logSessionRequest(R finalRequest, DesiredCapabilities finalCaps) {
-        StringBuffer msg = new StringBuffer();
-        msg.append("Requesting new web driver session with capabilities:");
-        finalCaps.asMap().forEach((k, v) -> msg.append(",").append(k).append("=").append(v));
-
-        /*
-        log proxy
-         */
-        Proxy proxy = (Proxy) finalCaps.getCapability(CapabilityType.PROXY);
-        if (proxy != null) {
-            msg.append("\n").append(proxy.toJson());
-        }
-
-        LOGGER.debug(msg.toString());
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        log().info("Requesting new web driver session with capabilities:\n" + gson.toJson(finalCaps.asMap()));
     }
 
     /**

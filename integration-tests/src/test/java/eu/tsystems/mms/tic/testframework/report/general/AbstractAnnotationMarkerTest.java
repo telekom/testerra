@@ -7,9 +7,6 @@ import eu.tsystems.mms.tic.testframework.report.model.ReportAnnotationType;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by fakr on 11.09.2017
- */
 public abstract class AbstractAnnotationMarkerTest extends AbstractReportTest {
 
     protected void checkAnnotationsAreDisplayed(IReportAnnotationVerifier verifier, Map<String,List<ReportAnnotationType>> methodTestObjects) {

@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,21 +13,22 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
+import eu.tsystems.mms.tic.testframework.layout.LayoutCheckException;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 
-/**
- * Created by rnhb on 11.08.2015.
- */
 public class DefaultGuiElementAssert implements GuiElementAssert {
 
     private final GuiElementWait guiElementWait;
@@ -42,9 +41,9 @@ public class DefaultGuiElementAssert implements GuiElementAssert {
     private final GuiElementData guiElementData;
 
     public DefaultGuiElementAssert(
-        GuiElementData guiElementData,
-        GuiElementWait guiElementWait,
-        Assertion configuredAssert
+            GuiElementData guiElementData,
+            GuiElementWait guiElementWait,
+            Assertion configuredAssert
     ) {
         this.guiElementWait = guiElementWait;
         this.guiElementCore = guiElementData.getGuiElement().getCore();
@@ -118,13 +117,13 @@ public class DefaultGuiElementAssert implements GuiElementAssert {
     @Override
     public void assertTextContains(String... text) {
         configuredAssert.assertTrue(guiElementWait.waitForTextContains(text), guiElementData + " text does not contain the requested text\n " +
-            "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
+                "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
     }
 
     @Override
     public void assertTextContainsNot(String... text) {
         configuredAssert.assertTrue(guiElementWait.waitForTextContainsNot(text), guiElementData + " text does contain the requested text\n " +
-            "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
+                "Expected: " + Arrays.toString(text) + "\n Actual: [" + guiElementCore.getText() + "]");
     }
 
     @Override
@@ -147,16 +146,16 @@ public class DefaultGuiElementAssert implements GuiElementAssert {
     @Override
     public void assertAttributeContains(String attributeName, String textContainedByAttribute) {
         configuredAssert.assertTrue(
-            guiElementWait.waitForAttributeContains(attributeName, textContainedByAttribute),
-            String.format("%s does not contain the requested text\n Expected: %s\n Actual: %s", guiElementData, textContainedByAttribute, guiElementCore.getAttribute(attributeName))
+                guiElementWait.waitForAttributeContains(attributeName, textContainedByAttribute),
+                String.format("%s does not contain the requested text\n Expected: %s\n Actual: %s", guiElementData, textContainedByAttribute, guiElementCore.getAttribute(attributeName))
         );
     }
 
     @Override
     public void assertAttributeContainsNot(final String attributeName, final String textNotContainedByAttribute) {
         configuredAssert.assertTrue(
-            guiElementWait.waitForAttributeContainsNot(attributeName, textNotContainedByAttribute),
-            String.format("%s does not contain the requested text\n Expected: %s\n Actual: %s", guiElementData, textNotContainedByAttribute, guiElementCore.getAttribute(attributeName))
+                guiElementWait.waitForAttributeContainsNot(attributeName, textNotContainedByAttribute),
+                String.format("%s does not contain the requested text\n Expected: %s\n Actual: %s", guiElementData, textNotContainedByAttribute, guiElementCore.getAttribute(attributeName))
         );
     }
 
@@ -228,7 +227,7 @@ public class DefaultGuiElementAssert implements GuiElementAssert {
 
     @Override
     public void assertVisible(boolean complete) {
-        configuredAssert.assertTrue(guiElementWait.waitForIsVisible(complete), guiElementData + " is "+(complete?"complete ":"")+"visible");
+        configuredAssert.assertTrue(guiElementWait.waitForIsVisible(complete), guiElementData + " is " + (complete ? "complete " : "") + "visible");
     }
 
     @Override

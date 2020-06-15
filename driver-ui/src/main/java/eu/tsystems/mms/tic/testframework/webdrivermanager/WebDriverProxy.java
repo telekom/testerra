@@ -4,10 +4,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class WebDriverProxy extends ObjectUtils.PassThroughProxy<WebDriver> implements Loggable {
@@ -22,10 +19,10 @@ public class WebDriverProxy extends ObjectUtils.PassThroughProxy<WebDriver> impl
 
         if (!method.getName().equals("toString")) {
             String msg = target.getClass().getSimpleName() + "." + method.getName();
-            log().debug(msg);
+            log().trace(msg);
         }
 
-        ProxyUtils.updateSessionContextRelations(sessionContext);
+        WebDriverProxyUtils.updateSessionContextRelations(sessionContext);
 
         return invoke(method, args);
     }

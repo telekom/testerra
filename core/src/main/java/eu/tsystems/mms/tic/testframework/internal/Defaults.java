@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +26,10 @@ import java.util.regex.Pattern;
 
 @Deprecated
 public final class Defaults {
+
+    private Defaults() {
+
+    }
 
     private static String load(String property, String defaultValue, String pattern) {
         Pattern compile = Pattern.compile(pattern);

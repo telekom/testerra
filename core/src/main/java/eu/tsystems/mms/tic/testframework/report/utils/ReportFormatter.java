@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,14 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 25.01.2011
- *
- * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
@@ -43,9 +34,9 @@ import eu.tsystems.mms.tic.testframework.report.velocity.PublicFieldUberspect;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.tools.generic.DateTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.velocity.tools.generic.DateTool;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -379,7 +370,7 @@ public class ReportFormatter {
 
     private static VelocityContext getVelocityContext() {
         VelocityContext context = new VelocityContext();
-        context.put("executionContext", ExecutionContextController.EXECUTION_CONTEXT);
+        context.put("executionContext", ExecutionContextController.getCurrentExecutionContext());
         context.put("TesterraBuildInformation", TesterraBuildInformation.getInstance());
         context.put("reportScreenshotsPreview", StaticReport.Properties.SCREENSHOTS_PREVIEW.asBool());
         context.put("reportName", ReportUtils.getReportName());

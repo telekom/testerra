@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,23 +19,29 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 
-/**
- * Created by pele on 30.01.2017.
- */
 public class GenerateXmlReportWorker extends GenerateReportsWorker implements Loggable {
     @Override
     public void run() {
         /*
+        Create status json
+         */
+        JSONObject statusJSON = TestStatusController.createStatusJSON();
+        log().debug("Status:\n" + statusJSON);
+
+        /*
         Create surefire and testng results xml
          */
+
+        Report report = new Report();
         // generate xml reports for surefire
-        log().info("Generating xml reports...");
+        log().debug("Generating xml reports...");
         jUnitXMLReporter.testSetCompleted(new SimpleReportEntry("", "Results"));
         // generate testng-results.xml
         org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();
-        testNgXmlReporter.generateReport(xmlSuites, suites, StaticReport.XML_DIRECTORY.getAbsolutePath());
+        testNgXmlReporter.generateReport(xmlSuites, suites, report.getReportDirectory(Report.XML_FOLDER_NAME).toString());
     }
 }

@@ -4,35 +4,42 @@ include::properties/property-attributes.adoc[]
 
 == Overview
 
-WebDriverManager is the central component to create or close your WebDriver session.
+`WebDriverManager` is the central component to create and close your `WebDriver` sessions.
 
 WebDriverManager uses the standard Selenium Webdriver but it is easier to configure your.
 To create a new browser session you only need a single call.
 
 == WebDriver sessions
 
-=== Create a local session
+Before you can use `WebDriver` sessions, you have to setup a Selenium-compatible server.
 
-With a local session you don't need a remote Selenium server.
-Testerra is using its build-in Selenium libary to create a new browser session.
+=== Setup remote sessions
 
-You need at least the following settings:
+For using a remote Selenium server (e.g. a Selenium Grid) you only have to tell Testerra where it can be find.
+
+.Additional settings in test.properties
+[source,properties,subs="attributes"]
+----
+{webdriver_mode}=remote
+{selenium_server_host}=localhost
+{selenium_server_port}=4444
+{selenium_server_url}=http://localhost:4444/wd/hub
+----
+
+NOTE: The browser support depends on the remote selenium setup.
+
+=== Create a local session (not recommended)
+
+Regularly, there is no reason to use local Selenium sessions based on binaries.
+We won't recommend to use that, because we've experienced some slightly differences between the local and remote behaviour.
+
+But there could be reasons for using local sessions like using an unsupported Browser.
+However, Testerra still supports these when you tell it where your `WebDriver` binaries are located:
 
 .test.properties
 [source,properties,subs="attributes"]
 ----
-// Setting the browser
-{browser}=firefox
-
-// Setting the start page
-{baseurl}=http://example.org
-----
-
-To tell Selenium where the Webdriver binary is located, use the `system.properties` file
-
-.system.properties
-[source,properties]
-----
+{webdriver_mode}=local
 webdriver.gecko.driver=path/to/your/binary/geckodriver.exe
 
 # or for other browsers
@@ -41,63 +48,31 @@ webdriver.edge.driver=...
 webdriver.ie.driver=...
 ----
 
-.Usage in your test method
-[source,java]
-----
-WebDriver driver = WebDriverManager.getWebDriver();
-----
+=== Usage of WebDriver sessions
 
-The `driver` object points to a new browser session and the site `http://example.org` was loaded.
-
-=== Create a remote session
-
-For using a remote Selenium server (e.g. a Selenium Grid) you only have to add some properties.
-
-.Additional settings in test.properties
-[source,properties,subs="attributes"]
-----
-{webdriver_mode}=remote
-
-// Define the remote Selenium server
-// The shown values are default
-{selenium_server_host}=localhost
-{selenium_server_port}=4444
-
-// In a grid you should specify a browser version if you have more then one version per browser type
-{browser_version}=65
-----
-
-You don't need a Webdriver binary definition in your `system.properties` because your remote Selenium server needs a configuration for the Webdriver binaries.
-
-There is no need to change your test method to create a new session.
-
-.Usage in your test method
-[source,java]
-----
-WebDriver driver = WebDriverManager.getWebDriver();
-----
-
-TIP: Use as often as possible a remote Selenium server, also for development.
-So your project is independed from any Webdriver configuration and needed Webdriver binary files.
-
-[TIP]
-======
-You can also use a simpel way to define browser type and version:
+Before starting a `WebDriver` session, you should configure your desired browser like.
 
 [source,properties,subs="attributes"]
 ----
-# Instead of both single properties...
+# ...this way
 {browser}=firefox
 {browser_version}=65
 
-# ... you can use the following
-{browser_setting}=firefox_65
+# ... or that way
+{browser_setting}=firefox:65
 ----
-======
 
-=== Usage of WebDriver sessions
+On the first call of
 
-For the first call of `getWebDriver()` Selenium is triggered to open a new Browser windows with the defined URL.
+[source,java]
+----
+WebDriver driver = WebDriverManager.getWebDriver();
+----
+
+Selenium is triggered to open a new Browser windows with the defined URL.
+
+TIP: Use remote Selenium server as often as possible, also for development.
+So your project is independent from any `WebDriver` configuration and needed Webdriver binary files.
 
 For every other call of `getWebDriver()` in the *same test context* WebDriverManager always returns the existing session.
 
@@ -109,7 +84,7 @@ The WebDriverManager can handle more than one session in one test context.
 Every session has a defined session key.
 If no key was set, the default session key is called `default`.
 
-The following example creates two unindependend browser sessions:
+The following example creates two independent browser sessions:
 
 [source,java]
 ----
@@ -155,6 +130,9 @@ WebDriverManager.forceShutdownAllThreads()
 Testerra calls `WebDriverManager.shutdown()` automatically at the end of every test method.
 
 At the end of the test run Testerra always calls `WebDriverManager.forceShutdown()` to cleanup all sessions.
+
+Please do not use Selenium provided methods to close `WebDriver` sessions.
+Have a further read in our known issue section: <<Closing `WebDriver` sessions without using Testerra `WebDriverManager`>>.
 ====
 
 === Shared sessions in one thread
@@ -322,11 +300,28 @@ WebDriver driver = WebDriverManager.getWebDriver(myRequest);
 
 == Working with sessions
 
-#Other stuff# you can do To interact with your WebDriver session you can use the utilities provided by Testerra.
+If you want to interact with your `WebDriver` session you can use the utilities provided by Testerra:
 
-WebDriverManagerUtils
+* WebDriverManagerUtils
+* WebDriverUtils
 
-WebDriverUtils
+=== Working with cookies
+
+If you want get and store the cookies of your current `WebDriver` session you can use `WebDriverUtils.getCookieString(WebDriver driver)`.
+It will give you access to the complete cookie string, which you can use to open plain HTTP connections or make HTTP calls with your actual session cookies.
+
+To delete all the cookies of your current `WebDriver` session just call `WebDriverManagerUtils.deleteAllCookies(WebDriver driver)`.
+
+=== Switching windows
+
+Sometimes you will come across testing websites with multiple windows, such as popups or something similar.
+To switch windows in a easy way Testerra provides some methods, which will automatically retry the window switching for maximum of seconds you can define with `{wdm_timeouts_window_switch}`.
+
+[source,java]
+----
+// Switch to a window by matching title
+WebDriverUtils.findWindowAndSwitchTo(String windowTitle)
+----
 
 === Difference in session key and session id
 
@@ -338,11 +333,9 @@ The session id is an internal id of Selenium itself.
 ----
 WebDriver driver = WebDriverManager.getWebDriver("mySession");
 
-// interal uuid of selenium session
+// Returns generated UUID of the Selenium session
 String sessionId = WebDriverUtils.getSessionId(driver);
 
 // will be "mySession"
 String sessionKey = WebDriverManagerUtils.getSessionKey(driver);
 ----
-
-https://testautomation-mms.atlassian.net/wiki/spaces/XETA/pages/327794/01+-+WebDriverManager#id-01-WebDriverManager-Other

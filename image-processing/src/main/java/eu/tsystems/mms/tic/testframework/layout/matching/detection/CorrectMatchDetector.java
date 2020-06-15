@@ -11,9 +11,6 @@ import eu.tsystems.mms.tic.testframework.layout.matching.graph.TemplateNode;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by rnhb on 09.12.2014.
- */
 public class CorrectMatchDetector extends FeatureDetector {
 
     @Override

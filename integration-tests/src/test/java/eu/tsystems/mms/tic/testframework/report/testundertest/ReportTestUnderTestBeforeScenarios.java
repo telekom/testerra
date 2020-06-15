@@ -5,9 +5,6 @@ import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by fakr on 07.11.2017
- */
 public class ReportTestUnderTestBeforeScenarios extends AbstractTest {
 
     @BeforeSuite(groups = {SystemTestsGroup.SYSTEMTESTSFILTER8})

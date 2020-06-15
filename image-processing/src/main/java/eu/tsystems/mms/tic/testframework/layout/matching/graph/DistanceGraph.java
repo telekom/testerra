@@ -1,10 +1,4 @@
-/*
- * Created on 03.13.2014
- *
- * Copyright(c) 2011 - 2014 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+
 package eu.tsystems.mms.tic.testframework.layout.matching.graph;
 
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
@@ -174,7 +168,9 @@ public class DistanceGraph {
      * potentially be improved by changing some parameters.
      */
     public void checkForParameterWarnings() {
-        distanceBetweenMultipleMatchesToProduceWarning = LayoutCheck.Properties.INTERNAL_PARAMETER_4.asDouble();
+         distanceBetweenMultipleMatchesToProduceWarning = PropertyManager.getDoubleProperty(
+                 TesterraProperties.LAYOUTCHECK_DISTANCE_MULTIPLE_MATCHES,
+                 DefaultParameter.LAYOUTCHECK_DISTANCE_MULTIPLE_MATCHES);
 
         HashSet<Edge> warnedEdges = new HashSet<Edge>();
         for (TemplateNode templateNode : templateNodes) {
@@ -209,7 +205,9 @@ public class DistanceGraph {
      * This method tries to detect such a case and adjust both coordinate systems.
      */
     public void incorporateSubImageDisplacement() {
-        minimumSimilarMovementErrorsForDisplacementCorrection = LayoutCheck.Properties.INTERNAL_PARAMETER_3.asDouble();
+        minimumSimilarMovementErrorsForDisplacementCorrection = PropertyManager.getDoubleProperty(
+                TesterraProperties.LAYOUTCHECK_MIN_SIMULAR_MOVEMENT_ERRORS,
+                DefaultParameter.LAYOUTCHECK_MIN_SIMULAR_MOVEMENT_ERRORS);
 
         GroupMovementDetector groupMovementDetector = new GroupMovementDetector();
         List<List<ElementMovedError>> movementErrorGroups = groupMovementDetector.getMovementErrorGroups(this);

@@ -5,8 +5,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -30,15 +28,11 @@ public class WebElementProxy extends ObjectUtils.PassThroughProxy<WebElement> im
             if (args != null) {
                 msg += " " + Arrays.stream(args).map(Object::toString).collect(Collectors.joining(" "));
             }
-            log().debug(msg);
+            log().trace(msg);
         }
 
-        ProxyUtils.updateSessionContextRelations(sessionContext);
+        WebDriverProxyUtils.updateSessionContextRelations(sessionContext);
 
         return invoke(method, args);
-    }
-
-    public WebElement getWrappedWebElement() {
-        return target;
     }
 }

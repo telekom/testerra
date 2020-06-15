@@ -7,4 +7,34 @@ include::property-attributes.adoc[]
 | {layoutcheck_reference_nametemplate} | `Reference%s.png` | Prefix for ReferenceScreenshots
 | {layoutcheck_takereference} | false | Determines whether reference images where taken in the current run
 | {layoutcheck_ignore_color} | false | Specifies whether the upper left pixel in the reference image defines an "ignore color". If true, then every pixel with this color will be ignored during the later comparison.
+
+| {layoutcheck_use_area_color} | false | Specifies whether the upper left pixel in the reference image defines an "area color". If true, then every area surrounded by pixels with this color will be used for later comparison, other areas are dismissed. Opposite of {layoutcheck_ignore_color}.
+//| {layoutcheck_mode} | pixel | The mode for the screenreferencer. Values are "pixel" or "annotated".
+| {layoutcheck_actual_template} | `Actual%s.png` | Filename scheme for saving current screenshots. The value must contain a '%s' which is replaced by the specified target file name during test execution.
+| {layoutcheck_distance_template} | `Distance%s.png` | Filename scheme for saving distance images. The value must contain a '%s' which is replaced by the specified target file name during test execution.
+| {layoutcheck_distance_path} | `src/test/resources/screenreferences/distance` | Directory path under which the calculated distance images are stored.
+| {layoutcheck_actual_path}       | `src/test/resources/screenreferences/actual` | Directory path under which the current screenshots for the comparison are saved
+| {layoutcheck_pixel_rgb_deviation_percent}       | 0 | Max allowed difference in rgb values between actual and reference image in percentage. If R, G, and B percentages are higher than {layoutcheck_pixel_rgb_deviation_percent} the corresponding pixel is marked as false (=red color in distance image)
+| {layoutcheck_pixel_rgb_deviation_percent}       | 0.95d | Defines at which score a region is considered a match. Should be as high as possible and as low as needed.
+| {layoutcheck_displacement_threshold}       | 5 | Displacement distance of matches that is considered as error (when distance > {layoutcheck_displacement_threshold})
+| {layoutcheck_intra_grouping_threshold}       | 5 | Threshold for grouping movement errors (errors <= {layoutcheck_intra_grouping_threshold} are grouped)
+| {layoutcheck_min_match_distance}       | 5 | Max distance for grouping multiple matches as single match (distance of matches < {layoutcheck_min_match_distance} are marked as single match)
+| {layoutcheck_min_size_difference_sub_images}       | 10 | Minimal difference in size of the reference and actual image, to consider the reference image as sub image.
+| {layoutcheck_distance_multiple_matches}       | 14 | Max distance between matches until a warning message about the parameter setting is logged. (matches have distance < {layoutcheck_distance_multiple_matches} a warning is logged)
+| {layoutcheck_ignore_ambiguous_movement}       | - | when true ignore ambiguous movement, which means for a template, several matches were found at different positions and it is unclear to which match the template belongs to.
+| {layoutcheck_ignore_movement}       | - | when true ignore movement, which mean exactly one match was found for a template, but it is in the wrong position.
+| {layoutcheck_ignore_group_movement}       | false | when true ignore group movement, which means for a set of templates, displacement errors have been found which have the same displacement vector.
+| {layoutcheck_ignore_missing_elements}       | - | when true ignore missing elements, which mean no match was found for a template.
+| {layoutcheck_ignore_ambiguous_match}       | - | when true ignore ambiguous match, which means several templates have been matched to this position, but only one template can be correct.
+
+//| {layoutcheck_annotated_nametemplate}       | - | -
+//| {layoutcheck_annotationdata_nametemplate}       | - | -
+//| {layoutcheck_min_similar_movement_errors}       | - | -
+//| {layoutcheck_min_marked_pixels}       | - | -
+//| {layoutcheck_max_marked_pixels_ratio}       | - | -
+
+//| {layoutcheck_error_detector_min_line_length}       | 25 |  Minimum length of a found line to be considered relevant in the LineDetection
+//| {layoutcheck_error_detector_min_edge_strength}       | 5 |  Minimum strength of an edge to be considered relevant in the LineDetection
+//| {layoutcheck_assert_info_mode}       | - | if true, will use non-functional asserts
+
 |===

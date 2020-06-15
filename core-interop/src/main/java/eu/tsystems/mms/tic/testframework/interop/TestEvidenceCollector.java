@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -103,4 +101,10 @@ public final class TestEvidenceCollector {
         }
         return null;
     }
+
+    public static void logInfo() {
+        LOGGER.trace("Collectors: Screenshots=" + SCREENSHOT_COLLECTORS.size() + ", Sources=" + SOURCE_COLLECTORS.size() + ", Videos: " + VIDEO_COLLECTORS.size());
+        LOGGER.debug("ScreenCaster enabled=" + Flags.SCREENCASTER_ACTIVE + ", Screenshotter enabled=" + Flags.SCREENSHOTTER_ACTIVE);
+    }
+
 }

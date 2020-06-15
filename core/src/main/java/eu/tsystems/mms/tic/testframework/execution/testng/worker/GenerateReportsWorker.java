@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,21 +18,12 @@
 package eu.tsystems.mms.tic.testframework.execution.testng.worker;
 
 import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.ISuite;
 import org.testng.xml.XmlSuite;
 
 import java.util.List;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public abstract class GenerateReportsWorker implements Worker {
-
-    @Deprecated
-    protected static final Logger LOGGER = LoggerFactory.getLogger("ResultHandler");
-
     protected List<XmlSuite> xmlSuites;
     protected List<ISuite> suites;
     protected String outputDirectory;

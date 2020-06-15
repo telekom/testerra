@@ -35,6 +35,21 @@
 
     </style>
 
+    <script type="application/javascript">
+        function toggleFotoramaFullscreen(fotoramaContainerSelector) {
+            var fotoramaContainer = $(fotoramaContainerSelector);
+            if (!fotoramaContainer.hasClass("fotorama--fullscreen")) {
+                fotoramaContainer.fotorama().data('fotorama').requestFullScreen();
+            } else {
+                fotoramaContainer.fotorama().data('fotorama').cancelFullScreen();
+            }
+        }
+
+        $('.fotorama').on('fotorama:load', function () {
+            $('.fotorama').fotorama().resize();
+        });
+    </script>
+
 </head>
 
 <body>
@@ -102,7 +117,7 @@
             #end
 
             <!-- video -->
-            #if (${testMethod.videos.size()} > 0)
+            #if (${testMethod.getVideos().size()} > 0)
                 <div id="buttonvideo" onclick="toggleDetailsView('videoarea', 'toggleview', 'buttonvideo', 'togglebutton');"
                      title="Show video" class="detailsmenu togglebutton">
                     <h6><i class="symbols fa fa-file-video-o fa-2x"></i>Videos</h6>
@@ -126,19 +141,6 @@
                 <table class="standardTable">
 
                     <tr>
-                        <td colspan="2" rowspan="3" class="cellTop">
-                            <h5>History</h5>
-
-                            <div>
-                                No history in<br/>
-                                Free Edition
-                            </div>
-                        </td>
-
-                        <td class="cellCenter">
-                            <div class="dashboardVerticalSpacer"></div>
-                        </td> <!-- spacer -->
-
                         <td class="cellTop" colspan="2">
                             <h5>Method</h5>
                             <br/>
@@ -159,7 +161,7 @@
                             <br/>
 
                             <div style="font-size: 30px; margin:10px;">
-                                <div style="color:${testMethod.status.color};">${testMethod.status.title}</div>
+                                <div data-qa="methodTestStatus" style="color:${testMethod.status.color};">${testMethod.status.title}</div>
 
                                 #if ($testMethod.isRetry())
                                     <img src="../style/retry.png" alt="Retry" style="width:40px;" title="Retry"/>
@@ -251,8 +253,13 @@
                                             <div style="color: red; font-size: 30px; padding: 25px; line-height: 40px;">
                                             #end
 
-                                            #if ($testMethod.errorContext().readableErrorMessage)
-                                                $testMethod.errorContext().readableErrorMessage
+                                            #if ($testMethod.errorContext().getReadableMessageFormatted())
+                                                $testMethod.errorContext().getReadableMessageFormatted()
+                                            #end
+                                            #if ($testMethod.errorContext().getAdditionalErrorMessageFormatted())
+                                                <div style="color: Grey; font-size: 30px; padding: 25px; line-height: 40px;">
+                                                    $testMethod.errorContext().getAdditionalErrorMessageFormatted()
+                                                </div>
                                             #end
                                             #if ($testMethod.priorityMessage)
                                                 <div class="skipped">
@@ -281,6 +288,24 @@
                                                 <div class="dashboardHorizontalSpacer"></div>
                                             </div>
 
+                                            #macro(displayLines $source $id)
+                                                #if ($source)
+                                                    <div id="$id" style="text-align: initial">
+<pre><code>  // $source.fileName
+    #foreach($s in $source.lines)
+        #if ($s.mark)
+            &#8623; $s.lineNumber : $s.line
+        #else
+            $s.lineNumber : $s.line
+        #end
+    #end
+</code></pre>
+                                                    </div>
+                                                #else
+                                                    No test sources
+                                                #end
+                                            #end
+
                                             <div style="font-size:15px;">
                                                 <table class="dashboardBorder">
                                                     <thead class="dashboardTextVerySmall">
@@ -290,47 +315,12 @@
                                                     </tr>
                                                     </thead>
                                                     <tr>
-                                                        <td class="cellCenter">
-                                                            #if ($testMethod.errorContext().scriptSource)
-                                                                <div id="sourceScript" style="text-align: initial">
-                                                                    #set ($source=$testMethod.errorContext().scriptSource)
-                                                                    <pre><code>  // $source.fileName
-
-                                                                        #foreach($s in $source.lines)
-                                                                            #if ($s.mark)
-                                                                                &#8623; $s.lineNumber : $s.line
-                                                                            #else
-                                                                                $s.lineNumber : $s.line
-                                                                            #end
-                                                                        #end
-</code></pre>
-                                                                </div>
-                                                            #else
-                                                                No test sources
-                                                            #end
+                                                        <td width="50%">
+                                                            #displayLines($testMethod.errorContext().scriptSource, "scriptSource")
                                                         </td>
-                                                        <td class="cellCenter">
-                                                            #if ($testMethod.errorContext().executionObjectSource)
-                                                                <div id="sourcePage" style="text-align: initial">
-                                                                    <div id="sourceScript" style="text-align: initial">
-                                                                        #set ($source=$testMethod.errorContext().executionObjectSource)
-                                                                        <pre><code>  // $source.fileName
-
-                                                                            #foreach($s in $source.lines)
-                                                                                #if ($s.mark)
-                                                                                    &#8623; $s.lineNumber
-                                                                                    : $s.line.replace($source.methodName, $String.format(
-                                                                                    "<mark>%s</mark>", $source.methodName));
-                                                                                #else
-                                                                                    $s.lineNumber : $s.line
-                                                                                #end
-                                                                            #end
-</code></pre>
-                                                                    </div>
-                                                                </div>
-                                                            #else
-                                                                No page object sources
-                                                            #end
+                                                        <td width="50%">
+                                                            #displayLines($testMethod.errorContext().executionObjectSource,
+                                                                "executionObjectSource")
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -346,23 +336,45 @@
                             #if ($testMethod.customContexts.size()>0)
                                 #foreach ($customError in $testMethod.customContexts)
                                     #if ($customError.class.simpleName == "LayoutCheckContext")
-                                        <h3>$customError.getName(): $customError.image</h3>
-                                        <div class="fotorama"
+                                        <div style="padding: 20px;">
+                                            <div class="dashboardHorizontalSpacer"></div>
+                                        </div>
+                                        <h3>Layout check: $customError.image</h3>
+                                        <div class="dashboardTextSmall">Pixel distance: $customError.distance%</div>
+                                        #set($fotoramaClassName="layoutCheck$foreach.count")
+                                        <div class="fotorama $fotoramaClassName"
                                              data-navposition="top"
                                              data-allowfullscreen="native"
+                                             data-arrows="false"
                                              data-nav="thumbs"
                                              data-thumbwidth="64"
                                              data-thumbheight="64"
-                                             data-height="40%"
-                                             data-width="40%"
+                                             data-height="80%"
+                                             data-width="90%"
+                                             data-swipe="true"
+                                             data-click="false"
+                                             data-fit="scaledown"
                                         >
+                                            #set($imageNames=[$customError.actualScreenshot.filename,$customError.expectedScreenshot.filename,$customError.distanceScreenshot.filename])
+                                            #set($imageCaptions=["Actual","Expected reference", "Distance"])
 
-                                            <img src="../../screenshots/$customError.expectedScreenshot.filename"
-                                                 data-caption="Expected"/>
-                                            <img src="../../screenshots/$customError.actualScreenshot.filename"
-                                                 data-caption="Actual"/>
-                                            <img src="../../screenshots/$customError.distanceScreenshot.filename"
-                                                 data-caption="Distance"/>
+                                            #foreach ($imageName in $imageNames)
+                                                #if ($imageName)
+                                                    #set ($path = "../../screenshots/$imageName")
+                                                    <div data-img="$path" data-caption="$imageCaptions[$foreach.index]">
+                                                        <div class="centeredItems">
+                                                            <a class="gallerybutton" href="#" title="Fullscreen"
+                                                               onclick="toggleFotoramaFullscreen('.$fotoramaClassName')">
+                                                                <i class="bgwhite fa fa-arrows-alt"></i>
+                                                            </a>
+                                                            <!-- pic download link -->
+                                                            <a class="gallerybutton" target="_blank" title="Download" href="$path">
+                                                                <i class="bgwhite fa fa-cloud-download"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                #end
+                                            #end
                                         </div>
                                     #end
                                 #end
@@ -393,11 +405,11 @@
     <!-- videos -->
     <tr id="videoarea" class="hidden toggleview">
         <td colspan="2">
-            #if ($testMethod.hasVideo())
+            #if (${testMethod.getVideos().size()} > 0)
                 <div>
                     <br/>
                     <br/>
-                    #foreach($video in ${testMethod.videos})
+                    #foreach($video in ${testMethod.getVideos()})
                         <div style="margin: 10px; float: left;">
                             <div>
                                 <video width="1024" height="512" controls autoplay>
@@ -572,14 +584,6 @@
 <script type="text/javascript">
     toggleDetailsView('details', 'toggleview', 'buttondetails', 'togglebutton');
 </script>
-
-    #if (!$testMethod.isConfigMethod())
-    <script type="text/javascript">
-        function showHistoryGraph() {
-        }
-    </script>
-    #end
-
 <script type="text/javascript">
     var e = "#logstd";
     $(e).empty();

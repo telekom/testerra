@@ -9,14 +9,10 @@ import eu.tsystems.mms.tic.testframework.report.model.ReportAnnotationType;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestAnnotations;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorMid;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestFailed;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestPassed;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestRetry;
-import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestSkipped;
+import eu.tsystems.mms.tic.testframework.report.testundertest.*;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.Dimension;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -24,9 +20,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by fakr on 19.06.2017.
- */
 @TestContext(name = "View-ClassesDetails")
 public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
 
@@ -35,13 +28,12 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the color of test results are correct
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
+    // Test case #831
     public void testT01_checkTestResultsColorsAreDisplayedAndTestResultCategoryIsCorrect() {
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()),
                 "My_Context");
-        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDMINOR);
-        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedInheritedMinor1", TestResultHelper.TestResult.FAILEDMINOR);
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDMINOR);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedMinor1", TestResultHelper.TestResult.FAILEDMINOR);
 
@@ -53,22 +45,31 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSED);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStatePassed1", TestResultHelper.TestResult.PASSED);
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDMINOR);
-        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_PassedInheritedMinor1", TestResultHelper.TestResult.PASSEDMINOR);
-        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDMINOR);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_PassedMinor1", TestResultHelper.TestResult.PASSEDMINOR);
 
         classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestSkipped.class.getSimpleName());
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.SKIPPED);
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStateSkipped1", TestResultHelper.TestResult.SKIPPED);
-        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.SKIPPED);
-        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_TestStateSkippedInherited1", TestResultHelper.TestResult.SKIPPED);
 
+        classesDetailsPage = classesDetailsPage.changeTestUnderTestClass(ReportTestUnderTestExecutionFilter.class.getSimpleName());
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.FAILEDEXPECTED);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedMinorAnnotatedWithFail_Run3", TestResultHelper.TestResult.FAILEDEXPECTED);
+
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDRETRY);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithPassedRetry ", TestResultHelper.TestResult.PASSEDRETRY);
+
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.RETRIED); //retry of method which will fail next retry
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithFailedRetry (1/2)", TestResultHelper.TestResult.RETRIED);
+
+        classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.RETRIED); //retry of method which will pass next retry
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithPassedRetry (1/2)", TestResultHelper.TestResult.RETRIED);
     }
 
     /**
      * Checks the displayed method information for passed tests. Concerns method name and Details Button.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
+    // Test case #832
     public void testT02_checkTestMethodInformationForPassedTests() {
 
         Class<ReportTestUnderTestPassed> classWithPassedMethods = ReportTestUnderTestPassed.class;
@@ -86,6 +87,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks the displayed method information for failed tests. Concerns method name, stack trace and Details Button.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
+    // Test case #833
     public void testT03_checkTestMethodInformationForFailedTests() {
 
         Class<ReportTestUnderTestFailed> classWithFailedMethods = ReportTestUnderTestFailed.class;
@@ -104,10 +106,11 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
 
     /**
      * checkScreenShotSymbol
-     * Checks whether the SCREENSHOT symbol is displayed
+     * Checks whether the SCREENSHOT symbol is not displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    public void testT04_checkScreenShotSymbol() {
+    // Test case #834
+    public void testT04_checkScreenShotSymbolIsNotDisplayed() {
         final String testundertestMethodName = "test_FailedInheritedMinor2";
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
@@ -120,6 +123,7 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the annotation marks are displayed correctly on Classes Details Page
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    // Test case #835
     public void testT05_checkAnnotationsAreDisplayed() {
         //TODO use DataProvider for this, enhanced to Minor Errors
         HashMap<String, List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
@@ -145,15 +149,16 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the RETRY symbol is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
+    // Test case #836
     public void testT06_checkAnnotationsForRetry() {
         TestStep.begin("Check Retried Annotation");
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesDetailsPage(
                 WebDriverManager.getWebDriver(),
                 PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()),
                 ReportTestUnderTestRetry.class.getSimpleName());
-
+        WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
         HashMap<String, List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
-        methodsTestObjects.put("test_TestRetryExceptionTrigger-01", Collections.singletonList(ReportAnnotationType.RETRIED));
+        methodsTestObjects.put("test_TestRetryExceptionTrigger", Collections.singletonList(ReportAnnotationType.RETRIED));
         checkAnnotationsAreDisplayed(classesDetailsPage, methodsTestObjects);
     }
 

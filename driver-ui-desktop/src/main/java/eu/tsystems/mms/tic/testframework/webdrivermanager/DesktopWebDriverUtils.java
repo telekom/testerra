@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,6 +28,10 @@ public final class DesktopWebDriverUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverUtils.class);
 
+    private DesktopWebDriverUtils() {
+
+    }
+
     public static NodeInfo getNodeInfo(DesktopWebDriverRequest desktopWebDriverRequest) {
         if (desktopWebDriverRequest.webDriverMode == WebDriverMode.local) {
             return new NodeInfo("local", 0);
@@ -51,8 +53,7 @@ public final class DesktopWebDriverUtils {
             JSONObject out = new JSONObject(nodeResponse);
             NodeInfo nodeInfo = new NodeInfo(out.getString("Name"), out.getInt("Port"));
             return nodeInfo;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LOGGER.info("Could not get node info", e);
             return new NodeInfo(host, Integer.valueOf(port));
         }

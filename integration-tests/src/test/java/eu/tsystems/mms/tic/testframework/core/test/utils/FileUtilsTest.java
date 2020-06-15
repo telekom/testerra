@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,9 +32,6 @@ import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-/**
- * Created by toku on 07.01.2015.
- */
 public class FileUtilsTest extends AbstractWebDriverTest {
 
     private static final String testfile = "testfiles/Test.txt";

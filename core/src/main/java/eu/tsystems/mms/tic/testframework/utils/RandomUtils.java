@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,13 +15,6 @@
  *     Peter Lehmann
  *     pele
  */
-/*
- * Created on 02.11.2012
- *
- * Copyright(c) 2012 - 2012 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
 package eu.tsystems.mms.tic.testframework.utils;
 
 import java.util.Random;
@@ -34,7 +25,9 @@ import java.util.Random;
  */
 public final class RandomUtils {
 
-    /** Private constructor, to hide the public. */
+    /**
+     * Private constructor, to hide the public.
+     */
     private RandomUtils() {
     }
 
@@ -96,10 +89,5 @@ public final class RandomUtils {
         int rndInt = rnd.nextInt(max - min);
         return min + rndInt;
     }
-
-    public static boolean magischeMiesmuschel(String frage) {
-        return new Random().nextBoolean();
-    }
-
 }
 

@@ -1,9 +1,4 @@
 = Browser capabilities
 
-#Capabilities#
-
-https://testautomation-mms.atlassian.net/wiki/spaces/XETA/pages/327794/01+-+WebDriverManager#id-01-WebDriverManager-Capabilities
-
 include::browsercaps/basic-caps.adoc[leveloffset=+1]
 include::browsercaps/proxy-setup.adoc[leveloffset=+1]
-include::browsercaps/chrome-settings.adoc[leveloffset=+1]

@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,17 +14,11 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 04.01.2013
- *
- * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import org.apache.velocity.VelocityContext;
@@ -36,10 +28,6 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA. User: peter Date: 16.12.12 Time: 13:44 To change this template use File | Settings | File
- * Templates.
- */
 public class ThreadVisualizer {
 
     /** Logger instance */
@@ -78,8 +66,9 @@ public class ThreadVisualizer {
         }
 
         // copy
-        ReportUtils.copyFile(css, StaticReport.REPORT_DIRECTORY);
-        ReportUtils.copyFile(js, StaticReport.REPORT_DIRECTORY);
+        Report report = new Report();
+        ReportUtils.copyFile(css, report.getReportDirectory());
+        ReportUtils.copyFile(js, report.getReportDirectory());
 
         /*
          #### Velocity merge
@@ -92,14 +81,20 @@ public class ThreadVisualizer {
         // build data
         StringBuilder sb = new StringBuilder();
         String line;
+
         final List<DataSet> list = DataStorage.getList();
         for (final DataSet dataSet : list) {
+
+            final MethodContext methodContext = dataSet.getContext();
+            // generate html formatted output for report
+            final String updatedMethodContent = ThreadVisualizerUtils.getFormattedContent(methodContext);
+
             line = "data.addRow(" +
                     "[" +
                     "new Date(" + dataSet.getStartTime() + ")," +
                     "new Date(" + dataSet.getStopTime() + ")," +
-                    "'" + dataSet.getContent() + "'," +
-                    "'" + dataSet.getThreadName() + "'" +
+                    "'" + updatedMethodContent + "'," +
+                    "'" + methodContext.threadName + "'" +
                     "]" +
                     ");";
             sb.append(line).append("\n");

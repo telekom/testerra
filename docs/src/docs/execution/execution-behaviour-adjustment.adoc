@@ -1,0 +1,14 @@
+= Conditional behaviour
+include::../properties/property-attributes.adoc[]
+
+For managing the execution behaviour of tests in suites there are means to skip tests and avoid closing browser windows after failures.
+
+.test.properties
+[source, properties, subs="attributes"]
+----
+# all browser windows remain open after first failure, default = false
+{on_state_testfailed_skip_shutdown}=true
+
+# skip all tests after first failure, default = false
+{on_state_testfailed_skip_following_tests}=true
+----

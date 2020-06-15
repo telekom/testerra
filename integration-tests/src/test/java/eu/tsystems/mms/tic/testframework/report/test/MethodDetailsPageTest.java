@@ -1,6 +1,5 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
@@ -8,6 +7,7 @@ import eu.tsystems.mms.tic.testframework.report.general.AbstractAnnotationMarker
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.ReportAnnotationType;
+import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDependenciesPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
@@ -17,6 +17,7 @@ import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodStackPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodStepsPage;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestCorridorLow;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter;
+import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExpectedtoFail;
 import eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestPassed;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -30,22 +31,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by riwa on 24.11.2016.
- */
 @TestContext(name = "View-MethodDetails")
 public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
     /**
      * Checks the method details page for passed tests.
+     * It runs once for a test that passed in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT01_checkMethodDetailsForPassedTest() throws Exception {
+    // Test case #805
+    public void testT01_checkMethodDetailsForPassedTest() {
         String methodName = "test_FilterPassedNoMinor";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+
         //Method Details
         AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Passed", "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodDetailsPage.getMethodResultString().contains(TestResultHelper.TestResult.PASSED.getXpathClassesDetailsHeader()), "The method status is displayed correctly for " + methodName);
 
         //shown tabs: Back, Steps and dependencies
         AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
@@ -54,17 +55,18 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     }
 
     /**
-     * Clicks itself from the dashboard page to the 'screenshots' tab of the method details. It tests whether
-     * there actually is a screenshot provided, the 'info' button works and test infos are provided.
-     * It runs once for a test that failed with a minor in the 1st report.
+     * Checks the method details page for passed tests.
+     * It runs once for a test that passed with minor in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT02_checkMethodDetailsForPassedMinorTest() throws Exception {
+    // Test case #806
+    public void testT02_checkMethodDetailsForPassedMinorTest() {
         String methodName = "test_FilterPassedMinor";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+
         //Method Details
         AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Minor", "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodDetailsPage.getMethodResultString().contains(TestResultHelper.TestResult.PASSEDMINOR.getXpathClassesDetailsHeader()), "The method status is displayed correctly for " + methodName);
 
         //Annotation
         HashMap<String, List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
@@ -84,18 +86,18 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
 
     /**
-     * Clicks itself from the dashboard page to the 'screenshots' tab of the method details. It tests whether
-     * there actually is a screenshot provided, the 'info' button works and test infos are provided.
-     * It runs once for a test that failed with a minor in the 1st report.
+     * Checks the method details page for passed tests.
+     * It runs once for a test that failed in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT03_checkMethodDetailsForFailedTest() throws Exception {
+    // Test case #807
+    public void testT03_checkMethodDetailsForFailedTest() {
         String methodName = "test_FailedInheritedFilter";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         ///Method Details
         AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Failed", "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodDetailsPage.getMethodResultString().contains(TestResultHelper.TestResult.FAILED.getXpathClassesDetailsHeader()), "The method status is displayed correctly for " + methodName);
 
         //shown tabs: Back, Steps, stack and dependencies
         AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
@@ -105,18 +107,18 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     }
 
     /**
-     * Clicks itself from the dashboard page to the 'screenshots' tab of the method details. It tests whether
-     * there actually is a screenshot provided, the 'info' button works and test infos are provided.
-     * It runs once for a test that failed with a minor in the 1st report.
+     * Checks the method details page for passed tests.
+     * It runs once for a test that failed with minor in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT04_checkMethodDetailsForFailedMinorTest() throws Exception {
+    // Test case #808
+    public void testT04_checkMethodDetailsForFailedMinorTest() {
         String methodName = "test_FilterFailedMinor";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details
         AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Failed with Minor", "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodDetailsPage.getMethodResultString().contains(TestResultHelper.TestResult.FAILEDMINOR.getXpathClassesDetailsHeader()), "The method status is displayed correctly for " + methodName);
 
         //Annotation
         HashMap<String, List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
@@ -132,18 +134,18 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     }
 
     /**
-     * Clicks itself from the dashboard page to the 'screenshots' tab of the method details. It tests whether
-     * there actually is a screenshot provided, the 'info' button works and test infos are provided.
-     * It runs once for a test that failed with a minor in the 1st report.
+     * Checks the method details page for passed tests.
+     * It runs once for a test that skipped in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT05_checkMethodDetailsForSkippedTest() throws Exception {
+    // Test case #809
+    public void testT05_checkMethodDetailsForSkippedTest() {
         String methodName = "test_FilterSkipped";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details
         AssertCollector.assertEquals(methodDetailsPage.getMethodNameString(), methodName, "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Skipped", "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodDetailsPage.getMethodResultString().contains(TestResultHelper.TestResult.SKIPPED.getXpathClassesDetailsHeader()), "The method status is displayed correctly for " + methodName);
 
         //shown tabs: Back, Steps and dependencies
         AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
@@ -153,19 +155,18 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
 
     /**
-     * Clicks itself from the dashboard page to the 'screenshots' tab of the method details. It tests whether
-     * there actually is a screenshot provided, the 'info' button works and test infos are provided.
-     * It runs once for a test that failed with a minor in the 1st report.
+     * Checks the method details page for passed tests.
+     * It runs once for a test that retried in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(description = "Need id for tr")
-    public void testT06_checkMethodDetailsForRetriedTest() throws Exception {
+    // Test case #810
+    public void testT06_checkMethodDetailsForRetriedTest() {
         String methodName = "test_FilterFailedNoMinorWithFailedRetry (1/2)";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details
         AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Retried", "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodDetailsPage.getMethodResultString().contains(TestResultHelper.TestResult.RETRIED.getXpathClassesDetailsHeader()), "The method status is displayed correctly for " + methodName);
 
         //Annotation
         HashMap<String, List<ReportAnnotationType>> methodsTestObjects = new HashMap<>();
@@ -182,18 +183,18 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     }
 
     /**
-     * Clicks itself from the dashboard page to the 'screenshots' tab of the method details. It tests whether
-     * there actually is a screenshot provided, the 'info' button works and test infos are provided.
-     * It runs once for a test that failed with a minor in the 1st report.
+     * Checks the method details page for passed tests.
+     * It runs once for a test that expected failed in the 1st report.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT07_checkMethodDetailsForExpectedFailedTest() throws Exception {
+    // Test case #811
+    public void testT07_checkMethodDetailsForExpectedFailedTest() {
         String methodName = "test_FailedMinorAnnotatedWithFail_Run1";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         //General Details
         AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
-        AssertCollector.assertEquals(methodDetailsPage.getMethodResultString(), "Expected Failed", "The method status is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodDetailsPage.getMethodResultString().contains(TestResultHelper.TestResult.FAILEDEXPECTED.getXpathClassesDetailsHeader()), "The method status is displayed correctly for " + methodName);
 
         //shown tabs: Back, Steps, Stack and dependencies
         AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
@@ -207,27 +208,47 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     }
 
     /**
+     * Checks the method details page for passed tests.
+     * It runs once for a test that passed retried in the 1st report.
+     */
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    public void testT08_checkMethodDetailsForPassedRetriedTest() {
+        String methodName = "test_FilterFailedNoMinorWithPassedRetry";
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+
+        //General Details
+        AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
+        AssertCollector.assertTrue(methodDetailsPage.getMethodResultString().contains(TestResultHelper.TestResult.PASSEDRETRY.getXpathClassesDetailsHeader()), "The method status is displayed correctly for " + methodName);
+
+        //shown tabs: Back, Steps and dependencies
+        AssertCollector.assertTrue(methodDetailsPage.getBackTab().isDisplayed());
+        AssertCollector.assertTrue(methodDetailsPage.getStepsTab().isDisplayed());
+        AssertCollector.assertTrue(methodDetailsPage.getDependenciesTab().isDisplayed());
+    }
+
+    /**
      * Checks the information provided for tests that are marked with @Fails but passed.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT08_checkRepairedFailsIndication() {
+    // Test case #812
+    public void testT09_checkRepairedFailsIndication() {
         String methodName = "test_TestStatePassed2";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), methodName);
 
         AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().isDisplayed(), "The method details page indicates that the shown method is repaired.");
         AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("ticketId=1"), "The indicator for the repaired fails annotation contains the correct ticketId.");
-        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("description=\"Does not actually fail.\""), "The indicator for the repaired fails annotation contains the correct description.");
+        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("description=Does not actually fail."), "The indicator for the repaired fails annotation contains the correct description.");
     }
 
     /**
      * Tests the shown method details on a failed method with screenshots.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(description = "No screenshot available in prepared reports")
-    public void testT09_checkScreenshotTab() throws Exception {
+    // Test case #814
+    public void testT10_checkScreenshotTab() {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), "My_Context", "test_FailedInheritedMinor2");
         MethodScreenshotPage screenshotPage = GeneralWorkflow.doOpenReportMethodScreenshotPage(methodDetailsPage);
-        AssertCollector.assertTrue(screenshotPage.getScreenShot().isDisplayed(), "There is no screenshot in the methodDetailsPage of the first report.");
+        Assert.assertTrue(screenshotPage.getScreenShot().isDisplayed(), "There is no screenshot in the methodDetailsPage of the first report.");
     }
 
     /**
@@ -235,13 +256,14 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * the provided stackstrace is correct.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT10_checkStackTraceTab() throws Exception {
+    // Test case #816
+    public void testT11_checkStackTraceTab() {
         String methodName = "test_FailedInheritedFilter";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
         MethodStackPage stackPage = GeneralWorkflow.doOpenReportStracktracePage(methodDetailsPage);
         AssertCollector.assertTrue(stackPage.getStackTrace().contains("java.lang.AssertionError: expected [true] but found [false]"));
-        AssertCollector.assertTrue(stackPage.getStackTrace().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FailedInheritedFilter(ReportTestUnderTestExecutionFilter.java:95"));
+        AssertCollector.assertTrue(stackPage.getStackTrace().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FailedInheritedFilter(ReportTestUnderTestExecutionFilter.java:92"));
     }
 
     /**
@@ -249,7 +271,8 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * details in report 1
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT11_checkMinorErrorsTab() throws Exception {
+    // Test case #817
+    public void testT12_checkMinorErrorsTab() {
         String methodName = "test_FilterPassedMinor";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
 
@@ -266,7 +289,8 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks whether the navigation to the DEPENDENCIES tab works as expected
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT12_checkDependenciesTab() {
+    // Test case #819
+    public void testT13_checkDependenciesTab() {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
         MethodDependenciesPage dependenciesPage = methodDetailsPage.clickDependenciesTab();
         //TODO what to check here
@@ -276,7 +300,8 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks the infos shown in the context view of the method details in report 1.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT13_checkContext() throws Exception {
+    // Test case #820
+    public void testT14_checkContext(){
         TestStep.begin("Checks Context for classes without using TesterraClassContext");
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
         methodDetailsPage = methodDetailsPage.toggleContext();
@@ -293,10 +318,11 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     }
 
     /**
-     * Check the infos shown in the duration view in report 5
+     * Check the infos shown in the duration view in report 1
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT14_checkDuration() throws Exception {
+    // Test case #821
+    public void testT15_checkDuration() {
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
 
         DateFormat durationFormat = new SimpleDateFormat("S 'ms'");
@@ -310,8 +336,6 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
         //check the format of end
         checkDateStringToCorrectFormat(dateFormat, methodDetailsPage.getFinishTime(), "End ");
-
-
     }
 
     private void checkDateStringToCorrectFormat(DateFormat expectedDateFormat, String dateString, String contentToExclude) {
@@ -335,7 +359,8 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * Checks the error message in the method details for correctnes.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    public void testT15_checkErrorMessage() throws Exception {
+    // Test case #822
+    public void testT16_checkErrorMessage() {
         TestStep.begin("Checks error Message from a failed test");
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestCorridorLow.class.getSimpleName(), "test_testLowCorridorFailed3");
         AssertCollector.assertEquals(methodDetailsPage.getErrorMessageString().getText(), "ArithmeticException: / by zero", "Expected another error message.");
@@ -359,8 +384,8 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      * It runs once for every test status that is not inherited in report 3. 5 times in total.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(description = "Needs a local webserver. Chrome blocks showing steps if site is loaded from file")
-    public void testT16_checkStepsTab() throws Exception {
+    // Test case #823
+    public void testT17_checkStepsTab() {
         String testmethod = "test_TestStatePassed1";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), testmethod);
         MethodStepsPage stepsPage = GeneralWorkflow.doOpenReportStepsPage(methodDetailsPage);
@@ -370,6 +395,15 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
     }
 
-    //TODO add tests for configuration method and other
+    /**
+     * Check if a failed test case with a failure aspect matching an expected failed test sets an extra message.
+     */
+    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
+    // Test case #824
+    public void testT18_failureAspectMatchingExpectedFailedInfoMessage(){
+        String testMethod = "test_UnexpectedFailedWithRelatedExpectedFailed";
+        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()), ReportTestUnderTestExpectedtoFail.class.getSimpleName(), testMethod);
+        AssertCollector.assertEquals( methodDetailsPage.getErrorMessageExtraInfo().getText(), "Failure aspect matches known issue: Description: Known issue with same aspect as unmarked failed test");
+    }
 
 }

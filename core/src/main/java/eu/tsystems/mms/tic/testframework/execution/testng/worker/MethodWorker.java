@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,8 +19,6 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
@@ -30,9 +26,6 @@ import org.testng.ITestResult;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public abstract class MethodWorker implements Worker {
 
     protected ITestResult testResult;
@@ -47,6 +40,9 @@ public abstract class MethodWorker implements Worker {
     }
 
     public static class SharedTestResultAttributes {
+
+        private SharedTestResultAttributes() { }
+
         public static final String failsFromCollectedAssertsOnly = "failsFromCollectedAssertsOnly";
         public static final String expectedFailed = "expectedFailed";
     }
@@ -75,7 +71,7 @@ public abstract class MethodWorker implements Worker {
     }
 
     protected boolean isFailed() {
-        return (!isSuccess()&& !isSkipped());
+        return (!isSuccess() && !isSkipped());
     }
 
     public abstract void run();

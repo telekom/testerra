@@ -9,21 +9,21 @@ import eu.tsystems.mms.tic.testframework.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.MethodDetailsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.modules.DashboardModuleMethodChart;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.DashboardModuleMethodChart;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by fakr on 09.10.2017
- */
 @TestContext(name = "Functional-Retry")
 public class RetryTest extends AbstractReportTest {
 
@@ -31,7 +31,8 @@ public class RetryTest extends AbstractReportTest {
      * Tests whether the data provider produced the expected number of test methods
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "XETA-679")
+    @Fails(ticketString = "668")
+    // Test case #791
     public void testT01_checkRetryDataProviderRunsTheExpectedNumberOfTestMethods() {
         final String retryClassName = "ReportTestUnderTestRetry";
 
@@ -50,7 +51,8 @@ public class RetryTest extends AbstractReportTest {
      * @throws Exception
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "XETA-677")
+    @Fails(ticketString = "667")
+    // Test case #792
     public void testT02_checkFailedRetriedTestsOnlySecondRetryIsDisplayed() throws Exception {
 
         List<String> testNames = new ArrayList<>();
@@ -94,7 +96,8 @@ public class RetryTest extends AbstractReportTest {
      * @throws Exception
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "XETA-677")
+    @Fails(ticketString = "667")
+    // Test case #793
     public void testT03_checkSuccessfulRetriedTestsAreDisplayed() throws Exception {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.PASSED);
@@ -106,7 +109,8 @@ public class RetryTest extends AbstractReportTest {
      * Tests the number of retries of a retried test method
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "XETA-679")
+    @Fails(ticketString = "668")
+    // Test case #794
     public void testT04_checkRetriedTestsWithDataProviderHaveTheExpectedNumberOfRetries() {
         final int numberOfFailedMethods = 7;
         final int numberOfPassedMethods = 1;
@@ -142,29 +146,12 @@ public class RetryTest extends AbstractReportTest {
     }
 
     /**
-     * Tests whether the retried test has no history entry
-     *
-     * @throws Exception
-     */
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "XETA-677")
-    public void testT05_checkRetriedTestHistoryViewHasNoHistory() throws Exception {
-        DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
-        dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.FAILED);
-        dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(0));
-        GuiElement methodDetail = dashboardPage.getMethodChartModule().getCurrentMethods().get(0);
-        MethodDetailsPage retryDetailsPage = GeneralWorkflow.doOpenReportMethodDetailsPage(dashboardPage, methodDetail);
-        GuiElement latestHistoryEntry = retryDetailsPage.getHistoryElementByPosition(1); // Latest
-        latestHistoryEntry.assertCollector().assertIsNotDisplayed();
-
-    }
-
-    /**
      * Tests whether the name of retried test with data provider has the expected structure
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    @Fails(ticketString = "XETA-679")
-    public void testT06_checkRetriedTestsWithDataProviderTestMethodsHaveTheCorrectName() {
+    @Fails(ticketString = "668")
+    // Test case #796
+    public void testT05_checkRetriedTestsWithDataProviderTestMethodsHaveTheCorrectName() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
         final int numberOfRetryMethods = 3;
 
@@ -188,13 +175,12 @@ public class RetryTest extends AbstractReportTest {
     }
 
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER6})
-    public void testT07_checkMethodThatDependsOnPassedRetryIsSuccessful() throws Exception {
-
+    // Test case #797
+    public void testT06_checkMethodThatDependsOnPassedRetryIsSuccessful() {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_6.getReportDirectory()));
-        dashboardPage.dashboardModuleTestResultPieChart.clickActualRunPieSegmentForTestResult(TestResultHelper.TestResult.PASSED);
-        dashboardPage.click(dashboardPage.dashboardModuleClassBarChart.getCurrentBars().get(1));
-        Assert.assertTrue(dashboardPage.getMethodChartModule().methodChartSuccessfulRetried.getText().contains("test_MethodDependsOnMethodThatPassesInRetry"), "The test 'test_MethodDependsOnMethodThatPassesInRetry' does not exist in the passed method chart.");
+        WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
+        ClassesDetailsPage reportTestUnderTestRetry = dashboardPage.goToClasses().gotoClassesDetailsPageForClass("ReportTestUnderTestRetry");
+        reportTestUnderTestRetry.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_MethodDependsOnMethodThatPassesInRetry", TestResultHelper.TestResult.PASSED);
     }
-
 
 }

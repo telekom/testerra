@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,16 +14,10 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 04.01.2013
- *
- * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import java.io.Serializable;
 
 /**
@@ -40,53 +32,22 @@ public class DataSet implements Serializable {
 
     /** Start of thread */
     private Long startTime;
-    /** End of Threa. */
+    /** End of thread */
     private Long stopTime;
-    /** HTML content to print out. */
-    private String content;
-    /** Name of thread. */
-    private String threadName;
-
-    /**
-     * Constructor creating a Data Set for the ThreadVisualizer without endTime.
-     *
-     * @param threadName Name of thread.
-     * @param content HTML content representing the data.
-     * @param startTime Start of thread.
-     */
-    public DataSet(final String threadName, final String content, final Long startTime) {
-        this.threadName = threadName;
-        this.content = content;
-        this.startTime = startTime;
-    }
+    /** MethodContext of test method */
+    private MethodContext context;
 
     /**
      * Constructor creating a Data Set for the ThreadVisualizer.
      *
-     * @param threadName Name of thread.
-     * @param content HTML content representing the data.
+     * @param context MethodContext of test.
      * @param startTime Start of thread.
      * @param stopTime End of Thread.
      */
-    public DataSet(final String threadName, final String content, final Long startTime, final Long stopTime) {
-        this.threadName = threadName;
-        this.content = content;
+    public DataSet(final MethodContext context, final Long startTime, final Long stopTime) {
+        this.context = context;
         this.startTime = startTime;
         this.stopTime = stopTime;
-    }
-
-    /**
-     * Format String for html.
-     *
-     * @param s String to format.
-     * @return formatted String.
-     */
-    private String format(final String s) {
-        return s.replaceAll("'", "\\\\'");
-    }
-
-    public String getContent() {
-        return format(content);
     }
 
     public Long getStartTime() {
@@ -97,14 +58,6 @@ public class DataSet implements Serializable {
         return stopTime;
     }
 
-    public String getThreadName() {
-        return threadName;
-    }
-
-    public void setContent(final String content) {
-        this.content = content;
-    }
-
     public void setStartTime(final Long startTime) {
         this.startTime = startTime;
     }
@@ -113,8 +66,12 @@ public class DataSet implements Serializable {
         this.stopTime = stopTime;
     }
 
-    public void setThreadName(final String threadName) {
-        this.threadName = threadName;
+    public MethodContext getContext() {
+        return context;
+    }
+
+    public void setContext(final MethodContext context) {
+        this.context = context;
     }
 
     public static long getSerialVersionUID() {

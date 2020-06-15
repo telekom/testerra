@@ -1,5 +1,7 @@
 = Overview of all Testerra properties
 
+Properties are managed by the <<PropertyManager>>
+
 == Testerra core properties
 
 include::properties/core-probs.adoc[leveloffset=+1]
@@ -15,6 +17,10 @@ include::properties/pagefactory-props.adoc[leveloffset=+1]
 == GuiElement properties
 
 include::properties/guielement-probs.adoc[leveloffset=+1]
+
+== Execution properties
+
+include::properties/execution-probs.adoc[leveloffset=+1]
 
 == Report properties
 

@@ -8,9 +8,6 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.ExitPointCreatorTestClass2;
 import org.testng.annotations.Test;
 
-/**
- * Created by jlma on 14.11.2016.
- */
 @TestContext
 public class ReportTestUnderTestCorridorLow extends AbstractTest {
 

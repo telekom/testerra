@@ -20,3 +20,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.6.2'
     // </LayoutCheck>
 }
+
+apply from: rootProject.file('release-bintray.gradle')

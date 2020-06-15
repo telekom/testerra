@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,14 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 05.02.2013
- *
- * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
@@ -83,7 +74,8 @@ public final class ReportUtils {
      */
     public static void copyReportResources() {
 
-        final File targetDir = new File(StaticReport.REPORT_DIRECTORY, StaticReport.FRAMES_FOLDER_NAME);
+        Report report = new Report();
+        final File targetDir = report.getReportDirectory(Report.FRAMES_FOLDER_NAME);
 
         String[] resources = new String[]{
                 "js/kis/main.js",
@@ -250,7 +242,8 @@ public final class ReportUtils {
                 "style/font/PWFreeArrows.ttf",
 
                 //logo
-                "logo.png"
+                "Testerra_Logo_0512px.png",
+                "Testerra_favicon.png"
         };
 
         for (String resource : resources) {
@@ -335,7 +328,8 @@ public final class ReportUtils {
         /*
          * main report index.html
          */
-        final File reportFileIndex = new File(StaticReport.REPORT_DIRECTORY, "index.html");
+        Report report = new Report();
+        final File reportFileIndex = report.getReportDirectory("index.html");
         ReportFormatter.createTestClassesView(reportFileIndex, reportingData.classContexts, "index.vm", null, null);
 
         /*
@@ -363,7 +357,7 @@ public final class ReportUtils {
         final File reportFileDashboard = new File(framesDir, "dashboard.html");
         ReportFormatter.createDashboardHtml(reportingData, reportFileDashboard, "dashboard.vm");
 
-        final File reportFileEmailable = new File(StaticReport.REPORT_DIRECTORY, "emailable-report.html");
+        final File reportFileEmailable = report.getReportDirectory("emailable-report.html");
         ReportFormatter.createEmailableReportHtml(reportingData, reportFileEmailable, "emailable-report.vm");
 
         /*
@@ -473,7 +467,7 @@ public final class ReportUtils {
         try {
             File reportFile2 = new File(StaticReport.METHODS_DIRECTORY, "steps" + methodContext.methodRunIndex + ".html");
             ReportFormatter.createMethodsFrame(reportFile2, methodContext, "methodDetailsSteps.vm");
-            LOGGER.debug("Created method details steps view for " + methodContext);
+            LOGGER.trace("Created method details steps view for " + methodContext);
         } catch (Exception e) {
             LOGGER.error("Could not create method details steps view for " + methodContext, e);
         }
@@ -483,14 +477,14 @@ public final class ReportUtils {
         try {
             File reportFile2 = new File(StaticReport.METHODS_DIRECTORY, methodContext.methodRunIndex + ".html");
             ReportFormatter.createMethodsFrame(reportFile2, methodContext, "methodDetails.vm");
-            LOGGER.debug("Created method details view for " + methodContext);
+            LOGGER.trace("Created method details view for " + methodContext);
         } catch (Exception e) {
             LOGGER.error("Could not create method details view for " + methodContext + ": " + e);
         }
     }
 
     public static String getReportName() {
-        return ExecutionContextController.EXECUTION_CONTEXT.runConfig.getReportName();
+        return ExecutionContextController.getCurrentExecutionContext().runConfig.getReportName();
     }
 
     public static void generateReportEssentials() {

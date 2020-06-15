@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,13 +13,9 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
-/**
- * Created by pele on 11.11.2016.
- */
 public class Viewport {
 
     public int yPosition;
@@ -32,10 +26,5 @@ public class Viewport {
         this.yPosition = yPosition;
         this.width = width;
         this.height = height;
-    }
-
-    public void modify(int scaleFactor) {
-        width = width / scaleFactor;
-        height = height / scaleFactor;
     }
 }

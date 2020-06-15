@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,14 +15,7 @@
  *     Peter Lehmann
  *     erku
  *     pele
- */
-/*
- * Created on 25.01.2011
- *
- * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
@@ -37,11 +28,18 @@ import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
-import org.testng.*;
+import org.testng.IInvokedMethod;
+import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
+import org.testng.SkipException;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -108,7 +106,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             if (iTestNGMethod != null) {
                 isTest = iTestNGMethod.isTest();
             } else {
-                throw new TesterraSystemException("Error getting method infos, seems like a TestNG bug.\n" + ArrayUtils.join(new Object[]{iTestNGMethod, iTestContext}, "\n"));
+                throw new TesterraSystemException("Error getting method infos, seems like a TestNG bug.\n" + String.join("\n", iTestNGMethod.toString(), iTestContext.toString()));
             }
 
             if (isTest) {
@@ -170,6 +168,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
             // fire context update event: create method context
             TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                    .addUserData()
                     .addData(TesterraEventDataType.CONTEXT, methodContext)
                     .addData(TesterraEventDataType.WITH_PARENT, true));
         } else {

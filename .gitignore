@@ -1,4 +1,5 @@
 testerra-report
+**/report-testsundertest-*
 .gradle
 gradle
 *.iml
@@ -13,3 +14,6 @@ gradlew
 /.classpath
 /.project
 **/*.settings
+/integration-tests/src/test/resources/screenreferences/
+
+logs/integration-test-log4j.log

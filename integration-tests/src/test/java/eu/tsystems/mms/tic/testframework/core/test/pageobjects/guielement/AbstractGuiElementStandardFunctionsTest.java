@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,9 +35,6 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by pele on 31.08.2015.
- */
 public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGuiElementTest {
 
     /**
@@ -274,6 +269,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         }
     }
 
+
     @Test
     public void test_GuiElement_findPrepared() {
         final Locate locator = Locate.prepare("//*[@id='%s']");
@@ -308,6 +304,13 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         Assert.assertNotNull(webElement);
     }
 
+    @Test
+    public void testT26a_GuiElement_locateByLinkText() {
+
+        final GuiElement linkOpenAgain = getGuiElementBy(Locate.by().linkText("Open again"));
+        Assert.assertNotNull(linkOpenAgain.getWebElement());
+    }
+
     /**
      * Test if GuiElement.find() works for an existing link found by its link text
      */
@@ -317,6 +320,14 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         Assert.assertNotNull(webElement);
     }
 
+    @Test
+    public void test27a_GuiElement_locateByPartialLinkText() {
+
+        final GuiElement linkOpenAgain = getGuiElementBy(Locate.by().partialLinkText("again"));
+        Assert.assertNotNull(linkOpenAgain.getWebElement());
+    }
+
+
     /**
      * Test if GuiElement.find() works for a named element
      */
@@ -324,6 +335,12 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     public void testT28_GuiElement_findByName() {
         WebElement webElement = getAnyElementByName().getWebElement();
         Assert.assertNotNull(webElement);
+    }
+
+    @Test
+    public void testT28a_GuiElement_findByName() {
+        final GuiElement linkOpenAgain = getGuiElementBy(Locate.by().name("radioBtn"));
+        Assert.assertNotNull(linkOpenAgain.getWebElement());
     }
 
     /**
@@ -547,7 +564,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     /**
      * Test if GuiElement.asserts().assertInputFieldLength returns right length of input field
      */
-//    @Test
+    //    @Test
     public void testT50_GuiElement_assertInputFieldLength() {
         GuiElement element = getTextBoxElement();
         element.asserts().assertInputFieldLength(5);
@@ -569,13 +586,13 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     }
 
     @Test
-    public void testT55_GuiElement_assertAttributIsPresent() {
+    public void testT55_GuiElement_assertAttributeIsPresent() {
         GuiElement element = getDisplayedElement();
         element.asserts().assertAttributeIsPresent("href");
     }
 
     @Test(expectedExceptions = {AssertionError.class})
-    public void testT56N_GuiElement_assertAttributIsPresent() {
+    public void testT56N_GuiElement_assertAttributeIsPresent() {
         GuiElement element = getDisplayedElement();
         element.asserts().assertAttributeIsPresent("label");
     }
@@ -803,7 +820,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
 
     @Test
     public void test_GuiElement_NotVisible_IsDisplayed() {
-        GuiElement element =  getGuiElementBy(By.id("notVisibleElement"));;
+        GuiElement element = getGuiElementBy(By.id("notVisibleElement"));
         Assert.assertFalse(element.isDisplayed(), "The Element is displayed.");
     }
 
@@ -813,6 +830,13 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         String tagName = element.getTagName();
 
         Assert.assertEquals(tagName, "a", "Expected Tagname was found");
+    }
+
+    @Test
+    public void testT85a_GuiElement_getTagName() {
+        GuiElement element = getGuiElementBy(Locate.by().tagName("a"));
+        Assert.assertTrue(element.isDisplayed(), "The Element is displayed.");
+        Assert.assertEquals(element.getTagName(), "a", "Expected Tagname was found");
     }
 
     @Test
@@ -896,9 +920,12 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
     }
 
     @Test
-    public void test_pageChangeOnAnchorClick() {
-        GuiElement element = getGuiElementBy(Locate.by().qa("action/pageChangeAnchor"));
-        element.click();
-        Assert.assertTrue(element.getWebDriver().getCurrentUrl().endsWith("form.html"));
+    public void testT99_pageChangeOnAnchorClick() {
+
+        final GuiElement elementToClick = getGuiElementBy(Locate.by().qa("action/pageChangeAnchor"));
+        elementToClick.click();
+
+        final GuiElement guiElementShownAfterClick = getGuiElementBy(Locate.by().cssSelector("input[type='submit']"));
+        Assert.assertTrue(guiElementShownAfterClick.isDisplayed());
     }
 }

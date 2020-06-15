@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,9 +23,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by rnhb on 12.08.2015.
- */
 public class GuiElementFacadeLoggingDecorator extends GuiElementFacadeDecorator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);

@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,13 +14,6 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 25.01.2011
- *
- * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
@@ -100,20 +91,21 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     /**
      * Public constructor. Creates a new <code>MethodContext</code> object.
-     *  @param name        The test method name.
-     * @param methodType  method type.
-     * @param classContext .
-     * @param suiteContext .
+     *
+     * @param name             The test method name.
+     * @param methodType       method type.
+     * @param classContext     .
+     * @param suiteContext     .
      * @param testContextModel .
      * @param executionContext .
      */
     public MethodContext(
-        final String name,
-        final MethodType methodType,
-        final ClassContext classContext,
-        final TestContextModel testContextModel,
-        final SuiteContext suiteContext,
-        final ExecutionContext executionContext
+            final String name,
+            final MethodType methodType,
+            final ClassContext classContext,
+            final TestContextModel testContextModel,
+            final SuiteContext suiteContext,
+            final ExecutionContext executionContext
     ) {
         this.testContextModel = testContextModel;
         this.suiteContext = suiteContext;
@@ -189,7 +181,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     /**
      * Add non functional infos.
      *
-     * @param throwable         .
+     * @param throwable .
      */
     public AssertionInfo addNonFunctionalInfo(final Throwable throwable) {
         AssertionInfo assertionInfo = new AssertionInfo(throwable);
@@ -336,8 +328,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public ClassContext getEffectiveClassContext() {
         if (classContext.merged) {
             return classContext.mergedIntoClassContext;
-        }
-        else {
+        } else {
             return classContext;
         }
     }
@@ -351,5 +342,9 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
             screenshot.setErrorContextId(this.id);
             currentTestStepAction.addScreenshot(screenshot);
         });
+    }
+
+    public List<Video> getVideos() {
+        return this.videos;
     }
 }

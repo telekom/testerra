@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,6 +20,8 @@ package eu.tsystems.mms.tic.testframework.webdrivermanager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.ErrorMessages;
+import eu.tsystems.mms.tic.testframework.constants.Constants;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSetupException;
@@ -38,6 +38,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
@@ -85,9 +86,6 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by pele on 19.07.2017.
- */
 public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> implements
     IWebDriverFactory,
     Loggable
@@ -227,12 +225,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
          Maximize
          */
         if (config.maximize) {
+            log().debug("Trying to maximize window");
             try {
                 Dimension originWindowSize = window.getSize();
                 // Maximize to detect window size
                 window.maximize();
                 if (config.maximizePosition != Position.CENTER) {
-                    log().info(String.format("Setting maximized window position to: %s", config.maximizePosition));
+                    log().debug(String.format("Setting maximized window position to: %s", config.maximizePosition));
                     Point targetPosition = new Point(0, 0);
                     switch (config.maximizePosition) {
                         case LEFT:
@@ -248,7 +247,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                             targetPosition.y = window.getSize().height + 1;
                             break;
                     }
-                    log().info(String.format("Move window to: %s", targetPosition));
+                    log().debug(String.format("Move window to: %s", targetPosition));
                     window.setPosition(targetPosition);
                     // Re-maximize
                     window.maximize();
@@ -280,6 +279,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
     }
 
     private void setWindowSizeBasedOnDisplayResolution(WebDriver.Window window, String browser) {
+        log().debug("Trying to set window size to: " + Defaults.DISPLAY_RESOLUTION);
         String[] split = Defaults.DISPLAY_RESOLUTION.split("x");
         int width = Integer.valueOf(split[0]);
         int height = Integer.valueOf(split[1]);
@@ -317,10 +317,15 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
 
     private WebDriver newWebDriver(DesktopWebDriverRequest desktopWebDriverRequest, DesiredCapabilities capabilities) {
         String sessionKey = desktopWebDriverRequest.sessionKey;
-
         final String url = desktopWebDriverRequest.seleniumServerURL;
-
         final String browser = desktopWebDriverRequest.browser;
+
+        log().info(String.format("Starting %s %s (session key=%s)", desktopWebDriverRequest.webDriverMode, TesterraWebDriver.class.getSimpleName(), sessionKey));
+        log().debug("Starting session here", new Throwable());
+
+        org.apache.commons.lang3.time.StopWatch sw = new org.apache.commons.lang3.time.StopWatch();
+        sw.start();
+
         /*
          * Remote or local
          */
@@ -385,16 +390,26 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         SessionId webDriverSessionId = ((RemoteWebDriver) newDriver).getSessionId();
         desktopWebDriverRequest.storedSessionId = webDriverSessionId.toString();
         desktopWebDriverRequest.sessionContext.sessionId = desktopWebDriverRequest.storedSessionId;
-        log().debug("Remote Session ID: " + webDriverSessionId);
 
         /*
         Log User Agent and executing host
          */
         NodeInfo nodeInfo = DesktopWebDriverUtils.getNodeInfo(desktopWebDriverRequest);
         desktopWebDriverRequest.storedExecutingNode = nodeInfo;
-        log().debug("Executing Node " + nodeInfo.toString());
         WebDriverManager.addExecutingSeleniumHostInfo(sessionKey + ": " + nodeInfo.toString());
-        WebDriverManagerUtils.logNewUserAgent(sessionKey, newDriver, nodeInfo);
+        sw.stop();
+
+        BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newDriver);
+        log().info(String.format(
+            "Started %s (session key=%s, remote session id=%s, node=%s, user agent=%s) in %s",
+            newDriver.getClass().getSimpleName(),
+            sessionKey,
+            webDriverSessionId,
+            nodeInfo.toString(),
+            browserInformation.getUserAgent(),
+            sw.toString()
+        ));
+        STARTUP_TIME_COLLECTOR.add(new TimingInfo("SessionStartup", "", sw.getTime(TimeUnit.MILLISECONDS), System.currentTimeMillis()));
 
         return newDriver;
     }
@@ -414,9 +429,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             String msg,
             String sessionKey
     ) {
-        log().debug("Starting WebDriver (" + sessionKey + ") " + msg, new NewSessionMarker());
-        org.apache.commons.lang3.time.StopWatch sw = new org.apache.commons.lang3.time.StopWatch();
-        sw.start();
+
 
         /*
          * This is the standard way of setting the browser locale for Selenoid based sessions
@@ -501,7 +514,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                 driverClass = EdgeDriver.class;
                 break;
             default:
-                throw new TesterraSystemException(ErrorMessages.browserNotSupportedHere(browser));
+                throw new TesterraSystemException("Browser must be set through SystemProperty 'browser' or in test.properties file! + is: " + browser);
         }
 
         WebDriver driver;
@@ -519,16 +532,12 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             throw new TesterraSetupException("Error starting browser session", e);
         }
 
-        sw.stop();
-        log().debug("Session startup time: " + sw.toString());
-        STARTUP_TIME_COLLECTOR.add(new TimingInfo("SessionStartup", "", sw.getTime(TimeUnit.MILLISECONDS), System.currentTimeMillis()));
-
         return driver;
     }
 
     private File getPhantomJSBinary() {
         if (phantomjsFile == null) {
-            log().debug("Unpacking phantomJS...");
+            log().info("Unpacking phantomJS...");
             try {
                 phantomjsFile = Phanbedder.unpack(); //Phanbedder to the rescue!
             } catch (Exception e) {
@@ -539,7 +548,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     throw e;
                 }
             }
-            log().debug("Unpacked phantomJS to: " + phantomjsFile);
+            log().info("Unpacked phantomJS to: " + phantomjsFile);
         }
         return phantomjsFile;
     }

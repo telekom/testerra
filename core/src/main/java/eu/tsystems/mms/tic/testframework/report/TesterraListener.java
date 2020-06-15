@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,14 +13,7 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
- */
-/*
- * Created on 05.04.2011
- *
- * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
+ *     Eric Kubenka
  */
 package eu.tsystems.mms.tic.testframework.report;
 
@@ -35,8 +26,9 @@ import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorkerExecutor;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.TestMethodInterceptWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.TestMethodInterceptWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.Worker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.CQWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodAnnotationCheckerWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
@@ -48,6 +40,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.Testerra
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TesterraEventsFinishWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.LoggingStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TestStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TesterraEventsStartWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
@@ -63,7 +56,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
 import org.testng.IConfigurable;
@@ -71,7 +63,7 @@ import org.testng.IConfigureCallBack;
 import org.testng.IHookCallBack;
 import org.testng.IHookable;
 import org.testng.IInvokedMethod;
-import org.testng.IInvokedMethodListener2;
+import org.testng.IInvokedMethodListener;
 import org.testng.IMethodInstance;
 import org.testng.IMethodInterceptor;
 import org.testng.IReporter;
@@ -83,6 +75,7 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.xml.XmlSuite;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -93,15 +86,15 @@ import java.util.List;
  * @author mrgi, mibu, pele, sepr
  */
 public class TesterraListener implements
-    IInvokedMethodListener2,
-    IReporter,
-    IHookable,
-    IConfigurable,
-    IMethodInterceptor,
-    ITestListener,
-    ISuiteListener,
-    Loggable
-{
+        IInvokedMethodListener,
+        IReporter,
+        IHookable,
+        IConfigurable,
+        IMethodInterceptor,
+        ITestListener,
+        ISuiteListener,
+        Loggable {
+
     /**
      * Global marker for positive test execution.
      */
@@ -117,8 +110,8 @@ public class TesterraListener implements
     private static final List<Class<? extends Worker>> BEFORE_INVOCATION_WORKERS = new LinkedList<>();
     private static final List<Class<? extends Worker>> AFTER_INVOCATION_WORKERS = new LinkedList<>();
     public static final List<Class<? extends Worker>> GENERATE_REPORTS_WORKERS = new LinkedList<>();
+    public static final List<Class<? extends Worker>> METHOD_INTERCEPT_WORKERS = new LinkedList<>();
 
-    private static List<IMethodInterceptor> METHOD_EXECUTION_FILTERS = new LinkedList<>();
     private static List<ISuiteListener> SUITE_LISTENERS = new LinkedList<>();
 
     /**
@@ -212,7 +205,7 @@ public class TesterraListener implements
 
     /**
      * This method INTERCEPTs THE XML_TEST not the methods
-     * It is possible to filter methods an remove them completly from execution
+     * It is possible to filter methods an remove them completely from execution
      * Or you do a dependency analysis for execution filter
      *
      * @param list         All methods that should be run due to current XML-Test
@@ -222,21 +215,12 @@ public class TesterraListener implements
     @Override
     public List<IMethodInstance> intercept(List<IMethodInstance> list, final ITestContext iTestContext) {
 
-        if (Flags.EXECUTION_OMIT_IN_DEVELOPMENT) {
-            ExecutionUtils.removeInDevelopmentMethods(list, iTestContext);
-        }
+        final TestMethodInterceptWorkerExecutor workerExecutor = new TestMethodInterceptWorkerExecutor();
 
-        // apply method interceptors - no lambda, because list is not final
-        for (final IMethodInterceptor methodInterceptor : METHOD_EXECUTION_FILTERS) {
-            list = methodInterceptor.intercept(list, iTestContext);
-        }
+        workerExecutor.add(new OmitInDevelopmentMethodInterceptor());
+        FrameworkUtils.addWorkersToExecutor(METHOD_INTERCEPT_WORKERS, workerExecutor);
 
-        return list;
-    }
-
-
-    public static void registerMethodExecutionFilter(IMethodInterceptor mi) {
-        METHOD_EXECUTION_FILTERS.add(mi);
+        return workerExecutor.run(list, iTestContext);
     }
 
     /**
@@ -425,7 +409,7 @@ public class TesterraListener implements
         /*
         add workers in workflow order
          */
-        TestStep step = methodContext.steps().announceTestStep(TestStep.TEARDOWN);
+        methodContext.steps().announceTestStep(TestStep.TEARDOWN);
 
         /*
         Workers #1
@@ -447,7 +431,6 @@ public class TesterraListener implements
 
         workerExecutor.add(new TesterraEventsFinishWorker());
         workerExecutor.add(new TestMethodFinishedWorker());
-        workerExecutor.add(new CQWorker());
         workerExecutor.add(new TesterraConnectorSyncEventsWorker());
 
         FrameworkUtils.addWorkersToExecutor(AFTER_INVOCATION_WORKERS, workerExecutor);
@@ -510,14 +493,25 @@ public class TesterraListener implements
 
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
+
+        final ITestContext testContext = iTestResult.getTestContext();
+
         /*
         Find methods that are ignored due to failed dependency
          */
-        Throwable throwable = iTestResult.getThrowable();
+        final Throwable throwable = iTestResult.getThrowable();
         if (throwable != null && throwable.toString().contains(SKIP_FAILED_DEPENDENCY_MSG)) {
-            ITestContext testContext = iTestResult.getTestContext();
             ExecutionContextController.setCurrentTestResult(iTestResult, testContext);
             pAfterInvocation(null, iTestResult, testContext);
+        }
+
+        /*
+         add missing method parameters for skipped test methods
+         */
+        final Class<?>[] parameterTypes = iTestResult.getMethod().getConstructorOrMethod().getMethod().getParameterTypes();
+        if (parameterTypes.length >0) {
+            final MethodContext methodContextFromTestResult = ExecutionContextController.getMethodContextFromTestResult(iTestResult, testContext);
+            methodContextFromTestResult.parameters.addAll(Arrays.asList(parameterTypes));
         }
     }
 
@@ -580,6 +574,10 @@ public class TesterraListener implements
 
     public static void registerGenerateReportsWorker(Class<? extends GenerateReportsWorker> worker) {
         GENERATE_REPORTS_WORKERS.add(worker);
+    }
+
+    public static void registerTestMethodInterceptWorker(Class<? extends TestMethodInterceptWorker> worker) {
+        METHOD_INTERCEPT_WORKERS.add(worker);
     }
 
 }

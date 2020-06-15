@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,14 +14,7 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 23.02.2012
- *
- * Copyright(c) 2011 - 2011 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+*/
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
@@ -90,6 +81,11 @@ public class UITestUtils {
     private static final DateFormat FILES_DATE_FORMAT = new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss");
     private static final Report report = Testerra.injector.getInstance(Report.class);
 
+    @Deprecated
+    private UITestUtils() {
+
+    }
+
     public static Screenshot takeScreenshot(WebDriver webDriver) {
         return takeScreenshot(webDriver, false);
     }
@@ -103,7 +99,6 @@ public class UITestUtils {
         );
     }
 
-    @Deprecated
     public static Screenshot takeScreenshot(
         WebDriver webDriver,
         boolean intoReport

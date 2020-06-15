@@ -8,6 +8,9 @@ dependencies {
     // </XML
 
     testCompile 'org.seleniumhq.selenium:selenium-server:' + seleniumVersion
+    // https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock
+    testCompile "com.github.tomakehurst:wiremock-jre8:2.26.3"
+
 }
 
 test {
@@ -26,6 +29,7 @@ test {
 
     def taskState = findProperty("taskState")
     if (taskState) {
+        setReportDir("report-tapastasktest-" + taskState)
         s = ['src/test/resources/testng/tapas/TapasTask' + taskState + '.xml']
     }
 
@@ -34,9 +38,14 @@ test {
         s = ['src/test/resources/Smoke.xml']
     }
 
+    def playground = findProperty("play")
+    if (playground) {
+        s = ['src/test/resources/testng/playground/Playground1.xml']
+    }
+
     useTestNG() {
         suites s
-        configFailurePolicy "continue"
+//        configFailurePolicy "continue"
     }
     options {
         systemProperties(System.getProperties())
@@ -84,4 +93,9 @@ def setFailureCorridor(nr) {
 
 def setCloseWindows() {
     System.setProperty("tt.wdm.closeWindows.afterTestMethods", "false")
+}
+
+bintray {
+    publications = []
+    configurations = []
 }

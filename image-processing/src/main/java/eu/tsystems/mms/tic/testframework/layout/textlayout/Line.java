@@ -5,9 +5,6 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 
-/**
- * Created by rnhb on 24.06.2015.
- */
 public class Line {
     private Point2D begin;
     private Point2D end;

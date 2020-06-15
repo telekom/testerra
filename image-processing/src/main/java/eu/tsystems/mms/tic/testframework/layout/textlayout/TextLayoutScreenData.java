@@ -2,9 +2,6 @@ package eu.tsystems.mms.tic.testframework.layout.textlayout;
 
 import org.opencv.core.Mat;
 
-/**
- * Created by rnhb on 24.06.2015.
- */
 public class TextLayoutScreenData {
     private Mat originalScreenshot;
     private Mat screenshotTextColor1;

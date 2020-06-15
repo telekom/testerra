@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,9 +28,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 
 import java.lang.reflect.Modifier;
 
-/**
- * Created by rnhb on 17.12.2015.
- */
 public abstract class CheckFieldAction extends FieldAction implements Loggable {
     @Deprecated
     protected final boolean findNot;

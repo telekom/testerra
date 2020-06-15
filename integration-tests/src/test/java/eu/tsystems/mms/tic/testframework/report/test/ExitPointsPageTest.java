@@ -3,22 +3,22 @@ package eu.tsystems.mms.tic.testframework.report.test;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractFailurePointsPage;
-import eu.tsystems.mms.tic.testframework.report.abstracts.AbstractResultTableFailureEntry;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractFailurePointsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractResultTableFailureEntry;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractReportFailuresTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
-import eu.tsystems.mms.tic.testframework.report.model.*;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
+import eu.tsystems.mms.tic.testframework.report.model.ExitPointEntry;
+import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoExitPoints;
+import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoNumbers;
+import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import java.util.List;
 
-/**
- * Created by riwa on 04.04.2017.
- */
 @TestContext(name = "View-ExitPoints")
 public class ExitPointsPageTest extends AbstractReportFailuresTest {
     //TODO restructure tests: find exit points with the help of method names and not with index
@@ -46,7 +46,7 @@ public class ExitPointsPageTest extends AbstractReportFailuresTest {
         int counter = 0;
         switch (reportFilter) {
             case SystemTestsGroup.SYSTEMTESTSFILTER2:
-                for (ExitPointEntry exitPoint:TestReportTwoExitPoints.getAllExitPointEntryTestObjects()) {
+                for (ExitPointEntry exitPoint: TestReportTwoExitPoints.getAllExitPointEntryTestObjects()) {
                     if (exitPoint.getFailurePointEntryType().equals(entryType)) {
                         counter++;
                     }

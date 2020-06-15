@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,12 +29,10 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestNGMethod;
+import org.testng.internal.annotations.DisabledRetryAnalyzer;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class TestStartWorker extends MethodWorker implements Loggable {
 
     @Override
@@ -47,7 +43,7 @@ public class TestStartWorker extends MethodWorker implements Loggable {
                 // fire event for test start
                 TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.TEST_START)
                         .addUserData()
-                        .addData(TesterraEventDataType.TIMESTAMP, ExecutionContextController.EXECUTION_CONTEXT.startTime.getTime())
+                        .addData(TesterraEventDataType.TIMESTAMP, ExecutionContextController.getCurrentExecutionContext().startTime.getTime())
                         .addData(TesterraEventDataType.ITestResult, testResult)
                         .addData(TesterraEventDataType.IInvokedMethod, method)
                 );
@@ -72,17 +68,17 @@ public class TestStartWorker extends MethodWorker implements Loggable {
          * analyzer.
          */
         if (testNGMethod != null) {
-            final IRetryAnalyzer retryAnalyzer = testNGMethod.getRetryAnalyzer();
-            if (retryAnalyzer == null) {
+            final IRetryAnalyzer retryAnalyzer = testNGMethod.getRetryAnalyzer(testResult);
+            if (retryAnalyzer == null || retryAnalyzer instanceof DisabledRetryAnalyzer) {
 
                 if (method.isAnnotationPresent(NoRetry.class)) {
-                    log().debug("Not adding testerra RetryAnalyzer for @NoRetry " + method.getName());
+                    log().trace("Not adding "+ RetryAnalyzer.class.getSimpleName() +" for @NoRetry " + method.getName());
                 } else {
-                    testNGMethod.setRetryAnalyzer(new RetryAnalyzer());
-                    log().debug("Adding testerra RetryAnalyzer for " + method.getName());
+                    testNGMethod.setRetryAnalyzerClass(RetryAnalyzer.class);
+                    log().trace("Adding " + RetryAnalyzer.class.getSimpleName() + " for " + method.getName());
                 }
             } else {
-                log().info("Using a non-testerra retry analyzer: " + retryAnalyzer + " on " + method.getName());
+                log().info("Using a non-default retry analyzer: " + retryAnalyzer + " on " + method.getName());
             }
         }
 

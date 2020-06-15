@@ -1,4 +1,4 @@
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="Testerra Integration Test Suite" verbose="10" configfailurepolicy="continue" thread-count="10" parallel="false">
 
     <test name="Core" parallel="methods">
@@ -10,6 +10,8 @@
         <packages>
             <package name="eu.tsystems.mms.tic.testframework.core.test.common"/>
             <package name="eu.tsystems.mms.tic.testframework.core.test.testdata"/>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.l10n"/>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.reporting"/>
         </packages>
     </test>
 
@@ -18,6 +20,17 @@
         <suite-file path="GuiElementVariations.xml"></suite-file>
         <suite-file path="PageObjects.xml"></suite-file>
     </suite-files>
+
+    <test name="WebDriver" parallel="methods">
+        <groups>
+            <run>
+                <exclude name="SEQUENTIAL"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.webdrivermanager"/>
+        </packages>
+    </test>
 
     <test name="Utils" parallel="methods">
         <groups>
@@ -30,7 +43,7 @@
         </packages>
     </test>
 
-    <test name="Events" parallel="methods">
+    <test name="Events" parallel="false">
         <packages>
             <package name="eu.tsystems.mms.tic.testframework.core.test.events"/>
         </packages>
@@ -39,11 +52,11 @@
     <test name="Sequential tests" parallel="false">
         <groups>
             <run>
-                <include name="SEQUENTIAL" />
+                <include name="SEQUENTIAL"/>
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.utils"></package>
+            <package name="eu.tsystems.mms.tic.testframework.core.test.utils"/>
         </packages>
     </test>
 </suite>

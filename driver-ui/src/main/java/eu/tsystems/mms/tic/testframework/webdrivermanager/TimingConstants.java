@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,9 +23,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by pele on 23.11.2016.
- */
 public final class TimingConstants {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimingConstants.class);
@@ -38,6 +33,10 @@ public final class TimingConstants {
     public static final int WATCHDOG_FIRST_ANNOUNCEMENT_SECONDS; // calculated
     public static final int WATCHDOG_THREAD_HANGING_TIMEOUT_SECONDS; // calculated
     public static final int WATCHDOG_FORCE_QUIT_TIMEOUT_SECONDS; // calculated
+
+    private TimingConstants() {
+        
+    }
 
     static {
         if (WEBDRIVER_COMMAND_TIMEOUT_SECONDS < 2 * 60) {

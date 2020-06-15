@@ -3,9 +3,6 @@ package eu.tsystems.mms.tic.testframework.report.testundertest;
 import eu.tsystems.mms.tic.testframework.annotations.*;
 import org.testng.annotations.Test;
 
-/**
- * Created by fakr on 30.08.2017
- */
 public class ReportTestUnderTestAnnotations extends AbstractTest {
 
     @Test
@@ -52,12 +49,6 @@ public class ReportTestUnderTestAnnotations extends AbstractTest {
     @InfoMethod
     // TODO how is this displayed in report?
     public void testNoStatusMethodMarker() {
-    }
-
-    //@Test
-    @SkipMetrics
-    // TODO how is this displayed in report?
-    public void testSkipMetricsMarker() {
     }
 
     //@Test

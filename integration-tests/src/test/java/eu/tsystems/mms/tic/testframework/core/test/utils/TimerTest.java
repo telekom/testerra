@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,12 +26,9 @@ import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import org.testng.annotations.Test;
 
-/**
- * Created by nigr on 04.09.2015.
- */
 public class TimerTest extends AbstractWebDriverTest implements Loggable {
 
-    public static final int DURATION_IN_MS = 1000;
+    public static final int DURATION_IN_MS = 2500;
     public static final int SLEEP_TIME_IN_MS = 50;
     public static final int UPPER_BOUND_IN_MS = 200;
 

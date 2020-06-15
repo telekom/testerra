@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,9 +21,6 @@ import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import org.testng.annotations.Test;
 
-/**
- * Created by pele on 28.05.2014.
- */
 public class PropertyManagerTest extends AbstractWebDriverTest {
 
     /**
@@ -73,6 +68,24 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
     @Test
     public void testT04BooleanDefault() {
         boolean prop = PropertyManager.getBooleanProperty("pm.test.boolean3", false);
+        Assert.assertFalse(prop, "Boolean property default");
+    }
+
+    /**
+     * property test without default boolean
+     */
+    @Test
+    public void testT04b_BooleanWithoutDefault() {
+        boolean prop = PropertyManager.getBooleanProperty("pm.test.boolean1");
+        Assert.assertTrue(prop, "Boolean property default");
+    }
+
+    /**
+     * property test without default boolean
+     */
+    @Test
+    public void testT04c_BooleanWithoutDefaultAndNotSet() {
+        boolean prop = PropertyManager.getBooleanProperty("pm.test.boolean3");
         Assert.assertFalse(prop, "Boolean property default");
     }
 
@@ -247,6 +260,46 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
     }
 
     @Test
+    public void testT22_DoublePropertyWithDefault() {
+
+        double doubleProperty = PropertyManager.getDoubleProperty("pm.test.double1", 10.0);
+        Assert.assertEquals(doubleProperty, 10.11, "Double Property equals value of file property.");
+    }
+
+    @Test
+    public void testT23_DoublePropertyWithDefaultNotSet() {
+
+        double doubleProperty = PropertyManager.getDoubleProperty("pm.test.double2", 10.0);
+        Assert.assertEquals(doubleProperty, 10.0, "Double Property equals value of default.");
+    }
+
+    @Test
+    public void testT24_DoublePropertyWithoutDefaultNotSet() {
+        double doubleProperty = PropertyManager.getDoubleProperty("pm.test.double2");
+        Assert.assertEquals(doubleProperty, -1, "Double Property equals default value.");
+    }
+
+    @Test
+    public void testT25_LongPropertyWithDefault() {
+
+        long longProperty = PropertyManager.getLongProperty("pm.test.long1", 10L);
+        Assert.assertEquals(longProperty, 2147483648L, "Long Property equals value of file property.");
+    }
+
+    @Test
+    public void testT26_LongPropertyWithDefaultNotSet() {
+
+        long longProperty = PropertyManager.getLongProperty("pm.test.long2", 10L);
+        Assert.assertEquals(longProperty, 10L, "Long Property equals value of default.");
+    }
+
+    @Test
+    public void testT27_LongPropertyWithoutDefaultNotSet() {
+        long longProperty = PropertyManager.getLongProperty("pm.test.long2");
+        Assert.assertEquals(longProperty, -1L, "Long Property equals default value.");
+    }
+
+    @Test
     public void testT31_MultiReplace() {
         System.setProperty("myprop", "test_{prop1}_{prop5}");
         System.setProperty("prop1", "value1");
@@ -273,9 +326,97 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
     }
 
     @Test
-    public void testT41SystemPropertyFromFile() {
-        // should load the system property tt.test.system.prop=tt.tt. from system.properties
-        String property = PropertyManager.getProperty("tt.test.system.prop");
-        Assert.assertEquals(property, "tt.tt.", "should load the system property tt.test.system.prop=tt.tt. from system.properties");
+    public void testT40_ThreadLocalProperty() {
+
+        PropertyManager.getThreadLocalProperties().put("thread.property", "1");
+
+        final Runnable runnable = () -> PropertyManager.getThreadLocalProperties().put("thread.property", "runnable");
+        Thread thread = new Thread(runnable);
+        thread.start();
+
+        final String value = PropertyManager.getProperty("thread.property");
+        Assert.assertEquals(value, "1", "Thread Local property not overridden.");
+    }
+
+    @Test
+    public void testT41_ClearThreadLocalProperty() {
+
+        PropertyManager.getThreadLocalProperties().put("thread.property", "1");
+
+        final Runnable runnable = () -> {
+            PropertyManager.getThreadLocalProperties().put("thread.property", "runnable");
+            Assert.assertEquals(PropertyManager.getProperty("thread.property"), "runnable", "Thread Local property not overridden.");
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "1", "Thread Local property not overridden.");
+
+        PropertyManager.clearThreadlocalProperties();
+        Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"), "Thread properties cleared.");
+    }
+
+    @Test()
+    public void testT42_LoadThreadLocalPropertyFile() {
+
+        PropertyManager.loadThreadLocalProperties("propertyfiles/threadlocal.properties");
+
+        final Runnable runnable = () -> {
+            PropertyManager.getThreadLocalProperties().put("thread.property", "runnable");
+            Assert.assertEquals(PropertyManager.getProperty("thread.property"), "runnable", "Thread Local property not overridden.");
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
+
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "thread_file", "Thread Local property not overridden.");
+    }
+
+    @Test
+    public void testT43_LocalPropertyOverrides() {
+
+        PropertyManager.loadProperties("propertyfiles/file.properties");
+        Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
+
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "file", "Thread Local property not overridden.");
+
+        PropertyManager.getThreadLocalProperties().put("thread.property", "new");
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "new", "Thread Local property not overridden.");
+    }
+
+    @Test
+    public void testT50_GetDifferentPropertyMaps() {
+
+        PropertyManager.loadProperties("propertyfiles/file.properties");
+        PropertyManager.loadThreadLocalProperties("propertyfiles/threadlocal.properties");
+        PropertyManager.getGlobalProperties().put("thread.property", "global");
+
+        Assert.assertEquals(PropertyManager.getThreadLocalProperties().getProperty("thread.property"), "thread_file");
+        Assert.assertEquals(PropertyManager.getGlobalProperties().getProperty("thread.property"), "global");
+        Assert.assertEquals(PropertyManager.getFileProperties().getProperty("thread.property"), "file");
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "thread_file");
+
+        // clear
+        PropertyManager.clearThreadlocalProperties();
+        Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
+
+        PropertyManager.clearGlobalProperties();
+        Assert.assertNull(PropertyManager.getGlobalProperties().getProperty("thread.property"));
+
+        Assert.assertEquals(PropertyManager.getProperty("thread.property"), "file");
+    }
+
+    // Disabled because it will break everything
+    @Test(enabled = false)
+    public void testT51_ClearAllProperties() {
+
+        PropertyManager.loadThreadLocalProperties("propertyfiles/threadlocal.properties");
+        PropertyManager.getGlobalProperties().put("thread.property", "global");
+
+        // clear -
+        PropertyManager.clearProperties();
+        Assert.assertNull(PropertyManager.getThreadLocalProperties().getProperty("thread.property"));
+        Assert.assertNull(PropertyManager.getGlobalProperties().getProperty("thread.property"));
+        Assert.assertNull(PropertyManager.getProperty("thread.property"));
     }
 }

@@ -4,9 +4,9 @@
 package eu.tsystems.mms.tic.testframework.core.test.testdata;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.helper.TestCsvReaderBean;
-import eu.tsystems.mms.tic.testframework.helper.TestCsvReaderBeanWithSubBean;
-import eu.tsystems.mms.tic.testframework.helper.TestCsvReaderSubBean;
+import eu.tsystems.mms.tic.testframework.core.test.testdata.implementation.TestCsvReaderBean;
+import eu.tsystems.mms.tic.testframework.core.test.testdata.implementation.TestCsvReaderBeanWithSubBean;
+import eu.tsystems.mms.tic.testframework.core.test.testdata.implementation.TestCsvReaderSubBean;
 import eu.tsystems.mms.tic.testframework.testdata.CSVTestDataReader;
 import org.testng.Assert;
 import org.testng.annotations.Test;

@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,20 +13,19 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
+ *     Eric Kubenka
  */
 package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by toku on 02.12.2014.
- */
 public class StringUtilsTest extends AbstractWebDriverTest {
 
     private String stringEmptyAssertMessage = "String is empty";
@@ -62,6 +59,7 @@ public class StringUtilsTest extends AbstractWebDriverTest {
 
     /**
      * checks if string is null
+     *
      * @throws Exception .
      */
     @Test
@@ -73,6 +71,7 @@ public class StringUtilsTest extends AbstractWebDriverTest {
 
     /**
      * checks if created random string has the defined length and if it only contains characters
+     *
      * @throws Exception .
      */
     @Test
@@ -128,4 +127,59 @@ public class StringUtilsTest extends AbstractWebDriverTest {
         String concat = StringUtils.concat(",", 1, 2, 3, 4);
         Assert.assertEquals(concat, "1,2,3,4");
     }
+
+    @Test
+    public void testT08_RemoveIllegalCharacter() {
+
+        final String input = "test1234_xx1";
+        final String actual = StringUtils.removeIllegalCharacters(input, "\\d", "d");
+
+        Assert.assertEquals(actual, "dddd1234ddd1");
+    }
+
+    @Test
+    public void testT09_ContainsAll() {
+
+        final String input = "This is a basic string example and you know it.";
+
+        Assert.assertTrue(StringUtils.containsAll(input, true, "basic string", "this is"));
+        Assert.assertFalse(StringUtils.containsAll(input, false, "basic string", "this is"));
+        Assert.assertTrue(StringUtils.containsAll(input, false, "basic string", "This is"));
+        Assert.assertFalse(StringUtils.containsAll(input, false, "Thisis"));
+    }
+
+    @Test
+    public void testT10_GetPlainTextFromHtml() {
+
+        final String nonHtmlInput = "This is a basic string.";
+        final String htmlInput = "<p>This is a<span class=\"font-bold\"><a href=\"http://example.de\"> basic</a> string</span>.";
+
+        final String actual = StringUtils.getPlainTextFromHTML(htmlInput);
+        Assert.assertEquals(actual, nonHtmlInput);
+    }
+
+    @Test
+    public void testT11_Concat() {
+
+        final String actual = StringUtils.concat("foo", "bar", "foo");
+        Assert.assertEquals(actual, "foobarfoo");
+    }
+
+    @Test
+    public void testT12_TryParseToInt() {
+
+        Assert.assertTrue(StringUtils.tryParseToInt("1"));
+        Assert.assertTrue(StringUtils.tryParseToInt("0"));
+        Assert.assertTrue(StringUtils.tryParseToInt("-1"));
+    }
+
+    @Test()
+    public void testT12F_TryParseToInt() {
+        Assert.assertFalse(StringUtils.tryParseToInt("1a"));
+        Assert.assertFalse(StringUtils.tryParseToInt("a"));
+        Assert.assertFalse(StringUtils.tryParseToInt("0.0d"));
+        Assert.assertFalse(StringUtils.tryParseToInt("0.0"));
+        Assert.assertFalse(StringUtils.tryParseToInt("0,0"));
+    }
+
 }

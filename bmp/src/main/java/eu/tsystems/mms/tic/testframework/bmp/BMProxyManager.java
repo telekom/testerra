@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,8 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by pele on 30.04.2015.
+ * @deprecated - Please see Testerra bup module - BrowserUpLocalProxyManager
  */
+@Deprecated
 public final class BMProxyManager {
 
     private static List<Integer> portPool = new ArrayList<Integer>(1);

@@ -1,10 +1,4 @@
-/*
- * Created on 03.13.2014
- *
- * Copyright(c) 2011 - 2014 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
- */
+
 package eu.tsystems.mms.tic.testframework.layout.matching;
 
 import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
@@ -23,7 +17,9 @@ import java.util.List;
  */
 public class GraphBasedTemplateMatcher extends TemplateMatcher {
 
-    private double minimalDistanceBetweenMatches = LayoutCheck.Properties.INTERNAL_PARAMETER_1.asDouble();
+    private double minimalDistanceBetweenMatches = PropertyManager.getIntProperty(
+            TesterraProperties.LAYOUTCHECK_MIN_MATCH_DISTANCE,
+            DefaultParameter.LAYOUTCHECK_MIN_MATCH_DISTANCE);
 
     private final TemplateMatchingAlgorithm templateMatchingAlgorithm;
 

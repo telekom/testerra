@@ -6,9 +6,6 @@ import org.testng.annotations.Test;
 
 import java.sql.SQLRecoverableException;
 
-/**
- * Created by jlma on 16.05.2017.
- */
 public class ReportTestUnderTestRetry extends AbstractTest {
 
     private static int countertest_ExceptionRetryTest = 0;

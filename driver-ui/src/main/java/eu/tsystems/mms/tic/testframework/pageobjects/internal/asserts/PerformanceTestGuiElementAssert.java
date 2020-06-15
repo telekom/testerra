@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,9 +19,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 
-/**
- * Created by rnhb on 13.08.2015.
- */
 public class PerformanceTestGuiElementAssert implements GuiElementAssert {
 
     @Override

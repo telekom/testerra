@@ -11,6 +11,7 @@ import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -24,6 +25,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -159,9 +162,12 @@ public final class LayoutCheck {
     private static final double NO_DISTANCE = 0;
     private static final int RGB_DEVIATION_PERCENT = Properties.PIXEL_RGB_DEVIATION_PERCENT.asLong().intValue();
     private static final double RGB_MAX_DEVIATION = 255;
-    private static final File REFERENCE_IMAGES_PATH = new File(Properties.REFERENCE_PATH.asString());
-    private static final File DISTANCE_IMAGES_PATH = new File(Properties.DISTANCE_PATH.asString());
-    private static final File ACTUAL_IMAGES_PATH = new File(Properties.ACTUAL_PATH.asString());
+    private static final File REFERENCE_IMAGES_PATH = new File(
+            Properties.REFERENCE_PATH.asString());
+    private static final File DISTANCE_IMAGES_PATH = new File(
+            Properties.DISTANCE_PATH.asString());
+    private static final File ACTUAL_IMAGES_PATH = new File(
+            Properties.ACTUAL_PATH.asString());
 
     private static HashMap<String, Integer> runCount = new HashMap<String, Integer>();
 
@@ -178,10 +184,8 @@ public final class LayoutCheck {
     private static final Logger LOGGER = LoggerFactory.getLogger(LayoutCheck.class);
 
     /**
-     *
      * @param webDriver Web driver instance, has to implement TakesScreenshot
-     * @param targetImageName filename of the reference screenshot/distance image (extended by a given prefix from the
-     *                        properties)
+     * @param targetImageName filename of the reference screenshot/distance image (extended by a given prefix from the properties)
      * @return Percents of pixels that are different
      */
     public static double run(WebDriver webDriver, String targetImageName) {
@@ -192,10 +196,8 @@ public final class LayoutCheck {
     }
 
     /**
-     *
      * @param webDriver Web driver instance, has to implement TakesScreenshot
-     * @param targetImageName filename of the reference screenshot/distance image (extended by a given prefix from the
-     *                        properties
+     * @param targetImageName filename of the reference screenshot/distance image (extended by a given prefix from the properties
      * @param mode PIXEL or ANNOTATED
      * @return Percents of pixels that are different
      */
@@ -213,9 +215,8 @@ public final class LayoutCheck {
      * 'Testerra.layoutcheck.takereference' is set to true. Otherwise takes a screenshot and creates a new distance
      * image comparing the actual shown website to an existing reference screenshot.
      *
-     * @param driver          Web driver instance
-     * @param targetImageName filename of the reference screenshot/distance image (extended by a given prefix from the
-     *                        properties)
+     * @param driver Web driver instance
+     * @param targetImageName filename of the reference screenshot/distance image (extended by a given prefix from the properties)
      * @return Percents of pixels that are different (0 if reference is taken)
      */
     @Deprecated
@@ -229,9 +230,9 @@ public final class LayoutCheck {
     /**
      * Creates directories for the images/ screenshots and creates distance image
      *
-     * @param driver          WebDriver used
+     * @param driver WebDriver used
      * @param targetImageName name of the target image
-     * @param mode            PIXEL or ANNOTATED
+     * @param mode PIXEL or ANNOTATED
      * @return distance between the images
      */
     @Deprecated
@@ -243,16 +244,16 @@ public final class LayoutCheck {
      * Matches annotations and returns
      */
     public static MatchStep matchAnnotations(
-        final TakesScreenshot driver,
-        final String targetImageName
+            final TakesScreenshot driver,
+            final String targetImageName
     ) {
         final File screenshot = driver.getScreenshotAs(OutputType.FILE);
         return matchAnnotations(screenshot, targetImageName);
     }
 
     public static MatchStep matchAnnotations(
-        final File screenshot,
-        final String targetImageName
+            final File screenshot,
+            final String targetImageName
     ) {
         MatchStep step = prepare(screenshot, targetImageName);
         step.mode = Mode.ANNOTATED;
@@ -262,39 +263,38 @@ public final class LayoutCheck {
         return step;
     }
 
-    private static void matchAnnotations(final MatchStep step) {
+    private static void matchAnnotations(MatchStep matchStep) {
         // read images
-        String referenceAbsoluteFileName = step.referenceFileName.toAbsolutePath().toString();
-        String annotatedAbsoluteFileName = step.annotatedReferenceFileName.toAbsolutePath().toString();
-        String actualAbsoluteFileName = step.actualFileName.toAbsolutePath().toString();
-        String distanceAbsoluteFileName = step.distanceFileName.toAbsolutePath().toString();
-        String annotationDataAbsoluteFileName = step.annotationDataFileName.toAbsolutePath().toString();
+        String referenceAbsoluteFileName = matchStep.referenceFileName.toAbsolutePath().toString();
+        String annotatedAbsoluteFileName = matchStep.annotatedReferenceFileName.toAbsolutePath().toString();
+        String actualAbsoluteFileName = matchStep.actualFileName.toAbsolutePath().toString();
+        String distanceAbsoluteFileName = matchStep.distanceFileName.toAbsolutePath().toString();
+        String annotationDataAbsoluteFileName = matchStep.annotationDataFileName.toAbsolutePath().toString();
 
         // create distance image to given reference
         LayoutComparator layoutComparator = new LayoutComparator();
+        matchStep.layoutComparator = layoutComparator;
         try {
             layoutComparator.compareImages(
-                referenceAbsoluteFileName,
-                annotatedAbsoluteFileName,
-                actualAbsoluteFileName,
-                distanceAbsoluteFileName,
-                annotationDataAbsoluteFileName
+                    referenceAbsoluteFileName,
+                    annotatedAbsoluteFileName,
+                    actualAbsoluteFileName,
+                    distanceAbsoluteFileName,
+                    annotationDataAbsoluteFileName
             );
-        } catch (FileNotFoundException e) {
-            LOGGER.error(e.getMessage());
-            throw new TesterraSystemException("Error reading images", e);
+        } catch (Exception e) {
+            throw new LayoutCheckException(matchStep, e);
         }
 
-        step.distance = layoutComparator.getErrorRelation();
-        step.layoutComparator = layoutComparator;
+        matchStep.distance = layoutComparator.getErrorRelation();
     }
 
     /**
      * Takes reference screenshots and prepares file paths for discrete matching modes
      */
     private static MatchStep prepare(
-        final File screenshot,
-        final String targetImageName
+            final File screenshot,
+            final String targetImageName
     ) {
         final MatchStep step = new MatchStep();
         step.referenceFileName = Paths.get(REFERENCE_IMAGES_PATH + "/" +
@@ -367,17 +367,17 @@ public final class LayoutCheck {
         return step;
     }
 
-    private static void matchPixels(final MatchStep step) {
+    private static void matchPixels(final MatchStep matchStep) {
         try {
             // read images
-            File refFile = step.referenceFileName.toFile();
-            File actualFile = step.actualFileName.toFile();
+            File refFile = matchStep.referenceFileName.toFile();
+            File actualFile = matchStep.actualFileName.toFile();
 
             if (!refFile.exists()) {
-                throw new FileNotFoundException(step.referenceFileName.toString());
+                throw new FileNotFoundException(matchStep.referenceFileName.toString());
             }
             if (!actualFile.exists()) {
-                throw new FileNotFoundException(step.actualFileName.toString());
+                throw new FileNotFoundException(matchStep.actualFileName.toString());
             }
 
             final BufferedImage referenceImage = ImageIO.read(refFile);
@@ -386,36 +386,35 @@ public final class LayoutCheck {
             final boolean useIgnoreColor = Properties.USE_IGNORE_COLOR.asBool();
 
             // create distance image to given reference
-            step.distance = generateDistanceImage(
-                referenceImage,
-                actualImage,
-                step.distanceFileName.toAbsolutePath().toString(),
-                useIgnoreColor
+            matchStep.distance = generateDistanceImage(
+                    referenceImage,
+                    actualImage,
+                    matchStep.distanceFileName.toAbsolutePath().toString(),
+                    useIgnoreColor
             );
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-            throw new TesterraSystemException("Error reading images", e);
+        } catch (Exception e) {
+            throw new LayoutCheckException(matchStep, e);
         }
     }
 
     /**
      * (private method) Creates directories for the images/ screenshots and creates distance image
      *
-     * @param driver          WebDriver used
+     * @param driver WebDriver used
      * @param targetImageName name of the target image
-     * @param mode            PIXEL or ANNOTATED
+     * @param mode PIXEL or ANNOTATED
      * @return distance between the images
      */
     private static synchronized MatchStep pRun(
-        final TakesScreenshot driver,
-        final String targetImageName,
-        final Mode mode
+            final TakesScreenshot driver,
+            final String targetImageName,
+            final Mode mode
     ) {
         LOGGER.debug("Starting ScreenReferencer in " + mode.name() + " mode.");
         final File screenshot = driver.getScreenshotAs(OutputType.FILE);
         final MatchStep step = prepare(screenshot, targetImageName);
 
-        if (step.takeReferenceOnly == false) {
+        if (!step.takeReferenceOnly) {
             step.mode = mode;
             switch (mode) {
                 case PIXEL:
@@ -439,8 +438,8 @@ public final class LayoutCheck {
      * Returns the color of a pixel at a certain position of the image
      *
      * @param image with a certain colored pixel
-     * @param x     Position of the pixel
-     * @param y     Position of the pixel
+     * @param x Position of the pixel
+     * @param y Position of the pixel
      * @return color code of the pixel
      */
     private static int getColorOfPixel(BufferedImage image, int x, int y) {
@@ -451,16 +450,16 @@ public final class LayoutCheck {
      * Creates an image showing the differences of the given images and calculates the difference between the images in
      * percent.
      *
-     * @param expectedImage  The expected image
-     * @param actualImage    The actual image
+     * @param expectedImage The expected image
+     * @param actualImage The actual image
      * @param resultFilename Filename to the save the image containing the differences
      * @return Percents of pixels that are different
      */
     private static double generateDistanceImage(
-        final BufferedImage expectedImage,
-        final BufferedImage actualImage,
-        final String resultFilename,
-        final boolean useIgnoreColor
+            final BufferedImage expectedImage,
+            final BufferedImage actualImage,
+            final String resultFilename,
+            final boolean useIgnoreColor
     ) {
         // for counting the pixels that are different
         int pixelsInError = 0;
@@ -475,11 +474,15 @@ public final class LayoutCheck {
         Dimension actualImageDimension = new Dimension(actualImage.getWidth(), actualImage.getHeight());
 
         if (!actualImageDimension.equals(expectedImageDimension)) {
-            NonFunctionalAssert.fail("The actual screenshot has a different size than the reference. Actual = " +
-                    actualImageDimension +
-                    ", Reference = " +
-                    expectedImageDimension +
-                    ".");
+            NonFunctionalAssert.fail(
+                    String.format(
+                            "The actual image (width=%dpx, height=%dpx) has a different size than the reference image (width=%dpx, height=%dpx)",
+                            actualImageDimension.width,
+                            actualImageDimension.height,
+                            expectedImageDimension.width,
+                            expectedImageDimension.height
+                    )
+            );
         }
 
         List<Rectangle> markedRectangles = null;
@@ -599,16 +602,16 @@ public final class LayoutCheck {
      * Calculates the sizes thats result from the maximum sizes of both pictures.
      *
      * @param expectedImage The expected image
-     * @param actualImage   The actual image
+     * @param actualImage The actual image
      * @return Calculated maximum size of the images
      */
     private static Dimension calculateMaxImageSize(
-        final BufferedImage expectedImage,
-        final BufferedImage actualImage
+            final BufferedImage expectedImage,
+            final BufferedImage actualImage
     ) {
         return new Dimension(
-            Math.max(expectedImage.getWidth(), actualImage.getWidth()),
-            Math.max(expectedImage.getHeight(), actualImage.getHeight())
+                Math.max(expectedImage.getWidth(), actualImage.getWidth()),
+                Math.max(expectedImage.getHeight(), actualImage.getHeight())
         );
     }
 
@@ -616,14 +619,14 @@ public final class LayoutCheck {
      * Determines whether a pixel is within the bounds of an image.
      *
      * @param image The image
-     * @param x     X-coordinate of the pixel
-     * @param y     Y-coordinate of the pixel
+     * @param x X-coordinate of the pixel
+     * @param y Y-coordinate of the pixel
      * @return true, if the pixel is within the images bounds, otherwise false
      */
     private static boolean isPixelInImageBounds(
-        final BufferedImage image,
-        final int x,
-        final int y
+            final BufferedImage image,
+            final int x,
+            final int y
     ) {
         return (image.getWidth() > x) && (image.getHeight() > y);
     }
@@ -637,9 +640,10 @@ public final class LayoutCheck {
         LayoutCheckContext context = new LayoutCheckContext();
         context.image = name;
         context.mode = step.mode.name();
-        context.distance = step.distance;
+        // For readable report
+        context.distance = new BigDecimal(step.distance).setScale(2, RoundingMode.HALF_UP).doubleValue();
         // Always copy the reference image
-        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(), Report.Mode.COPY);
+        context.expectedScreenshot = report.provideScreenshot(referenceScreenshotPath.toFile(),  Report.Mode.COPY);
         context.actualScreenshot = report.provideScreenshot(actualScreenshotPath.toFile(), Report.Mode.MOVE);
         context.distanceScreenshot = report.provideScreenshot(distanceScreenshotPath.toFile(), Report.Mode.MOVE);
         context.distanceScreenshot.meta().put("Distance", Double.toString(step.distance));
@@ -649,5 +653,22 @@ public final class LayoutCheck {
         }
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         methodContext.customContexts.add(context);
+    }
+
+    public static void assertScreenshot(WebDriver webDriver, String targetImageName, double confidenceThreshold) {
+        LayoutCheck.MatchStep matchStep;
+        final String assertMessage = String.format("Expected that pixel distance (%%) of WebDriver screenshot to image '%s'", targetImageName);
+        try {
+            matchStep = LayoutCheck.matchPixels((TakesScreenshot) webDriver, targetImageName);
+            if (!matchStep.takeReferenceOnly) {
+                LayoutCheck.toReport(matchStep);
+            }
+            // Check for 2 decimals of % value is enough --> Readable assertion message
+            AssertUtils.assertLowerEqualThan(new BigDecimal(matchStep.distance).setScale(2, RoundingMode.HALF_UP), new BigDecimal(confidenceThreshold), assertMessage);
+        } catch (LayoutCheckException e) {
+            matchStep = e.getMatchStep();
+            LayoutCheck.toReport(matchStep);
+            throw e;
+        }
     }
 }

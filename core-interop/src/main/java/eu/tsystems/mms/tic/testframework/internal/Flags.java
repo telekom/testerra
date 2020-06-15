@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,13 +14,6 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 24.02.14
- *
- * Copyright(c) 1995 - 2013 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
@@ -44,4 +35,6 @@ public final class Flags {
 
     public static boolean FAILURE_CORRIDOR_ACTIVE = p(TesterraProperties.FAILURE_CORRIDOR_ACTIVE, false);
     public static boolean EXECUTION_OMIT_IN_DEVELOPMENT = p(TesterraProperties.EXECUTION_OMIT_IN_DEVELOPMENT, false);
+    public static boolean SCREENSHOTTER_ACTIVE = p(TesterraProperties.SCREENSHOTTER_ACTIVE, true);
+    public static boolean SCREENCASTER_ACTIVE = p(TesterraProperties.SCREENCASTER_ACTIVE, true);
 }

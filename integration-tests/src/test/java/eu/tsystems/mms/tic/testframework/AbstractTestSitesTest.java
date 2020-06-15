@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,6 +33,7 @@ import java.net.BindException;
  * Abstract test class for tests based on static test site resources
  */
 public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implements Loggable {
+
     protected static Server server = new Server(FileUtils.getResourceFile("testsites"));
 
     @BeforeTest(alwaysRun = true)
@@ -55,11 +54,21 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
     /**
      * Open a custom Webdriver session with the default test page.
      *
-     * @param driver
+     * @param driver {@link WebDriver} Current webDriver Instance
      */
     public synchronized void visitTestPage(WebDriver driver) {
-        if (!driver.getCurrentUrl().contains(getTestPage().getPath())) {
-            String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), getTestPage().getPath());
+        visitTestPage(driver, getTestPage());
+    }
+
+    /**
+     * Open a custom Webdriver session with the default test page.
+     *
+     * @param driver   {@link WebDriver} Current Instance
+     * @param testPage {@link TestPage} page to open
+     */
+    public synchronized void visitTestPage(WebDriver driver, TestPage testPage) {
+        if (!driver.getCurrentUrl().contains(testPage.getPath())) {
+            String baseUrl = String.format("http://localhost:%d/%s", server.getPort(), testPage.getPath());
             driver.get(baseUrl);
         }
     }

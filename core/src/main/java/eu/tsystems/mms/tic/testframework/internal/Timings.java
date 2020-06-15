@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,14 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by pele on 24.08.2015.
- */
 public final class Timings {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Timings.class);
@@ -44,6 +37,10 @@ public final class Timings {
     public static final Map<Integer, Long> TIMING_GUIELEMENT_FIND_WITH_PARENT = new ConcurrentHashMap<Integer, Long>();
 
     private static int findCounter = 0;
+
+    private Timings() {
+        
+    }
 
     public static synchronized int raiseFindCounter() {
         findCounter++;
@@ -71,20 +68,6 @@ public final class Timings {
         }
     }
 
-    public static List<String> getLargeFindTimings() {
-        List<String> out = new ArrayList<String>();
-        out.add("Large timings > " + LARGE_LIMIT + " ms:");
-        out.add("");
-        for (Integer key : TIMING_GUIELEMENT_FIND.keySet()) {
-            Long value = TIMING_GUIELEMENT_FIND.get(key);
-            if (value > LARGE_LIMIT) {
-                out.add("#" + key + " : " + value + " ms");
-            }
-        }
-        out.add("");
-        return out;
-    }
-
     public static File createGuiElementFindTimingsGraph() {
         /*
         Create chart
@@ -92,57 +75,10 @@ public final class Timings {
         return createGraph("find()s", "timingsFind", TIMING_GUIELEMENT_FIND);
     }
 
-    public static String createGuiElementFindTimingsInfo() {
-        int size = TIMING_GUIELEMENT_FIND.size();
-        if (size == 0) {
-            return "Nothing measured";
-        }
-        String msg = size + " GuiElement find()s: ";
-        msg = calc(TIMING_GUIELEMENT_FIND, size, msg);
-        return msg;
-    }
-
     public static File createGuiElementFindWithParentTimingsGraph() {
         /*
         Create chart
          */
         return createGraph("find()s with parent", "timingsFindParent", TIMING_GUIELEMENT_FIND_WITH_PARENT);
-    }
-
-    public static String createGuiElementFindWithParentTimingsInfo() {
-        int size = TIMING_GUIELEMENT_FIND_WITH_PARENT.size();
-        if (size == 0) {
-            return "Nothing measured";
-        }
-        String msg = size + " GuiElement find()s with parent: ";
-        msg = calc(TIMING_GUIELEMENT_FIND_WITH_PARENT, size, msg);
-        return msg;
-    }
-
-    private static String calc(Map<Integer, Long> map, int size, String msg) {
-        long min = -1;
-        long max = -1;
-        long sum = 0;
-        for (Integer key : map.keySet()) {
-            if (min == -1) {
-                min = map.get(key);
-            }
-            Long l = map.get(key);
-            sum += l;
-            if (l < min) {
-                min = l;
-            }
-            if (l > max) {
-                max = l;
-            }
-        }
-        long mid = sum / size;
-
-        msg += min + " ms < [" + mid + " ms] < " + max + " ms";
-        return msg;
-    }
-
-    public static boolean hasGuiElementFindInfo() {
-        return TIMING_GUIELEMENT_FIND.size() > 0 || TIMING_GUIELEMENT_FIND_WITH_PARENT.size() > 0;
     }
 }

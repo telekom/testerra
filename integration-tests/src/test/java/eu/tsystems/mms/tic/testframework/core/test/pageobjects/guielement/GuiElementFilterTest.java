@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,10 +18,9 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -31,9 +28,6 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
-/**
- * Created by rnhb on 29.07.2015.
- */
 public class GuiElementFilterTest extends AbstractTestSitesTest {
 
     private void assertLogFieldContains(String textToBeContained) {
@@ -91,10 +85,26 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
     }
 
     @Test
-    public void testT05_Displayed_Is_As_Selector() {
+    public void testT05a_Displayed_Is() {
+
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").filter(WebElementFilter.DISPLAYED.is(false)));
+        nonVisibleTable.asserts().assertIsNotDisplayed();
+    }
+
+    @Test
+    public void testT05b_Displayed_Is() {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().notDisplayed().xpath(".//*[@id]"));
         nonVisibleTable.asserts().assertIsNotDisplayed();
+    }
+
+    @Test
+    public void testT05c_Displayed_Is() {
+
+        final WebDriver driver = WebDriverManager.getWebDriver();
+        GuiElement visibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").displayed());
+        visibleTable.asserts().assertIsDisplayed();
     }
 
     @Test

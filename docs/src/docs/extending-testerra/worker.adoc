@@ -1,0 +1,268 @@
+= Worker
+
+Testerra implements the `beforeInvocation()` and `afterInvocation()` methods of the TestNG `IInvokedMethodListener` interface and allows you to drop in concrete `Worker` classes to extend the functionality of the named methods.
+
+Testerra itself uses a worker pattern / approach to get things done in an ordered way.
+Therefore Testerra gives you the opportunity to implement the `Worker` interface and pass your concrete implementation into the framework to allow modifications or actions right before a test method will start or end.
+But there are some more points where you are able to inject a `Worker` implementation to get your own things done.
+
+.A simple Worker
+[source,java,]
+----
+
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.Worker;
+
+public class CustomWorker implements Worker {
+    //..
+}
+
+----
+
+For adding specified `Worker` implementation, Testerra provides some abstract Worker classes that you can extend, e.g. `MethodWorker`.
+
+== Before Method Worker
+
+"Before Method Worker" are based on the `MethodWorker` and executed right before your test method or test configuration method starts.
+For example we will print the test method name to our console log before the test starts.
+
+[source,java,]
+----
+
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+
+public class LogStartWorker extends MethodWorker {
+
+    @Override
+    public void run() {
+
+        final String testClassName = testMethod.getTestClass().getName();
+
+        if (isTest()) {
+            /*
+             * Test method
+             */
+            LOGGER.info("Starting test method: " + testClassName + "." + methodName);
+        } else {
+            /*
+             * Configuration methods
+             */
+            LOGGER.info("Starting configuration method: " + testClassName + "." + methodName);
+        }
+    }
+}
+----
+
+As you can see, the abstract class `MethodWorker` will ship with some helper methods like `isTest()` to determine if a test or a test configuration method was invoked.
+As you mention as well, you can use an already instantiated LOGGER object to use the default logger of Testerra.
+The `MethodWorker` will also give you some accessible class members, like `methodName` or the underlying TestNG `ITestResult`, which you can access with `testResult`.
+
+=== Register a Before Method Worker
+
+To register your implementation of a `MethodWorker` you have to call the TesterraListerner.
+It is best practice to register your worker as early as possible.
+So please take a look at the <<Hook>> section and register your `MethodWorker` in the `init()` method like shown below.
+
+.Registering a Before Method Worker
+[source,java]
+----
+TesterraListener.registerBeforeMethodWorker(LogStartWorker.class);
+----
+
+== After Method Worker
+
+The "After Method Worker" will work like the <<Before Method Worker>>, but at least they are called after the test method or test configuration method execution.
+
+NOTE: Please keep in mind, that any annotated `@AfterMethod` or similar configuration methods of TestNG will be called after your Worker!
+
+=== Register a After Method Worker
+
+You can register the After Method Worker by calling:
+
+[source,java]
+----
+TesterraListener.registerAfterMethodWorker(LogStartWorker.class);
+----
+
+== Generate Reports Worker
+
+The abstract class `GenerateReportsWorker` allows you to hop in the report creation process of Testerra and TestNG.
+This is the ideal point to create your own module reports, if you want to create them, and extending the default Testerra report.
+
+NOTE: The Testerra Report will be created AFTER all custom implementations of `GenerateReportsWorker` ran.
+
+.Create a own GenerateReportsWorker
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker
+
+public class CustomReportWorker extends GenerateReportsWorker {
+
+    @Override
+    public void run() {
+        /*
+         * Generate Report Methods here
+         */
+
+        // get test execution overall status
+        TestStatusController.Status status = ExecutionContextController.getCurrentExecutionContext().getStatus();
+    }
+}
+----
+
+The abstract `GenerateReportsWorker` provides you all information needed for creating custom reports based on TestNG objects.
+If you need to go deeper or need some more information about statistics, please feel free to use Testerra `ExecutionContextController` class.
+This controller class will give you access to all information about the test methods and the Testerra data model.
+
+=== Extending Testerra Report
+
+The Testerra default report is historically grown and built upon Velocity template engine and some outdated HTML design patterns.
+Right at the moment you're reading this, we have a ticket in our Backlog to create a new default report.
+Therefore this section of our documentation will only cover the current available basic functions.
+If you need something else, please feel free to create an issue.
+
+At first you have to store a Velocity template file in your project resource directory `src/main/resources`.
+In the example below you can see a basic template file, which includes all related Testerra resources and just print a Velocity context value.
+
+.template.vm
+[source,html]
+----
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>$tabTitle</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+        #parse("styleincludes.vm")
+        #parse("scriptincludes.vm")
+    </head>
+    <body>
+
+        #set($tabcontext = "t")
+        #parse("header.vm")
+
+        <div id="custom-tab-body">
+            <p>$tabExampleIntro</p>
+        </div>
+
+    </body>
+</html>
+----
+
+Now you can add value to your new template by creating and filling a new `VelocityContext` object.
+After filling up your context object, you should now add your custom report file to the Testerra report.
+
+The Best Practice here is, to use the `ReportUtils` in your `GenerateReportsWorker`.
+
+.GenerateReportsWorker
+[source,java]
+----
+public class CustomReportWorker extends GenerateReportsWorker {
+
+    @Override
+    public void run() {
+
+        // Fill up the velocity context
+        final VelocityContext context = new VelocityContext();
+        context.put("tabTitle", "My Custom Title");
+        context.put("tabExampleIntro", "My Custom Intro Message");
+
+        // append it to Testerra report
+        ReportUtils.addExtraTopLevelTab(
+                "template.vm", // Your template file
+                "template.html", // Relative target in report
+                "Custom", // Name of Tab displayed in report
+                "custom-tab", // HTML id of the navigation tab.
+                context, // Velocity Context object
+                true); // If true, your custom report is hidden in the hamburger menu int the top right corner.
+    }
+
+}
+----
+
+=== Register your custom reporting
+
+The last thing you have to do after creating your `GenerateReportsWorker` and your custom report files, is to inform Testerra about your worker.
+The Best Practice is as well as for any other `Worker` to use the `init()` method of your `ModuleHook`
+
+.ModuleHook
+[source,java]
+----
+TesterraListener.registerGenerateReportsWorker(CustomReportWorker.class);
+----
+
+== Test Method Intercept Worker
+
+All registered implementations of `TestMethodInterceptWorker` will be executed at the very beginning of executing a TestNG `Test` block, defined in TestNG suite files.
+To make anything clear: In the example below, all registered `TestMethodInterceptWorker` will be executed twice.
+Once per `<test>` block in this xml.
+
+NOTE: The `TesterraListener` implements the TestNG interface `IMethodInterceptor` and will register its own TestMethodInterceptWorker at the beginning, before adding custom implementations.
+
+.suite.xml
+[source,xml]
+----
+<suite name="UnitTestSuite" verbose="1" parallel="false">
+    <test name="testblock-one">
+        <!-- ... -->
+    </test>
+    <test name="testblock-two">
+        <!-- ... -->
+    </test>
+</suite>
+----
+
+With a implementation of `TestMethodInterceptWorker` you will be able to sort, filter, remove or add methods to the upcoming execution.
+By default Testerra will register the `OmitInDevelopmentMethodIntercept`, which is handling the passed in property value of {execution_omit_indevelopment}. Methods with <<InDevelopment, @InDevelopment>> will be excluded from execution completely.
+
+.Custom TestMethoInterceptWorker
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.TestMethodInterceptWorker
+
+public class LogMethodInterceptor extends TestMethodInterceptWorker {
+
+    @Override
+    public List<IMethodInstance> run() {
+
+        LOGGER.info("Will executing following methods in Test context: "
+            + iTestContext.getName());
+
+        for (IMethodInstance iMethodInstance : iMethodInstanceList) {
+            LOGGER.info("Method will be executed, because not removed from list: "
+                    + iMethodInstance.getMethod().getConstructorOrMethod().getName());
+        }
+
+        return iMethodInstanceList;
+    }
+}
+----
+
+As you can see in the example code snippet, Testerra will you give access to the current method list and the current test context as well as to a already instantiated logger.
+
+[#InDevelopment]
+== @InDevelopment
+This aforementioned annotations is further adjustable with the two attributes name and color.
+
+* name: change the shown text in the report. Default is `In Development`
+* color: change the background color of the shown text. Default is `#a7a5a5`. Values need to be valid for html colors:
+** name of the color, e.g. red
+** RGB values, e.g. rgb(255, 236, 139)
+** RGBA values, e.g. rgba(252, 156, 249, 0.75)
+** HSL values, e.g. hsl(217, 97%, 57%)
+** Hex values, e.g. #57c0ff
+
+=== Register a Test Method Intercept Worker
+
+As best practices stated out, you should register your `TestMethodInterceptWorker` by implementing a <<Hook>> and implementing its `init()` method.
+
+.Register TestMethodInterceptWorker
+[source,java]
+----
+TesterraListener.registerTestMethodInterceptWorker(LogMethodInterceptor.class);
+----
+
+
+
+
+
+

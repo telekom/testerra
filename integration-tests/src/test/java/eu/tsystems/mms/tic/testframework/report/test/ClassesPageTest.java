@@ -1,6 +1,5 @@
 package eu.tsystems.mms.tic.testframework.report.test;
 
-import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.AbstractReportTest;
@@ -19,9 +18,6 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by fakr on 31.05.2017.
- */
 @TestContext(name = "View-Classes")
 public class ClassesPageTest extends AbstractReportTest {
 
@@ -31,8 +27,8 @@ public class ClassesPageTest extends AbstractReportTest {
      * Checks whether the numbers of all testresults columns for a single testclass are correct
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    // Test case #825
     public void testT01_checkAllNumbersOfOneTest() {
-        //TODO sagu check all rows
         final String className = ReportTestUnderTestDependsOn.class.getSimpleName();
 
         final Map<TestResultHelper.TestResultClassesColumn, String> expectedClassesTableRowNumbers = new HashMap<>();
@@ -55,6 +51,7 @@ public class ClassesPageTest extends AbstractReportTest {
      *
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    // Test case #826
     public void testT02_checkClassIndicators() {
 
         final String successClass = ReportTestUnderTestPassed.class.getSimpleName();
@@ -70,10 +67,16 @@ public class ClassesPageTest extends AbstractReportTest {
      * Checks whether the "Hide passed Tests" Checkbox on the CLASSES Page is working.
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    // Test case #827
     public void testT03_checkHidePassedFilter() {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
-        classesPage.hidePassedTests();
-        classesPage.assertClassesAreDisplayedForHidePassedTestFilter();
+
+        classesPage.assertAllPassedClassesAreDisplayed();
+        classesPage.assertAllFailedClassesAreDisplayed();
+
+        classesPage.clickButtonToHidePassedTests();
+        classesPage.assertAllPassedClassesAreNotDisplayed();
+        classesPage.assertAllFailedClassesAreDisplayed();
     }
 
     /**
@@ -81,6 +84,7 @@ public class ClassesPageTest extends AbstractReportTest {
      * Checks whether the pageflow to ClassesDetailsPage by clicking on a testundertest class works
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    // Test case #828
     public void testT04_checkLinkToClassesDetails() {
         final String className = ReportTestUnderTestPassed.class.getSimpleName();
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
@@ -92,10 +96,10 @@ public class ClassesPageTest extends AbstractReportTest {
 
     /**
      * checkTesterraInformationIsDisplayed
-     * Checks whether the "XETA INFORMATION" is displayed
+     * Checks whether the "INFORMATION" is displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
-    @Fails(ticketString = "XETA-684")
+    // Test case #829
     public void testT05_checkTesterraInformationIsDisplayed() throws ParseException {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertTesterraInformationIsDisplayed();
@@ -106,6 +110,7 @@ public class ClassesPageTest extends AbstractReportTest {
      * Checks whether the legend symbols in the class table footer are displayed
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
+    // Test case #830
     public void testT06_checkLegendSymbolsAreDisplayed() {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         classesPage.assertAllLegendSymbolsAreDisplayed();

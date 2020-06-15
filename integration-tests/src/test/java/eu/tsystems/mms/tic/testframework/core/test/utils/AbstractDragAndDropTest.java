@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,9 +27,6 @@ import org.openqa.selenium.WebDriver;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
 
-/**
- * Created by pele on 21.12.2015.
- */
 public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
 
     final By sourceLocatorSimple = By.id("dragLogo");
@@ -50,7 +45,7 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
         final WebDriver driver = getDriver();
         GuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorSimple);
         GuiElement destinationGuiElement = new GuiElement(driver, By.id("divRectangle"));
-        return new GuiElement[] { sourceGuiElement, destinationGuiElement };
+        return new GuiElement[]{sourceGuiElement, destinationGuiElement};
     }
 
     private GuiElement[] beforeDragAndDropFrames() {
@@ -61,7 +56,7 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
 
         GuiElement sourceGuiElement = new GuiElement(driver, sourceLocatorFrames, leftFrame);
         GuiElement destinationGuiElement = new GuiElement(driver, By.id("dropTarget"), rightFrame);
-        return new GuiElement[] { sourceGuiElement, destinationGuiElement };
+        return new GuiElement[]{sourceGuiElement, destinationGuiElement};
     }
 
     private void checkResultSimple(GuiElement destinationGuiElement) {
@@ -77,8 +72,9 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
     @Test
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
     public void testT01_DragAndDrop() {
-        if (this instanceof DragAndDropWDActionsTest) {
-            throw new SkipException("Skipped. Would end up in a watchdog bite while mouseMove");
+
+        if (!(this instanceof DragAndDropJSTest)) {
+            throw new SkipException("Skipped. We only support DragAndDropJs");
         }
 
         final GuiElement[] guiElements = beforeDragAndDropSimple();
@@ -95,19 +91,21 @@ public abstract class AbstractDragAndDropTest extends AbstractTestSitesTest {
 
     @Test
     @Fails(validFor = "unsupportedBrowser=true", description = "Does not work in this browser!")
-    public void testT2_DragAndDropOverFrames() throws Exception {
-        if (this instanceof DragAndDropWDActionsTest) {
-            throw new SkipException("Skipped. Would end up in a watchdog bite while mouseMove");
+    public void testT2_DragAndDropOverFrames() {
+
+        if (!(this instanceof DragAndDropJSTest)) {
+            throw new SkipException("Skipped. We only support DragAndDropJs");
         }
+
+        WebDriver driver = getDriver();
+        visitTestPage(driver, TestPage.DRAG_AND_DROP_OVER_FRAMES);
 
         final GuiElement[] guiElements = beforeDragAndDropFrames();
 
         GuiElement sourceGuiElement = guiElements[0];
         GuiElement destinationGuiElement = guiElements[1];
 
-        WebDriver driver = getDriver();
         execute(driver, sourceGuiElement, destinationGuiElement);
-
         checkResultFrames(destinationGuiElement);
     }
 

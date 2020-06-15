@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Report- TestsUnderTest" verbose="1" parallel="methods" configfailurepolicy="continue" thread-count="10" data-provider-thread-count="10">
 
     <test name="Passed Creator">
@@ -86,6 +86,12 @@
     <test name="Annotation Creator">
         <classes>
             <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestAnnotations"/>
+        </classes>
+    </test>
+
+    <test name="AssertCollector Creator">
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestAssertCollector"/>
         </classes>
     </test>
 

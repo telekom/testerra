@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,18 +26,21 @@ package eu.tsystems.mms.tic.testframework.internal;
  */
 public final class Constants {
 
-    /** Hidden constructor. */
+    /**
+     * Hidden constructor.
+     */
     private Constants() {
     }
 
-    /** Screenshots path relative to report index file. */
+    /**
+     * Screenshots path relative to report index file.
+     */
     public static final String SCREENSHOTS_PATH = "screenshots/";
 
-    /** Screen references path relative to report index file. */
+    /**
+     * Screen references path relative to report index file.
+     */
     public static final String SCREENREFERENCES_PATH = "screenreferences";
-
-    public static final String DYNATRACE_LOGGER_DECORATOR_CLASS = "eu.tsystems.mms.tic.testframework.bmp.dynatrace.DynatraceLoggingDecorator";
-    public static final String DYNATRACE_LOGGER_CLASS = "eu.tsystems.mms.tic.testframework.bmp.dynatrace.DynaTraceLogger";
 
     public static int IE_SCREENSHOT_LIMIT = 1200;
 }

@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,10 +17,11 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
@@ -36,12 +35,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by piet on 02.12.16.
- */
 final public class ClassFinder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClassFinder.class);
@@ -60,6 +60,10 @@ final public class ClassFinder {
 
     private static final String PROJECT_PACKAGE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE,
             TesterraCommons.DEFAULT_PACKAGE_NAME);
+
+    private ClassFinder() {
+
+    }
 
     private static class Caches {
 
@@ -151,13 +155,11 @@ final public class ClassFinder {
             if (matchesOurAnyOfPatterns(resPart)) {
                 // prefixed classes with existing and matching res part
                 prioritizedClassInfos.getPrefixedClasses().add(new ResolutionClassInfo<>(subClass, resPart));
-            }
-            else if (StringUtils.isStringEmpty(resPart)) {
+            } else if (StringUtils.isStringEmpty(resPart)) {
                 // prefixed classes without res part
                 prioritizedClassInfos.setPrefixedBaseClass(subClass);
             }
-        }
-        else if (classname.startsWith(baseClassName)) {
+        } else if (classname.startsWith(baseClassName)) {
             String resPart = classname.replace(baseClassName, "");
             if (matchesOurAnyOfPatterns(resPart)) {
                 // non-prefixed classes with existing and matching res part
@@ -170,11 +172,11 @@ final public class ClassFinder {
         if (StringUtils.isStringEmpty(resPartOfClassName)) {
             return false;
         }
-        if (    resPartOfClassName.matches(PATTERN_LOW) ||
+        if (resPartOfClassName.matches(PATTERN_LOW) ||
                 resPartOfClassName.matches(PATTERN_MID) ||
                 resPartOfClassName.matches(PATTERN_HI) ||
                 resPartOfClassName.matches(PATTERN_RES)
-                ) {
+        ) {
             return true;
         }
         return false;
@@ -258,7 +260,7 @@ final public class ClassFinder {
 
         // base class
         if (bestMatchingClass == null) {
-            if (prioritizedClassInfos.baseClass!= null) {
+            if (prioritizedClassInfos.baseClass != null) {
                 bestMatchingClass = (Class<T>) prioritizedClassInfos.baseClass;
             }
         }
@@ -295,10 +297,6 @@ final public class ClassFinder {
 
         public List<ResolutionClassInfo<T>> getNonPrefixedClasses() {
             return nonPrefixedClasses;
-        }
-
-        public Class<T> getBaseClass() {
-            return baseClass;
         }
 
         public void setBaseClass(Class<T> baseClass) {
@@ -360,8 +358,7 @@ final public class ClassFinder {
             String rightValue = split[2];
             if (KEYWORD_RES.equals(leftValue)) {
                 throw new NotYetImplementedException();
-            }
-            else {
+            } else {
                 if (!KEYWORD_MIN.equals(leftValue)) {
                     resLowerLimit = Integer.valueOf(leftValue.replace(KEYWORD_PIXEL, ""));
                 }

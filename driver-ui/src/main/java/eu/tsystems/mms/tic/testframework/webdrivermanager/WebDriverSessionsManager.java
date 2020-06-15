@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-import eu.tsystems.mms.tic.testframework.utils.ArrayUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import org.openqa.selenium.WebDriver;
@@ -56,9 +53,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverFactory.wrapRawWebDriverWithEventFiringWebDriver;
 
-/**
- * Created by pele on 08.01.2015.
- */
 public final class WebDriverSessionsManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverSessionsManager.class);
@@ -82,6 +76,10 @@ public final class WebDriverSessionsManager {
     private static final String FULL_SESSION_KEY_SPLIT_MARKER = "___";
 
     static final Map<EventFiringWebDriver, WebDriverRequest> DRIVER_REQUEST_MAP = new ConcurrentHashMap<>();
+
+    private WebDriverSessionsManager() {
+
+    }
 
     private static String getFullSessionKey(String sessionKey) {
         Thread currentThread = Thread.currentThread();
@@ -124,7 +122,7 @@ public final class WebDriverSessionsManager {
         final String sessionId = WebDriverUtils.getSessionId(eventFiringWebDriver);
         if (sessionId != null) {
             ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.put(sessionId, sessionContext);
-            LOGGER.debug("Stored SessionContext " + sessionContext + " for session " + sessionId);
+            LOGGER.trace("Stored SessionContext " + sessionContext + " for session " + sessionId);
         } else {
             LOGGER.error("Could not store SessionContext, could not get SessionId");
         }
@@ -217,8 +215,8 @@ public final class WebDriverSessionsManager {
         List<WebDriver> webDriversFromThread = getWebDriversFromThread(threadId);
 
         for (WebDriver eventFiringWebDriver : webDriversFromThread) {
-            String sessionId = getSessionKey(eventFiringWebDriver);
-            LOGGER.debug("Shutting down WebDriver session: " + getFullSessionKey(sessionId));
+            String sessionKey = getSessionKey(eventFiringWebDriver);
+            LOGGER.info(String.format("Shutting down %s (session key=%s)", eventFiringWebDriver.getClass().getSimpleName(), sessionKey));
 
             beforeQuitActions.forEach(webDriverSessionHandler -> {
                 try {
@@ -232,7 +230,7 @@ public final class WebDriverSessionsManager {
             WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
 
             // remove links
-            removeWebDriverSession(sessionId, eventFiringWebDriver, null);
+            removeWebDriverSession(sessionKey, eventFiringWebDriver, null);
 
             afterQuitActions.forEach(runnable -> {
                 try {
@@ -253,10 +251,19 @@ public final class WebDriverSessionsManager {
             WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
         }
 
+        for (String key : ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.keySet()) {
+            LOGGER.info("Quitting exclusive ebdriver session: " + key);
+            WebDriver eventFiringWebDriver = ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.get(key);
+
+            WebDriverManagerUtils.quitWebDriverSession(eventFiringWebDriver);
+        }
+
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS.clear();
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_INVERSE.clear();
 
         ALL_EVENTFIRING_WEBDRIVER_SESSIONS_WITH_THREADID.clear();
+
+        ALL_EXCLUSIVE_EVENTFIRING_WEBDRIVER_SESSIONS.clear();
     }
 
     /**
@@ -308,10 +315,11 @@ public final class WebDriverSessionsManager {
          */
         String sessionId = WebDriverUtils.getSessionId(eventFiringWebDriver);
         SessionContext sessionContext = ALL_EVENTFIRING_WEBDRIVER_SESSIONS_CONTEXTS.get(sessionId);
-        ExecutionContextController.EXECUTION_CONTEXT.exclusiveSessionContexts.add(sessionContext);
-        sessionContext.parentContext = ExecutionContextController.EXECUTION_CONTEXT;
+        ExecutionContextController.getCurrentExecutionContext().exclusiveSessionContexts.add(sessionContext);
+        sessionContext.parentContext = ExecutionContextController.getCurrentExecutionContext();
         // fire sync
         TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                .addUserData()
                 .addData(TesterraEventDataType.CONTEXT, sessionContext));
 
         /*
@@ -374,9 +382,6 @@ public final class WebDriverSessionsManager {
             webDriverRequest.sessionKey = sessionKey;
         }
 
-        /*
-        get browser
-         */
         /**
          * Browser global setting.
          */
@@ -418,7 +423,7 @@ public final class WebDriverSessionsManager {
         }
 
         /*
-        **** STARTING NEW SESSION ****
+         **** STARTING NEW SESSION ****
          */
 
         /*
@@ -442,8 +447,9 @@ public final class WebDriverSessionsManager {
 
             // fire sync
             TesterraEventService.getInstance().fireEvent(
-                new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addData(TesterraEventDataType.CONTEXT, sessionContext)
+                    new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                            .addUserData()
+                            .addData(TesterraEventDataType.CONTEXT, sessionContext)
             );
 
             /*
@@ -464,8 +470,9 @@ public final class WebDriverSessionsManager {
 
             // fire sync again, for updated sessionContext
             TesterraEventService.getInstance().fireEvent(
-                new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addData(TesterraEventDataType.CONTEXT, sessionContext)
+                    new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                            .addUserData()
+                            .addData(TesterraEventDataType.CONTEXT, sessionContext)
             );
 
             return eventFiringWebDriver;
@@ -475,8 +482,8 @@ public final class WebDriverSessionsManager {
     }
 
     @Deprecated
-    static void registerWebDriverFactory(IWebDriverFactory webDriverFactory, String... browsers) {
-        LOGGER.debug("Registering " + webDriverFactory.getClass().getSimpleName() + " for browsers " + ArrayUtils.join(browsers, ","));
+    static void registerWebDriverFactory(WebDriverFactory webDriverFactory, String... browsers) {
+        LOGGER.debug("Register " + webDriverFactory.getClass().getSimpleName() + " for browsers " + String.join(", ", browsers));
 
         for (String browser : browsers) {
             WEB_DRIVER_FACTORIES.put(browser, webDriverFactory);

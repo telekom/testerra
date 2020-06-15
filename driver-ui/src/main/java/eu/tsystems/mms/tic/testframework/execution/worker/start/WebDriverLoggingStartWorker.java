@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,15 +20,13 @@ package eu.tsystems.mms.tic.testframework.execution.worker.start;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 
-/**
- * Created by pele on 19.01.2017.
- */
 public class WebDriverLoggingStartWorker extends MethodWorker implements Loggable {
 
     @Override
@@ -49,7 +45,7 @@ public class WebDriverLoggingStartWorker extends MethodWorker implements Loggabl
                 if (executingSeleniumHost.contains("\n")) {
                     msg += "\n";
                 }
-                log().debug(msg + executingSeleniumHost);
+                log().info(msg + executingSeleniumHost);
 
                 // log browser
                 long threadId = Thread.currentThread().getId();

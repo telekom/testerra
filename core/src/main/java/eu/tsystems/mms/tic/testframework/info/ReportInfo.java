@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,14 +23,17 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Created by pele on 31.05.2016.
- */
 public class ReportInfo {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportInfo.class);
 
+    // private
+    private ReportInfo() {
+
+    }
+
     public static abstract class Info {
+
         public abstract boolean hasInfos();
     }
 
@@ -165,15 +166,19 @@ public class ReportInfo {
     }
 
     public static class MethodInfo extends KeyValueInfo {
+
     }
 
     public static class RunInfo extends KeyValueInfo {
+
     }
 
     public static class DashboardInfo extends PriorityInfo {
+
     }
 
     public static class DashboardWarning extends PriorityInfo {
+
     }
 
     private static final ThreadLocal<MethodInfo> currentMethodInfo = new ThreadLocal<>();

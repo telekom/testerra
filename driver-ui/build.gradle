@@ -12,6 +12,7 @@ dependencies {
 
     implementation 'com.sun.jersey:jersey-client:1.19.3'
     implementation 'org.json:json:20140107'
+    implementation 'com.google.code.gson:gson:2.6.2'
     implementation 'commons-codec:commons-codec:1.13'
     implementation 'commons-collections:commons-collections:3.2.2'
     implementation 'org.reflections:reflections:0.9.12'
@@ -20,3 +21,5 @@ dependencies {
 test {
     exclude '**'
 }
+
+apply from: rootProject.file('release-bintray.gradle')

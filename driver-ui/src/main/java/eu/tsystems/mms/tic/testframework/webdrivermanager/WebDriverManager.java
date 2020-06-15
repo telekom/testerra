@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,13 +14,6 @@
  * Contributors:
  *     Peter Lehmann
  *     pele
- */
-/*
- * Created on 09.01.2012
- *
- * Copyright(c) 2011 - 2012 T-Systems Multimedia Solutions GmbH
- * Riesaer Str. 5, 01129 Dresden
- * All rights reserved.
  */
 package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
@@ -41,11 +32,12 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +50,8 @@ import java.util.Map;
  * @todo Migrate to {@link DefaultWebDriverManager}
  */
 public final class WebDriverManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverManager.class);
 
     static {
         UITestUtils.initializePerfTest();
@@ -224,26 +218,6 @@ public final class WebDriverManager {
         WebDriverSessionsAfterMethodWorker.register(webDriverSessionHandler);
     }
 
-
-    /**
-     * Introduce own Webdriver and Selenium drivers.
-     *
-     * @param sessionKey .
-     * @param driver     .
-     */
-    public static void introduceDrivers(final String sessionKey, final WebDriver driver) {
-        introduceWebDriver(sessionKey, driver);
-    }
-
-    /**
-     * Introduce own Webdriver and Selenium drivers.
-     *
-     * @param driver   .
-     */
-    public static void introduceDrivers(final WebDriver driver) {
-        introduceDrivers(DEFAULT_SESSION_KEY, driver);
-    }
-
     /**
      * Introduce an own webdriver object. Selenium session will be released in this case.
      *
@@ -318,7 +292,7 @@ public final class WebDriverManager {
      * @return .
      */
     public static WebDriverManagerConfig config() {
-        if (webdriverManagerConfig==null) {
+        if (webdriverManagerConfig == null) {
             webdriverManagerConfig = new WebDriverManagerConfig();
         }
         return webdriverManagerConfig;
@@ -329,8 +303,10 @@ public final class WebDriverManager {
      *
      * @return true is js is activated, false otherwise
      */
-    public static boolean isJavaScriptActivated(final String sessionId) {
-        return pIsJavaScriptActivated(sessionId);
+    public static boolean isJavaScriptActivated(final WebDriver driver) {
+
+
+        return pIsJavaScriptActivated(driver);
     }
 
     /**
@@ -338,35 +314,22 @@ public final class WebDriverManager {
      *
      * @return true is js is activated, false otherwise
      */
-    public static boolean isJavaScriptActivatedInDefaultSession() {
-        return pIsJavaScriptActivated(DEFAULT_SESSION_KEY);
-    }
+    private static boolean pIsJavaScriptActivated(final WebDriver driver) {
 
-    /**
-     * Returns a boolean status of the javascript activation in the browser.
-     *
-     * @return true is js is activated, false otherwise
-     */
-    private static boolean pIsJavaScriptActivated(final String sessionId) {
-        final WebDriver driver = getWebDriver(sessionId);
-        RemoteWebDriver rawDriver;
-        if (driver instanceof RemoteWebDriver) {
-            rawDriver = (RemoteWebDriver) driver;
-        }
-        else if (driver instanceof EventFiringWebDriver){
-            rawDriver = (RemoteWebDriver) ((EventFiringWebDriver) driver).getWrappedDriver();
-        }
-        else {
-            throw new TesterraSystemException("WebDriver object is not a RemoteWebDriver");
+        JavascriptExecutor rawJsExecutorDriver;
+        if (driver instanceof JavascriptExecutor) {
+            rawJsExecutorDriver = (JavascriptExecutor) driver;
+        } else {
+            throw new TesterraSystemException("WebDriver object is not a JavascriptExecutor");
         }
 
         try {
-            rawDriver.executeScript("return true;");
+            rawJsExecutorDriver.executeScript("return true;");
         } catch (final WebDriverException e) {
-                /*
-                 * Javascript is not running. This call is throwing org.openqa.SELENIUM_MAP.WebDriverException: waiting
-                 * for evaluate.js load failed
-                 */
+            /*
+             * Javascript is not running. This call is throwing org.openqa.SELENIUM_MAP.WebDriverException: waiting
+             * for evaluate.js load failed
+             */
             return false;
         }
         return true;
@@ -438,6 +401,7 @@ public final class WebDriverManager {
      * Are you sure you want do that?? This action quits all browser sessions in all threads.
      */
     public static void forceShutdownAllThreads() {
+        LOGGER.debug("Forcing all WebDrivers to shutdown (close all windows)");
         pRealShutdownAllThreads(true);
     }
 

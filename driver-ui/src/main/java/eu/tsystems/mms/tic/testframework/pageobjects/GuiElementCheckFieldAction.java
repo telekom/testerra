@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,9 +29,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by rnhb on 17.12.2015.
- */
 public class GuiElementCheckFieldAction extends CheckFieldAction {
 
     private final static PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
@@ -77,11 +72,11 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                 break;
             case IS_NOT_PRESENT:
                 if (findNot) {
-//                    if (fast) {
-//                        assertGuiElement.assertIsPresentFast();
-//                    } else {
-//                        assertGuiElement.assertIsPresent();
-//                    }
+                    //                    if (fast) {
+                    //                        assertGuiElement.assertIsPresentFast();
+                    //                    } else {
+                    //                        assertGuiElement.assertIsPresent();
+                    //                    }
                     log().warn(errorMessageNotNot);
                 } else {
                     guiElement.present().isFalse();
@@ -143,7 +138,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
 
                 if (!StringUtils.isStringEmpty(sessionId)) {
                     // do only search for the gui element if JS is disabled
-                    if (WebDriverManager.isJavaScriptActivated(sessionId)) {
+                    if (WebDriverManager.isJavaScriptActivated(driver)) {
                         execute = false;
                     }
                 }

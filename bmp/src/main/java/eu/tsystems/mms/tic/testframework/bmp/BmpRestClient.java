@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -51,6 +49,10 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+/**
+ * @deprecated Please see Testerra bup module - BrowserUpRemoteProxyManager
+ */
+@Deprecated
 public class BmpRestClient implements Loggable {
 
     private URL upstreamProxy;

@@ -1,6 +1,4 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +13,7 @@
  *
  * Contributors:
  *     Peter Lehmann
- *     pele
+ *     Eric Kubenka
  */
 package eu.tsystems.mms.tic.testframework.utils;
 
@@ -27,31 +25,23 @@ import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by peter on 16.06.14.
- */
 public class Timer {
 
     private static Logger LOGGER = LoggerFactory.getLogger(Timer.class);
 
-    private long startTime = 0;
-    private long sleepTimeInMs = 1000;
     private static final long SLEEP_TIME_IN_MS_MININMAL = 50;
-    private long durationInMs = 15000;
     private static final long DURATION_IN_MS_MINIMAL = 100;
+
+    private long startTime = 0;
+    private long sleepTimeInMs;
+    private long durationInMs;
     private String errorMessage;
 
     /**
-     * starts timer
-     */
-    public Timer() {
-    }
-
-    /**
-     * timer with sleeptime
+     * Creates new {@link Timer}. Will sleep for sleepTimeInMs for maximum durationInMs
      *
-     * @param sleepTimeInMs .
-     * @param durationInMs  .
+     * @param sleepTimeInMs How long to sleep in milliseconds
+     * @param durationInMs  Maximum Duration of Sleep
      */
     public Timer(long sleepTimeInMs, long durationInMs) {
         if (sleepTimeInMs > durationInMs) {
@@ -63,7 +53,8 @@ public class Timer {
     }
 
     /**
-     * The Sequence abstract to define a sequence within the run method. The Type declaration defines the return object type.
+     * The Sequence abstract to define a sequence within the run method.
+     * The Type declaration defines the return object type.
      *
      * @param <T>
      */
@@ -149,7 +140,6 @@ public class Timer {
      *
      * @param <T>      .
      * @param sequence .
-     *
      * @return .
      */
     public <T> ThrowablePackedResponse<T> executeSequence(Sequence<T> sequence) {

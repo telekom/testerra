@@ -41,19 +41,19 @@ public interface Report {
         }
         @Override
         public Double asDouble() {
-            return PropertyManager.parser.getDoubleProperty(toString(), defaultValue);
+            return PropertyManager.getParser().getDoubleProperty(toString(), defaultValue);
         }
         @Override
         public Long asLong() {
-            return PropertyManager.parser.getLongProperty(toString(), defaultValue);
+            return PropertyManager.getParser().getLongProperty(toString(), defaultValue);
         }
         @Override
         public Boolean asBool() {
-            return PropertyManager.parser.getBooleanProperty(toString(), defaultValue);
+            return PropertyManager.getParser().getBooleanProperty(toString(), defaultValue);
         }
         @Override
         public String asString() {
-            return PropertyManager.parser.getProperty(toString(), defaultValue);
+            return PropertyManager.getParser().getProperty(toString(), defaultValue);
         }
     }
     /**
@@ -67,4 +67,14 @@ public interface Report {
     Report addVideo(Video video, Mode mode);
     Video provideVideo(File file, Mode mode);
     File finalizeReport();
+
+    File getReportDirectory();
+
+    /**
+     * @param childName Child directory or file name
+     * @return Final report sub directory defined by the user
+     */
+    default File getReportDirectory(String childName) {
+        return new File(getReportDirectory(), childName);
+    }
 }

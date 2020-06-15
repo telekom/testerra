@@ -244,9 +244,7 @@ public class LayoutComparator {
     }
 
     private void loadProperties() {
-        minimalSizeDifferenceOfSubImages = PropertyManager.getIntProperty(
-                TesterraProperties.LAYOUTCHECK_MIN_SIZE_DIFFERENCE_SUB_IMAGES,
-                DefaultParameter.LAYOUTCHECK_MIN_SIZE_DIFFERENCE_SUB_IMAGES);
+        minimalSizeDifferenceOfSubImages = LayoutCheck.Properties.MIN_SIZE_DIFFERENCE_SUB_IMAGES.asLong().intValue();
     }
 
     private static Mat loadImageFromFile(final String absoluteFileName) throws FileNotFoundException {

@@ -74,8 +74,8 @@ public final class ReportUtils {
      */
     public static void copyReportResources() {
 
-        Report report = new Report();
-        final File targetDir = report.getReportDirectory(Report.FRAMES_FOLDER_NAME);
+        Report report = Testerra.injector.getInstance(Report.class);
+        final File targetDir = report.getReportDirectory(StaticReport.FRAMES_FOLDER_NAME);
 
         String[] resources = new String[]{
                 "js/kis/main.js",
@@ -328,7 +328,7 @@ public final class ReportUtils {
         /*
          * main report index.html
          */
-        Report report = new Report();
+        Report report = Testerra.injector.getInstance(Report.class);
         final File reportFileIndex = report.getReportDirectory("index.html");
         ReportFormatter.createTestClassesView(reportFileIndex, reportingData.classContexts, "index.vm", null, null);
 
@@ -450,7 +450,6 @@ public final class ReportUtils {
             throw new TesterraSystemException("Report generation took too long", e);
         }
 
-        Report report = Testerra.injector.getInstance(Report.class);
         File finalDirectory = report.finalizeReport();
         LOGGER.info("Report written to " + finalDirectory.getAbsolutePath());
     }

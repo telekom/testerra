@@ -23,7 +23,6 @@ import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -72,7 +71,7 @@ public class TestStatusController {
         statusMap.put("TestsFailed", testsFailed);
 
         statusMap.put("FailureCorridorActive", Flags.FAILURE_CORRIDOR_ACTIVE);
-        statusMap.put("DryRun", Flags.DRY_RUN);
+        statusMap.put("DryRun", Testerra.Properties.DRY_RUN.asString());
 
         statusMap.put("Status", getCurrentExecutionContext().getStatus());
         statusMap.put("StatusBool", getCurrentExecutionContext().getStatus() == Status.PASSED);

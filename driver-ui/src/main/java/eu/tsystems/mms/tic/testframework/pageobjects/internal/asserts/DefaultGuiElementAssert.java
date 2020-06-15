@@ -17,16 +17,11 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
-import eu.tsystems.mms.tic.testframework.layout.LayoutCheckException;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Arrays;
 
 public class DefaultGuiElementAssert implements GuiElementAssert {

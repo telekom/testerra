@@ -168,9 +168,7 @@ public class DistanceGraph {
      * potentially be improved by changing some parameters.
      */
     public void checkForParameterWarnings() {
-         distanceBetweenMultipleMatchesToProduceWarning = PropertyManager.getDoubleProperty(
-                 TesterraProperties.LAYOUTCHECK_DISTANCE_MULTIPLE_MATCHES,
-                 DefaultParameter.LAYOUTCHECK_DISTANCE_MULTIPLE_MATCHES);
+         distanceBetweenMultipleMatchesToProduceWarning = LayoutCheck.Properties.DISTANCE_MULTIPLE_MATCHES.asDouble();
 
         HashSet<Edge> warnedEdges = new HashSet<Edge>();
         for (TemplateNode templateNode : templateNodes) {
@@ -205,9 +203,7 @@ public class DistanceGraph {
      * This method tries to detect such a case and adjust both coordinate systems.
      */
     public void incorporateSubImageDisplacement() {
-        minimumSimilarMovementErrorsForDisplacementCorrection = PropertyManager.getDoubleProperty(
-                TesterraProperties.LAYOUTCHECK_MIN_SIMULAR_MOVEMENT_ERRORS,
-                DefaultParameter.LAYOUTCHECK_MIN_SIMULAR_MOVEMENT_ERRORS);
+        minimumSimilarMovementErrorsForDisplacementCorrection = LayoutCheck.Properties.MIN_SIMULAR_MOVEMENT_ERRORS.asDouble();
 
         GroupMovementDetector groupMovementDetector = new GroupMovementDetector();
         List<List<ElementMovedError>> movementErrorGroups = groupMovementDetector.getMovementErrorGroups(this);

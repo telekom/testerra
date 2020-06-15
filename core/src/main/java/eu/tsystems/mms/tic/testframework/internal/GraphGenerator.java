@@ -17,7 +17,8 @@
  */
 package eu.tsystems.mms.tic.testframework.internal;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -28,7 +29,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.ui.RectangleInsets;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -121,7 +122,7 @@ public final class GraphGenerator {
      * @throws IOException
      */
     public static File saveGraphAsJPEG(JFreeChart chart, String relativeFileName, int width, int height) throws IOException {
-        Report report = new Report();
+        Report report = Testerra.injector.getInstance(Report.class);
         File graphFile = report.getReportDirectory(relativeFileName);
         File dir = graphFile.getParentFile();
         if (!dir.exists()) {

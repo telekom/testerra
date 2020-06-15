@@ -17,9 +17,10 @@
 */
 package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
 import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
@@ -66,7 +67,7 @@ public class ThreadVisualizer {
         }
 
         // copy
-        Report report = new Report();
+        Report report = Testerra.injector.getInstance(Report.class);
         ReportUtils.copyFile(css, report.getReportDirectory());
         ReportUtils.copyFile(js, report.getReportDirectory());
 

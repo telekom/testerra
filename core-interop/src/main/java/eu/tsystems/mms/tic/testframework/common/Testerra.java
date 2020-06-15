@@ -64,19 +64,19 @@ public class Testerra {
 
         @Override
         public Double asDouble() {
-            return PropertyManager.parser.getDoubleProperty(toString(),defaultValue);
+            return PropertyManager.getParser().getDoubleProperty(toString(),defaultValue);
         }
         @Override
         public Long asLong() {
-            return PropertyManager.parser.getLongProperty(toString(), defaultValue);
+            return PropertyManager.getParser().getLongProperty(toString(), defaultValue);
         }
         @Override
         public Boolean asBool() {
-            return PropertyManager.parser.getBooleanProperty(toString(), defaultValue);
+            return PropertyManager.getParser().getBooleanProperty(toString(), defaultValue);
         }
         @Override
         public String asString() {
-            return PropertyManager.parser.getProperty(toString(), defaultValue);
+            return PropertyManager.getParser().getProperty(toString(), defaultValue);
         }
     }
 

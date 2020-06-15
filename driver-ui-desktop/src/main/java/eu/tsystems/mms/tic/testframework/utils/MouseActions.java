@@ -18,7 +18,6 @@
 package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -131,7 +130,7 @@ public final class MouseActions {
         JSUtils.executeScript(driver, script, drag, drop, fromX, fromY, toX, toY);
     }
 
-    public static void swipeElement(GuiElementData data, int offsetX, int offsetY) {
+    public static void swipeElement(GuiElement elementToSwipe, int offsetX, int offsetY) {
 
         WebDriver driver = elementToSwipe.getWebDriver();
         Point location = elementToSwipe.getLocation();
@@ -147,7 +146,7 @@ public final class MouseActions {
 
         JSUtils.implementJavascriptOnPage(driver, "js/inject/dragAndDrop.js", "TesterraDragAndDrop");
         final String script = "TesterraSwipe(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);";
-        JSUtils.executeScript(driver, script, webElement, fromX, fromY, toX, toY);
+        JSUtils.executeScript(driver, script, elementToSwipe.getWebElement(), fromX, fromY, toX, toY);
     }
 
 }

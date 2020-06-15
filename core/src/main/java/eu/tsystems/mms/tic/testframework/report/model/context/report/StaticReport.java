@@ -53,7 +53,7 @@ public class StaticReport implements Report, Loggable {
         FileUtils fileUtils = new FileUtils();
         String relativeReportDir = Properties.BASE_DIR.asString();
         REPORT_DIRECTORY = fileUtils.createTempDir(relativeReportDir);
-        log().debug("Preparing report in " + StaticReport.REPORT_DIRECTORY.getAbsolutePath());
+        log().debug("Prepare report in " + REPORT_DIRECTORY.getAbsolutePath());
 
         FRAMES_DIRECTORY = new File(REPORT_DIRECTORY, FRAMES_FOLDER_NAME);
         METHODS_DIRECTORY = new File(FRAMES_DIRECTORY, METHODS_FOLDER_NAME);
@@ -85,11 +85,12 @@ public class StaticReport implements Report, Loggable {
     }
 
     public File finalizeReport() {
-        String relativeReportDir = Properties.BASE_DIR.asString();
-        File finalReportDirectory = new File(relativeReportDir);
+        String relativeReportDirString = Properties.BASE_DIR.asString();
+        File finalReportDirectory = new File(relativeReportDirString);
         try {
             FileUtils.deleteDirectory(finalReportDirectory);
             FileUtils.moveDirectory(REPORT_DIRECTORY, finalReportDirectory);
+            REPORT_DIRECTORY = finalReportDirectory;
         } catch (IOException e) {
             throw new TesterraRuntimeException("Could not move report dir: " + e.getMessage(), e);
         }
@@ -139,5 +140,12 @@ public class StaticReport implements Report, Loggable {
         Video video = new Video(file);
         addVideo(video, mode);
         return video;
+    }
+
+    /**
+     * @return Final report directory defined by the user
+     */
+    public File getReportDirectory() {
+        return REPORT_DIRECTORY;
     }
 }

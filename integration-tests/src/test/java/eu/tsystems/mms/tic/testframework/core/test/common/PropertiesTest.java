@@ -52,22 +52,22 @@ public class PropertiesTest extends TesterraTest {
 
         @Override
         public Double asDouble() {
-            return PropertyManager.parser.getDoubleProperty(property, defaultValue);
+            return PropertyManager.getParser().getDoubleProperty(property, defaultValue);
         }
 
         @Override
         public Long asLong() {
-            return PropertyManager.parser.getLongProperty(property, defaultValue);
+            return PropertyManager.getParser().getLongProperty(property, defaultValue);
         }
 
         @Override
         public Boolean asBool() {
-            return PropertyManager.parser.getBooleanProperty(property, defaultValue);
+            return PropertyManager.getParser().getBooleanProperty(property, defaultValue);
         }
 
         @Override
         public String asString() {
-            return PropertyManager.parser.getProperty(property, defaultValue);
+            return PropertyManager.getParser().getProperty(property, defaultValue);
         }
     }
 

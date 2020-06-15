@@ -104,7 +104,7 @@ public final class TestEvidenceCollector {
 
     public static void logInfo() {
         LOGGER.trace("Collectors: Screenshots=" + SCREENSHOT_COLLECTORS.size() + ", Sources=" + SOURCE_COLLECTORS.size() + ", Videos: " + VIDEO_COLLECTORS.size());
-        LOGGER.debug("ScreenCaster enabled=" + Flags.SCREENCASTER_ACTIVE + ", Screenshotter enabled=" + Flags.SCREENSHOTTER_ACTIVE);
+        LOGGER.debug("ScreenCaster enabled=" + Report.Properties.SCREENCASTER_ACTIVE.asBool() + ", Screenshotter enabled=" + Report.Properties.SCREENSHOTTER_ACTIVE.asBool());
     }
 
 }

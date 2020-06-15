@@ -20,20 +20,19 @@ package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorkerExecutor;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.TestEndEventWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateXmlReportWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateOtherOutputsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateTesterraReportWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.TestEndEventWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
@@ -108,7 +107,7 @@ public class GenerateReport {
             // run workers
             workerExecutor.run(xmlSuites, suites, outputDirectory, xmlReporter);
 
-            Report report = new Report();
+            Report report = Testerra.injector.getInstance(Report.class);
             File finalDirectory = report.finalizeReport();
             LOGGER.info("Report written to " + finalDirectory.getAbsolutePath());
 

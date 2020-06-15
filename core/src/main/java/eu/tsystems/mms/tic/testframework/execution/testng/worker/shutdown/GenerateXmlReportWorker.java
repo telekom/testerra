@@ -17,11 +17,14 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.Report;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
+import org.json.JSONObject;
 
 public class GenerateXmlReportWorker extends GenerateReportsWorker implements Loggable {
     @Override
@@ -36,12 +39,12 @@ public class GenerateXmlReportWorker extends GenerateReportsWorker implements Lo
         Create surefire and testng results xml
          */
 
-        Report report = new Report();
+        Report report = Testerra.injector.getInstance(Report.class);
         // generate xml reports for surefire
         log().debug("Generating xml reports...");
         jUnitXMLReporter.testSetCompleted(new SimpleReportEntry("", "Results"));
         // generate testng-results.xml
         org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();
-        testNgXmlReporter.generateReport(xmlSuites, suites, report.getReportDirectory(Report.XML_FOLDER_NAME).toString());
+        testNgXmlReporter.generateReport(xmlSuites, suites, report.getReportDirectory(StaticReport.XML_FOLDER_NAME).toString());
     }
 }

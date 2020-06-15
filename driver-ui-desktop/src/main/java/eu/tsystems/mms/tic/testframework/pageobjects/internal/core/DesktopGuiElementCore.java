@@ -693,7 +693,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
 
     @Override
     public GuiElementCore swipe(int offsetX, int offSetY) {
-        MouseActions.swipeElement(guiElementData, offsetX, offSetY);
+        MouseActions.swipeElement(guiElementData.getGuiElement(), offsetX, offSetY);
         return this;
     }
 

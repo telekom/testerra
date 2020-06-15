@@ -482,7 +482,7 @@ public final class WebDriverSessionsManager {
     }
 
     @Deprecated
-    static void registerWebDriverFactory(WebDriverFactory webDriverFactory, String... browsers) {
+    static void registerWebDriverFactory(IWebDriverFactory webDriverFactory, String... browsers) {
         LOGGER.debug("Register " + webDriverFactory.getClass().getSimpleName() + " for browsers " + String.join(", ", browsers));
 
         for (String browser : browsers) {

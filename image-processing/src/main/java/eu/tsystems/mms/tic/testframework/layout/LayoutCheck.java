@@ -93,6 +93,12 @@ public final class LayoutCheck {
         //LAYOUTCHECK_TEXT_ERRORDETECTOR_ERROR_THRESHOLD("text.error.detector.error.threshold", null),
         LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_LINELENGTH("text.error.detector.minimal.line.length", 25),
         LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGESTRENGTH("text.error.detector.minimal.edge.strength", 5),
+
+        MIN_MATCH_DISTANCE("tt.layoutcheck.min.match.distance", 5),
+        MIN_SIZE_DIFFERENCE_SUB_IMAGES("tt.layoutcheck.min.size.difference.sub.images", 10),
+        MIN_SIMULAR_MOVEMENT_ERRORS("tt.layoutcheck.min.similar.movement.errors", 0.51d),
+        DISTANCE_MULTIPLE_MATCHES("tt.layoutcheck.distance.multiple.matches", 15),
+
         ;
         private final String property;
         private Object defaultValue;
@@ -115,18 +121,18 @@ public final class LayoutCheck {
 
         @Override
         public Double asDouble() {
-            return PropertyManager.parser.getDoubleProperty(toString(), defaultValue);
+            return PropertyManager.getParser().getDoubleProperty(toString(), defaultValue);
         }
         @Override
         public Long asLong() {
-            return PropertyManager.parser.getLongProperty(toString(), defaultValue);
+            return PropertyManager.getParser().getLongProperty(toString(), defaultValue);
         }
         @Override
         public Boolean asBool() {
-            return PropertyManager.parser.getBooleanProperty(toString(), defaultValue);
+            return PropertyManager.getParser().getBooleanProperty(toString(), defaultValue);
         }
         @Override
-        public String asString() { return PropertyManager.parser.getProperty(toString(), defaultValue); }
+        public String asString() { return PropertyManager.getParser().getProperty(toString(), defaultValue); }
     }
 
     public static class MatchStep {

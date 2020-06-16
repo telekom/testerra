@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2020, Alex Rockstroh, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package eu.tsystems.mms.tic.testframework.report.test;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
@@ -301,7 +322,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #820
-    public void testT14_checkContext(){
+    public void testT14_checkContext() {
         TestStep.begin("Checks Context for classes without using TesterraClassContext");
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), "test_PassedMinor1");
         methodDetailsPage = methodDetailsPage.toggleContext();
@@ -400,10 +421,10 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
     // Test case #824
-    public void testT18_failureAspectMatchingExpectedFailedInfoMessage(){
+    public void testT18_failureAspectMatchingExpectedFailedInfoMessage() {
         String testMethod = "test_UnexpectedFailedWithRelatedExpectedFailed";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory()), ReportTestUnderTestExpectedtoFail.class.getSimpleName(), testMethod);
-        AssertCollector.assertEquals( methodDetailsPage.getErrorMessageExtraInfo().getText(), "Failure aspect matches known issue: Description: Known issue with same aspect as unmarked failed test");
+        AssertCollector.assertEquals(methodDetailsPage.getErrorMessageExtraInfo().getText(), "Failure aspect matches known issue: Description: Known issue with same aspect as unmarked failed test");
     }
 
 }

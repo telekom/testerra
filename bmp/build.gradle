@@ -5,7 +5,7 @@ dependencies {
 
 //    compile 'net.lightbody.bmp:browsermob-proxy:2.1.1'
     implementation group: 'net.lightbody.bmp', name: 'browsermob-proxy', version: '2.1.1', ext: 'pom'
-    implementation 'org.apache.httpcomponents:httpcore:4.4.1'
+    implementation 'org.apache.httpcomponents:httpcore:4.4.13'
     implementation 'net.lightbody.bmp:browsermob-legacy:2.1.1'
 
     testCompile driver_ui_desktop

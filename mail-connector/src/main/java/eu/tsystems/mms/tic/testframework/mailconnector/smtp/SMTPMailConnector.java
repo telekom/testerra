@@ -1,20 +1,24 @@
 /*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * Testerra
+ *
+ * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  *
- * Contributors:
- *     Peter Lehmann
- *     pele
-*/
+ */
 package eu.tsystems.mms.tic.testframework.mailconnector.smtp;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
@@ -27,9 +31,18 @@ import org.slf4j.LoggerFactory;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
-import javax.mail.*;
+import javax.mail.Message;
 import javax.mail.Message.RecipientType;
-import javax.mail.internet.*;
+import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
@@ -41,15 +54,23 @@ import java.util.Properties;
  */
 public class SMTPMailConnector extends AbstractMailConnector {
 
-    /** The Logger. */
+    /**
+     * The Logger.
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(SMTPMailConnector.class);
 
-    /** messageID from the current sent message. */
+    /**
+     * messageID from the current sent message.
+     */
     private String messageID;
-    /** the last sent message. */
+    /**
+     * the last sent message.
+     */
     private MimeMessage lastSentMessage;
 
-    /** Constructor, creates a SMTPMailConnector Object. */
+    /**
+     * Constructor, creates a SMTPMailConnector Object.
+     */
     public SMTPMailConnector() {
         this.init();
     }
@@ -109,7 +130,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
                     }
                 }
 
-                ));
+        ));
         getSession().setDebug(isDebug());
         LOGGER.info("Done.");
     }
@@ -119,7 +140,6 @@ public class SMTPMailConnector extends AbstractMailConnector {
      *
      * @param message The message to send.
      * @throws TesterraSystemException thrown if message was not sent.
-     *
      */
     public void sendMessage(final MimeMessage message) throws TesterraSystemException {
         this.pSendMessage(message);
@@ -130,7 +150,6 @@ public class SMTPMailConnector extends AbstractMailConnector {
      *
      * @param message The message to send.
      * @throws TesterraSystemException thrown if message was not sent.
-     *
      */
     private void pSendMessage(final MimeMessage message) throws TesterraSystemException {
         Transport transport = null;
@@ -189,7 +208,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
      * Add MimeBodyParts to a message. Can only called once, otherwise message text can not saved.
      *
      * @param attachments An array containing the MimeBodyParts.
-     * @param message The message to add the attachments.
+     * @param message     The message to add the attachments.
      * @return The message with the attached MimeBodyParts.
      */
     public MimeMessage addAttachmentsToMessage(final MimeBodyPart[] attachments, final Message message) {
@@ -200,7 +219,7 @@ public class SMTPMailConnector extends AbstractMailConnector {
      * Add MimeBodyParts to a message. Can only called once, otherwise message text can not saved.
      *
      * @param attachments An array containing the MimeBodyParts.
-     * @param message The message to add the attachments.
+     * @param message     The message to add the attachments.
      * @return The message with the attached MimeBodyParts.
      */
     private MimeMessage pAddAttachmentsToMessage(final MimeBodyPart[] attachments, final Message message) {
@@ -229,36 +248,32 @@ public class SMTPMailConnector extends AbstractMailConnector {
     /**
      * Send a virus mail.
      *
-     * @param from The from address.
-     * @param receiver The to address.
+     * @param from       The from address.
+     * @param receiver   The to address.
      * @param ccReceiver The cc address. Can be null.
-     * @param bcc The bcc address. Can be null.
-     *
+     * @param bcc        The bcc address. Can be null.
      * @return A MimeMessage containing a virus signature.
-     *
-     * @throws TesterraSystemException thrown if virus Mail can't generated.
+     * @throws TesterraSystemException  thrown if virus Mail can't generated.
      * @throws TesterraRuntimeException thrown if address parameters were wrong.
      */
     public MimeMessage generateVirusMail(final String from, final String receiver,
-            final String ccReceiver, final String bcc) throws TesterraSystemException, TesterraRuntimeException {
+                                         final String ccReceiver, final String bcc) throws TesterraSystemException, TesterraRuntimeException {
         return this.pGenerateVirusMail(from, receiver, ccReceiver, bcc);
     }
 
     /**
      * Send a virus mail.
      *
-     * @param from The from address.
-     * @param receiver The to address.
+     * @param from       The from address.
+     * @param receiver   The to address.
      * @param ccReceiver The cc address. Can be null.
-     * @param bcc The bcc address. Can be null.
-     *
+     * @param bcc        The bcc address. Can be null.
      * @return A MimeMessage containing a virus signature.
-     *
-     * @throws TesterraSystemException thrown if virus Mail can't generated.
+     * @throws TesterraSystemException  thrown if virus Mail can't generated.
      * @throws TesterraRuntimeException thrown if address parameters were wrong.
      */
     private MimeMessage pGenerateVirusMail(final String from, final String receiver,
-            final String ccReceiver, final String bcc) throws TesterraSystemException, TesterraRuntimeException {
+                                           final String ccReceiver, final String bcc) throws TesterraSystemException, TesterraRuntimeException {
         final MimeMessage message = new MimeMessage(getSession());
         try {
 

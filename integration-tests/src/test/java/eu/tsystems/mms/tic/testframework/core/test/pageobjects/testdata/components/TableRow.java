@@ -1,8 +1,8 @@
-package eu.tsystems.mms.tic.testframework.pageobjects.components;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.components;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.By;
 
 public class TableRow extends AbstractComponent<TableRow> {

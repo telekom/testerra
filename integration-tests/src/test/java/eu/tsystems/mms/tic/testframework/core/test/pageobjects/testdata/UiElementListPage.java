@@ -1,6 +1,8 @@
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.components.TableRow;
+import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.components.TableRow;
+import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

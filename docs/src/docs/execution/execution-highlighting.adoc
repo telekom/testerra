@@ -7,7 +7,7 @@ In the demo mode actions on pages are marked with distinctive coloured frames ar
 [source, properties]
 ----
 # activate demo mode, default = false
-demomode=true
+{demomode}=true
 ----
 The following colours are used for highlighting
 

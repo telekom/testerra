@@ -58,7 +58,7 @@ public final class POConfig {
     }
 
     public static boolean isDemoMode() {
-        return PropertyManager.getBooleanProperty(TesterraProperties.DEMO_MODE, true);
+        return PropertyManager.getBooleanProperty(TesterraProperties.DEMO_MODE, false);
     }
 
     public static CheckRule getGuiElementCheckRule() {

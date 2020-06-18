@@ -222,7 +222,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public void addPriorityMessage(String msg) {
-        final String extraMessageToAdd = StringUtils.prepareStringForHTML(msg) + "\n";
+        final String extraMessageToAdd = StringUtils.prepareStringForHTML(msg + "\n");
 
         if (priorityMessage == null) {
             priorityMessage = "";

@@ -1,3 +1,4 @@
+[#Fails]
 = Expected Fails
 
 For known issues on the SUT the annoation `@Fails` can used to mark a test method as failing. These test cases are marked as `Expected failed` separately in the report.
@@ -17,7 +18,9 @@ public void testItWillFail() {
 ====
 The result is technically still a failure and only visually elevated to facilitate the evaluation of the report.
 
-Please keep in mind that `@Fails` has an impact to <<Failure Corridor>>
+Please keep in mind that `@Fails` has an impact to <<Failure Corridor>>.
+
+`@Fails` must not be used in conjunction with TestNG `@DataProvider`.
 ====
 
 == Add additional information

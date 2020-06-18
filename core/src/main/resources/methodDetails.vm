@@ -559,7 +559,7 @@
                                 <td width="" style="">
                                           <span class="screenshots">
                                               <!-- screenshots -->
-                                              #set($methodInfo=$ai)
+                                              #set($methodInfo = $testMethod)
                                               #parse("screenshotsSmall.vm")
                                           </span>
                                 </td>

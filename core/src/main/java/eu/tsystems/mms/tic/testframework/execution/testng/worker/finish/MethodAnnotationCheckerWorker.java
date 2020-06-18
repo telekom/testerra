@@ -53,7 +53,7 @@ public class MethodAnnotationCheckerWorker extends MethodWorker {
                 final String dataProviderName = method.getAnnotation(Test.class).dataProvider();
                 if (!dataProviderName.isEmpty()) {
                     // fails annotation in conjunction with dataProvider -> warn
-                    methodContext.addPriorityMessage("@Fails and @DataProvider must no be used together. Please remove @DataProvider from test method.");
+                    methodContext.addPriorityMessage("@Fails and @DataProvider should not be used together. Please remove @Fails from this test method.");
                 }
             }
 

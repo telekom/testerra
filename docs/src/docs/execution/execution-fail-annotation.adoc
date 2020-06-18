@@ -20,7 +20,8 @@ The result is technically still a failure and only visually elevated to facilita
 
 Please keep in mind that `@Fails` has an impact to <<Failure Corridor>>.
 
-`@Fails` must not be used in conjunction with TestNG `@DataProvider`.
+`@Fails` should not be used in conjunction with TestNG `@DataProvider` because the detected failure is ambiguous and might not be valid for all provided data.
+
 ====
 
 == Add additional information

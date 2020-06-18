@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
+import org.testng.annotations.Test;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
@@ -47,6 +48,13 @@ public class MethodAnnotationCheckerWorker extends MethodWorker {
             Fails fails = null;
             if (method.isAnnotationPresent(Fails.class)) {
                 fails = method.getAnnotation(Fails.class);
+
+                // check for dataProvider information
+                final String dataProviderName = method.getAnnotation(Test.class).dataProvider();
+                if (!dataProviderName.isEmpty()) {
+                    // fails annotation in conjunction with dataProvider -> warn
+                    methodContext.addPriorityMessage("@Fails and @DataProvider should not be used together. Please remove @Fails from this test method.");
+                }
             }
 
             if (isSuccess()) {

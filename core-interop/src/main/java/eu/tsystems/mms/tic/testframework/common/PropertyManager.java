@@ -55,7 +55,7 @@ public final class PropertyManager {
 
     static final Properties GLOBALPROPERTIES = new Properties();
 
-    public static ThreadLocal<PropertiesParser> PROPERTIES_PARSER = new ThreadLocal<>();
+    private static ThreadLocal<PropertiesParser> PROPERTIES_PARSER = new ThreadLocal<>();
 
     /*
      * Static constructor, creating static Properties object.
@@ -319,7 +319,7 @@ public final class PropertyManager {
         return GLOBALPROPERTIES;
     }
 
-    private static PropertiesParser getPropertiesParser() {
+    public static PropertiesParser getPropertiesParser() {
 
         if (PROPERTIES_PARSER.get() == null) {
 

@@ -53,12 +53,6 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
     }
 
     @Override
-    public By getBy() {
-        By by = decoratedGuiElementCore.getBy();
-        return by;
-    }
-
-    @Override
     public GuiElement getSubElement(By byLocator, String description) {
         return decoratedGuiElementCore.getSubElement(byLocator, description);
     }

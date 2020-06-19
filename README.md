@@ -104,7 +104,7 @@ _Upload and publish_
   ```
 * Publish Testerra Framework with specified version (snapshot versions like `1-SNAPSHOT` are not allowed)
   ```shell script
-  gradle publishToBintray -DttVersion=1.0-RC1 -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
+  gradle publishToBintray -DttVersion=1.0-RC-1 -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
   ```
   
   ## Contributing

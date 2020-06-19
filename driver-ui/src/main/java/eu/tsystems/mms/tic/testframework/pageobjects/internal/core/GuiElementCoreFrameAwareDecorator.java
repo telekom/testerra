@@ -61,12 +61,6 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
     }
 
     @Override
-    public By getBy() {
-        By by = core.getBy();
-        return by;
-    }
-
-    @Override
     public Select getSelectElement() {
         beforeDelegation();
         WebElement webElement = core.findWebElement();

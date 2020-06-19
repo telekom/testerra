@@ -67,7 +67,7 @@ public final class PropertyManager {
         String propertyFile = "test.properties";
         pLoadPropertiesFromResource(FILEPROPERTIES, propertyFile, null);
 
-        getParser();
+        getPropertiesParser();
     }
 
     /*
@@ -171,7 +171,7 @@ public final class PropertyManager {
      * @return The properties value.
      */
     public static String getProperty(final String key) {
-        return getParser().getProperty(key);
+        return getPropertiesParser().getProperty(key);
     }
 
     /**
@@ -182,7 +182,7 @@ public final class PropertyManager {
      * @return The properties value.
      */
     public static String getProperty(final String key, final String defaultValue) {
-        return getParser().getProperty(key, defaultValue);
+        return getPropertiesParser().getProperty(key, defaultValue);
     }
 
     /**
@@ -193,7 +193,7 @@ public final class PropertyManager {
      * @return property value
      */
     public static int getIntProperty(final String key, final int defaultValue) {
-        return getParser().getIntProperty(key, defaultValue);
+        return getPropertiesParser().getIntProperty(key, defaultValue);
     }
 
     /**
@@ -203,7 +203,7 @@ public final class PropertyManager {
      * @return property value or -1 if value cannot be parsed.
      */
     public static int getIntProperty(final String key) {
-        return getParser().getIntProperty(key);
+        return getPropertiesParser().getIntProperty(key);
     }
 
     /**
@@ -214,7 +214,7 @@ public final class PropertyManager {
      * @return property value
      */
     public static double getDoubleProperty(String key, double defaultValue) {
-        return getParser().getDoubleProperty(key, defaultValue);
+        return getPropertiesParser().getDoubleProperty(key, defaultValue);
     }
 
     /**
@@ -224,7 +224,7 @@ public final class PropertyManager {
      * @return property value or -1 if value cannot be parsed or is not set.
      */
     public static double getDoubleProperty(final String key) {
-        return getParser().getDoubleProperty(key);
+        return getPropertiesParser().getDoubleProperty(key);
     }
 
     /**
@@ -235,7 +235,7 @@ public final class PropertyManager {
      * @return property value
      */
     public static long getLongProperty(String key, long defaultValue) {
-        return getParser().getLongProperty(key, defaultValue);
+        return getPropertiesParser().getLongProperty(key, defaultValue);
     }
 
     /**
@@ -245,7 +245,7 @@ public final class PropertyManager {
      * @return property value or -1 if value cannot be parsed or is not set.
      */
     public static long getLongProperty(final String key) {
-        return getParser().getLongProperty(key);
+        return getPropertiesParser().getLongProperty(key);
     }
 
     /**
@@ -256,7 +256,7 @@ public final class PropertyManager {
      * @see java.lang.Boolean#parseBoolean(String)
      */
     public static boolean getBooleanProperty(final String key) {
-        return getParser().getBooleanProperty(key);
+        return getPropertiesParser().getBooleanProperty(key);
     }
 
     /**
@@ -267,7 +267,7 @@ public final class PropertyManager {
      * @return property value
      */
     public static boolean getBooleanProperty(final String key, final boolean defaultValue) {
-        return getParser().getBooleanProperty(key, defaultValue);
+        return getPropertiesParser().getBooleanProperty(key, defaultValue);
     }
 
     /**
@@ -292,7 +292,7 @@ public final class PropertyManager {
     public static Properties getThreadLocalProperties() {
         if (THREAD_LOCAL_PROPERTIES.get() == null) {
             THREAD_LOCAL_PROPERTIES.set(new Properties());
-            getParser().properties.add(THREAD_LOCAL_PROPERTIES.get());
+            getPropertiesParser().properties.add(THREAD_LOCAL_PROPERTIES.get());
         }
         return THREAD_LOCAL_PROPERTIES.get();
     }
@@ -303,7 +303,7 @@ public final class PropertyManager {
     public static void clearThreadlocalProperties() {
 
         if (THREAD_LOCAL_PROPERTIES.get() != null) {
-            getParser().properties.remove(THREAD_LOCAL_PROPERTIES.get());
+            getPropertiesParser().properties.remove(THREAD_LOCAL_PROPERTIES.get());
         }
 
         THREAD_LOCAL_PROPERTIES.remove();
@@ -317,7 +317,7 @@ public final class PropertyManager {
         return GLOBALPROPERTIES;
     }
 
-    public static PropertiesParser getParser() {
+    public static PropertiesParser getPropertiesParser() {
 
         if (PROPERTIES_PARSER.get() == null) {
 

@@ -288,7 +288,7 @@ public class TestStatusController {
     public enum Status {
         PASSED("green", "&#x2714;", "Passed", true, true),
         MINOR("skyblue", "&#x2714;", "Minor", true, true),
-        PASSED_RETRY("#6abd00", "&#x2714;", "Passed after Retry", false, true),
+        PASSED_RETRY("#6abd00", "&#x2714;", "Passed after Retry", true, true),
         MINOR_RETRY("#60bd8e", "&#x2714;", "Minor after Retry", false, true),
         INFO("#b9b900", "i", "Info", true, false),
 

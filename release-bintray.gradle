@@ -3,24 +3,19 @@
  * */
 ext {
   bintrayRepo = 'Testerra'
-//  bintrayName = POM_BINTRAY_NAME
   bintrayName = "eu.tsystems.mms.tic.testerra:${project.getName()}"
 
   publishedGroupId = 'eu.tsystems.mms.tic.testerra'
   libraryName = 'Testerra'
-//  artifact = POM_ARTIFACT_ID
   artifact = project.getName()
-//  packagingType = POM_PACKAGING
   packagingType = 'jar'
 
-//  libraryDescription = POM_DESCRIPTION
   libraryDescription = "Testerra ${project.getName()} module"
 
   siteUrl = 'https://testerra.io'
-  gitUrl = 'https://github.com/T-Systems-MMS/testerra.git'
-  issueUrl = 'https://github.com/T-Systems-MMS/testerra/issues'
+  gitUrl = 'https://github.com/telekom/testerra.git'
+  issueUrl = 'https://github.com/telekom/testerra/issues'
 
-//  libraryVersion = POM_VERSION
   libraryVersion = project.getVersion()
 
   developerId = 'MMS'
@@ -32,7 +27,7 @@ ext {
   allLicenses = ["Apache-2.0"]
 }
 
-// Set up the Android Maven publication.
+// Set up the Maven publication.
 apply from: rootProject.file('jcenter/maven-install.gradle')
 
 // Publish on Bintray.

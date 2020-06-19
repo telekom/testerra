@@ -5,8 +5,8 @@ dependencies {
     compile core_interop
     implementation 'org.apache.poi:poi-ooxml:3.17'
     implementation 'org.apache.pdfbox:pdfbox:1.8.10'
-    implementation 'org.apache.httpcomponents:httpcore:4.4.1'
-    implementation 'org.apache.httpcomponents:httpclient:4.5'
+    implementation 'org.apache.httpcomponents:httpcore:4.4.13'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.12'
     implementation 'com.sun.jersey:jersey-client:1.19.3'
 
     // <XML>

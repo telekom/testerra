@@ -1,21 +1,25 @@
 /*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * Testerra
+ *
+ * (C) 2020,  Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  *
- * Contributors:
- *     Peter Lehmann
- *     Eric Kubenka
  */
-package eu.tsystems.mms.tic.testframework.report;
+ package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
@@ -73,6 +77,7 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.xml.XmlSuite;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -489,14 +494,25 @@ public class TesterraListener implements
 
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
+
+        final ITestContext testContext = iTestResult.getTestContext();
+
         /*
         Find methods that are ignored due to failed dependency
          */
-        Throwable throwable = iTestResult.getThrowable();
+        final Throwable throwable = iTestResult.getThrowable();
         if (throwable != null && throwable.toString().contains(SKIP_FAILED_DEPENDENCY_MSG)) {
-            ITestContext testContext = iTestResult.getTestContext();
             ExecutionContextController.setCurrentTestResult(iTestResult, testContext);
             pAfterInvocation(null, iTestResult, testContext);
+        }
+
+        /*
+         add missing method parameters for skipped test methods
+         */
+        final Class<?>[] parameterTypes = iTestResult.getMethod().getConstructorOrMethod().getMethod().getParameterTypes();
+        if (parameterTypes.length >0) {
+            final MethodContext methodContextFromTestResult = ExecutionContextController.getMethodContextFromTestResult(iTestResult, testContext);
+            methodContextFromTestResult.parameters.addAll(Arrays.asList(parameterTypes));
         }
     }
 

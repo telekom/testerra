@@ -1,22 +1,27 @@
 /*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * Testerra
+ *
+ * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  *
- * Contributors:
- *     Peter Lehmann
- *     pele
-*/
-package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
+ */
+ package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import java.io.Serializable;
 
 /**
@@ -31,53 +36,22 @@ public class DataSet implements Serializable {
 
     /** Start of thread */
     private Long startTime;
-    /** End of Threa. */
+    /** End of thread */
     private Long stopTime;
-    /** HTML content to print out. */
-    private String content;
-    /** Name of thread. */
-    private String threadName;
-
-    /**
-     * Constructor creating a Data Set for the ThreadVisualizer without endTime.
-     *
-     * @param threadName Name of thread.
-     * @param content HTML content representing the data.
-     * @param startTime Start of thread.
-     */
-    public DataSet(final String threadName, final String content, final Long startTime) {
-        this.threadName = threadName;
-        this.content = content;
-        this.startTime = startTime;
-    }
+    /** MethodContext of test method */
+    private MethodContext context;
 
     /**
      * Constructor creating a Data Set for the ThreadVisualizer.
      *
-     * @param threadName Name of thread.
-     * @param content HTML content representing the data.
+     * @param context MethodContext of test.
      * @param startTime Start of thread.
      * @param stopTime End of Thread.
      */
-    public DataSet(final String threadName, final String content, final Long startTime, final Long stopTime) {
-        this.threadName = threadName;
-        this.content = content;
+    public DataSet(final MethodContext context, final Long startTime, final Long stopTime) {
+        this.context = context;
         this.startTime = startTime;
         this.stopTime = stopTime;
-    }
-
-    /**
-     * Format String for html.
-     *
-     * @param s String to format.
-     * @return formatted String.
-     */
-    private String format(final String s) {
-        return s.replaceAll("'", "\\\\'");
-    }
-
-    public String getContent() {
-        return format(content);
     }
 
     public Long getStartTime() {
@@ -88,14 +62,6 @@ public class DataSet implements Serializable {
         return stopTime;
     }
 
-    public String getThreadName() {
-        return threadName;
-    }
-
-    public void setContent(final String content) {
-        this.content = content;
-    }
-
     public void setStartTime(final Long startTime) {
         this.startTime = startTime;
     }
@@ -104,8 +70,12 @@ public class DataSet implements Serializable {
         this.stopTime = stopTime;
     }
 
-    public void setThreadName(final String threadName) {
-        this.threadName = threadName;
+    public MethodContext getContext() {
+        return context;
+    }
+
+    public void setContext(final MethodContext context) {
+        this.context = context;
     }
 
     public static long getSerialVersionUID() {

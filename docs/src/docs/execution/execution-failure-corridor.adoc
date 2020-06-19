@@ -3,8 +3,13 @@ include::../properties/property-attributes.adoc[]
 
 This mechanism is used to define the test goal of test runs so that the test suite only fails with a broken failure corridor.
 
+Testerra provides to kinds of a Failure corridor:
+
+* Define a maximum number of allowed failed tests - _or_
+* define for every test a weight (low, medium, high) and set specific number of allowed failed tests.
+
 == General
-Activating the corridor is done with the following property.
+The Failure corridor can be activated by the following property.
 
 [source, properties, subs="attributes"]
 ----
@@ -12,40 +17,44 @@ Activating the corridor is done with the following property.
 # default is false
 ----
 
-== Maximum Allowed Failures
+== Maximum allowed failures
 The simplest variant is to define the maximum number of allowed test failures.
 
 .test.properties
 [source, properties, subs="attributes"]
 ----
-{failure_corridor_active}=true
 {failure_corridor_allowed_failed_tests}=2
-# if less than two methods fail the suite will be marked as passed
+# Ff less than two methods fail the suite will be marked as passed
 ----
 
-== Custom Failure Corridor
-For further adjustment test methods can be weighted while defining the maximum number of failures for the corresponding weightings in the `test.properties`.
+== Custom failure corridor
+For further adjustment test methods can be weighted while defining the maximum number of failures for the corresponding weightings.
 
-.Method Weighting
+.Examples of method weighting
 [source, java]
 ----
+// This testcase is marked with a high weight.
 @FailureCorridor.High
 @Test
 public void test1() throws Exception {
     Assert.fail();
 }
 
+// This testcase is not marked, but the default weight is high.
 @Test
 public void test2() throws Exception {
     Assert.fail();
 }
 
+// This testcase is marked with a middle weight.
 @FailureCorridor.Mid
 @Test
 public void test3() throws Exception {
     Assert.fail();
 }
 
+// This testcase is additional marked with @Fails.
+// So the test result is ignored by the Failure corridor.
 @Fails
 @FailureCorridor.Mid
 @Test
@@ -53,6 +62,7 @@ public void test4() throws Exception {
     Assert.fail();
 }
 
+// This testcase is marked with a low weight.
 @FailureCorridor.Low
 @Test
 public void test5() throws Exception {
@@ -60,8 +70,7 @@ public void test5() throws Exception {
 }
 ----
 
-NOTE: Non-weighted methods have high weight by default.
-Testcases with valid <<Fails,@Fails>> annotation are ignored.
+Define your own failure corridor with the maximum number of failed tests by the following settings:
 
 .test.properties
 [source, properties, subs="attributes"]
@@ -71,64 +80,9 @@ Testcases with valid <<Fails,@Fails>> annotation are ignored.
 {failure_corridor_allowed_failed_tests_low}=2
 ----
 
-This setting allows
+[IMPORTANT]
+====
+If you do not define any failure corridor, but activate them, Testerra uses the default value `-1`.
 
-* high: no failed methods
-* mid : one failed method
-* low : two failed methods
-
-leading to the status failed for the whole suite as per Code
-
-* high: two methods fail
-* mid : one method fails, another isn't taken into account
-* low : one method fails
-
-[#Fails]
-== @Fails
-For known issues on the SUT this annotation is used to mark a test method as failing, showing the result in the section `Expected Failed` in case of failure.
-
-NOTE: The result is technically still a failure and only visually elevated to facilitate the evaluation of the report.
-
-Additional information like `ticketId`, `ticketString` and `description` can be provided and are shown in the report as well.
-However, passed tests will be correctly allocated to the corresponding section with an additional information about the invalidity of the `@Fails` annotation.
-
-.test.properties
-[source, properties, subs="attributes"]
-----
-# activate watchdog, default = true
-environment=test
-country=de
-
-----
-
-[source, java]
-----
-@Test
-@Fails(ticketString = "TST-742", description = "Failing for environment 'test' and coutry 'de'", validFor = {"environment=test", "country=de"})
-public void testExpectedFailed() {
-    Assert.fail();
-}
-----
-
-The test fails and is shown in the section `ExpectedFailed` because the validFor check is true. The property `environment` has the value 'test' and the property `country` has the value 'de'.
-Additionally, the `description` and the `ticketString` are shown in the report. For other values of environment and country the test will be shown as `Failed`.
-
-[source, java]
-----
-@Test
-@Fails(ticketId = 742, description = "Failed Login", intoReport = true)
-public void testExpectedFailed() {
-    Assert.fail();
-}
-----
-With the `intoReport` attribute you can control the display of failed tests. As its true the failing test isn't shown separately as `Expected Failed` but as `Failed`.
-
-[source, java]
-----
-@Test
-@Fails(ticketId = 742, description = "Failed Login", intoReport = true)
-public void testExpectedFailed() {
-    Assert.assertTrue(true);
-}
-----
-As the test passes it is shown in the section `Passed` in the report with the notice of an invalid `@Fails` annotation.
+In that case the custom failure corridor is used with `HIGH=-1, MID=-1, LOW=-1`.
+====

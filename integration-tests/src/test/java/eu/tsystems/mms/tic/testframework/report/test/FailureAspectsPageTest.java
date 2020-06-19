@@ -1,14 +1,34 @@
+/*
+ * Testerra
+ *
+ * (C) 2020, Alex Rockstroh, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package eu.tsystems.mms.tic.testframework.report.test;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.abstracts.AbstractFailurePointsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.abstracts.AbstractResultTableFailureEntry;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractFailurePointsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractResultTableFailureEntry;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractReportFailuresTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.FailureAspectsPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.report.model.FailureAspectEntry;
 import eu.tsystems.mms.tic.testframework.report.model.ResultTableFailureType;
@@ -17,7 +37,6 @@ import eu.tsystems.mms.tic.testframework.report.model.TestReportTwoNumbers;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import java.util.List;
 
@@ -86,15 +105,4 @@ public class FailureAspectsPageTest extends AbstractReportFailuresTest {
     protected AbstractFailurePointsPage openFailuresPointsPage(ReportDirectory reportDirectory) {
         return GeneralWorkflow.doOpenBrowserAndReportFailureAspectsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(reportDirectory.getReportDirectory()));
     }
-
-    @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER2})
-    public void testT09_checkInfoMessageOnRelatedFailureAspect(){
-        FailureAspectsPage failureAspectsPage = GeneralWorkflow.doOpenBrowserAndReportFailureAspectsPage(
-                WebDriverManager.getWebDriver(),
-                PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_2.getReportDirectory())
-        );
-        final AbstractResultTableFailureEntry failedEntry = failurePointEntryTestObjects.get(5);
-        failureAspectsPage.assertDescriptionsForFailurePointIsCorrect(failedEntry);
-    }
-
 }

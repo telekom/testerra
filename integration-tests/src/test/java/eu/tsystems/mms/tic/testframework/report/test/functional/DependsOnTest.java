@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2020, Alex Rockstroh, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package eu.tsystems.mms.tic.testframework.report.test.functional;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
@@ -9,9 +30,9 @@ import eu.tsystems.mms.tic.testframework.report.general.MethodDependency;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.ClassesDetailsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.DashboardPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.dashboard.DashboardModuleMethodChart;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.dashboard.DashboardModuleMethodChart;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.DataProvider;
@@ -24,7 +45,8 @@ public class DependsOnTest extends AbstractReportTest {
      * Checks whether the depends on test result is displayed correctly
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "dependsOnParallel")
-    @Fails(ticketString = "669")
+    @Fails(ticketString = "668")
+    // Test case #803
     public void testT01_checkDependsOnMethodChartDisplaysTheExpectedTestResults(String dependsOnClassName) {
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
         int barChartPosition = dashboardPage.dashboardModuleClassBarChart.getBarChartElementNumberByClassName(dependsOnClassName);
@@ -37,10 +59,10 @@ public class DependsOnTest extends AbstractReportTest {
     }
 
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "dependsOnTestObjects")
-    @Fails(ticketString = "669")
+    // Test case #804
     public void testT02_checkDependsOnMethodChartEntryStates(MethodDependency dependsOnTestObject) {
 
-        final String testClassName = "ReportTestUnderTestDependsOn__Report__TestsUnderTest__Parallel__2";
+        final String testClassName = "ReportTestUnderTestDependsOn_Report- TestsUnderTest_Parallel";
         ClassesDetailsPage classesDetailsPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory())).gotoClassesDetailsPageForClass(testClassName);
 
         String tagName = dependsOnTestObject.getTagName();

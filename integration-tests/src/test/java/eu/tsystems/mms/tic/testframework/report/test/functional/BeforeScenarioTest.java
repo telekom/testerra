@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2020, Alex Rockstroh, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 package eu.tsystems.mms.tic.testframework.report.test.functional;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
@@ -9,9 +30,9 @@ import eu.tsystems.mms.tic.testframework.report.model.BeforeConfiguration;
 import eu.tsystems.mms.tic.testframework.report.model.TestReportEightNumbers;
 import eu.tsystems.mms.tic.testframework.report.model.TestReportNineNumbers;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.ClassesDetailsPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.ClassesPage;
-import eu.tsystems.mms.tic.testframework.report.pageobjetcs.DashboardPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesDetailsPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.ClassesPage;
+import eu.tsystems.mms.tic.testframework.report.pageobjects.DashboardPage;
 import eu.tsystems.mms.tic.testframework.report.workflows.GeneralWorkflow;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.Dimension;
@@ -28,7 +49,8 @@ public class BeforeScenarioTest extends AbstractReportTest {
      * Checks whether the core test numbers for BeforeSuite test report are as expected
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER8})
-    public void testT01_checkTestNumbersBeforeSuite() {
+    // Test case #798
+    public void testT01_beforeSuiteScenario_dashboardPage_checkTestNumbers() {
         TestReportEightNumbers testReportEightNumbers = new TestReportEightNumbers();
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_8.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultNumberBreakdown.assertCoreTestNumbers(testReportEightNumbers);
@@ -38,7 +60,8 @@ public class BeforeScenarioTest extends AbstractReportTest {
      * Checks whether the core test numbers for all Before[...] (excl. BeforeSuite) test reports are as expected
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9})
-    public void testT02_checkTestNumbersBefore() {
+    // Test case #799
+    public void testT02_beforeScenario_dashboardPage_checkTestNumbers() {
         TestReportNineNumbers testReportNineNumbers = new TestReportNineNumbers();
         DashboardPage dashboardPage = GeneralWorkflow.doOpenBrowserAndReportDashboardPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.getReportDirectory()));
         dashboardPage.dashboardModuleTestResultNumberBreakdown.assertCoreTestNumbers(testReportNineNumbers);
@@ -48,6 +71,7 @@ public class BeforeScenarioTest extends AbstractReportTest {
      * Checks whether the BeforeSuite method causes the skipping of the control methods
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER8})
+    // Test case #800
     public void testT03_checkControlMethodsAreSkippedIfBeforeSuiteMethodsFailed() {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_8.getReportDirectory()));
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(BeforeConfiguration.BEFORE_SUITE.getReportClassName());
@@ -62,6 +86,7 @@ public class BeforeScenarioTest extends AbstractReportTest {
      * Checks whether the Before[...] methods cause the skipping of the control methods
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9}, dataProvider = "beforeDP")
+    // Test case #801
     public void testT04_checkControlMethodsAreSkippedIfBeforeMethodsFailed(BeforeConfiguration beforeConfig) {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.getReportDirectory()));
         WebDriverManager.getWebDriver().manage().window().setSize(new Dimension(1920, 1080));
@@ -83,6 +108,7 @@ public class BeforeScenarioTest extends AbstractReportTest {
      * Checks whether the control methods run as expected if all Before[...] methods pass
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER9})
+    // Test case #802
     public void testT05_checkControlMethodsRunIfBeforeMethodsPassed() {
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_9.getReportDirectory()));
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(BeforeConfiguration.ALL.getReportClassName());

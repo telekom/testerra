@@ -1,32 +1,15 @@
 /*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * Testerra
+ *
+ * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *     Peter Lehmann
- *     pele
- */
-package eu.tsystems.mms.tic.testframework.report.external.junit;
-
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -34,7 +17,9 @@ package eu.tsystems.mms.tic.testframework.report.external.junit;
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
+package eu.tsystems.mms.tic.testframework.report.external.junit;
 
 /**
  * Persists reports somewhere
@@ -42,27 +27,25 @@ package eu.tsystems.mms.tic.testframework.report.external.junit;
  * An instance of a reporter is not guaranteed to be thread-safe and concurrent test frameworks
  * must request an instance of a reporter per-thread from the ReporterFactory.
  */
-public interface Reporter
-{
+public interface Reporter {
+
     /**
      * Indicates the start of a given test-set
      *
      * @param report the report entry describing the testset
-     * @throws ReporterException
-     *          When reporting fails
+     * @throws ReporterException When reporting fails
      */
     void testSetStarting(ReportEntry report)
-        throws ReporterException;
+            throws ReporterException;
 
     /**
      * Indicates endTime of a given test-set
      *
      * @param report the report entry describing the testset
-     * @throws ReporterException
-     *          When reporting fails
+     * @throws ReporterException When reporting fails
      */
     void testSetCompleted(ReportEntry report)
-        throws ReporterException;
+            throws ReporterException;
 
     // Tests
 

@@ -42,25 +42,34 @@ These properties are automatically loaded by the `PropertyManager` and set up as
 IMPORTANT: Setting up the Testerra proxy will not setup a proxy for Gradle nor a browser.
 
 == Logging
-If you're on Gradle, the logging of Testerra should work out of the box. But if you're on Maven you MUST add the following SLF4J-dependency to your main `pom.xml`.
+If you're on Gradle, the logging of Testerra should work out of the box. But if you're on Maven you MUST add the following dependencies to your main `pom.xml`.
 
 .pom.xml
 [source, xml]
 ----
 <dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-log4j12</artifactId>
-    <version>1.8.0-beta2</version>
-    <scope>test</scope>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-slf4j18-impl</artifactId>
+    <version>2.13.2</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+    <version>2.13.2</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.13.2</version>
 </dependency>
 ----
 
 === Customize Logging
 The `TesterraLogger` logs to `System.out` by default.
-If you want to have more control over several log levels of classes, add a `log4j.xml` to your `resources/`.
+If you want to have more control over several log levels of classes, add a `log4j2.xml` to your `resources/`.
 
-.log4j.xml
+.log4j2.xml
 [source, xml]
 ----
-include::../../res/log4j.xml[]
+include::../../res/log4j2.xml[]
 ----

@@ -1,21 +1,25 @@
 /*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * Testerra
+ *
+ * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  *
- * Contributors:
- *     Peter Lehmann
- *     pele
-*/
-package eu.tsystems.mms.tic.testframework.pageobjects;
+ */
+ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
@@ -31,7 +35,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFiel
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
-import eu.tsystems.mms.tic.testframework.utils.*;
+import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import eu.tsystems.mms.tic.testframework.utils.Timer;
+import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import org.openqa.selenium.By;
@@ -51,7 +57,9 @@ import java.util.Random;
  * @author pele
  */
 public abstract class Page extends AbstractPage {
+
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
+
     public static void registerPageLoadHandler(PageLoadHandler h) {
         pageLoadHandlers.add(h);
     }
@@ -337,13 +345,11 @@ public abstract class Page extends AbstractPage {
     }
 
     public void assertIsTextPresent(String text) {
-        logger.info("assertIsTextPresent '" + text + "' on " + this.getClass().getSimpleName());
-        Assert.assertTrue(waitForIsTextPresent(text), "Text '" + text + "' is present on current page");
+        assertIsTextPresent(text, "");
     }
 
     public void assertIsTextDisplayed(String text) {
-        logger.info("assertIsTextDisplayed '" + text + "' on " + this.getClass().getSimpleName());
-        Assert.assertTrue(waitForIsTextDisplayed(text), "Text '" + text + "' is displayed on current page");
+        assertIsTextDisplayed(text, "");
     }
 
     public void assertIsNotTextPresent(String text) {

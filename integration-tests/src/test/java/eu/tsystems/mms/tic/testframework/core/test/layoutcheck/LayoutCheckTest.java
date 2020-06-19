@@ -1,21 +1,25 @@
 /*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * Testerra
+ *
+ * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  *
- * Contributors:
- *     Peter Lehmann
- *     pele
  */
-package eu.tsystems.mms.tic.testframework.core.test.layoutcheck;
+ package eu.tsystems.mms.tic.testframework.core.test.layoutcheck;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
@@ -24,6 +28,9 @@ import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class LayoutCheckTest extends AbstractTestSitesTest {
@@ -50,15 +57,18 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
     public void testCheckElementVisibility() {
         GuiElement guiElement = getGuiElementQa("section/layoutTestArticle");
         guiElement.asserts().assertVisible(true);
+        Assert.assertTrue(guiElement.isVisible(true));
 
         guiElement = getGuiElementQa("section/invisibleTestArticle");
         guiElement.asserts().assertNotVisible();
+        Assert.assertFalse(guiElement.isVisible(true));
 
         // Scroll to offset doesn't work
         //guiElement.scrollToElement(300);
         //Assert.assertFalse(guiElement.isVisible(true));
 
         guiElement.scrollToElement();
+        Assert.assertTrue(guiElement.isVisible(true));
         guiElement.asserts().assertVisible(true);
     }
 
@@ -78,4 +88,5 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
     public void testCheckPageLayout() {
         LayoutCheck.assertScreenshot(WebDriverManager.getWebDriver(), "LayoutTestPage", 1);
     }
+
 }

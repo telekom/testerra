@@ -15,3 +15,5 @@ gradlew
 /.project
 **/*.settings
 /integration-tests/src/test/resources/screenreferences/
+
+logs/integration-test-log4j.log

@@ -27,12 +27,6 @@ test {
         s = ['src/test/resources/testng/ReportTestsUnderTest' + nr + '.xml']
     }
 
-    def taskState = findProperty("taskState")
-    if (taskState) {
-        setReportDir("report-tapastasktest-" + taskState)
-        s = ['src/test/resources/testng/tapas/TapasTask' + taskState + '.xml']
-    }
-
     def smokeTest = findProperty("smoke")
     if (smokeTest) {
         s = ['src/test/resources/Smoke.xml']

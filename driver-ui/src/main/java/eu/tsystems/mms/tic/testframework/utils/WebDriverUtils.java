@@ -1,21 +1,25 @@
 /*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * Testerra
+ *
+ * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  *
- * Contributors:
- *     Peter Lehmann
- *     Eric Kubenka
  */
-package eu.tsystems.mms.tic.testframework.utils;
+ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.Constants;
@@ -352,9 +356,11 @@ public final class WebDriverUtils {
      * @return Rectangle
      */
     public static Rectangle getViewport(WebDriver driver) {
-        final ArrayList<Long> list = (ArrayList<Long>) JSUtils.executeScript(driver, "return [window.pageXOffset, window.pageYOffset, window.innerWidth, window.innerHeight];");
-        return new Rectangle(list.get(0).intValue(), list.get(1).intValue(), list.get(2).intValue(), list.get(3).intValue());
+
+        final ArrayList<String> list = (ArrayList<String>) JSUtils.executeScript(driver, "return [window.pageXOffset.toString(), window.pageYOffset.toString(), window.innerWidth.toString(), window.innerHeight.toString()];");
+        return new Rectangle(Integer.valueOf(list.get(0)), Integer.valueOf(list.get(1)), Integer.valueOf(list.get(2)), Integer.valueOf(list.get(3)));
     }
+
 
     /**
      * Initialize a {@link WebDriverKeepAliveSequence} and runs it with {@link Timer} in given interval.

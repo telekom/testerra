@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
+@Deprecated
 public interface UseJSAlternatives {
 }

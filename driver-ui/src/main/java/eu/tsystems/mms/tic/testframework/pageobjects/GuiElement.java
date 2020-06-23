@@ -63,6 +63,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.simulation.UserSimulator;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
+import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.By;
@@ -345,9 +346,39 @@ public class GuiElement implements
         return this;
     }
 
+    private void runActionSequence(Runnable runnable, Consumer<UiElement> whenFail) {
+        final UiElement self = this;
+        int useTimeoutSeconds = getTimeoutInSeconds();
+        //if (pageOverrides.hasTimeoutSeconds()) useTimeoutSeconds = pageOverrides.getTimeoutSeconds();
+
+        Timer timer = new Timer(
+                UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(),
+                useTimeoutSeconds * 1000
+        );
+        timer.executeSequence(new Timer.Sequence<Void>() {
+            @Override
+            public void run() {
+                // Prevent TimeoutException on any other exception
+                if (whenFail!=null) {
+                    setSkipThrowingException(true);
+                }
+                try {
+                    runnable.run();
+                    setPassState(true);
+                } catch (Exception e) {
+                    setPassState(false);
+                    log().warn("Unable to execute action, try whenFail fallback", e);
+                }
+                if (whenFail!= null && !getPassState()) {
+                    whenFail.accept(self);
+                }
+            }
+        });
+    }
+
     @Override
     public UiElementActions click(Consumer<UiElement> whenFail) {
-        core.click();
+        runActionSequence(() -> core.click(), whenFail);
         return this;
     }
 

@@ -28,15 +28,15 @@ public class ReportTestUnderTestAssertCollector extends AbstractTest {
 
     @Test
     public void test_assertCollectorAllFailed() {
-        AssertCollector.assertTrue(false, "Intentionally failed");
-        AssertCollector.assertTrue(false,"Intentionally failed");
-        AssertCollector.assertTrue(false, "Intentionally failed");
+        AssertCollector.assertTrue(false, "Intentionally failed first");
+        AssertCollector.assertTrue(false,"Intentionally failed second");
+        AssertCollector.assertTrue(false, "Intentionally failed third");
     }
 
     @Test
     public void test_assertCollectorPassedAndFailed() {
         AssertCollector.assertTrue(true);
-        AssertCollector.assertTrue(false, "Intentionally failed");
+        AssertCollector.assertTrue(false, "Intentionally failed first");
         AssertCollector.assertTrue(true);
     }
 

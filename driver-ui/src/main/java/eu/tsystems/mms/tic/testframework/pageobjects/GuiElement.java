@@ -78,6 +78,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 /**
  * GuiElement is the access point for most tests and is an extension of WebElement.
@@ -341,6 +342,12 @@ public class GuiElement implements
         guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.click();
         guiElementData.resetLogLevel();
+        return this;
+    }
+
+    @Override
+    public UiElementActions click(Consumer<UiElement> whenFail) {
+        core.click();
         return this;
     }
 

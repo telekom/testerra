@@ -3,6 +3,7 @@ package eu.tsystems.mms.tic.testframework.simulation;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
@@ -10,6 +11,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAs
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import org.openqa.selenium.WebElement;
+
+import java.util.function.Consumer;
 
 public class AbstractSimulator implements UiElementActions {
     protected final GuiElement guiElement;
@@ -106,6 +109,12 @@ public class AbstractSimulator implements UiElementActions {
     @Override
     public UiElementActions click() {
         guiElement.click();
+        return this;
+    }
+
+    @Override
+    public UiElementActions click(Consumer<UiElement> whenFail) {
+        guiElement.click(whenFail);
         return this;
     }
 

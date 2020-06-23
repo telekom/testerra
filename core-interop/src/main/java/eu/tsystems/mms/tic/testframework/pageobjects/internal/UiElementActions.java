@@ -3,6 +3,8 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 
+import java.util.function.Consumer;
+
 /**
  * All interactions that can be performed on a {@link UiElement}
  * @author Mike Reiche
@@ -19,6 +21,7 @@ public interface UiElementActions extends TestableUiElement {
         }
     }
     UiElementActions click();
+    UiElementActions click(Consumer<UiElement> whenFail);
     UiElementActions doubleClick();
     UiElementActions contextClick();
     UiElementActions select();

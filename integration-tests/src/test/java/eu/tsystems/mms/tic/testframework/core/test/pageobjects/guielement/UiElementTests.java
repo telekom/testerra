@@ -246,6 +246,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     public void test_Component() {
         final String input = "Ich gebe etwas ein";
         WebTestPage page = getPage();
+        page.inputForm().button().click(uiElement -> uiElement.getWebElement().click());
         page.inputForm().button().value().is("Button1");
         page.inputForm().input().clear().sendKeys(input).value().is(input);
         page.inputForm().button().numberOfElements().is(1);

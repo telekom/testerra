@@ -34,7 +34,7 @@ JSUtils.implementJavascriptOnPage(driver, "js/inject/custom.js", "customJs");
 
 ----
 
-Testerra will then inject your resource file into the current DOM of your `WebDriver` instance accoridng to the template
+Testerra will then inject your resource file into the current DOM of your `WebDriver` instance according to the template.
 [source,html]
 ----
 <script id="customJs" type="text/javascript">

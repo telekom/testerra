@@ -333,6 +333,11 @@ public class GuiElement implements
     }
 
     @Override
+    public void center(Point offset) {
+        guiElementFacade.center(offset);
+    }
+
+    @Override
     public void select() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.select();

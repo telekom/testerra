@@ -29,12 +29,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
-import java.awt.Color;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
@@ -44,6 +38,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.awt.*;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * JavaScript Utils.
@@ -605,6 +606,22 @@ public final class JSUtils {
         Point end = getElementLocationInViewPort(to);
 
         return new Point(end.x - start.x, end.y - start.y);
+    }
+
+    /**
+     * Scrolls the element to the center of the viewport
+     */
+    public static void scrollToCenter(WebDriver webDriver, WebElement webElement, Point offset) {
+        JSUtils.executeScript(
+                webDriver,
+                String.format("const elementRect = arguments[0].getBoundingClientRect();\n" +
+                        "const absoluteElementTop = elementRect.top + window.pageYOffset;\n" +
+                        "const absoluteElementLeft = elementRect.left + window.pageXOffset;\n" +
+                        "const middle = absoluteElementTop - (window.innerHeight / 2);\n" +
+                        "const center = absoluteElementLeft - (window.innerWidth / 2);\n" +
+                        "window.scrollTo(center+%d, middle+%d);", offset.x, offset.y),
+                webElement
+        );
     }
 
 }

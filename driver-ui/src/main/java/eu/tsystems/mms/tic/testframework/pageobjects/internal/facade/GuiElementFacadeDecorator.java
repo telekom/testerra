@@ -22,10 +22,14 @@
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import org.openqa.selenium.*;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -121,6 +125,15 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         beforeActionDelegation("scrollToElement");
         beforeDelegation("scrollToElement");
         decoratedFacade.scrollToElement(yOffset);
+        afterDelegation();
+        afterActionDelegation();
+    }
+
+    @Override
+    public void center(Point offset) {
+        beforeActionDelegation("center");
+        beforeDelegation("center");
+        decoratedFacade.center(offset);
         afterDelegation();
         afterActionDelegation();
     }

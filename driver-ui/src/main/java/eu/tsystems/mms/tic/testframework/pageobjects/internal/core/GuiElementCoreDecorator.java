@@ -23,7 +23,10 @@
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
@@ -63,6 +66,13 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     public void scrollToElement(int yOffset) {
         beforeDelegation();
         decoratedGuiElementCore.scrollToElement(yOffset);
+        afterDelegation();
+    }
+
+    @Override
+    public void center(Point offset) {
+        beforeDelegation();
+        decoratedGuiElementCore.center(offset);
         afterDelegation();
     }
 

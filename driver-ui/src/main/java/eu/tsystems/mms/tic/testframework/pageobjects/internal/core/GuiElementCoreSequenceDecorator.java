@@ -23,11 +23,15 @@
 
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
@@ -90,6 +94,19 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
             @Override
             public void run() {
                 guiElementCore.scrollToElement(yOffset);
+            }
+        };
+        sequence.setSkipThrowingException(true);
+        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
+        throwablePackedResponse.finalizeTimer();
+    }
+
+    @Override
+    public void center(Point offset) {
+        Timer.Sequence sequence = new Timer.Sequence() {
+            @Override
+            public void run() {
+                guiElementCore.center(offset);
             }
         };
         sequence.setSkipThrowingException(true);

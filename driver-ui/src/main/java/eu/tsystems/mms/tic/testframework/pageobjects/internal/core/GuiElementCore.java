@@ -22,8 +22,8 @@
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -56,6 +56,19 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      */
     void scrollToElement();
     void scrollToElement(int yOffset);
+
+    /**
+     * Centers the element in the viewport
+     */
+    default void center() {
+        center(new Point(0,0));
+    }
+
+    /**
+     * Centers the element in the viewport with a given offset
+     * @param offset
+     */
+    void center(Point offset);
 
     /**
      * Select a selectable element.

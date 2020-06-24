@@ -246,7 +246,6 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     public void test_Component() {
         final String input = "Ich gebe etwas ein";
         WebTestPage page = getPage();
-        page.inputForm().button().click(uiElement -> uiElement.getWebElement().click());
         page.inputForm().button().value().is("Button1");
         page.inputForm().input().clear().sendKeys(input).value().is(input);
         page.inputForm().button().numberOfElements().is(1);
@@ -268,6 +267,16 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         attributes.value("aria-expanded").is("true");
         //attributes.value("dataCompletelyCustomAttribute").is("true");
         attributes.value("data-completely-custom-attribute").is("yes");
+    }
+
+    @Test
+    public void test_ClickFallback() {
+        WebTestPage page = getPage();
+        UiElement btnDisabled = page.findById("btnDisabled");
+        btnDisabled.click(uiElement -> {
+            page.findById("btnEnable").click();
+        });
+        btnDisabled.text().is("Clicked");
     }
 
     @Override

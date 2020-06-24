@@ -339,5 +339,11 @@
 	<p>This is it.</p>
 </div>
 
+    <legend>
+        <label>Click Fallback test</label>
+        <button style="display: none;" id="btnDisabled" onclick="javascript:document.getElementById('btnDisabled').innerText = 'Clicked';">Disabled Button</button>
+        <button id="btnEnable" onclick="javascript:document.getElementById('btnDisabled').style.display = 'block';">Enable Button</button>
+    </legend>
+
 </body>
 </html>

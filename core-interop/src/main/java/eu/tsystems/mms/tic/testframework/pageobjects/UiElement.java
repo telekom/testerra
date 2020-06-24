@@ -76,14 +76,14 @@ public interface UiElement extends
 
         @Override
         public Double asDouble() {
-            return PropertyManager.getParser().getDoubleProperty(toString(), defaultValue);
+            return PropertyManager.getPropertiesParser().getDoubleProperty(toString(), defaultValue);
         }
         @Override
-        public Long asLong() { return PropertyManager.getParser().getLongProperty(toString(), defaultValue); }
+        public Long asLong() { return PropertyManager.getPropertiesParser().getLongProperty(toString(), defaultValue); }
         @Override
-        public Boolean asBool() { return PropertyManager.getParser().getBooleanProperty(toString(), defaultValue); }
+        public Boolean asBool() { return PropertyManager.getPropertiesParser().getBooleanProperty(toString(), defaultValue); }
         @Override
-        public String asString() { return PropertyManager.getParser().getProperty(toString(), defaultValue); }
+        public String asString() { return PropertyManager.getPropertiesParser().getProperty(toString(), defaultValue); }
     }
 
     IFrameLogic getFrameLogic();

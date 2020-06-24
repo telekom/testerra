@@ -99,19 +99,15 @@ _Upload and publish_
 
 * Before publishing, please note for Testerra version. You can only upload every version once!
 * Publish one module (but not recommended)
-  ````
+  ```sh
   gradle gradle core:bintrayUpload -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
-  ````
-* Publish Testerra Framework with default version `1-SNAPSHOT`
-  ````
-  gradle publishToBintray -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
-  ````
-* Publish Testerra Framework with specific version
-  ````
-  gradle publishToBintray -DttVersion=<version> -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
-  ```` 
-
-## Contributing
+  ```
+* Publish Testerra Framework with specified version (snapshot versions like `1-SNAPSHOT` are not allowed)
+  ```sh
+  gradle publishToBintray -DttVersion=1.0-RC-1 -DBINTRAY_USER=<bintray-user> -DBINTRAY_API_KEY=<bintray-api-key>
+  ```
+  
+  ## Contributing
 Thank you for considering contributing to the Testerra framework! The contribution guide can be found here: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License

@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+
+package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
@@ -28,6 +29,12 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
+import java.awt.Color;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
@@ -37,13 +44,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.awt.Color;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * JavaScript Utils.
@@ -291,32 +291,6 @@ public final class JSUtils {
     }
 
     /**
-     * Gets the inner html string from an element with the specified id.
-     *
-     * @param driver    WebDriver instance.
-     * @param elementId Id of element to get innerhtml from.
-     * @return innerhtml as String.
-     */
-    public static String getElementInnerHTMLById(final WebDriver driver, final String elementId) {
-        final Object out = ((JavascriptExecutor) driver).executeScript(
-                "return document.getElementById('" + elementId + "').innerHTML;");
-        return (String) out;
-    }
-
-    /**
-     * Gets the inner html string from an element with the specified name.
-     *
-     * @param driver      WebDriver instance.
-     * @param elementName Name of element to get innerhtml from.
-     * @return innerhtml as String.
-     */
-    public static String getElementInnerHTMLByName(final WebDriver driver, final String elementName) {
-        final Object out = ((JavascriptExecutor) driver).executeScript(
-                "return document.getElementByName('" + elementName + "').innerHTML;");
-        return (String) out;
-    }
-
-    /**
      * Scroll to top of page.
      *
      * @param driver WebDriver instance.
@@ -365,7 +339,7 @@ public final class JSUtils {
 
         final String jsById = documentSelector + ".getElementById(\"###\")";
         final String jsByClassName = documentSelector + ".getElementsByClassName(\"###\")[0]";
-        final String jsByTagName = documentSelector + "..getElementsByTagName(\"###\")[0]";
+        final String jsByTagName = documentSelector + ".getElementsByTagName(\"###\")[0]";
 
         //
         final String jsByCssSelector = documentSelector + ".querySelector(\"###\")";

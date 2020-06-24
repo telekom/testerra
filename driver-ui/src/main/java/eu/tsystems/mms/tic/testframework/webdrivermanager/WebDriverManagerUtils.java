@@ -185,8 +185,9 @@ public final class WebDriverManagerUtils {
     }
 
     public static void addBrowserVersionToCapabilities(final DesiredCapabilities capabilities, final String version) {
-        capabilities.setCapability(CapabilityType.VERSION, version);
-        capabilities.setCapability(CapabilityType.BROWSER_VERSION, version);
+//        capabilities.setCapability(CapabilityType.VERSION, version);
+//        capabilities.setCapability(CapabilityType.BROWSER_VERSION, version);
+        capabilities.setVersion(version);
     }
 
     /**

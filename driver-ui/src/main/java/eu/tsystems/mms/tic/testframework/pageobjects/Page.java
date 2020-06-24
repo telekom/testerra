@@ -45,7 +45,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -131,13 +131,6 @@ public abstract class Page extends AbstractPage {
 
     @Override
     public void waitForPageToLoad() {
-    }
-
-    @Override
-    protected void handleDemoMode(WebDriver webDriver) {
-        if (POConfig.isDemoMode() && webDriver != null) {
-            JSUtils.turnOnDemoModeForCurrentPage(webDriver);
-        }
     }
 
     @Override

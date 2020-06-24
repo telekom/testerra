@@ -168,8 +168,6 @@ public abstract class AbstractPage {
         String classSimpleName = this.getClass().getSimpleName();
         logger.info("Checking mandatory elements for " + classSimpleName);
 
-        handleDemoMode(getWebDriver());
-
         /*
         page checks
          */
@@ -224,7 +222,10 @@ public abstract class AbstractPage {
         // allow pages to run code before performing checkpage
     }
 
-    protected abstract void handleDemoMode(WebDriver webDriver);
+    @Deprecated
+    protected void handleDemoMode(WebDriver webDriver) {
+
+    }
 
     /**
      * Method entered when checkPage runs into an error (catching any throwable). You can throw a new throwable that

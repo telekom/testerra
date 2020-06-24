@@ -168,6 +168,8 @@ public abstract class AbstractPage {
         String classSimpleName = this.getClass().getSimpleName();
         logger.info("Checking mandatory elements for " + classSimpleName);
 
+        handleDemoMode(getWebDriver());
+
         /*
         page checks
          */
@@ -222,7 +224,6 @@ public abstract class AbstractPage {
         // allow pages to run code before performing checkpage
     }
 
-    @Deprecated
     protected void handleDemoMode(WebDriver webDriver) {
 
     }

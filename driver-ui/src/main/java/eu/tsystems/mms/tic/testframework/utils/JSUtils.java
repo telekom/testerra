@@ -29,12 +29,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
-import java.awt.Color;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
@@ -44,6 +38,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.awt.*;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * JavaScript Utils.
@@ -161,7 +162,7 @@ public final class JSUtils {
         try {
             return executeScriptWOCatch(driver, script, parameters);
         } catch (Exception e) {
-            LOGGER.error("Error executing javascript: " + e.getMessage(), e);
+            LOGGER.error(String.format("Error executing script\n-----\n%s\n-----", script), e);
             return null;
         }
     }
@@ -194,14 +195,16 @@ public final class JSUtils {
             WebElement webElement,
             Color color
     ) {
-        /*
-         * Try to inject JS for demo mode before executing highlight
-         */
-        turnOnDemoModeForCurrentPage(driver);
-
+        int ms = 2000;
         executeScript(
                 driver,
-                String.format("highlightElement(arguments[0],%d,%d,%d)", color.getRed(), color.getGreen(), color.getBlue()),
+                String.format("var element = arguments[0];\n" +
+                        "var origOutline = element.style.outline;\n" +
+                        "element.style.outline='5px solid rgba(%d,%d,%d,%d)';\n" +
+                        "var t = window.setTimeout(function(){\n" +
+                        "   element.style.outline = origOutline;\n" +
+                        "}, %d);",
+                        color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha(), ms),
                 webElement
         );
     }
@@ -235,27 +238,13 @@ public final class JSUtils {
             WebElement webElement,
             Color color
     ) {
-        /*
-         * Try to inject JS for demo mode before executing highlight
-         */
-        turnOnDemoModeForCurrentPage(driver);
-
         LOGGER.debug("Static highlighting WebElement " + webElement);
         executeScript(
                 driver,
-                String.format("highlightElementStatic(arguments[0],%d,%d,%d)", color.getRed(), color.getGreen(), color.getBlue()),
+                String.format("arguments[0].style.outline='5px dotted rgba(%d,%d,%d,%d)';", color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()),
                 webElement
         );
         LOGGER.debug("Finished static highlighting WebElement" + webElement);
-    }
-
-    /**
-     * Turn the demo mode on by injecting js into the current page source.
-     *
-     * @param driver .
-     */
-    public static void turnOnDemoModeForCurrentPage(final WebDriver driver) {
-        JSUtils.implementJavascriptOnPage(driver, "js/inject/highlightElement.js", "DemoModeForCurrentPage");
     }
 
     private static boolean isJavascriptImplementedOnPage(final WebDriver driver, final String id) {

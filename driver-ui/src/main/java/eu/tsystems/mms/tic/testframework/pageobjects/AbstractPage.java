@@ -224,7 +224,9 @@ public abstract class AbstractPage {
         // allow pages to run code before performing checkpage
     }
 
-    protected abstract void handleDemoMode(WebDriver webDriver);
+    protected void handleDemoMode(WebDriver webDriver) {
+
+    }
 
     /**
      * Method entered when checkPage runs into an error (catching any throwable). You can throw a new throwable that

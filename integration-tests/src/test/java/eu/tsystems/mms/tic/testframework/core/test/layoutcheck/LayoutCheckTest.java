@@ -65,7 +65,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
         //guiElement.scrollToElement(300);
         //Assert.assertFalse(guiElement.isVisible(true));
 
-        guiElement.center();
+        guiElement.scrollIntoView();
         Assert.assertTrue(guiElement.isVisible(true));
         guiElement.asserts().assertVisible(true);
     }

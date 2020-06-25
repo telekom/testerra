@@ -323,18 +323,14 @@ public class GuiElement implements
     }
 
     @Override
-    public void scrollToElement() {
-        guiElementFacade.scrollToElement();
-    }
-
-    @Override
+    @Deprecated
     public void scrollToElement(int yOffset) {
         guiElementFacade.scrollToElement(yOffset);
     }
 
     @Override
-    public void center(Point offset) {
-        guiElementFacade.center(offset);
+    public void scrollIntoView(Point offset) {
+        guiElementFacade.scrollIntoView(offset);
     }
 
     @Override

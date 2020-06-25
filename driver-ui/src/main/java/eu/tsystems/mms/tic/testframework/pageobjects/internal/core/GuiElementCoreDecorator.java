@@ -56,13 +56,7 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public void scrollToElement() {
-        beforeDelegation();
-        decoratedGuiElementCore.scrollToElement();
-        afterDelegation();
-    }
-
-    @Override
+    @Deprecated
     public void scrollToElement(int yOffset) {
         beforeDelegation();
         decoratedGuiElementCore.scrollToElement(yOffset);
@@ -70,9 +64,9 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public void center(Point offset) {
+    public void scrollIntoView(Point offset) {
         beforeDelegation();
-        decoratedGuiElementCore.center(offset);
+        decoratedGuiElementCore.scrollIntoView(offset);
         afterDelegation();
     }
 

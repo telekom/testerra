@@ -54,21 +54,25 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      *
      * @return this.
      */
-    void scrollToElement();
+    @Deprecated
+    default void scrollToElement() {
+        scrollToElement(0);
+    }
+    @Deprecated
     void scrollToElement(int yOffset);
 
     /**
      * Centers the element in the viewport
      */
-    default void center() {
-        center(new Point(0,0));
+    default void scrollIntoView() {
+        scrollIntoView(new Point(0,0));
     }
 
     /**
      * Centers the element in the viewport with a given offset
      * @param offset
      */
-    void center(Point offset);
+    void scrollIntoView(Point offset);
 
     /**
      * Select a selectable element.

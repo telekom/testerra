@@ -76,19 +76,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public void scrollToElement() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                guiElementCore.scrollToElement();
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
-        throwablePackedResponse.finalizeTimer();
-    }
-
-    @Override
+    @Deprecated
     public void scrollToElement(int yOffset) {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
@@ -102,11 +90,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     }
 
     @Override
-    public void center(Point offset) {
+    public void scrollIntoView(Point offset) {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.center(offset);
+                guiElementCore.scrollIntoView(offset);
             }
         };
         sequence.setSkipThrowingException(true);

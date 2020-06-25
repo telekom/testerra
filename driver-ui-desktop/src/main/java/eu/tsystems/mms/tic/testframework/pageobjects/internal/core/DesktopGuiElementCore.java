@@ -255,17 +255,13 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     }
 
     @Override
-    public void scrollToElement() {
-        pScrollToElement(0);
-    }
-
-    @Override
+    @Deprecated
     public void scrollToElement(int yOffset) {
         pScrollToElement(yOffset);
     }
 
     @Override
-    public void center(Point offset) {
+    public void scrollIntoView(Point offset) {
         JSUtils.scrollToCenter(guiElementData.webDriver, getWebElement(), offset);
     }
 
@@ -816,7 +812,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
             return element.getScreenshotAs(OutputType.FILE);
         } else {
             if (!isVisible(false)) {
-                center();
+                scrollIntoView();
             }
             Rectangle viewport = WebDriverUtils.getViewport(webDriver);
             try {

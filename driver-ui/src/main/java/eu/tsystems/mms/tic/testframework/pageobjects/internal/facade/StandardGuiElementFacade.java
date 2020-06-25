@@ -65,18 +65,14 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public void scrollToElement() {
-        guiElementCore.scrollToElement();
-    }
-
-    @Override
+    @Deprecated
     public void scrollToElement(int yOffset) {
         guiElementCore.scrollToElement(yOffset);
     }
 
     @Override
-    public void center(Point offset) {
-        guiElementCore.center(offset);
+    public void scrollIntoView(Point offset) {
+        guiElementCore.scrollIntoView(offset);
     }
 
     @Override

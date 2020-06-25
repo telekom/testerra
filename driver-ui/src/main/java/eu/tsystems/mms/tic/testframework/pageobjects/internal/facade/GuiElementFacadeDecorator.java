@@ -112,15 +112,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public void scrollToElement() {
-        beforeActionDelegation("scrollToElement");
-        beforeDelegation("scrollToElement");
-        decoratedFacade.scrollToElement();
-        afterDelegation();
-        afterActionDelegation();
-    }
-
-    @Override
+    @Deprecated
     public void scrollToElement(int yOffset) {
         beforeActionDelegation("scrollToElement");
         beforeDelegation("scrollToElement");
@@ -130,10 +122,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public void center(Point offset) {
+    public void scrollIntoView(Point offset) {
         beforeActionDelegation("center");
         beforeDelegation("center");
-        decoratedFacade.center(offset);
+        decoratedFacade.scrollIntoView(offset);
         afterDelegation();
         afterActionDelegation();
     }

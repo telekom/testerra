@@ -32,6 +32,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.awt.*;
 import java.io.File;
 import java.util.List;
 
@@ -231,8 +232,8 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public void highlight() {
-        guiElementCore.highlight();
+    public void highlight(Color color) {
+        guiElementCore.highlight(color);
     }
 
     @Override

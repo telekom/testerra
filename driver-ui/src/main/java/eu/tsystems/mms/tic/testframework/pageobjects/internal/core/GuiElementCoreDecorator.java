@@ -29,6 +29,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.awt.*;
 import java.io.File;
 import java.util.List;
 
@@ -246,9 +247,9 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public void highlight() {
+    public void highlight(Color color) {
         beforeDelegation();
-        decoratedGuiElementCore.highlight();
+        decoratedGuiElementCore.highlight(color);
         afterDelegation();
     }
 

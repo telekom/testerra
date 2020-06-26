@@ -381,14 +381,15 @@ public class GuiElement implements
     }
 
     @Override
+    @Deprecated
     public void clickJS() {
         guiElementData.setLogLevel(LogLevel.INFO);
-        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.mouseOverAbsolute2Axis(this.guiElementData.guiElement);
+        guiElementFacade.clickJS();
         guiElementData.resetLogLevel();
     }
 
     @Override
+    @Deprecated
     public void clickAbsolute() {
         guiElementData.setLogLevel(LogLevel.INFO);
         guiElementFacade.clickAbsolute();
@@ -396,6 +397,7 @@ public class GuiElement implements
     }
 
     @Override
+    @Deprecated
     public void mouseOverAbsolute2Axis() {
         guiElementFacade.mouseOverAbsolute2Axis();
     }
@@ -486,6 +488,7 @@ public class GuiElement implements
     }
 
     @Override
+    @Deprecated
     public void mouseOverJS() {
         guiElementFacade.mouseOverJS();
     }
@@ -558,11 +561,13 @@ public class GuiElement implements
     }
 
     @Override
+    @Deprecated
     public void rightClickJS() {
         guiElementFacade.rightClickJS();
     }
 
     @Override
+    @Deprecated
     public void doubleClickJS() {
         guiElementFacade.doubleClickJS();
     }

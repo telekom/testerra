@@ -41,6 +41,7 @@ import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
@@ -526,8 +527,32 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     }
 
     @Override
+    public void clickJS() {
+        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
+        desktopWebDriverUtils.clickJS(guiElementData.guiElement);
+    }
+
+    @Override
+    public void clickAbsolute() {
+        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
+        desktopWebDriverUtils.clickAbsolute(guiElementData.guiElement);
+    }
+
+    @Override
+    public void mouseOverAbsolute2Axis() {
+        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
+        desktopWebDriverUtils.mouseOverAbsolute2Axis(guiElementData.guiElement);
+    }
+
+    @Override
     public void mouseOver() {
         pMouseOver();
+    }
+
+    @Override
+    public void mouseOverJS() {
+        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
+        desktopWebDriverUtils.mouseOverJS(guiElementData.guiElement);
     }
 
     /**
@@ -671,6 +696,18 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
         find();
         Actions actions = new Actions(webDriver);
         actions.moveToElement(guiElementData.webElement).contextClick().build().perform();
+    }
+
+    @Override
+    public void rightClickJS() {
+        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
+        desktopWebDriverUtils.rightClickJS(guiElementData.guiElement);
+    }
+
+    @Override
+    public void doubleClickJS() {
+        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
+        desktopWebDriverUtils.doubleClickJS(guiElementData.guiElement);
     }
 
     @Override

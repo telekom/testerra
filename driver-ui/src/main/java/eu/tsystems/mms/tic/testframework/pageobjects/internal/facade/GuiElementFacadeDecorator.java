@@ -30,6 +30,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -431,9 +432,9 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public void highlight() {
+    public void highlight(Color color) {
         beforeDelegation("highlight");
-        decoratedFacade.highlight();
+        decoratedFacade.highlight(color);
         afterDelegation();
     }
 

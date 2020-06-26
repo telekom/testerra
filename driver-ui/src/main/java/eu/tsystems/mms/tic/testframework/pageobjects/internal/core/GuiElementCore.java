@@ -180,11 +180,57 @@ public interface GuiElementCore extends GuiElementStatusCheck {
     String getCssValue(String cssIdentifier);
 
     /**
+     * Clicks on a web element using javascript.
+     *
+     * @return .
+     */
+    @Deprecated
+    void clickJS();
+
+    /**
+     * click
+     *
+     * @return .
+     */
+    @Deprecated
+    void clickAbsolute();
+
+    /**
+     * hover mouse over 2 axis
+     *
+     * @return .
+     */
+    @Deprecated
+    void mouseOverAbsolute2Axis();
+
+    /**
      * Mouseover using WebDriver.
      *
      * @return this.
      */
     void mouseOver();
+
+    /**
+     * Mouseover directly over js event.
+     *
+     * @return this.
+     */
+    @Deprecated
+    void mouseOverJS();
+
+    /**
+     * Hovers the element
+     */
+    default void hover() {
+        this.mouseOver();
+    }
+
+    /**
+     * Performs a context click action
+     */
+    default void contextClick() {
+        this.rightClick();
+    }
 
     /**
      * Returns the Select-Object.
@@ -244,6 +290,11 @@ public interface GuiElementCore extends GuiElementStatusCheck {
     int getNumberOfFoundElements();
 
     void rightClick();
+    @Deprecated
+    void rightClickJS();
+    @Deprecated
+    void doubleClickJS();
+
     /**
      * Takes a screenshot of the GuiElement
      * @return File object of the screenshot or NULL on error

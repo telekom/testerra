@@ -64,7 +64,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -255,13 +255,14 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     }
 
     @Override
-    public void scrollToElement() {
-        pScrollToElement(0);
+    @Deprecated
+    public void scrollToElement(int yOffset) {
+        pScrollToElement(yOffset);
     }
 
     @Override
-    public void scrollToElement(int yOffset) {
-        pScrollToElement(yOffset);
+    public void scrollIntoView(Point offset) {
+        JSUtils.scrollToCenter(guiElementData.webDriver, getWebElement(), offset);
     }
 
     /**
@@ -811,7 +812,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
             return element.getScreenshotAs(OutputType.FILE);
         } else {
             if (!isVisible(false)) {
-                this.scrollToElement();
+                scrollIntoView();
             }
             Rectangle viewport = WebDriverUtils.getViewport(webDriver);
             try {

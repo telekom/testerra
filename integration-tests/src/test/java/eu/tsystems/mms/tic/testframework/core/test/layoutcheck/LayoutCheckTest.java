@@ -28,8 +28,6 @@ import eu.tsystems.mms.tic.testframework.layout.LayoutCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -67,7 +65,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
         //guiElement.scrollToElement(300);
         //Assert.assertFalse(guiElement.isVisible(true));
 
-        guiElement.scrollToElement();
+        guiElement.scrollIntoView();
         Assert.assertTrue(guiElement.isVisible(true));
         guiElement.asserts().assertVisible(true);
     }

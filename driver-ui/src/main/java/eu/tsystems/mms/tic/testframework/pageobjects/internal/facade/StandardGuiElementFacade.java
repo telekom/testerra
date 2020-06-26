@@ -22,12 +22,16 @@
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+
 import java.io.File;
 import java.util.List;
 
@@ -61,13 +65,14 @@ public class StandardGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public void scrollToElement() {
-        guiElementCore.scrollToElement();
+    @Deprecated
+    public void scrollToElement(int yOffset) {
+        guiElementCore.scrollToElement(yOffset);
     }
 
     @Override
-    public void scrollToElement(int yOffset) {
-        guiElementCore.scrollToElement(yOffset);
+    public void scrollIntoView(Point offset) {
+        guiElementCore.scrollIntoView(offset);
     }
 
     @Override

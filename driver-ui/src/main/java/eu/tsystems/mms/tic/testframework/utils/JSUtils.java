@@ -596,4 +596,20 @@ public final class JSUtils {
         return new Point(end.x - start.x, end.y - start.y);
     }
 
+    /**
+     * Scrolls the element to the center of the viewport
+     */
+    public static void scrollToCenter(WebDriver webDriver, WebElement webElement, Point offset) {
+        JSUtils.executeScript(
+                webDriver,
+                String.format("const elementRect = arguments[0].getBoundingClientRect();\n" +
+                        "const absoluteElementTop = elementRect.top + window.pageYOffset;\n" +
+                        "const absoluteElementLeft = elementRect.left + window.pageXOffset;\n" +
+                        "const middle = absoluteElementTop - (window.innerHeight / 2);\n" +
+                        "const center = absoluteElementLeft - (window.innerWidth / 2);\n" +
+                        "window.scrollTo(center+%d, middle+%d);", offset.x, offset.y),
+                webElement
+        );
+    }
+
 }

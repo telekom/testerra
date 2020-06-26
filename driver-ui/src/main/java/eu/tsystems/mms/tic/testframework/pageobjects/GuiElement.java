@@ -60,6 +60,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -381,7 +382,8 @@ public class GuiElement implements
     @Override
     public void clickJS() {
         guiElementData.setLogLevel(LogLevel.INFO);
-        guiElementFacade.clickJS();
+        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
+        desktopWebDriverUtils.mouseOverAbsolute2Axis(this.guiElementData.guiElement);
         guiElementData.resetLogLevel();
     }
 
@@ -530,8 +532,8 @@ public class GuiElement implements
     }
 
     @Override
-    public void highlight() {
-        guiElementFacade.highlight();
+    public void highlight(Color color) {
+        guiElementFacade.highlight(color);
     }
 
     @Override

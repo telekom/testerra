@@ -31,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
@@ -48,7 +47,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
@@ -64,7 +62,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -359,77 +357,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
         }
     }
 
-    private void pClickAbsolute(GuiElementCore guiElementCore, WebDriver driver, WebElement webElement) {
-        LOGGER.trace("Absolute navigation and click on: " + guiElementCore.toString());
-
-        checkAndWarnIfIE();
-
-        // Start the StopWatch for measuring the loading time of a Page
-        StopWatch.startPageLoad(driver);
-
-        Point point = webElement.getLocation();
-
-        Actions action = new Actions(driver);
-
-        // goto 0,0
-        action.moveToElement(webElement, 1 + -point.getX(), 1 + -point.getY());
-
-        // move y, then x
-        action.moveByOffset(0, point.getY()).moveByOffset(point.getX(), 0);
-
-        // move to webElement
-        action.moveToElement(webElement);
-        action.moveByOffset(1, 1);
-        action.click().perform();
-    }
-
-    @Override
-    public void clickJS() {
-        find();
-        JSUtils.executeScript(webDriver, "arguments[0].click();", guiElementData.webElement);
-    }
-
-    @Override
-    public void clickAbsolute() {
-        find();
-        pClickAbsolute(this, webDriver, guiElementData.webElement);
-    }
-
-    @Override
-    public void mouseOverAbsolute2Axis() {
-        find();
-        demoMouseOver();
-        mouseOverAbsolute2Axis(webDriver, guiElementData.webElement);
-    }
-
-    /**
-     * Two axis mouse move.
-     *
-     * @param driver     .
-     * @param webElement .
-     */
-    private void mouseOverAbsolute2Axis(WebDriver driver, WebElement webElement) {
-        checkAndWarnIfIE();
-        Actions action = new Actions(driver);
-
-        Point point = webElement.getLocation();
-
-        // goto 0,0
-        action.moveToElement(webElement, 1 + -point.getX(), 1 + -point.getY()).perform();
-
-        // move y, then x
-        action.moveByOffset(0, point.getY()).moveByOffset(point.getX(), 0).perform();
-
-        // move to webElement
-        action.moveToElement(webElement).perform();
-    }
-
-    private void checkAndWarnIfIE() {
-        if (Browsers.ie.equalsIgnoreCase(guiElementData.browser)) {
-            LOGGER.warn("*** IE driver with mouse events might not work ***");
-        }
-    }
-
     @Override
     public void submit() {
         getWebElement().submit();
@@ -599,37 +526,15 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
 
     @Override
     public void mouseOver() {
-        String browser = guiElementData.browser;
-        switch (browser) {
-            case Browsers.safari:
-            case Browsers.edge:
-
-                LOGGER.warn("Auto-changing mouseOver to mouseOverJS for " + browser);
-                pMouseOverJS();
-                break;
-
-            default:
-                pMouseOver();
-        }
-    }
-
-    /**
-     * Mouse over highlight in demo mode.
-     */
-    private void demoMouseOver() {
-        if (POConfig.isDemoMode()) {
-            highlightWebElement(new Color(255, 255, 0));
-        }
+        pMouseOver();
     }
 
     /**
      * Hidden method.
      */
     private void pMouseOver() {
-        find();
-        demoMouseOver();
-
-        WebElement webElement = guiElementData.webElement;
+        highlight(new Color(255, 255, 0));
+        WebElement webElement = getWebElement();
         final Point location = webElement.getLocation();
         final int x = location.getX();
         final int y = location.getY();
@@ -638,22 +543,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
 
         Actions action = new Actions(webDriver);
         action.moveToElement(webElement).build().perform();
-    }
-
-    @Override
-    public void mouseOverJS() {
-        demoMouseOver();
-        pMouseOverJS();
-    }
-
-    private void pMouseOverJS() {
-        find();
-        final String code = "var fireOnThis = arguments[0];"
-                + "var evObj = document.createEvent('MouseEvents');"
-                + "evObj.initEvent( 'mouseover', true, true );"
-                + "fireOnThis.dispatchEvent(evObj);";
-
-        ((JavascriptExecutor) webDriver).executeScript(code, guiElementData.webElement);
     }
 
     @Override
@@ -736,10 +625,10 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     }
 
     @Override
-    public void highlight() {
+    public void highlight(Color color) {
         LOGGER.debug("highlight(): starting highlight");
         find();
-        highlightWebElement(new Color(0, 0, 255));
+        highlightWebElement(color);
         LOGGER.debug("highlight(): finished highlight");
     }
 
@@ -781,25 +670,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
         find();
         Actions actions = new Actions(webDriver);
         actions.moveToElement(guiElementData.webElement).contextClick().build().perform();
-    }
-
-    @Override
-    public void rightClickJS() {
-        find();
-        String script = "var element = arguments[0];" +
-                "var e = element.ownerDocument.createEvent('MouseEvents');" +
-                "e.initMouseEvent('contextmenu', true, true,element.ownerDocument.defaultView, 1, 0, 0, 0, 0, false,false, false, false,2, null);" +
-                "return !element.dispatchEvent(e);";
-
-        JSUtils.executeScript(webDriver, script, guiElementData.webElement);
-    }
-
-    @Override
-    public void doubleClickJS() {
-        find();
-        WebElement webElement = getWebElement();
-        Point location = webElement.getLocation();
-        JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, location.getX(), location.getY());
     }
 
     @Override

@@ -147,6 +147,7 @@ public final class TesterraProperties {
     public static final String REPORT_ACTIVATE_SOURCES = "tt.report.activate.sources";
 
     public static final String GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = "tt.guielement.default.assertcollector";
+    @Deprecated
     public static final String GUIELEMENT_USE_JS_ALTERNATIVES = "tt.guielement.use.js.alternatives";
 
     /*

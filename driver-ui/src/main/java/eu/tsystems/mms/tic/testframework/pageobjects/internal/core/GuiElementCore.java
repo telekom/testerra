@@ -22,14 +22,15 @@
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.awt.*;
 import java.io.File;
 import java.util.List;
 
@@ -85,27 +86,6 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @return .
      */
     void click();
-
-    /**
-     * Clicks on a web element using javascript.
-     *
-     * @return .
-     */
-    void clickJS();
-
-    /**
-     * click
-     *
-     * @return .
-     */
-    void clickAbsolute();
-
-    /**
-     * hover mouse over 2 axis
-     *
-     * @return .
-     */
-    void mouseOverAbsolute2Axis();
 
     /**
      * submit
@@ -190,13 +170,6 @@ public interface GuiElementCore extends GuiElementStatusCheck {
     void mouseOver();
 
     /**
-     * Mouseover directly over js event.
-     *
-     * @return this.
-     */
-    void mouseOverJS();
-
-    /**
      * Returns the Select-Object.
      *
      * @return .
@@ -222,7 +195,10 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      *
      * @return element.
      */
-    void highlight();
+    default void highlight() {
+        highlight(new Color(0, 0, 255));
+    }
+    void highlight(Color color);
 
     /**
      * Swipe the element by the given offset. (0,0) should be the top left.
@@ -251,10 +227,6 @@ public interface GuiElementCore extends GuiElementStatusCheck {
     int getNumberOfFoundElements();
 
     void rightClick();
-    void rightClickJS();
-
-    void doubleClickJS();
-
     /**
      * Takes a screenshot of the GuiElement
      * @return File object of the screenshot or NULL on error

@@ -82,16 +82,16 @@ element.select(true);
 
 == Scrolling
 
-You can scroll the browser viewport until the element is on the upper edge of the viewport if possible.
+You can scroll the browser viewport until the element is in the middle viewport if possible.
 
 [source,java]
 ----
 GuiElement element = new GuiElement(driver, By.id("image"));
 
-element.scrollToElement()
+element.scrollIntoView();
 
 // Lets offset pixel distance from the top of the viewport
-element.scrollToElement(int yOffset)
+element.scrollIntoView(new Point(0, -20))
 
 ----
 

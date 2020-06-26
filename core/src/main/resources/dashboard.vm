@@ -14,7 +14,7 @@
         <!--<script type="text/javascript" src="js/cytoscape.min.js"></script>-->
         <!--<script type="text/javascript" src="js/dagre.js"></script>-->
 
-        <script type="text/javascript" src="js/inject/highlightElement.js"></script>
+##        <script type="text/javascript" src="js/inject/highlightElement.js"></script>
 
         <!-- Required for #detailView -->
         <link rel="stylesheet" href="style/fotorama.css"/>

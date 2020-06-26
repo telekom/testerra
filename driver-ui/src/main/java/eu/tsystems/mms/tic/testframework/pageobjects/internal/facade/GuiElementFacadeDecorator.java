@@ -122,16 +122,20 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementFacade scrollToElement() {
-        return scrollToElement(0);
+    @Deprecated
+    public GuiElementFacade scrollToElement(int yOffset) {
+        beforeActionDelegation("scrollToElement");
+        beforeDelegation("scrollToElement");
+        decoratedFacade.scrollToElement(yOffset);
+        afterDelegation();
+        afterActionDelegation();
     }
 
     @Override
-    public GuiElementFacade scrollToElement(int yOffset) {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeActionDelegation(methodName);
-        beforeDelegation(methodName);
-        decoratedFacade.scrollToElement(yOffset);
+    public GuiElementFacade scrollIntoView(Point offset) {
+        beforeActionDelegation("center");
+        beforeDelegation("center");
+        decoratedFacade.scrollIntoView(offset);
         afterDelegation();
         afterActionDelegation();
         return this;

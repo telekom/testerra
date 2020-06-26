@@ -122,17 +122,18 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     }
 
     @Override
-    public GuiElementCore scrollToElement() {
+    @Deprecated
+    public GuiElementCore scrollToElement(int yOffset) {
         beforeDelegation();
-        core.scrollToElement();
+        core.scrollToElement(yOffset);
         afterDelegation();
         return this;
     }
 
     @Override
-    public GuiElementCore scrollToElement(int yOffset) {
+    public GuiElementCore scrollIntoView(Point offset) {
         beforeDelegation();
-        core.scrollToElement(yOffset);
+        core.scrollIntoView(offset);
         afterDelegation();
         return this;
     }

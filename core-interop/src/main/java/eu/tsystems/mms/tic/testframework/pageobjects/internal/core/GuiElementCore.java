@@ -23,8 +23,8 @@
 
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -139,8 +139,24 @@ public interface GuiElementCore {
      *
      * @return this.
      */
-    GuiElementCore scrollToElement();
+    @Deprecated
+    default GuiElementCore scrollToElement() {
+        return scrollToElement(0);
+    }
     GuiElementCore scrollToElement(final int yOffset);
+
+    /**
+     * Centers the element in the viewport
+     */
+    default void scrollIntoView() {
+        scrollIntoView(new Point(0,0));
+    }
+
+    /**
+     * Centers the element in the viewport with a given offset
+     * @param offset
+     */
+    void scrollIntoView(Point offset);
 
     /**
      * Select a selectable element.

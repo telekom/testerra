@@ -304,18 +304,15 @@ public class GuiElement implements
         return decoratedFacade.getBy();
     }
 
-    public GuiElement scrollToElement() {
-        decoratedFacade.scrollToElement();
-        return this;
-    }
-
+    @Override
+    @Deprecated
     public UiElement scrollToElement(int yOffset) {
         decoratedFacade.scrollToElement(yOffset);
         return this;
     }
 
     @Override
-    public UiElement select() {
+    public void select() {
         guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.select();
         guiElementData.resetLogLevel();

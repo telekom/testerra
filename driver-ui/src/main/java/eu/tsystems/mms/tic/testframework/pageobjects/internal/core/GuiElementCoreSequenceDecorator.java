@@ -89,11 +89,12 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
     }
 
     @Override
-    public GuiElementCore scrollToElement() {
+    @Deprecated
+    public GuiElementCore scrollToElement(int yOffset) {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.scrollToElement();
+                core.scrollToElement(yOffset);
             }
         };
         sequence.setSkipThrowingException(true);
@@ -103,11 +104,11 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
     }
 
     @Override
-    public GuiElementCore scrollToElement(int yOffset) {
+    public GuiElementCore scrollIntoView(Point offset) {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.scrollToElement(yOffset);
+                core.scrollIntoView(offset);
             }
         };
         sequence.setSkipThrowingException(true);

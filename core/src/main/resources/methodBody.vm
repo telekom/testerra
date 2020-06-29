@@ -6,11 +6,14 @@
     $testMethod.name
 
     #if ($testMethod.infos)
-        <i>
-        #foreach ($i in $testMethod.infos)
-            $i<br>
-        #end
-        </i>
+        <div>
+            <i>
+            #foreach ($i in $testMethod.infos)
+                $i <br>
+            #end
+            </i>
+        </div>
+        <br>
     #end
 
     #if ($testMethod.classContext.merged)

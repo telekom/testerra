@@ -72,6 +72,7 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.LocalFileDetector;
@@ -213,6 +214,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         StopWatch.startPageLoad(eventFiringWebDriver);
 
         WebDriverManagerConfig config = WebDriverManager.config();
+        /**
+         * Setup default browser proxy
+         */
+        URL proxyUrl = config.proxyUrl();
+        if (proxyUrl != null) {
+            request.desiredCapabilities.setCapability(CapabilityType.PROXY, String.format("%s:%d", proxyUrl.getHost(), proxyUrl.getPort()));
+        }
         WebDriver.Window window = eventFiringWebDriver.manage().window();
         /*
          Maximize

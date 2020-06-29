@@ -1,0 +1,33 @@
+= Logging
+
+If you're on Gradle, the logging of Testerra should work out of the box. But if you're on Maven you MUST add the following dependencies to your main `pom.xml`.
+
+.pom.xml
+[source, xml]
+----
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-slf4j18-impl</artifactId>
+    <version>2.13.2</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+    <version>2.13.2</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.13.2</version>
+</dependency>
+----
+
+== Customize Logging
+The `TesterraLogger` logs to `System.out` by default.
+If you want to have more control over several log levels of classes, add a `log4j2.xml` to your `resources/`.
+
+.log4j2.xml
+[source, xml]
+----
+include::../../res/log4j2.xml[]
+----

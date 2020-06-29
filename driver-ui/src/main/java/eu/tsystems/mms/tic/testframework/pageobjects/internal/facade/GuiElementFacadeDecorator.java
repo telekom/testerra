@@ -24,16 +24,15 @@
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import java.awt.Color;
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
-import java.awt.*;
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * This is meant as template. If you want to implement a Decorator, copy this one and add your decorations.

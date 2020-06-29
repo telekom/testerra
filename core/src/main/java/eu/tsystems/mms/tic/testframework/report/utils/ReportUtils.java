@@ -125,8 +125,6 @@ public final class ReportUtils {
                 "style/kis/fonts.css",
                 "style/kis/layout.css",
 
-                "js/inject/highlightElement.js",
-
                 // fonts
                 "style/kis/fonts/opensans/OpenSans-Bold-webfont.eot",
                 "style/kis/fonts/opensans/OpenSans-Bold-webfont.svg",

@@ -60,6 +60,7 @@ import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -219,7 +220,15 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
          */
         URL proxyUrl = config.proxyUrl();
         if (proxyUrl != null) {
-            request.desiredCapabilities.setCapability(CapabilityType.PROXY, String.format("%s:%d", proxyUrl.getHost(), proxyUrl.getPort()));
+            String browserProxyString = String.format("%s:%d", proxyUrl.getHost(), proxyUrl.getPort());
+            Proxy browserProxy = new Proxy();
+            browserProxy.setHttpProxy(browserProxyString);
+            browserProxy.setFtpProxy(browserProxyString);
+            browserProxy.setSslProxy(browserProxyString);
+            browserProxy.setSocksProxy(browserProxyString);
+            browserProxy.setSocksUsername(proxyUrl.getUserInfo());
+            browserProxy.setSocksPassword(proxyUrl.getAuthority());
+            request.desiredCapabilities.setCapability(CapabilityType.PROXY, browserProxy);
         }
         WebDriver.Window window = eventFiringWebDriver.manage().window();
         /*

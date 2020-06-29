@@ -48,7 +48,8 @@ public final class Flags {
     public static boolean FAILURE_CORRIDOR_ACTIVE = p(TesterraProperties.FAILURE_CORRIDOR_ACTIVE, false);
     public static boolean EXECUTION_OMIT_IN_DEVELOPMENT = p(TesterraProperties.EXECUTION_OMIT_IN_DEVELOPMENT, false);
     public static boolean GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR = p(TesterraProperties.GUIELEMENT_DEFAULT_ASSERT_IS_COLLECTOR, false);
-    public static boolean GUIELEMENT_USE_JS_ALTERNATIVES = p(TesterraProperties.GUIELEMENT_USE_JS_ALTERNATIVES, true);
+    @Deprecated
+    public static boolean GUIELEMENT_USE_JS_ALTERNATIVES = p(TesterraProperties.GUIELEMENT_USE_JS_ALTERNATIVES, false);
 
     public static boolean SCREENSHOTTER_ACTIVE = p(TesterraProperties.SCREENSHOTTER_ACTIVE, true);
     public static boolean SCREENCASTER_ACTIVE = p(TesterraProperties.SCREENCASTER_ACTIVE, true);

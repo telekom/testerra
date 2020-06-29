@@ -23,14 +23,14 @@
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import java.awt.Color;
+import java.io.File;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
-import java.io.File;
-import java.util.List;
 
 public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecorator implements GuiElementCore {
 
@@ -246,9 +246,9 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
     }
 
     @Override
-    public void highlight() {
+    public void highlight(Color color) {
         beforeDelegation();
-        decoratedGuiElementCore.highlight();
+        decoratedGuiElementCore.highlight(color);
         afterDelegation();
     }
 

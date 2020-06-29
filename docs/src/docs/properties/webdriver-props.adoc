@@ -19,6 +19,8 @@ a| Browser label, the following browsers are possible
 
 | {browser_version} | na. | Version label
 | {browser_setting} | | You can combine browser type and version as single string like `firefox:65`
+| {browser_proxy} | na. | Sets the default proxy for all browsers and protocols.
+| {browser_proxy_default} | false | Use the system's default http proxy configuration for all browsers and protocols. |
 | {baseurl} | na. | URL of the first site called in a new browser session
 | {webdriver_mode} | remote | Sets the webdriver mode. remote uses an external Selenium server
 | {selenium_server_url} | na. | The complete URL to a remote Selenium server. +

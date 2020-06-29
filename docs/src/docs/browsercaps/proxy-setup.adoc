@@ -10,15 +10,17 @@ NOTE: If you want to setup a proxy for the runtime environment but the browser, 
 == Default configuration
 
 The default proxy configuration sets up the same proxy for all protocols. You simple add
-```properties
-tt.browser.proxy=http://your-proxy-host.com:8080
-```
+[source, properties, subs="attributes"]
+----
+{browser_proxy}=http://your-proxy-host.com:8080
+----
 to your `proxysettings.properties`.
 
 I you want to use the system's proxy instead, then add
-```properties
-tt.browser.proxy.useSystemDefault=true
-```
+[source, properties, subs="attributes"]
+----
+{browser_proxy_default}=true
+----
 
 == Custom configuration
 

@@ -9,6 +9,8 @@
 :browser:                                       tt.browser
 :browser_version:                               tt.browser.version
 :browser_setting:                               tt.browser.setting
+:browser_proxy:                                 tt.browser.proxy
+:browser_proxy_default:                         tt.browser.proxy.useSystemDefault
 :baseurl:                                       tt.baseurl
 :webdriver_mode:                                tt.webdriver.mode
 :selenium_server_url:                           tt.selenium.server.url

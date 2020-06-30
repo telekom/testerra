@@ -9,7 +9,7 @@
         <div>
             <i>
             #foreach ($i in $testMethod.infos)
-                $i <br>
+                $i<br>
             #end
             </i>
         </div>

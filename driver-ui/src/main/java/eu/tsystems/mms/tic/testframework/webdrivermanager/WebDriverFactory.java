@@ -21,8 +21,6 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -85,11 +83,6 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
         DesiredCapabilities finalCaps = buildCapabilities(caps, finalRequest);
 
         /*
-        log capabilities
-         */
-        logSessionRequest(finalRequest, finalCaps);
-
-        /*
         create the web driver session
          */
         WebDriver rawDriver = getRawWebDriver(finalRequest, finalCaps);
@@ -122,11 +115,6 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
         setupSession(eventFiringWebDriver, finalRequest);
 
         return eventFiringWebDriver;
-    }
-
-    private void logSessionRequest(R finalRequest, DesiredCapabilities finalCaps) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        log().info("Requesting new web driver session with capabilities:\n" + gson.toJson(finalCaps.asMap()));
     }
 
     /**

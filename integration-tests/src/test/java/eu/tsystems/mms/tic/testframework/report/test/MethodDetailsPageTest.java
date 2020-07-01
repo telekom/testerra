@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.report.test;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractAnnotationMarkerTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
@@ -254,12 +255,15 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #812
     public void testT09_checkRepairedFailsIndication() {
-        String methodName = "test_TestStatePassed2";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), methodName);
+        final String methodName = "test_TestStatePassed2";
+        final MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), methodName);
 
-        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().isDisplayed(), "The method details page indicates that the shown method is repaired.");
-        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("ticketId=1"), "The indicator for the repaired fails annotation contains the correct ticketId.");
-        AssertCollector.assertTrue(methodDetailsPage.getRepairedFailsIndication().getText().contains("description=Does not actually fail."), "The indicator for the repaired fails annotation contains the correct description.");
+        final GuiElement repairedFailsIndication = methodDetailsPage.getRepairedFailsIndication();
+        final String failsText = repairedFailsIndication.getText();
+
+        AssertCollector.assertTrue(repairedFailsIndication.isDisplayed(), "The method details page indicates that the shown method is repaired.");
+        AssertCollector.assertTrue(failsText.contains("ticketId=1"), "The indicator for the repaired fails annotation contains the correct ticketId.");
+        AssertCollector.assertTrue(failsText.contains("description=\"Does not actually fail.\""), "The indicator for the repaired fails annotation contains the correct description.");
     }
 
     /**

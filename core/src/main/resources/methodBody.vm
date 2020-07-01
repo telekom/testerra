@@ -6,12 +6,10 @@
     $testMethod.name
 
     #if ($testMethod.infos)
-        <div>
-            <i>
+        <div class = "nowrapinfoline">
             #foreach ($i in $testMethod.infos)
                 $i<br>
             #end
-            </i>
         </div>
         <br>
     #end

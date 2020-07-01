@@ -415,7 +415,7 @@ public class TimerTest extends AbstractWebDriverTest implements Loggable {
             out = timer.executeSequence(new Timer.Sequence<String>() {
                 @Override
                 public void run() {
-                    setAddThrowableToMethodContext(true);
+                    setAddThrowableToMethodContext(false);
                     throw new TesterraRuntimeException(msgTesterraRuntimeException);
                 }
             });

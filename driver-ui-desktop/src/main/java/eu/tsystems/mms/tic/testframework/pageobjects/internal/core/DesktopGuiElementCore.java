@@ -220,10 +220,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
         }
     }
 
-    private void highlightWebElement(Color color) {
-        JSUtils.highlightWebElement(webDriver, guiElementData.webElement, color);
-    }
-
     private void logTimings(long start, int findCounter) {
         if (findCounter != -1) {
             GuiElementCore parent = guiElementData.parent;
@@ -529,19 +525,19 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     @Override
     public void clickJS() {
         DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.clickJS(guiElementData.guiElement);
+        desktopWebDriverUtils.clickJS(this.webDriver, this.getWebElement());
     }
 
     @Override
     public void clickAbsolute() {
         DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.clickAbsolute(guiElementData.guiElement);
+        desktopWebDriverUtils.clickAbsolute(this.webDriver, this.getWebElement());
     }
 
     @Override
     public void mouseOverAbsolute2Axis() {
         DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.mouseOverAbsolute2Axis(guiElementData.guiElement);
+        desktopWebDriverUtils.mouseOverAbsolute2Axis(webDriver, this.getWebElement());
     }
 
     @Override
@@ -552,7 +548,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     @Override
     public void mouseOverJS() {
         DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.mouseOverJS(guiElementData.guiElement);
+        desktopWebDriverUtils.mouseOverJS(guiElementData.webDriver, this.getWebElement());
     }
 
     /**
@@ -654,7 +650,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     public void highlight(Color color) {
         LOGGER.debug("highlight(): starting highlight");
         find();
-        highlightWebElement(color);
+        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
+        desktopWebDriverUtils.highlightWebElement(webDriver, this.getWebElement(), color);
         LOGGER.debug("highlight(): finished highlight");
     }
 
@@ -701,13 +698,13 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     @Override
     public void rightClickJS() {
         DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.rightClickJS(guiElementData.guiElement);
+        desktopWebDriverUtils.rightClickJS(webDriver, this.getWebElement());
     }
 
     @Override
     public void doubleClickJS() {
         DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.doubleClickJS(guiElementData.guiElement);
+        desktopWebDriverUtils.doubleClickJS(webDriver, this.getWebElement());
     }
 
     @Override

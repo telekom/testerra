@@ -305,7 +305,7 @@ public class TestStatusController {
         INFO("#b9b900", "i", "Info", true, false),
 
         FAILED("red", "&#x2718;", "Failed", true, true),
-        FAILED_MINOR("deeppink", "&#x2718;", "Failed with Minor", true, true),
+        FAILED_MINOR("deeppink", "&#x2718;", "Failed + Minor", true, true),
         FAILED_RETRIED("pink", "R", "Retried", true, false),
         FAILED_EXPECTED("grey", "&#x2718;", "Expected Failed", true, false),
 

@@ -19,8 +19,9 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
@@ -28,13 +29,14 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-
 import java.net.URL;
+import org.openqa.selenium.Proxy;
 
 public class WebDriverProxyUtils {
 
-    private WebDriverProxyUtils() {
+    public WebDriverProxyUtils() {
 
     }
 
@@ -64,7 +66,7 @@ public class WebDriverProxyUtils {
      * @param proxyUrl {@link URL} proxy Url
      * @return String - The proxy URL
      */
-    public static String toProxyString(final URL proxyUrl) {
+    private String toProxyString(final URL proxyUrl) {
 
         String proxyString = null;
 
@@ -80,4 +82,37 @@ public class WebDriverProxyUtils {
         return proxyString;
     }
 
+    /**
+     * Creates proxy settings based on an URL
+     * @param url
+     * @return Proxy
+     */
+    public Proxy createProxyFromUrl(URL url) {
+        String proxyString = toProxyString(url);
+        Proxy proxy = new Proxy();
+        proxy.setHttpProxy(proxyString);
+        proxy.setFtpProxy(proxyString);
+        proxy.setSslProxy(proxyString);
+        proxy.setSocksProxy(proxyString);
+        String userInfo = url.getUserInfo();
+        if (userInfo != null && userInfo.length() > 0) {
+            String[] userInfoParts = userInfo.split(":", 2);
+            if (userInfoParts.length > 0) {
+                proxy.setSocksUsername(userInfoParts[0]);
+            }
+            if (userInfoParts.length > 1) {
+                proxy.setSocksPassword(userInfoParts[1]);
+            }
+        }
+        return proxy;
+    }
+
+    /**
+     * @return Proxy based on the default systems https proxy settings.
+     */
+    public Proxy getDefaultProxy() {
+        Proxy proxy = createProxyFromUrl(ProxyUtils.getSystemHttpsProxyUrl());
+        proxy.setNoProxy(PropertyManager.getProperty("https.nonProxyHosts"));
+        return proxy;
+    }
 }

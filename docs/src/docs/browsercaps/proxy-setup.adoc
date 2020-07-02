@@ -6,48 +6,31 @@ IMPORTANT: Make sure that your WebDriver supports the Proxy-Capability. Some Web
 
 NOTE: If you want to setup a proxy for the runtime environment but the browser, you have to follow the instructions at <<Using a proxy>>
 
-
 == Default configuration
 
-The default proxy configuration sets up the same proxy for all protocols. You simple add
-[source, properties, subs="attributes"]
-----
-{browser_proxy}=http://your-proxy-host.com:8080
-----
-to your `proxysettings.properties`.
-
-I you want to use the system's proxy instead, then add
-[source, properties, subs="attributes"]
-----
-{browser_proxy_default}=true
-----
-
-== Custom configuration
-
-If you want to setup browser or protocol specific proxies. Then adapt the following code example as you need.
+The following code setups a proxy based on the system's https proxy configuration.
 
 [source,java]
 ----
 import org.testng.annotations.BeforeSuite;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
-import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxyUtils;
+import org.openqa.selenium.Proxy;
 
 public abstract class AbstractTest extends TesterraTest {
+
     @BeforeSuite
     public void proxySetup() {
-
-        final String proxyA = "my-proxy:3128";
-        final String proxyB = "another-proxy:8080";
+        WebDriverProxyUtils utils = new WebDriverProxyUtils();
+        final defaultProxy Proxy = utils.getDefaultProxy();
+        final Proxy otherProxy = utils.createProxyFromUrl(new URL("http://proxyUser:secretPassword@my-proxy:3128"));
 
         /**
          * Global browser proxy configuration
          */
         DesiredCapabilities dc = new DesiredCapabilities();
-        Proxy globalProxy = new Proxy();
-        globalProxy.setHttpProxy(proxyB);
-        globalProxy.setSslProxy(proxyA);
-        dc.setCapability(CapabilityType.PROXY, globalProxy);
+        dc.setCapability(CapabilityType.PROXY, defaultProxy);
         WebDriverManager.setGlobalExtraCapabilities(dc);
 
          /**
@@ -56,10 +39,7 @@ public abstract class AbstractTest extends TesterraTest {
         WebDriverManager.setUserAgentConfig(Browsers.chrome, new ChromeConfig() {
             @Override
             public void configure(ChromeOptions options) {
-                Proxy browserProxy = new Proxy();
-                browserProxy.setHttpProxy(proxyA);
-                browserProxy.setSslProxy(proxyB);
-                options.setProxy(browserProxy);
+                options.setProxy(otherProxy);
             }
         });
     }

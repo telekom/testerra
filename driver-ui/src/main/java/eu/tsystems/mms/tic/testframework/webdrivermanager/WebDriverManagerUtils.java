@@ -222,8 +222,8 @@ public final class WebDriverManagerUtils {
      */
     @Deprecated
     public static void addProxyToCapabilities(final DesiredCapabilities capabilities, final URL proxyUrl) {
-        final String proxyString = WebDriverProxyUtils.toProxyString(proxyUrl);
-        addProxyToCapabilities(capabilities, proxyString);
+        WebDriverProxyUtils utils = new WebDriverProxyUtils();
+        capabilities.setCapability(CapabilityType.PROXY, utils.createProxyFromUrl(proxyUrl));
     }
 
     /**

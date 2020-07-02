@@ -60,7 +60,6 @@ import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -73,7 +72,6 @@ import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.BrowserType;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.LocalFileDetector;
@@ -215,21 +213,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         StopWatch.startPageLoad(eventFiringWebDriver);
 
         WebDriverManagerConfig config = WebDriverManager.config();
-        /**
-         * Setup default browser proxy
-         */
-        URL proxyUrl = config.proxyUrl();
-        if (proxyUrl != null) {
-            String browserProxyString = String.format("%s:%d", proxyUrl.getHost(), proxyUrl.getPort());
-            Proxy browserProxy = new Proxy();
-            browserProxy.setHttpProxy(browserProxyString);
-            browserProxy.setFtpProxy(browserProxyString);
-            browserProxy.setSslProxy(browserProxyString);
-            browserProxy.setSocksProxy(browserProxyString);
-            browserProxy.setSocksUsername(proxyUrl.getUserInfo());
-            browserProxy.setSocksPassword(proxyUrl.getAuthority());
-            request.desiredCapabilities.setCapability(CapabilityType.PROXY, browserProxy);
-        }
         WebDriver.Window window = eventFiringWebDriver.manage().window();
         /*
          Maximize

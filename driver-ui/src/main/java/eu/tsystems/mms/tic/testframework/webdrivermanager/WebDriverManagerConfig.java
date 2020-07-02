@@ -25,11 +25,8 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Class holding configuration settings for the WebDriverManager. Some are writable. This class is not ThreadSafe, some
@@ -46,7 +43,6 @@ public class WebDriverManagerConfig implements Loggable {
      */
     public boolean executeCloseWindows = true;
 
-    private URL proxyUrl;
     /**
      * WebDriverMode that is used.
      */
@@ -112,30 +108,4 @@ public class WebDriverManagerConfig implements Loggable {
         return executeCloseWindows && closeWindowsAfterTestMethod;
     }
 
-    /**
-     * Returns the configured proxy url for the web driver.
-     * @return The browser proxy URL
-     */
-    public URL proxyUrl() {
-        if (proxyUrl==null) {
-            final String propertyName = "tt.browser.proxy";
-            String browserProxy = PropertyManager.getProperty(propertyName);
-            if (browserProxy != null && browserProxy.length() > 0) {
-                try {
-                    this.proxyUrl = new URL(browserProxy);
-                } catch (MalformedURLException e) {
-                    log().error(String.format("Unable to parse propererty %s", propertyName), e);
-                    if (PropertyManager.getBooleanProperty("tt.browser.proxy.useSystemDefault", false)) {
-                        this.proxyUrl = ProxyUtils.getSystemHttpProxyUrl();
-                    }
-                }
-            }
-        }
-        return this.proxyUrl;
-    }
-
-    public WebDriverManagerConfig setProxyUrl(URL proxyUrl) {
-        this.proxyUrl = proxyUrl;
-        return this;
-    }
 }

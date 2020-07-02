@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
@@ -45,7 +45,7 @@ public class Timer {
      * Creates new {@link Timer}. Will sleep for sleepTimeInMs for maximum durationInMs
      *
      * @param sleepTimeInMs How long to sleep in milliseconds
-     * @param durationInMs  Maximum Duration of Sleep
+     * @param durationInMs Maximum Duration of Sleep
      */
     public Timer(long sleepTimeInMs, long durationInMs) {
         if (sleepTimeInMs > durationInMs) {
@@ -68,12 +68,22 @@ public class Timer {
         private Boolean passState = null;
         private boolean skipThrowingException = false;
 
+        private boolean addThrowableToMethodContext = true;
+
         public boolean isSkipThrowingException() {
             return skipThrowingException;
         }
 
         public void setSkipThrowingException(boolean skipThrowingException) {
             this.skipThrowingException = skipThrowingException;
+        }
+
+        public boolean isAddThrowableToMethodContext() {
+            return addThrowableToMethodContext;
+        }
+
+        public void setAddThrowableToMethodContext(boolean addThrowableToMethodContext) {
+            this.addThrowableToMethodContext = addThrowableToMethodContext;
         }
 
         public Boolean getPassState() {
@@ -106,7 +116,7 @@ public class Timer {
      * Execute a sequence and kill it if it times out. Be careful, for killing it uses Thread.stop(), which
      * is deprecated, but the only way java can kill a thread.
      *
-     * @param <T>      Return type.
+     * @param <T> Return type.
      * @param sequence Sequence.
      */
     public <T> void executeSequenceThread(final Sequence<T> sequence) {
@@ -142,7 +152,7 @@ public class Timer {
     /**
      * exectutes the following sequence
      *
-     * @param <T>      .
+     * @param <T> .
      * @param sequence .
      * @return .
      */
@@ -194,8 +204,14 @@ public class Timer {
             }
         }
 
+
+        if (sequence.isAddThrowableToMethodContext()) {
+            addThrowableToMethodContext(catchedThrowable);
+        }
+
         // create timeout exception
         TimeoutException timeoutException = createTimeoutException(catchedThrowable);
+
 
         // give back a packed response when we have an object to give back or we have to skip throwing something
         if (sequence.getReturningObject() != null || sequence.isSkipThrowingException()) {
@@ -220,7 +236,21 @@ public class Timer {
             vorher die lesbare Meldung extrahiert.
             Funktioniert das gut? pele 25.06.2014
              */
+            timeoutException = new TimeoutException(message, catchedThrowable);
+        } else {
+            timeoutException = new TimeoutException(message);
+        }
 
+        // stack exception if errormessage is given
+        if (!StringUtils.isStringEmpty(errorMessage)) {
+            timeoutException = new TimeoutException(errorMessage, timeoutException);
+        }
+
+        return timeoutException;
+    }
+
+    private void addThrowableToMethodContext(Throwable catchedThrowable) {
+        if (catchedThrowable != null) {
             String catchedThrowableMessage;
             if (catchedThrowable instanceof AssertionError) {
                 catchedThrowableMessage = catchedThrowable.toString();
@@ -233,17 +263,7 @@ public class Timer {
                     currentMethodContext.errorContext().setThrowable(catchedThrowableMessage, catchedThrowable);
                 }
             }
-            timeoutException = new TimeoutException(message, catchedThrowable);
-        } else {
-            timeoutException = new TimeoutException(message);
         }
-
-        // stack exception if errormessage is given
-        if (!StringUtils.isStringEmpty(errorMessage)) {
-            timeoutException = new TimeoutException(errorMessage, timeoutException);
-        }
-
-        return timeoutException;
     }
 
     /**

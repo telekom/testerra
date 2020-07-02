@@ -21,6 +21,8 @@
  */
  package eu.tsystems.mms.tic.testframework.utils;
 
+import java.io.IOException;
+import java.net.URL;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
@@ -29,9 +31,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.net.URL;
 
 public final class HttpClientUtils {
 
@@ -54,7 +53,7 @@ public final class HttpClientUtils {
     private static String pRequest(String requestUrl, boolean proxyAutoMode, HttpHost proxy, int connectionTimeoutMillis,
                                    ResponseCallBack responseCallBack, boolean suppressLogging) throws IOException {
         if (proxyAutoMode) {
-            final URL systemProxy = ProxyUtils.getSystemHttpProxyUrl();
+            final URL systemProxy = ProxyUtils.getSystemHttpsProxyUrl();
 
             // Check for
             // 1. Proxy was configured in general

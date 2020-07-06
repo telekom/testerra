@@ -40,9 +40,9 @@ public class AssertCollectorTest extends AbstractReportTest {
     @DataProvider(parallel = true)
     public Object[][] assertionTitles(){
         Object[][] result = new Object[][]{
-                new Object[]{"Intentionally failed first"},
-                new Object[]{"Intentionally failed second"},
-                new Object[]{"Intentionally failed third"},
+                new Object[]{"Intentionally failed first", "java.lang.AssertionError: Intentionally failed first expected [true] but found [false]"},
+                new Object[]{"Intentionally failed second", "java.lang.AssertionError: Intentionally failed second expected [true] but found [false]"},
+                new Object[]{"Intentionally failed third", "java.lang.AssertionError: Intentionally failed third expected [true] but found [false]"},
         };
         return result;
     }
@@ -89,12 +89,12 @@ public class AssertCollectorTest extends AbstractReportTest {
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "assertionTitles")
     // Test case #995
-    public void testT04_checkCorrectDisplayOfMultipleAssertionsInAssertionsTab(String assertionTitle) {
+    public void testT04_checkCorrectDisplayOfMultipleAssertionsInAssertionsTab(String assertionTitle, String assertionDescription) {
         String testMethod = "test_assertCollectorAllFailed";
 
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestAssertCollector.class.getSimpleName(), testMethod);
         MethodAssertionsPage methodAssertionsPage = GeneralWorkflow.doOpenReportMethodAssertionsPage(methodDetailsPage);
-        methodAssertionsPage.checkWhetherNameOfAssertionExists(assertionTitle);
+        methodAssertionsPage.checkAssertionIsDisplayedCorrectly(assertionTitle, assertionDescription);
     }
 
 }

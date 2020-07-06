@@ -30,14 +30,24 @@ public class MethodAssertionsPage extends MethodDetailsPage {
 
     @Check
     private GuiElement headLine = new GuiElement(this.getWebDriver(), By.xpath("//h5[text()='Collected Assertions']"), mainFrame);
-    private String LOCATOR_DISPLAYED_ASSERTION = "//a[contains(text(), '%s')]";
+    private String LOCATOR_ASSERTION_HEADLINE = "//a[contains(text(), '%s')]";
+    private String LOCATOR_ASSERTION_DESCRIPTION = "//a[contains(text(), '%s')]/..//pre";
 
     public MethodAssertionsPage(WebDriver driver) {
         super(driver);
     }
 
-    public void checkWhetherNameOfAssertionExists(String assertionTitle){
-        GuiElement displayedAssertion = new GuiElement(this.getWebDriver(), By.xpath(String.format(LOCATOR_DISPLAYED_ASSERTION, assertionTitle)), mainFrame);
-        displayedAssertion.asserts().assertIsDisplayed();
+    public void checkAssertionIsDisplayedCorrectly(String assertionTitle, String assertionDescription){
+        GuiElement headline = new GuiElement(this.getWebDriver(), By.xpath(String.format(LOCATOR_ASSERTION_HEADLINE, assertionTitle)), mainFrame);
+        headline.asserts().assertIsDisplayed();
+        headline.asserts().assertTextContains(assertionTitle);
+
+        openAssertionDescriptionMenu(headline);
+        GuiElement description = new GuiElement(this.getWebDriver(), By.xpath(String.format(LOCATOR_ASSERTION_DESCRIPTION, assertionTitle)), mainFrame);
+        description.asserts().assertTextContains(assertionDescription);
+    }
+
+    public void openAssertionDescriptionMenu(GuiElement assertionElement) {
+        assertionElement.click();
     }
 }

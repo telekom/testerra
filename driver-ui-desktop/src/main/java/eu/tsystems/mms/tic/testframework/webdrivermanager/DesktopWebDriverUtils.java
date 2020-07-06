@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
+import java.awt.Color;
 import org.json.JSONObject;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
@@ -37,8 +38,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.awt.*;
 
 public final class DesktopWebDriverUtils {
 
@@ -81,7 +80,7 @@ public final class DesktopWebDriverUtils {
     }
 
     /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#clickAbsolute(GuiElement)
+     * @deprecated Please use: {@link #clickAbsolute(GuiElement)}
      */
     @Deprecated
     public void clickAbsolute(final WebDriver webDriver, final WebElement webElement) {
@@ -95,7 +94,7 @@ public final class DesktopWebDriverUtils {
     }
 
     /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#demoMouseOver(GuiElement)
+     * @deprecated Please use: {@link #demoMouseOver(GuiElement)}
      */
     @Deprecated
     private void demoMouseOver(final WebDriver webDriver, final WebElement webElement) {
@@ -113,7 +112,7 @@ public final class DesktopWebDriverUtils {
     }
 
     /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#mouseOverAbsolute2Axis(GuiElement)
+     * @deprecated Please use: {@link #mouseOverAbsolute2Axis(GuiElement)}
      */
     @Deprecated
     public void mouseOverAbsolute2Axis(final WebDriver webDriver, final WebElement webElement) {
@@ -127,7 +126,7 @@ public final class DesktopWebDriverUtils {
     }
 
     /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#mouseOverJS(GuiElement)
+     * @deprecated Please use: {@link #mouseOverJS(GuiElement)}
      */
     @Deprecated
     public void mouseOverJS(final WebDriver webDriver, final WebElement webElement) {
@@ -184,7 +183,7 @@ public final class DesktopWebDriverUtils {
     }
 
     /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#clickJS(GuiElement)
+     * @deprecated Please use: {@link #clickJS(GuiElement)}
      */
     @Deprecated
     public void clickJS(final WebDriver webDriver, final WebElement webElement) {
@@ -196,7 +195,7 @@ public final class DesktopWebDriverUtils {
     }
 
     /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#rightClickJS(GuiElement)
+     * @deprecated Please use: {@link #rightClickJS(GuiElement)}
      */
     @Deprecated
     public void rightClickJS(final WebDriver webDriver, final WebElement webElement) {
@@ -213,7 +212,7 @@ public final class DesktopWebDriverUtils {
     }
 
     /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#doubleClickJS(GuiElement)
+     * @deprecated Please use: {@link #doubleClickJS(GuiElement)}
      */
     @Deprecated
     public void doubleClickJS(final WebDriver webDriver, final WebElement webElement) {

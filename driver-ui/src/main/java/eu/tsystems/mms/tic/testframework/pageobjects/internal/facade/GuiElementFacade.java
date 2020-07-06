@@ -19,14 +19,51 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 
 public interface GuiElementFacade extends
-    GuiElementCore,
-    GuiElementWait
+        GuiElementCore,
+        GuiElementWait
 {
 
+    /**
+     * Clicks on a web element using javascript.
+     *
+     * @return .
+     */
+    @Deprecated
+    void clickJS();
+
+    /**
+     * click
+     *
+     * @return .
+     */
+    @Deprecated
+    void clickAbsolute();
+
+    /**
+     * hover mouse over 2 axis
+     *
+     * @return .
+     */
+    @Deprecated
+    void mouseOverAbsolute2Axis();
+
+    /**
+     * Mouseover directly over js event.
+     *
+     * @return this.
+     */
+    @Deprecated
+    void mouseOverJS();
+
+    @Deprecated
+    void rightClickJS();
+
+    @Deprecated
+    void doubleClickJS();
 }

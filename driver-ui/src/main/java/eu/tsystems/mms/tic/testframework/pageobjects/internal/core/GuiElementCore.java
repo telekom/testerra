@@ -24,15 +24,14 @@
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
+import java.awt.Color;
+import java.io.File;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
-import java.awt.*;
-import java.io.File;
-import java.util.List;
 
 public interface GuiElementCore extends GuiElementStatusCheck {
 
@@ -180,43 +179,11 @@ public interface GuiElementCore extends GuiElementStatusCheck {
     String getCssValue(String cssIdentifier);
 
     /**
-     * Clicks on a web element using javascript.
-     *
-     * @return .
-     */
-    @Deprecated
-    void clickJS();
-
-    /**
-     * click
-     *
-     * @return .
-     */
-    @Deprecated
-    void clickAbsolute();
-
-    /**
-     * hover mouse over 2 axis
-     *
-     * @return .
-     */
-    @Deprecated
-    void mouseOverAbsolute2Axis();
-
-    /**
      * Mouseover using WebDriver.
      *
      * @return this.
      */
     void mouseOver();
-
-    /**
-     * Mouseover directly over js event.
-     *
-     * @return this.
-     */
-    @Deprecated
-    void mouseOverJS();
 
     /**
      * Hovers the element
@@ -290,10 +257,6 @@ public interface GuiElementCore extends GuiElementStatusCheck {
     int getNumberOfFoundElements();
 
     void rightClick();
-    @Deprecated
-    void rightClickJS();
-    @Deprecated
-    void doubleClickJS();
 
     /**
      * Takes a screenshot of the GuiElement

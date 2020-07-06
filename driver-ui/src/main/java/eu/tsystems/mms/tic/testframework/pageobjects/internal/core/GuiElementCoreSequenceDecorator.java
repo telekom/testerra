@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
+import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import java.awt.Color;
 import java.io.File;
@@ -44,7 +45,7 @@ import org.openqa.selenium.support.ui.Select;
  * <p>
  * Created by rnhb on 12.08.2015.
  */
-public class GuiElementCoreSequenceDecorator implements GuiElementCore {
+public class GuiElementCoreSequenceDecorator implements GuiElementCore, UseJSAlternatives {
 
     private final GuiElementCore guiElementCore;
     private final GuiElementData guiElementData;
@@ -154,13 +155,16 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         };
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "click", guiElementCore::clickJS);
+        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "click", () -> {
+            JSUtils utils = new JSUtils();
+            utils.click(guiElementData.webDriver, getWebElement());
+        });
     }
 
     private void checkForClickingJSAlternativeOrExit(ThrowablePackedResponse throwablePackedResponse, String action, Runnable runnable) {
         if (throwablePackedResponse.hasTimeoutException()) {
 
-            if (!UseJSAlternatives.class.isAssignableFrom(guiElementCore.getClass()) || !Flags.GUIELEMENT_USE_JS_ALTERNATIVES) {
+            if (!Flags.GUIELEMENT_USE_JS_ALTERNATIVES) {
                 // we cannot use clickJS()
                 throwablePackedResponse.finalizeTimer();
                 return;
@@ -205,10 +209,12 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
 
     @Override
     public void clickJS() {
+        final JSUtils utils = new JSUtils();
         Timer.Sequence sequence = new Timer.Sequence() {
+
             @Override
             public void run() {
-                guiElementCore.clickJS();
+                utils.click(guiElementData.webDriver, getWebElement());
             }
         };
         sequence.setSkipThrowingException(true);
@@ -218,10 +224,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
 
     @Override
     public void clickAbsolute() {
+        final JSUtils utils = new JSUtils();
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.clickAbsolute();
+                utils.clickAbsolute(guiElementData.webDriver, getWebElement());
             }
         };
         sequence.setSkipThrowingException(true);
@@ -231,10 +238,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
 
     @Override
     public void mouseOverAbsolute2Axis() {
+        final JSUtils utils = new JSUtils();
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.mouseOverAbsolute2Axis();
+                utils.mouseOverAbsolute2Axis(guiElementData.webDriver, getWebElement());
             }
         };
         sequence.setSkipThrowingException(true);
@@ -385,10 +393,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
 
     @Override
     public void mouseOverJS() {
+        final JSUtils utils = new JSUtils();
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.mouseOverJS();
+                utils.mouseOver(guiElementData.webDriver, getWebElement());
             }
         };
         sequence.setSkipThrowingException(true);
@@ -435,7 +444,10 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "doubleClick", guiElementCore::doubleClickJS);
+        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "doubleClick", () -> {
+            JSUtils utils = new JSUtils();
+            utils.doubleClick(guiElementData.webDriver, getWebElement());
+        });
     }
 
     @Override
@@ -504,15 +516,19 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "rightClick", guiElementCore::rightClickJS);
+        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "rightClick", () -> {
+            JSUtils utils = new JSUtils();
+            utils.rightClick(guiElementData.webDriver, getWebElement());
+        });
     }
 
     @Override
     public void rightClickJS() {
+        final JSUtils utils = new JSUtils();
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.rightClickJS();
+                utils.rightClick(guiElementData.webDriver, getWebElement());
             }
         };
         sequence.setSkipThrowingException(true);
@@ -522,10 +538,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
 
     @Override
     public void doubleClickJS() {
+        final JSUtils utils = new JSUtils();
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                guiElementCore.doubleClickJS();
+                utils.doubleClick(guiElementData.webDriver, getWebElement());
             }
         };
         sequence.setSkipThrowingException(true);

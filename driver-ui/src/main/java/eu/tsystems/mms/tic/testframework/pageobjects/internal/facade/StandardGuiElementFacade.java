@@ -97,17 +97,17 @@ public class StandardGuiElementFacade implements GuiElementFacade {
 
     @Override
     public void clickJS() {
-        guiElementCore.clickJS();
+
     }
 
     @Override
     public void clickAbsolute() {
-        guiElementCore.clickAbsolute();
+
     }
 
     @Override
     public void mouseOverAbsolute2Axis() {
-        guiElementCore.mouseOverAbsolute2Axis();
+
     }
 
     @Override
@@ -202,7 +202,7 @@ public class StandardGuiElementFacade implements GuiElementFacade {
 
     @Override
     public void mouseOverJS() {
-        guiElementCore.mouseOverJS();
+
     }
 
     @Override
@@ -257,12 +257,12 @@ public class StandardGuiElementFacade implements GuiElementFacade {
 
     @Override
     public void rightClickJS() {
-        guiElementCore.rightClickJS();
+
     }
 
     @Override
     public void doubleClickJS() {
-        guiElementCore.doubleClickJS();
+
     }
 
     @Override

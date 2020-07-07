@@ -38,6 +38,7 @@ import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
@@ -368,19 +369,19 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         /*
         Log User Agent and executing host
          */
-        //NodeInfo nodeInfo = DesktopWebDriverUtils.getNodeInfo(desktopWebDriverRequest);
-        //desktopWebDriverRequest.storedExecutingNode = nodeInfo;
-        //WebDriverManager.addExecutingSeleniumHostInfo(sessionKey + ": " + nodeInfo.toString());
-        WebDriverManager.addExecutingSeleniumHostInfo(sessionKey);
+        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+        NodeInfo nodeInfo = utils.getNodeInfo(desktopWebDriverRequest);
+        desktopWebDriverRequest.storedExecutingNode = nodeInfo;
+        WebDriverManager.addExecutingSeleniumHostInfo(sessionKey + ": " + nodeInfo.toString());
         sw.stop();
 
         BrowserInformation browserInformation = WebDriverManagerUtils.getBrowserInformation(newDriver);
         log().info(String.format(
-            "Started %s (session key=%s, remote session id=%s, user agent=%s) in %s",
+            "Started %s (session key=%s, remote session id=%s, node=%s, user agent=%s) in %s",
             newDriver.getClass().getSimpleName(),
             sessionKey,
             webDriverSessionId,
-            //nodeInfo.toString(),
+            nodeInfo.toString(),
             browserInformation.getUserAgent(),
             sw.toString()
         ));

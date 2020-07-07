@@ -23,32 +23,28 @@
 
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
+import java.awt.Color;
 import org.json.JSONObject;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.awt.*;
-
-public final class DesktopWebDriverUtils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverUtils.class);
+public final class DesktopWebDriverUtils implements Loggable {
 
     public DesktopWebDriverUtils() {
 
     }
 
-    public static NodeInfo getNodeInfo(DesktopWebDriverRequest desktopWebDriverRequest) {
+    public NodeInfo getNodeInfo(DesktopWebDriverRequest desktopWebDriverRequest) {
         if (desktopWebDriverRequest.webDriverMode == WebDriverMode.local) {
             return new NodeInfo("local", 0);
         }
@@ -70,13 +66,13 @@ public final class DesktopWebDriverUtils {
             NodeInfo nodeInfo = new NodeInfo(out.getString("Name"), out.getInt("Port"));
             return nodeInfo;
         } catch (Exception e) {
-            LOGGER.info("Could not get node info", e);
+            log().debug("Could not get node info: " + e.getMessage());
             return new NodeInfo(host, Integer.valueOf(port));
         }
     }
 
     public void clickAbsolute(GuiElement guiElement) {
-        LOGGER.trace("Absolute navigation and click on: " + guiElement.toString());
+        log().trace("Absolute navigation and click on: " + guiElement.toString());
         pClickAbsolute(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 

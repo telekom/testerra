@@ -248,4 +248,46 @@ public abstract class GuiElementCoreDecorator extends GuiElementStatusCheckDecor
         afterDelegation();
         return visible;
     }
+
+    @Override
+    public void clickJS() {
+        beforeDelegation();
+        decoratedGuiElementCore.clickJS();
+        afterDelegation();
+    }
+
+    @Override
+    public void clickAbsolute() {
+        beforeDelegation();
+        decoratedGuiElementCore.clickAbsolute();
+        afterDelegation();
+    }
+
+    @Override
+    public void mouseOverAbsolute2Axis() {
+        beforeDelegation();
+        decoratedGuiElementCore.mouseOverAbsolute2Axis();
+        afterDelegation();
+    }
+
+    @Override
+    public void mouseOverJS() {
+        beforeDelegation();
+        decoratedGuiElementCore.mouseOverJS();
+        afterDelegation();
+    }
+
+    @Override
+    public void rightClickJS() {
+        beforeDelegation();
+        decoratedGuiElementCore.rightClickJS();
+        afterDelegation();
+    }
+
+    @Override
+    public void doubleClickJS() {
+        beforeDelegation();
+        decoratedGuiElementCore.doubleClickJS();
+        afterDelegation();
+    }
 }

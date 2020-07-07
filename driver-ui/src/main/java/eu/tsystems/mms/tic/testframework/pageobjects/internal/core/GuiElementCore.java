@@ -33,7 +33,10 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-public interface GuiElementCore extends GuiElementStatusCheck {
+public interface GuiElementCore extends
+        GuiElementStatusCheck,
+        UseJSAlternatives
+{
 
     /**
      * Returns the Webelement.

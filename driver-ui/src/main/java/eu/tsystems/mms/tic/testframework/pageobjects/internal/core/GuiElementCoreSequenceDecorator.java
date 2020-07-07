@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
-import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import java.awt.Color;
 import java.io.File;
@@ -45,13 +44,14 @@ import org.openqa.selenium.support.ui.Select;
  * <p>
  * Created by rnhb on 12.08.2015.
  */
-public class GuiElementCoreSequenceDecorator implements GuiElementCore, UseJSAlternatives {
+public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator {
 
     private final GuiElementCore guiElementCore;
     private final GuiElementData guiElementData;
     private final TimerWrapper timerWrapper;
 
     public GuiElementCoreSequenceDecorator(GuiElementCore guiElementCore, GuiElementData guiElementData) {
+        super(guiElementCore);
         this.guiElementCore = guiElementCore;
         this.guiElementData = guiElementData;
         this.timerWrapper = guiElementData.timerWrapper;
@@ -155,10 +155,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, UseJSAlt
         };
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "click", () -> {
-            JSUtils utils = new JSUtils();
-            utils.click(guiElementData.webDriver, getWebElement());
-        });
+        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "click", guiElementCore::clickJS);
     }
 
     private void checkForClickingJSAlternativeOrExit(ThrowablePackedResponse throwablePackedResponse, String action, Runnable runnable) {
@@ -209,12 +206,11 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, UseJSAlt
 
     @Override
     public void clickJS() {
-        final JSUtils utils = new JSUtils();
         Timer.Sequence sequence = new Timer.Sequence() {
 
             @Override
             public void run() {
-                utils.click(guiElementData.webDriver, getWebElement());
+                guiElementCore.clickJS();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -224,11 +220,10 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, UseJSAlt
 
     @Override
     public void clickAbsolute() {
-        final JSUtils utils = new JSUtils();
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                utils.clickAbsolute(guiElementData.webDriver, getWebElement());
+                guiElementCore.clickAbsolute();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -238,11 +233,10 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, UseJSAlt
 
     @Override
     public void mouseOverAbsolute2Axis() {
-        final JSUtils utils = new JSUtils();
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                utils.mouseOverAbsolute2Axis(guiElementData.webDriver, getWebElement());
+                guiElementCore.mouseOverAbsolute2Axis();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -393,11 +387,10 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, UseJSAlt
 
     @Override
     public void mouseOverJS() {
-        final JSUtils utils = new JSUtils();
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                utils.mouseOver(guiElementData.webDriver, getWebElement());
+                guiElementCore.mouseOverJS();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -444,10 +437,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, UseJSAlt
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "doubleClick", () -> {
-            JSUtils utils = new JSUtils();
-            utils.doubleClick(guiElementData.webDriver, getWebElement());
-        });
+        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "doubleClick", guiElementCore::doubleClickJS);
     }
 
     @Override
@@ -516,19 +506,15 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, UseJSAlt
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = timerWrapper.executeSequence(sequence);
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "rightClick", () -> {
-            JSUtils utils = new JSUtils();
-            utils.rightClick(guiElementData.webDriver, getWebElement());
-        });
+        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "rightClick", guiElementCore::rightClickJS);
     }
 
     @Override
     public void rightClickJS() {
-        final JSUtils utils = new JSUtils();
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                utils.rightClick(guiElementData.webDriver, getWebElement());
+                guiElementCore.rightClickJS();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -538,11 +524,10 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, UseJSAlt
 
     @Override
     public void doubleClickJS() {
-        final JSUtils utils = new JSUtils();
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                utils.doubleClick(guiElementData.webDriver, getWebElement());
+                guiElementCore.doubleClickJS();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -553,6 +538,16 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore, UseJSAlt
     @Override
     public File takeScreenshot() {
         return guiElementCore.takeScreenshot();
+    }
+
+    @Override
+    protected void beforeDelegation() {
+
+    }
+
+    @Override
+    protected void afterDelegation() {
+
     }
 
     @Override

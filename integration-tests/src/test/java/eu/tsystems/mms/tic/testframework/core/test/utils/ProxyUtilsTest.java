@@ -88,7 +88,7 @@ public class ProxyUtilsTest extends TesterraTest {
         Assert.assertNotNull(actualProxyUrl, "Proxy url generated!");
 
         WebDriverProxyUtils utils = new WebDriverProxyUtils();
-        Proxy proxy = utils.createProxyFromUrl(actualProxyUrl);
+        Proxy proxy = utils.createSocksProxyFromUrl(actualProxyUrl);
         Assert.assertEquals(proxy.getHttpProxy(), expectedUrlString, "Generated proxy string equals.");
     }
 
@@ -98,7 +98,7 @@ public class ProxyUtilsTest extends TesterraTest {
         final String expectedUrlString = PROXY_HOST_HTTPS + ":" + PROXY_PORT_HTTPS;
 
         WebDriverProxyUtils utils = new WebDriverProxyUtils();
-        Proxy proxy = utils.getDefaultProxy();
+        Proxy proxy = utils.getDefaultSocksProxy();
         Assert.assertEquals(proxy.getSslProxy(), expectedUrlString, "Generated proxy string equals.");
     }
 
@@ -130,7 +130,7 @@ public class ProxyUtilsTest extends TesterraTest {
     public void test05_createProxyFromUrl() throws MalformedURLException {
         WebDriverProxyUtils utils = new WebDriverProxyUtils();
         String proxyString = "http://proxyUser:secretPassword@my-proxy:3128";
-        Proxy proxy = utils.createProxyFromUrl(new URL(proxyString));
+        Proxy proxy = utils.createSocksProxyFromUrl(new URL(proxyString));
         Assert.assertEquals(proxy.getHttpProxy(),"my-proxy:3128");
         Assert.assertEquals(proxy.getSocksUsername(),"proxyUser");
         Assert.assertEquals(proxy.getSocksPassword(), "secretPassword");

@@ -83,17 +83,11 @@ public class WebDriverProxyUtils {
     }
 
     /**
-     * Creates proxy settings based on an URL
-     * @param url
-     * @return Proxy
+     * @return Proxy based on an URL INCLUDING socks proxy settings
      */
-    public Proxy createProxyFromUrl(URL url) {
-        String proxyString = toProxyString(url);
-        Proxy proxy = new Proxy();
-        proxy.setHttpProxy(proxyString);
-        proxy.setFtpProxy(proxyString);
-        proxy.setSslProxy(proxyString);
-        proxy.setSocksProxy(proxyString);
+    public Proxy createSocksProxyFromUrl(URL url) {
+        Proxy proxy = createHttpProxyFromUrl(url);
+        proxy.setSocksProxy(proxy.getHttpProxy());
         String userInfo = url.getUserInfo();
         if (userInfo != null && userInfo.length() > 0) {
             String[] userInfoParts = userInfo.split(":", 2);
@@ -108,10 +102,31 @@ public class WebDriverProxyUtils {
     }
 
     /**
-     * @return Proxy based on the default systems https proxy settings.
+     * @return Proxy based on an URL WITHOUT socks proxy settings
      */
-    public Proxy getDefaultProxy() {
-        Proxy proxy = createProxyFromUrl(ProxyUtils.getSystemHttpsProxyUrl());
+    public Proxy createHttpProxyFromUrl(URL url) {
+        String proxyString = toProxyString(url);
+        Proxy proxy = new Proxy();
+        proxy.setHttpProxy(proxyString);
+        proxy.setFtpProxy(proxyString);
+        proxy.setSslProxy(proxyString);
+        return proxy;
+    }
+
+    /**
+     * @return Proxy based on the default system's https proxy settings INCLUDING socks proxy.
+     */
+    public Proxy getDefaultSocksProxy() {
+        Proxy proxy = createSocksProxyFromUrl(ProxyUtils.getSystemHttpsProxyUrl());
+        proxy.setNoProxy(PropertyManager.getProperty("https.nonProxyHosts"));
+        return proxy;
+    }
+
+    /**
+     * @return Proxy based on the default system's https proxy settings WITHOUT socks proxy.
+     */
+    public Proxy getDefaultHttpProxy() {
+        Proxy proxy = createHttpProxyFromUrl(ProxyUtils.getSystemHttpsProxyUrl());
         proxy.setNoProxy(PropertyManager.getProperty("https.nonProxyHosts"));
         return proxy;
     }

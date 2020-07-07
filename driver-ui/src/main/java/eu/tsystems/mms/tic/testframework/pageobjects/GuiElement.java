@@ -41,7 +41,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheck;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementStatusCheckFrameAwareDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.UseJSAlternatives;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.creation.GuiElementCoreFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
@@ -76,8 +75,7 @@ import org.slf4j.LoggerFactory;
 public class GuiElement implements
     Checkable,
     GuiElementCore,
-    Nameable,
-    UseJSAlternatives
+    Nameable
 {
 
     private static final Map<String, GuiElementCoreFactory> coreFactories = new HashMap<>();

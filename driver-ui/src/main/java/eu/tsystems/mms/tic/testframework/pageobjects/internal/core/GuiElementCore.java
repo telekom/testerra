@@ -30,6 +30,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.awt.*;
 import java.io.File;
 import java.util.List;
 
@@ -102,27 +103,6 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      * @return .
      */
     void click();
-
-    /**
-     * Clicks on a web element using javascript.
-     *
-     * @return .
-     */
-    void clickJS();
-
-    /**
-     * click
-     *
-     * @return .
-     */
-    void clickAbsolute();
-
-    /**
-     * hover mouse over 2 axis
-     *
-     * @return .
-     */
-    void mouseOverAbsolute2Axis();
 
     /**
      * submit
@@ -200,6 +180,30 @@ public interface GuiElementCore extends GuiElementStatusCheck {
     String getCssValue(String cssIdentifier);
 
     /**
+     * Clicks on a web element using javascript.
+     *
+     * @return .
+     */
+    @Deprecated
+    void clickJS();
+
+    /**
+     * click
+     *
+     * @return .
+     */
+    @Deprecated
+    void clickAbsolute();
+
+    /**
+     * hover mouse over 2 axis
+     *
+     * @return .
+     */
+    @Deprecated
+    void mouseOverAbsolute2Axis();
+
+    /**
      * Mouseover using WebDriver.
      *
      * @return this.
@@ -211,7 +215,22 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      *
      * @return this.
      */
+    @Deprecated
     void mouseOverJS();
+
+    /**
+     * Hovers the element
+     */
+    default void hover() {
+        this.mouseOver();
+    }
+
+    /**
+     * Performs a context click action
+     */
+    default void contextClick() {
+        this.rightClick();
+    }
 
     /**
      * Returns the Select-Object.
@@ -239,7 +258,10 @@ public interface GuiElementCore extends GuiElementStatusCheck {
      *
      * @return element.
      */
-    void highlight();
+    default void highlight() {
+        highlight(new Color(0, 0, 255));
+    }
+    void highlight(Color color);
 
     /**
      * Swipe the element by the given offset. (0,0) should be the top left.
@@ -268,8 +290,9 @@ public interface GuiElementCore extends GuiElementStatusCheck {
     int getNumberOfFoundElements();
 
     void rightClick();
+    @Deprecated
     void rightClickJS();
-
+    @Deprecated
     void doubleClickJS();
 
     /**

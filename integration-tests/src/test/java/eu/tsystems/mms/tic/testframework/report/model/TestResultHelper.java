@@ -41,7 +41,7 @@ public class TestResultHelper {
         PASSEDRETRY("#6abd00", "PASSED_RETRY", "todo xpath header", "Passed after Retry", "todo xpathTest"),
         SKIPPED("orange", "SKIPPED", "header skipped", "Skipped", "test skipped"),
         FAILED("red", "FAILED", "header broken", "Failed", "test broken"),
-        FAILEDMINOR("DeepPink", "FAILEDMINOR", "header brokennf", "Failed with Minor", "test brokennf"),
+        FAILEDMINOR("DeepPink", "FAILEDMINOR", "header brokennf", "Failed + Minor", "test brokennf"),
         RETRIED("pink", "RETRIED", "header retried", "Retried", "test retried"),
         FAILEDEXPECTED("grey", "FAILEDEXPECTED", "header expectedFailed", "Expected Failed", "test expectedFailed");
 

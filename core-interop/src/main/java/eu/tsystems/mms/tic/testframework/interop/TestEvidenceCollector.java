@@ -80,11 +80,15 @@ public final class TestEvidenceCollector {
         }
 
         List<Video> videos = new LinkedList<>();
-        for (VideoCollector videoCollector : VIDEO_COLLECTORS) {
-            List<Video> videos1 = videoCollector.getVideos();
-            if (videos1 != null) {
-                videos.addAll(videos1);
+        try {
+            for (VideoCollector videoCollector : VIDEO_COLLECTORS) {
+                List<Video> videos1 = videoCollector.getVideos();
+                if (videos1 != null) {
+                    videos.addAll(videos1);
+                }
             }
+        } catch (Throwable t) {
+            LOGGER.warn("Collecting videos failed", t);
         }
         return videos;
     }

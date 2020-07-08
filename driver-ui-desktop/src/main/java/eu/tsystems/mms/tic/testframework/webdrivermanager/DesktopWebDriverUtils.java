@@ -21,24 +21,21 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public final class DesktopWebDriverUtils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverUtils.class);
+public final class DesktopWebDriverUtils implements Loggable {
 
     public DesktopWebDriverUtils() {
 
     }
 
-    public static NodeInfo getNodeInfo(DesktopWebDriverRequest desktopWebDriverRequest) {
+    public NodeInfo getNodeInfo(DesktopWebDriverRequest desktopWebDriverRequest) {
         if (desktopWebDriverRequest.webDriverMode == WebDriverMode.local) {
             return new NodeInfo("local", 0);
         }
@@ -60,13 +57,13 @@ public final class DesktopWebDriverUtils {
             NodeInfo nodeInfo = new NodeInfo(out.getString("Name"), out.getInt("Port"));
             return nodeInfo;
         } catch (Exception e) {
-            LOGGER.info("Could not get node info", e);
+            log().debug("Could not get node info: " + e.getMessage());
             return new NodeInfo(host, Integer.valueOf(port));
         }
     }
 
     public void clickAbsolute(GuiElement guiElement) {
-        LOGGER.trace("Absolute navigation and click on: " + guiElement.toString());
+        log().trace("Absolute navigation and click on: " + guiElement.toString());
         JSUtils utils = new JSUtils();
         utils.clickAbsolute(guiElement.getWebDriver(), guiElement.getWebElement());
     }

@@ -8,8 +8,7 @@ NOTE: If you want to setup a proxy for the runtime environment but the browser, 
 
 == Default configuration
 
-The following code setups a proxy based on the system's https proxy configuration.
-
+The following code setups a proxy based on the <<Using a proxy,System's proxy configuration>> and a custom proxy.
 [source,java]
 ----
 import org.testng.annotations.BeforeSuite;

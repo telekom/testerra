@@ -83,7 +83,7 @@ public class WebDriverProxyUtils {
     }
 
     /**
-     * @return Proxy based on an URL INCLUDING socks proxy settings
+     * @return Proxy based on an URL including socks proxy settings
      */
     public Proxy createSocksProxyFromUrl(URL url) {
         Proxy proxy = createHttpProxyFromUrl(url);
@@ -102,7 +102,7 @@ public class WebDriverProxyUtils {
     }
 
     /**
-     * @return Proxy based on an URL WITHOUT socks proxy settings
+     * @return Proxy based on an URL without socks proxy settings
      */
     public Proxy createHttpProxyFromUrl(URL url) {
         String proxyString = toProxyString(url);
@@ -114,7 +114,7 @@ public class WebDriverProxyUtils {
     }
 
     /**
-     * @return Proxy based on the default system's https proxy settings INCLUDING socks proxy.
+     * @return Proxy settings including socks proxy based on {@link ProxyUtils#getSystemHttpsProxyUrl()}
      */
     public Proxy getDefaultSocksProxy() {
         Proxy proxy = createSocksProxyFromUrl(ProxyUtils.getSystemHttpsProxyUrl());
@@ -123,7 +123,7 @@ public class WebDriverProxyUtils {
     }
 
     /**
-     * @return Proxy based on the default system's https proxy settings WITHOUT socks proxy.
+     * @return Proxy settings without socks proxy based on {@link ProxyUtils#getSystemHttpsProxyUrl()}.
      */
     public Proxy getDefaultHttpProxy() {
         Proxy proxy = createHttpProxyFromUrl(ProxyUtils.getSystemHttpsProxyUrl());

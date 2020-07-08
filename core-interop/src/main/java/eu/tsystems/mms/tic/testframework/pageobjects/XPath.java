@@ -7,6 +7,9 @@ import java.util.ArrayList;
  * @author Mike Reiche
  */
 public class XPath {
+    private static final String CONTAINS="contains";
+    private static final String START="starts-with";
+    private static final String END="ends-with";
     private final String selector;
     private final ArrayList<String> attributes = new ArrayList<>();
     private final ArrayList<XPath> contains = new ArrayList<>();
@@ -41,8 +44,8 @@ public class XPath {
     private void somethingIs(String something, Object string) {
         attributes.add(String.format("%s='%s'", something, string));
     }
-    private void somethingContains(String something, Object string) {
-        attributes.add(String.format("contains(%s, '%s')", something, string));
+    private void somethingMatches(String operation, String something, Object string) {
+        attributes.add(String.format("%s(%s,'%s')", operation, something, string));
     }
     private void somethingContainsWord(String something, Object string) {
         /**
@@ -60,26 +63,19 @@ public class XPath {
         }
     }
 
-    public XPath attributeIs(Attribute attribute, Object string) {
-        return attributeIs(attribute.toString(), string);
-    }
-
-    public XPath attributeIs(String attribute, Object string) {
-        somethingIs(String.format("@%s", attribute), string);
+    public XPath attribute(String attribute) {
+        attributes.add(String.format("@%s", attribute));
         return this;
     }
 
-    public XPath attributeContains(Attribute attribute, Object string) {
-        return attributeContains(attribute.toString(), string);
-    }
-
-    public XPath attributeContains(String attribute, Object string) {
-        somethingContains(String.format("@%s", attribute), string);
+    public XPath attributeIs(String attribute, Object value) {
+        somethingIs(String.format("@%s", attribute), value);
         return this;
     }
 
-    public XPath attributeWords(Attribute attribute, Object string) {
-        return attributeWords(attribute.toString(), string);
+    public XPath attributePart(String attribute, Object string) {
+        somethingMatches(CONTAINS, String.format("@%s", attribute), string);
+        return this;
     }
 
     public XPath attributeWords(String attribute, Object ... words) {
@@ -92,8 +88,18 @@ public class XPath {
         return this;
     }
 
-    public XPath textContains(Object string) {
-        somethingContains(".//text()", string);
+    public XPath textPart(Object string) {
+        somethingMatches(CONTAINS,".//text()", string);
+        return this;
+    }
+
+    public XPath textStartsWith(Object string) {
+        somethingMatches(START,".//text()", string);
+        return this;
+    }
+
+    public XPath textEndsWith(Object string) {
+        somethingMatches(END,".//text()", string);
         return this;
     }
 
@@ -103,7 +109,12 @@ public class XPath {
     }
 
     private static String translateSubSelection(String selector) {
-        if (!selector.startsWith("/")) {
+        if (!selector.startsWith("/")
+                /**
+                 * Workaround for {https://jira.t-systems-mms.eu/browse/XETA-858}
+                 */
+                && !selector.startsWith(".")
+        ) {
             selector = "//"+selector;
         }
         return selector;

@@ -31,6 +31,11 @@ https.proxyPort=8080
 https.proxyUser=
 https.proxyPassword=
 https.nonProxyHosts=localhost|192.168.0.1
+
+http.proxyHost=your-proxy-host.com
+http.proxyPort=8080
+http.proxyUser=
+http.proxyPassword=
 ----
 The path of this file be changed by `{proxy_settings_file}` and will be automatically loaded during runtime when `{proxy_settings_load}` is `true` with the following message
 ----

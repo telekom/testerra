@@ -26,9 +26,17 @@ import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
+import java.awt.Color;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
@@ -36,15 +44,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.awt.*;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * JavaScript Utils.
@@ -54,9 +56,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class JSUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JSUtils.class);
-
-    private JSUtils() {
-    }
 
     /**
      * try to implement javascript on page
@@ -599,7 +598,7 @@ public final class JSUtils {
     /**
      * Scrolls the element to the center of the viewport
      */
-    public static void scrollToCenter(WebDriver webDriver, WebElement webElement, Point offset) {
+    public void scrollToCenter(WebDriver webDriver, WebElement webElement, Point offset) {
         JSUtils.executeScript(
                 webDriver,
                 String.format("const elementRect = arguments[0].getBoundingClientRect();\n" +
@@ -612,4 +611,85 @@ public final class JSUtils {
         );
     }
 
+    public void mouseOver(final WebDriver webDriver, final WebElement webElement) {
+        demoMouseOver(webDriver, webElement);
+        pMouseOverJS(webDriver, webElement);
+    }
+
+    public void doubleClick(final WebDriver webDriver, final WebElement webElement) {
+        Point location = webElement.getLocation();
+        JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, location.getX(), location.getY());
+    }
+
+    public void rightClick(final WebDriver webDriver, final WebElement webElement) {
+        String script = "var element = arguments[0];" +
+                "var e = element.ownerDocument.createEvent('MouseEvents');" +
+                "e.initMouseEvent('contextmenu', true, true,element.ownerDocument.defaultView, 1, 0, 0, 0, 0, false,false, false, false,2, null);" +
+                "return !element.dispatchEvent(e);";
+
+        JSUtils.executeScript(webDriver, script, webElement);
+    }
+
+    public void click(final WebDriver webDriver, final WebElement webElement) {
+        executeScript(webDriver, "arguments[0].click();", webElement);
+    }
+
+    private void demoMouseOver(final WebDriver webDriver, final WebElement webElement) {
+        if (POConfig.isDemoMode()) {
+            highlightWebElement(webDriver, webElement, new Color(255, 255, 0));
+        }
+    }
+
+    public void clickAbsolute(final WebDriver webDriver, final WebElement webElement) {
+        pClickAbsolute(webDriver, webElement);
+    }
+
+    public void mouseOverAbsolute2Axis(final WebDriver webDriver, final WebElement webElement) {
+        demoMouseOver(webDriver, webElement);
+        pMouseOverAbsolute2Axis(webDriver, webElement);
+    }
+
+    private void pMouseOverJS(final WebDriver webDriver, final WebElement webElement) {
+        final String code = "var fireOnThis = arguments[0];"
+                + "var evObj = document.createEvent('MouseEvents');"
+                + "evObj.initEvent( 'mouseover', true, true );"
+                + "fireOnThis.dispatchEvent(evObj);";
+
+        ((JavascriptExecutor) webDriver).executeScript(code, webElement);
+    }
+
+    private void pClickAbsolute(WebDriver driver, WebElement webElement) {
+        // Start the StopWatch for measuring the loading time of a Page
+        StopWatch.startPageLoad(driver);
+
+        Point point = webElement.getLocation();
+
+        Actions action = new Actions(driver);
+
+        // goto 0,0
+        action.moveToElement(webElement, 1 + -point.getX(), 1 + -point.getY());
+
+        // move y, then x
+        action.moveByOffset(0, point.getY()).moveByOffset(point.getX(), 0);
+
+        // move to webElement
+        action.moveToElement(webElement);
+        action.moveByOffset(1, 1);
+        action.click().perform();
+    }
+
+    private void pMouseOverAbsolute2Axis(WebDriver driver, WebElement webElement) {
+        Actions action = new Actions(driver);
+
+        Point point = webElement.getLocation();
+
+        // goto 0,0
+        action.moveToElement(webElement, 1 + -point.getX(), 1 + -point.getY()).perform();
+
+        // move y, then x
+        action.moveByOffset(0, point.getY()).moveByOffset(point.getX(), 0).perform();
+
+        // move to webElement
+        action.moveToElement(webElement).perform();
+    }
 }

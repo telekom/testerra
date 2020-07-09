@@ -66,6 +66,13 @@ import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
+import java.awt.Color;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -73,13 +80,6 @@ import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 /**
  * GuiElement is the access point for most tests and is an extension of WebElement.
@@ -374,6 +374,7 @@ public class GuiElement implements
     }
 
     @Override
+    @Deprecated
     public UiElementActions click(Consumer<UiElement> whenFail) {
         runActionSequence(() -> core.click(), whenFail);
         return this;
@@ -486,6 +487,7 @@ public class GuiElement implements
     }
 
     @Override
+    @Deprecated
     public UiElementList<UiElement> list() {
         if (this.list == null) {
             this.list = new DefaultUiElementList(this);
@@ -568,7 +570,7 @@ public class GuiElement implements
     }
 
     @Override
-    public UiElement highlight() {
+    public UiElement highlight(Color color) {
         decoratedFacade.highlight();
         return this;
     }

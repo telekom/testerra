@@ -24,12 +24,12 @@
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import eu.tsystems.mms.tic.testframework.utils.ProxyUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverProxyUtils;
-import org.testng.Assert;
+import java.net.MalformedURLException;
+import java.net.URL;
+import org.openqa.selenium.Proxy;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import java.net.URL;
 
 /**
  * Tests class for {@link ProxyUtils} and {@link WebDriverProxyUtils}
@@ -86,8 +86,9 @@ public class ProxyUtilsTest extends TesterraTest {
         final URL actualProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
         Assert.assertNotNull(actualProxyUrl, "Proxy url generated!");
 
-        final String actualProxyString = WebDriverProxyUtils.toProxyString(actualProxyUrl);
-        Assert.assertEquals(actualProxyString, expectedUrlString, "Generated proxy string equals.");
+        WebDriverProxyUtils utils = new WebDriverProxyUtils();
+        Proxy proxy = utils.createSocksProxyFromUrl(actualProxyUrl);
+        Assert.assertEquals(proxy.getHttpProxy(), expectedUrlString, "Generated proxy string equals.");
     }
 
     @Test
@@ -95,11 +96,9 @@ public class ProxyUtilsTest extends TesterraTest {
 
         final String expectedUrlString = PROXY_HOST_HTTPS + ":" + PROXY_PORT_HTTPS;
 
-        final URL actualProxyUrl = ProxyUtils.getSystemHttpsProxyUrl();
-        Assert.assertNotNull(actualProxyUrl, "Proxy url generated!");
-
-        final String actualProxyString = WebDriverProxyUtils.toProxyString(actualProxyUrl);
-        Assert.assertEquals(actualProxyString, expectedUrlString, "Generated proxy string equals.");
+        WebDriverProxyUtils utils = new WebDriverProxyUtils();
+        Proxy proxy = utils.getDefaultSocksProxy();
+        Assert.assertEquals(proxy.getSslProxy(), expectedUrlString, "Generated proxy string equals.");
     }
 
     @Test
@@ -124,5 +123,15 @@ public class ProxyUtilsTest extends TesterraTest {
 
         final String actualProxyString = actualProxyUrl.toString();
         Assert.assertEquals(actualProxyString, expectedUrlString, "Generated proxy string equals.");
+    }
+
+    @Test
+    public void test05_createProxyFromUrl() throws MalformedURLException {
+        WebDriverProxyUtils utils = new WebDriverProxyUtils();
+        String proxyString = "http://proxyUser:secretPassword@my-proxy:3128";
+        Proxy proxy = utils.createSocksProxyFromUrl(new URL(proxyString));
+        Assert.assertEquals(proxy.getHttpProxy(),"my-proxy:3128");
+        Assert.assertEquals(proxy.getSocksUsername(),"proxyUser");
+        Assert.assertEquals(proxy.getSocksPassword(), "secretPassword");
     }
 }

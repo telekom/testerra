@@ -22,12 +22,11 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import org.testng.annotations.DataProvider;
-
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import org.testng.annotations.DataProvider;
 
 public class TestResultHelper {
 
@@ -41,7 +40,7 @@ public class TestResultHelper {
         PASSEDRETRY("#6abd00", "PASSED_RETRY", "todo xpath header", "Passed after Retry", "todo xpathTest"),
         SKIPPED("orange", "SKIPPED", "header skipped", "Skipped", "test skipped"),
         FAILED("red", "FAILED", "header broken", "Failed", "test broken"),
-        FAILEDMINOR("DeepPink", "FAILEDMINOR", "header brokennf", "Failed with Minor", "test brokennf"),
+        FAILEDMINOR("DeepPink", "FAILEDMINOR", "header brokennf", "Failed + Minor", "test brokennf"),
         RETRIED("pink", "RETRIED", "header retried", "Retried", "test retried"),
         FAILEDEXPECTED("grey", "FAILEDEXPECTED", "header expectedFailed", "Expected Failed", "test expectedFailed");
 

@@ -28,12 +28,6 @@ import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.ITestResult;
-import org.testng.SkipException;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -42,7 +36,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.ITestResult;
+import org.testng.SkipException;
 import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.getCurrentExecutionContext;
 
 public class TestStatusController {
@@ -293,7 +291,7 @@ public class TestStatusController {
         INFO("#b9b900", "i", "Info", true, false),
 
         FAILED("red", "&#x2718;", "Failed", true, true),
-        FAILED_MINOR("deeppink", "&#x2718;", "Failed with Minor", true, true),
+        FAILED_MINOR("deeppink", "&#x2718;", "Failed + Minor", true, true),
         FAILED_RETRIED("pink", "R", "Retried", true, false),
         FAILED_EXPECTED("grey", "&#x2718;", "Expected Failed", true, false),
 

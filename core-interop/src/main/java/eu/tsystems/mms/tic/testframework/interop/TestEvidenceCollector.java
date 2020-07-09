@@ -25,11 +25,10 @@ import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.LinkedList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class TestEvidenceCollector {
 
@@ -83,11 +82,15 @@ public final class TestEvidenceCollector {
         }
 
         List<Video> videos = new LinkedList<>();
-        for (VideoCollector videoCollector : VIDEO_COLLECTORS) {
-            List<Video> videos1 = videoCollector.getVideos();
-            if (videos1 != null) {
-                videos.addAll(videos1);
+        try {
+            for (VideoCollector videoCollector : VIDEO_COLLECTORS) {
+                List<Video> videos1 = videoCollector.getVideos();
+                if (videos1 != null) {
+                    videos.addAll(videos1);
+                }
             }
+        } catch (Throwable t) {
+            LOGGER.warn("Collecting videos failed", t);
         }
         return videos;
     }

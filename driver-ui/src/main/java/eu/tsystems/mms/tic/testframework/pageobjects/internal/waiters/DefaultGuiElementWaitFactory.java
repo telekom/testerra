@@ -19,13 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 
 public class DefaultGuiElementWaitFactory implements GuiElementWaitFactory {
 
-    @Override
+        @Override
     public GuiElementWait create(GuiElementData data) {
         return new DefaultGuiElementWait(data, data.getGuiElement().getCore());
     }

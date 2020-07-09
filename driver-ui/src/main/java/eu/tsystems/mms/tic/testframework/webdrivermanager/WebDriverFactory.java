@@ -21,19 +21,13 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
-import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class WebDriverFactory<R extends WebDriverRequest> implements Loggable {
     private SessionContext sessionContext = null;
@@ -87,11 +81,6 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
         DesiredCapabilities finalCaps = buildCapabilities(caps, finalRequest);
 
         /*
-        log capabilities
-         */
-        logSessionRequest(finalRequest, finalCaps);
-
-        /*
         create the web driver session
          */
         WebDriver rawDriver = getRawWebDriver(finalRequest, finalCaps);
@@ -124,11 +113,6 @@ public abstract class WebDriverFactory<R extends WebDriverRequest> implements Lo
         setupSession(eventFiringWebDriver, finalRequest);
 
         return eventFiringWebDriver;
-    }
-
-    private void logSessionRequest(R finalRequest, DesiredCapabilities finalCaps) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        log().info("Requesting new web driver session with capabilities:\n" + gson.toJson(finalCaps.asMap()));
     }
 
     /**

@@ -4,13 +4,14 @@ include::../properties/property-attributes.adoc[]
 
 == Testerra setup
 
-The Testerra framework is deployed to a https://bintray.com/testerra-io/Testerra[Bintray repository].
+The Testerra framework is deployed to a https://bintray.com/testerra-io/Testerra[Bintray repository]. Make sure, that you added the jCenter repository somewhere.
 
 .Gradle
 [source, gradle, role="primary"]
 ----
 // Update your gradle configuration
 repositories {
+    jCenter()
     maven {
         url  "https://dl.bintray.com/testerra-io/Testerra"
     }
@@ -24,6 +25,10 @@ repositories {
 <profile>
     ...
     <repositories>
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+        </repository>
         <repository>
             <snapshots>
                 <enabled>false</enabled>

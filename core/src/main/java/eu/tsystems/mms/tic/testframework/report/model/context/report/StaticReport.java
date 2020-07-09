@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -147,5 +146,11 @@ public class StaticReport implements Report, Loggable {
      */
     public File getReportDirectory() {
         return REPORT_DIRECTORY;
+    }
+    /**
+     * @return Final report directory defined by the user
+     */
+    public File getFinalReportDirectory() {
+        return new File(Properties.BASE_DIR.asString());
     }
 }

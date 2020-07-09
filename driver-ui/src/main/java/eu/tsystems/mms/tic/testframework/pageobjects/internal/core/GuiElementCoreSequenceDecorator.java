@@ -28,15 +28,15 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
+import java.awt.Color;
+import java.io.File;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
-import java.io.File;
-import java.util.List;
 
 /**
  * Wraps core methods into sequences, to improve stability.
@@ -179,7 +179,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
     private void checkForClickingJSAlternativeOrExit(ThrowablePackedResponse throwablePackedResponse, String action, Runnable runnable) {
         if (throwablePackedResponse.hasTimeoutException()) {
 
-            if (!UseJSAlternatives.class.isAssignableFrom(core.getClass()) || !UiElement.Properties.USE_JS_ALTERNATIVES.asBool()) {
+            if (!UiElement.Properties.USE_JS_ALTERNATIVES.asBool()) {
                 // we cannot use clickJS()
                 throwablePackedResponse.finalizeTimer();
                 return;
@@ -225,6 +225,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
     @Override
     public GuiElementCore clickJS() {
         Timer.Sequence sequence = new Timer.Sequence() {
+
             @Override
             public void run() {
                 core.clickJS();
@@ -434,11 +435,11 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
     }
 
     @Override
-    public GuiElementCore highlight() {
+    public GuiElementCore highlight(Color color) {
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.highlight();
+                core.highlight(color);
             }
         };
         sequence.setSkipThrowingException(true);
@@ -536,6 +537,16 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
     @Override
     public File takeScreenshot() {
         return core.takeScreenshot();
+    }
+
+    @Override
+    protected void beforeDelegation() {
+
+    }
+
+    @Override
+    protected void afterDelegation() {
+
     }
 
     @Override

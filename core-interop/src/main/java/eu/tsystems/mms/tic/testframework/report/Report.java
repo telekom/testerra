@@ -4,7 +4,6 @@ import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
-
 import java.io.File;
 
 public interface Report {
@@ -76,5 +75,9 @@ public interface Report {
      */
     default File getReportDirectory(String childName) {
         return new File(getReportDirectory(), childName);
+    }
+    File getFinalReportDirectory();
+    default File getFinalReportDirectory(String childName) {
+        return new File(getFinalReportDirectory(), childName);
     }
 }

@@ -21,15 +21,15 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
+import java.awt.Color;
+import java.io.File;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
-import java.io.File;
-import java.util.List;
 
 public abstract class GuiElementCoreDecorator implements GuiElementCore {
 
@@ -315,9 +315,9 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     }
 
     @Override
-    public GuiElementCore highlight() {
+    public GuiElementCore highlight(Color color) {
         beforeDelegation();
-        core.highlight();
+        core.highlight(color);
         afterDelegation();
         return this;
     }
@@ -360,5 +360,47 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
         boolean visible = core.isVisible(complete);
         afterDelegation();
         return visible;
+    }
+
+    @Override
+    public void clickJS() {
+        beforeDelegation();
+        decoratedGuiElementCore.clickJS();
+        afterDelegation();
+    }
+
+    @Override
+    public void clickAbsolute() {
+        beforeDelegation();
+        decoratedGuiElementCore.clickAbsolute();
+        afterDelegation();
+    }
+
+    @Override
+    public void mouseOverAbsolute2Axis() {
+        beforeDelegation();
+        decoratedGuiElementCore.mouseOverAbsolute2Axis();
+        afterDelegation();
+    }
+
+    @Override
+    public void mouseOverJS() {
+        beforeDelegation();
+        decoratedGuiElementCore.mouseOverJS();
+        afterDelegation();
+    }
+
+    @Override
+    public void rightClickJS() {
+        beforeDelegation();
+        decoratedGuiElementCore.rightClickJS();
+        afterDelegation();
+    }
+
+    @Override
+    public void doubleClickJS() {
+        beforeDelegation();
+        decoratedGuiElementCore.doubleClickJS();
+        afterDelegation();
     }
 }

@@ -22,15 +22,15 @@
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import java.awt.Color;
+import java.io.File;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
-import java.io.File;
-import java.util.List;
 
 /**
  * This is meant as template. If you want to implement a Decorator, copy this one and add your decorations.
@@ -471,10 +471,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementFacade highlight() {
+    public GuiElementFacade highlight(Color color) {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);
-        decoratedFacade.highlight();
+        decoratedFacade.highlight(color);
         afterDelegation();
         return this;
     }

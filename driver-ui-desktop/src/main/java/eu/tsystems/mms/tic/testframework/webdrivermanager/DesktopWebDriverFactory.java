@@ -21,6 +21,8 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.enums.Position;
@@ -48,6 +50,15 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import net.anthavio.phanbedder.Phanbedder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
@@ -60,7 +71,6 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
@@ -74,17 +84,6 @@ import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> implements
     IWebDriverFactory,
@@ -320,9 +319,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         final String url = desktopWebDriverRequest.seleniumServerURL;
         final String browser = desktopWebDriverRequest.browser;
 
-        log().info(String.format("Starting %s %s (session key=%s)", desktopWebDriverRequest.webDriverMode, TesterraWebDriver.class.getSimpleName(), sessionKey));
-        log().debug("Starting session here", new Throwable());
-
         org.apache.commons.lang3.time.StopWatch sw = new org.apache.commons.lang3.time.StopWatch();
         sw.start();
 
@@ -345,20 +341,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             /*
              * Start a new web driver session.
              */
-
-            String msg = "on " + remoteAddress;
-            Object ffprofile = capabilities.getCapability(FirefoxDriver.PROFILE);
-            if (ffprofile != null && ffprofile instanceof FirefoxProfile) {
-                try {
-                    double size = ((double) ((FirefoxProfile) ffprofile).toJson().getBytes().length / 1024);
-                    long sizeInKB = Math.round(size);
-                    msg += "\n ffprofile size=" + sizeInKB + " KB";
-                } catch (IOException e) {
-                    // ignore silently
-                }
-            }
-
-
             try {
                 if (browser.equals(Browsers.htmlunit)) {
                     capabilities.setBrowserName(BrowserType.HTMLUNIT);
@@ -366,13 +348,13 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
                     log().info("Starting HtmlUnitRemoteWebDriver.");
                         newDriver = new RemoteWebDriver(remoteAddress, capabilities);
                         } else {
-                    newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
+                    newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, sessionKey);
                 }
             } catch (final TesterraSetupException e) {
                 int ms = Testerra.Properties.WEBDRIVER_TIMEOUT_SECONDS_RETRY.asLong().intValue()*1000;
-                log().error("Error starting WebDriver. Trying again in " + (ms / 1000) + " seconds.", e);
+                log().error(String.format("Error starting WebDriver. Trying again in %d seconds", (ms/1000)), e);
                 TimerUtils.sleep(ms);
-                newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, msg, sessionKey);
+                newDriver = startNewWebDriverSession(browser, capabilities, remoteAddress, sessionKey);
             }
 
         } else {
@@ -380,8 +362,7 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             /*
              ##### Local
              */
-            String msg = "locally";
-            newDriver = startNewWebDriverSession(browser, capabilities, null, msg, sessionKey);
+            newDriver = startNewWebDriverSession(browser, capabilities, null, sessionKey);
         }
 
         /*
@@ -394,7 +375,8 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         /*
         Log User Agent and executing host
          */
-        NodeInfo nodeInfo = DesktopWebDriverUtils.getNodeInfo(desktopWebDriverRequest);
+        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+        NodeInfo nodeInfo = utils.getNodeInfo(desktopWebDriverRequest);
         desktopWebDriverRequest.storedExecutingNode = nodeInfo;
         WebDriverManager.addExecutingSeleniumHostInfo(sessionKey + ": " + nodeInfo.toString());
         sw.stop();
@@ -426,7 +408,6 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             String browser,
             DesiredCapabilities capabilities,
             URL remoteAddress,
-            String msg,
             String sessionKey
     ) {
 
@@ -516,6 +497,15 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             default:
                 throw new TesterraSystemException("Browser must be set through SystemProperty 'browser' or in test.properties file! + is: " + browser);
         }
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        log().info(String.format(
+                "Starting WebDriver (session key=%s) on %s with capabilities:\n%s",
+                sessionKey,
+                remoteAddress,
+                gson.toJson(finalCapabilities.asMap())
+        ));
+        log().debug(String.format("Starting (session key=%s) here", sessionKey), new Throwable());
 
         WebDriver driver;
         try {

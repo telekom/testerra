@@ -19,12 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.core.test.utils;
+package eu.tsystems.mms.tic.testframework.core.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
@@ -376,5 +377,52 @@ public class TimerTest extends AbstractWebDriverTest implements Loggable {
 
         final String returningObject = (String) sequenceToRun.getReturningObject();
         Assert.assertEquals(returningObject, "False!");
+    }
+
+    @Test
+    public void testT12_ExecuteSequenceWithAddingToMethod() {
+        Timer timer = new Timer(SLEEP_TIME_IN_MS, DURATION_IN_MS);
+        Throwable throwable = new Throwable();
+        ThrowablePackedResponse<String> out = new ThrowablePackedResponse<String>(null, throwable, false, new TimeoutException(throwable));
+        boolean isTimeoutExceptionThrown = false;
+
+        try {
+            out = timer.executeSequence(new Timer.Sequence<String>() {
+                @Override
+                public void run() {
+                    setAddThrowableToMethodContext(true);   // default value
+                    throw new TesterraRuntimeException(msgTesterraRuntimeException);
+                }
+            });
+        } catch (TimeoutException e) {
+            isTimeoutExceptionThrown = true;
+        }
+        Assert.assertTrue(isTimeoutExceptionThrown, msgTimeoutExceptionThrown);
+        String readableErrorMessage = ExecutionContextController.getCurrentMethodContext().errorContext().getReadableErrorMessage();
+        Assert.assertNotNull(readableErrorMessage, "Readable error message must not be null.");
+        Assert.assertEquals(readableErrorMessage, msgTesterraRuntimeException, "Readable error message was set correctly.");
+    }
+
+    @Test
+    public void testT13_ExecuteSequenceWithoutAddingToMethod() {
+        Timer timer = new Timer(SLEEP_TIME_IN_MS, DURATION_IN_MS);
+        Throwable throwable = new Throwable();
+        ThrowablePackedResponse<String> out = new ThrowablePackedResponse<String>(null, throwable, false, new TimeoutException(throwable));
+        boolean isTimeoutExceptionThrown = false;
+
+        try {
+            out = timer.executeSequence(new Timer.Sequence<String>() {
+                @Override
+                public void run() {
+                    setAddThrowableToMethodContext(false);
+                    throw new TesterraRuntimeException(msgTesterraRuntimeException);
+                }
+            });
+        } catch (TimeoutException e) {
+            isTimeoutExceptionThrown = true;
+        }
+        Assert.assertTrue(isTimeoutExceptionThrown, msgTimeoutExceptionThrown);
+        String readableErrorMessage = ExecutionContextController.getCurrentMethodContext().errorContext().getReadableErrorMessage();
+        Assert.assertNull(readableErrorMessage, "Readable error message should be null.");
     }
 }

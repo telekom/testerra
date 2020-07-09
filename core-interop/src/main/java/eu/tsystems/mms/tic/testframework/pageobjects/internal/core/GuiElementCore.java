@@ -26,6 +26,9 @@ import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
+import java.awt.Color;
+import java.io.File;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -34,14 +37,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import java.io.File;
-import java.util.List;
-
 /**
  * Provides basic {@link UiElement} features
  * and acts as adapter for {@link WebDriver} implementations
  */
-public interface GuiElementCore {
+public interface GuiElementCore extends UseJSAlternatives {
     /**
      * Checks if an element is found by webdriver.
      *
@@ -267,9 +267,7 @@ public interface GuiElementCore {
     GuiElementCore mouseOver();
 
     /**
-     * Mouseover directly over js event.
-     *
-     * @return this.
+     * Hovers the element
      */
     GuiElementCore mouseOverJS();
 
@@ -299,7 +297,11 @@ public interface GuiElementCore {
      *
      * @return element.
      */
-    GuiElementCore highlight();
+    default GuiElementCore highlight() {
+        highlight(new Color(0, 0, 255));
+    }
+
+    GuiElementCore highlight(Color color);
 
     /**
      * Swipe the element by the given offset. (0,0) should be the top left.

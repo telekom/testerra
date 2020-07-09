@@ -19,12 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.Position;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 
@@ -32,7 +33,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
  * Class holding configuration settings for the WebDriverManager. Some are writable. This class is not ThreadSafe, some
  * settings may not be valid.
  */
-public class WebDriverManagerConfig {
+public class WebDriverManagerConfig implements Loggable {
 
     /*
      * Default values.
@@ -42,6 +43,7 @@ public class WebDriverManagerConfig {
      * Specifies if windows should be closed.
      */
     public boolean executeCloseWindows = true;
+
     /**
      * WebDriverMode that is used.
      */

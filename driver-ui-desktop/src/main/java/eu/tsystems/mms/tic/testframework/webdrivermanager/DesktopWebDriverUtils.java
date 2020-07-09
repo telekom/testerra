@@ -21,22 +21,21 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public final class DesktopWebDriverUtils {
+public final class DesktopWebDriverUtils implements Loggable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverUtils.class);
-
-    private DesktopWebDriverUtils() {
+    public DesktopWebDriverUtils() {
 
     }
 
-    public static NodeInfo getNodeInfo(DesktopWebDriverRequest desktopWebDriverRequest) {
+    public NodeInfo getNodeInfo(DesktopWebDriverRequest desktopWebDriverRequest) {
         if (desktopWebDriverRequest.webDriverMode == WebDriverMode.local) {
             return new NodeInfo("local", 0);
         }
@@ -58,9 +57,39 @@ public final class DesktopWebDriverUtils {
             NodeInfo nodeInfo = new NodeInfo(out.getString("Name"), out.getInt("Port"));
             return nodeInfo;
         } catch (Exception e) {
-            LOGGER.info("Could not get node info", e);
+            log().debug("Could not get node info: " + e.getMessage());
             return new NodeInfo(host, Integer.valueOf(port));
         }
     }
 
+    public void clickAbsolute(GuiElement guiElement) {
+        log().trace("Absolute navigation and click on: " + guiElement.toString());
+        JSUtils utils = new JSUtils();
+        utils.clickAbsolute(guiElement.getWebDriver(), guiElement.getWebElement());
+    }
+
+    public void mouseOverAbsolute2Axis(GuiElement guiElement) {
+        JSUtils utils = new JSUtils();
+        utils.mouseOverAbsolute2Axis(guiElement.getWebDriver(), guiElement.getWebElement());
+    }
+
+    public void mouseOverJS(GuiElement guiElement) {
+        JSUtils utils = new JSUtils();
+        utils.mouseOver(guiElement.getWebDriver(), guiElement.getWebElement());
+    }
+
+    public void clickJS(GuiElement guiElement) {
+        JSUtils utils = new JSUtils();
+        utils.click(guiElement.getWebDriver(), guiElement.getWebElement());
+    }
+
+    public void rightClickJS(GuiElement guiElement) {
+        JSUtils utils = new JSUtils();
+        utils.rightClick(guiElement.getWebDriver(), guiElement.getWebElement());
+    }
+
+    public void doubleClickJS(GuiElement guiElement) {
+        JSUtils utils = new JSUtils();
+        utils.doubleClick(guiElement.getWebDriver(), guiElement.getWebElement());
+    }
 }

@@ -94,7 +94,7 @@
 :layoutcheck_ignore_ambiguous_movement:         tt.layoutcheck.ignore.ambiguous.movement
 :layoutcheck_ignore_movement:                   tt.layoutcheck.ignore.movement
 :layoutcheck_ignore_group_movement:             tt.layoutcheck.ignore.group.movement
-:layoutcheck_ignore_missing_elements:            tt.layoutcheck.ignore.missing.elements
+:layoutcheck_ignore_missing_elements:           tt.layoutcheck.ignore.missing.elements
 :layoutcheck_ignore_ambiguous_match:            tt.layoutcheck.ignore.ambiguous.match
 
 // annotated mode related
@@ -114,6 +114,11 @@
 :source_utils_activate_sources:                 tt.report.activate.sources
 
 // perf
-:perf_test:                          tt.perf.test
-:perf_generate_statistics:           tt.perf.generate.statistics
-:perf_thinktime_ms:                  tt.perf.page.thinktime.ms
+:perf_test:                                     tt.perf.test
+:perf_generate_statistics:                      tt.perf.generate.statistics
+:perf_thinktime_ms:                             tt.perf.page.thinktime.ms
+
+// Selenoid connector
+:screencaster_active:                           tt.screencaster.active
+:selenoid_vnc_enabled:                          tt.selenoid.vnc.enabled
+:selenoid_vnc_address:                          tt.selenoid.vnc.address

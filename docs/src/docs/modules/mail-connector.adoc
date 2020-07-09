@@ -1,4 +1,4 @@
-= Mail-Connector
+= Mail connector
 
 The module mail-connector allows you to send and receive/read emails as well as solve mail surrounding tasks like encoding or encrypting.
 
@@ -8,7 +8,7 @@ The module mail-connector allows you to send and receive/read emails as well as 
 [source,gradle,role="primary"]
 ----
 // build.gradle
-compile 'eu.tsystems.mms.tic.testerra:mail-connoctor:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:mail-connoctor:1.0'
 ----
 
 .Maven
@@ -19,7 +19,7 @@ compile 'eu.tsystems.mms.tic.testerra:mail-connoctor:1-SNAPSHOT'
     <dependency>
         <groupId>eu.tsystems.mms.tic.testerra</groupId>
         <artifactId>mail-connector</artifactId>
-        <version>1-SNAPSHOT</version>
+        <version>1.0</version>
     </dependency>
 </dependencies>
 ----

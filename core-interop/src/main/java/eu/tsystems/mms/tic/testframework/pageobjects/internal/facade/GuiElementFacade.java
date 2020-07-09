@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
+import java.awt.Color;
 
 /**
  * It should extend {@link UiElement} in the future,
@@ -35,22 +36,13 @@ public interface GuiElementFacade extends GuiElementCore {
     GuiElementFacade click();
 
     @Override
-    GuiElementFacade clickJS();
-
-    @Override
     GuiElementFacade doubleClick();
-
-    @Override
-    GuiElementFacade doubleClickJS();
 
     @Override
     GuiElementFacade rightClick();
 
     @Override
-    GuiElementFacade rightClickJS();
-
-    @Override
-    GuiElementFacade highlight();
+    GuiElementFacade highlight(Color color);
 
     @Override
     GuiElementFacade swipe(int offsetX, int offSetY);

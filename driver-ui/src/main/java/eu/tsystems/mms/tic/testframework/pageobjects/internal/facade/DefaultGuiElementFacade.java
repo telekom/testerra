@@ -20,15 +20,15 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
+import java.awt.Color;
+import java.io.File;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
-import java.io.File;
-import java.util.List;
 
 /**
  * This class only facades {@link GuiElementCore} at the moment.
@@ -81,6 +81,12 @@ public class DefaultGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
+    public GuiElementFacade scrollIntoView(Point offset) {
+        core.scrollIntoView(offset);
+        return this;
+    }
+
+    @Override
     public GuiElementFacade select() {
         core.select();
         return this;
@@ -101,24 +107,6 @@ public class DefaultGuiElementFacade implements GuiElementFacade {
     @Override
     public GuiElementFacade click() {
         core.click();
-        return this;
-    }
-
-    @Override
-    public GuiElementFacade clickJS() {
-        core.clickJS();
-        return this;
-    }
-
-    @Override
-    public GuiElementFacade clickAbsolute() {
-        core.clickAbsolute();
-        return this;
-    }
-
-    @Override
-    public GuiElementFacade mouseOverAbsolute2Axis() {
-        core.mouseOverAbsolute2Axis();
         return this;
     }
 
@@ -207,12 +195,6 @@ public class DefaultGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementFacade mouseOverJS() {
-        core.mouseOverJS();
-        return this;
-    }
-
-    @Override
     public boolean isPresent() {
         return core.isPresent();
     }
@@ -262,14 +244,8 @@ public class DefaultGuiElementFacade implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementFacade rightClickJS() {
-        core.rightClickJS();
-        return this;
-    }
-
-    @Override
-    public GuiElementFacade doubleClickJS() {
-        core.doubleClickJS();
+    public GuiElementFacade highlight(Color color) {
+        core.highlight(color);
         return this;
     }
 }

@@ -171,41 +171,9 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     }
 
     @Override
-    public GuiElementCore clickJS() {
-        beforeDelegation();
-        core.clickJS();
-        afterDelegation();
-        return this;
-    }
-
-    @Override
     public GuiElementCore rightClick() {
         beforeDelegation();
         core.rightClick();
-        afterDelegation();
-        return this;
-    }
-
-    @Override
-    public GuiElementCore rightClickJS() {
-        beforeDelegation();
-        core.rightClickJS();
-        afterDelegation();
-        return this;
-    }
-
-    @Override
-    public GuiElementCore clickAbsolute() {
-        beforeDelegation();
-        core.clickAbsolute();
-        afterDelegation();
-        return this;
-    }
-
-    @Override
-    public GuiElementCore mouseOverAbsolute2Axis() {
-        beforeDelegation();
-        core.mouseOverAbsolute2Axis();
         afterDelegation();
         return this;
     }
@@ -275,14 +243,6 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     }
 
     @Override
-    public GuiElementCore mouseOverJS() {
-        beforeDelegation();
-        core.mouseOverJS();
-        afterDelegation();
-        return this;
-    }
-
-    @Override
     public Select getSelectElement() {
         beforeDelegation();
         Select select = core.getSelectElement();
@@ -302,14 +262,6 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     public GuiElementCore doubleClick() {
         beforeDelegation();
         core.doubleClick();
-        afterDelegation();
-        return this;
-    }
-
-    @Override
-    public GuiElementCore doubleClickJS() {
-        beforeDelegation();
-        core.doubleClickJS();
         afterDelegation();
         return this;
     }
@@ -360,47 +312,5 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
         boolean visible = core.isVisible(complete);
         afterDelegation();
         return visible;
-    }
-
-    @Override
-    public void clickJS() {
-        beforeDelegation();
-        decoratedGuiElementCore.clickJS();
-        afterDelegation();
-    }
-
-    @Override
-    public void clickAbsolute() {
-        beforeDelegation();
-        decoratedGuiElementCore.clickAbsolute();
-        afterDelegation();
-    }
-
-    @Override
-    public void mouseOverAbsolute2Axis() {
-        beforeDelegation();
-        decoratedGuiElementCore.mouseOverAbsolute2Axis();
-        afterDelegation();
-    }
-
-    @Override
-    public void mouseOverJS() {
-        beforeDelegation();
-        decoratedGuiElementCore.mouseOverJS();
-        afterDelegation();
-    }
-
-    @Override
-    public void rightClickJS() {
-        beforeDelegation();
-        decoratedGuiElementCore.rightClickJS();
-        afterDelegation();
-    }
-
-    @Override
-    public void doubleClickJS() {
-        beforeDelegation();
-        decoratedGuiElementCore.doubleClickJS();
-        afterDelegation();
     }
 }

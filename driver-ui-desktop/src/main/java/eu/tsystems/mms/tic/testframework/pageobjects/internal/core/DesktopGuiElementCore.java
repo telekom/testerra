@@ -68,7 +68,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DesktopGuiElementCore extends AbstractGuiElementCore implements
-    UseJSAlternatives,
     Loggable
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiElement.class);
@@ -248,9 +247,10 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
     }
 
     @Override
-    public void scrollIntoView(Point offset) {
+    public GuiElementCore scrollIntoView(Point offset) {
         JSUtils utils = new JSUtils();
-        utils.scrollToCenter(guiElementData.webDriver, getWebElement(), offset);
+        utils.scrollToCenter(guiElementData.getWebDriver(), getWebElement(), offset);
+        return this;
     }
 
     /**
@@ -581,7 +581,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
     public GuiElementCore highlight(Color color) {
         LOGGER.debug("highlight(): starting highlight");
         find();
-        JSUtils.highlightWebElement(webDriver, this.getWebElement(), color);
+        JSUtils.highlightWebElement(guiElementData.getWebDriver(), this.getWebElement(), color);
         LOGGER.debug("highlight(): finished highlight");
         return this;
     }
@@ -661,41 +661,5 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
             }
         }
         return null;
-    }
-
-    @Override
-    public void clickJS() {
-        JSUtils utils = new JSUtils();
-        utils.click(guiElementData.webDriver, getWebElement());
-    }
-
-    @Override
-    public void clickAbsolute() {
-        JSUtils utils = new JSUtils();
-        utils.clickAbsolute(guiElementData.webDriver, getWebElement());
-    }
-
-    @Override
-    public void mouseOverAbsolute2Axis() {
-        JSUtils utils = new JSUtils();
-        utils.mouseOverAbsolute2Axis(guiElementData.webDriver, getWebElement());
-    }
-
-    @Override
-    public void mouseOverJS() {
-        JSUtils utils = new JSUtils();
-        utils.mouseOver(guiElementData.webDriver, getWebElement());
-    }
-
-    @Override
-    public void rightClickJS() {
-        JSUtils utils = new JSUtils();
-        utils.rightClick(guiElementData.webDriver, getWebElement());
-    }
-
-    @Override
-    public void doubleClickJS() {
-        JSUtils utils = new JSUtils();
-        utils.doubleClick(guiElementData.webDriver, getWebElement());
     }
 }

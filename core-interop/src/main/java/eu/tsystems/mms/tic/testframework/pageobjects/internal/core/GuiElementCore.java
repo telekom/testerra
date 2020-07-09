@@ -41,7 +41,7 @@ import org.openqa.selenium.support.ui.Select;
  * Provides basic {@link UiElement} features
  * and acts as adapter for {@link WebDriver} implementations
  */
-public interface GuiElementCore extends UseJSAlternatives {
+public interface GuiElementCore {
     /**
      * Checks if an element is found by webdriver.
      *
@@ -148,15 +148,15 @@ public interface GuiElementCore extends UseJSAlternatives {
     /**
      * Centers the element in the viewport
      */
-    default void scrollIntoView() {
-        scrollIntoView(new Point(0,0));
+    default GuiElementCore scrollIntoView() {
+        return scrollIntoView(new Point(0,0));
     }
 
     /**
      * Centers the element in the viewport with a given offset
      * @param offset
      */
-    void scrollIntoView(Point offset);
+    GuiElementCore scrollIntoView(Point offset);
 
     /**
      * Select a selectable element.
@@ -186,27 +186,6 @@ public interface GuiElementCore extends UseJSAlternatives {
      * @return .
      */
     GuiElementCore click();
-
-    /**
-     * Clicks on a web element using javascript.
-     *
-     * @return .
-     */
-    GuiElementCore clickJS();
-
-    /**
-     * click
-     *
-     * @return .
-     */
-    GuiElementCore clickAbsolute();
-
-    /**
-     * hover mouse over 2 axis
-     *
-     * @return .
-     */
-    GuiElementCore mouseOverAbsolute2Axis();
 
     /**
      * submit
@@ -267,11 +246,6 @@ public interface GuiElementCore extends UseJSAlternatives {
     GuiElementCore mouseOver();
 
     /**
-     * Hovers the element
-     */
-    GuiElementCore mouseOverJS();
-
-    /**
      * Returns the Select-Object.
      *
      * @return .
@@ -298,7 +272,7 @@ public interface GuiElementCore extends UseJSAlternatives {
      * @return element.
      */
     default GuiElementCore highlight() {
-        highlight(new Color(0, 0, 255));
+        return highlight(new Color(0, 0, 255));
     }
 
     GuiElementCore highlight(Color color);
@@ -330,9 +304,6 @@ public interface GuiElementCore extends UseJSAlternatives {
     int getNumberOfFoundElements();
 
     GuiElementCore rightClick();
-    GuiElementCore rightClickJS();
-
-    GuiElementCore doubleClickJS();
 
     /**
      * Takes a screenshot of the GuiElement

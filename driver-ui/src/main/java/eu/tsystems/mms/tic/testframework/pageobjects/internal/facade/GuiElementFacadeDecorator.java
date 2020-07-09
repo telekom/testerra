@@ -129,6 +129,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         decoratedFacade.scrollToElement(yOffset);
         afterDelegation();
         afterActionDelegation();
+        return this;
     }
 
     @Override
@@ -187,56 +188,11 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementFacade clickJS() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeActionDelegation(methodName);
-        beforeDelegation(methodName);
-        decoratedFacade.clickJS();
-        afterDelegation();
-        afterActionDelegation();
-        return this;
-    }
-
-
-    @Override
     public GuiElementFacade rightClick() {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeActionDelegation(methodName);
         beforeDelegation(methodName);
         decoratedFacade.rightClick();
-        afterDelegation();
-        afterActionDelegation();
-        return this;
-    }
-
-    @Override
-    public GuiElementFacade rightClickJS() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeActionDelegation(methodName);
-        beforeDelegation(methodName);
-        decoratedFacade.rightClickJS();
-        afterDelegation();
-        afterActionDelegation();
-        return this;
-    }
-
-    @Override
-    public GuiElementFacade clickAbsolute() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeActionDelegation(methodName);
-        beforeDelegation(methodName);
-        decoratedFacade.clickAbsolute();
-        afterDelegation();
-        afterActionDelegation();
-        return this;
-    }
-
-    @Override
-    public GuiElementFacade mouseOverAbsolute2Axis() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeActionDelegation(methodName);
-        beforeDelegation(methodName);
-        decoratedFacade.mouseOverAbsolute2Axis();
         afterDelegation();
         afterActionDelegation();
         return this;
@@ -411,17 +367,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public GuiElementFacade mouseOverJS() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeActionDelegation(methodName);
-        beforeDelegation(methodName);
-        decoratedFacade.mouseOverJS();
-        afterDelegation();
-        afterActionDelegation();
-        return this;
-    }
-
-    @Override
     public boolean isPresent() {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);
@@ -454,17 +399,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         beforeActionDelegation(methodName);
         beforeDelegation(methodName);
         decoratedFacade.doubleClick();
-        afterDelegation();
-        afterActionDelegation();
-        return this;
-    }
-
-    @Override
-    public GuiElementFacade doubleClickJS() {
-        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeActionDelegation(methodName);
-        beforeDelegation(methodName);
-        decoratedFacade.doubleClickJS();
         afterDelegation();
         afterActionDelegation();
         return this;

@@ -63,7 +63,7 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
         //guiElement.scrollToElement(300);
         //Assert.assertFalse(guiElement.isVisible(true));
 
-        guiElement.scrollTo();
+        guiElement.scrollIntoView();
         guiElement.visible(true).isTrue();
     }
 

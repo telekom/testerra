@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.WebTestP
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.testing.UiElementCreator;
+import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,7 @@ public abstract class AbstractGuiElementTest extends AbstractTestSitesTest imple
 
     @Deprecated
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected static final DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
 
     /**
      * abstract methods to get specific GuiElement (e.g. FrameAwareInternalGuiElementDecorator) in a specific state

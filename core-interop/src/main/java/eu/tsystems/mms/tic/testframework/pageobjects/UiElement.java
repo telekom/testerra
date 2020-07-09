@@ -42,7 +42,6 @@ public interface UiElement extends
     enum Properties implements IProperties {
         @Deprecated
         DEFAULT_ASSERT_IS_COLLECTOR("tt.guielement.default.assertcollector", false),
-        USE_JS_ALTERNATIVES("tt.guielement.use.js.alternatives", true),
         DELAY_AFTER_FIND_MILLIS("tt.delay.after.guielement.find.millis", 0),
         DELAY_BEFORE_ACTION_MILLIS("tt.delay.before.guielement.action.millis",0),
         DELAY_AFTER_ACTION_MILLIS("tt.delay.after.guielement.action.millis", 0),

@@ -22,13 +22,13 @@
 
 package eu.tsystems.mms.tic.testframework.utils;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
 import eu.tsystems.mms.tic.testframework.exceptions.NotYetImplementedException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import java.awt.Color;
@@ -635,7 +635,7 @@ public final class JSUtils {
     }
 
     private void demoMouseOver(final WebDriver webDriver, final WebElement webElement) {
-        if (POConfig.isDemoMode()) {
+        if (Testerra.Properties.DEMO_MODE.asBool()) {
             highlightWebElement(webDriver, webElement, new Color(255, 255, 0));
         }
     }

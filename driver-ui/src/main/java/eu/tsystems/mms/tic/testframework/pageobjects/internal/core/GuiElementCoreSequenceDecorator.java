@@ -23,7 +23,6 @@
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
@@ -33,7 +32,6 @@ import java.io.File;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -172,96 +170,6 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         };
         ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
 
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "click", core::clickJS);
-        return this;
-    }
-
-    private void checkForClickingJSAlternativeOrExit(ThrowablePackedResponse throwablePackedResponse, String action, Runnable runnable) {
-        if (throwablePackedResponse.hasTimeoutException()) {
-
-            if (!UiElement.Properties.USE_JS_ALTERNATIVES.asBool()) {
-                // we cannot use clickJS()
-                throwablePackedResponse.finalizeTimer();
-                return;
-            }
-
-
-            // this should be TimeoutException
-            Throwable throwable = throwablePackedResponse.getTimeoutException();
-            String message = throwable.getMessage();
-
-            // get the real cause
-            Throwable cause = throwable.getCause();
-            if (cause != null) {
-                if (cause.getMessage() != null) {
-                    message += cause.getMessage();
-                }
-            }
-            else {
-                cause = throwable;
-            }
-
-            if (message == null) {
-                message = "";
-            }
-            message = message.toLowerCase();
-            if (    ElementNotVisibleException.class.isAssignableFrom(cause.getClass())
-                    ||
-                    message.contains("other element would receive the click") // from chrome driver
-                    ||
-                    message.contains("Element is obscured") // from edge driver
-                    ||
-                    message.contains("not clickable at point") // another chrome message (maybe FF with native events (emulation), too)
-                    ) {
-                log().warn(action + "() failed on " + core + ". Trying fallback " + action + "JS().");
-                runnable.run();
-                return;
-            }
-
-            throwablePackedResponse.finalizeTimer();
-        }
-    }
-
-    @Override
-    public GuiElementCore clickJS() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-
-            @Override
-            public void run() {
-                core.clickJS();
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
-        throwablePackedResponse.finalizeTimer();
-        return this;
-    }
-
-    @Override
-    public GuiElementCore clickAbsolute() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                core.clickAbsolute();
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
-        throwablePackedResponse.finalizeTimer();
-        return this;
-    }
-
-    @Override
-    public GuiElementCore mouseOverAbsolute2Axis() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                core.mouseOverAbsolute2Axis();
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
-        throwablePackedResponse.finalizeTimer();
         return this;
     }
 
@@ -378,20 +286,6 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
     }
 
     @Override
-    public GuiElementCore mouseOverJS() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                core.mouseOverJS();
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
-        throwablePackedResponse.finalizeTimer();
-        return this;
-    }
-
-    @Override
     public Select getSelectElement() {
         Timer.Sequence<Select> sequence = new Timer.Sequence<Select>() {
             @Override
@@ -429,8 +323,6 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         };
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
-
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "doubleClick", core::doubleClickJS);
         return this;
     }
 
@@ -501,52 +393,12 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         };
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
-
-        checkForClickingJSAlternativeOrExit(throwablePackedResponse, "rightClick", core::rightClickJS);
-        return this;
-    }
-
-    @Override
-    public GuiElementCore rightClickJS() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                core.rightClickJS();
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
-        throwablePackedResponse.finalizeTimer();
-        return this;
-    }
-
-    @Override
-    public GuiElementCore doubleClickJS() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                core.doubleClickJS();
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
-        throwablePackedResponse.finalizeTimer();
         return this;
     }
 
     @Override
     public File takeScreenshot() {
         return core.takeScreenshot();
-    }
-
-    @Override
-    protected void beforeDelegation() {
-
-    }
-
-    @Override
-    protected void afterDelegation() {
-
     }
 
     @Override

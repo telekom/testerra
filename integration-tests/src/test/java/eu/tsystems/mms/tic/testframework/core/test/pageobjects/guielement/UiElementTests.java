@@ -269,16 +269,6 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         attributes.value("data-completely-custom-attribute").is("yes");
     }
 
-    @Test
-    public void test_ClickFallback() {
-        WebTestPage page = getPage();
-        UiElement btnDisabled = page.findById("btnDisabled");
-        btnDisabled.click(uiElement -> {
-            page.findById("btnEnable").click();
-        });
-        btnDisabled.text().is("Clicked");
-    }
-
     @Override
     public WebTestPage getPage() {
         return pageFactory.createPage(WebTestPage.class);

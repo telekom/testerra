@@ -6,6 +6,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAsser
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
+import java.awt.Color;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -23,8 +25,23 @@ public interface BasicUiElement {
      * Takes a screenshot of the current element
      */
     ImageAssertion screenshot();
-    BasicUiElement highlight();
+    BasicUiElement highlight(Color color);
+    default BasicUiElement highlight() {
+        return highlight(new Color(0,0, 255, 255));
+    }
     String createXPath();
     Locate getLocate();
     WebElement getWebElement();
+    /**
+     * Centers the element in the viewport
+     */
+    default BasicUiElement scrollIntoView() {
+        return scrollIntoView(new Point(0,0));
+    }
+
+    /**
+     * Centers the element in the viewport with a given offset
+     * @param offset
+     */
+    BasicUiElement scrollIntoView(Point offset);
 }

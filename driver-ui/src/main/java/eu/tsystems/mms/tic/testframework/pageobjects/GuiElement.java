@@ -300,11 +300,21 @@ public class GuiElement implements
         return decoratedFacade.getWebElement();
     }
 
+    @Override
+    public UiElement scrollIntoView(Point offset) {
+        decoratedFacade.scrollIntoView(offset);
+        return this;
+    }
+
     public By getBy() {
         return decoratedFacade.getBy();
     }
 
-    @Override
+    @Deprecated
+    public UiElement scrollToElement() {
+        decoratedFacade.scrollToElement();
+        return this;
+    }
     @Deprecated
     public UiElement scrollToElement(int yOffset) {
         decoratedFacade.scrollToElement(yOffset);
@@ -312,7 +322,7 @@ public class GuiElement implements
     }
 
     @Override
-    public void select() {
+    public UiElement select() {
         guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.select();
         guiElementData.resetLogLevel();
@@ -371,32 +381,6 @@ public class GuiElement implements
                 }
             }
         });
-    }
-
-    @Override
-    @Deprecated
-    public UiElementActions click(Consumer<UiElement> whenFail) {
-        runActionSequence(() -> core.click(), whenFail);
-        return this;
-    }
-
-    public UiElement clickJS() {
-        guiElementData.setLogLevel(LogLevel.INFO);
-        decoratedFacade.clickJS();
-        guiElementData.resetLogLevel();
-        return this;
-    }
-
-    public UiElement clickAbsolute() {
-        guiElementData.setLogLevel(LogLevel.INFO);
-        decoratedFacade.clickAbsolute();
-        guiElementData.resetLogLevel();
-        return this;
-    }
-
-    public UiElement mouseOverAbsolute2Axis() {
-        decoratedFacade.mouseOverAbsolute2Axis();
-        return this;
     }
 
     public UiElement submit() {
@@ -504,11 +488,6 @@ public class GuiElement implements
         return this;
     }
 
-    public UiElement mouseOverJS() {
-        decoratedFacade.mouseOverJS();
-        return this;
-    }
-
     public boolean isPresent() {
         return decoratedFacade.isPresent();
     }
@@ -571,7 +550,7 @@ public class GuiElement implements
 
     @Override
     public UiElement highlight(Color color) {
-        decoratedFacade.highlight();
+        decoratedFacade.highlight(color);
         return this;
     }
 
@@ -601,16 +580,6 @@ public class GuiElement implements
     @Override
     public UiElement contextClick() {
         decoratedFacade.rightClick();
-        return this;
-    }
-
-    public UiElement rightClickJS() {
-        decoratedFacade.rightClickJS();
-        return this;
-    }
-
-    public UiElement doubleClickJS() {
-        decoratedFacade.doubleClickJS();
         return this;
     }
 
@@ -1064,15 +1033,6 @@ public class GuiElement implements
                 return String.format("%s.screenshot", self);
             }
         });
-    }
-
-    @Override
-    public UiElement scrollTo(final int yOffset) {
-        /**
-         * We have to negate the yOffset here
-         * because {@link #scrollToElement(int)} substracts the offset
-         */
-        return scrollToElement(yOffset*-1);
     }
 
     /**

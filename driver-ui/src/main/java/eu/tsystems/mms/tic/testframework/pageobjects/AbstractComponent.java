@@ -31,13 +31,14 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
-import org.openqa.selenium.WebElement;
-
+import java.awt.Color;
 import java.util.List;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 
 /**
  * Components are wrappers for HTML elements like WebComponents
@@ -67,6 +68,11 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
+    public BasicUiElement highlight(Color color) {
+        return rootElement.highlight(color);
+    }
+
+    @Override
     public BasicUiElement highlight() {
         rootElement.highlight();
         return this;
@@ -85,6 +91,11 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     @Override
     public WebElement getWebElement() {
         return rootElement.getWebElement();
+    }
+
+    @Override
+    public BasicUiElement scrollIntoView(Point offset) {
+        return rootElement.scrollIntoView(offset);
     }
 
     @Override

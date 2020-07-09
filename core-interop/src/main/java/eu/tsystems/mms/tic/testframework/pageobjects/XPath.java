@@ -7,9 +7,6 @@ import java.util.ArrayList;
  * @author Mike Reiche
  */
 public class XPath {
-    private static final String CONTAINS="contains";
-    private static final String START="starts-with";
-    private static final String END="ends-with";
     private final String selector;
     private final ArrayList<String> attributes = new ArrayList<>();
     private final ArrayList<XPath> contains = new ArrayList<>();
@@ -37,75 +34,122 @@ public class XPath {
         return xPath;
     }
 
-    public XPath classNames(Object ... classes) {
-        return attributeWords("class", classes);
-    }
+    class Function {
+        private static final String CONTAINS="contains";
+        private static final String START="starts-with";
+        private static final String END="ends-with";
+        XPath xPath;
+        String function;
+        Function(XPath xPath, String function) {
+            this.xPath = xPath;
+            this.function = function;
+        }
+        XPath is(Object value) {
+            somethingIs(function, value);
+            return xPath;
+        }
+        XPath isPresent() {
+            attributes.add(String.format("%s", function));
+            return xPath;
+        }
+        XPath contains(Object value) {
+            somethingMatches(CONTAINS, function, value);
+            return xPath;
+        }
 
-    private void somethingIs(String something, Object string) {
-        attributes.add(String.format("%s='%s'", something, string));
-    }
-    private void somethingMatches(String operation, String something, Object string) {
-        attributes.add(String.format("%s(%s,'%s')", operation, something, string));
-    }
-    private void somethingContainsWord(String something, Object string) {
-        /**
-         * @see {https://stackoverflow.com/questions/1390568/how-can-i-match-on-an-attribute-that-contains-a-certain-string}
-         */
-        attributes.add(String.format("contains(concat(' ', normalize-space(%s), ' '), ' %s ')", something, string));
-        // Regex match with XPath 2.0
-        //attributes.add(String.format("contains(@class, '[\\s|\\W]%s[\\s|\\W]')", className));
-    }
-    private void somethingContainsWords(String something, Object ... texts) {
-        for (Object text : texts) {
-            for (String word : text.toString().split("\\s+")) {
-                somethingContainsWord(something, word);
+        XPath hasWords(Object ... words) {
+            somethingContainsWords(function, words);
+            return xPath;
+        }
+
+        XPath startsWith(Object value) {
+            somethingMatches(START, function, value);
+            return xPath;
+        }
+
+        XPath endsWith(Object value) {
+            somethingMatches(END, function, value);
+            return xPath;
+        }
+
+        private void somethingIs(String something, Object string) {
+            attributes.add(String.format("%s='%s'", something, string));
+        }
+
+        private void somethingMatches(String operation, String something, Object string) {
+            attributes.add(String.format("%s(%s,'%s')", operation, something, string));
+        }
+        private void somethingContainsWord(String something, Object string) {
+            /**
+             * @see {https://stackoverflow.com/questions/1390568/how-can-i-match-on-an-attribute-that-contains-a-certain-string}
+             */
+            attributes.add(String.format("contains(concat(' ', normalize-space(%s), ' '), ' %s ')", something, string));
+            // Regex match with XPath 2.0
+            //attributes.add(String.format("contains(@class, '[\\s|\\W]%s[\\s|\\W]')", className));
+        }
+        private void somethingContainsWords(String something, Object ... texts) {
+            for (Object text : texts) {
+                for (String word : text.toString().split("\\s+")) {
+                    somethingContainsWord(something, word);
+                }
             }
         }
     }
 
-    public XPath attribute(String attribute) {
-        attributes.add(String.format("@%s", attribute));
-        return this;
+    public XPath classNames(Object ... classes) {
+        return attribute("class").hasWords(classes);
     }
 
+    public Function attribute(Attribute attribute) {
+        return new Function(this, "@"+attribute.toString());
+    }
+
+    public Function text() {
+        return new Function(this, ".//text()");
+    }
+
+    public Function attribute(String attribute) {
+        return new Function(this, "@"+attribute);
+    }
+
+    @Deprecated
+    public XPath attributeIs(Attribute attribute, Object value) {
+        return attributeIs(attribute.toString(), value);
+    }
+
+    @Deprecated
     public XPath attributeIs(String attribute, Object value) {
-        somethingIs(String.format("@%s", attribute), value);
-        return this;
+        return attribute(attribute).is(value);
     }
 
+    @Deprecated
     public XPath attributePart(String attribute, Object string) {
-        somethingMatches(CONTAINS, String.format("@%s", attribute), string);
-        return this;
+        return attribute(attribute).contains(string);
     }
 
+    @Deprecated
     public XPath attributeWords(String attribute, Object ... words) {
-        somethingContainsWords(String.format("@%s", attribute), words);
-        return this;
+        return attribute(attribute).hasWords(words);
     }
 
+    @Deprecated
+    public XPath textContains(Object string) {
+        return text().contains(string);
+    }
+
+    @Deprecated
     public XPath textIs(Object string) {
-        somethingIs(".//text()", string);
-        return this;
+        return text().is(string);
     }
 
+    @Deprecated
     public XPath textPart(Object string) {
-        somethingMatches(CONTAINS,".//text()", string);
-        return this;
+        return text().contains(string);
     }
 
-    public XPath textStartsWith(Object string) {
-        somethingMatches(START,".//text()", string);
-        return this;
-    }
-
-    public XPath textEndsWith(Object string) {
-        somethingMatches(END,".//text()", string);
-        return this;
-    }
-
+    @Deprecated
     public XPath textWords(Object ... words) {
-        somethingContainsWords(".//text()", words);
-        return this;
+        return text().hasWords(words);
     }
 
     private static String translateSubSelection(String selector) {

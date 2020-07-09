@@ -3,16 +3,16 @@ package eu.tsystems.mms.tic.testframework.simulation;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
+import java.awt.Color;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
-
-import java.util.function.Consumer;
 
 public class AbstractSimulator implements UiElementActions {
     protected final GuiElement guiElement;
@@ -87,9 +87,10 @@ public class AbstractSimulator implements UiElementActions {
     }
 
     @Override
-    public TestableUiElement highlight() {
-        return guiElement.highlight();
+    public BasicUiElement highlight(Color color) {
+        return guiElement.highlight(color);
     }
+
 
     @Override
     public String createXPath() {
@@ -107,14 +108,13 @@ public class AbstractSimulator implements UiElementActions {
     }
 
     @Override
-    public UiElementActions click() {
-        guiElement.click();
-        return this;
+    public BasicUiElement scrollIntoView(Point offset) {
+        return guiElement.scrollIntoView(offset);
     }
 
     @Override
-    public UiElementActions click(Consumer<UiElement> whenFail) {
-        guiElement.click(whenFail);
+    public UiElementActions click() {
+        guiElement.click();
         return this;
     }
 
@@ -163,12 +163,6 @@ public class AbstractSimulator implements UiElementActions {
     @Override
     public UiElementActions hover() {
         guiElement.hover();
-        return this;
-    }
-
-    @Override
-    public UiElementActions scrollTo(int yOffset) {
-        guiElement.scrollTo(yOffset);
         return this;
     }
 }

@@ -20,21 +20,21 @@ public class LocateTest extends AbstractTestSitesTest implements UiElementCreato
     @Test(expectedExceptions = AssertionError.class)
     public void locateByText_fails() {
         UiElement realA = findByQa("action/linkWithFormattedText");
-        UiElement a = find(XPath.from("a").textIs(textToFind));
+        UiElement a = find(XPath.from("a").text().is(textToFind));
         a.text().is(realA.text().getActual());
     }
 
     @Test(expectedExceptions = AssertionError.class)
     public void locateByTextContains_fails() {
         UiElement realA = findByQa("action/linkWithFormattedText");
-        UiElement a = find(XPath.from("a").textContains(textToFind));
+        UiElement a = find(XPath.from("a").text().contains(textToFind));
         a.text().is(realA.text().getActual());
     }
 
     @Test
     public void locateByWords() {
         UiElement realA = findByQa("action/linkWithFormattedText");
-        UiElement a = find(XPath.from("a").textWords(textToFind));
+        UiElement a = find(XPath.from("a").text().hasWords(textToFind));
         a.text().is(realA.text().getActual());
     }
 
@@ -43,9 +43,9 @@ public class LocateTest extends AbstractTestSitesTest implements UiElementCreato
         UiElement realA = findByQa("action/linkWithFormattedText");
         UiElement a = find(
             XPath.from("a")
-                .textWords("This link has some text!")
+                .text().hasWords("This link has some text!")
                 .contains("span")
-                    .textWords("Subtext")
+                    .text().hasWords("Subtext")
         );
         a.text().is(realA.text().getActual());
     }
@@ -77,7 +77,7 @@ public class LocateTest extends AbstractTestSitesTest implements UiElementCreato
 
     @Test
     public void testLocateByWords() {
-        UiElement div = find(XPath.from("*").textWords("Login here"));
+        UiElement div = find(XPath.from("*").text().hasWords("Login here"));
         div.value("data-qa").is("action/login");
     }
 }

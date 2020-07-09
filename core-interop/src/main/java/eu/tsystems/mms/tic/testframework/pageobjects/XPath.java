@@ -34,7 +34,7 @@ public class XPath {
         return xPath;
     }
 
-    class Function {
+    public class Function {
         private static final String CONTAINS="contains";
         private static final String START="starts-with";
         private static final String END="ends-with";
@@ -44,30 +44,30 @@ public class XPath {
             this.xPath = xPath;
             this.function = function;
         }
-        XPath is(Object value) {
+        public XPath is(Object value) {
             somethingIs(function, value);
             return xPath;
         }
-        XPath isPresent() {
+        public XPath present() {
             attributes.add(String.format("%s", function));
             return xPath;
         }
-        XPath contains(Object value) {
+        public XPath contains(Object value) {
             somethingMatches(CONTAINS, function, value);
             return xPath;
         }
 
-        XPath hasWords(Object ... words) {
+        public XPath hasWords(Object ... words) {
             somethingContainsWords(function, words);
             return xPath;
         }
 
-        XPath startsWith(Object value) {
+        public XPath startsWith(Object value) {
             somethingMatches(START, function, value);
             return xPath;
         }
 
-        XPath endsWith(Object value) {
+        public XPath endsWith(Object value) {
             somethingMatches(END, function, value);
             return xPath;
         }
@@ -108,48 +108,12 @@ public class XPath {
         return new Function(this, ".//text()");
     }
 
-    public Function attribute(String attribute) {
-        return new Function(this, "@"+attribute);
-    }
-
-    @Deprecated
-    public XPath attributeIs(Attribute attribute, Object value) {
-        return attributeIs(attribute.toString(), value);
-    }
-
-    @Deprecated
-    public XPath attributeIs(String attribute, Object value) {
-        return attribute(attribute).is(value);
-    }
-
-    @Deprecated
-    public XPath attributePart(String attribute, Object string) {
-        return attribute(attribute).contains(string);
-    }
-
-    @Deprecated
-    public XPath attributeWords(String attribute, Object ... words) {
-        return attribute(attribute).hasWords(words);
-    }
-
-    @Deprecated
-    public XPath textContains(Object string) {
-        return text().contains(string);
-    }
-
-    @Deprecated
-    public XPath textIs(Object string) {
+    public XPath text(Object string) {
         return text().is(string);
     }
 
-    @Deprecated
-    public XPath textPart(Object string) {
-        return text().contains(string);
-    }
-
-    @Deprecated
-    public XPath textWords(Object ... words) {
-        return text().hasWords(words);
+    public Function attribute(String attribute) {
+        return new Function(this, "@"+attribute);
     }
 
     private static String translateSubSelection(String selector) {

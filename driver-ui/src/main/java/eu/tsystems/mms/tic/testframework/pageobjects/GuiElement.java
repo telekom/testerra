@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
@@ -63,7 +63,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.simulation.UserSimulator;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
-import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import java.awt.Color;
@@ -72,7 +71,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -351,36 +349,6 @@ public class GuiElement implements
         decoratedFacade.click();
         guiElementData.resetLogLevel();
         return this;
-    }
-
-    private void runActionSequence(Runnable runnable, Consumer<UiElement> whenFail) {
-        final UiElement self = this;
-        int useTimeoutSeconds = getTimeoutInSeconds();
-        //if (pageOverrides.hasTimeoutSeconds()) useTimeoutSeconds = pageOverrides.getTimeoutSeconds();
-
-        Timer timer = new Timer(
-                UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(),
-                useTimeoutSeconds * 1000
-        );
-        timer.executeSequence(new Timer.Sequence<Void>() {
-            @Override
-            public void run() {
-                // Prevent TimeoutException on any other exception
-                if (whenFail!=null) {
-                    setSkipThrowingException(true);
-                }
-                try {
-                    runnable.run();
-                    setPassState(true);
-                } catch (Exception e) {
-                    setPassState(false);
-                    log().warn("Unable to execute action, try whenFail fallback", e);
-                }
-                if (whenFail!= null && !getPassState()) {
-                    whenFail.accept(self);
-                }
-            }
-        });
     }
 
     public UiElement submit() {

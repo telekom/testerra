@@ -8,6 +8,8 @@ The module will register automatically by using Testera <<Hooks>>.
 
 == Project setup
 
+Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:selenoid-connector?label=Testerra%20Selenoid%20connector[Bintray]
+
 .Gradle
 [source,gradle,role="primary"]
 ----

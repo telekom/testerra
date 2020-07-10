@@ -7,6 +7,8 @@ on test method updates and update general build status on report generation.
 
 == Project setup
 
+Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:teamcity-connector?label=Testerra%20TeamCity%20connector[Bintray]
+
 .Gradle
 [source,gradle,role="primary"]
 ----

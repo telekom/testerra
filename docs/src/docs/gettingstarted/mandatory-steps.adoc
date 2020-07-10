@@ -6,6 +6,8 @@ include::../properties/property-attributes.adoc[]
 
 The Testerra framework is deployed to a https://bintray.com/testerra-io/Testerra[Bintray repository]. Make sure, that you added the jCenter repository somewhere.
 
+Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:core?label=Testerra%20Framework[Bintray]
+
 .Gradle
 [source, gradle, role="primary"]
 ----

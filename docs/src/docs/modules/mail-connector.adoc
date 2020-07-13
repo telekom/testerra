@@ -4,6 +4,8 @@ The module mail-connector allows you to send and receive/read emails as well as 
 
 == Project setup
 
+Current release image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:mail-connector?label=Testerra%20Mail%20connector[Bintray]
+
 .Gradle
 [source,gradle,role="primary"]
 ----

@@ -9,4 +9,5 @@ include::modules/mail-connector.adoc[leveloffset=+1]
 include::modules/property-manager.adoc[leveloffset=+1]
 include::modules/selenoid-connector.adoc[leveloffset=+1]
 include::modules/teamcity-connector.adoc[leveloffset=+1]
+include::modules/xray-connector.adoc[leveloffset=+1]
 

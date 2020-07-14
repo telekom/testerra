@@ -1,0 +1,26 @@
+= Testerra Xray connector
+
+== Project setup
+
+Current release
+
+.Gradle
+[source,gradle,role="primary"]
+----
+// build.gradle
+implementation 'eu.tsystems.mms.tic.testerra:xray-connector:1.0'
+----
+
+.Maven
+[source,xml,role="secondary"]
+----
+<!-- pom.xml -->
+<dependencies>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>xray-connector</artifactId>
+        <version>1.0</version>
+    </dependency>
+</dependencies>
+----
+

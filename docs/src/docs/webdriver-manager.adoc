@@ -1,7 +1,5 @@
 = WebDriverManager
 
-include::properties/property-attributes.adoc[]
-
 == Overview
 
 `WebDriverManager` is the central component to create and close your `WebDriver` sessions.

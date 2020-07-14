@@ -1,6 +1,7 @@
 = Create a new project
 
 include::gettingstarted/system-requirements.adoc[leveloffset=+1]
-include::gettingstarted/mandatory-steps.adoc[leveloffset=+1]
+include::gettingstarted/skeleton-project.adoc[leveloffset=+1]
+include::gettingstarted/manual-steps.adoc[leveloffset=+1]
 include::gettingstarted/system-proxy.adoc[leveloffset=+1]
 include::gettingstarted/logging.adoc[leveloffset=+1]

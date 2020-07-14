@@ -1,0 +1,5 @@
+= Testerra Skeleton project
+
+We provide a skeleton project to demonstrate the basic features of Testerra.
+
+GitHub: https://github.com/telekom/testerra-skeleton

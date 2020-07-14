@@ -1,14 +1,8 @@
-= Mandatory steps
+= Testerra manual setup
 
 include::../properties/property-attributes.adoc[]
 
-== Testerra Skeleton project
-
-We provide a skeleton project of Testerra to demontrate the basic features.
-
-GitHub: https://github.com/telekom/testerra-skeleton
-
-== Testerra manual setup
+== Setup
 
 The Testerra framework is deployed to a https://bintray.com/testerra-io/Testerra[Bintray repository]. Make sure, that you added the jCenter repository somewhere.
 

@@ -1,5 +1,7 @@
 = Testerra Xray connector
 
+include::../properties/property-attributes.adoc[]
+
 == Project setup
 
 Current release
@@ -24,3 +26,27 @@ implementation 'eu.tsystems.mms.tic.testerra:xray-connector:1.0'
 </dependencies>
 ----
 
+== Configuration
+
+.Overview about all properties allowed in xray.properties
+[cols="2,^1,4",options="header"]
+|===
+| Property | default | Description
+| {xray_rest_service_uri} |  | URI of the JIRA REST service (with Xray-Plugin installed)
+| {xray_project_key} |  | JIRA project key
+| {xray_user} |  | JIRA user to sync test execution
+| {xray_password} |  | Password for JIRA user
+| {xray_validation_revision_regexp} | .* | Given test execution infos are validated against these regular expressions, before they are accepted. +
+Use it as a safety measure to prevent unintended creation of test exectution issues (default for all: .*)
+| {xray_validation_summary_regexp} | .* |
+| {xray_validation_description_regexp} | .* |
+| {xray_previous_result_filename} |  | When updating test execution, previous results are attached as json-file using the following file name. +
+Leave it blank if no file should create.
+| {xray_transitions_on_created} |  | Transitions to be executed on test execution issue after certain status was reached (comma separated list).
+| {xray_transitions_on_updated} |  |
+| {xray_transitions_on_done} |  |
+| {xray_test_execution_start_time_field_id} |  | The JIRA custom field for test execution start time.
+| {xray_test_execution_finish_time_field_id} |  | The JIRA custom field for test execution finish time.
+| {xray_test_execution_revision_field_id} |  | The JIRA custom field for test execution revision.
+| {xray_test_execution_test_environments_field_id} |  | The JIRA custom field for test execution test-environments.
+|===

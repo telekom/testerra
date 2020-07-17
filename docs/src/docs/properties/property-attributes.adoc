@@ -122,3 +122,20 @@
 :screencaster_active:                           tt.screencaster.active
 :selenoid_vnc_enabled:                          tt.selenoid.vnc.enabled
 :selenoid_vnc_address:                          tt.selenoid.vnc.address
+
+// Xray connector
+:xray_rest_service_uri:                         xray.rest.service.uri
+:xray_project_key:                              xray.project.key
+:xray_user:                                     xray.user
+:xray_password:                                 xray.password
+:xray_validation_revision_regexp:               xray.validation.revision.regexp
+:xray_validation_summary_regexp:                xray.validation.summary.regexp
+:xray_validation_description_regexp:            xray.validation.description.regexp
+:xray_previous_result_filename:                 xray.previous.result.filename
+:xray_transitions_on_created:                   xray.transitions.on.created
+:xray_transitions_on_updated:                   xray.transitions.on.updated
+:xray_transitions_on_done:                      xray.transitions.on.done
+:xray_test_execution_start_time_field_id:       xray.test.execution.start.time.field.id
+:xray_test_execution_finish_time_field_id:      xray.test.execution.finish.time.field.id
+:xray_test_execution_revision_field_id:         xray.test.execution.revision.field.id
+:xray_test_execution_test_environments_field_id: xray.test.execution.test-environments.field.id

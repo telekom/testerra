@@ -22,8 +22,9 @@ public abstract class AbstractTest extends TesterraTest {
     @BeforeSuite
     public void proxySetup() {
         WebDriverProxyUtils utils = new WebDriverProxyUtils();
-        final defaultProxy Proxy = utils.getDefaultHttpProxy();
-        final Proxy otherProxy = utils.createHttpProxyFromUrl(new URL("http://proxyUser:secretPassword@my-proxy:3128"));
+        final Proxy defaultProxy = utils.getDefaultHttpProxy();
+        final Proxy otherProxy = utils.createHttpProxyFromUrl(
+                new URL("http://proxyUser:secretPassword@my-proxy:3128"));
 
         /**
          * Global browser proxy configuration

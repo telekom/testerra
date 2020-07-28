@@ -1,4 +1,4 @@
-= HPQC / ALM connector
+= HP QualityCenter / Application Lifecycle Management connector
 
 include::../properties/property-attributes.adoc[]
 
@@ -65,10 +65,10 @@ Use the format key:value\|key2:value2 for multiple values.
 | qc.upload.videos | false | Enable video upload
 | qc.test.failed.upload.videos | false | Upload videos in case of test failure
 | qc.test.passed.upload.videos | false | Upload videos in case of test successful
-| qc.test.execution.filter | false | Filter testcases in QC/ALM testset by status to determine it should be executed. Value can be +
+| qc.test.execution.filter | false | Filter test cases in QC/ALM test set by status to determine it should be executed. Value can be +
 - exclude:status:passed +
 - include:status:failed +
-- or other in format "include/exlude" + "status" + <explicit name of status>
+- or other in format "include/exclude" + "status" + <explicit name of status>
 |===
 
 === Synchronization
@@ -92,8 +92,8 @@ public class CorrectClassAnnotationTest extends TesterraTest {
 }
 ----
 
-This little snippet will search for a testset called `\\Root\\My\\Full\\Path\\TestSet`.
-If the test set was found, the method name will be extracted and searched as test name in QC/ALM.
+This little snippet will search for a test set called `\\Root\\My\\Full\\Path\\TestSet`.
+If found, the method name will be extracted and searched as test name in QC/ALM.
 If found, the result will be synchronized to this test case.
 
 ==== Annotated test method mode

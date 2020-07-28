@@ -1,0 +1,39 @@
+= Cucumber connector
+
+include::../properties/property-attributes.adoc[]
+
+This module provides you the opportunity to use Cucumber and Gherkin to specify `.feature` files and combine it with the advantages of Testerra, like reporting, WebDriver management, GuiElement and other.
+The module will register automatically by using Testera <<Hooks>>.
+
+== Project setup
+
+Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:cucumber-connector?label=Testerra%Cucumber%20connector[Bintray]
+
+.Gradle
+[source,gradle,role="primary"]
+----
+// build.gradle
+implementation 'eu.tsystems.mms.tic.testerra:cucumber-connector:1.0'
+----
+
+.Maven
+[source,xml,role="secondary"]
+----
+<!-- pom.xml -->
+<dependencies>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>cucumber-connector</artifactId>
+        <version>1.0</version>
+    </dependency>
+</dependencies>
+----
+
+== Usage
+
+== Properties
+
+[cols="2,^1,4a",options="header"]
+|===
+| Property | default | Description
+|===

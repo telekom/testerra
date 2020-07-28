@@ -1,0 +1,72 @@
+= HPQC / ALM connector
+
+include::../properties/property-attributes.adoc[]
+
+This module for Testerra provides an automatic test result synchronization to HP Application Lifecycle Management, former called HP QualityCenter.
+The module will register automatically by using Testera <<Hooks>>.
+
+== Project setup
+
+Current release: image::https://api.bintray.com/packages/testerra-io/Testerra/eu.tsystems.mms.tic.testerra%3Aqc11-connector/images/download.svg[link="https://bintray.com/testerra-io/Testerra/eu.tsystems.mms.tic.testerra%3Aqc11-connector/_latestVersion"]
+
+.Gradle
+[source,gradle,role="primary"]
+----
+// build.gradle
+implementation 'eu.tsystems.mms.tic.testerra:qc11-connector:1.0'
+----
+
+.Maven
+[source,xml,role="secondary"]
+----
+<!-- pom.xml -->
+<dependencies>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>qc11-connector</artifactId>
+        <version>1.0</version>
+    </dependency>
+</dependencies>
+----
+
+== Usage
+
+The easiest way to setup your project for automatic synchronization is by adding a `qcconnection.properties` file to your `/src/test/resources/` directory.
+
+[source,properties]
+----
+qc.connection.server=
+qc.connection.domain=
+qc.connection.project=
+qc.connection.user=
+qc.connection.password=
+# type of qc synchronization, 1 = testmethodname, 2 = ta_scriptname, 3 = annotation
+qc.syncType=3
+# The package which includes the testclasses, needed for syncType 1
+qc.test.package=eu.tsystems.mms.tic.testframework.test
+qc.syncActive=false
+# File which includes QC TestSets to run.
+# default: TestSetsToRun.txt
+# qc.testSetsToRunFile=TestSetsToRun.txt
+uploadAutomaticScreenshot=true
+#qc.field.mapping.testrun=host:host|test:user-03
+#field.host=WUMxyz
+#field.test=1
+----
+
+=== Properties
+
+|===
+| Property | Default | Description
+| qc.connection.server |  | URI of ALM / QC server
+| qc.connection.user |  | User to use for synchronization
+| qc.connection.password |  | Password of user used for synchronization
+| qc.connection.domain |  | Domain of user to log in
+| qc.connection.project |  | Project of user to log in
+| qc.syncActive | true | Enables synchronization fo test results (former qc.syncToCQC)
+// TODO :: add more properties here.
+|===
+
+=== Synchronization
+
+

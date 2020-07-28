@@ -31,9 +31,21 @@ implementation 'eu.tsystems.mms.tic.testerra:cucumber-connector:1.0'
 
 == Usage
 
-== Properties
+The Cucumber connector provide some simple utilities for extending Cucumber with Testerra by using their defaults for TestNG enhancement.
+You have to set up a test class and importing the Testerra Cucumber connector report plugin, called `TesterraReportPlugin` like the following code example shows.
+Please take note, that the `AbstractTestNGCucumberTests` must be extended.
 
-[cols="2,^1,4a",options="header"]
-|===
-| Property | default | Description
-|===
+[source,java]
+----
+@Listeners(TesterraListener.class)
+@CucumberOptions(
+        plugin = {"eu.tsystems.mms.tic.testerra.plugins.cucumber.TesterraReportPlugin"}
+        , features = "src/test/resources/features/"
+        , glue = {"steps","eu.tsystems.mms.tic.testerra.plugins.cucumber"}
+)
+public class RunTesterraCucumberTest extends AbstractTestNGCucumberTests {
+}
+----
+
+You can then write down your `.feature` files and store them into the `src/test/resources/features/` directory, and the associated glue code in `src/test/java/steps` for example.
+

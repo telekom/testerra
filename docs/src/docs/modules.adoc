@@ -10,4 +10,6 @@ include::modules/property-manager.adoc[leveloffset=+1]
 include::modules/selenoid-connector.adoc[leveloffset=+1]
 include::modules/teamcity-connector.adoc[leveloffset=+1]
 include::modules/xray-connector.adoc[leveloffset=+1]
+include::modules/hpqc-connector.adoc[leveloffset=+1]
+include::modules/cucumber-connector.adoc[leveloffset=+1]
 

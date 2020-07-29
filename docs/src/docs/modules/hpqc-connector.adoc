@@ -50,22 +50,22 @@ qc.test.failed.upload.videos=true
 
 |===
 | Property | Default | Description
-| qc.sync.active | true | Enables synchronization fo test results
-| qc.connection.server |  | URI of ALM / QC server
-| qc.connection.user |  | User to use for synchronization
-| qc.connection.password |  | Password of user used for synchronization
-| qc.connection.domain |  | Domain of user to log in
-| qc.connection.project |  | Project of user to log in
-| qc.version | 12 | Version of Quality Center or ALM 11, 12 or higher.
-| qc.field.mapping.testrun |  | Customize field-value mapping for synchronize properties to the quality center testrun +
-Use the format key:value\|key2:value2 for multiple values.
-| qc.upload.screenshots.off | false | Disabled the upload of screenshots globally
-| qc.test.failed.upload.screenshots | false | Upload screenshots in case of test failure
-| qc.test.passed.upload.screenshots | false | Upload screenshots in case of test successful
-| qc.upload.videos | false | Enable video upload
-| qc.test.failed.upload.videos | false | Upload videos in case of test failure
-| qc.test.passed.upload.videos | false | Upload videos in case of test successful
-| qc.test.execution.filter | false | Filter test cases in QC/ALM test set by status to determine it should be executed. Value can be +
+| {qc_sync_active} | true | Enables synchronization fo test results
+| {qc_connection_server} |  | URI of ALM / QC server
+| {qc_connection_user} |  | User to use for synchronization
+| {qc_connection_password} |  | Password of user used for synchronization
+| {qc_connection_domain} |  | Domain of user to log in
+| {qc_connection_project} |  | Project of user to log in
+| {qc_version} | 12 | Version of Quality Center or ALM 11, 12 or higher
+| {qc_field_mapping_testrun} |  | Customize field-value mapping for synchronize properties to the quality center testrun +
+Use the format key:value\|key2:value2 for multiple values
+| {qc_upload_screenshots_off} | false | Disabled the upload of screenshots globally
+| {qc_test_failed_upload_screenshots} | false | Upload screenshots in case of test failure
+| {qc_test_passed_upload_screenshots} | false | Upload screenshots in case of test successful
+| {qc_upload_videos} | false | Enable video upload
+| {qc_test_failed_upload_videos} | false | Upload videos in case of test failure
+| {qc_test_passed_upload_videos} | false | Upload videos in case of test successful
+| {qc_test_execution_filter} | false | Filter test cases in QC/ALM test set by status to determine it should be executed. Value can be +
 - exclude:status:passed +
 - include:status:failed +
 - or other in format "include/exclude" + "status" + <explicit name of status>

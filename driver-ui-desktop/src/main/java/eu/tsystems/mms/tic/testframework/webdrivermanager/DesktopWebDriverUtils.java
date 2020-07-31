@@ -21,34 +21,21 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.constants.JSMouseAction;
-import eu.tsystems.mms.tic.testframework.internal.StopWatch;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import org.json.JSONObject;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.awt.*;
-
-public final class DesktopWebDriverUtils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DesktopWebDriverUtils.class);
+public final class DesktopWebDriverUtils implements Loggable {
 
     public DesktopWebDriverUtils() {
 
     }
 
-    public static NodeInfo getNodeInfo(DesktopWebDriverRequest desktopWebDriverRequest) {
+    public NodeInfo getNodeInfo(DesktopWebDriverRequest desktopWebDriverRequest) {
         if (desktopWebDriverRequest.webDriverMode == WebDriverMode.local) {
             return new NodeInfo("local", 0);
         }
@@ -70,154 +57,39 @@ public final class DesktopWebDriverUtils {
             NodeInfo nodeInfo = new NodeInfo(out.getString("Name"), out.getInt("Port"));
             return nodeInfo;
         } catch (Exception e) {
-            LOGGER.info("Could not get node info", e);
+            log().debug("Could not get node info: " + e.getMessage());
             return new NodeInfo(host, Integer.valueOf(port));
         }
     }
 
     public void clickAbsolute(GuiElement guiElement) {
-        LOGGER.trace("Absolute navigation and click on: " + guiElement.toString());
-        clickAbsolute(guiElement.getWebDriver(), guiElement.getWebElement());
-    }
-
-    /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#clickAbsolute(GuiElement)
-     */
-    @Deprecated
-    public void clickAbsolute(final WebDriver webDriver, final WebElement webElement) {
-        pClickAbsolute(webDriver, webElement);
-    }
-
-    private void demoMouseOver(GuiElement guiElement) {
-        if (POConfig.isDemoMode()) {
-            guiElement.highlight(new Color(255, 255, 0));
-        }
-    }
-
-    /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#demoMouseOver(GuiElement)
-     */
-    @Deprecated
-    private void demoMouseOver(final WebDriver webDriver, final WebElement webElement) {
-        if (POConfig.isDemoMode()) {
-            highlightWebElement(webDriver, webElement, new Color(255, 255, 0));
-        }
-    }
-
-    public void highlightWebElement(final WebDriver webDriver, final WebElement webElement, final Color color) {
-        JSUtils.highlightWebElement(webDriver, webElement, color);
+        log().trace("Absolute navigation and click on: " + guiElement.toString());
+        JSUtils utils = new JSUtils();
+        utils.clickAbsolute(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 
     public void mouseOverAbsolute2Axis(GuiElement guiElement) {
-        mouseOverAbsolute2Axis(guiElement.getWebDriver(), guiElement.getWebElement());
-    }
-
-    /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#mouseOverAbsolute2Axis(GuiElement)
-     */
-    @Deprecated
-    public void mouseOverAbsolute2Axis(final WebDriver webDriver, final WebElement webElement) {
-        demoMouseOver(webDriver, webElement);
-        pMouseOverAbsolute2Axis(webDriver, webElement);
+        JSUtils utils = new JSUtils();
+        utils.mouseOverAbsolute2Axis(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 
     public void mouseOverJS(GuiElement guiElement) {
-        demoMouseOver(guiElement);
-        pMouseOverJS(guiElement.getWebDriver(), guiElement.getWebElement());
-    }
-
-    /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#mouseOverJS(GuiElement)
-     */
-    @Deprecated
-    public void mouseOverJS(final WebDriver webDriver, final WebElement webElement) {
-        demoMouseOver(webDriver, webElement);
-        pMouseOverJS(webDriver, webElement);
-    }
-
-    private void pMouseOverJS(final WebDriver webDriver, final WebElement webElement) {
-        final String code = "var fireOnThis = arguments[0];"
-                + "var evObj = document.createEvent('MouseEvents');"
-                + "evObj.initEvent( 'mouseover', true, true );"
-                + "fireOnThis.dispatchEvent(evObj);";
-
-        ((JavascriptExecutor) webDriver).executeScript(code, webElement);
-    }
-
-    private void pClickAbsolute(WebDriver driver, WebElement webElement) {
-        // Start the StopWatch for measuring the loading time of a Page
-        StopWatch.startPageLoad(driver);
-
-        Point point = webElement.getLocation();
-
-        Actions action = new Actions(driver);
-
-        // goto 0,0
-        action.moveToElement(webElement, 1 + -point.getX(), 1 + -point.getY());
-
-        // move y, then x
-        action.moveByOffset(0, point.getY()).moveByOffset(point.getX(), 0);
-
-        // move to webElement
-        action.moveToElement(webElement);
-        action.moveByOffset(1, 1);
-        action.click().perform();
-    }
-
-    private void pMouseOverAbsolute2Axis(WebDriver driver, WebElement webElement) {
-        Actions action = new Actions(driver);
-
-        Point point = webElement.getLocation();
-
-        // goto 0,0
-        action.moveToElement(webElement, 1 + -point.getX(), 1 + -point.getY()).perform();
-
-        // move y, then x
-        action.moveByOffset(0, point.getY()).moveByOffset(point.getX(), 0).perform();
-
-        // move to webElement
-        action.moveToElement(webElement).perform();
+        JSUtils utils = new JSUtils();
+        utils.mouseOver(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 
     public void clickJS(GuiElement guiElement) {
-        clickJS(guiElement.getWebDriver(), guiElement.getWebElement());
-    }
-
-    /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#clickJS(GuiElement)
-     */
-    @Deprecated
-    public void clickJS(final WebDriver webDriver, final WebElement webElement) {
-        JSUtils.executeScript(webDriver, "arguments[0].click();", webElement);
+        JSUtils utils = new JSUtils();
+        utils.click(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 
     public void rightClickJS(GuiElement guiElement) {
-        rightClickJS(guiElement.getWebDriver(), guiElement.getWebElement());
-    }
-
-    /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#rightClickJS(GuiElement)
-     */
-    @Deprecated
-    public void rightClickJS(final WebDriver webDriver, final WebElement webElement) {
-        String script = "var element = arguments[0];" +
-                "var e = element.ownerDocument.createEvent('MouseEvents');" +
-                "e.initMouseEvent('contextmenu', true, true,element.ownerDocument.defaultView, 1, 0, 0, 0, 0, false,false, false, false,2, null);" +
-                "return !element.dispatchEvent(e);";
-
-        JSUtils.executeScript(webDriver, script, webElement);
+        JSUtils utils = new JSUtils();
+        utils.rightClick(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 
     public void doubleClickJS(GuiElement guiElement) {
-        doubleClickJS(guiElement.getWebDriver(), guiElement.getWebElement());
-    }
-
-    /**
-     * @deprecated Please use: {@link eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils#doubleClickJS(GuiElement)
-     */
-    @Deprecated
-    public void doubleClickJS(final WebDriver webDriver, final WebElement webElement) {
-        Point location = webElement.getLocation();
-        JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, location.getX(), location.getY());
+        JSUtils utils = new JSUtils();
+        utils.doubleClick(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 }

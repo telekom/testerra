@@ -19,14 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 
 public interface GuiElementFacade extends
-    GuiElementCore,
-    GuiElementWait
+        GuiElementCore,
+        GuiElementWait
 {
-
 }

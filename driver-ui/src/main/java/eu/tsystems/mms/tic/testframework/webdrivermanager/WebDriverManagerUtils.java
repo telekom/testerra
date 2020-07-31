@@ -21,36 +21,24 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.UniformInterfaceException;
-import com.sun.jersey.api.client.WebResource;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.model.HostInfo;
-import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.model.YauaaBrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.net.URL;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.CommandExecutor;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.HttpCommandExecutor;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class containing utility methods for WebDriverManager. To keep the WebDriverManager Class cleaner.
@@ -218,8 +206,7 @@ public final class WebDriverManagerUtils {
      * @param capabilities  .
      * @param proxyString   .
      * @param noProxyString .
-     * @see WebDriverManagerUtils#addProxyToCapabilities(DesiredCapabilities, URL)
-     * @deprecated see {@link WebDriverManagerUtils#addProxyToCapabilities(DesiredCapabilities, URL)}
+     * @deprecated
      */
     @Deprecated
     public static void addProxyToCapabilities(final DesiredCapabilities capabilities, final String proxyString, final String noProxyString) {
@@ -231,11 +218,12 @@ public final class WebDriverManagerUtils {
      *
      * @param capabilities {@link DesiredCapabilities}
      * @param proxyUrl     {@link URL}
+     * @deprecated
      */
+    @Deprecated
     public static void addProxyToCapabilities(final DesiredCapabilities capabilities, final URL proxyUrl) {
-
-        final String proxyString = WebDriverProxyUtils.toProxyString(proxyUrl);
-        addProxyToCapabilities(capabilities, proxyString);
+        WebDriverProxyUtils utils = new WebDriverProxyUtils();
+        capabilities.setCapability(CapabilityType.PROXY, utils.createSocksProxyFromUrl(proxyUrl));
     }
 
     /**
@@ -243,7 +231,7 @@ public final class WebDriverManagerUtils {
      *
      * @param capabilities {@link DesiredCapabilities}
      * @param proxyString  {@link String}
-     * @deprecated see {@link #addProxyToCapabilities(DesiredCapabilities, URL)}
+     * @deprecated
      */
     @Deprecated
     public static void addProxyToCapabilities(final DesiredCapabilities capabilities, final String proxyString) {

@@ -44,13 +44,14 @@ import org.openqa.selenium.support.ui.Select;
  * <p>
  * Created by rnhb on 12.08.2015.
  */
-public class GuiElementCoreSequenceDecorator implements GuiElementCore {
+public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator {
 
     private final GuiElementCore guiElementCore;
     private final GuiElementData guiElementData;
     private final TimerWrapper timerWrapper;
 
     public GuiElementCoreSequenceDecorator(GuiElementCore guiElementCore, GuiElementData guiElementData) {
+        super(guiElementCore);
         this.guiElementCore = guiElementCore;
         this.guiElementData = guiElementData;
         this.timerWrapper = guiElementData.timerWrapper;
@@ -160,7 +161,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     private void checkForClickingJSAlternativeOrExit(ThrowablePackedResponse throwablePackedResponse, String action, Runnable runnable) {
         if (throwablePackedResponse.hasTimeoutException()) {
 
-            if (!UseJSAlternatives.class.isAssignableFrom(guiElementCore.getClass()) || !Flags.GUIELEMENT_USE_JS_ALTERNATIVES) {
+            if (!Flags.GUIELEMENT_USE_JS_ALTERNATIVES) {
                 // we cannot use clickJS()
                 throwablePackedResponse.finalizeTimer();
                 return;
@@ -206,6 +207,7 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     @Override
     public void clickJS() {
         Timer.Sequence sequence = new Timer.Sequence() {
+
             @Override
             public void run() {
                 guiElementCore.clickJS();
@@ -536,6 +538,16 @@ public class GuiElementCoreSequenceDecorator implements GuiElementCore {
     @Override
     public File takeScreenshot() {
         return guiElementCore.takeScreenshot();
+    }
+
+    @Override
+    protected void beforeDelegation() {
+
+    }
+
+    @Override
+    protected void afterDelegation() {
+
     }
 
     @Override

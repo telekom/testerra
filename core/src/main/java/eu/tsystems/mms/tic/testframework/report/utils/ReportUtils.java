@@ -37,10 +37,6 @@ import eu.tsystems.mms.tic.testframework.report.perf.PerfTestContainer;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.ThreadVisualizer;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import org.apache.velocity.VelocityContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,6 +47,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import org.apache.velocity.VelocityContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility functions for Reporting.
@@ -84,7 +83,7 @@ public final class ReportUtils {
                 "js/kis/modernizr.js",
                 "js/kis/jquery-migrate-1.2.1.min.js",
 
-                "js/jsapi.js",
+//                "js/jsapi.js",
                 "js/easy.js",
                 "js/main.js",
                 "js/report.js",

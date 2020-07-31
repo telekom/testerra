@@ -22,7 +22,8 @@
 
     </body>
 
-    <script type="text/javascript" src="js/jsapi.js"></script>
+    <!-- See https://developers.google.com/chart/interactive/docs/basic_load_libs -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="../threadvisualizer/timeline.js"></script>
 
     <script type="text/javascript">
@@ -74,32 +75,3 @@
 
     </script>
 </html>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-   

@@ -369,7 +369,8 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
         /*
         Log User Agent and executing host
          */
-        NodeInfo nodeInfo = DesktopWebDriverUtils.getNodeInfo(desktopWebDriverRequest);
+        DesktopWebDriverUtils utils = new DesktopWebDriverUtils();
+        NodeInfo nodeInfo = utils.getNodeInfo(desktopWebDriverRequest);
         desktopWebDriverRequest.storedExecutingNode = nodeInfo;
         WebDriverManager.addExecutingSeleniumHostInfo(sessionKey + ": " + nodeInfo.toString());
         sw.stop();

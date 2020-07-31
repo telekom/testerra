@@ -27,13 +27,12 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Report {
 
@@ -103,7 +102,7 @@ public class Report {
     }
 
     /**
-     * @return Final report directory defined by the user
+     * @return Current report directory
      */
     public File getReportDirectory() {
        return REPORT_DIRECTORY;
@@ -111,10 +110,25 @@ public class Report {
 
     /**
      * @param childName Child directory or file name
-     * @return Final report sub directory defined by the user
+     * @return Current report directory
      */
     public File getReportDirectory(String childName) {
         return new File(getReportDirectory(), childName);
+    }
+
+    /**
+     * @return Final report directory defined by the user
+     */
+    public File getFinalReportDirectory() {
+        String relativeReportDirString = PropertyManager.getProperty(TesterraProperties.REPORTDIR, DEFAULT_REPORTDIR);
+        return new File(relativeReportDirString);
+    }
+    /**
+     * @param childName Child directory or file name
+     * @return Final report sub directory defined by the user
+     */
+    public File getFinalReportDirectory(String childName) {
+        return new File(getFinalReportDirectory(), childName);
     }
 
     /**

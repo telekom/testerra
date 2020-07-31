@@ -19,7 +19,48 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
+/**
+ * @deprecated Use {@link DesktopWebDriverUtils} instead
+ */
+@Deprecated
 public interface UseJSAlternatives {
+    /**
+     * Clicks on a web element using javascript.
+     *
+     * @return .
+     */
+    @Deprecated
+    void clickJS();
+
+    /**
+     * click
+     *
+     * @return .
+     */
+    @Deprecated
+    void clickAbsolute();
+
+    /**
+     * hover mouse over 2 axis
+     *
+     * @return .
+     */
+    @Deprecated
+    void mouseOverAbsolute2Axis();
+
+    /**
+     * Mouseover directly over js event.
+     *
+     * @return this.
+     */
+    @Deprecated
+    void mouseOverJS();
+
+    @Deprecated
+    void rightClickJS();
+
+    @Deprecated
+    void doubleClickJS();
 }

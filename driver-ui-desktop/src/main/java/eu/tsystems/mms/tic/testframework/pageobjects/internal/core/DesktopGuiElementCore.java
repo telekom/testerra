@@ -41,10 +41,17 @@ import eu.tsystems.mms.tic.testframework.utils.MouseActions;
 import eu.tsystems.mms.tic.testframework.utils.ObjectUtils;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebElementProxy;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import javax.imageio.ImageIO;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
@@ -62,16 +69,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives, Loggable {
+public class DesktopGuiElementCore implements GuiElementCore, Loggable {
 
     private By by;
 
@@ -257,7 +255,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
 
     @Override
     public void scrollIntoView(Point offset) {
-        JSUtils.scrollToCenter(guiElementData.webDriver, getWebElement(), offset);
+        JSUtils utils = new JSUtils();
+        utils.scrollToCenter(guiElementData.webDriver, getWebElement(), offset);
     }
 
     /**
@@ -523,32 +522,8 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     }
 
     @Override
-    public void clickJS() {
-        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.clickJS(this.webDriver, this.getWebElement());
-    }
-
-    @Override
-    public void clickAbsolute() {
-        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.clickAbsolute(this.webDriver, this.getWebElement());
-    }
-
-    @Override
-    public void mouseOverAbsolute2Axis() {
-        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.mouseOverAbsolute2Axis(webDriver, this.getWebElement());
-    }
-
-    @Override
     public void mouseOver() {
         pMouseOver();
-    }
-
-    @Override
-    public void mouseOverJS() {
-        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.mouseOverJS(guiElementData.webDriver, this.getWebElement());
     }
 
     /**
@@ -650,8 +625,7 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     public void highlight(Color color) {
         LOGGER.debug("highlight(): starting highlight");
         find();
-        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.highlightWebElement(webDriver, this.getWebElement(), color);
+        JSUtils.highlightWebElement(webDriver, this.getWebElement(), color);
         LOGGER.debug("highlight(): finished highlight");
     }
 
@@ -696,18 +670,6 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
     }
 
     @Override
-    public void rightClickJS() {
-        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.rightClickJS(webDriver, this.getWebElement());
-    }
-
-    @Override
-    public void doubleClickJS() {
-        DesktopWebDriverUtils desktopWebDriverUtils = new DesktopWebDriverUtils();
-        desktopWebDriverUtils.doubleClickJS(webDriver, this.getWebElement());
-    }
-
-    @Override
     public File takeScreenshot() {
         final WebElement element = getWebElement();
         final boolean isSelenium4 = false;
@@ -743,5 +705,41 @@ public class DesktopGuiElementCore implements GuiElementCore, UseJSAlternatives,
         }
 
         return null;
+    }
+
+    @Override
+    public void clickJS() {
+        JSUtils utils = new JSUtils();
+        utils.click(guiElementData.webDriver, getWebElement());
+    }
+
+    @Override
+    public void clickAbsolute() {
+        JSUtils utils = new JSUtils();
+        utils.clickAbsolute(guiElementData.webDriver, getWebElement());
+    }
+
+    @Override
+    public void mouseOverAbsolute2Axis() {
+        JSUtils utils = new JSUtils();
+        utils.mouseOverAbsolute2Axis(guiElementData.webDriver, getWebElement());
+    }
+
+    @Override
+    public void mouseOverJS() {
+        JSUtils utils = new JSUtils();
+        utils.mouseOver(guiElementData.webDriver, getWebElement());
+    }
+
+    @Override
+    public void rightClickJS() {
+        JSUtils utils = new JSUtils();
+        utils.rightClick(guiElementData.webDriver, getWebElement());
+    }
+
+    @Override
+    public void doubleClickJS() {
+        JSUtils utils = new JSUtils();
+        utils.doubleClick(guiElementData.webDriver, getWebElement());
     }
 }

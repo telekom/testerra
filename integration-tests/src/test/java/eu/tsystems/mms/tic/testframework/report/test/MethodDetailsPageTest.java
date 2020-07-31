@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractAnnotationMarkerTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
@@ -184,8 +185,12 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1})
     // Test case #810
     public void testT06_checkMethodDetailsForRetriedTest() {
-        String methodName = "test_FilterFailedNoMinorWithFailedRetry (1/2)";
-        MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), methodName);
+        final String methodNameMainPart = "test_FilterFailedNoMinorWithFailedRetry";
+
+        final String htmlId = methodNameMainPart + "-" + TestStatusController.Status.FAILED_RETRIED.name();
+        final String methodName = methodNameMainPart + " (1/2)";
+
+        final MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestExecutionFilter.class.getSimpleName(), htmlId);
 
         //General Details
         AssertCollector.assertTrue(methodDetailsPage.getMethodNameString().contains(methodName), "The method name is displayed correctly for " + methodName);
@@ -289,7 +294,7 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
 
         MethodStackPage stackPage = GeneralWorkflow.doOpenReportStracktracePage(methodDetailsPage);
         AssertCollector.assertTrue(stackPage.getStackTrace().contains("java.lang.AssertionError: expected [true] but found [false]"));
-        AssertCollector.assertTrue(stackPage.getStackTrace().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FailedInheritedFilter(ReportTestUnderTestExecutionFilter.java:92"));
+        AssertCollector.assertTrue(stackPage.getStackTrace().contains("eu.tsystems.mms.tic.testframework.report.testundertest.ReportTestUnderTestExecutionFilter.test_FailedInheritedFilter(ReportTestUnderTestExecutionFilter.java"));
     }
 
     /**
@@ -415,9 +420,9 @@ public class MethodDetailsPageTest extends AbstractAnnotationMarkerTest {
         String testmethod = "test_TestStatePassed1";
         MethodDetailsPage methodDetailsPage = GeneralWorkflow.doOpenBrowserAndReportMethodDetailsPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()), ReportTestUnderTestPassed.class.getSimpleName(), testmethod);
         MethodStepsPage stepsPage = GeneralWorkflow.doOpenReportStepsPage(methodDetailsPage);
-        AssertCollector.assertEquals(stepsPage.getTestStep1Button().getText(), "2) Test-Step-1", "Test-Step-1-Button is displayed (correctly) in steps tab for " + testmethod);
-        AssertCollector.assertEquals(stepsPage.getTestStep2Button().getText(), "3) Test-Step-2", "Test-Step-2-Button is displayed (correctly) in steps tab for " + testmethod);
-        AssertCollector.assertEquals(stepsPage.getTestStep3Button().getText(), "4) Test-Step-3", "Test-Step-3-Button is displayed (correctly) in steps tab for " + testmethod);
+        AssertCollector.assertEquals(stepsPage.getTestStep1Button().getText(), "1 ) Test-Step-1", "Test-Step-1-Button is displayed (correctly) in steps tab for " + testmethod);
+        AssertCollector.assertEquals(stepsPage.getTestStep2Button().getText(), "2 ) Test-Step-2", "Test-Step-2-Button is displayed (correctly) in steps tab for " + testmethod);
+        AssertCollector.assertEquals(stepsPage.getTestStep3Button().getText(), "3 ) Test-Step-3", "Test-Step-3-Button is displayed (correctly) in steps tab for " + testmethod);
 
     }
 

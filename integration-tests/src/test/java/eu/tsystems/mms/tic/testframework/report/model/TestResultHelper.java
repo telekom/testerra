@@ -87,7 +87,7 @@ public class TestResultHelper {
         PASSEDRETRY(".//*[@title='Passed after Retry']"),
         SKIPPED(".//*[@title='Skipped']"),
         FAILED(".//td[@title='Failed']"),
-        FAILEDMINOR(".//*[@title='Failed with Minor']"),
+        FAILEDMINOR(".//*[@title='Failed + Minor']"),
         RETRIED(".//*[@title='Retried']"),
         FAILEDEXPECTED(".//*[@title='Expected Failed']");
 

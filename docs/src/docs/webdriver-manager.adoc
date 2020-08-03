@@ -31,16 +31,20 @@ NOTE: The browser support depends on the remote selenium setup.
 === Create a local session (not recommended)
 
 Regularly, there is no reason to use local Selenium sessions based on binaries.
-We won't recommend to use that, because we've experienced some slightly differences between the local and remote behaviour.
+We won't recommend using that, because we've experienced slightly differences between the local and remote behaviour.
 
-But there could be reasons for using local sessions like using an unsupported Browser.
-However, Testerra still supports these when you tell it where your `WebDriver` binaries are located:
+However, Testerra supports using local web drivers.
+
+- Search for your browser's selenium driver online, like _selenium gecko driver_ for Firefox or _selenium crome driver_ for Chrome based browsers
+- Download your WebDriver binary from browser vendor's website to a local location
+- Make sure the driver and your installed browser have the same version
+- Open your properties file and tell where your binaries are located
 
 .test.properties
 [source,properties,subs="attributes"]
 ----
 {webdriver_mode}=local
-webdriver.gecko.driver=path/to/your/binary/geckodriver.exe
+webdriver.gecko.driver="C:\absolute\path\to\your\geckodriver.exe"
 
 # or for other browsers
 webdriver.chrome.driver=...

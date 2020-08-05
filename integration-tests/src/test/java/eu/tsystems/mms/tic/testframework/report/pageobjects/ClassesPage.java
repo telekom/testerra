@@ -300,8 +300,6 @@ public class ClassesPage extends AbstractReportPage {
      */
     public ClassesDetailsPage gotoClassesDetailsPageForClass(String className) {
         GuiElement classTableRowLink = new GuiElement(this.getWebDriver(), By.partialLinkText(className), mainFrame);
-        classTableRowLink.highlight();
-        UITestUtils.takeScreenshot(this.getWebDriver(), true);
         classTableRowLink.setName(className + "ClassTableRowLink");
         classTableRowLink.click();
         return PageFactory.create(ClassesDetailsPage.class, this.getWebDriver());

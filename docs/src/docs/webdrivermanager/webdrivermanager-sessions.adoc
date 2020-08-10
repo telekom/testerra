@@ -28,7 +28,7 @@ However, Testerra supports using local web drivers.
 
 - Search for your browser's selenium driver online, like _selenium gecko driver_ for Firefox or _selenium crome driver_ for Chrome based browsers
 - Download your WebDriver binary from browser vendor's website to a local location
-- Make sure the driver and your installed browser have the same version
+- Make sure the driver version supports your installed browser
 - Open your properties file and tell where your binaries are located
 
 .test.properties

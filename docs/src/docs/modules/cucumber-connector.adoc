@@ -7,7 +7,7 @@ The module will register automatically by using Testerra <<Hooks>>.
 
 == Project setup
 
-Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:cucumber-connector?label=Testerra%Cucumber%20connector[Bintray]
+Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:cucumber-connector?label=Testerra%20Cucumber%20connector[Bintray]
 
 .Gradle
 [source,gradle,role="primary"]
@@ -33,6 +33,7 @@ implementation 'eu.tsystems.mms.tic.testerra:cucumber-connector:1.0'
 
 The Cucumber connector provide some simple utilities for extending Cucumber with Testerra by using their defaults for TestNG enhancement.
 You have to set up a test class and importing the Testerra Cucumber connector report plugin, called `TesterraReportPlugin` like the following code example shows.
+
 Please take note, that the `AbstractTestNGCucumberTests` must be extended.
 
 [source,java]

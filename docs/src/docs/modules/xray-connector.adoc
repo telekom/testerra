@@ -1,10 +1,10 @@
-= Testerra Xray connector
+= Xray connector
 
 include::../properties/property-attributes.adoc[]
 
 == Project setup
 
-Current release
+Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:xray-connector?label=Testerra%20Xray%20connector[Bintray]
 
 .Gradle
 [source,gradle,role="primary"]
@@ -142,12 +142,12 @@ public class FooXrayResultsSynchronizer extends AbstractXrayResultsSynchronizer 
 }
 ----
 
-=== Mapping
+== Mapping
 
 To synchronize your test results to a specific JIRA issue, the X-Ray connector will use some mapping.
 Basically there are two ways of mapping, both of them are instructed and controlled by annotations.
 
-==== Test method mapping
+=== Test method mapping
 
 To create a one-to-one mapping between your test methods and your JIRA issues of type `Test` you just have to set up the `XrayTest` annotation on your method.
 
@@ -164,13 +164,14 @@ public class MethodsAnnotatedTest extends TesterraTest {
 }
 ----
 
-==== Test class mapping
+=== Test class mapping
 
 Instead of annotating each method by itself, you can annotate just the test class with the `XrayTestSet` annotation and the X-Ray connector will do the rest for you by searching JIRA issues itself with the provided query on your implementation of `XrayMapper.methodToXrayTestQuery`.
 
 For example, you can provide the following simple mapper, that will just grab the test method name and search JIRA issues by matching summary.
 
 .AnnotatedClassTest
+[source,java]
 ----
 @XrayTestSet(key = "EXAMPLE-5")
 public class AnnotatedClassTest extends TesterraTest {
@@ -179,33 +180,41 @@ public class AnnotatedClassTest extends TesterraTest {
 ----
 
 .TestMethodNameMapper
+[source,java]
 ----
 public class TestMethodNameMapper implements XrayMapper {
 
     @Override
     public JqlQuery resultToXrayTest(ITestResult testNgResult) {
         final Object[] parameters = testNgResult.getParameters();
+        final String methodName = testNgResult.getMethod().getMethodName();
         if (parameters.length > 0) {
-            final String summary = String.format("%s with %s", testNgResult.getMethod().getMethodName(), parameters[0]);
+            final String summary = String.format("%s with %s", methodName, parameters[0]);
             return JqlQuery.create()
                     .addCondition(new SummaryContainsExact(summary))
                     .build();
         } else {
             return JqlQuery.create()
-                    .addCondition(new SummaryContainsExact(testNgResult.getMethod().getMethodName()))
+                    .addCondition(new SummaryContainsExact(methodName))
                     .build();
         }
     }
 
     @Override
-    public JqlQuery classToXrayTestSet(ITestClass testNgClass) {return null;}
+    public JqlQuery classToXrayTestSet(ITestClass testNgClass) {
+        return null;
+    }
 }
 ----
 
-> Note : The default `EmptyMapper` will return `null`.
-This will lead in a synchronization error, because no matching JIRA issue was found.
+[NOTE]
+====
+The default `EmptyMapper` will return `null`.
 
-==== Generic mapping
+This will lead in a synchronization error, because no matching JIRA issue was found.
+====
+
+=== Generic mapping
 
 If you don't want to annotate your class with `XrayTestSet` and neither your test methods with `XrayTest` you can use a full generic way by implementing the `XrayMapper.classToXrayTestSet()` method as well as the already known `methodToXrayTestQuery()`.
 
@@ -217,14 +226,15 @@ public class GenericMapper implements XrayMapper {
     @Override
     public JqlQuery resultToXrayTest(ITestResult testNgResult) {
         final Object[] parameters = testNgResult.getParameters();
+        final String methodName = testNgResult.getMethod().getMethodName();
         if (parameters.length > 0) {
-            final String summary = String.format("%s with %s", testNgResult.getMethod().getMethodName(), parameters[0]);
+            final String summary = String.format("%s with %s", methodName, parameters[0]);
             return JqlQuery.create()
                     .addCondition(new SummaryContainsExact(summary))
                     .build();
         } else {
             return JqlQuery.create()
-                    .addCondition(new SummaryContainsExact(testNgResult.getMethod().getMethodName()))
+                    .addCondition(new SummaryContainsExact(methodName))
                     .build();
 
         }
@@ -242,9 +252,9 @@ public class GenericMapper implements XrayMapper {
 In this case the X-ray connector will search JIRA issues for an issue of type `TestSet` with matching summary `My Tests`.
 Then the connector will run a search for all associated test methods for this test set to find an issue of type `Test` and a summary equal the test method name.
 
-==== Test execution updates on transition
+=== Test execution updates on transition
 
-As you may noticed in the cod examples above we provided a `EmptyTestExecutionUpdates` as implementation for `XrayTestExecutionUpdates` in our `FooXrayResultsSynchronizer`.
+As you may noticed in the code examples above we provided a `EmptyTestExecutionUpdates` as implementation for `XrayTestExecutionUpdates` in our `FooXrayResultsSynchronizer`.
 Test execution updates should be defined to add metadata to associated JIRA issue of type `Test Execution`.
 
 The X-ray connector will lookup JIRA for Test execution matching your criteria provided as `XrayTestExecutionInfo`.
@@ -253,6 +263,7 @@ But if no matching Test Execution was found, it will create a new one by using t
 To add labels, revision, summary, fix versions, associated version or other execution info you can use your own implementation of `XrayTestExecutionUpdates`.
 
 .DefaultTestExecutionUpdates
+[source,java]
 ----
 public class DefaultTestExecutionUpdates implements XrayTestExecutionUpdates {
 

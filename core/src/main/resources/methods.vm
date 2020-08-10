@@ -56,7 +56,7 @@
                             #set ($index = "0$index")
                         #end
 
-                        <tr id="${testMethod.name}-${index}" class="test">
+                        <tr id="${testMethod.name}-${s}-${index}" class="test">
                             <!-- methodBody -->
                             #parse("methodBody.vm")
                         </tr>

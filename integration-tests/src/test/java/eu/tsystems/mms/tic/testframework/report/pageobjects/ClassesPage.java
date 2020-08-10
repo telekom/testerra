@@ -28,6 +28,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.report.pageobjects.abstracts.AbstractReportPage;
 import eu.tsystems.mms.tic.testframework.report.model.TestResultHelper;
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -299,6 +300,7 @@ public class ClassesPage extends AbstractReportPage {
      */
     public ClassesDetailsPage gotoClassesDetailsPageForClass(String className) {
         GuiElement classTableRowLink = new GuiElement(this.getWebDriver(), By.partialLinkText(className), mainFrame);
+        classTableRowLink.asserts().assertIsDisplayed();
         classTableRowLink.setName(className + "ClassTableRowLink");
         classTableRowLink.click();
         return PageFactory.create(ClassesDetailsPage.class, this.getWebDriver());

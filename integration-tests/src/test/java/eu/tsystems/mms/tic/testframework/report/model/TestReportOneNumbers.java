@@ -28,22 +28,22 @@ public class TestReportOneNumbers extends AbstractTestReportNumbers {
 
     public TestReportOneNumbers() {
         highCorridorLimit = 34;
-        highCorridorActual = 34;
+        highCorridorActual = 36;
         midCorridorActual = 3;
         lowCorridorActual = 5;
         all = 105;
         allSuccessful = 39;
-        passed = 22;
+        passed = 23;
         passedMinor = 13;
         passedRetry = 3;
         allSkipped = 22;
         skipped = 22;
         allBroken = 44;
-        failed = 26;
-        failedMinor = 18;
+        failed = 25;
+        failedMinor = 19;
         failedRetried = 5;
         failedExpected = 3;
-        failureAspects = 11;
+        failureAspects = 10;
         exitPoints = 42;
         percentage = 37;
     }

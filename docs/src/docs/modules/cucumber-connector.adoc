@@ -50,3 +50,8 @@ public class RunTesterraCucumberTest extends AbstractTestNGCucumberTests {
 
 You can then write down your `.feature` files and store them into the `src/test/resources/features/` directory, and the associated glue code in `src/test/java/steps` for example.
 
+== Demo
+
+Feel free to try out our little project 'Google Search' from the Testerra Cucumber connector repository on Github. It is a complete Cucumber project and demonstrates the Testerra integration.
+
+You will find the showcase in the folder `src/test/java`.

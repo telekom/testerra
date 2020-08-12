@@ -7,6 +7,8 @@ Testerra offers a simple integration to spin multiple local proxy servers or man
 
 == Project setup
 
+Current release image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:bup?label=Testerra%20BUP[Bintray]
+
 .build.gradle
 [source,gradle,role="primary"]
 ----

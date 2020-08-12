@@ -94,7 +94,7 @@
 :layoutcheck_ignore_ambiguous_movement:         tt.layoutcheck.ignore.ambiguous.movement
 :layoutcheck_ignore_movement:                   tt.layoutcheck.ignore.movement
 :layoutcheck_ignore_group_movement:             tt.layoutcheck.ignore.group.movement
-:layoutcheck_ignore_missing_elements:            tt.layoutcheck.ignore.missing.elements
+:layoutcheck_ignore_missing_elements:           tt.layoutcheck.ignore.missing.elements
 :layoutcheck_ignore_ambiguous_match:            tt.layoutcheck.ignore.ambiguous.match
 
 // annotated mode related
@@ -114,6 +114,51 @@
 :source_utils_activate_sources:                 tt.report.activate.sources
 
 // perf
-:perf_test:                          tt.perf.test
-:perf_generate_statistics:           tt.perf.generate.statistics
-:perf_thinktime_ms:                  tt.perf.page.thinktime.ms
+:perf_test:                                     tt.perf.test
+:perf_generate_statistics:                      tt.perf.generate.statistics
+:perf_thinktime_ms:                             tt.perf.page.thinktime.ms
+
+// Selenoid connector
+:screencaster_active:                           tt.screencaster.active
+:selenoid_vnc_enabled:                          tt.selenoid.vnc.enabled
+:selenoid_vnc_address:                          tt.selenoid.vnc.address
+
+// Xray connector
+:xray_sync_enabled:                                 xray.sync.enabled
+:xray_sync_skipped:                                 xray.sync.skipped
+:xray_sync_strategy:                                xray.sync.strategy
+:xray_rest_service_uri:                             xray.rest.service.uri
+:xray_project_key:                                  xray.project.key
+:xray_user:                                         xray.user
+:xray_password:                                     xray.password
+:xray_test_execution_start_time_field_id:           xray.test.execution.start.time.field.id
+:xray_test_execution_finish_time_field_id:          xray.test.execution.finish.time.field.id
+:xray_test_execution_revision_field_id:             xray.test.execution.revision.field.id
+:xray_test_execution_test_environments_field_id:    xray.test.execution.test-environments.field.id
+:xray_validation_revision_regexp:                   xray.validation.revision.regexp
+:xray_validation_summary_regexp:                    xray.validation.summary.regexp
+:xray_validation_description_regexp:                xray.validation.description.regexp
+:xray_previous_result_filename:                     xray.previous.result.filename
+:xray_transitions_on_created:                       xray.transitions.on.created
+:xray_transitions_on_updated:                       xray.transitions.on.updated
+:xray_transitions_on_done:                          xray.transitions.on.done
+:xray_webresource_filterlogging_enabled:            xray.webresource.filter.logging.enabled
+:xray_webresource_filter_getrequestonly_enabled:    xray.webresource.filter.getrequestsonly.enabled
+:xray_webresource_filter_getrequestonly_fake_response_key:    xray.webresource.filter.getrequestsonly.fake.response.key
+
+// HPQC / ALM connector
+:qc_sync_active:                        qc.sync.active
+:qc_connection_server:                  qc.connection.server
+:qc_connection_user:                    qc.connection.user
+:qc_connection_password:                qc.connection.password
+:qc_connection_domain:                  qc.connection.domain
+:qc_connection_project:                 qc.connection.project
+:qc_version:                            qc.version
+:qc_field_mapping_testrun:              qc.field.mapping.testrun
+:qc_upload_screenshots_off:             qc.upload.screenshots.off
+:qc_test_failed_upload_screenshots:     qc.test.failed.upload.screenshots
+:qc_test_passed_upload_screenshots:     qc.test.passed.upload.screenshots
+:qc_upload_videos:                      qc.upload.videos
+:qc_test_failed_upload_videos:          qc.test.failed.upload.videos
+:qc_test_passed_upload_videos:          qc.test.passed.upload.videos
+:qc_test_execution_filter:              qc.test.execution.filter

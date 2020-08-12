@@ -1,0 +1,57 @@
+= Cucumber connector
+
+include::../properties/property-attributes.adoc[]
+
+This module provides you the opportunity to use Cucumber and Gherkin to specify `.feature` files and combine it with the advantages of Testerra, like reporting, WebDriver management, GuiElement and other.
+The module will register automatically by using Testerra <<Hooks>>.
+
+== Project setup
+
+Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:cucumber-connector?label=Testerra%20Cucumber%20connector[Bintray]
+
+.Gradle
+[source,gradle,role="primary"]
+----
+// build.gradle
+implementation 'eu.tsystems.mms.tic.testerra:cucumber-connector:1.0'
+----
+
+.Maven
+[source,xml,role="secondary"]
+----
+<!-- pom.xml -->
+<dependencies>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>cucumber-connector</artifactId>
+        <version>1.0</version>
+    </dependency>
+</dependencies>
+----
+
+== Usage
+
+The Cucumber connector provide some simple utilities for extending Cucumber with Testerra by using their defaults for TestNG enhancement.
+You have to set up a test class and importing the Testerra Cucumber connector report plugin, called `TesterraReportPlugin` like the following code example shows.
+
+Please take note, that the `AbstractTestNGCucumberTests` must be extended.
+
+[source,java]
+----
+@Listeners(TesterraListener.class)
+@CucumberOptions(
+        plugin = {"eu.tsystems.mms.tic.testerra.plugins.cucumber.TesterraReportPlugin"}
+        , features = "src/test/resources/features/"
+        , glue = {"steps","eu.tsystems.mms.tic.testerra.plugins.cucumber"}
+)
+public class RunTesterraCucumberTest extends AbstractTestNGCucumberTests {
+}
+----
+
+You can then write down your `.feature` files and store them into the `src/test/resources/features/` directory, and the associated glue code in `src/test/java/steps` for example.
+
+== Demo
+
+Feel free to try out our little project 'Google Search' from the Testerra Cucumber connector repository on Github. It is a complete Cucumber project and demonstrates the Testerra integration.
+
+You will find the showcase in the folder `src/test/java`.

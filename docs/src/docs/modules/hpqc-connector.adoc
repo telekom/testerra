@@ -1,0 +1,116 @@
+= HP QualityCenter / Application Lifecycle Management connector
+
+include::../properties/property-attributes.adoc[]
+
+This module for Testerra provides an automatic test result synchronization to HP Application Lifecycle Management, former called HP QualityCenter.
+The module will register automatically by using Testera <<Hooks>>.
+
+== Project setup
+
+Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:qc11-connector?label=HP%20ALM%20connector[Bintray]
+
+.Gradle
+[source,gradle,role="primary"]
+----
+// build.gradle
+implementation 'eu.tsystems.mms.tic.testerra:qc11-connector:1.0'
+----
+
+.Maven
+[source,xml,role="secondary"]
+----
+<!-- pom.xml -->
+<dependencies>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>qc11-connector</artifactId>
+        <version>1.0</version>
+    </dependency>
+</dependencies>
+----
+
+== Usage
+
+The easiest way to setup your project for automatic synchronization is by adding a `qcconnection.properties` file to your `/src/test/resources/` directory.
+
+[source,properties]
+----
+qc.connection.server=
+qc.connection.domain=
+qc.connection.project=
+qc.connection.user=
+qc.connection.password=
+qc.sync.active=true
+qc.test.failed.upload.screenshots=true
+qc.upload.videos=true
+qc.test.failed.upload.videos=true
+----
+
+=== Properties
+
+|===
+| Property | Default | Description
+| {qc_sync_active} | true | Enables synchronization fo test results
+| {qc_connection_server} |  | URI of ALM / QC server
+| {qc_connection_user} |  | User to use for synchronization
+| {qc_connection_password} |  | Password of user used for synchronization
+| {qc_connection_domain} |  | Domain of user to log in
+| {qc_connection_project} |  | Project of user to log in
+| {qc_version} | 12 | Version of Quality Center or ALM 11, 12 or higher
+| {qc_field_mapping_testrun} |  | Customize field-value mapping for synchronize properties to the quality center testrun +
+Use the format key:value\|key2:value2 for multiple values
+| {qc_upload_screenshots_off} | false | Disabled the upload of screenshots globally
+| {qc_test_failed_upload_screenshots} | false | Upload screenshots in case of test failure
+| {qc_test_passed_upload_screenshots} | false | Upload screenshots in case of test successful
+| {qc_upload_videos} | false | Enable video upload
+| {qc_test_failed_upload_videos} | false | Upload videos in case of test failure
+| {qc_test_passed_upload_videos} | false | Upload videos in case of test successful
+| {qc_test_execution_filter} | false | Filter test cases in QC/ALM test set by status to determine it should be executed. Value can be +
+- exclude:status:passed +
+- include:status:failed +
+- or other in format "include/exclude" + "status" + <explicit name of status>
+|===
+
+=== Synchronization
+
+Basically the synchronization will work by two explicit annotations that can be set.
+
+==== Annotated class mode
+
+To enable synchronization you should add the annotation `QCTestset` to your class containing the test methods.
+The given value should match the complete path of Quality Center or Application Lifecycle Management test set, for an example see code snipped below:
+
+[source,java]
+----
+@QCTestset("\\Root\\My\\Full\\Path\\TestSet")
+public class CorrectClassAnnotationTest extends TesterraTest {
+
+    @org.testng.annotations.Test
+    public void testMethodPass() {
+        Assert.assertTrue(true);
+    }
+}
+----
+
+This little snippet will search for a test set called `\\Root\\My\\Full\\Path\\TestSet`.
+If found, the method name will be extracted and searched as test name in QC/ALM.
+If found, the result will be synchronized to this test case.
+
+==== Annotated test method mode
+
+While the class annotation is necessary, the method annotation is not.
+In case, you don't use the method names as test names you can set the `QCTestname` at each test method.
+The hpqc-connector will then lookup the given value as test name instead of the method name itself.
+
+[source,java]
+----
+@QCTestset("\\Root\\My\\Full\\Path\\TestSet")
+public class CorrectClassAnnotationTest extends TesterraTest {
+
+    @org.testng.annotations.Test
+    @QCTestname("Pass_Test_01")
+    public void testMethodPass() {
+        Assert.assertTrue(true);
+    }
+}
+----

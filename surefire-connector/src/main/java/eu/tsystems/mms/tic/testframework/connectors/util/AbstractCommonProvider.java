@@ -67,11 +67,6 @@ public abstract class AbstractCommonProvider extends AbstractProvider {
     protected SyncType syncType;
 
     /**
-     * The package including the testclasses.
-     */
-    protected String packageName;
-
-    /**
      * Enables or disables the synchronization to QC.
      */
     protected boolean syncToProvider;

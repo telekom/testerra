@@ -1,0 +1,89 @@
+= WebDriver configuration
+
+include::../properties/property-attributes.adoc[]
+
+== Global configuration
+
+A global configuration applies to all new sessions created by WebDriverManager.
+
+You can set a global configuration by
+
+* `test.properties`
+* at runtime by `System.setProperty()`
+* at runtime by `WebDriverManager.config()` (only browser session behaviour)
+
+=== Configure with `test.properties`
+
+Like shown above all session properties can be set in `test.properties`.
+
+include::../properties/webdriver-props.adoc[leveloffset=+1]
+
+=== Configure with `System.setProperty()`
+
+At runtime you can change the global configuration of all properties with `System.setProperty()`.
+
+[source,java]
+----
+System.setProperty(TesterraProperties.BROWSER, Browsers.firefox);
+System.setProperty(TesterraProperties.BROWSER_VERSION, "66");
+----
+
+=== Configure with `WebDriverManager.config()`
+
+Some of the WebdriverManager settings you can change as follows
+
+[source,java]
+----
+WebDriverManager.config().executeCloseWindows = true;
+
+// tt.wdm.closewindows.aftertestmethods
+WebDriverManager.config().closeWindowsAfterTestMethod = true;
+
+// tt.wdm.closewindows.onfailure
+WebDriverManager.config().closeWindowsOnFailure = false;
+
+// tt.browser.maximize
+WebDriverManager.config().maximize = true;
+
+// tt.takeAutomaticScreenshot
+WebDriverManager.config().takeScreenShotsActive = false;
+
+// tt.webdriver.mode
+WebDriverManager.config().webDriverMode = WebDriverMode.remote;
+----
+
+Except for `executeCloseWindows` the associated property name is added as comment.
+
+[NOTE]
+======
+`WebDriverManager.config().executeCloseWindows` controls the closing of browser windows after every test method in generally.
+
+If `executeCloseWindows = false`, the settings `closeWindowsAfterTestMethod` and `closeWindowsOnFailure` have no effect.
+
+Keep in mind, that after the complete test run a browser close is forced.
+======
+
+You can reset the settings to the default values or defined in `test.properties` as follows
+
+[source,java]
+----
+WebDriverManager.resetConfig();
+----
+
+== Local configuration
+
+If you only want to change the settings for one session, you can use `WebDriverRequest`.
+All defined attributes overrides the standard configuration.
+
+NOTE: If an attribute is not set the global definition is used.
+
+[source,java]
+----
+WebDriverRequest myRequest = new DesktopWebDriverRequest();
+myRequest.baseUrl = "http://example.org";
+myRequest.browser = Browsers.firefox;
+myRequest.browserVersion = "66";
+myRequest.sessionKey = "mysession";     // if no custom session defined, the default value 'default' is set
+
+WebDriver driver = WebDriverManager.getWebDriver(myRequest);
+----

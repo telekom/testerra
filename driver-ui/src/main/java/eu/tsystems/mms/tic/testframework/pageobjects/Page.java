@@ -40,16 +40,15 @@ import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.testng.Assert;
-
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 
 /**
  * tt. page objects base class.
@@ -125,7 +124,7 @@ public abstract class Page extends AbstractPage {
             }
         }
         // wait Thinktime + Offset
-        logger.info("Waiting a Thinktime of " + timeToWait + " milliseconds");
+        log().info("Waiting a time to think of " + timeToWait + " milliseconds");
         TimerUtils.sleep(timeToWait);
     }
 
@@ -206,7 +205,7 @@ public abstract class Page extends AbstractPage {
         WebDriverRequest request = WebDriverManager.getRelatedWebDriverRequest(driver);
         if (Browsers.safari.equalsIgnoreCase(request.browser) || Browsers.phantomjs.equalsIgnoreCase(request.browser)) {
             String msg = "Recursive Page Scan does not work. Unsupported Browser.";
-            logger.error(msg);
+            log().error(msg);
             MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
             if (methodContext != null) {
                 methodContext.addPriorityMessage(msg);
@@ -273,7 +272,7 @@ public abstract class Page extends AbstractPage {
         });
 
         if (response.hasThrowable()) {
-            logger.error("waitForIsNotTextPresent ran into an error", response.getThrowable());
+            log().error("waitForIsNotTextPresent ran into an error", response.getThrowable());
         }
         return response.getResponse();
     }
@@ -296,7 +295,7 @@ public abstract class Page extends AbstractPage {
         });
 
         if (response.hasThrowable()) {
-            logger.error("waitForIsNotTextDisplayed ran into an error", response.getThrowable());
+            log().error("waitForIsNotTextDisplayed ran into an error", response.getThrowable());
         }
         return response.getResponse();
     }
@@ -328,12 +327,12 @@ public abstract class Page extends AbstractPage {
     }
 
     public void assertIsTextPresent(String text, String description) {
-        logger.info("assertIsTextPresent '" + text + "' on " + this.getClass().getSimpleName());
+        log().info("assertIsTextPresent '" + text + "'");
         Assert.assertTrue(waitForIsTextPresent(text), "Text '" + text + "' is present on current page. " + description);
     }
 
     public void assertIsTextDisplayed(String text, String description) {
-        logger.info("assertIsTextDisplayed '" + text + "' on " + this.getClass().getSimpleName());
+        log().info("assertIsTextDisplayed '" + text + "'");
         Assert.assertTrue(waitForIsTextDisplayed(text), "Text '" + text + "' is displayed on current page. " + description);
     }
 
@@ -346,12 +345,12 @@ public abstract class Page extends AbstractPage {
     }
 
     public void assertIsNotTextPresent(String text) {
-        logger.info("assertIsNotTextPresent '" + text + "' on " + this.getClass().getSimpleName());
+        log().info("assertIsNotTextPresent '" + text + "'");
         Assert.assertFalse(isTextPresent(text), "Text '" + text + "' is present on current page");
     }
 
     public void assertIsNotTextDisplayed(String text) {
-        logger.info("assertIsNotTextDisplayed '" + text + "' on " + this.getClass().getSimpleName());
+        log().info("assertIsNotTextDisplayed '" + text + "'");
         Assert.assertFalse(isTextDisplayed(text), "Text '" + text + "' is displayed on current page");
     }
 

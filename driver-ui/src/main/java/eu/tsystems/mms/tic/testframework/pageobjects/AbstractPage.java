@@ -25,15 +25,12 @@ import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,8 +38,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import org.openqa.selenium.WebDriver;
 
-public abstract class AbstractPage {
+public abstract class AbstractPage implements Loggable {
 
     /**
      * The webdriver object.
@@ -56,11 +54,6 @@ public abstract class AbstractPage {
      * Element timeout in seconds (int).
      */
     protected int elementTimeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
-
-    /**
-     * Protected logger.
-     */
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private boolean forcedGuiElementStandardAsserts = false;
 
@@ -138,7 +131,7 @@ public abstract class AbstractPage {
             StackTraceElement stackTraceElement = stackTrace[3];
             String callingMethodName = stackTraceElement.getMethodName();
             if ("<init>".equals(callingMethodName)) {
-                logger.debug("checkPage() was called from constructor. Please use PageFactory.create() and remove checkPage() from constructors.");
+                log().debug("checkPage() was called from constructor. Please use PageFactory.create() and remove checkPage() from constructors.");
             }
             // Class.forName(stackTraceElement.getClassName()).isAssignableFrom(this.getClass())
             String thisClassName = this.getClass().getName();
@@ -151,11 +144,11 @@ public abstract class AbstractPage {
             try {
                 classCallingCheckPage = Class.forName(stackTraceElement.getClassName());
             } catch (ClassNotFoundException e) {
-                logger.debug("Internal error: Failed to load class that called checkPage, identified by name from stacktrace.", e);
+                log().debug("Internal error: Failed to load class that called checkPage, identified by name from stacktrace.", e);
             }
             if (classCallingCheckPage != null && AbstractPage.class.isAssignableFrom(classCallingCheckPage)) {
                 if (!callingClassName.equals(thisClassName)) {
-                    logger.debug("Not performing checkPage() for " + callingClassName + ", because the calling instance is of class " +
+                    log().debug("Not performing checkPage() for " + callingClassName + ", because the calling instance is of class " +
                             thisClassName + ".");
                     return;
                 }
@@ -166,7 +159,7 @@ public abstract class AbstractPage {
         Logging and demo mode
          */
         String classSimpleName = this.getClass().getSimpleName();
-        logger.info("Checking mandatory elements for " + classSimpleName);
+        log().info("Checking mandatory elements");
 
         handleDemoMode(getWebDriver());
 
@@ -213,11 +206,9 @@ public abstract class AbstractPage {
             }
         }
 
-        logger.info("Checking mandatory elements done for: " + classSimpleName);
-
         screenShotOnPageLoad();
 
-        logger.info("Page load successful: " + classSimpleName);
+        log().info("Page loaded successfully");
     }
 
     protected void checkPagePreparation() {
@@ -285,7 +276,7 @@ public abstract class AbstractPage {
 
     private void applyPageOptions(PageOptions pageOptions) {
         if (pageOptions.elementTimeoutInSeconds() >= 0) {
-            logger.info("Applying timeout value for this page object: " + pageOptions.elementTimeoutInSeconds() + "s");
+            log().info("Applying timeout value for this page object: " + pageOptions.elementTimeoutInSeconds() + "s");
             setElementTimeoutInSeconds(pageOptions.elementTimeoutInSeconds());
         }
     }

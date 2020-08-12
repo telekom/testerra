@@ -72,7 +72,6 @@ public class PageFactoryTest extends AbstractTestSitesTest {
     public void testT01_InRange_1() {
         PageFactoryPrefixedTest.setViewportSize(WebDriverManager.getWebDriver(), 799, 1000);
         ResponsiveWebTestPage blaPage = getPage();
-        blaPage.assertIsNotTextDisplayed("motherf");
         Assert.assertEquals(blaPage.getClass().getSimpleName(), ResponsiveWebTestPage_601px_800px.class.getSimpleName(), "Instantiated correct page.");
     }
 

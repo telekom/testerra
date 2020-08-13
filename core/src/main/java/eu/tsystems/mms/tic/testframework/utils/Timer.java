@@ -23,15 +23,12 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Timer {
-
-    private static Logger LOGGER = LoggerFactory.getLogger(Timer.class);
+public class Timer implements Loggable {
 
     private static final long SLEEP_TIME_IN_MS_MININMAL = 50;
     private static final long DURATION_IN_MS_MINIMAL = 100;
@@ -49,7 +46,7 @@ public class Timer {
      */
     public Timer(long sleepTimeInMs, long durationInMs) {
         if (sleepTimeInMs > durationInMs) {
-            LOGGER.error("SleepTime should not be greater than Duration of Timer. It will result in only one execution: " +
+            log().error("SleepTime should not be greater than Duration of Timer. It will result in only one execution: " +
                     sleepTimeInMs + " > " + durationInMs);
         }
         this.sleepTimeInMs = sleepTimeInMs;
@@ -126,7 +123,7 @@ public class Timer {
             try {
                 executeSequence(sequence);
             } catch (TimeoutException e) {
-                LOGGER.warn("Timeout in executed thread.", e);
+                log().warn("Timeout in executed thread.", e);
             }
         });
 
@@ -136,17 +133,13 @@ public class Timer {
 
     private void checkTimerValues() {
         if (sleepTimeInMs < SLEEP_TIME_IN_MS_MININMAL) {
-            LOGGER.warn("invalid timer sleep time: " + sleepTimeInMs + ", setting it to " + SLEEP_TIME_IN_MS_MININMAL);
+            log().warn("invalid timer sleep time: " + sleepTimeInMs + ", setting it to " + SLEEP_TIME_IN_MS_MININMAL);
             sleepTimeInMs = SLEEP_TIME_IN_MS_MININMAL;
         }
         if (durationInMs < DURATION_IN_MS_MINIMAL) {
-            LOGGER.warn("invalid timer duration: " + durationInMs + ", setting it to " + DURATION_IN_MS_MINIMAL);
+            log().warn("invalid timer duration: " + durationInMs + ", setting it to " + DURATION_IN_MS_MINIMAL);
             durationInMs = DURATION_IN_MS_MINIMAL;
         }
-    }
-
-    private void logMessage(String message) {
-        LOGGER.debug(message);
     }
 
     /**
@@ -164,18 +157,18 @@ public class Timer {
         int runCount = 1;
         while (!isTimeOver()) {
             try {
-                logMessage("##### Starting Sequence Iteration #" + runCount + " #####");
+                log().trace("##### Starting Sequence Iteration #" + runCount + " #####");
                 sequence.run();
-                LOGGER.debug("Sequence Iteration #" + runCount + " executed without throwing Throwable");
+                log().trace("Sequence Iteration #" + runCount + " executed without throwing Throwable");
                 /*
                 Look at the pass state that could be set explicitly.
                  */
                 Boolean passState = sequence.getPassState();
                 if (passState == null) {
-                    LOGGER.debug("Sequence Iteration #" + runCount + " successful without passState");
+                    log().trace("Sequence Iteration #" + runCount + " successful without passState");
                     success = true;
                 } else {
-                    LOGGER.debug("Sequence Iteration #" + runCount + " pass state: " + passState);
+                    log().trace("Sequence Iteration #" + runCount + " pass state: " + passState);
                     success = passState;
                 }
             } catch (Throwable throwable) {
@@ -188,7 +181,7 @@ public class Timer {
                     throw (IllegalArgumentException) throwable;
                 } else {
                     catchedThrowable = throwable;
-                    LOGGER.info("Sequence Iteration #" + runCount + " failed", throwable);
+                    log().debug("Sequence Iteration #" + runCount + " failed", throwable);
                 }
             }
             runCount++;

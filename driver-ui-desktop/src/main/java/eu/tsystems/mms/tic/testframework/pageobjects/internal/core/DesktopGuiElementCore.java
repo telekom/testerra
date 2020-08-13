@@ -608,11 +608,14 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
             LOGGER.info("Safari double click workaround");
             JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
         } else {
-            Actions actions = new Actions(webDriver);
-            final Action action = actions.doubleClick(webElement).build();
+            final Actions actions = new Actions(webDriver);
+
+            final Action moveToElement = actions.moveToElement(webElement).build();
+            final Action doubleClick = actions.doubleClick(webElement).build();
 
             try {
-                action.perform();
+                moveToElement.perform();
+                doubleClick.perform();
             } catch (InvalidElementStateException e) {
                 LOGGER.error("Error performing double click", e);
                 LOGGER.info("Retrying double click with click-click");

@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
+import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.ThrowableUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -656,11 +657,14 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         Assert.assertEquals(element.getText(), "", "Textboxelement is empty");
     }
 
-    @Test(enabled = false)
+    @Test
     public void testT66_GuiElement_doubleClick() {
-        GuiElement element = getSelectableElement();
+        final GuiElement element = getSelectableElement();
+        // scroll element out of viewport
+        JSUtils.executeScript(getWebDriver(), String.format("scrollBy(%d, %d)", 0, getWebDriver().manage().window().getSize().getHeight()));
+        // double click element with implicit scrolling to viewport
         element.doubleClick();
-        getLoggerTableElement().asserts().assertContainsText("Input 3 Double clicked");
+        getLoggerTableElement().asserts().assertTextContains("Input 3 Double clicked");
     }
 
     @Test

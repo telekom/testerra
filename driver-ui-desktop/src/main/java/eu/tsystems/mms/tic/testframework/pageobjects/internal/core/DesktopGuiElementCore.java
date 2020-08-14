@@ -609,13 +609,10 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
             JSUtils.executeJavaScriptMouseAction(webDriver, webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
         } else {
             final Actions actions = new Actions(webDriver);
-
-            final Action moveToElement = actions.moveToElement(webElement).build();
-            final Action doubleClick = actions.doubleClick(webElement).build();
+            final Action action = actions.moveToElement(webElement).doubleClick(webElement).build();
 
             try {
-                moveToElement.perform();
-                doubleClick.perform();
+                action.perform();
             } catch (InvalidElementStateException e) {
                 LOGGER.error("Error performing double click", e);
                 LOGGER.info("Retrying double click with click-click");

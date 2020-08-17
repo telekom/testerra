@@ -124,8 +124,9 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     @Override
     @Deprecated
     public GuiElementFacade scrollToElement(int yOffset) {
-        beforeActionDelegation("scrollToElement");
-        beforeDelegation("scrollToElement");
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.scrollToElement(yOffset);
         afterDelegation();
         afterActionDelegation();
@@ -134,8 +135,9 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
 
     @Override
     public GuiElementFacade scrollIntoView(Point offset) {
-        beforeActionDelegation("center");
-        beforeDelegation("center");
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.scrollIntoView(offset);
         afterDelegation();
         afterActionDelegation();
@@ -387,9 +389,9 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     @Override
     public List<String> getTextsFromChildren() {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeDelegation("getTextsFromChildren");
+        beforeDelegation(methodName);
         List<String> textsFromChildren = decoratedFacade.getTextsFromChildren();
-        afterDelegation("getTextsFromChildren() = " + textsFromChildren);
+        afterDelegation(methodName + " = " + textsFromChildren);
         return textsFromChildren;
     }
 
@@ -436,7 +438,12 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
 
     @Override
     public GuiElementFacade swipe(int offsetX, int offSetY) {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeActionDelegation(methodName);
+        beforeDelegation(methodName);
         decoratedFacade.swipe(offsetX, offSetY);
+        afterDelegation();
+        afterActionDelegation();
         return this;
     }
 

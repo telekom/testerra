@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
-import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
@@ -314,33 +313,25 @@ public class GuiElement implements
 
     @Override
     public UiElement select() {
-        guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.select();
-        guiElementData.resetLogLevel();
         return this;
     }
 
     @Override
     public UiElement deselect() {
-        guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.deselect();
-        guiElementData.resetLogLevel();
         return this;
     }
 
     @Override
     public UiElement type(String text) {
-        guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.type(text);
-        guiElementData.resetLogLevel();
         return this;
     }
 
     @Override
     public UiElement click() {
-        guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.click();
-        guiElementData.resetLogLevel();
         return this;
     }
 
@@ -351,9 +342,7 @@ public class GuiElement implements
 
     @Override
     public UiElement sendKeys(CharSequence... charSequences) {
-        guiElementData.setLogLevel(LogLevel.INFO);
         decoratedFacade.sendKeys(charSequences);
-        guiElementData.resetLogLevel();
         return this;
     }
 
@@ -729,16 +718,6 @@ public class GuiElement implements
         List<GuiElement> guiElements = new ArrayList<>();
         list().forEach(guiElement -> guiElements.add((GuiElement)guiElement));
         return guiElements;
-    }
-
-    @Deprecated
-    public LogLevel getLogLevel() {
-        return guiElementData.getLogLevel();
-    }
-
-    @Deprecated
-    public void setLogLevel(LogLevel logLevel) {
-        guiElementData.setLogLevel(logLevel);
     }
 
     @Deprecated

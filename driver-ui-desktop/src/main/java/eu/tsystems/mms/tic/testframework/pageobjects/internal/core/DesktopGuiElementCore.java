@@ -199,10 +199,6 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         }
     }
 
-    private void highlightWebElement(Color color) {
-        JSUtils.highlightWebElement(guiElementData.getWebDriver(), guiElementData.getWebElement(), color);
-    }
-
     private void logTimings(long start, int findCounter) {
         if (findCounter != -1) {
             GuiElementData parent = guiElementData.getParent();
@@ -325,10 +321,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
     @Override
     public GuiElementCore click() {
         find();
-        LOGGER.debug("click(): found element, adding ClickPath");
-        LOGGER.debug("click(): added ClickPath, clicking relative");
         pClickRelative(this, guiElementData.getWebDriver(), guiElementData.getWebElement());
-        LOGGER.debug("click(): clicked relative");
         return this;
     }
 
@@ -507,10 +500,8 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
     @Override
     public boolean isPresent() {
         try {
-            LOGGER.debug("isPresent(): trying to find WebElement");
             find();
         } catch (Exception e) {
-            LOGGER.error("isPresent(): Element not found: " + guiElementData.getLocate(), e);
             return false;
         }
         return true;

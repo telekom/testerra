@@ -21,19 +21,17 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.logging.LogLevel;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
+import java.util.WeakHashMap;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import java.util.WeakHashMap;
 
 /**
  * Holds the state of the {@link GuiElement} to interchange with any other
@@ -54,8 +52,6 @@ public class GuiElementData implements
     private WebElement webElement;
     private IFrameLogic frameLogic;
     private int timeoutSeconds = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
-    private LogLevel logLevel = LogLevel.DEBUG;
-    private LogLevel storedLogLevel = logLevel;
 
     /**
      * @todo Add accessor methods
@@ -189,21 +185,6 @@ public class GuiElementData implements
 
     public boolean hasFrameLogic() {
         return frameLogic != null;
-    }
-
-    public LogLevel getLogLevel() {
-        return logLevel;
-    }
-
-    public void setLogLevel(LogLevel logLevel) {
-        // store previous log level away
-        this.storedLogLevel = this.logLevel;
-        // set new log level
-        this.logLevel = logLevel;
-    }
-
-    public void resetLogLevel() {
-        this.logLevel = this.storedLogLevel;
     }
 
     @Override

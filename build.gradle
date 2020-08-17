@@ -28,7 +28,7 @@ ext {
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
 
-    moduleVersion = '1-SNAPSHOT'
+    moduleVersion = '2-SNAPSHOT'
     if (System.properties.containsKey('ttVersion')) {
         moduleVersion = System.getProperty('ttVersion')
     }

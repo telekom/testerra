@@ -71,7 +71,7 @@ public class CheckPageTest_Deprecated extends AbstractTestSitesTest {
 
         Page page = new Page(webDriver) {
             @Check
-            GuiElement testElement = new GuiElement(driver, By.xpath("not existing"));
+            GuiElement testElement = new GuiElement(getWebDriver(), By.xpath("not existing"));
         };
 
         boolean exceptionWasThrown = false;
@@ -91,7 +91,7 @@ public class CheckPageTest_Deprecated extends AbstractTestSitesTest {
 
         class ParentPage extends Page {
             @Check
-            GuiElement testElement = new GuiElement(driver, By.xpath("not existing"));
+            GuiElement testElement = new GuiElement(getWebDriver(), By.xpath("not existing"));
 
             public ParentPage(WebDriver driver) {
                 super(driver);

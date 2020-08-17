@@ -765,7 +765,7 @@ public class GuiElement implements
 
             @Override
             public String getSubject() {
-                return String.format("%s.tagName", self);
+                return String.format("%s.@tagName", self);
             }
         });
     }
@@ -781,7 +781,7 @@ public class GuiElement implements
 
             @Override
             public String getSubject() {
-                return String.format("%s.text", self);
+                return String.format("%s.@text", self);
             }
         });
     }
@@ -806,7 +806,7 @@ public class GuiElement implements
 
             @Override
             public String getSubject() {
-                return String.format("%s.value(attribute: %s)", self, finalAttribute);
+                return String.format("%s.@%s", self, finalAttribute);
             }
         });
     }
@@ -822,7 +822,7 @@ public class GuiElement implements
 
             @Override
             public String getSubject() {
-                return String.format("%s.css(property: %s)", self, property);
+                return String.format("%s.css(@%s)", self, property);
             }
         });
     }
@@ -842,7 +842,7 @@ public class GuiElement implements
 
             @Override
             public String getSubject() {
-                return String.format("%s.present", self);
+                return String.format("%s.@present", self);
             }
         });
     }
@@ -878,7 +878,7 @@ public class GuiElement implements
 
             @Override
             public String getSubject() {
-                return String.format("%s.displayed", self);
+                return String.format("%s.@displayed", self);
             }
         });
         return prop;
@@ -895,7 +895,7 @@ public class GuiElement implements
 
             @Override
             public String getSubject() {
-                return String.format("%s.enabled", self);
+                return String.format("%s.@enabled", self);
             }
         });
     }
@@ -911,7 +911,7 @@ public class GuiElement implements
 
             @Override
             public String getSubject() {
-                return String.format("%s.selected", self);
+                return String.format("%s.@selected", self);
             }
         });
     }
@@ -947,7 +947,7 @@ public class GuiElement implements
 
             @Override
             public String getSubject() {
-                return String.format("%s.numberOfElements", self);
+                return String.format("%s.@numberOfElements", self);
             }
         });
     }

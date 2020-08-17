@@ -48,12 +48,7 @@ import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import java.awt.*;
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -61,7 +56,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
 
 /**
  * Represents a full web page and provides advanced {@link PageObject} features:
@@ -357,7 +351,7 @@ public abstract class Page extends AbstractPage implements TestablePage, UiEleme
 
             @Override
             public String getSubject() {
-                return String.format("%s.title", self);
+                return String.format("%s.@title", self);
             }
         });
     }
@@ -373,7 +367,7 @@ public abstract class Page extends AbstractPage implements TestablePage, UiEleme
 
             @Override
             public String getSubject() {
-                return String.format("%s.url", self);
+                return String.format("%s.@url", self);
             }
         });
     }

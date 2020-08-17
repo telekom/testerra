@@ -4,7 +4,6 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,23 +26,23 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 //    }
 
     @Override
-    public boolean contains(String expected, String message) {
-        return testTimer(t -> instantAssertion.assertContains((String)provider.getActual(), expected, new Assertion.Message(message, traceSubjectString())));
+    public boolean contains(String expected, String failMessage) {
+        return testTimer(t -> instantAssertion.assertContains((String)provider.getActual(), expected, new Assertion.Message(failMessage, traceSubjectString())));
     }
 
     @Override
-    public boolean containsNot(String expected, String message) {
-        return testTimer(t -> instantAssertion.assertContainsNot((String)provider.getActual(), expected, new Assertion.Message(message, traceSubjectString())));
+    public boolean containsNot(String expected, String failMessage) {
+        return testTimer(t -> instantAssertion.assertContainsNot((String)provider.getActual(), expected, new Assertion.Message(failMessage, traceSubjectString())));
     }
 
     @Override
-    public boolean startsWith(String expected, String message) {
-        return testTimer(t -> instantAssertion.assertBeginsWith(provider.getActual(), expected, new Assertion.Message(message, traceSubjectString())));
+    public boolean startsWith(String expected, String failMessage) {
+        return testTimer(t -> instantAssertion.assertBeginsWith(provider.getActual(), expected, new Assertion.Message(failMessage, traceSubjectString())));
     }
 
     @Override
-    public boolean endsWith(String expected, String message) {
-        return testTimer(t -> instantAssertion.assertEndsWith(provider.getActual(), expected, new Assertion.Message(message, traceSubjectString())));
+    public boolean endsWith(String expected, String failMessage) {
+        return testTimer(t -> instantAssertion.assertEndsWith(provider.getActual(), expected, new Assertion.Message(failMessage, traceSubjectString())));
     }
 
     @Override

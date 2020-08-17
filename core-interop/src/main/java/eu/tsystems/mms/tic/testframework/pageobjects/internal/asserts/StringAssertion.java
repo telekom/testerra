@@ -10,22 +10,22 @@ public interface StringAssertion<T> extends QuantityAssertion<T> {
     default boolean contains(String expected) {
         return contains(expected, null);
     }
-    boolean contains(String expected, String message);
+    boolean contains(String expected, String failMessage);
 
     default boolean containsNot(String expected) {
         return containsNot(expected, null);
     }
-    boolean containsNot(String expected, String message);
+    boolean containsNot(String expected, String failMessage);
 
     default boolean startsWith(String expected) {
         return startsWith(expected, null);
     }
-    boolean startsWith(String expected, String message);
+    boolean startsWith(String expected, String failMessage);
 
     default boolean endsWith(String expected) {
         return endsWith(expected, null);
     }
-    boolean endsWith(String expected, String message);
+    boolean endsWith(String expected, String failMessage);
 
     default PatternAssertion matches(String pattern) {
         return matches(Pattern.compile(pattern, Pattern.CASE_INSENSITIVE|Pattern.MULTILINE));

@@ -10,12 +10,12 @@ public interface QuantityAssertion<T> extends BinaryAssertion<T> {
     default boolean is(Object expected) {
         return is(expected, null);
     }
-    boolean is(Object expected, String message);
+    boolean is(Object expected, String failMessage);
 
     default boolean isNot(Object expected) {
         return isNot(expected, null);
     }
-    boolean isNot(Object expected, String message);
+    boolean isNot(Object expected, String failMessage);
 
     default boolean isGreaterThan(long expected) {
         return isGreaterThan(new BigDecimal(expected));
@@ -23,16 +23,16 @@ public interface QuantityAssertion<T> extends BinaryAssertion<T> {
     default boolean isGreaterThan(double expected) {
         return isGreaterThan(new BigDecimal(expected));
     }
-    default boolean isGreaterThan(long expected, String message) {
-        return isGreaterThan(new BigDecimal(expected), message);
+    default boolean isGreaterThan(long expected, String failMessage) {
+        return isGreaterThan(new BigDecimal(expected), failMessage);
     }
-    default boolean isGreaterThan(double expected, String message) {
-        return isGreaterThan(new BigDecimal(expected), message);
+    default boolean isGreaterThan(double expected, String failMessage) {
+        return isGreaterThan(new BigDecimal(expected), failMessage);
     }
     default boolean isGreaterThan(BigDecimal expected) {
         return isGreaterThan(expected, null);
     }
-    boolean isGreaterThan(BigDecimal expected, String message);
+    boolean isGreaterThan(BigDecimal expected, String failMessage);
 
     default boolean isLowerThan(long expected) {
         return isLowerThan(new BigDecimal(expected));
@@ -40,16 +40,16 @@ public interface QuantityAssertion<T> extends BinaryAssertion<T> {
     default boolean isLowerThan(double expected) {
         return isLowerThan(new BigDecimal(expected));
     }
-    default boolean isLowerThan(long expected, String message) {
-        return isLowerThan(new BigDecimal(expected), message);
+    default boolean isLowerThan(long expected, String failMessage) {
+        return isLowerThan(new BigDecimal(expected), failMessage);
     }
-    default boolean isLowerThan(double expected, String message) {
-        return isLowerThan(new BigDecimal(expected), message);
+    default boolean isLowerThan(double expected, String failMessage) {
+        return isLowerThan(new BigDecimal(expected), failMessage);
     }
     default boolean isLowerThan(BigDecimal expected) {
         return isLowerThan(expected, null);
     }
-    boolean isLowerThan(BigDecimal expected, String message);
+    boolean isLowerThan(BigDecimal expected, String failMessage);
 
     default boolean isGreaterEqualThan(long expected) {
         return isGreaterEqualThan(new BigDecimal(expected));
@@ -57,16 +57,16 @@ public interface QuantityAssertion<T> extends BinaryAssertion<T> {
     default boolean isGreaterEqualThan(double expected) {
         return isGreaterEqualThan(new BigDecimal(expected));
     }
-    default boolean isGreaterEqualThan(long expected, String message) {
-        return isGreaterEqualThan(new BigDecimal(expected), message);
+    default boolean isGreaterEqualThan(long expected, String failMessage) {
+        return isGreaterEqualThan(new BigDecimal(expected), failMessage);
     }
-    default boolean isGreaterEqualThan(double expected, String message) {
-        return isGreaterEqualThan(new BigDecimal(expected), message);
+    default boolean isGreaterEqualThan(double expected, String failMessage) {
+        return isGreaterEqualThan(new BigDecimal(expected), failMessage);
     }
     default boolean isGreaterEqualThan(BigDecimal expected) {
         return isGreaterEqualThan(expected, null);
     }
-    boolean isGreaterEqualThan(BigDecimal expected, String message);
+    boolean isGreaterEqualThan(BigDecimal expected, String failMessage);
 
     default boolean isLowerEqualThan(long expected) {
         return isLowerEqualThan(new BigDecimal(expected));
@@ -74,16 +74,16 @@ public interface QuantityAssertion<T> extends BinaryAssertion<T> {
     default boolean isLowerEqualThan(double expected) {
         return isLowerEqualThan(new BigDecimal(expected));
     }
-    default boolean isLowerEqualThan(long expected, String message) {
-        return isLowerEqualThan(new BigDecimal(expected), message);
+    default boolean isLowerEqualThan(long expected, String failMessage) {
+        return isLowerEqualThan(new BigDecimal(expected), failMessage);
     }
-    default boolean isLowerEqualThan(double expected, String message) {
-        return isLowerEqualThan(new BigDecimal(expected), message);
+    default boolean isLowerEqualThan(double expected, String failMessage) {
+        return isLowerEqualThan(new BigDecimal(expected), failMessage);
     }
     default boolean isLowerEqualThan(BigDecimal expected) {
         return isLowerEqualThan(expected, null);
     }
-    boolean isLowerEqualThan(BigDecimal expected, String message);
+    boolean isLowerEqualThan(BigDecimal expected, String failMessage);
 
     default boolean isBetween(long lower, long higher) {
         return isBetween(new BigDecimal(lower), new BigDecimal(higher));
@@ -91,16 +91,16 @@ public interface QuantityAssertion<T> extends BinaryAssertion<T> {
     default boolean isBetween(double lower, double higher) {
         return isBetween(new BigDecimal(lower), new BigDecimal(higher));
     }
-    default boolean isBetween(long lower, long higher, String message) {
-        return isBetween(new BigDecimal(lower), new BigDecimal(higher), message);
+    default boolean isBetween(long lower, long higher, String failMessage) {
+        return isBetween(new BigDecimal(lower), new BigDecimal(higher), failMessage);
     }
-    default boolean isBetween(double lower, double higher, String message) {
-        return isBetween(new BigDecimal(lower), new BigDecimal(higher), message);
+    default boolean isBetween(double lower, double higher, String failMessage) {
+        return isBetween(new BigDecimal(lower), new BigDecimal(higher), failMessage);
     }
     default boolean isBetween(BigDecimal lower, BigDecimal higher) {
         return isBetween(lower, higher, null);
     }
-    boolean isBetween(BigDecimal lower, BigDecimal higher, String message);
+    boolean isBetween(BigDecimal lower, BigDecimal higher, String failMessage);
 
     QuantityAssertion<BigDecimal> absolute();
 }

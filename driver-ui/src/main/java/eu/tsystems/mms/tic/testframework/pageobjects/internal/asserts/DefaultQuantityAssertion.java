@@ -1,7 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-
 import java.math.BigDecimal;
 
 public class DefaultQuantityAssertion<T> extends DefaultBinaryAssertion<T> implements QuantityAssertion<T> {
@@ -11,38 +10,38 @@ public class DefaultQuantityAssertion<T> extends DefaultBinaryAssertion<T> imple
     }
 
     @Override
-    public boolean is(Object expected, String message) {
-        return testTimer(t -> instantAssertion.assertEquals(provider.getActual(), expected, new Assertion.Message(message, traceSubjectString())));
+    public boolean is(Object expected, String failMessage) {
+        return testTimer(t -> instantAssertion.assertEquals(provider.getActual(), expected, new Assertion.Message(failMessage, traceSubjectString())));
     }
 
     @Override
-    public boolean isNot(Object expected, String message) {
-        return testTimer(t -> instantAssertion.assertNotEquals(provider.getActual(), expected, new Assertion.Message(message, traceSubjectString())));
+    public boolean isNot(Object expected, String failMessage) {
+        return testTimer(t -> instantAssertion.assertNotEquals(provider.getActual(), expected, new Assertion.Message(failMessage, traceSubjectString())));
     }
 
     @Override
-    public boolean isGreaterThan(BigDecimal expected, String message) {
-        return testTimer(t -> instantAssertion.assertGreaterThan(new BigDecimal(provider.getActual().toString()), expected, new Assertion.Message(message, traceSubjectString())));
+    public boolean isGreaterThan(BigDecimal expected, String failMessage) {
+        return testTimer(t -> instantAssertion.assertGreaterThan(new BigDecimal(provider.getActual().toString()), expected, new Assertion.Message(failMessage, traceSubjectString())));
     }
 
     @Override
-    public boolean isLowerThan(BigDecimal expected, String message) {
-        return testTimer(t -> instantAssertion.assertLowerThan(new BigDecimal(provider.getActual().toString()), expected, new Assertion.Message(message, traceSubjectString())));
+    public boolean isLowerThan(BigDecimal expected, String failMessage) {
+        return testTimer(t -> instantAssertion.assertLowerThan(new BigDecimal(provider.getActual().toString()), expected, new Assertion.Message(failMessage, traceSubjectString())));
     }
 
     @Override
-    public boolean isGreaterEqualThan(BigDecimal expected, String message) {
-        return testTimer(t -> instantAssertion.assertGreaterEqualThan(new BigDecimal(provider.getActual().toString()), expected, new Assertion.Message(message, traceSubjectString())));
+    public boolean isGreaterEqualThan(BigDecimal expected, String failMessage) {
+        return testTimer(t -> instantAssertion.assertGreaterEqualThan(new BigDecimal(provider.getActual().toString()), expected, new Assertion.Message(failMessage, traceSubjectString())));
     }
 
     @Override
-    public boolean isLowerEqualThan(BigDecimal expected, String message) {
-        return testTimer(t -> instantAssertion.assertLowerEqualThan(new BigDecimal(provider.getActual().toString()), expected, new Assertion.Message(message, traceSubjectString())));
+    public boolean isLowerEqualThan(BigDecimal expected, String failMessage) {
+        return testTimer(t -> instantAssertion.assertLowerEqualThan(new BigDecimal(provider.getActual().toString()), expected, new Assertion.Message(failMessage, traceSubjectString())));
     }
 
     @Override
-    public boolean isBetween(BigDecimal lower, BigDecimal higher, String message) {
-        return testTimer(t -> instantAssertion.assertBetween(new BigDecimal(provider.getActual().toString()), lower, higher, new Assertion.Message(message, traceSubjectString())));
+    public boolean isBetween(BigDecimal lower, BigDecimal higher, String failMessage) {
+        return testTimer(t -> instantAssertion.assertBetween(new BigDecimal(provider.getActual().toString()), lower, higher, new Assertion.Message(failMessage, traceSubjectString())));
     }
 
     @Override

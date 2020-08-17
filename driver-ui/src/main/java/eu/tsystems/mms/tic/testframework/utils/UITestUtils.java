@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+
+package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
@@ -61,6 +62,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import javax.imageio.ImageIO;
+import org.apache.commons.codec.binary.Base64;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.sikuli.api.ScreenLocation;
+import org.sikuli.api.ScreenRegion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Helper class containing some util methods for tt.
@@ -299,7 +308,8 @@ public class UITestUtils {
             LOGGER.info("Taking screenshot from desktop");
             final ScreenLocation upperLeftCorner = screenRegion.getUpperLeftCorner();
             final ScreenLocation lowerRightCorner = screenRegion.getLowerRightCorner();
-            final BufferedImage screenshot = screenRegion.getScreen().getScreenshot(upperLeftCorner.getX(), upperLeftCorner.getY(), lowerRightCorner.getX(), lowerRightCorner.getY());
+            final BufferedImage screenshot = screenRegion.getScreen()
+                    .getScreenshot(upperLeftCorner.getX(), upperLeftCorner.getY(), lowerRightCorner.getX(), lowerRightCorner.getY());
 
             final String filename = "Desktop_" + FILES_DATE_FORMAT.format(new Date()) + ".png";
             final File targetFile = new File(StaticReport.SCREENSHOTS_DIRECTORY, filename);
@@ -319,7 +329,7 @@ public class UITestUtils {
     public static List<Screenshot> takeScreenshotsFromSessions(
             final MethodContext methodContext,
             final Map<String, WebDriver> rawWebDriverInstances,
-        final boolean explicitly
+            final boolean explicitly
     ) {
         List<String> processedWebDriverSessions = new ArrayList<>(1);
         List<Screenshot> screenshots = new LinkedList<>();
@@ -421,7 +431,6 @@ public class UITestUtils {
      * Make screenshots from all open browser windows/selenium, webdriver instances.
      *
      * @param publishToReport True for publish directly into report.
-     *
      * @return ScreenshotPaths.
      */
     public static List<Screenshot> takeScreenshots(final boolean publishToReport) {

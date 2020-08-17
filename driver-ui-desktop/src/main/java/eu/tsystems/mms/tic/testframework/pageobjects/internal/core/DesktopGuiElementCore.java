@@ -563,8 +563,8 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
             LOGGER.info("Safari double click workaround");
             JSUtils.executeJavaScriptMouseAction(guiElementData.getWebDriver(), webElement, JSMouseAction.DOUBLE_CLICK, 0, 0);
         } else {
-            Actions actions = new Actions(guiElementData.getWebDriver());
-            final Action action = actions.doubleClick(webElement).build();
+            final Actions actions = new Actions(guiElementData.getWebDriver());
+            final Action action = actions.moveToElement(webElement).doubleClick(webElement).build();
 
             try {
                 action.perform();

@@ -145,7 +145,7 @@ public class ClassesDetailsPage extends AbstractReportPage implements IReportAnn
 //        GuiElement informationMethodBody = new GuiElement(driver, By.xpath(String.format("//*[@id='%s']", testMethodName)), mainFrame);
         GuiElement informationMethodBody = new GuiElement(this.getWebDriver(), By.xpath(String.format("//*[contains(@id,'%s-')]", testMethodName)), mainFrame);
         if (null != configMethodName) {
-            informationMethodBody = new GuiElement(this.getWebDriver(), By.xpath(String.format("//*[contains(@id,'%s-') and .//i[contains(text(), '%s')]]", testMethodName, configMethodName)), mainFrame);
+            informationMethodBody = new GuiElement(this.getWebDriver(), By.xpath(String.format("//*[contains(@id,'%s-') and .//div[contains(text(), '%s')]]", testMethodName, configMethodName)), mainFrame);
         }
         informationMethodBody.setName("informationMethodBody");
         return informationMethodBody;

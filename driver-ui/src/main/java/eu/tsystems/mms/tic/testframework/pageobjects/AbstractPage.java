@@ -33,7 +33,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFiel
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import org.openqa.selenium.WebDriver;
-
+import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +41,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import org.openqa.selenium.WebDriver;
 
 /**
  * Provides basic {@link PageObject} related features:
@@ -172,7 +173,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
         Logging and demo mode
          */
         String classSimpleName = this.getClass().getSimpleName();
-        log().debug("Perform element checks");
+        log().info("Checking mandatory elements");
 
         handleDemoMode(getWebDriver());
 
@@ -218,7 +219,7 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
                 }
             }
         }
-        log().debug("Page load successful");
+        log().info("Page loaded successfully");
     }
 
     protected void checkPagePreparation() {

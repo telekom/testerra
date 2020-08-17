@@ -21,14 +21,33 @@
  */
 package eu.tsystems.mms.tic.testframework.report.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class MethodAssertionsPage extends MethodDetailsPage {
 
-    //TODO add @check annotation after bug ticket 966 is solved
+    @Check
+    private GuiElement headLine = new GuiElement(this.getWebDriver(), By.xpath("//h5[text()='Collected Assertions']"), mainFrame);
+    private String LOCATOR_ASSERTION_HEADLINE = "//a[contains(text(), '%s')]";
+    private String LOCATOR_ASSERTION_DESCRIPTION = "//a[contains(text(), '%s')]/..//pre";
 
     public MethodAssertionsPage(WebDriver driver) {
-
         super(driver);
+    }
+
+    public void checkAssertionIsDisplayedCorrectly(String assertionTitle, String assertionDescription){
+        GuiElement headline = new GuiElement(this.getWebDriver(), By.xpath(String.format(LOCATOR_ASSERTION_HEADLINE, assertionTitle)), mainFrame);
+        headline.asserts().assertIsDisplayed();
+        headline.asserts().assertTextContains(assertionTitle);
+
+        openAssertionDescriptionMenu(headline);
+        GuiElement description = new GuiElement(this.getWebDriver(), By.xpath(String.format(LOCATOR_ASSERTION_DESCRIPTION, assertionTitle)), mainFrame);
+        description.asserts().assertTextContains(assertionDescription);
+    }
+
+    public void openAssertionDescriptionMenu(GuiElement assertionElement) {
+        assertionElement.click();
     }
 }

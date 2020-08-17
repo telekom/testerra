@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.report.test;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.general.AbstractAnnotationMarkerTest;
 import eu.tsystems.mms.tic.testframework.report.general.ReportDirectory;
 import eu.tsystems.mms.tic.testframework.report.general.SystemTestsGroup;
@@ -77,13 +78,13 @@ public class ClassesDetailsPageTest extends AbstractAnnotationMarkerTest {
         classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FailedMinorAnnotatedWithFail_Run3", TestResultHelper.TestResult.FAILEDEXPECTED);
 
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.PASSEDRETRY);
-        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithPassedRetry ", TestResultHelper.TestResult.PASSEDRETRY);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithPassedRetry-" + TestResultHelper.TestResult.PASSEDRETRY.getTestState(), TestResultHelper.TestResult.PASSEDRETRY);
 
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.RETRIED); //retry of method which will fail next retry
-        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithFailedRetry (1/2)", TestResultHelper.TestResult.RETRIED);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithFailedRetry-" + TestStatusController.Status.FAILED_RETRIED.name(), TestResultHelper.TestResult.RETRIED);
 
         classesDetailsPage.assertColorIsDisplayedForTestResult(TestResultHelper.TestResult.RETRIED); //retry of method which will pass next retry
-        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithPassedRetry (1/2)", TestResultHelper.TestResult.RETRIED);
+        classesDetailsPage.assertMethodIsDisplayedInTheCorrectTestResultCategory("test_FilterFailedMinorWithPassedRetry-" + TestStatusController.Status.FAILED_RETRIED.name(), TestResultHelper.TestResult.RETRIED);
     }
 
     /**

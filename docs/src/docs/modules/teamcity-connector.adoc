@@ -1,0 +1,76 @@
+= TeamCity connector
+
+include::../properties/property-attributes.adoc[]
+
+This module for Testerra provides a simple notification service for Jetbrains TeamCity. It uses the build script interaction of TeamCity to update build progress messages
+on test method updates and update general build status on report generation.
+
+== Project setup
+
+Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:teamcity-connector?label=Testerra%20TeamCity%20connector[Bintray]
+
+.Gradle
+[source,gradle,role="primary"]
+----
+// build.gradle
+implementation 'eu.tsystems.mms.tic.testerra:teamcity-connector:1.0'
+----
+
+.Maven
+[source,xml,role="secondary"]
+----
+<!-- pom.xml -->
+<dependencies>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>teamcity-connector</artifactId>
+        <version>1.0</version>
+    </dependency>
+</dependencies>
+----
+
+== TeamCity configuration
+
+Please ensure that you have deactivated the following flag in your build configuration: +
+`Failure Conditions > Common Failure Conditions > at least one test failed`
+
+Testerra TeamCity Connector will announce the build status on report generation based on test execution statistics.
+
+== Impacts on TeamCity
+
+.Changes in TeamCity
+[cols="1a,2a,1a",options="header"]
+|===
+| TeamCity default | With TeamCity Connector | Description
+| image::teamcity_default_running.png[] | image::teamcity_connector_running.png[] | TeamCity connector set the current test result at runtime.
+| image::teamcity_default_result.png[] | image::teamcity_connector_result.png[] | TeamCity connector set the correct test result and build status.
+|===
+
+The TeamCity connector not only set the correct test results but also add useful information.
+
+Based on the screenshots in the table above the following information are added.
+
+.Meaning of shown informaion
+[cols="1a,2a",options="header"]
+|===
+| Part | Description
+| `TT-Skeleton` | The value of the property `{reportname}`
+| `regression` | The value of the property `{runcfg}`. +
+This could be the test set (regression, smoketest, etc.)
+| `3 Passed, 1 Failed` | The result of all test cases of the complete run. +
+At runtime it shows the current result up to that point.
+| `-NOT OK-` | The status of the complete test run. +
+If all tests passed or the <<Failure Corridor>> was matched, the status would be `-OK-`
+|===
+
+The following tables shows some more examples how the result could be.
+
+.Variations to test results
+[cols="1a,1",options="header"]
+|===
+| Test result | Description
+| image::teamcity_connector_result_skipped.png[] | A test cases was skipped because the corresponding setup method failed. The result of the test run is failed.
+| image::teamcity_connector_result_failure_corr.png[] | The Failure corridor was matched, the status is OK although a test failed.
+| image::teamcity_connector_result_exp_failed.png[] | A test was marked as expected failed, all other tests passed. The restult of the test run is still passed.
+|===
+

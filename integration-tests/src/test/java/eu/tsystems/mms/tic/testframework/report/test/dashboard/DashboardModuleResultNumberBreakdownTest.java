@@ -134,7 +134,7 @@ public class DashboardModuleResultNumberBreakdownTest extends AbstractTestDashbo
      */
     @Test(groups = {SystemTestsGroup.SYSTEMTESTSFILTER1}, dataProvider = "testResultNumbers")
     // Test case #858
-    public void testT04_testReportPercentages(ReportDirectory report, AbstractTestReportNumbers numbers) throws Exception {
+    public void testT04_testReportPercentages(ReportDirectory report, AbstractTestReportNumbers numbers) {
         DashboardPage dashboardPage = getDashboardPage(report);
         final String expectedPercentage = numbers.getPercentage();
         final String actualPercentage = dashboardPage.dashboardModuleTestResultNumberBreakdown.testPercentageString.getText();

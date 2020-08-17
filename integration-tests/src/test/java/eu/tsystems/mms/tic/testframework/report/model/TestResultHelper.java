@@ -86,7 +86,7 @@ public class TestResultHelper {
         PASSEDRETRY(".//*[@title='Passed after Retry']"),
         SKIPPED(".//*[@title='Skipped']"),
         FAILED(".//td[@title='Failed']"),
-        FAILEDMINOR(".//*[@title='Failed with Minor']"),
+        FAILEDMINOR(".//*[@title='Failed + Minor']"),
         RETRIED(".//*[@title='Retried']"),
         FAILEDEXPECTED(".//*[@title='Expected Failed']");
 
@@ -164,7 +164,7 @@ public class TestResultHelper {
             case FAILEDMINOR:
                 return new Color(255, 20, 147);
             case RETRIED:
-                return new Color(255, 182, 193);
+                return new Color(255, 192, 203);
             case FAILEDEXPECTED:
                 return new Color(128, 128, 128);
             default:

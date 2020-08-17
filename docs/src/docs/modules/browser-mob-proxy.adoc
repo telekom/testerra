@@ -5,6 +5,8 @@ You can use it to enable Basic Auth for your SUT and other features.
 
 == Project setup
 
+Current release image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:bmp?label=Testerra%20BMP[Bintray]
+
 .build.gradle
 [source,gradle,role="primary"]
 ----

@@ -35,9 +35,13 @@ timer.executeSequence(new Timer.Sequence<Boolean>() {
 });
 ----
 
-Note: With this approach you will block your current thread, mostly your main thread.
+[NOTE]
+====
+With this approach you will block your current thread, mostly your main thread.
+
 If you want to execute your `Sequence` in another thread - we got you.
 Just use the `executeSequenceThread` method.
+====
 
 [source,java]
 ----

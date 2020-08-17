@@ -1,12 +1,11 @@
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
-import org.testng.Assert;
-
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import org.testng.Assert;
 
 /**
  * Non static wrapper for TestNG {@link Assert}
@@ -38,7 +37,7 @@ public abstract class AbstractAssertion implements Assertion {
         }
         builder.append("Expected");
         if (subject != null && !subject.isEmpty()) {
-            builder.append(" that {").append(subject).append("}");
+            builder.append(" that »").append(subject).append("«");
             builder.append(" actual");
         }
         builder.append(" [").append(actual).append("]");

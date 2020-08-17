@@ -131,7 +131,7 @@ public class GuiElement implements
     public GuiElement(GuiElement guiElement, int index) {
         this(new GuiElementData(guiElement.guiElementData, index));
         setParent(guiElement.getParent());
-        createDecoratorFacades();
+        createDecorators();
     }
 
     /**
@@ -143,7 +143,7 @@ public class GuiElement implements
         AbstractGuiElementCore realCore = (AbstractGuiElementCore)core;
         guiElementData = realCore.guiElementData;
         guiElementData.setGuiElement(this);
-        createDecoratorFacades();
+        createDecorators();
     }
 
     /**
@@ -169,7 +169,7 @@ public class GuiElement implements
         if (frames != null && frames.length > 0) {
             guiElementData.setFrameLogic(new FrameLogic(driver, frames));
         }
-        createDecoratorFacades();
+        createDecorators();
     }
 
     @Deprecated
@@ -195,38 +195,31 @@ public class GuiElement implements
         return guiElementData.getLocate();
     }
 
-    private void createDecoratorFacades() {
-        if (guiElementData.hasFrameLogic()) {
-            // if frames are set, the waiter should use frame switches when executing its sequences
-            core = new GuiElementCoreFrameAwareDecorator(core, guiElementData);
-        }
-
-        // Wrap the core with sequence decorator, such that its methods are executed with sequence
-        GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(core, guiElementData);
-
-        GuiElementWaitFactory waitFactory = Testerra.injector.getInstance(GuiElementWaitFactory.class);
-        decoratedWait = waitFactory.create(guiElementData);
-        decoratedFacade = createFacade(sequenceCore);
-    }
-
     /**
      * We cannot use the GuiElementFactory for decorating the facade here,
      * since GuiElement is not always created by it's according factory
      * and implementing a GuiElementFacadeFactory is useless.
      * You can move this code to DefaultGuiElementFactory when no more 'new GuiElement()' calls exists.
-     * But this may not happen before 2119.
      */
-    private GuiElementFacade createFacade(GuiElementCore guiElementCore) {
-        GuiElementFacade guiElementFacade;
-        guiElementFacade = new DefaultGuiElementFacade(guiElementCore);
-        guiElementFacade = new GuiElementFacadeLoggingDecorator(guiElementFacade, guiElementData);
+    private void createDecorators() {
+        if (guiElementData.hasFrameLogic()) {
+            // if frames are set, the waiter should use frame switches when executing its sequences
+            core = new GuiElementCoreFrameAwareDecorator(core, guiElementData);
+        }
+
+        GuiElementWaitFactory waitFactory = Testerra.injector.getInstance(GuiElementWaitFactory.class);
+        decoratedWait = waitFactory.create(guiElementData);
+
+        // Wrap the core with sequence decorator, such that its methods are executed with sequence
+        GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(core, guiElementData);
+        decoratedFacade = new DefaultGuiElementFacade(sequenceCore);
+        decoratedFacade = new GuiElementFacadeLoggingDecorator(decoratedFacade, guiElementData);
 
         int delayAfterAction = Properties.DELAY_AFTER_ACTION_MILLIS.asLong().intValue();
         int delayBeforeAction = Properties.DELAY_BEFORE_ACTION_MILLIS.asLong().intValue();
         if (delayAfterAction > 0 || delayBeforeAction > 0) {
-            guiElementFacade = new DelayActionsGuiElementFacade(guiElementFacade, delayBeforeAction, delayAfterAction, guiElementData);
+            decoratedFacade = new DelayActionsGuiElementFacade(decoratedFacade, delayBeforeAction, delayAfterAction, guiElementData);
         }
-        return guiElementFacade;
     }
 
     /**

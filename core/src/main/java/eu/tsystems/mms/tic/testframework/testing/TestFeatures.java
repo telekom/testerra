@@ -21,7 +21,6 @@ package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
 
 /**
  * Provides basic test features

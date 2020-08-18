@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultBinaryAssertion;
@@ -729,6 +730,7 @@ public class GuiElement implements
     /**
      * Provides access to all wait methods
      */
+    @Deprecated
     public GuiElementWait waits() {
         return decoratedWait;
     }
@@ -932,7 +934,7 @@ public class GuiElement implements
     }
 
     @Override
-    public TestableUiElement waitFor() {
+    public UiElementAssertions waitFor() {
         propertyAssertionFactory.shouldWait();
         return this;
     }

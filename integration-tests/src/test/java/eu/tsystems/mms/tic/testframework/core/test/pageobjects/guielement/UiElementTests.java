@@ -58,7 +58,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_Page_waitFor() {
         WebTestPage page = getPage();
-        Control.withElementTimeout(0, () -> {
+        Control.elementTimeout(0, () -> {
             if (page.waitFor().title().contains("Katzentitel")) {
                 Assert.assertFalse(true);
             }
@@ -172,7 +172,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_GuiElement_waitFor() {
         WebTestPage page = getPage();
-        Control.withElementTimeout(0, () -> {
+        Control.elementTimeout(0, () -> {
             if (page.notVisibleElement().waitFor().value(Attribute.STYLE).is("humbug")) {
                 Assert.assertFalse(true);
             }
@@ -208,7 +208,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
 
     @Test
     public void test_NonExistent_GuiElement_present_fails_fast() {
-        Control.withElementTimeout(0, () -> test_NonExistent_GuiElement_present_fails());
+        Control.elementTimeout(0, () -> test_NonExistent_GuiElement_present_fails());
     }
 
     @Test

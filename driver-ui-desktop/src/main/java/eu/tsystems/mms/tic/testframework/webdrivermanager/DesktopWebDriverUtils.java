@@ -23,7 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.RESTUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
@@ -62,33 +62,33 @@ public final class DesktopWebDriverUtils implements Loggable {
         }
     }
 
-    public void clickAbsolute(GuiElement guiElement) {
+    public void clickAbsolute(UiElement guiElement) {
         log().trace("Absolute navigation and click on: " + guiElement.toString());
         JSUtils utils = new JSUtils();
         utils.clickAbsolute(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 
-    public void mouseOverAbsolute2Axis(GuiElement guiElement) {
+    public void mouseOverAbsolute2Axis(UiElement guiElement) {
         JSUtils utils = new JSUtils();
         utils.mouseOverAbsolute2Axis(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 
-    public void mouseOverJS(GuiElement guiElement) {
+    public void mouseOverJS(UiElement guiElement) {
         JSUtils utils = new JSUtils();
         utils.mouseOver(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 
-    public void clickJS(GuiElement guiElement) {
+    public void clickJS(UiElement guiElement) {
         JSUtils utils = new JSUtils();
         utils.click(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 
-    public void rightClickJS(GuiElement guiElement) {
+    public void rightClickJS(UiElement guiElement) {
         JSUtils utils = new JSUtils();
         utils.rightClick(guiElement.getWebDriver(), guiElement.getWebElement());
     }
 
-    public void doubleClickJS(GuiElement guiElement) {
+    public void doubleClickJS(UiElement guiElement) {
         JSUtils utils = new JSUtils();
         utils.doubleClick(guiElement.getWebDriver(), guiElement.getWebElement());
     }

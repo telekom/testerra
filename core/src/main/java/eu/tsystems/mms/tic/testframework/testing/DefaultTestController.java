@@ -30,7 +30,7 @@ public class DefaultTestController implements TestController {
         assertionFactory.setDefault(prevClass);
     }
 
-    public void withElementTimeout(int seconds, Runnable runnable) {
+    public void elementTimeout(int seconds, Runnable runnable) {
         int prevTimeout = pageOverrides.setTimeoutSeconds(seconds);
         runnable.run();
         pageOverrides.setTimeoutSeconds(prevTimeout);

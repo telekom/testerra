@@ -22,12 +22,11 @@
  package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import org.openqa.selenium.By;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.openqa.selenium.By;
 
 /**
  * Advanced selector for elements as replacement for By
@@ -53,7 +52,7 @@ public class Locate {
     }
 
     /**
-     * @deprecated Use {@link LocateBuilder} instead
+     * @deprecated Use {@link LocateFactory} instead
      */
     @Deprecated
     public static Locate by() {
@@ -61,7 +60,7 @@ public class Locate {
     }
 
     /**
-     * @deprecated Use {@link LocateBuilder} instead
+     * @deprecated Use {@link LocateFactory} instead
      */
     @Deprecated
     public static Locate by(By by) {
@@ -71,7 +70,7 @@ public class Locate {
     }
 
     /**
-     * @deprecated Use {@link LocateBuilder} instead
+     * @deprecated Use {@link LocateFactory} instead
      */
     @Deprecated
     public static Locate by(XPath xPath) {

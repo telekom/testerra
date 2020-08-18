@@ -7,5 +7,5 @@ package eu.tsystems.mms.tic.testframework.testing;
 public interface TestController {
     void collectAssertions(Runnable runnable);
     void nonFunctionalAssertions(Runnable runnable);
-    void withElementTimeout(int seconds, Runnable runnable);
+    void elementTimeout(int seconds, Runnable runnable);
 }

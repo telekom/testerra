@@ -103,7 +103,7 @@ public interface QuantityAssertion<TYPE> extends BinaryAssertion<TYPE> {
     }
     boolean isBetween(BigDecimal lower, BigDecimal higher, String failMessage);
 
-    QuantityAssertion<TYPE> map(Function<? super TYPE, ? extends TYPE> mapFunction);
+    <MAPPED_TYPE> StringAssertion<MAPPED_TYPE> map(Function<? super TYPE, MAPPED_TYPE> mapFunction);
 
     QuantityAssertion<BigDecimal> absolute();
 }

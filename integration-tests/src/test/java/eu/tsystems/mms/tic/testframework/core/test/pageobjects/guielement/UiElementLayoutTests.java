@@ -45,7 +45,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right =  page.find(By.linkText("Open again"));
-        Control.withElementTimeout(0, () -> right.bounds().leftOf(left).isTrue());
+        Control.elementTimeout(0, () -> right.bounds().leftOf(left).isTrue());
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -53,7 +53,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.findById(5);
-        Control.withElementTimeout(0, () -> right.bounds().leftOf(left).isTrue());
+        Control.elementTimeout(0, () -> right.bounds().leftOf(left).isTrue());
     }
 
     /*
@@ -73,7 +73,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.find(By.linkText("Open again"));
-        Control.withElementTimeout(0, () -> left.bounds().rightOf(right).isTrue());
+        Control.elementTimeout(0, () -> left.bounds().rightOf(right).isTrue());
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -81,7 +81,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.findById(5);
-        Control.withElementTimeout(0, () -> left.bounds().rightOf(right).isTrue());
+        Control.elementTimeout(0, () -> left.bounds().rightOf(right).isTrue());
     }
 
     /*
@@ -101,7 +101,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement oben = page.findById(1);
         UiElement unten = page.findById(5);
-        Control.withElementTimeout(0, () -> unten.bounds().above(oben).isTrue());
+        Control.elementTimeout(0, () -> unten.bounds().above(oben).isTrue());
     }
 
     /*
@@ -121,7 +121,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement oben = page.findById(1);
         UiElement unten = page.findById(5);
-        Control.withElementTimeout(0, () -> oben.bounds().below(unten).isTrue());
+        Control.elementTimeout(0, () -> oben.bounds().below(unten).isTrue());
     }
 
     /*
@@ -141,7 +141,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1).find(By.xpath("./.."));
         UiElement e2 = page.findById(11);
-        Control.withElementTimeout(0, () -> e1.bounds().fromTop().toTopOf(e2).is(0));
+        Control.elementTimeout(0, () -> e1.bounds().fromTop().toTopOf(e2).is(0));
     }
 
     @Test
@@ -169,7 +169,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1).find(By.xpath("./.."));
         UiElement e2 = page.findById(11);
-        Control.withElementTimeout(0, () -> e1.bounds().fromBottom().toBottomOf(e2).is(0));
+        Control.elementTimeout(0, () -> e1.bounds().fromBottom().toBottomOf(e2).is(0));
     }
 
     @Test
@@ -197,7 +197,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1);
         UiElement e2 = page.findById(3);
-        Control.withElementTimeout(0, () -> e1.bounds().fromLeft().toLeftOf(e2).is(0));
+        Control.elementTimeout(0, () -> e1.bounds().fromLeft().toLeftOf(e2).is(0));
     }
 
     @Test
@@ -227,7 +227,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1);
         UiElement e2 = page.findById(3);
-        Control.withElementTimeout(0, () -> e1.bounds().fromRight().toRightOf(e2).is(0));
+        Control.elementTimeout(0, () -> e1.bounds().fromRight().toRightOf(e2).is(0));
     }
 
     @Test

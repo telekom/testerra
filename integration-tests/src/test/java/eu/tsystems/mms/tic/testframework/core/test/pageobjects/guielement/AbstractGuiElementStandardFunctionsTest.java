@@ -257,14 +257,14 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
 
     @Test
     public void testT23_GuiElement_findByIDUnique() {
-        GuiElement guiElement = getGuiElementBy(Locator.by(By.id("11")).unique());
+        GuiElement guiElement = getGuiElementBy(Locate.by(By.id("11")).unique());
         WebElement webElement = guiElement.getWebElement();
         Assert.assertNotNull(webElement);
     }
 
     @Test
     public void test_GuiElement_findNonUnique() {
-        GuiElement guiElement = getGuiElementBy(Locator.by(By.xpath("//div")).unique());
+        GuiElement guiElement = getGuiElementBy(Locate.by(By.xpath("//div")).unique());
         try {
             WebElement webElement = guiElement.getWebElement();
         } catch (TimeoutException e) {

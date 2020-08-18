@@ -33,7 +33,7 @@ import org.openqa.selenium.By;
  *
  * @author Mike Reiche
  */
-public class LocateBuilder {
+public class LocateFactory {
     public Locate by(By by) {
         return new Locate(by);
     }

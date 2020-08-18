@@ -96,7 +96,7 @@ public class XPath {
         }
     }
 
-    public XPath classNames(Object ... classes) {
+    public XPath classes(Object ... classes) {
         return attribute("class").hasWords(classes);
     }
 
@@ -104,19 +104,27 @@ public class XPath {
         return new Function(this, "@"+attribute.toString());
     }
 
+    public XPath attribute(Attribute attribute, Object value) {
+        return attribute(attribute).is(value);
+    }
+
     public Function text() {
         return new Function(this, ".//text()");
     }
 
-    public XPath text(Object string) {
-        return text().is(string);
+    public XPath text(Object value) {
+        return text().is(value);
     }
 
     public Function attribute(String attribute) {
         return new Function(this, "@"+attribute);
     }
 
-    private static String translateSubSelection(String selector) {
+    public XPath attribute(String attribute, Object value) {
+        return attribute(attribute).is(value);
+    }
+
+    protected static String translateSubSelection(String selector) {
         if (!selector.startsWith("/")
                 /**
                  * Workaround for {https://jira.t-systems-mms.eu/browse/XETA-858}
@@ -128,7 +136,7 @@ public class XPath {
         return selector;
     }
 
-    private String translateInnerSelection(String selector) {
+    protected static String translateInnerSelection(String selector) {
         if (selector.startsWith("//")) {
             return selector.replace("//","descendant::");
         } else if (selector.startsWith("/")) {

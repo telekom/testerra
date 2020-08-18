@@ -46,10 +46,10 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
     }
 
     @Override
-    public QuantityAssertion<TYPE> map(Function<? super TYPE, ? extends TYPE> mapFunction) {
-        return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<TYPE>() {
+    public <MAPPED_TYPE> StringAssertion<MAPPED_TYPE> map(Function<? super TYPE, MAPPED_TYPE> mapFunction) {
+        return propertyAssertionFactory.create(DefaultStringAssertion.class, this, new AssertionProvider<MAPPED_TYPE>() {
             @Override
-            public TYPE getActual() {
+            public MAPPED_TYPE getActual() {
                 return mapFunction.apply(provider.getActual());
             }
 

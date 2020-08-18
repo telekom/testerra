@@ -13,7 +13,7 @@ public class LocateTest extends AbstractTestSitesTest implements UiElementCreato
 
     @Test
     public void locateByClass() {
-        UiElement div = find(XPath.from("div").classNames("element", "multiple"));
+        UiElement div = find(XPath.from("div").classes("element", "multiple"));
         div.text().contains("This element has multiple classes");
     }
 
@@ -58,20 +58,20 @@ public class LocateTest extends AbstractTestSitesTest implements UiElementCreato
 
     @Test
     public void testLocateByClassWord() {
-        UiElement div = find(XPath.from("*").classNames("header","large"));
+        UiElement div = find(XPath.from("*").classes("header","large"));
         div.text().is("You found me");
     }
 
     @Test
     public void testLocatePosition() {
         UiElement li;
-        li = find(XPath.from("ul").classNames("list-group").select("li",1));
+        li = find(XPath.from("ul").classes("list-group").select("li",1));
         li.text().is("Affe");
 
-        li = find(XPath.from("ul").classNames("list-group").select("li",2));
+        li = find(XPath.from("ul").classes("list-group").select("li",2));
         li.text().is("Katze");
 
-        li = find(XPath.from("ul").classNames("list-group").select("li",-1));
+        li = find(XPath.from("ul").classes("list-group").select("li",-1));
         li.text().is("Kuh");
     }
 

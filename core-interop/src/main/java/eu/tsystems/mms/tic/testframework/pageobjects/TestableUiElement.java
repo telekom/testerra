@@ -7,5 +7,5 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementAssertion
  * @author Mike Reiche
  */
 public interface TestableUiElement extends UiElementAssertions {
-    TestableUiElement waitFor();
+    UiElementAssertions waitFor();
 }

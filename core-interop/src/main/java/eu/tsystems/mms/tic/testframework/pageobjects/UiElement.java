@@ -37,7 +37,8 @@ public interface UiElement extends
     InteractiveUiElement,
     Nameable<UiElement>,
     WebDriverRetainer,
-    HasParent
+    HasParent,
+    UiElementLocator
 {
     enum Properties implements IProperties {
         @Deprecated
@@ -106,7 +107,7 @@ public interface UiElement extends
         return find(By.id(id.toString()));
     }
     default UiElement findByQa(String qa) {
-        return find(Locate.by().qa(qa));
+        return find(Locate.byQa(qa));
     }
 
     UiElementList<UiElement> list();

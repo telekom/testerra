@@ -1,12 +1,13 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import java.math.BigDecimal;
+import java.util.function.Function;
 
 /**
  * Allows numeric range based assertions
  * @author Mike Reiche
  */
-public interface QuantityAssertion<T> extends BinaryAssertion<T> {
+public interface QuantityAssertion<TYPE> extends BinaryAssertion<TYPE> {
     default boolean is(Object expected) {
         return is(expected, null);
     }
@@ -101,6 +102,8 @@ public interface QuantityAssertion<T> extends BinaryAssertion<T> {
         return isBetween(lower, higher, null);
     }
     boolean isBetween(BigDecimal lower, BigDecimal higher, String failMessage);
+
+    QuantityAssertion<TYPE> map(Function<? super TYPE, ? extends TYPE> mapFunction);
 
     QuantityAssertion<BigDecimal> absolute();
 }

@@ -2,10 +2,11 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import java.math.BigDecimal;
+import java.util.function.Function;
 
-public class DefaultQuantityAssertion<T> extends DefaultBinaryAssertion<T> implements QuantityAssertion<T> {
+public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE> implements QuantityAssertion<TYPE> {
 
-    public DefaultQuantityAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+    public DefaultQuantityAssertion(PropertyAssertion parentAssertion, AssertionProvider<TYPE> provider) {
         super(parentAssertion, provider);
     }
 
@@ -42,6 +43,21 @@ public class DefaultQuantityAssertion<T> extends DefaultBinaryAssertion<T> imple
     @Override
     public boolean isBetween(BigDecimal lower, BigDecimal higher, String failMessage) {
         return testTimer(t -> instantAssertion.assertBetween(new BigDecimal(provider.getActual().toString()), lower, higher, new Assertion.Message(failMessage, traceSubjectString())));
+    }
+
+    @Override
+    public QuantityAssertion<TYPE> map(Function<? super TYPE, ? extends TYPE> mapFunction) {
+        return propertyAssertionFactory.create(DefaultQuantityAssertion.class, this, new AssertionProvider<TYPE>() {
+            @Override
+            public TYPE getActual() {
+                return mapFunction.apply(provider.getActual());
+            }
+
+            @Override
+            public String getSubject() {
+                return "map";
+            }
+        });
     }
 
     @Override

@@ -23,6 +23,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
@@ -204,7 +205,9 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1);
         UiElement e2 = page.findById(3);
-        e1.bounds().fromLeft().toLeftOf(e2).absolute().isLowerEqualThan(20);
+        QuantityAssertion<Integer> integerQuantityAssertion = e1.bounds().fromLeft().toLeftOf(e2);
+        integerQuantityAssertion.map(integer -> Math.abs(integer)).isLowerEqualThan(20);
+        integerQuantityAssertion.absolute().isLowerEqualThan(20);
     }
 
     /*

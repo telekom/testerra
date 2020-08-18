@@ -102,12 +102,12 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         }
 
         if (guiElementData.getWebElement() == null) {
-            String message = String.format("{%s} not found", guiElementData.toString(true));
+            ElementNotFoundException exception = new ElementNotFoundException(guiElementData.getGuiElement(), cause);
             MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
             if (currentMethodContext != null) {
-                currentMethodContext.errorContext().setThrowable(message, cause);
+                currentMethodContext.errorContext().setThrowable(exception.getMessage(), cause);
             }
-            throw new ElementNotFoundException(message, cause);
+            throw exception;
         }
         return elements;
     }

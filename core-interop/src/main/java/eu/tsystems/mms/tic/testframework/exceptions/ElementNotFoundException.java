@@ -21,6 +21,8 @@
  */
  package eu.tsystems.mms.tic.testframework.exceptions;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+
 /**
  * Runtime Exception, stating that a GUI Element is missing.
  */
@@ -31,23 +33,22 @@ public class ElementNotFoundException extends RuntimeException {
      */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor
-     *
-     * @param text Exception message.
-     */
-    public ElementNotFoundException(final String text) {
-        super(text);
+    public ElementNotFoundException(UiElement element) {
+        this(element,null);
+    }
+
+    public ElementNotFoundException(UiElement element, Throwable cause) {
+        this("»"+element.toString(true) + "« not found", cause);
     }
 
     /**
      * Constructor with exception.
      *
      * @param text Exception message.
-     * @param exception exception for message output
+     * @param cause exception for message output
      */
-    public ElementNotFoundException(final String text, final Exception exception) {
-        super(text, exception);
+    private ElementNotFoundException(final String text, final Throwable cause) {
+        super(text, cause);
     }
 
 

@@ -19,8 +19,11 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.testng.worker;
+ package eu.tsystems.mms.tic.testframework.worker;
 
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.Worker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.WorkerExecutor;
 import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
 import org.testng.ISuite;
 import org.testng.xml.XmlSuite;

@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.utils;
+ package report.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
@@ -36,7 +36,12 @@ import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestContainer;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.ThreadVisualizer;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+import org.apache.velocity.VelocityContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,26 +52,25 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import org.apache.velocity.VelocityContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Utility functions for Reporting.
  *
  * @author sepr
  */
-public final class ReportUtils {
+public final class ReportUtilsA {
+
+    // TODO: consolidate with ReportUtils of core module
 
     /**
      * Logger instance.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReportUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReportUtilsA.class);
 
     /**
      * Hide constructor
      */
-    private ReportUtils() {
+    private ReportUtilsA() {
     }
 
     /**
@@ -428,9 +432,9 @@ public final class ReportUtils {
         /*
         Logs
          */
-        LoggingDispatcher.stopReportLogging();
+        LoggingDispatcherA.stopReportLogging();
         final File reportFileGlobalLogs = new File(framesDir, "logs.html");
-        ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData.classContexts, "log.vm", LoggingDispatcher.UNRELATED_LOGS, null);
+        ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData.classContexts, "log.vm", LoggingDispatcherA.UNRELATED_LOGS, null);
 
         /*
         Memory consumption
@@ -455,7 +459,7 @@ public final class ReportUtils {
         context.put("methods", methodsWithAcknowledgements);
         context.put("pagetitle", "Acknowledgements");
         context.put("status", TestStatusController.Status.values());
-        ReportUtils.addExtraTopLevelTab("stateChanges.vm", "classes/acknowledgements.html", "Acknowledgements", "Acknowledgements", context, false);
+        ReportUtilsA.addExtraTopLevelTab("stateChanges.vm", "classes/acknowledgements.html", "Acknowledgements", "Acknowledgements", context, false);
     }
 
     public static void createMethodDetailsStepsView(MethodContext methodContext) {
@@ -480,6 +484,11 @@ public final class ReportUtils {
 
     public static String getReportName() {
         return ExecutionContextController.getCurrentExecutionContext().runConfig.getReportName();
+    }
+
+    public static void generateReportEssentials() {
+        PerfTestContainer.prepareMeasurementsForTesterraReport();
+        GenerateReport.generateReport();
     }
 
     public static class TabInfo {

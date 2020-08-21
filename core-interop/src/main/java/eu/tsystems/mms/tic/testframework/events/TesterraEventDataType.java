@@ -22,6 +22,9 @@
  package eu.tsystems.mms.tic.testframework.events;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.SynchronizableContext;
+import org.testng.reporters.JUnitXMLReporter;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -58,7 +61,14 @@ public enum TesterraEventDataType implements ITesterraEventDataType {
     CONTEXT(SynchronizableContext.class),
 
     WITH_PARENT(Boolean.class),
-    RECURSIVE(Boolean.class);
+    RECURSIVE(Boolean.class),
+
+    // reporting
+    OUTPUT_DIR(String.class),
+    XML_SUITES(List.class),
+    SUITES(List.class),
+    XML_REPORTER(JUnitXMLReporter.class);
+
 
     private Class typeClass;
 

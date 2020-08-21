@@ -23,7 +23,10 @@
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
+import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
@@ -58,7 +61,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
@@ -454,7 +456,15 @@ public class TesterraListener implements
             List<ISuite> suites,
             String outputDirectory
     ) {
-        GenerateReport.runOnce(xmlSuites, suites, outputDirectory, XML_REPORTER);
+
+        final TesterraEvent generateReportEvent = new TesterraEvent(TesterraEventType.GENERATE_REPORT)
+                .addData(TesterraEventDataType.XML_SUITES, xmlSuites)
+                .addData(TesterraEventDataType.SUITES, suites)
+                .addData(TesterraEventDataType.OUTPUT_DIR, outputDirectory)
+                .addData(TesterraEventDataType.XML_REPORTER, XML_REPORTER);
+
+        // fire Event for report generation via static-report module
+        TesterraEventService.getInstance().fireEvent(generateReportEvent);
     }
 
     @Override

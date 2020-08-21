@@ -50,6 +50,8 @@ public enum TesterraEventType implements ITesterraEventType {
     @Deprecated
     TAKE_SCREENSHOTS,
 
-    CONTEXT_UPDATE
+    CONTEXT_UPDATE,
+
+    GENERATE_REPORT
 
 }

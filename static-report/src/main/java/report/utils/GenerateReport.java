@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.utils;
+ package report.utils;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
@@ -27,9 +27,9 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorkerExecutor;
+import eu.tsystems.mms.tic.testframework.worker.GenerateReportsWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateOtherOutputsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateTesterraReportWorker;
+
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.TestEndEventWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
@@ -42,6 +42,7 @@ import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import org.slf4j.Logger;
@@ -107,7 +108,6 @@ public class GenerateReport {
 
             FrameworkUtils.addWorkersToExecutor(TesterraListener.GENERATE_REPORTS_WORKERS, workerExecutor);
 
-            workerExecutor.add(new GenerateTesterraReportWorker());
             workerExecutor.add(new GenerateOtherOutputsWorker());
 
             // run workers
@@ -238,7 +238,7 @@ public class GenerateReport {
         reportingData.failureCorridorMatched = FailureCorridor.isCorridorMatched();
         reportingData.classContexts = allClassContexts;
 
-        ReportUtils.createReport(reportingData);
+        ReportUtilsA.createReport(reportingData);
     }
 
     private static Map<String, List<MethodContext>> sortTestMethodContainerMap(final Map<String, List<MethodContext>> inputMap) {

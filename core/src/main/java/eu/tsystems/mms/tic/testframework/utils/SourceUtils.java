@@ -211,7 +211,7 @@ public final class SourceUtils {
             return source;
         }
         else {
-            LOGGER.warn("Did not find source for " + filename + " in " + sourceRoot);
+            LOGGER.debug("Did not find source for " + filename + " in " + sourceRoot);
             return null;
         }
     }

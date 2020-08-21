@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+group 'eu.tsystems.mms.tic.testerra'
+version '1-SNAPSHOT'
+
+
+dependencies {
+    compile core
+    compile core_interop
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

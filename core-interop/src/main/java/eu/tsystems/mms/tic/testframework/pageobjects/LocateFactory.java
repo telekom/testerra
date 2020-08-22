@@ -45,4 +45,7 @@ public class LocateFactory {
     public Locate byQa(String string) {
         return by(XPath.from("*").attribute(UiElement.Properties.QA_ATTRIBUTE.asString()).is(string));
     }
+    public Locate prepare(final String format) {
+        return new Locate(format);
+    }
 }

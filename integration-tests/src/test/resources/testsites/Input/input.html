@@ -340,9 +340,15 @@
 </div>
 
     <legend>
-        <label>Click Fallback test</label>
-        <button style="display: none;" id="btnDisabled" onclick="javascript:document.getElementById('btnDisabled').innerText = 'Clicked';">Disabled Button</button>
-        <button id="btnEnable" onclick="javascript:document.getElementById('btnDisabled').style.display = 'block';">Enable Button</button>
+        <label>Retry-Test</label>
+        <script>
+            function disableMyself() {
+                window.setTimeout(function() {
+                    document.getElementById('disableMyselfBtn').disabled = true;
+                }, 5000);
+            }
+        </script>
+        <button id="disableMyselfBtn" onclick="disableMyself()">Disable Myself</button>
     </legend>
 
 </body>

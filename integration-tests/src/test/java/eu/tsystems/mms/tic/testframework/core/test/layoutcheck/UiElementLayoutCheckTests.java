@@ -72,7 +72,7 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     public void testCheckElementLayoutDistance() {
         BasePage page = preparePage();
         UiElement guiElement = page.findByQa("section/layoutTestArticle");
-        Control.elementTimeout(0, () -> guiElement.screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
+        Control.retryFor(10).withTimeout(0, () -> guiElement.screenshot().pixelDistance("TestArticleFailed").isLowerThan(1));
     }
 
     @Test
@@ -86,6 +86,6 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     @Test(expectedExceptions = AssertionError.class)
     public void testCheckPageLayout_failed() {
         BasePage page = preparePage();
-        Control.elementTimeout(0, () -> page.screenshot().pixelDistance("LayoutTestPage").isGreaterThan(100));
+        Control.withTimeout(0, () -> page.screenshot().pixelDistance("LayoutTestPage").isGreaterThan(100));
     }
 }

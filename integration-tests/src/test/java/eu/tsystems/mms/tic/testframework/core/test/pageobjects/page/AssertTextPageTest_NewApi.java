@@ -46,7 +46,7 @@ public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements 
 
     @Test
     public void testT11_assertIsTextPresent() {
-        Control.elementTimeout(0, () -> {
+        Control.withTimeout(0, () -> {
             WebTestFramedPage page = getPage();
             page.anyElementContainsText("Frame1234").present().isTrue();
         });
@@ -54,7 +54,7 @@ public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements 
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_assertIsTextPresent_fails() {
-        Control.elementTimeout(0, () -> {
+        Control.withTimeout(0, () -> {
             WebTestFramedPage page = getPage();
             page.anyElementContainsText("Bifi").present().isTrue();
         });
@@ -62,7 +62,7 @@ public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements 
 
     @Test
     public void testT13_assertIsNotTextPresent() {
-        Control.elementTimeout(0, () -> {
+        Control.withTimeout(0, () -> {
             WebTestFramedPage page = getPage();
             page.anyElementContainsText("Bifi").present().isFalse();
         });
@@ -70,7 +70,7 @@ public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements 
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_assertIsNotTextPresent_fails() {
-        Control.elementTimeout(0, () -> {
+        Control.withTimeout(0, () -> {
             WebTestFramedPage page = getPage();
             page.anyElementContainsText("Frame1234").present().isFalse();
         });
@@ -78,7 +78,7 @@ public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements 
 
     @Test
     public void testT21_assertIsTextDisplayed() {
-        Control.elementTimeout(0, () -> {
+        Control.withTimeout(0, () -> {
             WebTestFramedPage page = getPage();
             page.anyElementContainsText("Frame1234").displayed().isTrue();
         });
@@ -86,7 +86,7 @@ public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements 
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_assertIsTextDisplayed_fails() {
-        Control.elementTimeout(0, () -> {
+        Control.withTimeout(0, () -> {
             WebTestFramedPage page = getPage();
             page.anyElementContainsText("Bifi").displayed().isTrue();
         });
@@ -94,7 +94,7 @@ public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements 
 
     @Test
     public void testT23_assertIsNotTextDisplayed() {
-        Control.elementTimeout(0, () -> {
+        Control.withTimeout(0, () -> {
             WebTestFramedPage page = getPage();
             page.anyElementContainsText("Bifi").displayed().isFalse();
         });
@@ -102,7 +102,7 @@ public class AssertTextPageTest_NewApi extends AbstractTestSitesTest implements 
 
     @Test(expectedExceptions = AssertionError.class)
     public void test_assertIsNotTextDisplayed_fails() {
-        Control.elementTimeout(0, () -> {
+        Control.withTimeout(0, () -> {
             WebTestFramedPage page = getPage();
             page.anyElementContainsText("Frame1234").displayed().isFalse();
         });

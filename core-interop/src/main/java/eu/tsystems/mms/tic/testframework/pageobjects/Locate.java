@@ -40,137 +40,13 @@ public class Locate {
     private By by;
     private String preparedFormat;
 
-    Locate() {
-    }
-
     Locate(By by) {
         this.by = by;
     }
 
-    Locate(XPath xPath) {
-        this.xpath(xPath.toString());
+    Locate(String preparedFormat) {
+        this.preparedFormat = preparedFormat;
     }
-
-    /**
-     * @deprecated Use {@link LocateFactory} instead
-     */
-    @Deprecated
-    public static Locate by() {
-        return new Locate();
-    }
-
-    /**
-     * @deprecated Use {@link LocateFactory} instead
-     */
-    @Deprecated
-    public static Locate by(By by) {
-        Locate locate = new Locate();
-        locate.by = by;
-        return locate;
-    }
-
-    /**
-     * @deprecated Use {@link LocateFactory} instead
-     */
-    @Deprecated
-    public static Locate by(XPath xPath) {
-        return by().xpath(xPath.toString());
-    }
-
-    /**
-     * @param id The value of the "id" attribute to search for.
-     * @return A By which locates elements by the value of the "id" attribute.
-     */
-    @Deprecated
-    public Locate id(Object id) {
-        this.by = new By.ById(id.toString());
-        return this;
-    }
-
-    /**
-     * @param linkText The exact text to match against.
-     * @return A By which locates A elements by the exact text it displays.
-     */
-    @Deprecated
-    public Locate linkText(String linkText) {
-        by = new By.ByLinkText(linkText);
-        return this;
-    }
-
-    /**
-     * @param partialLinkText The partial text to match against
-     * @return a By which locates elements that contain the given link text.
-     */
-    @Deprecated
-    public Locate partialLinkText(String partialLinkText) {
-        by = new By.ByPartialLinkText(partialLinkText);
-        return this;
-    }
-
-    /**
-     * @param name The value of the "name" attribute to search for.
-     * @return A By which locates elements by the value of the "name" attribute.
-     */
-    @Deprecated
-    public Locate name(String name) {
-        by = new By.ByName(name);
-        return this;
-    }
-
-    /**
-     * @param tagName The element's tag name.
-     * @return A By which locates elements by their tag name.
-     */
-    @Deprecated
-    public Locate tagName(String tagName) {
-        by = new By.ByTagName(tagName);
-        return this;
-    }
-
-    /**
-     * @param xpathExpression The XPath to use.
-     * @return A By which locates elements via XPath.
-     */
-    @Deprecated
-    public Locate xpath(String xpathExpression) {
-        by = new By.ByXPath(xpathExpression);
-        return this;
-    }
-
-    /**
-     * Find elements based on the value of the "class" attribute. If an element has multiple classes, then
-     * this will match against each of them. For example, if the value is "one two onone", then the
-     * class names "one" and "two" will match.
-     *
-     * @param className The value of the "class" attribute to search for.
-     * @return A By which locates elements by the value of the "class" attribute.
-     */
-    @Deprecated
-    public Locate className(String className) {
-        by = new By.ByClassName(className);
-        return this;
-    }
-
-    /**
-     * Find elements via the driver's underlying W3C Selector engine. If the browser does not
-     * implement the Selector API, a best effort is made to emulate the API. In this case, we strive
-     * for at least CSS2 support, but offer no guarantees.
-     *
-     * @param cssSelector CSS expression.
-     * @return A By which locates elements by CSS.
-     */
-    @Deprecated
-    public Locate cssSelector(String cssSelector) {
-        by = new By.ByCssSelector(cssSelector);
-        return this;
-    }
-
-    @Deprecated
-    public Locate qa(String string) {
-        by = new By.ByXPath(String.format("//*[@%s='%s']", UiElement.Properties.QA_ATTRIBUTE.asString(), string));
-        return this;
-    }
-
 
     public By getBy() {
         return this.by;
@@ -216,27 +92,14 @@ public class Locate {
     }
 
     /**
-     * Prepares a xpath selector
-     * @param format
-     * @return
-     */
-    @Deprecated
-    public static Locate prepare(final String format) {
-        final Locate locate = new Locate();
-        locate.preparedFormat = format;
-        return locate;
-    }
-
-    /**
      * Formats an xpath selector
      * @param args
      * @return
      */
-    @Deprecated
     public Locate with(Object... args) {
-        Locate locate = by();
+        Locate locate = new Locate(By.xpath(String.format(preparedFormat, args)));
         locate.unique = unique;
         locate.filters = filters;
-        return locate.xpath(String.format(preparedFormat, args));
+        return locate;
     }
 }

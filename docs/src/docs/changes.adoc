@@ -61,7 +61,7 @@ MyPage page = PageFactory.create(
 ====
 
 [CAUTION]
-.Constructor instantiation of Pages is forbidden!
+.Constructor instantiation of Pages is prohibited!
 ====
 ```java
 MyPage page = new MyPage(WebDriverManager.getWebDriver());
@@ -100,7 +100,7 @@ class MyPage extends Page {
 ```
 
 [CAUTION]
-.Performing explicit page checks is forbidden!
+.Performing explicit page checks is prohibited!
 ====
 ```java
 class MyPage extends Page {
@@ -113,8 +113,8 @@ class MyPage extends Page {
 MyPage page = pageFactory.create(MyPage.class);
 page.checkPage(); <2>
 ```
-<1> Calling `checkPage()` as `protected` member is forbidden
-<2> Calling `checkPage()` as `public` member is forbidden
+<1> Calling `checkPage()` as `protected` member is prohibited
+<2> Calling `checkPage()` as `public` member is prohibited
 ====
 
 === Element instantiation
@@ -248,12 +248,13 @@ if (guiElement.waits().waitForIsDisplayed()) {
 Support of more features through consistent assertion API
 ```java
 uiElement.css("display").is("none"); <1>
-uiElement.text().matches("^Hello\\s.orld").isTrue(); <2>
-page.anyElementContainsText("You see me").numberOfElements().is(1); <3>
+uiElement.text().map(value -> value.toLowerCase()).matches("^hello\\s.orld").isTrue(); <2,3>
+page.anyElementContainsText("You see me").numberOfElements().is(1); <4>
 ```
 <1> Perform assertions on the element's CSS properties
-<2> Regular expression assertions
-<3> Perform GuiElement assertions on found text nodes
+<2> Map values
+<3> Regular expression assertions
+<4> Perform GuiElement assertions on found text nodes
 
 Custom failure messages
 ```java
@@ -282,21 +283,45 @@ UITestUtils.takeScreenshot(page.getWebDriver(), true);
 ==== Layout based Assertions
 The new standard way to perform layout based assertions is now
 ```java
+// Element is beside another element
+UiElement left = find(By.id("left"));
+UiElement right = find(By.id("right"));
 left.bounds().leftOf(right).isTrue(); <1>
-left.bounds().fromRight().toRightOf(right).is(0); <2>
-parent.bounds().contains(child).isTrue();
 left.bounds().intersects(right).isFalse();
+
+// Elements aligned to the same right
+UiElement top = find(By.id("top"));
+UiElement bottom = find(By.id("bottom"));
+top.bounds().fromRight().toRightOf(bottom).is(0);<2>
+
+// Element contains another element
+UiElement body = find(By.tagName("body"));
+UiElement nav = parent.find(By.tagName("nav"));
+body.bounds().contains(nav).isTrue();
 ```
 [NOTE]
 .Using the `assertLayout()` method is now `@deprecated`
 ====
 ```java
 left.asserts().assertLayout(Layout.outer().leftOf(right)); <1>
-left.asserts().assertLayout(Layout.outer().sameRight(right, 0)); <2>
+top.asserts().assertLayout(Layout.outer().sameRight(bottom, 0)); <2>
 ```
 ====
 
-==== Collected Assertions
+=== Control API
+
+With the `TestController` API, you are able to control your test flow during runtime. Like timeouts, assertion handling and retry intervals.
+The `Control` instance is availabe as soon you implement the `TestFeatures` interface.
+
+```java
+class MyPage extends Page implements TestFeatures {
+    public void doSomething() {
+        Control.collectAssertions();
+    }
+}
+```
+
+=== Collected Assertions
 
 The new standard way to collect assertions of GuiElements in Tests or Pages is now
 ```java
@@ -453,12 +478,12 @@ page.setElementTimeoutInSeconds(1);
 
 Override during runtime
 ```java
-Control.withElementTimeout(1, () -> uiElement.displayed().isTrue());
+Control.withTimeout(1, () -> uiElement.displayed().isTrue());
 ```
 
 For many GuiElements or Pages
 ```java
-Control.withElementTimeout(1, () -> {
+Control.withTimeout(1, () -> {
     MyPage page = pageFactory.create(MyPage.class);
     page.title().is("TestPage");
     uiElement.value().contains("Hello");
@@ -469,7 +494,7 @@ For other test methods
 ```java
 @Test
 public void test_TestSomething_fast() {
-    Control.withElementTimeout(1, () -> test_TestSomething());
+    Control.withTimeout(1, () -> test_TestSomething());
 }
 ```
 
@@ -483,53 +508,110 @@ POConfig.removeThreadLocalUiElementTimeout();
 ```
 ====
 
+=== Retry
+
+It sometimes happens, that you need to retry a whole sequence of operations.
+
+```java
+Control.retryFor(5, () -> {
+    button.click();
+    button.enabled().isFalse();
+);
+```
+
+That will retry to click a button for 5 seconds until it's disabled.
+
+You can combine these features with the fluent API design, to completely disable the internal element timeout.
+
+```java
+Control.retryFor(10).withTimeout(0, () -> {
+    button.click();
+    guiElement.scrollIntoView();
+    guiElement.visible(false).isTrue();
+});
+```
+
 === New Locator interface
 
-The `Locate.by()` method allows you to pass a new introduced `XPath` object, that helps you to build failsafe xpathes optimized for HTML.
+The new `XPath` class helps you to build failsafe xpathes optimized for HTML. But it's restricted to search elements from top down. Once you changed the
+scope of an element by `contains` or `select` you cannot go back.
 
 This is what the basic syntax looks like
 ```java
-UiElement div = find(Locate.by(XPath.node("div")));
+UiElement div = find(XPath.from("div"));
 ```
 
 But it supports many other features you need when you select
 elements from the DOM, like first and last element.
 ```java
-XPath.node("td", 1);
-XPath.node("td", -1);
+XPath.from("td", 1);
+XPath.from("td", -1);
 ```
 
-Elements that have classes
+==== Elements that have classes
 
 ```java
-XPath.node("div").classNames("navigation", "header"); <1>
+XPath.from("div").classes("navigation", "header");
 ```
-<1> This will find elements like `<div class="header large navigation">` and not `<div class="navigation-header">`
+This will find elements like
+```html
+<div class="header large navigation">
+```
+but not
+```html
+<div class="navigation-header">
+```
 
-Select an element that contains another element
+==== Select an element that contains another element
 
 ```java
-XPath.node("nav")
-    .classNames("mobile")
+XPath.from("nav")
+    .classes("mobile")
     .contains("div")
-        .classNames("navigation", "header");
+        .classes("navigation", "header");
 ```
 
-Select an element by its text
-```java
-XPath.node("*").textWords("Login here"); <1>
+This will find elements like
+```html
+<nav class="mobile"><div class="navigation header"></nav>
 ```
-<1> This will find elements like
+
+==== Select an element by its text
+```java
+XPath.from("*").text().words("Login", "here");
+XPath.from("*").text().contains("first");
+XPath.from("*").text().endsWith("here ");
+```
+This will find elements like
 ```html
 <a> Login first
     here </a>
 ```
-Select a sub element
+
+==== Select by attributes
+
 ```java
-XPath.node("form")
-    .attribute("name", "login")
+XPath.from("*").attribute("src").endsWith(".png");
+```
+
+This will find elements like
+
+```html
+<img src="http://example.com/image.png"/>
+```
+
+==== Select a sub element
+```java
+XPath.from("form")
+    .attribute("name", "login") // shortcut for attribute("name").is("login")
     .select("button")
-        .textWords("Login");
+        .text().words("Login");
+```
+This will find elements like
+```html
+<form name="login">
+    <button>Login here</button>
+</form>
 ```
 
 === The internals

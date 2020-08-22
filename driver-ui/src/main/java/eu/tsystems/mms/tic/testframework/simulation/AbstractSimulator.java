@@ -2,9 +2,9 @@ package eu.tsystems.mms.tic.testframework.simulation;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
@@ -77,7 +77,7 @@ public class AbstractSimulator implements UiElementActions {
     }
 
     @Override
-    public TestableUiElement waitFor() {
+    public UiElementAssertions waitFor() {
         return guiElement.waitFor();
     }
 

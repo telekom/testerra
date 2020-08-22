@@ -6,6 +6,11 @@ package eu.tsystems.mms.tic.testframework.testing;
  */
 public interface TestController {
     void collectAssertions(Runnable runnable);
+    TestController collectAssertions();
     void nonFunctionalAssertions(Runnable runnable);
-    void elementTimeout(int seconds, Runnable runnable);
+    TestController nonFunctionalAssertions();
+    void withTimeout(int seconds, Runnable runnable);
+    TestController withTimeout(int seconds);
+    void retryFor(int seconds, Runnable runnable);
+    TestController retryFor(int seconds);
 }

@@ -30,8 +30,8 @@ import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 
 public class Timer implements Loggable {
 
-    private static final long SLEEP_TIME_IN_MS_MININMAL = 50;
-    private static final long DURATION_IN_MS_MINIMAL = 100;
+    private static final long SLEEP_TIME_IN_MS_MININMAL = 0;
+    private static final long DURATION_IN_MS_MINIMAL = 0;
 
     private long startTime = 0;
     private long sleepTimeInMs;
@@ -45,12 +45,8 @@ public class Timer implements Loggable {
      * @param durationInMs Maximum Duration of Sleep
      */
     public Timer(long sleepTimeInMs, long durationInMs) {
-        if (sleepTimeInMs > durationInMs) {
-            log().error("SleepTime should not be greater than Duration of Timer. It will result in only one execution: " +
-                    sleepTimeInMs + " > " + durationInMs);
-        }
-        this.sleepTimeInMs = sleepTimeInMs;
-        this.durationInMs = durationInMs;
+        setSleepTimeInMs(sleepTimeInMs);
+        setDurationInMs(durationInMs);
     }
 
     /**
@@ -131,17 +127,6 @@ public class Timer implements Loggable {
         thread.start();
     }
 
-    private void checkTimerValues() {
-        if (sleepTimeInMs < SLEEP_TIME_IN_MS_MININMAL) {
-            log().warn("invalid timer sleep time: " + sleepTimeInMs + ", setting it to " + SLEEP_TIME_IN_MS_MININMAL);
-            sleepTimeInMs = SLEEP_TIME_IN_MS_MININMAL;
-        }
-        if (durationInMs < DURATION_IN_MS_MINIMAL) {
-            log().warn("invalid timer duration: " + durationInMs + ", setting it to " + DURATION_IN_MS_MINIMAL);
-            durationInMs = DURATION_IN_MS_MINIMAL;
-        }
-    }
-
     /**
      * exectutes the following sequence
      *
@@ -150,7 +135,6 @@ public class Timer implements Loggable {
      * @return .
      */
     public <T> ThrowablePackedResponse<T> executeSequence(Sequence<T> sequence) {
-        checkTimerValues();
         startTimer();
         boolean success;
         Throwable catchedThrowable = null;
@@ -275,6 +259,10 @@ public class Timer implements Loggable {
     }
 
     public void setSleepTimeInMs(long sleepTimeInMs) {
+        if (sleepTimeInMs < SLEEP_TIME_IN_MS_MININMAL) {
+            log().warn(String.format("invalid timer sleep time: %dms, setting it to: %dms", sleepTimeInMs, SLEEP_TIME_IN_MS_MININMAL));
+            sleepTimeInMs = SLEEP_TIME_IN_MS_MININMAL;
+        }
         this.sleepTimeInMs = sleepTimeInMs;
     }
 
@@ -283,6 +271,10 @@ public class Timer implements Loggable {
     }
 
     public void setDurationInMs(long durationInMs) {
+        if (durationInMs < DURATION_IN_MS_MINIMAL) {
+            log().warn(String.format("invalid timer duration: %dms, setting it to: %dms", durationInMs, DURATION_IN_MS_MINIMAL));
+            durationInMs = DURATION_IN_MS_MINIMAL;
+        }
         this.durationInMs = durationInMs;
     }
 

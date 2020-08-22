@@ -37,6 +37,7 @@ import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.model.NodeInfo;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.DesktopGuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
@@ -87,7 +88,8 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRequest> implements
     IWebDriverFactory,
-    Loggable
+    Loggable,
+    UiElementLocator
 {
     public static final TimingInfosCollector STARTUP_TIME_COLLECTOR = new TimingInfosCollector();
 

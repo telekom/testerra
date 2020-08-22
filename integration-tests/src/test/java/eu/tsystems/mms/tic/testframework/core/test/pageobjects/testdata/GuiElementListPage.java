@@ -22,7 +22,6 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -38,11 +37,11 @@ public class GuiElementListPage extends Page {
     }
 
     public GuiElement getNavigation() {
-        return new GuiElement(this.getWebDriver(), Locate.by().qa("section/navigation"));
+        return new GuiElement(this.getWebDriver(), Locate.byQa("section/navigation"));
     }
 
     public GuiElement getTable() {
-        return new GuiElement(this.getWebDriver(), Locate.by().qa("section/table"));
+        return new GuiElement(this.getWebDriver(), Locate.byQa("section/table"));
     }
 
     public GuiElement getNavigationSubElementsByTagName() {

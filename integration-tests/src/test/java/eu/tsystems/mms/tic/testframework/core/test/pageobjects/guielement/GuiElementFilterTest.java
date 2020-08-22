@@ -23,7 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementLocator;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
@@ -32,7 +32,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
-public class GuiElementFilterTest extends AbstractTestSitesTest {
+public class GuiElementFilterTest extends AbstractTestSitesTest implements UiElementLocator {
 
     private void assertLogFieldContains(String textToBeContained) {
         final WebDriver driver = WebDriverManager.getWebDriver();
@@ -92,14 +92,14 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
     public void testT05a_Displayed_Is() {
 
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").filter(WebElementFilter.DISPLAYED.is(false)));
+        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by(By.xpath(".//*[@id]")).filter(WebElementFilter.DISPLAYED.is(false)));
         nonVisibleTable.asserts().assertIsNotDisplayed();
     }
 
     @Test
     public void testT05b_Displayed_Is() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().notDisplayed().xpath(".//*[@id]"));
+        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by(By.xpath(".//*[@id]")).notDisplayed());
         nonVisibleTable.asserts().assertIsNotDisplayed();
     }
 
@@ -107,7 +107,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
     public void testT05c_Displayed_Is() {
 
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement visibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").displayed());
+        GuiElement visibleTable = new GuiElement(driver, Locate.by(By.xpath(".//*[@id]")).displayed());
         visibleTable.asserts().assertIsDisplayed();
     }
 

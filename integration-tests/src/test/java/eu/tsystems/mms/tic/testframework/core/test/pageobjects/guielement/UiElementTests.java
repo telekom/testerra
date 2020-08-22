@@ -58,7 +58,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_Page_waitFor() {
         WebTestPage page = getPage();
-        Control.elementTimeout(0, () -> {
+        Control.withTimeout(0, () -> {
             if (page.waitFor().title().contains("Katzentitel")) {
                 Assert.assertFalse(true);
             }
@@ -172,7 +172,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     @Test
     public void test_GuiElement_waitFor() {
         WebTestPage page = getPage();
-        Control.elementTimeout(0, () -> {
+        Control.withTimeout(0, () -> {
             if (page.notVisibleElement().waitFor().value(Attribute.STYLE).is("humbug")) {
                 Assert.assertFalse(true);
             }
@@ -208,7 +208,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
 
     @Test
     public void test_NonExistent_GuiElement_present_fails_fast() {
-        Control.elementTimeout(0, () -> test_NonExistent_GuiElement_present_fails());
+        Control.withTimeout(0, () -> test_NonExistent_GuiElement_present_fails());
     }
 
     @Test
@@ -267,6 +267,16 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         attributes.value("aria-expanded").is("true");
         //attributes.value("dataCompletelyCustomAttribute").is("true");
         attributes.value("data-completely-custom-attribute").is("yes");
+    }
+
+    @Test
+    public void test_retry() {
+        WebTestPage page = getPage();
+        UiElement disableMyselfBtn = page.findById("disableMyselfBtn");
+        Control.retryFor(10).withTimeout(0,() -> {
+            disableMyselfBtn.click();
+            disableMyselfBtn.enabled().isFalse();
+        });
     }
 
     @Override

@@ -175,7 +175,7 @@ function drawPoints() {
                 label: categories[$i],
                 backgroundColor: colors[$i],
                 fill: false,
-                showLine: true,
+                showLine: false,
                 pointRadius: radius,
                 pointHoverRadius: radius + 5,
                 data: [

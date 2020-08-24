@@ -14,7 +14,7 @@ public class DefaultTestController implements TestController {
 
     private final AssertionFactory assertionFactory;
     private final PageOverrides pageOverrides;
-    private final HashSet<RunnableConfiguration> configurations = new HashSet<>();
+    private final ThreadLocal<HashSet<RunnableConfiguration>> threadLocalConfigurations = new ThreadLocal<>();
 
     private abstract class RunnableConfiguration {
         Runnable setup(Runnable runnable) {
@@ -33,6 +33,7 @@ public class DefaultTestController implements TestController {
 
 
     private void run(Runnable runnable) {
+        HashSet<RunnableConfiguration> configurations = threadLocalConfigurations.get();
         for (RunnableConfiguration configuration : configurations) {
             runnable = configuration.setup(runnable);
         }
@@ -46,9 +47,18 @@ public class DefaultTestController implements TestController {
         collectAssertions().run(runnable);
     }
 
+    private void addConfiguration(RunnableConfiguration configuration) {
+        HashSet<RunnableConfiguration> configurations = threadLocalConfigurations.get();
+        if (configurations==null) {
+            configurations = new HashSet<>();
+            threadLocalConfigurations.set(configurations);
+        }
+        configurations.add(configuration);
+    }
+
     @Override
     public DefaultTestController collectAssertions() {
-        configurations.add(new RunnableConfiguration() {
+        addConfiguration(new RunnableConfiguration() {
             Class<? extends Assertion> prevClass;
             @Override
             Runnable setup(Runnable runnable) {
@@ -71,7 +81,7 @@ public class DefaultTestController implements TestController {
 
     @Override
     public DefaultTestController nonFunctionalAssertions() {
-        configurations.add(new RunnableConfiguration() {
+        addConfiguration(new RunnableConfiguration() {
             Class<? extends Assertion> prevClass;
             @Override
             Runnable setup(Runnable runnable) {
@@ -94,7 +104,7 @@ public class DefaultTestController implements TestController {
 
     @Override
     public DefaultTestController withTimeout(int seconds) {
-        configurations.add(new RunnableConfiguration() {
+        addConfiguration(new RunnableConfiguration() {
             int prevTimeout;
             @Override
             Runnable setup(Runnable runnable) {
@@ -117,7 +127,7 @@ public class DefaultTestController implements TestController {
 
     @Override
     public DefaultTestController retryFor(int seconds) {
-        configurations.add(new RunnableConfiguration() {
+        addConfiguration(new RunnableConfiguration() {
             @Override
             Runnable setup(Runnable runnable) {
                 return () -> {

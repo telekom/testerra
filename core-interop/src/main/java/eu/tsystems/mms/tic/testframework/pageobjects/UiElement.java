@@ -38,7 +38,7 @@ public interface UiElement extends
     Nameable<UiElement>,
     WebDriverRetainer,
     HasParent,
-    UiElementLocator
+    UiElementFinder
 {
     enum Properties implements IProperties {
         @Deprecated
@@ -99,16 +99,6 @@ public interface UiElement extends
     Dimension getSize();
 
     UiElement find(Locate locate);
-
-    default UiElement find(By by) {
-        return find(Locate.by(by));
-    }
-    default UiElement findById(Object id) {
-        return find(By.id(id.toString()));
-    }
-    default UiElement findByQa(String qa) {
-        return find(Locate.byQa(qa));
-    }
 
     UiElementList<UiElement> list();
 }

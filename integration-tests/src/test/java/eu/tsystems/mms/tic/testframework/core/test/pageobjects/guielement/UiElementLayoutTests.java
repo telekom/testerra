@@ -37,7 +37,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.find(By.linkText("Open again"));
-        left.bounds().leftOf(right).isTrue();
+        left.bounds().leftOf(right).is(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -45,7 +45,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right =  page.find(By.linkText("Open again"));
-        Control.withTimeout(0, () -> right.bounds().leftOf(left).isTrue());
+        Control.withTimeout(0, () -> right.bounds().leftOf(left).is(true));
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -53,7 +53,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.findById(5);
-        Control.withTimeout(0, () -> right.bounds().leftOf(left).isTrue());
+        Control.withTimeout(0, () -> right.bounds().leftOf(left).is(true));
     }
 
     /*
@@ -65,7 +65,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.find(By.linkText("Open again"));
-        right.bounds().rightOf(left).isTrue();
+        right.bounds().rightOf(left).is(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -73,7 +73,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.find(By.linkText("Open again"));
-        Control.withTimeout(0, () -> left.bounds().rightOf(right).isTrue());
+        Control.withTimeout(0, () -> left.bounds().rightOf(right).is(true));
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -81,7 +81,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.findById(5);
-        Control.withTimeout(0, () -> left.bounds().rightOf(right).isTrue());
+        Control.withTimeout(0, () -> left.bounds().rightOf(right).is(true));
     }
 
     /*
@@ -93,7 +93,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement oben = page.findById(1);
         UiElement unten = page.findById(5);
-        oben.bounds().above(unten).isTrue();
+        oben.bounds().above(unten).is(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -101,7 +101,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement oben = page.findById(1);
         UiElement unten = page.findById(5);
-        Control.withTimeout(0, () -> unten.bounds().above(oben).isTrue());
+        Control.withTimeout(0, () -> unten.bounds().above(oben).is(true));
     }
 
     /*
@@ -113,7 +113,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement oben = page.findById(1);
         UiElement unten = page.findById(5);
-        unten.bounds().below(oben).isTrue();
+        unten.bounds().below(oben).is(true);
     }
 
     @Test(expectedExceptions = AssertionError.class)
@@ -121,7 +121,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
         WebTestPage page = getPage();
         UiElement oben = page.findById(1);
         UiElement unten = page.findById(5);
-        Control.withTimeout(0, () -> oben.bounds().below(unten).isTrue());
+        Control.withTimeout(0, () -> oben.bounds().below(unten).is(true));
     }
 
     /*

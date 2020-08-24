@@ -54,17 +54,17 @@ public class UiElementLayoutCheckTests extends AbstractTestSitesTest implements 
     public void testCheckElementVisibility() {
         BasePage page = preparePage();
         UiElement guiElement = page.findByQa("section/layoutTestArticle");
-        guiElement.visible(true).isTrue();
+        guiElement.visible(true).is(true);
 
         guiElement = page.findByQa("section/invisibleTestArticle");
-        guiElement.visible(false).isFalse();
+        guiElement.visible(false).is(false);
 
         // Scroll to offset doesn't work
         //guiElement.scrollToElement(300);
         //Assert.assertFalse(guiElement.isVisible(true));
 
         guiElement.scrollIntoView();
-        guiElement.visible(true).isTrue();
+        guiElement.visible(true).is(true);
     }
 
     @Test()

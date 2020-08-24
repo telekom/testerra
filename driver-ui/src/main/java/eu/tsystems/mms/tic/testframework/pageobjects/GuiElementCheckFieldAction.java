@@ -69,9 +69,9 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
         switch (checkRule) {
             case IS_PRESENT:
                 if (findNot) {
-                    guiElement.present().isFalse();
+                    guiElement.present().is(false);
                 } else {
-                    guiElement.present().isTrue();
+                    guiElement.present().is(true);
                 }
                 break;
             case IS_NOT_PRESENT:
@@ -83,14 +83,14 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
                     //                    }
                     log().warn(errorMessageNotNot);
                 } else {
-                    guiElement.present().isFalse();
+                    guiElement.present().is(false);
                 }
                 break;
             case IS_NOT_DISPLAYED: {
                 if (findNot) {
                     log().warn(errorMessageNotNot);
                 } else {
-                    guiElement.displayed().isFalse();
+                    guiElement.displayed().is(false);
                 }
             }
             break;
@@ -98,9 +98,9 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             case IS_DISPLAYED:
             default: {
                 if (findNot) {
-                    guiElement.displayed().isFalse();
+                    guiElement.displayed().is(false);
                 } else {
-                    guiElement.displayed().isTrue();
+                    guiElement.displayed().is(true);
                 }
             }
         }

@@ -9,38 +9,37 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
     }
 
     @Override
-    public boolean isTrue(String failMessage) {
-        return testTimer(t -> {
-            final String actualString = getActual().toString();
-            if (!(
-                    actualString.equalsIgnoreCase("true")
-                    || actualString.equalsIgnoreCase("on")
-                    || actualString.equalsIgnoreCase("1")
-                    || actualString.equalsIgnoreCase("yes")
+    public boolean is(boolean expected, String failMessage) {
+        if (expected) {
+            return testTimer(t -> {
+                final String actualString = getActual().toString();
+                if (!(
+                        actualString.equalsIgnoreCase("true")
+                                || actualString.equalsIgnoreCase("on")
+                                || actualString.equalsIgnoreCase("1")
+                                || actualString.equalsIgnoreCase("yes")
                 )
-            ) {
-                instantAssertion.fail(instantAssertion.format(actualString, "is one of [true, 'on', '1', 'yes']", new Assertion.Message(failMessage, traceSubjectString())));
-                return false;
-            }
-            return true;
-        });
-    }
-
-    @Override
-    public boolean isFalse(String failMessage) {
-        return testTimer(t -> {
-            final String actualString = getActual().toString();
-            if (!(
-                    actualString.equalsIgnoreCase("false")
-                    || actualString.equalsIgnoreCase("off")
-                    || actualString.equalsIgnoreCase("0")
-                    || actualString.equalsIgnoreCase("no")
+                ) {
+                    instantAssertion.fail(instantAssertion.format(actualString, "is one of [true, 'on', '1', 'yes']", new Assertion.Message(failMessage, traceSubjectString())));
+                    return false;
+                }
+                return true;
+            });
+        } else {
+            return testTimer(t -> {
+                final String actualString = getActual().toString();
+                if (!(
+                        actualString.equalsIgnoreCase("false")
+                                || actualString.equalsIgnoreCase("off")
+                                || actualString.equalsIgnoreCase("0")
+                                || actualString.equalsIgnoreCase("no")
                 )
-            ) {
-                instantAssertion.fail(instantAssertion.format(actualString, "is one of [false, 'off', '0', 'no']", new Assertion.Message(failMessage, traceSubjectString())));
-                return false;
-            }
-            return true;
-        });
+                ) {
+                    instantAssertion.fail(instantAssertion.format(actualString, "is one of [false, 'off', '0', 'no']", new Assertion.Message(failMessage, traceSubjectString())));
+                    return false;
+                }
+                return true;
+            });
+        }
     }
 }

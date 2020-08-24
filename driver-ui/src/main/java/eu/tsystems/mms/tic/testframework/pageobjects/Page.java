@@ -317,22 +317,22 @@ public abstract class Page extends AbstractPage implements TestablePage, UiEleme
 
     @Deprecated
     public void assertIsTextPresent(String text) {
-        anyElementContainsText(text).present().isTrue();
+        anyElementContainsText(text).present().is(true);
     }
 
     @Deprecated
     public void assertIsTextDisplayed(String text) {
-        anyElementContainsText(text).displayed().isTrue();
+        anyElementContainsText(text).displayed().is(true);
     }
 
     @Deprecated
     public void assertIsNotTextPresent(String text) {
-        anyElementContainsText(text).present().isFalse();
+        anyElementContainsText(text).present().is(false);
     }
 
     @Deprecated
     public void assertIsNotTextDisplayed(String text) {
-        anyElementContainsText(text).displayed().isFalse();
+        anyElementContainsText(text).displayed().is(false);
     }
 
     @Override

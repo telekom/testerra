@@ -214,10 +214,10 @@ Assert.assertTrue(false);
 
 The new standard way to perform assertions on elements like Pages and GuiElements is now
 ```java
-uiElement.displayed().isTrue(); <1>
+uiElement.displayed().is(true); <1>
 uiElement.value().contains("Hallo Welt"); <2>
 page.url().endsWith("index.html"); <3>
-page.anyElementContainsText("You see me").displayed().isTrue(); <4>
+page.anyElementContainsText("You see me").displayed().is(true); <4>
 ```
 [NOTE]
 .Using the GuiElement assertions is now `@deprecated`
@@ -232,7 +232,7 @@ page.assertIsTextDisplayed("You see me"); <4>
 
 Perform decisions on occurrence with the `waitFor` prefix.
 ```
-if (uiElement.waitFor().displayed().isTrue()) {
+if (uiElement.waitFor().displayed().is(true)) {
     // Optional element became visible
 }
 ```
@@ -248,7 +248,7 @@ if (guiElement.waits().waitForIsDisplayed()) {
 Support of more features through consistent assertion API
 ```java
 uiElement.css("display").is("none"); <1>
-uiElement.text().map(value -> value.toLowerCase()).matches("^hello\\s.orld").isTrue(); <2,3>
+uiElement.text().map(value -> value.toLowerCase()).matches("^hello\\s.orld").is(true); <2,3>
 page.anyElementContainsText("You see me").numberOfElements().is(1); <4>
 ```
 <1> Perform assertions on the element's CSS properties
@@ -258,7 +258,7 @@ page.anyElementContainsText("You see me").numberOfElements().is(1); <4>
 
 Custom failure messages
 ```java
-uiElement.displayed().isTrue("This element should be displayed");
+uiElement.displayed().is(true, This element should be displayed");
 ```
 
 ==== Screenshot based Assertions
@@ -286,8 +286,8 @@ The new standard way to perform layout based assertions is now
 // Element is beside another element
 UiElement left = find(By.id("left"));
 UiElement right = find(By.id("right"));
-left.bounds().leftOf(right).isTrue(); <1>
-left.bounds().intersects(right).isFalse();
+left.bounds().leftOf(right).is(true); <1>
+left.bounds().intersects(right).is(false);
 
 // Elements aligned to the same right
 UiElement top = find(By.id("top"));
@@ -297,7 +297,7 @@ top.bounds().fromRight().toRightOf(bottom).is(0);<2>
 // Element contains another element
 UiElement body = find(By.tagName("body"));
 UiElement nav = parent.find(By.tagName("nav"));
-body.bounds().contains(nav).isTrue();
+body.bounds().contains(nav).is(true);
 ```
 [NOTE]
 .Using the `assertLayout()` method is now `@deprecated`
@@ -325,7 +325,7 @@ class MyPage extends Page implements TestFeatures {
 
 The new standard way to collect assertions of GuiElements in Tests or Pages is now
 ```java
-Control.collectAssertions(() -> uiElement.displayed().isTrue());
+Control.collectAssertions(() -> uiElement.displayed().is(true));
 ```
 
 For many GuiElements or Pages
@@ -389,7 +389,7 @@ tt.guielement.default.assertcollector=true
 
 The new standard way for non functional assertions works like <<Collected Assertions>>
 ```java
-Control.nonFunctional(() -> uiElement.displayed().isTrue());
+Control.nonFunctional(() -> uiElement.displayed().is(true));
 ```
 
 [NOTE]
@@ -478,7 +478,7 @@ page.setElementTimeoutInSeconds(1);
 
 Override during runtime
 ```java
-Control.withTimeout(1, () -> uiElement.displayed().isTrue());
+Control.withTimeout(1, () -> uiElement.displayed().is(true));
 ```
 
 For many GuiElements or Pages
@@ -515,7 +515,7 @@ It sometimes happens, that you need to retry a whole sequence of operations.
 ```java
 Control.retryFor(5, () -> {
     button.click();
-    button.enabled().isFalse();
+    button.enabled().is(false);
 );
 ```
 
@@ -527,7 +527,7 @@ You can combine these features with the fluent API design, to completely disable
 Control.retryFor(10).withTimeout(0, () -> {
     button.click();
     guiElement.scrollIntoView();
-    guiElement.visible(false).isTrue();
+    guiElement.visible(false).is(true);
 });
 ```
 
@@ -654,7 +654,7 @@ The API provides abstract assertion implementations for several properties.
 
 . `StringAssertion` allows you to perform assertions on strings like `contains("Something")`
 . `QuantityAssertion` allows you to perform assertions on quantified values like `isBetween(-2,3)`
-. `BinaryAssertion` allows to assert if an value is boolean or a string that represents a boolean value with `isTrue()`
+. `BinaryAssertion` allows to assert if an value is boolean or a string that represents a boolean value with `is(true)`
 
 These generic assertions are used in many other assertions and supports a hierarchical order.
 This is what the hierarchy looks like when you perform `uiElement.screenshot().file().extension().is("png")`

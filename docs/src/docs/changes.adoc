@@ -214,10 +214,10 @@ Assert.assertTrue(false);
 
 The new standard way to perform assertions on elements like Pages and GuiElements is now
 ```java
-uiElement.displayed().is(true); <1>
+uiElement.displayed(true); <1>
 uiElement.value().contains("Hallo Welt"); <2>
 page.url().endsWith("index.html"); <3>
-page.anyElementContainsText("You see me").displayed().is(true); <4>
+page.anyElementContainsText("You see me").displayed(true); <4>
 ```
 [NOTE]
 .Using the GuiElement assertions is now `@deprecated`
@@ -232,7 +232,7 @@ page.assertIsTextDisplayed("You see me"); <4>
 
 Perform decisions on occurrence with the `waitFor` prefix.
 ```
-if (uiElement.waitFor().displayed().is(true)) {
+if (uiElement.waitFor().displayed(true)) {
     // Optional element became visible
 }
 ```
@@ -258,7 +258,7 @@ page.anyElementContainsText("You see me").numberOfElements().is(1); <4>
 
 Custom failure messages
 ```java
-uiElement.displayed().is(true, This element should be displayed");
+uiElement.displayed(true, This element should be displayed");
 ```
 
 ==== Screenshot based Assertions
@@ -325,7 +325,7 @@ class MyPage extends Page implements TestFeatures {
 
 The new standard way to collect assertions of GuiElements in Tests or Pages is now
 ```java
-Control.collectAssertions(() -> uiElement.displayed().is(true));
+Control.collectAssertions(() -> uiElement.displayed(true));
 ```
 
 For many GuiElements or Pages
@@ -389,7 +389,7 @@ tt.guielement.default.assertcollector=true
 
 The new standard way for non functional assertions works like <<Collected Assertions>>
 ```java
-Control.nonFunctional(() -> uiElement.displayed().is(true));
+Control.nonFunctional(() -> uiElement.displayed(true));
 ```
 
 [NOTE]
@@ -478,7 +478,7 @@ page.setElementTimeoutInSeconds(1);
 
 Override during runtime
 ```java
-Control.withTimeout(1, () -> uiElement.displayed().is(true));
+Control.withTimeout(1, () -> uiElement.displayed(true));
 ```
 
 For many GuiElements or Pages

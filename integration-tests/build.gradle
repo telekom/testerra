@@ -2,7 +2,7 @@ doNotPublish(this)
 
 dependencies {
     compile driver_ui_desktop
-    compile static_report
+    compile report
 
     // <XML>
     implementation 'org.xmlunit:xmlunit-core:2.5.0'

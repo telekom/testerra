@@ -23,7 +23,6 @@
 
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

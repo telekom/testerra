@@ -25,12 +25,12 @@ package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.utils.ReportUtils;
 import java.io.InputStream;
 import java.util.List;
 import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import eu.tsystems.mms.tic.testframework.utils.ReportUtils;
 
 public class ThreadVisualizer {
 

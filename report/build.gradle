@@ -5,10 +5,9 @@ plugins {
 group 'eu.tsystems.mms.tic.testerra'
 version '1-SNAPSHOT'
 
-
 dependencies {
     compile core
     compile core_interop
-
-    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+apply from: rootProject.file('release-bintray.gradle')

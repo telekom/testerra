@@ -19,12 +19,16 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.hook;
 
+package eu.tsystems.mms.tic.testframework.hook;
+
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.listener.GenerateReportListener;
+import eu.tsystems.mms.tic.testframework.report.StaticReportLogFormatter;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.worker.CreateThreadVisualizerDataSetWorker;
 import eu.tsystems.mms.tic.testframework.worker.GenerateTesterraReportWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +39,16 @@ public class ReportHook implements ModuleHook {
 
     @Override
     public void init() {
+
         // listener on report event
         TesterraEventService.addListener(new GenerateReportListener());
+
+        // Enable report formatter here
+        TesterraCommons.getTesterraLogger().setFormatter(new StaticReportLogFormatter());
+
         // init GenerateReport
         TesterraListener.registerGenerateReportsWorker(GenerateTesterraReportWorker.class);
+        TesterraListener.registerAfterMethodWorker(CreateThreadVisualizerDataSetWorker.class);
     }
 
     @Override

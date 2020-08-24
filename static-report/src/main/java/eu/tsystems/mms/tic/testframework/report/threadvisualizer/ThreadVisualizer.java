@@ -19,22 +19,24 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
+
+package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
+import java.io.InputStream;
+import java.util.List;
 import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.InputStream;
-import java.util.List;
+import eu.tsystems.mms.tic.testframework.utils.ReportUtils;
 
 public class ThreadVisualizer {
 
-    /** Logger instance */
+    /**
+     * Logger instance
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(ThreadVisualizer.class);
 
     /**
@@ -50,6 +52,7 @@ public class ThreadVisualizer {
      * generate the html file.
      */
     public static void generateReport() {
+
         LOGGER.trace("Generate Report with " + DataStorage.getList().size() + " datasets");
 
         final String tvFolderName = "threadvisualizer";

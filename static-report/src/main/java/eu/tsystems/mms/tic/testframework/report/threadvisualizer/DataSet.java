@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package report.threadvisualizer;
+ package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 

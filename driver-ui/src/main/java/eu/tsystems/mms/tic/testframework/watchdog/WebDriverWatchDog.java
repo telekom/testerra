@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.watchdog;
+
+package eu.tsystems.mms.tic.testframework.watchdog;
 
 import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
@@ -27,16 +28,14 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.SecUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.TimingConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class WebDriverWatchDog {
 
@@ -138,7 +137,8 @@ public final class WebDriverWatchDog {
                                 final int passedSeconds = newCount * TimingConstants.WATCHDOG_THREAD_POLL_INTERVAL_SECONDS;
 
                                 if (passedSeconds > TimingConstants.WATCHDOG_FIRST_ANNOUNCEMENT_SECONDS) {
-                                    LOGGER.warn("(" + passedSeconds + "/" + TimingConstants.WEBDRIVER_COMMAND_TIMEOUT_SECONDS + " s) hanging a while now: " + key);
+                                    LOGGER.warn("(" + passedSeconds + "/" + TimingConstants.WEBDRIVER_COMMAND_TIMEOUT_SECONDS +
+                                            " s) hanging a while now: " + key);
                                 }
 
                                 /*

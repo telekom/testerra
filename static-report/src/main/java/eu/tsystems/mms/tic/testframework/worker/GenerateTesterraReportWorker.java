@@ -23,9 +23,8 @@
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.DateUtils;
-import report.utils.ReportUtilsA;
+import eu.tsystems.mms.tic.testframework.utils.ReportUtils;
 
 public class GenerateTesterraReportWorker extends GenerateReportsWorker implements Loggable {
     @Override
@@ -35,7 +34,7 @@ public class GenerateTesterraReportWorker extends GenerateReportsWorker implemen
          */
         long start = System.currentTimeMillis();
 //        ReportUtils.generateReportEssentials();
-        ReportUtilsA.generateReportEssentials();
+        ReportUtils.generateReportEssentials();
         long stop = System.currentTimeMillis();
         String formattedDuration = DateUtils.getFormattedDuration(stop - start, false);
         log().debug("Took " + formattedDuration + " to create the report.");

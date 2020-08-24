@@ -52,6 +52,7 @@ public enum TesterraEventType implements ITesterraEventType {
 
     CONTEXT_UPDATE,
 
-    GENERATE_REPORT
+    GENERATE_REPORT,
+    GENERATE_METHOD_REPORT
 
 }

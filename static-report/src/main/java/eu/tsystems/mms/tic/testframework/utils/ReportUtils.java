@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package report.utils;
+
+package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
@@ -37,11 +38,6 @@ import eu.tsystems.mms.tic.testframework.report.perf.PerfTestContainer;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.ThreadVisualizer;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import org.apache.velocity.VelocityContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,25 +48,28 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import org.apache.velocity.VelocityContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility functions for Reporting.
  *
  * @author sepr
  */
-public final class ReportUtilsA {
+public final class ReportUtils {
 
     // TODO: consolidate with ReportUtils of core module
 
     /**
      * Logger instance.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReportUtilsA.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReportUtils.class);
 
     /**
      * Hide constructor
      */
-    private ReportUtilsA() {
+    private ReportUtils() {
     }
 
     /**
@@ -82,12 +81,12 @@ public final class ReportUtilsA {
         Report report = new Report();
         final File targetDir = report.getReportDirectory(Report.FRAMES_FOLDER_NAME);
 
-        String[] resources = new String[]{
+        String[] resources = new String[] {
                 "js/kis/main.js",
                 "js/kis/modernizr.js",
                 "js/kis/jquery-migrate-1.2.1.min.js",
 
-//                "js/jsapi.js",
+                //                "js/jsapi.js",
                 "js/easy.js",
                 "js/main.js",
                 "js/report.js",
@@ -284,7 +283,8 @@ public final class ReportUtilsA {
     /**
      * Create html output
      */
-    static void createReport(ReportingData reportingData) {
+    public static void createReport(ReportingData reportingData) {
+
         /*
         Copy resources
          */
@@ -306,11 +306,17 @@ public final class ReportUtilsA {
         if (ThreadVisualizer.hasData()) {
             ThreadVisualizer.generateReport();
         }
+
         if (reportingData.methodsWithAcknowledgements != null && reportingData.methodsWithAcknowledgements.size() > 0) {
             createAcknowledgements(reportingData.methodsWithAcknowledgements);
         }
+
         // jvm monitor tab
-        JVMMonitor.createReportTab();
+        addExtraTopLevelConsumptionMeasurementsTab(
+                "JVM Monitor",
+                "jvmmonitor.html",
+                true,
+                JVMMonitor.getConsumptionMeasurementsCollector());
 
         /*
         define base top level tabs (added to existing ones that are extra tabs)
@@ -371,7 +377,8 @@ public final class ReportUtilsA {
         Map<String, Long> minMeasurementPerActions = PerfTestReportUtils.getMinResponseTimePerTestStepAction();
         Map<String, Long> maxMeasurementPerActions = PerfTestReportUtils.getMaxResponseTimePerTestStepAction();
         Map<String, List<TimingInfo>> pageloadInfosPerAction = PerfTestReportUtils.getPageLoadInfosPerTestStepAction();
-        ReportFormatter.createTimingsHtml(reportFileMeasurements, minMeasurementPerActions, avgMeasurementPerActions, maxMeasurementPerActions, pageloadInfosPerAction, "measurements.vm");
+        ReportFormatter.createTimingsHtml(reportFileMeasurements, minMeasurementPerActions, avgMeasurementPerActions, maxMeasurementPerActions,
+                pageloadInfosPerAction, "measurements.vm");
 
         /*
          * Classes
@@ -409,7 +416,7 @@ public final class ReportUtilsA {
             /*
             multi threaded details generation, 1 thread per class
              */
-            Runnable createMethodDetailsRunnable =() -> {
+            Runnable createMethodDetailsRunnable = () -> {
                 for (MethodContext testMethodContainer : methodContexts) {
                     createMethodDetailsView(testMethodContainer);
                 }
@@ -432,9 +439,9 @@ public final class ReportUtilsA {
         /*
         Logs
          */
-        LoggingDispatcherA.stopReportLogging();
+        LoggingDispatcher.stopReportLogging();
         final File reportFileGlobalLogs = new File(framesDir, "logs.html");
-        ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData.classContexts, "log.vm", LoggingDispatcherA.UNRELATED_LOGS, null);
+        ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData.classContexts, "log.vm", LoggingDispatcher.UNRELATED_LOGS, null);
 
         /*
         Memory consumption
@@ -459,7 +466,7 @@ public final class ReportUtilsA {
         context.put("methods", methodsWithAcknowledgements);
         context.put("pagetitle", "Acknowledgements");
         context.put("status", TestStatusController.Status.values());
-        ReportUtilsA.addExtraTopLevelTab("stateChanges.vm", "classes/acknowledgements.html", "Acknowledgements", "Acknowledgements", context, false);
+        ReportUtils.addExtraTopLevelTab("stateChanges.vm", "classes/acknowledgements.html", "Acknowledgements", "Acknowledgements", context, false);
     }
 
     public static void createMethodDetailsStepsView(MethodContext methodContext) {
@@ -492,6 +499,7 @@ public final class ReportUtilsA {
     }
 
     public static class TabInfo {
+
         String tabId;
         String tabName;
         String relativeHtmlFilePath;
@@ -531,6 +539,7 @@ public final class ReportUtilsA {
     }
 
     public static class TabCreationInfo {
+
         String vmTemplateFileInResources;
         VelocityContext velocityContext;
 
@@ -542,7 +551,8 @@ public final class ReportUtilsA {
 
     static final List<TabInfo> TOP_LEVEL_TABS = new LinkedList<>();
 
-    private static void createExtraTopLevelTab(String vmTemplateFileInResources, String htmlOutputFileName, String tabName, VelocityContext velocityContext) {
+    private static void createExtraTopLevelTab(String vmTemplateFileInResources, String htmlOutputFileName, String tabName,
+                                               VelocityContext velocityContext) {
         File htmlOutputFile = new File(Report.FRAMES_DIRECTORY, htmlOutputFileName);
         try {
             ReportFormatter.createHtml(vmTemplateFileInResources, htmlOutputFile, velocityContext);
@@ -551,13 +561,15 @@ public final class ReportUtilsA {
         }
     }
 
-    public static void addExtraTopLevelTab(String vmTemplateFileInResources, String relativeHtmlFilePath, String tabName, String tabId, VelocityContext velocityContext, boolean hamburger) {
+    public static void addExtraTopLevelTab(String vmTemplateFileInResources, String relativeHtmlFilePath, String tabName, String tabId,
+                                           VelocityContext velocityContext, boolean hamburger) {
         TabInfo tabInfo = new TabInfo(tabId, tabName, relativeHtmlFilePath, hamburger);
         tabInfo.setTabCreationInfo(new TabCreationInfo(vmTemplateFileInResources, velocityContext));
         TOP_LEVEL_TABS.add(tabInfo);
     }
 
-    public static void addExtraTopLevelTimingsTab(String tabName, String relativeHtmlFilePath, boolean hamburger, TimingInfosCollector timingInfosCollector) {
+    public static void addExtraTopLevelTimingsTab(String tabName, String relativeHtmlFilePath, boolean hamburger,
+                                                  TimingInfosCollector timingInfosCollector) {
         timingInfosCollector.terminate();
 
         TimingInfosCollector.Calculations calculations = timingInfosCollector.getCalculations();
@@ -577,7 +589,8 @@ public final class ReportUtilsA {
         addExtraTopLevelTab("measurements.vm", relativeHtmlFilePath, tabName, tabName, context, hamburger);
     }
 
-    public static void addExtraTopLevelConsumptionMeasurementsTab(String tabName, String relativeHtmlFilePath, boolean hamburger, ConsumptionMeasurementsCollector consumptionMeasurementsCollector) {
+    public static void addExtraTopLevelConsumptionMeasurementsTab(String tabName, String relativeHtmlFilePath, boolean hamburger,
+                                                                  ConsumptionMeasurementsCollector consumptionMeasurementsCollector) {
         VelocityContext context = new VelocityContext();
         context.put("tabName", tabName);
         context.put("tabId", tabName);

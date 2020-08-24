@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,12 +19,13 @@
  * under the License.
  *
  */
-package report;
+
+package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
-import report.utils.LoggingDispatcherA;
+import eu.tsystems.mms.tic.testframework.utils.LoggingDispatcher;
 import org.apache.logging.log4j.core.LogEvent;
 
 /**
@@ -50,7 +51,7 @@ public class StaticReportLogFormatter extends ContextLogFormatter {
 
         /**
          * We dont log any messages from steps package,
-         * because logs from {@link TestStep} also triggering logs by {@link LoggingDispatcherA}
+         * because logs from {@link TestStep} also triggering logs by {@link LoggingDispatcher}
          * which may result in a callstack loop.
          */
         if (event.getLoggerName().startsWith(TestStep.class.getPackage().getName())) {
@@ -93,6 +94,6 @@ public class StaticReportLogFormatter extends ContextLogFormatter {
          * Add log message.
          */
         LogMessage logMessage = new LogMessage(event);
-        return LoggingDispatcherA.addLogMessage(logMessage);
+        return LoggingDispatcher.addLogMessage(logMessage);
     }
 }

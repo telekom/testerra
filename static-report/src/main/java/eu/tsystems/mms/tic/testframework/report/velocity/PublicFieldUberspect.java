@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package report.velocity;
+ package eu.tsystems.mms.tic.testframework.report.velocity;
 
 import org.apache.velocity.util.introspection.Info;
 import org.apache.velocity.util.introspection.UberspectImpl;

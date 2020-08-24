@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
+
+package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
@@ -31,9 +32,7 @@ import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
-
 import java.util.Map;
 
 public class MethodFinishedWorker extends MethodWorker implements Loggable {
@@ -71,16 +70,16 @@ public class MethodFinishedWorker extends MethodWorker implements Loggable {
                 methodContext.errorContext().buildExitFingerprint();
             }
 
-            // generate html
-            try {
-                ReportUtils.createMethodDetailsStepsView(methodContext);
-            } catch (Throwable e) {
-                log().error("FATAL: Could not create html", e);
-            }
+
         } finally {
 
             // Fire CONTEXT UPDATE EVENT.
             TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
+                    .addUserData()
+                    .addData(TesterraEventDataType.CONTEXT, methodContext));
+
+            // FIRE GENERATE REPORT FOR METHOD
+            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.GENERATE_METHOD_REPORT)
                     .addUserData()
                     .addData(TesterraEventDataType.CONTEXT, methodContext));
 

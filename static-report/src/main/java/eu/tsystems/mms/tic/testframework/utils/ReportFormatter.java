@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.utils;
+ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.velocity.PublicFieldUberspect;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -376,6 +377,7 @@ public class ReportFormatter {
         context.put("TesterraBuildInformation", TesterraBuildInformation.getInstance());
         context.put("reportScreenshotsPreview", Flags.REPORT_SCREENSHOTS_PREVIEW);
         context.put("reportName", ReportUtils.getReportName());
+
         context.put("dryrun", Flags.DRY_RUN);
         context.put("dateFormatter", new DateTool());
 

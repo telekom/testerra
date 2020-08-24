@@ -19,5 +19,11 @@ public interface UiElementAssertions extends BasicUiElement {
     StringAssertion<String> value(String attribute);
     StringAssertion<String> css(String property);
     BinaryAssertion<Boolean> enabled();
+    default boolean enabled(boolean expected) {
+        return enabled().is(expected);
+    }
     BinaryAssertion<Boolean> selected();
+    default boolean selected(boolean expected) {
+        return selected().is(expected);
+    }
 }

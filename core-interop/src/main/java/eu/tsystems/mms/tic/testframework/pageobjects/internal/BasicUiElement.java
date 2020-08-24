@@ -17,7 +17,13 @@ import org.openqa.selenium.WebElement;
 public interface BasicUiElement {
     QuantityAssertion<Integer> numberOfElements();
     BinaryAssertion<Boolean> present();
+    default boolean present(boolean expected) {
+        return present().is(expected);
+    }
     BinaryAssertion<Boolean> displayed();
+    default boolean displayed(boolean expected) {
+        return displayed().is(expected);
+    }
     BinaryAssertion<Boolean> visible(boolean complete);
     StringAssertion<String> tagName();
     RectAssertion bounds();

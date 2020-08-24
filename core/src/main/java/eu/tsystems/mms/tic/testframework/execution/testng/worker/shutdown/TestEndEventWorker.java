@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown;
+
+package eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown;
 
 import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
@@ -27,16 +28,19 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-
 import java.util.Date;
 
+/**
+ * This {@link GenerateReportsWorker} will fire the {@link TesterraEventType} TEST_END to notify all listeners, that test is ending..
+ */
 public class TestEndEventWorker extends GenerateReportsWorker {
+
     @Override
     public void run() {
         // fire event
         long startTime = ExecutionContextController.getCurrentExecutionContext().startTime.getTime();
         long endTime = new Date().getTime();
-        TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.TEST_END)
+        TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.TEST_RUN_END)
                 .addUserData()
                 .addData(TesterraEventDataType.TIMESTAMP, endTime)
                 .addData(TesterraEventDataType.DURATION, endTime - startTime)

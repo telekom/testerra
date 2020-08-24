@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.worker;
+
+package eu.tsystems.mms.tic.testframework.worker;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -27,13 +28,13 @@ import eu.tsystems.mms.tic.testframework.utils.DateUtils;
 import eu.tsystems.mms.tic.testframework.utils.ReportUtils;
 
 public class GenerateTesterraReportWorker extends GenerateReportsWorker implements Loggable {
+
     @Override
     public void run() {
         /*
          * Generate Report
          */
         long start = System.currentTimeMillis();
-//        ReportUtils.generateReportEssentials();
         ReportUtils.generateReportEssentials();
         long stop = System.currentTimeMillis();
         String formattedDuration = DateUtils.getFormattedDuration(stop - start, false);

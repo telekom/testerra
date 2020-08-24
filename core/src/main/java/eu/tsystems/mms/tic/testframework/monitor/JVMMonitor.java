@@ -153,7 +153,7 @@ public class JVMMonitor implements TesterraEventListener {
                     break;
                 case TEST_START:
                     break;
-                case TEST_END:
+                case TEST_RUN_END:
                     break;
                 case RETRYING_METHOD:
                     break;

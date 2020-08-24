@@ -154,8 +154,10 @@ public final class WebDriverWatchDog {
                                          */
                                         try {
                                             ReportInfo.getDashboardWarning().addInfo(0, "Watchdog stopped the test");
-                                            // fire Event for Report
-                                            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.GENERATE_REPORT));
+                                            // fire Event for Report gnerateion
+                                            TesterraEventService.getInstance()
+                                                    .fireEvent(new TesterraEvent(TesterraEventType.TEST_RUN_ABORT)
+                                                            .addUserData());
                                         } finally {
                                             System.err.println("Causing stacktrace on thread " + threadId + ":\n" + readableStacktrace);
                                             System.err.println("\n" +

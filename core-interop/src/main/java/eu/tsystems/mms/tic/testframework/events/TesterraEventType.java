@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.events;
+
+package eu.tsystems.mms.tic.testframework.events;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,14 +31,30 @@
  */
 public enum TesterraEventType implements ITesterraEventType {
 
+    /**
+     * Called on start of every test method annotated by TestNG @Test annotation, but before the execution of registered Before Method Worker and after all TestNG configuration methods like @BeforeMethod.
+     */
     TEST_METHOD_START,
+    /**
+     * Called at the end of every test method annotated by TestNG @Test annotation, but before the execution of registered After Method Worker and the execution fo all TestNG configuration methods like @AfterMethod.
+     */
     TEST_METHOD_END,
 
     CONFIGURATION_METHOD_START,
     CONFIGURATION_METHOD_END,
 
+    /**
+     * Called on start of every test method annotated by TestNG @Test annotation and every test configuration method annotated by TestNG @BeforeMethod or similar, but before the execution of registered Before Method Worker
+     */
     TEST_START,
-    TEST_END,
+    /**
+     * Called at the end of test run to trigger report generation and other output worker.
+     */
+    TEST_RUN_END,
+    /**
+     * Called at the abortion of test run by unclear circumstances.
+     */
+    TEST_RUN_ABORT,
 
     @Deprecated
     RETRYING_METHOD,

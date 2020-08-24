@@ -46,9 +46,9 @@ ITestResult +
 IInvokedMethod
 
 |TEST_END
-|Called at the end of every test method annotated by TestNG `@Test` annotation and every test configuration method annotated by TestNG `@BeforeMethod` or similar, but before the execution of registered <<After Method Worker>>
+|Called at the end of test run to trigger report generation and other output worker.
 |TIMESTAMP +
-DURATION
+DURATION +
 
 //|RETRYING_METHOD
 //| #NOT called anywhere#

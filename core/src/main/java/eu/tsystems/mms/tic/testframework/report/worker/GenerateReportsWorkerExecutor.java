@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,17 +19,17 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.worker;
+
+package eu.tsystems.mms.tic.testframework.report.worker;
 
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.Worker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.WorkerExecutor;
 import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
-import org.testng.ISuite;
-import org.testng.xml.XmlSuite;
-
 import java.util.LinkedList;
 import java.util.List;
+import org.testng.ISuite;
+import org.testng.xml.XmlSuite;
 
 public class GenerateReportsWorkerExecutor implements WorkerExecutor {
 

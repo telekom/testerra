@@ -38,6 +38,7 @@ import eu.tsystems.mms.tic.testframework.report.perf.PerfTestContainer;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.ThreadVisualizer;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,8 +59,6 @@ import org.slf4j.LoggerFactory;
  * @author sepr
  */
 public final class ReportUtils {
-
-    // TODO: consolidate with ReportUtils of core module
 
     /**
      * Logger instance.
@@ -493,6 +492,9 @@ public final class ReportUtils {
         return ExecutionContextController.getCurrentExecutionContext().runConfig.getReportName();
     }
 
+    /**
+     * Generates the Testerra report
+     */
     public static void generateReportEssentials() {
         PerfTestContainer.prepareMeasurementsForTesterraReport();
         GenerateReport.generateReport();

@@ -115,12 +115,13 @@ public class ContextExporter {
                  */
                 builder.setExecStatus(ExecStatusType.CRASHED);
             } else {
-                /*
-                "normal" states
-                 */
-                if (TestStatusController.getTestsFailed() + TestStatusController.getTestsSuccessful() == 0) {
+                if (TestStatusController.getTestsSkipped() == executionContext.estimatedTestMethodCount) {
+                    builder.setResultStatus(ResultStatusType.SKIPPED);
+                    builder.setExecStatus(ExecStatusType.VOID);
+                } else if (TestStatusController.getTestsFailed() + TestStatusController.getTestsSuccessful() == 0) {
                     builder.setResultStatus(ResultStatusType.NO_RUN);
                     builder.setExecStatus(ExecStatusType.VOID);
+
                 } else {
                     ResultStatusType resultStatusType = STATUS_MAPPING.get(executionContext.getStatus());
                     builder.setResultStatus(resultStatusType);

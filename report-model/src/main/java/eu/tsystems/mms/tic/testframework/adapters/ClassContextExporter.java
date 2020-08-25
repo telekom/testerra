@@ -22,7 +22,7 @@ package eu.tsystems.mms.tic.testframework.adapters;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
 
-final class ClassContextExporter extends ContextExporter {
+public class ClassContextExporter extends ContextExporter {
 
     public ClassContext.Builder prepareClassContext(eu.tsystems.mms.tic.testframework.report.model.context.ClassContext classContext) {
 

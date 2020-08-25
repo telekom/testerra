@@ -42,7 +42,7 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
-final class MethodContextExporter extends ContextExporter {
+public class MethodContextExporter extends ContextExporter {
     private static Report report = new Report();
 
     //private static final String workspaceFolder = ExecutionContextController.getCurrentExecutionContext().metaData.get(PlatformProperties.WORKSPACE_FOLDER);
@@ -69,8 +69,8 @@ final class MethodContextExporter extends ContextExporter {
     }
 
     public static class MethodContextData {
-        eu.tsystems.mms.tic.testframework.report.model.MethodContext methodContext;
-        List<File> files = new LinkedList<>();
+        public eu.tsystems.mms.tic.testframework.report.model.MethodContext methodContext;
+        public List<File> files = new LinkedList<>();
     }
 
     private static String mapArtifactsPath(String absolutePath) {

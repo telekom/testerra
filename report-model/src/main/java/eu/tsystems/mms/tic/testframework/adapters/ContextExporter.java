@@ -19,7 +19,7 @@ public class ContextExporter {
 
     private static final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
 
-    ContextExporter() {
+    public ContextExporter() {
         for (TestStatusController.Status status : TestStatusController.Status.values()) {
             /*
             Status

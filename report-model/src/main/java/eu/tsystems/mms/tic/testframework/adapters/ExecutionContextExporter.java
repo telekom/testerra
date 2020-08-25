@@ -28,7 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-final class ExecutionContextExporter extends ContextExporter {
+public class ExecutionContextExporter extends ContextExporter {
 
     public ExecutionContext.Builder prepareExecutionContext(eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext) {
 

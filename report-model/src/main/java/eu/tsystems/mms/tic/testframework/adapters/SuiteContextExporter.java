@@ -21,9 +21,9 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import eu.tsystems.mms.tic.testframework.report.model.SuiteContext;
 
-final class SuiteContextExporter extends ContextExporter {
+public class SuiteContextExporter extends ContextExporter {
 
-    public SuiteContext.Builder createSuiteContext(eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext suiteContext) {
+    public SuiteContext.Builder prepareSuiteContext(eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext suiteContext) {
 
         SuiteContext.Builder builder = SuiteContext.newBuilder();
 
@@ -34,6 +34,4 @@ final class SuiteContextExporter extends ContextExporter {
 
         return builder;
     }
-
-
 }

@@ -21,7 +21,7 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import eu.tsystems.mms.tic.testframework.report.model.TestContext;
 
-final class TestContextExporter extends ContextExporter {
+public class TestContextExporter extends ContextExporter {
 
     public TestContext.Builder prepareTestContext(eu.tsystems.mms.tic.testframework.report.model.context.TestContextModel testContextModel) {
         TestContext.Builder builder = TestContext.newBuilder();

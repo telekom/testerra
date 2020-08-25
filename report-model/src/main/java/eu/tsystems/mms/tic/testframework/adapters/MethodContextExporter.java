@@ -41,11 +41,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class MethodContextExporter extends ContextExporter {
     private static Report report = new Report();
-
-    //private static final String workspaceFolder = ExecutionContextController.getCurrentExecutionContext().metaData.get(PlatformProperties.WORKSPACE_FOLDER);
 
     private static String annotationToString(Annotation annotation) {
         String json = "\"" + annotation.annotationType().getSimpleName() + "\"";
@@ -68,11 +67,6 @@ public class MethodContextExporter extends ContextExporter {
         return json;
     }
 
-    public static class MethodContextData {
-        public eu.tsystems.mms.tic.testframework.report.model.MethodContext methodContext;
-        public List<File> files = new LinkedList<>();
-    }
-
     private static String mapArtifactsPath(String absolutePath) {
         String path = absolutePath.replace(report.getFinalReportDirectory().toString(), "");
 
@@ -87,7 +81,7 @@ public class MethodContextExporter extends ContextExporter {
         return path;
     }
 
-    public MethodContextData prepareMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext) {
+    public MethodContext.Builder prepareMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext, Consumer<File.Builder> fileConsumer) {
         MethodContext.Builder builder = MethodContext.newBuilder();
 
         value(createContextValues(methodContext), builder::setContextValues);
@@ -116,7 +110,6 @@ public class MethodContextExporter extends ContextExporter {
         valueList(methodContext.dependsOnMethodContexts, m -> m.id, builder::addAllDependsOnMethodContext);
 
         // build context
-        MethodContextData methodContextData = new MethodContextData();
         valueMapping(methodContext, mc -> prepareErrorContext(mc.errorContext()), builder::setErrorContext);
         valueList(methodContext.nonFunctionalInfos, ec -> prepareErrorContext(ec).build(), builder::addAllNonFunctionalInfo);
         valueList(methodContext.collectedAssertions, ec -> prepareErrorContext(ec).build(), builder::addAllCollectedAssertion);
@@ -147,9 +140,9 @@ public class MethodContextExporter extends ContextExporter {
             fileBuilderVideo.setRelativePath(mappedPathVideoPath);
             fileBuilderVideo.setMimetype(MediaType.WEBM_VIDEO.toString());
             fillFileBasicData(fileBuilderVideo, currentVideoFile);
-            methodContextData.files.add(fileBuilderVideo.build());
-
+            fileConsumer.accept(fileBuilderVideo);
             return videoId;
+
         }, builder::addAllVideoIds);
 
         valueList(methodContext.screenshots, screenshot -> {
@@ -177,7 +170,7 @@ public class MethodContextExporter extends ContextExporter {
             fileBuilderScreenshot.putAllMeta(screenshot.meta());
             fileBuilderScreenshot.putMeta("sourcesRefId", sourcesRefId);
             fillFileBasicData(fileBuilderScreenshot, currentScreenshotFile);
-            methodContextData.files.add(fileBuilderScreenshot.build());
+//            methodContextData.files.add(fileBuilderScreenshot.build());
 
             // add sources data
             final File.Builder fileBuilderSources = File.newBuilder();
@@ -185,7 +178,8 @@ public class MethodContextExporter extends ContextExporter {
             fileBuilderSources.setRelativePath(mappedSourcePath);
             fileBuilderSources.setMimetype(MediaType.PLAIN_TEXT_UTF_8.toString());
             fillFileBasicData(fileBuilderSources, currentSourceFile);
-            methodContextData.files.add(fileBuilderSources.build());
+            fileConsumer.accept(fileBuilderSources);
+//            methodContextData.files.add(fileBuilderSources.build());
             return screenshotId;
 
         }, builder::addAllScreenshotIds);
@@ -193,13 +187,12 @@ public class MethodContextExporter extends ContextExporter {
 //        if (methodContext.customContexts.size() > 0) {
 //            builder.setCustomContextJson(toJson(methodContext.customContexts));
 //        }
-        methodContextData.methodContext =  builder.build();
 
         // return
-        return methodContextData;
+        return builder;
     }
 
-    protected void fillFileBasicData(File.Builder builder, java.io.File file) {
+    private void fillFileBasicData(File.Builder builder, java.io.File file) {
 //        ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
 //        value(currentExecutionContext.metaData.get(PlatformProperties.PROJECT_ID), builder::setProjectId);
 //        value(currentExecutionContext.metaData.get(PlatformProperties.JOB_ID), builder::setJobId);
@@ -310,7 +303,6 @@ public class MethodContextExporter extends ContextExporter {
             clickPathBuilder.setSubject(testStepActionEntry.clickPathEvent.getSubject());
             clickPathBuilder.setSessionId(testStepActionEntry.clickPathEvent.getSessionId());
             testStepBuilder.addClickpathEvents(clickPathBuilder.build());
-
             testStepBuilder.addScreenshotNames(testStepActionEntry.screenshot.filename);
         });
         return testStepBuilder;

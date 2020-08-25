@@ -36,20 +36,20 @@ public class ContextExporter {
     }
 
 
-    <T, R> void value(T value, Function<T, R> function) {
+    protected <T, R> void value(T value, Function<T, R> function) {
         if (value != null) {
             function.apply(value);
         }
     }
 
-    <T, R, M> void value(T value, Function<T, M> mappingFunction, Function<M, R> function) {
+    protected<T, R, M> void value(T value, Function<T, M> mappingFunction, Function<M, R> function) {
         if (value != null) {
             M mappedValue = mappingFunction.apply(value);
             function.apply(mappedValue);
         }
     }
 
-    <T, R> void valueValidated(T value, Function<T, Boolean> validate, Function<T, R> function) {
+    protected<T, R> void valueValidated(T value, Function<T, Boolean> validate, Function<T, R> function) {
         if (value != null) {
             Boolean apply = validate.apply(value);
             if (apply) {
@@ -58,21 +58,21 @@ public class ContextExporter {
         }
     }
 
-    <T, M, R> void valueMapping(T value, Function<T, M> map, Function<M, R> function) {
+    protected<T, M, R> void valueMapping(T value, Function<T, M> map, Function<M, R> function) {
         if (value != null) {
             M m = map.apply(value);
             function.apply(m);
         }
     }
 
-    <T, M, R> void valueList(List<T> list, Function<T, M> map, Function<List<M>, R> function) {
+    protected<T, M, R> void valueList(List<T> list, Function<T, M> map, Function<List<M>, R> function) {
         if (list != null && !list.isEmpty()) {
             List<M> collect = list.stream().map(map).collect(Collectors.toList());
             function.apply(collect);
         }
     }
 
-    <M, N> Map<M, N> clearMap(Map<M, N> map) {
+    protected<M, N> Map<M, N> clearMap(Map<M, N> map) {
         Map<M, N> newMap = new LinkedHashMap<>();
         if (map != null && !map.isEmpty()) {
             for (M key : map.keySet()) {
@@ -85,7 +85,7 @@ public class ContextExporter {
         return newMap;
     }
 
-    ContextValues createContextValues(AbstractContext context) {
+    protected ContextValues createContextValues(AbstractContext context) {
         ContextValues.Builder builder = ContextValues.newBuilder();
 
         value(context.id, builder::setId);
@@ -136,5 +136,4 @@ public class ContextExporter {
         }
         return builder.build();
     }
-
 }

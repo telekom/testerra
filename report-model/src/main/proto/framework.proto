@@ -3,7 +3,7 @@ This file contains all context related models required by the Testerra framework
 */
 
 syntax = "proto3";
-option java_package = "eu.tsystems.mms.tic.tap.model.framework";
+option java_package = "eu.tsystems.mms.tic.testframework.report.model";
 option java_multiple_files = true;
 
 package data;

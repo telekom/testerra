@@ -17,6 +17,7 @@ version '1-SNAPSHOT'
 apply plugin: 'com.google.protobuf'
 def grpcVersion = '1.28.0' // CURRENT_GRPC_VERSION
 def protobufVersion = '3.10.0'
+def jacksonProtoVersion = '0.9.10-jackson2.9-proto3'
 //def guavaVersion = '28.1-jre'
 
 dependencies {
@@ -27,11 +28,13 @@ dependencies {
      * but the Android version doesn't contain 'ImmutableList.toImmutableList()'.
      * Thats why we have to exclude this dependency completely and fix it manually.
      */
+    compile core
     compile("io.grpc:grpc-protobuf:${grpcVersion}")
     compile "io.grpc:grpc-stub:${grpcVersion}"
     compileOnly "com.google.protobuf:protobuf-java:$protobufVersion"
 //    compileOnly "javax.annotation:javax.annotation-api:1.2"
 //    compile "com.google.guava:guava:$guavaVersion"
+//    implementation "com.hubspot.jackson:jackson-datatype-protobuf:$jacksonProtoVersion"
 }
 
 protobuf {

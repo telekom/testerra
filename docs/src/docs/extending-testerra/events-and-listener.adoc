@@ -45,10 +45,14 @@ IInvokedMethod
 ITestResult +
 IInvokedMethod
 
-|TEST_END
+|TEST_RUN_END
 |Called at the end of test run to trigger report generation and other output worker.
 |TIMESTAMP +
 DURATION +
+
+|TEST_RUN_ABORT
+|Called on test run abortion due to unclear circumstances like hanging sessions, JVM exit or other.
+|Nothing
 
 //|RETRYING_METHOD
 //| #NOT called anywhere#
@@ -83,6 +87,14 @@ IInvokedMethod
 |Called on every context update of Testerra underlying data model.
 |It is so often called internally, but at least following should be provided: +
 CONTEXT
+
+|GENERATE_REPORT
+|Called on report generation to generate custom reports with unified data.
+|REPORT_DATA
+
+|GENERATE_METHOD_REPORT
+|Called at the end of each test method to allow generation of method-base reports
+|CONTEXT
 
 |===
 

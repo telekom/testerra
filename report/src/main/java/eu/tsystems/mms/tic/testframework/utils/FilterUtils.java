@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+
+package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -37,7 +38,8 @@ public final class FilterUtils {
         return INSTANCE;
     }
 
-    public List<MethodContext> filterMethodContexts(List<MethodContext> methodContexts, boolean configMethods, boolean testMethods, TestStatusController.Status status) {
+    public List<MethodContext> filterMethodContexts(List<MethodContext> methodContexts, boolean configMethods, boolean testMethods,
+                                                    TestStatusController.Status status) {
         return methodContexts.stream()
                 .filter(methodContext -> (methodContext.isConfigMethod() && configMethods) || (methodContext.isTestMethod() && testMethods))
                 .filter(methodContext -> methodContext.status == status)

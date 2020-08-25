@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
+
+package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,12 +29,18 @@ import org.slf4j.LoggerFactory;
 
 public final class DataStorage {
 
-    /** Logger instance */
+    /**
+     * Logger instance
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(DataStorage.class);
-    /** Data Sets */
+    /**
+     * Data Sets
+     */
     private static final List<DataSet> LIST = new LinkedList<DataSet>();
 
-    /** Hide constructor of utility method. */
+    /**
+     * Hide constructor of utility method.
+     */
     private DataStorage() {
     }
 

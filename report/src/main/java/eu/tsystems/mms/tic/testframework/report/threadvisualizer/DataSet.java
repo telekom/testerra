@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
+
+package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import java.io.Serializable;
@@ -29,24 +30,31 @@ import java.io.Serializable;
  * Templates.
  */
 public class DataSet implements Serializable {
+
     /**
      * UID for serialization.
      */
     private static final long serialVersionUID = -8406209532487083720L;
 
-    /** Start of thread */
+    /**
+     * Start of thread
+     */
     private Long startTime;
-    /** End of thread */
+    /**
+     * End of thread
+     */
     private Long stopTime;
-    /** MethodContext of test method */
+    /**
+     * MethodContext of test method
+     */
     private MethodContext context;
 
     /**
      * Constructor creating a Data Set for the ThreadVisualizer.
      *
-     * @param context MethodContext of test.
+     * @param context   MethodContext of test.
      * @param startTime Start of thread.
-     * @param stopTime End of Thread.
+     * @param stopTime  End of Thread.
      */
     public DataSet(final MethodContext context, final Long startTime, final Long stopTime) {
         this.context = context;

@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+
+package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
@@ -158,7 +159,8 @@ public class ReportFormatter {
      * @param unrelatedLogs List of log messages that could not be mapped to a test.
      */
     private static void pCreateTestClassesView(final File logFile, final Collection<ClassContext> testClassList,
-                                               final String template, final List<LogMessage> unrelatedLogs, final ReportInfo.RunInfo runInfo) throws IOException {
+                                               final String template, final List<LogMessage> unrelatedLogs, final ReportInfo.RunInfo runInfo)
+            throws IOException {
 
         Template htmlLogTemplate = Velocity.getTemplate(template, "UTF-8");
         htmlLogTemplate.setEncoding("UTF-8");
@@ -222,9 +224,9 @@ public class ReportFormatter {
      * @param template  The template file to use.
      */
     public static void createMethodsView(
-        File logFile,
-        ClassContext testClass,
-        String template
+            File logFile,
+            ClassContext testClass,
+            String template
     ) {
         try {
             pFormatWithTestClass(logFile, testClass, template);
@@ -238,9 +240,9 @@ public class ReportFormatter {
     }
 
     public static void createMethodsFrame(
-        File logFile,
-        MethodContext methodContext,
-        String template
+            File logFile,
+            MethodContext methodContext,
+            String template
     ) {
         try {
             pFormatWithTestMethod(logFile, methodContext, template);
@@ -250,9 +252,9 @@ public class ReportFormatter {
     }
 
     public static void createMultiMethodsHtml(
-        ReportingData reportingData,
-        File logFile,
-        String template
+            ReportingData reportingData,
+            File logFile,
+            String template
     ) {
         try {
             pFormatWithFailuresAndHistory(reportingData, logFile, template);
@@ -269,9 +271,9 @@ public class ReportFormatter {
      * @param template  The template file to use.
      */
     private static void pFormatWithTestClass(
-        File logFile,
-        ClassContext testClass,
-        String template
+            File logFile,
+            ClassContext testClass,
+            String template
     ) throws IOException {
 
         Template htmlLogTemplate = Velocity.getTemplate(template, "UTF-8");
@@ -290,14 +292,14 @@ public class ReportFormatter {
     /**
      * Writes a new HTML formatted test log file.
      *
-     * @param logFile             The log destination file.
+     * @param logFile       The log destination file.
      * @param methodContext A test class.
-     * @param template            The template file to use.
+     * @param template      The template file to use.
      */
     private static void pFormatWithTestMethod(
-        File logFile,
-        MethodContext methodContext,
-        String template
+            File logFile,
+            MethodContext methodContext,
+            String template
     ) throws IOException {
         Template htmlLogTemplate = Velocity.getTemplate(template, "UTF-8");
         htmlLogTemplate.setEncoding("UTF-8");

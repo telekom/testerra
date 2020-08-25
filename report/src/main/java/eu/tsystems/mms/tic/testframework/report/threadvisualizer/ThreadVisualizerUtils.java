@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
+
+package eu.tsystems.mms.tic.testframework.report.threadvisualizer;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 
@@ -44,7 +45,7 @@ public final class ThreadVisualizerUtils {
     /**
      * Gets html content formatted for the thread visualizer.
      *
-     * @param methodContext  {@link MethodContext}
+     * @param methodContext {@link MethodContext}
      * @return Formatted HTML content.
      */
     public static String getFormattedContent(final MethodContext methodContext) {
@@ -54,8 +55,7 @@ public final class ThreadVisualizerUtils {
 
         if (methodContext.isConfigMethod()) {
             style += "border: 2px solid #ffa500; ";
-        }
-        else {
+        } else {
             style += "border: 1px solid " + methodContext.status.color + "; ";
         }
 

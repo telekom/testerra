@@ -14,7 +14,6 @@ public class SessionContextExporter extends ContextExporter implements Loggable 
         Builder builder = newBuilder();
 
         value(createContextValues(sessionContext), builder::setContextValues);
-
         value(sessionContext.sessionKey, builder::setSessionKey);
         value(sessionContext.provider, builder::setProvider);
         value(sessionContext.sessionId, builder::setSessionId);

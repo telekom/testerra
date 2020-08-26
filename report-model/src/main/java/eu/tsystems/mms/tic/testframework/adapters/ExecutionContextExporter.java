@@ -31,29 +31,15 @@ import java.util.Map;
 public class ExecutionContextExporter extends ContextExporter {
 
     public ExecutionContext.Builder prepareExecutionContext(eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext executionContext) {
-
-        final ExecutionContext.Builder builder = ExecutionContext.newBuilder();
+        ExecutionContext.Builder builder = ExecutionContext.newBuilder();
 
         value(createContextValues(executionContext), builder::setContextValues);
-
         valueList(executionContext.suiteContexts, s -> s.id, builder::addAllSuiteContextIds);
         valueList(executionContext.mergedClassContexts, classContext -> classContext.id, builder::addAllMergedClassContextIds);
-
-        /*
-        add exit points and failure aspects
-         */
         valueMapping(executionContext.exitPoints, ExecutionContextExporter::contextClip, builder::addAllExitPoints);
         valueMapping(executionContext.failureAspects, ExecutionContextExporter::contextClip, builder::addAllFailureAscpects);
-
         value(executionContext.runConfig, config -> builder.setRunConfig(createRunConfig(config)));
-
-//        value(executionContext.metaData.get(PlatformProperties.JOB_ID), builder::setJobId);
-//        value(executionContext.metaData.get(PlatformProperties.RUN_ID), builder::setRunId);
-//        value(executionContext.metaData.get(PlatformProperties.TASK_ID), builder::setTaskId);
-//        value(executionContext.metaData.get(PlatformProperties.PROJECT_ID), builder::setProjectId);
-
         valueList(executionContext.exclusiveSessionContexts, sc -> sc.id, builder::addAllExclusiveSessionContextIds);
-
         value(executionContext.estimatedTestMethodCount, builder::setEstimatedTestMethodCount);
 
         return builder;
@@ -72,8 +58,7 @@ public class ExecutionContextExporter extends ContextExporter {
     }
 
     public RunConfig.Builder createRunConfig(eu.tsystems.mms.tic.testframework.report.model.context.RunConfig runConfig) {
-
-        final RunConfig.Builder builder = RunConfig.newBuilder();
+        RunConfig.Builder builder = RunConfig.newBuilder();
 
         value(runConfig.getReportName(), builder::setReportName);
         value(runConfig.RUNCFG, builder::setRuncfg);

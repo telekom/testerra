@@ -193,10 +193,6 @@ public class MethodContextExporter extends ContextExporter {
     }
 
     private void fillFileBasicData(File.Builder builder, java.io.File file) {
-//        ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
-//        value(currentExecutionContext.metaData.get(PlatformProperties.PROJECT_ID), builder::setProjectId);
-//        value(currentExecutionContext.metaData.get(PlatformProperties.JOB_ID), builder::setJobId);
-
         // timestamps
         long timestamp = System.currentTimeMillis();
         builder.setCreatedTimestamp(timestamp);
@@ -221,7 +217,6 @@ public class MethodContextExporter extends ContextExporter {
         value(cause.className, builder::setClassName);
         value(cause.message, builder::setMessage);
         value(cause.stackTraceElements, builder::addAllStackTraceElements);
-
         value(cause.cause, this::prepareStackTraceCause, builder::setCause);
 
         return builder;
@@ -232,7 +227,6 @@ public class MethodContextExporter extends ContextExporter {
 
         value(scriptSource.fileName, builder::setFileName);
         value(scriptSource.methodName, builder::setMethodName);
-
         valueList(scriptSource.lines, line -> prepareScriptSourceLine(line).build(), builder::addAllLines);
 
         return builder;
@@ -253,10 +247,8 @@ public class MethodContextExporter extends ContextExporter {
 
         value(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
         value(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
-
         valueMapping(errorContext.stackTrace, this::prepareStackTrace, builder::setStackTrace);
         value(errorContext.errorFingerprint, builder::setErrorFingerprint);
-
         value(errorContext.scriptSource, this::prepareScriptSource, builder::setScriptSource);
         value(errorContext.executionObjectSource, this::prepareScriptSource, builder::setExecutionObjectSource);
 
@@ -267,7 +259,6 @@ public class MethodContextExporter extends ContextExporter {
         PTestStep.Builder builder = PTestStep.newBuilder();
 
         value(testStep.getName(), builder::setName);
-
         valueList(testStep.getTestStepActions(), testStepAction -> prepareTestStepAction(testStepAction).build(), builder::addAllTestStepAction);
 
         return builder;

@@ -35,7 +35,6 @@ public class ContextExporter {
         return STATUS_MAPPING.get(status);
     }
 
-
     protected <T, R> void value(T value, Function<T, R> function) {
         if (value != null) {
             function.apply(value);
@@ -46,15 +45,6 @@ public class ContextExporter {
         if (value != null) {
             M mappedValue = mappingFunction.apply(value);
             function.apply(mappedValue);
-        }
-    }
-
-    protected<T, R> void valueValidated(T value, Function<T, Boolean> validate, Function<T, R> function) {
-        if (value != null) {
-            Boolean apply = validate.apply(value);
-            if (apply) {
-                function.apply(value);
-            }
         }
     }
 
@@ -70,19 +60,6 @@ public class ContextExporter {
             List<M> collect = list.stream().map(map).collect(Collectors.toList());
             function.apply(collect);
         }
-    }
-
-    protected<M, N> Map<M, N> clearMap(Map<M, N> map) {
-        Map<M, N> newMap = new LinkedHashMap<>();
-        if (map != null && !map.isEmpty()) {
-            for (M key : map.keySet()) {
-                N value = map.get(key);
-                if (key != null && value != null) {
-                    newMap.put(key, value);
-                }
-            }
-        }
-        return newMap;
     }
 
     protected ContextValues createContextValues(AbstractContext context) {

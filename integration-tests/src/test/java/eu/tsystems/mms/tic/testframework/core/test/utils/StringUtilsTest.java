@@ -23,12 +23,10 @@
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.openqa.selenium.By;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 public class StringUtilsTest extends AbstractWebDriverTest {
 

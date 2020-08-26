@@ -19,24 +19,19 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report;
+
+package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 public final class FailureCorridor {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(FailureCorridor.class);
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
@@ -218,7 +213,8 @@ public final class FailureCorridor {
     }
 
     public static void printStatusToStdOut() {
-        String statusMessage = ReportUtils.getReportName() + " " + ExecutionContextController.getCurrentExecutionContext().runConfig.RUNCFG + ": ";
+        String statusMessage = ExecutionContextController.getCurrentExecutionContext().runConfig.getReportName() + " " +
+                ExecutionContextController.getCurrentExecutionContext().runConfig.RUNCFG + ": ";
         statusMessage += TestStatusController.getFinalCountersMessage() + " ";
         statusMessage += FailureCorridor.getStatusMessage();
 

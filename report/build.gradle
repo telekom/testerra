@@ -1,0 +1,82 @@
+plugins {
+    id 'java'
+}
+
+group 'eu.tsystems.mms.tic.testerra'
+version '1-SNAPSHOT'
+
+dependencies {
+    compile core
+    compile core_interop
+
+    testCompile driver_ui_desktop
+    testCompile project(':integration-tests')
+}
+
+
+test {
+    String[] s = [
+            'src/test/resources/ReportingTestSuite.xml',
+    ]
+
+    def nr = findProperty("nr")
+    if (nr) {
+        setFailureCorridor(nr)
+        setCloseWindows()
+        setReportDir("report-testsundertest-0" + nr)
+        s = ['src/test/resources/testng/ReportTestsUnderTest' + nr + '.xml']
+    }
+
+    useTestNG() {
+        suites s
+//        configFailurePolicy "continue"
+    }
+    options {
+        systemProperties(System.getProperties())
+    }
+}
+
+def setReportDir(reportname) {
+    def reportdir = reportname
+    def modulename = "report"
+    if (!projectDir.toString().contains(modulename)) {
+        reportdir = modulename + "/" + reportname
+    }
+    System.setProperty("tt.report.dir", reportdir)
+}
+
+def setFailureCorridor(nr) {
+    System.setProperty("tt.failure.corridor.active", "true")
+    System.setProperty("tt.failure.corridor.allowed.failed.tests.mid", "3")
+    System.setProperty("tt.failure.corridor.allowed.failed.tests.low", "5")
+    //abhängig von nr
+    switch (nr) {
+        case "1":
+            System.setProperty("tt.failure.corridor.allowed.failed.tests.high", "34")
+            break
+        case "2":
+        case "4":
+        case "5":
+            System.setProperty("tt.failure.corridor.allowed.failed.tests.high", "19")
+            break
+        case "3":
+            System.setProperty("tt.failure.corridor.allowed.failed.tests.high", "24")
+            break
+        case "6":
+            System.setProperty("tt.failure.corridor.allowed.failed.tests.high", "26")
+            break
+        case "7":
+        case "8":
+        case "9":
+            System.setProperty("tt.failure.corridor.allowed.failed.tests.high", "0")
+            System.setProperty("tt.failure.corridor.allowed.failed.tests.mid", "0")
+            System.setProperty("tt.failure.corridor.allowed.failed.tests.low", "0")
+            break
+    }
+}
+
+def setCloseWindows() {
+    System.setProperty("tt.wdm.closeWindows.afterTestMethods", "false")
+}
+
+apply from: rootProject.file('release-bintray.gradle')

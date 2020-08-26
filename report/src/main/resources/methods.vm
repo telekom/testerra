@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
+    <head>
+        <title>Test Results Report</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+        <meta name="description" content="TestNG unit test results."/>
+
+        #parse("styleincludesrelative.vm")
+
+        <link rel="stylesheet" href="../style/fotorama.css"/>
+
+        #parse("scriptincludesrelative.vm")
+        <script type="text/javascript" src="../js/highlight.pack.js"></script>
+        <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+        <!--<script type="text/javascript" src="../js/pace.min.js"></script>-->
+
+        <script type="text/javascript" src="../js/fotorama.js"></script>
+        <script type="text/javascript" src="../js/cytoscape.min.js"></script>
+        <script type="text/javascript" src="../js/dagre.js"></script>
+
+    </head>
+
+    <body>
+        #set($cols = 3)
+
+    <!--<body onload="loadComments('$!{testStatistics.startTime}')">-->
+
+        #set($velocityCount1 = 1)
+
+        #set($pagetitle = "Test Methods")
+        #parse("headerrelative.vm")
+
+        <br/>
+
+        <div class="dashboardTextBig" style="font-size:32px; margin-top: 44px; margin-bottom: 26px;">$testClass.name</div>
+        <div class="dashboardTextVerySmall">$testClass.fullClassName</div>
+
+        #set($methodsAll = $testClass.copyOfMethodContexts())
+
+        #foreach ($s in ${executionContext.getAvailableStatuses()})
+
+            #set ($methods = $filter.filterMethodContexts($methodsAll, true, true, $s))
+            #if ($methods.size() > 0)
+                #set ($style = "background-color: $s.color")
+                <table class="textleft resultsTable">
+                    <tr class="header">
+                        <th colspan="$cols" style="$style">$s.title</th>
+                    </tr>
+                    <tr class="header" style="$style">
+                    </tr>
+                    #foreach( $testMethod in $methods )
+                        #set($index = ${velocityCount} - 1)
+                        #if ($index < 10)
+                            #set ($index = "0$index")
+                        #end
+
+                        <tr id="${testMethod.name}-${s}-${index}" class="test">
+                            <!-- methodBody -->
+                            #parse("methodBody.vm")
+                        </tr>
+                    #end
+                #end
+            </table>
+        #end
+</body>
+
+</html>

@@ -3,6 +3,7 @@ dependencies {
     compile 'org.bouncycastle:bcmail-jdk15on:1.52'
     compile 'net.iharder:base64:2.3.8'
     compile core
+    testCompile report
 
     testCompile 'com.icegreen:greenmail:1.5.9'
 }

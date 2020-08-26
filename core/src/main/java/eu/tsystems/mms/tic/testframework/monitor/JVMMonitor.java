@@ -19,20 +19,19 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.monitor;
+
+package eu.tsystems.mms.tic.testframework.monitor;
 
 import eu.tsystems.mms.tic.testframework.events.ITesterraEventType;
 import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventListener;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.internal.ConsumptionMeasurementsCollector;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.JVMUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JVMMonitor implements TesterraEventListener {
 
@@ -53,13 +52,15 @@ public class JVMMonitor implements TesterraEventListener {
     private static final long diff = 2;
 
     private static final ConsumptionMeasurementsCollector cmc = new ConsumptionMeasurementsCollector();
-    private static final ConsumptionMeasurementsCollector.ContextMeasurement cmMemUsage = new ConsumptionMeasurementsCollector.ContextMeasurement("JVM Memory Usage", "Mem", "MB");
-    private static final ConsumptionMeasurementsCollector.ContextMeasurement cmMemTotal = new ConsumptionMeasurementsCollector.ContextMeasurement("JVM Memory Reserved", "Mem", "MB");
-    private static final ConsumptionMeasurementsCollector.ContextMeasurement cmCPU = new ConsumptionMeasurementsCollector.ContextMeasurement("JVM CPU", "CPU", "%");
+    private static final ConsumptionMeasurementsCollector.ContextMeasurement cmMemUsage =
+            new ConsumptionMeasurementsCollector.ContextMeasurement("JVM Memory Usage", "Mem", "MB");
+    private static final ConsumptionMeasurementsCollector.ContextMeasurement cmMemTotal =
+            new ConsumptionMeasurementsCollector.ContextMeasurement("JVM Memory Reserved", "Mem", "MB");
+    private static final ConsumptionMeasurementsCollector.ContextMeasurement cmCPU =
+            new ConsumptionMeasurementsCollector.ContextMeasurement("JVM CPU", "CPU", "%");
 
     static {
-//        cmc.setSquash(true);
-
+        //        cmc.setSquash(true);
         cmMemUsage.setMaxValue(MAX_MEMORY);
         cmMemTotal.setMaxValue(MAX_MEMORY);
     }
@@ -94,8 +95,7 @@ public class JVMMonitor implements TesterraEventListener {
                 if (!isNearLastValue(usedMem, total)) {
                     putValueToMap(usedMem, total);
                 }
-            }
-            else {
+            } else {
                 // wenn mit label, dann ajF hinzufuegen
                 putValueToMap(usedMem, total);
                 int position = MEASUREMENTS.size() - 1; // must be 1+
@@ -142,18 +142,18 @@ public class JVMMonitor implements TesterraEventListener {
             TesterraEventType TesterraEventType = (TesterraEventType) iTesterraEventType;
             switch (TesterraEventType) {
                 case TEST_METHOD_START:
-//                    logJVMUsageInfo();
+                    //                    logJVMUsageInfo();
                     break;
                 case TEST_METHOD_END:
                     break;
                 case CONFIGURATION_METHOD_START:
-//                    logJVMUsageInfo();
+                    //                    logJVMUsageInfo();
                     break;
                 case CONFIGURATION_METHOD_END:
                     break;
                 case TEST_START:
                     break;
-                case TEST_END:
+                case TEST_RUN_END:
                     break;
                 case RETRYING_METHOD:
                     break;
@@ -237,8 +237,7 @@ public class JVMMonitor implements TesterraEventListener {
         return LABELS;
     }
 
-    public static void createReportTab() {
-        ReportUtils.addExtraTopLevelConsumptionMeasurementsTab("JVM Monitor", "jvmmonitor.html", true, cmc);
+    public static ConsumptionMeasurementsCollector getConsumptionMeasurementsCollector() {
+        return cmc;
     }
-
 }

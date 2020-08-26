@@ -19,21 +19,19 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report;
+
+package eu.tsystems.mms.tic.testframework.report;
+
+import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.getCurrentExecutionContext;
+
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.ITestResult;
-import org.testng.SkipException;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -42,8 +40,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController.getCurrentExecutionContext;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.ITestResult;
+import org.testng.SkipException;
 
 public class TestStatusController {
 
@@ -110,7 +111,8 @@ public class TestStatusController {
             Throwable throwable = methodContext.testResult.getThrowable();
 
             if (methodContext.testResult.getStatus() == ITestResult.CREATED && status == Status.FAILED) {
-                LOGGER.warn("TestNG bug - result status is CREATED, which is wrong. Method status is " + Status.FAILED + ", which is also wrong. Assuming SKIPPED.");
+                LOGGER.warn("TestNG bug - result status is CREATED, which is wrong. Method status is " + Status.FAILED +
+                        ", which is also wrong. Assuming SKIPPED.");
                 status = Status.SKIPPED;
             } else if (throwable instanceof SkipException) {
                 LOGGER.info("Found SkipException");
@@ -252,7 +254,8 @@ public class TestStatusController {
 
     public static void writeCounterToLog() {
         String counterInfoMessage = getCounterInfoMessage();
-        String logMessage = ReportUtils.getReportName() + " " + getCurrentExecutionContext().runConfig.RUNCFG + ": " + counterInfoMessage;
+        String logMessage = ExecutionContextController.getCurrentExecutionContext().runConfig.getReportName() + " " +
+                getCurrentExecutionContext().runConfig.RUNCFG + ": " + counterInfoMessage;
 
         LOGGER.info(logMessage);
     }

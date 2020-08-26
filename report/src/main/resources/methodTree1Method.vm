@@ -1,0 +1,18 @@
+#set ($c = 0)
+#foreach ($m in $methodX.getRelatedContainers())
+    #if ($c > 0)
+        <ul>
+    #end
+    #set ($c = $c + 1)
+    #parse('methodTreeBubble.vm')
+#end
+
+#if ($close == 1)
+    #if ($c > 1)
+        #set($range = [2..$c])
+        #foreach($i in $range)
+            </ul></li>
+        #end
+    #end
+    </li>
+#end

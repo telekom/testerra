@@ -1,0 +1,5 @@
+.DS_STORE
+Thumbs.db
+.idea
+node_modules
+dist

@@ -1,0 +1,155 @@
+<template id="main">
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link  rel="stylesheet" href="bundle.css">
+  </head>
+  <body class="mdc-typography">
+    <div aurelia-app='src/main'></div>
+    <!-- mdc-tab-bar using material design syntax, needs to be rewritten into aurelia-mdc -->
+    <div class="mdc-tab-bar" role="tablist">
+      <div class="mdc-tab-scroller">
+        <div class="mdc-tab-scroller__scroll-area">
+          <div class="mdc-tab-scroller__scroll-content">
+            <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
+          <span class="mdc-tab__content">
+            <span class="mdc-tab__text-label">Data Set 0</span>
+          </span>
+              <span class="mdc-tab-indicator mdc-tab-indicator--active">
+            <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+          </span>
+              <span class="mdc-tab__ripple"></span>
+            </button>
+            <button class="mdc-tab " role="tab" aria-selected="true" tabindex="0">
+          <span class="mdc-tab__content">
+            <span class="mdc-tab__text-label">Data Set 1</span>
+          </span>
+              <span class="mdc-tab-indicator">
+            <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+          </span>
+              <span class="mdc-tab__ripple"></span>
+            </button>
+            <button class="mdc-tab " role="tab" aria-selected="true" tabindex="0">
+          <span class="mdc-tab__content">
+            <span class="mdc-tab__text-label">Data Set 2</span>
+          </span>
+              <span class="mdc-tab-indicator">
+            <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+          </span>
+              <span class="mdc-tab__ripple"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <!-- Testing Menu -->
+    <mdc-menu view-model.ref="dataset_menu">
+      <mdc-menu-surface>
+        <mdc-list>
+          <mdc-list-item>Data set 0</mdc-list-item>
+          <mdc-list-item>Data set 1</mdc-list-item>
+          <mdc-list-item>Data set 2</mdc-list-item>
+        </mdc-list>
+      </mdc-menu-surface>
+    </mdc-menu>
+    <button mdc-button raised click.trigger="dataset_menu.toggle()">Open Menu</button>
+    <button mdc-button raised>aurelia-ui-mdc button</button>
+    <h1 css="font-family: ${(font?'Times New Roman':'Source Sans Pro, sans-serif')};">${message}</h1>
+    <button mdc-button raised click.delegate="font=!font">change font</button>
+    <button mdc-button raised click.delegate="toggleText()">change text</button>
+    <br>
+    <br>
+    <br>
+    <!-- table from aurelia-mdc -->
+    <mdc-data-table>
+      <mdc-data-table-header>
+        <mdc-data-table-header-cell>Dessert</mdc-data-table-header-cell>
+        <mdc-data-table-header-cell numeric>Calories</mdc-data-table-header-cell>
+        <mdc-data-table-header-cell numeric>Carbs</mdc-data-table-header-cell>
+        <mdc-data-table-header-cell numeric>Protein (g)</mdc-data-table-header-cell>
+        <mdc-data-table-header-cell mdcDataTableHeaderCell>Comments</mdc-data-table-header-cell>
+      </mdc-data-table-header>
+      <mdc-data-table-content>
+        <mdc-data-table-row repeat.for="dessert of desserts">
+          <mdc-data-table-cell>${dessert.name}</mdc-data-table-cell>
+          <mdc-data-table-cell numeric>${dessert.calories}</mdc-data-table-cell>
+          <mdc-data-table-cell numeric>${dessert.carbs}</mdc-data-table-cell>
+          <mdc-data-table-cell numeric>${dessert.protein}</mdc-data-table-cell>
+          <mdc-data-table-cell>${dessert.comment}</mdc-data-table-cell>
+        </mdc-data-table-row>
+      </mdc-data-table-content>
+    </mdc-data-table>
+    <br>
+    <br>
+    <button mdc-button raised click.delegate="dialog.open()">dialog</button>
+    <!-- Dialog test -->
+    <mdc-dialog view-model.ref="dialog" mdcdialog:closing.trigger="handleClosing(DialogText, false)"> <!-- still fires function when onclick OK, need interrupt to prevent closing.trigger from firing -->
+      <mdc-dialog-title>
+        handing stuff to functions
+      </mdc-dialog-title>
+      <mdc-dialog-content>
+        <mdc-text-field value.bind="DialogText" >
+            <input type="text" class="mdc-text-field__input" >
+        </mdc-text-field>
+      </mdc-dialog-content>
+      <mdc-dialog-actions>
+        <button mdc-button data-mdc-dialog-action="cancel">Cancel</button>
+        <button mdc-button data-mdc-dialog-action="ok" data-mdc-dialog-button-default data-mdc-dialog-initial-focus disabled.bind="!DialogText" click.delegate="handleClosing(DialogText, true)">Ok</button>
+      </mdc-dialog-actions>
+    </mdc-dialog>
+    <br>
+    <br>
+    <!-- Drawer test, fixed; list styles were missing -->
+    <div class="demo-layout__row--no-wrap demo-drawer-app">
+      <mdc-drawer type="modal" view-model.ref="Drawer">
+        <mdc-drawer-header title="Title" subtitle="Subtitle"></mdc-drawer-header>
+        <mdc-drawer-content>
+          <mdc-list tabindex="0">
+            <mdc-list-item repeat.for="item of items" activated.bind="item.activated" class="">
+              <mdc-icon mdc-list-item-graphic if.bind="item.icon">${item.icon}</mdc-icon>
+              <span>${item.label}</span>
+            </mdc-list-item>
+          </mdc-list>
+        </mdc-drawer-content>
+      </mdc-drawer>
+      <div>
+        Lorem ipsum dolor sit amet, ad erat postea ullamcorper nec, veri veniam quo et. Diam phaedrum ei mea, quaeque
+        voluptaria efficiantur duo no. Eu adhuc veritus civibus nec, sumo invidunt mel id, in vim dictas detraxit. Per
+        an legere iriure blandit. Veri iisque accusamus an pri.
+      </div>
+    </div>
+    <button mdc-button raised click.delegate="Drawer.open = !Drawer.open">Open Drawer</button>
+    <br>
+    <br>
+    <!-- Testing elevation -->
+    <figure mdc-elevation.bind="i" class="elevation__item" repeat.for="i of e_items">
+      <figcaption>elevation="${i}"</figcaption>
+    </figure>
+    <br>
+    <br>
+    <!-- Testing switches / form fields -->
+    <!--    Switches don't work properly, label does not attach, no documentation besides from material which works differently-->
+    <div> <!-- automatically passes var(--mdc-ripple-fg-size, 100%);, causing the ripple size to be way too large, viewport update causes it to recalc and fix the issue -->
+      <mdc-form-field>
+        <mdc-switch checked.bind="checked"></mdc-switch>
+        <label>yep, ripple on switches are still broken</label>
+      </mdc-form-field>
+    </div>
+    <br>
+    <br>
+    <!-- Testing Radio buttons / form fields -->
+<!--    Radio buttons don't work properly, label does not attach, no documentation besides from material which works differently-->
+<!--    <mdc-radio checked>-->
+<!--      <input id="radio_0">-->
+<!--    </mdc-radio>-->
+<!--    <mdc-radio>-->
+<!--      <input  id="radio_1" >-->
+<!--    </mdc-radio>-->
+<!--    <label for="radio_0">Data 0</label> -->
+<!--    <label for="radio_1">Data 1</label>-->
+    <!-- Label seems to not be properly attached  -->
+    <br>
+    <br>
+  </body>
+</template>

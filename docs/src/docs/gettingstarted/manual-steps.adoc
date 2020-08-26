@@ -4,7 +4,7 @@ include::../properties/property-attributes.adoc[]
 
 == Setup
 
-The Testerra framework is deployed to a https://bintray.com/testerra-io/Testerra[Bintray repository]. Make sure, that you added the jCenter repository somewhere.
+The Testerra framework is deployed to a https://bintray.com/testerra-io/Testerra[Bintray repository].Make sure, that you added the jCenter repository somewhere.
 
 Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:core?label=Testerra%20Framework[Bintray]
 
@@ -70,11 +70,12 @@ compileTestJava.options.encoding = "UTF-8"
 
 dependencies {
     compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
+    compile 'eu.tsystems.mms.tic.testerra:report:1-SNAPSHOT'
 }
 ----
 
 .Maven
-[source, xml, role="secondary"]
+[source,xml,role="secondary"]
 ----
 <!-- pom.xml -->
 <project>
@@ -89,6 +90,12 @@ dependencies {
         <dependency>
             <groupId>eu.tsystems.mms.tic.testerra</groupId>
             <artifactId>driver-ui-desktop</artifactId>
+            <version>1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.tsystems.mms.tic.testerra</groupId>
+            <artifactId>report</artifactId>
             <version>1-SNAPSHOT</version>
         </dependency>
     </dependencies>

@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.DateUtils;
 import eu.tsystems.mms.tic.testframework.utils.ReportUtils;
 
-public class GenerateTesterraReportWorker extends GenerateReportsWorker implements Loggable {
+public class GenerateReportWorker extends GenerateReportsWorker implements Loggable {
 
     @Override
     public void run() {

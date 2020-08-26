@@ -8,6 +8,7 @@ version '1-SNAPSHOT'
 dependencies {
     compile core
     compile core_interop
+    compile project(':report-model')
 
     testCompile driver_ui_desktop
     testCompile project(':integration-tests')

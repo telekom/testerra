@@ -25,16 +25,14 @@ package eu.tsystems.mms.tic.testframework.report;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
-import eu.tsystems.mms.tic.testframework.utils.LoggingDispatcher;
 import org.apache.logging.log4j.core.LogEvent;
 
 /**
  * Adds log events as {@link LogMessage} to {@link TestStep}
- * This is required for the local static report only.
  *
  * @author Mike Reiche
  */
-public class StaticReportLogFormatter extends ContextLogFormatter {
+public class ReportLogFormatter extends ContextLogFormatter {
 
     @Override
     public String format(LogEvent event) {
@@ -94,6 +92,6 @@ public class StaticReportLogFormatter extends ContextLogFormatter {
          * Add log message.
          */
         LogMessage logMessage = new LogMessage(event);
-        return LoggingDispatcher.addLogMessage(logMessage);
+        return LoggingDispatcher.getInstance().addLogMessage(logMessage);
     }
 }

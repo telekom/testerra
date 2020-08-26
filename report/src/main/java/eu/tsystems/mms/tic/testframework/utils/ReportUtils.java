@@ -29,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
+import eu.tsystems.mms.tic.testframework.report.LoggingDispatcher;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
@@ -438,9 +439,8 @@ public final class ReportUtils {
         /*
         Logs
          */
-        LoggingDispatcher.stopReportLogging();
         final File reportFileGlobalLogs = new File(framesDir, "logs.html");
-        ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData.classContexts, "log.vm", LoggingDispatcher.UNRELATED_LOGS, null);
+        ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData.classContexts, "log.vm", LoggingDispatcher.getInstance().getUnrelatedLogs(), null);
 
         /*
         Memory consumption

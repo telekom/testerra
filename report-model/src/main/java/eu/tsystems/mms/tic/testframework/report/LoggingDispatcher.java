@@ -20,8 +20,9 @@
  *
  */
 
-package eu.tsystems.mms.tic.testframework.utils;
+package eu.tsystems.mms.tic.testframework.report;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
@@ -30,8 +31,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
 
 /**
@@ -39,9 +38,13 @@ import org.testng.ITestResult;
  *
  * @author sepr, mrgi
  */
-public final class LoggingDispatcher {
+public final class LoggingDispatcher implements Loggable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoggingDispatcher.class);
+    private static final LoggingDispatcher self = new LoggingDispatcher();
+
+    public static LoggingDispatcher getInstance() {
+        return self;
+    }
 
     /**
      * List that contains -thread link offers-. If the method linkThread is called from a test steps, the link offer
@@ -49,21 +52,23 @@ public final class LoggingDispatcher {
      * threadname of the thread to link and the testresult of the current steps. The link is established when the
      * testresult is referenced to the thread to link.
      */
-    private static final ConcurrentHashMap<String, ITestResult> THREAD_LINK_OFFERS = new ConcurrentHashMap<>();
-
-    private static boolean STOP_REPORT_LOGGING = false;
+    private final ConcurrentHashMap<String, ITestResult> THREAD_LINK_OFFERS = new ConcurrentHashMap<>();
 
     /**
      * Collection of unrelated logs.
      */
     static final List<LogMessage> UNRELATED_LOGS = Collections.synchronizedList(new LinkedList<>());
 
+    public List<LogMessage> getUnrelatedLogs() {
+        return UNRELATED_LOGS;
+    }
+
     /**
      * Adds a logMessage message to MethodContext. Called in TesterraListener.class
      *
      * @param logMessage The logMessage message.
      */
-    public static TestStepAction addLogMessage(LogMessage logMessage) {
+    public TestStepAction addLogMessage(LogMessage logMessage) {
         return pAddLogMessage(logMessage);
     }
 
@@ -72,11 +77,7 @@ public final class LoggingDispatcher {
      *
      * @param logMessage The logMessage message.
      */
-    private static TestStepAction pAddLogMessage(LogMessage logMessage) {
-        if (STOP_REPORT_LOGGING) {
-            return null;
-        }
-
+    private TestStepAction pAddLogMessage(LogMessage logMessage) {
         // check if a thread link offer exists
         final String threadName = Thread.currentThread().getId() + "";
         if (THREAD_LINK_OFFERS.containsKey(threadName)) {
@@ -95,25 +96,14 @@ public final class LoggingDispatcher {
         return methodContext.addLogMessage(logMessage);
     }
 
-
-    /**
-     * Private constructor.
-     */
-    private LoggingDispatcher() {
-    }
-
-    public static void stopReportLogging() {
-        STOP_REPORT_LOGGING = true;
-    }
-
     /**
      * Link a thread to the current steps, so that the log appears in the steps (report).
      *
      * @param thread .
      */
-    public static void linkThread(Thread thread) {
+    public void linkThread(Thread thread) {
         if (ExecutionContextController.getCurrentTestResult() == null) {
-            LOGGER.error("Linkage offer failed. There is no test result set, yet.");
+            log().error("Linkage offer failed. There is no test result set, yet.");
             return;
         }
 
@@ -121,5 +111,4 @@ public final class LoggingDispatcher {
         // store the current test result to be used by the other thread as well
         THREAD_LINK_OFFERS.put(threadName, ExecutionContextController.getCurrentTestResult());
     }
-
 }

@@ -23,6 +23,7 @@ dependencies {
      * Thats why we have to exclude this dependency completely and fix it manually.
      */
     compile core
+    // Prevents: java.lang.NoSuchMethodError: 'java.util.stream.Collector com.google.common.collect.ImmutableList.toImmutableList()'
     compile("io.grpc:grpc-protobuf:${grpcVersion}")
     compile "io.grpc:grpc-stub:${grpcVersion}"
     compileOnly "com.google.protobuf:protobuf-java:$protobufVersion"

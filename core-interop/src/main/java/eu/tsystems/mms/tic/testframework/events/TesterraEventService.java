@@ -19,13 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.events;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package eu.tsystems.mms.tic.testframework.events;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created with IntelliJ IDEA.
@@ -78,19 +78,12 @@ public final class TesterraEventService implements TesterraEventListener {
     }
 
     /**
-     *
      * @param TesterraEvent .
      */
     public void fireEvent(final TesterraEvent TesterraEvent) {
-        ITesterraEventType eventType = TesterraEvent.getTesterraEventType();
         for (final TesterraEventListener listener : listeners) {
             LOGGER.debug("Firing event " + TesterraEvent + " for " + listener);
-            if (eventType == TesterraEventType.TEST_END) {
-                // not thread at test end
-                listener.fireEvent(TesterraEvent);
-            } else {
-                listener.fireEvent(TesterraEvent);
-            }
+            listener.fireEvent(TesterraEvent);
         }
     }
 

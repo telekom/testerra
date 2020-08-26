@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.utils;
+
+package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
@@ -27,9 +28,7 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateOtherOutputsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateTesterraReportWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.TestEndEventWorker;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
@@ -37,18 +36,15 @@ import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.report.events.TesterraReportEventDataTypes;
 import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
+import eu.tsystems.mms.tic.testframework.report.worker.GenerateReportsWorkerExecutor;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.ISuite;
-import org.testng.xml.XmlSuite;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,6 +58,10 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.ISuite;
+import org.testng.xml.XmlSuite;
 
 public class GenerateReport {
 
@@ -101,20 +101,20 @@ public class GenerateReport {
             /*
             workers
              */
-            GenerateReportsWorkerExecutor workerExecutor = new GenerateReportsWorkerExecutor();
-
+            final GenerateReportsWorkerExecutor workerExecutor = new GenerateReportsWorkerExecutor();
             workerExecutor.add(new TestEndEventWorker());
 
+            // run custom / registered workers
             FrameworkUtils.addWorkersToExecutor(TesterraListener.GENERATE_REPORTS_WORKERS, workerExecutor);
 
-            workerExecutor.add(new GenerateTesterraReportWorker());
+            // generate other output formats...
             workerExecutor.add(new GenerateOtherOutputsWorker());
 
-            // run workers
+            // EXECUTE workers
             workerExecutor.run(xmlSuites, suites, outputDirectory, xmlReporter);
 
-            Report report = new Report();
-            File finalDirectory = report.finalizeReport();
+            final Report report = new Report();
+            final File finalDirectory = report.finalizeReport();
             LOGGER.info("Report written to " + finalDirectory.getAbsolutePath());
 
             /*
@@ -147,10 +147,12 @@ public class GenerateReport {
     }
 
     private static void pGenerateReport() {
+
         /*
         get ALL ClassContexts
          */
-        final List<ClassContext> allClassContexts = new ArrayList<>(ExecutionContextController.getCurrentExecutionContext().getMethodStatsPerClass(true, false).keySet());
+        final List<ClassContext> allClassContexts =
+                new ArrayList<>(ExecutionContextController.getCurrentExecutionContext().getMethodStatsPerClass(true, false).keySet());
 
         /*
          * Build maps for exit points and failure aspects
@@ -238,7 +240,12 @@ public class GenerateReport {
         reportingData.failureCorridorMatched = FailureCorridor.isCorridorMatched();
         reportingData.classContexts = allClassContexts;
 
-        ReportUtils.createReport(reportingData);
+        // CALL GENERATION OF REPORTS on each registered listener...
+        TesterraEventService.getInstance().fireEvent(
+                new TesterraEvent(TesterraEventType.GENERATE_REPORT)
+                        .addUserData()
+                        .addData(TesterraReportEventDataTypes.REPORT_DATA, reportingData)
+        );
     }
 
     private static Map<String, List<MethodContext>> sortTestMethodContainerMap(final Map<String, List<MethodContext>> inputMap) {
@@ -315,7 +322,8 @@ public class GenerateReport {
 
                     if (methodContext.isPresent()) {
 
-                        final Fails failsAnnotation = methodContext.get().testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
+                        final Fails failsAnnotation =
+                                methodContext.get().testResult.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Fails.class);
                         String additionalErrorMessage = "Failure aspect matches known issue:";
 
                         if (StringUtils.isNotBlank(failsAnnotation.description())) {

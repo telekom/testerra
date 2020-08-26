@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
+
+package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
@@ -27,36 +28,14 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.threadvisualizer.DataSet;
-import eu.tsystems.mms.tic.testframework.report.threadvisualizer.DataStorage;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 
 public class TesterraEventsFinishWorker extends MethodWorker {
-
-    private void addThreadVisualizerDataSet() {
-        long startTimeTime = methodContext.startTime.getTime();
-        long endTimeTime = methodContext.endTime.getTime();
-
-        if (endTimeTime - startTimeTime <= 10) {
-            endTimeTime = startTimeTime + 10;
-        }
-
-        final DataSet dataSet = new DataSet(
-                methodContext,
-                startTimeTime,
-                endTimeTime);
-        DataStorage.addDataSet(dataSet);
-    }
 
     @Override
     public void run() {
         if (wasMethodInvoked()) {
-            /*
-            calculate addThreadVisualizerDataSet
-             */
-            addThreadVisualizerDataSet();
-
             /*
             fire END event
              */

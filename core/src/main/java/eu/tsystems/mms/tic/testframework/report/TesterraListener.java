@@ -19,10 +19,10 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report;
+
+package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.boot.Booter;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
@@ -60,6 +60,10 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
 import org.testng.IHookCallBack;
@@ -76,11 +80,6 @@ import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.xml.XmlSuite;
-
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Listener for JUnit and TestNg, collects test informations for testreport.
@@ -127,12 +126,6 @@ public class TesterraListener implements
         Call Booter
          */
         Booter.bootOnce();
-
-        /**
-         * Enable report formatter here
-         * @todo Move this to core module hook or module config in Testerra 2
-         */
-        TesterraCommons.getTesterraLogger().setFormatter(new StaticReportLogFormatter());
 
         /*
          * Add monitoring event listeners
@@ -292,7 +285,8 @@ public class TesterraListener implements
         /*
          * store testresult, create method context
          */
-        MethodContext methodContext = ExecutionContextController.setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
+        MethodContext methodContext = ExecutionContextController
+                .setCurrentTestResult(testResult, testContext); // stores the actual testresult, auto-creates the method context
         ExecutionContextController.setCurrentMethodContext(methodContext);
 
         methodContext.steps().announceTestStep(TestStep.SETUP);
@@ -454,6 +448,7 @@ public class TesterraListener implements
             List<ISuite> suites,
             String outputDirectory
     ) {
+
         GenerateReport.runOnce(xmlSuites, suites, outputDirectory, XML_REPORTER);
     }
 
@@ -510,7 +505,7 @@ public class TesterraListener implements
          add missing method parameters for skipped test methods
          */
         final Class<?>[] parameterTypes = iTestResult.getMethod().getConstructorOrMethod().getMethod().getParameterTypes();
-        if (parameterTypes.length >0) {
+        if (parameterTypes.length > 0) {
             final MethodContext methodContextFromTestResult = ExecutionContextController.getMethodContextFromTestResult(iTestResult, testContext);
             methodContextFromTestResult.parameters.addAll(Arrays.asList(parameterTypes));
         }

@@ -59,6 +59,7 @@ public class GenerateReportModelListener implements TesterraEventListener, Logga
             final Map<ITesterraEventDataType, Object> eventData = testerraEvent.getData();
             final MethodContext methodContext = (MethodContext) eventData.get(TesterraEventDataType.CONTEXT);
             File modelDir = report.getReportDirectory("model");
+            modelDir.mkdirs();
             eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder methodContextBuilder = methodContextExporter.prepareMethodContext(methodContext, fileBuilder -> {
                 writeBuilderToFile(fileBuilder, new File(modelDir, "file-"+fileBuilder.getId()));
 

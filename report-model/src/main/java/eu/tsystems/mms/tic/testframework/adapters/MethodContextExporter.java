@@ -271,30 +271,34 @@ public class MethodContextExporter extends ContextExporter {
         value(testStepAction.getTimestamp(), testStepBuilder::setTimestamp);
 
         testStepAction.getTestStepActionEntries().forEach(testStepActionEntry -> {
-            PClickPathEvent.Builder clickPathBuilder = PClickPathEvent.newBuilder();
-            switch (testStepActionEntry.clickPathEvent.getType()) {
-                case WINDOW:
-                    clickPathBuilder.setType(PClickPathEventType.WINDOW);
-                    break;
-                case CLICK:
-                    clickPathBuilder.setType(PClickPathEventType.CLICK);
-                    break;
-                case VALUE:
-                    clickPathBuilder.setType(PClickPathEventType.VALUE);
-                    break;
-                case PAGE:
-                    clickPathBuilder.setType(PClickPathEventType.PAGE);
-                    break;
-                case URL:
-                    clickPathBuilder.setType(PClickPathEventType.URL);
-                    break;
-                default:
-                    clickPathBuilder.setType(PClickPathEventType.NOT_SET);
+            if (testStepActionEntry.clickPathEvent != null) {
+                PClickPathEvent.Builder clickPathBuilder = PClickPathEvent.newBuilder();
+                switch (testStepActionEntry.clickPathEvent.getType()) {
+                    case WINDOW:
+                        clickPathBuilder.setType(PClickPathEventType.WINDOW);
+                        break;
+                    case CLICK:
+                        clickPathBuilder.setType(PClickPathEventType.CLICK);
+                        break;
+                    case VALUE:
+                        clickPathBuilder.setType(PClickPathEventType.VALUE);
+                        break;
+                    case PAGE:
+                        clickPathBuilder.setType(PClickPathEventType.PAGE);
+                        break;
+                    case URL:
+                        clickPathBuilder.setType(PClickPathEventType.URL);
+                        break;
+                    default:
+                        clickPathBuilder.setType(PClickPathEventType.NOT_SET);
+                }
+                clickPathBuilder.setSubject(testStepActionEntry.clickPathEvent.getSubject());
+                clickPathBuilder.setSessionId(testStepActionEntry.clickPathEvent.getSessionId());
+                testStepBuilder.addClickpathEvents(clickPathBuilder.build());
             }
-            clickPathBuilder.setSubject(testStepActionEntry.clickPathEvent.getSubject());
-            clickPathBuilder.setSessionId(testStepActionEntry.clickPathEvent.getSessionId());
-            testStepBuilder.addClickpathEvents(clickPathBuilder.build());
-            testStepBuilder.addScreenshotNames(testStepActionEntry.screenshot.filename);
+            if (testStepActionEntry.screenshot != null) {
+                testStepBuilder.addScreenshotNames(testStepActionEntry.screenshot.filename);
+            }
         });
         return testStepBuilder;
     }

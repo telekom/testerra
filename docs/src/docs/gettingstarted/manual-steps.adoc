@@ -4,12 +4,13 @@ include::../properties/property-attributes.adoc[]
 
 == Setup
 
-The Testerra framework is deployed to a https://bintray.com/testerra-io/Testerra[Bintray repository].Make sure, that you added the jCenter repository somewhere.
+The Testerra framework is deployed to a https://bintray.com/testerra-io/Testerra[Bintray repository].
+Make sure, that you added the jCenter repository somewhere.
 
 Current release: image:https://img.shields.io/bintray/v/testerra-io/Testerra/eu.tsystems.mms.tic.testerra:core?label=Testerra%20Framework[Bintray]
 
 .Gradle
-[source, gradle, role="primary"]
+[source,gradle,role="primary"]
 ----
 // Update your gradle configuration
 repositories {
@@ -21,7 +22,7 @@ repositories {
 ----
 
 .Maven
-[source, xml, role="secondary"]
+[source,xml,role="secondary"]
 ----
 <!-- settings.xml - Update your current profile -->
 <profile>

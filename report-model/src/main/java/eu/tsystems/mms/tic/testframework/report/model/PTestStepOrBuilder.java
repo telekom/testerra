@@ -32,26 +32,26 @@ public interface PTestStepOrBuilder extends
       getIdBytes();
 
   /**
-   * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> 
-      getTestStepActionList();
+      getTestStepActionsList();
   /**
-   * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getTestStepAction(int index);
+  eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getTestStepActions(int index);
   /**
-   * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
-  int getTestStepActionCount();
+  int getTestStepActionsCount();
   /**
-   * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> 
-      getTestStepActionOrBuilderList();
+      getTestStepActionsOrBuilderList();
   /**
-   * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder getTestStepActionOrBuilder(
+  eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder getTestStepActionsOrBuilder(
       int index);
 }

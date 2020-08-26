@@ -23,29 +23,29 @@ public interface ClassContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder();
 
   /**
-   * <code>repeated string method_contexts = 6;</code>
-   * @return A list containing the methodContexts.
+   * <code>repeated string method_context_ids = 6;</code>
+   * @return A list containing the methodContextIds.
    */
   java.util.List<java.lang.String>
-      getMethodContextsList();
+      getMethodContextIdsList();
   /**
-   * <code>repeated string method_contexts = 6;</code>
-   * @return The count of methodContexts.
+   * <code>repeated string method_context_ids = 6;</code>
+   * @return The count of methodContextIds.
    */
-  int getMethodContextsCount();
+  int getMethodContextIdsCount();
   /**
-   * <code>repeated string method_contexts = 6;</code>
+   * <code>repeated string method_context_ids = 6;</code>
    * @param index The index of the element to return.
-   * @return The methodContexts at the given index.
+   * @return The methodContextIds at the given index.
    */
-  java.lang.String getMethodContexts(int index);
+  java.lang.String getMethodContextIds(int index);
   /**
-   * <code>repeated string method_contexts = 6;</code>
+   * <code>repeated string method_context_ids = 6;</code>
    * @param index The index of the value to return.
-   * @return The bytes of the methodContexts at the given index.
+   * @return The bytes of the methodContextIds at the given index.
    */
   com.google.protobuf.ByteString
-      getMethodContextsBytes(int index);
+      getMethodContextIdsBytes(int index);
 
   /**
    * <code>string full_class_name = 7;</code>
@@ -96,18 +96,10 @@ public interface ClassContextOrBuilder extends
       getExecutionContextIdBytes();
 
   /**
-   * <code>string testerra_class_context = 11;</code>
-   * @return The testerraClassContext.
-   */
-  java.lang.String getTesterraClassContext();
-  /**
-   * <code>string testerra_class_context = 11;</code>
-   * @return The bytes for testerraClassContext.
-   */
-  com.google.protobuf.ByteString
-      getTesterraClassContextBytes();
-
-  /**
+   * <pre>
+   *string testerra_class_context = 11;
+   * </pre>
+   *
    * <code>bool merged = 12;</code>
    * @return The merged.
    */

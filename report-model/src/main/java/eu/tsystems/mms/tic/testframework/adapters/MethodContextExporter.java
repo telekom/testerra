@@ -87,12 +87,12 @@ public class MethodContextExporter extends ContextExporter {
         value(createContextValues(methodContext), builder::setContextValues);
 
         valueMapping(methodContext.methodType, methodType -> MethodType.valueOf(methodType.name()), builder::setMethodType);
-        valueList(methodContext.parameters, o -> "" + o, builder::addAllParameter);
-        valueList(methodContext.methodTags, MethodContextExporter::annotationToString, builder::addAllMethodTag);
+        valueList(methodContext.parameters, o -> "" + o, builder::addAllParameters);
+        valueList(methodContext.methodTags, MethodContextExporter::annotationToString, builder::addAllMethodTags);
         value(methodContext.retryNumber, builder::setRetryNumber);
         value(methodContext.methodRunIndex, builder::setMethodRunIndex);
 
-        value(methodContext.priorityMessage, builder::addPriorityMessage);
+        value(methodContext.priorityMessage, builder::setPriorityMessage);
         value(methodContext.threadName, builder::setThreadName);
 
         // test steps
@@ -105,14 +105,14 @@ public class MethodContextExporter extends ContextExporter {
         value(methodContext.classContext.id, builder::setClassContextId);
         value(methodContext.executionContext.id, builder::setExecutionContextId);
 
-        valueList(methodContext.infos, s -> s, builder::addAllInfo);
-        valueList(methodContext.relatedMethodContexts, m -> m.id, builder::addAllRelatedMethodContext);
-        valueList(methodContext.dependsOnMethodContexts, m -> m.id, builder::addAllDependsOnMethodContext);
+        valueList(methodContext.infos, s -> s, builder::addAllInfos);
+        valueList(methodContext.relatedMethodContexts, m -> m.id, builder::addAllRelatedMethodContextIds);
+        valueList(methodContext.dependsOnMethodContexts, m -> m.id, builder::addAllDependsOnMethodContextIds);
 
         // build context
         valueMapping(methodContext, mc -> prepareErrorContext(mc.errorContext()), builder::setErrorContext);
-        valueList(methodContext.nonFunctionalInfos, ec -> prepareErrorContext(ec).build(), builder::addAllNonFunctionalInfo);
-        valueList(methodContext.collectedAssertions, ec -> prepareErrorContext(ec).build(), builder::addAllCollectedAssertion);
+        valueList(methodContext.nonFunctionalInfos, ec -> prepareErrorContext(ec).build(), builder::addAllNonFunctionalInfos);
+        valueList(methodContext.collectedAssertions, ec -> prepareErrorContext(ec).build(), builder::addAllCollectedAssertions);
         valueList(methodContext.sessionContexts, sc -> sc.id, builder::addAllSessionContextIds);
 
         /**
@@ -259,7 +259,7 @@ public class MethodContextExporter extends ContextExporter {
         PTestStep.Builder builder = PTestStep.newBuilder();
 
         value(testStep.getName(), builder::setName);
-        valueList(testStep.getTestStepActions(), testStepAction -> prepareTestStepAction(testStepAction).build(), builder::addAllTestStepAction);
+        valueList(testStep.getTestStepActions(), testStepAction -> prepareTestStepAction(testStepAction).build(), builder::addAllTestStepActions);
 
         return builder;
     }

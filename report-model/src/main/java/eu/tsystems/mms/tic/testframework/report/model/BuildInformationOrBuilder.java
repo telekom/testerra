@@ -3,8 +3,8 @@
 
 package eu.tsystems.mms.tic.testframework.report.model;
 
-public interface TesterraBuildInformationOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:data.TesterraBuildInformation)
+public interface BuildInformationOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:data.BuildInformation)
     com.google.protobuf.MessageOrBuilder {
 
   /**

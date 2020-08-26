@@ -27,41 +27,41 @@ public interface SuiteContextOrBuilder extends
    * list of all test
    * </pre>
    *
-   * <code>repeated string test_contexts = 6;</code>
-   * @return A list containing the testContexts.
+   * <code>repeated string test_context_ids = 6;</code>
+   * @return A list containing the testContextIds.
    */
   java.util.List<java.lang.String>
-      getTestContextsList();
+      getTestContextIdsList();
   /**
    * <pre>
    * list of all test
    * </pre>
    *
-   * <code>repeated string test_contexts = 6;</code>
-   * @return The count of testContexts.
+   * <code>repeated string test_context_ids = 6;</code>
+   * @return The count of testContextIds.
    */
-  int getTestContextsCount();
+  int getTestContextIdsCount();
   /**
    * <pre>
    * list of all test
    * </pre>
    *
-   * <code>repeated string test_contexts = 6;</code>
+   * <code>repeated string test_context_ids = 6;</code>
    * @param index The index of the element to return.
-   * @return The testContexts at the given index.
+   * @return The testContextIds at the given index.
    */
-  java.lang.String getTestContexts(int index);
+  java.lang.String getTestContextIds(int index);
   /**
    * <pre>
    * list of all test
    * </pre>
    *
-   * <code>repeated string test_contexts = 6;</code>
+   * <code>repeated string test_context_ids = 6;</code>
    * @param index The index of the value to return.
-   * @return The bytes of the testContexts at the given index.
+   * @return The bytes of the testContextIds at the given index.
    */
   com.google.protobuf.ByteString
-      getTestContextsBytes(int index);
+      getTestContextIdsBytes(int index);
 
   /**
    * <pre>

@@ -20,19 +20,19 @@ public interface RunConfigOrBuilder extends
       getRuncfgBytes();
 
   /**
-   * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+   * <code>.data.BuildInformation testerra_build_information = 2;</code>
    * @return Whether the testerraBuildInformation field is set.
    */
   boolean hasTesterraBuildInformation();
   /**
-   * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+   * <code>.data.BuildInformation testerra_build_information = 2;</code>
    * @return The testerraBuildInformation.
    */
-  eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation getTesterraBuildInformation();
+  eu.tsystems.mms.tic.testframework.report.model.BuildInformation getTesterraBuildInformation();
   /**
-   * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+   * <code>.data.BuildInformation testerra_build_information = 2;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformationOrBuilder getTesterraBuildInformationOrBuilder();
+  eu.tsystems.mms.tic.testframework.report.model.BuildInformationOrBuilder getTesterraBuildInformationOrBuilder();
 
   /**
    * <code>string report_name = 3;</code>

@@ -34,54 +34,54 @@ public interface MethodContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.MethodType getMethodType();
 
   /**
-   * <code>repeated string parameter = 8;</code>
-   * @return A list containing the parameter.
+   * <code>repeated string parameters = 8;</code>
+   * @return A list containing the parameters.
    */
   java.util.List<java.lang.String>
-      getParameterList();
+      getParametersList();
   /**
-   * <code>repeated string parameter = 8;</code>
-   * @return The count of parameter.
+   * <code>repeated string parameters = 8;</code>
+   * @return The count of parameters.
    */
-  int getParameterCount();
+  int getParametersCount();
   /**
-   * <code>repeated string parameter = 8;</code>
+   * <code>repeated string parameters = 8;</code>
    * @param index The index of the element to return.
-   * @return The parameter at the given index.
+   * @return The parameters at the given index.
    */
-  java.lang.String getParameter(int index);
+  java.lang.String getParameters(int index);
   /**
-   * <code>repeated string parameter = 8;</code>
+   * <code>repeated string parameters = 8;</code>
    * @param index The index of the value to return.
-   * @return The bytes of the parameter at the given index.
+   * @return The bytes of the parameters at the given index.
    */
   com.google.protobuf.ByteString
-      getParameterBytes(int index);
+      getParametersBytes(int index);
 
   /**
-   * <code>repeated string method_tag = 9;</code>
-   * @return A list containing the methodTag.
+   * <code>repeated string method_tags = 9;</code>
+   * @return A list containing the methodTags.
    */
   java.util.List<java.lang.String>
-      getMethodTagList();
+      getMethodTagsList();
   /**
-   * <code>repeated string method_tag = 9;</code>
-   * @return The count of methodTag.
+   * <code>repeated string method_tags = 9;</code>
+   * @return The count of methodTags.
    */
-  int getMethodTagCount();
+  int getMethodTagsCount();
   /**
-   * <code>repeated string method_tag = 9;</code>
+   * <code>repeated string method_tags = 9;</code>
    * @param index The index of the element to return.
-   * @return The methodTag at the given index.
+   * @return The methodTags at the given index.
    */
-  java.lang.String getMethodTag(int index);
+  java.lang.String getMethodTags(int index);
   /**
-   * <code>repeated string method_tag = 9;</code>
+   * <code>repeated string method_tags = 9;</code>
    * @param index The index of the value to return.
-   * @return The bytes of the methodTag at the given index.
+   * @return The bytes of the methodTags at the given index.
    */
   com.google.protobuf.ByteString
-      getMethodTagBytes(int index);
+      getMethodTagsBytes(int index);
 
   /**
    * <code>int32 retry_number = 10;</code>
@@ -151,152 +151,139 @@ public interface MethodContextOrBuilder extends
       getExecutionContextIdBytes();
 
   /**
-   * <code>repeated .data.ErrorContext non_functional_info = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
    */
   java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
-      getNonFunctionalInfoList();
+      getNonFunctionalInfosList();
   /**
-   * <code>repeated .data.ErrorContext non_functional_info = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getNonFunctionalInfo(int index);
+  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getNonFunctionalInfos(int index);
   /**
-   * <code>repeated .data.ErrorContext non_functional_info = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
    */
-  int getNonFunctionalInfoCount();
+  int getNonFunctionalInfosCount();
   /**
-   * <code>repeated .data.ErrorContext non_functional_info = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
    */
   java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-      getNonFunctionalInfoOrBuilderList();
+      getNonFunctionalInfosOrBuilderList();
   /**
-   * <code>repeated .data.ErrorContext non_functional_info = 17;</code>
+   * <code>repeated .data.ErrorContext non_functional_infos = 17;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getNonFunctionalInfoOrBuilder(
+  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getNonFunctionalInfosOrBuilder(
       int index);
 
   /**
-   * <code>repeated .data.ErrorContext collected_assertion = 18;</code>
+   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
    */
   java.util.List<eu.tsystems.mms.tic.testframework.report.model.ErrorContext> 
-      getCollectedAssertionList();
+      getCollectedAssertionsList();
   /**
-   * <code>repeated .data.ErrorContext collected_assertion = 18;</code>
+   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getCollectedAssertion(int index);
+  eu.tsystems.mms.tic.testframework.report.model.ErrorContext getCollectedAssertions(int index);
   /**
-   * <code>repeated .data.ErrorContext collected_assertion = 18;</code>
+   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
    */
-  int getCollectedAssertionCount();
+  int getCollectedAssertionsCount();
   /**
-   * <code>repeated .data.ErrorContext collected_assertion = 18;</code>
+   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
    */
   java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder> 
-      getCollectedAssertionOrBuilderList();
+      getCollectedAssertionsOrBuilderList();
   /**
-   * <code>repeated .data.ErrorContext collected_assertion = 18;</code>
+   * <code>repeated .data.ErrorContext collected_assertions = 18;</code>
    */
-  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getCollectedAssertionOrBuilder(
+  eu.tsystems.mms.tic.testframework.report.model.ErrorContextOrBuilder getCollectedAssertionsOrBuilder(
       int index);
 
   /**
-   * <code>repeated string info = 19;</code>
-   * @return A list containing the info.
+   * <code>repeated string infos = 19;</code>
+   * @return A list containing the infos.
    */
   java.util.List<java.lang.String>
-      getInfoList();
+      getInfosList();
   /**
-   * <code>repeated string info = 19;</code>
-   * @return The count of info.
+   * <code>repeated string infos = 19;</code>
+   * @return The count of infos.
    */
-  int getInfoCount();
+  int getInfosCount();
   /**
-   * <code>repeated string info = 19;</code>
+   * <code>repeated string infos = 19;</code>
    * @param index The index of the element to return.
-   * @return The info at the given index.
+   * @return The infos at the given index.
    */
-  java.lang.String getInfo(int index);
+  java.lang.String getInfos(int index);
   /**
-   * <code>repeated string info = 19;</code>
+   * <code>repeated string infos = 19;</code>
    * @param index The index of the value to return.
-   * @return The bytes of the info at the given index.
+   * @return The bytes of the infos at the given index.
    */
   com.google.protobuf.ByteString
-      getInfoBytes(int index);
+      getInfosBytes(int index);
 
   /**
-   * <code>repeated string priority_message = 21;</code>
-   * @return A list containing the priorityMessage.
+   * <code>string priority_message = 21;</code>
+   * @return The priorityMessage.
    */
-  java.util.List<java.lang.String>
-      getPriorityMessageList();
+  java.lang.String getPriorityMessage();
   /**
-   * <code>repeated string priority_message = 21;</code>
-   * @return The count of priorityMessage.
-   */
-  int getPriorityMessageCount();
-  /**
-   * <code>repeated string priority_message = 21;</code>
-   * @param index The index of the element to return.
-   * @return The priorityMessage at the given index.
-   */
-  java.lang.String getPriorityMessage(int index);
-  /**
-   * <code>repeated string priority_message = 21;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the priorityMessage at the given index.
+   * <code>string priority_message = 21;</code>
+   * @return The bytes for priorityMessage.
    */
   com.google.protobuf.ByteString
-      getPriorityMessageBytes(int index);
+      getPriorityMessageBytes();
 
   /**
-   * <code>repeated string related_method_context = 23;</code>
-   * @return A list containing the relatedMethodContext.
+   * <code>repeated string related_method_context_ids = 23;</code>
+   * @return A list containing the relatedMethodContextIds.
    */
   java.util.List<java.lang.String>
-      getRelatedMethodContextList();
+      getRelatedMethodContextIdsList();
   /**
-   * <code>repeated string related_method_context = 23;</code>
-   * @return The count of relatedMethodContext.
+   * <code>repeated string related_method_context_ids = 23;</code>
+   * @return The count of relatedMethodContextIds.
    */
-  int getRelatedMethodContextCount();
+  int getRelatedMethodContextIdsCount();
   /**
-   * <code>repeated string related_method_context = 23;</code>
+   * <code>repeated string related_method_context_ids = 23;</code>
    * @param index The index of the element to return.
-   * @return The relatedMethodContext at the given index.
+   * @return The relatedMethodContextIds at the given index.
    */
-  java.lang.String getRelatedMethodContext(int index);
+  java.lang.String getRelatedMethodContextIds(int index);
   /**
-   * <code>repeated string related_method_context = 23;</code>
+   * <code>repeated string related_method_context_ids = 23;</code>
    * @param index The index of the value to return.
-   * @return The bytes of the relatedMethodContext at the given index.
+   * @return The bytes of the relatedMethodContextIds at the given index.
    */
   com.google.protobuf.ByteString
-      getRelatedMethodContextBytes(int index);
+      getRelatedMethodContextIdsBytes(int index);
 
   /**
-   * <code>repeated string depends_on_method_context = 24;</code>
-   * @return A list containing the dependsOnMethodContext.
+   * <code>repeated string depends_on_method_context_ids = 24;</code>
+   * @return A list containing the dependsOnMethodContextIds.
    */
   java.util.List<java.lang.String>
-      getDependsOnMethodContextList();
+      getDependsOnMethodContextIdsList();
   /**
-   * <code>repeated string depends_on_method_context = 24;</code>
-   * @return The count of dependsOnMethodContext.
+   * <code>repeated string depends_on_method_context_ids = 24;</code>
+   * @return The count of dependsOnMethodContextIds.
    */
-  int getDependsOnMethodContextCount();
+  int getDependsOnMethodContextIdsCount();
   /**
-   * <code>repeated string depends_on_method_context = 24;</code>
+   * <code>repeated string depends_on_method_context_ids = 24;</code>
    * @param index The index of the element to return.
-   * @return The dependsOnMethodContext at the given index.
+   * @return The dependsOnMethodContextIds at the given index.
    */
-  java.lang.String getDependsOnMethodContext(int index);
+  java.lang.String getDependsOnMethodContextIds(int index);
   /**
-   * <code>repeated string depends_on_method_context = 24;</code>
+   * <code>repeated string depends_on_method_context_ids = 24;</code>
    * @param index The index of the value to return.
-   * @return The bytes of the dependsOnMethodContext at the given index.
+   * @return The bytes of the dependsOnMethodContextIds at the given index.
    */
   com.google.protobuf.ByteString
-      getDependsOnMethodContextBytes(int index);
+      getDependsOnMethodContextIdsBytes(int index);
 
   /**
    * <code>.data.ErrorContext error_context = 25;</code>

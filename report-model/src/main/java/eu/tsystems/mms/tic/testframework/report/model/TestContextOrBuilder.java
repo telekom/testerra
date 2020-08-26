@@ -23,29 +23,29 @@ public interface TestContextOrBuilder extends
   eu.tsystems.mms.tic.testframework.report.model.ContextValuesOrBuilder getContextValuesOrBuilder();
 
   /**
-   * <code>repeated string class_contexts = 6;</code>
-   * @return A list containing the classContexts.
+   * <code>repeated string class_context_ids = 6;</code>
+   * @return A list containing the classContextIds.
    */
   java.util.List<java.lang.String>
-      getClassContextsList();
+      getClassContextIdsList();
   /**
-   * <code>repeated string class_contexts = 6;</code>
-   * @return The count of classContexts.
+   * <code>repeated string class_context_ids = 6;</code>
+   * @return The count of classContextIds.
    */
-  int getClassContextsCount();
+  int getClassContextIdsCount();
   /**
-   * <code>repeated string class_contexts = 6;</code>
+   * <code>repeated string class_context_ids = 6;</code>
    * @param index The index of the element to return.
-   * @return The classContexts at the given index.
+   * @return The classContextIds at the given index.
    */
-  java.lang.String getClassContexts(int index);
+  java.lang.String getClassContextIds(int index);
   /**
-   * <code>repeated string class_contexts = 6;</code>
+   * <code>repeated string class_context_ids = 6;</code>
    * @param index The index of the value to return.
-   * @return The bytes of the classContexts at the given index.
+   * @return The bytes of the classContextIds at the given index.
    */
   com.google.protobuf.ByteString
-      getClassContextsBytes(int index);
+      getClassContextIdsBytes(int index);
 
   /**
    * <code>string suite_context_id = 7;</code>

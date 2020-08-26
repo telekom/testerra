@@ -19,16 +19,15 @@
  */
 package eu.tsystems.mms.tic.testframework.adapters;
 
-import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
 
 public class ClassContextExporter extends ContextExporter {
 
     public ClassContext.Builder prepareClassContext(eu.tsystems.mms.tic.testframework.report.model.context.ClassContext classContext) {
-
         ClassContext.Builder builder = ClassContext.newBuilder();
 
         value(createContextValues(classContext), builder::setContextValues);
+        valueList(classContext.methodContexts, methodContext -> methodContext.id, builder::addAllMethodContextIds);
 
         value(classContext.fullClassName, builder::setFullClassName);
         value(classContext.simpleClassName, builder::setFullClassName);
@@ -36,7 +35,7 @@ public class ClassContextExporter extends ContextExporter {
         value(classContext.testContextModel.id, builder::setTestContextId);
         value(classContext.executionContext.id, builder::setExecutionContextId);
 
-        valueMapping(classContext.testContext, TestContext::name, builder::setTesterraClassContext);
+        //valueMapping(classContext.testContext, TestContext::name, builder::setTesterraClassContext);
         value(classContext.merged, builder::setMerged);
 
         return builder;

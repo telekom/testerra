@@ -16,7 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private TestContext() {
-    classContexts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    classContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     suiteContextId_ = "";
     executionContextId_ = "";
   }
@@ -68,10 +68,10 @@ private static final long serialVersionUID = 0L;
           case 50: {
             java.lang.String s = input.readStringRequireUtf8();
             if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              classContexts_ = new com.google.protobuf.LazyStringArrayList();
+              classContextIds_ = new com.google.protobuf.LazyStringArrayList();
               mutable_bitField0_ |= 0x00000001;
             }
-            classContexts_.add(s);
+            classContextIds_.add(s);
             break;
           }
           case 58: {
@@ -102,7 +102,7 @@ private static final long serialVersionUID = 0L;
           e).setUnfinishedMessage(this);
     } finally {
       if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        classContexts_ = classContexts_.getUnmodifiableView();
+        classContextIds_ = classContextIds_.getUnmodifiableView();
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -144,39 +144,39 @@ private static final long serialVersionUID = 0L;
     return getContextValues();
   }
 
-  public static final int CLASS_CONTEXTS_FIELD_NUMBER = 6;
-  private com.google.protobuf.LazyStringList classContexts_;
+  public static final int CLASS_CONTEXT_IDS_FIELD_NUMBER = 6;
+  private com.google.protobuf.LazyStringList classContextIds_;
   /**
-   * <code>repeated string class_contexts = 6;</code>
-   * @return A list containing the classContexts.
+   * <code>repeated string class_context_ids = 6;</code>
+   * @return A list containing the classContextIds.
    */
   public com.google.protobuf.ProtocolStringList
-      getClassContextsList() {
-    return classContexts_;
+      getClassContextIdsList() {
+    return classContextIds_;
   }
   /**
-   * <code>repeated string class_contexts = 6;</code>
-   * @return The count of classContexts.
+   * <code>repeated string class_context_ids = 6;</code>
+   * @return The count of classContextIds.
    */
-  public int getClassContextsCount() {
-    return classContexts_.size();
+  public int getClassContextIdsCount() {
+    return classContextIds_.size();
   }
   /**
-   * <code>repeated string class_contexts = 6;</code>
+   * <code>repeated string class_context_ids = 6;</code>
    * @param index The index of the element to return.
-   * @return The classContexts at the given index.
+   * @return The classContextIds at the given index.
    */
-  public java.lang.String getClassContexts(int index) {
-    return classContexts_.get(index);
+  public java.lang.String getClassContextIds(int index) {
+    return classContextIds_.get(index);
   }
   /**
-   * <code>repeated string class_contexts = 6;</code>
+   * <code>repeated string class_context_ids = 6;</code>
    * @param index The index of the value to return.
-   * @return The bytes of the classContexts at the given index.
+   * @return The bytes of the classContextIds at the given index.
    */
   public com.google.protobuf.ByteString
-      getClassContextsBytes(int index) {
-    return classContexts_.getByteString(index);
+      getClassContextIdsBytes(int index) {
+    return classContextIds_.getByteString(index);
   }
 
   public static final int SUITE_CONTEXT_ID_FIELD_NUMBER = 7;
@@ -268,8 +268,8 @@ private static final long serialVersionUID = 0L;
     if (contextValues_ != null) {
       output.writeMessage(1, getContextValues());
     }
-    for (int i = 0; i < classContexts_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, classContexts_.getRaw(i));
+    for (int i = 0; i < classContextIds_.size(); i++) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, classContextIds_.getRaw(i));
     }
     if (!getSuiteContextIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 7, suiteContextId_);
@@ -292,11 +292,11 @@ private static final long serialVersionUID = 0L;
     }
     {
       int dataSize = 0;
-      for (int i = 0; i < classContexts_.size(); i++) {
-        dataSize += computeStringSizeNoTag(classContexts_.getRaw(i));
+      for (int i = 0; i < classContextIds_.size(); i++) {
+        dataSize += computeStringSizeNoTag(classContextIds_.getRaw(i));
       }
       size += dataSize;
-      size += 1 * getClassContextsList().size();
+      size += 1 * getClassContextIdsList().size();
     }
     if (!getSuiteContextIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, suiteContextId_);
@@ -324,8 +324,8 @@ private static final long serialVersionUID = 0L;
       if (!getContextValues()
           .equals(other.getContextValues())) return false;
     }
-    if (!getClassContextsList()
-        .equals(other.getClassContextsList())) return false;
+    if (!getClassContextIdsList()
+        .equals(other.getClassContextIdsList())) return false;
     if (!getSuiteContextId()
         .equals(other.getSuiteContextId())) return false;
     if (!getExecutionContextId()
@@ -345,9 +345,9 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + CONTEXT_VALUES_FIELD_NUMBER;
       hash = (53 * hash) + getContextValues().hashCode();
     }
-    if (getClassContextsCount() > 0) {
-      hash = (37 * hash) + CLASS_CONTEXTS_FIELD_NUMBER;
-      hash = (53 * hash) + getClassContextsList().hashCode();
+    if (getClassContextIdsCount() > 0) {
+      hash = (37 * hash) + CLASS_CONTEXT_IDS_FIELD_NUMBER;
+      hash = (53 * hash) + getClassContextIdsList().hashCode();
     }
     hash = (37 * hash) + SUITE_CONTEXT_ID_FIELD_NUMBER;
     hash = (53 * hash) + getSuiteContextId().hashCode();
@@ -492,7 +492,7 @@ private static final long serialVersionUID = 0L;
         contextValues_ = null;
         contextValuesBuilder_ = null;
       }
-      classContexts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      classContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000001);
       suiteContextId_ = "";
 
@@ -531,10 +531,10 @@ private static final long serialVersionUID = 0L;
         result.contextValues_ = contextValuesBuilder_.build();
       }
       if (((bitField0_ & 0x00000001) != 0)) {
-        classContexts_ = classContexts_.getUnmodifiableView();
+        classContextIds_ = classContextIds_.getUnmodifiableView();
         bitField0_ = (bitField0_ & ~0x00000001);
       }
-      result.classContexts_ = classContexts_;
+      result.classContextIds_ = classContextIds_;
       result.suiteContextId_ = suiteContextId_;
       result.executionContextId_ = executionContextId_;
       onBuilt();
@@ -588,13 +588,13 @@ private static final long serialVersionUID = 0L;
       if (other.hasContextValues()) {
         mergeContextValues(other.getContextValues());
       }
-      if (!other.classContexts_.isEmpty()) {
-        if (classContexts_.isEmpty()) {
-          classContexts_ = other.classContexts_;
+      if (!other.classContextIds_.isEmpty()) {
+        if (classContextIds_.isEmpty()) {
+          classContextIds_ = other.classContextIds_;
           bitField0_ = (bitField0_ & ~0x00000001);
         } else {
-          ensureClassContextsIsMutable();
-          classContexts_.addAll(other.classContexts_);
+          ensureClassContextIdsIsMutable();
+          classContextIds_.addAll(other.classContextIds_);
         }
         onChanged();
       }
@@ -755,112 +755,112 @@ private static final long serialVersionUID = 0L;
       return contextValuesBuilder_;
     }
 
-    private com.google.protobuf.LazyStringList classContexts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureClassContextsIsMutable() {
+    private com.google.protobuf.LazyStringList classContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureClassContextIdsIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        classContexts_ = new com.google.protobuf.LazyStringArrayList(classContexts_);
+        classContextIds_ = new com.google.protobuf.LazyStringArrayList(classContextIds_);
         bitField0_ |= 0x00000001;
        }
     }
     /**
-     * <code>repeated string class_contexts = 6;</code>
-     * @return A list containing the classContexts.
+     * <code>repeated string class_context_ids = 6;</code>
+     * @return A list containing the classContextIds.
      */
     public com.google.protobuf.ProtocolStringList
-        getClassContextsList() {
-      return classContexts_.getUnmodifiableView();
+        getClassContextIdsList() {
+      return classContextIds_.getUnmodifiableView();
     }
     /**
-     * <code>repeated string class_contexts = 6;</code>
-     * @return The count of classContexts.
+     * <code>repeated string class_context_ids = 6;</code>
+     * @return The count of classContextIds.
      */
-    public int getClassContextsCount() {
-      return classContexts_.size();
+    public int getClassContextIdsCount() {
+      return classContextIds_.size();
     }
     /**
-     * <code>repeated string class_contexts = 6;</code>
+     * <code>repeated string class_context_ids = 6;</code>
      * @param index The index of the element to return.
-     * @return The classContexts at the given index.
+     * @return The classContextIds at the given index.
      */
-    public java.lang.String getClassContexts(int index) {
-      return classContexts_.get(index);
+    public java.lang.String getClassContextIds(int index) {
+      return classContextIds_.get(index);
     }
     /**
-     * <code>repeated string class_contexts = 6;</code>
+     * <code>repeated string class_context_ids = 6;</code>
      * @param index The index of the value to return.
-     * @return The bytes of the classContexts at the given index.
+     * @return The bytes of the classContextIds at the given index.
      */
     public com.google.protobuf.ByteString
-        getClassContextsBytes(int index) {
-      return classContexts_.getByteString(index);
+        getClassContextIdsBytes(int index) {
+      return classContextIds_.getByteString(index);
     }
     /**
-     * <code>repeated string class_contexts = 6;</code>
+     * <code>repeated string class_context_ids = 6;</code>
      * @param index The index to set the value at.
-     * @param value The classContexts to set.
+     * @param value The classContextIds to set.
      * @return This builder for chaining.
      */
-    public Builder setClassContexts(
+    public Builder setClassContextIds(
         int index, java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
-  ensureClassContextsIsMutable();
-      classContexts_.set(index, value);
+  ensureClassContextIdsIsMutable();
+      classContextIds_.set(index, value);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string class_contexts = 6;</code>
-     * @param value The classContexts to add.
+     * <code>repeated string class_context_ids = 6;</code>
+     * @param value The classContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addClassContexts(
+    public Builder addClassContextIds(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
-  ensureClassContextsIsMutable();
-      classContexts_.add(value);
+  ensureClassContextIdsIsMutable();
+      classContextIds_.add(value);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string class_contexts = 6;</code>
-     * @param values The classContexts to add.
+     * <code>repeated string class_context_ids = 6;</code>
+     * @param values The classContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addAllClassContexts(
+    public Builder addAllClassContextIds(
         java.lang.Iterable<java.lang.String> values) {
-      ensureClassContextsIsMutable();
+      ensureClassContextIdsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, classContexts_);
+          values, classContextIds_);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string class_contexts = 6;</code>
+     * <code>repeated string class_context_ids = 6;</code>
      * @return This builder for chaining.
      */
-    public Builder clearClassContexts() {
-      classContexts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    public Builder clearClassContextIds() {
+      classContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string class_contexts = 6;</code>
-     * @param value The bytes of the classContexts to add.
+     * <code>repeated string class_context_ids = 6;</code>
+     * @param value The bytes of the classContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addClassContextsBytes(
+    public Builder addClassContextIdsBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-      ensureClassContextsIsMutable();
-      classContexts_.add(value);
+      ensureClassContextIdsIsMutable();
+      classContextIds_.add(value);
       onChanged();
       return this;
     }

@@ -18,7 +18,7 @@ private static final long serialVersionUID = 0L;
   private PTestStep() {
     name_ = "";
     id_ = "";
-    testStepAction_ = java.util.Collections.emptyList();
+    testStepActions_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -66,10 +66,10 @@ private static final long serialVersionUID = 0L;
           }
           case 26: {
             if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              testStepAction_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction>();
+              testStepActions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction>();
               mutable_bitField0_ |= 0x00000001;
             }
-            testStepAction_.add(
+            testStepActions_.add(
                 input.readMessage(eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.parser(), extensionRegistry));
             break;
           }
@@ -89,7 +89,7 @@ private static final long serialVersionUID = 0L;
           e).setUnfinishedMessage(this);
     } finally {
       if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        testStepAction_ = java.util.Collections.unmodifiableList(testStepAction_);
+        testStepActions_ = java.util.Collections.unmodifiableList(testStepActions_);
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -180,39 +180,39 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int TEST_STEP_ACTION_FIELD_NUMBER = 3;
-  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> testStepAction_;
+  public static final int TEST_STEP_ACTIONS_FIELD_NUMBER = 3;
+  private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> testStepActions_;
   /**
-   * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
-  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> getTestStepActionList() {
-    return testStepAction_;
+  public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> getTestStepActionsList() {
+    return testStepActions_;
   }
   /**
-   * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
   public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> 
-      getTestStepActionOrBuilderList() {
-    return testStepAction_;
+      getTestStepActionsOrBuilderList() {
+    return testStepActions_;
   }
   /**
-   * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
-  public int getTestStepActionCount() {
-    return testStepAction_.size();
+  public int getTestStepActionsCount() {
+    return testStepActions_.size();
   }
   /**
-   * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getTestStepAction(int index) {
-    return testStepAction_.get(index);
+  public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getTestStepActions(int index) {
+    return testStepActions_.get(index);
   }
   /**
-   * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+   * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder getTestStepActionOrBuilder(
+  public eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder getTestStepActionsOrBuilder(
       int index) {
-    return testStepAction_.get(index);
+    return testStepActions_.get(index);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -235,8 +235,8 @@ private static final long serialVersionUID = 0L;
     if (!getIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, id_);
     }
-    for (int i = 0; i < testStepAction_.size(); i++) {
-      output.writeMessage(3, testStepAction_.get(i));
+    for (int i = 0; i < testStepActions_.size(); i++) {
+      output.writeMessage(3, testStepActions_.get(i));
     }
     unknownFields.writeTo(output);
   }
@@ -253,9 +253,9 @@ private static final long serialVersionUID = 0L;
     if (!getIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, id_);
     }
-    for (int i = 0; i < testStepAction_.size(); i++) {
+    for (int i = 0; i < testStepActions_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, testStepAction_.get(i));
+        .computeMessageSize(3, testStepActions_.get(i));
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -276,8 +276,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getName())) return false;
     if (!getId()
         .equals(other.getId())) return false;
-    if (!getTestStepActionList()
-        .equals(other.getTestStepActionList())) return false;
+    if (!getTestStepActionsList()
+        .equals(other.getTestStepActionsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -293,9 +293,9 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getName().hashCode();
     hash = (37 * hash) + ID_FIELD_NUMBER;
     hash = (53 * hash) + getId().hashCode();
-    if (getTestStepActionCount() > 0) {
-      hash = (37 * hash) + TEST_STEP_ACTION_FIELD_NUMBER;
-      hash = (53 * hash) + getTestStepActionList().hashCode();
+    if (getTestStepActionsCount() > 0) {
+      hash = (37 * hash) + TEST_STEP_ACTIONS_FIELD_NUMBER;
+      hash = (53 * hash) + getTestStepActionsList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -425,7 +425,7 @@ private static final long serialVersionUID = 0L;
     private void maybeForceBuilderInitialization() {
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
-        getTestStepActionFieldBuilder();
+        getTestStepActionsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -435,11 +435,11 @@ private static final long serialVersionUID = 0L;
 
       id_ = "";
 
-      if (testStepActionBuilder_ == null) {
-        testStepAction_ = java.util.Collections.emptyList();
+      if (testStepActionsBuilder_ == null) {
+        testStepActions_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
       } else {
-        testStepActionBuilder_.clear();
+        testStepActionsBuilder_.clear();
       }
       return this;
     }
@@ -470,14 +470,14 @@ private static final long serialVersionUID = 0L;
       int from_bitField0_ = bitField0_;
       result.name_ = name_;
       result.id_ = id_;
-      if (testStepActionBuilder_ == null) {
+      if (testStepActionsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
-          testStepAction_ = java.util.Collections.unmodifiableList(testStepAction_);
+          testStepActions_ = java.util.Collections.unmodifiableList(testStepActions_);
           bitField0_ = (bitField0_ & ~0x00000001);
         }
-        result.testStepAction_ = testStepAction_;
+        result.testStepActions_ = testStepActions_;
       } else {
-        result.testStepAction_ = testStepActionBuilder_.build();
+        result.testStepActions_ = testStepActionsBuilder_.build();
       }
       onBuilt();
       return result;
@@ -535,29 +535,29 @@ private static final long serialVersionUID = 0L;
         id_ = other.id_;
         onChanged();
       }
-      if (testStepActionBuilder_ == null) {
-        if (!other.testStepAction_.isEmpty()) {
-          if (testStepAction_.isEmpty()) {
-            testStepAction_ = other.testStepAction_;
+      if (testStepActionsBuilder_ == null) {
+        if (!other.testStepActions_.isEmpty()) {
+          if (testStepActions_.isEmpty()) {
+            testStepActions_ = other.testStepActions_;
             bitField0_ = (bitField0_ & ~0x00000001);
           } else {
-            ensureTestStepActionIsMutable();
-            testStepAction_.addAll(other.testStepAction_);
+            ensureTestStepActionsIsMutable();
+            testStepActions_.addAll(other.testStepActions_);
           }
           onChanged();
         }
       } else {
-        if (!other.testStepAction_.isEmpty()) {
-          if (testStepActionBuilder_.isEmpty()) {
-            testStepActionBuilder_.dispose();
-            testStepActionBuilder_ = null;
-            testStepAction_ = other.testStepAction_;
+        if (!other.testStepActions_.isEmpty()) {
+          if (testStepActionsBuilder_.isEmpty()) {
+            testStepActionsBuilder_.dispose();
+            testStepActionsBuilder_ = null;
+            testStepActions_ = other.testStepActions_;
             bitField0_ = (bitField0_ & ~0x00000001);
-            testStepActionBuilder_ = 
+            testStepActionsBuilder_ = 
               com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                 getTestStepActionFieldBuilder() : null;
+                 getTestStepActionsFieldBuilder() : null;
           } else {
-            testStepActionBuilder_.addAllMessages(other.testStepAction_);
+            testStepActionsBuilder_.addAllMessages(other.testStepActions_);
           }
         }
       }
@@ -743,244 +743,244 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> testStepAction_ =
+    private java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> testStepActions_ =
       java.util.Collections.emptyList();
-    private void ensureTestStepActionIsMutable() {
+    private void ensureTestStepActionsIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        testStepAction_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction>(testStepAction_);
+        testStepActions_ = new java.util.ArrayList<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction>(testStepActions_);
         bitField0_ |= 0x00000001;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.PTestStepAction, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> testStepActionBuilder_;
+        eu.tsystems.mms.tic.testframework.report.model.PTestStepAction, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> testStepActionsBuilder_;
 
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> getTestStepActionList() {
-      if (testStepActionBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(testStepAction_);
+    public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> getTestStepActionsList() {
+      if (testStepActionsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(testStepActions_);
       } else {
-        return testStepActionBuilder_.getMessageList();
+        return testStepActionsBuilder_.getMessageList();
       }
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public int getTestStepActionCount() {
-      if (testStepActionBuilder_ == null) {
-        return testStepAction_.size();
+    public int getTestStepActionsCount() {
+      if (testStepActionsBuilder_ == null) {
+        return testStepActions_.size();
       } else {
-        return testStepActionBuilder_.getCount();
+        return testStepActionsBuilder_.getCount();
       }
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getTestStepAction(int index) {
-      if (testStepActionBuilder_ == null) {
-        return testStepAction_.get(index);
+    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction getTestStepActions(int index) {
+      if (testStepActionsBuilder_ == null) {
+        return testStepActions_.get(index);
       } else {
-        return testStepActionBuilder_.getMessage(index);
+        return testStepActionsBuilder_.getMessage(index);
       }
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public Builder setTestStepAction(
+    public Builder setTestStepActions(
         int index, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction value) {
-      if (testStepActionBuilder_ == null) {
+      if (testStepActionsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureTestStepActionIsMutable();
-        testStepAction_.set(index, value);
+        ensureTestStepActionsIsMutable();
+        testStepActions_.set(index, value);
         onChanged();
       } else {
-        testStepActionBuilder_.setMessage(index, value);
+        testStepActionsBuilder_.setMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public Builder setTestStepAction(
+    public Builder setTestStepActions(
         int index, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder builderForValue) {
-      if (testStepActionBuilder_ == null) {
-        ensureTestStepActionIsMutable();
-        testStepAction_.set(index, builderForValue.build());
+      if (testStepActionsBuilder_ == null) {
+        ensureTestStepActionsIsMutable();
+        testStepActions_.set(index, builderForValue.build());
         onChanged();
       } else {
-        testStepActionBuilder_.setMessage(index, builderForValue.build());
+        testStepActionsBuilder_.setMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public Builder addTestStepAction(eu.tsystems.mms.tic.testframework.report.model.PTestStepAction value) {
-      if (testStepActionBuilder_ == null) {
+    public Builder addTestStepActions(eu.tsystems.mms.tic.testframework.report.model.PTestStepAction value) {
+      if (testStepActionsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureTestStepActionIsMutable();
-        testStepAction_.add(value);
+        ensureTestStepActionsIsMutable();
+        testStepActions_.add(value);
         onChanged();
       } else {
-        testStepActionBuilder_.addMessage(value);
+        testStepActionsBuilder_.addMessage(value);
       }
       return this;
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public Builder addTestStepAction(
+    public Builder addTestStepActions(
         int index, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction value) {
-      if (testStepActionBuilder_ == null) {
+      if (testStepActionsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureTestStepActionIsMutable();
-        testStepAction_.add(index, value);
+        ensureTestStepActionsIsMutable();
+        testStepActions_.add(index, value);
         onChanged();
       } else {
-        testStepActionBuilder_.addMessage(index, value);
+        testStepActionsBuilder_.addMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public Builder addTestStepAction(
+    public Builder addTestStepActions(
         eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder builderForValue) {
-      if (testStepActionBuilder_ == null) {
-        ensureTestStepActionIsMutable();
-        testStepAction_.add(builderForValue.build());
+      if (testStepActionsBuilder_ == null) {
+        ensureTestStepActionsIsMutable();
+        testStepActions_.add(builderForValue.build());
         onChanged();
       } else {
-        testStepActionBuilder_.addMessage(builderForValue.build());
+        testStepActionsBuilder_.addMessage(builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public Builder addTestStepAction(
+    public Builder addTestStepActions(
         int index, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder builderForValue) {
-      if (testStepActionBuilder_ == null) {
-        ensureTestStepActionIsMutable();
-        testStepAction_.add(index, builderForValue.build());
+      if (testStepActionsBuilder_ == null) {
+        ensureTestStepActionsIsMutable();
+        testStepActions_.add(index, builderForValue.build());
         onChanged();
       } else {
-        testStepActionBuilder_.addMessage(index, builderForValue.build());
+        testStepActionsBuilder_.addMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public Builder addAllTestStepAction(
+    public Builder addAllTestStepActions(
         java.lang.Iterable<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepAction> values) {
-      if (testStepActionBuilder_ == null) {
-        ensureTestStepActionIsMutable();
+      if (testStepActionsBuilder_ == null) {
+        ensureTestStepActionsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, testStepAction_);
+            values, testStepActions_);
         onChanged();
       } else {
-        testStepActionBuilder_.addAllMessages(values);
+        testStepActionsBuilder_.addAllMessages(values);
       }
       return this;
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public Builder clearTestStepAction() {
-      if (testStepActionBuilder_ == null) {
-        testStepAction_ = java.util.Collections.emptyList();
+    public Builder clearTestStepActions() {
+      if (testStepActionsBuilder_ == null) {
+        testStepActions_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
       } else {
-        testStepActionBuilder_.clear();
+        testStepActionsBuilder_.clear();
       }
       return this;
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public Builder removeTestStepAction(int index) {
-      if (testStepActionBuilder_ == null) {
-        ensureTestStepActionIsMutable();
-        testStepAction_.remove(index);
+    public Builder removeTestStepActions(int index) {
+      if (testStepActionsBuilder_ == null) {
+        ensureTestStepActionsIsMutable();
+        testStepActions_.remove(index);
         onChanged();
       } else {
-        testStepActionBuilder_.remove(index);
+        testStepActionsBuilder_.remove(index);
       }
       return this;
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder getTestStepActionBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder getTestStepActionsBuilder(
         int index) {
-      return getTestStepActionFieldBuilder().getBuilder(index);
+      return getTestStepActionsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder getTestStepActionOrBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder getTestStepActionsOrBuilder(
         int index) {
-      if (testStepActionBuilder_ == null) {
-        return testStepAction_.get(index);  } else {
-        return testStepActionBuilder_.getMessageOrBuilder(index);
+      if (testStepActionsBuilder_ == null) {
+        return testStepActions_.get(index);  } else {
+        return testStepActionsBuilder_.getMessageOrBuilder(index);
       }
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public java.util.List<? extends eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> 
-         getTestStepActionOrBuilderList() {
-      if (testStepActionBuilder_ != null) {
-        return testStepActionBuilder_.getMessageOrBuilderList();
+         getTestStepActionsOrBuilderList() {
+      if (testStepActionsBuilder_ != null) {
+        return testStepActionsBuilder_.getMessageOrBuilderList();
       } else {
-        return java.util.Collections.unmodifiableList(testStepAction_);
+        return java.util.Collections.unmodifiableList(testStepActions_);
       }
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder addTestStepActionBuilder() {
-      return getTestStepActionFieldBuilder().addBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder addTestStepActionsBuilder() {
+      return getTestStepActionsFieldBuilder().addBuilder(
           eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder addTestStepActionBuilder(
+    public eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder addTestStepActionsBuilder(
         int index) {
-      return getTestStepActionFieldBuilder().addBuilder(
+      return getTestStepActionsFieldBuilder().addBuilder(
           index, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.getDefaultInstance());
     }
     /**
-     * <code>repeated .data.PTestStepAction test_step_action = 3;</code>
+     * <code>repeated .data.PTestStepAction test_step_actions = 3;</code>
      */
     public java.util.List<eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder> 
-         getTestStepActionBuilderList() {
-      return getTestStepActionFieldBuilder().getBuilderList();
+         getTestStepActionsBuilderList() {
+      return getTestStepActionsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilderV3<
         eu.tsystems.mms.tic.testframework.report.model.PTestStepAction, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder> 
-        getTestStepActionFieldBuilder() {
-      if (testStepActionBuilder_ == null) {
-        testStepActionBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+        getTestStepActionsFieldBuilder() {
+      if (testStepActionsBuilder_ == null) {
+        testStepActionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
             eu.tsystems.mms.tic.testframework.report.model.PTestStepAction, eu.tsystems.mms.tic.testframework.report.model.PTestStepAction.Builder, eu.tsystems.mms.tic.testframework.report.model.PTestStepActionOrBuilder>(
-                testStepAction_,
+                testStepActions_,
                 ((bitField0_ & 0x00000001) != 0),
                 getParentForChildren(),
                 isClean());
-        testStepAction_ = null;
+        testStepActions_ = null;
       }
-      return testStepActionBuilder_;
+      return testStepActionsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

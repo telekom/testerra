@@ -57,11 +57,11 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 18: {
-            eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.Builder subBuilder = null;
+            eu.tsystems.mms.tic.testframework.report.model.BuildInformation.Builder subBuilder = null;
             if (testerraBuildInformation_ != null) {
               subBuilder = testerraBuildInformation_.toBuilder();
             }
-            testerraBuildInformation_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.parser(), extensionRegistry);
+            testerraBuildInformation_ = input.readMessage(eu.tsystems.mms.tic.testframework.report.model.BuildInformation.parser(), extensionRegistry);
             if (subBuilder != null) {
               subBuilder.mergeFrom(testerraBuildInformation_);
               testerraBuildInformation_ = subBuilder.buildPartial();
@@ -144,25 +144,25 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TESTERRA_BUILD_INFORMATION_FIELD_NUMBER = 2;
-  private eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation testerraBuildInformation_;
+  private eu.tsystems.mms.tic.testframework.report.model.BuildInformation testerraBuildInformation_;
   /**
-   * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+   * <code>.data.BuildInformation testerra_build_information = 2;</code>
    * @return Whether the testerraBuildInformation field is set.
    */
   public boolean hasTesterraBuildInformation() {
     return testerraBuildInformation_ != null;
   }
   /**
-   * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+   * <code>.data.BuildInformation testerra_build_information = 2;</code>
    * @return The testerraBuildInformation.
    */
-  public eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation getTesterraBuildInformation() {
-    return testerraBuildInformation_ == null ? eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.getDefaultInstance() : testerraBuildInformation_;
+  public eu.tsystems.mms.tic.testframework.report.model.BuildInformation getTesterraBuildInformation() {
+    return testerraBuildInformation_ == null ? eu.tsystems.mms.tic.testframework.report.model.BuildInformation.getDefaultInstance() : testerraBuildInformation_;
   }
   /**
-   * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+   * <code>.data.BuildInformation testerra_build_information = 2;</code>
    */
-  public eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformationOrBuilder getTesterraBuildInformationOrBuilder() {
+  public eu.tsystems.mms.tic.testframework.report.model.BuildInformationOrBuilder getTesterraBuildInformationOrBuilder() {
     return getTesterraBuildInformation();
   }
 
@@ -627,31 +627,31 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation testerraBuildInformation_;
+    private eu.tsystems.mms.tic.testframework.report.model.BuildInformation testerraBuildInformation_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation, eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.Builder, eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformationOrBuilder> testerraBuildInformationBuilder_;
+        eu.tsystems.mms.tic.testframework.report.model.BuildInformation, eu.tsystems.mms.tic.testframework.report.model.BuildInformation.Builder, eu.tsystems.mms.tic.testframework.report.model.BuildInformationOrBuilder> testerraBuildInformationBuilder_;
     /**
-     * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+     * <code>.data.BuildInformation testerra_build_information = 2;</code>
      * @return Whether the testerraBuildInformation field is set.
      */
     public boolean hasTesterraBuildInformation() {
       return testerraBuildInformationBuilder_ != null || testerraBuildInformation_ != null;
     }
     /**
-     * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+     * <code>.data.BuildInformation testerra_build_information = 2;</code>
      * @return The testerraBuildInformation.
      */
-    public eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation getTesterraBuildInformation() {
+    public eu.tsystems.mms.tic.testframework.report.model.BuildInformation getTesterraBuildInformation() {
       if (testerraBuildInformationBuilder_ == null) {
-        return testerraBuildInformation_ == null ? eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.getDefaultInstance() : testerraBuildInformation_;
+        return testerraBuildInformation_ == null ? eu.tsystems.mms.tic.testframework.report.model.BuildInformation.getDefaultInstance() : testerraBuildInformation_;
       } else {
         return testerraBuildInformationBuilder_.getMessage();
       }
     }
     /**
-     * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+     * <code>.data.BuildInformation testerra_build_information = 2;</code>
      */
-    public Builder setTesterraBuildInformation(eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation value) {
+    public Builder setTesterraBuildInformation(eu.tsystems.mms.tic.testframework.report.model.BuildInformation value) {
       if (testerraBuildInformationBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -665,10 +665,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+     * <code>.data.BuildInformation testerra_build_information = 2;</code>
      */
     public Builder setTesterraBuildInformation(
-        eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.Builder builderForValue) {
+        eu.tsystems.mms.tic.testframework.report.model.BuildInformation.Builder builderForValue) {
       if (testerraBuildInformationBuilder_ == null) {
         testerraBuildInformation_ = builderForValue.build();
         onChanged();
@@ -679,13 +679,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+     * <code>.data.BuildInformation testerra_build_information = 2;</code>
      */
-    public Builder mergeTesterraBuildInformation(eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation value) {
+    public Builder mergeTesterraBuildInformation(eu.tsystems.mms.tic.testframework.report.model.BuildInformation value) {
       if (testerraBuildInformationBuilder_ == null) {
         if (testerraBuildInformation_ != null) {
           testerraBuildInformation_ =
-            eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.newBuilder(testerraBuildInformation_).mergeFrom(value).buildPartial();
+            eu.tsystems.mms.tic.testframework.report.model.BuildInformation.newBuilder(testerraBuildInformation_).mergeFrom(value).buildPartial();
         } else {
           testerraBuildInformation_ = value;
         }
@@ -697,7 +697,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+     * <code>.data.BuildInformation testerra_build_information = 2;</code>
      */
     public Builder clearTesterraBuildInformation() {
       if (testerraBuildInformationBuilder_ == null) {
@@ -711,33 +711,33 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+     * <code>.data.BuildInformation testerra_build_information = 2;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.Builder getTesterraBuildInformationBuilder() {
+    public eu.tsystems.mms.tic.testframework.report.model.BuildInformation.Builder getTesterraBuildInformationBuilder() {
       
       onChanged();
       return getTesterraBuildInformationFieldBuilder().getBuilder();
     }
     /**
-     * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+     * <code>.data.BuildInformation testerra_build_information = 2;</code>
      */
-    public eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformationOrBuilder getTesterraBuildInformationOrBuilder() {
+    public eu.tsystems.mms.tic.testframework.report.model.BuildInformationOrBuilder getTesterraBuildInformationOrBuilder() {
       if (testerraBuildInformationBuilder_ != null) {
         return testerraBuildInformationBuilder_.getMessageOrBuilder();
       } else {
         return testerraBuildInformation_ == null ?
-            eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.getDefaultInstance() : testerraBuildInformation_;
+            eu.tsystems.mms.tic.testframework.report.model.BuildInformation.getDefaultInstance() : testerraBuildInformation_;
       }
     }
     /**
-     * <code>.data.TesterraBuildInformation testerra_build_information = 2;</code>
+     * <code>.data.BuildInformation testerra_build_information = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation, eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.Builder, eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformationOrBuilder> 
+        eu.tsystems.mms.tic.testframework.report.model.BuildInformation, eu.tsystems.mms.tic.testframework.report.model.BuildInformation.Builder, eu.tsystems.mms.tic.testframework.report.model.BuildInformationOrBuilder> 
         getTesterraBuildInformationFieldBuilder() {
       if (testerraBuildInformationBuilder_ == null) {
         testerraBuildInformationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation, eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.Builder, eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformationOrBuilder>(
+            eu.tsystems.mms.tic.testframework.report.model.BuildInformation, eu.tsystems.mms.tic.testframework.report.model.BuildInformation.Builder, eu.tsystems.mms.tic.testframework.report.model.BuildInformationOrBuilder>(
                 getTesterraBuildInformation(),
                 getParentForChildren(),
                 isClean());

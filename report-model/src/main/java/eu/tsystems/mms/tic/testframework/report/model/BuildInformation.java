@@ -4,18 +4,18 @@
 package eu.tsystems.mms.tic.testframework.report.model;
 
 /**
- * Protobuf type {@code data.TesterraBuildInformation}
+ * Protobuf type {@code data.BuildInformation}
  */
-public  final class TesterraBuildInformation extends
+public  final class BuildInformation extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:data.TesterraBuildInformation)
-    TesterraBuildInformationOrBuilder {
+    // @@protoc_insertion_point(message_implements:data.BuildInformation)
+    BuildInformationOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use TesterraBuildInformation.newBuilder() to construct.
-  private TesterraBuildInformation(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use BuildInformation.newBuilder() to construct.
+  private BuildInformation(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private TesterraBuildInformation() {
+  private BuildInformation() {
     buildJavaVersion_ = "";
     buildOsName_ = "";
     buildOsVersion_ = "";
@@ -28,7 +28,7 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new TesterraBuildInformation();
+    return new BuildInformation();
   }
 
   @java.lang.Override
@@ -36,7 +36,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private TesterraBuildInformation(
+  private BuildInformation(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -111,15 +111,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TesterraBuildInformation_descriptor;
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_BuildInformation_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TesterraBuildInformation_fieldAccessorTable
+    return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_BuildInformation_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.class, eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.Builder.class);
+            eu.tsystems.mms.tic.testframework.report.model.BuildInformation.class, eu.tsystems.mms.tic.testframework.report.model.BuildInformation.Builder.class);
   }
 
   public static final int BUILD_JAVA_VERSION_FIELD_NUMBER = 1;
@@ -407,10 +407,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation)) {
+    if (!(obj instanceof eu.tsystems.mms.tic.testframework.report.model.BuildInformation)) {
       return super.equals(obj);
     }
-    eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation other = (eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation) obj;
+    eu.tsystems.mms.tic.testframework.report.model.BuildInformation other = (eu.tsystems.mms.tic.testframework.report.model.BuildInformation) obj;
 
     if (!getBuildJavaVersion()
         .equals(other.getBuildJavaVersion())) return false;
@@ -452,69 +452,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parseFrom(byte[] data)
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parseFrom(java.io.InputStream input)
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parseDelimitedFrom(java.io.InputStream input)
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parseDelimitedFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parseFrom(
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -527,7 +527,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation prototype) {
+  public static Builder newBuilder(eu.tsystems.mms.tic.testframework.report.model.BuildInformation prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -543,26 +543,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code data.TesterraBuildInformation}
+   * Protobuf type {@code data.BuildInformation}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:data.TesterraBuildInformation)
-      eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformationOrBuilder {
+      // @@protoc_insertion_point(builder_implements:data.BuildInformation)
+      eu.tsystems.mms.tic.testframework.report.model.BuildInformationOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TesterraBuildInformation_descriptor;
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_BuildInformation_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TesterraBuildInformation_fieldAccessorTable
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_BuildInformation_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.class, eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.Builder.class);
+              eu.tsystems.mms.tic.testframework.report.model.BuildInformation.class, eu.tsystems.mms.tic.testframework.report.model.BuildInformation.Builder.class);
     }
 
-    // Construct using eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.newBuilder()
+    // Construct using eu.tsystems.mms.tic.testframework.report.model.BuildInformation.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -598,17 +598,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_TesterraBuildInformation_descriptor;
+      return eu.tsystems.mms.tic.testframework.report.model.Framework.internal_static_data_BuildInformation_descriptor;
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation getDefaultInstanceForType() {
-      return eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.getDefaultInstance();
+    public eu.tsystems.mms.tic.testframework.report.model.BuildInformation getDefaultInstanceForType() {
+      return eu.tsystems.mms.tic.testframework.report.model.BuildInformation.getDefaultInstance();
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation build() {
-      eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation result = buildPartial();
+    public eu.tsystems.mms.tic.testframework.report.model.BuildInformation build() {
+      eu.tsystems.mms.tic.testframework.report.model.BuildInformation result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -616,8 +616,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation buildPartial() {
-      eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation result = new eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation(this);
+    public eu.tsystems.mms.tic.testframework.report.model.BuildInformation buildPartial() {
+      eu.tsystems.mms.tic.testframework.report.model.BuildInformation result = new eu.tsystems.mms.tic.testframework.report.model.BuildInformation(this);
       result.buildJavaVersion_ = buildJavaVersion_;
       result.buildOsName_ = buildOsName_;
       result.buildOsVersion_ = buildOsVersion_;
@@ -662,16 +662,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation) {
-        return mergeFrom((eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation)other);
+      if (other instanceof eu.tsystems.mms.tic.testframework.report.model.BuildInformation) {
+        return mergeFrom((eu.tsystems.mms.tic.testframework.report.model.BuildInformation)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation other) {
-      if (other == eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation.getDefaultInstance()) return this;
+    public Builder mergeFrom(eu.tsystems.mms.tic.testframework.report.model.BuildInformation other) {
+      if (other == eu.tsystems.mms.tic.testframework.report.model.BuildInformation.getDefaultInstance()) return this;
       if (!other.getBuildJavaVersion().isEmpty()) {
         buildJavaVersion_ = other.buildJavaVersion_;
         onChanged();
@@ -711,11 +711,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation parsedMessage = null;
+      eu.tsystems.mms.tic.testframework.report.model.BuildInformation parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation) e.getUnfinishedMessage();
+        parsedMessage = (eu.tsystems.mms.tic.testframework.report.model.BuildInformation) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -1193,41 +1193,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:data.TesterraBuildInformation)
+    // @@protoc_insertion_point(builder_scope:data.BuildInformation)
   }
 
-  // @@protoc_insertion_point(class_scope:data.TesterraBuildInformation)
-  private static final eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:data.BuildInformation)
+  private static final eu.tsystems.mms.tic.testframework.report.model.BuildInformation DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation();
+    DEFAULT_INSTANCE = new eu.tsystems.mms.tic.testframework.report.model.BuildInformation();
   }
 
-  public static eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation getDefaultInstance() {
+  public static eu.tsystems.mms.tic.testframework.report.model.BuildInformation getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<TesterraBuildInformation>
-      PARSER = new com.google.protobuf.AbstractParser<TesterraBuildInformation>() {
+  private static final com.google.protobuf.Parser<BuildInformation>
+      PARSER = new com.google.protobuf.AbstractParser<BuildInformation>() {
     @java.lang.Override
-    public TesterraBuildInformation parsePartialFrom(
+    public BuildInformation parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new TesterraBuildInformation(input, extensionRegistry);
+      return new BuildInformation(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<TesterraBuildInformation> parser() {
+  public static com.google.protobuf.Parser<BuildInformation> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<TesterraBuildInformation> getParserForType() {
+  public com.google.protobuf.Parser<BuildInformation> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public eu.tsystems.mms.tic.testframework.report.model.TesterraBuildInformation getDefaultInstanceForType() {
+  public eu.tsystems.mms.tic.testframework.report.model.BuildInformation getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

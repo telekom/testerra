@@ -16,12 +16,11 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ClassContext() {
-    methodContexts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    methodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     fullClassName_ = "";
     simpleClassName_ = "";
     testContextId_ = "";
     executionContextId_ = "";
-    testerraClassContext_ = "";
   }
 
   @java.lang.Override
@@ -71,10 +70,10 @@ private static final long serialVersionUID = 0L;
           case 50: {
             java.lang.String s = input.readStringRequireUtf8();
             if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-              methodContexts_ = new com.google.protobuf.LazyStringArrayList();
+              methodContextIds_ = new com.google.protobuf.LazyStringArrayList();
               mutable_bitField0_ |= 0x00000001;
             }
-            methodContexts_.add(s);
+            methodContextIds_.add(s);
             break;
           }
           case 58: {
@@ -101,12 +100,6 @@ private static final long serialVersionUID = 0L;
             executionContextId_ = s;
             break;
           }
-          case 90: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            testerraClassContext_ = s;
-            break;
-          }
           case 96: {
 
             merged_ = input.readBool();
@@ -128,7 +121,7 @@ private static final long serialVersionUID = 0L;
           e).setUnfinishedMessage(this);
     } finally {
       if (((mutable_bitField0_ & 0x00000001) != 0)) {
-        methodContexts_ = methodContexts_.getUnmodifiableView();
+        methodContextIds_ = methodContextIds_.getUnmodifiableView();
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -170,39 +163,39 @@ private static final long serialVersionUID = 0L;
     return getContextValues();
   }
 
-  public static final int METHOD_CONTEXTS_FIELD_NUMBER = 6;
-  private com.google.protobuf.LazyStringList methodContexts_;
+  public static final int METHOD_CONTEXT_IDS_FIELD_NUMBER = 6;
+  private com.google.protobuf.LazyStringList methodContextIds_;
   /**
-   * <code>repeated string method_contexts = 6;</code>
-   * @return A list containing the methodContexts.
+   * <code>repeated string method_context_ids = 6;</code>
+   * @return A list containing the methodContextIds.
    */
   public com.google.protobuf.ProtocolStringList
-      getMethodContextsList() {
-    return methodContexts_;
+      getMethodContextIdsList() {
+    return methodContextIds_;
   }
   /**
-   * <code>repeated string method_contexts = 6;</code>
-   * @return The count of methodContexts.
+   * <code>repeated string method_context_ids = 6;</code>
+   * @return The count of methodContextIds.
    */
-  public int getMethodContextsCount() {
-    return methodContexts_.size();
+  public int getMethodContextIdsCount() {
+    return methodContextIds_.size();
   }
   /**
-   * <code>repeated string method_contexts = 6;</code>
+   * <code>repeated string method_context_ids = 6;</code>
    * @param index The index of the element to return.
-   * @return The methodContexts at the given index.
+   * @return The methodContextIds at the given index.
    */
-  public java.lang.String getMethodContexts(int index) {
-    return methodContexts_.get(index);
+  public java.lang.String getMethodContextIds(int index) {
+    return methodContextIds_.get(index);
   }
   /**
-   * <code>repeated string method_contexts = 6;</code>
+   * <code>repeated string method_context_ids = 6;</code>
    * @param index The index of the value to return.
-   * @return The bytes of the methodContexts at the given index.
+   * @return The bytes of the methodContextIds at the given index.
    */
   public com.google.protobuf.ByteString
-      getMethodContextsBytes(int index) {
-    return methodContexts_.getByteString(index);
+      getMethodContextIdsBytes(int index) {
+    return methodContextIds_.getByteString(index);
   }
 
   public static final int FULL_CLASS_NAME_FIELD_NUMBER = 7;
@@ -349,45 +342,13 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int TESTERRA_CLASS_CONTEXT_FIELD_NUMBER = 11;
-  private volatile java.lang.Object testerraClassContext_;
-  /**
-   * <code>string testerra_class_context = 11;</code>
-   * @return The testerraClassContext.
-   */
-  public java.lang.String getTesterraClassContext() {
-    java.lang.Object ref = testerraClassContext_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      testerraClassContext_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string testerra_class_context = 11;</code>
-   * @return The bytes for testerraClassContext.
-   */
-  public com.google.protobuf.ByteString
-      getTesterraClassContextBytes() {
-    java.lang.Object ref = testerraClassContext_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      testerraClassContext_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   public static final int MERGED_FIELD_NUMBER = 12;
   private boolean merged_;
   /**
+   * <pre>
+   *string testerra_class_context = 11;
+   * </pre>
+   *
    * <code>bool merged = 12;</code>
    * @return The merged.
    */
@@ -412,8 +373,8 @@ private static final long serialVersionUID = 0L;
     if (contextValues_ != null) {
       output.writeMessage(1, getContextValues());
     }
-    for (int i = 0; i < methodContexts_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, methodContexts_.getRaw(i));
+    for (int i = 0; i < methodContextIds_.size(); i++) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, methodContextIds_.getRaw(i));
     }
     if (!getFullClassNameBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 7, fullClassName_);
@@ -426,9 +387,6 @@ private static final long serialVersionUID = 0L;
     }
     if (!getExecutionContextIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 10, executionContextId_);
-    }
-    if (!getTesterraClassContextBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 11, testerraClassContext_);
     }
     if (merged_ != false) {
       output.writeBool(12, merged_);
@@ -448,11 +406,11 @@ private static final long serialVersionUID = 0L;
     }
     {
       int dataSize = 0;
-      for (int i = 0; i < methodContexts_.size(); i++) {
-        dataSize += computeStringSizeNoTag(methodContexts_.getRaw(i));
+      for (int i = 0; i < methodContextIds_.size(); i++) {
+        dataSize += computeStringSizeNoTag(methodContextIds_.getRaw(i));
       }
       size += dataSize;
-      size += 1 * getMethodContextsList().size();
+      size += 1 * getMethodContextIdsList().size();
     }
     if (!getFullClassNameBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, fullClassName_);
@@ -465,9 +423,6 @@ private static final long serialVersionUID = 0L;
     }
     if (!getExecutionContextIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, executionContextId_);
-    }
-    if (!getTesterraClassContextBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, testerraClassContext_);
     }
     if (merged_ != false) {
       size += com.google.protobuf.CodedOutputStream
@@ -493,8 +448,8 @@ private static final long serialVersionUID = 0L;
       if (!getContextValues()
           .equals(other.getContextValues())) return false;
     }
-    if (!getMethodContextsList()
-        .equals(other.getMethodContextsList())) return false;
+    if (!getMethodContextIdsList()
+        .equals(other.getMethodContextIdsList())) return false;
     if (!getFullClassName()
         .equals(other.getFullClassName())) return false;
     if (!getSimpleClassName()
@@ -503,8 +458,6 @@ private static final long serialVersionUID = 0L;
         .equals(other.getTestContextId())) return false;
     if (!getExecutionContextId()
         .equals(other.getExecutionContextId())) return false;
-    if (!getTesterraClassContext()
-        .equals(other.getTesterraClassContext())) return false;
     if (getMerged()
         != other.getMerged()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
@@ -522,9 +475,9 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + CONTEXT_VALUES_FIELD_NUMBER;
       hash = (53 * hash) + getContextValues().hashCode();
     }
-    if (getMethodContextsCount() > 0) {
-      hash = (37 * hash) + METHOD_CONTEXTS_FIELD_NUMBER;
-      hash = (53 * hash) + getMethodContextsList().hashCode();
+    if (getMethodContextIdsCount() > 0) {
+      hash = (37 * hash) + METHOD_CONTEXT_IDS_FIELD_NUMBER;
+      hash = (53 * hash) + getMethodContextIdsList().hashCode();
     }
     hash = (37 * hash) + FULL_CLASS_NAME_FIELD_NUMBER;
     hash = (53 * hash) + getFullClassName().hashCode();
@@ -534,8 +487,6 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getTestContextId().hashCode();
     hash = (37 * hash) + EXECUTION_CONTEXT_ID_FIELD_NUMBER;
     hash = (53 * hash) + getExecutionContextId().hashCode();
-    hash = (37 * hash) + TESTERRA_CLASS_CONTEXT_FIELD_NUMBER;
-    hash = (53 * hash) + getTesterraClassContext().hashCode();
     hash = (37 * hash) + MERGED_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
         getMerged());
@@ -678,7 +629,7 @@ private static final long serialVersionUID = 0L;
         contextValues_ = null;
         contextValuesBuilder_ = null;
       }
-      methodContexts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      methodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000001);
       fullClassName_ = "";
 
@@ -687,8 +638,6 @@ private static final long serialVersionUID = 0L;
       testContextId_ = "";
 
       executionContextId_ = "";
-
-      testerraClassContext_ = "";
 
       merged_ = false;
 
@@ -725,15 +674,14 @@ private static final long serialVersionUID = 0L;
         result.contextValues_ = contextValuesBuilder_.build();
       }
       if (((bitField0_ & 0x00000001) != 0)) {
-        methodContexts_ = methodContexts_.getUnmodifiableView();
+        methodContextIds_ = methodContextIds_.getUnmodifiableView();
         bitField0_ = (bitField0_ & ~0x00000001);
       }
-      result.methodContexts_ = methodContexts_;
+      result.methodContextIds_ = methodContextIds_;
       result.fullClassName_ = fullClassName_;
       result.simpleClassName_ = simpleClassName_;
       result.testContextId_ = testContextId_;
       result.executionContextId_ = executionContextId_;
-      result.testerraClassContext_ = testerraClassContext_;
       result.merged_ = merged_;
       onBuilt();
       return result;
@@ -786,13 +734,13 @@ private static final long serialVersionUID = 0L;
       if (other.hasContextValues()) {
         mergeContextValues(other.getContextValues());
       }
-      if (!other.methodContexts_.isEmpty()) {
-        if (methodContexts_.isEmpty()) {
-          methodContexts_ = other.methodContexts_;
+      if (!other.methodContextIds_.isEmpty()) {
+        if (methodContextIds_.isEmpty()) {
+          methodContextIds_ = other.methodContextIds_;
           bitField0_ = (bitField0_ & ~0x00000001);
         } else {
-          ensureMethodContextsIsMutable();
-          methodContexts_.addAll(other.methodContexts_);
+          ensureMethodContextIdsIsMutable();
+          methodContextIds_.addAll(other.methodContextIds_);
         }
         onChanged();
       }
@@ -810,10 +758,6 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getExecutionContextId().isEmpty()) {
         executionContextId_ = other.executionContextId_;
-        onChanged();
-      }
-      if (!other.getTesterraClassContext().isEmpty()) {
-        testerraClassContext_ = other.testerraClassContext_;
         onChanged();
       }
       if (other.getMerged() != false) {
@@ -968,112 +912,112 @@ private static final long serialVersionUID = 0L;
       return contextValuesBuilder_;
     }
 
-    private com.google.protobuf.LazyStringList methodContexts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    private void ensureMethodContextsIsMutable() {
+    private com.google.protobuf.LazyStringList methodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureMethodContextIdsIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        methodContexts_ = new com.google.protobuf.LazyStringArrayList(methodContexts_);
+        methodContextIds_ = new com.google.protobuf.LazyStringArrayList(methodContextIds_);
         bitField0_ |= 0x00000001;
        }
     }
     /**
-     * <code>repeated string method_contexts = 6;</code>
-     * @return A list containing the methodContexts.
+     * <code>repeated string method_context_ids = 6;</code>
+     * @return A list containing the methodContextIds.
      */
     public com.google.protobuf.ProtocolStringList
-        getMethodContextsList() {
-      return methodContexts_.getUnmodifiableView();
+        getMethodContextIdsList() {
+      return methodContextIds_.getUnmodifiableView();
     }
     /**
-     * <code>repeated string method_contexts = 6;</code>
-     * @return The count of methodContexts.
+     * <code>repeated string method_context_ids = 6;</code>
+     * @return The count of methodContextIds.
      */
-    public int getMethodContextsCount() {
-      return methodContexts_.size();
+    public int getMethodContextIdsCount() {
+      return methodContextIds_.size();
     }
     /**
-     * <code>repeated string method_contexts = 6;</code>
+     * <code>repeated string method_context_ids = 6;</code>
      * @param index The index of the element to return.
-     * @return The methodContexts at the given index.
+     * @return The methodContextIds at the given index.
      */
-    public java.lang.String getMethodContexts(int index) {
-      return methodContexts_.get(index);
+    public java.lang.String getMethodContextIds(int index) {
+      return methodContextIds_.get(index);
     }
     /**
-     * <code>repeated string method_contexts = 6;</code>
+     * <code>repeated string method_context_ids = 6;</code>
      * @param index The index of the value to return.
-     * @return The bytes of the methodContexts at the given index.
+     * @return The bytes of the methodContextIds at the given index.
      */
     public com.google.protobuf.ByteString
-        getMethodContextsBytes(int index) {
-      return methodContexts_.getByteString(index);
+        getMethodContextIdsBytes(int index) {
+      return methodContextIds_.getByteString(index);
     }
     /**
-     * <code>repeated string method_contexts = 6;</code>
+     * <code>repeated string method_context_ids = 6;</code>
      * @param index The index to set the value at.
-     * @param value The methodContexts to set.
+     * @param value The methodContextIds to set.
      * @return This builder for chaining.
      */
-    public Builder setMethodContexts(
+    public Builder setMethodContextIds(
         int index, java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
-  ensureMethodContextsIsMutable();
-      methodContexts_.set(index, value);
+  ensureMethodContextIdsIsMutable();
+      methodContextIds_.set(index, value);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string method_contexts = 6;</code>
-     * @param value The methodContexts to add.
+     * <code>repeated string method_context_ids = 6;</code>
+     * @param value The methodContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addMethodContexts(
+    public Builder addMethodContextIds(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
-  ensureMethodContextsIsMutable();
-      methodContexts_.add(value);
+  ensureMethodContextIdsIsMutable();
+      methodContextIds_.add(value);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string method_contexts = 6;</code>
-     * @param values The methodContexts to add.
+     * <code>repeated string method_context_ids = 6;</code>
+     * @param values The methodContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addAllMethodContexts(
+    public Builder addAllMethodContextIds(
         java.lang.Iterable<java.lang.String> values) {
-      ensureMethodContextsIsMutable();
+      ensureMethodContextIdsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, methodContexts_);
+          values, methodContextIds_);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string method_contexts = 6;</code>
+     * <code>repeated string method_context_ids = 6;</code>
      * @return This builder for chaining.
      */
-    public Builder clearMethodContexts() {
-      methodContexts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    public Builder clearMethodContextIds() {
+      methodContextIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
     /**
-     * <code>repeated string method_contexts = 6;</code>
-     * @param value The bytes of the methodContexts to add.
+     * <code>repeated string method_context_ids = 6;</code>
+     * @param value The bytes of the methodContextIds to add.
      * @return This builder for chaining.
      */
-    public Builder addMethodContextsBytes(
+    public Builder addMethodContextIdsBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-      ensureMethodContextsIsMutable();
-      methodContexts_.add(value);
+      ensureMethodContextIdsIsMutable();
+      methodContextIds_.add(value);
       onChanged();
       return this;
     }
@@ -1382,84 +1326,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object testerraClassContext_ = "";
-    /**
-     * <code>string testerra_class_context = 11;</code>
-     * @return The testerraClassContext.
-     */
-    public java.lang.String getTesterraClassContext() {
-      java.lang.Object ref = testerraClassContext_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        testerraClassContext_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string testerra_class_context = 11;</code>
-     * @return The bytes for testerraClassContext.
-     */
-    public com.google.protobuf.ByteString
-        getTesterraClassContextBytes() {
-      java.lang.Object ref = testerraClassContext_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        testerraClassContext_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string testerra_class_context = 11;</code>
-     * @param value The testerraClassContext to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTesterraClassContext(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      testerraClassContext_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string testerra_class_context = 11;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearTesterraClassContext() {
-      
-      testerraClassContext_ = getDefaultInstance().getTesterraClassContext();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string testerra_class_context = 11;</code>
-     * @param value The bytes for testerraClassContext to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTesterraClassContextBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      testerraClassContext_ = value;
-      onChanged();
-      return this;
-    }
-
     private boolean merged_ ;
     /**
+     * <pre>
+     *string testerra_class_context = 11;
+     * </pre>
+     *
      * <code>bool merged = 12;</code>
      * @return The merged.
      */
@@ -1467,6 +1339,10 @@ private static final long serialVersionUID = 0L;
       return merged_;
     }
     /**
+     * <pre>
+     *string testerra_class_context = 11;
+     * </pre>
+     *
      * <code>bool merged = 12;</code>
      * @param value The merged to set.
      * @return This builder for chaining.
@@ -1478,6 +1354,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     *string testerra_class_context = 11;
+     * </pre>
+     *
      * <code>bool merged = 12;</code>
      * @return This builder for chaining.
      */

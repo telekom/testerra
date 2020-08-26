@@ -38,7 +38,7 @@ test {
 
 def setReportDir(reportname) {
     def reportdir = reportname
-    def modulename = "integration-tests"
+    def modulename = "report"
     if (!projectDir.toString().contains(modulename)) {
         reportdir = modulename + "/" + reportname
     }

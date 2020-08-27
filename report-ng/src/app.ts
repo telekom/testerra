@@ -1,10 +1,23 @@
-import {PLATFORM} from "aurelia-framework";
+import {PLATFORM, autoinject} from "aurelia-framework";
 import {Router, RouterConfiguration} from 'aurelia-router';
+import {DataBackendService} from "./services/data-backend-service";
 
+
+@autoinject()
 export class App {
 
   router: Router;
+  _data : HTMLScriptElement;
 
+  constructor(
+    private _dataservice : DataBackendService
+  ) {
+ _dataservice.getProject().then(value => console.log("Data: ",value))
+
+  }
+  bind() {
+    console.log(this._data)
+  }
   configureRouter(config: RouterConfiguration, router: Router): void {
     this.router = router;
     config.title = 'Testerra Report';

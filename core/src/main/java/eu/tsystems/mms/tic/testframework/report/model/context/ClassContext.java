@@ -29,14 +29,7 @@ import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import org.testng.IInvokedMethod;
-import org.testng.ITestContext;
-import org.testng.ITestNGMethod;
-import org.testng.ITestResult;
-import org.testng.SkipException;
-
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -44,6 +37,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.testng.IInvokedMethod;
+import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
+import org.testng.SkipException;
 
 /**
  * Holds the informations of a test class.
@@ -103,7 +101,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
                 /*
                 create new one
                  */
-            MethodType methodType;
+            MethodContext.Type methodType;
 
             final boolean isTest;
             if (iTestNGMethod != null) {
@@ -113,9 +111,9 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             }
 
             if (isTest) {
-                methodType = MethodType.TEST_METHOD;
+                methodType = MethodContext.Type.TEST_METHOD;
             } else {
-                methodType = MethodType.CONFIGURATION_METHOD;
+                methodType = MethodContext.Type.CONFIGURATION_METHOD;
             }
 
             TestContextModel correctTestContextModel = testContextModel;

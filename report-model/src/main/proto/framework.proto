@@ -1,0 +1,259 @@
+/*
+This file contains all context related models required by the Testerra framework
+*/
+
+syntax = "proto3";
+option java_package = "eu.tsystems.mms.tic.testframework.report.model";
+option java_multiple_files = true;
+
+package data;
+
+message SuiteContext {
+    ContextValues context_values = 1;
+
+    repeated string test_context_ids = 6; // list of all test
+    string execution_context_id = 7; // reference
+}
+
+message ClassContext {
+    ContextValues context_values = 1;
+
+    repeated string method_context_ids = 6;
+
+    string full_class_name = 7;
+    string simple_class_name = 8;
+
+    string test_context_id = 9;
+    string execution_context_id = 10;
+
+    //string testerra_class_context = 11;
+    bool merged = 12;
+}
+
+message TestContext {
+    ContextValues context_values = 1;
+
+    repeated string class_context_ids = 6;
+
+    string suite_context_id = 7;
+    string execution_context_id = 8;
+}
+
+message ExecutionContext {
+    ContextValues context_values = 1;
+
+    repeated string merged_class_context_ids = 3;
+    repeated ContextClip exit_points = 4;
+    repeated ContextClip failure_ascpects = 5;
+    repeated string suite_context_ids = 6;
+    RunConfig run_config = 7;
+
+    string project_Id = 8;
+    string job_Id = 9;
+    string run_Id = 10;
+    string task_Id = 11;
+
+    repeated string exclusive_session_context_ids = 12;
+
+    int32 estimatedTestMethodCount = 13;
+}
+
+message ContextClip {
+    string key = 1;
+    repeated string method_context_ids = 2;
+}
+
+message MethodContext {
+    ContextValues context_values = 1;
+
+    MethodType method_type = 7;
+    repeated string parameters = 8;
+    repeated string method_tags = 9;
+    int32 retry_number = 10;
+    int32 method_run_index = 11;
+    string thread_name = 12;
+    //TestStep failed_step = 13;
+    FailureCorridorValue failure_corridor_value = 14;
+
+    string class_context_id = 15;
+    string execution_context_id = 16;
+
+    repeated ErrorContext non_functional_infos = 17;
+    repeated ErrorContext collected_assertions = 18;
+    repeated string infos = 19;
+    string priority_message = 21;
+    repeated string related_method_context_ids = 23;
+    repeated string depends_on_method_context_ids = 24;
+    ErrorContext error_context = 25;
+    repeated PTestStep test_steps = 26;
+
+    string test_context_id = 27;
+    string suite_context_id = 28;
+
+    repeated string session_context_ids = 29;
+    repeated string video_ids = 30;
+    repeated string screenshot_ids = 31;
+    string custom_context_json = 32;
+}
+
+message ContextValues {
+    string id = 1;
+    int64 created = 2;
+    string name = 3;
+    int64 start_time = 4;
+    int64 end_time = 5;
+    string swi = 6;
+
+    ResultStatusType result_status = 7;
+    ExecStatusType exec_status = 8;
+}
+
+message PTestStep {
+    string name = 1;
+    string id = 2;
+    repeated PTestStepAction test_step_actions = 3;
+}
+
+message PTestStepAction {
+    string name = 1;
+    string id = 2;
+    int64 timestamp = 3;
+    repeated string screenshot_names = 4;
+    repeated PClickPathEvent clickpath_events = 5;
+}
+
+enum PClickPathEventType {
+    NOT_SET = 0;
+    WINDOW = 1;
+    CLICK = 2;
+    VALUE = 3;
+    PAGE = 4;
+    URL = 5;
+}
+
+message PClickPathEvent {
+    PClickPathEventType type = 1;
+    string subject = 2;
+    string session_id = 3;
+}
+
+message ErrorContext {
+    string readable_error_message = 1;
+    string additional_error_message = 2;
+    StackTrace stack_trace = 3;
+    string error_fingerprint = 6;
+    ScriptSource script_source = 7;
+    ScriptSource execution_object_source = 8;
+}
+
+message SessionContext {
+    ContextValues context_values = 1;
+    string session_key = 2;
+    string provider = 3;
+    map<string, string> metadata = 4;
+    string session_id = 6;
+}
+
+message RunConfig {
+    string runcfg = 1;
+    BuildInformation testerra_build_information = 2;
+    string report_name = 3;
+}
+
+message BuildInformation {
+    string build_java_version = 1;
+    string build_os_name = 2;
+    string build_os_version = 3;
+    string build_user_name = 4;
+    string build_version = 5;
+    string build_timestamp = 6;
+}
+
+enum FailureCorridorValue {
+    FCV_NOT_SET = 0;
+    HIGH = 1;
+    MID = 2;
+    LOW = 3;
+}
+
+enum MethodType {
+    MT_NOT_SET = 0;
+    TEST_METHOD = 1;
+    CONFIGURATION_METHOD = 2;
+}
+
+message StackTrace {
+    StackTraceCause cause = 1;
+    string additional_error_message = 2;
+}
+
+message StackTraceCause {
+    string class_name = 1;
+    string message = 2;
+    repeated string stack_trace_elements = 3;
+    StackTraceCause cause = 4;
+}
+
+message ScriptSource {
+    string file_name = 1;
+    string method_name = 2;
+    repeated ScriptSourceLine lines = 3;
+}
+
+message ScriptSourceLine {
+    string line = 1;
+    int32 line_number = 2;
+    bool mark = 3;
+}
+
+message File {
+    // XID
+    string id = 1;
+    // in bytes
+    int64 size = 2;
+    string mimetype = 3;
+    // relative path based on project storage --> /projectID/jobID/XXX...
+    string relative_path = 4;
+    int64 created_timestamp = 5;
+    bytes sha1_checksum = 6;
+    map<string, string> meta = 7;
+    int64 last_modified = 9;
+    string project_id = 10;
+    string job_id = 11;
+    bool is_directory = 12;
+    string name = 13;
+}
+
+// All status elements for run and job executions
+enum ExecStatusType {
+    EST_NOT_SET = 0;
+    NEW = 1; // Execution is new and hasn't been processed from any agent
+    PENDING = 2; // Execution has been seen by the scheduler and is in waiting position for an executer
+    PROVISIONING = 3; // The scheduler tries to start a Kube container execution
+    RUNNING = 4; // Execution is currently being run by the executer
+    FINISHED = 5; // Execution has been finished, which is: run to completion by the executer
+    ABORTED = 6; // Execution has been shutdown graceful or manually or has never been executed
+    CRASHED = 7; // Execution ended abruptly due to system error, runtime exceptions, kernel bugs, etc.
+    INVALID = 8; // Execution of tests didn't start due to failed prerequisite steps (git clone) or executed command didn't start any (no execution context exists for invalid run)
+    VOID = 9; // Execution of tests started but no new tests were executed (all tests were skipped, or the execution filter didn't match any (all methods were INHERITED))
+    ARTIFACT_UPLOAD = 10; // Execution of tests is finished and artifacts uploading is in progress
+}
+
+// All status elements for an actual executed test method
+enum ResultStatusType {
+    RST_NOT_SET = 0;
+    NO_RUN = 1; // default status when entity is spawned, basically an illegal end status
+    INFO = 2; // info status, not representative
+    SKIPPED = 3; // skipped
+
+    PASSED = 4; // passed status, without any issue
+    MINOR = 5; // passed, but with minor, non-blocking issues
+
+    FAILED = 7; // failed status, with hard failing issues
+    FAILED_MINOR = 8; // failed with additional minor issues
+    FAILED_RETRIED = 9; // failed and retry is triggered
+    FAILED_EXPECTED = 10; // entity was expected to fail (with or without an explicit issue), it may or may not be representative
+
+    PASSED_RETRY = 11; // passed after a retry
+    MINOR_RETRY = 12; // minor after a retry
+}

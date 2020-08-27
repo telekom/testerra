@@ -1,0 +1,33 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
+    }
+}
+
+apply from: rootProject.file('release-bintray.gradle')
+apply plugin: 'com.google.protobuf'
+def protobufVersion = '3.10.0'
+def guavaVersion = '28.1-jre'
+
+dependencies {
+    compile core
+    compile "com.google.protobuf:protobuf-java:$protobufVersion"
+    compile "com.google.guava:guava:$guavaVersion"
+}
+
+protobuf {
+    generatedFilesBaseDir = projectDir.toString() + "/src"
+
+    protoc { artifact = "com.google.protobuf:protoc:${protobufVersion}" }
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDir "proto"
+        }
+    }
+}

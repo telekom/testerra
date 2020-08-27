@@ -27,19 +27,17 @@ import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
-import eu.tsystems.mms.tic.testframework.report.model.MethodType;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.testng.ITestContext;
-import org.testng.ITestNGMethod;
-import org.testng.ITestResult;
-
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import org.testng.ITestContext;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
 
 /**
  * Holds the informations of an test method.
@@ -48,12 +46,17 @@ import java.util.List;
  */
 public class MethodContext extends AbstractContext implements SynchronizableContext {
 
+    public enum Type {
+        TEST_METHOD,
+        CONFIGURATION_METHOD
+    }
+
     public ITestResult testResult;
     public ITestContext iTestContext;
     public ITestNGMethod iTestNgMethod;
 
     public TestStatusController.Status status = TestStatusController.Status.NO_RUN;
-    public final MethodType methodType;
+    public final Type methodType;
     public List<Object> parameters = new LinkedList<>();
     public List<Annotation> methodTags = new LinkedList<>();
     public int retryNumber = 0;
@@ -97,7 +100,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
      */
     public MethodContext(
             final String name,
-            final MethodType methodType,
+            final Type methodType,
             final ClassContext classContext,
             final TestContextModel testContextModel,
             final SuiteContext suiteContext,
@@ -239,7 +242,7 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     }
 
     public boolean isConfigMethod() {
-        return methodType == MethodType.CONFIGURATION_METHOD;
+        return methodType == Type.CONFIGURATION_METHOD;
     }
 
     public boolean isTestMethod() {

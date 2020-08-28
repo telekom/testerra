@@ -2,9 +2,6 @@ plugins {
     id 'java'
 }
 
-group 'eu.tsystems.mms.tic.testerra'
-version '1-SNAPSHOT'
-
 dependencies {
     compile core
     compile core_interop
@@ -13,7 +10,6 @@ dependencies {
     testCompile driver_ui_desktop
     testCompile project(':integration-tests')
 }
-
 
 test {
     String[] s = [

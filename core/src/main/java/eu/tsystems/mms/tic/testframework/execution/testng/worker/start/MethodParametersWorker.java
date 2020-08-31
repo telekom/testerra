@@ -19,22 +19,27 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
+package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
-
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
 
-public class MethodParametersWorker extends MethodWorker {
+public class MethodParametersWorker implements MethodStartEvent.Listener {
 
     @Override
-    public void run() {
+    @Subscribe
+    public void onMethodStart(MethodStartEvent event) {
+        ITestNGMethod testMethod = event.getTestMethod();
+        ITestResult testResult = event.getTestResult();
         if (testMethod.isTest()) {
             Object[] parameters = testResult.getParameters();
             if (parameters != null && parameters.length > 0) {
-                methodContext.parameters = Arrays.stream(parameters).collect(Collectors.toList());
+                event.getMethodContext().parameters = Arrays.stream(parameters).collect(Collectors.toList());
             }
         }
         else {
@@ -43,9 +48,8 @@ public class MethodParametersWorker extends MethodWorker {
              */
             if (testMethod.isBeforeMethodConfiguration() || testMethod.isAfterMethodConfiguration()) {
                 // check for method injection
-                ExecutionContextUtils.checkForInjectedMethod(testResult, context);
+                ExecutionContextUtils.checkForInjectedMethod(testResult, event.getTestContext());
             }
-
         }
     }
 }

@@ -22,6 +22,7 @@
 
 package eu.tsystems.mms.tic.testframework.listener;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.protobuf.Message;
 import eu.tsystems.mms.tic.testframework.adapters.ClassContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.ExecutionContextExporter;
@@ -29,11 +30,9 @@ import eu.tsystems.mms.tic.testframework.adapters.MethodContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.SuiteContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.TestContextExporter;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
-import eu.tsystems.mms.tic.testframework.events.ITesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventListener;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.ContextLogFormatter;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
@@ -45,9 +44,13 @@ import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Map;
 
-public class GenerateReportModelListener implements TesterraEventListener, Loggable {
+public class GenerateReportModelListener implements
+        MethodEndEvent.Listener,
+        ContextUpdateEvent.Listener,
+        ExecutionEndEvent.Listener,
+        Loggable
+{
 
     private MethodContextExporter methodContextExporter = new MethodContextExporter();
     private ClassContextExporter classContextExporter = new ClassContextExporter();
@@ -88,35 +91,40 @@ public class GenerateReportModelListener implements TesterraEventListener, Logga
     }
 
     @Override
-    public void fireEvent(final TesterraEvent testerraEvent) {
-        if (testerraEvent.getTesterraEventType() == TesterraEventType.GENERATE_METHOD_REPORT) {
-            Map<ITesterraEventDataType, Object> eventData = testerraEvent.getData();
-            MethodContext methodContext = (MethodContext) eventData.get(TesterraEventDataType.CONTEXT);
-            eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder methodContextBuilder = methodContextExporter.prepareMethodContext(methodContext, fileBuilder -> {
-                writeBuilderToFile(fileBuilder, new File(filesDir, fileBuilder.getId()));
+    @Subscribe
+    public void onMethodEnd(MethodEndEvent event) {
+        MethodContext methodContext = event.getMethodContext();
+        eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder methodContextBuilder = methodContextExporter.prepareMethodContext(methodContext, fileBuilder -> {
+            writeBuilderToFile(fileBuilder, new File(filesDir, fileBuilder.getId()));
 
-            });
-            writeBuilderToFile(methodContextBuilder, new File(methodsDir, methodContext.id));
-        } else if (testerraEvent.getTesterraEventType() == TesterraEventType.GENERATE_REPORT) {
-            // Reset to default logger
-            TesterraCommons.getTesterraLogger().setFormatter(new ContextLogFormatter());
+        });
+        writeBuilderToFile(methodContextBuilder, new File(methodsDir, methodContext.id));
+    }
 
-            ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
-            currentExecutionContext.getMethodStatsPerClass(true, false).keySet().forEach(classContext -> {
-                writeBuilderToFile(classContextExporter.prepareClassContext(classContext), new File(classesDir,(classContext.id)));
-            });
-            writeBuilderToFile(executionContextExporter.prepareExecutionContext(currentExecutionContext), new File(modelDir, "execution"));
-        } else if (testerraEvent.getTesterraEventType() == TesterraEventType.CONTEXT_UPDATE) {
-            File modelDir = report.getReportDirectory("model");
-            modelDir.mkdirs();
+    @Override
+    @Subscribe
+    public void onContextUpdate(ContextUpdateEvent event) {
+        File modelDir = report.getReportDirectory("model");
+        modelDir.mkdirs();
 
-            Map<ITesterraEventDataType, Object> data = testerraEvent.getData();
-            SynchronizableContext context = (SynchronizableContext) data.get(TesterraEventDataType.CONTEXT);
-            if (context instanceof SuiteContext) {
-                writeBuilderToFile(suiteContextExporter.prepareSuiteContext((SuiteContext)context), new File(suitesDir,((SuiteContext) context).id));
-            } else if (context instanceof TestContextModel) {
-                writeBuilderToFile(testContextExporter.prepareTestContext((TestContextModel)context), new File(testsDir,((TestContextModel) context).id));
-            }
+        SynchronizableContext context = event.getContext();
+        if (context instanceof SuiteContext) {
+            writeBuilderToFile(suiteContextExporter.prepareSuiteContext((SuiteContext)context), new File(suitesDir,((SuiteContext) context).id));
+        } else if (context instanceof TestContextModel) {
+            writeBuilderToFile(testContextExporter.prepareTestContext((TestContextModel)context), new File(testsDir,((TestContextModel) context).id));
         }
+    }
+
+    @Override
+    @Subscribe
+    public void onExecutionEnd(ExecutionEndEvent event) {
+        // Reset to default logger
+        TesterraCommons.getTesterraLogger().setFormatter(new ContextLogFormatter());
+
+        ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
+        currentExecutionContext.getMethodStatsPerClass(true, false).keySet().forEach(classContext -> {
+            writeBuilderToFile(classContextExporter.prepareClassContext(classContext), new File(classesDir,(classContext.id)));
+        });
+        writeBuilderToFile(executionContextExporter.prepareExecutionContext(currentExecutionContext), new File(modelDir, "execution"));
     }
 }

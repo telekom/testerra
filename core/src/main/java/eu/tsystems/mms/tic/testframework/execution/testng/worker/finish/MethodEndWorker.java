@@ -22,27 +22,69 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
+import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
+import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 import java.util.Map;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
 
-public class MethodFinishedWorker extends MethodWorker implements Loggable {
+public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
 
+    private final Formatter formatter = new DefaultFormatter();
 
+    @Subscribe
     @Override
-    public void run() {
-
+    public void onMethodEnd(MethodEndEvent event) {
         // clear current result
         ExecutionContextController.clearCurrentTestResult();
+        MethodContext methodContext = event.getMethodContext();
+        ITestResult testResult = event.getTestResult();
+        ITestNGMethod testMethod = event.getTestMethod();
+
+        StringBuilder sb = new StringBuilder();
+        if (event.isFailed()) {
+            sb
+                    .append(TestStatusController.Status.FAILED.title)
+                    .append(" ")
+                    .append(formatter.toString(testMethod));
+            log().error(sb.toString(), testResult.getThrowable());
+        }
+        else if (event.getTestResult().isSuccess()) {
+            sb
+                    .append(TestStatusController.Status.PASSED.title)
+                    .append(" ")
+                    .append(formatter.toString(testMethod));
+            log().info(sb.toString(), testResult.getThrowable());
+        }
+        else if (event.isSkipped()) {
+            sb
+                    .append(TestStatusController.Status.SKIPPED.title)
+                    .append(" ")
+                    .append(formatter.toString(testMethod));
+            log().warn(sb.toString(), testResult.getThrowable());
+        }
+
+        if (testMethod.isTest()) {
+            // cleanup thread locals from PropertyManager
+            PropertyManager.clearThreadlocalProperties();
+
+            // cleanup collected assertions
+            CollectedAssertions.clear();
+        }
 
         try {
             /*
@@ -57,7 +99,7 @@ public class MethodFinishedWorker extends MethodWorker implements Loggable {
             }
 
             // calculate fingerprint
-            if (isFailed()) {
+            if (event.isFailed()) {
                 Throwable throwable = methodContext.errorContext().getThrowable();
                 if (throwable != null) {
                     // look for script source
@@ -72,22 +114,13 @@ public class MethodFinishedWorker extends MethodWorker implements Loggable {
 
 
         } finally {
-
-            // Fire CONTEXT UPDATE EVENT.
-            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addUserData()
-                    .addData(TesterraEventDataType.CONTEXT, methodContext));
-
-            // FIRE GENERATE REPORT FOR METHOD
-            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.GENERATE_METHOD_REPORT)
-                    .addUserData()
-                    .addData(TesterraEventDataType.CONTEXT, methodContext));
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(event.getMethodContext()));
 
             // clear method infos
             ReportInfo.clearCurrentMethodInfo();
 
             // gc
-            System.gc();
+            //System.gc();
         }
 
     }

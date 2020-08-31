@@ -21,9 +21,14 @@
  */
 package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import java.lang.reflect.Method;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
 
 /**
  * RemoveTestMethodIfRetryPassedWorker
@@ -34,12 +39,15 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
  *
  * @author Eric Kubenka
  */
-public class RemoveTestMethodIfRetryPassedWorker extends MethodWorker {
+public class RemoveTestMethodIfRetryPassedWorker implements MethodEndEvent.Listener {
 
+    @Subscribe
     @Override
-    public void run() {
+    public void onMethodEnd(MethodEndEvent event) {
+        MethodContext methodContext = event.getMethodContext();
+        ITestResult testResult = event.getTestResult();
 
-        if (isSuccess()) {
+        if (testResult.isSuccess()) {
             if (methodContext.getStatus().equals(TestStatusController.Status.PASSED_RETRY)) {
                 for (final MethodContext dependsOnMethodContexts : methodContext.getDependsOnMethodContexts()) {
                     if (dependsOnMethodContexts.isSame(methodContext) && dependsOnMethodContexts.isRetry()) {
@@ -49,6 +57,5 @@ public class RemoveTestMethodIfRetryPassedWorker extends MethodWorker {
                 }
             }
         }
-
     }
 }

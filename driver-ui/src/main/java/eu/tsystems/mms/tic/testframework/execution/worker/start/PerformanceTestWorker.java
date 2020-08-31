@@ -19,21 +19,41 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.worker.start;
+package eu.tsystems.mms.tic.testframework.execution.worker.start;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
+import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 
-public class PerformanceStartWorker extends MethodWorker {
+public class PerformanceTestWorker implements
+        MethodStartEvent.Listener,
+        MethodEndEvent.Listener
+{
+    @Subscribe
     @Override
-    public void run() {
-        if (isTest()) {
+    public void onMethodStart(MethodStartEvent event) {
+        if (event.getTestMethod().isTest()) {
             /*
              * LoadTest setup
              */
             if (Flags.GENERATE_PERF_STATISTICS) {
                 StopWatch.initializeStopWatch();
+            }
+        }
+    }
+
+    @Override
+    @Subscribe
+    public void onMethodEnd(MethodEndEvent event) {
+        if (event.getTestMethod().isTest()) {
+
+            // storePageLoadInfos if StopWatch is active
+            if (Flags.PERF_STOP_WATCH_ACTIVE) {
+                // store perf test data
+                StopWatch.storePageLoadInfosAfterTestMethod(event.getTestResult());
+                StopWatch.cleanupThreadLocals();
             }
         }
     }

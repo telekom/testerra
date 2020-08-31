@@ -21,23 +21,28 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import org.testng.ITestResult;
 
 import java.util.List;
 
-public class HandleCollectedAssertsWorker extends MethodWorker {
+public class HandleCollectedAssertsWorker extends MethodWorker implements MethodEndEvent.Listener {
 
     @Override
-    public void run() {
+    @Subscribe
+    public void onMethodEnd(MethodEndEvent event) {
         if (CollectedAssertions.hasEntries()) {
             // add all collected assertions
             List<AssertionInfo> entries = CollectedAssertions.getEntries();
-            methodContext.addCollectedAssertions(entries);
-
-            if (isSuccess()) {
+            event.getMethodContext().addCollectedAssertions(entries);
+            ITestResult testResult = event.getTestResult();
+            MethodContext methodContext = event.getMethodContext();
+            if (testResult.isSuccess()) {
                 // let the test fail
                 testResult.setStatus(ITestResult.FAILURE);
                 String msg = "The following assertions failed:";

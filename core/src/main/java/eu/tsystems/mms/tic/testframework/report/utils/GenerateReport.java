@@ -24,28 +24,20 @@ package eu.tsystems.mms.tic.testframework.report.utils;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.GenerateOtherOutputsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.shutdown.TestEndEventWorker;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.events.TesterraReportEventDataTypes;
-import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
 import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
-import eu.tsystems.mms.tic.testframework.report.worker.GenerateReportsWorkerExecutor;
-import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
+import eu.tsystems.mms.tic.testframework.report.perf.PerfTestContainer;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -67,86 +59,64 @@ public class GenerateReport {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenerateReport.class);
 
-    static {
-        // flush run contexts
+    private static boolean ran = false;
+
+    public static void runOnce(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
+        // static block is executed before!!!
+
+        if (ran) {
+            return;
+        }
+
+        ran = true;
+
         MethodRelations.flushAll();
 
-        JVMMonitor.label("Tests Finished");
-
-        JVMMonitor.stop();
-        JVMMonitor.start(1000);
-
-        /*
-        List tests only
-         */
         if (Flags.LIST_TESTS) {
             GenerateReport.printTestsList();
             // discontinue
             System.exit(0);
         }
-    }
 
-    private static boolean ran = false;
+        // set the testRunFinished flag
+        ExecutionContextController.testRunFinished = true;
 
-    public static void runOnce(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory, JUnitXMLReporter xmlReporter) {
-        // static block is executed before!!!
+        ExecutionEndEvent event = new ExecutionEndEvent()
+                .setReportingData(pGenerateReport())
+                .setSuites(suites)
+                .setXmlSuites(xmlSuites);
 
-        if (!ran) {
-            // just run once, just in case we are not exiting...
-            ran = true;
+        TesterraListener.getEventBus().post(event);
 
-            // set the testRunFinished flag
-            ExecutionContextController.testRunFinished = true;
+        Report report = new Report();
+        report.finalizeReport();
 
-            /*
-            workers
-             */
-            final GenerateReportsWorkerExecutor workerExecutor = new GenerateReportsWorkerExecutor();
-            workerExecutor.add(new TestEndEventWorker());
+        /*
+         * Shutdown local services and hooks
+         */
+        JVMMonitor.stop();
+        Booter.shutdown();
 
-            // run custom / registered workers
-            FrameworkUtils.addWorkersToExecutor(TesterraListener.GENERATE_REPORTS_WORKERS, workerExecutor);
+        /*
+        print stats
+         */
+        ExecutionContextController.printExecutionStatistics();
 
-            // generate other output formats...
-            workerExecutor.add(new GenerateOtherOutputsWorker());
-
-            // EXECUTE workers
-            workerExecutor.run(xmlSuites, suites, outputDirectory, xmlReporter);
-
-            final Report report = new Report();
-            final File finalDirectory = report.finalizeReport();
-            LOGGER.info("Report written to " + finalDirectory.getAbsolutePath());
-
-            /*
-             * Shutdown local services and hooks
-             */
-            JVMMonitor.stop();
-            Booter.shutdown();
-
-            /*
-            print stats
-             */
-            ExecutionContextController.printExecutionStatistics();
-
-            /*
-             * Check failure corridor and set exit code and state
-             */
-            if (Flags.FAILURE_CORRIDOR_ACTIVE) {
-                FailureCorridor.printStatusToStdOut();
-            }
+        /*
+         * Check failure corridor and set exit code and state
+         */
+        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
+            FailureCorridor.printStatusToStdOut();
         }
     }
 
     /**
-     * Stops logging of TesterraCommands. Statistics are filled and reports are generated.
+     * Stops logging of commands. Statistics are filled and reports are generated.
      */
-    public static void generateReport() {
+    private static ReportingData pGenerateReport() {
+        PerfTestContainer.prepareMeasurementsForTesterraReport();
         ExecutionContextController.getCurrentExecutionContext().endTime = new Date();
         JVMMonitor.label("Report");
-        pGenerateReport();
-    }
-
-    private static void pGenerateReport() {
 
         /*
         get ALL ClassContexts
@@ -222,15 +192,7 @@ public class GenerateReport {
         ExecutionContextController.getCurrentExecutionContext().exitPoints = exitPoints;
         ExecutionContextController.getCurrentExecutionContext().failureAspects = failureAspects;
 
-        /*
-        final execution context sync
-         */
-        TesterraEventService.getInstance().fireEvent(
-                new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                        .addUserData()
-                        .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.getCurrentExecutionContext())
-        );
-
+        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(ExecutionContextController.getCurrentExecutionContext()));
         /*
          * Create report
          */
@@ -240,12 +202,7 @@ public class GenerateReport {
         reportingData.failureCorridorMatched = FailureCorridor.isCorridorMatched();
         reportingData.classContexts = allClassContexts;
 
-        // CALL GENERATION OF REPORTS on each registered listener...
-        TesterraEventService.getInstance().fireEvent(
-                new TesterraEvent(TesterraEventType.GENERATE_REPORT)
-                        .addUserData()
-                        .addData(TesterraReportEventDataTypes.REPORT_DATA, reportingData)
-        );
+        return reportingData;
     }
 
     private static Map<String, List<MethodContext>> sortTestMethodContainerMap(final Map<String, List<MethodContext>> inputMap) {

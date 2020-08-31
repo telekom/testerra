@@ -21,33 +21,40 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
+import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import java.lang.reflect.Method;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
 
-public class MethodContextUpdateWorker extends MethodWorker {
+public class MethodContextUpdateWorker extends MethodWorker implements MethodEndEvent.Listener {
 
+    @Subscribe
     @Override
-    public void run() {
+    public void onMethodEnd(MethodEndEvent event) {
+        Method method = event.getMethod();
+        MethodContext methodContext = event.getMethodContext();
+        ITestResult testResult = event.getTestResult();
+        ITestNGMethod testMethod = event.getTestMethod();
+
         // !!! do nothing when state is RETRY (already set from RetryAnalyzer)
         if (methodContext.status != TestStatusController.Status.FAILED_RETRIED) {
 
             // in case of info method
-            if (method.isAnnotationPresent(InfoMethod.class) && (isSkipped() || isSuccess())) {
+            if (method.isAnnotationPresent(InfoMethod.class) && (event.isSkipped() || testResult.isSuccess())) {
                 TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.INFO, method);
             } else {
 
                 /*
                  * method container status and steps
                  */
-                if (isFailed()) {
+                if (event.isFailed()) {
 
                     /*
                      * set throwable
@@ -58,7 +65,7 @@ public class MethodContextUpdateWorker extends MethodWorker {
                     /*
                      * set status
                      */
-                    if (isTest()) {
+                    if (testMethod.isTest()) {
                         Object expectedFailed = testResult.getAttribute(SharedTestResultAttributes.expectedFailed);
                         if (expectedFailed == Boolean.TRUE) {
                             // expected failed
@@ -92,7 +99,7 @@ public class MethodContextUpdateWorker extends MethodWorker {
 //                        msg += additionalErrorMessage;
 //                    }
 //                    failedStep.getCurrentTestStepAction().addFailingLogMessage(msg);
-                } else if (isSuccess()) {
+                } else if (testResult.isSuccess()) {
                     TestStatusController.Status status = TestStatusController.Status.PASSED;
 
                     // is it a retried test?
@@ -109,17 +116,10 @@ public class MethodContextUpdateWorker extends MethodWorker {
 
                     // set status
                     TestStatusController.setMethodStatus(methodContext, status, method);
-                } else if (isSkipped()) {
+                } else if (event.isSkipped()) {
                     TestStatusController.setMethodStatus(methodContext, TestStatusController.Status.SKIPPED, method);
                 }
             }
         }
-
-        /*
-        fire CONTEXT_UPDATE event
-         */
-        TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                .addUserData()
-                .addData(TesterraEventDataType.CONTEXT, methodContext));
     }
 }

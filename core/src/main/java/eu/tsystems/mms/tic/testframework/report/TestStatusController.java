@@ -28,7 +28,6 @@ import static eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextCon
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
-import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
@@ -131,9 +130,6 @@ public class TestStatusController {
             // stop here
         }
 
-        // create xml results entry
-        SimpleReportEntry reportEntry = new SimpleReportEntry(method.getDeclaringClass().getName(), method.getName());
-
         // dont count if infoStatusMethod
         if (methodContext.status == Status.INFO) {
             return;
@@ -151,9 +147,6 @@ public class TestStatusController {
             case PASSED:
                 testsSuccessful++;
 
-                // set xml status
-                TesterraListener.XML_REPORTER.testSucceeded(reportEntry);
-
                 break;
 
             case FAILED_EXPECTED:
@@ -163,10 +156,6 @@ public class TestStatusController {
             case FAILED_MINOR:
             case FAILED:
                 testsFailed++;
-
-                // set xml status
-                TesterraListener.XML_REPORTER.testFailed(reportEntry, "", "");
-
                 levelFC(methodContext, true);
                 break;
 

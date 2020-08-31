@@ -42,7 +42,6 @@ public final class Flags {
     public static boolean GENERATE_PERF_STATISTICS = p(TesterraProperties.PERF_GENERATE_STATISTICS, false);
     public static boolean PERF_STOP_WATCH_ACTIVE = false;
     public static boolean REUSE_DATAPROVIDER_DRIVER_BY_THREAD = p(TesterraProperties.REUSE_DATAPROVIDER_DRIVER_BY_THREAD, false);
-    public static boolean MONITOR_MEMORY = p(TesterraProperties.MONITOR_MEMORY, true);
     public static boolean DRY_RUN = p(TesterraProperties.DRY_RUN, false);
     public static boolean LIST_TESTS = p(TesterraProperties.LIST_TESTS, false);
     public static boolean FAILURE_CORRIDOR_ACTIVE = p(TesterraProperties.FAILURE_CORRIDOR_ACTIVE, false);

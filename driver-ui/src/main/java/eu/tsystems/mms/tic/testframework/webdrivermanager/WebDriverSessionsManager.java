@@ -21,15 +21,13 @@
  */
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -310,9 +308,7 @@ public final class WebDriverSessionsManager {
         ExecutionContextController.getCurrentExecutionContext().exclusiveSessionContexts.add(sessionContext);
         sessionContext.parentContext = ExecutionContextController.getCurrentExecutionContext();
         // fire sync
-        TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                .addUserData()
-                .addData(TesterraEventDataType.CONTEXT, sessionContext));
+        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
         /*
         Delete session from session maps.
@@ -436,13 +432,7 @@ public final class WebDriverSessionsManager {
             sessionContext.parentContext = methodContext;
             ExecutionContextController.setCurrentSessionContext(sessionContext);
 
-            // fire sync
-            TesterraEventService.getInstance().fireEvent(
-                    new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                            .addUserData()
-                            .addData(TesterraEventDataType.CONTEXT, sessionContext)
-            );
-
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
             /*
             setup new session
              */
@@ -458,13 +448,7 @@ public final class WebDriverSessionsManager {
                     LOGGER.error("Error executing webdriver startup handler", e);
                 }
             }
-
-            // fire sync again, for updated sessionContext
-            TesterraEventService.getInstance().fireEvent(
-                    new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                            .addUserData()
-                            .addData(TesterraEventDataType.CONTEXT, sessionContext)
-            );
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
             return eventFiringWebDriver;
         } else {

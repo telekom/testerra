@@ -21,16 +21,17 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.worker.shutdown;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
-public class WebDriverShutDownAfterTestsWorker extends GenerateReportsWorker {
+public class WebDriverShutDownAfterTestsWorker implements ExecutionEndEvent.Listener {
 
-    @Override
-    public void run() {
+   @Subscribe
+   @Override
+   public void onExecutionEnd(ExecutionEndEvent event) {
         WebDriverManager.forceShutdownAllThreads();
         WebDriverWatchDog.stop();
-    }
-
+   }
 }

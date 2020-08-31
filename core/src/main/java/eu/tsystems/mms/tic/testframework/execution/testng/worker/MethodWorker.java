@@ -19,30 +19,10 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.testng.worker;
 
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import org.testng.IInvokedMethod;
-import org.testng.ITestContext;
-import org.testng.ITestNGMethod;
-import org.testng.ITestResult;
+package eu.tsystems.mms.tic.testframework.execution.testng.worker;
 
-import java.lang.reflect.Method;
-
-public abstract class MethodWorker implements Worker {
-
-    protected ITestResult testResult;
-    protected ITestNGMethod testMethod;
-    protected Method method;
-    protected String methodName;
-    protected MethodContext methodContext;
-    protected ITestContext context;
-    protected IInvokedMethod invokedMethod;
-
-    public MethodWorker() {
-    }
-
+public abstract class MethodWorker {
     public static class SharedTestResultAttributes {
 
         private SharedTestResultAttributes() { }
@@ -50,38 +30,4 @@ public abstract class MethodWorker implements Worker {
         public static final String failsFromCollectedAssertsOnly = "failsFromCollectedAssertsOnly";
         public static final String expectedFailed = "expectedFailed";
     }
-
-    public void init(ITestResult testResult, String methodName, MethodContext methodContext, ITestContext context, IInvokedMethod invokedMethod) {
-        this.testResult = testResult;
-        this.testMethod = TestNGHelper.getTestMethod(testResult, context, invokedMethod);
-        this.method = testMethod.getConstructorOrMethod().getMethod();
-        this.methodName = methodName;
-        this.methodContext = methodContext;
-
-        this.context = context;
-        this.invokedMethod = invokedMethod;
-    }
-
-    protected boolean isTest() {
-        return testMethod.isTest();
-    }
-
-    protected boolean isSuccess() {
-        return testResult.isSuccess();
-    }
-
-    protected boolean isSkipped() {
-        return testResult.getStatus() == ITestResult.SKIP;
-    }
-
-    protected boolean isFailed() {
-        return (!isSuccess() && !isSkipped());
-    }
-
-    public abstract void run();
-
-    public boolean wasMethodInvoked() {
-        return invokedMethod != null;
-    }
-
 }

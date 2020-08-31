@@ -21,13 +21,11 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
@@ -59,11 +57,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public ExecutionContext() {
         name = runConfig.RUNCFG;
         swi = name;
-
-        // fire context update event: create context
-        TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                .addUserData()
-                .addData(TesterraEventDataType.CONTEXT, this));
+        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
     }
 
     public SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {

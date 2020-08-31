@@ -21,18 +21,21 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
+import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
-public class ConditionalBehaviourWorker extends MethodWorker implements Loggable {
+public class ConditionalBehaviourWorker extends MethodWorker implements Loggable, MethodEndEvent.Listener {
 
     @Override
-    public void run() {
-        if (isTest() && isFailed()) {
+    @Subscribe
+    public void onMethodEnd(MethodEndEvent event) {
+        if (event.getTestMethod().isTest() && event.isFailed()) {
 
             // check state condition: shutdown
             boolean skipShutdown = PropertyManager.getBooleanProperty(
@@ -51,6 +54,5 @@ public class ConditionalBehaviourWorker extends MethodWorker implements Loggable
                 TesterraListener.skipAllTests();
             }
         }
-
     }
 }

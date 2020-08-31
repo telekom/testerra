@@ -179,8 +179,6 @@ public final class TesterraProperties {
 
     public static final String DB_TIMEOUT = "tt.db.timeout";
 
-    public static final String MONITOR_MEMORY = "tt.monitor.memory";
-
     public static final String DRY_RUN = "tt.dryrun";
 
     public static final String GUIELEMENT_CHECK_RULE = "tt.guielement.checkrule";

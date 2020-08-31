@@ -19,7 +19,7 @@
  * under the License.
  *
  */
-package eu.tsystems.mms.tic.testframework.report.external.junit;
+package eu.tsystems.mms.tic.testframework.report.junit;
 
 import java.io.File;
 import java.text.NumberFormat;

@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020,  Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.external.junit;
+ package eu.tsystems.mms.tic.testframework.report.junit;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -40,18 +40,31 @@
  * under the License.
  */
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-
 /**
- * Exception occurring during report generation.
+ * Ability to write a stack trace, filtered to omit locations inside Surefire and Maven.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
-public class ReporterException
-    extends TesterraRuntimeException
+public interface StackTraceWriter
 {
-    public ReporterException( String message, Exception nested )
-    {
-        super( message, nested );
-    }
+    /**
+     * Write the throwable to a string, without trimming.
+     *
+     * @return the trace
+     */
+    String writeTraceToString();
+
+    /**
+     * Write the throwable to a string, trimming extra locations.
+     *
+     * @return the trace
+     */
+    String writeTrimmedTraceToString();
+
+    /**
+     * Retrieve the throwable for this writer.
+     *
+     * @return the throwable
+     */
+    Throwable getThrowable();
 }

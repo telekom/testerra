@@ -10,12 +10,10 @@ buildscript {
 apply from: rootProject.file('release-bintray.gradle')
 apply plugin: 'com.google.protobuf'
 def protobufVersion = '3.10.0'
-def guavaVersion = '28.1-jre'
 
 dependencies {
     compile core
     compile "com.google.protobuf:protobuf-java:$protobufVersion"
-    compile "com.google.guava:guava:$guavaVersion"
 }
 
 protobuf {

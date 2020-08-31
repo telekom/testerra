@@ -25,7 +25,10 @@
     "aurelia-bootstrapper": "^2.3.3",
     "aurelia-fetch-client": "^1.8.2",
     "aurelia-typed-observable-plugin": "^0.4.2",
-    "moment": "^2.27.0"
+    "bsonfy": "^1.0.2",
+    "byte-base64": "^1.1.0",
+    "moment": "^2.27.0",
+    "png2bin": "^0.2.2"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.160",
@@ -36,6 +39,7 @@
     "aurelia-loader-nodejs": "^1.1.0",
     "aurelia-pal-nodejs": "^2.0.0",
     "aurelia-webpack-plugin": "^4.0.0",
+    "bin2png": "^0.2.1",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.6.0",

@@ -1,23 +1,50 @@
 import {PLATFORM, autoinject} from "aurelia-framework";
 import {Router, RouterConfiguration} from 'aurelia-router';
-import {DataBackendService} from "./services/data-backend-service";
-
+//import {DataBackendService} from "./services/data-backend-service";
+import { png2bin } from "png2bin";
+import { BSON } from 'bsonfy';
+import * as base64 from "byte-base64";
+import {bytesToBase64} from "byte-base64";
+import {bin2png} from "bin2png";
 
 @autoinject()
 export class App {
 
   router: Router;
   _data : HTMLScriptElement;
-
+  source : string;
+  _dataImage : HTMLElement;
+  //img = document.getElementById("myfile");
   constructor(
-    private _dataservice : DataBackendService
+   // private _dataservice : DataBackendService
+
   ) {
- _dataservice.getProject().then(value => console.log("Data: ",value))
+
+    //_dataservice.getProject().then(value => console.log("Data: ",value))
+    let doc = {Text: "hi"};
+    let bson = BSON.serialize(doc);
+
+
+    bin2png(bson).then(pngData => {
+      const bs64 = bytesToBase64(pngData);
+      this.source = "data:image/png;base64,"+bs64;
+      console.log(bs64);
+    })
+
+
+
+    //png2bin(this.img).then(mydata => {
 
   }
-  bind() {
-    console.log(this._data)
+
+  attached() {
+    png2bin(this._dataImage).then(mydata => {
+      let ram = BSON.deserialize(mydata)
+      console.log("Data", ram);
+    });
   }
+
+
   configureRouter(config: RouterConfiguration, router: Router): void {
     this.router = router;
     config.title = 'Testerra Report';

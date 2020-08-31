@@ -26,7 +26,7 @@ import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.events.MethodEvent;
+import eu.tsystems.mms.tic.testframework.events.AbstractMethodEvent;
 import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
@@ -270,7 +270,7 @@ public class TesterraListener implements
 
         startMethodTimer();
 
-        MethodEvent event = new MethodStartEvent()
+        AbstractMethodEvent event = new MethodStartEvent()
                 .setTestResult(testResult)
                 .setInvokedMethod(invokedMethod)
                 .setMethodName(methodName)
@@ -379,7 +379,7 @@ public class TesterraListener implements
 
         cleanMethodTimer();
 
-        MethodEvent event = new MethodEndEvent()
+        AbstractMethodEvent event = new MethodEndEvent()
                 .setTestResult(testResult)
                 .setInvokedMethod(invokedMethod)
                 .setMethodName(methodName)

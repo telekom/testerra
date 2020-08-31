@@ -8,7 +8,7 @@ import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
-public class MethodEvent {
+public abstract class AbstractMethodEvent {
     private ITestResult testResult;
     private String methodName;
     private MethodContext methodContext;
@@ -19,7 +19,7 @@ public class MethodEvent {
         return testResult;
     }
 
-    public MethodEvent setTestResult(ITestResult testResult) {
+    public AbstractMethodEvent setTestResult(ITestResult testResult) {
         this.testResult = testResult;
         return this;
     }
@@ -36,7 +36,7 @@ public class MethodEvent {
         return methodName;
     }
 
-    public MethodEvent setMethodName(String methodName) {
+    public AbstractMethodEvent setMethodName(String methodName) {
         this.methodName = methodName;
         return this;
     }
@@ -45,7 +45,7 @@ public class MethodEvent {
         return methodContext;
     }
 
-    public MethodEvent setMethodContext(MethodContext methodContext) {
+    public AbstractMethodEvent setMethodContext(MethodContext methodContext) {
         this.methodContext = methodContext;
         return this;
     }
@@ -54,7 +54,7 @@ public class MethodEvent {
         return testContext;
     }
 
-    public MethodEvent setTestContext(ITestContext context) {
+    public AbstractMethodEvent setTestContext(ITestContext context) {
         this.testContext = context;
         return this;
     }
@@ -63,7 +63,7 @@ public class MethodEvent {
         return invokedMethod;
     }
 
-    public MethodEvent setInvokedMethod(IInvokedMethod invokedMethod) {
+    public AbstractMethodEvent setInvokedMethod(IInvokedMethod invokedMethod) {
         this.invokedMethod = invokedMethod;
         return this;
     }

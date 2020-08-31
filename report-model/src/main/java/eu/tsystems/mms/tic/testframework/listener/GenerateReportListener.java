@@ -63,7 +63,7 @@ public class GenerateReportListener implements ExecutionEndEvent.Listener, Logga
      * Stops logging of commands. Statistics are filled and reports are generated.
      */
     private ReportingData pGenerateReport() {
-        PerfTestContainer.prepareMeasurementsForTesterraReport();
+        PerfTestContainer.prepareMeasurementsForReport();
         ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
         currentExecutionContext.endTime = new Date();
         JVMMonitor.label("Report");

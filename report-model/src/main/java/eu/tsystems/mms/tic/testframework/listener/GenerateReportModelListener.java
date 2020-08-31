@@ -45,6 +45,9 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import java.io.File;
 import java.io.FileOutputStream;
 
+/**
+ * Generates the protobuf report model
+ */
 public class GenerateReportModelListener implements
         MethodEndEvent.Listener,
         ContextUpdateEvent.Listener,

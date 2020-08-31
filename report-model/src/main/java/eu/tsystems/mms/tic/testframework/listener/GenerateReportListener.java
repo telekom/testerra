@@ -20,23 +20,26 @@
  *
  */
 
-package eu.tsystems.mms.tic.testframework.report.utils;
+package eu.tsystems.mms.tic.testframework.listener;
 
+import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
+import eu.tsystems.mms.tic.testframework.events.GenerateReportEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
-import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
+import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestContainer;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,84 +53,31 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.ISuite;
-import org.testng.xml.XmlSuite;
 
-public class GenerateReport {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GenerateReport.class);
-
-    private static boolean ran = false;
-
-    public static void runOnce(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
-        // static block is executed before!!!
-
-        if (ran) {
-            return;
-        }
-
-        ran = true;
-
-        MethodRelations.flushAll();
-
-        if (Flags.LIST_TESTS) {
-            GenerateReport.printTestsList();
-            // discontinue
-            System.exit(0);
-        }
-
-        // set the testRunFinished flag
-        ExecutionContextController.testRunFinished = true;
-
-        ExecutionEndEvent event = new ExecutionEndEvent()
-                .setReportingData(pGenerateReport())
-                .setSuites(suites)
-                .setXmlSuites(xmlSuites);
-
-        TesterraListener.getEventBus().post(event);
-
-        Report report = new Report();
-        report.finalizeReport();
-
-        /*
-         * Shutdown local services and hooks
-         */
-        JVMMonitor.stop();
-        Booter.shutdown();
-
-        /*
-        print stats
-         */
-        ExecutionContextController.printExecutionStatistics();
-
-        /*
-         * Check failure corridor and set exit code and state
-         */
-        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
-            FailureCorridor.printStatusToStdOut();
-        }
-    }
+/**
+ * Generates internal report model
+ */
+public class GenerateReportListener implements ExecutionEndEvent.Listener, Loggable {
 
     /**
      * Stops logging of commands. Statistics are filled and reports are generated.
      */
-    private static ReportingData pGenerateReport() {
+    private ReportingData pGenerateReport() {
         PerfTestContainer.prepareMeasurementsForTesterraReport();
-        ExecutionContextController.getCurrentExecutionContext().endTime = new Date();
+        ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
+        currentExecutionContext.endTime = new Date();
         JVMMonitor.label("Report");
 
         /*
         get ALL ClassContexts
          */
         final List<ClassContext> allClassContexts =
-                new ArrayList<>(ExecutionContextController.getCurrentExecutionContext().getMethodStatsPerClass(true, false).keySet());
+                new ArrayList<>(currentExecutionContext.getMethodStatsPerClass(true, false).keySet());
 
         /*
          * Build maps for exit points and failure aspects
          */
-        LOGGER.trace("Build maps for exit points and failure aspects...");
+        log().trace("Build maps for exit points and failure aspects...");
         Map<String, List<MethodContext>> exitPoints = new TreeMap<>();
         Map<String, List<MethodContext>> failureAspects = new TreeMap<>();
         int unknownCounter = 0;
@@ -189,14 +139,14 @@ public class GenerateReport {
         /*
         Store
          */
-        ExecutionContextController.getCurrentExecutionContext().exitPoints = exitPoints;
-        ExecutionContextController.getCurrentExecutionContext().failureAspects = failureAspects;
+        currentExecutionContext.exitPoints = exitPoints;
+        currentExecutionContext.failureAspects = failureAspects;
 
-        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(ExecutionContextController.getCurrentExecutionContext()));
+        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(currentExecutionContext));
+
         /*
          * Create report
          */
-        LOGGER.debug("Create Report...");
         ReportingData reportingData = new ReportingData();
         reportingData.executionContext = ExecutionContextController.getCurrentExecutionContext();
         reportingData.failureCorridorMatched = FailureCorridor.isCorridorMatched();
@@ -307,5 +257,21 @@ public class GenerateReport {
                                 && expectedFailedMethodContext.errorContext().getThrowable().getCause().getMessage()
                                 .equals(context.errorContext().getThrowable().getMessage()))
                 .findFirst();
+    }
+
+    @Override
+    @Subscribe
+    public void onExecutionEnd(ExecutionEndEvent event) {
+        if (Flags.LIST_TESTS) {
+            printTestsList();
+            // discontinue
+            System.exit(0);
+        }
+
+        GenerateReportEvent reportEvent = new GenerateReportEvent().setReportingData(pGenerateReport());
+        TesterraListener.getEventBus().post(reportEvent);
+
+        Report report = new Report();
+        report.finalizeReport();
     }
 }

@@ -23,7 +23,7 @@
 package eu.tsystems.mms.tic.testframework.listener;
 
 import com.google.common.eventbus.Subscribe;
-import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
+import eu.tsystems.mms.tic.testframework.events.GenerateReportEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -35,10 +35,11 @@ import eu.tsystems.mms.tic.testframework.utils.ReportUtils;
 public class GenerateReportListener implements
         Loggable,
         MethodEndEvent.Listener,
-        ExecutionEndEvent.Listener
+        GenerateReportEvent.Listener
 {
 
     @Subscribe
+    @Override
     public void onMethodEnd(MethodEndEvent event) {
         try {
             ReportUtils.createMethodDetailsStepsView(event.getMethodContext());
@@ -66,7 +67,7 @@ public class GenerateReportListener implements
 
     @Override
     @Subscribe
-    public void onExecutionEnd(ExecutionEndEvent event) {
+    public void onGenerateReport(GenerateReportEvent event) {
         long start = System.currentTimeMillis();
         ReportUtils.createReport(event.getReportingData());
         long stop = System.currentTimeMillis();

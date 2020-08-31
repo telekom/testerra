@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.listener.GenerateOtherOutputsWorker;
+import eu.tsystems.mms.tic.testframework.listener.GenerateReportListener;
 import eu.tsystems.mms.tic.testframework.listener.GenerateReportModelListener;
 import eu.tsystems.mms.tic.testframework.report.ReportLogFormatter;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
@@ -13,6 +14,7 @@ public class ReportModelHook implements ModuleHook {
     @Override
     public void init() {
         EventBus eventBus = TesterraListener.getEventBus();
+        eventBus.register(new GenerateReportListener());
         eventBus.register(new GenerateOtherOutputsWorker());
         eventBus.register(new GenerateReportModelListener());
 

@@ -31,6 +31,9 @@ import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import org.testng.ISuite;
 import org.testng.ISuiteListener;
 
+/**
+ * Generates TestNG and jUnit xml reports
+ */
 public class GenerateOtherOutputsWorker implements
         Loggable,
         ExecutionEndEvent.Listener,

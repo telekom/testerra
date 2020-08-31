@@ -1,6 +1,5 @@
 package eu.tsystems.mms.tic.testframework.events;
 
-import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import java.util.List;
 import org.testng.ISuite;
 import org.testng.xml.XmlSuite;
@@ -11,16 +10,6 @@ public class ExecutionEndEvent {
     }
     private List<XmlSuite> xmlSuites;
     private List<ISuite> suites;
-    private ReportingData reportingData;
-
-    public ReportingData getReportingData() {
-        return reportingData;
-    }
-
-    public ExecutionEndEvent setReportingData(ReportingData reportingData) {
-        this.reportingData = reportingData;
-        return this;
-    }
 
     public List<XmlSuite> getXmlSuites() {
         return xmlSuites;

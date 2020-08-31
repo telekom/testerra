@@ -24,6 +24,7 @@ package eu.tsystems.mms.tic.testframework.report;
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEvent;
 import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
@@ -39,6 +40,8 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodPar
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
+import eu.tsystems.mms.tic.testframework.internal.Flags;
+import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook;
@@ -47,7 +50,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -393,7 +395,33 @@ public class TesterraListener implements
             List<ISuite> suites,
             String outputDirectory
     ) {
-        GenerateReport.runOnce(xmlSuites, suites, outputDirectory);
+        MethodRelations.flushAll();
+
+        // set the testRunFinished flag
+        ExecutionContextController.testRunFinished = true;
+
+        /*
+         * Shutdown local services and hooks
+         */
+        JVMMonitor.stop();
+        Booter.shutdown();
+        /*
+        print stats
+         */
+        ExecutionContextController.printExecutionStatistics();
+
+        /*
+         * Check failure corridor and set exit code and state
+         */
+        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
+            FailureCorridor.printStatusToStdOut();
+        }
+
+        ExecutionEndEvent event = new ExecutionEndEvent()
+                .setSuites(suites)
+                .setXmlSuites(xmlSuites);
+
+        eventBus.post(event);
     }
 
     @Override

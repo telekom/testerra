@@ -25,7 +25,7 @@ import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.InfoMethod;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
@@ -33,7 +33,7 @@ import java.lang.reflect.Method;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
-public class MethodContextUpdateWorker extends MethodWorker implements MethodEndEvent.Listener {
+public class MethodContextUpdateWorker implements MethodEndEvent.Listener {
 
     @Subscribe
     @Override

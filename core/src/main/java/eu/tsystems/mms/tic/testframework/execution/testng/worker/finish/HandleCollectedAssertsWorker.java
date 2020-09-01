@@ -23,7 +23,7 @@
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -31,7 +31,7 @@ import org.testng.ITestResult;
 
 import java.util.List;
 
-public class HandleCollectedAssertsWorker extends MethodWorker implements MethodEndEvent.Listener {
+public class HandleCollectedAssertsWorker implements MethodEndEvent.Listener {
 
     @Override
     @Subscribe

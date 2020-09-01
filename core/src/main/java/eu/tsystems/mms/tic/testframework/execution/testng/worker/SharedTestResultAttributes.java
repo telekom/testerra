@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,17 +17,15 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 package eu.tsystems.mms.tic.testframework.execution.testng.worker;
 
-public abstract class MethodWorker {
-    public static class SharedTestResultAttributes {
+public class SharedTestResultAttributes {
 
-        private SharedTestResultAttributes() { }
+    private SharedTestResultAttributes() { }
 
-        public static final String failsFromCollectedAssertsOnly = "failsFromCollectedAssertsOnly";
-        public static final String expectedFailed = "expectedFailed";
-    }
+    public static final String failsFromCollectedAssertsOnly = "failsFromCollectedAssertsOnly";
+    @Deprecated
+    public static final String expectedFailed = "expectedFailed";
 }

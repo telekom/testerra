@@ -25,7 +25,7 @@ import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraTestFailureException;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
@@ -38,7 +38,7 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class MethodAnnotationCheckerWorker extends MethodWorker implements MethodEndEvent.Listener {
+public class MethodAnnotationCheckerWorker implements MethodEndEvent.Listener {
 
     @Subscribe
     @Override

@@ -25,12 +25,11 @@ import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
-public class ConditionalBehaviourWorker extends MethodWorker implements Loggable, MethodEndEvent.Listener {
+public class ConditionalBehaviourWorker implements Loggable, MethodEndEvent.Listener {
 
     @Override
     @Subscribe

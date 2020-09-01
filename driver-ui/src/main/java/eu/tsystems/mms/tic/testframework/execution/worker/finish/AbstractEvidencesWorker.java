@@ -22,10 +22,10 @@
 package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 
-public abstract class AbstractEvidencesWorker extends MethodWorker implements MethodEndEvent.Listener {
+public abstract class AbstractEvidencesWorker implements MethodEndEvent.Listener {
 
     protected MethodEndEvent event;
 

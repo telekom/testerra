@@ -89,7 +89,7 @@ public class RandomUtilsTest extends AbstractWebDriverTest {
         int max = 1;
         Integer number = RandomUtils.generateRandomInt(max);
 
-        Assert.assertTrue(number < max, intMax);
+        Assert.assertTrue(number <= max, intMax);
 
         String a = "" + number;
 
@@ -107,7 +107,7 @@ public class RandomUtilsTest extends AbstractWebDriverTest {
         int max = 10;
         Integer number = RandomUtils.generateRandomInt(max);
 
-        Assert.assertTrue(number < max, intMax);
+        Assert.assertTrue(number <= max, intMax);
 
         String a = "" + number;
 

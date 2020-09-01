@@ -30,8 +30,8 @@ import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.LoggingDispatcher;
-import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.ReportingData;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
@@ -66,8 +66,8 @@ public final class ReportUtils {
     private static Report report = new Report();
     private static final String FRAMES_FOLDER_NAME = "frames";
     private static final String METHODS_FOLDER_NAME = "methods";
-    private static File METHODS_DIRECTORY = report.getReportDirectory(METHODS_FOLDER_NAME);
     private static File FRAMES_DIRECTORY = report.getReportDirectory(FRAMES_FOLDER_NAME);
+    private static File METHODS_DIRECTORY = new File(FRAMES_DIRECTORY, METHODS_FOLDER_NAME);
 
     static {
         FRAMES_DIRECTORY.mkdirs();

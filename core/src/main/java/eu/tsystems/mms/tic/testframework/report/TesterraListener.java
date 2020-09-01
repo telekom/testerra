@@ -48,6 +48,7 @@ import eu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook;
 import eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.Arrays;
@@ -391,8 +392,16 @@ public class TesterraListener implements
     ) {
         MethodRelations.flushAll();
 
+        ExecutionContextController.getCurrentExecutionContext().endTime = new Date();
+
         // set the testRunFinished flag
         ExecutionContextController.testRunFinished = true;
+
+        ExecutionEndEvent event = new ExecutionEndEvent()
+                .setSuites(suites)
+                .setXmlSuites(xmlSuites);
+
+        eventBus.post(event);
 
         /*
          * Shutdown local services and hooks
@@ -411,11 +420,9 @@ public class TesterraListener implements
             FailureCorridor.printStatusToStdOut();
         }
 
-        ExecutionEndEvent event = new ExecutionEndEvent()
-                .setSuites(suites)
-                .setXmlSuites(xmlSuites);
+        Report report = new Report();
+        report.finalizeReport();
 
-        eventBus.post(event);
     }
 
     @Override

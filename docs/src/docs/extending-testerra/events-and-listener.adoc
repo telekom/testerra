@@ -51,7 +51,7 @@ Testerra provides an Google Guava event bus with custom events for test executio
 
 |===
 
-== Create Custom Event Listeners
+== Create custom event listeners
 
 The simplest way to get in touch with the event bus is to write and register your own implementation of the event's `Listener` interface and add the `@Subscribe` annotation.
 
@@ -84,7 +84,7 @@ After you defined your first custom listener you now have to register it to the 
 TesterraListener.getEventBus().register(new LogEventListener());
 ----
 
-== Fire Events by yourself
+== Fire events by yourself
 
 While Implementing your own module you may reach a point, where you want to inform other components or modules about an important event.
 You can achieve this by just posting this event to the bus.

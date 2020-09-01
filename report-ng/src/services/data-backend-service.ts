@@ -1,5 +1,6 @@
 import {autoinject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-fetch-client';
+import {data} from "services/report-model";
 
 
 /**
@@ -9,24 +10,24 @@ import {HttpClient} from 'aurelia-fetch-client';
 @autoinject()
 export class DataBackendService {
 
-    constructor(
-      private _httpClient: HttpClient,
-    ) {
-      //  this.httpClient.configure(config => {
-      //  config.withBaseUrl(TapConfig.DataBackendBaseUrl);
-      //  });
-      this._httpClient.configure(config => {
-        config
-          .useStandardConfiguration()
-          .rejectErrorResponses()
-          .withDefaults({
-            "headers": {
-              // "content-type": "application/octet-stream",
-              "accept": "*/*"
-            }
-          });
-      });
-    }
+  constructor(
+    private _httpClient: HttpClient,
+  ) {
+    //  this.httpClient.configure(config => {
+    //  config.withBaseUrl(TapConfig.DataBackendBaseUrl);
+    //  });
+    this._httpClient.configure(config => {
+      config
+        .useStandardConfiguration()
+        .rejectErrorResponses()
+        .withDefaults({
+          "headers": {
+            // "content-type": "application/octet-stream",
+            "accept": "*/*"
+          }
+        });
+    });
+  }
 
   protected get(path: string): Promise<Response> {
     return this._httpClient.fetch(path, {
@@ -34,18 +35,18 @@ export class DataBackendService {
     });
   }
 
-    protected responseToProtobufJSMessage(response: Response, messageClass) {
-      return response.arrayBuffer().then(buffer => {
-        return messageClass.decode(new Uint8Array(buffer))
-      });
-    }
+  protected responseToProtobufJSMessage(response: Response, messageClass) {
+    return response.arrayBuffer().then(buffer => {
+      return messageClass.decode(new Uint8Array(buffer))
+    });
+  }
 
-    getProject(): Promise<object> {
-        return this.get("data.json")
-            .then(response => {
-              return response.text().then(text=>JSON.parse(text))
-              //    return this.responseToProtobufJSMessage(response, Project)
-            })
-    }
+  // @ts-ignore
+  getExecution(): Promise<data.ExecutionContext> {
+    return this.get("model/execution")
+      .then(response => {
+        return this.responseToProtobufJSMessage(response, data.ExecutionContext)
+      })
+  }
 
 }

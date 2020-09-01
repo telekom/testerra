@@ -93,12 +93,6 @@ public class TesterraListener implements
 
     private static EventBus eventBus = new EventBus();
 
-    /**
-     * Instance counter for this reporter. *
-     */
-    private static int instances = 0;
-    private static final Object LOCK = new Object();
-
     static {
         eventBus.register(new MethodStartWorker());
         eventBus.register(new MethodParametersWorker());
@@ -134,38 +128,6 @@ public class TesterraListener implements
      * Default constructor. *
      */
     public TesterraListener() {
-        synchronized (LOCK) {
-            // increment instance counter
-            instances++;
-        }
-    }
-
-    /**
-     * Thread safe long representing the startTime of the actual thread.
-     */
-    private static final ThreadLocal<Long> THREADSTART = new ThreadLocal<Long>();
-
-    /**
-     * Set thread start time.
-     */
-    private static void startMethodTimer() {
-        THREADSTART.set(System.currentTimeMillis());
-    }
-
-    /**
-     * Clean threadtimes.
-     */
-    private static void cleanMethodTimer() {
-        THREADSTART.remove();
-    }
-
-    /**
-     * Threadsafe Getter.
-     *
-     * @return threadStartTimes value.
-     */
-    public static Long getThreadStartTime() {
-        return THREADSTART.get();
     }
 
     /*
@@ -262,8 +224,6 @@ public class TesterraListener implements
                 " - " + Thread.currentThread().getName();
 
         log().trace(infoText);
-
-        startMethodTimer();
 
         AbstractMethodEvent event = new MethodStartEvent()
                 .setTestResult(testResult)
@@ -371,8 +331,6 @@ public class TesterraListener implements
         add workers in workflow order
          */
         methodContext.steps().announceTestStep(TestStep.TEARDOWN);
-
-        cleanMethodTimer();
 
         AbstractMethodEvent event = new MethodEndEvent()
                 .setTestResult(testResult)
@@ -517,9 +475,5 @@ public class TesterraListener implements
     @Override
     public void onFinish(ISuite iSuite) {
         eventBus.post(iSuite);
-    }
-
-    public static boolean isActive() {
-        return instances > 0;
     }
 }

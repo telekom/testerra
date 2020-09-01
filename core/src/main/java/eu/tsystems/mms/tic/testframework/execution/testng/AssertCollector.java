@@ -109,12 +109,7 @@ public class AssertCollector {
      */
     static public void fail(String message) {
         AssertionError assertionError = new AssertionError(message);
-        if (TesterraListener.isActive()) {
-            CollectedAssertions.store(assertionError);
-        }
-        else {
-            throw new AssertionError(message);
-        }
+        CollectedAssertions.store(assertionError);
     }
 
     /**

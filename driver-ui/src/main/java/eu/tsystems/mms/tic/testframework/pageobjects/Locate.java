@@ -19,16 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByCoordinates;
+import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.openqa.selenium.WebElement;
 
 /**
  * Advanced selector for elements as replacement for By
@@ -36,8 +33,7 @@ import java.util.List;
  * @author Mike Reiche
  */
 public class Locate {
-
-    private List<WebElementFilter> filters;
+    private Predicate<WebElement> filter;
     private boolean unique = false;
     private By by;
     private String preparedFormat;
@@ -167,37 +163,24 @@ public class Locate {
     }
 
     public Locate displayed() {
-        return filter(WebElementFilter.DISPLAYED.is(true));
+        return displayed(true);
     }
-    public Locate notDisplayed() {
-        return filter(WebElementFilter.DISPLAYED.is(false));
+    public Locate displayed(boolean displayed) {
+        return filter(webElement -> webElement.isDisplayed()==displayed);
     }
 
-    public Locate filter(WebElementFilter... filters) {
-        if (filters != null) {
-            Collections.addAll(getFilters(), filters);
-        }
+    public Locate filter(Predicate<WebElement> filter) {
+        this.filter = filter;
         return this;
     }
 
-    public List<WebElementFilter> getFilters() {
-        if (this.filters == null) {
-            this.filters = new ArrayList<>();
-        }
-        return this.filters;
+    public Predicate<WebElement> getFilter() {
+        return this.filter;
     }
 
     @Override
     public String toString() {
         String toString = by.toString() + (unique ? " (unique)" : "");
-        if (filters != null && !filters.isEmpty()) {
-            toString += " with WebElementFilter" + (filters.size() > 1 ? "s" : "") + " { ";
-            for (WebElementFilter webElementFilter : filters) {
-                toString += webElementFilter.toString() + ", ";
-            }
-            // cut the last comma with space
-            toString = toString.substring(0, toString.length() - 2) + " }";
-        }
         return toString;
     }
 
@@ -219,8 +202,8 @@ public class Locate {
      */
     public Locate with(Object... args) {
         Locate locate = by();
-        locate.unique = unique;
-        locate.filters = filters;
+        locate.unique = this.unique;
+        locate.filter = this.filter;
         return locate.xpath(String.format(preparedFormat, args));
     }
 }

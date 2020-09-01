@@ -54,10 +54,10 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -260,9 +260,11 @@ public class GuiElement implements
      */
     @Deprecated
     public GuiElement withWebElementFilter(WebElementFilter... filters) {
-        if (filters != null) {
-            Collections.addAll(locator.getFilters(), filters);
-        }
+        return this;
+    }
+
+    public GuiElement withWebElementFilter(Predicate<WebElement> filter) {
+        locator.filter(filter);
         return this;
     }
 
@@ -606,11 +608,6 @@ public class GuiElement implements
     public GuiElement setParent(GuiElementCore parent) {
         guiElementData.parent = parent;
         return this;
-    }
-
-    @Deprecated
-    public List<WebElementFilter> getWebElementFilters() {
-        return locator.getFilters();
     }
 
     @Override

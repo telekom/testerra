@@ -47,7 +47,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
     public void testT01_Telxt_Is() {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id]"))
-                .withWebElementFilter(WebElementFilter.TEXT.is("Open again"));
+                .withWebElementFilter(webElement -> webElement.getText().equals("Open again"));
         openAgainLink.asserts().assertIsPresent();
         openAgainLink.click();
         assertLogFieldContains("Open again clicked");
@@ -93,14 +93,14 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
     public void testT05a_Displayed_Is() {
 
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").filter(WebElementFilter.DISPLAYED.is(false)));
+        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").filter(webElement -> !webElement.isDisplayed()));
         nonVisibleTable.asserts().assertIsNotDisplayed();
     }
 
     @Test
     public void testT05b_Displayed_Is() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().notDisplayed().xpath(".//*[@id]"));
+        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().displayed(false).xpath(".//*[@id]"));
         nonVisibleTable.asserts().assertIsNotDisplayed();
     }
 

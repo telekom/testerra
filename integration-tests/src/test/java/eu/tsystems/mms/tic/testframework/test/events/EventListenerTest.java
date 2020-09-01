@@ -1,6 +1,9 @@
-package eu.tsystems.mms.tic.testframework.events;
+package eu.tsystems.mms.tic.testframework.test.events;
 
 import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
+import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;

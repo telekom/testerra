@@ -28,20 +28,20 @@ import org.testng.ITestContext;
 
 /**
  * This event gets fired before executing test methods.
- * Use this event to filter methods to be executed by updating {@link #setMethodInstanceList(List)}
+ * Use this event to filter methods to be executed by updating {@link #setMethodInstances(List)}
  */
 public class InterceptMethodsEvent {
     public interface Listener {
         void onInterceptMethods(InterceptMethodsEvent event);
     }
-    private List<IMethodInstance> methodInstanceList;
+    private List<IMethodInstance> methodInstances;
     private ITestContext testContext;
-    public List<IMethodInstance> getMethodInstanceList() {
-        return methodInstanceList;
+    public List<IMethodInstance> getMethodInstances() {
+        return methodInstances;
     }
 
-    public InterceptMethodsEvent setMethodInstanceList(List<IMethodInstance> methodInstanceList) {
-        this.methodInstanceList = methodInstanceList;
+    public InterceptMethodsEvent setMethodInstances(List<IMethodInstance> methodInstances) {
+        this.methodInstances = methodInstances;
         return this;
     }
 

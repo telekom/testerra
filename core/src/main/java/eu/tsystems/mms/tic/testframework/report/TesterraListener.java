@@ -24,10 +24,10 @@ package eu.tsystems.mms.tic.testframework.report;
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
-import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
-import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.AbstractMethodEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
 import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
@@ -37,8 +37,8 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodCo
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.RemoveTestMethodIfRetryPassedWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
@@ -183,10 +183,10 @@ public class TesterraListener implements
     @Override
     public List<IMethodInstance> intercept(List<IMethodInstance> list, final ITestContext iTestContext) {
         InterceptMethodsEvent event = new InterceptMethodsEvent()
-                .setMethodInstanceList(list)
+                .setMethodInstances(list)
                 .setTestContext(iTestContext);
         eventBus.post(event);
-        return event.getMethodInstanceList();
+        return event.getMethodInstances();
     }
 
     /**
@@ -241,12 +241,6 @@ public class TesterraListener implements
             ITestResult testResult,
             ITestContext testContext
     ) {
-        /*
-        check for listener duplicates
-         */
-        //        context.
-
-
         final String methodName = getMethodName(testResult);
 
         if (ListenerUtils.wasMethodInvokedBefore("beforeInvocationFor" + methodName, invokedMethod, testResult)) {

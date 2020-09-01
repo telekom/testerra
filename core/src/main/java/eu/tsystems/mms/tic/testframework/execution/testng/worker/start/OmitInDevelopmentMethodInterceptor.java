@@ -27,12 +27,11 @@ import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
-import org.testng.IMethodInstance;
-
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.testng.IMethodInstance;
 
 /**
  * Omit all methods annotated with {@link eu.tsystems.mms.tic.testframework.annotations.InDevelopment} annotation
@@ -50,7 +49,7 @@ public class OmitInDevelopmentMethodInterceptor implements Loggable, InterceptMe
             final List<IMethodInstance> toRemove = new LinkedList<>();
 
             // collect methods to remove
-            event.getMethodInstanceList().forEach(methodInstance -> {
+            event.getMethodInstances().forEach(methodInstance -> {
                 final Method method = methodInstance.getMethod().getConstructorOrMethod().getMethod();
                 if (method.isAnnotationPresent(InDevelopment.class)) {
                     if (ExecutionUtils.isMethodInExecutionScope(method, event.getTestContext(), null, false)) {
@@ -61,9 +60,9 @@ public class OmitInDevelopmentMethodInterceptor implements Loggable, InterceptMe
             });
 
             // remove them
-            toRemove.forEach(methodInstance -> event.getMethodInstanceList().remove(methodInstance));
+            toRemove.forEach(methodInstance -> event.getMethodInstances().remove(methodInstance));
         }
 
-        log().info("Execution plan for test context \"" + event.getTestContext().getName() + "\": " + event.getMethodInstanceList().stream().map(iMethodInstance -> iMethodInstance.getMethod().getConstructorOrMethod().getName()).collect(Collectors.joining(", ")));
+        log().info("Execution plan for test context \"" + event.getTestContext().getName() + "\": " + event.getMethodInstances().stream().map(iMethodInstance -> iMethodInstance.getMethod().getConstructorOrMethod().getName()).collect(Collectors.joining(", ")));
     }
 }

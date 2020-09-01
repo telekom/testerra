@@ -26,6 +26,10 @@ import java.util.List;
 import org.testng.IMethodInstance;
 import org.testng.ITestContext;
 
+/**
+ * This event gets fired before executing test methods.
+ * Use this event to filter methods to be executed by updating {@link #setMethodInstanceList(List)}
+ */
 public class InterceptMethodsEvent {
     public interface Listener {
         void onInterceptMethods(InterceptMethodsEvent event);

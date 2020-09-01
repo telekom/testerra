@@ -24,6 +24,10 @@ package eu.tsystems.mms.tic.testframework.events;
 
 import eu.tsystems.mms.tic.testframework.report.model.context.SynchronizableContext;
 
+/**
+ * This event gets fired whenever a context should be updated.
+ * Use this event to synchronize data based on this model like external reporting services.
+ */
 public class ContextUpdateEvent {
     public interface Listener {
         void onContextUpdate(ContextUpdateEvent event);

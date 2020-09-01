@@ -26,6 +26,10 @@ import java.util.List;
 import org.testng.ISuite;
 import org.testng.xml.XmlSuite;
 
+/**
+ * This event gets fired when execution ends completely.
+ * Use this to finalize your listeners.
+ */
 public class ExecutionEndEvent {
     public interface Listener {
         void onExecutionEnd(ExecutionEndEvent event);

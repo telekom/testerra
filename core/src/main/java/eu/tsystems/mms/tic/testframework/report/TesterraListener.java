@@ -100,6 +100,18 @@ public class TesterraListener implements
     private static final Object LOCK = new Object();
 
     static {
+        eventBus.register(new MethodStartWorker());
+        eventBus.register(new MethodParametersWorker());
+        eventBus.register(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
+        eventBus.register(new MethodAnnotationCheckerWorker()); // !! must be invoked before Container Update
+        eventBus.register(new MethodContextUpdateWorker());
+        eventBus.register(new RemoveTestMethodIfRetryPassedWorker());
+
+        // this is the last worker to be called
+        eventBus.register(new MethodEndWorker());
+
+        eventBus.register(new OmitInDevelopmentMethodInterceptor());
+
         /*
         Call Booter
          */
@@ -126,18 +138,6 @@ public class TesterraListener implements
             // increment instance counter
             instances++;
         }
-
-        eventBus.register(new MethodStartWorker());
-        eventBus.register(new MethodParametersWorker());
-        eventBus.register(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
-        eventBus.register(new MethodAnnotationCheckerWorker()); // !! must be invoked before Container Update
-        eventBus.register(new MethodContextUpdateWorker());
-        eventBus.register(new RemoveTestMethodIfRetryPassedWorker());
-
-        // this is the last worker to be called
-        eventBus.register(new MethodEndWorker());
-
-        eventBus.register(new OmitInDevelopmentMethodInterceptor());
     }
 
     /**

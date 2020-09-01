@@ -26,6 +26,5 @@ public class SharedTestResultAttributes {
     private SharedTestResultAttributes() { }
 
     public static final String failsFromCollectedAssertsOnly = "failsFromCollectedAssertsOnly";
-    @Deprecated
     public static final String expectedFailed = "expectedFailed";
 }

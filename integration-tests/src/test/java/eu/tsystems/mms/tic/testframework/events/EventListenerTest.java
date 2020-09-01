@@ -3,10 +3,7 @@ package eu.tsystems.mms.tic.testframework.events;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.testng.Assert;
-import org.testng.IMethodInstance;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
@@ -37,10 +34,7 @@ public class EventListenerTest extends TesterraTest {
         @Override
         @Subscribe
         public void onInterceptMethods(InterceptMethodsEvent event) {
-            List<IMethodInstance> testToBeIgnored = event.getMethodInstances().stream()
-                    .filter(iMethodInstance -> !iMethodInstance.getMethod().getMethodName().equals("testToBeIgnored"))
-                    .collect(Collectors.toList());
-            event.setMethodInstances(testToBeIgnored);
+            event.getMethodInstances().removeIf(iMethodInstance -> iMethodInstance.getMethod().getMethodName().equals("testToBeIgnored"));
         }
     }
 

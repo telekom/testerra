@@ -41,3 +41,15 @@ With this annotation you can set the TestContext for the given test class. There
 * mode: TestContext.Mode.ONE_FOR_ALL or TestContext.Mode.ONE_FOR_EACH, default = `TestContext.Mode.ONE_FOR_ALL`
 
 The Executed tests are then shown in the classes overview of the report as a entry labeled with `name` from <<TestContext, @TestContext>>.
+
+[#InDevelopment]
+== @InDevelopment
+This aforementioned annotations is further adjustable with the two attributes name and color.
+
+* name: change the shown text in the report. Default is `In Development`
+* color: change the background color of the shown text. Default is `#a7a5a5`. Values need to be valid for html colors:
+** name of the color, e.g. red
+** RGB values, e.g. rgb(255, 236, 139)
+** RGBA values, e.g. rgba(252, 156, 249, 0.75)
+** HSL values, e.g. hsl(217, 97%, 57%)
+** Hex values, e.g. #57c0ff

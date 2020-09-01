@@ -93,6 +93,12 @@ public class TesterraListener implements
 
     private static EventBus eventBus = new EventBus();
 
+    /**
+     * Instance counter for this reporter. *
+     */
+    private static int instances = 0;
+    private static final Object LOCK = new Object();
+
     static {
         eventBus.register(new MethodStartWorker());
         eventBus.register(new MethodParametersWorker());
@@ -128,6 +134,10 @@ public class TesterraListener implements
      * Default constructor. *
      */
     public TesterraListener() {
+        synchronized (LOCK) {
+            // increment instance counter
+            instances++;
+        }
     }
 
     /*
@@ -475,5 +485,9 @@ public class TesterraListener implements
     @Override
     public void onFinish(ISuite iSuite) {
         eventBus.post(iSuite);
+    }
+
+    public static boolean isActive() {
+        return instances > 0;
     }
 }

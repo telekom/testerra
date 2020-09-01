@@ -335,7 +335,7 @@
 
                             #if ($testMethod.customContexts.size()>0)
                                 #foreach ($customError in $testMethod.customContexts)
-                                    #if ($customError.class.simpleName == "LayoutCheckContext")
+                                    #if ($customError.name == "LayoutCheckContext")
                                         <div style="padding: 20px;">
                                             <div class="dashboardHorizontalSpacer"></div>
                                         </div>

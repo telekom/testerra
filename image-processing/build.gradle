@@ -17,9 +17,9 @@ dependencies {
     implementation opencv
     compile 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
 
-    // <LayoutCheck>
-    implementation 'com.google.code.gson:gson:2.6.2'
-    // </LayoutCheck>
+    // <LayoutCheck AnnotationContainer>
+    implementation 'com.google.code.gson:gson:2.8.6'
+    // </LayoutCheck AnnotationContainer>
 }
 
 apply from: rootProject.file('release-bintray.gradle')

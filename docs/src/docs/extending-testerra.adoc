@@ -1,7 +1,6 @@
 = Extending Testerra
 
 Testerra provides several ways for extensions.
-You are able to register on events, add listener or create own workers to extend the behaviour.
 
 include::extending-testerra/hooks.adoc[leveloffset=+1]
 include::extending-testerra/events-and-listener.adoc[leveloffset=+1]

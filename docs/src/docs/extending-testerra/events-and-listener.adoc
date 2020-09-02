@@ -10,7 +10,7 @@ Testerra provides a Google Guava event bus with custom events for test execution
 
 
 |`MethodEndEvent`
-|Called at the end of every test method annotated by TestNG `@Test` annotation.
+|Called at the end of every test method annotated by TestNG `@Test` annotation. This can be used to send test results to a test management system or issue tracker.
 
 
 //|TEST_START
@@ -47,7 +47,7 @@ Testerra provides a Google Guava event bus with custom events for test execution
 //IInvokedMethod
 
 |`ContextUpdateEvent`
-|Called every time the internal context data has been changed significantly. This can be used to synchronize test results to a test management system or issue tracker.
+|Called every time the internal context data has been changed significantly. This can be used to synchronize the internal test context model.
 
 |===
 

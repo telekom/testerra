@@ -26,9 +26,7 @@ import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
 import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
-import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
@@ -61,13 +59,6 @@ public class FinalizeListener implements
         print stats
          */
         ExecutionContextController.printExecutionStatistics();
-
-        /*
-         * Check failure corridor and set exit code and state
-         */
-        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
-            FailureCorridor.printStatusToStdOut();
-        }
 
         Report report = new Report();
         report.finalizeReport();

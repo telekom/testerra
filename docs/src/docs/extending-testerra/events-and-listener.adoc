@@ -8,10 +8,8 @@ Testerra provides a Google Guava event bus with custom events for test execution
 | `MethodStartEvent`
 |Called on start of every test method annotated by TestNG `@Test` annotation.
 
-
 |`MethodEndEvent`
 |Called at the end of every test method annotated by TestNG `@Test` annotation. This can be used to send test results to a test management system or issue tracker.
-
 
 //|TEST_START
 //|Called on start of every test method annotated by TestNG `@Test` annotation and every test configuration method annotated by TestNG `@BeforeMethod` or similar, but before the execution of registered <<Before Method Worker>>
@@ -22,15 +20,11 @@ Testerra provides a Google Guava event bus with custom events for test execution
 | `ExecutionFinishEvent`
 |Called at the end of test run to trigger report generation and other output worker.
 
-
 |`ExecutionAbortEvent`
 |Called on test run abortion due to unclear circumstances like hanging sessions, JVM exit or other.
 
-
 |`InterceptMethodsEvent`
 |Called before suite execution. The events methods list provides a list of tests to execute. Read more about this in <<Intercept test method execution>>
-
-
 
 //|FIRST_FAILED_TEST
 //|Called on the first failing test of your test run.
@@ -114,7 +108,7 @@ public class CustomEvent {
 }
 ----
 
-With your `CustomEvent` created, you now can fire these events or react to them in the way described in the sections <<Fire Events by yourself>> and <<Create Custom Event Listeners>>.
+With your `CustomEvent` created, you now can fire these events or react to them in the way described in the sections <<Fire events by yourself>> and <<Create custom event listeners>>.
 
 .CustomEvent Listener Example
 [source,java]

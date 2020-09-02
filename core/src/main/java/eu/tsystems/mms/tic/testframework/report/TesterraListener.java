@@ -158,7 +158,7 @@ public class TesterraListener implements
      *
      * @param list         All methods that should be run due to current XML-Test
      * @param iTestContext .
-     * @return Alle mthods taht shuld be run
+     * @return All methods that should be executed
      */
     @Override
     public List<IMethodInstance> intercept(List<IMethodInstance> list, final ITestContext iTestContext) {

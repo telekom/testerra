@@ -32,7 +32,6 @@ import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import org.testng.ITestContext;
@@ -255,23 +254,6 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
 
     public boolean isExpectedFailed() {
         return status == TestStatusController.Status.FAILED_EXPECTED;
-    }
-
-    public List<MethodContext> getRelatedMethodContexts() {
-        return getMethodContexts(relatedMethodContexts);
-    }
-
-    private List<MethodContext> getMethodContexts(List<MethodContext> relatedMethodContexts) {
-        if (relatedMethodContexts == null) {
-            return null;
-        }
-        List<MethodContext> copy = new LinkedList<>(relatedMethodContexts);
-        Collections.reverse(copy);
-        return copy;
-    }
-
-    public List<MethodContext> getDependsOnMethodContexts() {
-        return getMethodContexts(dependsOnMethodContexts);
     }
 
     public boolean hasBeenRetried() {

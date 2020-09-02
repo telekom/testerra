@@ -19,9 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.factory;
+package eu.tsystems.mms.tic.testframework.pageobjects.factory;
 
-import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
@@ -31,11 +30,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.openqa.selenium.WebDriver;
-import org.reflections.Reflections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -43,6 +37,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import org.openqa.selenium.WebDriver;
+import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 final class ClassFinder {
 
@@ -122,31 +120,29 @@ final class ClassFinder {
             prefix = "";
         }
 
-        synchronized (Locks.REFLECTIONS) {
-            final Reflections reflections = new Reflections(PROJECT_PACKAGE);
-            final String baseClassName = baseClass.getSimpleName();
+        final Reflections reflections = new Reflections(PROJECT_PACKAGE);
+        final String baseClassName = baseClass.getSimpleName();
 
-            PrioritizedClassInfos<T> prioritizedClassInfos = new PrioritizedClassInfos<>();
+        PrioritizedClassInfos<T> prioritizedClassInfos = new PrioritizedClassInfos<>();
 
-            // at first, add the base page it self, only if not abstract
-            if (!Modifier.isAbstract(baseClass.getModifiers())) {
-                prioritizedClassInfos.setBaseClass(baseClass);
-            }
-
-            // search for sub pages
-            Set<? extends Class<T>> subClasses = reflections.getSubTypesOf((Class) baseClass);
-            for (Class<T> subClass : subClasses) {
-                String classname = subClass.getSimpleName();
-
-                if (Modifier.isAbstract(subClass.getModifiers())) {
-                    LOGGER.debug("Not taking " + classname + " into consideration, because it is abstract");
-                } else {
-                    tryToFindImplementationOf(subClass, classname, baseClassName, prefix, prioritizedClassInfos);
-                }
-            }
-
-            Caches.setCache(baseClass, prefix, prioritizedClassInfos);
+        // at first, add the base page it self, only if not abstract
+        if (!Modifier.isAbstract(baseClass.getModifiers())) {
+            prioritizedClassInfos.setBaseClass(baseClass);
         }
+
+        // search for sub pages
+        Set<? extends Class<T>> subClasses = reflections.getSubTypesOf((Class) baseClass);
+        for (Class<T> subClass : subClasses) {
+            String classname = subClass.getSimpleName();
+
+            if (Modifier.isAbstract(subClass.getModifiers())) {
+                LOGGER.debug("Not taking " + classname + " into consideration, because it is abstract");
+            } else {
+                tryToFindImplementationOf(subClass, classname, baseClassName, prefix, prioritizedClassInfos);
+            }
+        }
+
+        Caches.setCache(baseClass, prefix, prioritizedClassInfos);
     }
 
     private static <T extends Page> void tryToFindImplementationOf(Class<T> subClass, String classname,

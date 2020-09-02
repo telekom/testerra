@@ -24,7 +24,6 @@ package eu.tsystems.mms.tic.testframework.report;
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
-import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.events.AbstractMethodEvent;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
@@ -126,11 +125,6 @@ public class TesterraListener implements
         Call Booter
          */
         Booter.bootOnce();
-
-        // The finalize listener has to be registered AFTER all modules
-        synchronized (Locks.REFLECTIONS) {
-            eventBus.register(new FinalizeListener());
-        }
     }
 
     public static EventBus getEventBus() {
@@ -144,6 +138,12 @@ public class TesterraListener implements
         synchronized (LOCK) {
             // increment instance counter
             instances++;
+
+
+            if (instances==1) {
+                // The finalize listener has to be registered AFTER all modules ONCE
+                eventBus.register(new FinalizeListener());
+            }
         }
     }
 

@@ -128,7 +128,7 @@ public void onCustomEvent(CustomEvent event) {
 
 == Intercept test method execution
 
-With the test `InterceptMethodsEvent`, you are able to modify the list of tests being executed when `@BeforeSuite` gets called.
+With the test `InterceptMethodsEvent`, you are able to modify the list of tests being executed before execution.
 
 [source,java]
 ----
@@ -145,7 +145,7 @@ public class MyTest extends TesterraTest {
         }
     }
 
-    @BeforeSuite
+    @BeforeTest
     public void setupListener() {
         TesterraListener.getEventBus().register(new MyListener());
     }

@@ -30,7 +30,7 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class EventListenerTest extends TesterraTest {
@@ -65,7 +65,7 @@ public class EventListenerTest extends TesterraTest {
 
     private MyListener listener;
 
-    @BeforeSuite
+    @BeforeTest
     public void setupListener() {
         listener = new MyListener();
         TesterraListener.getEventBus().register(listener);

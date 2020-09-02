@@ -29,12 +29,11 @@ import eu.tsystems.mms.tic.testframework.adapters.ExecutionContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.MethodContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.SuiteContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.TestContextExporter;
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.report.ContextLogFormatter;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
@@ -51,8 +50,9 @@ import java.io.FileOutputStream;
 public class GenerateReportModelListener implements
         MethodEndEvent.Listener,
         ContextUpdateEvent.Listener,
-        ExecutionEndEvent.Listener,
-        Loggable
+        ExecutionFinishEvent.Listener,
+        Loggable,
+        ExecutionAbortEvent.Listener
 {
 
     private MethodContextExporter methodContextExporter = new MethodContextExporter();
@@ -120,10 +120,17 @@ public class GenerateReportModelListener implements
 
     @Override
     @Subscribe
-    public void onExecutionEnd(ExecutionEndEvent event) {
-        // Reset to default logger
-        TesterraCommons.getTesterraLogger().setFormatter(new ContextLogFormatter());
+    public void onExecutionFinish(ExecutionFinishEvent event) {
+        generateReportModels();
+    }
 
+    @Override
+    @Subscribe
+    public void onExecutionAbort(ExecutionAbortEvent event) {
+        generateReportModels();
+    }
+
+    private void generateReportModels() {
         ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
         currentExecutionContext.getMethodStatsPerClass(true, false).keySet().forEach(classContext -> {
             writeBuilderToFile(classContextExporter.prepareClassContext(classContext), new File(classesDir,(classContext.id)));

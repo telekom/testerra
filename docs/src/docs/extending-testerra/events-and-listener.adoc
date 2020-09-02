@@ -1,6 +1,6 @@
-= Events and Listener
+= Events and Listeners
 
-Testerra provides an Google Guava event bus with custom events for test execution. The following events are currently implemented:
+Testerra provides a Google Guava event bus with custom events for test execution. The following events are currently implemented:
 
 |===
 |Event |Description
@@ -19,7 +19,7 @@ Testerra provides an Google Guava event bus with custom events for test executio
 //ITestResult +
 //IInvokedMethod
 
-| `ExecutionEndEvent`
+| `ExecutionFinishEvent`
 |Called at the end of test run to trigger report generation and other output worker.
 
 

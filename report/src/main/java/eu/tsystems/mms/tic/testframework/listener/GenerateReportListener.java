@@ -25,7 +25,8 @@ package eu.tsystems.mms.tic.testframework.listener;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -59,7 +60,8 @@ import java.util.stream.Collectors;
 public class GenerateReportListener implements
         Loggable,
         MethodEndEvent.Listener,
-        ExecutionEndEvent.Listener
+        ExecutionFinishEvent.Listener,
+        ExecutionAbortEvent.Listener
 {
 
     @Subscribe
@@ -290,7 +292,17 @@ public class GenerateReportListener implements
 
     @Subscribe
     @Override
-    public void onExecutionEnd(ExecutionEndEvent event) {
+    public void onExecutionFinish(ExecutionFinishEvent event) {
+        generateReport();
+    }
+
+    @Subscribe
+    @Override
+    public void onExecutionAbort(ExecutionAbortEvent event) {
+        generateReport();
+    }
+
+    private void generateReport() {
         if (Flags.LIST_TESTS) {
             printTestsList();
             // discontinue

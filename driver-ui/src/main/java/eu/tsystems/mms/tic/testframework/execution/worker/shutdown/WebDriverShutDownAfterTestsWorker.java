@@ -22,15 +22,15 @@
  package eu.tsystems.mms.tic.testframework.execution.worker.shutdown;
 
 import com.google.common.eventbus.Subscribe;
-import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
-public class WebDriverShutDownAfterTestsWorker implements ExecutionEndEvent.Listener {
+public class WebDriverShutDownAfterTestsWorker implements ExecutionFinishEvent.Listener {
 
    @Subscribe
    @Override
-   public void onExecutionEnd(ExecutionEndEvent event) {
+   public void onExecutionFinish(ExecutionFinishEvent event) {
         WebDriverManager.forceShutdownAllThreads();
         WebDriverWatchDog.stop();
    }

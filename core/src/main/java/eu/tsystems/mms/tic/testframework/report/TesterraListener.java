@@ -24,12 +24,15 @@ package eu.tsystems.mms.tic.testframework.report;
 
 import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
+import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.events.AbstractMethodEvent;
-import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.execution.testng.ExecutionEndListener;
+import eu.tsystems.mms.tic.testframework.execution.testng.FinalizeListener;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodAnnotationCheckerWorker;
@@ -40,15 +43,12 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodPar
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
-import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook;
 import eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.Arrays;
@@ -100,6 +100,14 @@ public class TesterraListener implements
     private static final Object LOCK = new Object();
 
     static {
+        /*
+         * Add monitoring event listeners
+         */
+        JVMMonitor.label("Start");
+
+        // start memory monitor
+        JVMMonitor.start();
+
         eventBus.register(new MethodStartWorker());
         eventBus.register(new MethodParametersWorker());
         eventBus.register(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
@@ -112,18 +120,17 @@ public class TesterraListener implements
 
         eventBus.register(new OmitInDevelopmentMethodInterceptor());
 
+        eventBus.register(new ExecutionEndListener());
+
         /*
         Call Booter
          */
         Booter.bootOnce();
 
-        /*
-         * Add monitoring event listeners
-         */
-        JVMMonitor.label("Start");
-
-        // start memory monitor
-        JVMMonitor.start();
+        // The finalize listener has to be registered AFTER all modules
+        synchronized (Locks.REFLECTIONS) {
+            eventBus.register(new FinalizeListener());
+        }
     }
 
     public static EventBus getEventBus() {
@@ -358,39 +365,10 @@ public class TesterraListener implements
             List<ISuite> suites,
             String outputDirectory
     ) {
-        MethodRelations.flushAll();
-
-        ExecutionContextController.getCurrentExecutionContext().endTime = new Date();
-
-        // set the testRunFinished flag
-        ExecutionContextController.testRunFinished = true;
-
-        ExecutionEndEvent event = new ExecutionEndEvent()
+        ExecutionFinishEvent event = new ExecutionFinishEvent()
                 .setSuites(suites)
                 .setXmlSuites(xmlSuites);
-
         eventBus.post(event);
-
-        /*
-         * Shutdown local services and hooks
-         */
-        JVMMonitor.stop();
-        Booter.shutdown();
-        /*
-        print stats
-         */
-        ExecutionContextController.printExecutionStatistics();
-
-        /*
-         * Check failure corridor and set exit code and state
-         */
-        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
-            FailureCorridor.printStatusToStdOut();
-        }
-
-        Report report = new Report();
-        report.finalizeReport();
-
     }
 
     @Override

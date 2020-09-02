@@ -22,7 +22,8 @@
  package eu.tsystems.mms.tic.testframework.listener;
 
 import com.google.common.eventbus.Subscribe;
-import eu.tsystems.mms.tic.testframework.events.ExecutionEndEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.junit.JUnitXMLReporter;
@@ -36,9 +37,10 @@ import org.testng.ISuiteListener;
  */
 public class GenerateOtherOutputsWorker implements
         Loggable,
-        ExecutionEndEvent.Listener,
+        ExecutionFinishEvent.Listener,
         MethodEndEvent.Listener,
-        ISuiteListener
+        ISuiteListener,
+        ExecutionAbortEvent.Listener
 {
     Report report = new Report();
 
@@ -69,7 +71,21 @@ public class GenerateOtherOutputsWorker implements
 
     @Subscribe
     @Override
-    public void onExecutionEnd(ExecutionEndEvent event) {
+    public void onExecutionFinish(ExecutionFinishEvent event) {
+        generateReport();
+
+        // generate testng-results.xml
+        org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();
+        testNgXmlReporter.generateReport(event.getXmlSuites(), event.getSuites(), report.getReportDirectory(Report.XML_FOLDER_NAME).toString());
+    }
+
+    @Override
+    @Subscribe
+    public void onExecutionAbort(ExecutionAbortEvent event) {
+        generateReport();
+    }
+
+    private void generateReport() {
         /*
         Create status json
          */
@@ -82,8 +98,6 @@ public class GenerateOtherOutputsWorker implements
         // generate xml reports for surefire
         log().debug("Generating xml reports...");
         XML_REPORTER.testSetCompleted(new SimpleReportEntry("", "Results"));
-        // generate testng-results.xml
-        org.testng.reporters.XMLReporter testNgXmlReporter = new org.testng.reporters.XMLReporter();
-        testNgXmlReporter.generateReport(event.getXmlSuites(), event.getSuites(), report.getReportDirectory(Report.XML_FOLDER_NAME).toString());
+
     }
 }

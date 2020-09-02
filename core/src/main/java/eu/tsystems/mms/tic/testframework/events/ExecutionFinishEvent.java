@@ -27,12 +27,12 @@ import org.testng.ISuite;
 import org.testng.xml.XmlSuite;
 
 /**
- * This event gets fired when execution ends completely.
+ * This event gets fired when execution ends gracefully.
  * Use this to finalize your listeners.
  */
-public class ExecutionEndEvent {
+public class ExecutionFinishEvent {
     public interface Listener {
-        void onExecutionEnd(ExecutionEndEvent event);
+        void onExecutionFinish(ExecutionFinishEvent event);
     }
     private List<XmlSuite> xmlSuites;
     private List<ISuite> suites;
@@ -41,7 +41,7 @@ public class ExecutionEndEvent {
         return xmlSuites;
     }
 
-    public ExecutionEndEvent setXmlSuites(List<XmlSuite> xmlSuites) {
+    public ExecutionFinishEvent setXmlSuites(List<XmlSuite> xmlSuites) {
         this.xmlSuites = xmlSuites;
         return this;
     }
@@ -50,7 +50,7 @@ public class ExecutionEndEvent {
         return suites;
     }
 
-    public ExecutionEndEvent setSuites(List<ISuite> suites) {
+    public ExecutionFinishEvent setSuites(List<ISuite> suites) {
         this.suites = suites;
         return this;
     }

@@ -43,6 +43,9 @@ Testerra provides a Google Guava event bus with custom events for test execution
 |`ContextUpdateEvent`
 |Called every time the internal context data has been changed significantly. This can be used to synchronize the internal test context model.
 
+|`FinalizeExecutionEvent`
+|Called on the very end of the test execution when the execution model has been finalized. Use this event to generate a report.
+
 |===
 
 == Create custom event listeners

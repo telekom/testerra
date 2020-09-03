@@ -23,7 +23,7 @@
 package eu.tsystems.mms.tic.testframework.hook;
 
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
-import eu.tsystems.mms.tic.testframework.listener.GenerateReportListener;
+import eu.tsystems.mms.tic.testframework.listeners.GenerateHtmlReportListener;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 
 public class ReportHook implements ModuleHook {
@@ -31,7 +31,7 @@ public class ReportHook implements ModuleHook {
     @Override
     public void init() {
 
-        TesterraListener.getEventBus().register(new GenerateReportListener());
+        TesterraListener.getEventBus().register(new GenerateHtmlReportListener());
     }
 
     @Override

@@ -20,36 +20,25 @@
  *
  */
 
-package eu.tsystems.mms.tic.testframework.execution.testng;
+package eu.tsystems.mms.tic.testframework.report;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
-import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
-import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
+import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 
 /**
- * Listener for the very end of the test execution.
+ * Listener for the very end of the execution.
+ * This needs to be the last event listener.
+ * NOTE: It is package private to prevent miss usage.
  */
-public class FinalizeListener implements
-        ExecutionAbortEvent.Listener,
-        ExecutionFinishEvent.Listener
-{
-    @Override
-    @Subscribe
-    public void onExecutionAbort(ExecutionAbortEvent event) {
-        finalizeTestExecution();
-    }
+final class FinalizeListener implements FinalizeExecutionEvent.Listener {
 
     @Override
     @Subscribe
-    public void onExecutionFinish(ExecutionFinishEvent event) {
-        finalizeTestExecution();
-    }
-
-    private void finalizeTestExecution() {
+    public void onFinalizeExecution(FinalizeExecutionEvent event) {
         /*
          * Shutdown local services and hooks
          */

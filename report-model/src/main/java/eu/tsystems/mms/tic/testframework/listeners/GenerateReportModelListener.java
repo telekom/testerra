@@ -20,7 +20,7 @@
  *
  */
 
-package eu.tsystems.mms.tic.testframework.listener;
+package eu.tsystems.mms.tic.testframework.listeners;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.protobuf.Message;
@@ -30,8 +30,7 @@ import eu.tsystems.mms.tic.testframework.adapters.MethodContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.SuiteContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.TestContextExporter;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
-import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
+import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
@@ -39,20 +38,17 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SynchronizableContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.TestContextModel;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.io.File;
 import java.io.FileOutputStream;
 
 /**
- * Generates the protobuf report model
+ * Generates the protobuf report model to the local report directory
  */
 public class GenerateReportModelListener implements
         MethodEndEvent.Listener,
         ContextUpdateEvent.Listener,
-        ExecutionFinishEvent.Listener,
         Loggable,
-        ExecutionAbortEvent.Listener
+        FinalizeExecutionEvent.Listener
 {
 
     private MethodContextExporter methodContextExporter = new MethodContextExporter();
@@ -60,26 +56,25 @@ public class GenerateReportModelListener implements
     private SuiteContextExporter suiteContextExporter = new SuiteContextExporter();
     private TestContextExporter testContextExporter = new TestContextExporter();
     private ExecutionContextExporter executionContextExporter = new ExecutionContextExporter();
-    private Report report = new Report();
-    private File modelDir;
-    private File classesDir;
-    private File filesDir;
-    private File methodsDir;
-    private File testsDir;
-    private File suitesDir;
+    private final File baseDir;
+    private final File classesDir;
+    private final File filesDir;
+    private final File methodsDir;
+    private final File testsDir;
+    private final File suitesDir;
 
-    public GenerateReportModelListener() {
-        modelDir = report.getReportDirectory("model");
-        modelDir.mkdir();
-        classesDir = new File(modelDir, "classes");
+    public GenerateReportModelListener(File baseDir) {
+        this.baseDir = baseDir;
+        baseDir.mkdir();
+        classesDir = new File(baseDir, "classes");
         classesDir.mkdir();
-        filesDir = new File(modelDir, "files");
+        filesDir = new File(baseDir, "files");
         filesDir.mkdir();
-        methodsDir = new File(modelDir, "methods");
+        methodsDir = new File(baseDir, "methods");
         methodsDir.mkdir();
-        testsDir = new File(modelDir, "tests");
+        testsDir = new File(baseDir, "tests");
         testsDir.mkdir();
-        suitesDir = new File(modelDir, "suites");
+        suitesDir = new File(baseDir, "suites");
         suitesDir.mkdir();
     }
 
@@ -99,7 +94,6 @@ public class GenerateReportModelListener implements
         MethodContext methodContext = event.getMethodContext();
         eu.tsystems.mms.tic.testframework.report.model.MethodContext.Builder methodContextBuilder = methodContextExporter.prepareMethodContext(methodContext, fileBuilder -> {
             writeBuilderToFile(fileBuilder, new File(filesDir, fileBuilder.getId()));
-
         });
         writeBuilderToFile(methodContextBuilder, new File(methodsDir, methodContext.id));
     }
@@ -107,9 +101,6 @@ public class GenerateReportModelListener implements
     @Override
     @Subscribe
     public void onContextUpdate(ContextUpdateEvent event) {
-        File modelDir = report.getReportDirectory("model");
-        modelDir.mkdirs();
-
         SynchronizableContext context = event.getContext();
         if (context instanceof SuiteContext) {
             writeBuilderToFile(suiteContextExporter.prepareSuiteContext((SuiteContext)context), new File(suitesDir,((SuiteContext) context).id));
@@ -120,21 +111,13 @@ public class GenerateReportModelListener implements
 
     @Override
     @Subscribe
-    public void onExecutionFinish(ExecutionFinishEvent event) {
-        generateReportModels();
-    }
-
-    @Override
-    @Subscribe
-    public void onExecutionAbort(ExecutionAbortEvent event) {
-        generateReportModels();
-    }
-
-    private void generateReportModels() {
-        ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
-        currentExecutionContext.getMethodStatsPerClass(true, false).keySet().forEach(classContext -> {
-            writeBuilderToFile(classContextExporter.prepareClassContext(classContext), new File(classesDir,(classContext.id)));
+    public void onFinalizeExecution(FinalizeExecutionEvent event) {
+        ExecutionContext currentExecutionContext = event.getExecutionContext();
+        event.getMethodStatsPerClass().ifPresent(classContexts -> {
+            classContexts.forEach(classContext -> {
+                writeBuilderToFile(classContextExporter.prepareClassContext(classContext), new File(classesDir,(classContext.id)));
+            });
         });
-        writeBuilderToFile(executionContextExporter.prepareExecutionContext(currentExecutionContext), new File(modelDir, "execution"));
+        writeBuilderToFile(executionContextExporter.prepareExecutionContext(currentExecutionContext), new File(baseDir, "execution"));
     }
 }

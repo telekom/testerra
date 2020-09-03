@@ -414,13 +414,11 @@ public final class ReportUtils {
         create method details
          */
         for (ClassContext classContext : reportingData.classContexts) {
-            final Collection<MethodContext> methodContexts = classContext.copyOfMethodContexts();
-
             /*
             multi threaded details generation, 1 thread per class
              */
             Runnable createMethodDetailsRunnable = () -> {
-                for (MethodContext testMethodContainer : methodContexts) {
+                for (MethodContext testMethodContainer : classContext.methodContexts) {
                     createMethodDetailsView(testMethodContainer);
                 }
             };

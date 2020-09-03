@@ -162,8 +162,7 @@ final class ExecutionEndListener implements
         int unknownCounter = 0;
         // scan
         for (ClassContext classContext : allClassContexts) {
-            List<MethodContext> methodContexts = classContext.copyOfMethodContexts();
-            for (MethodContext methodContext : methodContexts) {
+            for (MethodContext methodContext : classContext.methodContexts) {
                 /*
                  * Every failed method that is not flagged config or retry
                  */

@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import java.util.Queue;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +62,7 @@ public abstract class AbstractContext implements SynchronizableContext {
         context.swi = parentContext.swi + "_" + name;
     }
 
-    protected <T extends AbstractContext> T getContext(Class<T> contextClass, List<T> contexts, String name, boolean autocreate, CreateDownStreamContext<T> createDownStreamContext) {
+    protected <T extends AbstractContext> T getContext(Class<T> contextClass, Queue<T> contexts, String name, boolean autocreate, CreateDownStreamContext<T> createDownStreamContext) {
         synchronized (contexts) {
             List<T> collect = contexts.stream().filter(context -> name.equals(context.name)).collect(Collectors.toList());
             if (collect.isEmpty()) {

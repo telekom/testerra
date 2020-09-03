@@ -34,6 +34,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
@@ -48,7 +50,7 @@ import org.testng.SkipException;
  */
 public class ClassContext extends AbstractContext implements SynchronizableContext {
 
-    public final List<MethodContext> methodContexts = new LinkedList<>();
+    public final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
     public String fullClassName;
     public String simpleClassName;
     public final TestContextModel testContextModel;
@@ -175,12 +177,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         return methodContext;
     }
 
-    public List<MethodContext> copyOfMethodContexts() {
-        synchronized (methodContexts) {
-            return new LinkedList<>(methodContexts);
-        }
-    }
-
     public MethodContext safeAddSkipMethod(ITestResult testResult, IInvokedMethod invokedMethod) {
         MethodContext methodContext = getMethodContext(testResult, testResult.getTestContext(), invokedMethod);
         methodContext.errorContext().setThrowable(null, new SkipException("Skipped"));
@@ -194,7 +190,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     }
 
     public AbstractContext[] getRepresentationalMethods() {
-        List<MethodContext> methodContexts = copyOfMethodContexts();
         AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod).toArray(AbstractContext[]::new);
         return contexts;
     }
@@ -205,7 +200,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         // initialize with 0
         Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
 
-        List<MethodContext> methodContexts = copyOfMethodContexts();
         methodContexts.stream().filter(mc -> (includeTestMethods && mc.isTestMethod()) || (includeConfigMethods && mc.isConfigMethod())).forEach(methodContext -> {
             TestStatusController.Status status = methodContext.getStatus();
             int value = 0;
@@ -221,7 +215,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     public List<MethodContext> getTestMethodsWithStatus(TestStatusController.Status status) {
         List<MethodContext> methodContexts = new LinkedList<>();
-        copyOfMethodContexts().forEach(methodContext -> {
+        this.methodContexts.forEach(methodContext -> {
             if (methodContext.isTestMethod() && status == methodContext.status) {
                 methodContexts.add(methodContext);
             }

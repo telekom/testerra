@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -86,45 +87,47 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         }
     }
 
-//    public int getNumberOfRepresentationalTests() {
-//        final AtomicReference<Integer> i = new AtomicReference<>();
-//        i.set(0);
-//        List<SuiteContext> suiteContexts = copyOfSuiteContexts();
-//        suiteContexts.forEach(suiteContext -> {
-//            suiteContext.copyOfTestContexts().forEach(testContext -> {
-//                testContext.copyOfClassContexts().forEach(classContext -> {
-//                    i.set(i.get() + classContext.getRepresentationalMethods().length);
-//                });
-//            });
-//        });
-//        return i.get();
-//    }
-//
-//    public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
-//        Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
-//
-//        // initialize with 0
-//        Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
-//
-//        List<SuiteContext> suiteContexts = copyOfSuiteContexts();
-//        suiteContexts.forEach(suiteContext -> {
-//            suiteContext.copyOfTestContexts().forEach(testContext -> {
-//                testContext.copyOfClassContexts().forEach(classContext -> {
-//                    Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
-//                    methodStats.keySet().forEach(status -> {
-//                        Integer oldValue = counts.get(status);
-//                        int newValue = oldValue + methodStats.get(status);
-//                        counts.put(status, newValue);
-//                    });
-//                });
-//            });
-//        });
-//
-//        return counts;
-//    }
+    /**
+     * Used in dashboard.vm
+     */
+    public int getNumberOfRepresentationalTests() {
+        final AtomicReference<Integer> i = new AtomicReference<>();
+        i.set(0);
+        List<SuiteContext> suiteContexts = copyOfSuiteContexts();
+        suiteContexts.forEach(suiteContext -> {
+            suiteContext.copyOfTestContexts().forEach(testContext -> {
+                testContext.copyOfClassContexts().forEach(classContext -> {
+                    i.set(i.get() + classContext.getRepresentationalMethods().length);
+                });
+            });
+        });
+        return i.get();
+    }
 
-    public void finalizeModel() {
+    /**
+     * Used in dashboard.vm
+     */
+    public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
+        Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
 
+        // initialize with 0
+        Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
+
+        List<SuiteContext> suiteContexts = copyOfSuiteContexts();
+        suiteContexts.forEach(suiteContext -> {
+            suiteContext.copyOfTestContexts().forEach(testContext -> {
+                testContext.copyOfClassContexts().forEach(classContext -> {
+                    Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
+                    methodStats.keySet().forEach(status -> {
+                        Integer oldValue = counts.get(status);
+                        int newValue = oldValue + methodStats.get(status);
+                        counts.put(status, newValue);
+                    });
+                });
+            });
+        });
+
+        return counts;
     }
 
     /**

@@ -21,17 +21,10 @@
  */
 package eu.tsystems.mms.tic.testframework.connectors.util;
 
-import eu.tsystems.mms.tic.testframework.events.ITesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.ITesterraEventType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventListener;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.testng.ITestResult;
-
-import java.util.Map;
 
 /**
  * Template for Maven Test Listeners used by Testerra. Methods that need to be implemented by subclasses are abstract, other
@@ -40,7 +33,7 @@ import java.util.Map;
  *
  * @author mrgi, sepr, erku
  */
-public abstract class AbstractCommonSynchronizer implements TesterraEventListener {
+public abstract class AbstractCommonSynchronizer implements Loggable, MethodEndEvent.Listener {
 
     /**
      * The type mapping to Quality Center.
@@ -52,35 +45,28 @@ public abstract class AbstractCommonSynchronizer implements TesterraEventListene
      */
     protected static boolean isSyncActive;
 
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @SuppressWarnings("static-access")
     public void setSyncType(final SyncType synctype) {
         this.syncType = synctype;
     }
 
+    @Subscribe
     @Override
-    public void fireEvent(TesterraEvent testerraEvent) {
+    public void onMethodEnd(MethodEndEvent event) {
+        final ITestResult currentTestResult = event.getTestResult();
 
-        final ITesterraEventType ttEventType = testerraEvent.getTesterraEventType();
-        if (ttEventType == TesterraEventType.SYNC_METHOD_RESULT) {
-
-            final Map<ITesterraEventDataType, Object> data = testerraEvent.getData();
-            final ITestResult currentTestResult = (ITestResult) data.get(TesterraEventDataType.ITestResult);
-
-            switch (currentTestResult.getStatus()) {
-                case ITestResult.SUCCESS:
-                    pOnTestSuccess(currentTestResult);
-                    break;
-                case ITestResult.FAILURE:
-                    pOnTestFailure(currentTestResult);
-                    break;
-                case ITestResult.SKIP:
-                    pOnTestSkip(currentTestResult);
-                    break;
-                default:
-                    logger.warn("unsupported test method result");
-            }
+        switch (currentTestResult.getStatus()) {
+            case ITestResult.SUCCESS:
+                pOnTestSuccess(currentTestResult);
+                break;
+            case ITestResult.FAILURE:
+                pOnTestFailure(currentTestResult);
+                break;
+            case ITestResult.SKIP:
+                pOnTestSkip(currentTestResult);
+                break;
+            default:
+                log().warn("unsupported test method result");
         }
     }
 

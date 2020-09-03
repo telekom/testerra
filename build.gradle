@@ -20,6 +20,7 @@ ext {
     report = project(':report')
 
     seleniumVersion = '3.141.59'
+    guavaVersion = "28.1-jre"
     /*
     Flags
      */

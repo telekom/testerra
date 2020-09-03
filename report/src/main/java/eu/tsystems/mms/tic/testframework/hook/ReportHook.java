@@ -22,24 +22,16 @@
 
 package eu.tsystems.mms.tic.testframework.hook;
 
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.listener.GenerateReportListener;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.worker.CreateThreadVisualizerDataSetWorker;
-import eu.tsystems.mms.tic.testframework.worker.GenerateReportWorker;
 
 public class ReportHook implements ModuleHook {
 
     @Override
     public void init() {
 
-        // listener on report event
-        TesterraEventService.addListener(new GenerateReportListener());
-
-        // init GenerateReport
-        TesterraListener.registerGenerateReportsWorker(GenerateReportWorker.class);
-        TesterraListener.registerAfterMethodWorker(CreateThreadVisualizerDataSetWorker.class);
+        TesterraListener.getEventBus().register(new GenerateReportListener());
     }
 
     @Override

@@ -23,13 +23,19 @@
 
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.testng.Assert;
 import org.testng.collections.Lists;
-
-import java.lang.reflect.Array;
-import java.util.*;
-
-import static org.testng.internal.EclipseInterface.*;
+import static org.testng.internal.EclipseInterface.ASSERT_EQUAL_LEFT;
+import static org.testng.internal.EclipseInterface.ASSERT_LEFT2;
+import static org.testng.internal.EclipseInterface.ASSERT_MIDDLE;
+import static org.testng.internal.EclipseInterface.ASSERT_RIGHT;
 
 /**
  * A dummy class for collecting asserts.

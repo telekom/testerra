@@ -22,13 +22,11 @@
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -167,11 +165,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
                 methodContexts.add(methodContext);
             }
 
-            // fire context update event: create method context
-            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addUserData()
-                    .addData(TesterraEventDataType.CONTEXT, methodContext)
-                    .addData(TesterraEventDataType.WITH_PARENT, true));
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(methodContext));
         } else {
             if (collect.size() > 1) {
                 LOGGER.error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");

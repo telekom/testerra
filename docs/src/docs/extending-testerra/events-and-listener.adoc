@@ -1,286 +1,168 @@
-= Events and Listener
+= Events and Listeners
 
-Testerra provides it own event service called `TesterraEventService` which basically fires events of type `ITesterraEventType`.
-By default Testerra will register the `TesterraEventListener` by itself.
-This basic implementation will fire the following events by default.
+Testerra provides a Google Guava event bus with custom events for test execution. The following events are currently implemented:
 
-.TesterraEventType
 |===
-|Event |Description |Associated data
+|Event |Description
 
-|TEST_METHOD_START
-|Called on start of every test method annotated by TestNG `@Test` annotation, but before the execution of registered <<Before Method Worker>> and after all TestNG configuration methods like `@BeforeMethod`.
-|METHOD_NAME +
-TIMESTAMP +
-ITestResult +
-IInvokedMethod
+| `MethodStartEvent`
+|Called on start of every test method annotated by TestNG `@Test` annotation.
 
-|TEST_METHOD_END
-|Called at the end of every test method annotated by TestNG `@Test` annotation, but before the execution of registered <<After Method Worker>> and the execution fo all TestNG configuration methods like `@AfterMethod`.
-|METHOD_NAME +
-TIMESTAMP +
-TESTRESULT_STATUS +
-DURATION +
-ITestResult +
-IInvokedMethod
+|`MethodEndEvent`
+|Called at the end of every test method annotated by TestNG `@Test` annotation. This can be used to send test results to a test management system or issue tracker.
 
-|CONFIGURATION_METHOD_START
-|Called on start of every test configuration method annotated by TestNG `@BeforeMethod` annotation or similar, but before the execution of registered <<Before Method Worker>>.
-|METHOD_NAME +
-TIMESTAMP +
-ITestResult +
-IInvokedMethod
+//|TEST_START
+//|Called on start of every test method annotated by TestNG `@Test` annotation and every test configuration method annotated by TestNG `@BeforeMethod` or similar, but before the execution of registered <<Before Method Worker>>
+//|TIMESTAMP+
+//ITestResult +
+//IInvokedMethod
 
-|CONFIGURATION_METHOD_END
-|Called at the end of every test configuration method annotated by TestNG `@BeforeMethod` annotation or similar, but before the execution of registered <<After Method Worker>>.
-|METHOD_NAME +
-TIMESTAMP +
-TESTRESULT_STATUS +
-ITestResult +
-IInvokedMethod
-
-|TEST_START
-|Called on start of every test method annotated by TestNG `@Test` annotation and every test configuration method annotated by TestNG `@BeforeMethod` or similar, but before the execution of registered <<Before Method Worker>>
-|TIMESTAMP+
-ITestResult +
-IInvokedMethod
-
-|TEST_RUN_END
+| `ExecutionFinishEvent`
 |Called at the end of test run to trigger report generation and other output worker.
-|TIMESTAMP +
-DURATION +
 
-|TEST_RUN_ABORT
+|`ExecutionAbortEvent`
 |Called on test run abortion due to unclear circumstances like hanging sessions, JVM exit or other.
-|Nothing
 
-//|RETRYING_METHOD
-//| #NOT called anywhere#
-//|#WIP#
+|`InterceptMethodsEvent`
+|Called before suite execution. The events methods list provides a list of tests to execute. Read more about this in <<Intercept test method execution>>
 
-|FIRST_FAILED_TEST
-|Called on the first failing test of your test run.
-|TIMESTAMP +
-METHOD_NAME +
-ITestResult +
-IInvokedMethod
+//|FIRST_FAILED_TEST
+//|Called on the first failing test of your test run.
+//|TIMESTAMP +
+//METHOD_NAME +
+//ITestResult +
+//IInvokedMethod
+//
+//|TEST_WITH_FILTERED_THROWABLE
+//|Called on every failed test method when Testerra `RetryAnalyzer`found a cause to retry the test.
+//|TIMESTAMP +
+//METHOD_NAME +
+//ITestResult +
+//IInvokedMethod
 
-|TEST_WITH_FILTERED_THROWABLE
-|Called on every failed test method when Testerra `RetryAnalyzer`found a cause to retry the test.
-|TIMESTAMP +
-METHOD_NAME +
-ITestResult +
-IInvokedMethod
-
-|SYNC_METHOD_RESULT
-|Called after every test method to determine a state where you can use the delivered data of the event to synchronize test results to test management system or issue tracker.
-|METHOD_NAME +
-TESTRESULT_STATUS +
-ITestResult +
-IInvokedMethod
-
-//|TAKE_SCREENSHOTS
-//| #NOT called anywhere#
-//|#WIP#
-
-|CONTEXT_UPDATE
-|Called on every context update of Testerra underlying data model.
-|It is so often called internally, but at least following should be provided: +
-CONTEXT
-
-|GENERATE_REPORT
-|Called on report generation to generate custom reports with unified data.
-|REPORT_DATA
-
-|GENERATE_METHOD_REPORT
-|Called at the end of each test method to allow generation of method-base reports
-|CONTEXT
+|`ContextUpdateEvent`
+|Called every time the internal context data has been changed significantly. This can be used to synchronize the internal test context model.
 
 |===
 
-== Create Custom Event Listeners
+== Create custom event listeners
 
-The simplest way to get in touch with the `TesterraEventServiuce` eco system is to write and register your own implementation of `TesterraEventListener`.
-Listening to events and reacting to them will give your module the power to provide real time information of your test executions.
-
-For a simple example we will add a `TesterraEventListener` that will log each event that was fired during the test execution.
+The simplest way to get in touch with the event bus is to write and register your own implementation of the event's `Listener` interface and add the `@Subscribe` annotation.
 
 .Simple LogEventListener
 [source,java]
 ----
-import eu.tsystems.mms.tic.testframework.events.TesterraEventListener;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 
-public class LogEventListener implements TesterraEventListener {
-
-    private static Logger LOGGER = LoggerFactory.getLogger(LogEventListener.class);
+public class LogEventListener implements MethodStartEvent.Listener, Loggable {
 
     @Override
-    public void fireEvent(TesterraEvent e) {
-        LOGGER.info("Testerra Event logged: " + e.getTesterraEventType().name());
-    }
-}
-
-----
-
-As you noticed, the main part of your implementation of `TesterraEventListener` is done in the `fireEvent()` method, that you need to override.
-If you only want to react to some event types, you can just filter by the `ITesterraEventType`.
-
-.Filter events by event type
-[source,java]
-----
-@Override
-public void fireEvent(TesterraEvent e) {
-    if (e.getTesterraEventType() == TesterraEventType.TEST_METHOD_START) {
-        LOGGER.info("Testerra Test Method Start Event fired");
+    @Subscribe
+    public void onMethodStart(MethodStartEvent event) {
+        log().info("Event logged: " + event.getMethod());
     }
 }
 ----
 
-Further more, events can provide some data, that can be retrieved by calling `getData()` on the `TesterraEvent` object.
-To give you the best flexibility, this data is defined by an interface `ITesterraEventDataType`.
-Testerra will come with a default set of event data types defined in `TesterraEventDataType`.
-
-.Receive data
-[source,java]
-----
-@Override
-public void fireEvent(TesterraEvent e) {
-    if (e.getTesterraEventType() == TesterraEventType.TEST_METHOD_START) {
-        final String methodName = (String) e.getData().get(TesterraEventDataType.METHOD_NAME);
-        LOGGER.info("Testerra Test Method Start Event fired for method: " + methodName);
-    }
-}
-----
+If you want to react to some more events, you can just implement multiple interfaces.
 
 == Register custom event listener
 
-After you defined your first custom `TesterraEventListener` you now have to register it to Testerra.
-Think about it in a simple way.
-You want to get a notice, when a Testerra event is fired, so you have to tell Testerra, that your module is waiting and listening to events.
-
-While the <<Hooks>> works automatically it is best practice to use the `init()` method of a `ModuleHook` to register custom `TesterraEventListener` implementations.
+After you defined your first custom listener you now have to register it to the `TesterraListener`.
 
 .Registering your listener
 [source,java]
 ----
-TesterraEventService.addListener(new LogEventListener());
+TesterraListener.getEventBus().register(new LogEventListener());
 ----
 
-== Fire Events by yourself
+== Fire events by yourself
 
-While Implementing your own Testerra module you may reach a point, where you want to inform other components of Testerra or other Testerra modules about an important change or an event.
-You can achieve this by just telling the `TesterraEventService` that an event should be fired.
+While Implementing your own module you may reach a point, where you want to inform other components or modules about an important event.
+You can achieve this by just posting this event to the bus.
 
-For example, if your Testerra module changes some data in the underlying data model, you have to inform all other "participants" of the `TesterraEventService` eco system about your change by firing an `TesterraEventType.CONTEXT_UPDATE` event.
-
-You may want to add some data, that other registered implementations of the `TesterraEventListener` can work on.
+For example, if your module changes some data in the underlying data model, you have to inform all other "participants"  about your change by firing an `ContextUpdateEvent` event.
 
 [source,java]
 ----
+
 // Update some data in data model...
 methodContext.name = "new_Test_Method_Name";
 
-TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addUserData()
-                    .addData(TesterraEventDataType.CONTEXT, methodContext));
+TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(methodContext));
 ----
 
-By calling the `addUserData()` method on the event, Testerra will automatically add the global and thread-local user data to the event, provided by `TesterraEventUserDataManager` covered in the section <<Adding user data>>.
+== Create custom event types
 
-== Create custom event types and data types
-
-As you may already know, Testerra comes with some default `ITesterraEventType` that are stored in `TesterraEventType`.
-While playing around with the option of firing events by yourself, you may need more than the default event types.
-So you can just create new ones by implementing the `ITesterraEventType` interface.
+If you want to provide some custom events to other modules. You can implement these by implementing any kind of class for the event bus.
 
 .Creating custom event types
 [source,java]
 ----
-import eu.tsystems.mms.tic.testframework.events.ITesterraEventType;
-
-public enum CustomEventTypes implements ITesterraEventType {
-
-    CUSTOM_EVENT_START,
-    CUSTOM_EVENT_END
+public class CustomEvent {
+    public interface Listener {
+        void onCustomEvent(CustomEvent event);
+    }
 }
 ----
 
-With your `CustomEventTypes` created, you now can fire these events or react to them in the way described in the sections <<Fire Events by yourself>> and <<Create Custom Event Listeners>>.
+With your `CustomEvent` created, you now can fire these events or react to them in the way described in the sections <<Fire events by yourself>> and <<Create custom event listeners>>.
 
-.CustomEventTypes Listener Example
+.CustomEvent Listener Example
 [source,java]
 ----
 @Override
-public void fireEvent(TesterraEvent e) {
-    if (e.getTesterraEventType() == CustomEventTypes.CUSTOM_EVENT_START) {
-        LOGGER.info("Custom Event started!");
+@Subscribe
+public void onCustomEvent(CustomEvent event) {
+   log().info("Custom Event started!");
+}
+----
+
+== Intercept test method execution
+
+With the test `InterceptMethodsEvent`, you are able to modify the list of tests being executed before execution.
+
+[source,java]
+----
+import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
+
+public class MyTest extends TesterraTest {
+
+    public class MyListener implements InterceptMethodsEvent.Listener {
+
+        @Override
+        @Subscribe
+        public void onInterceptMethods(InterceptMethodsEvent event) {
+            event.getMethodInstances().removeIf(iMethodInstance -> true);
+        }
+    }
+
+    @BeforeTest
+    public void setupListener() {
+        TesterraListener.getEventBus().register(new MyListener());
     }
 }
 ----
 
-.Fire events with CustomEventTypes
+== Listen to TestNG events
+
+Since the `TesterraListener` listens to `TestNG` events, it also forwards some of these events the same way like any other events.
+
 [source,java]
 ----
-final List<String> propertyList = new ArrayList();
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import com.google.common.eventbus.Subscribe;
+import org.testng.ISuite;
+import org.testng.ISuiteListener;
 
-TesterraEventService.getInstance().fireEvent(new TesterraEvent(CustomEventTypes.CUSTOM_EVENT_START)
-                    .addUserData()
-                    .addData(CustomEventDataTypes.PROPERTY_LIST, propertyList));
-----
+class MySuiteListener implements ISuiteListener, Loggable {
 
-As you noticed, in the code snippet above some data of type `CustomEventDataTypes` was added to the event.
-To use your own data types and models when using the `TesterraEventService` you can implement the `ITesterraEventDataType` interface.
-
-.Creating CustomEventDataTypes
-[source,java]
-----
-import eu.tsystems.mms.tic.testframework.events.ITesterraEventDataType;
-
-public enum CustomEventDataTypes implements ITesterraEventDataType {
-
-    NAME(String.class),
-    PROPERTY_LIST(List.class);
-
-    private Class typeClass;
-
-    CustomEventDataTypes(Class<?> typeClass) {
-        this.typeClass = typeClass;
-    }
-
-    public Class getTypeClass() {
-        return typeClass;
+    @Subscribe
+    @Override
+    public void onStart(ISuite suite) {
+        log().info("Suite started");
     }
 }
 ----
-
-== Adding user data
-
-Testerra will add global and thread-local user data to all events that where fired by itself.
-So foreach internally fired event, the `addUserData()` method is called on event creation.
-If you want to make sure, that Testerra adds your module data to all internally fired events, you have to add these data with the `TesterraEventUserDataManager`.
-
-The `TesterraEventUserDataManager` will come across with two managed maps, which will work in the same way, with one important difference.
-
-=== Global user data
-
-Testerra allows you to add global data with this command.
-
-[source,java]
-----
-TesterraEventUserDataManager.getGlobalData().put(ITesterraEventDataType , value);
-----
-
-This data will be added to every event that is fired up by Testerra istself and every event that where `addUserData()` called on.
-This data can be written and read by any thread and should therefore only used for real GLOBAL data, that per definition will not change.
-
-=== Threadsafe user data
-
-But in the case, you use parallelization and custom thread data needs to be written to the `TesterraEvent`, you can use the thread-safe way by adding your data with the thread local data map.
-This data will as well be appended to every internal `TesterraEvent` and events that where created with `addUserData()`, but instead of sending global values it will append thread local data.
-
-[source,java]
-----
-TesterraEventUserDataManager.getThreadLocalData().put(ITesterraEventDataType , value);
-----
-
-

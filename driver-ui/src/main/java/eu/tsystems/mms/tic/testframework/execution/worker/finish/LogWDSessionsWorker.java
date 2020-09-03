@@ -21,13 +21,15 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
-public class LogWDSessionsWorker extends MethodWorker {
+public class LogWDSessionsWorker implements MethodEndEvent.Listener {
 
     @Override
-    public void run() {
+    @Subscribe
+    public void onMethodEnd(MethodEndEvent event) {
         if (WebDriverManager.hasAnySessionActive()) {
             String executingSeleniumHost = WebDriverManager.getExecutingSeleniumHosts();
             if (executingSeleniumHost == null) {
@@ -38,7 +40,7 @@ public class LogWDSessionsWorker extends MethodWorker {
             if (executingSeleniumHost.contains("\n")) {
                 msg += "\n";
             }
-            methodContext.infos.add(msg + executingSeleniumHost);
+            event.getMethodContext().infos.add(msg + executingSeleniumHost);
         }
     }
 }

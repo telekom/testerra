@@ -22,10 +22,6 @@
 
 package eu.tsystems.mms.tic.testframework.monitor;
 
-import eu.tsystems.mms.tic.testframework.events.ITesterraEventType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventListener;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
 import eu.tsystems.mms.tic.testframework.internal.ConsumptionMeasurementsCollector;
 import eu.tsystems.mms.tic.testframework.utils.JVMUtils;
 import java.util.LinkedHashMap;
@@ -33,7 +29,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JVMMonitor implements TesterraEventListener {
+public class JVMMonitor {
 
     private static final int GC_THRESHOLD = 500;
     private static final long MB = 1024 * 1024;
@@ -133,36 +129,6 @@ public class JVMMonitor implements TesterraEventListener {
 
     public static void logJVMUsageInfo() {
         LOGGER.debug(getJVMUsageInfo());
-    }
-
-    @Override
-    public void fireEvent(TesterraEvent TesterraEvent) {
-        ITesterraEventType iTesterraEventType = TesterraEvent.getTesterraEventType();
-        if (iTesterraEventType instanceof TesterraEventType) {
-            TesterraEventType TesterraEventType = (TesterraEventType) iTesterraEventType;
-            switch (TesterraEventType) {
-                case TEST_METHOD_START:
-                    //                    logJVMUsageInfo();
-                    break;
-                case TEST_METHOD_END:
-                    break;
-                case CONFIGURATION_METHOD_START:
-                    //                    logJVMUsageInfo();
-                    break;
-                case CONFIGURATION_METHOD_END:
-                    break;
-                case TEST_START:
-                    break;
-                case TEST_RUN_END:
-                    break;
-                case RETRYING_METHOD:
-                    break;
-                case FIRST_FAILED_TEST:
-                    break;
-                case TEST_WITH_FILTERED_THROWABLE:
-                    break;
-            }
-        }
     }
 
     private static boolean threadStop = false;

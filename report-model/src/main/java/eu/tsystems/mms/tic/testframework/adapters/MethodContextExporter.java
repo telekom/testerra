@@ -20,6 +20,7 @@
 package eu.tsystems.mms.tic.testframework.adapters;
 
 import com.google.common.net.MediaType;
+import com.google.gson.Gson;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.model.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue;
@@ -44,7 +45,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class MethodContextExporter extends ContextExporter {
-    private static Report report = new Report();
+    private Report report = new Report();
+    private Gson jsonEncoder = new Gson();
 
     private static String annotationToString(Annotation annotation) {
         String json = "\"" + annotation.annotationType().getSimpleName() + "\"";
@@ -67,7 +69,7 @@ public class MethodContextExporter extends ContextExporter {
         return json;
     }
 
-    private static String mapArtifactsPath(String absolutePath) {
+    private String mapArtifactsPath(String absolutePath) {
         String path = absolutePath.replace(report.getFinalReportDirectory().toString(), "");
 
         // replace all \ with /
@@ -184,9 +186,10 @@ public class MethodContextExporter extends ContextExporter {
 
         }, builder::addAllScreenshotIds);
 
-//        if (methodContext.customContexts.size() > 0) {
-//            builder.setCustomContextJson(toJson(methodContext.customContexts));
-//        }
+
+        if (methodContext.customContexts.size() > 0) {
+            builder.setCustomContextJson(jsonEncoder.toJson(methodContext.customContexts));
+        }
 
         // return
         return builder;

@@ -100,10 +100,13 @@ public class ExecutionContextController {
         return classContext.getMethodContext(iTestResult, testContext, null);
     }
 
-//    public static MethodContext getMethodContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod, final Object[] parameters) {
-//        ClassContext classContext = getClassContextFromTestContextAndMethod(iTestContext, iTestNgMethod);
-//        return classContext.getMethodContext(null, iTestContext, iTestNgMethod, parameters);
-//    }
+    /**
+     * Used in platform-connector
+     */
+    public static MethodContext getMethodContextFromTestContextAndMethod(final ITestContext iTestContext, final ITestNGMethod iTestNgMethod, final Object[] parameters) {
+        ClassContext classContext = getClassContextFromTestContextAndMethod(iTestContext, iTestNgMethod);
+        return classContext.getMethodContext(null, iTestContext, iTestNgMethod, parameters);
+    }
 
     /**
      * Set currently active test.
@@ -184,10 +187,4 @@ public class ExecutionContextController {
 
         LOGGER.info(prefix + "**********************************************");
     }
-
-    public static void setEstimatedTestMethodCount(final int estimatedTestMethodCount) {
-
-        getCurrentExecutionContext().estimatedTestMethodCount = estimatedTestMethodCount;
-    }
-
 }

@@ -129,20 +129,20 @@ final class ExecutionEndListener implements
     @Override
     @Subscribe
     public void onExecutionAbort(ExecutionAbortEvent event) {
+        ExecutionContextController.getCurrentExecutionContext().crashed = true;
         finalizeExecutionContext();
     }
 
     @Override
     @Subscribe
     public void onExecutionFinish(ExecutionFinishEvent event) {
+        // set the testRunFinished flag
+        ExecutionContextController.testRunFinished = true;
         finalizeExecutionContext();
     }
 
     private void finalizeExecutionContext() {
         MethodRelations.flushAll();
-
-        // set the testRunFinished flag
-        ExecutionContextController.testRunFinished = true;
 
         ExecutionContext currentExecutionContext = ExecutionContextController.getCurrentExecutionContext();
         currentExecutionContext.endTime = new Date();

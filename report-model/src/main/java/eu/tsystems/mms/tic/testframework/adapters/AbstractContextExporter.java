@@ -10,17 +10,15 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Queue;
+import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
-public class ContextExporter {
+public abstract class AbstractContextExporter {
 
     private static final Map<TestStatusController.Status, ResultStatusType> STATUS_MAPPING = new LinkedHashMap<>();
 
-    public ContextExporter() {
+    public AbstractContextExporter() {
         for (TestStatusController.Status status : TestStatusController.Status.values()) {
             /*
             Status
@@ -36,28 +34,49 @@ public class ContextExporter {
         return STATUS_MAPPING.get(status);
     }
 
-    @Deprecated
-    protected <T, R> void value(T value, Function<T, R> function) {
+    /**
+     * Applies a value if not null
+     */
+    protected <T, R> void apply(T value, Function<T, R> function) {
         if (value != null) {
             function.apply(value);
+        }
+    }
+
+    /**
+     * Maps and applies a value if not null
+     */
+    protected<T, M, R> void map(T value, Function<T, M> map, Function<M, R> function) {
+        if (value != null) {
+            M m = map.apply(value);
+            function.apply(m);
+        }
+    }
+
+    /**
+     * Iterates if not null
+     */
+    protected <T extends Iterable<C>, C> void forEach(T value, Consumer<C> function) {
+        if (value != null) {
+            value.forEach(function);
         }
     }
 
     protected ContextValues createContextValues(AbstractContext context) {
         ContextValues.Builder builder = ContextValues.newBuilder();
 
-        value(context.id, builder::setId);
-        value(context.swi, builder::setSwi);
-        value(System.currentTimeMillis(), builder::setCreated);
-        value(context.name, builder::setName);
-        builder.setStartTime(context.startTime.getTime());
-        builder.setEndTime(context.endTime.getTime());
+        apply(context.id, builder::setId);
+        apply(context.swi, builder::setSwi);
+        apply(System.currentTimeMillis(), builder::setCreated);
+        apply(context.name, builder::setName);
+        map(context.startTime, Date::getTime, builder::setStartTime);
+        map(context.endTime, Date::getTime, builder::setEndTime);
 
         if (context instanceof MethodContext) {
             MethodContext methodContext = (MethodContext) context;
 
             // result status
-            builder.setResultStatus(getMappedStatus(methodContext.status));
+            map(methodContext.status, this::getMappedStatus, builder::setResultStatus);
 
             // exec status
             if (methodContext.status == TestStatusController.Status.NO_RUN) {

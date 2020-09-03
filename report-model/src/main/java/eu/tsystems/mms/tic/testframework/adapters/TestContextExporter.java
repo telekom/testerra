@@ -21,15 +21,15 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import eu.tsystems.mms.tic.testframework.report.model.TestContext;
 
-public class TestContextExporter extends ContextExporter {
+public class TestContextExporter extends AbstractContextExporter {
 
     public TestContext.Builder prepareTestContext(eu.tsystems.mms.tic.testframework.report.model.context.TestContextModel testContextModel) {
         TestContext.Builder builder = TestContext.newBuilder();
 
-        value(createContextValues(testContextModel), builder::setContextValues);
-        testContextModel.classContexts.forEach(classContext -> builder.addClassContextIds(classContext.id));
-        value(testContextModel.suiteContext.id, builder::setSuiteContextId);
-        value(testContextModel.executionContext.id, builder::setExecutionContextId);
+        apply(createContextValues(testContextModel), builder::setContextValues);
+        forEach(testContextModel.classContexts, classContext -> builder.addClassContextIds(classContext.id));
+        apply(testContextModel.suiteContext.id, builder::setSuiteContextId);
+        apply(testContextModel.executionContext.id, builder::setExecutionContextId);
 
         return builder;
     }

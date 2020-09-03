@@ -44,7 +44,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class MethodContextExporter extends ContextExporter {
+public class MethodContextExporter extends AbstractContextExporter {
     private Report report = new Report();
     private Gson jsonEncoder = new Gson();
 
@@ -86,36 +86,35 @@ public class MethodContextExporter extends ContextExporter {
     public MethodContext.Builder prepareMethodContext(eu.tsystems.mms.tic.testframework.report.model.context.MethodContext methodContext, Consumer<File.Builder> fileConsumer) {
         MethodContext.Builder builder = MethodContext.newBuilder();
 
-        value(createContextValues(methodContext), builder::setContextValues);
+        apply(createContextValues(methodContext), builder::setContextValues);
+        map(methodContext.methodType, type -> MethodType.valueOf(type.name()), builder::setMethodType);
+        forEach(methodContext.parameters, parameter -> builder.addParameters(parameter.toString()));
+        forEach(methodContext.methodTags, annotation -> builder.addMethodTags(MethodContextExporter.annotationToString(annotation)));
+        apply(methodContext.retryNumber, builder::setRetryNumber);
+        apply(methodContext.methodRunIndex, builder::setMethodRunIndex);
 
-        builder.setMethodType(MethodType.valueOf(methodContext.methodType.name()));
-        methodContext.parameters.forEach(o -> builder.addParameters(o.toString()));
-        methodContext.methodTags.forEach(annotation -> builder.addMethodTags(MethodContextExporter.annotationToString(annotation)));
-        value(methodContext.retryNumber, builder::setRetryNumber);
-        value(methodContext.methodRunIndex, builder::setMethodRunIndex);
-
-        value(methodContext.priorityMessage, builder::setPriorityMessage);
-        value(methodContext.threadName, builder::setThreadName);
+        apply(methodContext.priorityMessage, builder::setPriorityMessage);
+        apply(methodContext.threadName, builder::setThreadName);
 
         // test steps
-        methodContext.steps().getTestSteps().forEach(testStep -> builder.addTestSteps(prepareTestStep(testStep)));
+        forEach(methodContext.steps().getTestSteps(), testStep -> builder.addTestSteps(prepareTestStep(testStep)));
         //value(methodContext.failedStep, MethodContextExporter::createPTestStep, builder::setFailedStep);
 
-        builder.setFailureCorridorValue(FailureCorridorValue.valueOf(methodContext.failureCorridorValue.name()));
-        value(methodContext.suiteContext.id, builder::setSuiteContextId);
-        value(methodContext.testContextModel.id, builder::setTestContextId);
-        value(methodContext.classContext.id, builder::setClassContextId);
-        value(methodContext.executionContext.id, builder::setExecutionContextId);
+        map(methodContext.failureCorridorValue, value -> FailureCorridorValue.valueOf(value.name()), builder::setFailureCorridorValue);
+        apply(methodContext.suiteContext.id, builder::setSuiteContextId);
+        apply(methodContext.testContextModel.id, builder::setTestContextId);
+        apply(methodContext.classContext.id, builder::setClassContextId);
+        apply(methodContext.executionContext.id, builder::setExecutionContextId);
 
-        methodContext.infos.forEach(s -> builder.addInfos(s));
-        methodContext.relatedMethodContexts.forEach(m -> builder.addRelatedMethodContextIds(m.id));
-        if (methodContext.dependsOnMethodContexts!=null) methodContext.dependsOnMethodContexts.forEach(m -> builder.addDependsOnMethodContextIds(m.id));
+        forEach(methodContext.infos, builder::addInfos);
+        forEach(methodContext.relatedMethodContexts, m -> builder.addRelatedMethodContextIds(m.id));
+        forEach(methodContext.dependsOnMethodContexts, m -> builder.addDependsOnMethodContextIds(m.id));
 
         // build context
-        builder.setErrorContext(prepareErrorContext(methodContext.errorContext()));
-        methodContext.nonFunctionalInfos.forEach(assertionInfo -> builder.addNonFunctionalInfos(prepareErrorContext(assertionInfo)));
-        methodContext.collectedAssertions.forEach(assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
-        methodContext.sessionContexts.forEach(sessionContext -> builder.addScreenshotIds(sessionContext.id));
+        map(methodContext.errorContext(), this::prepareErrorContext, builder::setErrorContext);
+        forEach(methodContext.nonFunctionalInfos, assertionInfo -> builder.addNonFunctionalInfos(prepareErrorContext(assertionInfo)));
+        forEach(methodContext.collectedAssertions, assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
+        forEach(methodContext.sessionContexts, sessionContext -> builder.addScreenshotIds(sessionContext.id));
 
         /**
          * The report is already moved to the target directory at this point.
@@ -126,7 +125,7 @@ public class MethodContextExporter extends ContextExporter {
         final java.io.File currentVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
         final java.io.File currentScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
 
-        methodContext.videos.forEach(video -> {
+        forEach(methodContext.videos, video -> {
             final java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);
             final java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
             final String mappedPathVideoPath = mapArtifactsPath(targetVideoFile.getAbsolutePath());
@@ -145,7 +144,7 @@ public class MethodContextExporter extends ContextExporter {
             fileConsumer.accept(fileBuilderVideo);
         });
 
-        methodContext.screenshots.forEach(screenshot -> {
+        forEach(methodContext.screenshots, screenshot -> {
             // build screenshot and sources files
             final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
             final java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
@@ -183,10 +182,7 @@ public class MethodContextExporter extends ContextExporter {
 
         });
 
-
-        if (methodContext.customContexts.size() > 0) {
-            builder.setCustomContextJson(jsonEncoder.toJson(methodContext.customContexts));
-        }
+        map(methodContext.customContexts, jsonEncoder::toJson, builder::setCustomContextJson);
 
         // return
         return builder;
@@ -205,8 +201,8 @@ public class MethodContextExporter extends ContextExporter {
     public StackTrace.Builder prepareStackTrace(eu.tsystems.mms.tic.testframework.report.model.context.StackTrace stackTrace) {
         StackTrace.Builder builder = StackTrace.newBuilder();
 
-        value(stackTrace.additionalErrorMessage, builder::setAdditionalErrorMessage);
-        builder.setCause(prepareStackTraceCause(stackTrace.stackTrace));
+        apply(stackTrace.additionalErrorMessage, builder::setAdditionalErrorMessage);
+        map(stackTrace.stackTrace, this::prepareStackTraceCause, builder::setCause);
 
         return builder;
     }
@@ -214,10 +210,10 @@ public class MethodContextExporter extends ContextExporter {
     public StackTraceCause.Builder prepareStackTraceCause(eu.tsystems.mms.tic.testframework.report.model.context.StackTrace.Cause cause) {
         StackTraceCause.Builder builder = StackTraceCause.newBuilder();
 
-        value(cause.className, builder::setClassName);
-        value(cause.message, builder::setMessage);
-        value(cause.stackTraceElements, builder::addAllStackTraceElements);
-        builder.setCause(prepareStackTraceCause(cause.cause));
+        apply(cause.className, builder::setClassName);
+        apply(cause.message, builder::setMessage);
+        apply(cause.stackTraceElements, builder::addAllStackTraceElements);
+        map(cause.cause, this::prepareStackTraceCause, builder::setCause);
 
         return builder;
     }
@@ -225,9 +221,9 @@ public class MethodContextExporter extends ContextExporter {
     public ScriptSource.Builder prepareScriptSource(eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource scriptSource) {
         ScriptSource.Builder builder = ScriptSource.newBuilder();
 
-        value(scriptSource.fileName, builder::setFileName);
-        value(scriptSource.methodName, builder::setMethodName);
-        scriptSource.lines.forEach(line -> builder.addLines(prepareScriptSourceLine(line)));
+        apply(scriptSource.fileName, builder::setFileName);
+        apply(scriptSource.methodName, builder::setMethodName);
+        forEach(scriptSource.lines, line -> builder.addLines(prepareScriptSourceLine(line)));
 
         return builder;
     }
@@ -235,9 +231,9 @@ public class MethodContextExporter extends ContextExporter {
     public ScriptSourceLine.Builder prepareScriptSourceLine(eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource.Line line) {
         ScriptSourceLine.Builder builder = ScriptSourceLine.newBuilder();
 
-        value(line.line, builder::setLine);
-        value(line.lineNumber, builder::setLineNumber);
-        value(line.mark, builder::setMark);
+        apply(line.line, builder::setLine);
+        apply(line.lineNumber, builder::setLineNumber);
+        apply(line.mark, builder::setMark);
 
         return builder;
     }
@@ -245,12 +241,12 @@ public class MethodContextExporter extends ContextExporter {
     public ErrorContext.Builder prepareErrorContext(eu.tsystems.mms.tic.testframework.report.model.context.ErrorContext errorContext) {
         ErrorContext.Builder builder = ErrorContext.newBuilder();
 
-        value(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
-        value(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
-        builder.setStackTrace(prepareStackTrace(errorContext.stackTrace));
-        value(errorContext.errorFingerprint, builder::setErrorFingerprint);
-        builder.setScriptSource(prepareScriptSource(errorContext.scriptSource));
-        builder.setExecutionObjectSource(prepareScriptSource(errorContext.executionObjectSource));
+        apply(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
+        apply(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
+        map(errorContext.stackTrace, this::prepareStackTrace, builder::setStackTrace);
+        apply(errorContext.errorFingerprint, builder::setErrorFingerprint);
+        map(errorContext.scriptSource, this::prepareScriptSource, builder::setScriptSource);
+        map(errorContext.executionObjectSource, this::prepareScriptSource, builder::setExecutionObjectSource);
 
         return builder;
     }
@@ -258,8 +254,8 @@ public class MethodContextExporter extends ContextExporter {
     public PTestStep.Builder prepareTestStep(TestStep testStep) {
         PTestStep.Builder builder = PTestStep.newBuilder();
 
-        value(testStep.getName(), builder::setName);
-        testStep.getTestStepActions().forEach(testStepAction -> builder.addTestStepActions(prepareTestStepAction(testStepAction)));
+        apply(testStep.getName(), builder::setName);
+        forEach(testStep.getTestStepActions(), testStepAction -> builder.addTestStepActions(prepareTestStepAction(testStepAction)));
 
         return builder;
     }
@@ -267,10 +263,10 @@ public class MethodContextExporter extends ContextExporter {
     public PTestStepAction.Builder prepareTestStepAction(TestStepAction testStepAction) {
         PTestStepAction.Builder testStepBuilder = PTestStepAction.newBuilder();
 
-        value(testStepAction.getName(), testStepBuilder::setName);
-        value(testStepAction.getTimestamp(), testStepBuilder::setTimestamp);
+        apply(testStepAction.getName(), testStepBuilder::setName);
+        apply(testStepAction.getTimestamp(), testStepBuilder::setTimestamp);
 
-        testStepAction.getTestStepActionEntries().forEach(testStepActionEntry -> {
+        forEach(testStepAction.getTestStepActionEntries(), testStepActionEntry -> {
             if (testStepActionEntry.clickPathEvent != null) {
                 PClickPathEvent.Builder clickPathBuilder = PClickPathEvent.newBuilder();
                 switch (testStepActionEntry.clickPathEvent.getType()) {

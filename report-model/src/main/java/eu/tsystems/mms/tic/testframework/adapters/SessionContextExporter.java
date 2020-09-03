@@ -8,15 +8,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import static eu.tsystems.mms.tic.testframework.report.model.SessionContext.newBuilder;
 
-public class SessionContextExporter extends ContextExporter implements Loggable {
+public class SessionContextExporter extends AbstractContextExporter implements Loggable {
 
     public SessionContext.Builder prepareSessionContext(eu.tsystems.mms.tic.testframework.report.model.context.SessionContext sessionContext) {
         Builder builder = newBuilder();
 
-        value(createContextValues(sessionContext), builder::setContextValues);
-        value(sessionContext.sessionKey, builder::setSessionKey);
-        value(sessionContext.provider, builder::setProvider);
-        value(sessionContext.sessionId, builder::setSessionId);
+        apply(createContextValues(sessionContext), builder::setContextValues);
+        apply(sessionContext.sessionKey, builder::setSessionKey);
+        apply(sessionContext.provider, builder::setProvider);
+        apply(sessionContext.sessionId, builder::setSessionId);
 
         // translate object map to string map
         Map<String, String> newMap = new LinkedHashMap<>();

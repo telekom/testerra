@@ -21,22 +21,22 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
 
-public class ClassContextExporter extends ContextExporter {
+public class ClassContextExporter extends AbstractContextExporter {
 
     public ClassContext.Builder prepareClassContext(eu.tsystems.mms.tic.testframework.report.model.context.ClassContext classContext) {
         ClassContext.Builder builder = ClassContext.newBuilder();
 
-        value(createContextValues(classContext), builder::setContextValues);
-        classContext.methodContexts.forEach(methodContext -> builder.addMethodContextIds(methodContext.id));
+        apply(createContextValues(classContext), builder::setContextValues);
+        forEach(classContext.methodContexts, methodContext -> builder.addMethodContextIds(methodContext.id));
 
-        value(classContext.fullClassName, builder::setFullClassName);
-        value(classContext.simpleClassName, builder::setFullClassName);
+        apply(classContext.fullClassName, builder::setFullClassName);
+        apply(classContext.simpleClassName, builder::setFullClassName);
 
-        value(classContext.testContextModel.id, builder::setTestContextId);
-        value(classContext.executionContext.id, builder::setExecutionContextId);
+        apply(classContext.testContextModel.id, builder::setTestContextId);
+        apply(classContext.executionContext.id, builder::setExecutionContextId);
 
         //valueMapping(classContext.testContext, TestContext::name, builder::setTesterraClassContext);
-        value(classContext.merged, builder::setMerged);
+        apply(classContext.merged, builder::setMerged);
 
         return builder;
     }

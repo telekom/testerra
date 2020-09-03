@@ -109,7 +109,7 @@ public class MethodContextExporter extends ContextExporter {
 
         methodContext.infos.forEach(s -> builder.addInfos(s));
         methodContext.relatedMethodContexts.forEach(m -> builder.addRelatedMethodContextIds(m.id));
-        methodContext.dependsOnMethodContexts.forEach(m -> builder.addDependsOnMethodContextIds(m.id));
+        if (methodContext.dependsOnMethodContexts!=null) methodContext.dependsOnMethodContexts.forEach(m -> builder.addDependsOnMethodContextIds(m.id));
 
         // build context
         builder.setErrorContext(prepareErrorContext(methodContext.errorContext()));

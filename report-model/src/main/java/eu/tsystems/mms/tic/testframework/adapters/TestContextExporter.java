@@ -27,7 +27,7 @@ public class TestContextExporter extends ContextExporter {
         TestContext.Builder builder = TestContext.newBuilder();
 
         value(createContextValues(testContextModel), builder::setContextValues);
-        valueList(testContextModel.classContexts, classContext -> classContext.id, builder::addAllClassContextIds);
+        testContextModel.classContexts.forEach(classContext -> builder.addClassContextIds(classContext.id));
         value(testContextModel.suiteContext.id, builder::setSuiteContextId);
         value(testContextModel.executionContext.id, builder::setExecutionContextId);
 

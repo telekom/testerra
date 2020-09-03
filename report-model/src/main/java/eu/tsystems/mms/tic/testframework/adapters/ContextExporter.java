@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,30 +36,10 @@ public class ContextExporter {
         return STATUS_MAPPING.get(status);
     }
 
+    @Deprecated
     protected <T, R> void value(T value, Function<T, R> function) {
         if (value != null) {
             function.apply(value);
-        }
-    }
-
-    protected<T, R, M> void value(T value, Function<T, M> mappingFunction, Function<M, R> function) {
-        if (value != null) {
-            M mappedValue = mappingFunction.apply(value);
-            function.apply(mappedValue);
-        }
-    }
-
-    protected<T, M, R> void valueMapping(T value, Function<T, M> map, Function<M, R> function) {
-        if (value != null) {
-            M m = map.apply(value);
-            function.apply(m);
-        }
-    }
-
-    protected<T, M, R> void valueList(List<T> list, Function<T, M> map, Function<List<M>, R> function) {
-        if (list != null && !list.isEmpty()) {
-            List<M> collect = list.stream().map(map).collect(Collectors.toList());
-            function.apply(collect);
         }
     }
 
@@ -69,14 +50,14 @@ public class ContextExporter {
         value(context.swi, builder::setSwi);
         value(System.currentTimeMillis(), builder::setCreated);
         value(context.name, builder::setName);
-        valueMapping(context.startTime, Date::getTime, builder::setStartTime);
-        valueMapping(context.endTime, Date::getTime, builder::setEndTime);
+        builder.setStartTime(context.startTime.getTime());
+        builder.setEndTime(context.endTime.getTime());
 
         if (context instanceof MethodContext) {
             MethodContext methodContext = (MethodContext) context;
 
             // result status
-            valueMapping(methodContext.status, this::getMappedStatus, builder::setResultStatus);
+            builder.setResultStatus(getMappedStatus(methodContext.status));
 
             // exec status
             if (methodContext.status == TestStatusController.Status.NO_RUN) {

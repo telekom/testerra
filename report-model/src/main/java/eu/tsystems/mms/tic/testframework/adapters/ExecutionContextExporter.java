@@ -34,12 +34,12 @@ public class ExecutionContextExporter extends ContextExporter {
         ExecutionContext.Builder builder = ExecutionContext.newBuilder();
 
         value(createContextValues(executionContext), builder::setContextValues);
-        valueList(executionContext.suiteContexts, s -> s.id, builder::addAllSuiteContextIds);
-        valueList(executionContext.mergedClassContexts, classContext -> classContext.id, builder::addAllMergedClassContextIds);
-        valueMapping(executionContext.exitPoints, ExecutionContextExporter::contextClip, builder::addAllExitPoints);
-        valueMapping(executionContext.failureAspects, ExecutionContextExporter::contextClip, builder::addAllFailureAscpects);
+        executionContext.suiteContexts.forEach(suiteContext -> builder.addSuiteContextIds(suiteContext.id));
+        executionContext.mergedClassContexts.forEach(classContext -> builder.addMergedClassContextIds(classContext.id));
+        builder.addAllExitPoints(contextClip(executionContext.exitPoints));
+        builder.addAllFailureAscpects(contextClip(executionContext.failureAspects));
         value(executionContext.runConfig, config -> builder.setRunConfig(prepareRunConfig(config)));
-        valueList(executionContext.exclusiveSessionContexts, sc -> sc.id, builder::addAllExclusiveSessionContextIds);
+        executionContext.exclusiveSessionContexts.forEach(sessionContext -> builder.addExclusiveSessionContextIds(sessionContext.id));
         value(executionContext.estimatedTestMethodCount, builder::setEstimatedTestMethodCount);
 
         return builder;

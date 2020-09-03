@@ -88,9 +88,9 @@ public class MethodContextExporter extends ContextExporter {
 
         value(createContextValues(methodContext), builder::setContextValues);
 
-        valueMapping(methodContext.methodType, methodType -> MethodType.valueOf(methodType.name()), builder::setMethodType);
-        valueList(methodContext.parameters, o -> "" + o, builder::addAllParameters);
-        valueList(methodContext.methodTags, MethodContextExporter::annotationToString, builder::addAllMethodTags);
+        builder.setMethodType(MethodType.valueOf(methodContext.methodType.name()));
+        methodContext.parameters.forEach(o -> builder.addParameters(o.toString()));
+        methodContext.methodTags.forEach(annotation -> builder.addMethodTags(MethodContextExporter.annotationToString(annotation)));
         value(methodContext.retryNumber, builder::setRetryNumber);
         value(methodContext.methodRunIndex, builder::setMethodRunIndex);
 
@@ -98,24 +98,24 @@ public class MethodContextExporter extends ContextExporter {
         value(methodContext.threadName, builder::setThreadName);
 
         // test steps
-        valueList(methodContext.steps().getTestSteps(), testStep -> prepareTestStep(testStep).build(), builder::addAllTestSteps);
+        methodContext.steps().getTestSteps().forEach(testStep -> builder.addTestSteps(prepareTestStep(testStep)));
         //value(methodContext.failedStep, MethodContextExporter::createPTestStep, builder::setFailedStep);
 
-        valueMapping(methodContext.failureCorridorValue, value -> FailureCorridorValue.valueOf(value.name()), builder::setFailureCorridorValue);
+        builder.setFailureCorridorValue(FailureCorridorValue.valueOf(methodContext.failureCorridorValue.name()));
         value(methodContext.suiteContext.id, builder::setSuiteContextId);
         value(methodContext.testContextModel.id, builder::setTestContextId);
         value(methodContext.classContext.id, builder::setClassContextId);
         value(methodContext.executionContext.id, builder::setExecutionContextId);
 
-        valueList(methodContext.infos, s -> s, builder::addAllInfos);
-        valueList(methodContext.relatedMethodContexts, m -> m.id, builder::addAllRelatedMethodContextIds);
-        valueList(methodContext.dependsOnMethodContexts, m -> m.id, builder::addAllDependsOnMethodContextIds);
+        methodContext.infos.forEach(s -> builder.addInfos(s));
+        methodContext.relatedMethodContexts.forEach(m -> builder.addRelatedMethodContextIds(m.id));
+        methodContext.dependsOnMethodContexts.forEach(m -> builder.addDependsOnMethodContextIds(m.id));
 
         // build context
-        valueMapping(methodContext, mc -> prepareErrorContext(mc.errorContext()), builder::setErrorContext);
-        valueList(methodContext.nonFunctionalInfos, ec -> prepareErrorContext(ec).build(), builder::addAllNonFunctionalInfos);
-        valueList(methodContext.collectedAssertions, ec -> prepareErrorContext(ec).build(), builder::addAllCollectedAssertions);
-        valueList(methodContext.sessionContexts, sc -> sc.id, builder::addAllSessionContextIds);
+        builder.setErrorContext(prepareErrorContext(methodContext.errorContext()));
+        methodContext.nonFunctionalInfos.forEach(assertionInfo -> builder.addNonFunctionalInfos(prepareErrorContext(assertionInfo)));
+        methodContext.collectedAssertions.forEach(assertionInfo -> builder.addCollectedAssertions(prepareErrorContext(assertionInfo)));
+        methodContext.sessionContexts.forEach(sessionContext -> builder.addScreenshotIds(sessionContext.id));
 
         /**
          * The report is already moved to the target directory at this point.
@@ -126,7 +126,7 @@ public class MethodContextExporter extends ContextExporter {
         final java.io.File currentVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
         final java.io.File currentScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
 
-        valueList(methodContext.videos, video -> {
+        methodContext.videos.forEach(video -> {
             final java.io.File targetVideoFile = new java.io.File(targetVideoDir, video.filename);
             final java.io.File currentVideoFile = new java.io.File(currentVideoDir, video.filename);
             final String mappedPathVideoPath = mapArtifactsPath(targetVideoFile.getAbsolutePath());
@@ -143,11 +143,9 @@ public class MethodContextExporter extends ContextExporter {
             fileBuilderVideo.setMimetype(MediaType.WEBM_VIDEO.toString());
             fillFileBasicData(fileBuilderVideo, currentVideoFile);
             fileConsumer.accept(fileBuilderVideo);
-            return videoId;
+        });
 
-        }, builder::addAllVideoIds);
-
-        valueList(methodContext.screenshots, screenshot -> {
+        methodContext.screenshots.forEach(screenshot -> {
             // build screenshot and sources files
             final java.io.File targetScreenshotFile = new java.io.File(targetScreenshotDir, screenshot.filename);
             final java.io.File currentScreenshotFile = new java.io.File(currentScreenshotDir, screenshot.filename);
@@ -182,9 +180,8 @@ public class MethodContextExporter extends ContextExporter {
             fillFileBasicData(fileBuilderSources, currentSourceFile);
             fileConsumer.accept(fileBuilderSources);
 //            methodContextData.files.add(fileBuilderSources.build());
-            return screenshotId;
 
-        }, builder::addAllScreenshotIds);
+        });
 
 
         if (methodContext.customContexts.size() > 0) {
@@ -209,7 +206,7 @@ public class MethodContextExporter extends ContextExporter {
         StackTrace.Builder builder = StackTrace.newBuilder();
 
         value(stackTrace.additionalErrorMessage, builder::setAdditionalErrorMessage);
-        value(stackTrace.stackTrace, this::prepareStackTraceCause, builder::setCause);
+        builder.setCause(prepareStackTraceCause(stackTrace.stackTrace));
 
         return builder;
     }
@@ -220,7 +217,7 @@ public class MethodContextExporter extends ContextExporter {
         value(cause.className, builder::setClassName);
         value(cause.message, builder::setMessage);
         value(cause.stackTraceElements, builder::addAllStackTraceElements);
-        value(cause.cause, this::prepareStackTraceCause, builder::setCause);
+        builder.setCause(prepareStackTraceCause(cause.cause));
 
         return builder;
     }
@@ -230,7 +227,7 @@ public class MethodContextExporter extends ContextExporter {
 
         value(scriptSource.fileName, builder::setFileName);
         value(scriptSource.methodName, builder::setMethodName);
-        valueList(scriptSource.lines, line -> prepareScriptSourceLine(line).build(), builder::addAllLines);
+        scriptSource.lines.forEach(line -> builder.addLines(prepareScriptSourceLine(line)));
 
         return builder;
     }
@@ -250,10 +247,10 @@ public class MethodContextExporter extends ContextExporter {
 
         value(errorContext.getReadableErrorMessage(), builder::setReadableErrorMessage);
         value(errorContext.getAdditionalErrorMessage(), builder::setAdditionalErrorMessage);
-        valueMapping(errorContext.stackTrace, this::prepareStackTrace, builder::setStackTrace);
+        builder.setStackTrace(prepareStackTrace(errorContext.stackTrace));
         value(errorContext.errorFingerprint, builder::setErrorFingerprint);
-        value(errorContext.scriptSource, this::prepareScriptSource, builder::setScriptSource);
-        value(errorContext.executionObjectSource, this::prepareScriptSource, builder::setExecutionObjectSource);
+        builder.setScriptSource(prepareScriptSource(errorContext.scriptSource));
+        builder.setExecutionObjectSource(prepareScriptSource(errorContext.executionObjectSource));
 
         return builder;
     }
@@ -262,7 +259,7 @@ public class MethodContextExporter extends ContextExporter {
         PTestStep.Builder builder = PTestStep.newBuilder();
 
         value(testStep.getName(), builder::setName);
-        valueList(testStep.getTestStepActions(), testStepAction -> prepareTestStepAction(testStepAction).build(), builder::addAllTestStepActions);
+        testStep.getTestStepActions().forEach(testStepAction -> builder.addTestStepActions(prepareTestStepAction(testStepAction)));
 
         return builder;
     }

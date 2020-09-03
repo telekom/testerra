@@ -20,7 +20,6 @@
 package eu.tsystems.mms.tic.testframework.adapters;
 
 import eu.tsystems.mms.tic.testframework.report.model.ClassContext;
-import java.util.stream.Collectors;
 
 public class ClassContextExporter extends ContextExporter {
 
@@ -28,7 +27,7 @@ public class ClassContextExporter extends ContextExporter {
         ClassContext.Builder builder = ClassContext.newBuilder();
 
         value(createContextValues(classContext), builder::setContextValues);
-        classContext.methodContexts.stream().forEach(methodContext -> builder.addMethodContextIds(methodContext.id));
+        classContext.methodContexts.forEach(methodContext -> builder.addMethodContextIds(methodContext.id));
 
         value(classContext.fullClassName, builder::setFullClassName);
         value(classContext.simpleClassName, builder::setFullClassName);

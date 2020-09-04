@@ -19,16 +19,18 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+
+package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.utils.xmlutils.AbstractXMLUtils;
 import eu.tsystems.mms.tic.testframework.utils.xmlutils.JDom;
 import eu.tsystems.mms.tic.testframework.utils.xmlutils.JSoup;
 import eu.tsystems.mms.tic.testframework.utils.xmlutils.W3cDom;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.StringReader;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -36,15 +38,16 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.StringReader;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 /**
  * User: rnhb
  * Date: 11.10.13
+ *
+ * @deprecated Please use modern xml libraries
  */
+@Deprecated
 public class XMLUtils extends AbstractXMLUtils {
 
     private static final JDom JDOM = new JDom();
@@ -53,24 +56,30 @@ public class XMLUtils extends AbstractXMLUtils {
 
     /**
      * Accessor.
+     *
      * @return .
      */
+    @Deprecated
     public static JDom jdom() {
         return JDOM;
     }
 
     /**
      * Accessor.
+     *
      * @return .
      */
+    @Deprecated
     public static W3cDom w3cdom() {
         return W3CDOM;
     }
 
     /**
      * Accessor.
+     *
      * @return .
      */
+    @Deprecated
     public static JSoup jsoup() {
         return JSOUP;
     }
@@ -78,11 +87,12 @@ public class XMLUtils extends AbstractXMLUtils {
     /**
      * Method to parse an xml String with xpathExpression, returning the first result converted to String.
      *
-     * @param xml The document to parse.
-     * @param xpathExpression    The xpathExpression expression to parse with.
+     * @param xml             The document to parse.
+     * @param xpathExpression The xpathExpression expression to parse with.
      * @return The first element that fits the given xpathExpression as String.
      * @throws XPathExpressionException
      */
+    @Deprecated
     public static String evaluateXPath(String xml, String xpathExpression) throws XPathExpressionException {
         XPath xPath = getXpathFactory().newXPath();
         String out = xPath.evaluate(xpathExpression, new InputSource(new StringReader(xml)));
@@ -92,11 +102,12 @@ public class XMLUtils extends AbstractXMLUtils {
     /**
      * Method to parse an xml String with xpath, returning all fitting elements in a NodeList.
      *
-     * @param xml The document to parse.
-     * @param xpath    The xpath expression to parse with.
+     * @param xml   The document to parse.
+     * @param xpath The xpath expression to parse with.
      * @return A List of Nodes that fit the given xpath.
      * @throws XPathExpressionException
      */
+    @Deprecated
     public static NodeList evaluateXPathNodes(String xml, String xpath) throws XPathExpressionException {
         XPath xPath = getXpathFactory().newXPath();
         NodeList nodeList = (NodeList) xPath.evaluate(xpath, new InputSource(new StringReader(xml)), XPathConstants.NODESET);
@@ -106,12 +117,13 @@ public class XMLUtils extends AbstractXMLUtils {
     /**
      * XML to Object Mapping.
      *
-     * @param xml definition.
+     * @param xml    definition.
      * @param tClass the class.
-     * @param <T> the type.
+     * @param <T>    the type.
      * @return the object.
      */
     @SuppressWarnings("unchecked")
+    @Deprecated
     public static <T> T jaxbXMLToObject(String xml, Class<T> tClass) {
         InputStream inputStream = new ByteArrayInputStream(xml.getBytes());
 
@@ -129,11 +141,12 @@ public class XMLUtils extends AbstractXMLUtils {
     /**
      * Object to XML Mapping.
      *
-     * @param tClass the class.
+     * @param tClass  the class.
      * @param tObject the object.
-     * @param <T> the type.
+     * @param <T>     the type.
      * @return the output xml.
      */
+    @Deprecated
     public static <T> String jaxbObjectToXML(Class<T> tClass, T tObject) {
         try {
             JAXBContext context = JAXBContext.newInstance(tClass);

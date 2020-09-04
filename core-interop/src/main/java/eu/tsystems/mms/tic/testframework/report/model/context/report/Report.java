@@ -80,10 +80,15 @@ public class Report {
         String relativeReportDirString = PropertyManager.getProperty(TesterraProperties.REPORTDIR, DEFAULT_REPORTDIR);
         File finalReportDirectory = new File(relativeReportDirString);
         try {
-            FileUtils.deleteDirectory(finalReportDirectory);
-            FileUtils.moveDirectory(REPORT_DIRECTORY, finalReportDirectory);
-            REPORT_DIRECTORY = finalReportDirectory;
-            LOGGER.info("Report written to " + finalReportDirectory.getAbsolutePath());
+            if (finalReportDirectory.exists()) {
+                FileUtils.deleteDirectory(finalReportDirectory);
+            }
+
+            if (REPORT_DIRECTORY.exists()) {
+                FileUtils.moveDirectory(REPORT_DIRECTORY, finalReportDirectory);
+                REPORT_DIRECTORY = finalReportDirectory;
+                LOGGER.info("Report written to " + finalReportDirectory.getAbsolutePath());
+            }
         } catch (IOException e) {
             throw new TesterraRuntimeException("Could not move report dir: " + e.getMessage(), e);
         }

@@ -174,7 +174,6 @@ public final class WebDriverWatchDog {
 
 
                                             // update crashed execution context
-                                            ExecutionContextController.getCurrentExecutionContext().crashed = true;
                                             ContextUpdateEvent event = new ContextUpdateEvent().setContext(ExecutionContextController.getCurrentExecutionContext());
                                             TesterraListener.getEventBus().post(event);
 

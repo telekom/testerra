@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.listener;
+package eu.tsystems.mms.tic.testframework.listeners;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
@@ -35,7 +35,7 @@ import org.testng.ISuiteListener;
 /**
  * Generates TestNG and jUnit xml reports
  */
-public class GenerateOtherOutputsWorker implements
+public class GenerateXmlReportListener implements
         Loggable,
         ExecutionFinishEvent.Listener,
         MethodEndEvent.Listener,
@@ -46,7 +46,7 @@ public class GenerateOtherOutputsWorker implements
 
     JUnitXMLReporter XML_REPORTER;
 
-    public GenerateOtherOutputsWorker() {
+    public GenerateXmlReportListener() {
         XML_REPORTER =  new JUnitXMLReporter(true, report.getReportDirectory(Report.XML_FOLDER_NAME));
     }
 

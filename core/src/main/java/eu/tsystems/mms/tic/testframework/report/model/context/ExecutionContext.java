@@ -27,21 +27,22 @@ import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
-import org.testng.ITestContext;
-import org.testng.ITestResult;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
 
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
 
-    public final List<SuiteContext> suiteContexts = new LinkedList<>();
+    public final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
     public final List<ClassContext> mergedClassContexts = new LinkedList<>();
     public Map<String, List<MethodContext>> failureAspects = new LinkedHashMap<>();
     public Map<String, List<MethodContext>> exitPoints = new LinkedHashMap<>();
@@ -69,12 +70,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         return this.getSuiteContext(null, iTestContext);
     }
 
-    public List<SuiteContext> copyOfSuiteContexts() {
-        synchronized (suiteContexts) {
-            return new LinkedList<>(suiteContexts);
-        }
-    }
-
     @Override
     public TestStatusController.Status getStatus() {
         if (Flags.FAILURE_CORRIDOR_ACTIVE) {
@@ -88,13 +83,15 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         }
     }
 
+    /**
+     * Used in dashboard.vm
+     */
     public int getNumberOfRepresentationalTests() {
         final AtomicReference<Integer> i = new AtomicReference<>();
         i.set(0);
-        List<SuiteContext> suiteContexts = copyOfSuiteContexts();
         suiteContexts.forEach(suiteContext -> {
-            suiteContext.copyOfTestContexts().forEach(testContext -> {
-                testContext.copyOfClassContexts().forEach(classContext -> {
+            suiteContext.testContextModels.forEach(testContext -> {
+                testContext.classContexts.forEach(classContext -> {
                     i.set(i.get() + classContext.getRepresentationalMethods().length);
                 });
             });
@@ -102,16 +99,18 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
         return i.get();
     }
 
+    /**
+     * Used in dashboard.vm
+     */
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {
         Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
 
         // initialize with 0
         Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
 
-        List<SuiteContext> suiteContexts = copyOfSuiteContexts();
         suiteContexts.forEach(suiteContext -> {
-            suiteContext.copyOfTestContexts().forEach(testContext -> {
-                testContext.copyOfClassContexts().forEach(classContext -> {
+            suiteContext.testContextModels.forEach(testContext -> {
+                testContext.classContexts.forEach(classContext -> {
                     Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
                     methodStats.keySet().forEach(status -> {
                         Integer oldValue = counts.get(status);
@@ -135,10 +134,9 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
      */
     public Map<ClassContext, Map> getMethodStatsPerClass(boolean includeTestMethods, boolean includeConfigMethods) {
         final Map<ClassContext, Map> methodStatsPerClass = new LinkedHashMap<>();
-        List<SuiteContext> suiteContexts = copyOfSuiteContexts();
         suiteContexts.forEach(suiteContext -> {
-            suiteContext.copyOfTestContexts().forEach(testContext -> {
-                testContext.copyOfClassContexts().forEach(classContext -> {
+            suiteContext.testContextModels.forEach(testContext -> {
+                testContext.classContexts.forEach(classContext -> {
                     if (!classContext.merged) {
                         Map<TestStatusController.Status, Integer> methodStats = classContext.getMethodStats(includeTestMethods, includeConfigMethods);
                         methodStatsPerClass.put(classContext, methodStats);

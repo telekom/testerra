@@ -30,8 +30,6 @@ import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import eu.tsystems.mms.tic.testframework.execution.testng.ExecutionEndListener;
-import eu.tsystems.mms.tic.testframework.execution.testng.FinalizeListener;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodAnnotationCheckerWorker;
@@ -138,7 +136,6 @@ public class TesterraListener implements
         synchronized (LOCK) {
             // increment instance counter
             instances++;
-
 
             if (instances==1) {
                 // The finalize listener has to be registered AFTER all modules ONCE

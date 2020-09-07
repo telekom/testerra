@@ -66,30 +66,15 @@ GuiElement loginButton = new GuiElement(driver, byText.with("Login"));
 GuiElement logoutButton = new GuiElement(driver, byClass.with("button", "btn-logout", 1));
 ----
 
-=== Filtering elements (draft)
+=== Filtering elements
 
-Searching for a special locator can lead to multiple findings. With filters, it is possible to check them for individual properties for:
-
-* Text
-* Tag
-* Enabled
-* Displayed
-* Selected
-* Attribute
-* Css
-* Position
-* Size
-
-The parameters are combined with a logical AND.
+You can also filter elements during find.
 
 [source,java]
 ----
-GuiElement button = new GuiElement(driver, Locate.by().xpath(".//button").filter(
-    WebElementFilter.TEXT.contains("Start"),
-    WebElementFilter.DISPLAYED.is(true),
-    WebElementFilter.ATTRIBUTE.exists("href")
-    )
-);
+Locate byText = Locate.by().xpath("//button").filter(webElement -> webElement.getText().equals("Open again"));
+
+GuiElement buttonContainsText = new GuiElement(driver, byText);
 ----
 
 === GuiElements inside frames

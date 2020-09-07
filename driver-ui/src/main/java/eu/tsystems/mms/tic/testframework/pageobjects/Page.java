@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
-import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiElementTimeoutFieldAction;
@@ -186,7 +185,7 @@ public abstract class Page extends AbstractPage {
         WebDriver driver = getWebDriver();
         textElement = new GuiElement(driver, By.xpath(textFinderXpath));
         if (isDisplayed) {
-            textElement.withWebElementFilter(WebElementFilter.DISPLAYED.is(true));
+            textElement.withWebElementFilter(WebElement::isDisplayed);
         }
 
         textElement.setTimeoutInSeconds(1);

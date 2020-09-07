@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
+ package eu.tsystems.mms.tic.testframework.test.core.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -47,7 +46,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
     public void testT01_Telxt_Is() {
         final WebDriver driver = WebDriverManager.getWebDriver();
         GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id]"))
-                .withWebElementFilter(WebElementFilter.TEXT.is("Open again"));
+                .withWebElementFilter(webElement -> webElement.getText().equals("Open again"));
         openAgainLink.asserts().assertIsPresent();
         openAgainLink.click();
         assertLogFieldContains("Open again clicked");
@@ -93,14 +92,14 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
     public void testT05a_Displayed_Is() {
 
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").filter(WebElementFilter.DISPLAYED.is(false)));
+        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").filter(webElement -> !webElement.isDisplayed()));
         nonVisibleTable.asserts().assertIsNotDisplayed();
     }
 
     @Test
     public void testT05b_Displayed_Is() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().notDisplayed().xpath(".//*[@id]"));
+        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().displayed(false).xpath(".//*[@id]"));
         nonVisibleTable.asserts().assertIsNotDisplayed();
     }
 
@@ -112,19 +111,6 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
         visibleTable.asserts().assertIsDisplayed();
     }
 
-    @Test
-    public void testT06_Size_IsBetween() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement submitButton = new GuiElement(driver, By.xpath("//input[@type='submit']"));
-        Dimension dimSubmitButton = submitButton.getSize();
-        GuiElement submitButtonCheck = new GuiElement(driver, By.xpath(".//*"))
-                .withWebElementFilter(WebElementFilter.SIZE.isBetween(
-                        dimSubmitButton.getWidth() - 2,
-                        dimSubmitButton.getHeight() - 2,
-                        dimSubmitButton.getWidth() + 2,
-                        dimSubmitButton.getHeight() + 2));
-        submitButtonCheck.asserts().assertAttributeContains("value", "Submit");
-    }
 
     @Test
     public void testT07_Attribute_Contains() {
@@ -282,45 +268,5 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
                 .withWebElementFilter(WebElementFilter.TAG.isNot("input"));
         elementWithTag.setTimeoutInSeconds(1);
         elementWithTag.asserts().assertIsNotPresent();
-    }
-
-    @Test
-    public void testT25_Position_Is() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement submitButton = new GuiElement(driver, By.xpath("//input[@type='submit']"));
-        Point pointSubmitButton = submitButton.getLocation();
-        GuiElement elementsWithTag = new GuiElement(driver, By.xpath("//input"))
-                .withWebElementFilter(WebElementFilter.POSITION.is(
-                        pointSubmitButton.getX(),
-                        pointSubmitButton.getY()));
-        elementsWithTag.asserts().assertAttributeContains("type", "submit");
-    }
-
-    @Test
-    public void testT26_Position_IsBetween() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement submitButton = new GuiElement(driver, By.xpath("//input[@type='submit']"));
-        Point pointSubmitButton = submitButton.getLocation();
-        GuiElement elementsWithTag = new GuiElement(driver, By.xpath(".//*"))
-                .withWebElementFilter(WebElementFilter.POSITION.isBetween(
-                        pointSubmitButton.getX() - 5,
-                        pointSubmitButton.getY() - 5,
-                        pointSubmitButton.getX() + 5,
-                        pointSubmitButton.getY() + 5));
-        elementsWithTag.asserts().assertAttributeContains("value", "Submit");
-    }
-
-
-    @Test
-    public void testT27_Size_Is() {
-        final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement openAgainLink = new GuiElement(driver, By.xpath(".//*[@id='11']"));
-        Dimension dimensionOPenAgainLink = openAgainLink.getSize();
-        GuiElement openAgainLinkCheck = new GuiElement(driver, By.xpath(".//*"))
-                .withWebElementFilter(WebElementFilter.SIZE.is(
-                        dimensionOPenAgainLink.getWidth(),
-                        dimensionOPenAgainLink.getHeight()));
-
-        openAgainLinkCheck.asserts().assertContainsText("Open again");
     }
 }

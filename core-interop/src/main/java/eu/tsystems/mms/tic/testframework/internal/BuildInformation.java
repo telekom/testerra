@@ -34,9 +34,9 @@ import java.util.Properties;
  *
  * @author mibu
  */
-public class TesterraBuildInformation implements Serializable {
+public class BuildInformation implements Serializable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TesterraBuildInformation.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BuildInformation.class);
 
     /**
      * UID needed for serialization.
@@ -46,7 +46,7 @@ public class TesterraBuildInformation implements Serializable {
     /**
      * The singleton instance.
      */
-    private static TesterraBuildInformation instance = null;
+    private static BuildInformation instance = null;
 
     final String localBuild = "local build";
     public String buildJavaVersion = localBuild;
@@ -62,10 +62,10 @@ public class TesterraBuildInformation implements Serializable {
      *
      * @return The test run configurations.
      */
-    public static TesterraBuildInformation getInstance() {
-        synchronized (TesterraBuildInformation.class) {
+    public static BuildInformation getInstance() {
+        synchronized (BuildInformation.class) {
             if (instance == null) {
-                instance = new TesterraBuildInformation();
+                instance = new BuildInformation();
                 try {
                     final Properties properties = new Properties();
                     final InputStream propertiesInputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("testerra-build.properties");

@@ -67,14 +67,14 @@ public class ExecutionContextExporter extends AbstractContextExporter {
         add build information
          */
         BuildInformation.Builder bi = BuildInformation.newBuilder();
-        builder.setTesterraBuildInformation(bi);
-        apply(runConfig.testerraBuildInformation.buildJavaVersion, bi::setBuildJavaVersion);
-//        value(runConfig.testerraBuildInformation.buildOsArch, bi::setBuildOsName);
-        apply(runConfig.testerraBuildInformation.buildOsName, bi::setBuildOsName);
-        apply(runConfig.testerraBuildInformation.buildOsVersion, bi::setBuildOsVersion);
-        apply(runConfig.testerraBuildInformation.buildTimestamp, bi::setBuildTimestamp);
-        apply(runConfig.testerraBuildInformation.buildUserName, bi::setBuildUserName);
-        apply(runConfig.testerraBuildInformation.buildVersion, bi::setBuildVersion);
+        apply(runConfig.buildInformation.buildJavaVersion, bi::setBuildJavaVersion);
+        //apply(runConfig.buildInformation.buildOsArch, bi::setBuildOsName);
+        apply(runConfig.buildInformation.buildOsName, bi::setBuildOsName);
+        apply(runConfig.buildInformation.buildOsVersion, bi::setBuildOsVersion);
+        apply(runConfig.buildInformation.buildTimestamp, bi::setBuildTimestamp);
+        apply(runConfig.buildInformation.buildUserName, bi::setBuildUserName);
+        apply(runConfig.buildInformation.buildVersion, bi::setBuildVersion);
+        builder.setBuildInformation(bi);
 
         return builder;
     }

@@ -19,18 +19,15 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
+package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
+import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.InDevelopment;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.TestMethodInterceptWorker;
+import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
-import org.testng.IMethodInstance;
-
 import java.lang.reflect.Method;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -41,31 +38,23 @@ import java.util.stream.Collectors;
  *
  * @author Eric Kubenka
  */
-public class OmitInDevelopmentMethodInterceptor extends TestMethodInterceptWorker implements Loggable {
+public class OmitInDevelopmentMethodInterceptor implements Loggable, InterceptMethodsEvent.Listener {
 
-    @Override
-    public List<IMethodInstance> run() {
-
+    @Subscribe
+    public void onInterceptMethods(InterceptMethodsEvent event) {
         if (Flags.EXECUTION_OMIT_IN_DEVELOPMENT) {
-            final List<IMethodInstance> toRemove = new LinkedList<>();
-
-            // collect methods to remove
-            iMethodInstanceList.forEach(methodInstance -> {
-                final Method method = methodInstance.getMethod().getConstructorOrMethod().getMethod();
+            event.getMethodInstances().removeIf(methodInstance -> {
+                Method method = methodInstance.getMethod().getConstructorOrMethod().getMethod();
                 if (method.isAnnotationPresent(InDevelopment.class)) {
-                    if (ExecutionUtils.isMethodInExecutionScope(method, iTestContext, null, false)) {
+                    if (ExecutionUtils.isMethodInExecutionScope(method, event.getTestContext(), null, false)) {
                         log().trace("Removing @" + InDevelopment.class.getSimpleName() + " " + method + " from execution");
-                        toRemove.add(methodInstance);
+                        return true;
                     }
                 }
+                return false;
             });
-
-            // remove them
-            toRemove.forEach(methodInstance -> iMethodInstanceList.remove(methodInstance));
         }
 
-        log().info("Execution plan for test context \"" + iTestContext.getName() + "\": " + iMethodInstanceList.stream().map(iMethodInstance -> iMethodInstance.getMethod().getConstructorOrMethod().getName()).collect(Collectors.joining(", ")));
-
-        return iMethodInstanceList;
+        log().info("Execution plan for test context \"" + event.getTestContext().getName() + "\": " + event.getMethodInstances().stream().map(iMethodInstance -> iMethodInstance.getMethod().getConstructorOrMethod().getName()).collect(Collectors.joining(", ")));
     }
 }

@@ -45,9 +45,6 @@ public class Report {
      */
     @Deprecated
     private static File REPORT_DIRECTORY;
-
-    public static final String FRAMES_FOLDER_NAME = "frames";
-    public static final String METHODS_FOLDER_NAME = "methods";
     public static final String SCREENSHOTS_FOLDER_NAME = "screenshots";
     public static final String VIDEO_FOLDER_NAME = "videos";
     public static final String XML_FOLDER_NAME = "xml";
@@ -62,25 +59,16 @@ public class Report {
     }
 
     @Deprecated
-    public static final File FRAMES_DIRECTORY = new File(REPORT_DIRECTORY, FRAMES_FOLDER_NAME);
-    @Deprecated
-    public static final File METHODS_DIRECTORY = new File(FRAMES_DIRECTORY, METHODS_FOLDER_NAME);
-    @Deprecated
     public static final File SCREENSHOTS_DIRECTORY = new File(REPORT_DIRECTORY, SCREENSHOTS_FOLDER_NAME);
     @Deprecated
     public static final File VIDEO_DIRECTORY = new File(REPORT_DIRECTORY, VIDEO_FOLDER_NAME);
-    @Deprecated
-    public static final File XML_DIRECTORY = new File(REPORT_DIRECTORY, XML_FOLDER_NAME);
 
     static {
         /*
         Initialize report sub directories
          */
-        FRAMES_DIRECTORY.mkdirs();
-        METHODS_DIRECTORY.mkdirs();
         SCREENSHOTS_DIRECTORY.mkdirs();
         VIDEO_DIRECTORY.mkdirs();
-        XML_DIRECTORY.mkdirs();
     }
 
     public enum Mode {
@@ -92,9 +80,15 @@ public class Report {
         String relativeReportDirString = PropertyManager.getProperty(TesterraProperties.REPORTDIR, DEFAULT_REPORTDIR);
         File finalReportDirectory = new File(relativeReportDirString);
         try {
-            FileUtils.deleteDirectory(finalReportDirectory);
-            FileUtils.moveDirectory(REPORT_DIRECTORY, finalReportDirectory);
-            REPORT_DIRECTORY = finalReportDirectory;
+            if (finalReportDirectory.exists()) {
+                FileUtils.deleteDirectory(finalReportDirectory);
+            }
+
+            if (REPORT_DIRECTORY.exists()) {
+                FileUtils.moveDirectory(REPORT_DIRECTORY, finalReportDirectory);
+                REPORT_DIRECTORY = finalReportDirectory;
+                LOGGER.info("Report written to " + finalReportDirectory.getAbsolutePath());
+            }
         } catch (IOException e) {
             throw new TesterraRuntimeException("Could not move report dir: " + e.getMessage(), e);
         }

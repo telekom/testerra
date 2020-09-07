@@ -19,26 +19,27 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+
+package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
-import org.apache.commons.io.FilenameUtils;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSocketFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSocketFactory;
+import org.apache.commons.io.FilenameUtils;
+import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for downloading files to executing host
@@ -95,6 +96,9 @@ public class FileDownloader {
         this.downloadLocation = downloadLocation;
         this.imitateCookies = imitateCookies;
         this.trustAllCertificates = trustAllCertificates;
+
+        final URL systemHttpProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
+        this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(systemHttpProxyUrl.getHost(), systemHttpProxyUrl.getPort()));
     }
 
     /**
@@ -114,6 +118,7 @@ public class FileDownloader {
 
     /**
      * Deletes all downloads
+     *
      * @deprecated Use {@link #cleanup()} instead
      */
     @Deprecated
@@ -220,15 +225,15 @@ public class FileDownloader {
      * Downloads the given file
      *
      * @param driver         WebDriver
-     * @param urlString            String
+     * @param urlString      String
      * @param targetFileName String
      * @return String
      */
     private String pDownload(
-        WebDriver driver,
-        String urlString,
-        String targetFileName,
-        int timeoutMS
+            WebDriver driver,
+            String urlString,
+            String targetFileName,
+            int timeoutMS
     ) throws IOException {
         String cookieString = null;
 
@@ -238,8 +243,8 @@ public class FileDownloader {
 
         this.ensureLocationExists();
 
-        File targetFile=null;
-        if (targetFileName!=null) {
+        File targetFile = null;
+        if (targetFileName != null) {
             targetFile = FileUtils.getFile(this.getDownloadLocation() + "/" + targetFileName);
         }
         URL url = new URL(urlString);
@@ -251,14 +256,14 @@ public class FileDownloader {
      */
     @Deprecated
     public static String download(
-        String urlString,
-        File targetFile,
-        Proxy proxy,
-        int timeoutMS,
-        boolean trustAll,
-        SSLSocketFactory sslSocketFactory,
-        String cookieString,
-        boolean useSecondConnection
+            String urlString,
+            File targetFile,
+            Proxy proxy,
+            int timeoutMS,
+            boolean trustAll,
+            SSLSocketFactory sslSocketFactory,
+            String cookieString,
+            boolean useSecondConnection
     ) throws IOException {
         URL url = new URL(urlString);
         FileDownloader downloader = new FileDownloader();
@@ -278,18 +283,18 @@ public class FileDownloader {
      * @return
      */
     private String download(
-        URL url,
-        File targetFile,
-        Proxy proxy,
-        int timeoutMS,
-        boolean trustAll,
-        SSLSocketFactory sslSocketFactory,
-        String cookieString,
-        boolean useSecondConnection
+            URL url,
+            File targetFile,
+            Proxy proxy,
+            int timeoutMS,
+            boolean trustAll,
+            SSLSocketFactory sslSocketFactory,
+            String cookieString,
+            boolean useSecondConnection
     ) throws IOException {
         LOGGER.info("Downloading file " + url);
 
-        String targetFileName="";
+        String targetFileName = "";
         URLConnection connection = openConnection(url, proxy, timeoutMS, trustAll, cookieString, sslSocketFactory);
         if (connection instanceof HttpURLConnection) {
             targetFileName = readFileNameFromConnection((HttpURLConnection) connection);
@@ -336,12 +341,12 @@ public class FileDownloader {
     }
 
     private static URLConnection openConnection(
-        URL url,
-        Proxy proxy,
-        int timeoutMS,
-        boolean trustAll,
-        String cookieString,
-        SSLSocketFactory sslSocketFactory
+            URL url,
+            Proxy proxy,
+            int timeoutMS,
+            boolean trustAll,
+            String cookieString,
+            SSLSocketFactory sslSocketFactory
     ) throws IOException {
         URLConnection connection;
         if (proxy == null) {

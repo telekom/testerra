@@ -22,13 +22,11 @@
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -36,6 +34,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
@@ -50,7 +50,7 @@ import org.testng.SkipException;
  */
 public class ClassContext extends AbstractContext implements SynchronizableContext {
 
-    public final List<MethodContext> methodContexts = new LinkedList<>();
+    public final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
     public String fullClassName;
     public String simpleClassName;
     public final TestContextModel testContextModel;
@@ -167,11 +167,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
                 methodContexts.add(methodContext);
             }
 
-            // fire context update event: create method context
-            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                    .addUserData()
-                    .addData(TesterraEventDataType.CONTEXT, methodContext)
-                    .addData(TesterraEventDataType.WITH_PARENT, true));
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(methodContext));
         } else {
             if (collect.size() > 1) {
                 LOGGER.error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");
@@ -179,12 +175,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             methodContext = collect.get(0);
         }
         return methodContext;
-    }
-
-    public List<MethodContext> copyOfMethodContexts() {
-        synchronized (methodContexts) {
-            return new LinkedList<>(methodContexts);
-        }
     }
 
     public MethodContext safeAddSkipMethod(ITestResult testResult, IInvokedMethod invokedMethod) {
@@ -200,7 +190,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     }
 
     public AbstractContext[] getRepresentationalMethods() {
-        List<MethodContext> methodContexts = copyOfMethodContexts();
         AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod).toArray(AbstractContext[]::new);
         return contexts;
     }
@@ -211,7 +200,6 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         // initialize with 0
         Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
 
-        List<MethodContext> methodContexts = copyOfMethodContexts();
         methodContexts.stream().filter(mc -> (includeTestMethods && mc.isTestMethod()) || (includeConfigMethods && mc.isConfigMethod())).forEach(methodContext -> {
             TestStatusController.Status status = methodContext.getStatus();
             int value = 0;
@@ -227,7 +215,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
     public List<MethodContext> getTestMethodsWithStatus(TestStatusController.Status status) {
         List<MethodContext> methodContexts = new LinkedList<>();
-        copyOfMethodContexts().forEach(methodContext -> {
+        this.methodContexts.forEach(methodContext -> {
             if (methodContext.isTestMethod() && status == methodContext.status) {
                 methodContexts.add(methodContext);
             }

@@ -22,47 +22,34 @@
 
 package eu.tsystems.mms.tic.testframework.report;
 
+import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.boot.Booter;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
+import eu.tsystems.mms.tic.testframework.events.AbstractMethodEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
+import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
+import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.ListenerUtils;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorkerExecutor;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.TestMethodInterceptWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.TestMethodInterceptWorkerExecutor;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.Worker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.HandleCollectedAssertsWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodAnnotationCheckerWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodContextUpdateWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodFinishedWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.MethodEndWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.RemoveTestMethodIfRetryPassedWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TestMethodFinishedWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TesterraConnectorSyncEventsWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.finish.TesterraEventsFinishWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.LoggingStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodParametersWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.MethodStartWorker;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.OmitInDevelopmentMethodInterceptor;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TestStartWorker;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.start.TesterraEventsStartWorker;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
-import eu.tsystems.mms.tic.testframework.report.external.junit.JUnitXMLReporter;
-import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
 import eu.tsystems.mms.tic.testframework.report.hooks.ConfigMethodHook;
 import eu.tsystems.mms.tic.testframework.report.hooks.TestMethodHook;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
-import eu.tsystems.mms.tic.testframework.utils.FrameworkUtils;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import org.testng.IConfigurable;
 import org.testng.IConfigureCallBack;
@@ -94,26 +81,14 @@ public class TesterraListener implements
         IMethodInterceptor,
         ITestListener,
         ISuiteListener,
-        Loggable {
-
-    /**
-     * Global marker for positive test execution.
-     */
-    private static boolean allTestsPassed = true;
-
+        Loggable
+{
     /**
      * Skip test methods control.
      */
     private static boolean skipAllMethods = false;
 
-    static final JUnitXMLReporter XML_REPORTER;
-
-    private static final List<Class<? extends Worker>> BEFORE_INVOCATION_WORKERS = new LinkedList<>();
-    private static final List<Class<? extends Worker>> AFTER_INVOCATION_WORKERS = new LinkedList<>();
-    public static final List<Class<? extends Worker>> GENERATE_REPORTS_WORKERS = new LinkedList<>();
-    public static final List<Class<? extends Worker>> METHOD_INTERCEPT_WORKERS = new LinkedList<>();
-
-    private static List<ISuiteListener> SUITE_LISTENERS = new LinkedList<>();
+    private static EventBus eventBus = new EventBus();
 
     /**
      * Instance counter for this reporter. *
@@ -123,26 +98,35 @@ public class TesterraListener implements
 
     static {
         /*
-        Call Booter
-         */
-        Booter.bootOnce();
-
-        /*
          * Add monitoring event listeners
          */
         JVMMonitor.label("Start");
 
-        // loading flags, the latest
-        if (Flags.MONITOR_MEMORY) {
-            TesterraEventService.addListener(new JVMMonitor());
-        }
-
-        // start test for xml
-        XML_REPORTER = new JUnitXMLReporter(true, Report.XML_DIRECTORY);
-        XML_REPORTER.testSetStarting(new SimpleReportEntry("", "Test starting"));
-
         // start memory monitor
         JVMMonitor.start();
+
+        eventBus.register(new MethodStartWorker());
+        eventBus.register(new MethodParametersWorker());
+        eventBus.register(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
+        eventBus.register(new MethodAnnotationCheckerWorker()); // !! must be invoked before Container Update
+        eventBus.register(new MethodContextUpdateWorker());
+        eventBus.register(new RemoveTestMethodIfRetryPassedWorker());
+
+        // this is the last worker to be called
+        eventBus.register(new MethodEndWorker());
+
+        eventBus.register(new OmitInDevelopmentMethodInterceptor());
+
+        eventBus.register(new ExecutionEndListener());
+
+        /*
+        Call Booter
+         */
+        Booter.bootOnce();
+    }
+
+    public static EventBus getEventBus() {
+        return eventBus;
     }
 
     /**
@@ -152,46 +136,12 @@ public class TesterraListener implements
         synchronized (LOCK) {
             // increment instance counter
             instances++;
+
+            if (instances==1) {
+                // The finalize listener has to be registered AFTER all modules ONCE
+                eventBus.register(new FinalizeListener());
+            }
         }
-    }
-
-    /**
-     * Determines whether there was an error in the current test. This is necessary to not synchronize a test result
-     * twice if the test was failed, because first 'testFailure' is called and afterwards 'testFinished' and there is no
-     * way in 'testFinished' to determine whether the finished test was successful or not.
-     */
-    private static ThreadLocal<Boolean> failureInCurrentTest = new ThreadLocal<Boolean>();
-
-    /*
-     * Thread Visualizer
-     */
-
-    /**
-     * Thread safe long representing the startTime of the actual thread.
-     */
-    private static final ThreadLocal<Long> THREADSTART = new ThreadLocal<Long>();
-
-    /**
-     * Set thread start time.
-     */
-    public static void startMethodTimer() {
-        THREADSTART.set(System.currentTimeMillis());
-    }
-
-    /**
-     * Clean threadtimes.
-     */
-    public static void cleanMethodTimer() {
-        THREADSTART.remove();
-    }
-
-    /**
-     * Threadsafe Getter.
-     *
-     * @return threadStartTimes value.
-     */
-    public static Long getThreadStartTime() {
-        return THREADSTART.get();
     }
 
     /*
@@ -205,17 +155,15 @@ public class TesterraListener implements
      *
      * @param list         All methods that should be run due to current XML-Test
      * @param iTestContext .
-     * @return Alle mthods taht shuld be run
+     * @return All methods that should be executed
      */
     @Override
     public List<IMethodInstance> intercept(List<IMethodInstance> list, final ITestContext iTestContext) {
-
-        final TestMethodInterceptWorkerExecutor workerExecutor = new TestMethodInterceptWorkerExecutor();
-
-        workerExecutor.add(new OmitInDevelopmentMethodInterceptor());
-        FrameworkUtils.addWorkersToExecutor(METHOD_INTERCEPT_WORKERS, workerExecutor);
-
-        return workerExecutor.run(list, iTestContext);
+        InterceptMethodsEvent event = new InterceptMethodsEvent()
+                .setMethodInstances(list)
+                .setTestContext(iTestContext);
+        eventBus.post(event);
+        return event.getMethodInstances();
     }
 
     /**
@@ -270,12 +218,6 @@ public class TesterraListener implements
             ITestResult testResult,
             ITestContext testContext
     ) {
-        /*
-        check for listener duplicates
-         */
-        //        context.
-
-
         final String methodName = getMethodName(testResult);
 
         if (ListenerUtils.wasMethodInvokedBefore("beforeInvocationFor" + methodName, invokedMethod, testResult)) {
@@ -297,17 +239,14 @@ public class TesterraListener implements
 
         log().trace(infoText);
 
+        AbstractMethodEvent event = new MethodStartEvent()
+                .setTestResult(testResult)
+                .setInvokedMethod(invokedMethod)
+                .setMethodName(methodName)
+                .setTestContext(testContext)
+                .setMethodContext(methodContext);
 
-        MethodWorkerExecutor workerExecutor = new MethodWorkerExecutor();
-
-        workerExecutor.add(new TestStartWorker());
-        workerExecutor.add(new MethodParametersWorker());
-        workerExecutor.add(new TesterraEventsStartWorker());
-        workerExecutor.add(new LoggingStartWorker());
-
-        FrameworkUtils.addWorkersToExecutor(BEFORE_INVOCATION_WORKERS, workerExecutor);
-
-        workerExecutor.run(testResult, methodName, methodContext, testContext, invokedMethod);
+        eventBus.post(event);
 
         // We don't close teardown steps, because we want to collect further actions there
         //step.close();
@@ -407,39 +346,14 @@ public class TesterraListener implements
          */
         methodContext.steps().announceTestStep(TestStep.TEARDOWN);
 
-        /*
-        Workers #1
-         */
-        MethodWorkerExecutor workerExecutor = new MethodWorkerExecutor();
+        AbstractMethodEvent event = new MethodEndEvent()
+                .setTestResult(testResult)
+                .setInvokedMethod(invokedMethod)
+                .setMethodName(methodName)
+                .setTestContext(testContext)
+                .setMethodContext(methodContext);
 
-        workerExecutor.add(new HandleCollectedAssertsWorker());// !! must be invoked before MethodAnnotationCheckerWorker
-        workerExecutor.add(new MethodAnnotationCheckerWorker()); // !! must be invoked before Container Update
-        workerExecutor.add(new MethodContextUpdateWorker());
-        workerExecutor.add(new RemoveTestMethodIfRetryPassedWorker());
-
-        workerExecutor.run(testResult, methodName, methodContext, testContext, invokedMethod);
-
-        /*
-        Workers #2
-         */
-        workerExecutor = new MethodWorkerExecutor();
-
-        workerExecutor.add(new TesterraEventsFinishWorker());
-        workerExecutor.add(new TestMethodFinishedWorker());
-        workerExecutor.add(new TesterraConnectorSyncEventsWorker());
-
-        FrameworkUtils.addWorkersToExecutor(AFTER_INVOCATION_WORKERS, workerExecutor);
-
-        // this is the last worker to be called
-        workerExecutor.add(new MethodFinishedWorker());
-
-        /*
-        execute workers in correct order
-         */
-        workerExecutor.run(testResult, methodName, methodContext, testContext, invokedMethod);
-
-        // We don't close teardown steps, because we want to collect further actions there
-        //step.close();
+        eventBus.post(event);
     }
 
     @Override
@@ -448,8 +362,10 @@ public class TesterraListener implements
             List<ISuite> suites,
             String outputDirectory
     ) {
-
-        GenerateReport.runOnce(xmlSuites, suites, outputDirectory, XML_REPORTER);
+        ExecutionFinishEvent event = new ExecutionFinishEvent()
+                .setSuites(suites)
+                .setXmlSuites(xmlSuites);
+        eventBus.post(event);
     }
 
     @Override
@@ -526,10 +442,6 @@ public class TesterraListener implements
 
     }
 
-    public static void registerSuiteListener(final ISuiteListener listener) {
-        SUITE_LISTENERS.add(listener);
-    }
-
     /**
      * This method runs, when SUITE starts!
      *
@@ -537,10 +449,7 @@ public class TesterraListener implements
      */
     @Override
     public void onStart(ISuite iSuite) {
-
-        for (final ISuiteListener suiteListener : SUITE_LISTENERS) {
-            suiteListener.onStart(iSuite);
-        }
+        eventBus.post(iSuite);
     }
 
     /**
@@ -550,30 +459,10 @@ public class TesterraListener implements
      */
     @Override
     public void onFinish(ISuite iSuite) {
-
-        for (final ISuiteListener suiteListener : SUITE_LISTENERS) {
-            suiteListener.onFinish(iSuite);
-        }
+        eventBus.post(iSuite);
     }
 
     public static boolean isActive() {
         return instances > 0;
     }
-
-    public static void registerBeforeMethodWorker(Class<? extends MethodWorker> worker) {
-        BEFORE_INVOCATION_WORKERS.add(worker);
-    }
-
-    public static void registerAfterMethodWorker(Class<? extends MethodWorker> worker) {
-        AFTER_INVOCATION_WORKERS.add(worker);
-    }
-
-    public static void registerGenerateReportsWorker(Class<? extends GenerateReportsWorker> worker) {
-        GENERATE_REPORTS_WORKERS.add(worker);
-    }
-
-    public static void registerTestMethodInterceptWorker(Class<? extends TestMethodInterceptWorker> worker) {
-        METHOD_INTERCEPT_WORKERS.add(worker);
-    }
-
 }

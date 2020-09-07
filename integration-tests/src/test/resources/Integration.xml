@@ -12,6 +12,7 @@
             <package name="eu.tsystems.mms.tic.testframework.core.test.testdata"/>
             <package name="eu.tsystems.mms.tic.testframework.core.test.l10n"/>
             <package name="eu.tsystems.mms.tic.testframework.core.test.reporting"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.*"/>
         </packages>
     </test>
 

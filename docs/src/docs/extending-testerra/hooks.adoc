@@ -10,7 +10,7 @@ The `terminate()` method of your custom module hook is called at the most latest
 You should use this method to cleanup your module, if necessary, for example closing database connections in a database module.
 
 .Simple Testerra ModuleHook
-[source,java,subs="module-hook"]
+[source,java]
 ----
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 

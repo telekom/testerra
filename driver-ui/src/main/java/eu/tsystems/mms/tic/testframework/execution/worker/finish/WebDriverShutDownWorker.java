@@ -19,19 +19,16 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.worker.finish;
+package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WDInternal;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
 
-public class WebDriverShutDownWorker extends MethodWorker {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverShutDownWorker.class);
+public class WebDriverShutDownWorker implements MethodEndEvent.Listener {
 
     /**
      * WebDriverManagerShutdown routine. Shutdown if test method.
@@ -79,8 +76,9 @@ public class WebDriverShutDownWorker extends MethodWorker {
     }
 
     @Override
-    public void run() {
-        webDriverManagerShutdownRoutine(methodName, testResult);
+    @Subscribe
+    public void onMethodEnd(MethodEndEvent event) {
+        webDriverManagerShutdownRoutine(event.getMethodName(), event.getTestResult());
 
         // WDM cleanup threadlocals
         WebDriverManager.cleanupThreadlocals();

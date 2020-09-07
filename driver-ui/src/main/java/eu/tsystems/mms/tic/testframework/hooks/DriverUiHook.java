@@ -21,29 +21,25 @@
  */
  package eu.tsystems.mms.tic.testframework.hooks;
 
+import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.execution.testng.RetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.testng.WebDriverRetryAnalyzer;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.ConditionalBehaviourWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.LogWDSessionsWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeInSessionEvidencesWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.TakeOutOfSessionsEvidencesWorker;
-import eu.tsystems.mms.tic.testframework.execution.worker.finish.TestMethodFinishWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionsAfterMethodWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverShutDownWorker;
 import eu.tsystems.mms.tic.testframework.execution.worker.shutdown.WebDriverShutDownAfterTestsWorker;
-import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceStartWorker;
+import eu.tsystems.mms.tic.testframework.execution.worker.start.PerformanceTestWorker;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.ScreenshotGrabber;
 import eu.tsystems.mms.tic.testframework.report.SourceGrabber;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.UITestStepIntegration;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DriverUiHook implements ModuleHook {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DriverUiHook.class);
 
     @Override
     public void init() {
@@ -56,26 +52,26 @@ public class DriverUiHook implements ModuleHook {
         init TesterraListener Workers
          */
         //start
-        TesterraListener.registerBeforeMethodWorker(PerformanceStartWorker.class);
-        //TesterraListener.registerBeforeMethodWorker(WebDriverLoggingStartWorker.class);
+        EventBus eventBus = TesterraListener.getEventBus();
+
+        eventBus.register(new PerformanceTestWorker());
+        //eventBus.register(new WebDriverLoggingStartWorker());
 
         //finish
-        TesterraListener.registerAfterMethodWorker(ConditionalBehaviourWorker.class);
-        TesterraListener.registerAfterMethodWorker(LogWDSessionsWorker.class);
-        TesterraListener.registerAfterMethodWorker(TakeInSessionEvidencesWorker.class);
+        eventBus.register(new ConditionalBehaviourWorker());
+        eventBus.register(new LogWDSessionsWorker());
+        eventBus.register(new TakeInSessionEvidencesWorker());
 
-        TesterraListener.registerAfterMethodWorker(WebDriverSessionsAfterMethodWorker.class); // the utilizable one
+        eventBus.register(new WebDriverSessionsAfterMethodWorker()); // the utilizable one
 
         /*
         ********* SESSIONS SHUTDOWN *********
          */
-        TesterraListener.registerAfterMethodWorker(WebDriverShutDownWorker.class);
-
-        TesterraListener.registerAfterMethodWorker(TakeOutOfSessionsEvidencesWorker.class);
-        TesterraListener.registerAfterMethodWorker(TestMethodFinishWorker.class);
+        eventBus.register(new WebDriverShutDownWorker());
+        eventBus.register(new TakeOutOfSessionsEvidencesWorker());
 
         //shutdown
-        TesterraListener.registerGenerateReportsWorker(WebDriverShutDownAfterTestsWorker.class);
+        eventBus.register(new WebDriverShutDownAfterTestsWorker());
 
         /*
         register services

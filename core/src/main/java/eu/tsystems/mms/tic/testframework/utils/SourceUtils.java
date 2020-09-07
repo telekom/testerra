@@ -21,15 +21,10 @@
  */
  package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
-import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
-import org.reflections.Reflections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -38,6 +33,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <Beschreibung der Klasse>
@@ -175,17 +173,14 @@ public final class SourceUtils {
         return -1;
     }
 
-    @SuppressWarnings("unchecked")
     private static List<String> findClassNamesForSubTypesOf(Class clazz) {
         final List<String> classnames = new ArrayList<String>();
-        synchronized (Locks.REFLECTIONS) {
-            Reflections reflections = new Reflections(PACKAGE_SCOPE);
-            Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
-            for (Class aClass : subTypesOf) {
-                classnames.add(aClass.getName());
-            }
-            return classnames;
+        Reflections reflections = new Reflections(PACKAGE_SCOPE);
+        Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
+        for (Class aClass : subTypesOf) {
+            classnames.add(aClass.getName());
         }
+        return classnames;
     }
 
     private static ScriptSource getSourceFrom(String className, String filename, String methodName, int lineNr) {

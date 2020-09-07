@@ -22,9 +22,11 @@
  package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import java.util.function.Predicate;
 import org.openqa.selenium.WebElement;
 
-public class Attribute extends WebElementFilter {
+@Deprecated
+public class Attribute implements Predicate<WebElement> {
 
     private String attributeName;
     private String expectedAttributeValue;
@@ -42,39 +44,38 @@ public class Attribute extends WebElementFilter {
         this.stringChecker = stringChecker;
     }
 
-    public WebElementFilter is(String attributeName, String attributeValue) {
+    public Predicate<WebElement> is(String attributeName, String attributeValue) {
         Attribute attribute = new Attribute(attributeName, attributeValue, new StringChecker.Is());
         return attribute;
     }
 
-    public WebElementFilter isNot(String attributeName, String attributeValue) {
+    public Predicate<WebElement> isNot(String attributeName, String attributeValue) {
         Attribute attribute = new Attribute(attributeName, attributeValue, new StringChecker.IsNot());
         return attribute;
     }
 
-    public WebElementFilter contains(String attributeName, String attributeValue) {
+    public Predicate<WebElement> contains(String attributeName, String attributeValue) {
         Attribute attribute = new Attribute(attributeName, attributeValue, new StringChecker.Contains());
         return attribute;
     }
 
-    public WebElementFilter containsNot(String attributeName, String attributeValue) {
+    public Predicate<WebElement> containsNot(String attributeName, String attributeValue) {
         Attribute attribute = new Attribute(attributeName, attributeValue, new StringChecker.ContainsNot());
         return attribute;
     }
 
-    public WebElementFilter exists(String attributeName) {
+    public Predicate<WebElement> exists(String attributeName) {
         Attribute attribute = new Attribute(attributeName, "", new StringChecker.Exists());
         return attribute;
     }
 
-    public WebElementFilter existsNot(String attributeName) {
+    public Predicate<WebElement> existsNot(String attributeName) {
         Attribute attribute = new Attribute(attributeName, "", new StringChecker.ExistsNot());
         return attribute;
     }
 
     @Override
-    public boolean isSatisfiedBy(WebElement webElement) {
-        checkCorrectUsage(STD_ERROR_MSG, attributeName, expectedAttributeValue, stringChecker);
+    public boolean test(WebElement webElement) {
         String actualAttributeValue = webElement.getAttribute(attributeName);
         return stringChecker.check(expectedAttributeValue, actualAttributeValue);
     }

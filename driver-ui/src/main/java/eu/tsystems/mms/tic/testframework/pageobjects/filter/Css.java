@@ -22,9 +22,11 @@
  package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import java.util.function.Predicate;
 import org.openqa.selenium.WebElement;
 
-public class Css extends WebElementFilter {
+@Deprecated
+public class Css implements Predicate<WebElement> {
 
     private String cssName;
     private String expectedCssValue;
@@ -41,39 +43,38 @@ public class Css extends WebElementFilter {
         this.stringChecker = stringChecker;
     }
 
-    public WebElementFilter is(String cssName, String cssValue) {
+    public Predicate<WebElement> is(String cssName, String cssValue) {
         Css css = new Css(cssName, cssValue, new StringChecker.Is());
         return css;
     }
 
-    public WebElementFilter isNot(String cssName, String cssValue) {
+    public Predicate<WebElement> isNot(String cssName, String cssValue) {
         Css css =    new Css(cssName, cssValue, new StringChecker.IsNot());
         return css;
     }
 
-    public WebElementFilter contains(String cssName, String cssValue) {
+    public Predicate<WebElement> contains(String cssName, String cssValue) {
         Css css = new Css(cssName, cssValue, new StringChecker.Contains());
         return css;
     }
 
-    public WebElementFilter containsNot(String cssName, String cssValue) {
+    public Predicate<WebElement> containsNot(String cssName, String cssValue) {
         Css css = new Css(cssName, cssValue, new StringChecker.ContainsNot());
         return css;
     }
 
-    public WebElementFilter exists(String cssName) {
+    public Predicate<WebElement> exists(String cssName) {
         Css css = new Css(cssName, "", new StringChecker.Exists());
         return css;
     }
 
-    public WebElementFilter existsNot(String cssName) {
+    public Predicate<WebElement> existsNot(String cssName) {
         Css css = new Css(cssName, "", new StringChecker.ExistsNot());
         return css;
     }
 
     @Override
-    public boolean isSatisfiedBy(WebElement webElement) {
-        checkCorrectUsage(STD_ERROR_MSG, cssName, expectedCssValue, stringChecker);
+    public boolean test(WebElement webElement) {
         String actualCssValue = webElement.getCssValue(cssName);
         return stringChecker.check(expectedCssValue, actualCssValue);
     }

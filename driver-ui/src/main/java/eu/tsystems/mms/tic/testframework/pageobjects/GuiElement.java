@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.LogLevel;
-import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Checkable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.ConfiguredAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
@@ -253,16 +252,12 @@ public class GuiElement implements
      * After retrieving all WebElements of the given locator, this method can be used to filter the WebElements.
      * Different filters can be applied in conjunction (and).
      *
-     * @param filters Filters to be applied
+     * @param filter Filters to be applied
      *
      * @return The same GuiElement
      * @deprecated Use {@link Locate} instead
      */
     @Deprecated
-    public GuiElement withWebElementFilter(WebElementFilter... filters) {
-        return this;
-    }
-
     public GuiElement withWebElementFilter(Predicate<WebElement> filter) {
         locator.filter(filter);
         return this;

@@ -9,7 +9,7 @@
         </groups>
         <classes>
             <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.GuiElementStandardTests"/>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.GuiElementFilterTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.core.guielement.GuiElementFilterTest"/>
             <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.GuiElementAdditionalTests"/>
             <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.GuiElementExceptionsTest"/>
             <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.GuiElementListTests"/>

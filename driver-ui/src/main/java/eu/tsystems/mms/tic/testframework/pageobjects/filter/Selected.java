@@ -19,11 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.filter;
+package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 
+import java.util.function.Predicate;
 import org.openqa.selenium.WebElement;
 
-public class Selected extends WebElementFilter {
+@Deprecated
+public class Selected implements Predicate<WebElement> {
 
     private boolean expectedSelectionStatus;
 
@@ -34,14 +36,13 @@ public class Selected extends WebElementFilter {
         this.expectedSelectionStatus = expectedSelectionStatus;
     }
 
-    public WebElementFilter is(boolean expectedSelectionStatus) {
+    public Predicate<WebElement> is(boolean expectedSelectionStatus) {
         Selected selected = new Selected(expectedSelectionStatus);
         return selected;
     }
 
     @Override
-    public boolean isSatisfiedBy(WebElement webElement) {
-        checkCorrectUsage(STD_ERROR_MSG, expectedSelectionStatus);
+    public boolean test(WebElement webElement) {
         boolean selected = webElement.isSelected();
         return selected == expectedSelectionStatus;
     }

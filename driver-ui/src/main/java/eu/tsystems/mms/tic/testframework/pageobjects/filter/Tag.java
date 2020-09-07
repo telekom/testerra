@@ -21,9 +21,11 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 
+import java.util.function.Predicate;
 import org.openqa.selenium.WebElement;
 
-public class Tag extends WebElementFilter {
+@Deprecated
+public class Tag implements Predicate<WebElement> {
 
     private String expectedTag;
     private StringChecker stringChecker;
@@ -38,29 +40,28 @@ public class Tag extends WebElementFilter {
         this.stringChecker = stringChecker;
     }
 
-    public WebElementFilter is(String expectedTag) {
+    public Predicate<WebElement> is(String expectedTag) {
         Tag tag = new Tag(expectedTag, new StringChecker.Is());
         return tag;
     }
 
-    public WebElementFilter isNot(String expectedTag) {
+    public Predicate<WebElement> isNot(String expectedTag) {
         Tag tag = new Tag(expectedTag, new StringChecker.IsNot());
         return tag;
     }
 
-    public WebElementFilter contains(String expectedTag) {
+    public Predicate<WebElement> contains(String expectedTag) {
         Tag tag = new Tag(expectedTag, new StringChecker.Contains());
         return tag;
     }
 
-    public WebElementFilter containsNot(String expectedTag) {
+    public Predicate<WebElement> containsNot(String expectedTag) {
         Tag tag = new Tag(expectedTag, new StringChecker.ContainsNot());
         return tag;
     }
 
     @Override
-    public boolean isSatisfiedBy(WebElement webElement) {
-        checkCorrectUsage(STD_ERROR_MSG, expectedTag, stringChecker);
+    public boolean test(WebElement webElement) {
         String tag = webElement.getTagName();
         return stringChecker.check(expectedTag, tag);
     }

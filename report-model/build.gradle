@@ -19,8 +19,12 @@ dependencies {
 
 protobuf {
     generatedFilesBaseDir = projectDir.toString() + "/src"
-
     protoc { artifact = "com.google.protobuf:protoc:${protobufVersion}" }
+    generateProtoTasks {
+        all().each { task ->
+            task.enabled = !project.gradle.startParameter.taskNames.contains("build")
+        }
+    }
 }
 
 sourceSets {

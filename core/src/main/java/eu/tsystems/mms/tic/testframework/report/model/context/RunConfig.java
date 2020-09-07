@@ -23,7 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.internal.TesterraBuildInformation;
+import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 
 import java.io.File;
@@ -31,7 +31,7 @@ import java.io.File;
 public final class RunConfig {
 
     public final String RUNCFG = (Flags.DRY_RUN ? "DRY RUN " : "") + PropertyManager.getProperty(TesterraProperties.RUNCFG, "DEFAULT");
-    public final TesterraBuildInformation testerraBuildInformation = new TesterraBuildInformation();
+    public final BuildInformation buildInformation = new BuildInformation();
 
     public static String getModuleFolderName() {
         return new File(".").getAbsoluteFile().getParentFile().getName();

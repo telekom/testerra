@@ -23,7 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
-import eu.tsystems.mms.tic.testframework.internal.TesterraBuildInformation;
+import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.BufferedReader;
@@ -78,7 +78,7 @@ public final class Booter {
         /*
         get versions info
          */
-        TesterraBuildInformation buildInformation = TesterraBuildInformation.getInstance();
+        BuildInformation buildInformation = BuildInformation.getInstance();
         bannerVersions.add("build.java.version: " + buildInformation.buildJavaVersion);
         bannerVersions.add("build.os.name:      " + buildInformation.buildOsName);
         bannerVersions.add("build.os.arch:      " + buildInformation.buildOsArch);

@@ -196,47 +196,47 @@ public final class Framework {
       "metadata\030\004 \003(\0132\".data.SessionContext.Met" +
       "adataEntry\022\022\n\nsession_id\030\006 \001(\t\032/\n\rMetada" +
       "taEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"" +
-      "l\n\tRunConfig\022\016\n\006runcfg\030\001 \001(\t\022:\n\032testerra" +
-      "_build_information\030\002 \001(\0132\026.data.BuildInf" +
-      "ormation\022\023\n\013report_name\030\003 \001(\t\"\250\001\n\020BuildI" +
-      "nformation\022\032\n\022build_java_version\030\001 \001(\t\022\025" +
-      "\n\rbuild_os_name\030\002 \001(\t\022\030\n\020build_os_versio" +
-      "n\030\003 \001(\t\022\027\n\017build_user_name\030\004 \001(\t\022\025\n\rbuil" +
-      "d_version\030\005 \001(\t\022\027\n\017build_timestamp\030\006 \001(\t" +
-      "\"T\n\nStackTrace\022$\n\005cause\030\001 \001(\0132\025.data.Sta" +
-      "ckTraceCause\022 \n\030additional_error_message" +
-      "\030\002 \001(\t\"z\n\017StackTraceCause\022\022\n\nclass_name\030" +
-      "\001 \001(\t\022\017\n\007message\030\002 \001(\t\022\034\n\024stack_trace_el" +
-      "ements\030\003 \003(\t\022$\n\005cause\030\004 \001(\0132\025.data.Stack" +
-      "TraceCause\"]\n\014ScriptSource\022\021\n\tfile_name\030" +
-      "\001 \001(\t\022\023\n\013method_name\030\002 \001(\t\022%\n\005lines\030\003 \003(" +
-      "\0132\026.data.ScriptSourceLine\"C\n\020ScriptSourc" +
-      "eLine\022\014\n\004line\030\001 \001(\t\022\023\n\013line_number\030\002 \001(\005" +
-      "\022\014\n\004mark\030\003 \001(\010\"\253\002\n\004File\022\n\n\002id\030\001 \001(\t\022\014\n\004s" +
-      "ize\030\002 \001(\003\022\020\n\010mimetype\030\003 \001(\t\022\025\n\rrelative_" +
-      "path\030\004 \001(\t\022\031\n\021created_timestamp\030\005 \001(\003\022\025\n" +
-      "\rsha1_checksum\030\006 \001(\014\022\"\n\004meta\030\007 \003(\0132\024.dat" +
-      "a.File.MetaEntry\022\025\n\rlast_modified\030\t \001(\003\022" +
-      "\022\n\nproject_id\030\n \001(\t\022\016\n\006job_id\030\013 \001(\t\022\024\n\014i" +
-      "s_directory\030\014 \001(\010\022\014\n\004name\030\r \001(\t\032+\n\tMetaE" +
-      "ntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001*W\n\023" +
-      "PClickPathEventType\022\013\n\007NOT_SET\020\000\022\n\n\006WIND" +
-      "OW\020\001\022\t\n\005CLICK\020\002\022\t\n\005VALUE\020\003\022\010\n\004PAGE\020\004\022\007\n\003" +
-      "URL\020\005*C\n\024FailureCorridorValue\022\017\n\013FCV_NOT" +
-      "_SET\020\000\022\010\n\004HIGH\020\001\022\007\n\003MID\020\002\022\007\n\003LOW\020\003*G\n\nMe" +
-      "thodType\022\016\n\nMT_NOT_SET\020\000\022\017\n\013TEST_METHOD\020" +
-      "\001\022\030\n\024CONFIGURATION_METHOD\020\002*\252\001\n\016ExecStat" +
-      "usType\022\017\n\013EST_NOT_SET\020\000\022\007\n\003NEW\020\001\022\013\n\007PEND" +
-      "ING\020\002\022\020\n\014PROVISIONING\020\003\022\013\n\007RUNNING\020\004\022\014\n\010" +
-      "FINISHED\020\005\022\013\n\007ABORTED\020\006\022\013\n\007CRASHED\020\007\022\013\n\007" +
-      "INVALID\020\010\022\010\n\004VOID\020\t\022\023\n\017ARTIFACT_UPLOAD\020\n" +
-      "*\307\001\n\020ResultStatusType\022\017\n\013RST_NOT_SET\020\000\022\n" +
-      "\n\006NO_RUN\020\001\022\010\n\004INFO\020\002\022\013\n\007SKIPPED\020\003\022\n\n\006PAS" +
-      "SED\020\004\022\t\n\005MINOR\020\005\022\n\n\006FAILED\020\007\022\020\n\014FAILED_M" +
-      "INOR\020\010\022\022\n\016FAILED_RETRIED\020\t\022\023\n\017FAILED_EXP" +
-      "ECTED\020\n\022\020\n\014PASSED_RETRY\020\013\022\017\n\013MINOR_RETRY" +
-      "\020\014B2\n.eu.tsystems.mms.tic.testframework." +
-      "report.modelP\001b\006proto3"
+      "c\n\tRunConfig\022\016\n\006runcfg\030\001 \001(\t\0221\n\021build_in" +
+      "formation\030\002 \001(\0132\026.data.BuildInformation\022" +
+      "\023\n\013report_name\030\003 \001(\t\"\250\001\n\020BuildInformatio" +
+      "n\022\032\n\022build_java_version\030\001 \001(\t\022\025\n\rbuild_o" +
+      "s_name\030\002 \001(\t\022\030\n\020build_os_version\030\003 \001(\t\022\027" +
+      "\n\017build_user_name\030\004 \001(\t\022\025\n\rbuild_version" +
+      "\030\005 \001(\t\022\027\n\017build_timestamp\030\006 \001(\t\"T\n\nStack" +
+      "Trace\022$\n\005cause\030\001 \001(\0132\025.data.StackTraceCa" +
+      "use\022 \n\030additional_error_message\030\002 \001(\t\"z\n" +
+      "\017StackTraceCause\022\022\n\nclass_name\030\001 \001(\t\022\017\n\007" +
+      "message\030\002 \001(\t\022\034\n\024stack_trace_elements\030\003 " +
+      "\003(\t\022$\n\005cause\030\004 \001(\0132\025.data.StackTraceCaus" +
+      "e\"]\n\014ScriptSource\022\021\n\tfile_name\030\001 \001(\t\022\023\n\013" +
+      "method_name\030\002 \001(\t\022%\n\005lines\030\003 \003(\0132\026.data." +
+      "ScriptSourceLine\"C\n\020ScriptSourceLine\022\014\n\004" +
+      "line\030\001 \001(\t\022\023\n\013line_number\030\002 \001(\005\022\014\n\004mark\030" +
+      "\003 \001(\010\"\253\002\n\004File\022\n\n\002id\030\001 \001(\t\022\014\n\004size\030\002 \001(\003" +
+      "\022\020\n\010mimetype\030\003 \001(\t\022\025\n\rrelative_path\030\004 \001(" +
+      "\t\022\031\n\021created_timestamp\030\005 \001(\003\022\025\n\rsha1_che" +
+      "cksum\030\006 \001(\014\022\"\n\004meta\030\007 \003(\0132\024.data.File.Me" +
+      "taEntry\022\025\n\rlast_modified\030\t \001(\003\022\022\n\nprojec" +
+      "t_id\030\n \001(\t\022\016\n\006job_id\030\013 \001(\t\022\024\n\014is_directo" +
+      "ry\030\014 \001(\010\022\014\n\004name\030\r \001(\t\032+\n\tMetaEntry\022\013\n\003k" +
+      "ey\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001*W\n\023PClickPat" +
+      "hEventType\022\013\n\007NOT_SET\020\000\022\n\n\006WINDOW\020\001\022\t\n\005C" +
+      "LICK\020\002\022\t\n\005VALUE\020\003\022\010\n\004PAGE\020\004\022\007\n\003URL\020\005*C\n\024" +
+      "FailureCorridorValue\022\017\n\013FCV_NOT_SET\020\000\022\010\n" +
+      "\004HIGH\020\001\022\007\n\003MID\020\002\022\007\n\003LOW\020\003*G\n\nMethodType\022" +
+      "\016\n\nMT_NOT_SET\020\000\022\017\n\013TEST_METHOD\020\001\022\030\n\024CONF" +
+      "IGURATION_METHOD\020\002*\252\001\n\016ExecStatusType\022\017\n" +
+      "\013EST_NOT_SET\020\000\022\007\n\003NEW\020\001\022\013\n\007PENDING\020\002\022\020\n\014" +
+      "PROVISIONING\020\003\022\013\n\007RUNNING\020\004\022\014\n\010FINISHED\020" +
+      "\005\022\013\n\007ABORTED\020\006\022\013\n\007CRASHED\020\007\022\013\n\007INVALID\020\010" +
+      "\022\010\n\004VOID\020\t\022\023\n\017ARTIFACT_UPLOAD\020\n*\307\001\n\020Resu" +
+      "ltStatusType\022\017\n\013RST_NOT_SET\020\000\022\n\n\006NO_RUN\020" +
+      "\001\022\010\n\004INFO\020\002\022\013\n\007SKIPPED\020\003\022\n\n\006PASSED\020\004\022\t\n\005" +
+      "MINOR\020\005\022\n\n\006FAILED\020\007\022\020\n\014FAILED_MINOR\020\010\022\022\n" +
+      "\016FAILED_RETRIED\020\t\022\023\n\017FAILED_EXPECTED\020\n\022\020" +
+      "\n\014PASSED_RETRY\020\013\022\017\n\013MINOR_RETRY\020\014B2\n.eu." +
+      "tsystems.mms.tic.testframework.report.mo" +
+      "delP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -325,7 +325,7 @@ public final class Framework {
     internal_static_data_RunConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_data_RunConfig_descriptor,
-        new java.lang.String[] { "Runcfg", "TesterraBuildInformation", "ReportName", });
+        new java.lang.String[] { "Runcfg", "BuildInformation", "ReportName", });
     internal_static_data_BuildInformation_descriptor =
       getDescriptor().getMessageTypes().get(13);
     internal_static_data_BuildInformation_fieldAccessorTable = new

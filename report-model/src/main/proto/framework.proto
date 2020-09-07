@@ -156,7 +156,7 @@ message SessionContext {
 
 message RunConfig {
     string runcfg = 1;
-    BuildInformation testerra_build_information = 2;
+    BuildInformation build_information = 2;
     string report_name = 3;
 }
 

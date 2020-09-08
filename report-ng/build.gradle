@@ -1,0 +1,9 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation project(':report-model')
+}
+
+apply from: rootProject.file('release-bintray.gradle')

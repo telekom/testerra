@@ -2,7 +2,7 @@ doNotPublish(this)
 
 dependencies {
     compile driver_ui_desktop
-    testCompile report
+    testImplementation project(':report-ng')
 
     // <XML>
     implementation 'org.xmlunit:xmlunit-core:2.5.0'

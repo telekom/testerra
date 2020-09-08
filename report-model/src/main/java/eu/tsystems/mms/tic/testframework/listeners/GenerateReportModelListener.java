@@ -65,7 +65,7 @@ public class GenerateReportModelListener implements
 
     public GenerateReportModelListener(File baseDir) {
         this.baseDir = baseDir;
-        baseDir.mkdir();
+        baseDir.mkdirs();
         classesDir = new File(baseDir, "classes");
         classesDir.mkdir();
         filesDir = new File(baseDir, "files");

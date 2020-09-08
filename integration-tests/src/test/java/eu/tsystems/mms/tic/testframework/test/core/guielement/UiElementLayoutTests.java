@@ -17,7 +17,7 @@
  *     Peter Lehmann
  *     pele
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
+package eu.tsystems.mms.tic.testframework.test.core.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.WebTestPage;

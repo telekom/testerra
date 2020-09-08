@@ -22,34 +22,27 @@
 package eu.tsystems.mms.tic.testframework.connectors.util;
 
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.MapUtils;
+import java.util.LinkedList;
+import java.util.Properties;
 import org.apache.maven.surefire.providerapi.AbstractProvider;
 import org.apache.maven.surefire.providerapi.ProviderParameters;
 import org.apache.maven.surefire.report.ReporterFactory;
 import org.apache.maven.surefire.suite.RunResult;
 import org.apache.maven.surefire.testset.TestRequest;
 import org.apache.maven.surefire.testset.TestSetFailedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.LinkedList;
-import java.util.Properties;
 
 /**
  * Abstract class encapsulating common tasks for surefire providers of testerra.
  *
  * @author sepr
  */
-public abstract class AbstractCommonProvider extends AbstractProvider {
+public abstract class AbstractCommonProvider extends AbstractProvider implements Loggable {
 
     static {
         TesterraCommons.init();
     }
-
-    /**
-     * The logger.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommonProvider.class);
 
     /**
      * The class loader used to find the test classes.
@@ -146,7 +139,7 @@ public abstract class AbstractCommonProvider extends AbstractProvider {
             if (SyncUtils.isTestNGXmlSuite(testRequest)) {
                 TestngTestExecutor.execute(providerProperties, testRequest.getSuiteXmlFiles(), reporterFactory, syncToProvider);
             } else {
-                LOGGER.error("No Suite XML was set! You must set a suite.xml in the pom " + "or use the Standard Surefire Junit/TestNG Provider! ");
+                log().error("No Suite XML was set! You must set a suite.xml in the pom " + "or use the Standard Surefire Junit/TestNG Provider! ");
             }
         }
 

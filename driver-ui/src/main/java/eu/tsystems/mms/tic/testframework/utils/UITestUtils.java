@@ -31,21 +31,10 @@ import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.sikuli.api.ScreenLocation;
-import org.sikuli.api.ScreenRegion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -63,8 +52,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import javax.imageio.ImageIO;
-import org.apache.commons.codec.binary.Base64;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.sikuli.api.ScreenLocation;
 import org.sikuli.api.ScreenRegion;
@@ -312,7 +303,7 @@ public class UITestUtils {
                     .getScreenshot(upperLeftCorner.getX(), upperLeftCorner.getY(), lowerRightCorner.getX(), lowerRightCorner.getY());
 
             final String filename = "Desktop_" + FILES_DATE_FORMAT.format(new Date()) + ".png";
-            final File targetFile = new File(StaticReport.SCREENSHOTS_DIRECTORY, filename);
+            final File targetFile = new File(DefaultReport.SCREENSHOTS_DIRECTORY, filename);
             saveBufferedImage(screenshot, targetFile);
 
             final MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();

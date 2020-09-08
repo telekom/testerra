@@ -31,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -48,8 +47,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
 import javax.imageio.ImageIO;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -92,15 +91,17 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         } catch(Exception e) {
             cause = e;
         }
-
         if (elements != null) {
-            if (locate.isUnique() && elements.size() > 1) {
+            final Locate selector = guiElementData.guiElement.getLocator();
+            Predicate<WebElement> filter = selector.getFilter();
+            if (filter != null) {
+                elements.removeIf(webElement -> !filter.test(webElement));
+            }
+            if (selector.isUnique() && elements.size() > 1) {
                 throw new NonUniqueElementException(String.format("Locator(%s) found more than one WebElement [%d]", locate, elements.size()));
             }
-            elements = applyFilters(elements, locate.getFilters());
-            setWebElement(elements);
+            numberOfFoundElements = elements.size();
         }
-
         if (guiElementData.getWebElement() == null) {
             ElementNotFoundException exception = new ElementNotFoundException(guiElementData.getGuiElement(), cause);
             MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
@@ -169,33 +170,16 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         }
     }
 
-    private List<WebElement> applyFilters(List<WebElement> foundElements, List<WebElementFilter> webElementFilters) {
-        if (webElementFilters == null || webElementFilters.isEmpty()) {
-            LOGGER.debug("find(): No WebElementFilters existing, not filtering");
-            return foundElements;
-        } else {
-            LOGGER.debug("find(): Filtering with WebElementFilters " + webElementFilters);
-            List<WebElement> filteredElements = new LinkedList<>();
-            for (WebElement webElement : foundElements) {
-                boolean satisfiesAllFilters = true;
-                for (WebElementFilter filter : webElementFilters) {
-                    if (filter.isSatisfiedBy(webElement)) {
-                        LOGGER.debug("find():" + webElement + " satisfies filter " + filter);
-                    } else {
-                        LOGGER.debug("find(): " + webElement + " does not satisfy filter " + filter);
-                        satisfiesAllFilters = false;
-                        break;
-                    }
-                }
-                if (satisfiesAllFilters) {
-                    LOGGER.debug("find(): " + webElement + " satisfied all filters");
-                    filteredElements.add(webElement);
-                } else {
-                    LOGGER.debug("find(): " + webElement + " did not satisfy all filters");
-                }
+    private void throwExceptionIfWebElementIsNull(Exception cause) {
+        if (guiElementData.webElement == null) {
+            String message = "GuiElement not found: " + toString();
+
+            MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+            if (currentMethodContext != null) {
+                currentMethodContext.errorContext().setThrowable(message, cause);
             }
-            LOGGER.debug("Before Filtering: " + foundElements.size() + " WebElements, After Filtering: " + filteredElements.size() + " WebElements.");
-            return filteredElements;
+
+            throw new ElementNotFoundException(message, cause);
         }
     }
 

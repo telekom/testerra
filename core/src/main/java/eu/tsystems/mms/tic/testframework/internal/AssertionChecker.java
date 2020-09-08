@@ -26,10 +26,9 @@ import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,7 +51,7 @@ public final class AssertionChecker {
     private static final Logger LOGGER = LoggerFactory.getLogger(AssertionChecker.class);
 
     public static void storeNonFunctionalInfo(Throwable throwable) {
-        LOGGER.warn(String.format("Non-functional: %s", throwable));
+        LOGGER.warn("Found non-functional error", throwable);
         MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
         if (methodContext != null) {
             // add nf info

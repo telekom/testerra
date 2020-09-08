@@ -23,10 +23,9 @@
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.utils.RandomUtils;
-import org.testng.annotations.Test;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.testng.annotations.Test;
 
 public class RandomUtilsTest extends AbstractWebDriverTest {
 
@@ -89,7 +88,7 @@ public class RandomUtilsTest extends AbstractWebDriverTest {
         int max = 1;
         Integer number = RandomUtils.generateRandomInt(max);
 
-        Assert.assertTrue(number < 1, intMax);
+        Assert.assertTrue(number <= max, intMax);
 
         String a = "" + number;
 
@@ -107,7 +106,7 @@ public class RandomUtilsTest extends AbstractWebDriverTest {
         int max = 10;
         Integer number = RandomUtils.generateRandomInt(max);
 
-        Assert.assertTrue(number < 10, intMax);
+        Assert.assertTrue(number <= max, intMax);
 
         String a = "" + number;
 
@@ -128,8 +127,8 @@ public class RandomUtilsTest extends AbstractWebDriverTest {
 
         final int number = RandomUtils.generateRandomInt(min, max);
 
-        Assert.assertTrue(number > min, intMin);
-        Assert.assertTrue(number < max, intMax);
+        Assert.assertTrue(number >= min, intMin);
+        Assert.assertTrue(number <= max, intMax);
 
         String a = "" + number;
 

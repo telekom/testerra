@@ -21,20 +21,20 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.worker.shutdown;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.GenerateReportsWorker;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
 /**
  * This should not be a {@link GenerateReportsWorker}
  */
-public class WebDriverShutDownAfterTestsWorker extends GenerateReportsWorker implements Loggable {
+public class WebDriverShutDownAfterTestsWorker implements ExecutionFinishEvent.Listener {
 
-    @Override
-    public void run() {
+   @Subscribe
+   @Override
+   public void onExecutionFinish(ExecutionFinishEvent event) {
         WebDriverManager.forceShutdownAllThreads();
         WebDriverWatchDog.stop();
-    }
-
+   }
 }

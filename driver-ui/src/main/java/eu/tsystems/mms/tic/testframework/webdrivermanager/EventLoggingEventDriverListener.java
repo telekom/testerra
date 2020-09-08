@@ -19,27 +19,16 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.webdrivermanager;
+package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.WebDriverEventListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class EventLoggingEventDriverListener implements WebDriverEventListener {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger("WebDriverEvent");
-
-    public static boolean active = true;
-
-    private static void log(String msg) {
-        if (active) {
-            LOGGER.info(msg);
-        }
-    }
+public class EventLoggingEventDriverListener implements WebDriverEventListener, Loggable {
 
     @Override
     public void beforeAlertAccept(WebDriver webDriver) {
@@ -63,7 +52,7 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener {
 
     @Override
     public void beforeNavigateTo(String s, WebDriver webDriver) {
-        log("GET " + s);
+        log().info("GET " + s);
     }
 
     @Override
@@ -73,7 +62,7 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener {
 
     @Override
     public void beforeNavigateBack(WebDriver webDriver) {
-        log("BACK");
+        log().info("BACK");
     }
 
     @Override
@@ -83,7 +72,7 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener {
 
     @Override
     public void beforeNavigateForward(WebDriver webDriver) {
-        log("FORWARD");
+        log().info("FORWARD");
     }
 
     @Override
@@ -93,7 +82,7 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener {
 
     @Override
     public void beforeNavigateRefresh(WebDriver webDriver) {
-        log("REFRESH");
+        log().info("REFRESH");
     }
 
     @Override
@@ -138,7 +127,7 @@ public class EventLoggingEventDriverListener implements WebDriverEventListener {
 
     @Override
     public void beforeSwitchToWindow(String s, WebDriver webDriver) {
-        log("SWITCH TO WINDOW " + s);
+        log().info("SWITCH TO WINDOW " + s);
     }
 
     @Override

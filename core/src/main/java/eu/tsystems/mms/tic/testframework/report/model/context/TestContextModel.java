@@ -19,30 +19,29 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.model.context;
+package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import org.testng.IClass;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 /**
  * Representation of a TestNG {@link ITestContext}
  */
 public class TestContextModel extends AbstractContext implements SynchronizableContext {
 
-    public final List<ClassContext> classContexts = new LinkedList<>();
+    public final Queue<ClassContext> classContexts = new ConcurrentLinkedQueue<>();
     public final SuiteContext suiteContext;
     public final ExecutionContext executionContext;
 
@@ -207,13 +206,6 @@ public class TestContextModel extends AbstractContext implements SynchronizableC
             return newClassContext;
         }
     }
-
-    public List<ClassContext> copyOfClassContexts() {
-        synchronized (classContexts) {
-            return new LinkedList<>(classContexts);
-        }
-    }
-
 
     @Override
     public TestStatusController.Status getStatus() {

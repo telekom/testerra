@@ -21,19 +21,15 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.openqa.selenium.WebDriver;
 
-public class WebDriverSessionsAfterMethodWorker extends MethodWorker {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverSessionHandler.class);
+public class WebDriverSessionsAfterMethodWorker implements MethodEndEvent.Listener, Loggable {
 
     private static final List<WebDriverSessionHandler> WEB_DRIVER_SESSION_HANDLERS = new ArrayList<>();
 
@@ -42,7 +38,8 @@ public class WebDriverSessionsAfterMethodWorker extends MethodWorker {
     }
 
     @Override
-    public void run() {
+    @Subscribe
+    public void onMethodEnd(MethodEndEvent event) {
         if (WebDriverManager.hasAnySessionActive()) {
             if (WEB_DRIVER_SESSION_HANDLERS.size() > 0) {
                 long threadID = Thread.currentThread().getId();
@@ -52,12 +49,12 @@ public class WebDriverSessionsAfterMethodWorker extends MethodWorker {
                     for (WebDriver driver : drivers) {
                         String webDriverSessionId = WebDriverManager.getSessionKeyFrom(driver);
                         String msg = "Executing handler for session -" + webDriverSessionId + "- : " + webDriverSessionHandler;
-                        LOGGER.info(msg);
+                        log().info(msg);
 
                         try {
                             webDriverSessionHandler.run(driver);
                         } catch (Throwable t) {
-                            LOGGER.error("Error " + msg, t);
+                            log().error("Error " + msg, t);
                         }
                     }
                 }

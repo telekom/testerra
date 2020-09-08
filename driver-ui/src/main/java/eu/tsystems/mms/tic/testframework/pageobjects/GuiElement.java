@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
@@ -68,9 +67,9 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManag
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -226,16 +225,14 @@ public class GuiElement implements
      * After retrieving all WebElements of the given locator, this method can be used to filter the WebElements.
      * Different filters can be applied in conjunction (and).
      *
-     * @param filters Filters to be applied
+     * @param filter Filters to be applied
      *
      * @return The same GuiElement
      * @deprecated Use {@link Locate} instead
      */
     @Deprecated
-    public GuiElement withWebElementFilter(WebElementFilter... filters) {
-        if (filters != null) {
-            Collections.addAll(guiElementData.getLocate().getFilters(), filters);
-        }
+    public GuiElement withWebElementFilter(Predicate<WebElement> filter) {
+        guiElementData.getLocate().filter(filter);
         return this;
     }
 
@@ -569,11 +566,6 @@ public class GuiElement implements
     @Override
     public HasParent getParent() {
         return parent;
-    }
-
-    @Deprecated
-    public List<WebElementFilter> getWebElementFilters() {
-        return guiElementData.getLocate().getFilters();
     }
 
     @Override

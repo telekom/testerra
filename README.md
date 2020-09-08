@@ -34,12 +34,18 @@ For maven:
         <artifactId>driver-ui-desktop</artifactId>
         <version>1-SNAPSHOT</version>
     </dependecy>
+    <dependency>
+        <groupId>eu.tsystems.mms.tic.testerra</groupId>
+        <artifactId>report</artifactId>
+        <version>1-SNAPSHOT</version>
+    </dependecy>
 </dependencies>
 ```
 
 For gradle:
 ```text
 compile 'eu.tsystems.mms.tic.testerra:driver-ui-desktop:1-SNAPSHOT'
+compile 'eu.tsystems.mms.tic.testerra:report:1-SNAPSHOT'
 ```
 
 ## Using testerra functionality:

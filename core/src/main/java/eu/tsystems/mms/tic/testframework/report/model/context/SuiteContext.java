@@ -23,15 +23,14 @@
 
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class SuiteContext extends AbstractContext implements SynchronizableContext {
 
-    public final List<TestContextModel> testContextModels = new LinkedList<>();
+    public final Queue<TestContextModel> testContextModels = new ConcurrentLinkedQueue<>();
     public final ExecutionContext executionContext;
 
     public SuiteContext(ExecutionContext executionContext) {
@@ -45,12 +44,6 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
 
     public TestContextModel getTestContext(final ITestContext iTestContext) {
         return this.getTestContext(null, iTestContext);
-    }
-
-    public List<TestContextModel> copyOfTestContexts() {
-        synchronized (testContextModels) {
-            return new LinkedList<>(testContextModels);
-        }
     }
 
     @Override

@@ -19,16 +19,20 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+
+package eu.tsystems.mms.tic.testframework.utils;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-
-import javax.ws.rs.core.MediaType;
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.ws.rs.core.MediaType;
 
+/**
+ * @deprecated - Please use modern REST / HTTP clients
+ */
+@Deprecated
 public class RESTUtils {
 
     public static final int DEFAULT_TIMEOUT = 5 * 60 * 1000;
@@ -37,9 +41,9 @@ public class RESTUtils {
      * REST POST with parameters.
      *
      * @param url the complete url.
-     *
      * @return response cast to string.
      */
+    @Deprecated
     public static String requestPOST(final String url) {
         return requestPOST(url, null);
     }
@@ -49,9 +53,9 @@ public class RESTUtils {
      *
      * @param url        the complete url.
      * @param parameters the parameters or null.
-     *
      * @return response cast to string.
      */
+    @Deprecated
     public static String requestPOST(final String url, final String parameters) {
         return requestPOST(url, parameters, MediaType.TEXT_PLAIN_TYPE, String.class);
     }
@@ -64,9 +68,9 @@ public class RESTUtils {
      * @param mediaType          {@link MediaType} ContentType
      * @param responseObjectType response
      * @param <T>                response object
-     *
      * @return Response casted to given object
      */
+    @Deprecated
     public static <T> T requestPOST(final String url, final String parameters, final MediaType mediaType, Class<T> responseObjectType) {
         return requestPOST(url, parameters, mediaType, DEFAULT_TIMEOUT, responseObjectType);
     }
@@ -79,10 +83,11 @@ public class RESTUtils {
      * @param mediaType          {@link MediaType} ContentType
      * @param responseObjectType response
      * @param <T>                response object
-     *
      * @return Response casted to given object
      */
-    public static <T> T requestPOST(final String url, final String parameters, final MediaType mediaType, final int timeout, Class<T> responseObjectType) {
+    @Deprecated
+    public static <T> T requestPOST(final String url, final String parameters, final MediaType mediaType, final int timeout,
+                                    Class<T> responseObjectType) {
         WebResource resource = getClient(url, timeout).resource(url);
 
         if (parameters != null) {
@@ -96,9 +101,9 @@ public class RESTUtils {
      * REST GET
      *
      * @param url the complete url.
-     *
      * @return response cast to string.
      */
+    @Deprecated
     public static String requestGET(final String url) {
         return requestGET(url, String.class);
     }
@@ -109,13 +114,14 @@ public class RESTUtils {
      * @param url                {@link String}
      * @param responseObjectType Response Object Class
      * @param <T>                T
-     *
      * @return Response casted to given class
      */
+    @Deprecated
     public static <T> T requestGET(final String url, Class<T> responseObjectType) {
         return requestGET(url, DEFAULT_TIMEOUT, responseObjectType);
     }
 
+    @Deprecated
     public static <T> T requestGET(final String url, final int timeout, Class<T> responseObjectType) {
         Client client = getClient(url, timeout);
         WebResource resource = client.resource(url);
@@ -151,6 +157,7 @@ public class RESTUtils {
         return client;
     }
 
+    @Deprecated
     public static void requestDELETE(final String url) {
         Client client = getClient(url, DEFAULT_TIMEOUT);
         WebResource resource = client.resource(url);

@@ -8,6 +8,7 @@ dependencies {
     implementation 'org.apache.httpcomponents:httpcore:4.4.13'
     implementation 'org.apache.httpcomponents:httpclient:4.5.12'
     implementation 'com.sun.jersey:jersey-client:1.19.3'
+    implementation "com.google.guava:guava:${guavaVersion}"
 
     // <XML>
     // These dependencies are exposed by XMLUtils.java

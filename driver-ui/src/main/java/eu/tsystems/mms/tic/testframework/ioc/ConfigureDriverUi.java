@@ -2,6 +2,9 @@ package eu.tsystems.mms.tic.testframework.ioc;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
+import com.google.inject.multibindings.Multibinder;
+import eu.tsystems.mms.tic.testframework.hooks.DriverUiHook;
+import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultPageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultPageOverrides;
 import eu.tsystems.mms.tic.testframework.pageobjects.DefaultUiElementFactory;
@@ -26,5 +29,8 @@ public class ConfigureDriverUi extends AbstractModule {
         bind(PageOverrides.class).to(DefaultPageOverrides.class).in(Scopes.SINGLETON);
         bind(PropertyAssertionFactory.class).to(DefaultPropertyAssertionFactory.class).in(Scopes.SINGLETON);
         bind(IWebDriverManager.class).to(DefaultWebDriverManager.class).in(Scopes.SINGLETON);
+
+        Multibinder<ModuleHook> hookBinder = Multibinder.newSetBinder(binder(), ModuleHook.class);
+        hookBinder.addBinding().to(DriverUiHook.class).in(Scopes.SINGLETON);
     }
 }

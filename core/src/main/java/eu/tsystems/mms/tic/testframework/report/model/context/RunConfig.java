@@ -24,15 +24,14 @@
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.internal.TesterraBuildInformation;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
-
+import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
+import eu.tsystems.mms.tic.testframework.report.model.context.report.DefaultReport;
 import java.io.File;
 
 public final class RunConfig {
 
     public final String RUNCFG = (Testerra.Properties.DRY_RUN.asBool() ? Testerra.Properties.DRY_RUN : "") + PropertyManager.getProperty(TesterraProperties.RUNCFG, "DEFAULT");
-    public final TesterraBuildInformation testerraBuildInformation = new TesterraBuildInformation();
+    public final BuildInformation buildInformation = new BuildInformation();
 
     public static String getModuleFolderName() {
         return new File(".").getAbsoluteFile().getParentFile().getName();
@@ -47,7 +46,7 @@ public final class RunConfig {
         } catch (Exception e) {
             // nothing
         }
-        reportName = StaticReport.Properties.NAME.newDefault(defaultName).asString();
+        reportName = DefaultReport.Properties.NAME.newDefault(defaultName).asString();
     }
 
     public String getReportName() {

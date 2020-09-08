@@ -1,5 +1,5 @@
 plugins {
-    id 'com.github.jk1.dependency-license-report' version '1.13'
+    id 'com.github.jk1.dependency-license-report' version '1.14'
     id "com.jfrog.bintray" version "1.8.5"
 }
 
@@ -17,8 +17,10 @@ ext {
     driver_ui_desktop = project(':driver-ui-desktop')
     image_processing = project(':image-processing')
     core = project(':core')
+    report = project(':report')
 
     seleniumVersion = '3.141.59'
+    guavaVersion = "28.1-jre"
     /*
     Flags
      */
@@ -52,7 +54,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
-    apply plugin: 'jacoco' // code-coverage
+    //apply plugin: 'jacoco' // code-coverage
 
     // important!
     repositories {

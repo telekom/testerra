@@ -10,4 +10,6 @@ include 'integration-tests'
 include 'image-processing'
 include 'docs'
 include 'bup'
+include 'report-model'
+include 'report'
 

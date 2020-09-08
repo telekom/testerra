@@ -24,26 +24,18 @@
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,7 +46,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import static eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverFactory.wrapRawWebDriverWithEventFiringWebDriver;
 
 public final class WebDriverSessionsManager {
@@ -322,9 +318,7 @@ public final class WebDriverSessionsManager {
         ExecutionContextController.getCurrentExecutionContext().exclusiveSessionContexts.add(sessionContext);
         sessionContext.parentContext = ExecutionContextController.getCurrentExecutionContext();
         // fire sync
-        TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                .addUserData()
-                .addData(TesterraEventDataType.CONTEXT, sessionContext));
+        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
         /*
         Delete session from session maps.
@@ -449,13 +443,7 @@ public final class WebDriverSessionsManager {
             }
             sessionContext.parentContext = methodContext;
 
-            // fire sync
-            TesterraEventService.getInstance().fireEvent(
-                    new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                            .addUserData()
-                            .addData(TesterraEventDataType.CONTEXT, sessionContext)
-            );
-
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
             /*
             setup new session
              */
@@ -471,13 +459,7 @@ public final class WebDriverSessionsManager {
                     LOGGER.error("Error executing webdriver startup handler", e);
                 }
             }
-
-            // fire sync again, for updated sessionContext
-            TesterraEventService.getInstance().fireEvent(
-                    new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                            .addUserData()
-                            .addData(TesterraEventDataType.CONTEXT, sessionContext)
-            );
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
 
             return eventFiringWebDriver;
         } else {

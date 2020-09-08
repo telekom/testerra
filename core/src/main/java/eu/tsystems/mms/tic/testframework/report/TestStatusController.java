@@ -19,14 +19,15 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report;
+
+package eu.tsystems.mms.tic.testframework.report;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.MethodRelations;
-import eu.tsystems.mms.tic.testframework.report.external.junit.SimpleReportEntry;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -106,7 +107,8 @@ public class TestStatusController {
             Throwable throwable = methodContext.testResult.getThrowable();
 
             if (methodContext.testResult.getStatus() == ITestResult.CREATED && status == Status.FAILED) {
-                LOGGER.warn("TestNG bug - result status is CREATED, which is wrong. Method status is " + Status.FAILED + ", which is also wrong. Assuming SKIPPED.");
+                LOGGER.warn("TestNG bug - result status is CREATED, which is wrong. Method status is " + Status.FAILED +
+                        ", which is also wrong. Assuming SKIPPED.");
                 status = Status.SKIPPED;
             } else if (throwable instanceof SkipException) {
                 LOGGER.info("Found SkipException");
@@ -125,9 +127,6 @@ public class TestStatusController {
             // stop here
         }
 
-        // create xml results entry
-        SimpleReportEntry reportEntry = new SimpleReportEntry(method.getDeclaringClass().getName(), method.getName());
-
         // dont count if infoStatusMethod
         if (methodContext.status == Status.INFO) {
             return;
@@ -145,9 +144,6 @@ public class TestStatusController {
             case PASSED:
                 testsSuccessful++;
 
-                // set xml status
-                TesterraListener.XML_REPORTER.testSucceeded(reportEntry);
-
                 break;
 
             case FAILED_EXPECTED:
@@ -157,10 +153,6 @@ public class TestStatusController {
             case FAILED_MINOR:
             case FAILED:
                 testsFailed++;
-
-                // set xml status
-                TesterraListener.XML_REPORTER.testFailed(reportEntry, "", "");
-
                 levelFC(methodContext, true);
                 break;
 
@@ -241,6 +233,14 @@ public class TestStatusController {
             out = StringUtils.enhanceList(out, testsFailedRetried + " Retried", SEPERATOR, true);
         }
         return out;
+    }
+
+    public static void writeCounterToLog() {
+        String counterInfoMessage = getCounterInfoMessage();
+        String logMessage = ExecutionContextController.getCurrentExecutionContext().runConfig.getReportName() + " " +
+                getCurrentExecutionContext().runConfig.RUNCFG + ": " + counterInfoMessage;
+
+        LOGGER.info(logMessage);
     }
 
     public static int getTestsFailed() {

@@ -68,8 +68,6 @@
 :failure_corridor_allowed_failed_tests_mid:     tt.failure.corridor.allowed.failed.tests.mid
 :failure_corridor_allowed_failed_tests_low:     tt.failure.corridor.allowed.failed.tests.low
 
-:jvm_monitor_enabled:                           tt.monitor.memory
-
 :layoutcheck_takereference:                     tt.layoutcheck.takereference
 :layoutcheck_reference_path:                    tt.layoutcheck.reference.path
 :layoutcheck_reference_nametemplate:            tt.layoutcheck.reference.nametemplate

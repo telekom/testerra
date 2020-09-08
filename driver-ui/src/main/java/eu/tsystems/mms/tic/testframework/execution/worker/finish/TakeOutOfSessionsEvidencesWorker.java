@@ -21,27 +21,33 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-
 import java.util.List;
 
 public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker implements Loggable {
 
     protected void collect() {
-        if (isTest() && WebDriverManager.config().areSessionsClosedAfterTestMethod()) {
+        if (event.getTestMethod().isTest() && WebDriverManager.config().areSessionsClosedAfterTestMethod()) {
             /*
             videos are now fetched only after test methods
              */
             List<Video> videos = TestEvidenceCollector.collectVideos();
             log().debug("Evidence Videos: " + videos);
             if (videos != null) {
-                videos.forEach(v -> v.errorContextId = methodContext.id);
-                methodContext.videos.addAll(videos);
+                videos.forEach(v -> v.errorContextId = event.getMethodContext().id);
+                event.getMethodContext().videos.addAll(videos);
             }
         }
     }
 
+    @Override
+    @Subscribe
+    public void onMethodEnd(MethodEndEvent event) {
+        super.onMethodEnd(event);
+    }
 }

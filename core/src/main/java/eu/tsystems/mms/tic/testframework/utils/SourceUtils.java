@@ -21,17 +21,11 @@
  */
  package eu.tsystems.mms.tic.testframework.utils;
 
-import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.StaticReport;
-import org.reflections.Reflections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import eu.tsystems.mms.tic.testframework.report.model.context.report.DefaultReport;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -40,6 +34,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <Beschreibung der Klasse>
@@ -55,7 +52,7 @@ public final class SourceUtils {
 
     private static String sourceRoot = System.getProperty(TesterraProperties.MODULE_SOURCE_ROOT, "src");
     private static int linePrefetch = PropertyManager.getIntProperty(TesterraProperties.SOURCE_LINES_PREFETCH, 5);
-    private static final boolean FIND_SOURCES = StaticReport.Properties.ACTIVATE_SOURCES.asBool();
+    private static final boolean FIND_SOURCES = DefaultReport.Properties.ACTIVATE_SOURCES.asBool();
     private static HashMap<Class, List<String>> cachedClassNames = new HashMap<Class, List<String>>();
     private static final String PACKAGE_SCOPE = PropertyManager.getProperty(TesterraProperties.PROJECT_PACKAGE,
             TesterraCommons.DEFAULT_PACKAGE_NAME);
@@ -177,17 +174,14 @@ public final class SourceUtils {
         return -1;
     }
 
-    @SuppressWarnings("unchecked")
     private static List<String> findClassNamesForSubTypesOf(Class clazz) {
         final List<String> classnames = new ArrayList<String>();
-        synchronized (Locks.REFLECTIONS) {
-            Reflections reflections = new Reflections(PACKAGE_SCOPE);
-            Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
-            for (Class aClass : subTypesOf) {
-                classnames.add(aClass.getName());
-            }
-            return classnames;
+        Reflections reflections = new Reflections(PACKAGE_SCOPE);
+        Set<Class> subTypesOf = reflections.getSubTypesOf(clazz);
+        for (Class aClass : subTypesOf) {
+            classnames.add(aClass.getName());
         }
+        return classnames;
     }
 
     private static ScriptSource getSourceFrom(String className, String filename, String methodName, int lineNr) {
@@ -213,7 +207,7 @@ public final class SourceUtils {
             return source;
         }
         else {
-            LOGGER.warn("Did not find source for " + filename + " in " + sourceRoot);
+            LOGGER.debug("Did not find source for " + filename + " in " + sourceRoot);
             return null;
         }
     }

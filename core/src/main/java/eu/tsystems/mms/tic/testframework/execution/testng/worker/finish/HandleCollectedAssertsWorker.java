@@ -21,26 +21,30 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
+import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import java.util.List;
 import org.testng.ITestResult;
 
-import java.util.List;
-
-public class HandleCollectedAssertsWorker extends MethodWorker {
+public class HandleCollectedAssertsWorker implements MethodEndEvent.Listener {
 
     final AssertionsCollector assertionsCollector = Testerra.injector.getInstance(AssertionsCollector.class);
 
     @Override
-    public void run() {
+    @Subscribe
+    public void onMethodEnd(MethodEndEvent event) {
         if (assertionsCollector.hasEntries()) {
             // add all collected assertions
             List<AssertionInfo> entries = assertionsCollector.getEntries();
-            methodContext.addCollectedAssertions(entries);
-
-            if (isSuccess()) {
+            event.getMethodContext().addCollectedAssertions(entries);
+            ITestResult testResult = event.getTestResult();
+            MethodContext methodContext = event.getMethodContext();
+            if (testResult.isSuccess()) {
                 // let the test fail
                 testResult.setStatus(ITestResult.FAILURE);
                 String msg = "The following assertions failed:";

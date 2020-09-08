@@ -21,15 +21,19 @@
  */
  package eu.tsystems.mms.tic.testframework.utils;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
+/**
+ * @deprecated Please use Java Date library
+ */
+@Deprecated
 public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy_HH:mm:ss");
@@ -43,21 +47,25 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     }
 
+    @Deprecated
     public static String getDate() {
 
         return SIMPLE_DATE_FORMAT.format(new Date());
     }
 
+    @Deprecated
     public static String getDate(final SimpleDateFormat simpleDateFormat) {
 
         return simpleDateFormat.format(new Date());
     }
 
+    @Deprecated
     public static String getDate(final SimpleDateFormat simpleDateFormat, final Date date) {
 
         return simpleDateFormat.format(date);
     }
 
+    @Deprecated
     public static XMLGregorianCalendar getXMLGregorianCalender(final Date date) throws DatatypeConfigurationException {
 
         GregorianCalendar c = new GregorianCalendar();
@@ -66,6 +74,7 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return xgc;
     }
 
+    @Deprecated
     public static Date getDateWithDiff(int monthDiff, int dayOfMonthDiff, int dayOfWeekDiff, int hourDiff, int minuteDiff, int secondDiff) {
 
         final Calendar calendar = Calendar.getInstance();
@@ -78,6 +87,7 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return calendar.getTime();
     }
 
+    @Deprecated
     public static Date getDate(XMLGregorianCalendar xmlGregorianCalendar) {
 
         if (xmlGregorianCalendar == null) {
@@ -86,6 +96,7 @@ public final class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return xmlGregorianCalendar.toGregorianCalendar().getTime();
     }
 
+    @Deprecated
     public static String getFormattedDuration(long durationInMS, boolean showMS) {
 
         String zero = "0s";

@@ -19,24 +19,22 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.watchdog;
 
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+package eu.tsystems.mms.tic.testframework.watchdog;
+
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.ReportUtils;
 import eu.tsystems.mms.tic.testframework.utils.SecUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.TimingConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class WebDriverWatchDog {
 
@@ -138,7 +136,8 @@ public final class WebDriverWatchDog {
                                 final int passedSeconds = newCount * TimingConstants.WATCHDOG_THREAD_POLL_INTERVAL_SECONDS;
 
                                 if (passedSeconds > TimingConstants.WATCHDOG_FIRST_ANNOUNCEMENT_SECONDS) {
-                                    LOGGER.warn("(" + passedSeconds + "/" + TimingConstants.WEBDRIVER_COMMAND_TIMEOUT_SECONDS + " s) hanging a while now: " + key);
+                                    LOGGER.warn("(" + passedSeconds + "/" + TimingConstants.WEBDRIVER_COMMAND_TIMEOUT_SECONDS +
+                                            " s) hanging a while now: " + key);
                                 }
 
                                 /*
@@ -154,7 +153,7 @@ public final class WebDriverWatchDog {
                                          */
                                         try {
                                             ReportInfo.getDashboardWarning().addInfo(0, "Watchdog stopped the test");
-                                            ReportUtils.generateReportEssentials();
+                                            TesterraListener.getEventBus().post(new ExecutionAbortEvent());
                                         } finally {
                                             System.err.println("Causing stacktrace on thread " + threadId + ":\n" + readableStacktrace);
                                             System.err.println("\n" +
@@ -175,10 +174,8 @@ public final class WebDriverWatchDog {
 
 
                                             // update crashed execution context
-                                            ExecutionContextController.getCurrentExecutionContext().crashed = true;
-                                            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                                                    .addUserData()
-                                                    .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.getCurrentExecutionContext()));
+                                            ContextUpdateEvent event = new ContextUpdateEvent().setContext(ExecutionContextController.getCurrentExecutionContext());
+                                            TesterraListener.getEventBus().post(event);
 
                                             System.exit(99);
                                         }

@@ -21,21 +21,21 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.worker.start;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.MethodStartEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
-import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
+import java.util.List;
 import org.openqa.selenium.WebDriver;
 
-import java.util.List;
-
-public class WebDriverLoggingStartWorker extends MethodWorker implements Loggable {
+public class WebDriverLoggingStartWorker implements MethodStartEvent.Listener, Loggable {
 
     @Override
-    public void run() {
-        if (isTest()) {
+    @Subscribe
+    public void onMethodStart(MethodStartEvent event) {
+        if (event.getTestMethod().isTest()) {
             /*
              * Log already opened wd sessions
              */

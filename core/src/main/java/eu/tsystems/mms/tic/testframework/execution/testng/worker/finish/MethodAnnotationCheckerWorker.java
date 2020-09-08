@@ -21,29 +21,37 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
+import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraTestFailureException;
-import eu.tsystems.mms.tic.testframework.execution.testng.worker.MethodWorker;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import eu.tsystems.mms.tic.testframework.report.utils.FailsAnnotationFilter;
-import org.testng.annotations.Test;
-
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import org.testng.ITestResult;
+import org.testng.annotations.Test;
 
-public class MethodAnnotationCheckerWorker extends MethodWorker {
+public class MethodAnnotationCheckerWorker implements MethodEndEvent.Listener {
 
+    @Subscribe
     @Override
-    public void run() {
+    public void onMethodEnd(MethodEndEvent event) {
+        Method method = event.getMethod();
+        MethodContext methodContext = event.getMethodContext();
+        ITestResult testResult = event.getTestResult();
         /*
         write method annotations info
          */
         Annotation[] annotations = method.getAnnotations();
         methodContext.methodTags = Arrays.stream(annotations).collect(Collectors.toList());
 
-        if (isTest()) {
+        if (event.getTestMethod().isTest()) {
             // get fails annotation
             Fails fails = null;
             if (method.isAnnotationPresent(Fails.class)) {
@@ -57,14 +65,14 @@ public class MethodAnnotationCheckerWorker extends MethodWorker {
                 }
             }
 
-            if (isSuccess()) {
+            if (testResult.isSuccess()) {
                 if (fails != null && FailsAnnotationFilter.isFailsAnnotationValid(fails)) {
                     // fails annotation is present but test is passed -> warn
                     ReportInfo.getDashboardInfo().addInfo(0, "Repaired >" + method.getName() + "< marked @Fails", "methods/" + methodContext.methodRunIndex + ".html");
                     methodContext.addPriorityMessage("@Fails annotation can be removed: " + fails);
                 }
             }
-            else if (isFailed()) {
+            else if (event.isFailed()) {
                 Throwable throwable = testResult.getThrowable();
 
                 // may be there is a deeper @Fails annotataion present

@@ -39,7 +39,7 @@ public class LayoutCheckTest extends AbstractTestSitesTest {
     }
 
     private GuiElement getGuiElementQa(final String qaTag) {
-        return new GuiElement(WebDriverManager.getWebDriver(), Locate.by().qa(qaTag));
+        return new GuiElement(WebDriverManager.getWebDriver(), Locate.byQa(qaTag));
     }
 
     @Test

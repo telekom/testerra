@@ -92,14 +92,14 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
     public void testT05a_Displayed_Is() {
 
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").filter(webElement -> !webElement.isDisplayed()));
+        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by(By.xpath(".//*[@id]")).filter(webElement -> !webElement.isDisplayed()));
         nonVisibleTable.asserts().assertIsNotDisplayed();
     }
 
     @Test
     public void testT05b_Displayed_Is() {
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by().displayed(false).xpath(".//*[@id]"));
+        GuiElement nonVisibleTable = new GuiElement(driver, Locate.by(By.xpath(".//*[@id]")).displayed(false));
         nonVisibleTable.asserts().assertIsNotDisplayed();
     }
 
@@ -107,7 +107,7 @@ public class GuiElementFilterTest extends AbstractTestSitesTest {
     public void testT05c_Displayed_Is() {
 
         final WebDriver driver = WebDriverManager.getWebDriver();
-        GuiElement visibleTable = new GuiElement(driver, Locate.by().xpath(".//*[@id]").displayed());
+        GuiElement visibleTable = new GuiElement(driver, Locate.by(By.xpath(".//*[@id]")).displayed());
         visibleTable.asserts().assertIsDisplayed();
     }
 

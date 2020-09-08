@@ -22,11 +22,10 @@
 
 package eu.tsystems.mms.tic.testframework.watchdog;
 
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
+import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.SecUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.TimingConstants;
@@ -154,10 +153,7 @@ public final class WebDriverWatchDog {
                                          */
                                         try {
                                             ReportInfo.getDashboardWarning().addInfo(0, "Watchdog stopped the test");
-                                            // fire Event for Report gnerateion
-                                            TesterraEventService.getInstance()
-                                                    .fireEvent(new TesterraEvent(TesterraEventType.TEST_RUN_ABORT)
-                                                            .addUserData());
+                                            TesterraListener.getEventBus().post(new ExecutionAbortEvent());
                                         } finally {
                                             System.err.println("Causing stacktrace on thread " + threadId + ":\n" + readableStacktrace);
                                             System.err.println("\n" +
@@ -178,10 +174,8 @@ public final class WebDriverWatchDog {
 
 
                                             // update crashed execution context
-                                            ExecutionContextController.getCurrentExecutionContext().crashed = true;
-                                            TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                                                    .addUserData()
-                                                    .addData(TesterraEventDataType.CONTEXT, ExecutionContextController.getCurrentExecutionContext()));
+                                            ContextUpdateEvent event = new ContextUpdateEvent().setContext(ExecutionContextController.getCurrentExecutionContext());
+                                            TesterraListener.getEventBus().post(event);
 
                                             System.exit(99);
                                         }

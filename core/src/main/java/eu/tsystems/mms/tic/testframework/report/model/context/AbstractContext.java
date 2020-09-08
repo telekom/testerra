@@ -21,13 +21,12 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.events.TesterraEvent;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventDataType;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventService;
-import eu.tsystems.mms.tic.testframework.events.TesterraEventType;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+import java.util.Queue;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +62,7 @@ public abstract class AbstractContext implements SynchronizableContext {
         context.swi = parentContext.swi + "_" + name;
     }
 
-    protected <T extends AbstractContext> T getContext(Class<T> contextClass, List<T> contexts, String name, boolean autocreate, CreateDownStreamContext<T> createDownStreamContext) {
+    protected <T extends AbstractContext> T getContext(Class<T> contextClass, Queue<T> contexts, String name, boolean autocreate, CreateDownStreamContext<T> createDownStreamContext) {
         synchronized (contexts) {
             List<T> collect = contexts.stream().filter(context -> name.equals(context.name)).collect(Collectors.toList());
             if (collect.isEmpty()) {
@@ -78,13 +77,7 @@ public abstract class AbstractContext implements SynchronizableContext {
                     T context = createDownStreamContext.create();
                     fillBasicContextValues(context, this, name);
                     contexts.add(context);
-
-                    // fire context update event: create context
-                    TesterraEventService.getInstance().fireEvent(new TesterraEvent(TesterraEventType.CONTEXT_UPDATE)
-                            .addUserData()
-                            .addData(TesterraEventDataType.CONTEXT, context)
-                            .addData(TesterraEventDataType.WITH_PARENT, true));
-
+                    TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(context));
                     return context;
                 } catch (Exception e) {
                     throw new TesterraSystemException("Error creating Context Class", e);

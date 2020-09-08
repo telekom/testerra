@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 
 public class LayoutCheckContext implements CustomContext {
 
+    public String name = this.getClass().getSimpleName();
     public String image;
     public String mode;
     public double distance;

@@ -171,7 +171,7 @@ public final class PerfTestContainer {
 //        PerfTestReportUtils.saveTestConfigs();
 //    }
 
-    public static void prepareMeasurementsForTesterraReport() {
+    public static void prepareMeasurementsForReport() {
 
         Map<String, Map<Long, List<TimingInfo>>> pageLoadInfosPerTestMethod = PerfTestContainer
                 .getPageLoadInfosPerTestMethod();

@@ -30,16 +30,14 @@ import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.internal.utils.TimingInfosCollector;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.LoggingDispatcher;
+import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
-import eu.tsystems.mms.tic.testframework.report.perf.PerfTestContainer;
 import eu.tsystems.mms.tic.testframework.report.perf.PerfTestReportUtils;
 import eu.tsystems.mms.tic.testframework.report.threadvisualizer.ThreadVisualizer;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.report.utils.GenerateReport;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,6 +63,16 @@ public final class ReportUtils {
      * Logger instance.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportUtils.class);
+    private static Report report = new Report();
+    private static final String FRAMES_FOLDER_NAME = "frames";
+    private static final String METHODS_FOLDER_NAME = "methods";
+    private static File FRAMES_DIRECTORY = report.getReportDirectory(FRAMES_FOLDER_NAME);
+    private static File METHODS_DIRECTORY = new File(FRAMES_DIRECTORY, METHODS_FOLDER_NAME);
+
+    static {
+        FRAMES_DIRECTORY.mkdirs();
+        METHODS_DIRECTORY.mkdirs();
+    }
 
     /**
      * Hide constructor
@@ -78,8 +86,7 @@ public final class ReportUtils {
      */
     public static void copyReportResources() {
 
-        Report report = new Report();
-        final File targetDir = report.getReportDirectory(Report.FRAMES_FOLDER_NAME);
+        final File targetDir = FRAMES_DIRECTORY;
 
         String[] resources = new String[] {
                 "js/kis/main.js",
@@ -355,15 +362,11 @@ public final class ReportUtils {
             }
         }
 
-        /*
-        create frames dir
-         */
-        final File framesDir = Report.FRAMES_DIRECTORY;
 
         /*
         Dashboard
          */
-        final File reportFileDashboard = new File(framesDir, "dashboard.html");
+        final File reportFileDashboard = new File(FRAMES_DIRECTORY, "dashboard.html");
         ReportFormatter.createDashboardHtml(reportingData, reportFileDashboard, "dashboard.vm");
 
         final File reportFileEmailable = report.getReportDirectory("emailable-report.html");
@@ -372,7 +375,7 @@ public final class ReportUtils {
         /*
         measurements output
          */
-        final File reportFileMeasurements = new File(framesDir, "measurements.html");
+        final File reportFileMeasurements = new File(FRAMES_DIRECTORY, "measurements.html");
         Map<String, Long> avgMeasurementPerActions = PerfTestReportUtils.getAverageResponseTimePerTestStepAction();
         Map<String, Long> minMeasurementPerActions = PerfTestReportUtils.getMinResponseTimePerTestStepAction();
         Map<String, Long> maxMeasurementPerActions = PerfTestReportUtils.getMaxResponseTimePerTestStepAction();
@@ -383,14 +386,14 @@ public final class ReportUtils {
         /*
          * Classes
          */
-        final File reportFileClassesStats = new File(framesDir, "classesStatistics.html");
+        final File reportFileClassesStats = new File(FRAMES_DIRECTORY, "classesStatistics.html");
         final ReportInfo.RunInfo runInfo = ReportInfo.getRunInfo();
         ReportFormatter.createTestClassesView(reportFileClassesStats, reportingData.classContexts, "classesStatistics.vm", null, runInfo);
 
         /*
         create classes dir
          */
-        final File classesLogDir = new File(framesDir, "classes/");
+        final File classesLogDir = new File(FRAMES_DIRECTORY, "classes/");
         classesLogDir.mkdir();
 
         /*
@@ -411,13 +414,11 @@ public final class ReportUtils {
         create method details
          */
         for (ClassContext classContext : reportingData.classContexts) {
-            final Collection<MethodContext> methodContexts = classContext.copyOfMethodContexts();
-
             /*
             multi threaded details generation, 1 thread per class
              */
             Runnable createMethodDetailsRunnable = () -> {
-                for (MethodContext testMethodContainer : methodContexts) {
+                for (MethodContext testMethodContainer : classContext.methodContexts) {
                     createMethodDetailsView(testMethodContainer);
                 }
             };
@@ -439,14 +440,14 @@ public final class ReportUtils {
         /*
         Logs
          */
-        final File reportFileGlobalLogs = new File(framesDir, "logs.html");
+        final File reportFileGlobalLogs = new File(FRAMES_DIRECTORY, "logs.html");
         ReportFormatter.createTestClassesView(reportFileGlobalLogs, reportingData.classContexts, "log.vm", LoggingDispatcher.getInstance().getUnrelatedLogs(), null);
 
         /*
         Memory consumption
          */
         JVMMonitor.label("End");
-        final File reportFileMemory = new File(framesDir, "memory.html");
+        final File reportFileMemory = new File(FRAMES_DIRECTORY, "memory.html");
         ReportFormatter.createMemoryHtml(reportFileMemory, "memory.vm");
 
         /*
@@ -470,7 +471,7 @@ public final class ReportUtils {
 
     public static void createMethodDetailsStepsView(MethodContext methodContext) {
         try {
-            File reportFile2 = new File(Report.METHODS_DIRECTORY, "steps" + methodContext.methodRunIndex + ".html");
+            File reportFile2 = new File(METHODS_DIRECTORY, "steps" + methodContext.methodRunIndex + ".html");
             ReportFormatter.createMethodsFrame(reportFile2, methodContext, "methodDetailsSteps.vm");
             LOGGER.trace("Created method details steps view for " + methodContext);
         } catch (Exception e) {
@@ -480,7 +481,7 @@ public final class ReportUtils {
 
     public static void createMethodDetailsView(MethodContext methodContext) {
         try {
-            File reportFile2 = new File(Report.METHODS_DIRECTORY, methodContext.methodRunIndex + ".html");
+            File reportFile2 = new File(METHODS_DIRECTORY, methodContext.methodRunIndex + ".html");
             ReportFormatter.createMethodsFrame(reportFile2, methodContext, "methodDetails.vm");
             LOGGER.trace("Created method details view for " + methodContext);
         } catch (Exception e) {
@@ -490,14 +491,6 @@ public final class ReportUtils {
 
     public static String getReportName() {
         return ExecutionContextController.getCurrentExecutionContext().runConfig.getReportName();
-    }
-
-    /**
-     * Generates the Testerra report
-     */
-    public static void generateReportEssentials() {
-        PerfTestContainer.prepareMeasurementsForTesterraReport();
-        GenerateReport.generateReport();
     }
 
     public static class TabInfo {
@@ -555,7 +548,7 @@ public final class ReportUtils {
 
     private static void createExtraTopLevelTab(String vmTemplateFileInResources, String htmlOutputFileName, String tabName,
                                                VelocityContext velocityContext) {
-        File htmlOutputFile = new File(Report.FRAMES_DIRECTORY, htmlOutputFileName);
+        File htmlOutputFile = new File(FRAMES_DIRECTORY, htmlOutputFileName);
         try {
             ReportFormatter.createHtml(vmTemplateFileInResources, htmlOutputFile, velocityContext);
         } catch (IOException e) {

@@ -24,13 +24,13 @@ package eu.tsystems.mms.tic.testframework.utils;
 
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
-import eu.tsystems.mms.tic.testframework.internal.TesterraBuildInformation;
+import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.LogMessage;
-import eu.tsystems.mms.tic.testframework.report.model.ReportingData;
+import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.model.context.ClassContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -375,7 +375,7 @@ public class ReportFormatter {
     private static VelocityContext getVelocityContext() {
         VelocityContext context = new VelocityContext();
         context.put("executionContext", ExecutionContextController.getCurrentExecutionContext());
-        context.put("TesterraBuildInformation", TesterraBuildInformation.getInstance());
+        context.put("TesterraBuildInformation", BuildInformation.getInstance());
         context.put("reportScreenshotsPreview", Flags.REPORT_SCREENSHOTS_PREVIEW);
         context.put("reportName", ReportUtils.getReportName());
 

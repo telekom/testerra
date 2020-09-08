@@ -21,6 +21,8 @@
  */
  package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -35,10 +37,15 @@ public class TakeInSessionEvidencesWorker extends AbstractEvidencesWorker {
             List<Screenshot> screenshots = TestEvidenceCollector.collectScreenshots();
 
             if (screenshots != null) {
-                screenshots.forEach(s -> s.errorContextId = methodContext.id);
-                methodContext.screenshots.addAll(screenshots);
+                screenshots.forEach(s -> s.errorContextId = event.getMethodContext().id);
+                event.getMethodContext().screenshots.addAll(screenshots);
             }
         }
     }
 
+    @Override
+    @Subscribe
+    public void onMethodEnd(MethodEndEvent event) {
+        super.onMethodEnd(event);
+    }
 }

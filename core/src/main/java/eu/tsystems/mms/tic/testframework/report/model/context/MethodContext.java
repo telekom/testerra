@@ -81,6 +81,14 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public List<MethodContext> relatedMethodContexts;
     public List<MethodContext> dependsOnMethodContexts;
 
+    public List<MethodContext> getRelatedMethodContexts() {
+        return relatedMethodContexts;
+    }
+
+    public List<MethodContext> getDependsOnMethodContexts() {
+        return dependsOnMethodContexts;
+    }
+
     public final List<Video> videos = new LinkedList<>();
     public final List<Screenshot> screenshots = new LinkedList<>();
     public final List<CustomContext> customContexts = new LinkedList<>();

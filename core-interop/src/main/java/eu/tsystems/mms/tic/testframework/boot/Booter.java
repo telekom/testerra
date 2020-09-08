@@ -21,17 +21,11 @@
  */
  package eu.tsystems.mms.tic.testframework.boot;
 
-import eu.tsystems.mms.tic.testframework.common.Locks;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
-import eu.tsystems.mms.tic.testframework.internal.TesterraBuildInformation;
+import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.reflections.Reflections;
-import org.reflections.util.ConfigurationBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,6 +34,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class Booter {
 
@@ -80,7 +78,7 @@ public final class Booter {
         /*
         get versions info
          */
-        TesterraBuildInformation buildInformation = TesterraBuildInformation.getInstance();
+        BuildInformation buildInformation = BuildInformation.getInstance();
         bannerVersions.add("build.java.version: " + buildInformation.buildJavaVersion);
         bannerVersions.add("build.os.name:      " + buildInformation.buildOsName);
         bannerVersions.add("build.os.arch:      " + buildInformation.buildOsArch);
@@ -118,28 +116,26 @@ public final class Booter {
         configurationBuilder.addClassLoader(Thread.currentThread().getContextClassLoader());
         configurationBuilder.forPackages("eu.tsystems.mms.tic");
 
-        synchronized (Locks.REFLECTIONS) {
-            final Reflections reflections = new Reflections(configurationBuilder);
-            final Set<Class<? extends ModuleHook>> hooks = reflections.getSubTypesOf(ModuleHook.class);
+        final Reflections reflections = new Reflections(configurationBuilder);
+        final Set<Class<? extends ModuleHook>> hooks = reflections.getSubTypesOf(ModuleHook.class);
 
-            if (hooks.isEmpty()) {
-                LOGGER.debug("No Init Hooks found");
-            }
-
-            // init hooks in alphabetical order to avoid random initialization
-            hooks.stream()
-                    .sorted(Comparator.comparing(Class::getSimpleName))
-                    .forEach(aClass -> {
-                        try {
-                            final ModuleHook moduleHook = aClass.getConstructor().newInstance();
-                            LOGGER.debug("Initialize " + ModuleHook.class.getSimpleName() + ": " + aClass.getSimpleName());
-                            moduleHook.init();
-                            MODULE_HOOKS.add(moduleHook);
-                        } catch (Exception e) {
-                            LOGGER.error("Could not load Init Hook " + aClass.getSimpleName());
-                        }
-                    });
+        if (hooks.isEmpty()) {
+            LOGGER.debug("No Init Hooks found");
         }
+
+        // init hooks in alphabetical order to avoid random initialization
+        hooks.stream()
+                .sorted(Comparator.comparing(Class::getSimpleName))
+                .forEach(aClass -> {
+                    try {
+                        final ModuleHook moduleHook = aClass.getConstructor().newInstance();
+                        LOGGER.debug("Initialize " + ModuleHook.class.getSimpleName() + ": " + aClass.getSimpleName());
+                        moduleHook.init();
+                        MODULE_HOOKS.add(moduleHook);
+                    } catch (Exception e) {
+                        LOGGER.error("Could not load Init Hook " + aClass.getSimpleName());
+                    }
+                });
     }
 
     public static void shutdown() {

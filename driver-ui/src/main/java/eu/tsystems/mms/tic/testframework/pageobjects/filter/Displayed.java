@@ -21,9 +21,11 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 
+import java.util.function.Predicate;
 import org.openqa.selenium.WebElement;
 
-public class Displayed extends WebElementFilter {
+@Deprecated
+public class Displayed implements Predicate<WebElement> {
 
     private boolean expectedVisibility;
 
@@ -33,14 +35,13 @@ public class Displayed extends WebElementFilter {
         this.expectedVisibility = expectedVisibility;
     }
 
-    public WebElementFilter is(boolean expectedVisibility) {
+    public Predicate<WebElement> is(boolean expectedVisibility) {
         Displayed displayed = new Displayed(expectedVisibility);
         return displayed;
     }
 
     @Override
-    public boolean isSatisfiedBy(WebElement webElement) {
-        checkCorrectUsage(STD_ERROR_MSG, expectedVisibility);
+    public boolean test(WebElement webElement) {
         boolean displayed = webElement.isDisplayed();
         return displayed == expectedVisibility;
     }

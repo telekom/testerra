@@ -19,34 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.filter;
+package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 
-import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
-import org.openqa.selenium.WebElement;
-
-public abstract class WebElementFilter {
-
-    public static final Enabled ENABLED = new Enabled();
-    public static final Selected SELECTED = new Selected();
+@Deprecated
+public final class WebElementFilter {
     public static final Tag TAG = new Tag();
-    public static final Size SIZE = new Size();
     public static final Text TEXT = new Text();
     public static final Css CSS = new Css();
     public static final Displayed DISPLAYED = new Displayed();
     public static final Attribute ATTRIBUTE = new Attribute();
-    public static final Position POSITION = new Position();
-
-    public static final Child CHILD = new Child();
-
-    final static String STD_ERROR_MSG = "Use the filter properties like is() on your WebElementFilter!";
-
-    public abstract boolean isSatisfiedBy(WebElement webElement);
-
-    void checkCorrectUsage(final String helpText, Object... objectsToBeNotNull) {
-        for (Object o : objectsToBeNotNull) {
-            if (o == null) {
-                throw new TesterraSystemException("Error using WebElementFilter.\n" + helpText);
-            }
-        }
-    }
 }

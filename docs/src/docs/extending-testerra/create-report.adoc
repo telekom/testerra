@@ -1,0 +1,46 @@
+= Create a report
+
+When you want to create a custom report, you have to add the `report-model` module as a dependency to your module and listen to the `FinalizeExecutionEvent`.
+
+[source,java]
+----
+import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+
+public class GenerateReportListener implements FinalizeExecutionEvent.Listener, Loggable {
+
+    @Override
+    @Subscribe
+    public void onFinalizeExecution(FinalizeExecutionEvent event) {
+        log().info("Generate report");
+    }
+}
+----
+
+== Generate the protobuf report model
+
+Testerra ships Google Protobuf model adapters for the internal context model.
+You can automatically generate all the models during the execution, when you register the `GenerateReportModelListener` in your module hook.
+
+[source,java]
+----
+
+import com.google.common.eventbus.EventBus;
+import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
+import eu.tsystems.mms.tic.testframework.listeners.GenerateReportModelListener;
+import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
+
+public class CustomReportModuleHook implements ModuleHook {
+
+    @Override
+    public void init() {
+        Report report = new Report();
+        EventBus eventBus = TesterraListener.getEventBus();
+        eventBus.register(new GenerateReportModelListener(report.getReportDirectory()));
+    }
+}
+----
+
+This will generate Protobuf models in `testerra-report/models`.

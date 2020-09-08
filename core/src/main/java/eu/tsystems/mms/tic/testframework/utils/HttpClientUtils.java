@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.utils;
+
+package eu.tsystems.mms.tic.testframework.utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,6 +33,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @deprecated - Please use modern Rest / HTTP clients
+ */
+@Deprecated
 public final class HttpClientUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);
@@ -41,10 +46,13 @@ public final class HttpClientUtils {
         public abstract String run(HttpResponse response);
     }
 
+    @Deprecated
+
     public static String request(String requestUrl, ResponseCallBack callback) throws IOException {
         return request(requestUrl, true, null, 10000, callback, false);
     }
 
+    @Deprecated
     public static String request(String requestUrl, boolean proxyAutoMode, HttpHost proxy, int connectionTimeoutMillis,
                                  ResponseCallBack responseCallBack, boolean suppressLogging) throws IOException {
         return pRequest(requestUrl, proxyAutoMode, proxy, connectionTimeoutMillis, responseCallBack, suppressLogging);

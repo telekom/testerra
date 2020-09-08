@@ -19,14 +19,14 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
+ package eu.tsystems.mms.tic.testframework.test.core.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.ResponsiveWebTestPage;
 
 /**
  * Tests the responsive page factory for correct instantiated classes.
  */
-public class PageFactoryTest extends AbstractPageFactoryTest {
+public class PageFactoryTest_NewApi extends AbstractPageFactoryTest {
 
     public ResponsiveWebTestPage getPage() {
         return pageFactory.createPage(ResponsiveWebTestPage.class);

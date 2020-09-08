@@ -21,7 +21,9 @@ package eu.tsystems.mms.tic.testframework.adapters;
 
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.ErrorContext;
 import eu.tsystems.mms.tic.testframework.report.model.FailureCorridorValue;
 import eu.tsystems.mms.tic.testframework.report.model.File;
@@ -35,7 +37,6 @@ import eu.tsystems.mms.tic.testframework.report.model.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.model.ScriptSourceLine;
 import eu.tsystems.mms.tic.testframework.report.model.StackTrace;
 import eu.tsystems.mms.tic.testframework.report.model.StackTraceCause;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStep;
 import eu.tsystems.mms.tic.testframework.report.model.steps.TestStepAction;
 import java.lang.annotation.Annotation;
@@ -45,7 +46,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class MethodContextExporter extends AbstractContextExporter {
-    private Report report = new Report();
+    private Report report = Testerra.injector.getInstance(Report.class);
     private Gson jsonEncoder = new Gson();
 
     private static String annotationToString(Annotation annotation) {
@@ -119,7 +120,6 @@ public class MethodContextExporter extends AbstractContextExporter {
         /**
          * The report is already moved to the target directory at this point.
          */
-        final Report report = new Report();
         final java.io.File targetVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);
         final java.io.File targetScreenshotDir = report.getFinalReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
         final java.io.File currentVideoDir = report.getFinalReportDirectory(Report.VIDEO_FOLDER_NAME);

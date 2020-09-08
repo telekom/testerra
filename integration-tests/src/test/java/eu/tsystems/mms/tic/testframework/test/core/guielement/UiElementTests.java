@@ -21,7 +21,6 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -30,6 +29,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
+import eu.tsystems.mms.tic.testframework.test.core.PageFactoryTest;
 import org.testng.annotations.Test;
 
 public class UiElementTests extends AbstractTestSitesTest implements Loggable, PageFactoryTest {

@@ -35,10 +35,6 @@ import java.util.List;
 public class DefaultReport implements Report, Loggable {
 
     public static File REPORT_DIRECTORY;
-    public static final String SCREENSHOTS_FOLDER_NAME = "screenshots";
-    public static final String VIDEO_FOLDER_NAME = "videos";
-    @Deprecated
-    public static final String XML_FOLDER_NAME = "xml";
 
     private File SCREENSHOTS_DIRECTORY;
     private File VIDEO_DIRECTORY;

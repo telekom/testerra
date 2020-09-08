@@ -7,6 +7,9 @@ import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import java.io.File;
 
 public interface Report {
+    String SCREENSHOTS_FOLDER_NAME = "screenshots";
+    String VIDEO_FOLDER_NAME = "videos";
+    String XML_FOLDER_NAME = "xml";
     enum Mode {
         COPY,
         MOVE

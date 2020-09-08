@@ -31,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.DefaultReport;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
@@ -303,7 +302,8 @@ public class UITestUtils {
                     .getScreenshot(upperLeftCorner.getX(), upperLeftCorner.getY(), lowerRightCorner.getX(), lowerRightCorner.getY());
 
             final String filename = "Desktop_" + FILES_DATE_FORMAT.format(new Date()) + ".png";
-            final File targetFile = new File(DefaultReport.SCREENSHOTS_DIRECTORY, filename);
+            Report report = Testerra.injector.getInstance(Report.class);
+            final File targetFile = new File(report.getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME), filename);
             saveBufferedImage(screenshot, targetFile);
 
             final MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();

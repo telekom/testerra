@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.internal;
+package eu.tsystems.mms.tic.testframework.internal;
 
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
@@ -27,7 +27,6 @@ import eu.tsystems.mms.tic.testframework.report.model.context.CustomContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-
 import java.util.LinkedList;
 import java.util.List;
 

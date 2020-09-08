@@ -92,7 +92,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
             cause = e;
         }
         if (elements != null) {
-            final Locate selector = guiElementData.guiElement.getLocator();
+            final Locate selector = guiElementData.getGuiElement().getLocate();
             Predicate<WebElement> filter = selector.getFilter();
             if (filter != null) {
                 elements.removeIf(webElement -> !filter.test(webElement));
@@ -100,7 +100,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
             if (selector.isUnique() && elements.size() > 1) {
                 throw new NonUniqueElementException(String.format("Locator(%s) found more than one WebElement [%d]", locate, elements.size()));
             }
-            numberOfFoundElements = elements.size();
+            setWebElement(elements);
         }
         if (guiElementData.getWebElement() == null) {
             ElementNotFoundException exception = new ElementNotFoundException(guiElementData.getGuiElement(), cause);
@@ -167,19 +167,6 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements
         } else {
             LOGGER.debug("find(): GuiElement " + toString() + " was NOT found. Element list has 0 entries.");
             return -1;
-        }
-    }
-
-    private void throwExceptionIfWebElementIsNull(Exception cause) {
-        if (guiElementData.webElement == null) {
-            String message = "GuiElement not found: " + toString();
-
-            MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
-            if (currentMethodContext != null) {
-                currentMethodContext.errorContext().setThrowable(message, cause);
-            }
-
-            throw new ElementNotFoundException(message, cause);
         }
     }
 

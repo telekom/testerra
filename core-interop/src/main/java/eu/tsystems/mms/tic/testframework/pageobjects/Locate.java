@@ -21,12 +21,9 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.filter.WebElementFilter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * Advanced selector for elements as replacement for By
@@ -35,7 +32,7 @@ import org.openqa.selenium.By;
  */
 public class Locate {
 
-    private List<WebElementFilter> filters;
+    private Predicate<WebElement> filter;
     private boolean unique = false;
     private By by;
     private String preparedFormat;
@@ -62,32 +59,24 @@ public class Locate {
     }
 
     public Locate displayed() {
-        return filter(WebElementFilter.DISPLAYED.is(true));
+        return displayed(true);
     }
-    public Locate notDisplayed() {
-        return filter(WebElementFilter.DISPLAYED.is(false));
+    public Locate displayed(boolean displayed) {
+        return filter(webElement -> webElement.isDisplayed()==displayed);
     }
 
-    public Locate filter(WebElementFilter... filters) {
-        if (filters != null) {
-            Collections.addAll(getFilters(), filters);
-        }
+    public Locate filter(Predicate<WebElement> filter) {
+        this.filter = filter;
         return this;
     }
 
-    public List<WebElementFilter> getFilters() {
-        if (this.filters == null) {
-            this.filters = new ArrayList<>();
-        }
-        return this.filters;
+    public Predicate<WebElement> getFilter() {
+        return this.filter;
     }
 
     @Override
     public String toString() {
-        String toString = (unique ? "unique " : "") + by.toString();
-        if (filters != null && !filters.isEmpty()) {
-            toString += String.format("with filters %s", filters.stream().map(WebElementFilter::toString).collect(Collectors.joining(", ")));
-        }
+        String toString = by.toString() + (unique ? " (unique)" : "");
         return toString;
     }
 
@@ -99,7 +88,7 @@ public class Locate {
     public Locate with(Object... args) {
         Locate locate = new Locate(By.xpath(String.format(preparedFormat, args)));
         locate.unique = unique;
-        locate.filters = filters;
+        locate.filter = filter;
         return locate;
     }
 }

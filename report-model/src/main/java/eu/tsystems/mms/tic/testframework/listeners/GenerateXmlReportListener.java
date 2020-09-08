@@ -22,13 +22,14 @@
 package eu.tsystems.mms.tic.testframework.listeners;
 
 import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.junit.JUnitXMLReporter;
 import eu.tsystems.mms.tic.testframework.report.junit.SimpleReportEntry;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.Report;
 import org.testng.ISuite;
 import org.testng.ISuiteListener;
 
@@ -42,7 +43,7 @@ public class GenerateXmlReportListener implements
         ISuiteListener,
         ExecutionAbortEvent.Listener
 {
-    Report report = new Report();
+    Report report = Testerra.injector.getInstance(Report.class);
 
     JUnitXMLReporter XML_REPORTER;
 

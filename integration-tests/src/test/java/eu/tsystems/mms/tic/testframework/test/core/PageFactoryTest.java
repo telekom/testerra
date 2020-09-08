@@ -19,7 +19,7 @@
  * under the License.
  *
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects;
+package eu.tsystems.mms.tic.testframework.test.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 

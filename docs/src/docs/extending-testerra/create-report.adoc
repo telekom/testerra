@@ -36,7 +36,7 @@ public class CustomReportModuleHook implements ModuleHook {
 
     @Override
     public void init() {
-        Report report = new Report();
+        Report report = Testerra.injector.getInstance(Report.class);
         EventBus eventBus = TesterraListener.getEventBus();
         eventBus.register(new GenerateReportModelListener(report.getReportDirectory()));
     }

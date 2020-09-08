@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
+ package eu.tsystems.mms.tic.testframework.test.core.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverCapabilities;

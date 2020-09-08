@@ -17,11 +17,10 @@
  *     Peter Lehmann
  *     pele
  */
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
+package eu.tsystems.mms.tic.testframework.test.core.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.BasePage;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.BasePage2016;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithExistingElement;
@@ -35,6 +34,7 @@ import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.Responsi
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertCollector;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.test.core.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;

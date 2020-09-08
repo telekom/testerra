@@ -19,13 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
+ package eu.tsystems.mms.tic.testframework.test.core.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.WebTestFramedPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
+import eu.tsystems.mms.tic.testframework.test.core.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.annotations.Test;
 

@@ -21,11 +21,11 @@ package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.UiElementListPage;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.components.TableRow;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.test.core.PageFactoryTest;
+import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.UiElementListPage;
+import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.components.TableRow;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 

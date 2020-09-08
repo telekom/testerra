@@ -25,10 +25,10 @@ package eu.tsystems.mms.tic.testframework.listeners;
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.ReportingData;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -123,7 +123,7 @@ public class GenerateHtmlReportListener implements
         reportingData.failureCorridorMatched = FailureCorridor.isCorridorMatched();
         reportingData.classContexts = event.getMethodStatsPerClass().get();
 
-        if (Flags.LIST_TESTS) {
+        if (Report.Properties.LIST_TESTS.asBool()) {
             printTestsList();
             // discontinue
             System.exit(0);

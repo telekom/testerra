@@ -24,10 +24,11 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
-import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
+import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
@@ -35,7 +36,6 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.ScriptSource;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.DefaultFormatter;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.utils.SourceUtils;
 import java.util.Map;
@@ -44,7 +44,7 @@ import org.testng.ITestResult;
 
 public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
 
-    private final Formatter formatter = new DefaultFormatter();
+    private final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
 
     @Subscribe
     @Override
@@ -81,9 +81,7 @@ public class MethodEndWorker implements MethodEndEvent.Listener, Loggable {
         if (testMethod.isTest()) {
             // cleanup thread locals from PropertyManager
             PropertyManager.clearThreadlocalProperties();
-
-            // cleanup collected assertions
-            CollectedAssertions.clear();
+            Testerra.injector.getInstance(AssertionsCollector.class).clear();
         }
 
         try {

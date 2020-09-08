@@ -19,10 +19,11 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
+ package eu.tsystems.mms.tic.testframework.test.core.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithExistingElement;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithExistingStaticElement;
@@ -31,7 +32,7 @@ import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWith
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithNullElement;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.report.model.context.report.DefaultReport;
+import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.io.File;
 import org.openqa.selenium.WebDriver;
@@ -68,7 +69,8 @@ public class CheckPageTest extends AbstractTestSitesTest {
     @Test
     public void testT08_CheckPage_ScreenshotOnLoad() {
 
-        final File reportScreenshotDirectory = DefaultReport.SCREENSHOTS_DIRECTORY;
+        Report report = Testerra.injector.getInstance(Report.class);
+        final File reportScreenshotDirectory = report.getReportDirectory(Report.SCREENSHOTS_FOLDER_NAME);
         Assert.assertNotNull(reportScreenshotDirectory);
         Assert.assertTrue(reportScreenshotDirectory.exists());
         Assert.assertTrue(reportScreenshotDirectory.isDirectory());

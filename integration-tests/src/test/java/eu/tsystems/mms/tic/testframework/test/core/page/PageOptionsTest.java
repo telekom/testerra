@@ -1,4 +1,4 @@
-package eu.tsystems.mms.tic.testframework.core.test.pageobjects.page;
+package eu.tsystems.mms.tic.testframework.test.core.page;
 
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithPageOptions;
 

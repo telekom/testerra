@@ -63,7 +63,7 @@ public final class ReportUtils {
      * Logger instance.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(ReportUtils.class);
-    private static Report report = new Report();
+    private static Report report = Testerra.injector.getInstance(Report.class);
     private static final String FRAMES_FOLDER_NAME = "frames";
     private static final String METHODS_FOLDER_NAME = "methods";
     private static File FRAMES_DIRECTORY = report.getReportDirectory(FRAMES_FOLDER_NAME);

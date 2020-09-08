@@ -20,10 +20,10 @@
 package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
+import eu.tsystems.mms.tic.testframework.test.core.PageFactoryTest;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 

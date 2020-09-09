@@ -19,17 +19,12 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.testdata;
+
+package eu.tsystems.mms.tic.testframework.testdata;
 
 import com.opencsv.CSVReader;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -50,6 +45,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
 
 /**
  * This class ...
@@ -159,7 +159,6 @@ public class CSVTestDataReader {
      *
      * @param fileInResources name of the csv file in resources
      * @param clazz           class to create beans from
-     *
      * @return list with created beans
      */
     public <T> List<T> readCsvIntoBeans(final String fileInResources, final Class<T> clazz) {
@@ -208,7 +207,6 @@ public class CSVTestDataReader {
      * @param fileInResources name of the csv file in resources
      * @param clazz           class to create beans from
      * @param identifier      identifier to find the correct line in the file
-     *
      * @return an object of type class with given identifier
      */
     private <T> T readLineIntoBean(String fileInResources, Class<T> clazz, String identifier) {
@@ -224,7 +222,8 @@ public class CSVTestDataReader {
                 .map(Arrays::asList)
                 .filter(line -> line.contains(identifier))
                 .findFirst()
-                .orElseThrow(() -> new TesterraRuntimeException(String.format("No line with identifier '%s' found in %s", identifier, fileInResources)));
+                .orElseThrow(
+                        () -> new TesterraRuntimeException(String.format("No line with identifier '%s' found in %s", identifier, fileInResources)));
 
         return createBeanFromLine(clazz, correctLine, headers);
     }
@@ -297,7 +296,7 @@ public class CSVTestDataReader {
         final CSVReader csvReader = new CSVReader(fileReader, getSeparator(), getQuoteChar(), getSkippedLines());
 
         try {
-            return csvReader.readAll();
+            return csvReader.readAll().stream().map(l -> Arrays.stream(l).map(String::trim).toArray(String[]::new)).collect(Collectors.toList());
         } catch (IOException e) {
             throw new TesterraRuntimeException(String.format("Could not read csv file in resources %s.", fileName), e);
         }

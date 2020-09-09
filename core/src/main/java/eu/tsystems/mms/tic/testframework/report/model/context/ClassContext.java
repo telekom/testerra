@@ -21,6 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
@@ -161,8 +162,10 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             add to method contexts
              */
             methodContexts.add(methodContext);
-            // Send update for the class context, not thte method contexts
-            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+
+            EventBus eventBus = TesterraListener.getEventBus();
+            eventBus.post(new ContextUpdateEvent().setContext(methodContext));
+            eventBus.post(new ContextUpdateEvent().setContext(this));
         } else {
             if (collect.size() > 1) {
                 log().error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");

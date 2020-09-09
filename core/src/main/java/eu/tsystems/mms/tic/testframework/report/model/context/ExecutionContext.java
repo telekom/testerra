@@ -45,21 +45,21 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     public final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
     public final List<ClassContext> mergedClassContexts = new LinkedList<>();
-    public Map<String, List<MethodContext>> failureAspects = new LinkedHashMap<>();
-    public Map<String, List<MethodContext>> exitPoints = new LinkedHashMap<>();
+    public Map<String, List<MethodContext>> failureAspects;
+    public Map<String, List<MethodContext>> exitPoints;
     public final RunConfig runConfig = new RunConfig();
 
     public final Map<String, String> metaData = new LinkedHashMap<>();
     public boolean crashed = false;
 
-    public List<SessionContext> exclusiveSessionContexts = new LinkedList<>();
+    public final Queue<SessionContext> exclusiveSessionContexts = new ConcurrentLinkedQueue<>();
 
     public int estimatedTestMethodCount;
 
     public ExecutionContext() {
         name = runConfig.RUNCFG;
         swi = name;
-        //TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
     }
 
     public SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {

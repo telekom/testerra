@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,25 +19,28 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations;
+
+package eu.tsystems.mms.tic.testframework.test.core.guielement.variations;
 
 import eu.tsystems.mms.tic.testframework.core.test.TestPage;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.AbstractGuiElementNonFunctionalAssertionTest;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.test.core.guielement.AbstractGuiElementNonFunctionalAssertionTest;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class ExtensiveLoggingGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
+public class FrameAwareSubElementGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
 
     @Override
     public GuiElement getGuiElementBy(Locate locator) {
         WebDriver driver = getWebDriver();
-        GuiElement guiElement = new GuiElement(driver, locator);
-        return guiElement;
+        GuiElement frame = new GuiElement(driver, By.name("InputFrame1"));
+        GuiElement parentElement = new GuiElement(driver, By.xpath("//body"), frame);
+        return parentElement.getSubElement(locator);
     }
 
     @Override
     protected TestPage getTestPage() {
-        return TestPage.INPUT_TEST_PAGE;
+        return TestPage.FRAME_TEST_PAGE;
     }
 }

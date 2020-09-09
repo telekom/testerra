@@ -8,7 +8,7 @@
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.guielement.variations"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.core.guielement.variations"/>
         </packages>
     </test>
 </suite>

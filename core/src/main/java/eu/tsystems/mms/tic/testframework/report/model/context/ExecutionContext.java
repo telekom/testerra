@@ -31,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -44,7 +43,7 @@ import org.testng.ITestResult;
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
 
     public final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
-    public final List<ClassContext> mergedClassContexts = new LinkedList<>();
+    public final Queue<ClassContext> mergedClassContexts = new ConcurrentLinkedQueue<>();
     public Map<String, List<MethodContext>> failureAspects;
     public Map<String, List<MethodContext>> exitPoints;
     public final RunConfig runConfig = new RunConfig();

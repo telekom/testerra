@@ -21,7 +21,6 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -54,8 +53,11 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
 
     /**
      * Gets an context for a specified name.
-     * If it not exists, it will be created, preconfigured, added to the given queue of contexts
-     * and sends an {@link ContextUpdateEvent} for the newly created.
+     * If it not exists, it will be created by a supplier, preconfigured, added to the given queue of contexts and supplied to a consumer
+     * @param contextClass The desired context class
+     * @param contexts The queue to add the context when created
+     * @param newContextSupplier Supplier for the new context
+     * @param whenAddedToQueue Consumer when added to the queue
      * @return {@link AbstractContext} or NULL if the context doesn't exists or should not be created
      */
     protected <T extends AbstractContext> T getOrCreateContext(

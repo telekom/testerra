@@ -21,6 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
@@ -58,12 +59,21 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
     public ExecutionContext() {
         name = runConfig.RUNCFG;
         swi = name;
-        TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
+        //TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
     }
 
     public SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
         final String suiteName = TestNGHelper.getSuiteName(testResult, iTestContext);
-        return getContext(SuiteContext.class, suiteContexts, suiteName, true, () -> new SuiteContext(this));
+        return getOrCreateContext(
+                SuiteContext.class,
+                suiteContexts,
+                suiteName,
+                () -> new SuiteContext(this),
+                suiteContext -> {
+                    EventBus eventBus = TesterraListener.getEventBus();
+                    eventBus.post(new ContextUpdateEvent().setContext(suiteContext));
+                    eventBus.post(new ContextUpdateEvent().setContext(this));
+                });
     }
 
     public SuiteContext getSuiteContext(final ITestContext iTestContext) {

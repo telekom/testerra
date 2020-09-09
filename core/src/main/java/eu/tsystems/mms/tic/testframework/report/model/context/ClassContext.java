@@ -24,6 +24,7 @@
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
@@ -48,7 +49,7 @@ import org.testng.SkipException;
  *
  * @author pele
  */
-public class ClassContext extends AbstractContext implements SynchronizableContext {
+public class ClassContext extends AbstractContext implements SynchronizableContext, Loggable {
 
     public final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
     public String fullClassName;
@@ -65,7 +66,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     }
 
     public MethodContext findTestMethodContainer(String methodName) {
-        return getContext(MethodContext.class, methodContexts, methodName, false, null);
+        return getOrCreateContext(MethodContext.class, methodContexts, methodName, null, null);
     }
 
     public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
@@ -143,9 +144,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
                 link to merged context
                  */
             if (merged) {
-                synchronized (mergedIntoClassContext.methodContexts) {
-                    mergedIntoClassContext.methodContexts.add(methodContext);
-                }
+                mergedIntoClassContext.methodContexts.add(methodContext);
             }
 
                 /*
@@ -163,14 +162,12 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             /*
             add to method contexts
              */
-            synchronized (methodContexts) {
-                methodContexts.add(methodContext);
-            }
-
-            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(methodContext));
+            methodContexts.add(methodContext);
+            // Send update for the class context, not thte method contexts
+            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(this));
         } else {
             if (collect.size() > 1) {
-                LOGGER.error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");
+                log().error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");
             }
             methodContext = collect.get(0);
         }

@@ -4,9 +4,9 @@
     <test name="TestReport">
         <classes>
             <class name="eu.tsystems.mms.tic.testframework.core.test.common.PropertyManagerTest"></class>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageOptionsTest"></class>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryPrefixedTest"></class>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory.PageFactoryTest"></class>
+            <class name="eu.tsystems.mms.tic.testframework.test.core.pagefactory.PageOptionsTest"></class>
+            <class name="eu.tsystems.mms.tic.testframework.test.core.pagefactory.PageFactoryPrefixedTest"></class>
+            <class name="eu.tsystems.mms.tic.testframework.test.core.pagefactory.PageFactoryTest"></class>
         </classes>
     </test>
 </suite>

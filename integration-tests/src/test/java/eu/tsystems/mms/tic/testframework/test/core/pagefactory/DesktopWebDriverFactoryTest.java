@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Eric Kubenka, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory;
+
+package eu.tsystems.mms.tic.testframework.test.core.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractWebDriverTest;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DesktopWebDriverCapabilities;

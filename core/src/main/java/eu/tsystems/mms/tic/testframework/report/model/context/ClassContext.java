@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.model.context;
+package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
@@ -82,19 +82,17 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
         List<MethodContext> collect;
 
-        synchronized (methodContexts) {
-            if (testResult != null) {
-                collect = methodContexts.stream()
-                        .filter(mc -> testResult == mc.testResult)
-                        .collect(Collectors.toList());
-            } else {
-                // TODO: (!!!!) this is not eindeutig
-                collect = methodContexts.stream()
-                        .filter(mc -> iTestContext == mc.iTestContext)
-                        .filter(mc -> iTestNGMethod == mc.iTestNgMethod)
-                        .filter(mc -> mc.parameters.containsAll(parametersList))
-                        .collect(Collectors.toList());
-            }
+        if (testResult != null) {
+            collect = methodContexts.stream()
+                    .filter(mc -> testResult == mc.testResult)
+                    .collect(Collectors.toList());
+        } else {
+            // TODO: (!!!!) this is not eindeutig
+            collect = methodContexts.stream()
+                    .filter(mc -> iTestContext == mc.iTestContext)
+                    .filter(mc -> iTestNGMethod == mc.iTestNgMethod)
+                    .filter(mc -> mc.parameters.containsAll(parametersList))
+                    .collect(Collectors.toList());
         }
 
         MethodContext methodContext;

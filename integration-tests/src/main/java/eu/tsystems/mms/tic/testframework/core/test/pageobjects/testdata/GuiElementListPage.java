@@ -38,11 +38,11 @@ public class GuiElementListPage extends Page {
     }
 
     public GuiElement getNavigation() {
-        return new GuiElement(this.getWebDriver(), Locate.by().qa("section/navigation"));
+        return new GuiElement(this.getWebDriver(), Locate.byQa("section/navigation"));
     }
 
     public GuiElement getTable() {
-        return new GuiElement(this.getWebDriver(), Locate.by().qa("section/table"));
+        return new GuiElement(this.getWebDriver(), Locate.byQa("section/table"));
     }
 
     public GuiElement getNavigationSubElementsByTagName() {

@@ -100,6 +100,7 @@ public class FileDownloader {
         final URL systemHttpProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
         if (systemHttpProxyUrl != null) {
             this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(systemHttpProxyUrl.getHost(), systemHttpProxyUrl.getPort()));
+            LOGGER.info("Will use proxy:" + this.proxy.toString());
         }
     }
 

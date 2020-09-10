@@ -8,12 +8,12 @@
             </run>
         </groups>
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.test.core.guielement.GuiElementStandardTests"/>
-            <class name="eu.tsystems.mms.tic.testframework.test.core.guielement.GuiElementFilterTest"/>
-            <class name="eu.tsystems.mms.tic.testframework.test.core.guielement.GuiElementAdditionalTests"/>
-            <class name="eu.tsystems.mms.tic.testframework.test.core.guielement.GuiElementExceptionsTest"/>
-            <class name="eu.tsystems.mms.tic.testframework.test.core.guielement.GuiElementListTests"/>
-            <class name="eu.tsystems.mms.tic.testframework.test.core.guielement.GuiElementShadowRootTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementStandardTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementFilterTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementAdditionalTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementExceptionsTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementListTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.test.guielement.GuiElementShadowRootTest"/>
         </classes>
     </test>
 
@@ -24,7 +24,7 @@
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.layoutcheck"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.layoutcheck"/>
         </packages>
     </test>
 

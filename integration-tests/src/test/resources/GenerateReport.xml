@@ -3,10 +3,10 @@
 <suite name="TestReport" parallel="methods" thread-count="20">
     <test name="TestReport">
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.common.PropertyManagerTest"></class>
-            <class name="eu.tsystems.mms.tic.testframework.test.core.pagefactory.PageOptionsTest"></class>
-            <class name="eu.tsystems.mms.tic.testframework.test.core.pagefactory.PageFactoryPrefixedTest"></class>
-            <class name="eu.tsystems.mms.tic.testframework.test.core.pagefactory.PageFactoryTest"></class>
+            <class name="eu.tsystems.mms.tic.testframework.test.common.PropertyManagerTest"></class>
+            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.PageOptionsTest"></class>
+            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.PageFactoryPrefixedTest"></class>
+            <class name="eu.tsystems.mms.tic.testframework.test.pagefactory.PageFactoryTest"></class>
         </classes>
     </test>
 </suite>

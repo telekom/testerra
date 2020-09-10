@@ -4,25 +4,25 @@
 
     <test name="test1">
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.core.playground.ReportingAllStatesTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.playground.ReportingAllStatesTests"/>
         </classes>
     </test>
 
     <test name="test2">
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.core.playground.ReportingAllStatesTests"/>
+            <class name="eu.tsystems.mms.tic.testframework.playground.ReportingAllStatesTests"/>
         </classes>
     </test>
 
     <test name="test3">
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.core.playground.SimplePassingTest"/>
+            <class name="eu.tsystems.mms.tic.testframework.playground.SimplePassingTest"/>
         </classes>
     </test>
 
     <test name="test4">
         <classes>
-            <class name="eu.tsystems.mms.tic.testframework.core.test.layoutcheck.LayoutCheckTest"></class>
+            <class name="eu.tsystems.mms.tic.testframework.test.layoutcheck.LayoutCheckTest"></class>
         </classes>
     </test>
 

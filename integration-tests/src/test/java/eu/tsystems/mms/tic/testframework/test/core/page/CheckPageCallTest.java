@@ -23,8 +23,8 @@
 package eu.tsystems.mms.tic.testframework.test.core.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.SubPageWithoutCheck;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.SuperPageWithCheck;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.SubPageWithoutCheck;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.SuperPageWithCheck;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;

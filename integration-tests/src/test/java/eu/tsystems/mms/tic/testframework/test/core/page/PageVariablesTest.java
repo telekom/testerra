@@ -23,8 +23,7 @@
 package eu.tsystems.mms.tic.testframework.test.core.page;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.PageFactoryTest;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.WebTestPage;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;

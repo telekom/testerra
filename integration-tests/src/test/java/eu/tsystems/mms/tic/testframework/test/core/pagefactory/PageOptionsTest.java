@@ -23,7 +23,7 @@
 package eu.tsystems.mms.tic.testframework.test.core.pagefactory;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
-import eu.tsystems.mms.tic.testframework.core.test.pageobjects.testdata.PageWithPageOptions;
+import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.PageWithPageOptions;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.testng.Assert;

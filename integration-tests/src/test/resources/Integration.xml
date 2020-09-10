@@ -8,10 +8,10 @@
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.common"/>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.testdata"/>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.l10n"/>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.reporting"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.common"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.testdata"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.l10n"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.reporting"/>
             <package name="eu.tsystems.mms.tic.testframework.test.*"/>
         </packages>
     </test>
@@ -29,7 +29,7 @@
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.webdrivermanager"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.webdrivermanager"/>
         </packages>
     </test>
 
@@ -40,7 +40,7 @@
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.utils"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.utils"/>
         </packages>
     </test>
 
@@ -57,7 +57,7 @@
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.utils"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.utils"/>
         </packages>
     </test>
 </suite>

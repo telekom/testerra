@@ -9,10 +9,9 @@
         </groups>
         <packages>
             <package name="eu.tsystems.mms.tic.testframework.test.common"/>
-            <package name="eu.tsystems.mms.tic.testframework.test.testdata"/>
             <package name="eu.tsystems.mms.tic.testframework.test.l10n"/>
             <package name="eu.tsystems.mms.tic.testframework.test.reporting"/>
-            <package name="eu.tsystems.mms.tic.testframework.test.*"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.testdata"/>
         </packages>
     </test>
 
@@ -21,6 +20,12 @@
         <suite-file path="GuiElementVariations.xml"></suite-file>
         <suite-file path="PageObjects.xml"></suite-file>
     </suite-files>
+
+    <test name="Events" parallel="false">
+        <packages>
+            <package name="eu.tsystems.mms.tic.testframework.test.events"/>
+        </packages>
+    </test>
 
     <test name="WebDriver" parallel="methods">
         <groups>
@@ -44,12 +49,6 @@
         </packages>
     </test>
 
-    <test name="Events" parallel="false">
-        <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.events"/>
-        </packages>
-    </test>
-
     <test name="Sequential tests" parallel="false">
         <groups>
             <run>
@@ -57,6 +56,11 @@
             </run>
         </groups>
         <packages>
+            <package name="eu.tsystems.mms.tic.testframework.test.common"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.l10n"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.reporting"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.testdata"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.webdrivermanager"/>
             <package name="eu.tsystems.mms.tic.testframework.test.utils"/>
         </packages>
     </test>

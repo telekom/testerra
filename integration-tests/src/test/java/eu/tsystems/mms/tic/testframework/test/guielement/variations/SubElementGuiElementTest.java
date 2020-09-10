@@ -20,11 +20,11 @@
  *
  */
 
-package eu.tsystems.mms.tic.testframework.test.pageobjects.guielement.variations;
+package eu.tsystems.mms.tic.testframework.test.guielement.variations;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import eu.tsystems.mms.tic.testframework.test.pageobjects.guielement.AbstractGuiElementNonFunctionalAssertionTest;
+import eu.tsystems.mms.tic.testframework.test.guielement.AbstractGuiElementNonFunctionalAssertionTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;

@@ -20,23 +20,37 @@
  *
  */
 
-package eu.tsystems.mms.tic.testframework.test.pageobjects.guielement.variations;
+package eu.tsystems.mms.tic.testframework.test.guielement.variations;
 
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
-import eu.tsystems.mms.tic.testframework.test.pageobjects.guielement.AbstractGuiElementNonFunctionalAssertionTest;
+import eu.tsystems.mms.tic.testframework.test.guielement.AbstractGuiElementNonFunctionalAssertionTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.Test;
 
-public class FrameAwareSubElementGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
+public class FrameAwareGuiElementTest extends AbstractGuiElementNonFunctionalAssertionTest {
+
+    /**
+     * Test if FrameAwareElement in deepest hierarchy is present via AllFrameLogic
+     */
+    @Test
+    public void testTFA01_GuiElement_FrameLogic_AllFrames() {
+        WebDriver driver = getWebDriver();
+        GuiElement frame1 = new GuiElement(driver, By.name("frame1"));
+        GuiElement frame12 = new GuiElement(driver, By.name("frame12"), frame1);
+        GuiElement frame123 = new GuiElement(driver, By.name("frame123"), frame1, frame12);
+        GuiElement frame1234 = new GuiElement(driver, By.name("InputFrame1234"), frame1, frame12, frame123);
+        GuiElement element = new GuiElement(driver, By.id("16"), frame1, frame12, frame123, frame1234);
+        element.asserts().assertIsPresent();
+    }
 
     @Override
     public GuiElement getGuiElementBy(Locate locator) {
         WebDriver driver = getWebDriver();
         GuiElement frame = new GuiElement(driver, By.name("InputFrame1"));
-        GuiElement parentElement = new GuiElement(driver, By.xpath("//body"), frame);
-        return parentElement.getSubElement(locator);
+        return new GuiElement(driver, locator, frame);
     }
 
     @Override

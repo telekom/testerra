@@ -19,7 +19,8 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.test.utils;
+
+package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.utils.FileDownloader;
@@ -57,9 +58,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
     public void testT01_downloadFileAndDelete() throws IOException {
 
         final WebDriver driver = WebDriverManager.getWebDriver();
-
-        FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true);
-
+        FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true).setProxy(null);
         String download = downloader.download(driver, WebDriverManager.getWebDriver().getCurrentUrl(),
                 "testT01_downloadFile.htm");
         File file = FileUtils.getFile(download);
@@ -83,7 +82,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
 
         FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath(), true, true);
 
-        String download = downloader.download(driver, "https://google.de","testT02_downloadFileOfHttpsUrl.htm");
+        String download = downloader.download(driver, "https://google.de", "testT02_downloadFileOfHttpsUrl.htm");
         File file = FileUtils.getFile(download);
 
         Assert.assertTrue(file.exists(), "File was downloaded correctly.");
@@ -98,7 +97,7 @@ public class FileDownloaderTest extends AbstractTestSitesTest {
     public void test03_downloadFileToLongLocation() throws IOException {
 
         final WebDriver driver = WebDriverManager.getWebDriver();
-        FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath() + "/foo/bar\\test", true, true);
+        FileDownloader downloader = new FileDownloader(FileUtils.getUserDirectoryPath() + "/foo/bar\\test", true, true).setProxy(null);
 
         String download = downloader.download(driver, WebDriverManager.getWebDriver().getCurrentUrl(),
                 "test03_downloadFileToLongLocation.htm");

@@ -98,7 +98,9 @@ public class FileDownloader {
         this.trustAllCertificates = trustAllCertificates;
 
         final URL systemHttpProxyUrl = ProxyUtils.getSystemHttpProxyUrl();
-        this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(systemHttpProxyUrl.getHost(), systemHttpProxyUrl.getPort()));
+        if (systemHttpProxyUrl != null) {
+            this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(systemHttpProxyUrl.getHost(), systemHttpProxyUrl.getPort()));
+        }
     }
 
     /**

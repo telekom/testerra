@@ -7,12 +7,12 @@
             </run>
         </groups>
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.test.core.page"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.page"/>
         </packages>
     </test>
     <test name="Page Factory">
         <packages>
-            <package name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.pagefactory"/>
+            <package name="eu.tsystems.mms.tic.testframework.test.pagefactory"/>
         </packages>
     </test>
 </suite>

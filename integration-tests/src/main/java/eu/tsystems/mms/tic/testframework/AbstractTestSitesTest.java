@@ -22,8 +22,8 @@
 
 package eu.tsystems.mms.tic.testframework;
 
-import eu.tsystems.mms.tic.testframework.core.test.Server;
-import eu.tsystems.mms.tic.testframework.core.test.TestPage;
+import eu.tsystems.mms.tic.testframework.core.server.Server;
+import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;

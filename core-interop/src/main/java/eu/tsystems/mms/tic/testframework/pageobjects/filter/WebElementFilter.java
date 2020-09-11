@@ -23,9 +23,14 @@ package eu.tsystems.mms.tic.testframework.pageobjects.filter;
 
 @Deprecated
 public final class WebElementFilter {
+    @Deprecated
     public static final Tag TAG = new Tag();
+    @Deprecated
     public static final Text TEXT = new Text();
+    @Deprecated
     public static final Css CSS = new Css();
+    @Deprecated
     public static final Displayed DISPLAYED = new Displayed();
+    @Deprecated
     public static final Attribute ATTRIBUTE = new Attribute();
 }

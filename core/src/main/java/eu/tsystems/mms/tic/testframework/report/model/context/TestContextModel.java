@@ -113,26 +113,24 @@ public class TestContextModel extends AbstractContext implements SynchronizableC
             if (actualTestContext.mode() == TestContext.Mode.ONE_FOR_ALL) {
                 final ClassContext mergedClassContext;
 
-                synchronized (executionContext.mergedClassContexts) {
-                    // check if this class is present
-                    Optional<ClassContext> first = executionContext.mergedClassContexts.stream().filter(c -> c.testContext == actualTestContext).findFirst();
-                    if (first.isPresent()) {
-                        mergedClassContext = first.get();
-                    } else {
-                        // create and add to list
-                        mergedClassContext = new ClassContext(this, executionContext);
-                        mergedClassContext.fullClassName = realClass.getName();
-                        mergedClassContext.simpleClassName = realClass.getSimpleName();
-                        fillBasicContextValues(mergedClassContext, this, mergedClassContext.simpleClassName);
-                        mergedClassContext.testContext = actualTestContext;
-                        mergedClassContext.merged = true;
+                // check if this class is present
+                Optional<ClassContext> first = executionContext.mergedClassContexts.stream().filter(c -> c.testContext == actualTestContext).findFirst();
+                if (first.isPresent()) {
+                    mergedClassContext = first.get();
+                } else {
+                    // create and add to list
+                    mergedClassContext = new ClassContext(this, executionContext);
+                    mergedClassContext.fullClassName = realClass.getName();
+                    mergedClassContext.simpleClassName = realClass.getSimpleName();
+                    fillBasicContextValues(mergedClassContext, this, mergedClassContext.simpleClassName);
+                    mergedClassContext.testContext = actualTestContext;
+                    mergedClassContext.merged = true;
 
-                        if (!StringUtils.isStringEmpty(actualTestContext.name())) {
-                            mergedClassContext.name = actualTestContext.name();
-                        }
-
-                        executionContext.mergedClassContexts.add(mergedClassContext);
+                    if (!StringUtils.isStringEmpty(actualTestContext.name())) {
+                        mergedClassContext.name = actualTestContext.name();
                     }
+
+                    executionContext.mergedClassContexts.add(mergedClassContext);
                 }
 
                 // mark context reference

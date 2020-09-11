@@ -1,6 +1,6 @@
 = Changes
 
-== New API (Draft)
+== New API
 
 This is a draft of the new Testerra API.
 The main goal for re-inventing the GuiElement API was at first, to provide a better user experience for
@@ -17,7 +17,7 @@ The new Testerra API provides it all.
 
 If you're a developer and want to know how the new API works, you can jump straight to <<The internals>> or just proceed with the next chapter to get an overview.
 
-=== Traditional page objects tests
+== Traditional page objects tests
 
 For the traditional page objects pattern, the test class looks like.
 
@@ -81,7 +81,7 @@ class HomePage extends Page {
 
 - More effort required at the beginning
 
-=== Behaviour driven tests
+== Behaviour driven tests
 
 For the non-abstract behaviour driven test API, the test class looks like.
 
@@ -117,7 +117,7 @@ class LoginTest extends TesterraTest implements UiElementCreator {
 - Not useful for large test environments
 
 
-=== Page object changes
+== Page object changes
 
 When implementing the `PageFactoryProvider` interface, you get an `pageFactory` instance within your class.
 
@@ -136,7 +136,7 @@ class MyTest extends TesterraTest implements PageFactoryProvider {
 }
 ```
 
-but you can instantiate pages withing pages more easily:
+but you can instantiate pages within pages more easily:
 ```java
 class MyPage extends Page {
     public AnotherPage navigateToAnotherPage() {
@@ -222,7 +222,7 @@ page.checkPage(); <2>
 <2> Calling `checkPage()` as `public` member is prohibited
 ====
 
-=== Element instantiation
+== Element creation changes
 
 The new standard way to instantiate GuiElements is now
 ```java
@@ -308,7 +308,9 @@ class MyPage extends Page {
 ```
 ====
 
-=== Element Assertions
+== Assertion changes
+
+=== Element assertions
 
 The new standard way to perform assertions on elements like Pages and GuiElements is now
 ```java
@@ -410,7 +412,7 @@ top.asserts().assertLayout(Layout.outer().sameRight(bottom, 0)); <2>
 ```
 ====
 
-=== Control API
+== New Control API
 
 With the `TestController` API, you are able to control your test flow during runtime. Like timeouts, assertion handling and retry intervals.
 The `Control` instance is availabe as soon you implement the `TestFeatures` interface.
@@ -487,7 +489,7 @@ tt.guielement.default.assertcollector=true
 ```
 ====
 
-==== Non Functional Assertions
+=== Non Functional Assertions
 
 The new standard way for non functional assertions works like <<Collected Assertions>>
 ```java
@@ -510,7 +512,7 @@ guiElement.nonFunctionalAsserts().assertIsDisplayed();
 ```
 ====
 
-=== Advanced Topics on Assertions
+=== Advanced Topics on assertions
 Perform assertions outside of `TestFeatures`
 ```java
 public MyClass {
@@ -544,6 +546,8 @@ public MyClass {
     }
 }
 ```
+
+== Timeouts and Retry API
 
 === @Check timeouts
 
@@ -631,7 +635,7 @@ Control.retryFor(10).withTimeout(0, () -> {
 });
 ```
 
-=== New Locator interface
+== New Locator interface
 
 The new `XPath` class helps you to build failsafe xpathes optimized for HTML. But it's restricted to search elements from top down. Once you changed the
 scope of an element by `contains` or `select` you cannot go back.
@@ -648,7 +652,7 @@ XPath.from("td", 1);
 XPath.from("td", -1);
 ```
 
-==== Elements that have classes
+=== Elements that have classes
 
 ```java
 XPath.from("div").classes("navigation", "header");
@@ -662,7 +666,7 @@ but not
 <div class="navigation-header">
 ```
 
-==== Select an element that contains another element
+=== Select an element that contains another element
 
 ```java
 XPath.from("nav")
@@ -676,7 +680,7 @@ This will find elements like
 <nav class="mobile"><div class="navigation header"></nav>
 ```
 
-==== Select an element by its text
+=== Select an element by its text
 ```java
 XPath.from("*").text().words("Login", "here");
 XPath.from("*").text().contains("first");
@@ -688,7 +692,7 @@ This will find elements like
     here </a>
 ```
 
-==== Select by attributes
+=== Select by attributes
 
 ```java
 XPath.from("*").attribute("src").endsWith(".png");
@@ -700,7 +704,7 @@ This will find elements like
 <img src="http://example.com/image.png"/>
 ```
 
-==== Select a sub element
+=== Select a sub element
 ```java
 XPath.from("form")
     .attribute("name", "login") // shortcut for attribute("name").is("login")
@@ -714,11 +718,11 @@ This will find elements like
 </form>
 ```
 
-=== The internals
+== The internals
 
 This chapter explains how the new API works internally.
 
-==== Everything is timed, but once
+=== Everything is timed, but once
 Every assertions is performed multiple times with a maximum timeout of {element_timeout_seconds}.
 If this timeout has reached, the assertion will finally fail.
 
@@ -733,7 +737,7 @@ This is what an assertion internally does, when you perform `uiElement.text().co
 . Otherwise when the timeout has reached, an assertion error message will be displayed that the
 text of the element you're looking for doesn't contain the string "Something".
 
-==== More consistence, less complexity
+=== More consistence, less complexity
 
 There will be only one interface for everything you need in a manner of
 an easy to read fluent API. It is not too abstract like TestNG Assert, and not to technically like AssertJ.
@@ -741,7 +745,7 @@ an easy to read fluent API. It is not too abstract like TestNG Assert, and not t
 The new interface will always act exactly like you expect to, no matter in which context you are.
 You don't have to decide which method you should use. The standard way will be the best fit for most cases. Let the framework handle the workarrounds for you.
 
-==== Strict Page Object pattern
+=== Strict Page Object pattern
 
 Testerra was built with the Page Object pattern in mind. The new API makes it easier for your team, to keep you on track
 makes it harder to break out, even if your project contains hundreds of Pages and thousands of Tests.
@@ -749,7 +753,7 @@ makes it harder to break out, even if your project contains hundreds of Pages an
 The new components extension allows you to implement page objects like a web developer would do, by separating
 functionality into reusable components.
 
-==== Smaller codebase and less boilerplate
+=== Smaller codebase and less boilerplate
 The API provides abstract assertion implementations for several properties.
 
 . `StringAssertion` allows you to perform assertions on strings like `contains("Something")`
@@ -765,6 +769,6 @@ This is what the hierarchy looks like when you perform `uiElement.screenshot().f
 
 This implementation helps to keep the internal assertion code small, easy extensible and maintainable.
 
-==== Dependency Injection
+=== Dependency Injection
 
 We want to make Testerra more SOLID. Thats why we finally introduced Dependency Injection via. Google Guice.

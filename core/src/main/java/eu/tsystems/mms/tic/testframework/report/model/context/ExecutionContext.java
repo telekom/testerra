@@ -21,6 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
@@ -30,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -43,15 +43,15 @@ import org.testng.ITestResult;
 public class ExecutionContext extends AbstractContext implements SynchronizableContext {
 
     public final Queue<SuiteContext> suiteContexts = new ConcurrentLinkedQueue<>();
-    public final List<ClassContext> mergedClassContexts = new LinkedList<>();
-    public Map<String, List<MethodContext>> failureAspects = new LinkedHashMap<>();
-    public Map<String, List<MethodContext>> exitPoints = new LinkedHashMap<>();
+    public final Queue<ClassContext> mergedClassContexts = new ConcurrentLinkedQueue<>();
+    public Map<String, List<MethodContext>> failureAspects;
+    public Map<String, List<MethodContext>> exitPoints;
     public final RunConfig runConfig = new RunConfig();
 
     public final Map<String, String> metaData = new LinkedHashMap<>();
     public boolean crashed = false;
 
-    public List<SessionContext> exclusiveSessionContexts = new LinkedList<>();
+    public final Queue<SessionContext> exclusiveSessionContexts = new ConcurrentLinkedQueue<>();
 
     public int estimatedTestMethodCount;
 
@@ -63,7 +63,16 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     public SuiteContext getSuiteContext(ITestResult testResult, ITestContext iTestContext) {
         final String suiteName = TestNGHelper.getSuiteName(testResult, iTestContext);
-        return getContext(SuiteContext.class, suiteContexts, suiteName, true, () -> new SuiteContext(this));
+        return getOrCreateContext(
+                SuiteContext.class,
+                suiteContexts,
+                suiteName,
+                () -> new SuiteContext(this),
+                suiteContext -> {
+                    EventBus eventBus = TesterraListener.getEventBus();
+                    eventBus.post(new ContextUpdateEvent().setContext(suiteContext));
+                    eventBus.post(new ContextUpdateEvent().setContext(this));
+                });
     }
 
     public SuiteContext getSuiteContext(final ITestContext iTestContext) {

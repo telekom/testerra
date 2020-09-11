@@ -459,9 +459,6 @@ public final class ReportUtils {
         } catch (InterruptedException e) {
             throw new TesterraSystemException("Report generation took too long", e);
         }
-
-        File finalDirectory = report.finalizeReport();
-        LOGGER.info("Report written to " + finalDirectory.getAbsolutePath());
     }
 
     private static void createAcknowledgements(List<MethodContext> methodsWithAcknowledgements) {

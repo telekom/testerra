@@ -26,10 +26,7 @@ import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import org.testng.annotations.Listeners;
 
 @Listeners(TesterraListener.class)
-public abstract class TesterraTest implements
-    PageFactoryProvider,
-    TestFeatures
-{
+public abstract class TesterraTest implements TestFeatures {
     static {
         /**
          * Make sure the framework is initialized before any other

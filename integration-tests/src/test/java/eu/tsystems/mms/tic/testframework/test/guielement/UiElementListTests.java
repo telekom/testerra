@@ -22,11 +22,11 @@ package eu.tsystems.mms.tic.testframework.test.guielement;
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
+import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.UiElementListPage;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.components.TableRow;
-import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
 public class UiElementListTests extends AbstractTestSitesTest implements PageFactoryTest {
@@ -79,10 +79,10 @@ public class UiElementListTests extends AbstractTestSitesTest implements PageFac
 
     private void testTableRowsAndData(TableRow tableRows) {
         tableRows.numberOfElements().is(4);
-        UiElement tableDataUnspecified = tableRows.find(By.tagName("td"));
+        TestableUiElement tableDataUnspecified = tableRows.columns();
         tableDataUnspecified.numberOfElements().is(2);
 
-        UiElement tableDataSpecified = tableRows.list().get(1).find(By.tagName("td"));
+        TestableUiElement tableDataSpecified = tableRows.list().get(1).columns();
         tableDataSpecified.numberOfElements().is(2);
     }
 

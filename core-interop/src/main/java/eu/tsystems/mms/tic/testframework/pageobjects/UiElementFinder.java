@@ -20,30 +20,30 @@ public interface UiElementFinder extends UiElementLocator {
     default UiElement find(XPath xPath) {
         return find(Locate.by(xPath));
     }
-    default UiElement findByCaption(String caption) {
-        Locate textLocator = Locate.by(XPath.from("*").text().is(caption)).displayed();
-
-        UiElement element = find(textLocator);
-
-        if (!element.present().getActual()) {
-            Locate titleLocator = Locate.by(XPath.from("*").attribute(Attribute.TITLE).is(caption)).displayed();
-            element = find(titleLocator);
-
-            if (!element.present().getActual()) {
-                Locate valueLocator = Locate.by(XPath.from("*").attribute(Attribute.VALUE).is(caption)).displayed();
-                element = find(valueLocator);
-            }
-
-//            if (!element.present().getActual()) {
-//                element = findInFrames(textLocator);
+//    default UiElement findByCaption(String caption) {
+//        Locate textLocator = Locate.by(XPath.from("*").text().is(caption)).displayed();
 //
-//                if (!element.present().getActual()) {
-//                    element = findInFrames(titleLocator);
-//                }
+//        UiElement element = find(textLocator);
+//
+//        if (!element.present().getActual()) {
+//            Locate titleLocator = Locate.by(XPath.from("*").attribute(Attribute.TITLE).is(caption)).displayed();
+//            element = find(titleLocator);
+//
+//            if (!element.present().getActual()) {
+//                Locate valueLocator = Locate.by(XPath.from("*").attribute(Attribute.VALUE).is(caption)).displayed();
+//                element = find(valueLocator);
 //            }
-        }
-        return element;
-    }
+//
+////            if (!element.present().getActual()) {
+////                element = findInFrames(textLocator);
+////
+////                if (!element.present().getActual()) {
+////                    element = findInFrames(titleLocator);
+////                }
+////            }
+//        }
+//        return element;
+//    }
 //    default UiElement findInFrames(Locate locator) {
 //        return null;
 //    }

@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
@@ -40,7 +40,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAsse
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.testing.UiElementCreator;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
@@ -68,14 +67,9 @@ import org.openqa.selenium.WebElement;
  * @author Peter Lehmann
  * @author Mike Reiche
  */
-public abstract class Page extends AbstractPage implements TestablePage, UiElementCreator {
+public abstract class Page extends AbstractPage implements TestablePage {
     private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
-
-    @Override
-    public UiElement find(Locate locate) {
-        return uiElementFactory.createFromPage(this, locate);
-    }
 
     @Override
     public HasParent getParent() {
@@ -87,7 +81,7 @@ public abstract class Page extends AbstractPage implements TestablePage, UiEleme
         return getClass().getSimpleName();
     }
 
-    private static class FrameFinder implements UiElementFinder {
+    private static class FrameFinder {
         private final UiElement frame;
         private FrameFinder(UiElement frame) {
             this.frame = frame;
@@ -97,7 +91,7 @@ public abstract class Page extends AbstractPage implements TestablePage, UiEleme
         }
     }
 
-    protected UiElementFinder inFrame(UiElement frame) {
+    protected FrameFinder inFrame(UiElement frame) {
         return new FrameFinder(frame);
     }
 

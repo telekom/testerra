@@ -13,25 +13,130 @@ As an Test Engineer, you may want expressive info messages for bugs in the Syste
 specification. You may need easy to understand test code and a robust extensible Page Object model for large test environments
 by keeping the full potential of a Software Developer?
 
-The new Testerra API provides them all.
+The new Testerra API provides it all.
 
 If you're a developer and want to know how the new API works, you can jump straight to <<The internals>> or just proceed with the next chapter to get an overview.
 
-=== Pages instantiation
+=== Traditional page objects tests
 
-The new standard way to instantiate Pages is now
+For the traditional page objects pattern, the test class looks like.
+
 ```java
-class MyTest extends TesterraTest {
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
+
+class LoginTest extends TesterraTest implements PageFactoryProvider {
+
+    @Test
+    public void test_doLogin() {
+        LoginPage loginPage = pageFactory.create(LoginPage.class);
+        HomePage homePage = loginPage.doLogin("jane doe", "foobar");
+        homePage.assertUserIsLoggedIn();
+    }
+}
+```
+
+And the page objects
+
+```java
+import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+
+class LoginPage extends Page {
+
+    @Check
+    private UiElement login = find(By.name("login"));
+    @Check
+    private UiElement password = find(By.name("password"));
+    @Check
+    private UiElement loginBtn = find(By.name("loginAction"));
+
+    public HomePage doLogin(String username, String password) {
+        login.type(username);
+        password.type(password);
+        loginBtn.click();
+        return createPage(HomePage.class);
+    }
+}
+```
+
+```java
+import eu.tsystems.mms.tic.testframework.pageobjects.Check;
+
+class HomePage extends Page {
+
+    @Check
+    private UiElement userName = find(By.name("name"));
+
+    public void assertUserIsLoggedIn() {
+        userName.text().isNot("Guest");
+    }
+```
+
+**Pros:**
+
+- Test separation from page abstraction
+- More readable tests
+- Reusable code through components compositions
+
+**Cons:**
+
+- More effort required at the beginning
+
+=== Behaviour driven tests
+
+For the non-abstract behaviour driven test API, the test class looks like.
+
+```java
+import eu.tsystems.mms.tic.testframework.testing.UiElementCreator;
+
+class LoginTest extends TesterraTest implements UiElementCreator {
+
+    @Test
+    public void test_doLogin() {
+
+        // Given
+        find(By.name("login")).type("jane doe");
+        find(By.name("password")).type("foobar");
+
+        // When
+        find(By.name("loginAction")).click();
+
+        // Then
+        find(By.name("name")).text().isNot("Guest");
+    }
+}
+```
+
+**Pros:**
+
+- No boiler plate code
+- Test code separation
+
+**Cons:**
+
+- Redundant code
+- Not useful for large test environments
+
+
+=== Page object changes
+
+When implementing the `PageFactoryProvider` interface, you get an `pageFactory` instance within your class.
+
+```java
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
+
+class MyTest extends TesterraTest implements PageFactoryProvider {
+
     @Test
     public void test_MyPageTest() {
         MyPage page = pageFactory.create(MyPage.class);
 
-        // Or with different WebDriver
+        // Or using a different WebDriver
         MyPage page = pageFactory.create(MyPage.class, WebDriverManager.getWebDriver());
     }
 }
 ```
-Within Pages
+
+but you can instantiate pages withing pages more easily:
 ```java
 class MyPage extends Page {
     public AnotherPage navigateToAnotherPage() {
@@ -68,7 +173,7 @@ MyPage page = new MyPage(WebDriverManager.getWebDriver());
 ```
 ====
 
-=== Sub Pages
+=== Components pattern
 The new standard way to implement Sub Pages aka Components is now
 ```java
 public class MyForm extends AbstractComponent<MyForm> {
@@ -203,14 +308,7 @@ class MyPage extends Page {
 ```
 ====
 
-=== Assertions
-
-The new standard way for performing assertions in Tests or Pages is now
-```java
-Assert.assertTrue(false);
-```
-
-==== Element Assertions
+=== Element Assertions
 
 The new standard way to perform assertions on elements like Pages and GuiElements is now
 ```java
@@ -258,10 +356,10 @@ page.anyElementContainsText("You see me").numberOfElements().is(1); <4>
 
 Custom failure messages
 ```java
-uiElement.displayed(true, This element should be displayed");
+uiElement.displayed(true, "This element should be displayed");
 ```
 
-==== Screenshot based Assertions
+=== Screenshot based Assertions
 The new standard way to perform screenshot based assertions is now
 ```java
 uiElement.screenshot().pixelDistance("ElementReference").isLowerThan(1);
@@ -280,23 +378,27 @@ UITestUtils.takeScreenshot(page.getWebDriver(), true);
 ```
 ====
 
-==== Layout based Assertions
-The new standard way to perform layout based assertions is now
+=== Layout based Assertions
+To check if a element is beside another element
 ```java
-// Element is beside another element
 UiElement left = find(By.id("left"));
 UiElement right = find(By.id("right"));
+
 left.bounds().leftOf(right).is(true); <1>
 left.bounds().intersects(right).is(false);
-
-// Elements aligned to the same right
+```
+Elements aligned to the same right
+```java
 UiElement top = find(By.id("top"));
 UiElement bottom = find(By.id("bottom"));
-top.bounds().fromRight().toRightOf(bottom).is(0);<2>
 
-// Element contains another element
+top.bounds().fromRight().toRightOf(bottom).is(0); <2>
+```
+Element contains another element
+```java
 UiElement body = find(By.tagName("body"));
 UiElement nav = parent.find(By.tagName("nav"));
+
 body.bounds().contains(nav).is(true);
 ```
 [NOTE]
@@ -323,12 +425,12 @@ class MyPage extends Page implements TestFeatures {
 
 === Collected Assertions
 
-The new standard way to collect assertions of GuiElements in Tests or Pages is now
+The new standard way to collect assertions of elements in tests or pages is now
 ```java
 Control.collectAssertions(() -> uiElement.displayed(true));
 ```
 
-For many GuiElements or Pages
+For many elements or pages
 ```java
 Control.collectAssertions(() -> {
     MyPage page = pageFactory.create(MyPage.class);
@@ -389,7 +491,7 @@ tt.guielement.default.assertcollector=true
 
 The new standard way for non functional assertions works like <<Collected Assertions>>
 ```java
-Control.nonFunctional(() -> uiElement.displayed(true));
+Control.nonFunctionalAssertions(() -> uiElement.displayed(true));
 ```
 
 [NOTE]
@@ -408,8 +510,8 @@ guiElement.nonFunctionalAsserts().assertIsDisplayed();
 ```
 ====
 
-==== Advanced Topics on Assertions
-Perform assertions outside of Pages or Tests
+=== Advanced Topics on Assertions
+Perform assertions outside of `TestFeatures`
 ```java
 public MyClass {
     @Inject
@@ -443,9 +545,7 @@ public MyClass {
 }
 ```
 
-=== Timeouts
-
-==== @Check timeouts
+=== @Check timeouts
 
 The new standard way for setting GuiElement timeouts on `@Check` is now
 
@@ -481,7 +581,7 @@ Override during runtime
 Control.withTimeout(1, () -> uiElement.displayed(true));
 ```
 
-For many GuiElements or Pages
+For many elements
 ```java
 Control.withTimeout(1, () -> {
     MyPage page = pageFactory.create(MyPage.class);
@@ -646,7 +746,7 @@ You don't have to decide which method you should use. The standard way will be t
 Testerra was built with the Page Object pattern in mind. The new API makes it easier for your team, to keep you on track
 makes it harder to break out, even if your project contains hundreds of Pages and thousands of Tests.
 
-The new components extension allows you to implement Page Objects like the Web Developer would do by separating
+The new components extension allows you to implement page objects like a web developer would do, by separating
 functionality into reusable components.
 
 ==== Smaller codebase and less boilerplate

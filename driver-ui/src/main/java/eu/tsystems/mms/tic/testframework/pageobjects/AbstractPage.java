@@ -32,8 +32,8 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiEleme
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import org.openqa.selenium.WebDriver;
-import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
+import eu.tsystems.mms.tic.testframework.testing.TestFeatures;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,9 +41,11 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 /**
+ * This is an abstract page object used for {@link Page} and {@link AbstractComponent}.
  * Provides basic {@link PageObject} related features:
  *      Supports element {@link Check}
  *      Supports {@link PageOptions}
@@ -53,7 +55,14 @@ import org.openqa.selenium.WebDriver;
  * @author Peter Lehmann
  * @author Mike Reiche
  */
-public abstract class AbstractPage extends AbstractPageObject implements Loggable {
+public abstract class AbstractPage implements
+        Loggable,
+        TestFeatures,
+        PageObject,
+        UiElementLocator,
+        UiElementFactoryProvider,
+        PageFactoryProvider
+{
     /**
      * The webdriver object.
      *
@@ -61,6 +70,22 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
      */
     @Deprecated
     protected WebDriver driver;
+
+    protected UiElement find(Locate locate) {
+        return uiElementFactory.createFromPage(this, locate);
+    }
+    protected UiElement findById(Object id) {
+        return find(Locate.by(By.id(id.toString())));
+    }
+    protected UiElement findByQa(String qa) {
+        return find(Locate.byQa(qa));
+    }
+    protected UiElement find(By by) {
+        return find(Locate.by(by));
+    }
+    protected UiElement find(XPath xPath) {
+        return find(Locate.by(xPath));
+    }
 
     /**
      * Element timeout in seconds (int).
@@ -400,5 +425,13 @@ public abstract class AbstractPage extends AbstractPageObject implements Loggabl
     @Override
     public WebDriver getWebDriver() {
         return driver;
+    }
+
+    protected <T extends Component> T createComponent(Class<T> componentClass, UiElement rootElement) {
+        return pageFactory.createComponent(componentClass, rootElement);
+    }
+
+    protected <T extends PageObject> T createPage(final Class<T> pageClass) {
+        return pageFactory.createPage(pageClass, getWebDriver());
     }
 }

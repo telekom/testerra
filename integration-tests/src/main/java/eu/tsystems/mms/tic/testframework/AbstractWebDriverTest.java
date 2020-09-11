@@ -78,6 +78,7 @@ public abstract class AbstractWebDriverTest extends TesterraTest implements WebD
         }
     }
 
+    @Override
     public WebDriver getWebDriver() {
         try {
             WebDriverManager.getWebDriver().getWindowHandles();

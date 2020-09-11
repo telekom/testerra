@@ -43,7 +43,6 @@ import org.openqa.selenium.WebElement;
 /**
  * Components are wrappers for HTML elements like WebComponents
  * that acts like a {@link UiElement} and {@link PageObject}
- *      Supports finding component elements by {@link #find(Locate)}
  * @author Mike Reiche
  */
 public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> extends AbstractPage implements Component<SELF>
@@ -104,11 +103,6 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
             this.list = new DefaultComponentList<>(self());
         }
         return this.list;
-    }
-
-    @Override
-    public UiElement find(Locate locate) {
-        return rootElement.find(locate);
     }
 
     @Override

@@ -16,10 +16,14 @@ public class TableRow extends AbstractComponent<TableRow> {
     }
 
     public TestableUiElement linkByName() {
-        return find(By.tagName("a"));
+        return rootElement.find(By.tagName("a"));
     }
 
     public TestableUiElement linkByXPath() {
-        return find(By.xpath(".//a"));
+        return rootElement.find(By.xpath(".//a"));
+    }
+
+    public TestableUiElement columns() {
+        return rootElement.find(By.tagName("td"));
     }
 }

@@ -35,7 +35,10 @@ import org.openqa.selenium.WebDriver;
  * Templates.
  */
 @PageOptions(elementTimeoutInSeconds = 1)
-public class WebTestPage extends AbstractWebTestPage {
+public class WebTestPage extends BasePage {
+
+    @Check
+    protected final GuiElement openAgainLink = new GuiElement(getWebDriver(), By.id("11"));
 
     private final GuiElement input1 = new GuiElement(this.getWebDriver(), By.id("1"));
     /** A button on the page. */

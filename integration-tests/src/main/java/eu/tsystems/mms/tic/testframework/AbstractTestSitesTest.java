@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.core.server.Server;
 import eu.tsystems.mms.tic.testframework.core.testpage.TestPage;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import java.lang.reflect.Method;
 import java.net.BindException;
@@ -36,7 +37,7 @@ import org.testng.annotations.BeforeTest;
 /**
  * Abstract test class for tests based on static test site resources
  */
-public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implements Loggable {
+public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implements Loggable, PageFactoryProvider {
 
     protected static Server server = new Server(FileUtils.getResourceFile("testsites"));
 

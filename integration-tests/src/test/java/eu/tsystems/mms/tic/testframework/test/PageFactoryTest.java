@@ -22,7 +22,8 @@
 package eu.tsystems.mms.tic.testframework.test;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 
-public interface PageFactoryTest {
+public interface PageFactoryTest extends PageFactoryProvider {
     Page getPage();
 }

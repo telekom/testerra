@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Configuration>
     <Appenders>
-        <File name="MyFile" fileName="logs/integration-test-log4j.log" maxFileSize="1MB" maxBackupIndex="1">
+        <File name="MyFile" fileName="logs/integration-test-log4j.log">
             <PatternLayout>
                 <Pattern>%-5p %c{2} - %m%n</Pattern>
             </PatternLayout>

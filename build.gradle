@@ -54,7 +54,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'maven-publish' // tasks publish and publishToMavenLocal
-    apply plugin: 'jacoco' // code-coverage
+    //apply plugin: 'jacoco' // code-coverage
 
     // important!
     repositories {

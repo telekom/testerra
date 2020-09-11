@@ -4,8 +4,8 @@
 
     <test name="test1">
         <classes>
-<!--            <class name="eu.tsystems.mms.tic.testframework.core.test.common.PropertyManagerTest"></class>-->
-            <class name="eu.tsystems.mms.tic.testframework.core.test.pageobjects.page.AssertTextPageTest"></class>
+<!--            <class name="eu.tsystems.mms.tic.testframework.test.common.PropertyManagerTest"></class>-->
+            <class name="eu.tsystems.mms.tic.testframework.test.page.AssertTextPageTest"></class>
         </classes>
     </test>
 </suite>

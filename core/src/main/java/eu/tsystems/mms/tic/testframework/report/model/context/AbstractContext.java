@@ -36,6 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public abstract class AbstractContext implements SynchronizableContext, Loggable {
@@ -107,24 +108,22 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
         return TestStatusController.Status.PASSED;
     }
 
-    TestStatusController.Status getStatusFromContexts(AbstractContext[] contexts) {
+    TestStatusController.Status getStatusFromContexts(Stream<? extends AbstractContext> contexts) {
         Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
         /*
         get statuses
          */
-        synchronized (contexts) {
-            // init with 0
-            Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
+        // init with 0
+        Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
 
-            for (AbstractContext context : contexts) {
-                TestStatusController.Status status = context.getStatus();
-                int value = 0;
-                if (counts.containsKey(status)) {
-                    value = counts.get(status);
-                }
-                counts.put(status, value + 1);
+        contexts.forEach(abstractContext -> {
+            TestStatusController.Status status = abstractContext.getStatus();
+            int value = 0;
+            if (counts.containsKey(status)) {
+                value = counts.get(status);
             }
-        }
+            counts.put(status, value + 1);
+        });
 
         /*
         find actual status

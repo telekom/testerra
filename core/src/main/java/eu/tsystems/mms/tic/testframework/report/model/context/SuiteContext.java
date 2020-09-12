@@ -60,6 +60,6 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
 
     @Override
     public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(testContextModels.toArray(new AbstractContext[0]));
+        return getStatusFromContexts(testContextModels.stream());
     }
 }

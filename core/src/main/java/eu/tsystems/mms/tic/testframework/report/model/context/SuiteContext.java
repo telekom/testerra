@@ -49,7 +49,6 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
                 () -> new TestContextModel(this, executionContext),
                 testContextModel -> {
                     EventBus eventBus = TesterraListener.getEventBus();
-                    eventBus.post(new ContextUpdateEvent().setContext(testContextModel));
                     eventBus.post(new ContextUpdateEvent().setContext(this));
                 });
     }

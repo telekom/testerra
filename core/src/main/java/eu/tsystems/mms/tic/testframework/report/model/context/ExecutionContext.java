@@ -71,7 +71,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
                 () -> new SuiteContext(this),
                 suiteContext -> {
                     EventBus eventBus = TesterraListener.getEventBus();
-                    eventBus.post(new ContextUpdateEvent().setContext(suiteContext));
                     eventBus.post(new ContextUpdateEvent().setContext(this));
                 });
     }

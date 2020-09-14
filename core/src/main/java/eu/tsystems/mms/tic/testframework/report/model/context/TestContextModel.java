@@ -138,9 +138,8 @@ public class TestContextModel extends AbstractContext implements SynchronizableC
         }
 
         EventBus eventBus = TesterraListener.getEventBus();
-        eventBus.post(new ContextUpdateEvent().setContext(newClassContext));
         eventBus.post(new ContextUpdateEvent().setContext(this));
-
+        
         return newClassContext;
 
     }

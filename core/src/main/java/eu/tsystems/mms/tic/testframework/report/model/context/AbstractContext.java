@@ -148,7 +148,7 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
         return DurationFormatUtils.formatDuration(millis, "SSS 'ms'", false);
     }
 
-    public int nrOfFailed(Map<TestStatusController.Status, Integer> counts) {
+    public long nrOfFailed(Map<TestStatusController.Status, Integer> counts) {
         final AtomicReference<Integer> count = new AtomicReference<>();
         count.set(0);
         counts.keySet().forEach(status -> {
@@ -159,7 +159,7 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
         return count.get();
     }
 
-    public int nrOfPassed(Map<TestStatusController.Status, Integer> counts) {
+    public long nrOfPassed(Map<TestStatusController.Status, Integer> counts) {
         final AtomicReference<Integer> count = new AtomicReference<>();
         count.set(0);
         counts.keySet().forEach(status -> {
@@ -170,7 +170,7 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
         return count.get();
     }
 
-    public int nrOfSkipped(Map<TestStatusController.Status, Integer> counts) {
+    public long nrOfSkipped(Map<TestStatusController.Status, Integer> counts) {
         final AtomicReference<Integer> count = new AtomicReference<>();
         count.set(0);
         counts.keySet().forEach(status -> {
@@ -181,7 +181,7 @@ public abstract class AbstractContext implements SynchronizableContext, Loggable
         return count.get();
     }
 
-    public int passRate(Map<TestStatusController.Status, Integer> counts, int numberOfTests) {
+    public long passRate(Map<TestStatusController.Status, Integer> counts, long numberOfTests) {
         if (numberOfTests == 0) {
             return 0;
         }

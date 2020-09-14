@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
@@ -187,9 +188,10 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         return getStatusFromContexts(getRepresentationalMethods());
     }
 
-    public AbstractContext[] getRepresentationalMethods() {
-        AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod).toArray(AbstractContext[]::new);
-        return contexts;
+    public Stream<MethodContext> getRepresentationalMethods() {
+        return methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
+//        AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
+//        return contexts;
     }
 
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {

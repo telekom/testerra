@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import org.testng.ITestContext;
@@ -70,7 +71,6 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
                 () -> new SuiteContext(this),
                 suiteContext -> {
                     EventBus eventBus = TesterraListener.getEventBus();
-                    eventBus.post(new ContextUpdateEvent().setContext(suiteContext));
                     eventBus.post(new ContextUpdateEvent().setContext(this));
                 });
     }
@@ -88,20 +88,20 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
                 return TestStatusController.Status.FAILED;
             }
         } else {
-            return getStatusFromContexts(suiteContexts.toArray(new AbstractContext[0]));
+            return getStatusFromContexts(suiteContexts.stream());
         }
     }
 
     /**
      * Used in dashboard.vm
      */
-    public int getNumberOfRepresentationalTests() {
-        final AtomicReference<Integer> i = new AtomicReference<>();
+    public long getNumberOfRepresentationalTests() {
+        AtomicLong i = new AtomicLong();
         i.set(0);
         suiteContexts.forEach(suiteContext -> {
             suiteContext.testContextModels.forEach(testContext -> {
                 testContext.classContexts.forEach(classContext -> {
-                    i.set(i.get() + classContext.getRepresentationalMethods().length);
+                    i.set(i.get() + classContext.getRepresentationalMethods().count());
                 });
             });
         });

@@ -21,14 +21,17 @@
  */
 package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.testng.IClass;
 import org.testng.IInvokedMethod;
@@ -51,7 +54,7 @@ public class TestContextModel extends AbstractContext implements SynchronizableC
      * Same class context can see an already existing id and either enhance (same testContext)
      * or create a new id with naming scheme.
      */
-    private static final Map<String, ClassContext> CLASS_CONTEXT_MARKS = new LinkedHashMap<>();
+    private static final Map<String, ClassContext> CLASS_CONTEXT_MARKS = new ConcurrentHashMap<>();
 
     public TestContextModel(SuiteContext suiteContext, ExecutionContext executionContext) {
         this.parentContext = this.suiteContext = suiteContext;
@@ -91,17 +94,12 @@ public class TestContextModel extends AbstractContext implements SynchronizableC
          */
 
         /*
-        this is the one we want to return later
-         */
-        final ClassContext classContext;
-
-        /*
         basic tree entries for the context
          */
-        classContext = getTreeClassContext(realClass);
+        final ClassContext newClassContext = createAndAddClassContext(realClass);
 
-        /*
-        check if @TesterraClassContext is present on class
+        /**
+         * check if {@link TestContext} is present on class
          */
         if (realClass.isAnnotationPresent(TestContext.class)) {
 
@@ -134,16 +132,19 @@ public class TestContextModel extends AbstractContext implements SynchronizableC
                 }
 
                 // mark context reference
-                classContext.merged = true;
-                classContext.mergedIntoClassContext = mergedClassContext;
+                newClassContext.merged = true;
+                newClassContext.mergedIntoClassContext = mergedClassContext;
             }
         }
 
-        return classContext;
+        EventBus eventBus = TesterraListener.getEventBus();
+        eventBus.post(new ContextUpdateEvent().setContext(this));
+        
+        return newClassContext;
 
     }
 
-    private ClassContext getTreeClassContext(Class realClass) {
+    private ClassContext createAndAddClassContext(Class realClass) {
         /*
         create a new class context, maybe this is later thrown away
          */
@@ -152,61 +153,55 @@ public class TestContextModel extends AbstractContext implements SynchronizableC
         newClassContext.simpleClassName = realClass.getSimpleName();
         fillBasicContextValues(newClassContext, this, newClassContext.simpleClassName);
 
-        synchronized (CLASS_CONTEXT_MARKS) {
-            // lets check if we already know about it
-            if (CLASS_CONTEXT_MARKS.containsKey(newClassContext.fullClassName)) {
-                // a context for this class is already present
+        // lets check if we already know about it
+        if (CLASS_CONTEXT_MARKS.containsKey(newClassContext.fullClassName)) {
+            // a context for this class is already present
 
-                // Does a marker entry with this swi exist?
-                if (CLASS_CONTEXT_MARKS.containsKey(newClassContext.swi)) { // A'++ HIT
-                    // this must be our class context
-                    return CLASS_CONTEXT_MARKS.get(newClassContext.swi);
-                }
+            // Does a marker entry with this swi exist?
+            if (CLASS_CONTEXT_MARKS.containsKey(newClassContext.swi)) { // A'++ HIT
+                // this must be our class context
+                return CLASS_CONTEXT_MARKS.get(newClassContext.swi);
+            }
 
-                // now A can be the matching one, or this is a completely new context
+            // now A can be the matching one, or this is a completely new context
 
-                final ClassContext defaultStoredClassContext = CLASS_CONTEXT_MARKS.get(newClassContext.fullClassName);
-                if (newClassContext.swi.equals(defaultStoredClassContext.swi)) { // A HIT
-                    // it is the exact same class
-                    return defaultStoredClassContext;
-                }
+            final ClassContext defaultStoredClassContext = CLASS_CONTEXT_MARKS.get(newClassContext.fullClassName);
+            if (newClassContext.swi.equals(defaultStoredClassContext.swi)) { // A HIT
+                // it is the exact same class
+                return defaultStoredClassContext;
+            }
 
                 /*
                  A is present but not matching.
                  creating A'' and setting A to dummy
                   */
-                newClassContext.setExplicitName();
-                CLASS_CONTEXT_MARKS.put(newClassContext.swi, newClassContext);
-                synchronized (classContexts) {
-                    classContexts.add(newClassContext);
-                }
+            newClassContext.setExplicitName();
+            CLASS_CONTEXT_MARKS.put(newClassContext.swi, newClassContext);
+            classContexts.add(newClassContext);
 
-                final String dummySWI = "dummy";
-                if (!dummySWI.equals(defaultStoredClassContext.swi)) {
+            final String dummySWI = "dummy";
+            if (!dummySWI.equals(defaultStoredClassContext.swi)) {
                     /*
                     the defaultStoredClassContext is NOT a dummy already, set it to dummy
                      */
-                    defaultStoredClassContext.setExplicitName();
-                    CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.swi, defaultStoredClassContext);
+                defaultStoredClassContext.setExplicitName();
+                CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.swi, defaultStoredClassContext);
 
-                    final ClassContext dummy = new ClassContext(null, executionContext);
-                    dummy.swi = "dummy";
-                    CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.fullClassName, dummy);
-                }
-            } else {
-                // Our new class is the first time coming up.
-                CLASS_CONTEXT_MARKS.put(newClassContext.fullClassName, newClassContext);
-                synchronized (classContexts) {
-                    classContexts.add(newClassContext);
-                }
+                final ClassContext dummy = new ClassContext(null, executionContext);
+                dummy.swi = "dummy";
+                CLASS_CONTEXT_MARKS.put(defaultStoredClassContext.fullClassName, dummy);
             }
-
-            return newClassContext;
+        } else {
+            // Our new class is the first time coming up.
+            CLASS_CONTEXT_MARKS.put(newClassContext.fullClassName, newClassContext);
+            classContexts.add(newClassContext);
         }
+
+        return newClassContext;
     }
 
     @Override
     public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(classContexts.toArray(new AbstractContext[0]));
+        return getStatusFromContexts(classContexts.stream());
     }
 }

@@ -459,8 +459,6 @@ public final class WebDriverSessionsManager {
                     LOGGER.error("Error executing webdriver startup handler", e);
                 }
             }
-            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(sessionContext));
-
             return eventFiringWebDriver;
         } else {
             throw new TesterraSystemException("No webdriver factory registered for browser " + browser);

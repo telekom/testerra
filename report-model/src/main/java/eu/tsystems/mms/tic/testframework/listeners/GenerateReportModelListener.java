@@ -29,15 +29,11 @@ import eu.tsystems.mms.tic.testframework.adapters.ExecutionContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.MethodContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.SuiteContextExporter;
 import eu.tsystems.mms.tic.testframework.adapters.TestContextExporter;
-import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.events.FinalizeExecutionEvent;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.ExecutionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.SynchronizableContext;
-import eu.tsystems.mms.tic.testframework.report.model.context.TestContextModel;
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -46,7 +42,6 @@ import java.io.FileOutputStream;
  */
 public class GenerateReportModelListener implements
         MethodEndEvent.Listener,
-        ContextUpdateEvent.Listener,
         Loggable,
         FinalizeExecutionEvent.Listener
 {
@@ -100,24 +95,17 @@ public class GenerateReportModelListener implements
 
     @Override
     @Subscribe
-    public void onContextUpdate(ContextUpdateEvent event) {
-        SynchronizableContext context = event.getContext();
-        if (context instanceof SuiteContext) {
-            writeBuilderToFile(suiteContextExporter.prepareSuiteContext((SuiteContext)context), new File(suitesDir,((SuiteContext) context).id));
-        } else if (context instanceof TestContextModel) {
-            writeBuilderToFile(testContextExporter.prepareTestContext((TestContextModel)context), new File(testsDir,((TestContextModel) context).id));
-        }
-    }
-
-    @Override
-    @Subscribe
     public void onFinalizeExecution(FinalizeExecutionEvent event) {
-        ExecutionContext currentExecutionContext = event.getExecutionContext();
-        event.getMethodStatsPerClass().ifPresent(classContexts -> {
-            classContexts.forEach(classContext -> {
-                writeBuilderToFile(classContextExporter.prepareClassContext(classContext), new File(classesDir,(classContext.id)));
+        ExecutionContext executionContext = event.getExecutionContext();
+        executionContext.suiteContexts.forEach(suiteContext -> {
+            writeBuilderToFile(suiteContextExporter.prepareSuiteContext(suiteContext), new File(suitesDir, suiteContext.id));
+            suiteContext.testContextModels.forEach(testContextModel -> {
+                writeBuilderToFile(testContextExporter.prepareTestContext(testContextModel), new File(testsDir, testContextModel.id));
+                testContextModel.classContexts.forEach(classContext -> {
+                    writeBuilderToFile(classContextExporter.prepareClassContext(classContext), new File(classesDir, classContext.id));
+                });
             });
         });
-        writeBuilderToFile(executionContextExporter.prepareExecutionContext(currentExecutionContext), new File(baseDir, "execution"));
+        writeBuilderToFile(executionContextExporter.prepareExecutionContext(executionContext), new File(baseDir, "execution"));
     }
 }

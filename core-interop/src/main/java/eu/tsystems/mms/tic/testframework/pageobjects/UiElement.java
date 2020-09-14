@@ -25,9 +25,6 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 
 /**
  * GuiElement with new fluent API support
@@ -87,18 +84,6 @@ public interface UiElement extends
     }
 
     IFrameLogic getFrameLogic();
-
-    /**
-     * Deprecated API
-     */
-    @Deprecated
-    By getBy();
-    @Deprecated
-    Point getLocation();
-    @Deprecated
-    Dimension getSize();
-
-    UiElement find(Locate locate);
 
     UiElementList<UiElement> list();
 }

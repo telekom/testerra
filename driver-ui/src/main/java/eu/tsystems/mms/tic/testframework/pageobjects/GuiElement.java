@@ -403,12 +403,10 @@ public class GuiElement implements
         return decoratedFacade.isSelectable();
     }
 
-    @Override
     public Point getLocation() {
         return decoratedFacade.getLocation();
     }
 
-    @Override
     public Dimension getSize() {
         return decoratedFacade.getSize();
     }

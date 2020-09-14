@@ -343,7 +343,7 @@ public final class JSUtils {
 
         // By-Class does not allow to access the selector field
         // ... use .toString() and extract selector.
-        final By by = element.getBy();
+        final By by = element.getLocate().getBy();
         final String beautifiedSelector = beautifySelectorString(by);
         String jsSelector = "";
 

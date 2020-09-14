@@ -25,10 +25,10 @@ import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import java.util.Map;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-
-import java.util.Map;
+import org.openqa.selenium.WebElement;
 
 @Deprecated
 public abstract class Layout implements ILayout {
@@ -86,8 +86,9 @@ public abstract class Layout implements ILayout {
             }
             return new LayoutBorders(0, 0, 0, 0);
         } else {
-            Point location = guiElement.getLocation();
-            Dimension size = guiElement.getSize();
+            WebElement webElement = guiElement.getWebElement();
+            Point location = webElement.getLocation();
+            Dimension size = webElement.getSize();
             int left = location.getX();
             int right = left + size.getWidth();
             int top = location.getY();

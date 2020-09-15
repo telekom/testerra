@@ -280,7 +280,7 @@ public class PropertyManagerTest extends AbstractWebDriverTest {
     @Test
     public void testT24_DoublePropertyWithoutDefaultNotSet() {
         double doubleProperty = PropertyManager.getDoubleProperty("pm.test.double2");
-        Assert.assertEquals(doubleProperty, -1, "Double Property equals default value.");
+        Assert.assertEquals(doubleProperty, -1.0, "Double Property equals default value.");
     }
 
     @Test

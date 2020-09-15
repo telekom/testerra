@@ -24,7 +24,6 @@
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
-
 import java.math.BigDecimal;
 
 @Deprecated
@@ -85,6 +84,6 @@ public final class AssertUtils {
     }
 
     public static void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, String description) {
-        assertion.assertLowerThan(actual, expected, description);
+        assertion.assertLowerEqualThan(actual, expected, description);
     }
 }

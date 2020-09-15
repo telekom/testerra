@@ -48,7 +48,7 @@ public class AssertUtilsTest extends AbstractWebDriverTest {
         try {
             AssertUtils.assertContains(string, "DresdenX");
         } catch (AssertionError e) {
-            Assert.assertTrue(e.getMessage().contains("expected [Dresden] contains [DresdenX]"));
+            Assert.assertContains(e.getMessage(), "Expected [Dresden] contains [DresdenX]");
             return;
         }
         Assert.fail("");

@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
-import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.internal.Viewport;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -83,6 +82,8 @@ public class UITestUtils {
      */
     private static final DateFormat FILES_DATE_FORMAT = new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss");
     private static final Report report = Testerra.injector.getInstance(Report.class);
+
+    private static int IE_SCREENSHOT_LIMIT = 1200;
 
     @Deprecated
     private UITestUtils() {
@@ -233,8 +234,8 @@ public class UITestUtils {
         if (Browsers.ie.equalsIgnoreCase(browser)) {
             Viewport viewport = JSUtils.getViewport(driver);
 
-            if (viewport.height > Constants.IE_SCREENSHOT_LIMIT) {
-                LOGGER.warn("IE: Not taking screenshot because screen size is larger than height limit of " + Constants.IE_SCREENSHOT_LIMIT);
+            if (viewport.height > IE_SCREENSHOT_LIMIT) {
+                LOGGER.warn("IE: Not taking screenshot because screen size is larger than height limit of " + IE_SCREENSHOT_LIMIT);
                 return;
             }
         }

@@ -26,22 +26,15 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssert;
-import eu.tsystems.mms.tic.testframework.internal.Constants;
 import eu.tsystems.mms.tic.testframework.layout.extraction.AnnotationReader;
 import eu.tsystems.mms.tic.testframework.layout.reporting.LayoutCheckContext;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,6 +46,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.imageio.ImageIO;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for handling layout checking screenshots.
@@ -71,9 +71,9 @@ public final class LayoutCheck {
         ANNOTATIONDATA_NAMETEMPLATE("annotationdata.nametemplate", "Reference%s_data.json"),
         ACTUAL_NAMETEMPLATE("actual.nametemplate", "Actual%s.png"),
         DISTANCE_NAMETEMPLATE("distance.nametemplate", "Distance%s.png"),
-        REFERENCE_PATH("reference.path", "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/reference"),
-        DISTANCE_PATH("distance.path", "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/distance"),
-        ACTUAL_PATH("actual.path", "src/test/resources/" + Constants.SCREENREFERENCES_PATH + "/actual"),
+        REFERENCE_PATH("reference.path", "src/test/resources/screenreferences/reference"),
+        DISTANCE_PATH("distance.path", "src/test/resources/screenreferences/distance"),
+        ACTUAL_PATH("actual.path", "src/test/resources/screenreferences/actual"),
         USE_IGNORE_COLOR("use.ignore.color", false),
         USE_AREA_COLOR("use.area.color", false),
         PIXEL_RGB_DEVIATION_PERCENT("pixel.rgb.deviation.percent", 0),

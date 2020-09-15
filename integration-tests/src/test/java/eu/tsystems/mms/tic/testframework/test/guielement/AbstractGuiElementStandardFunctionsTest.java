@@ -269,7 +269,7 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         try {
             WebElement webElement = guiElement.getWebElement();
         } catch (TimeoutException e) {
-            AssertUtils.assertContains(e.getCause().getMessage(), "GuiElement not found");
+            AssertUtils.assertContains(e.getCause().getMessage(), "found more than one WebElement");
             AssertUtils.assertContains(e.getCause().getMessage(), guiElement.getLocate().toString());
         }
     }

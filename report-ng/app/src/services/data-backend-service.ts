@@ -1,6 +1,11 @@
 import {autoinject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-fetch-client';
 import {data} from "services/report-model";
+import ExecutionContext = data.ExecutionContext;
+import SuiteContext = data.SuiteContext;
+import TestContext = data.TestContext;
+import ClassContext = data.ClassContext;
+import MethodContext = data.MethodContext;
 
 
 /**
@@ -41,12 +46,42 @@ export class DataBackendService {
     });
   }
 
-  // @ts-ignore
-  getExecution(): Promise<data.ExecutionContext> {
+  getExecution(): Promise<ExecutionContext> {
     return this.get("model/execution")
       .then(response => {
-        return this.responseToProtobufJSMessage(response, data.ExecutionContext)
+        return this.responseToProtobufJSMessage(response, ExecutionContext)
       })
   }
 
+
+  getSuite(apath : string): Promise<SuiteContext> {
+    return this.get("model/suites/"+apath)
+      .then(response => {
+        return this.responseToProtobufJSMessage(response, SuiteContext)
+      })
+  }
+
+  // @ts-ignore
+  getTest(apath : string): Promise<TestContext> {
+    return this.get("model/tests/"+apath)
+      .then(response => {
+        return this.responseToProtobufJSMessage(response, TestContext)
+      })
+  }
+
+  // @ts-ignore
+  getClass(apath : string): Promise<ClassContext> {
+    return this.get("model/classes/"+apath)
+      .then(response => {
+        return this.responseToProtobufJSMessage(response, ClassContext)
+      })
+  }
+
+  // @ts-ignore
+  getMethod(apath : string): Promise<MethodContext> {
+    return this.get("model/methods/"+apath)
+      .then(response => {
+        return this.responseToProtobufJSMessage(response, MethodContext)
+      })
+  }
 }

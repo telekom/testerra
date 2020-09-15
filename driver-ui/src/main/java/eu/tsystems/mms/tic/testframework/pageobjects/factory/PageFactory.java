@@ -26,19 +26,17 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.apache.commons.collections.buffer.CircularFifoBuffer;
-import org.openqa.selenium.WebDriver;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.collections.buffer.CircularFifoBuffer;
+import org.openqa.selenium.WebDriver;
 
 /**
  * @deprecated Use {@link PageObjectFactory} instead
@@ -119,7 +117,12 @@ public final class PageFactory {
      * @deprecated Passing page variables and False-Check overrides are deprecated
      */
     @Deprecated
-    private static <T extends Page, U extends PageVariables> T loadPO(Class<T> pageClass, WebDriver driver, U pageVariables, boolean positiveCheck) {
+    private static <T extends Page, U extends PageVariables> T loadPO(
+            Class<T> pageClass,
+            WebDriver driver,
+            U pageVariables,
+            boolean positiveCheck
+    ) {
         if (pageVariables instanceof Page) {
             throw new TesterraRuntimeException("You cannot hand over a page to a page. This is a bad design and also may produce looping. " +
                     "You can make page compositions with a) static modules (Page xyzPage = PageFactory.create(...) inside a page class) " +
@@ -139,8 +142,13 @@ public final class PageFactory {
         try {
             try {
                 Constructor<T> constructor;
-                constructor = pageClass.getConstructor(WebDriver.class, pageVariables.getClass());
-                t = constructor.newInstance(driver, pageVariables);
+                if (pageVariables != null) {
+                    constructor = pageClass.getConstructor(WebDriver.class, pageVariables.getClass());
+                    t = constructor.newInstance(driver, pageVariables);
+                } else {
+                    constructor = pageClass.getConstructor(WebDriver.class);
+                    t = constructor.newInstance(driver);
+                }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new TesterraRuntimeException(msg + pageClass.getSimpleName(), e);
             }

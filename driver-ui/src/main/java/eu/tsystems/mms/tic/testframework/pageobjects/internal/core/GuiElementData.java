@@ -129,17 +129,21 @@ public class GuiElementData implements
         return toString(false);
     }
 
+    @Override
     public String toString(boolean detailed) {
         StringBuilder sb = new StringBuilder();
-        if (guiElement.hasParent()) {
-            sb.append(guiElement.getParent()).append(" -> ");
+        if (hasParent()) {
+            sb.append(getParent()).append(" -> ");
         }
-        if (hasName()) {
+
+        boolean hasName = this.name!=null;
+
+        if (hasName) {
             sb.append(name);
         } else {
-            sb.append("UiElement");
+            sb.append(UiElement.class.getSimpleName());
         }
-        if (!hasName() || detailed) {
+        if (!hasName || detailed) {
             sb.append("(").append(locate);
             if (index != -1) {
                 sb.append("[").append(index+1).append("]");

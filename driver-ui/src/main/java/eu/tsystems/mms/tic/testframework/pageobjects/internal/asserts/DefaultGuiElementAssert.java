@@ -40,14 +40,15 @@ public class DefaultGuiElementAssert implements GuiElementAssert {
     private final GuiElementData guiElementData;
 
     public DefaultGuiElementAssert(
-            GuiElementData guiElementData,
-            GuiElementWait guiElementWait,
-            Assertion configuredAssert
+            GuiElementCore core,
+            GuiElementData data,
+            GuiElementWait wait,
+            Assertion assertion
     ) {
-        this.guiElementWait = guiElementWait;
-        this.guiElementCore = guiElementData.getGuiElement().getRawCore();
-        this.configuredAssert = configuredAssert;
-        this.guiElementData = guiElementData;
+        this.guiElementWait = wait;
+        this.guiElementCore = core;
+        this.configuredAssert = assertion;
+        this.guiElementData = data;
     }
 
     @Override

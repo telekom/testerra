@@ -37,7 +37,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
     private final GuiElementData guiElementData;
 
     @Inject
-    public DefaultGuiElementWait(GuiElementData data, GuiElementCore core) {
+    public DefaultGuiElementWait(GuiElementCore core, GuiElementData data) {
         this.guiElementData = data;
         this.core = core;
     }

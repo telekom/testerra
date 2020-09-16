@@ -24,8 +24,6 @@
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-
 import java.lang.reflect.Field;
 
 public class SetNameFieldAction extends FieldAction implements Loggable {
@@ -50,7 +48,7 @@ public class SetNameFieldAction extends FieldAction implements Loggable {
                 log().error("Failed to assign description to " + field + ". Make sure the field was made accessible in the" +
                         " AbstractPage class before calling this method.");
             }
-            if (guiElement != null && !guiElement.hasName()) {
+            if (guiElement != null && guiElement.getName() == null) {
                 guiElement.setName(field.getName());
             }
         }

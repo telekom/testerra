@@ -224,7 +224,7 @@ public class GuiElement implements UiElement, Loggable {
         }
 
         GuiElementWaitFactory waitFactory = Testerra.injector.getInstance(GuiElementWaitFactory.class);
-        decoratedWait = waitFactory.create(guiElementData);
+        decoratedWait = waitFactory.create(frameAwareCore, guiElementData);
 
         // Wrap the core with sequence decorator, such that its methods are executed with sequence
         GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(frameAwareCore, guiElementData);
@@ -657,7 +657,7 @@ public class GuiElement implements UiElement, Loggable {
         if (nonFunctionalAssert==null) {
             GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             NonFunctionalAssertion assertion = Testerra.injector.getInstance(NonFunctionalAssertion.class);
-            nonFunctionalAssert = assertFactory.create(guiElementData, assertion, decoratedWait);
+            nonFunctionalAssert = assertFactory.create(frameAwareCore, guiElementData, assertion, decoratedWait);
         }
         return nonFunctionalAssert;
     }
@@ -682,7 +682,7 @@ public class GuiElement implements UiElement, Loggable {
         if (instantAssert == null) {
             GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             InstantAssertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
-            instantAssert = assertFactory.create(guiElementData, assertion, decoratedWait);
+            instantAssert = assertFactory.create(frameAwareCore, guiElementData, assertion, decoratedWait);
         }
         return instantAssert;
     }
@@ -698,7 +698,7 @@ public class GuiElement implements UiElement, Loggable {
         if (collectableAssert==null) {
             GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             CollectedAssertion assertion = Testerra.injector.getInstance(CollectedAssertion.class);
-            collectableAssert = assertFactory.create(guiElementData, assertion, decoratedWait);
+            collectableAssert = assertFactory.create(frameAwareCore, guiElementData, assertion, decoratedWait);
         }
         return collectableAssert;
     }

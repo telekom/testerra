@@ -21,22 +21,25 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 
+@Deprecated
 public class DefaultGuiElementAssertFactory implements GuiElementAssertFactory {
 
     @Override
     public GuiElementAssert create(
+        GuiElementCore core,
         GuiElementData data,
         Assertion assertion,
-        GuiElementWait guiElementWait
+        GuiElementWait wait
     ) {
         GuiElementAssert guiElementAssert;
         if (Testerra.Properties.PERF_TEST.asBool()) {
             guiElementAssert = new PerformanceTestGuiElementAssert();
         } else {
-            guiElementAssert = new DefaultGuiElementAssert(data, guiElementWait, assertion);
+            guiElementAssert = new DefaultGuiElementAssert(core, data, wait, assertion);
             guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, data);
         }
         return guiElementAssert;

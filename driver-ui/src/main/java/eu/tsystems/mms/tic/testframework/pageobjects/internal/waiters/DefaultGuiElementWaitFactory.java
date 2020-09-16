@@ -21,12 +21,14 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 
+@Deprecated
 public class DefaultGuiElementWaitFactory implements GuiElementWaitFactory {
 
-        @Override
-    public GuiElementWait create(GuiElementData data) {
-        return new DefaultGuiElementWait(data, data.getGuiElement().getRawCore());
+    @Override
+    public GuiElementWait create(GuiElementCore core, GuiElementData data) {
+        return new DefaultGuiElementWait(core, data);
     }
 }

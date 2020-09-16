@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import java.awt.Color;
 import java.io.File;
 import java.util.List;
+import java.util.function.Consumer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -33,11 +34,11 @@ import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-public abstract class GuiElementCoreDecorator implements GuiElementCore {
+public abstract class AbstractGuiElementCoreDecorator implements GuiElementCore {
 
     protected final GuiElementCore decoratedCore;
 
-    public GuiElementCoreDecorator(GuiElementCore decoratedCore) {
+    public AbstractGuiElementCoreDecorator(GuiElementCore decoratedCore) {
         this.decoratedCore = decoratedCore;
     }
 
@@ -115,6 +116,13 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
         WebElement webElement = decoratedCore.findWebElement();
         afterDelegation();
         return webElement;
+    }
+
+    @Override
+    public void findWebElement(Consumer<WebElement> consumer) {
+        beforeDelegation();
+        decoratedCore.findWebElement(consumer);
+        afterDelegation();
     }
 
     @Override

@@ -37,6 +37,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssert
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import java.awt.Color;
 import java.util.List;
+import java.util.function.Consumer;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
@@ -85,11 +86,6 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     @Override
     public Locate getLocate() {
         return rootElement.getLocate();
-    }
-
-    @Override
-    public WebElement findWebElement() {
-        return rootElement.findWebElement();
     }
 
     @Override
@@ -180,5 +176,10 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
             sb.append(getClass().getSimpleName());
         }
         return sb.toString();
+    }
+
+    @Override
+    public void findWebElement(Consumer<WebElement> consumer) {
+        rootElement.findWebElement(consumer);
     }
 }

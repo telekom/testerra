@@ -44,7 +44,7 @@ import org.openqa.selenium.support.ui.Select;
  * Created by rnhb on 12.08.2015.
  */
 @Deprecated
-public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator implements Loggable {
+public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecorator implements Loggable {
 
     private final GuiElementData guiElementData;
 
@@ -59,21 +59,21 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
 
     @Override
     public WebElement getWebElement() {
+       return this.findWebElement();
+    }
+
+    @Override
+    public WebElement findWebElement() {
         Timer.Sequence<WebElement> sequence = new Timer.Sequence<WebElement>() {
             @Override
             public void run() {
-                WebElement webElement = decoratedCore.getWebElement();
+                WebElement webElement = decoratedCore.findWebElement();
                 setReturningObject(webElement);
             }
         };
         sequence.setSkipThrowingException(true);
         ThrowablePackedResponse<WebElement> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, 1);
         return throwablePackedResponse.finalizeTimer();
-    }
-
-    @Override
-    public WebElement findWebElement() {
-        return decoratedCore.findWebElement();
     }
 
     @Override

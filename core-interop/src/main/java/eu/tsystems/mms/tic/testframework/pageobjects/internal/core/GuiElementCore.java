@@ -21,6 +21,8 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
+import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
+import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebElementRetainer;
@@ -33,6 +35,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 /**
@@ -286,4 +289,11 @@ public interface GuiElementCore extends UiElementFinder, WebElementRetainer {
      * @return File object of the screenshot or NULL on error
      */
     File takeScreenshot();
+
+    /**
+     * @return The first found filtered {@link WebElement}
+     * Throws an {@link ElementNotFoundException} when no element has been found
+     * Throws an {@link NonUniqueElementException} when more than one element has been found
+     */
+    WebElement findWebElement();
 }

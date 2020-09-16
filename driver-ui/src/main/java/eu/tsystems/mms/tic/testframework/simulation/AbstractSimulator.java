@@ -1,7 +1,7 @@
 package eu.tsystems.mms.tic.testframework.simulation;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementAssertions;
@@ -14,80 +14,80 @@ import java.awt.Color;
 import org.openqa.selenium.Point;
 
 public class AbstractSimulator implements UiElementActions {
-    protected final GuiElement guiElement;
+    protected final UiElement uiElement;
 
-    public AbstractSimulator(GuiElement guiElement) {
-        this.guiElement = guiElement;
+    public AbstractSimulator(UiElement uiElement) {
+        this.uiElement = uiElement;
     }
 
     @Override
     public StringAssertion<String> text() {
-        return guiElement.text();
+        return uiElement.text();
     }
 
     @Override
     public QuantityAssertion<Integer> numberOfElements() {
-        return guiElement.numberOfElements();
+        return uiElement.numberOfElements();
     }
 
     @Override
     public StringAssertion<String> value(String attribute) {
-        return guiElement.value();
+        return uiElement.value();
     }
 
     @Override
     public StringAssertion<String> css(String property) {
-        return guiElement.css(property);
+        return uiElement.css(property);
     }
 
     @Override
     public BinaryAssertion<Boolean> enabled() {
-        return guiElement.enabled();
+        return uiElement.enabled();
     }
 
     @Override
     public BinaryAssertion<Boolean> selected() {
-        return guiElement.selected();
+        return uiElement.selected();
     }
 
     @Override
     public BinaryAssertion<Boolean> present() {
-        return guiElement.present();
+        return uiElement.present();
     }
 
     @Override
     public BinaryAssertion<Boolean> displayed() {
-        return guiElement.displayed();
+        return uiElement.displayed();
     }
 
     @Override
     public BinaryAssertion<Boolean> visible(boolean complete) {
-        return guiElement.visible(complete);
+        return uiElement.visible(complete);
     }
 
     @Override
     public StringAssertion<String> tagName() {
-        return guiElement.tagName();
+        return uiElement.tagName();
     }
 
     @Override
     public RectAssertion bounds() {
-        return guiElement.bounds();
+        return uiElement.bounds();
     }
 
     @Override
     public UiElementAssertions waitFor() {
-        return guiElement.waitFor();
+        return uiElement.waitFor();
     }
 
     @Override
     public ImageAssertion screenshot() {
-        return guiElement.screenshot();
+        return uiElement.screenshot();
     }
 
     @Override
     public BasicUiElement highlight(Color color) {
-        return guiElement.highlight(color);
+        return uiElement.highlight(color);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class AbstractSimulator implements UiElementActions {
      * @todo The simulator doesn't need that
      */
     public String createXPath() {
-        return guiElement.createXPath();
+        return uiElement.createXPath();
     }
 
     @Override
@@ -103,65 +103,65 @@ public class AbstractSimulator implements UiElementActions {
      * @todo The simulator doesn't need that
      */
     public Locate getLocate() {
-        return guiElement.getLocate();
+        return uiElement.getLocate();
     }
 
     @Override
     public BasicUiElement scrollIntoView(Point offset) {
-        return guiElement.scrollIntoView(offset);
+        return uiElement.scrollIntoView(offset);
     }
 
     @Override
     public UiElementActions click() {
-        guiElement.click();
+        uiElement.click();
         return this;
     }
 
     @Override
     public UiElementActions doubleClick() {
-        guiElement.doubleClick();
+        uiElement.doubleClick();
         return this;
     }
 
     @Override
     public UiElementActions contextClick() {
-        guiElement.contextClick();
+        uiElement.contextClick();
         return this;
     }
 
     @Override
     public UiElementActions select() {
-        guiElement.select();
+        uiElement.select();
         return this;
     }
 
     @Override
     public UiElementActions deselect() {
-        guiElement.deselect();
+        uiElement.deselect();
         return this;
     }
 
     @Override
     public UiElementActions sendKeys(CharSequence... charSequences) {
-        guiElement.sendKeys(charSequences);
+        uiElement.sendKeys(charSequences);
         return this;
     }
 
     @Override
     public UiElementActions type(String text) {
-        guiElement.type(text);
+        uiElement.type(text);
         return this;
     }
 
     @Override
     public UiElementActions clear() {
-        guiElement.clear();
+        uiElement.clear();
         return this;
     }
 
     @Override
     public UiElementActions hover() {
-        guiElement.hover();
+        uiElement.hover();
         return this;
     }
 }

@@ -26,7 +26,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
+public class GuiElementCoreFrameAwareDecorator extends AbstractGuiElementCoreDecorator {
 
     private final GuiElementData guiElementData;
 

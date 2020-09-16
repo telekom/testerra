@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import java.awt.Color;
 import java.io.File;
 import java.util.List;
+import java.util.function.Consumer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -463,5 +464,13 @@ public abstract class AbstractGuiElementFacadeDecorator implements GuiElementFac
         final UiElement element = decoratedFacade.find(locator);
         afterDelegation();
         return element;
+    }
+
+    @Override
+    public void findWebElement(Consumer<WebElement> consumer) {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        decoratedFacade.findWebElement(consumer);
+        afterDelegation();
     }
 }

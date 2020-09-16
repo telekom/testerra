@@ -48,6 +48,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import javax.imageio.ImageIO;
 import org.openqa.selenium.By;
@@ -119,6 +120,11 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
             TimerUtils.sleep(UiElement.Properties.DELAY_AFTER_FIND_MILLIS.asLong().intValue());
         }
         return webElement;
+    }
+
+    @Override
+    public void findWebElement(Consumer<WebElement> consumer) {
+        consumer.accept(findWebElement());
     }
 
     /**
@@ -198,7 +204,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
     @Override
     public GuiElementCore scrollIntoView(Point offset) {
         JSUtils utils = new JSUtils();
-        utils.scrollToCenter(guiElementData.getWebDriver(), getWebElement(), offset);
+        utils.scrollToCenter(guiElementData.getWebDriver(), findWebElement(), offset);
         return this;
     }
 
@@ -206,7 +212,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
      * Private scroll to element.
      */
     private void pScrollToElement(int yOffset) {
-        final Point location = getWebElement().getLocation();
+        final Point location = findWebElement().getLocation();
         final int x = location.getX();
         final int y = location.getY() - yOffset;
         log().trace("Scrolling into view: " + x + ", " + y);
@@ -300,19 +306,19 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
 
     @Override
     public GuiElementCore submit() {
-        getWebElement().submit();
+        findWebElement().submit();
         return this;
     }
 
     @Override
     public GuiElementCore sendKeys(CharSequence... charSequences) {
-        getWebElement().sendKeys(charSequences);
+        findWebElement().sendKeys(charSequences);
         return this;
     }
 
     @Override
     public GuiElementCore clear() {
-        getWebElement().clear();
+        findWebElement().clear();
         return this;
     }
 
@@ -424,7 +430,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
      */
     private void pMouseOver() {
         highlight(new Color(255, 255, 0));
-        WebElement webElement = getWebElement();
+        WebElement webElement = findWebElement();
         final Point location = webElement.getLocation();
         final int x = location.getX();
         final int y = location.getY();
@@ -547,7 +553,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
 
     @Override
     public File takeScreenshot() {
-        final WebElement element = getWebElement();
+        final WebElement element = findWebElement();
         final boolean isSelenium4 = false;
 
         if (isSelenium4) {

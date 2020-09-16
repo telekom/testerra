@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
 import java.awt.Color;
 import java.io.File;
 import java.util.List;
+import java.util.function.Consumer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -245,5 +246,10 @@ public class DefaultGuiElementFacade implements GuiElementFacade {
     @Override
     public UiElement find(Locate locator) {
         return decoratedCore.find(locator);
+    }
+
+    @Override
+    public void findWebElement(Consumer<WebElement> consumer) {
+        decoratedCore.findWebElement(consumer);
     }
 }

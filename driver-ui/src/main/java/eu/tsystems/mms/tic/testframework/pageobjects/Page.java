@@ -193,8 +193,9 @@ public abstract class Page extends AbstractPage implements TestablePage {
             || textElement.present().getActual()
         ) {
             WebDriver driver = getWebDriver();
-            WebElement webElement = textElement.getWebElement();
-            JSUtils.highlightWebElementStatic(driver, webElement, new Color(0, 255, 0));
+            textElement.findWebElement(webElement -> {
+                JSUtils.highlightWebElementStatic(driver, webElement, new Color(0, 255, 0));
+            });
             return true;
         }
 

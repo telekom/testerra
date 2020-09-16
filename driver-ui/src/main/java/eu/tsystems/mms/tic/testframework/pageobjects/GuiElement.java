@@ -70,6 +70,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -297,11 +298,6 @@ public class GuiElement implements UiElement, Loggable {
     @Deprecated
     public GuiElement getSubElement(Locate locate) {
         return (GuiElement)find(locate);
-    }
-
-    @Override
-    public WebElement findWebElement() {
-        return decoratedFacade.findWebElement();
     }
 
     @Override
@@ -994,5 +990,10 @@ public class GuiElement implements UiElement, Loggable {
     @Deprecated
     public boolean isDisplayedFromWebElement() {
         return this.isDisplayed();
+    }
+
+    @Override
+    public void findWebElement(Consumer<WebElement> consumer) {
+        decoratedFacade.findWebElement(consumer);
     }
 }

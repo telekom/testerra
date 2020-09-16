@@ -16,7 +16,7 @@ public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<
     protected final AssertionProvider<T> provider;
     protected final AbstractPropertyAssertion<T> parent;
     protected boolean shouldWait;
-    protected int timeoutSeconds = 0;
+    protected int timeout = -1;
 
     public AbstractPropertyAssertion(PropertyAssertion<T> parentAssertion, AssertionProvider<T> provider) {
         this.parent = (AbstractPropertyAssertion<T>)parentAssertion;
@@ -31,7 +31,7 @@ public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<
 
     @Override
     public AbstractPropertyAssertion<T> setTimeout(int seconds) {
-        this.timeoutSeconds = seconds;
+        this.timeout = seconds;
         return this;
     }
 

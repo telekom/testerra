@@ -29,8 +29,9 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
     }
 
     protected boolean testTimer(Function<T, Boolean> testFunction) {
-        int useTimeoutSeconds = timeoutSeconds;
+        int useTimeoutSeconds = timeout;
         if (pageOverrides.hasTimeout()) useTimeoutSeconds = pageOverrides.getTimeout();
+        if (useTimeoutSeconds < 0) useTimeoutSeconds = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
 
         Timer timer = new Timer(
             UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(),

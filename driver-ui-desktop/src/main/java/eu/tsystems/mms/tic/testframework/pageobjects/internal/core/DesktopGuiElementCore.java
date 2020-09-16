@@ -77,9 +77,10 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
      * @return A list of {@link WebElement}
      */
     private List<WebElement> findAndFilterWebElements() {
-        List<WebElement> elements;
-        Locate locate = guiElementData.getLocate();
+        List<WebElement> elements = null;
+        Exception seleniumException=null;
         try {
+            Locate locate = guiElementData.getLocate();
             if (guiElementData.hasParent()) {
                 elements = guiElementData.getParent().getGuiElement().getRawCore().findWebElement().findElements(locate.getBy());
             } else {
@@ -93,11 +94,14 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
             if (locate.isUnique() && elements.size() > 1) {
                 throw new NonUniqueElementException(String.format("Locator(%s) found more than one %s [%d]", locate, WebElement.class.getSimpleName(), elements.size()));
             }
-        } catch(Exception cause) {
-            ElementNotFoundException exception = new ElementNotFoundException(guiElementData.getGuiElement(), cause);
+        } catch(Exception e) {
+           seleniumException = e;
+        }
+        if (elements == null || elements.size() == 0) {
+            ElementNotFoundException exception = new ElementNotFoundException(guiElementData.getGuiElement(), seleniumException);
             MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
             if (currentMethodContext != null) {
-                currentMethodContext.errorContext().setThrowable(exception.getMessage(), cause);
+                currentMethodContext.errorContext().setThrowable(exception.getMessage(), seleniumException);
             }
             throw exception;
         }

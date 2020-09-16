@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.SubPageWithoutCheck;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.SuperPageWithCheck;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
+import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
@@ -46,7 +47,7 @@ public class CheckPageCallTest_Deprecated extends AbstractTestSitesTest {
     }
 
     /**
-     * This tests that checkpage() called from a super class of the actual class of the instance is not executed.
+     * This tests that {@link AbstractPage#checkPage()} called from a super class of the actual class of the instance is not executed.
      */
     @Test
     public void testT02_checkPage_notCalledInSuperClass() {

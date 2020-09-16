@@ -244,6 +244,7 @@ public abstract class AbstractPage implements
                 }
             }
         }
+
         log().info("Page loaded successfully");
     }
 

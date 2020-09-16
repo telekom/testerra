@@ -48,8 +48,17 @@ public class CheckPageTest extends AbstractTestSitesTest {
     }
 
     @Test(expectedExceptions = PageNotFoundException.class)
-    public void testT02_checkNotExistingElement() throws Exception {
-        pageFactory.createPage(PageWithNotExistingElement.class);
+    public void testT02_checkNotExistingElement() throws Throwable {
+        try {
+            pageFactory.createPage(PageWithNotExistingElement.class);
+        } catch (Throwable e) {
+            do {
+                e = e.getCause();
+                if (e instanceof PageNotFoundException) {
+                    throw e;
+                }
+            } while (e != null);
+        }
     }
 
     @Test(expectedExceptions = TesterraRuntimeException.class)

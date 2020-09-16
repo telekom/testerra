@@ -99,7 +99,7 @@ public class FrameLogic implements IFrameLogic, Loggable {
                 // switch
                 driver.switchTo().frame(webElement);
             }
-            WebElement frameWebElement = frameGuiElement.getWebElement();
+            WebElement frameWebElement = frameGuiElement.findWebElement();
             frameWebElementList.add(frameWebElement);
         }
 
@@ -110,7 +110,6 @@ public class FrameLogic implements IFrameLogic, Loggable {
     }
 
     public void switchToDefaultFrame() {
-        log().debug("Switching to DefaultContent");
         driver.switchTo().defaultContent();
 
         xOffset = 0;

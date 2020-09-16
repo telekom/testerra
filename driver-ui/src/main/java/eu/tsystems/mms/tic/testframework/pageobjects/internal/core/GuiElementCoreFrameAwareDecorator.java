@@ -51,7 +51,7 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
     @Override
     public Select getSelectElement() {
         beforeDelegation();
-        WebElement webElement = core.getWebElement();
+        WebElement webElement = decoratedCore.findWebElement();
         Select select = new Select(webElement);
         Select frameAwareSelect = new FrameAwareSelect(select, webElement, guiElementData.getFrameLogic().getFrames(), guiElementData.getWebDriver() );
         afterDelegation();

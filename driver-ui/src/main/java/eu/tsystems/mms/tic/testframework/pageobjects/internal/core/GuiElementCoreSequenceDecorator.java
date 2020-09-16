@@ -62,7 +62,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence<WebElement> sequence = new Timer.Sequence<WebElement>() {
             @Override
             public void run() {
-                WebElement webElement = core.getWebElement();
+                WebElement webElement = decoratedCore.getWebElement();
                 setReturningObject(webElement);
             }
         };
@@ -73,12 +73,12 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
 
     @Override
     public WebElement findWebElement() {
-        return core.findWebElement();
+        return decoratedCore.findWebElement();
     }
 
     @Override
     public By getBy() {
-        return core.getBy();
+        return decoratedCore.getBy();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.scrollToElement(yOffset);
+                decoratedCore.scrollToElement(yOffset);
             }
         };
         sequence.setSkipThrowingException(true);
@@ -101,7 +101,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.scrollIntoView(offset);
+                decoratedCore.scrollIntoView(offset);
             }
         };
         sequence.setSkipThrowingException(true);
@@ -115,8 +115,8 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.select();
-                setPassState(core.isSelected());
+                decoratedCore.select();
+                setPassState(decoratedCore.isSelected());
             }
         };
         sequence.setSkipThrowingException(true);
@@ -130,8 +130,8 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.deselect();
-                setPassState(!core.isSelected());
+                decoratedCore.deselect();
+                setPassState(!decoratedCore.isSelected());
             }
         };
         sequence.setSkipThrowingException(true);
@@ -145,7 +145,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.type(text);
+                decoratedCore.type(text);
             }
         };
         sequence.setSkipThrowingException(true);
@@ -160,7 +160,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
             @Override
             public void run() {
                 setSkipThrowingException(true);
-                core.click();
+                decoratedCore.click();
             }
         };
         ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
@@ -173,7 +173,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.submit();
+                decoratedCore.submit();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -187,7 +187,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.sendKeys(charSequences);
+                decoratedCore.sendKeys(charSequences);
             }
         };
         sequence.setSkipThrowingException(true);
@@ -201,7 +201,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.clear();
+                decoratedCore.clear();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -215,7 +215,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
             @Override
             public void run() {
-                String tagName = core.getTagName();
+                String tagName = decoratedCore.getTagName();
                 setReturningObject(tagName);
             }
         };
@@ -229,7 +229,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence<Point> sequence = new Timer.Sequence<Point>() {
             @Override
             public void run() {
-                Point point = core.getLocation();
+                Point point = decoratedCore.getLocation();
                 setReturningObject(point);
             }
         };
@@ -243,7 +243,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence<Dimension> sequence = new Timer.Sequence<Dimension>() {
             @Override
             public void run() {
-                Dimension dimension = core.getSize();
+                Dimension dimension = decoratedCore.getSize();
                 setReturningObject(dimension);
             }
         };
@@ -257,7 +257,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
             @Override
             public void run() {
-                String cssValue = core.getCssValue(cssIdentifier);
+                String cssValue = decoratedCore.getCssValue(cssIdentifier);
                 setReturningObject(cssValue);
             }
         };
@@ -272,7 +272,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
             @Override
             public void run() {
                 setSkipThrowingException(true);
-                core.mouseOver();
+                decoratedCore.mouseOver();
             }
         };
         ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeoutSeconds());
@@ -285,7 +285,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence<Select> sequence = new Timer.Sequence<Select>() {
             @Override
             public void run() {
-                Select select = core.getSelectElement();
+                Select select = decoratedCore.getSelectElement();
                 setReturningObject(select);
             }
         };
@@ -299,7 +299,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence<List<String>> sequence = new Timer.Sequence<List<String>>() {
             @Override
             public void run() {
-                List<String> stringList = core.getTextsFromChildren();
+                List<String> stringList = decoratedCore.getTextsFromChildren();
                 setReturningObject(stringList);
             }
         };
@@ -313,7 +313,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.doubleClick();
+                decoratedCore.doubleClick();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -326,7 +326,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.highlight(color);
+                decoratedCore.highlight(color);
             }
         };
         sequence.setSkipThrowingException(true);
@@ -340,7 +340,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.swipe(offsetX, offSetY);
+                decoratedCore.swipe(offsetX, offSetY);
             }
         };
         sequence.setSkipThrowingException(true);
@@ -354,7 +354,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence<Integer> sequence = new Timer.Sequence<Integer>() {
             @Override
             public void run() {
-                Integer integer = core.getLengthOfValueAfterSendKeys(textToInput);
+                Integer integer = decoratedCore.getLengthOfValueAfterSendKeys(textToInput);
                 setReturningObject(integer);
             }
         };
@@ -369,7 +369,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
             @Override
             public void run() {
                 setReturningObject(0);
-                int numberOfFoundElements = core.getNumberOfFoundElements();
+                int numberOfFoundElements = decoratedCore.getNumberOfFoundElements();
                 setReturningObject(numberOfFoundElements);
             }
         };
@@ -383,7 +383,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence sequence = new Timer.Sequence() {
             @Override
             public void run() {
-                core.rightClick();
+                decoratedCore.rightClick();
             }
         };
         sequence.setSkipThrowingException(true);
@@ -393,7 +393,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
 
     @Override
     public File takeScreenshot() {
-        return core.takeScreenshot();
+        return decoratedCore.takeScreenshot();
     }
 
     @Override
@@ -414,7 +414,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean present = core.isPresent();
+                boolean present = decoratedCore.isPresent();
                 setReturningObject(present);
                 setPassState(present);
             }
@@ -432,7 +432,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean enabled = core.isEnabled();
+                boolean enabled = decoratedCore.isEnabled();
                 setReturningObject(enabled);
                 setPassState(enabled);
             }
@@ -450,7 +450,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean displayed = core.isDisplayed();
+                boolean displayed = decoratedCore.isDisplayed();
                 setReturningObject(displayed);
                 setPassState(displayed);
             }
@@ -468,7 +468,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean visible = core.isVisible(complete);
+                boolean visible = decoratedCore.isVisible(complete);
                 setReturningObject(visible);
                 setPassState(visible);
             }
@@ -486,7 +486,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean selected = core.isSelected();
+                boolean selected = decoratedCore.isSelected();
                 setReturningObject(selected);
                 setPassState(selected);
             }
@@ -501,7 +501,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
             @Override
             public void run() {
-                String text = core.getText();
+                String text = decoratedCore.getText();
                 setReturningObject(text);
             }
         };
@@ -515,7 +515,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
         Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
             @Override
             public void run() {
-                String attributeValue = core.getAttribute(attributeName);
+                String attributeValue = decoratedCore.getAttribute(attributeName);
                 setReturningObject(attributeValue);
             }
         };
@@ -532,7 +532,7 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
                 setReturningObject(false);
                 setSkipThrowingException(true);
 
-                boolean selectable = core.isSelectable();
+                boolean selectable = decoratedCore.isSelectable();
                 setReturningObject(selectable);
                 setPassState(selectable);
             }

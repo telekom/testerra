@@ -91,7 +91,14 @@ public class GuiElement implements UiElement, Loggable {
     private GuiElementAssert collectableAssert;
     private GuiElementAssert nonFunctionalAssert;
 
-    private GuiElementCore core;
+    /**
+     * This is the raw core implementation
+     */
+    private GuiElementCore rawCore;
+    /**
+     * This is the decorated core like {@link GuiElementCoreFrameAwareDecorator} and {@link GuiElementCoreSequenceDecorator}
+     */
+    private GuiElementCore decoratedCore;
     private final GuiElementData guiElementData;
     private GuiElementFacade decoratedFacade;
     private GuiElementWait decoratedWait;
@@ -107,11 +114,11 @@ public class GuiElement implements UiElement, Loggable {
         guiElementData = data;
         guiElementData.setGuiElement(this);
         IWebDriverFactory factory = WebDriverSessionsManager.getWebDriverFactory(guiElementData.getBrowser());
-        core = factory.createCore(guiElementData);
+        this.rawCore = factory.createCore(guiElementData);
     }
 
-    public GuiElementCore getCore() {
-        return this.core;
+    public GuiElementCore getRawCore() {
+        return this.rawCore;
     }
 
     public GuiElementData getData() {
@@ -134,7 +141,7 @@ public class GuiElement implements UiElement, Loggable {
      * This is the internal standard constructor for elements with parent {@link GuiElementCore} implementations.
      */
     public GuiElement(GuiElementCore core) {
-        this.core = core;
+        this.rawCore = core;
         AbstractGuiElementCore realCore = (AbstractGuiElementCore)core;
         guiElementData = realCore.guiElementData;
         guiElementData.setGuiElement(this);
@@ -199,14 +206,16 @@ public class GuiElement implements UiElement, Loggable {
     private void createDecorators() {
         if (guiElementData.hasFrameLogic()) {
             // if frames are set, the waiter should use frame switches when executing its sequences
-            core = new GuiElementCoreFrameAwareDecorator(core, guiElementData);
+            decoratedCore = new GuiElementCoreFrameAwareDecorator(rawCore, guiElementData);
+        } else {
+            decoratedCore = rawCore;
         }
 
         GuiElementWaitFactory waitFactory = Testerra.injector.getInstance(GuiElementWaitFactory.class);
         decoratedWait = waitFactory.create(guiElementData);
 
         // Wrap the core with sequence decorator, such that its methods are executed with sequence
-        GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(core, guiElementData);
+        GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(decoratedCore, guiElementData);
         decoratedFacade = new DefaultGuiElementFacade(sequenceCore);
         decoratedFacade = new GuiElementFacadeLoggingDecorator(decoratedFacade, guiElementData);
 
@@ -409,7 +418,7 @@ public class GuiElement implements UiElement, Loggable {
 
     @Override
     public UiElement find(Locate locate) {
-        return core.find(locate);
+        return decoratedFacade.find(locate);
     }
 
     @Override
@@ -728,7 +737,7 @@ public class GuiElement implements UiElement, Loggable {
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return core.getTagName();
+                return decoratedCore.getTagName();
             }
 
             @Override
@@ -744,7 +753,7 @@ public class GuiElement implements UiElement, Loggable {
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return core.getText();
+                return decoratedCore.getText();
             }
 
             @Override
@@ -769,7 +778,7 @@ public class GuiElement implements UiElement, Loggable {
         return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
-                return core.getAttribute(finalAttribute);
+                return decoratedCore.getAttribute(finalAttribute);
             }
 
             @Override
@@ -802,7 +811,7 @@ public class GuiElement implements UiElement, Loggable {
             @Override
             public Boolean getActual() {
                 try {
-                    return core.findWebElement()!=null;
+                    return decoratedCore.findWebElement()!=null;
                 } catch (ElementNotFoundException e) {
                     return false;
                 }
@@ -821,7 +830,7 @@ public class GuiElement implements UiElement, Loggable {
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return core.isVisible(complete);
+                return decoratedCore.isVisible(complete);
             }
 
             @Override
@@ -838,7 +847,7 @@ public class GuiElement implements UiElement, Loggable {
             @Override
             public Boolean getActual() {
                 try {
-                    return core.isDisplayed();
+                    return decoratedCore.isDisplayed();
                 } catch (ElementNotFoundException e) {
                     return false;
                 }
@@ -858,7 +867,7 @@ public class GuiElement implements UiElement, Loggable {
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return core.isEnabled();
+                return decoratedCore.isEnabled();
             }
 
             @Override
@@ -874,7 +883,7 @@ public class GuiElement implements UiElement, Loggable {
         return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                return core.isSelected();
+                return decoratedCore.isSelected();
             }
 
             @Override
@@ -890,7 +899,7 @@ public class GuiElement implements UiElement, Loggable {
         return propertyAssertionFactory.create(DefaultRectAssertion.class, new AssertionProvider<Rectangle>() {
             @Override
             public Rectangle getActual() {
-                return core.getRect();
+                return decoratedCore.getRect();
             }
 
             @Override
@@ -907,7 +916,7 @@ public class GuiElement implements UiElement, Loggable {
             @Override
             public Integer getActual() {
                 try {
-                    return core.getNumberOfFoundElements();
+                    return decoratedCore.getNumberOfFoundElements();
                 } catch (ElementNotFoundException e) {
                     return 0;
                 }
@@ -945,7 +954,7 @@ public class GuiElement implements UiElement, Loggable {
     public ImageAssertion screenshot() {
         final UiElement self = this;
         final AtomicReference<File> screenshot = new AtomicReference<>();
-        screenshot.set(core.takeScreenshot());
+        screenshot.set(rawCore.takeScreenshot());
         return propertyAssertionFactory.create(DefaultImageAssertion.class, new AssertionProvider<File>() {
             @Override
             public File getActual() {
@@ -954,7 +963,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public void failed(PropertyAssertion assertion) {
-                screenshot.set(core.takeScreenshot());
+                screenshot.set(decoratedCore.takeScreenshot());
             }
 
             @Override

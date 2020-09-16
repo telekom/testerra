@@ -26,7 +26,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
-
 import java.util.Arrays;
 
 public class DefaultGuiElementAssert implements GuiElementAssert {
@@ -46,7 +45,7 @@ public class DefaultGuiElementAssert implements GuiElementAssert {
             Assertion configuredAssert
     ) {
         this.guiElementWait = guiElementWait;
-        this.guiElementCore = guiElementData.getGuiElement().getCore();
+        this.guiElementCore = guiElementData.getGuiElement().getRawCore();
         this.configuredAssert = configuredAssert;
         this.guiElementData = guiElementData;
     }

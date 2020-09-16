@@ -81,7 +81,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
         Locate locate = guiElementData.getLocate();
         try {
             if (guiElementData.hasParent()) {
-                elements = guiElementData.getParent().getGuiElement().getCore().findWebElement().findElements(locate.getBy());
+                elements = guiElementData.getParent().getGuiElement().getRawCore().findWebElement().findElements(locate.getBy());
             } else {
                 elements = guiElementData.getWebDriver().findElements(locate.getBy());
             }

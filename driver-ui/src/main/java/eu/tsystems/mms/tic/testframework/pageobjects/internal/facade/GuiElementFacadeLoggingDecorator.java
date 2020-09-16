@@ -24,7 +24,7 @@
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 
-public class GuiElementFacadeLoggingDecorator extends GuiElementFacadeDecorator implements Loggable {
+public class GuiElementFacadeLoggingDecorator extends AbstractGuiElementFacadeDecorator implements Loggable {
 
     private final GuiElementData guiElementData;
 
@@ -34,21 +34,12 @@ public class GuiElementFacadeLoggingDecorator extends GuiElementFacadeDecorator 
     }
 
     @Override
-    protected void beforeDelegation(String methodName, String message) {
-
+    protected void beforeDelegation(String methodName, String parameterInfo) {
+        log().info(methodName + "("+parameterInfo+") on " + guiElementData.toString());
     }
 
     @Override
-    protected void afterDelegation(String result) {
-    }
-
-    @Override
-    protected void beforeActionDelegation(String message) {
-        print(message);
-    }
-
-    private void print(String message) {
-        String messageToLog = message + " on " + guiElementData.toString();
-        log().info(messageToLog);
+    protected void beforeActionDelegation(String methodName) {
+        log().info(methodName + " on " + guiElementData.toString());
     }
 }

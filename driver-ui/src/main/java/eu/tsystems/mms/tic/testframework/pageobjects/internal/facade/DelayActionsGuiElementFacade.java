@@ -24,7 +24,7 @@
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 
-public class DelayActionsGuiElementFacade extends GuiElementFacadeDecorator {
+public class DelayActionsGuiElementFacade extends AbstractGuiElementFacadeDecorator {
 
     private final int beforeActionSleepTime;
     private final int afterActionSleepTime;
@@ -36,22 +36,12 @@ public class DelayActionsGuiElementFacade extends GuiElementFacadeDecorator {
     }
 
     @Override
-    protected void beforeActionDelegation(String message) {
+    protected void beforeActionDelegation(String methodName) {
         TimerUtils.sleep(beforeActionSleepTime);
     }
 
     @Override
     protected void afterActionDelegation() {
         TimerUtils.sleep(afterActionSleepTime);
-    }
-
-    @Override
-    protected void beforeDelegation(String methodName, String message) {
-
-    }
-
-    @Override
-    protected void afterDelegation(String result) {
-
     }
 }

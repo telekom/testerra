@@ -24,11 +24,10 @@
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -42,9 +41,6 @@ public class FrameLogic implements IFrameLogic, Loggable {
 
     private final WebDriver driver;
     private final UiElement[] frames;
-
-    private int xOffset = 0;
-    private int yOffset = 0;
 
     /**
      * Contructor.
@@ -78,44 +74,48 @@ public class FrameLogic implements IFrameLogic, Loggable {
         return frameList;
     }
 
+    @Override
     public void switchToCorrectFrame() {
         List<UiElement> allFrames = getAllFramesInOrder();
-
         driver.switchTo().defaultContent();
-        ArrayList<WebElement> frameWebElementList = new ArrayList<>();
+        HashMap<String, WebElement> frameElements = new HashMap<>();
         for (UiElement frameGuiElement : allFrames) {
             // do not switch to the webElement that was recovered last, as this will be done by getWebElement of 'frameGuiElement'
-            for (int i = 0; i < frameWebElementList.size() - 1; i++) {
-                // get webelement
-                WebElement webElement = frameWebElementList.get(i);
-
-                // get offset und sum up
-                Point location = webElement.getLocation();
-                if (location != null) {
-                    xOffset += location.getX();
-                    yOffset += location.getY();
-                }
-
-                // switch
-                driver.switchTo().frame(webElement);
-            }
+//            for (int i = 0; i < frameWebElementList.size() - 1; i++) {
+//                // get webelement
+//                WebElement webElement = frameWebElementList.get(i);
+//
+//                // get offset und sum up
+////                Point location = webElement.getLocation();
+////                if (location != null) {
+////                    xOffset += location.getX();
+////                    yOffset += location.getY();
+////                }
+//
+//                // switch
+//                driver.switchTo().frame(webElement);
+//            }
             WebElement frameWebElement = frameGuiElement.findWebElement();
-            frameWebElementList.add(frameWebElement);
+            frameElements.put(frameGuiElement.toString(), frameWebElement);
         }
 
-        for (WebElement webElement : frameWebElementList) {
-            log().info("Switching to frame " + webElement);
-            driver.switchTo().frame(webElement);
-        }
+        ;
+
+        log().info("Switch to frames: " + String.join(" -> ", frameElements.keySet().toArray(new String[]{})));
+        frameElements.values().forEach(webElement -> driver.switchTo().frame(webElement));
+//        for (WebElement webElement : frameIdentifiers) {
+//            log().info("Switching to frame " + webElement);
+//            driver.switchTo().frame(webElement);
+//        }
     }
 
+    @Override
     public void switchToDefaultFrame() {
+        //log().info("Switch to default content");
         driver.switchTo().defaultContent();
-
-        xOffset = 0;
-        yOffset = 0;
     }
 
+    @Override
     public UiElement[] getFrames() {
         return frames;
     }
@@ -134,6 +134,7 @@ public class FrameLogic implements IFrameLogic, Loggable {
         return string + "}";
     }
 
+    @Override
     public boolean hasFrames() {
         return getFrames() != null && getFrames().length > 0;
     }

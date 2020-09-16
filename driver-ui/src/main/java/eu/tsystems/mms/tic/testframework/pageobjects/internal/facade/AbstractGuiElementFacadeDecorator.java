@@ -43,12 +43,12 @@ import org.openqa.selenium.support.ui.Select;
  * <p>
  * Created by rnhb on 11.08.2015.
  */
-public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
+public abstract class AbstractGuiElementFacadeDecorator implements GuiElementFacade {
 
     final GuiElementFacade decoratedFacade;
     private final GuiElementData guiElementData;
 
-    public GuiElementFacadeDecorator(GuiElementFacade decoratedFacade, GuiElementData guiElementData) {
+    public AbstractGuiElementFacadeDecorator(GuiElementFacade decoratedFacade, GuiElementData guiElementData) {
         this.decoratedFacade = decoratedFacade;
         this.guiElementData = guiElementData;
     }
@@ -60,21 +60,33 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         beforeDelegation(methodName, "");
     }
 
-    protected abstract void beforeDelegation(final String methodName, final String parameterInfo);
+    protected void beforeDelegation(final String methodName, final String parameterInfo) {
+
+    }
 
     /**
      * called after any delegation.
      *
      * @param result Result of delegation or null
      */
-    protected abstract void afterDelegation(final String result);
+    protected void afterDelegation(final String result) {
+
+    }
+
+    protected void afterDelegation() {
+        afterDelegation(null);
+    }
 
     /**
      * called only before methods that perform an action
      *
-     * @param message description of method to delegate
+     * @param methodName description of method to delegate
      */
-    protected void beforeActionDelegation(final String message) {
+    protected void beforeActionDelegation(final String methodName) {
+        beforeActionDelegation(methodName, "");
+    }
+
+    protected void beforeActionDelegation(final String methodName, final String parameterInfo) {
 
     }
 
@@ -83,10 +95,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
      */
     protected void afterActionDelegation() {
 
-    }
-
-    private void afterDelegation() {
-        afterDelegation(null);
     }
 
     @Override
@@ -451,7 +459,7 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     @Override
     public UiElement find(Locate locator) {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        beforeDelegation(methodName);
+        beforeDelegation(methodName, locator.toString());
         final UiElement element = decoratedFacade.find(locator);
         afterDelegation();
         return element;

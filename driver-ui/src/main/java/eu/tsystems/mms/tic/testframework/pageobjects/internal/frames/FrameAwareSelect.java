@@ -22,12 +22,11 @@
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.frames;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import java.util.LinkedList;
+import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by rnhb on 17.02.2015.
@@ -72,7 +71,7 @@ public class FrameAwareSelect extends Select {
     public List<WebElement> getOptions() {
         frameLogic.switchToCorrectFrame();
         List<WebElement> options = select.getOptions();
-        LinkedList<WebElement> elements = new LinkedList<WebElement>();
+        LinkedList<WebElement> elements = new LinkedList<>();
         for (WebElement option : options) {
             FrameAwareWebElementDecorator decoratedElement = new FrameAwareWebElementDecorator(option, frames, driver);
             elements.add(decoratedElement);

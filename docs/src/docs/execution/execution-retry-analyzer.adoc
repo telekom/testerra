@@ -15,7 +15,7 @@ You can change the default with the following property.
 {failed_tests_max_retries}=1
 ----
 
-NOTE: The retry mechanism always ignores testcase with a valid Fails annotation.
+NOTE: The retry mechanism always ignores testcases with a valid Fails annotation.
 
 [#Retry]
 == Specific retry count for test methods

@@ -12,7 +12,8 @@ public interface Component<SELF> extends
     CheckablePage,
     BasicUiElement,
     HasParent,
-    Nameable<SELF>
+    Nameable<SELF>,
+    WebElementRetainer
 {
     UiElementList<SELF> list();
 }

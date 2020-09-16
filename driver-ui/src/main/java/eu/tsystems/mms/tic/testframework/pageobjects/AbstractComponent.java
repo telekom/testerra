@@ -88,8 +88,8 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public WebElement getWebElement() {
-        return rootElement.getWebElement();
+    public WebElement findWebElement() {
+        return rootElement.findWebElement();
     }
 
     @Override

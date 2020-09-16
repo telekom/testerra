@@ -26,10 +26,7 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
 import org.openqa.selenium.WebDriver;
 
-public class DefaultUiElementFactory implements
-    UiElementFactory,
-    Loggable
-{
+public class DefaultUiElementFactory implements UiElementFactory, Loggable {
     /**
      * Creates elements as sub elements from a given element
      */

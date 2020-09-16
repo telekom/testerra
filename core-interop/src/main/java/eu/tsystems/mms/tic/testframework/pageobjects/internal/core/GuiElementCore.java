@@ -21,10 +21,9 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
-import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
-import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
-import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
+import eu.tsystems.mms.tic.testframework.pageobjects.WebElementRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import java.awt.Color;
 import java.io.File;
@@ -34,14 +33,13 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 /**
  * Provides basic {@link UiElement} features
  * and acts as adapter for {@link WebDriver} implementations
  */
-public interface GuiElementCore {
+public interface GuiElementCore extends UiElementFinder, WebElementRetainer {
     /**
      * Checks if an element is found by webdriver.
      *
@@ -103,21 +101,6 @@ public interface GuiElementCore {
      * @return ture, if the element is selectable
      */
     boolean isSelectable();
-
-    /**
-     * Does the same like {@link #findWebElement()}
-     */
-    @Deprecated
-    WebElement getWebElement();
-
-    /**
-     * @return The first found filtered {@link WebElement}
-     * @throws ElementNotFoundException If none found
-     * @throws NonUniqueElementException If more than one WebElement has been found according to given {@link Locate}
-     */
-    default WebElement findWebElement() {
-       return getWebElement();
-    }
 
     /**
      * Returns by locator element.

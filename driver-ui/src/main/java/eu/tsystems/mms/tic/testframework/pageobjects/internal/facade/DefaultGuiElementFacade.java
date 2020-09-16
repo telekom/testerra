@@ -19,6 +19,8 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import java.awt.Color;
 import java.io.File;
@@ -34,208 +36,214 @@ import org.openqa.selenium.support.ui.Select;
  * This class only facades {@link GuiElementCore} at the moment.
  * See {@link GuiElementFacade} for details.
  * Was formerly known as StandardGuiElementFacade.
+ * @Todo make compatible to {@link UiElement}
  */
 public class DefaultGuiElementFacade implements GuiElementFacade {
 
-    private GuiElementCore core;
+    private GuiElementCore decoratedCore;
 
     public DefaultGuiElementFacade(GuiElementCore guiElementCore) {
-        this.core = guiElementCore;
+        this.decoratedCore = guiElementCore;
     }
 
     @Override
     public File takeScreenshot() {
-        return core.takeScreenshot();
+        return decoratedCore.takeScreenshot();
     }
 
     @Override
-    public WebElement getWebElement() {
-        return core.getWebElement();
+    public WebElement findWebElement() {
+        return decoratedCore.findWebElement();
     }
 
     @Override
     public By getBy() {
-        return core.getBy();
+        return decoratedCore.getBy();
     }
 
     @Override
     public GuiElementFacade scrollToElement() {
-        core.scrollToElement();
+        decoratedCore.scrollToElement();
         return this;
     }
 
     @Override
     public GuiElementFacade scrollToElement(int yOffset) {
-        core.scrollToElement(yOffset);
+        decoratedCore.scrollToElement(yOffset);
         return this;
     }
 
     @Override
     public GuiElementFacade scrollIntoView(Point offset) {
-        core.scrollIntoView(offset);
+        decoratedCore.scrollIntoView(offset);
         return this;
     }
 
     @Override
     public GuiElementFacade select() {
-        core.select();
+        decoratedCore.select();
         return this;
     }
 
     @Override
     public GuiElementFacade deselect() {
-        core.deselect();
+        decoratedCore.deselect();
         return this;
     }
 
     @Override
     public GuiElementFacade type(String text) {
-        core.type(text);
+        decoratedCore.type(text);
         return this;
     }
 
     @Override
     public GuiElementFacade click() {
-        core.click();
+        decoratedCore.click();
         return this;
     }
 
     @Override
     public GuiElementFacade submit() {
-        core.submit();
+        decoratedCore.submit();
         return this;
     }
 
     @Override
     public GuiElementFacade sendKeys(CharSequence... charSequences) {
-        core.sendKeys(charSequences);
+        decoratedCore.sendKeys(charSequences);
         return this;
     }
 
     @Override
     public GuiElementFacade clear() {
-        core.clear();
+        decoratedCore.clear();
         return this;
     }
 
     @Override
     public String getTagName() {
-        return core.getTagName();
+        return decoratedCore.getTagName();
     }
 
     @Override
     public String getAttribute(String attributeName) {
-        return core.getAttribute(attributeName);
+        return decoratedCore.getAttribute(attributeName);
     }
 
     @Override
     public boolean isSelected() {
-        return core.isSelected();
+        return decoratedCore.isSelected();
     }
 
     @Override
     public boolean isEnabled() {
-        return core.isEnabled();
+        return decoratedCore.isEnabled();
     }
 
     @Override
     public String getText() {
-        return core.getText();
+        return decoratedCore.getText();
     }
 
     @Override
     public boolean isDisplayed() {
-        return core.isDisplayed();
+        return decoratedCore.isDisplayed();
     }
 
     @Override
     public boolean isVisible(boolean complete) {
-        return core.isVisible(complete);
+        return decoratedCore.isVisible(complete);
     }
 
     @Override
     public Rectangle getRect() {
-        return core.getRect();
+        return decoratedCore.getRect();
     }
 
     @Override
     public boolean isSelectable() {
-        return core.isSelectable();
+        return decoratedCore.isSelectable();
     }
 
     @Override
     public Point getLocation() {
-        return core.getLocation();
+        return decoratedCore.getLocation();
     }
 
     @Override
     public Dimension getSize() {
-        return core.getSize();
+        return decoratedCore.getSize();
     }
 
     @Override
     public String getCssValue(String cssIdentifier) {
-        return core.getCssValue(cssIdentifier);
+        return decoratedCore.getCssValue(cssIdentifier);
     }
 
     @Override
     public GuiElementFacade mouseOver() {
-        core.mouseOver();
+        decoratedCore.mouseOver();
         return this;
     }
 
     @Override
     public boolean isPresent() {
-        return core.isPresent();
+        return decoratedCore.isPresent();
     }
 
     @Override
     public Select getSelectElement() {
-        return core.getSelectElement();
+        return decoratedCore.getSelectElement();
     }
 
     @Override
     public List<String> getTextsFromChildren() {
-        return core.getTextsFromChildren();
+        return decoratedCore.getTextsFromChildren();
     }
 
     @Override
     public GuiElementFacade doubleClick() {
-        core.doubleClick();
+        decoratedCore.doubleClick();
         return this;
     }
 
     @Override
     public GuiElementFacade highlight() {
-        core.highlight();
+        decoratedCore.highlight();
         return this;
     }
 
     @Override
     public GuiElementFacade swipe(int offsetX, int offSetY) {
-        core.swipe(offsetX, offSetY);
+        decoratedCore.swipe(offsetX, offSetY);
         return this;
     }
 
     @Override
     public int getLengthOfValueAfterSendKeys(String textToInput) {
-        return core.getLengthOfValueAfterSendKeys(textToInput);
+        return decoratedCore.getLengthOfValueAfterSendKeys(textToInput);
     }
 
     @Override
     public int getNumberOfFoundElements() {
-        return core.getNumberOfFoundElements();
+        return decoratedCore.getNumberOfFoundElements();
     }
 
     @Override
     public GuiElementFacade rightClick() {
-        core.rightClick();
+        decoratedCore.rightClick();
         return this;
     }
 
     @Override
     public GuiElementFacade highlight(Color color) {
-        core.highlight(color);
+        decoratedCore.highlight(color);
         return this;
+    }
+
+    @Override
+    public UiElement find(Locate locator) {
+        return decoratedCore.find(locator);
     }
 }

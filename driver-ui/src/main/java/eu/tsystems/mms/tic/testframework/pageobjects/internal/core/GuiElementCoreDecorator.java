@@ -21,6 +21,8 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import java.awt.Color;
 import java.io.File;
 import java.util.List;
@@ -108,9 +110,9 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
     }
 
     @Override
-    public WebElement getWebElement() {
+    public WebElement findWebElement() {
         beforeDelegation();
-        WebElement webElement = core.getWebElement();
+        WebElement webElement = core.findWebElement();
         afterDelegation();
         return webElement;
     }
@@ -312,5 +314,13 @@ public abstract class GuiElementCoreDecorator implements GuiElementCore {
         boolean visible = core.isVisible(complete);
         afterDelegation();
         return visible;
+    }
+
+    @Override
+    public UiElement find(Locate locator) {
+        beforeDelegation();
+        UiElement element = core.find(locator);
+        afterDelegation();
+        return element;
     }
 }

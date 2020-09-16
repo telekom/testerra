@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -63,7 +64,7 @@ import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
-public class DesktopGuiElementCore extends AbstractGuiElementCore implements Loggable {
+public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiElementFactoryProvider, Loggable {
 
     public DesktopGuiElementCore(GuiElementData guiElementData) {
         super(guiElementData);
@@ -85,12 +86,11 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                 elements = guiElementData.getWebDriver().findElements(locate.getBy());
             }
 
-            Locate selector = guiElementData.getGuiElement().getLocate();
-            Predicate<WebElement> filter = selector.getFilter();
+            Predicate<WebElement> filter = locate.getFilter();
             if (filter != null) {
                 elements.removeIf(webElement -> !filter.test(webElement));
             }
-            if (selector.isUnique() && elements.size() > 1) {
+            if (locate.isUnique() && elements.size() > 1) {
                 throw new NonUniqueElementException(String.format("Locator(%s) found more than one %s [%d]", locate, WebElement.class.getSimpleName(), elements.size()));
             }
         } catch(Exception cause) {
@@ -104,7 +104,8 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
         return elements;
     }
 
-    private WebElement findWebElementCounted() {
+    @Override
+    public WebElement findWebElement() {
         long start = System.currentTimeMillis();
         // find timings
         Timings.raiseFindCounter();
@@ -169,7 +170,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
     @Override
     @Deprecated
     public WebElement getWebElement() {
-        return findWebElementCounted();
+        return findWebElement();
     }
 
     @Override
@@ -248,9 +249,9 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
                     "type won't be checked.");
         }
 
-        findWebElementCounted();
+        findWebElement();
 
-        WebElement webElement = findWebElementCounted();
+        WebElement webElement = findWebElement();
         webElement.clear();
         webElement.sendKeys(text);
 
@@ -268,7 +269,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public GuiElementCore click() {
-        pClickRelative(this, guiElementData.getWebDriver(), findWebElementCounted());
+        pClickRelative(this, guiElementData.getWebDriver(), findWebElement());
         return this;
     }
 
@@ -313,33 +314,33 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public String getTagName() {
-        return findWebElementCounted().getTagName();
+        return findWebElement().getTagName();
     }
 
     @Override
     public String getAttribute(String attributeName) {
-        return findWebElementCounted().getAttribute(attributeName);
+        return findWebElement().getAttribute(attributeName);
     }
 
     @Override
     public boolean isSelected() {
-        return findWebElementCounted().isSelected();
+        return findWebElement().isSelected();
     }
 
     @Override
     public boolean isEnabled() {
-        return findWebElementCounted().isEnabled();
+        return findWebElement().isEnabled();
     }
 
     @Override
     public String getText() {
-        return findWebElementCounted().getText();
+        return findWebElement().getText();
     }
 
     @Override
     public boolean isDisplayed() {
         try {
-            WebElement webElement = findWebElementCounted();
+            WebElement webElement = findWebElement();
             return webElement.isDisplayed();
         } catch (Exception e) {
             return false;
@@ -348,12 +349,12 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public Rectangle getRect() {
-        return findWebElementCounted().getRect();
+        return findWebElement().getRect();
     }
 
     @Override
     public boolean isVisible(boolean complete) {
-        WebElement webElement = findWebElementCounted();
+        WebElement webElement = findWebElement();
         if (!webElement.isDisplayed()) return false;
         Rectangle viewport = WebDriverUtils.getViewport(guiElementData.getWebDriver());
         // getRect doesn't work
@@ -395,17 +396,17 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public Point getLocation() {
-        return findWebElementCounted().getLocation();
+        return findWebElement().getLocation();
     }
 
     @Override
     public Dimension getSize() {
-        return findWebElementCounted().getSize();
+        return findWebElement().getSize();
     }
 
     @Override
     public String getCssValue(String cssIdentifier) {
-        return findWebElementCounted().getCssValue(cssIdentifier);
+        return findWebElement().getCssValue(cssIdentifier);
     }
 
     @Override
@@ -433,7 +434,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
     @Override
     public boolean isPresent() {
         try {
-            findWebElementCounted();
+            findWebElement();
         } catch (Exception e) {
             return false;
         }
@@ -442,7 +443,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public Select getSelectElement() {
-        Select select = new Select(findWebElementCounted());
+        Select select = new Select(findWebElement());
         return select;
     }
 
@@ -454,7 +455,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     private List<String> pGetTextsFromChildren() {
         // find() not necessary here, because findElements() is called, which calls find().
-        List<WebElement> childElements = findWebElementCounted().findElements(By.xpath(".//*"));
+        List<WebElement> childElements = findWebElement().findElements(By.xpath(".//*"));
 
         ArrayList<String> childTexts = new ArrayList<String>();
         for (WebElement childElement : childElements) {
@@ -469,7 +470,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public GuiElementCore doubleClick() {
-        WebElement webElement = findWebElementCounted();
+        WebElement webElement = findWebElement();
         By localBy = getBy();
 
         WebDriverRequest driverRequest = WebDriverManager.getRelatedWebDriverRequest(guiElementData.getWebDriver());
@@ -500,7 +501,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
 
     @Override
     public GuiElementCore highlight(Color color) {
-        JSUtils.highlightWebElement(guiElementData.getWebDriver(), findWebElementCounted(), color);
+        JSUtils.highlightWebElement(guiElementData.getWebDriver(), findWebElement(), color);
         return this;
     }
 
@@ -536,7 +537,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
     @Override
     public GuiElementCore rightClick() {
         Actions actions = new Actions(guiElementData.getWebDriver());
-        actions.moveToElement(findWebElementCounted()).contextClick().build().perform();
+        actions.moveToElement(findWebElement()).contextClick().build().perform();
         return this;
     }
 
@@ -575,5 +576,10 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements Log
             }
         }
         return null;
+    }
+
+    @Override
+    public UiElement find(Locate locator) {
+        return uiElementFactory.createFromParent(guiElementData.getGuiElement(), locator);
     }
 }

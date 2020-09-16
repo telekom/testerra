@@ -8,7 +8,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssert
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import java.awt.Color;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
 
 /**
  * Contains basic GuiElement features which every GuiElement needs to have.
@@ -37,7 +36,6 @@ public interface BasicUiElement {
     }
     String createXPath();
     Locate getLocate();
-    WebElement getWebElement();
     /**
      * Centers the element in the viewport
      */

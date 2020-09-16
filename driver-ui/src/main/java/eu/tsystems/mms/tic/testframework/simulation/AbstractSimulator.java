@@ -12,7 +12,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssert
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import java.awt.Color;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
 
 public class AbstractSimulator implements UiElementActions {
     protected final GuiElement guiElement;
@@ -91,20 +90,20 @@ public class AbstractSimulator implements UiElementActions {
         return guiElement.highlight(color);
     }
 
-
     @Override
+    /**
+     * @todo The simulator doesn't need that
+     */
     public String createXPath() {
         return guiElement.createXPath();
     }
 
     @Override
+    /**
+     * @todo The simulator doesn't need that
+     */
     public Locate getLocate() {
         return guiElement.getLocate();
-    }
-
-    @Override
-    public WebElement getWebElement() {
-        return guiElement.getWebElement();
     }
 
     @Override

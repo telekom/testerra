@@ -24,14 +24,13 @@
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 /**
  * Class to encapsulate the logic needed for switching between frames.
@@ -105,7 +104,7 @@ public class FrameLogic implements IFrameLogic, Loggable {
         }
 
         for (WebElement webElement : frameWebElementList) {
-            log().debug("Switching to Frame " + webElement);
+            log().info("Switching to frame " + webElement);
             driver.switchTo().frame(webElement);
         }
     }

@@ -35,7 +35,8 @@ public interface UiElement extends
     Nameable<UiElement>,
     WebDriverRetainer,
     HasParent,
-    UiElementFinder
+    UiElementFinder,
+    WebElementRetainer
 {
     enum Properties implements IProperties {
         @Deprecated

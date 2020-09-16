@@ -83,11 +83,7 @@ import org.openqa.selenium.support.ui.Select;
  * <p>
  * Authors: pele, rnhb
  */
-public class GuiElement implements
-    UiElementFactoryProvider,
-    UiElement,
-    Loggable
-{
+public class GuiElement implements UiElement, Loggable {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
 
     private GuiElementAssert defaultAssert;
@@ -284,8 +280,8 @@ public class GuiElement implements
     }
 
     @Override
-    public WebElement getWebElement() {
-        return decoratedFacade.getWebElement();
+    public WebElement findWebElement() {
+        return decoratedFacade.findWebElement();
     }
 
     @Override
@@ -413,7 +409,7 @@ public class GuiElement implements
 
     @Override
     public UiElement find(Locate locate) {
-        return uiElementFactory.createFromParent(this, locate);
+        return core.find(locate);
     }
 
     @Override
@@ -446,6 +442,7 @@ public class GuiElement implements
         return decoratedFacade.getTextsFromChildren();
     }
 
+    @Deprecated
     public boolean anyFollowingTextNodeContains(String contains) {
         TestableUiElement textElements = anyElementContainsText(contains);
         return textElements.present().getActual();

@@ -21,6 +21,8 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import java.awt.Color;
 import java.io.File;
@@ -97,10 +99,10 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public WebElement getWebElement() {
+    public WebElement findWebElement() {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         beforeDelegation(methodName);
-        WebElement webElement = decoratedFacade.getWebElement();
+        WebElement webElement = decoratedFacade.findWebElement();
         afterDelegation();
         return webElement;
     }
@@ -444,5 +446,14 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
         final File screenshot = decoratedFacade.takeScreenshot();
         afterDelegation();
         return screenshot;
+    }
+
+    @Override
+    public UiElement find(Locate locator) {
+        final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        beforeDelegation(methodName);
+        final UiElement element = decoratedFacade.find(locator);
+        afterDelegation();
+        return element;
     }
 }

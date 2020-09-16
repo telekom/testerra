@@ -105,26 +105,19 @@ public interface GuiElementCore {
     boolean isSelectable();
 
     /**
-     * Returns the Webelement.
-     *
-     * @return webElement
+     * Does the same like {@link #findWebElement()}
      */
     @Deprecated
     WebElement getWebElement();
 
     /**
-     * @return All found filtered WebElements
-     * @throws ElementNotFoundException If non found
-     * @throws NonUniqueElementException If more than one WebElement has been found according to given {@link Locate}
-     */
-    List<WebElement> findWebElements();
-
-    /**
-     * @return The first found filtered WebElement
+     * @return The first found filtered {@link WebElement}
      * @throws ElementNotFoundException If none found
      * @throws NonUniqueElementException If more than one WebElement has been found according to given {@link Locate}
      */
-    WebElement findWebElement();
+    default WebElement findWebElement() {
+       return getWebElement();
+    }
 
     /**
      * Returns by locator element.

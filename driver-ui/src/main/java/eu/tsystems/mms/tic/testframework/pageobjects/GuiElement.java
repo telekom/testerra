@@ -910,7 +910,7 @@ public class GuiElement implements
             @Override
             public Integer getActual() {
                 try {
-                    return core.findWebElements().size();
+                    return core.getNumberOfFoundElements();
                 } catch (ElementNotFoundException e) {
                     return 0;
                 }

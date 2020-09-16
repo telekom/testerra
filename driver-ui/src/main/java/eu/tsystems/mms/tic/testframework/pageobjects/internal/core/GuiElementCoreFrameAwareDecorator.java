@@ -23,10 +23,8 @@
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameAwareSelect;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-import java.util.List;
 
 public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
 
@@ -51,19 +49,9 @@ public class GuiElementCoreFrameAwareDecorator extends GuiElementCoreDecorator {
     }
 
     @Override
-    public List<WebElement> findWebElements() {
-        return core.findWebElements();
-    }
-
-    @Override
-    public WebElement findWebElement() {
-        return core.findWebElement();
-    }
-
-    @Override
     public Select getSelectElement() {
         beforeDelegation();
-        WebElement webElement = core.findWebElement();
+        WebElement webElement = core.getWebElement();
         Select select = new Select(webElement);
         Select frameAwareSelect = new FrameAwareSelect(select, webElement, guiElementData.getFrameLogic().getFrames(), guiElementData.getWebDriver() );
         afterDelegation();

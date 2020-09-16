@@ -106,16 +106,6 @@ public abstract class GuiElementFacadeDecorator implements GuiElementFacade {
     }
 
     @Override
-    public List<WebElement> findWebElements() {
-        return decoratedFacade.findWebElements();
-    }
-
-    @Override
-    public WebElement findWebElement() {
-        return decoratedFacade.findWebElement();
-    }
-
-    @Override
     public By getBy() {
         By by = decoratedFacade.getBy();
         return by;

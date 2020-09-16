@@ -29,9 +29,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import java.util.WeakHashMap;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 /**
  * Holds the state of the {@link GuiElement} to interchange with any other
@@ -42,14 +40,12 @@ public class GuiElementData implements
     WebDriverRetainer,
     HasParent
 {
-    public static final WeakHashMap<WebElement, GuiElement> WEBELEMENT_MAP = new WeakHashMap<>();
     private final Locate locate;
     private final WebDriver webDriver;
     private GuiElementData parent;
     private int index = -1;
     private GuiElement guiElement;
     private String name;
-    private WebElement webElement;
     private IFrameLogic frameLogic;
     private int timeoutSeconds = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
 
@@ -108,15 +104,6 @@ public class GuiElementData implements
 
     public IFrameLogic getFrameLogic() {
         return frameLogic;
-    }
-
-    public GuiElementData setWebElement(WebElement webElement) {
-        this.webElement = webElement;
-        return this;
-    }
-
-    public WebElement getWebElement() {
-        return this.webElement;
     }
 
     @Override

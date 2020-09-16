@@ -72,11 +72,6 @@ public class GuiElementCoreSequenceDecorator extends GuiElementCoreDecorator imp
     }
 
     @Override
-    public List<WebElement> findWebElements() {
-        return core.findWebElements();
-    }
-
-    @Override
     public WebElement findWebElement() {
         return core.findWebElement();
     }

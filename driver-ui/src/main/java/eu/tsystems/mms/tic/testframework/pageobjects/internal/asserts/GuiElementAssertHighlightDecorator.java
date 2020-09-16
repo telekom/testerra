@@ -22,14 +22,10 @@
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import org.openqa.selenium.WebDriver;
+import java.awt.Color;
 import org.openqa.selenium.WebElement;
-
-import java.awt.*;
 
 /**
  * Highlights assertions in Demo Mode
@@ -56,7 +52,7 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
     }
 
     private void highlight(boolean successful) {
-        WebElement webElement = guiElementData.getWebElement();
+        WebElement webElement = guiElementData.getGuiElement().getWebElement();
         if (webElement == null) {
             return;
         }
@@ -65,9 +61,9 @@ public class GuiElementAssertHighlightDecorator extends GuiElementAssertDecorato
                 guiElementData.getFrameLogic().switchToCorrectFrame();
             }
             if (successful) {
-                JSUtils.highlightWebElementStatic(guiElementData.getWebDriver(), guiElementData.getWebElement(), new Color(0, 255, 0));
+                JSUtils.highlightWebElementStatic(guiElementData.getWebDriver(), webElement, new Color(0, 255, 0));
             } else {
-                JSUtils.highlightWebElementStatic(guiElementData.getWebDriver(), guiElementData.getWebElement(), new Color(255, 0, 0));
+                JSUtils.highlightWebElementStatic(guiElementData.getWebDriver(), webElement, new Color(255, 0, 0));
             }
         } catch (RuntimeException e) {
             // could not highlight, but thats ok.

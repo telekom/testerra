@@ -29,13 +29,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import org.apache.commons.collections.buffer.CircularFifoBuffer;
-import org.openqa.selenium.WebDriver;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.collections.buffer.CircularFifoBuffer;
+import org.openqa.selenium.WebDriver;
 
 public final class PageFactory {
 
@@ -58,19 +57,6 @@ public final class PageFactory {
     private PageFactory() {
 
     }
-
-    public static abstract class ErrorHandler {
-
-        /**
-         * Run the things you want to do when a page object could not be instantiated. Throw a new throwable by yourself!
-         *
-         * @param driver                   .
-         * @param throwableFromPageFactory .
-         */
-        public abstract void run(WebDriver driver, Throwable throwableFromPageFactory);
-    }
-
-    private static ErrorHandler errorHandler = null;
 
     public static void setGlobalPagesPrefix(String prefix) {
         GLOBAL_PAGES_PREFIX = prefix;
@@ -142,23 +128,14 @@ public final class PageFactory {
                 t.checkPage(true, false);
             }
         } catch (Throwable overAllThrowable) {
-            if (errorHandler != null) {
-                // should throw a new RuntimeException or Error ...
-                try {
-                    errorHandler.run(driver, overAllThrowable);
-                } catch (Throwable e) {
-                    // modify test method container
-                    final String message = e.getMessage();
+            // modify test method container
+            final String message = overAllThrowable.getMessage();
 
-                    MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                    if (methodContext != null) {
-                        methodContext.errorContext().setThrowable(message, e, true);
-                    }
-
-                    throw e;
-                }
-                // ... if not, fall through
+            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+            if (methodContext != null) {
+                methodContext.errorContext().setThrowable(message, overAllThrowable, true);
             }
+
             throw overAllThrowable;
         }
 
@@ -198,9 +175,5 @@ public final class PageFactory {
 
     public static void clearCache() {
         ClassFinder.clearCache();
-    }
-
-    public static void setErrorHandler(ErrorHandler errorHandler) {
-        PageFactory.errorHandler = errorHandler;
     }
 }

@@ -81,10 +81,12 @@ public class MethodContext extends AbstractContext implements SynchronizableCont
     public List<MethodContext> relatedMethodContexts;
     public List<MethodContext> dependsOnMethodContexts;
 
+    // Used in methodDependencies.vm
     public List<MethodContext> getRelatedMethodContexts() {
         return relatedMethodContexts;
     }
 
+    // Used in methodDependencies.vm
     public List<MethodContext> getDependsOnMethodContexts() {
         return dependsOnMethodContexts;
     }

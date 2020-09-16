@@ -97,7 +97,7 @@ public class ReportTestUnderTestFailed extends AbstractTest {
     @Test
     public void test_FailedInheritedMinor2() throws Exception {
         WebDriver driver = WebDriverManager.getWebDriver();
-        driver.get("https://tap-as.io");
+        driver.get("https://the-internet.herokuapp.com/");
         // Please don't delete this again without letting us know why.
         // It is needed to create a screenshot for this test method.
         NonFunctionalAssert.assertTrue(2>3);

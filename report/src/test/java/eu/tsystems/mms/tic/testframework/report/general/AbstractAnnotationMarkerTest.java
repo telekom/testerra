@@ -21,7 +21,7 @@
  */
 package eu.tsystems.mms.tic.testframework.report.general;
 
-import eu.tsystems.mms.tic.testframework.AbstractReportTest;
+import eu.tsystems.mms.tic.testframework.report.AbstractReportTest;
 import eu.tsystems.mms.tic.testframework.report.model.IReportAnnotationVerifier;
 import eu.tsystems.mms.tic.testframework.report.model.ReportAnnotationType;
 import java.util.List;

@@ -21,33 +21,25 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
-import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.internal.IDUtils;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
-import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import java.util.Queue;
-import org.apache.commons.lang3.time.DurationFormatUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
-public abstract class AbstractContext implements SynchronizableContext {
-
-    @FunctionalInterface
-    public interface CreateDownStreamContext<T extends AbstractContext> {
-
-        T create();
-    }
-
+public abstract class AbstractContext implements SynchronizableContext, Loggable {
     public String name;
     public final String id = IDUtils.getB64encXID();
     public AbstractContext parentContext;
@@ -55,40 +47,52 @@ public abstract class AbstractContext implements SynchronizableContext {
     public Date startTime = new Date();
     public Date endTime = new Date();
 
-    protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-
     protected static void fillBasicContextValues(AbstractContext context, AbstractContext parentContext, String name) {
         context.name = name;
         context.swi = parentContext.swi + "_" + name;
     }
 
-    protected <T extends AbstractContext> T getContext(Class<T> contextClass, Queue<T> contexts, String name, boolean autocreate, CreateDownStreamContext<T> createDownStreamContext) {
-        synchronized (contexts) {
-            List<T> collect = contexts.stream().filter(context -> name.equals(context.name)).collect(Collectors.toList());
-            if (collect.isEmpty()) {
-                if (!autocreate) {
-                    return null;
-                }
-                try {
-                    /*
-                    CREATE a new context
-                     */
+    /**
+     * Gets an context for a specified name.
+     * If it not exists, it will be created by a supplier, preconfigured, added to the given queue of contexts and supplied to a consumer
+     * @param contextClass The desired context class
+     * @param contexts The queue to add the context when created
+     * @param newContextSupplier Supplier for the new context
+     * @param whenAddedToQueue Consumer when added to the queue
+     * @return {@link AbstractContext} or NULL if the context doesn't exists or should not be created
+     */
+    protected <T extends AbstractContext> T getOrCreateContext(
+            Class<T> contextClass,
+            Queue<T> contexts, String name,
+            Supplier<T> newContextSupplier,
+            Consumer<T> whenAddedToQueue
+    ) {
+        List<T> collect = contexts.stream()
+                .filter(context -> name.equals(context.name))
+                .collect(Collectors.toList());
 
-                    T context = createDownStreamContext.create();
-                    fillBasicContextValues(context, this, name);
-                    contexts.add(context);
-                    TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(context));
-                    return context;
-                } catch (Exception e) {
-                    throw new TesterraSystemException("Error creating Context Class", e);
-                }
-
-            } else {
-                if (collect.size() > 1) {
-                    LOGGER.error("Found " + collect.size() + " " + contextClass.getSimpleName() + "s with name " + name + ", picking first one");
-                }
-                return collect.get(0);
+        if (collect.isEmpty()) {
+            if (newContextSupplier == null) {
+                return null;
             }
+            try {
+                T context = newContextSupplier.get();
+                fillBasicContextValues(context, this, name);
+                contexts.add(context);
+
+                if (whenAddedToQueue != null) {
+                    whenAddedToQueue.accept(context);
+                }
+                return context;
+            } catch (Exception e) {
+                throw new TesterraSystemException("Error creating Context Class", e);
+            }
+
+        } else {
+            if (collect.size() > 1) {
+                log().error("Found " + collect.size() + " " + contextClass.getSimpleName() + "s with name " + name + ", picking first one");
+            }
+            return collect.get(0);
         }
     }
 
@@ -104,24 +108,22 @@ public abstract class AbstractContext implements SynchronizableContext {
         return TestStatusController.Status.PASSED;
     }
 
-    TestStatusController.Status getStatusFromContexts(AbstractContext[] contexts) {
+    TestStatusController.Status getStatusFromContexts(Stream<? extends AbstractContext> contexts) {
         Map<TestStatusController.Status, Integer> counts = new LinkedHashMap<>();
         /*
         get statuses
          */
-        synchronized (contexts) {
-            // init with 0
-            Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
+        // init with 0
+        Arrays.stream(TestStatusController.Status.values()).forEach(status -> counts.put(status, 0));
 
-            for (AbstractContext context : contexts) {
-                TestStatusController.Status status = context.getStatus();
-                int value = 0;
-                if (counts.containsKey(status)) {
-                    value = counts.get(status);
-                }
-                counts.put(status, value + 1);
+        contexts.forEach(abstractContext -> {
+            TestStatusController.Status status = abstractContext.getStatus();
+            int value = 0;
+            if (counts.containsKey(status)) {
+                value = counts.get(status);
             }
-        }
+            counts.put(status, value + 1);
+        });
 
         /*
         find actual status
@@ -146,7 +148,7 @@ public abstract class AbstractContext implements SynchronizableContext {
         return DurationFormatUtils.formatDuration(millis, "SSS 'ms'", false);
     }
 
-    public int nrOfFailed(Map<TestStatusController.Status, Integer> counts) {
+    public long nrOfFailed(Map<TestStatusController.Status, Integer> counts) {
         final AtomicReference<Integer> count = new AtomicReference<>();
         count.set(0);
         counts.keySet().forEach(status -> {
@@ -157,7 +159,7 @@ public abstract class AbstractContext implements SynchronizableContext {
         return count.get();
     }
 
-    public int nrOfPassed(Map<TestStatusController.Status, Integer> counts) {
+    public long nrOfPassed(Map<TestStatusController.Status, Integer> counts) {
         final AtomicReference<Integer> count = new AtomicReference<>();
         count.set(0);
         counts.keySet().forEach(status -> {
@@ -168,7 +170,7 @@ public abstract class AbstractContext implements SynchronizableContext {
         return count.get();
     }
 
-    public int nrOfSkipped(Map<TestStatusController.Status, Integer> counts) {
+    public long nrOfSkipped(Map<TestStatusController.Status, Integer> counts) {
         final AtomicReference<Integer> count = new AtomicReference<>();
         count.set(0);
         counts.keySet().forEach(status -> {
@@ -179,7 +181,7 @@ public abstract class AbstractContext implements SynchronizableContext {
         return count.get();
     }
 
-    public int passRate(Map<TestStatusController.Status, Integer> counts, int numberOfTests) {
+    public long passRate(Map<TestStatusController.Status, Integer> counts, long numberOfTests) {
         if (numberOfTests == 0) {
             return 0;
         }

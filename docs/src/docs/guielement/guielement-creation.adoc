@@ -41,7 +41,7 @@ If you want to make sure, that your element is unique.
 ----
 import eu.tsystems.mms.tic.testframework.pageobjects.location.Locate;
 
-GuiElement myElement = new GuiElement(driver, Locate.by().unique().id("elementId"));
+GuiElement myElement = new GuiElement(driver, Locate.by(By.id("elementId")).unique());
 ----
 
 This will throw an exception, if not one WebElement has been found.
@@ -50,7 +50,7 @@ This will throw an exception, if not one WebElement has been found.
 
 [source,java]
 ----
-GuiElement myElement = new GuiElement(driver, Locate.by().displayed().xpath(".//button"));
+GuiElement myElement = new GuiElement(driver, Locate.by(By.xpath(".//button")).displayed());
 ----
 
 === Prepared xpath expressions
@@ -72,7 +72,7 @@ You can also filter elements during find.
 
 [source,java]
 ----
-Locate byText = Locate.by().xpath("//button").filter(webElement -> webElement.getText().equals("Open again"));
+Locate byText = Locate.by(By.xpath("//button")).filter(webElement -> webElement.getText().equals("Open again"));
 
 GuiElement buttonContainsText = new GuiElement(driver, byText);
 ----

@@ -21,15 +21,15 @@
  */
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import com.google.common.eventbus.EventBus;
+import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
+import eu.tsystems.mms.tic.testframework.report.TesterraListener;
 import eu.tsystems.mms.tic.testframework.report.utils.TestNGHelper;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class SuiteContext extends AbstractContext implements SynchronizableContext {
 
@@ -42,7 +42,15 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
 
     public TestContextModel getTestContext(ITestResult testResult, ITestContext iTestContext) {
         final String testName = TestNGHelper.getTestName(testResult, iTestContext);
-        return getContext(TestContextModel.class, testContextModels, testName, true, () -> new TestContextModel(this, executionContext));
+        return getOrCreateContext(
+                TestContextModel.class,
+                testContextModels,
+                testName,
+                () -> new TestContextModel(this, executionContext),
+                testContextModel -> {
+                    EventBus eventBus = TesterraListener.getEventBus();
+                    eventBus.post(new ContextUpdateEvent().setContext(this));
+                });
     }
 
     public TestContextModel getTestContext(final ITestContext iTestContext) {
@@ -51,6 +59,6 @@ public class SuiteContext extends AbstractContext implements SynchronizableConte
 
     @Override
     public TestStatusController.Status getStatus() {
-        return getStatusFromContexts(testContextModels.toArray(new AbstractContext[0]));
+        return getStatusFromContexts(testContextModels.stream());
     }
 }

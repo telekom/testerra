@@ -22,11 +22,9 @@
 
 package eu.tsystems.mms.tic.testframework.watchdog;
 
-import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.events.ExecutionAbortEvent;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.SecUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.TimingConstants;
 import java.util.ArrayList;
@@ -171,12 +169,6 @@ public final class WebDriverWatchDog {
                                                     "\n" +
                                                     "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n" +
                                                     "\n");
-
-
-                                            // update crashed execution context
-                                            ContextUpdateEvent event = new ContextUpdateEvent().setContext(ExecutionContextController.getCurrentExecutionContext());
-                                            TesterraListener.getEventBus().post(event);
-
                                             System.exit(99);
                                         }
                                     }

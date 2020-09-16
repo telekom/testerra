@@ -19,11 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.report.model.context;
+package eu.tsystems.mms.tic.testframework.report.model.context;
 
+import com.google.common.eventbus.EventBus;
 import eu.tsystems.mms.tic.testframework.annotations.TestContext;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
@@ -37,6 +39,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.testng.IInvokedMethod;
 import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
@@ -48,7 +51,7 @@ import org.testng.SkipException;
  *
  * @author pele
  */
-public class ClassContext extends AbstractContext implements SynchronizableContext {
+public class ClassContext extends AbstractContext implements SynchronizableContext, Loggable {
 
     public final Queue<MethodContext> methodContexts = new ConcurrentLinkedQueue<>();
     public String fullClassName;
@@ -65,7 +68,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
     }
 
     public MethodContext findTestMethodContainer(String methodName) {
-        return getContext(MethodContext.class, methodContexts, methodName, false, null);
+        return getOrCreateContext(MethodContext.class, methodContexts, methodName, null, null);
     }
 
     public MethodContext getMethodContext(ITestResult testResult, ITestContext iTestContext, IInvokedMethod invokedMethod) {
@@ -81,19 +84,17 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
 
         List<MethodContext> collect;
 
-        synchronized (methodContexts) {
-            if (testResult != null) {
-                collect = methodContexts.stream()
-                        .filter(mc -> testResult == mc.testResult)
-                        .collect(Collectors.toList());
-            } else {
-                // TODO: (!!!!) this is not eindeutig
-                collect = methodContexts.stream()
-                        .filter(mc -> iTestContext == mc.iTestContext)
-                        .filter(mc -> iTestNGMethod == mc.iTestNgMethod)
-                        .filter(mc -> mc.parameters.containsAll(parametersList))
-                        .collect(Collectors.toList());
-            }
+        if (testResult != null) {
+            collect = methodContexts.stream()
+                    .filter(mc -> testResult == mc.testResult)
+                    .collect(Collectors.toList());
+        } else {
+            // TODO: (!!!!) this is not eindeutig
+            collect = methodContexts.stream()
+                    .filter(mc -> iTestContext == mc.iTestContext)
+                    .filter(mc -> iTestNGMethod == mc.iTestNgMethod)
+                    .filter(mc -> mc.parameters.containsAll(parametersList))
+                    .collect(Collectors.toList());
         }
 
         MethodContext methodContext;
@@ -143,9 +144,7 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
                 link to merged context
                  */
             if (merged) {
-                synchronized (mergedIntoClassContext.methodContexts) {
-                    mergedIntoClassContext.methodContexts.add(methodContext);
-                }
+                mergedIntoClassContext.methodContexts.add(methodContext);
             }
 
                 /*
@@ -163,14 +162,14 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
             /*
             add to method contexts
              */
-            synchronized (methodContexts) {
-                methodContexts.add(methodContext);
-            }
+            methodContexts.add(methodContext);
 
-            TesterraListener.getEventBus().post(new ContextUpdateEvent().setContext(methodContext));
+            EventBus eventBus = TesterraListener.getEventBus();
+            eventBus.post(new ContextUpdateEvent().setContext(methodContext));
+            eventBus.post(new ContextUpdateEvent().setContext(this));
         } else {
             if (collect.size() > 1) {
-                LOGGER.error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");
+                log().error("INTERNAL ERROR: Found " + collect.size() + " " + MethodContext.class.getSimpleName() + "s with name " + name + ", picking first one");
             }
             methodContext = collect.get(0);
         }
@@ -189,9 +188,10 @@ public class ClassContext extends AbstractContext implements SynchronizableConte
         return getStatusFromContexts(getRepresentationalMethods());
     }
 
-    public AbstractContext[] getRepresentationalMethods() {
-        AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod).toArray(AbstractContext[]::new);
-        return contexts;
+    public Stream<MethodContext> getRepresentationalMethods() {
+        return methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
+//        AbstractContext[] contexts = methodContexts.stream().filter(MethodContext::isRepresentationalTestMethod);
+//        return contexts;
     }
 
     public Map<TestStatusController.Status, Integer> getMethodStats(boolean includeTestMethods, boolean includeConfigMethods) {

@@ -22,13 +22,12 @@
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import org.apache.commons.io.FilenameUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.io.FilenameUtils;
 
 public class Screenshot extends Attachment implements Loggable {
 
@@ -57,7 +56,7 @@ public class Screenshot extends Attachment implements Loggable {
     @Deprecated
     public String sourceFilename;
     private File pageSourceFile;
-    final private Map<String, String> meta = new HashMap<>();
+    private Map<String, String> meta;
 
     public Screenshot() {
         this("Screenshot");
@@ -76,8 +75,8 @@ public class Screenshot extends Attachment implements Loggable {
 
     @Override
     protected Attachment setFile(File file) {
-        meta.put(Meta.DATE.toString(), new Date(file.lastModified()).toString());
-        meta.put(Meta.FILE_NAME.toString(), file.getName());
+        meta().put(Meta.DATE.toString(), new Date(file.lastModified()).toString());
+        meta().put(Meta.FILE_NAME.toString(), file.getName());
         return super.setFile(file);
     }
 
@@ -88,7 +87,7 @@ public class Screenshot extends Attachment implements Loggable {
     private Screenshot setPageSourceFile(File file) {
         sourceFilename = file.getName();
         pageSourceFile = file;
-        meta.put(Meta.SOURCE_FILE_NAME.toString(), sourceFilename);
+        meta().put(Meta.SOURCE_FILE_NAME.toString(), sourceFilename);
         return this;
     }
 
@@ -115,6 +114,9 @@ public class Screenshot extends Attachment implements Loggable {
     }
 
     public Map<String, String> meta() {
+        if (meta == null) {
+            meta = new HashMap<>();
+        }
         return meta;
     }
 }

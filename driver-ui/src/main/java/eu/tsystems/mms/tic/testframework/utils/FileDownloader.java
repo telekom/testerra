@@ -131,10 +131,10 @@ public class FileDownloader implements Loggable {
         synchronized (downloadList) {
             for (String path : downloadList) {
                 File file = FileUtils.getFile(path);
-                /*if (!file.delete()) {
+                if (!file.delete()) {
                     LOGGER.warn(String.format("File >%s< couldn't be deleted on cleanup. Please remove file manually.",
                             file.getAbsolutePath()));
-                }*/
+                }
             }
 
             downloadList.clear();

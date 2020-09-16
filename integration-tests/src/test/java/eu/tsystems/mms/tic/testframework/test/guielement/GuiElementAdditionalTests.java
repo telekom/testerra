@@ -56,8 +56,8 @@ public class GuiElementAdditionalTests extends AbstractTestSitesTest {
 
         input.type("testT02_SensibleData");
         // pageobjects.GuiElement - type "*****************" on By.id: 1
-        LogAssertUtils.assertEntryInLogFile("pageobjects.GuiElement - type \"*****************\" on By.id: 1");
-        LogAssertUtils.assertEntryNotInLogFile("pageobjects.GuiElement - type \"testT02_SensibleData\" on By.id: 1");
+        LogAssertUtils.assertEntryInLogFile("type(\"*****************\")");
+        LogAssertUtils.assertEntryNotInLogFile("type(\"testT02_SensibleData\")");
     }
 
 

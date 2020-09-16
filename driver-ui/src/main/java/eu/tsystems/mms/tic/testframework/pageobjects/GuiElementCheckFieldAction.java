@@ -61,9 +61,9 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
              * Unfortunately, this value is not documented and differs in previous implementations.
              * However, we set this timeout now to zero seconds.
              */
-            prevTimeout = pageOverrides.setTimeoutSeconds(0);
+            prevTimeout = pageOverrides.setTimeout(0);
         } else if (check.timeout()!=-1) {
-            prevTimeout = pageOverrides.setTimeoutSeconds(check.timeout());
+            prevTimeout = pageOverrides.setTimeout(check.timeout());
         }
 
         switch (checkRule) {
@@ -106,7 +106,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
         }
 
         if (prevTimeout >= 0) {
-            pageOverrides.setTimeoutSeconds(prevTimeout);
+            pageOverrides.setTimeout(prevTimeout);
         }
     }
 

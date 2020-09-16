@@ -1,14 +1,13 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
-
 import java.util.function.Function;
 
 /**
@@ -31,7 +30,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
 
     protected boolean testTimer(Function<T, Boolean> testFunction) {
         int useTimeoutSeconds = timeoutSeconds;
-        if (pageOverrides.hasTimeoutSeconds()) useTimeoutSeconds = pageOverrides.getTimeoutSeconds();
+        if (pageOverrides.hasTimeout()) useTimeoutSeconds = pageOverrides.getTimeout();
 
         Timer timer = new Timer(
             UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(),

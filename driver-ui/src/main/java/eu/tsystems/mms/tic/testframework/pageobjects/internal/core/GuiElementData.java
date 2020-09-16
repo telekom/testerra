@@ -21,8 +21,10 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
@@ -47,8 +49,7 @@ public class GuiElementData implements
     private GuiElement guiElement;
     private String name;
     private IFrameLogic frameLogic;
-    private int timeoutSeconds = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
-
+    private int timeoutSeconds = -1;
     /**
      * @todo Add accessor methods
      */
@@ -166,11 +167,20 @@ public class GuiElementData implements
         return sb.toString();
     }
 
-    public int getTimeoutSeconds() {
-        return timeoutSeconds;
+    public int getTimeout() {
+        if (timeoutSeconds < 0) {
+            PageOverrides instance = Testerra.injector.getInstance(PageOverrides.class);
+            return instance.getTimeout();
+        } else {
+            return timeoutSeconds;
+        }
     }
 
-    public void setTimeoutSeconds(int timeoutInSeconds) {
+    public void resetTimeout() {
+        this.timeoutSeconds = -1;
+    }
+
+    public void setTimeout(int timeoutInSeconds) {
         this.timeoutSeconds = timeoutInSeconds;
     }
 

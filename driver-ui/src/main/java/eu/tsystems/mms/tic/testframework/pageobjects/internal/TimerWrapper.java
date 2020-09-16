@@ -56,7 +56,7 @@ public class TimerWrapper implements Loggable {
     }
 
     public <T> ThrowablePackedResponse<T> executeSequence(final Timer.Sequence<T> sequence) {
-        return executeSequence(sequence, pageOverrides.getTimeoutSeconds());
+        return executeSequence(sequence, pageOverrides.getTimeout());
     }
 
     public <T> ThrowablePackedResponse<T> executeSequence(final Timer.Sequence<T> sequence, int timeoutInSeconds) {

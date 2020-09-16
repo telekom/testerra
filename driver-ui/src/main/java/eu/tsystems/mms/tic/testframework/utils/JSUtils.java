@@ -452,7 +452,6 @@ public final class JSUtils {
             } catch (Exception e) {
                 LOGGER.error("Could not determine element inner left position", e);
             }
-            throw new TesterraRuntimeException("Could not get element border via JS call");
         });
 
         return out;

@@ -10,17 +10,17 @@ import eu.tsystems.mms.tic.testframework.testing.TestController;
  * @author Mike Reiche
  */
 public interface PageOverrides {
-    boolean hasTimeoutSeconds();
+    boolean hasTimeout();
     /**
      * @return Configured or default element timeout
      */
-    int getTimeoutSeconds();
+    int getTimeout();
 
     /**
      * Sets a new element timeout and returns the previously configured
      * @param seconds If < 0, the timeout configuration will be removed
      */
-    int setTimeoutSeconds(int seconds);
+    int setTimeout(int seconds);
 
     boolean hasCheckRule();
 

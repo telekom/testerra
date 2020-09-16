@@ -15,12 +15,12 @@ public class DefaultPageOverrides implements PageOverrides {
     }
 
     @Override
-    public boolean hasTimeoutSeconds() {
+    public boolean hasTimeout() {
         return threadLocalTimeout.get()!=null;
     }
 
     @Override
-    public int getTimeoutSeconds() {
+    public int getTimeout() {
         Integer timeout = threadLocalTimeout.get();
         if (timeout==null) {
             timeout = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
@@ -29,10 +29,10 @@ public class DefaultPageOverrides implements PageOverrides {
     }
 
     @Override
-    public int setTimeoutSeconds(int seconds) {
+    public int setTimeout(int seconds) {
         int prevTimeout = -1;
-        if (hasTimeoutSeconds()) {
-            prevTimeout = getTimeoutSeconds();
+        if (hasTimeout()) {
+            prevTimeout = getTimeout();
         }
         if (seconds < 0) {
             threadLocalTimeout.remove();

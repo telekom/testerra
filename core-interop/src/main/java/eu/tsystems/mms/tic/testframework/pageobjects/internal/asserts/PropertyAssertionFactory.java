@@ -17,5 +17,4 @@ public interface PropertyAssertionFactory {
         return create(assertionClass, null, provider);
     }
     PropertyAssertionFactory shouldWait();
-    PropertyAssertionFactory setDefaultTimeoutSeconds(int seconds);
 }

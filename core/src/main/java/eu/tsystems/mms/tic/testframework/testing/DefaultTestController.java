@@ -108,13 +108,13 @@ public class DefaultTestController implements TestController {
             int prevTimeout;
             @Override
             Runnable setup(Runnable runnable) {
-                prevTimeout = pageOverrides.setTimeoutSeconds(seconds);
+                prevTimeout = pageOverrides.setTimeout(seconds);
                 return runnable;
             }
 
             @Override
             void teardown() {
-                pageOverrides.setTimeoutSeconds(prevTimeout);
+                pageOverrides.setTimeout(prevTimeout);
             }
         });
         return this;

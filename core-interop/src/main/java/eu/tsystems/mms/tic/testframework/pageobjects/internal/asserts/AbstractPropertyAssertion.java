@@ -1,13 +1,9 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import org.apache.commons.text.StringSubstitutor;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * An abstract property assertion without any test implementations.
@@ -34,7 +30,7 @@ public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<
     }
 
     @Override
-    public AbstractPropertyAssertion<T> setTimeoutSeconds(int seconds) {
+    public AbstractPropertyAssertion<T> setTimeout(int seconds) {
         this.timeoutSeconds = seconds;
         return this;
     }

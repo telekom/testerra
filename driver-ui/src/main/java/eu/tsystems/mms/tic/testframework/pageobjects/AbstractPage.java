@@ -90,7 +90,7 @@ public abstract class AbstractPage implements
     /**
      * Element timeout in seconds (int).
      */
-    protected int elementTimeoutInSeconds = Testerra.injector.getInstance(PageOverrides.class).getTimeoutSeconds();
+    protected int elementTimeoutInSeconds = Testerra.injector.getInstance(PageOverrides.class).getTimeout();
 
     /**
      * Setter.

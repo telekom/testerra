@@ -33,11 +33,11 @@ public final class POConfig {
     private POConfig() { }
 
     public static int getUiElementTimeoutInSeconds() {
-        return pageOverrides.getTimeoutSeconds();
+        return pageOverrides.getTimeout();
     }
 
     public static void setUiElementTimeoutInSeconds(int uiElementTimeoutInSeconds) {
-        pageOverrides.setTimeoutSeconds(uiElementTimeoutInSeconds);
+        pageOverrides.setTimeout(uiElementTimeoutInSeconds);
     }
 
     public static CheckRule getGuiElementCheckRule() {
@@ -49,7 +49,7 @@ public final class POConfig {
     }
 
     public static void setThreadLocalUiElementTimeoutInSeconds(int value) {
-        pageOverrides.setTimeoutSeconds(value);
+        pageOverrides.setTimeout(value);
     }
 
     public static void removeThreadLocalUiElementTimeout() {
@@ -57,9 +57,9 @@ public final class POConfig {
     }
 
     public static void executeWithExplicitUiElementTimeout(int value, Runnable runnable) {
-        int timeoutBefore = pageOverrides.getTimeoutSeconds();
-        pageOverrides.setTimeoutSeconds(value);
+        int timeoutBefore = pageOverrides.getTimeout();
+        pageOverrides.setTimeout(value);
         runnable.run();
-        pageOverrides.setTimeoutSeconds(timeoutBefore);
+        pageOverrides.setTimeout(timeoutBefore);
     }
 }

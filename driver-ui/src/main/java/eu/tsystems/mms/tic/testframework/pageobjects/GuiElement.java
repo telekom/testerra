@@ -485,26 +485,17 @@ public class GuiElement implements UiElement, Loggable {
         return this;
     }
 
-    /**
-     * @deprecated This method should not be public
-     */
-    @Deprecated
     public int getTimeoutInSeconds() {
-        return guiElementData.getTimeoutSeconds();
+        return guiElementData.getTimeout();
     }
 
     public UiElement setTimeoutInSeconds(int timeoutInSeconds) {
-        propertyAssertionFactory.setDefaultTimeoutSeconds(timeoutInSeconds);
-        guiElementData.setTimeoutSeconds(timeoutInSeconds);
+        guiElementData.setTimeout(timeoutInSeconds);
         return this;
     }
 
-    /**
-     * @deprecated This method should not be public
-     */
     public UiElement restoreDefaultTimeout() {
-        PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
-        guiElementData.setTimeoutSeconds(pageOverrides.getTimeoutSeconds());
+        guiElementData.resetTimeout();
         return this;
     }
 
@@ -742,7 +733,7 @@ public class GuiElement implements UiElement, Loggable {
     @Override
     public StringAssertion<String> tagName() {
         final UiElement self = this;
-        return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
+        DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return frameAwareCore.getTagName();
@@ -753,12 +744,14 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@tagName", self);
             }
         });
+        assertion.setTimeout(guiElementData.getTimeout());
+        return assertion;
     }
 
     @Override
     public StringAssertion<String> text() {
         final UiElement self = this;
-        return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
+        DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return frameAwareCore.getText();
@@ -769,21 +762,15 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@text", self);
             }
         });
+        assertion.setTimeout(guiElementData.getTimeout());
+        return assertion;
     }
 
     @Override
     public StringAssertion<String> value(String attribute) {
-//        if (attribute.contains("-")) {
-//            String parts[] = attribute.split("\\-+");
-//            StringBuilder builder = new StringBuilder();
-//            for (String part : parts) {
-//                builder.append(StringUtils.capitalize(part));
-//            }
-//            attribute = builder.toString();
-//        }
         final String finalAttribute = attribute;
         final UiElement self = this;
-        return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
+        DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return frameAwareCore.getAttribute(finalAttribute);
@@ -794,12 +781,14 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@%s", self, finalAttribute);
             }
         });
+        assertion.setTimeout(guiElementData.getTimeout());
+        return assertion;
     }
 
     @Override
     public StringAssertion<String> css(String property) {
         final UiElement self = this;
-        return propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
+        DefaultStringAssertion<String> assertion = propertyAssertionFactory.create(DefaultStringAssertion.class, new AssertionProvider<String>() {
             @Override
             public String getActual() {
                 return getCssValue(property);
@@ -810,16 +799,18 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.css(@%s)", self, property);
             }
         });
+        assertion.setTimeout(guiElementData.getTimeout());
+        return assertion;
     }
 
     @Override
     public BinaryAssertion<Boolean> present() {
         final UiElement self = this;
-        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 try {
-                    return frameAwareCore.findWebElement()!=null;
+                    return frameAwareCore.findWebElement() != null;
                 } catch (ElementNotFoundException e) {
                     return false;
                 }
@@ -830,12 +821,14 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@present", self);
             }
         });
+        assertion.setTimeout(guiElementData.getTimeout());
+        return assertion;
     }
 
     @Override
     public BinaryAssertion<Boolean> visible(boolean complete) {
         final UiElement self = this;
-        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return frameAwareCore.isVisible(complete);
@@ -846,12 +839,14 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.visible(complete: %s)", self, complete);
             }
         });
+        assertion.setTimeout(guiElementData.getTimeout());
+        return assertion;
     }
 
     @Override
     public BinaryAssertion<Boolean> displayed() {
         final UiElement self = this;
-        BinaryAssertion<Boolean> prop = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 try {
@@ -866,13 +861,14 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@displayed", self);
             }
         });
-        return prop;
+        assertion.setTimeout(guiElementData.getTimeout());
+        return assertion;
     }
 
     @Override
     public BinaryAssertion<Boolean> enabled() {
         final UiElement self = this;
-        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return frameAwareCore.isEnabled();
@@ -883,12 +879,14 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@enabled", self);
             }
         });
+        assertion.setTimeout(guiElementData.getTimeout());
+        return assertion;
     }
 
     @Override
     public BinaryAssertion<Boolean> selected() {
         final UiElement self = this;
-        return propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
                 return frameAwareCore.isSelected();
@@ -899,12 +897,14 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@selected", self);
             }
         });
+        assertion.setTimeout(guiElementData.getTimeout());
+        return assertion;
     }
 
     @Override
     public RectAssertion bounds() {
         final UiElement self = this;
-        return propertyAssertionFactory.create(DefaultRectAssertion.class, new AssertionProvider<Rectangle>() {
+        DefaultRectAssertion assertion = propertyAssertionFactory.create(DefaultRectAssertion.class, new AssertionProvider<Rectangle>() {
             @Override
             public Rectangle getActual() {
                 return frameAwareCore.getRect();
@@ -915,12 +915,14 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.bounds", self);
             }
         });
+        assertion.setTimeout(guiElementData.getTimeout());
+        return assertion;
     }
 
     @Override
     public QuantityAssertion<Integer> numberOfElements() {
         final UiElement self = this;
-        return propertyAssertionFactory.create(DefaultQuantityAssertion.class, new AssertionProvider<Integer>() {
+        DefaultQuantityAssertion assertion = propertyAssertionFactory.create(DefaultQuantityAssertion.class, new AssertionProvider<Integer>() {
             @Override
             public Integer getActual() {
                 try {
@@ -935,6 +937,8 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@numberOfElements", self);
             }
         });
+        assertion.setTimeout(guiElementData.getTimeout());
+        return assertion;
     }
 
     @Override
@@ -963,7 +967,7 @@ public class GuiElement implements UiElement, Loggable {
         final UiElement self = this;
         final AtomicReference<File> screenshot = new AtomicReference<>();
         screenshot.set(rawCore.takeScreenshot());
-        return propertyAssertionFactory.create(DefaultImageAssertion.class, new AssertionProvider<File>() {
+        DefaultImageAssertion assertion = propertyAssertionFactory.create(DefaultImageAssertion.class, new AssertionProvider<File>() {
             @Override
             public File getActual() {
                 return screenshot.get();
@@ -979,6 +983,8 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.screenshot", self);
             }
         });
+        assertion.setTimeout(guiElementData.getTimeout());
+        return assertion;
     }
 
     /**

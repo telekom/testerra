@@ -6,5 +6,5 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
  */
 public interface PropertyAssertion<T> extends ActualProperty<T> {
     PropertyAssertion<T> shouldWait(boolean wait);
-    PropertyAssertion<T> setTimeoutSeconds(int seconds);
+    PropertyAssertion<T> setTimeout(int seconds);
 }

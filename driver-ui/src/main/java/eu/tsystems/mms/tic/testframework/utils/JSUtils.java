@@ -37,6 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
@@ -427,39 +428,34 @@ public final class JSUtils {
                 "yy = it + ih - ibb - ipb;" +
                 "" +
                 "return {left:x, right:xx, top:y, bottom:yy};";
+
         WebDriver driver = guiElement.getWebDriver();
-        IFrameLogic frameLogic = guiElement.getFrameLogic();
-        WebElement webElement = guiElement.getWebElement();
-        if (frameLogic != null) {
-            frameLogic.switchToCorrectFrame();
-        }
-        try {
-            Object o = executeScript(driver, cmd, webElement);
-            if (o != null && o instanceof Map) {
-                Map map = (Map) o;
-                Map<String, Long> out = new ConcurrentHashMap<String, Long>(map.size());
-                for (Object key : map.keySet()) {
-                    Object value = map.get(key);
-                    if (key instanceof String && value instanceof Long) {
-                        out.put((String) key, (Long) value);
+        Map<String, Long> out = new ConcurrentHashMap<>();
+        guiElement.findWebElement(webElement -> {
+            try {
+                Object o = executeScript(driver, cmd, webElement);
+                if (o != null && o instanceof Map) {
+                    Map map = (Map) o;
+                    for (Object key : map.keySet()) {
+                        Object value = map.get(key);
+                        if (key instanceof String && value instanceof Long) {
+                            out.put((String) key, (Long) value);
+                        }
                     }
-                }
 
-                out.keySet().forEach(key -> LOGGER.info(key + "=" + out.get(key)));
-                if (out.keySet().size() != 4) {
-                    throw new TesterraRuntimeException("Could not get element border via JS call");
-                }
+                    out.keySet().forEach(key -> LOGGER.info(key + "=" + out.get(key)));
+                    if (out.keySet().size() != 4) {
+                        throw new TesterraRuntimeException("Could not get element border via JS call");
+                    }
 
-                return out;
+                }
+            } catch (Exception e) {
+                LOGGER.error("Could not determine element inner left position", e);
             }
-        } catch (Exception e) {
-            LOGGER.error("Could not determine element inner left position", e);
-        } finally {
-            if (frameLogic != null) {
-                frameLogic.switchToDefaultFrame();
-            }
-        }
-        throw new TesterraRuntimeException("Could not get element border via JS call");
+            throw new TesterraRuntimeException("Could not get element border via JS call");
+        });
+
+        return out;
     }
 
     public static Viewport getViewport(WebDriver driver) {
@@ -554,38 +550,35 @@ public final class JSUtils {
     }
 
     public static Point getElementLocationInParent(UiElement guiElement, Where where) {
-        WebElement webElement = guiElement.getWebElement();
-        IFrameLogic frameLogic = guiElement.getFrameLogic();
+        AtomicReference<Point> atomicPoint = new AtomicReference<>();
+        guiElement.findWebElement(webElement -> {
+            Object o = executeScript(guiElement.getWebDriver(), "return arguments[0].getBoundingClientRect();", webElement);
 
-        if (frameLogic != null) {
-            frameLogic.switchToCorrectFrame();
-        }
+            if (o == null) {
+                throw new TesterraSystemException("Could not get information about web element, please see the logs");
+            }
 
-        Object o = executeScript(guiElement.getWebDriver(), "return arguments[0].getBoundingClientRect();", webElement);
+            Map m = (Map) o;
 
-        if (o == null) {
-            throw new TesterraSystemException("Could not get information about web element, please see the logs");
-        }
+            int left = getJSValueAsInt(m.get("left"));
+            int width = getJSValueAsInt(m.get("width"));
+            int height = getJSValueAsInt(m.get("height"));
+            int top = getJSValueAsInt(m.get("top"));
 
-        Map m = (Map) o;
+            switch (where) {
+                case CENTER:
+                    atomicPoint.set(new Point(left + width / 2, top + height / 2));
+                    break;
+                case TOP_LEFT:
+                    atomicPoint.set(new Point(left, top));
+                    break;
+                default:
+                    throw new NotYetImplementedException("" + where);
+            }
+        });
 
-        int left = getJSValueAsInt(m.get("left"));
-        int width = getJSValueAsInt(m.get("width"));
-        int height = getJSValueAsInt(m.get("height"));
-        int top = getJSValueAsInt(m.get("top"));
+        return atomicPoint.get();
 
-        if (frameLogic != null) {
-            frameLogic.switchToDefaultFrame();
-        }
-
-        switch (where) {
-            case CENTER:
-                return new Point(left + width / 2, top + height / 2);
-            case TOP_LEFT:
-                return new Point(left, top);
-            default:
-                throw new NotYetImplementedException("" + where);
-        }
     }
 
     public static Point getRelativePositionVector(UiElement from, UiElement to) {

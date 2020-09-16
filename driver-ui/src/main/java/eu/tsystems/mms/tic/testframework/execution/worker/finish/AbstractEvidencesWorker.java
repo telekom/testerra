@@ -23,6 +23,7 @@ package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
 import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
+import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 
 public abstract class AbstractEvidencesWorker implements MethodEndEvent.Listener {
@@ -34,12 +35,16 @@ public abstract class AbstractEvidencesWorker implements MethodEndEvent.Listener
     @Override
     public void onMethodEnd(MethodEndEvent event) {
         this.event = event;
-        if (event.isFailed()) {
+
+        if (event.isFailed() && Flags.SCREENCAST_ACTIVE_ON_FAILED) {
             Object attribute = event.getTestResult().getAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly);
 
             if (attribute != Boolean.TRUE) {
                 collect();
             }
+        } else if (event.isPassed() && Flags.SCREENCAST_ACTIVE_ON_SUCCESS) {
+            collect();
+
         } else if (event.isSkipped()) {
             if (event.getMethodContext().status == TestStatusController.Status.FAILED_RETRIED) {
                 collect();

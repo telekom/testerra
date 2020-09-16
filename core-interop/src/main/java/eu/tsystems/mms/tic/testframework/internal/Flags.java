@@ -52,4 +52,6 @@ public final class Flags {
 
     public static boolean SCREENSHOTTER_ACTIVE = p(TesterraProperties.SCREENSHOTTER_ACTIVE, true);
     public static boolean SCREENCASTER_ACTIVE = p(TesterraProperties.SCREENCASTER_ACTIVE, true);
+    public static boolean SCREENCAST_ACTIVE_ON_SUCCESS = p(TesterraProperties.SCREENCAST_ACTIVE_ON_SUCCESS, false);
+    public static boolean SCREENCAST_ACTIVE_ON_FAILED = p(TesterraProperties.SCREENCAST_ACTIVE_ON_FAILED, true);
 }

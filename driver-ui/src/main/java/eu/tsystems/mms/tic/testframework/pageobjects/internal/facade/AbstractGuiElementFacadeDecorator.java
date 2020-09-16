@@ -170,7 +170,7 @@ public abstract class AbstractGuiElementFacadeDecorator implements GuiElementFac
     public GuiElementFacade type(String text) {
         final String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         final String msg = "\"" + obfuscateIfSensible(text) + "\"";
-        beforeActionDelegation(methodName + " " + msg);
+        beforeActionDelegation(methodName, msg);
         beforeDelegation(methodName, msg);
         decoratedFacade.type(text);
         afterDelegation();

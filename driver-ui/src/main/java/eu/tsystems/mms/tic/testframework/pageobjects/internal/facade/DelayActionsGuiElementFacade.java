@@ -36,7 +36,7 @@ public class DelayActionsGuiElementFacade extends AbstractGuiElementFacadeDecora
     }
 
     @Override
-    protected void beforeActionDelegation(String methodName) {
+    protected void beforeActionDelegation(String methodName, String parameterInfo) {
         TimerUtils.sleep(beforeActionSleepTime);
     }
 

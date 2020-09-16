@@ -132,7 +132,7 @@ public class GuiElementData implements
     public String toString(boolean detailed) {
         StringBuilder sb = new StringBuilder();
         if (guiElement.hasParent()) {
-            sb.append(guiElement.getParent()).append(".");
+            sb.append(guiElement.getParent()).append(" -> ");
         }
         if (hasName()) {
             sb.append(name);

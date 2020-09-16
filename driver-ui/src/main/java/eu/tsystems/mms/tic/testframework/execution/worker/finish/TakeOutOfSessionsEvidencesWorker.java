@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResul
 import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
@@ -62,6 +63,10 @@ public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker im
         } else if (event.isPassed() && Flags.SCREENCASTER_ACTIVE_ON_SUCCESS) {
             collect();
 
+        } else if (event.isSkipped()) {
+            if (event.getMethodContext().status == TestStatusController.Status.FAILED_RETRIED) {
+                collect();
+            }
         }
     }
 }

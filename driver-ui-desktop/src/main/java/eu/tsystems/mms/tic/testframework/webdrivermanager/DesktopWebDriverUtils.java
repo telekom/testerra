@@ -31,6 +31,8 @@ import org.json.JSONObject;
 
 public final class DesktopWebDriverUtils implements Loggable {
 
+    JSUtils utils = new JSUtils();
+
     public DesktopWebDriverUtils() {
 
     }
@@ -63,33 +65,27 @@ public final class DesktopWebDriverUtils implements Loggable {
     }
 
     public void clickAbsolute(UiElement guiElement) {
-        log().trace("Absolute navigation and click on: " + guiElement.toString());
-        JSUtils utils = new JSUtils();
-        utils.clickAbsolute(guiElement.getWebDriver(), guiElement.getWebElement());
+        log().debug("Absolute navigation and click on: " + guiElement.toString());
+        guiElement.findWebElement(webElement -> utils.clickAbsolute(guiElement.getWebDriver(), webElement));
     }
 
     public void mouseOverAbsolute2Axis(UiElement guiElement) {
-        JSUtils utils = new JSUtils();
-        utils.mouseOverAbsolute2Axis(guiElement.getWebDriver(), guiElement.getWebElement());
+        guiElement.findWebElement(webElement -> utils.mouseOverAbsolute2Axis(guiElement.getWebDriver(), webElement));
     }
 
     public void mouseOverJS(UiElement guiElement) {
-        JSUtils utils = new JSUtils();
-        utils.mouseOver(guiElement.getWebDriver(), guiElement.getWebElement());
+        guiElement.findWebElement(webElement -> utils.mouseOver(guiElement.getWebDriver(), webElement));
     }
 
     public void clickJS(UiElement guiElement) {
-        JSUtils utils = new JSUtils();
-        utils.click(guiElement.getWebDriver(), guiElement.getWebElement());
+        guiElement.findWebElement(webElement -> utils.click(guiElement.getWebDriver(), webElement));
     }
 
     public void rightClickJS(UiElement guiElement) {
-        JSUtils utils = new JSUtils();
-        utils.rightClick(guiElement.getWebDriver(), guiElement.getWebElement());
+        guiElement.findWebElement(webElement -> utils.rightClick(guiElement.getWebDriver(), webElement));
     }
 
     public void doubleClickJS(UiElement guiElement) {
-        JSUtils utils = new JSUtils();
-        utils.doubleClick(guiElement.getWebDriver(), guiElement.getWebElement());
+        guiElement.findWebElement(webElement -> utils.doubleClick(guiElement.getWebDriver(), webElement));
     }
 }

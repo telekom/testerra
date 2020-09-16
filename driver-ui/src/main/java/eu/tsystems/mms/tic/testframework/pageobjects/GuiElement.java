@@ -453,14 +453,20 @@ public class GuiElement implements UiElement, Loggable {
 
     @Deprecated
     public boolean anyFollowingTextNodeContains(String contains) {
-        TestableUiElement textElements = anyElementContainsText(contains);
-        return textElements.present().getActual();
+        try {
+            anyElementContainsText(contains);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
      * This method is no part of any interface, because we don't know if
      * we want to support this feature at the moment.
+     * The better approach is to use {@link #find(XPath)}
      */
+    @Deprecated
     public TestableUiElement anyElementContainsText(String text) {
         String textFinderXpath = String.format("//text()[contains(., '%s')]/..", text);
         return find(By.xpath(textFinderXpath));

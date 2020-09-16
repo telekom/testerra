@@ -23,11 +23,12 @@
 
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -78,8 +79,11 @@ public class FrameLogic implements IFrameLogic, Loggable {
     public void switchToCorrectFrame() {
         List<UiElement> allFrames = getAllFramesInOrder();
         driver.switchTo().defaultContent();
-        HashMap<String, WebElement> frameElements = new HashMap<>();
+//        HashMap<String, WebElement> frameElements = new HashMap<>();
+        log().info("Switch to frames: " + allFrames.stream().map(Object::toString).collect(Collectors.joining(" -> ")));
+
         for (UiElement frameGuiElement : allFrames) {
+            GuiElement realGuiElement = (GuiElement)frameGuiElement;
             // do not switch to the webElement that was recovered last, as this will be done by getWebElement of 'frameGuiElement'
 //            for (int i = 0; i < frameWebElementList.size() - 1; i++) {
 //                // get webelement
@@ -95,14 +99,11 @@ public class FrameLogic implements IFrameLogic, Loggable {
 //                // switch
 //                driver.switchTo().frame(webElement);
 //            }
-            WebElement frameWebElement = frameGuiElement.findWebElement();
-            frameElements.put(frameGuiElement.toString(), frameWebElement);
+            WebElement frameWebElement = realGuiElement.getRawCore().findWebElement();
+            driver.switchTo().frame(frameWebElement);
         }
 
-        ;
 
-        log().info("Switch to frames: " + String.join(" -> ", frameElements.keySet().toArray(new String[]{})));
-        frameElements.values().forEach(webElement -> driver.switchTo().frame(webElement));
 //        for (WebElement webElement : frameIdentifiers) {
 //            log().info("Switching to frame " + webElement);
 //            driver.switchTo().frame(webElement);

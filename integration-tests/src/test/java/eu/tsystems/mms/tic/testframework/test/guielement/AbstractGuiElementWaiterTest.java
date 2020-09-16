@@ -109,9 +109,6 @@ public abstract class AbstractGuiElementWaiterTest extends AbstractGuiElementLay
     @Test
     public void testT5_GuiElement_waitForAnyFollowingTextNodeContains() {
         GuiElement element = getParent2();
-        //element.anyElementContainsText("Show alert");
-
-        element.findById(14).highlight();
         boolean ret = element.waits().waitForAnyFollowingTextNodeContains("Show alert");
         Assert.assertTrue(ret, "Found Node with given Text");
 

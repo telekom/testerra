@@ -22,14 +22,21 @@
  package eu.tsystems.mms.tic.testframework.execution.worker.finish;
 
 import com.google.common.eventbus.Subscribe;
+import eu.tsystems.mms.tic.testframework.common.PropertyManager;
+import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import java.util.List;
 
 public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker implements Loggable {
+
+    private final boolean SCREENCASTER_ACTIVE_ON_SUCCESS = PropertyManager.getBooleanProperty(TesterraProperties.SCREENCASTER_ACTIVE_ON_SUCCESS, false);
+    private final boolean SCREENCASTER_ACTIVE_ON_FAILED = PropertyManager.getBooleanProperty(TesterraProperties.SCREENCASTER_ACTIVE_ON_FAILED, true);
 
     protected void collect() {
         if (event.getTestMethod().isTest() && WebDriverManager.config().areSessionsClosedAfterTestMethod()) {
@@ -48,6 +55,21 @@ public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker im
     @Override
     @Subscribe
     public void onMethodEnd(MethodEndEvent event) {
-        super.onMethodEnd(event);
+        this.event = event;
+
+        if (event.isFailed() && SCREENCASTER_ACTIVE_ON_FAILED) {
+            Object attribute = event.getTestResult().getAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly);
+
+            if (attribute != Boolean.TRUE) {
+                collect();
+            }
+        } else if (event.isPassed() && SCREENCASTER_ACTIVE_ON_SUCCESS) {
+            collect();
+
+        } else if (event.isSkipped()) {
+            if (event.getMethodContext().status == TestStatusController.Status.FAILED_RETRIED) {
+                collect();
+            }
+        }
     }
 }

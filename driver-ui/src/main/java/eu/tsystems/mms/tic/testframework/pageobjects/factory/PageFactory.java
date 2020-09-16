@@ -53,20 +53,6 @@ public final class PageFactory {
 
     }
 
-    public static abstract class ErrorHandler {
-
-        /**
-         * Run the things you want to do when a page object could not be instantiated. Throw a new throwable by yourself!
-         *
-         * @param driver                   .
-         * @param throwableFromPageFactory .
-         */
-        public abstract void run(WebDriver driver, Throwable throwableFromPageFactory);
-    }
-
-    private static ErrorHandler errorHandler = null;
-
-    @Deprecated
     public static void setGlobalPagesPrefix(String prefix) {
         pageFactory.setGlobalPagePrefix(prefix);
     }
@@ -160,23 +146,14 @@ public final class PageFactory {
                 t.checkPage(true, false);
             }
         } catch (Throwable overAllThrowable) {
-            if (errorHandler != null) {
-                // should throw a new RuntimeException or Error ...
-                try {
-                    errorHandler.run(driver, overAllThrowable);
-                } catch (Throwable e) {
-                    // modify test method container
-                    final String message = e.getMessage();
+            // modify test method container
+            final String message = overAllThrowable.getMessage();
 
-                    MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
-                    if (methodContext != null) {
-                        methodContext.errorContext().setThrowable(message, e, true);
-                    }
-
-                    throw e;
-                }
-                // ... if not, fall through
+            MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
+            if (methodContext != null) {
+                methodContext.errorContext().setThrowable(message, overAllThrowable, true);
             }
+
             throw overAllThrowable;
         }
 
@@ -217,9 +194,5 @@ public final class PageFactory {
     @Deprecated
     public static void clearCache() {
         ClassFinder.clearCache();
-    }
-
-    public static void setErrorHandler(ErrorHandler errorHandler) {
-        PageFactory.errorHandler = errorHandler;
     }
 }

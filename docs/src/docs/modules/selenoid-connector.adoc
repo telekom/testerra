@@ -38,16 +38,21 @@ The Selenoid connector can collect the generated video stream and provide it for
 [source,properties,subs="attributes"]
 ----
 # test.properties
+# activate generation of screencast in general, default = false
 {screencaster_active}=true
+# activate appending of screencast to report for failed tests, default = true
+{screencaster_active_on_failed} = true
+# activate appending of screencast to report for successful tests, default = false
+{screencaster_active_on_success} = true
 ----
 
-After finishing the test run Testerra collects the video files and add them to the report.
+After finishing the test run Testerra collects the video files and adds them to the report.
 
 
 .You will find all video files in the method detail view in a separate tab.
 image::selenoid_connector_report_video_tab.png[]
 
-IMPORTANT: Testerra add video files only to failed methods.
+IMPORTANT: By default Testerra adds video files only to failed methods.
 
 == VNC support
 
@@ -80,7 +85,9 @@ image::selenoid_connector_vnc_url.png[]
 [cols="2,^1,4a",options="header"]
 |===
 | Property | default | Description
-|{screencaster_active} | true | Video files will be collected in failure case of test method and for exclusive sessions.
+|{screencaster_active} | true | Video files will be generated for test methods and for exclusive sessions.
+|{screencaster_active_on_success}| false | When true, generated video files will be attached the report for successful test methods
+|{screencaster_active_on_failed} | true | Generated video files will be attached the report for failed test methods
 |{selenoid_vnc_enabled} | true | VNC Stream will be activated and logged to the console.
 |{selenoid_vnc_address} |  | VNC Host address - Will be used to generate a unique url for accessing the VNC session.
 |===

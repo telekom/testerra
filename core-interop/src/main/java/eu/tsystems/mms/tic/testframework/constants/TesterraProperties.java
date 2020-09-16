@@ -275,7 +275,7 @@ public final class TesterraProperties {
     public static final String LAYOUTCHECK_TEXT_ERRORDETECTOR_MINIMAL_EDGE_STRENGTH = "tt.layoutcheck.text.error.detector.minimal.edge.strength";
 
     public static final String SCREENCASTER_ACTIVE = "tt.screencaster.active";
-    public static final String SCREENCAST_ACTIVE_ON_SUCCESS = "tt.screencaster.active.on.success";
-    public static final String SCREENCAST_ACTIVE_ON_FAILED = "tt.screencaster.active.on.failed";
+    public static final String SCREENCASTER_ACTIVE_ON_SUCCESS = "tt.screencaster.active.on.success";
+    public static final String SCREENCASTER_ACTIVE_ON_FAILED = "tt.screencaster.active.on.failed";
 
 }

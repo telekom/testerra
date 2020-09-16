@@ -23,6 +23,8 @@
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.MethodEndEvent;
+import eu.tsystems.mms.tic.testframework.execution.testng.worker.SharedTestResultAttributes;
+import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.model.context.Video;
@@ -49,6 +51,17 @@ public class TakeOutOfSessionsEvidencesWorker extends AbstractEvidencesWorker im
     @Override
     @Subscribe
     public void onMethodEnd(MethodEndEvent event) {
-        super.onMethodEnd(event);
+        this.event = event;
+
+        if (event.isFailed() && Flags.SCREENCASTER_ACTIVE_ON_FAILED) {
+            Object attribute = event.getTestResult().getAttribute(SharedTestResultAttributes.failsFromCollectedAssertsOnly);
+
+            if (attribute != Boolean.TRUE) {
+                collect();
+            }
+        } else if (event.isPassed() && Flags.SCREENCASTER_ACTIVE_ON_SUCCESS) {
+            collect();
+
+        }
     }
 }

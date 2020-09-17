@@ -56,9 +56,6 @@ public abstract class AbstractPage implements Loggable {
      */
     protected int elementTimeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
 
-    @Deprecated
-    private boolean forcedGuiElementStandardAsserts = false;
-
     /**
      * Setter.
      *

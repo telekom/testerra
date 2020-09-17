@@ -56,6 +56,7 @@ public abstract class AbstractPage implements Loggable {
      */
     protected int elementTimeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
 
+    @Deprecated
     private boolean forcedGuiElementStandardAsserts = false;
 
     /**
@@ -103,11 +104,6 @@ public abstract class AbstractPage implements Loggable {
              */
             throw new PageNotFoundException(message, t);
         }
-    }
-
-    @Deprecated
-    public final void forceGuiElementStandardAsserts() {
-        forcedGuiElementStandardAsserts = true;
     }
 
     /**
@@ -308,7 +304,7 @@ public abstract class AbstractPage implements Loggable {
         ArrayList<FieldWithActionConfig> fieldToChecks = new ArrayList<FieldWithActionConfig>();
         for (final Class<? extends AbstractPage> cl : allClasses) {
             for (final Field field : cl.getDeclaredFields()) {
-                fieldToChecks.add(new FieldWithActionConfig(field, findNot, fast, forcedGuiElementStandardAsserts));
+                fieldToChecks.add(new FieldWithActionConfig(field, findNot, fast));
             }
         }
         return fieldToChecks;

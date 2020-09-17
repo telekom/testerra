@@ -210,11 +210,13 @@ public class GuiElement implements
         guiElementFacade = getFacade(guiElementCore, guiElementWait, functionalAssert);
     }
 
+    @Deprecated
     public void forceStandardAsserts() {
         forcedStandardAsserts = true;
         initDefaultAssert();
     }
 
+    @Deprecated
     public void resetDefaultAsserts() {
         forcedStandardAsserts = false;
         initDefaultAssert();

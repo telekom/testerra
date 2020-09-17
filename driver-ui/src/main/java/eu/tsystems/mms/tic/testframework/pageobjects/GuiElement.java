@@ -62,6 +62,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.simulation.UserSimulator;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverSessionsManager;
@@ -495,15 +496,22 @@ public class GuiElement implements UiElement, Loggable {
         return this;
     }
 
+    @Deprecated
     public int getTimeoutInSeconds() {
         return guiElementData.getTimeout();
     }
 
+    /**
+     * Use {@link TestController#withTimeout(int, Runnable)} instead
+     * @deprecated
+     */
+    @Deprecated
     public UiElement setTimeoutInSeconds(int timeoutInSeconds) {
         guiElementData.setTimeout(timeoutInSeconds);
         return this;
     }
 
+    @Deprecated
     public UiElement restoreDefaultTimeout() {
         guiElementData.resetTimeout();
         return this;

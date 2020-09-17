@@ -167,6 +167,7 @@ public class GuiElementData implements
         return sb.toString();
     }
 
+    @Deprecated
     public int getTimeout() {
         if (timeoutSeconds < 0) {
             PageOverrides instance = Testerra.injector.getInstance(PageOverrides.class);
@@ -176,10 +177,12 @@ public class GuiElementData implements
         }
     }
 
+    @Deprecated
     public void resetTimeout() {
         this.timeoutSeconds = -1;
     }
 
+    @Deprecated
     public void setTimeout(int timeoutInSeconds) {
         this.timeoutSeconds = timeoutInSeconds;
     }

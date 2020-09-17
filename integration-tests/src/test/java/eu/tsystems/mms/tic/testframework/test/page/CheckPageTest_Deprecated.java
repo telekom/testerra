@@ -36,36 +36,37 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
 /**
- * Created by rnhb on 29.12.2015.
+ * These tests have been disabled, because creating pages without factory is not supported.
+ * @deprecated
  */
 public class CheckPageTest_Deprecated extends AbstractTestSitesTest {
 
-    @Test
+    @Test(enabled=false)
     public void testT01_checkExistingElement() throws Exception {
         new PageWithExistingElement(WebDriverManager.getWebDriver());
     }
 
-    @Test(expectedExceptions = PageNotFoundException.class)
+    @Test(expectedExceptions = PageNotFoundException.class, enabled=false)
     public void testT02_checkNotExistingElement() throws Exception {
         new PageWithNotExistingElement(WebDriverManager.getWebDriver());
     }
 
-    @Test(expectedExceptions = TesterraRuntimeException.class)
+    @Test(expectedExceptions = TesterraRuntimeException.class, enabled=false)
     public void testT03_checkNullElement() throws Exception {
         new PageWithNullElement(WebDriverManager.getWebDriver());
     }
 
-    @Test(expectedExceptions = TesterraRuntimeException.class)
+    @Test(expectedExceptions = TesterraRuntimeException.class, enabled=false)
     public void testT04_checkStaticElement() throws Exception {
         new PageWithExistingStaticElement(WebDriverManager.getWebDriver());
     }
 
-    @Test(expectedExceptions = TesterraRuntimeException.class)
+    @Test(expectedExceptions = TesterraRuntimeException.class, enabled=false)
     public void testT05_checkNonCheckableElement() throws Exception {
         new PageWithNonCheckableCheck(WebDriverManager.getWebDriver());
     }
 
-    @Test
+    @Test(enabled=false)
     public void testT06_CheckPage_ExecutionFromDifferentClass() throws Exception {
         WebDriver webDriver = WebDriverManager.getWebDriver();
 
@@ -85,7 +86,7 @@ public class CheckPageTest_Deprecated extends AbstractTestSitesTest {
         Assert.assertTrue(exceptionWasThrown, "PageNotFoundException was thrown because element was not found.");
     }
 
-    @Test
+    @Test(enabled=false)
     public void testT07_CheckPage_BlockedExecutionFromParentPage() throws Exception {
         WebDriver webDriver = WebDriverManager.getWebDriver();
 

@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.MyVariab
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 /**
@@ -51,10 +50,10 @@ public class PageVariablesTest_Deprecated extends AbstractTestSitesTest implemen
         WebTestPage page = getPage();
 
         GuiElement input = new GuiElement(page.getWebDriver(), By.xpath("//label[@for='inputMillis']"));
-        WebElement webElement = input.getWebElement();
-
-        page.assertIsTextDisplayed("in Millis");
-        JSUtils.executeScript(page.getWebDriver(), "arguments[0].style.visibility='hidden';", webElement);
-        page.assertIsNotTextDisplayed("in Millis");
+        input.findWebElement(webElement -> {
+            page.assertIsTextDisplayed("in Millis");
+            JSUtils.executeScript(page.getWebDriver(), "arguments[0].style.visibility='hidden';", webElement);
+            page.assertIsNotTextDisplayed("in Millis");
+        });
     }
 }

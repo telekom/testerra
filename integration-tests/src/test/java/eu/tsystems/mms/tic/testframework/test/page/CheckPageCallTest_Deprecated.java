@@ -31,16 +31,18 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 
 /**
- * Created by rnhb on 29.12.2015.
- *
  * Test that checkpage is not executed when called in the constructor of a super page
+ *
+ * These tests have been disabled, because creating pages without factory is not supported.
+ * @deprecated
  */
+@Test
 public class CheckPageCallTest_Deprecated extends AbstractTestSitesTest {
 
     /**
      * This tests that checkpage() called from the actual class of the instance is executed.
      */
-    @Test(expectedExceptions = PageNotFoundException.class)
+    @Test(expectedExceptions = PageNotFoundException.class, enabled = false)
     public void testT01_checkPage_calledInActualInstanceClass() {
         final WebDriver driver = WebDriverManager.getWebDriver();
         new SuperPageWithCheck(driver);
@@ -49,7 +51,7 @@ public class CheckPageCallTest_Deprecated extends AbstractTestSitesTest {
     /**
      * This tests that {@link AbstractPage#checkPage()} called from a super class of the actual class of the instance is not executed.
      */
-    @Test
+    @Test(enabled=false)
     public void testT02_checkPage_notCalledInSuperClass() {
         final WebDriver driver = WebDriverManager.getWebDriver();
         new SubPageWithoutCheck(driver);

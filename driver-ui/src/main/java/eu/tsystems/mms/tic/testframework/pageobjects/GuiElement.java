@@ -479,6 +479,16 @@ public class GuiElement implements UiElement, Loggable {
         return guiElementData.getWebDriver();
     }
 
+    /**
+     * It's dangerous to use this method and rely on the given {@link WebElement}
+     * because it can become stale during the execution
+     * Use {@link #findWebElement(Consumer)} instead
+     */
+    @Deprecated
+    public WebElement getWebElement() {
+        return decoratedFacade.findWebElement();
+    }
+
     @Override
     public UiElement doubleClick() {
         decoratedFacade.doubleClick();

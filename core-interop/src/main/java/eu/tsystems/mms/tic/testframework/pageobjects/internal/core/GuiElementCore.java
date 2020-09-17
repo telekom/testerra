@@ -290,6 +290,11 @@ public interface GuiElementCore extends UiElementFinder, WebElementRetainer {
      */
     File takeScreenshot();
 
+    @Deprecated
+    default WebElement getWebElement() {
+        return findWebElement();
+    }
+
     /**
      * @return The first found filtered {@link WebElement}
      * Throws an {@link ElementNotFoundException} when no element has been found

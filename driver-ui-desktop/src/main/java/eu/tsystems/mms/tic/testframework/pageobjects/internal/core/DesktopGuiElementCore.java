@@ -178,12 +178,6 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
     }
 
     @Override
-    @Deprecated
-    public WebElement getWebElement() {
-        return findWebElement();
-    }
-
-    @Override
     public By getBy() {
         return guiElementData.getLocate().getBy();
     }

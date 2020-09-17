@@ -21,6 +21,10 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
+/**
+ * @deprecated Injecting {@link PageVariables} is an anti pattern and this feature will be removed soon.
+ * Please see documentation for details.
+ */
 @Deprecated
 public interface PageVariables {
 

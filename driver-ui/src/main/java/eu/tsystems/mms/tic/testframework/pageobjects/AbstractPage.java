@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -113,19 +114,23 @@ public abstract class AbstractPage implements Loggable {
      * The call of this method is injected into the constructor of every page class or must be called from every page
      * class constructor!!!
      * If there are several subclasses each calling checkPage, it will be only called from the class of the calling instance.
+     * @deprecated Don't call this method on your own and use {@link PageFactory#create(Class, WebDriver)} instead
      */
     @Deprecated
     public final void checkPage() {
         pCheckPage(false, false, true);
     }
 
+    /**
+     * @deprecated Don't call this method on your own and use {@link PageFactory#create(Class, WebDriver)} instead
+     */
     @Deprecated
     public final void checkPage(final boolean inverse, final boolean fast) {
         pCheckPage(inverse, fast, true);
     }
 
     @Deprecated
-    void pCheckPage(final boolean findNot, final boolean fast, final boolean checkCaller) {
+    private void pCheckPage(final boolean findNot, final boolean fast, final boolean checkCaller) {
 
         if (checkCaller) {
         /*

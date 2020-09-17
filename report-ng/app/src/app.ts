@@ -1,7 +1,5 @@
 import {autoinject, PLATFORM} from "aurelia-framework";
 import {Router, RouterConfiguration} from 'aurelia-router';
-import {DataBackendService} from "./services/data-backend-service";
-import {MergedClass} from "./services/merged-class";
 import {StatisticValues} from "./services/statistic-values";
 
 @autoinject()
@@ -9,14 +7,17 @@ export class App {
 
   router: Router;
 
+
   constructor(
-  private statisticValues: StatisticValues
+    private statisticValues: StatisticValues
   ) {
-    statisticValues.createMergeClassStatistics();
+
   }
 
   attached() {
-
+    this.statisticValues.createMergeClassStatistics().then(value => {
+      console.log(value);
+    })
   }
 
 

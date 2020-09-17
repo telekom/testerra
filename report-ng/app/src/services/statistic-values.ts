@@ -15,7 +15,7 @@ export class StatisticValues {
       console.log(mergedClass);
     }
   }
-  createMergeClassStatistics() {
+  createMergeClassStatistics() : any {
     this._dataservice.getExecution().then(executionContext => {
       console.log(executionContext);
       for (let suiteContextId of executionContext.suiteContextIds) {
@@ -31,6 +31,7 @@ export class StatisticValues {
                     })
                   }
                   this.mergedClasses.push(mergedClass);
+                  return this.mergedClasses;
                 })
               }
             })

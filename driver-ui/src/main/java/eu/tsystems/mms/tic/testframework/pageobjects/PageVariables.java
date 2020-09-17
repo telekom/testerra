@@ -19,8 +19,9 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects;
 
+@Deprecated
 public interface PageVariables {
 
 }

@@ -518,14 +518,17 @@ public class GuiElement implements
         guiElementFacade.doubleClick();
     }
 
+    @Deprecated
     public int getTimeoutInSeconds() {
         return guiElementData.getTimeoutInSeconds();
     }
 
+    @Deprecated
     public void setTimeoutInSeconds(int timeoutInSeconds) {
         guiElementData.setTimeoutInSeconds(timeoutInSeconds);
     }
 
+    @Deprecated
     public void restoreDefaultTimeout() {
         int timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
         guiElementData.setTimeoutInSeconds(timeoutInSeconds);

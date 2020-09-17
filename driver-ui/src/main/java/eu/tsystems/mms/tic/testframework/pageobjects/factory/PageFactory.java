@@ -74,6 +74,7 @@ public final class PageFactory {
         return loadPO(pageClass, driver, null, false);
     }
 
+    @Deprecated
     public static <T extends Page, U extends PageVariables> T checkNot(Class<T> pageClass, WebDriver driver, U pageVariables) {
         return loadPO(pageClass, driver, pageVariables, false);
     }
@@ -82,6 +83,7 @@ public final class PageFactory {
         return loadPO(pageClass, driver, null, true);
     }
 
+    @Deprecated
     public static <T extends Page, U extends PageVariables> T create(Class<T> pageClass, WebDriver driver, U pageVariables) {
         return loadPO(pageClass, driver, pageVariables, true);
     }

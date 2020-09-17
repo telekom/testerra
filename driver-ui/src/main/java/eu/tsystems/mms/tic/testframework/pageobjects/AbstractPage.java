@@ -62,6 +62,7 @@ public abstract class AbstractPage implements Loggable {
      *
      * @param newElementTimeout a new timeout in seconds
      */
+    @Deprecated
     public void setElementTimeoutInSeconds(final int newElementTimeout) {
         elementTimeoutInSeconds = newElementTimeout;
     }
@@ -103,6 +104,7 @@ public abstract class AbstractPage implements Loggable {
         }
     }
 
+    @Deprecated
     public final void forceGuiElementStandardAsserts() {
         forcedGuiElementStandardAsserts = true;
     }
@@ -112,14 +114,17 @@ public abstract class AbstractPage implements Loggable {
      * class constructor!!!
      * If there are several subclasses each calling checkPage, it will be only called from the class of the calling instance.
      */
+    @Deprecated
     public final void checkPage() {
         pCheckPage(false, false, true);
     }
 
+    @Deprecated
     public final void checkPage(final boolean inverse, final boolean fast) {
         pCheckPage(inverse, fast, true);
     }
 
+    @Deprecated
     void pCheckPage(final boolean findNot, final boolean fast, final boolean checkCaller) {
 
         if (checkCaller) {

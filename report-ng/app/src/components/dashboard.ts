@@ -1,15 +1,16 @@
-import 'apexcharts'
+// @ts-ignore
+import ApexCharts from 'apexcharts'
 
 export class Dashboard {
   message: string;
-
+  _chartData : object;
   constructor() {
     this.message = 'This is the home URL and therefore loads the Dashboard component. More routes are implemented, take a look around. The old testing site can be found in >testing';
 
 
   }
   attached() {
-    let options = {
+    this._chartData = {
       chart: {
         type: 'bar'
       },
@@ -24,7 +25,7 @@ export class Dashboard {
       }
     }
 
-    let chart = new ApexCharts(document.querySelector('#chart'), options);
-    chart.render();
+    //let chart = new ApexCharts(document.querySelector('#chart'), options);
+    //chart.render();
   }
 }

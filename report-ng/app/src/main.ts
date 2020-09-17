@@ -21,7 +21,10 @@ export function configure(aurelia: Aurelia) {
     .plugin(PLATFORM.moduleName('@aurelia-mdc-web/radio'))
     .plugin(PLATFORM.moduleName('@aurelia-mdc-web/tab-bar'))
     .plugin(PLATFORM.moduleName('@aurelia-mdc-web/top-app-bar'))
-    .plugin(PLATFORM.moduleName('@aurelia-mdc-web/text-field'));
+    .plugin(PLATFORM.moduleName('@aurelia-mdc-web/text-field'))
+    .globalResources([
+      PLATFORM.moduleName('components/apex-chart/apex-chart'),
+    ])
 
   aurelia.use.developmentLogging(environment.debug ? 'debug' : 'warn');
 

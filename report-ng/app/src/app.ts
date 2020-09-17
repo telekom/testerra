@@ -9,15 +9,15 @@ export class App {
 
 
   constructor(
-    private statisticValues: StatisticValues
+    //private statisticValues: StatisticValues
   ) {
 
   }
 
   attached() {
-    this.statisticValues.createMergeClassStatistics().then(value => {
-      console.log(value);
-    })
+    // this.statisticValues.createMergeClassStatistics().then(value => {
+    //   console.log(value);
+    // })
   }
 
 

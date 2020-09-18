@@ -29,7 +29,6 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiElementTimeoutFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -340,7 +339,6 @@ public abstract class AbstractPage implements
             Priority List!!
              */
             fieldActions.add(setNameFieldAction);
-            fieldActions.add(new SetGuiElementTimeoutFieldAction(field.field, declaringPage));
             addCustomFieldAction(field, fieldActions, declaringPage);
             fieldActions.add(guiElementCheckFieldAction);
         }

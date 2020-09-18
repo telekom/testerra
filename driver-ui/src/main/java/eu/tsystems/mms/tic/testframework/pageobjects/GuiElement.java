@@ -496,24 +496,12 @@ public class GuiElement implements UiElement, Loggable {
         return this;
     }
 
-    @Deprecated
-    public int getTimeoutInSeconds() {
-        return guiElementData.getTimeout();
-    }
-
     /**
      * Use {@link TestController#withTimeout(int, Runnable)} instead
      * @deprecated
      */
     @Deprecated
     public UiElement setTimeoutInSeconds(int timeoutInSeconds) {
-        guiElementData.setTimeout(timeoutInSeconds);
-        return this;
-    }
-
-    @Deprecated
-    public UiElement restoreDefaultTimeout() {
-        guiElementData.resetTimeout();
         return this;
     }
 
@@ -762,7 +750,6 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@tagName", self);
             }
         });
-        assertion.setTimeout(guiElementData.getTimeout());
         return assertion;
     }
 
@@ -780,7 +767,6 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@text", self);
             }
         });
-        assertion.setTimeout(guiElementData.getTimeout());
         return assertion;
     }
 
@@ -799,7 +785,6 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@%s", self, finalAttribute);
             }
         });
-        assertion.setTimeout(guiElementData.getTimeout());
         return assertion;
     }
 
@@ -817,7 +802,6 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.css(@%s)", self, property);
             }
         });
-        assertion.setTimeout(guiElementData.getTimeout());
         return assertion;
     }
 
@@ -839,7 +823,6 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@present", self);
             }
         });
-        assertion.setTimeout(guiElementData.getTimeout());
         return assertion;
     }
 
@@ -857,7 +840,6 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.visible(complete: %s)", self, complete);
             }
         });
-        assertion.setTimeout(guiElementData.getTimeout());
         return assertion;
     }
 
@@ -879,7 +861,6 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@displayed", self);
             }
         });
-        assertion.setTimeout(guiElementData.getTimeout());
         return assertion;
     }
 
@@ -897,7 +878,6 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@enabled", self);
             }
         });
-        assertion.setTimeout(guiElementData.getTimeout());
         return assertion;
     }
 
@@ -915,7 +895,6 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@selected", self);
             }
         });
-        assertion.setTimeout(guiElementData.getTimeout());
         return assertion;
     }
 
@@ -933,7 +912,6 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.bounds", self);
             }
         });
-        assertion.setTimeout(guiElementData.getTimeout());
         return assertion;
     }
 
@@ -955,7 +933,6 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.@numberOfElements", self);
             }
         });
-        assertion.setTimeout(guiElementData.getTimeout());
         return assertion;
     }
 
@@ -1001,7 +978,6 @@ public class GuiElement implements UiElement, Loggable {
                 return String.format("%s.screenshot", self);
             }
         });
-        assertion.setTimeout(guiElementData.getTimeout());
         return assertion;
     }
 

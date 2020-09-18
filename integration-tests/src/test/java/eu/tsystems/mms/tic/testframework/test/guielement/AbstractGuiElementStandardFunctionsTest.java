@@ -881,14 +881,14 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
         Assert.assertFalse(result, "Element is displayed");
     }
 
-    @Test
-    public void testT92_GuiElement_restoreDefaultTimeOut() {
-        GuiElement element = getTableElement();
-        int timeOutInSeconds = element.getTimeoutInSeconds();
-        element.setTimeoutInSeconds(50000);
-        element.restoreDefaultTimeout();
-        Assert.assertEquals(element.getTimeoutInSeconds(), timeOutInSeconds, "TimeOut is identical");
-    }
+//    @Test
+//    public void testT92_GuiElement_restoreDefaultTimeOut() {
+//        GuiElement element = getTableElement();
+//        int timeOutInSeconds = element.getTimeoutInSeconds();
+//        element.setTimeoutInSeconds(50000);
+//        element.restoreDefaultTimeout();
+//        Assert.assertEquals(element.getTimeoutInSeconds(), timeOutInSeconds, "TimeOut is identical");
+//    }
 
     @Test
     public void TestT94_GuiElement_highlight() {

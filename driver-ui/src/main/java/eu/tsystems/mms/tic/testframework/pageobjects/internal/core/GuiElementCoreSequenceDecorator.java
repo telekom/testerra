@@ -23,6 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
@@ -48,6 +49,8 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     private final GuiElementData guiElementData;
 
+    private static PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
+
     public GuiElementCoreSequenceDecorator(GuiElementCore core, GuiElementData guiElementData) {
         super(core);
         this.guiElementData = guiElementData;
@@ -72,7 +75,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<WebElement> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, 1);
+        ThrowablePackedResponse<WebElement> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -91,7 +94,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -105,7 +108,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -120,7 +123,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -135,7 +138,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -149,7 +152,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -163,7 +166,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
                 decoratedCore.click();
             }
         };
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
 
         return this;
     }
@@ -177,7 +180,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -191,7 +194,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -205,7 +208,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -220,7 +223,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<String> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse<String> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -234,7 +237,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Point> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse<Point> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -248,7 +251,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Dimension> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse<Dimension> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -262,7 +265,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<String> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse<String> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -275,7 +278,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
                 decoratedCore.mouseOver();
             }
         };
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -290,7 +293,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Select> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse<Select> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -304,7 +307,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<List<String>> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse<List<String>> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -317,7 +320,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return this;
     }
 
@@ -330,7 +333,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         throwablePackedResponse.logThrowableAndReturnResponse();
         return this;
     }
@@ -344,7 +347,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         throwablePackedResponse.finalizeTimer();
         return this;
     }
@@ -359,7 +362,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Integer> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse<Integer> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -374,7 +377,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Integer> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse<Integer> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -387,7 +390,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return this;
     }
 
@@ -506,7 +509,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<String> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse<String> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -520,7 +523,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<String> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse<String> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return throwablePackedResponse.finalizeTimer();
     }
 
@@ -538,7 +541,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
             }
         };
         sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = getTimerWrapper().executeSequence(sequence, guiElementData.getTimeout());
+        ThrowablePackedResponse<Boolean> response = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
         return response.logThrowableAndReturnResponse();
     }
 

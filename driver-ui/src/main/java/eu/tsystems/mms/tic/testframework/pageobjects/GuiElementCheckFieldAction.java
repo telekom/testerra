@@ -45,8 +45,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
         BasicUiElement guiElement,
         GuiElementAssert GuiElementAssert,
         Check check,
-        boolean findNot,
-        boolean fast
+        boolean findNot
     ) {
         CheckRule checkRule = check.checkRule();
         if (checkRule == CheckRule.DEFAULT) {
@@ -54,17 +53,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
         }
 
         String errorMessageNotNot = "You are trying to FIND_NOT a not present element.";
-        int prevTimeout = -1;
-        if (fast) {
-            /**
-             * Sets the timeout for "fast" checks.
-             * Unfortunately, this value is not documented and differs in previous implementations.
-             * However, we set this timeout now to zero seconds.
-             */
-            prevTimeout = pageOverrides.setTimeout(0);
-        } else if (check.timeout()!=-1) {
-            prevTimeout = pageOverrides.setTimeout(check.timeout());
-        }
+        int prevTimeout = pageOverrides.setTimeout(check.timeout());
 
         switch (checkRule) {
             case IS_PRESENT:
@@ -111,9 +100,9 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
     }
 
     @Override
-    protected void checkField(Check check, boolean fast) {
+    protected void checkField(Check check) {
         try {
-            pCheckField(checkableInstance, null, check, findNot, fast);
+            pCheckField(checkableInstance, null, check, findNot);
         } catch (AssertionError e) {
             final PageNotFoundException pageNotFoundException = new PageNotFoundException(createReadableMessage(), e);
 

@@ -201,8 +201,8 @@ public abstract class Page extends AbstractPage implements TestablePage {
         return waitForIsNotTextPresent(text);
     }
 
-    protected void pCheckPage(final boolean findNot, final boolean fast, final boolean checkCaller) {
-        super.pCheckPage(findNot, fast, checkCaller);
+    protected void pCheckPage(final boolean findNot, final boolean checkCaller) {
+        super.pCheckPage(findNot, checkCaller);
         if (PropertyManager.getBooleanProperty(TesterraProperties.SCREENSHOT_ON_PAGELOAD, false)) {
             this.screenshot().toReport();
         }

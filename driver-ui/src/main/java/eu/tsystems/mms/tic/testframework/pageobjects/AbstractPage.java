@@ -49,7 +49,7 @@ import org.openqa.selenium.WebDriver;
  * Provides basic {@link PageObject} related features:
  *      Supports element {@link Check}
  *      Supports {@link PageOptions}
- *      Supports deprecated custom page checks by {@link #checkPage(boolean, boolean)}
+ *      Supports deprecated custom page checks by {@link #checkPage(boolean)}
  *      Supports custom page load callbacks like {@link #assertPageIsShown()} and {@link #waitForPageToLoad()}
  * @see {https://martinfowler.com/bliki/PageObject.html}
  * @author Peter Lehmann
@@ -130,14 +130,14 @@ public abstract class AbstractPage implements
     }
 
     @Override
-    public PageObject checkGuiElements(CheckRule checkRule) {
+    public PageObject checkUiElements(CheckRule checkRule) {
         switch (checkRule) {
             case IS_NOT_PRESENT:
             case IS_NOT_DISPLAYED:
-                pCheckPage(true, false, true);
+                pCheckPage(true, true);
                 break;
             default:
-                pCheckPage(false, false, true);
+                pCheckPage(false,  true);
         }
         return this;
     }
@@ -150,18 +150,18 @@ public abstract class AbstractPage implements
      */
     @Deprecated
     public final void checkPage() {
-        pCheckPage(false, false, true);
+        pCheckPage(false, true);
     }
 
     /**
      * @deprecated Don't call this method on your own and use {@link PageFactory#create(Class, WebDriver)} instead
      */
     @Deprecated
-    public final void checkPage(final boolean inverse, final boolean fast) {
-        pCheckPage(inverse, fast, true);
+    public final void checkPage(final boolean inverse) {
+        pCheckPage(inverse, true);
     }
 
-    protected void pCheckPage(final boolean findNot, final boolean fast, final boolean checkCaller) {
+    protected void pCheckPage(final boolean findNot, final boolean checkCaller) {
 
         /**
          * @todo This whole checkCaller block may be removed safely
@@ -215,7 +215,7 @@ public abstract class AbstractPage implements
          */
         checkPagePreparation();
         try {
-            checkAnnotatedFields(findNot, fast);
+            checkAnnotatedFields(findNot);
             checkAdditional(findNot);
         } catch (Throwable throwable) {
             try {
@@ -292,9 +292,8 @@ public abstract class AbstractPage implements
      * Gets all @Check annotated fields of a class and executes a webdriver find().
      *
      * @param findNot flag for "findNot" - verify fields are NOT shown
-     * @param fast    Fast search (minimal timeout)
      */
-    private void checkAnnotatedFields(final boolean findNot, final boolean fast) {
+    private void checkAnnotatedFields(final boolean findNot) {
         List<Class<? extends AbstractPage>> allClasses = collectAllClasses(findNot);
 
         /*
@@ -305,7 +304,7 @@ public abstract class AbstractPage implements
             applyPageOptions(pageOptions);
         }
 
-        List<FieldWithActionConfig> fields = getFields(allClasses, findNot, fast);
+        List<FieldWithActionConfig> fields = getFields(allClasses, findNot);
         List<FieldAction> fieldActions = getFieldActions(fields, this);
 
         Set<Field> fieldsMadeAccessible = makeFieldsAccessible(fields);
@@ -355,11 +354,11 @@ public abstract class AbstractPage implements
         return fieldsMadeAccessible;
     }
 
-    private List<FieldWithActionConfig> getFields(List<Class<? extends AbstractPage>> allClasses, boolean findNot, boolean fast) {
+    private List<FieldWithActionConfig> getFields(List<Class<? extends AbstractPage>> allClasses, boolean findNot) {
         ArrayList<FieldWithActionConfig> fieldToChecks = new ArrayList<>();
         for (final Class<? extends AbstractPage> cl : allClasses) {
             for (final Field field : cl.getDeclaredFields()) {
-                fieldToChecks.add(new FieldWithActionConfig(field, findNot, fast));
+                fieldToChecks.add(new FieldWithActionConfig(field, findNot));
             }
         }
         return fieldToChecks;

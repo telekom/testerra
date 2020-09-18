@@ -29,21 +29,17 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-
 import java.lang.reflect.Modifier;
 
 public abstract class CheckFieldAction extends FieldAction implements Loggable {
     @Deprecated
     protected final boolean findNot;
-    @Deprecated
-    private final boolean fast;
 
     @Deprecated
     protected BasicUiElement checkableInstance;
 
     public CheckFieldAction(FieldWithActionConfig fieldWithActionConfig, AbstractPage declaringPage) {
         super(fieldWithActionConfig.field, declaringPage);
-        this.fast = fieldWithActionConfig.fast;
         this.findNot = fieldWithActionConfig.findNot;
     }
 
@@ -65,7 +61,7 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
      * @deprecated Fast checks are deprecated. Use {@link Check#timeout()} instead
      */
     @Deprecated
-    protected abstract void checkField(Check check, boolean fast);
+    protected abstract void checkField(Check check);
     protected boolean execute = false;
 
     @Override
@@ -116,7 +112,7 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
             log().debug("Looking for GuiElement on " + declaringClass.getSimpleName() + ": " + fieldName
                     + " with locator " + checkableInstance.toString());
             try {
-                checkField(check, fast);
+                checkField(check);
             } catch (Throwable t) {
                 MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
                 if (methodContext != null && t.getMessage() != null) {

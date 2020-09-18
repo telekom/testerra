@@ -149,9 +149,9 @@ public final class PageFactory {
 
             // check page
             if (positiveCheck) {
-                t.checkPage();
+                t.checkUiElements(CheckRule.IS_DISPLAYED);
             } else {
-                t.checkPage(true, false);
+                t.checkUiElements(CheckRule.IS_NOT_DISPLAYED);
             }
         } catch (Throwable overAllThrowable) {
             // modify test method container

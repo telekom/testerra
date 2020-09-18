@@ -21,6 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
@@ -520,16 +521,31 @@ public class GuiElement implements
         guiElementFacade.doubleClick();
     }
 
+    /**
+     * @deprecated This feature has been deprecated
+     * @see {@link #setTimeoutInSeconds(int)} for description
+     */
     @Deprecated
     public int getTimeoutInSeconds() {
         return guiElementData.getTimeoutInSeconds();
     }
 
+    /**
+     * @deprecated Setting the timeout for an element the way it's implemented is a design flaw,
+     * because you can lose control over the timeout flow.
+     * Setting timeouts on elements is controlled differently in future APIs and you
+     * should not use this feature anymore.
+     * When you want to use element timeouts, then refer to {@link PageOptions#elementTimeoutInSeconds()} instead
+     */
     @Deprecated
     public void setTimeoutInSeconds(int timeoutInSeconds) {
         guiElementData.setTimeoutInSeconds(timeoutInSeconds);
     }
 
+    /**
+     * @deprecated This feature has been deprecated
+     * @see {@link #setTimeoutInSeconds(int)} for description
+     */
     @Deprecated
     public void restoreDefaultTimeout() {
         int timeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();

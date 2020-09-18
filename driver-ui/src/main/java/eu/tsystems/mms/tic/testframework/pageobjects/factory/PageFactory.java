@@ -24,6 +24,7 @@
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -51,7 +52,12 @@ public final class PageFactory {
     private static String GLOBAL_PAGES_PREFIX = null;
     private static ThreadLocal<String> THREAD_LOCAL_PAGES_PREFIX = new ThreadLocal<>();
 
+    /**
+     * This loop detection feature is obsolete as soon {@link AbstractPage#checkPage()} is no more part of a public API
+     */
+    @Deprecated
     private static final ThreadLocal<CircularFifoBuffer> LOOP_DETECTION_LOGGER = new ThreadLocal<>();
+    @Deprecated
     private static final int NR_OF_LOOPS = PropertyManager.getIntProperty(TesterraProperties.PAGE_FACTORY_LOOPS, 20);
 
     private PageFactory() {
@@ -74,6 +80,11 @@ public final class PageFactory {
         return loadPO(pageClass, driver, null, false);
     }
 
+    /**
+     * @deprecated Injecting {@link PageVariables} is an anti pattern and this feature will be removed soon.
+     * Please see documentation for details.
+     */
+    @Deprecated
     public static <T extends Page, U extends PageVariables> T checkNot(Class<T> pageClass, WebDriver driver, U pageVariables) {
         return loadPO(pageClass, driver, pageVariables, false);
     }
@@ -82,6 +93,11 @@ public final class PageFactory {
         return loadPO(pageClass, driver, null, true);
     }
 
+    /**
+     * @deprecated Injecting {@link PageVariables} is an anti pattern and this feature will be removed soon.
+     * Please see documentation for details.
+     */
+    @Deprecated
     public static <T extends Page, U extends PageVariables> T create(Class<T> pageClass, WebDriver driver, U pageVariables) {
         return loadPO(pageClass, driver, pageVariables, true);
     }

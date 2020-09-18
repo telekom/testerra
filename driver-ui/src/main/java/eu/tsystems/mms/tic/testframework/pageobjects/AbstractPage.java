@@ -57,9 +57,8 @@ public abstract class AbstractPage implements Loggable {
     protected int elementTimeoutInSeconds = POConfig.getUiElementTimeoutInSeconds();
 
     /**
-     * Setter.
-     *
-     * @param newElementTimeout a new timeout in seconds
+     * @deprecated Should not be public or hidden by an interface.
+     * @see {@link PageOptions#elementTimeoutInSeconds()}
      */
     @Deprecated
     public void setElementTimeoutInSeconds(final int newElementTimeout) {

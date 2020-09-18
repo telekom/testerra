@@ -28,15 +28,12 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
 import java.awt.Color;
-import java.util.List;
 import java.util.function.Consumer;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
@@ -99,10 +96,6 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
             this.list = new DefaultComponentList<>(self());
         }
         return this.list;
-    }
-
-    @Override
-    protected void addCustomFieldAction(FieldWithActionConfig field, List<FieldAction> fieldActions, AbstractPage declaringPage) {
     }
 
     @Override

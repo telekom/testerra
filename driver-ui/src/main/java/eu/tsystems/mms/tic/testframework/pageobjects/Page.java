@@ -28,8 +28,6 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultScreenshotAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultStringAssertion;
@@ -60,7 +58,6 @@ import org.openqa.selenium.WebElement;
  *      Supports finding elements by {@link #find(Locate)}
  *      Support for performance tests by {@link #perfTestExtras()}
  *      Support for frames by {@link #inFrame(UiElement)}
- *      Support for custom field actions {@link #addCustomFieldAction(FieldWithActionConfig, List, AbstractPage)}
  *      Support for text assertions by {@link #anyElementContainsText(String)}
  * @author Peter Lehmann
  * @author Mike Reiche
@@ -141,10 +138,6 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
     @Override
     public void waitForPageToLoad() {
-    }
-
-    @Override
-    protected void addCustomFieldAction(FieldWithActionConfig field, List<FieldAction> fieldActions, AbstractPage declaringPage) {
     }
 
     public boolean isTextPresent(String text) {

@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -37,10 +36,9 @@ import eu.tsystems.mms.tic.testframework.testing.TestFeatures;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -304,18 +302,14 @@ public abstract class AbstractPage implements
             applyPageOptions(pageOptions);
         }
 
-        List<FieldWithActionConfig> fields = getFields(allClasses, findNot);
-        List<FieldAction> fieldActions = getFieldActions(fields, this);
-
-        Set<Field> fieldsMadeAccessible = makeFieldsAccessible(fields);
-
-        for (FieldAction fieldAction : fieldActions) {
-            fieldAction.run();
-        }
-
-        for (Field field : fieldsMadeAccessible) {
-            field.setAccessible(false);
-        }
+        allClasses.forEach(pageClass -> {
+            for (Field field : pageClass.getFields()) {
+                field.setAccessible(true);
+                List<FieldAction> fieldActions = getFieldActions(field, this);
+                fieldActions.forEach(FieldAction::run);
+                field.setAccessible(false);
+            }
+        });
     }
 
     private void applyPageOptions(PageOptions pageOptions) {
@@ -325,43 +319,20 @@ public abstract class AbstractPage implements
         }
     }
 
-    abstract protected void addCustomFieldAction(FieldWithActionConfig field, List<FieldAction> fieldActions, AbstractPage declaringPage);
+    protected Optional<List<FieldAction>> addCustomFieldActions(Field field, AbstractPage declaringPage) {
+        return Optional.empty();
+    }
 
-    private List<FieldAction> getFieldActions(List<FieldWithActionConfig> fields, AbstractPage declaringPage) {
+    private List<FieldAction> getFieldActions(Field field, AbstractPage declaringPage) {
         List<FieldAction> fieldActions = new ArrayList<>();
-        for (FieldWithActionConfig field : fields) {
-            GuiElementCheckFieldAction guiElementCheckFieldAction = new GuiElementCheckFieldAction(field, declaringPage);
-            SetNameFieldAction setNameFieldAction = new SetNameFieldAction(field.field, declaringPage);
+        SetNameFieldAction setNameFieldAction = new SetNameFieldAction(field, declaringPage);
+        fieldActions.add(setNameFieldAction);
 
-            /*
-            Priority List!!
-             */
-            fieldActions.add(setNameFieldAction);
-            addCustomFieldAction(field, fieldActions, declaringPage);
-            fieldActions.add(guiElementCheckFieldAction);
-        }
+        addCustomFieldActions(field, declaringPage).ifPresent(customFieldActions -> fieldActions.addAll(customFieldActions));
+
+        GuiElementCheckFieldAction guiElementCheckFieldAction = new GuiElementCheckFieldAction(field, declaringPage);
+        fieldActions.add(guiElementCheckFieldAction);
         return fieldActions;
-    }
-
-    private Set<Field> makeFieldsAccessible(List<FieldWithActionConfig> fields) {
-        Set<Field> fieldsMadeAccessible = new HashSet<>();
-        for (FieldWithActionConfig fieldWithActionConfig : fields) {
-            if (!fieldWithActionConfig.field.isAccessible()) {
-                fieldWithActionConfig.field.setAccessible(true);
-                fieldsMadeAccessible.add(fieldWithActionConfig.field);
-            }
-        }
-        return fieldsMadeAccessible;
-    }
-
-    private List<FieldWithActionConfig> getFields(List<Class<? extends AbstractPage>> allClasses, boolean findNot) {
-        ArrayList<FieldWithActionConfig> fieldToChecks = new ArrayList<>();
-        for (final Class<? extends AbstractPage> cl : allClasses) {
-            for (final Field field : cl.getDeclaredFields()) {
-                fieldToChecks.add(new FieldWithActionConfig(field, findNot));
-            }
-        }
-        return fieldToChecks;
     }
 
     private List<Class<? extends AbstractPage>> collectAllClasses(boolean findNot) {

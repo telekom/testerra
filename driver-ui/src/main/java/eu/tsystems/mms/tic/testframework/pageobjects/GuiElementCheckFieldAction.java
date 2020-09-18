@@ -26,85 +26,56 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.CheckFieldAction;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManagerUtils;
-import org.openqa.selenium.WebDriver;
+import java.lang.reflect.Field;
 
 public class GuiElementCheckFieldAction extends CheckFieldAction {
 
     private final static PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
 
-    public GuiElementCheckFieldAction(FieldWithActionConfig field, AbstractPage declaringPage) {
+    public GuiElementCheckFieldAction(Field field, AbstractPage declaringPage) {
         super(field, declaringPage);
     }
 
     private void pCheckField(
         BasicUiElement guiElement,
-        GuiElementAssert GuiElementAssert,
-        Check check,
-        boolean findNot
+        Check check
     ) {
         CheckRule checkRule = check.checkRule();
         if (checkRule == CheckRule.DEFAULT) {
             checkRule = pageOverrides.getCheckRule();
         }
 
-        String errorMessageNotNot = "You are trying to FIND_NOT a not present element.";
         int prevTimeout = pageOverrides.setTimeout(check.timeout());
 
         switch (checkRule) {
             case IS_PRESENT:
-                if (findNot) {
-                    guiElement.present().is(false);
-                } else {
-                    guiElement.present().is(true);
-                }
+                guiElement.present(true);
                 break;
             case IS_NOT_PRESENT:
-                if (findNot) {
-                    //                    if (fast) {
-                    //                        assertGuiElement.assertIsPresentFast();
-                    //                    } else {
-                    //                        assertGuiElement.assertIsPresent();
-                    //                    }
-                    log().warn(errorMessageNotNot);
-                } else {
-                    guiElement.present().is(false);
-                }
+                guiElement.present(false);
                 break;
             case IS_NOT_DISPLAYED: {
-                if (findNot) {
-                    log().warn(errorMessageNotNot);
-                } else {
-                    guiElement.displayed().is(false);
-                }
+                guiElement.displayed(false);
             }
             break;
             case DEFAULT:
             case IS_DISPLAYED:
             default: {
-                if (findNot) {
-                    guiElement.displayed().is(false);
-                } else {
-                    guiElement.displayed().is(true);
-                }
+                guiElement.displayed(true);
             }
         }
-
         if (prevTimeout >= 0) {
             pageOverrides.setTimeout(prevTimeout);
         }
     }
 
     @Override
-    protected void checkField(Check check) {
+    protected void checkField(BasicUiElement checkableInstance, Check check) {
         try {
-            pCheckField(checkableInstance, null, check, findNot);
+            pCheckField(checkableInstance, check);
         } catch (AssertionError e) {
-            final PageNotFoundException pageNotFoundException = new PageNotFoundException(createReadableMessage(), e);
+            final PageNotFoundException pageNotFoundException = new PageNotFoundException(null, e);
 
                 /*
                 if @Check has a prioritizedErrorMessage mark, then wrap t's
@@ -118,25 +89,25 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             }
         }
     }
-
-    @Override
-    protected void additionalBeforeCheck() {
-        if (field.isAnnotationPresent(IfJavascriptDisabled.class)) {
-
-            if (checkableInstance != null && checkableInstance instanceof GuiElement) {
-                // get the web driver session
-                GuiElement guiElement = (GuiElement) checkableInstance;
-                WebDriver driver = guiElement.getWebDriver();
-                String sessionId = WebDriverManagerUtils.getSessionKey(driver);
-
-                if (!StringUtils.isStringEmpty(sessionId)) {
-                    // do only search for the gui element if JS is disabled
-                    if (WebDriverManager.isJavaScriptActivated(driver)) {
-                        execute = false;
-                    }
-                }
-            }
-        }
-    }
+//
+//    @Override
+//    protected void additionalBeforeCheck() {
+//        if (field.isAnnotationPresent(IfJavascriptDisabled.class)) {
+//
+//            if (checkableInstance != null && checkableInstance instanceof GuiElement) {
+//                // get the web driver session
+//                GuiElement guiElement = (GuiElement) checkableInstance;
+//                WebDriver driver = guiElement.getWebDriver();
+//                String sessionId = WebDriverManagerUtils.getSessionKey(driver);
+//
+//                if (!StringUtils.isStringEmpty(sessionId)) {
+//                    // do only search for the gui element if JS is disabled
+//                    if (WebDriverManager.isJavaScriptActivated(driver)) {
+//                        execute = false;
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 }

@@ -26,42 +26,20 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public abstract class CheckFieldAction extends FieldAction implements Loggable {
-    @Deprecated
-    protected final boolean findNot;
 
-    @Deprecated
-    protected BasicUiElement checkableInstance;
+    private BasicUiElement checkableInstance;
 
-    public CheckFieldAction(FieldWithActionConfig fieldWithActionConfig, AbstractPage declaringPage) {
-        super(fieldWithActionConfig.field, declaringPage);
-        this.findNot = fieldWithActionConfig.findNot;
+    public CheckFieldAction(Field field, AbstractPage declaringPage) {
+        super(field, declaringPage);
     }
 
-    protected String createReadableMessage() {
-        try {
-            HasParent element = (HasParent)field.get(declaringPage);
-            if (findNot) {
-                return String.format("Mandatory {%s} was found, but expected to be NOT", element.toString(true));
-            } else {
-                return String.format("Mandatory {%s} was not found", element.toString(true));
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * @deprecated Fast checks are deprecated. Use {@link Check#timeout()} instead
-     */
-    @Deprecated
-    protected abstract void checkField(Check check);
+    protected abstract void checkField(BasicUiElement checkableInstance, Check check);
     protected boolean execute = false;
 
     @Override
@@ -91,7 +69,7 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
         return execute;
     }
 
-    protected abstract void additionalBeforeCheck();
+    protected void additionalBeforeCheck() {}
 
     @Override
     public void execute() {
@@ -112,7 +90,7 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
             log().debug("Looking for GuiElement on " + declaringClass.getSimpleName() + ": " + fieldName
                     + " with locator " + checkableInstance.toString());
             try {
-                checkField(check);
+                checkField(checkableInstance, check);
             } catch (Throwable t) {
                 MethodContext methodContext = ExecutionContextController.getCurrentMethodContext();
                 if (methodContext != null && t.getMessage() != null) {

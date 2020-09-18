@@ -161,7 +161,6 @@ public abstract class AbstractPage implements
         pCheckPage(inverse, fast, true);
     }
 
-    @Deprecated
     protected void pCheckPage(final boolean findNot, final boolean fast, final boolean checkCaller) {
 
         /**

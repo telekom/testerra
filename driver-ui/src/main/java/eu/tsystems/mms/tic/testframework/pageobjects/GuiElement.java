@@ -497,8 +497,7 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     /**
-     * Use {@link TestController#withTimeout(int, Runnable)} instead
-     * @deprecated
+     * @deprecated  Use {@link TestController#withTimeout(int, Runnable)} instead
      */
     @Deprecated
     public UiElement setTimeoutInSeconds(int timeoutInSeconds) {

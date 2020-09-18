@@ -109,11 +109,17 @@ public class GuiElementData {
         return LoggerFactory.getLogger("GuiElement" + (name == null ? "" : " " + name));
     }
 
+    /**
+     * @deprecated See {@link GuiElement#getTimeoutInSeconds()} for description
+     */
     @Deprecated
     public int getTimeoutInSeconds() {
         return timeoutInSeconds;
     }
 
+    /**
+     * @deprecated See {@link GuiElement#setTimeoutInSeconds(int)} for description
+     */
     @Deprecated
     public void setTimeoutInSeconds(int timeoutInSeconds) {
         this.timeoutInSeconds = timeoutInSeconds;

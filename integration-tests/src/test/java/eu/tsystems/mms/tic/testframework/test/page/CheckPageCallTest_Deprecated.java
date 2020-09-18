@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
  * These tests have been disabled, because creating pages without factory is not supported.
  * @deprecated
  */
-@Test
+@Deprecated
 public class CheckPageCallTest_Deprecated extends AbstractTestSitesTest {
 
     /**

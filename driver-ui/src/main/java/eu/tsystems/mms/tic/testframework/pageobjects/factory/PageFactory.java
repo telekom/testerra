@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.TesterraRuntimeException;
+import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.Page;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageObjectFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageVariables;
@@ -46,7 +47,12 @@ public final class PageFactory {
 
     private static PageObjectFactory pageFactory = Testerra.injector.getInstance(PageObjectFactory.class);
 
+    /**
+     * This loop detection feature is obsolete as soon {@link AbstractPage#checkPage()} is no more part of a public API
+     */
+    @Deprecated
     private static final ThreadLocal<CircularFifoBuffer> LOOP_DETECTION_LOGGER = new ThreadLocal<>();
+    @Deprecated
     private static final int NR_OF_LOOPS = PropertyManager.getIntProperty(TesterraProperties.PAGE_FACTORY_LOOPS, 20);
 
     private PageFactory() {
@@ -76,7 +82,8 @@ public final class PageFactory {
     }
 
     /**
-     * @deprecated Use {@link PageObjectFactory#createPageWithCheckRule(Class, CheckRule)} instead
+     * @deprecated Injecting {@link PageVariables} is an anti pattern and this feature will be removed soon.
+     * Use {@link PageObjectFactory#createPageWithCheckRule(Class, CheckRule)} instead
      */
     @Deprecated
     public static <T extends Page, U extends PageVariables> T checkNot(Class<T> pageClass, WebDriver driver, U pageVariables) {
@@ -88,7 +95,8 @@ public final class PageFactory {
     }
 
     /**
-     * @deprecated Passing page variables is deprecated
+     * @deprecated Injecting {@link PageVariables} is an anti pattern and this feature will be removed soon.
+     * Use {@link PageObjectFactory#createPageWithCheckRule(Class, CheckRule)} instead
      */
     @Deprecated
     public static <T extends Page, U extends PageVariables> T create(Class<T> pageClass, WebDriver driver, U pageVariables) {

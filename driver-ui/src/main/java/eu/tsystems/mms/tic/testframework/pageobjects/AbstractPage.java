@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldWithActionConfig;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetGuiElementTimeoutFieldAction;
@@ -93,10 +94,8 @@ public abstract class AbstractPage implements
     protected int elementTimeoutInSeconds = Testerra.injector.getInstance(PageOverrides.class).getTimeout();
 
     /**
-     * Setter.
-     *
-     * @param newElementTimeout a new timeout in seconds
-     * @deprecated Use {@link PageOptions} instead
+     * @deprecated Should not be public or hidden by an interface.
+     * @see {@link PageOptions#elementTimeoutInSeconds()}
      */
     @Deprecated
     public void setElementTimeoutInSeconds(int newElementTimeout) {
@@ -145,7 +144,18 @@ public abstract class AbstractPage implements
     }
 
     /**
-     * @deprecated Use {@link #checkGuiElements(CheckRule)} instead
+     * The call of this method is injected into the constructor of every page class or must be called from every page
+     * class constructor!!!
+     * If there are several subclasses each calling checkPage, it will be only called from the class of the calling instance.
+     * @deprecated Don't call this method on your own and use {@link PageFactory#create(Class, WebDriver)} instead
+     */
+    @Deprecated
+    public final void checkPage() {
+        pCheckPage(false, false, true);
+    }
+
+    /**
+     * @deprecated Don't call this method on your own and use {@link PageFactory#create(Class, WebDriver)} instead
      */
     @Deprecated
     public final void checkPage(final boolean inverse, final boolean fast) {

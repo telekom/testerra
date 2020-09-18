@@ -48,7 +48,6 @@ import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverRequest;
 import java.awt.Color;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
@@ -59,7 +58,6 @@ import org.openqa.selenium.WebElement;
 /**
  * Represents a full web page and provides advanced {@link PageObject} features:
  *      Supports finding elements by {@link #find(Locate)}
- *      Support for {@link #registerPageLoadHandler(PageLoadHandler)}
  *      Support for performance tests by {@link #perfTestExtras()}
  *      Support for frames by {@link #inFrame(UiElement)}
  *      Support for custom field actions {@link #addCustomFieldAction(FieldWithActionConfig, List, AbstractPage)}
@@ -68,7 +66,6 @@ import org.openqa.selenium.WebElement;
  * @author Mike Reiche
  */
 public abstract class Page extends AbstractPage implements TestablePage {
-    private static List<PageLoadHandler> pageLoadHandlers = new LinkedList<>();
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
 
     @Override
@@ -103,15 +100,6 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
         // performance test stop timer
         perfTestExtras();
-
-        // call page load handlers
-        for (PageLoadHandler pageLoadHandler : pageLoadHandlers) {
-            pageLoadHandler.run(this);
-        }
-    }
-
-    public static void registerPageLoadHandler(PageLoadHandler h) {
-        pageLoadHandlers.add(h);
     }
 
     /**

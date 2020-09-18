@@ -39,6 +39,7 @@ import org.testng.annotations.Test;
  * To test that checkpage() is executed, a not existing, check-annotated element is used.
  *
  */
+@Deprecated
 public class PageVariablesTest_Deprecated extends AbstractTestSitesTest implements PageFactoryTest {
     @Override
     public WebTestPage getPage() {

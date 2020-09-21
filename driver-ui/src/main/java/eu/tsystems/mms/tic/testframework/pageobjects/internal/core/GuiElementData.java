@@ -19,13 +19,12 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.WebDriverRetainer;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -37,8 +36,7 @@ import org.openqa.selenium.WebDriver;
  */
 public class GuiElementData implements
     Nameable<GuiElementData>,
-    WebDriverRetainer,
-    HasParent
+    WebDriverRetainer
 {
     private final Locate locate;
     private final WebDriver webDriver;
@@ -126,11 +124,8 @@ public class GuiElementData implements
     }
 
     @Override
-    public String toString(boolean detailed) {
+    public String getName(boolean detailed) {
         StringBuilder sb = new StringBuilder();
-        if (hasParent()) {
-            sb.append(getParent()).append(" -> ");
-        }
 
         boolean hasName = this.name!=null;
 

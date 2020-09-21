@@ -19,28 +19,20 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 
 import eu.tsystems.mms.tic.testframework.actions.Action;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 
-public abstract class FieldAction extends Action {
+public abstract class AbstractFieldAction extends Action {
 
     protected final Field field;
-    protected final Class<?> declaringClass;
-    protected final Class<?> typeOfField;
-    protected final String fieldName;
     protected final AbstractPage declaringPage;
 
-    public FieldAction(Field field, AbstractPage declaringPage) {
+    public AbstractFieldAction(Field field, AbstractPage declaringPage) {
         this.field = field;
-        this.declaringClass = field.getDeclaringClass();
-        fieldName = field.getName();
-        typeOfField = field.getType();
         this.declaringPage = declaringPage;
     }
 

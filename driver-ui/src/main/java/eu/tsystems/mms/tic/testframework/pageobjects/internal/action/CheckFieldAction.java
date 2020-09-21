@@ -31,7 +31,7 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-public abstract class CheckFieldAction extends FieldAction implements Loggable {
+public abstract class CheckFieldAction extends AbstractFieldAction implements Loggable {
 
     private BasicUiElement checkableInstance;
 
@@ -45,10 +45,10 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
     @Override
     public boolean before() {
         boolean isCheckAnnotated = field.isAnnotationPresent(Check.class);
-        boolean isCheckable = BasicUiElement.class.isAssignableFrom(typeOfField);
+        boolean isCheckable = BasicUiElement.class.isAssignableFrom(field.getType());
 
         if (isCheckAnnotated && !isCheckable) {
-            throw new TesterraRuntimeException("Field {" + fieldName + "} of " + declaringClass.getCanonicalName()
+            throw new TesterraRuntimeException("Field {" + field.getName() + "} of " + declaringPage
                     + " is annotated with @Check, but the class doesn't implement " + BasicUiElement.class.getCanonicalName());
         }
 
@@ -56,7 +56,7 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
             if (((field.getModifiers() & Modifier.STATIC) == Modifier.STATIC)) {
                 // if the Check annotated field is not static
                 throw new TesterraRuntimeException("Checkable field MUST be non-static: " +
-                        declaringClass.getCanonicalName() + "." + field.getName());
+                        declaringPage + "." + field.getName());
             }
             else {
                 if (isCheckAnnotated) {
@@ -73,6 +73,7 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
 
     @Override
     public void execute() {
+        String fieldName = field.getName();
         try {
             checkableInstance = (BasicUiElement) field.get(declaringPage);
         } catch (IllegalAccessException e) {
@@ -85,9 +86,9 @@ public abstract class CheckFieldAction extends FieldAction implements Loggable {
         Check check = field.getAnnotation(Check.class);
         if (checkableInstance == null) {
             throw new TesterraRuntimeException(String.format("Field {%s.%s} is annotated with @Check and was never initialized (it is null)." +
-                "This is not allowed because @Check indicates a mandatory GuiElement of a Page.", declaringClass.getSimpleName(), fieldName));
+                "This is not allowed because @Check indicates a mandatory GuiElement of a Page.", declaringPage, fieldName));
         } else {
-            log().debug("Looking for GuiElement on " + declaringClass.getSimpleName() + ": " + fieldName
+            log().debug("Looking for GuiElement on " + declaringPage + ": " + fieldName
                     + " with locator " + checkableInstance.toString());
             try {
                 checkField(checkableInstance, check);

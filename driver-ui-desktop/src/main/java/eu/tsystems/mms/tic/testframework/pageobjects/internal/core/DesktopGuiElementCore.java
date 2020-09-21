@@ -82,8 +82,9 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
         Exception seleniumException=null;
         try {
             Locate locate = guiElementData.getLocate();
-            if (guiElementData.hasParent()) {
-                elements = guiElementData.getParent().getGuiElement().getRawCore().findWebElement().findElements(locate.getBy());
+            GuiElementData parentGuiElementData = guiElementData.getParent();
+            if (parentGuiElementData != null) {
+                elements = parentGuiElementData.getGuiElement().getRawCore().findWebElement().findElements(locate.getBy());
             } else {
                 elements = guiElementData.getWebDriver().findElements(locate.getBy());
             }

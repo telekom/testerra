@@ -22,6 +22,7 @@
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.action;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.AbstractComponent;
 import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import java.lang.reflect.Field;
@@ -29,7 +30,7 @@ import java.lang.reflect.Field;
 /**
  * Sets the name of a {@link Nameable} to its field name of the class
  */
-public class SetNameFieldAction extends FieldAction implements Loggable {
+public class SetNameFieldAction extends AbstractFieldAction implements Loggable {
 
     public SetNameFieldAction(Field field, AbstractPage declaringPage) {
         super(field, declaringPage);
@@ -43,6 +44,16 @@ public class SetNameFieldAction extends FieldAction implements Loggable {
     @Override
     public void execute() {
         Class<?> typeOfField = field.getType();
+        /**
+         * We dont overwrite the name of {@link AbstractComponent#rootElement}
+         */
+        if (
+                declaringPage instanceof AbstractComponent
+                && field.getName().equals("rootElement")
+        ) {
+            return;
+        }
+
         if (Nameable.class.isAssignableFrom(typeOfField)) {
             Nameable nameable = null;
             try {

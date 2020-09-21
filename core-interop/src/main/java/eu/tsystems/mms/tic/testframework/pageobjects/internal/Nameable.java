@@ -21,8 +21,35 @@
  */
 package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
+import eu.tsystems.mms.tic.testframework.pageobjects.PageObject;
+import java.util.function.Consumer;
+
+/**
+ * This interface supports naming hierarchy of {@link PageObject}
+ * @param <SELF>
+ */
 public interface Nameable<SELF> {
 
     SELF setName(String name);
-    String getName();
+    String getName(boolean detailed);
+    Nameable getParent();
+
+    default String getName() {
+        return getName(false);
+    }
+    default String toString(boolean detailed) {
+        return getName(detailed);
+    }
+
+    /**
+     * Traces the parents beginning by root and passes them to the consumer
+     * @param consumer
+     */
+    default void traceParent(Consumer<Nameable> consumer) {
+        Nameable parent = getParent();
+        if (parent!=null) {
+            parent.traceParent(consumer);
+            consumer.accept(parent);
+        }
+    }
 }

@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.factory.PageFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.FieldAction;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.AbstractFieldAction;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFieldAction;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -35,11 +35,9 @@ import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
 import eu.tsystems.mms.tic.testframework.testing.TestFeatures;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -283,10 +281,10 @@ public abstract class AbstractPage implements
                 applyPageOptions(pageClass.getAnnotation(PageOptions.class));
             }
 
-            for (Field field : pageClass.getFields()) {
+            for (Field field : pageClass.getDeclaredFields()) {
                 field.setAccessible(true);
-                List<FieldAction> fieldActions = getFieldActions(field, this);
-                fieldActions.forEach(FieldAction::run);
+                List<AbstractFieldAction> fieldActions = getFieldActions(field, this);
+                fieldActions.forEach(AbstractFieldAction::run);
                 field.setAccessible(false);
             }
         });
@@ -299,12 +297,12 @@ public abstract class AbstractPage implements
         }
     }
 
-    protected Optional<List<FieldAction>> addCustomFieldActions(Field field, AbstractPage declaringPage) {
+    protected Optional<List<AbstractFieldAction>> addCustomFieldActions(Field field, AbstractPage declaringPage) {
         return Optional.empty();
     }
 
-    private List<FieldAction> getFieldActions(Field field, AbstractPage declaringPage) {
-        List<FieldAction> fieldActions = new ArrayList<>();
+    private List<AbstractFieldAction> getFieldActions(Field field, AbstractPage declaringPage) {
+        List<AbstractFieldAction> fieldActions = new ArrayList<>();
         SetNameFieldAction setNameFieldAction = new SetNameFieldAction(field, declaringPage);
         fieldActions.add(setNameFieldAction);
 

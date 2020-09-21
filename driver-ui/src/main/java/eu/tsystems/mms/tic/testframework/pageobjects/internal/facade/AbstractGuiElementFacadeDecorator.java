@@ -46,8 +46,8 @@ import org.openqa.selenium.support.ui.Select;
  */
 public abstract class AbstractGuiElementFacadeDecorator implements GuiElementFacade {
 
-    final GuiElementFacade decoratedFacade;
-    private final GuiElementData guiElementData;
+    protected final GuiElementFacade decoratedFacade;
+    protected final GuiElementData guiElementData;
 
     public AbstractGuiElementFacadeDecorator(GuiElementFacade decoratedFacade, GuiElementData guiElementData) {
         this.decoratedFacade = decoratedFacade;

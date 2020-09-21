@@ -27,7 +27,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
@@ -48,13 +48,9 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 {
     protected final UiElement rootElement;
     private String name;
-    private HasParent parent;
     private DefaultComponentList<SELF> list;
 
     public AbstractComponent(UiElement rootElement) {
-        GuiElement realRootElement = (GuiElement)rootElement;
-        setParent(realRootElement.getParent());
-        realRootElement.setParent(this);
         this.rootElement = rootElement;
     }
 
@@ -101,7 +97,9 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     protected UiElement find(eu.tsystems.mms.tic.testframework.pageobjects.Locate locate) {
-        return uiElementFactory.createFromParent(rootElement, locate);
+        GuiElement subElement = (GuiElement)uiElementFactory.createFromParent(rootElement, locate);
+        subElement.setParent(this);
+        return subElement;
     }
 
     @Override
@@ -145,37 +143,18 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public String getName() {
+    public String getName(boolean detailed) {
+        String name = this.name;
+        if (name == null) name = getClass().getSimpleName();
+        if (detailed) {
+            name += "("+rootElement.getName(detailed)+")";
+        }
         return name;
     }
 
-    public AbstractComponent<SELF> setParent(HasParent parent) {
-        this.parent = parent;
-        return this;
-    }
-
     @Override
-    public HasParent getParent() {
-        return parent;
-    }
-
-    @Override
-    public String toString() {
-        return toString(false);
-    }
-
-    @Override
-    public String toString(boolean detailed) {
-        StringBuilder sb = new StringBuilder();
-        if (parent!=null) {
-            sb.append(parent.toString(detailed)).append(".");
-        }
-        if (name!=null) {
-            sb.append(name);
-        } else {
-            sb.append(getClass().getSimpleName());
-        }
-        return sb.toString();
+    public Nameable getParent() {
+        return rootElement.getParent();
     }
 
     @Override

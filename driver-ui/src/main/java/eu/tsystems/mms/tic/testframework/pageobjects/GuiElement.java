@@ -29,7 +29,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
@@ -73,6 +73,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import org.apache.poi.ss.formula.functions.Na;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -116,7 +117,7 @@ public class GuiElement implements UiElement, Loggable {
     private GuiElementFacade decoratedFacade;
     private GuiElementWait decoratedWait;
 
-    protected HasParent parent;
+    protected Nameable parent;
     private UserSimulator userSimulator;
     private DefaultUiElementList list;
 
@@ -168,7 +169,7 @@ public class GuiElement implements UiElement, Loggable {
         this(page.getWebDriver(), locate, null);
         Page realPage = (Page)page;
         setTimeoutInSeconds(realPage.getElementTimeoutInSeconds());
-        setParent(page);
+        setParent(realPage);
     }
 
     /**
@@ -230,7 +231,7 @@ public class GuiElement implements UiElement, Loggable {
         // Wrap the core with sequence decorator, such that its methods are executed with sequence
         GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(frameAwareCore, guiElementData);
         decoratedFacade = new DefaultGuiElementFacade(sequenceCore);
-        decoratedFacade = new GuiElementFacadeLoggingDecorator(decoratedFacade, guiElementData);
+        decoratedFacade = new GuiElementFacadeLoggingDecorator(decoratedFacade, guiElementData, this);
 
         int delayAfterAction = Properties.DELAY_AFTER_ACTION_MILLIS.asLong().intValue();
         int delayBeforeAction = Properties.DELAY_BEFORE_ACTION_MILLIS.asLong().intValue();
@@ -562,7 +563,7 @@ public class GuiElement implements UiElement, Loggable {
      * Sets the abstract parent
      * @param parent {@link UiElement} or {@link PageObject}
      */
-    public UiElement setParent(HasParent parent) {
+    public UiElement setParent(Nameable parent) {
         this.parent = parent;
         return this;
     }
@@ -572,18 +573,22 @@ public class GuiElement implements UiElement, Loggable {
      * @return Can be {@link UiElement} or {@link PageObject}
      */
     @Override
-    public HasParent getParent() {
+    public Nameable getParent() {
         return parent;
     }
 
     @Override
     public String toString() {
-        return guiElementData.toString();
+        return this.toString(false);
     }
 
     @Override
-    public String toString(boolean details) {
-        return guiElementData.toString(details);
+    public String toString(boolean detailed) {
+        StringBuilder sb = new StringBuilder();
+        this.traceParent(parent -> sb.append(parent.getName(detailed)).append(" -> "));
+        //this.guiElementData.traceParent(addParentConsumer);
+        sb.append(getName(detailed));
+        return sb.toString();
     }
 
     @Deprecated
@@ -607,8 +612,8 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     @Override
-    public String getName() {
-        return guiElementData.getName();
+    public String getName(boolean detailed) {
+        return guiElementData.getName(detailed);
     }
 
     /**
@@ -763,7 +768,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public String getSubject() {
-                return String.format("%s.@text", self);
+                return String.format("%s.@text", self.toString(true));
             }
         });
         return assertion;
@@ -781,7 +786,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public String getSubject() {
-                return String.format("%s.@%s", self, finalAttribute);
+                return String.format("%s.@%s", self.toString(true), finalAttribute);
             }
         });
         return assertion;
@@ -798,7 +803,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public String getSubject() {
-                return String.format("%s.css(@%s)", self, property);
+                return String.format("%s.css(@%s)", self.toString(true), property);
             }
         });
         return assertion;
@@ -819,7 +824,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public String getSubject() {
-                return String.format("%s.@present", self);
+                return String.format("%s.@present", self.toString(true));
             }
         });
         return assertion;
@@ -836,7 +841,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public String getSubject() {
-                return String.format("%s.visible(complete: %s)", self, complete);
+                return String.format("%s.visible(complete: %s)", self.toString(true), complete);
             }
         });
         return assertion;
@@ -857,7 +862,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public String getSubject() {
-                return String.format("%s.@displayed", self);
+                return String.format("%s.@displayed", self.toString(true));
             }
         });
         return assertion;
@@ -874,7 +879,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public String getSubject() {
-                return String.format("%s.@enabled", self);
+                return String.format("%s.@enabled", self.toString(true));
             }
         });
         return assertion;
@@ -891,7 +896,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public String getSubject() {
-                return String.format("%s.@selected", self);
+                return String.format("%s.@selected", self.toString(true));
             }
         });
         return assertion;
@@ -908,7 +913,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public String getSubject() {
-                return String.format("%s.bounds", self);
+                return String.format("%s.bounds", self.toString(true));
             }
         });
         return assertion;
@@ -929,7 +934,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public String getSubject() {
-                return String.format("%s.@numberOfElements", self);
+                return String.format("%s.@numberOfElements", self.toString(true));
             }
         });
         return assertion;
@@ -945,7 +950,7 @@ public class GuiElement implements UiElement, Loggable {
     public String createXPath() {
         Formatter formatter = Testerra.injector.getInstance(Formatter.class);
         ArrayList<String> xPathes = new ArrayList<>();
-        HasParent element = this;
+        Nameable element = this;
         do {
             if (element instanceof UiElement) {
                 xPathes.add(0, formatter.byToXPath(((UiElement) element).getLocate().getBy()));
@@ -974,7 +979,7 @@ public class GuiElement implements UiElement, Loggable {
 
             @Override
             public String getSubject() {
-                return String.format("%s.screenshot", self);
+                return String.format("%s.screenshot", self.toString(true));
             }
         });
         return assertion;

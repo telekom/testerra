@@ -22,7 +22,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.IProperties;
 import eu.tsystems.mms.tic.testframework.common.PropertyManager;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 
@@ -34,7 +33,6 @@ public interface UiElement extends
     InteractiveUiElement,
     Nameable<UiElement>,
     WebDriverRetainer,
-    HasParent,
     UiElementFinder,
     WebElementRetainer
 {

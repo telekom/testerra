@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.HasParent;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultScreenshotAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultStringAssertion;
@@ -62,17 +62,22 @@ import org.openqa.selenium.WebElement;
  * @author Peter Lehmann
  * @author Mike Reiche
  */
-public abstract class Page extends AbstractPage implements TestablePage {
+public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
     private WebDriver driver;
 
     @Override
-    public HasParent getParent() {
+    public Nameable getParent() {
         return null;
     }
 
     @Override
-    public String toString(boolean detailed) {
+    public Page setName(String name) {
+        return this;
+    }
+
+    @Override
+    public String getName(boolean detailed) {
         return getClass().getSimpleName();
     }
 
@@ -338,7 +343,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
             @Override
             public String getSubject() {
-                return String.format("%s.@title", self);
+                return String.format("%s.@title", self.toString(true));
             }
         });
     }
@@ -354,7 +359,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
             @Override
             public String getSubject() {
-                return String.format("%s.@url", self);
+                return String.format("%s.@url", self.toString(true));
             }
         });
     }
@@ -383,7 +388,7 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
             @Override
             public String getSubject() {
-                return self.toString();
+                return self.toString(true);
             }
         });
     }

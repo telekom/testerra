@@ -14,7 +14,7 @@ public class DefaultComponentList<COMPONENT extends AbstractComponent<COMPONENT>
     @Override
     public COMPONENT get(int i) {
         COMPONENT component = (COMPONENT)pageFactory.createComponent(this.component.getClass(), this.component.rootElement.list().get(i));
-        component.setParent(this.component.getParent());
+        //component.setParent(this.component.getParent());
         return component;
     }
 }

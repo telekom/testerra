@@ -105,6 +105,11 @@ public class GuiElementData implements
         return parent;
     }
 
+    @Override
+    public boolean hasName() {
+        return name!=null;
+    }
+
     public Locate getLocate() {
         return locate;
     }

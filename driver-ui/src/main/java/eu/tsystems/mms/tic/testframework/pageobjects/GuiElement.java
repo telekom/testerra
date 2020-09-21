@@ -578,6 +578,11 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     @Override
+    public boolean hasName() {
+        return guiElementData.hasName();
+    }
+
+    @Override
     public String toString() {
         return this.toString(false);
     }

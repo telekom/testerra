@@ -61,16 +61,28 @@ import org.openqa.selenium.WebElement;
  *      Support for text assertions by {@link #anyElementContainsText(String)}
  * @author Peter Lehmann
  * @author Mike Reiche
+ * @todo Rename to AbstractPage
  */
-public class Page extends AbstractPage implements TestablePage, Nameable<Page> {
+public abstract class Page extends AbstractPage implements TestablePage, Nameable<Page> {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
     private WebDriver driver;
 
+    /**
+     * Pages should not have parents. Use {@link Component} instead.
+     */
     @Override
     public Nameable getParent() {
         return null;
     }
 
+    @Override
+    public boolean hasName() {
+        return true;
+    }
+
+    /**
+     * There is usually no need to set the name of a page
+     */
     @Override
     public Page setName(String name) {
         return this;

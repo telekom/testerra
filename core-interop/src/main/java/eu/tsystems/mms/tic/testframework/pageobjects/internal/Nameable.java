@@ -30,13 +30,31 @@ import java.util.function.Consumer;
  */
 public interface Nameable<SELF> {
 
+    /**
+     * Sets the name of this instance
+     */
     SELF setName(String name);
+
+    /**
+     * Return the (detailed) name of this instance.
+     * @return String Should never return NULL
+     */
     String getName(boolean detailed);
+
+    /**
+     * Returns the parent instance of this
+     */
     Nameable getParent();
+
+    /**
+     * Determines if the instance has name explicitly set by {@link #setName(String)}
+     */
+    boolean hasName();
 
     default String getName() {
         return getName(false);
     }
+
     default String toString(boolean detailed) {
         return getName(detailed);
     }

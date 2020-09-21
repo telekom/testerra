@@ -144,8 +144,11 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     public String getName(boolean detailed) {
-        String name = this.name;
-        if (name == null) name = getClass().getSimpleName();
+        String name;
+
+        if (!hasName()) name = getClass().getSimpleName();
+        else name = getName();
+
         if (detailed) {
             name += "("+rootElement.getName(detailed)+")";
         }
@@ -155,6 +158,11 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     @Override
     public Nameable getParent() {
         return rootElement.getParent();
+    }
+
+    @Override
+    public boolean hasName() {
+        return name!=null;
     }
 
     @Override

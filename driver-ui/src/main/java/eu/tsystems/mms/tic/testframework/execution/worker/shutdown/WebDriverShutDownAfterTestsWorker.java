@@ -19,16 +19,13 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.execution.worker.shutdown;
+package eu.tsystems.mms.tic.testframework.execution.worker.shutdown;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.events.ExecutionFinishEvent;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
 
-/**
- * This should not be a {@link GenerateReportsWorker}
- */
 public class WebDriverShutDownAfterTestsWorker implements ExecutionFinishEvent.Listener {
 
    @Subscribe

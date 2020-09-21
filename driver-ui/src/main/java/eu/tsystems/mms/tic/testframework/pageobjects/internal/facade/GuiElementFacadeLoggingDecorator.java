@@ -40,6 +40,6 @@ public class GuiElementFacadeLoggingDecorator extends AbstractGuiElementFacadeDe
 
     @Override
     protected void beforeDelegation(String methodName, String parameterInfo) {
-        log().info(methodName + "("+parameterInfo+") on " + this.uiElement.toString());
+        log().info(methodName + "("+parameterInfo+") on " + this.uiElement.toString(false));
     }
 }

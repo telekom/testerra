@@ -151,6 +151,8 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
         if (detailed) {
             name += "("+rootElement.getName(detailed)+")";
+        } else if (rootElement.hasName()) {
+            name += "("+rootElement.getName()+")";
         }
         return name;
     }

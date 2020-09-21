@@ -108,7 +108,6 @@ public class ClassesPageTest extends AbstractReportTest {
     public void testT04_checkLinkToClassesDetails() {
         final String className = ReportTestUnderTestPassed.class.getSimpleName();
         ClassesPage classesPage = GeneralWorkflow.doOpenBrowserAndReportClassesPage(WebDriverManager.getWebDriver(), PropertyManager.getProperty(ReportDirectory.REPORT_DIRECTORY_1.getReportDirectory()));
-        classesPage.waitForPageToLoad();
         ClassesDetailsPage classesDetailsPage = classesPage.gotoClassesDetailsPageForClass(className);
         classesDetailsPage.assertPageIsShown();
 

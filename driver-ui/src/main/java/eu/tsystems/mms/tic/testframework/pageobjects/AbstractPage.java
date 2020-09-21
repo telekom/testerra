@@ -47,8 +47,11 @@ import org.openqa.selenium.WebDriver;
  * Provides basic {@link PageObject} related features:
  *      Supports element {@link Check}
  *      Supports {@link PageOptions}
- *      Supports deprecated custom page checks by {@link #checkPage(boolean)}
- *      Supports custom page load callbacks like {@link #assertPageIsShown()} and {@link #waitForPageToLoad()}
+ * Livecycle methods for {@link #checkUiElements(CheckRule)}:
+ *      {@link #checkPagePreparation()}
+ *      {@link #addCustomFieldActions}
+ *      {@link #assertPageIsNotShown()} or {@link #assertPageIsNotShown()}
+ *      {@link #checkPageErrorState(Throwable)}
  * @see {https://martinfowler.com/bliki/PageObject.html}
  * @author Peter Lehmann
  * @author Mike Reiche
@@ -61,9 +64,7 @@ public abstract class AbstractPage implements
         UiElementFactoryProvider,
         PageFactoryProvider
 {
-    protected UiElement find(Locate locate) {
-        return uiElementFactory.createFromPage(this, locate);
-    }
+    abstract protected UiElement find(Locate locate);
     protected UiElement findById(Object id) {
         return find(Locate.by(By.id(id.toString())));
     }
@@ -198,8 +199,6 @@ public abstract class AbstractPage implements
         String classSimpleName = this.getClass().getSimpleName();
         log().info("Checking mandatory elements");
 
-        handleDemoMode(getWebDriver());
-
         /*
         page checks
          */
@@ -246,12 +245,16 @@ public abstract class AbstractPage implements
         log().info("Page loaded successfully");
     }
 
+    /**
+     * Allows pages to run code before performing checkpage
+     */
     protected void checkPagePreparation() {
-        // allow pages to run code before performing checkpage
     }
 
-    protected void handleDemoMode(WebDriver webDriver) {
-
+    /**
+     * @deprecated
+     */
+    protected void handleDemoMode() {
     }
 
     /**
@@ -365,12 +368,6 @@ public abstract class AbstractPage implements
         Collections.reverse(allClasses);
         return allClasses;
     }
-
-    /**
-     * @deprecated This method should not be public
-     */
-    @Deprecated
-    public abstract void waitForPageToLoad();
 
     /**
      * Empty method to be overriden. Can perform some (additional) checks on page objects.

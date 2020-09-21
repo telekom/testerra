@@ -100,7 +100,8 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public void waitForPageToLoad() {
+    protected UiElement find(eu.tsystems.mms.tic.testframework.pageobjects.Locate locate) {
+        return uiElementFactory.createFromParent(rootElement, locate);
     }
 
     @Override

@@ -93,9 +93,6 @@ public abstract class Page extends AbstractPage implements TestablePage {
     public Page(WebDriver webDriver) {
         this.driver = webDriver;
 
-        // webdriver based waitForPageToLoad
-        waitForPageToLoad();
-
         // performance test stop timer
         perfTestExtras();
     }
@@ -140,10 +137,6 @@ public abstract class Page extends AbstractPage implements TestablePage {
         // wait Thinktime + Offset
         log().info("Waiting a time to think of " + timeToWait + " milliseconds");
         TimerUtils.sleep(timeToWait);
-    }
-
-    @Override
-    public void waitForPageToLoad() {
     }
 
     public boolean isTextPresent(String text) {
@@ -198,6 +191,11 @@ public abstract class Page extends AbstractPage implements TestablePage {
     public boolean waitForIsNotTextPresentWithDelay(final String text, final int delayInSeconds) {
         TimerUtils.sleep(delayInSeconds * 1000);
         return waitForIsNotTextPresent(text);
+    }
+
+    @Override
+    protected UiElement find(eu.tsystems.mms.tic.testframework.pageobjects.Locate locate) {
+        return uiElementFactory.createFromPage(this, locate);
     }
 
     protected void pCheckPage(final boolean findNot, final boolean checkCaller) {

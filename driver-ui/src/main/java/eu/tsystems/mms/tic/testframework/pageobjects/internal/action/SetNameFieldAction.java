@@ -26,6 +26,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.AbstractPage;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import java.lang.reflect.Field;
 
+/**
+ * Sets the name of a {@link Nameable} to its field name of the class
+ */
 public class SetNameFieldAction extends FieldAction implements Loggable {
 
     public SetNameFieldAction(Field field, AbstractPage declaringPage) {
@@ -41,15 +44,15 @@ public class SetNameFieldAction extends FieldAction implements Loggable {
     public void execute() {
         Class<?> typeOfField = field.getType();
         if (Nameable.class.isAssignableFrom(typeOfField)) {
-            Nameable guiElement = null;
+            Nameable nameable = null;
             try {
-                guiElement = (Nameable) field.get(declaringPage);
+                nameable = (Nameable) field.get(declaringPage);
             } catch (IllegalAccessException e) {
                 log().error("Failed to assign description to " + field + ". Make sure the field was made accessible in the" +
                         " AbstractPage class before calling this method.");
             }
-            if (guiElement != null && guiElement.getName() == null) {
-                guiElement.setName(field.getName());
+            if (nameable != null && nameable.getName() == null) {
+                nameable.setName(field.getName());
             }
         }
     }

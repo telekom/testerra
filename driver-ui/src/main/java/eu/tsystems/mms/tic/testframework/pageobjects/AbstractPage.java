@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -204,7 +205,7 @@ public abstract class AbstractPage implements
          */
         checkPagePreparation();
         try {
-            checkAnnotatedFields(findNot);
+            checkAnnotatedFields();
             checkAdditional(findNot);
         } catch (Throwable throwable) {
             try {
@@ -271,33 +272,17 @@ public abstract class AbstractPage implements
         return elementTimeoutInSeconds;
     }
 
-    private PageOptions getPageOptions(List<Class<? extends AbstractPage>> allClasses) {
-        PageOptions pageOptions = null;
-        for (Class<? extends AbstractPage> c : allClasses) {
-            if (c.isAnnotationPresent(PageOptions.class)) {
-                pageOptions = c.getAnnotation(PageOptions.class);
-            }
-        }
-        return pageOptions;
-    }
-
     /**
      * Gets all @Check annotated fields of a class and executes a webdriver find().
-     *
-     * @param findNot flag for "findNot" - verify fields are NOT shown
      */
-    private void checkAnnotatedFields(final boolean findNot) {
-        List<Class<? extends AbstractPage>> allClasses = collectAllClasses(findNot);
-
-        /*
-        get and apply PageOptions
-         */
-        PageOptions pageOptions = getPageOptions(allClasses);
-        if (pageOptions != null) {
-            applyPageOptions(pageOptions);
-        }
+    private void checkAnnotatedFields() {
+        List<Class<? extends AbstractPage>> allClasses = collectAllSuperClasses();
 
         allClasses.forEach(pageClass -> {
+            if (pageClass.isAnnotationPresent(PageOptions.class)) {
+                applyPageOptions(pageClass.getAnnotation(PageOptions.class));
+            }
+
             for (Field field : pageClass.getFields()) {
                 field.setAccessible(true);
                 List<FieldAction> fieldActions = getFieldActions(field, this);
@@ -330,42 +315,41 @@ public abstract class AbstractPage implements
         return fieldActions;
     }
 
-    private List<Class<? extends AbstractPage>> collectAllClasses(boolean findNot) {
+    /**
+     * Collects all classes in the hierarchy that are sub classes of {@link AbstractPage}
+     */
+    private List<Class<? extends AbstractPage>> collectAllSuperClasses() {
         final LinkedList<Class<? extends AbstractPage>> allClasses = new LinkedList<>();
         allClasses.add(this.getClass());
-
+        boolean running = true;
         /*
-         * Find all classes in the class hierarchy.
+         * Find all superclasses.
          */
-        if (!findNot) {
-            /*
-             * don't find superclasses when executing findNot
-             */
-            Class<?> clazz = this.getClass();
-            boolean running = true;
-            /*
-             * Find all superclasses.
-             */
-            while (running) {
-                clazz = clazz.getSuperclass();
-                try {
-                    if (clazz == null) {
-                        running = false;
-                    } else {
-                        if (clazz != AbstractPage.class) {
-                            @SuppressWarnings("unchecked") final Class<? extends AbstractPage> pageClass = (Class<? extends AbstractPage>) clazz;
-                            allClasses.add(pageClass);
-                        }
-                    }
-                } catch (final ClassCastException e) {
+        Class<?> clazz = this.getClass();
+        while (running) {
+            clazz = clazz.getSuperclass();
+            try {
+                if (clazz == null) {
                     running = false;
+                } else {
+                    if (
+                            clazz != AbstractPage.class
+                            && clazz != Page.class
+                            && clazz != Object.class
+                    ) {
+                        @SuppressWarnings("unchecked") final Class<? extends AbstractPage> pageClass = (Class<? extends AbstractPage>) clazz;
+                        allClasses.add(pageClass);
+                    }
                 }
+            } catch (final ClassCastException e) {
+                running = false;
             }
         }
-          /*
-        Revert classes order to bottom up
+        /**
+         * Revert classes order to bottom up
+         * @todo Why? There is no reason
          */
-        Collections.reverse(allClasses);
+        //Collections.reverse(allClasses);
         return allClasses;
     }
 

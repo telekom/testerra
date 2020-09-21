@@ -325,19 +325,21 @@ public abstract class AbstractPage implements
          */
         Class<?> clazz = this.getClass();
         while (running) {
+
             clazz = clazz.getSuperclass();
+
             try {
                 if (clazz == null) {
                     running = false;
+                } else if (clazz == AbstractComponent.class || clazz == Page.class) {
+                    /*
+                      When the class is on of the abstract implementations,
+                      then stop searching here
+                     */
+                    break;
                 } else {
-                    if (
-                            clazz != AbstractPage.class
-                            && clazz != Page.class
-                            && clazz != Object.class
-                    ) {
-                        @SuppressWarnings("unchecked") final Class<? extends AbstractPage> pageClass = (Class<? extends AbstractPage>) clazz;
-                        allClasses.add(pageClass);
-                    }
+                    @SuppressWarnings("unchecked") final Class<? extends AbstractPage> pageClass = (Class<? extends AbstractPage>) clazz;
+                    allClasses.add(pageClass);
                 }
             } catch (final ClassCastException e) {
                 running = false;

@@ -70,8 +70,9 @@ public class GuiElementData implements
         this(parent.webDriver, parent.locate);
         this.index = index;
         this.parent = parent.parent;
-        frameLogic = parent.frameLogic;
-        guiElement = parent.guiElement;
+        this.name = parent.name;
+        this.frameLogic = parent.frameLogic;
+        this.guiElement = parent.guiElement;
     }
 
     public GuiElementData(
@@ -132,10 +133,10 @@ public class GuiElementData implements
     public String getName(boolean detailed) {
         StringBuilder sb = new StringBuilder();
 
-        boolean hasName = this.name!=null;
+        boolean hasName = hasName();
 
         if (hasName) {
-            sb.append(name);
+            sb.append(this.name);
         } else {
             sb.append(UiElement.class.getSimpleName());
         }

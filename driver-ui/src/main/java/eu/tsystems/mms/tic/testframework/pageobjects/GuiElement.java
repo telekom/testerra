@@ -591,7 +591,6 @@ public class GuiElement implements UiElement, Loggable {
     public String toString(boolean detailed) {
         StringBuilder sb = new StringBuilder();
         this.traceParent(parent -> sb.append(parent.getName(detailed)).append(" -> "));
-        //this.guiElementData.traceParent(addParentConsumer);
         sb.append(getName(detailed));
         return sb.toString();
     }

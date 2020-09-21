@@ -290,7 +290,7 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
                 }
             }
         } else {
-            LOGGER.warn("Cannot perform value check after type() because this element doesn't have a value property. Consider using sendKeys() instead.");
+            LOGGER.warn("Cannot perform value check after type() because " + this.toString() + " doesn't have a value property. Consider using sendKeys() instead.");
         }
     }
 

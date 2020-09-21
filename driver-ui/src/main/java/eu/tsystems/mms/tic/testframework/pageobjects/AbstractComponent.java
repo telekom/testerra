@@ -36,6 +36,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAsse
 import java.awt.Color;
 import java.util.function.Consumer;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -100,6 +101,11 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
 
     @Override
     public void waitForPageToLoad() {
+    }
+
+    @Override
+    public WebDriver getWebDriver() {
+        return rootElement.getWebDriver();
     }
 
     @Override

@@ -64,6 +64,7 @@ import org.openqa.selenium.WebElement;
  */
 public abstract class Page extends AbstractPage implements TestablePage {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
+    private WebDriver driver;
 
     @Override
     public HasParent getParent() {
@@ -97,6 +98,11 @@ public abstract class Page extends AbstractPage implements TestablePage {
 
         // performance test stop timer
         perfTestExtras();
+    }
+
+    @Override
+    public WebDriver getWebDriver() {
+        return driver;
     }
 
     /**

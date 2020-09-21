@@ -61,14 +61,6 @@ public abstract class AbstractPage implements
         UiElementFactoryProvider,
         PageFactoryProvider
 {
-    /**
-     * The webdriver object.
-     *
-     * @deprecated Use {@link #getWebDriver()} instead
-     */
-    @Deprecated
-    protected WebDriver driver;
-
     protected UiElement find(Locate locate) {
         return uiElementFactory.createFromPage(this, locate);
     }
@@ -391,19 +383,8 @@ public abstract class AbstractPage implements
     public void assertPageIsNotShown() {
     }
 
-    /**
-     * @return
-     * @deprecated Use {@link #getWebDriver()} instead
-     */
-    @Deprecated
-    public WebDriver getDriver() {
-        return getWebDriver();
-    }
-
     @Override
-    public WebDriver getWebDriver() {
-        return driver;
-    }
+    abstract public WebDriver getWebDriver();
 
     protected <T extends Component> T createComponent(Class<T> componentClass, UiElement rootElement) {
         return pageFactory.createComponent(componentClass, rootElement);

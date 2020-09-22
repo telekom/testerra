@@ -23,20 +23,10 @@ public abstract class AbstractAssertion implements Assertion {
     }
 
     @Override
-    public String format(Object actual, Object expected, Object message) {
+    public String format(Object actual, Object expected, Object subject) {
         StringBuilder builder = new StringBuilder();
-        String subject = null;
-        if (message instanceof Message) {
-            Message realMessage = (Message)message;
-            if (realMessage.prefixMessage != null) {
-                builder.append(realMessage.prefixMessage).append(": ");
-            }
-            subject = realMessage.subject;
-        } else if (message != null) {
-            subject = message.toString();
-        }
         builder.append("Expected");
-        if (subject != null && !subject.isEmpty()) {
+        if (subject != null) {
             builder.append(" that »").append(subject).append("«");
             builder.append(" actual");
         }

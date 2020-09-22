@@ -14,35 +14,25 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
     public DefaultStringAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
     }
-//
-//    @Override
-//    public boolean is(String expected, String message) {
-//        return super.is(expected, message);
-//    }
-//
-//    @Override
-//    public boolean is(String expected, String message) {
-//        return super.is(expected, message);
-//    }
 
     @Override
     public boolean contains(String expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertContains((String)provider.getActual(), expected, new Assertion.Message(failMessage, traceSubjectString())));
+        return testTimer(t -> instantAssertion.assertContains((String)provider.getActual(), expected), createFailMessageSupplier(failMessage));
     }
 
     @Override
     public boolean containsNot(String expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertContainsNot((String)provider.getActual(), expected, new Assertion.Message(failMessage, traceSubjectString())));
+        return testTimer(t -> instantAssertion.assertContainsNot((String)provider.getActual(), expected), createFailMessageSupplier(failMessage));
     }
 
     @Override
     public boolean startsWith(String expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertBeginsWith(provider.getActual(), expected, new Assertion.Message(failMessage, traceSubjectString())));
+        return testTimer(t -> instantAssertion.assertBeginsWith(provider.getActual(), expected), createFailMessageSupplier(failMessage));
     }
 
     @Override
     public boolean endsWith(String expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertEndsWith(provider.getActual(), expected, new Assertion.Message(failMessage, traceSubjectString())));
+        return testTimer(t -> instantAssertion.assertEndsWith(provider.getActual(), expected), createFailMessageSupplier(failMessage));
     }
 
     @Override

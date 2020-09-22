@@ -9,6 +9,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * An abstract Property Assertion which performs a test
@@ -28,7 +29,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
         return provider.getActual();
     }
 
-    protected boolean testTimer(Function<T, Boolean> testFunction) {
+    protected boolean testTimer(Function<T, Boolean> testFunction, Supplier<String> failMessageSupplier) {
         int useTimeoutSeconds = timeout;
         if (pageOverrides.hasTimeout()) useTimeoutSeconds = pageOverrides.getTimeout();
         if (useTimeoutSeconds < 0) useTimeoutSeconds = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
@@ -37,19 +38,15 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
             UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(),
             useTimeoutSeconds * 1000
         );
-        ThrowablePackedResponse<AssertionError> packedResponse = timer.executeSequence(new Timer.Sequence<AssertionError>() {
+        ThrowablePackedResponse<Throwable> packedResponse = timer.executeSequence(new Timer.Sequence<Throwable>() {
             @Override
             public void run() {
                 // Prevent TimeoutException on any other exception
                 setSkipThrowingException(true);
                 try {
                     setPassState(testFunction.apply(null));
-                } catch (AssertionError e) {
-                    setReturningObject(e);
-                    failedRecursive();
-                    setPassState(false);
                 } catch (Throwable throwable) {
-                    setReturningObject(new AssertionError(throwable));
+                    setReturningObject(throwable);
                     failedRecursive();
                     setPassState(false);
                 }
@@ -60,7 +57,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
             // Dont handle exceptions when it should only wait
             if (!shouldWait) {
                 Assertion finalAssertion = assertionFactory.create();
-                finalAssertion.fail(packedResponse.getResponse());
+                finalAssertion.fail(failMessageSupplier.get(), packedResponse.getThrowable());
             }
             return false;
         } else {

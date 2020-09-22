@@ -1,7 +1,5 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-
 public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T> implements BinaryAssertion<T> {
 
     public DefaultBinaryAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
@@ -20,11 +18,11 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                                 || actualString.equalsIgnoreCase("yes")
                 )
                 ) {
-                    instantAssertion.fail(instantAssertion.format(actualString, "is one of [true, 'on', '1', 'yes']", new Assertion.Message(failMessage, traceSubjectString())));
+                    instantAssertion.fail(instantAssertion.format(actualString, "is one of [true, 'on', '1', 'yes']", null));
                     return false;
                 }
                 return true;
-            });
+            }, createFailMessageSupplier(failMessage));
         } else {
             return testTimer(t -> {
                 final String actualString = getActual().toString();
@@ -35,11 +33,11 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                                 || actualString.equalsIgnoreCase("no")
                 )
                 ) {
-                    instantAssertion.fail(instantAssertion.format(actualString, "is one of [false, 'off', '0', 'no']", new Assertion.Message(failMessage, traceSubjectString())));
+                    instantAssertion.fail(instantAssertion.format(actualString, "is one of [false, 'off', '0', 'no']", null));
                     return false;
                 }
                 return true;
-            });
+            }, createFailMessageSupplier(failMessage));
         }
     }
 }

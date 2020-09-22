@@ -4,6 +4,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * An abstract property assertion without any test implementations.
@@ -39,7 +40,18 @@ public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<
         return provider.getActual();
     }
 
-    public String traceSubjectString() {
+    protected Supplier<String> createFailMessageSupplier(String prefixMessage) {
+        return () -> {
+            StringBuilder sb = new StringBuilder();
+            if (prefixMessage != null) {
+                sb.append(prefixMessage).append(": ");
+            }
+            sb.append(traceSubjectString());
+            return sb.toString();
+        };
+    }
+
+    private String traceSubjectString() {
         final List<String> subjects = new ArrayList<>();
         String subject = provider.getSubject();
         if (subject!=null) subjects.add(subject);

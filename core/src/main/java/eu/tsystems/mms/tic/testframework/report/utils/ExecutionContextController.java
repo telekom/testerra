@@ -31,6 +31,7 @@ import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.SuiteContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.TestContextModel;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,10 @@ public class ExecutionContextController {
 
     private static final ThreadLocal<SessionContext> CURRENT_SESSION_CONTEXT = new ThreadLocal<>();
 
+    /**
+     * @return The current method context or NULL if there was no method initialized.
+     * @todo Make {@link Optional}
+     */
     public static MethodContext getCurrentMethodContext() {
         return CURRENT_METHOD_CONTEXT.get();
     }

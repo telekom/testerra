@@ -21,7 +21,6 @@
  */
 package eu.tsystems.mms.tic.testframework.connectors.util;
 
-import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.MapUtils;
 import java.util.LinkedList;
@@ -39,10 +38,6 @@ import org.apache.maven.surefire.testset.TestSetFailedException;
  * @author sepr
  */
 public abstract class AbstractCommonProvider extends AbstractProvider implements Loggable {
-
-    static {
-        TesterraCommons.init();
-    }
 
     /**
      * The class loader used to find the test classes.

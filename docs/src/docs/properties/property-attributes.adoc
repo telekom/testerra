@@ -2,8 +2,7 @@
 // If a property was changed in Testerra, change it here!
 
 // Testerra core
-:proxy_settings_load:                           tt.proxy.settings.load
-:proxy_settings_file:                           tt.proxy.settings.file
+:system_settings_file:                           tt.system.settings.file
 
 // webdriver
 :browser:                                       tt.browser

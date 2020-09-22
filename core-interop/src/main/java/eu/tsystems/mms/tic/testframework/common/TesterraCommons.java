@@ -26,6 +26,12 @@ import eu.tsystems.mms.tic.testframework.report.DefaultLogAppender;
 import eu.tsystems.mms.tic.testframework.report.TesterraLogger;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Properties;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
@@ -35,12 +41,6 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Properties;
 
 public class TesterraCommons {
     private static final Logger LOGGER = LoggerFactory.getLogger(TesterraCommons.class);
@@ -92,42 +92,37 @@ public class TesterraCommons {
     }
 
     /**
-     * Loads proxy settings from a file.
+     * Loads properties from a file and sets them as system properties when not already defined
      */
-    public static void initializeProxySettings() {
-        if (!proxySettingsLoaded) {
-            pSetSystemProxySettingsFromConfigFile();
-            proxySettingsLoaded = true;
+    private static void initializeSystemProperties() {
+        FileUtils fileUtils = new FileUtils();
+        String filename = PropertyManager.getProperty(TesterraProperties.SYSTEM_SETTINGS_FILE, "system.properties");
+        try {
+            File file = fileUtils.getLocalOrResourceFile(filename);
+            if (file.exists()) {
+                loadSystemProperties(file);
+            }
+        } catch (FileNotFoundException e) {
+            //
         }
     }
 
-    private static void pSetSystemProxySettingsFromConfigFile() {
-
-        final boolean loadProxySettings = PropertyManager.getBooleanProperty(TesterraProperties.PROXY_SETTINGS_LOAD, true);
-        if (!loadProxySettings) {
-            LOGGER.debug("Skipping loading of Proxy Settings.");
-            return;
-        }
-
-        FileUtils fileUtils = new FileUtils();
-        String filename = PropertyManager.getProperty(TesterraProperties.PROXY_SETTINGS_FILE, "proxysettings.properties");
-        Properties props = new Properties();
+    private static void loadSystemProperties(File file) {
+        Properties props;
         try {
-            File proxySettings = fileUtils.getLocalOrResourceFile(filename);
-            if (proxySettings.exists()) {
-                LOGGER.info("Load proxy settings: " + proxySettings.getAbsolutePath());
-            }
-            InputStream inputStream = new FileInputStream(proxySettings);
+            InputStream inputStream = new FileInputStream(file);
+            LOGGER.info("Load system properties: " + file.getAbsolutePath());
+            props = new Properties();
             props.load(inputStream);
         } catch (Exception e) {
-            //LOGGER.warn(String.format("Not loaded proxy settings from file: %s", e.getMessage()), e);
+            LOGGER.warn(e.getMessage());
             return;
         }
 
         for (String property : props.stringPropertyNames()) {
             final String systemPropertyValue = System.getProperty(property);
             if (StringUtils.isStringEmpty(systemPropertyValue)) {
-                final String propertyValue = props.getProperty(property);
+                String propertyValue = props.getProperty(property);
                 System.setProperty(property, propertyValue);
                 LOGGER.debug("Setting system property " + property + " = " + propertyValue);
             } else {
@@ -139,6 +134,6 @@ public class TesterraCommons {
 
     public static void init() {
         initializeLogging();
-        initializeProxySettings();
+        initializeSystemProperties();
     }
 }

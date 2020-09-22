@@ -14,9 +14,9 @@ To setup a proxy for the whole system, including the build environment (Maven, G
 gradle test -Dhttps.proxyHost=your-proxy-host.com -Dhttps.proxyPort=8080
 ----
 
-== System properties file
+== Property file
 
-You can also put your proxy settings to a file name `system.properties`  to your resource bundle at `src/test/resources` with the following content
+You can also put your proxy settings to the system <<PropertyManager, Property files>> with the following content
 
 .Example of system.properties
 [source,properties]
@@ -31,10 +31,6 @@ http.proxyHost=your-proxy-host.com
 http.proxyPort=8080
 http.proxyUser=
 http.proxyPassword=
-----
-The path of this file can be changed by `{system_settings_file}` and will be automatically loaded with the following message
-----
-common.TesterraCommons - Load system properties: /path/to/your/system.properties
 ----
 
 == Access the system proxy URL

@@ -22,14 +22,17 @@
 package eu.tsystems.mms.tic.testframework.test.utils;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.SimpleAssertion;
 import eu.tsystems.mms.tic.testframework.testing.TesterraTest;
 import org.testng.annotations.Test;
 
+/**
+ * @todo Incomplete
+ */
 public class AssertionsTest extends TesterraTest {
 
-    private Assertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
+    private SimpleAssertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
 
     @Test
     public void testIsTrue() {

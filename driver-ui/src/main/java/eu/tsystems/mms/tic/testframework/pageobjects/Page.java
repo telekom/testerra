@@ -75,6 +75,9 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
         return null;
     }
 
+    /**
+     * A page has always a name
+     */
     @Override
     public boolean hasName() {
         return true;
@@ -88,6 +91,9 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
         return this;
     }
 
+    /**
+     * Always return the class name of the page
+     */
     @Override
     public String getName(boolean detailed) {
         return getClass().getSimpleName();
@@ -156,6 +162,7 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
         TimerUtils.sleep(timeToWait);
     }
 
+    @Deprecated
     public boolean isTextPresent(String text) {
         WebDriver driver = getWebDriver();
         driver.switchTo().defaultContent();
@@ -337,11 +344,6 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
     @Deprecated
     public void assertIsNotTextDisplayed(String text) {
         anyElementContainsText(text).displayed().is(false);
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName();
     }
 
     @Override

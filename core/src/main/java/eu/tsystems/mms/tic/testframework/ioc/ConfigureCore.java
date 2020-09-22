@@ -36,7 +36,7 @@ public class ConfigureCore extends AbstractModule {
         bind(TestAssertion.class).to(SilentAssertion.class).in(Scopes.SINGLETON);
         bind(AssertionsCollector.class).to(CollectedAssertions.class).in(Scopes.SINGLETON);
         bind(Assertion.class).to(DefaultAssertionWrapper.class).in(Scopes.SINGLETON);
-        bind(TestController.class).to(DefaultTestController.class);
+        bind(TestController.class).to(DefaultTestController.class).in(Scopes.SINGLETON);
         bind(BrowserInformation.class).to(UapBrowserInformation.class);
         //bind(BrowserInformation.class).to(YauaaBrowserInformation.class);
     }

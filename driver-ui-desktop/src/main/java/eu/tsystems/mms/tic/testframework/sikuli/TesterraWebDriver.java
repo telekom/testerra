@@ -21,8 +21,12 @@
  */
  package eu.tsystems.mms.tic.testframework.sikuli;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
+import java.awt.Rectangle;
+import java.net.URL;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CommandExecutor;
@@ -31,26 +35,11 @@ import org.sikuli.api.DefaultScreenRegion;
 import org.sikuli.api.ImageTarget;
 import org.sikuli.api.ScreenLocation;
 import org.sikuli.api.ScreenRegion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.awt.*;
-import java.net.URL;
 
 /**
  * Testerra WebDriver is a ScreenshotWebdriver enhanced by the possibilty to find elements by coordinates and images.
  */
-public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
-
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(TesterraWebDriver.class);
-
-    /**
-     * Default waiter.
-     */
-    private static final int DEFAULT_WAIT_TIMEOUT_MSECS = POConfig.getUiElementTimeoutInSeconds() * 1000;
+public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver, Loggable {
 
     /**
      * Stored webdriver region.
@@ -111,7 +100,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
         if (o instanceof WebElement) {
             return (WebElement) o;
         } else {
-            logger.info("Could not find web element: " + o.toString());
+            log().info("Could not find web element: " + o.toString());
         }
         return null;
     }
@@ -125,11 +114,12 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver {
      */
     public ImageElement findImageElement(URL imageUrl) {
         ImageTarget target = new ImageTarget(imageUrl);
-        final ScreenRegion imageRegion = webdriverRegion.wait(target, DEFAULT_WAIT_TIMEOUT_MSECS);
+        PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
+        final ScreenRegion imageRegion = webdriverRegion.wait(target, pageOverrides.getTimeout()*1000);
 
         if (imageRegion != null) {
             Rectangle r = imageRegion.getBounds();
-            logger.debug("image is found at " + r.x + "," + r.y + " with dimension " + r.width + "," + r.height);
+            log().debug("image is found at " + r.x + "," + r.y + " with dimension " + r.width + "," + r.height);
         } else {
             throw new RuntimeException("Element not found similar to " + imageUrl);
         }

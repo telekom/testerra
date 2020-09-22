@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 
 /**
- * Allows temporary thread local Page related overrides.
+ * Allows temporary thread local {@link PageObject} related overrides.
  * This interface was originally created to replace the POConfig
  * and may be @deprecated since {@link TestController} for combining them both.
  * @author Mike Reiche

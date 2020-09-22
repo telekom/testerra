@@ -28,7 +28,6 @@ import eu.tsystems.mms.tic.testframework.exceptions.TesterraSystemException;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionHandler;
 import eu.tsystems.mms.tic.testframework.execution.worker.finish.WebDriverSessionsAfterMethodWorker;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
-import eu.tsystems.mms.tic.testframework.pageobjects.POConfig;
 import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
@@ -36,16 +35,15 @@ import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.utils.WebDriverUtils;
 import eu.tsystems.mms.tic.testframework.watchdog.WebDriverWatchDog;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Provides threadsafe WebDriver and Selenium objects. These objects are needed for correct logging and reporting.
@@ -337,17 +335,6 @@ public final class WebDriverManager {
             return false;
         }
         return true;
-    }
-
-
-    /**
-     * Returns the configured element timeout in seconds.
-     *
-     * @return element timeout in seconds.
-     */
-    @Deprecated
-    public static int getElementTimeoutInSeconds() {
-        return POConfig.getUiElementTimeoutInSeconds();
     }
 
     /**

@@ -22,8 +22,8 @@
  package eu.tsystems.mms.tic.testframework.report.model.context;
 
 import com.google.common.eventbus.EventBus;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.ContextUpdateEvent;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
 import eu.tsystems.mms.tic.testframework.report.TestStatusController;
 import eu.tsystems.mms.tic.testframework.report.TesterraListener;
@@ -81,7 +81,7 @@ public class ExecutionContext extends AbstractContext implements SynchronizableC
 
     @Override
     public TestStatusController.Status getStatus() {
-        if (Flags.FAILURE_CORRIDOR_ACTIVE) {
+        if (Testerra.Properties.FAILURE_CORRIDOR_ACTIVE.asBool()) {
             if (FailureCorridor.isCorridorMatched()) {
                 return TestStatusController.Status.PASSED;
             } else {

@@ -57,12 +57,14 @@ public class Testerra {
         PERF_TEST("tt.perf.test", false),
         PERF_GENERATE_STATISTICS("tt.perf.generate.statistics", false),
         REUSE_DATAPROVIDER_DRIVER_BY_THREAD("tt.reuse.dataprovider.driver.by.thread", false),
-
         /**
          * @todo Default should be based on WebDriverMode class
          */
         WEBDRIVER_MODE("tt.webdriver.mode", "local"),
+        FAILURE_CORRIDOR_ACTIVE("tt.failure.corridor.active", false),
+        EXECUTION_OMIT_IN_DEVELOPMENT("tt.execution.omit.indevelopment", false),
         ;
+
         private final String property;
         private Object defaultValue;
 

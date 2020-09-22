@@ -23,8 +23,8 @@ package eu.tsystems.mms.tic.testframework.execution.testng.worker.start;
 
 import com.google.common.eventbus.Subscribe;
 import eu.tsystems.mms.tic.testframework.annotations.InDevelopment;
+import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.events.InterceptMethodsEvent;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionUtils;
 import java.lang.reflect.Method;
@@ -42,7 +42,7 @@ public class OmitInDevelopmentMethodInterceptor implements Loggable, InterceptMe
 
     @Subscribe
     public void onInterceptMethods(InterceptMethodsEvent event) {
-        if (Flags.EXECUTION_OMIT_IN_DEVELOPMENT) {
+        if (Testerra.Properties.EXECUTION_OMIT_IN_DEVELOPMENT.asBool()) {
             event.getMethodInstances().removeIf(methodInstance -> {
                 Method method = methodInstance.getMethod().getConstructorOrMethod().getMethod();
                 if (method.isAnnotationPresent(InDevelopment.class)) {

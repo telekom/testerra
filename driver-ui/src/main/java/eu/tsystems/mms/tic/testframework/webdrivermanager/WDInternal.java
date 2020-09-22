@@ -22,13 +22,12 @@
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.utils.DriverStorage;
 
 public class WDInternal {
 
     private WDInternal() {
-        
+
     }
 
     public static void cleanupExecutingSeleniumHost() {

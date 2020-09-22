@@ -139,7 +139,6 @@ public final class TesterraProperties {
     /*
     failure corridor
      */
-    public static final String FAILURE_CORRIDOR_ACTIVE = "tt.failure.corridor.active";
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS = "tt.failure.corridor.allowed.failed.tests";
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_HIGH = "tt.failure.corridor.allowed.failed.tests.high";
     public static final String FAILURE_CORRIDOR_ALLOWED_FAILED_TESTS_MID = "tt.failure.corridor.allowed.failed.tests.mid";
@@ -148,7 +147,6 @@ public final class TesterraProperties {
     public static final String DISPLAY_RESOLUTION = "tt.display.resolution";
 
     public static final String PAGE_FACTORY_LOOPS = "tt.page.factory.loops";
-    public static final String EXECUTION_OMIT_IN_DEVELOPMENT = "tt.execution.omit.indevelopment";
     public static final String SCREENCASTER_ACTIVE_ON_SUCCESS = "tt.screencaster.active.on.success";
     public static final String SCREENCASTER_ACTIVE_ON_FAILED = "tt.screencaster.active.on.failed";
 }

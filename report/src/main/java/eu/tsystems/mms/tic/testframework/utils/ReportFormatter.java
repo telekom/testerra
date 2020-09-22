@@ -25,7 +25,6 @@ package eu.tsystems.mms.tic.testframework.utils;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.info.ReportInfo;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
-import eu.tsystems.mms.tic.testframework.internal.Flags;
 import eu.tsystems.mms.tic.testframework.internal.TimingInfo;
 import eu.tsystems.mms.tic.testframework.monitor.JVMMonitor;
 import eu.tsystems.mms.tic.testframework.report.FailureCorridor;
@@ -385,7 +384,7 @@ public class ReportFormatter {
         context.put("dateFormatter", new DateTool());
 
         context.put("filter", FilterUtils.getInstance());
-        context.put("fcActive", Flags.FAILURE_CORRIDOR_ACTIVE);
+        context.put("fcActive", Testerra.Properties.FAILURE_CORRIDOR_ACTIVE.asBool());
         context.put("fcMatched", FailureCorridor.isCorridorMatched());
         context.put("fcH", TestStatusController.getTestsFailedHIGH());
         context.put("fcM", TestStatusController.getTestsFailedMID());

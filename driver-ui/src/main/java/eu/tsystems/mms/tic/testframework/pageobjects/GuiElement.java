@@ -73,7 +73,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import org.apache.poi.ss.formula.functions.Na;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -857,11 +856,7 @@ public class GuiElement implements UiElement, Loggable {
         DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
             @Override
             public Boolean getActual() {
-                try {
-                    return frameAwareCore.isDisplayed();
-                } catch (ElementNotFoundException e) {
-                    return false;
-                }
+                return frameAwareCore.isDisplayed();
             }
 
             @Override

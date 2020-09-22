@@ -1,3 +1,24 @@
+/*
+ * Testerra
+ *
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import java.math.BigDecimal;
@@ -5,107 +26,145 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 
 public interface Assertion {
-    /**
-     * More detailed message object that supports lazy message building
-     */
-    class Message {
-        private final Supplier<String> subjectSupplier;
-        private final String prefixMessage;
+    String format(Object actual, Object expected, Object subject);
 
-        public Message(String prefix, Supplier<String> subjectSupplier) {
-            this.prefixMessage = prefix;
-            this.subjectSupplier = subjectSupplier;
-        }
-
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            if (prefixMessage != null) {
-                sb.append(prefixMessage).append(": ");
-            }
-            sb.append(subjectSupplier.get());
-            return sb.toString();
-        }
+    default void fail(String message, Throwable cause) {
+        fail(new AssertionError(message, cause));
     }
-
-    void fail(String message, Throwable realCause);
-    void fail(String message);
+    default void fail(String message) {
+        fail(message, null);
+    }
     void fail(AssertionError error);
-    String format(Object actual, Object expected, Object message);
-    default boolean assertTrue(boolean condition) {
-        return assertTrue(condition, null);
-    }
-    boolean assertTrue(boolean condition, Object message);
-    default boolean assertFalse(boolean condition) {
-        return assertFalse(condition, null);
-    }
-    boolean assertFalse(boolean condition, Object message);
-    boolean assertSame(Object actual, Object expected, Object message);
-    boolean assertNotSame(Object actual, Object expected, Object message);
-    boolean assertNull(Object object, Object message);
-    default boolean assertNull(Object object) {
-        return assertNull(object, null);
-    }
-    default boolean assertNotNull(Object object) {
-        return assertNotNull(object, null);
-    }
-    boolean assertNotNull(Object object, Object message);
-    default boolean assertContains(String actual, String expected) {
-        return assertContains(actual, expected, null);
-    }
-    boolean assertContains(String actual, String expected, Object message);
-    default boolean assertContainsNot(String actual, String expected) {
-        return assertContainsNot(actual, expected, null);
-    }
-    boolean assertContainsNot(String actual, String expected, Object message);
-    default boolean assertGreaterThan(BigDecimal actual, BigDecimal expected) {
-        return assertGreaterThan(actual, expected, null);
-    }
-    boolean assertGreaterThan(BigDecimal actual, BigDecimal expected, Object message);
-    default boolean assertGreaterEqualThan(BigDecimal actual, BigDecimal expected) {
-        return assertGreaterEqualThan(actual, expected, null);
-    }
-    boolean assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, Object message);
-    default boolean assertLowerThan(BigDecimal actual, BigDecimal expected) {
-        return assertLowerThan(actual, expected, null);
-    }
-    boolean assertLowerThan(BigDecimal actual, BigDecimal expected, Object message);
-    default boolean assertLowerEqualThan(BigDecimal actual, BigDecimal expected) {
-        return assertLowerEqualThan(actual, expected, null);
-    }
-    boolean assertLowerEqualThan(BigDecimal actual, BigDecimal expected, Object message);
-    default boolean assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher) {
-        return assertBetween(actual, lower, higher, null);
-    }
-    boolean assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, Object message);
-    default boolean assertEquals(Object actual, Object expected) {
-        return assertEquals(actual, expected, null);
-    }
-    boolean assertEquals(Object actual, Object expected, Object message);
-    boolean assertEquals(Collection<?> actual, Collection<?> expected, Object message);
-    boolean assertEquals(Iterator<?> actual, Iterator<?> expected, Object message);
-    boolean assertEquals(Iterable<?> actual, Iterable<?> expected, Object message);
-    boolean assertEquals(Object[] actual, Object[] expected, Object message);
-    boolean assertEquals(Set<?> actual, Set<?> expected, Object message);
-    boolean assertEquals(Map<?, ?> actual, Map<?, ?> expected, Object message);
-    boolean assertEqualsDeep(Set<?> actual, Set<?> expected, Object message);
-    boolean assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected, Object message);
-    boolean assertEqualsNoOrder(Object[] actual, Object[] expected, Object message);
-    default boolean assertNotEquals(Object actual1, Object actual2) {
-        return assertNotEquals(actual1, actual2, null);
-    }
-    boolean assertNotEquals(Object actual1, Object actual2, Object message);
-    boolean assertNotEquals(Set<?> actual, Set<?> expected, Object message);
-    boolean assertNotEquals(Map<?, ?> actual, Map<?, ?> expected, Object message);
 
-    default boolean assertBeginsWith(Object actual, Object expected) {
-        return assertBeginsWith(actual, expected, null);
+    boolean isTrue(boolean actual);
+    String formatExpectTrue(boolean actual, Object subject);
+    void assertTrue(boolean actual, Object subject);
+    default void assertTrue(boolean actual) {
+        assertTrue(actual, null);
     }
-    boolean assertBeginsWith(Object actual, Object expected, Object message);
-    default boolean assertEndsWith(Object actual, Object expected) {
-        return assertEndsWith(actual, expected, null);
+
+    boolean isFalse(boolean actual);
+    String formatExpectFalse(boolean actual, Object subject);
+    void assertFalse(boolean actual, Object subject);
+    default void assertFalse(boolean actual) {
+        assertFalse(actual, null);
     }
-    boolean assertEndsWith(Object actual, Object expected, Object message);
+
+    boolean isSame(Object actual, Object expected);
+    String formatExpectSame(Object actual, Object expected, Object subject);
+    void assertSame(Object actual, Object expected, Object subject);
+    default void assertSame(Object actual, Object expected) {
+        assertSame(actual, expected, null);
+    }
+
+    boolean isNotSame(Object actual, Object expected);
+    String formatExpectNotSame(Object actual, Object expected, Object subject);
+    void assertNotSame(Object actual, Object expected, Object subject);
+    default void assertNotSame(Object actual, Object expected) {
+        assertNotSame(actual, expected, null);
+    }
+
+    boolean isNull(Object actual);
+    String formatExpectNull(Object actual, Object subject);
+    void assertNull(Object actual, Object subject);
+    default void assertNull(Object actual) {
+        assertNull(actual, null);
+    }
+
+    boolean isNotNull(Object actual);
+    String formatExpectNotNull(Object actual, Object subject);
+    void assertNotNull(Object actual, Object subject);
+    default void assertNotNull(Object actual) {
+        assertNotNull(actual, null);
+    }
+
+    boolean contains(String actual, String expected);
+    String formatExpectContains(String actual, String expected, Object subject);
+    void assertContains(String actual, String expected, Object subject);
+    default void assertContains(String actual, String expected) {
+        assertContains(actual, expected, null);
+    }
+
+    boolean containsNot(String actual, String expected);
+    String formatExpectContainsNot(String actual, String expected, Object subject);
+    void assertContainsNot(String actual, String expected, Object subject);
+    default void assertContainsNot(String actual, String expected) {
+        assertContainsNot(actual, expected, null);
+    }
+
+    boolean isGreaterThan(BigDecimal actual, BigDecimal expected);
+    String formatExpectGreaterThan(BigDecimal actual, BigDecimal expected, Object subject);
+    void assertGreaterThan(BigDecimal actual, BigDecimal expected, Object subject);
+    default void assertGreaterThan(BigDecimal actual, BigDecimal expected) {
+        assertGreaterThan(actual, expected, null);
+    }
+
+    boolean isGreaterEqualThan(BigDecimal actual, BigDecimal expected);
+    String formatExpectGreaterEqualThan(BigDecimal actual, BigDecimal expected, Object subject);
+    void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected, Object subject);
+    default void assertGreaterEqualThan(BigDecimal actual, BigDecimal expected) {
+        assertGreaterEqualThan(actual, expected, null);
+    }
+
+    boolean isLowerThan(BigDecimal actual, BigDecimal expected);
+    String formatExpectLowerThan(BigDecimal actual, BigDecimal expected, Object subject);
+    void assertLowerThan(BigDecimal actual, BigDecimal expected, Object subject);
+    default void assertLowerThan(BigDecimal actual, BigDecimal expected) {
+        assertLowerThan(actual, expected, null);
+    }
+
+    boolean isLowerEqualThan(BigDecimal actual, BigDecimal expected);
+    String formatExpectLowerEqualThan(BigDecimal actual, BigDecimal expected, Object subject);
+    void assertLowerEqualThan(BigDecimal actual, BigDecimal expected, Object subject);
+    default void assertLowerEqualThan(BigDecimal actual, BigDecimal expected) {
+        assertLowerEqualThan(actual, expected, null);
+    }
+
+    boolean isBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher);
+    String formatExpectIsBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, Object subject);
+    void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher, Object subject);
+    default void assertBetween(BigDecimal actual, BigDecimal lower, BigDecimal higher) {
+        assertBetween(actual, lower, higher, null);
+    }
+
+    boolean equals(Object actual, Object expected);
+    String formatExpectEquals(Object actual, Object expected, Object subject);
+    void assertEquals(Object actual, Object expected, Object subject);
+    void assertEquals(Collection<?> actual, Collection<?> expected, Object subject);
+    void assertEquals(Iterator<?> actual, Iterator<?> expected, Object subject);
+    void assertEquals(Iterable<?> actual, Iterable<?> expected, Object subject);
+    void assertEquals(Object[] actual, Object[] expected, Object subject);
+    void assertEquals(Set<?> actual, Set<?> expected, Object subject);
+    void assertEquals(Map<?, ?> actual, Map<?, ?> expected, Object subject);
+    void assertEqualsDeep(Set<?> actual, Set<?> expected, Object subject);
+    void assertEqualsDeep(Map<?, ?> actual, Map<?, ?> expected, Object subject);
+    void assertEqualsNoOrder(Object[] actual, Object[] expected, Object subject);
+    default void assertEquals(Object actual, Object expected) {
+        assertEquals(actual, expected, null);
+    }
+
+    boolean notEquals(Object actual, Object expected);
+    String formatExpectNotEquals(Object actual, Object expected, Object subject);
+    void assertNotEquals(Object actual1, Object actual2, Object subject);
+    void assertNotEquals(Set<?> actual, Set<?> expected, Object subject);
+    void assertNotEquals(Map<?, ?> actual, Map<?, ?> expected, Object subject);
+    default void assertNotEquals(Object actual1, Object actual2) {
+        assertNotEquals(actual1, actual2, null);
+    }
+
+    boolean startsWith(Object actual, Object expected);
+    String formatExpectStartsWith(Object actual, Object expected, Object subject);
+    void assertStartsWith(Object actual, Object expected, Object subject);
+    default void assertStartsWith(Object actual, Object expected) {
+        assertStartsWith(actual, expected, null);
+    }
+
+    boolean endsWith(Object actual, Object expected);
+    String formatExpectEndsWith(Object actual, Object expected, Object subject);
+    void assertEndsWith(Object actual, Object expected, Object subject);
+    default void assertEndsWith(Object actual, Object expected) {
+        assertEndsWith(actual, expected, null);
+    }
 }

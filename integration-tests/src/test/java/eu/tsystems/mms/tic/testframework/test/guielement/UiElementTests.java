@@ -1,21 +1,22 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
+ * Testerra
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *     Peter Lehmann
- *     pele
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
@@ -114,14 +115,14 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         try {
             page.url().endsWith("nonexistingfile.html", "Wrong URL");
         } catch (AssertionError e) {
-            Assert.assertBeginsWith(e.getMessage(), "Wrong URL");
+            Assert.assertContains(e.getMessage(), "Wrong URL");
             Assert.assertEndsWith(e.getMessage(), "ends with [nonexistingfile.html]");
         }
 
         try {
             page.url().length().isGreaterEqualThan(10000, "URL is too short");
         } catch (AssertionError e) {
-            Assert.assertBeginsWith(e.getMessage(), "URL is too short");
+            Assert.assertContains(e.getMessage(), "URL is too short");
             Assert.assertEndsWith(e.getMessage(), "is greater or equal than [10000]");
         }
 
@@ -148,13 +149,13 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         page.notDisplayedElement().displayed().is(true);
     }
 
-    @Test
+    @Test()
     public void test_GuiElement_displayed_false_fails_with_message() {
         WebTestPage page = getPage();
         try {
-            page.notDisplayedElement().displayed().is(true,"Missing visible element here");
+            page.notDisplayedElement().displayed().is(true,"Important element visibility");
         } catch (AssertionError e) {
-            Assert.assertBeginsWith(e.getMessage(), "Missing visible element here");
+            Assert.assertContains(e.getMessage(), "Important element visibility");
             Assert.assertContains(e.getMessage(), page.notDisplayedElement().toString());
         }
     }
@@ -173,12 +174,8 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     public void test_GuiElement_waitFor() {
         WebTestPage page = getPage();
         Control.withTimeout(0, () -> {
-            if (page.notVisibleElement().waitFor().value(Attribute.STYLE).is("humbug")) {
-                Assert.assertFalse(true);
-            }
-            if (page.notVisibleElement().waitFor().value(Attribute.STYLE).contains("hidden")) {
-                Assert.assertTrue(true);
-            }
+            Assert.assertFalse(page.notVisibleElement().waitFor().value(Attribute.STYLE).is("humbug"));
+            Assert.assertTrue(page.notVisibleElement().waitFor().value(Attribute.STYLE).contains("hidden"));
         });
     }
 
@@ -211,16 +208,10 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         Control.withTimeout(0, () -> test_NonExistent_GuiElement_present_fails());
     }
 
-    @Test
+    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = ".*?not found$")
     public void test_NonExistent_GuiElement_displayed_fails() {
         WebTestPage page = getPage();
-        String msg=null;
-        try {
-            page.nonExistentElement().displayed().is(false);
-        } catch (AssertionError e) {
-            msg = e.getMessage();
-        }
-        Assert.assertEndsWith(msg, "not found", AssertionError.class.toString());
+        page.nonExistentElement().displayed().is(false);
     }
 
     @Test

@@ -89,6 +89,7 @@ public class TesterraListener implements
     private static boolean skipAllMethods = false;
 
     private static EventBus eventBus = new EventBus();
+    private static Booter booter;
 
     /**
      * Instance counter for this reporter. *
@@ -119,14 +120,15 @@ public class TesterraListener implements
 
         eventBus.register(new ExecutionEndListener());
 
-        /*
-        Call Booter
-         */
-        Booter.bootOnce();
+        booter = new Booter();
     }
 
     public static EventBus getEventBus() {
         return eventBus;
+    }
+
+    static Booter getBooter() {
+        return booter;
     }
 
     /**

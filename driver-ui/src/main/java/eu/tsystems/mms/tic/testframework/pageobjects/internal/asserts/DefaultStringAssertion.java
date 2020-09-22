@@ -1,7 +1,6 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import java.util.regex.Matcher;
@@ -17,22 +16,34 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
     @Override
     public boolean contains(String expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertContains((String)provider.getActual(), expected), createFailMessageSupplier(failMessage));
+        return testTimer(
+                () -> instantAssertion.contains((String)provider.getActual(), expected),
+                () -> instantAssertion.formatExpectContains((String)provider.getActual(), expected, createFailMessage(failMessage))
+        );
     }
 
     @Override
     public boolean containsNot(String expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertContainsNot((String)provider.getActual(), expected), createFailMessageSupplier(failMessage));
+        return testTimer(
+                () -> instantAssertion.containsNot((String)provider.getActual(), expected),
+                () -> instantAssertion.formatExpectContainsNot((String)provider.getActual(), expected, createFailMessage(failMessage))
+        );
     }
 
     @Override
     public boolean startsWith(String expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertBeginsWith(provider.getActual(), expected), createFailMessageSupplier(failMessage));
+        return testTimer(
+                () -> instantAssertion.startsWith(provider.getActual(), expected),
+                () -> instantAssertion.formatExpectStartsWith(provider.getActual(), expected, createFailMessage(failMessage))
+        );
     }
 
     @Override
     public boolean endsWith(String expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertEndsWith(provider.getActual(), expected), createFailMessageSupplier(failMessage));
+        return testTimer(
+                () -> instantAssertion.endsWith(provider.getActual(), expected),
+                () -> instantAssertion.formatExpectEndsWith(provider.getActual(), expected, createFailMessage(failMessage))
+        );
     }
 
     @Override

@@ -15,7 +15,9 @@ public class DefaultPatternAssertion extends AbstractTestedPropertyAssertion<Mat
 
     @Override
     public boolean is(boolean expected, String failMessage) {
-        this.testTimer(matcher -> instantAssertion.assertEquals(getActual().find(), expected), createFailMessageSupplier(failMessage));
-        return false;
+        return testTimer(
+                () -> instantAssertion.equals(getActual().find(), expected),
+                () -> instantAssertion.formatExpectEquals(getActual().find(), expected, createFailMessage(failMessage))
+        );
     }
 }

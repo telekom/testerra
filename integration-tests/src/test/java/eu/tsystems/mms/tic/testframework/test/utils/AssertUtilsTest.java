@@ -26,6 +26,7 @@ import eu.tsystems.mms.tic.testframework.utils.AssertUtils;
 import java.math.BigDecimal;
 import org.testng.annotations.Test;
 
+@Deprecated
 public class AssertUtilsTest extends AbstractWebDriverTest {
 
     /**

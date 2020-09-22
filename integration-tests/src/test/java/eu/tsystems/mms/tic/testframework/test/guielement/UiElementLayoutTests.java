@@ -1,22 +1,24 @@
 /*
- * (C) Copyright T-Systems Multimedia Solutions GmbH 2018, ..
+ * Testerra
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ *
+ * Deutsche Telekom AG and all other contributors /
+ * copyright owners license this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Contributors:
- *     Peter Lehmann
- *     pele
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
+
 package eu.tsystems.mms.tic.testframework.test.guielement;
 
 import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
@@ -27,13 +29,10 @@ import eu.tsystems.mms.tic.testframework.test.PageFactoryTest;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
-/**
- * Created by pele on 31.08.2015.
- */
 public class UiElementLayoutTests extends AbstractTestSitesTest implements PageFactoryTest {
 
     @Test
-    public void testT01_LeftOf() throws Exception {
+    public void testT01_LeftOf() {
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.find(By.linkText("Open again"));
@@ -41,7 +40,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT02_LeftOfFails() throws Exception {
+    public void testT02_LeftOfFails() {
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right =  page.find(By.linkText("Open again"));
@@ -49,7 +48,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT03_LeftOfFailsSameCoords() throws Exception {
+    public void testT03_LeftOfFailsSameCoords() {
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.findById(5);
@@ -61,7 +60,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
      */
 
     @Test
-    public void testT11_RightOf() throws Exception {
+    public void testT11_RightOf() {
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.find(By.linkText("Open again"));
@@ -69,7 +68,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT12_RightOfFails() throws Exception {
+    public void testT12_RightOfFails() {
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.find(By.linkText("Open again"));
@@ -77,7 +76,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT13_RightOfFailsSameCoords() throws Exception {
+    public void testT13_RightOfFailsSameCoords() {
         WebTestPage page = getPage();
         UiElement left = page.findById(1);
         UiElement right = page.findById(5);
@@ -89,7 +88,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
      */
 
     @Test
-    public void testT21_Above() throws Exception {
+    public void testT21_Above()  {
         WebTestPage page = getPage();
         UiElement oben = page.findById(1);
         UiElement unten = page.findById(5);
@@ -97,7 +96,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT22_AboveFails() throws Exception {
+    public void testT22_AboveFails() {
         WebTestPage page = getPage();
         UiElement oben = page.findById(1);
         UiElement unten = page.findById(5);
@@ -109,7 +108,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
      */
 
     @Test
-    public void testT31_Below() throws Exception {
+    public void testT31_Below() {
         WebTestPage page = getPage();
         UiElement oben = page.findById(1);
         UiElement unten = page.findById(5);
@@ -117,7 +116,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT32_BelowFails() throws Exception {
+    public void testT32_BelowFails() {
         WebTestPage page = getPage();
         UiElement oben = page.findById(1);
         UiElement unten = page.findById(5);
@@ -129,7 +128,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
      */
 
     @Test
-    public void testT41_SameTop() throws Exception {
+    public void testT41_SameTop() {
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1).find(By.xpath("./.."));
         UiElement e2 = page.findById(11).find(By.xpath("./.."));
@@ -137,7 +136,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT42_SameTopFails() throws Exception {
+    public void testT42_SameTopFails() {
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1).find(By.xpath("./.."));
         UiElement e2 = page.findById(11);
@@ -145,7 +144,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test
-    public void testT43_SameTopWithDelta() throws Exception {
+    public void testT43_SameTopWithDelta() {
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1).find(By.xpath("./.."));
         UiElement e2 = page.findById(11);
@@ -157,7 +156,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
      */
 
     @Test
-    public void testT51_SameBottom() throws Exception {
+    public void testT51_SameBottom() {
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1).find(By.xpath("./.."));
         UiElement e2 = page.findById(11).find(By.xpath("./.."));
@@ -165,7 +164,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT52_SameBottomFails() throws Exception {
+    public void testT52_SameBottomFails() {
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1).find(By.xpath("./.."));
         UiElement e2 = page.findById(11);
@@ -173,7 +172,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test
-    public void testT53_SameBottomWithDelta() throws Exception {
+    public void testT53_SameBottomWithDelta() {
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1).find(By.xpath("./.."));
         UiElement e2 = page.findById(11);
@@ -185,7 +184,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
      */
 
     @Test
-    public void testT61_SameLeft() throws Exception {
+    public void testT61_SameLeft() {
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1);
         UiElement e2 = page.findById(5);
@@ -193,7 +192,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT62_SameLeftFails() throws Exception {
+    public void testT62_SameLeftFails() {
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1);
         UiElement e2 = page.findById(3);
@@ -201,7 +200,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test
-    public void testT63_SameLeftWithDelta() throws Exception {
+    public void testT63_SameLeftWithDelta() {
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1);
         UiElement e2 = page.findById(3);
@@ -215,7 +214,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
      */
 
     @Test
-    public void testT71_SameRight() throws Exception {
+    public void testT71_SameRight() {
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1);
         UiElement e2 = page.findById(5);
@@ -223,7 +222,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test(expectedExceptions = AssertionError.class)
-    public void testT72_SameRightFails() throws Exception {
+    public void testT72_SameRightFails() {
         WebTestPage page = getPage();
         UiElement e1 = page.findById(1);
         UiElement e2 = page.findById(3);
@@ -231,7 +230,7 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     }
 
     @Test
-    public void testT73_SameRightWithDelta() throws Exception {
+    public void testT73_SameRightWithDelta() {
         WebTestPage page = getPage();
         UiElement e1 = page.findById(11);
         UiElement e2 = page.findById(12);
@@ -246,14 +245,14 @@ public class UiElementLayoutTests extends AbstractTestSitesTest implements PageF
     /**
      * There is no implementation for inner borders
      */
-    public void testT81_InnerBorders() throws Exception {
+    public void testT81_InnerBorders()  {
     }
 
     @Test(enabled = false)
     /**
      * There is no implementation for inner borders
      */
-    public void testT82_Checkon_Assert() throws Exception {
+    public void testT82_Checkon_Assert() {
 
     }
 

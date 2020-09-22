@@ -8,7 +8,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -29,7 +28,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
         return provider.getActual();
     }
 
-    protected boolean testTimer(Function<T, Boolean> testFunction, Supplier<String> failMessageSupplier) {
+    protected boolean testTimer(Supplier<Boolean> testFunction, Supplier<String> failMessageSupplier) {
         int useTimeoutSeconds = timeout;
         if (pageOverrides.hasTimeout()) useTimeoutSeconds = pageOverrides.getTimeout();
         if (useTimeoutSeconds < 0) useTimeoutSeconds = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
@@ -44,7 +43,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
                 // Prevent TimeoutException on any other exception
                 setSkipThrowingException(true);
                 try {
-                    setPassState(testFunction.apply(null));
+                    setPassState(testFunction.get());
                 } catch (Throwable throwable) {
                     setReturningObject(throwable);
                     failedRecursive();
@@ -57,11 +56,13 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
             // Dont handle exceptions when it should only wait
             if (!shouldWait) {
                 Assertion finalAssertion = assertionFactory.create();
-                finalAssertion.fail(failMessageSupplier.get(), packedResponse.getThrowable());
+                try {
+                    finalAssertion.fail(failMessageSupplier.get(), packedResponse.getThrowable());
+                } catch (Throwable throwable) {
+                    finalAssertion.fail(new AssertionError(throwable));
+                }
             }
-            return false;
-        } else {
-            return true;
         }
+        return packedResponse.isSuccessful();
     }
 }

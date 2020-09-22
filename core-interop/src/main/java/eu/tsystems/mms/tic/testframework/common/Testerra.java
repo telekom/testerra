@@ -5,14 +5,13 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
-import org.reflections.Reflections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
+import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Testerra {
 
@@ -109,8 +108,7 @@ public class Testerra {
                 }
                 return Guice.createInjector(prevModule);
             } catch (Exception e) {
-                e.printStackTrace();
-                //LOGGER.error("Unable to initialize IoC modules", e);
+                LOGGER.error(e.getMessage());
             }
         }
         return null;

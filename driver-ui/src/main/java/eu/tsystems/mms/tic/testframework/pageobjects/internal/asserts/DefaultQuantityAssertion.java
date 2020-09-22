@@ -1,6 +1,5 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import java.math.BigDecimal;
 import java.util.function.Function;
 
@@ -12,37 +11,58 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
 
     @Override
     public boolean is(Object expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertEquals(provider.getActual(), expected), createFailMessageSupplier(failMessage));
+        return testTimer(
+                () -> instantAssertion.equals(provider.getActual(), expected),
+                () -> instantAssertion.formatExpectEquals(provider.getActual(), expected ,createFailMessage(failMessage))
+        );
     }
 
     @Override
     public boolean isNot(Object expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertNotEquals(provider.getActual(), expected), createFailMessageSupplier(failMessage));
+        return testTimer(
+                () -> instantAssertion.notEquals(provider.getActual(), expected),
+                () -> instantAssertion.formatExpectNotEquals(provider.getActual(), expected, createFailMessage(failMessage))
+        );
     }
 
     @Override
     public boolean isGreaterThan(BigDecimal expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertGreaterThan(new BigDecimal(provider.getActual().toString()), expected), createFailMessageSupplier(failMessage));
+        return testTimer(
+                () -> instantAssertion.isGreaterThan(new BigDecimal(provider.getActual().toString()), expected),
+                () -> instantAssertion.formatExpectGreaterThan(new BigDecimal(provider.getActual().toString()), expected, createFailMessage(failMessage))
+        );
     }
 
     @Override
     public boolean isLowerThan(BigDecimal expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertLowerThan(new BigDecimal(provider.getActual().toString()), expected), createFailMessageSupplier(failMessage));
+        return testTimer(
+                () -> instantAssertion.isLowerThan(new BigDecimal(provider.getActual().toString()), expected),
+                () -> instantAssertion.formatExpectLowerThan(new BigDecimal(provider.getActual().toString()), expected, createFailMessage(failMessage))
+        );
     }
 
     @Override
     public boolean isGreaterEqualThan(BigDecimal expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertGreaterEqualThan(new BigDecimal(provider.getActual().toString()), expected), createFailMessageSupplier(failMessage));
+        return testTimer(
+                () -> instantAssertion.isGreaterEqualThan(new BigDecimal(provider.getActual().toString()), expected),
+                () -> instantAssertion.formatExpectGreaterEqualThan(new BigDecimal(provider.getActual().toString()), expected, createFailMessage(failMessage))
+        );
     }
 
     @Override
     public boolean isLowerEqualThan(BigDecimal expected, String failMessage) {
-        return testTimer(t -> instantAssertion.assertLowerEqualThan(new BigDecimal(provider.getActual().toString()), expected), createFailMessageSupplier(failMessage));
+        return testTimer(
+                () -> instantAssertion.isLowerEqualThan(new BigDecimal(provider.getActual().toString()), expected),
+                () -> instantAssertion.formatExpectLowerEqualThan(new BigDecimal(provider.getActual().toString()), expected, createFailMessage(failMessage))
+        );
     }
 
     @Override
     public boolean isBetween(BigDecimal lower, BigDecimal higher, String failMessage) {
-        return testTimer(t -> instantAssertion.assertBetween(new BigDecimal(provider.getActual().toString()), lower, higher), createFailMessageSupplier(failMessage));
+        return testTimer(
+                () -> instantAssertion.isBetween(new BigDecimal(provider.getActual().toString()), lower, higher),
+                () -> instantAssertion.formatExpectIsBetween(new BigDecimal(provider.getActual().toString()), lower, higher, createFailMessage(failMessage))
+        );
     }
 
     @Override

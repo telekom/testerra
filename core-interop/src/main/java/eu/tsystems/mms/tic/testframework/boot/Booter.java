@@ -19,7 +19,7 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.boot;
+package eu.tsystems.mms.tic.testframework.boot;
 
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
@@ -27,6 +27,7 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.common.TesterraCommons;
 import eu.tsystems.mms.tic.testframework.hooks.ModuleHook;
 import eu.tsystems.mms.tic.testframework.internal.BuildInformation;
+import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -35,28 +36,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public final class Booter {
+public final class Booter implements Loggable {
 
-    private static final Logger LOGGER;
-    private static Set<ModuleHook> MODULE_HOOKS;
+    private Set<ModuleHook> MODULE_HOOKS;
 
-    static {
+    public Booter() {
         TesterraCommons.init();
-        LOGGER = LoggerFactory.getLogger(Booter.class);
         // when logger is configured:
         printTesterraBanner();
         initHooks();
     }
 
-    public static void bootOnce() {}
-
     /**
      * Prints testerra build information.
      */
-    private static void printTesterraBanner() {
+    private void printTesterraBanner() {
         List<String> frameworkBanner = new LinkedList<>();
         String buildVersion = "";
         List<String> bannerVersions = new LinkedList<>();
@@ -69,7 +64,7 @@ public final class Booter {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             br.lines().forEach(frameworkBanner::add);
         } else {
-            LOGGER.debug("Could not read banner");
+            log().debug("Could not read banner");
         }
 
         /*
@@ -100,25 +95,25 @@ public final class Booter {
         print banner
          */
         String ruler = StringUtils.repeat(wall, width / wall.length() + 2);
-        LOGGER.info(ruler);
-        frameworkBanner.forEach(LOGGER::info);
-        LOGGER.info(buildVersion);
-        LOGGER.info(ruler);
-        bannerVersions.forEach(LOGGER::info);
-        LOGGER.info(ruler);
+        log().info(ruler);
+        frameworkBanner.forEach(log()::info);
+        log().info(buildVersion);
+        log().info(ruler);
+        bannerVersions.forEach(log()::info);
+        log().info(ruler);
     }
 
-    private static void initHooks() {
+    private void initHooks() {
         MODULE_HOOKS = Testerra.injector.getInstance(Key.get(new TypeLiteral<Set<ModuleHook>>(){}));
         MODULE_HOOKS.forEach(moduleHook -> {
-            LOGGER.debug("Calling Init Hook " + moduleHook.getClass().getSimpleName() + "...");
+            log().debug("Calling Init Hook " + moduleHook.getClass().getSimpleName() + "...");
             moduleHook.init();
         });
     }
 
-    public static void shutdown() {
+    public void shutdown() {
         MODULE_HOOKS.forEach(moduleHook -> {
-            LOGGER.debug("Shutting down " + moduleHook.getClass().getSimpleName());
+            log().debug("Shutting down " + moduleHook.getClass().getSimpleName());
             moduleHook.terminate();
         });
     }

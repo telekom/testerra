@@ -224,9 +224,6 @@ public class GuiElement implements UiElement, Loggable {
             frameAwareCore = rawCore;
         }
 
-        GuiElementWaitFactory waitFactory = Testerra.injector.getInstance(GuiElementWaitFactory.class);
-        decoratedWait = waitFactory.create(frameAwareCore, guiElementData);
-
         // Wrap the core with sequence decorator, such that its methods are executed with sequence
         GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(frameAwareCore, guiElementData);
         decoratedFacade = new DefaultGuiElementFacade(sequenceCore);
@@ -661,7 +658,7 @@ public class GuiElement implements UiElement, Loggable {
         if (nonFunctionalAssert==null) {
             GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             NonFunctionalAssertion assertion = Testerra.injector.getInstance(NonFunctionalAssertion.class);
-            nonFunctionalAssert = assertFactory.create(frameAwareCore, guiElementData, assertion, decoratedWait);
+            nonFunctionalAssert = assertFactory.create(frameAwareCore, guiElementData, assertion, waits());
         }
         return nonFunctionalAssert;
     }
@@ -686,7 +683,7 @@ public class GuiElement implements UiElement, Loggable {
         if (instantAssert == null) {
             GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             InstantAssertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
-            instantAssert = assertFactory.create(frameAwareCore, guiElementData, assertion, decoratedWait);
+            instantAssert = assertFactory.create(frameAwareCore, guiElementData, assertion, waits());
         }
         return instantAssert;
     }
@@ -702,7 +699,7 @@ public class GuiElement implements UiElement, Loggable {
         if (collectableAssert==null) {
             GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             CollectedAssertion assertion = Testerra.injector.getInstance(CollectedAssertion.class);
-            collectableAssert = assertFactory.create(frameAwareCore, guiElementData, assertion, decoratedWait);
+            collectableAssert = assertFactory.create(frameAwareCore, guiElementData, assertion, waits());
         }
         return collectableAssert;
     }
@@ -740,6 +737,10 @@ public class GuiElement implements UiElement, Loggable {
      */
     @Deprecated
     public GuiElementWait waits() {
+        if (decoratedWait == null) {
+            GuiElementWaitFactory waitFactory = Testerra.injector.getInstance(GuiElementWaitFactory.class);
+            decoratedWait = waitFactory.create(frameAwareCore, guiElementData);
+        }
         return decoratedWait;
     }
 

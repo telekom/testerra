@@ -271,29 +271,26 @@ public class DesktopGuiElementCore implements GuiElementCore, Loggable {
             LOGGER.warn("Text to type is empty!");
         }
 
-        boolean skipValueCheck = false;
-        if (text.contains("\n")) {
-            skipValueCheck = true;
-            LOGGER.warn("The text to type contains a linebreak, which will result in an enter after the type." +
-                    " Since this will probably invalidate this GuiElement (" + toString() + "), the result of the " +
-                    "type won't be checked.");
-        }
-
         find();
 
         WebElement webElement = guiElementData.webElement;
         webElement.clear();
         webElement.sendKeys(text);
 
-        if (!skipValueCheck && !webElement.getAttribute("value").equals(text)) {
-            LOGGER.warn("Writing text to input field didn't work. Trying again.");
+        String valueProperty = webElement.getAttribute("value");
+        if (valueProperty != null) {
+            if (!valueProperty.equals(text)) {
+                LOGGER.warn("Writing text to input field didn't work. Trying again.");
 
-            webElement.clear();
-            webElement.sendKeys(text);
+                webElement.clear();
+                webElement.sendKeys(text);
 
-            if (!webElement.getAttribute("value").equals(text)) {
-                LOGGER.error("Writing text to input field didn't work on second try!");
+                if (!webElement.getAttribute("value").equals(text)) {
+                    LOGGER.error("Writing text to input field didn't work on second try!");
+                }
             }
+        } else {
+            LOGGER.warn("Cannot perform value check after type() because " + this.toString() + " doesn't have a value property. Consider using sendKeys() instead.");
         }
     }
 

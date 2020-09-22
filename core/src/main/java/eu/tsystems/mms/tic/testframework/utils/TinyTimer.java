@@ -53,10 +53,10 @@ public class TinyTimer implements Loggable {
     /**
      * Runs the supplier in a timer loop and when it returns true, the timer stops
      */
-    public void run(Supplier<Boolean> runnable) {
+    public TinyTimer run(Supplier<Boolean> runnable) {
         try {
-            long startTimeMs = System.currentTimeMillis();
 
+            long startTimeMs = System.currentTimeMillis();
             do {
                 if (runnable.get()) {
                     break;
@@ -67,5 +67,6 @@ public class TinyTimer implements Loggable {
         } catch (InterruptedException e) {
             log().error(e.getMessage(), e);
         }
+        return this;
     }
 }

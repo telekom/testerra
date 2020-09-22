@@ -28,6 +28,14 @@ import java.util.Map;
 import java.util.Set;
 
 public interface SimpleAssertion {
+    default void fail(String message, Throwable cause) {
+        fail(new AssertionError(message, cause));
+    }
+    default void fail(String message) {
+        fail(message, null);
+    }
+    void fail(AssertionError error);
+
     void assertTrue(boolean actual, Object subject);
     default void assertTrue(boolean actual) {
         assertTrue(actual, null);

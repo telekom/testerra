@@ -26,14 +26,6 @@ import java.math.BigDecimal;
 public interface Assertion extends SimpleAssertion {
     String format(Object actual, Object expected, Object subject);
 
-    default void fail(String message, Throwable cause) {
-        fail(new AssertionError(message, cause));
-    }
-    default void fail(String message) {
-        fail(message, null);
-    }
-    void fail(AssertionError error);
-
     boolean isTrue(boolean actual);
     String formatExpectTrue(boolean actual, Object subject);
 

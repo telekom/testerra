@@ -263,7 +263,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
                 }
             }
         } else {
-            LOGGER.warn("Cannot perform value check after type() because " + this.toString() + " doesn't have a value property. Consider using sendKeys() instead.");
+            log().warn("Cannot perform value check after type() because " + this.toString() + " doesn't have a value property. Consider using sendKeys() instead.");
         }
     }
 

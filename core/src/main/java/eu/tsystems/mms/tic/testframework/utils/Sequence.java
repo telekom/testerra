@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  */
 public class Sequence implements Loggable {
     private long pauseMs = 0;
-    private long periodMs = 0;
+    private long timeoutMs = 0;
     private long startTime;
     private long endTime;
 
@@ -51,12 +51,12 @@ public class Sequence implements Loggable {
         return this;
     }
 
-    public long getPeriodMs() {
-        return periodMs;
+    public long getTimeoutMs() {
+        return timeoutMs;
     }
 
-    public Sequence setPeriodMs(long periodMs) {
-        this.periodMs = periodMs;
+    public Sequence setTimeoutMs(long timeoutMs) {
+        this.timeoutMs = timeoutMs;
         return this;
     }
 
@@ -77,7 +77,7 @@ public class Sequence implements Loggable {
                 }
                 Thread.sleep(pauseMs);
                 endTime = System.currentTimeMillis();
-            } while (getDurationMs() < periodMs);
+            } while (getDurationMs() < timeoutMs);
 
         } catch (InterruptedException e) {
             log().error(e.getMessage(), e);

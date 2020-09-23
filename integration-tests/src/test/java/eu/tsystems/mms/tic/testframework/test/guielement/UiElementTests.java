@@ -179,6 +179,30 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         });
     }
 
+    @Test
+    public void test_UiElement_waitFor_text() {
+        WebTestPage page = getPage();
+        Assert.assertTrue(page.getOpenAgainLink().waitFor().text("Open again"));
+    }
+
+    @Test
+    public void test_UiElement_waitFor_text_fails() {
+        WebTestPage page = getPage();
+        Assert.assertFalse(page.getOpenAgainLink().waitFor().text("Close again"));
+    }
+
+    @Test
+    public void test_UiElement_waitFor_text_mapped() {
+        WebTestPage page = getPage();
+        Assert.assertTrue(page.getOpenAgainLink().waitFor().text().map(String::toLowerCase).is("open again"));
+    }
+
+    @Test
+    public void test_UiElement_waitFor_text_mapped_fails() {
+        WebTestPage page = getPage();
+        Assert.assertFalse(page.getOpenAgainLink().waitFor().text().map(String::toLowerCase).is("close again"));
+    }
+
     @Test(expectedExceptions = AssertionError.class)
     public void test_GuiElement_visible_false_fails() {
         WebTestPage page = getPage();

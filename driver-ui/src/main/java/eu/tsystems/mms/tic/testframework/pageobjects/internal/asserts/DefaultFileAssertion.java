@@ -1,14 +1,13 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-import org.apache.commons.io.FilenameUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import org.apache.commons.io.FilenameUtils;
 
 public class DefaultFileAssertion extends AbstractPropertyAssertion<File> implements FileAssertion {
 
-    public DefaultFileAssertion(PropertyAssertion parentAssertion, AssertionProvider<File> provider) {
+    public DefaultFileAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<File> provider) {
         super(parentAssertion, provider);
     }
 

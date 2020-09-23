@@ -3,7 +3,6 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.report.Report;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
-
 import java.io.File;
 
 public class DefaultScreenshotAssertion extends DefaultImageAssertion implements ScreenshotAssertion {
@@ -12,7 +11,7 @@ public class DefaultScreenshotAssertion extends DefaultImageAssertion implements
 
     private final AssertionProvider<Screenshot> providerOverride;
 
-    public DefaultScreenshotAssertion(PropertyAssertion parentAssertion, AssertionProvider<Screenshot> provider) {
+    public DefaultScreenshotAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<Screenshot> provider) {
         super(parentAssertion, new AssertionProvider<File>() {
             @Override
             public File getActual() {

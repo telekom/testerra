@@ -5,7 +5,7 @@ import org.openqa.selenium.Rectangle;
 
 public class DefaultVerticalDistanceAssertion extends AbstractPropertyAssertion<Integer> implements VerticalDistanceAssertion {
 
-    public DefaultVerticalDistanceAssertion(PropertyAssertion<Integer> parentAssertion, AssertionProvider<Integer> provider) {
+    public DefaultVerticalDistanceAssertion(AbstractPropertyAssertion<Integer> parentAssertion, AssertionProvider<Integer> provider) {
         super(parentAssertion, provider);
     }
 

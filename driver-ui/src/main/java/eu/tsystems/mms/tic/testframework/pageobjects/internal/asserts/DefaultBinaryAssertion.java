@@ -2,7 +2,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T> implements BinaryAssertion<T> {
 
-    public DefaultBinaryAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+    public DefaultBinaryAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
     }
 
@@ -19,7 +19,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                                         || actualString.equalsIgnoreCase("yes")
                         );
                     },
-                    () -> instantAssertion.format(getActual().toString(), "is one of [true, 'on', '1', 'yes']", createFailMessage(failMessage))
+                    () -> assertion.format(getActual().toString(), "is one of [true, 'on', '1', 'yes']", createFailMessage(failMessage))
             );
         } else {
             return testTimer(
@@ -32,7 +32,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                                 || actualString.equalsIgnoreCase("no")
                         );
                     },
-                    () -> instantAssertion.format(getActual().toString(), "is one of [false, 'off', '0', 'no']", createFailMessage(failMessage)));
+                    () -> assertion.format(getActual().toString(), "is one of [false, 'off', '0', 'no']", createFailMessage(failMessage)));
         }
     }
 }

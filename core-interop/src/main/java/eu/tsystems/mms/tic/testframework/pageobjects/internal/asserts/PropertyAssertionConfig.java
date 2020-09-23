@@ -1,7 +1,7 @@
 /*
  * Testerra
  *
- * (C) 2020, Peter Lehmann, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
+ * (C) 2020, Mike Reiche, T-Systems Multimedia Solutions GmbH, Deutsche Telekom AG
  *
  * Deutsche Telekom AG and all other contributors /
  * copyright owners license this file to you under the Apache
@@ -17,18 +17,15 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
-package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
-@Deprecated
-public class DefaultGuiElementWaitFactory implements GuiElementWaitFactory {
-
-    @Override
-    public GuiElementWait create(GuiElementCore core, GuiElementData data) {
-        return new DefaultGuiElementWait(core, data);
-    }
+/**
+ * Configuration for implementations of {@link AbstractPropertyAssertion}
+ */
+public class PropertyAssertionConfig {
+    public boolean shouldWait = false;
+    public int timeoutInSeconds = -1;
+    public long pauseIntervalMs = 0;
 }

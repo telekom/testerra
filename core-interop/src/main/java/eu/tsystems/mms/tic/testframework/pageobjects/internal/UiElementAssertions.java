@@ -9,6 +9,9 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAsse
  * @author Mike Reiche
  */
 public interface UiElementAssertions extends BasicUiElement {
+    default boolean text(String text) {
+        return text().is(text);
+    }
     StringAssertion<String> text();
     default StringAssertion<String> value() {
         return value(Attribute.VALUE);

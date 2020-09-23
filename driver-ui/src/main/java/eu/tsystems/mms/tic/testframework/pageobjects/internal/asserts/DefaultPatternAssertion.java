@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 
 public class DefaultPatternAssertion extends AbstractTestedPropertyAssertion<Matcher> implements PatternAssertion {
 
-    public DefaultPatternAssertion(PropertyAssertion parentAssertion, AssertionProvider<Matcher> provider) {
+    public DefaultPatternAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<Matcher> provider) {
         super(parentAssertion, provider);
     }
 
@@ -16,8 +16,8 @@ public class DefaultPatternAssertion extends AbstractTestedPropertyAssertion<Mat
     @Override
     public boolean is(boolean expected, String failMessage) {
         return testTimer(
-                () -> instantAssertion.equals(getActual().find(), expected),
-                () -> instantAssertion.formatExpectEquals(getActual().find(), expected, createFailMessage(failMessage))
+                () -> assertion.equals(getActual().find(), expected),
+                () -> assertion.formatExpectEquals(getActual().find(), expected, createFailMessage(failMessage))
         );
     }
 }

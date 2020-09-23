@@ -10,39 +10,39 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
     private final static Formatter formatter = Testerra.injector.getInstance(Formatter.class);
 
-    public DefaultStringAssertion(PropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+    public DefaultStringAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
         super(parentAssertion, provider);
     }
 
     @Override
     public boolean contains(String expected, String failMessage) {
         return testTimer(
-                () -> instantAssertion.contains((String)provider.getActual(), expected),
-                () -> instantAssertion.formatExpectContains((String)provider.getActual(), expected, createFailMessage(failMessage))
+                () -> assertion.contains((String)provider.getActual(), expected),
+                () -> assertion.formatExpectContains((String)provider.getActual(), expected, createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean containsNot(String expected, String failMessage) {
         return testTimer(
-                () -> instantAssertion.containsNot((String)provider.getActual(), expected),
-                () -> instantAssertion.formatExpectContainsNot((String)provider.getActual(), expected, createFailMessage(failMessage))
+                () -> assertion.containsNot((String)provider.getActual(), expected),
+                () -> assertion.formatExpectContainsNot((String)provider.getActual(), expected, createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean startsWith(String expected, String failMessage) {
         return testTimer(
-                () -> instantAssertion.startsWith(provider.getActual(), expected),
-                () -> instantAssertion.formatExpectStartsWith(provider.getActual(), expected, createFailMessage(failMessage))
+                () -> assertion.startsWith(provider.getActual(), expected),
+                () -> assertion.formatExpectStartsWith(provider.getActual(), expected, createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean endsWith(String expected, String failMessage) {
         return testTimer(
-                () -> instantAssertion.endsWith(provider.getActual(), expected),
-                () -> instantAssertion.formatExpectEndsWith(provider.getActual(), expected, createFailMessage(failMessage))
+                () -> assertion.endsWith(provider.getActual(), expected),
+                () -> assertion.formatExpectEndsWith(provider.getActual(), expected, createFailMessage(failMessage))
         );
     }
 

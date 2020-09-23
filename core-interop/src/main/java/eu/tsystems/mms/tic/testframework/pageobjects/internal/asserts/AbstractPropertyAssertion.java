@@ -31,29 +31,25 @@ import java.util.List;
  * Extend this class if you don't need to perform assertions, but compose others.
  * @author Mike Reiche
  */
-public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<T> {
+public abstract class AbstractPropertyAssertion<T> implements ActualProperty<T> {
 
-    protected final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
+    protected final static PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
     protected final AssertionProvider<T> provider;
     protected final AbstractPropertyAssertion<T> parent;
-    protected boolean shouldWait;
-    protected int timeout = -1;
+    protected PropertyAssertionConfig config;
 
-    public AbstractPropertyAssertion(PropertyAssertion<T> parentAssertion, AssertionProvider<T> provider) {
-        this.parent = (AbstractPropertyAssertion<T>)parentAssertion;
+    public AbstractPropertyAssertion(AbstractPropertyAssertion parentAssertion, AssertionProvider<T> provider) {
+        this.parent = parentAssertion;
         this.provider = provider;
     }
 
-    @Override
-    public AbstractPropertyAssertion<T> shouldWait(boolean wait) {
-        shouldWait = wait;
+    public AbstractPropertyAssertion setConfig(PropertyAssertionConfig config) {
+        this.config = config;
         return this;
     }
 
-    @Override
-    public AbstractPropertyAssertion<T> setTimeout(int seconds) {
-        this.timeout = seconds;
-        return this;
+    public PropertyAssertionConfig getConfig() {
+        return this.config;
     }
 
     public T getActual() {
@@ -84,7 +80,7 @@ public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<
         return String.join(".", subjects);
     }
 
-    public void failedRecursive() {
+    protected void failedRecursive() {
         provider.failed(this);
         AbstractPropertyAssertion parentAssertion = parent;
         while (parentAssertion != null) {
@@ -93,7 +89,7 @@ public abstract class AbstractPropertyAssertion<T> implements PropertyAssertion<
         }
     }
 
-    public void failedFinallyRecursive() {
+    protected void failedFinallyRecursive() {
         provider.failedFinally(this);
         AbstractPropertyAssertion parentAssertion = parent;
         while (parentAssertion != null) {

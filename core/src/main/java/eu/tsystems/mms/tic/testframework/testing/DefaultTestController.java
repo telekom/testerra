@@ -152,7 +152,7 @@ public class DefaultTestController implements TestController {
             Runnable setup(Runnable runnable) {
                 return () -> {
                     Sequence sequence = new Sequence()
-                            .setPeriodMs(seconds * 1000);
+                            .setTimeoutMs(seconds * 1000);
 
                     sequence.run(() -> {
                         try {

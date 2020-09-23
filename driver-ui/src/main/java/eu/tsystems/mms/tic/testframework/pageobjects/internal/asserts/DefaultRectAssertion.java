@@ -9,7 +9,7 @@ public class DefaultRectAssertion extends AbstractPropertyAssertion<Rectangle> i
 
     private static final Formatter formatter = Testerra.injector.getInstance(Formatter.class);
 
-    public DefaultRectAssertion(PropertyAssertion<Rectangle> parentAssertion, AssertionProvider<Rectangle> provider) {
+    public DefaultRectAssertion(AbstractPropertyAssertion<Rectangle> parentAssertion, AssertionProvider<Rectangle> provider) {
         super(parentAssertion, provider);
     }
 

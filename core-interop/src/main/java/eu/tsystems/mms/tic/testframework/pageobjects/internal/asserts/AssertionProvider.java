@@ -15,7 +15,7 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
      * if one of the assertions failed.
      * @param assertion The failed assertion
      */
-    public void failed(PropertyAssertion assertion) {
+    public void failed(AbstractPropertyAssertion<T> assertion) {
     }
 
     /**
@@ -23,6 +23,6 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
      * if one of the assertions finally failed.
      * @param assertion The failed assertion
      */
-    public void failedFinally(PropertyAssertion assertion) {
+    public void failedFinally(AbstractPropertyAssertion<T> assertion) {
     }
 }

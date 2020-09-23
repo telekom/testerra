@@ -5,12 +5,12 @@ package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
  * @author Mike Reiche
  */
 public interface PropertyAssertionFactory {
-    <ASSERTION extends PropertyAssertion, TYPE> ASSERTION create(
+    <ASSERTION extends AbstractPropertyAssertion, TYPE> ASSERTION create(
         Class<ASSERTION> assertionClass,
-        PropertyAssertion parentAssertion,
+        AbstractPropertyAssertion parentAssertion,
         AssertionProvider<TYPE> provider
     );
-    default <ASSERTION extends PropertyAssertion, TYPE> ASSERTION create(
+    default <ASSERTION extends AbstractPropertyAssertion, TYPE> ASSERTION create(
         Class<ASSERTION> assertionClass,
         AssertionProvider<TYPE> provider
     ) {

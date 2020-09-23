@@ -28,10 +28,10 @@ import eu.tsystems.mms.tic.testframework.constants.Browsers;
 import eu.tsystems.mms.tic.testframework.constants.TesterraProperties;
 import eu.tsystems.mms.tic.testframework.internal.StopWatch;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AbstractPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultScreenshotAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultStringAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ScreenshotAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
@@ -395,7 +395,7 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
             }
 
             @Override
-            public void failed(PropertyAssertion assertion) {
+            public void failed(AbstractPropertyAssertion assertion) {
                 // Take new screenshot only if failed
                 UITestUtils.takeScreenshot(driver, atomicScreenshot.get());
             }

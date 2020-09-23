@@ -25,6 +25,7 @@ import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.MyVariables;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.components.InputForm;
 import org.openqa.selenium.By;
@@ -67,6 +68,9 @@ public class WebTestPage extends BasePage {
         super(driver);
     }
 
+    public UiElement getOpenAgainLink() {
+        return openAgainLink;
+    }
     /**
      * Test if button works as aspected.
      */

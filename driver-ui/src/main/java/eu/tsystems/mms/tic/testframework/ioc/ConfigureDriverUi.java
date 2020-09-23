@@ -14,8 +14,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGui
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultPropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWaitFactory;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWaitFactory;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.DefaultWebDriverManager;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
@@ -23,7 +21,6 @@ import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 public class ConfigureDriverUi extends AbstractModule {
     protected void configure() {
         bind(GuiElementAssertFactory.class).to(DefaultGuiElementAssertFactory.class).in(Scopes.SINGLETON);
-        bind(GuiElementWaitFactory.class).to(DefaultGuiElementWaitFactory.class).in(Scopes.SINGLETON);
         bind(UiElementFactory.class).to(DefaultUiElementFactory.class).in(Scopes.SINGLETON);
         bind(PageObjectFactory.class).to(DefaultPageFactory.class).in(Scopes.SINGLETON);
         bind(TestController.Overrides.class).to(DefaultTestControllerOverrides.class).in(Scopes.SINGLETON);

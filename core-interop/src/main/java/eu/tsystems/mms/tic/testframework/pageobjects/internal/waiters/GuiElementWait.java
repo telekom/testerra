@@ -87,14 +87,18 @@ public interface GuiElementWait {
      *
      * @return true is displayed, false if not. No Exception is thrown.
      */
-    boolean waitForIsDisplayedFromWebElement();
+    default boolean waitForIsDisplayedFromWebElement() {
+        return waitForIsDisplayed();
+    }
 
     /**
      * Wait till this element disappears.
      *
      * @return this.
      */
-    boolean waitForIsNotDisplayedFromWebElement();
+    default boolean waitForIsNotDisplayedFromWebElement() {
+        return waitForIsNotDisplayed();
+    }
 
     /**
      * Wait till the element is selected.

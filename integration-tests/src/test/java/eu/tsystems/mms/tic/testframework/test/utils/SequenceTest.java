@@ -31,7 +31,7 @@ public class SequenceTest extends TesterraTest {
     @Test
     public void testSequenceDuration() {
         Sequence sequence = new Sequence()
-                .setPeriodMs(1000)
+                .setTimeoutMs(1000)
                 .run(() -> {
                     try {
                         Thread.sleep(100);

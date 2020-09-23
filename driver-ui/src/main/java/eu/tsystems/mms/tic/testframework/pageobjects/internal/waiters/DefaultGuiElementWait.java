@@ -19,32 +19,18 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters;
 
-import com.google.inject.Inject;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.testing.TestController;
-import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
-import eu.tsystems.mms.tic.testframework.utils.Timer;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 
 @Deprecated
 public class DefaultGuiElementWait implements GuiElementWait, Loggable {
 
-    private final GuiElementCore core;
-    private final GuiElementData guiElementData;
+    private final GuiElement uiElement;
 
-    @Inject
-    public DefaultGuiElementWait(GuiElementCore core, GuiElementData data) {
-        this.guiElementData = data;
-        this.core = core;
-    }
-
-    private Timer getTimer() {
-        TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
-        return new Timer(200, overrides.getTimeoutInSeconds());
+    public DefaultGuiElementWait(GuiElement uiElement) {
+        this.uiElement = uiElement;
     }
 
     @Override
@@ -58,20 +44,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
     }
 
     private boolean waitForPresentStatus(final boolean checkForPresent) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(!checkForPresent); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                boolean present = core.isPresent();
-                final boolean sequenceStatus = present == checkForPresent;
-                setReturningObject(sequenceStatus);
-                setPassState(sequenceStatus);
-            }
-        };
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        return uiElement.waitFor().present(checkForPresent);
     }
 
     @Override
@@ -85,37 +58,12 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
     }
 
     private boolean pWaitForEnableDisableStatus(final boolean checkForEnabled) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(!checkForEnabled); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                boolean isEnabled = core.isEnabled();
-                boolean sequenceStatus = isEnabled == checkForEnabled;
-                setPassState(sequenceStatus);
-                setReturningObject(sequenceStatus);
-            }
-        };
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        return uiElement.waitFor().enabled(checkForEnabled);
     }
 
     @Override
     public boolean waitForAnyFollowingTextNodeContains(final String contains) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                boolean anyFollowingTextNodeContains = guiElementData.getGuiElement().anyFollowingTextNodeContains(contains);
-                setPassState(anyFollowingTextNodeContains);
-                setReturningObject(anyFollowingTextNodeContains);
-            }
-        };
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        return uiElement.anyElementContainsText(contains).waitFor().present(true);
     }
 
     @Override
@@ -129,21 +77,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
     }
 
     private boolean pWaitForDisplayedStatus(final boolean checkForDisplayed) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(!checkForDisplayed); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                boolean displayed = core.isDisplayed();
-                boolean sequenceStatus = displayed == checkForDisplayed;
-                setPassState(sequenceStatus);
-                setReturningObject(sequenceStatus);
-            }
-        };
-        log().debug("Executing pWaitForDisplayedStatus=" + checkForDisplayed + " with Sequence.");
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        return this.uiElement.waitFor().displayed(checkForDisplayed);
     }
 
     @Override
@@ -157,48 +91,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
     }
 
     private boolean pWaitForVisibleStatus(final boolean visible, final boolean complete) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(!visible); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                boolean displayed = core.isVisible(complete);
-                boolean sequenceStatus = displayed == visible;
-                setPassState(sequenceStatus);
-                setReturningObject(sequenceStatus);
-            }
-        };
-        log().debug("Executing pWaitForVisibleStatus=" + visible + " with Sequence.");
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
-    }
-
-    @Override
-    public boolean waitForIsDisplayedFromWebElement() {
-        return pWaitForDisplayedFromWebelementStatus(true);
-    }
-
-    @Override
-    public boolean waitForIsNotDisplayedFromWebElement() {
-        return pWaitForDisplayedFromWebelementStatus(false);
-    }
-
-    private boolean pWaitForDisplayedFromWebelementStatus(final boolean checkForDisplayed) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(!checkForDisplayed); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                boolean displayed = core.isDisplayed();
-                boolean sequenceStatus = displayed == checkForDisplayed;
-                setPassState(sequenceStatus);
-                setReturningObject(sequenceStatus);
-            }
-        };
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        return uiElement.waitFor().visible(complete).is(visible);
     }
 
     @Override
@@ -212,20 +105,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
     }
 
     private boolean waitForSelectionStatus(final boolean checkForSelected) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(!checkForSelected); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                boolean selected = core.isSelected();
-                boolean sequenceStatus = selected == checkForSelected;
-                setPassState(sequenceStatus);
-                setReturningObject(sequenceStatus);
-            }
-        };
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        return this.uiElement.waitFor().selected(checkForSelected);
     }
 
     @Override
@@ -234,21 +114,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
     }
 
     private boolean pWaitForText(String text) {
-        final String trimmedExpectedText = text.trim();
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                String trimmedActualText = core.getText().trim();
-                boolean equals = trimmedActualText.equals(trimmedExpectedText);
-                setPassState(equals);
-                setReturningObject(equals);
-            }
-        };
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        return this.uiElement.waitFor().text().map(String::trim).is(text);
     }
 
     @Override
@@ -257,122 +123,32 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
     }
 
     private boolean pWaitForTextContains(final String... texts) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                String currentText = core.getText();
-                boolean contains = true;
-                for (String text : texts) {
-                    if (!currentText.contains(text)) {
-                        contains = false;
-                        break;
-                    }
-                }
-                setPassState(contains);
-                setReturningObject(contains);
-            }
-        };
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        return this.uiElement.waitFor().text().containsWords(texts).is(true);
     }
 
     @Override
     public boolean waitForTextContainsNot(String... texts) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                String currentText = core.getText();
-                boolean gone = true;
-                for (String text : texts) {
-                    if (currentText.contains(text)) {
-                        gone = false;
-                        break;
-                    }
-                }
-                setPassState(gone);
-                setReturningObject(gone);
-            }
-        };
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        return this.uiElement.waitFor().text().containsWords(texts).is(false);
     }
 
     @Override
     public boolean waitForAttribute(final String attributeName) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                boolean hasAttribute = core.getAttribute(attributeName) != null;
-                setPassState(hasAttribute);
-                setReturningObject(hasAttribute);
-            }
-        };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.logThrowableAndReturnResponse();
+        return this.uiElement.waitFor().value(attributeName).is(true);
     }
 
     @Override
     public boolean waitForAttribute(final String attributeName, final String value) {
-        final String trimmedExpectedAttributeValue = value.trim();
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                String attributeValue = core.getAttribute(attributeName);
-                boolean hasAttribute = attributeValue != null && trimmedExpectedAttributeValue.equals(attributeValue.trim());
-                setPassState(hasAttribute);
-                setReturningObject(hasAttribute);
-            }
-        };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.logThrowableAndReturnResponse();
+        return this.uiElement.waitFor().value(attributeName).map(String::trim).is(value);
     }
 
     @Override
     public boolean waitForAttributeContains(final String attributeName, final String value) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                String attribute = core.getAttribute(attributeName);
-                boolean hasAttribute = attribute != null && attribute.contains(value);
-                setPassState(hasAttribute);
-                setReturningObject(hasAttribute);
-            }
-        };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.logThrowableAndReturnResponse();
+        return this.uiElement.waitFor().value(attributeName).contains(value);
     }
 
     @Override
     public boolean waitForAttributeContainsNot(final String attributeName, final String value) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                String attribute = core.getAttribute(attributeName);
-                boolean hasNotAttribute = attribute == null || attribute.contains(value) == false;
-                setPassState(hasNotAttribute);
-                setReturningObject(hasNotAttribute);
-            }
-        };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.logThrowableAndReturnResponse();
+        return this.uiElement.waitFor().value(attributeName).containsNot(value);
     }
 
     @Override
@@ -387,35 +163,11 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
 
     @Override
     public boolean waitForIsSelectable() {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                boolean selectable = core.isSelectable();
-                setPassState(selectable);
-                setReturningObject(selectable);
-            }
-        };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.logThrowableAndReturnResponse();
+        return this.uiElement.waitFor().selected(true);
     }
 
     @Override
     public boolean waitForIsNotSelectable() {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false); // in case of an error while executing webelement method -> no exception has to be thrown
-                setSkipThrowingException(true);
-
-                boolean notSelectable = !core.isSelectable();
-                setPassState(notSelectable);
-                setReturningObject(notSelectable);
-            }
-        };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.logThrowableAndReturnResponse();
+        return this.uiElement.waitFor().selected(false);
     }
 }

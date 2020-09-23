@@ -47,7 +47,7 @@ Because you may use different grids for mobile and desktop automation, you have 
 
 #Set your mobile cloud configuration
 {mobile_server_url}=https://mobiledevicecloud.example.com/wd/hub
-{mobile_access_key}=https://mobiledevicecloud.example.com/wd/hub
+{mobile_access_key}=YOUR ACCESS KEY
 
 #set your device filter - will filter for android devices only
 {mobile_device_query_ios}=@os='ios' and @category='PHONE'
@@ -102,7 +102,7 @@ The default values will provide you a device with given operating system and of 
 |===
 | Property | default | Description
 | {mobile_server_url} | NONE | Grid URL of Appium / Selenium Grid ending on "wd/hub"
-| {mobile_access_key} | NONE | Access key of your user  and project
+| {mobile_access_key} | NONE | Access key of your user and project
 | {mobile_device_query_ios} | "@os='ios' and @category='PHONE'" | Access key of your user  and project
 | {mobile_device_query_android} | "@os='android' and @category='PHONE'" | Access key of your user  and project
 |===

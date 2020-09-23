@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @todo This is not {@link Throwable}, so rename it
  */
+@Deprecated
 public class ThrowablePackedResponse<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThrowablePackedResponse.class);

@@ -28,6 +28,10 @@ import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 
+/**
+ * @deprecated Use {@link eu.tsystems.mms.tic.testframework.utils.Sequence} instead
+ */
+@Deprecated
 public class Timer implements Loggable {
 
     private static final long SLEEP_TIME_IN_MS_MININMAL = 0;

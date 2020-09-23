@@ -44,11 +44,10 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementDat
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextUtils;
 import eu.tsystems.mms.tic.testframework.sikuli.TesterraWebDriver;
-import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.useragents.UserAgentConfig;
 import eu.tsystems.mms.tic.testframework.utils.FileUtils;
+import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
-import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.desktop.WebDriverMode;
 import java.io.File;
@@ -292,26 +291,19 @@ public class DesktopWebDriverFactory extends WebDriverFactory<DesktopWebDriverRe
             if (Browsers.edge.equals(browser)) {
                 log().debug("Edge Browser was requested, trying a second workaround");
 
-                Timer timer = new Timer(500, 5000);
-                ThrowablePackedResponse<Object> response = timer.executeSequence(new Timer.Sequence<Object>() {
-                    @Override
-                    public void run() throws Throwable {
-                        setSkipThrowingException(true);
-                        log().debug("Trying setPosition() and setSize()");
-                        try {
-                            window.setPosition(new Point(0, 0));
-                            window.setSize(new Dimension(width, height));
-                            log().debug("Yup, success!");
-                        } catch (Exception e) {
-                            log().warn("Nope. Got error: " + e.getMessage());
-                            throw e;
-                        }
+                Sequence sequence = new Sequence()
+                        .setPauseMs(500)
+                        .setTimeoutMs(5000);
+                sequence.run(() -> {
+                    try {
+                        window.setPosition(new Point(0, 0));
+                        window.setSize(new Dimension(width, height));
+                        return true;
+                    } catch (Throwable throwable) {
+                        log().warn("Got error: " + throwable.getMessage());
+                        return false;
                     }
                 });
-
-                if (!response.isSuccessful()) {
-                    log().error("Finally, could not set Edge Window size", response.getThrowable());
-                }
             }
         }
     }

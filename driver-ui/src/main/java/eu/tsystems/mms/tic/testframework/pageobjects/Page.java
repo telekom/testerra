@@ -218,7 +218,7 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
     }
 
     @Override
-    protected UiElement find(eu.tsystems.mms.tic.testframework.pageobjects.Locate locate) {
+    protected UiElement find(Locate locate) {
         return uiElementFactory.createFromPage(this, locate);
     }
 

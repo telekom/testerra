@@ -30,6 +30,7 @@ import eu.tsystems.mms.tic.testframework.testing.TestController;
  * and may be @deprecated since {@link TestController} for combining them both.
  * @author Mike Reiche
  */
+@Deprecated
 public interface PageOverrides {
     boolean hasTimeout();
     /**

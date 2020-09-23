@@ -23,7 +23,8 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
 import com.google.inject.Inject;
 
 /**
- * Passes assertions to the current implementation.
+ * This wrapper is the default implementation of {@link Assertion}
+ * It always creates a new assertion from the {@link AssertionFactory}
  * @author Mike Reiche
  */
 public class DefaultAssertionWrapper extends AbstractAssertion implements Assertion {

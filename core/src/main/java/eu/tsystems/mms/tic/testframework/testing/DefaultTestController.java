@@ -23,10 +23,8 @@ package eu.tsystems.mms.tic.testframework.testing;
 
 import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.util.HashSet;
 
@@ -36,8 +34,7 @@ import java.util.HashSet;
  */
 public class DefaultTestController implements TestController {
 
-    private final AssertionFactory assertionFactory;
-    private final PageOverrides pageOverrides;
+    private final TestController.Overrides overrides;
     private final ThreadLocal<HashSet<RunnableConfiguration>> threadLocalConfigurations = new ThreadLocal<>();
 
     private abstract class RunnableConfiguration {
@@ -50,9 +47,8 @@ public class DefaultTestController implements TestController {
     }
 
     @Inject
-    protected DefaultTestController(AssertionFactory assertionFactory, PageOverrides pageOverrides) {
-        this.assertionFactory = assertionFactory;
-        this.pageOverrides = pageOverrides;
+    protected DefaultTestController(TestController.Overrides overrides) {
+        this.overrides = overrides;
     }
 
 
@@ -86,13 +82,13 @@ public class DefaultTestController implements TestController {
             Class<? extends Assertion> prevClass;
             @Override
             Runnable setup(Runnable runnable) {
-                prevClass = assertionFactory.setDefault(CollectedAssertion.class);
+                prevClass = overrides.setAssertionClass(CollectedAssertion.class);
                 return runnable;
             }
 
             @Override
             void teardown() {
-                assertionFactory.setDefault(prevClass);
+                overrides.setAssertionClass(prevClass);
             }
         });
         return this;
@@ -109,13 +105,13 @@ public class DefaultTestController implements TestController {
             Class<? extends Assertion> prevClass;
             @Override
             Runnable setup(Runnable runnable) {
-                prevClass = assertionFactory.setDefault(NonFunctionalAssertion.class);
+                prevClass = overrides.setAssertionClass(NonFunctionalAssertion.class);
                 return runnable;
             }
 
             @Override
             void teardown() {
-                assertionFactory.setDefault(prevClass);
+                overrides.setAssertionClass(prevClass);
             }
         });
         return this;
@@ -132,13 +128,13 @@ public class DefaultTestController implements TestController {
             int prevTimeout;
             @Override
             Runnable setup(Runnable runnable) {
-                prevTimeout = pageOverrides.setTimeout(seconds);
+                prevTimeout = overrides.setElementTimeout(seconds);
                 return runnable;
             }
 
             @Override
             void teardown() {
-                pageOverrides.setTimeout(prevTimeout);
+                overrides.setElementTimeout(prevTimeout);
             }
         });
         return this;

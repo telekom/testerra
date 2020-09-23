@@ -24,20 +24,17 @@
 import com.google.inject.Inject;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.TimerWrapper;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.Timer;
-import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverManager;
 
+@Deprecated
 public class DefaultGuiElementWait implements GuiElementWait, Loggable {
 
     private final GuiElementCore core;
     private final GuiElementData guiElementData;
-
-    private static PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
 
     @Inject
     public DefaultGuiElementWait(GuiElementCore core, GuiElementData data) {
@@ -45,8 +42,9 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
         this.core = core;
     }
 
-    private TimerWrapper getTimerWrapper() {
-        return Testerra.injector.getInstance(IWebDriverManager.class).getTimerWrapper(guiElementData.getWebDriver());
+    private Timer getTimer() {
+        TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
+        return new Timer(200, overrides.getElementTimeoutInSeconds());
     }
 
     @Override
@@ -72,7 +70,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setPassState(sequenceStatus);
             }
         };
-        ThrowablePackedResponse<Boolean> response = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -99,7 +97,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(sequenceStatus);
             }
         };
-        ThrowablePackedResponse<Boolean> response = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -116,7 +114,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(anyFollowingTextNodeContains);
             }
         };
-        ThrowablePackedResponse<Boolean> response = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -144,7 +142,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
             }
         };
         log().debug("Executing pWaitForDisplayedStatus=" + checkForDisplayed + " with Sequence.");
-        ThrowablePackedResponse<Boolean> response = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -172,7 +170,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
             }
         };
         log().debug("Executing pWaitForVisibleStatus=" + visible + " with Sequence.");
-        ThrowablePackedResponse<Boolean> response = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -199,7 +197,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(sequenceStatus);
             }
         };
-        ThrowablePackedResponse<Boolean> response = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -226,7 +224,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(sequenceStatus);
             }
         };
-        ThrowablePackedResponse<Boolean> response = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -249,7 +247,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(equals);
             }
         };
-        ThrowablePackedResponse<Boolean> response = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -277,7 +275,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(contains);
             }
         };
-        ThrowablePackedResponse<Boolean> response = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -301,7 +299,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(gone);
             }
         };
-        ThrowablePackedResponse<Boolean> response = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
         return response.logThrowableAndReturnResponse();
     }
 
@@ -318,7 +316,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(hasAttribute);
             }
         };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimer().executeSequence(sequence);
         return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 
@@ -337,7 +335,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(hasAttribute);
             }
         };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimer().executeSequence(sequence);
         return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 
@@ -355,7 +353,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(hasAttribute);
             }
         };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimer().executeSequence(sequence);
         return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 
@@ -373,7 +371,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(hasNotAttribute);
             }
         };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimer().executeSequence(sequence);
         return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 
@@ -400,7 +398,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(selectable);
             }
         };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimer().executeSequence(sequence);
         return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 
@@ -417,7 +415,7 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
                 setReturningObject(notSelectable);
             }
         };
-        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimerWrapper().executeSequence(sequence, pageOverrides.getTimeout());
+        ThrowablePackedResponse<Boolean> throwablePackedResponse = getTimer().executeSequence(sequence);
         return throwablePackedResponse.logThrowableAndReturnResponse();
     }
 }

@@ -32,6 +32,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFiel
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.testing.TestFeatures;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public abstract class AbstractPage implements
     /**
      * Element timeout in seconds (int).
      */
-    protected int elementTimeoutInSeconds = Testerra.injector.getInstance(PageOverrides.class).getTimeout();
+    private int elementTimeoutInSeconds;
 
     /**
      * @deprecated Should not be public or hidden by an interface.
@@ -267,6 +268,9 @@ public abstract class AbstractPage implements
     }
 
     public int getElementTimeoutInSeconds() {
+        if (elementTimeoutInSeconds < 1) {
+            elementTimeoutInSeconds = Testerra.injector.getInstance(TestController.Overrides.class).getElementTimeoutInSeconds();
+        }
         return elementTimeoutInSeconds;
     }
 

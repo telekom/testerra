@@ -23,7 +23,7 @@
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
 import java.awt.Rectangle;
 import java.net.URL;
@@ -114,8 +114,8 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver, 
      */
     public ImageElement findImageElement(URL imageUrl) {
         ImageTarget target = new ImageTarget(imageUrl);
-        PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
-        final ScreenRegion imageRegion = webdriverRegion.wait(target, pageOverrides.getTimeout()*1000);
+        TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
+        final ScreenRegion imageRegion = webdriverRegion.wait(target, overrides.getElementTimeoutInSeconds()*1000);
 
         if (imageRegion != null) {
             Rectangle r = imageRegion.getBounds();

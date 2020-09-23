@@ -26,12 +26,13 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.CheckFieldAction;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.StringUtils;
 import java.lang.reflect.Field;
 
 public class GuiElementCheckFieldAction extends CheckFieldAction {
 
-    private final static PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
+    private final static TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
 
     public GuiElementCheckFieldAction(Field field, AbstractPage declaringPage) {
         super(field, declaringPage);
@@ -43,10 +44,10 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
     ) {
         CheckRule checkRule = check.checkRule();
         if (checkRule == CheckRule.DEFAULT) {
-            checkRule = pageOverrides.getCheckRule();
+            checkRule = CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString());
         }
 
-        int prevTimeout = pageOverrides.setTimeout(check.timeout());
+        int prevTimeout = overrides.setElementTimeout(check.timeout());
 
         switch (checkRule) {
             case IS_PRESENT:
@@ -66,7 +67,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             }
         }
         if (prevTimeout >= 0) {
-            pageOverrides.setTimeout(prevTimeout);
+            overrides.setElementTimeout(prevTimeout);
         }
     }
 

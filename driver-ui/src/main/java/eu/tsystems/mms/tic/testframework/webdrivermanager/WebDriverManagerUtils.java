@@ -22,10 +22,7 @@
  package eu.tsystems.mms.tic.testframework.webdrivermanager;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import eu.tsystems.mms.tic.testframework.model.HostInfo;
 import eu.tsystems.mms.tic.testframework.report.model.BrowserInformation;
-import eu.tsystems.mms.tic.testframework.report.model.context.SessionContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -49,10 +46,6 @@ public final class WebDriverManagerUtils {
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverManagerUtils.class);
-
-    // url pattern for node proxy requests
-    private static final String urlPattern = "http://<ip>:<port>/grid/api/<request>";
-
     /**
      * Hide constructor.
      */
@@ -80,27 +73,6 @@ public final class WebDriverManagerUtils {
             baseUrl = Testerra.Properties.BASEURL.asString();
         }
         return baseUrl;
-    }
-
-    /**
-     * Set Browser type + version in TestRunConfiguration and log infos.
-     *
-     * @param driver WebDriver or Selenium to get info from.
-     */
-    protected static void logNewUserAgent(
-        final String sessionKey,
-        final WebDriver driver,
-        final HostInfo hostInfo
-    ) {
-        BrowserInformation browserInformation = getBrowserInformation(driver);
-        LOGGER.info(String.format("New user agent: %s %s", browserInformation.getBrowserName(), browserInformation.getBrowserVersion()));
-
-        SessionContext sessionContext = ExecutionContextController.getCurrentSessionContext();
-        if (sessionContext != null) {
-            sessionContext.metaData.put("browserInfo", getBrowserInformation(driver));
-        } else {
-            LOGGER.error("Expected a current active session");
-        }
     }
 
     private static final Map<WebDriver, BrowserInformation> CACHED_BROWSER_INFOS = new ConcurrentHashMap<>();

@@ -247,7 +247,7 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
      */
     @Deprecated
     public boolean waitForIsNotTextPresent(final String text) {
-        Timer timer = new Timer(1000, elementTimeoutInSeconds * 1000);
+        Timer timer = new Timer(1000, getElementTimeoutInSeconds() * 1000);
         final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -271,7 +271,7 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
      */
     @Deprecated
     public boolean waitForIsNotTextDisplayed(final String text) {
-        Timer timer = new Timer(1000, elementTimeoutInSeconds * 1000);
+        Timer timer = new Timer(1000, getElementTimeoutInSeconds() * 1000);
         final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -290,7 +290,7 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
 
     @Deprecated
     public boolean waitForIsTextPresent(final String text) {
-        Timer timer = new Timer(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), elementTimeoutInSeconds * 1000);
+        Timer timer = new Timer(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), getElementTimeoutInSeconds() * 1000);
         ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {
@@ -304,7 +304,7 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
 
     @Deprecated
     public boolean waitForIsTextDisplayed(final String text) {
-        Timer timer = new Timer(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), elementTimeoutInSeconds * 1000);
+        Timer timer = new Timer(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), getElementTimeoutInSeconds() * 1000);
         ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
             @Override
             public void run() {

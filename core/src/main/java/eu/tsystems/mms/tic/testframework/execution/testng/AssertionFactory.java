@@ -21,15 +21,12 @@
 
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
+import eu.tsystems.mms.tic.testframework.testing.TestController;
+
 /**
- * Creates configured assertions
+ * Creates configured assertions based on {@link TestController.Overrides#getAssertionClass()}
  * @author Mike Reiche
  */
 public interface AssertionFactory {
-    /**
-     * Sets a new default assertion class
-     * @return Returns the previously configured assertion class
-     */
-    Class<? extends Assertion> setDefault(Class<? extends Assertion> newClass);
     Assertion create();
 }

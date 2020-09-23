@@ -4,8 +4,8 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
-import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -17,7 +17,7 @@ import java.util.function.Supplier;
  * @author Mike Reiche
  */
 public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropertyAssertion<T> {
-    private static final PageOverrides pageOverrides = Testerra.injector.getInstance(PageOverrides.class);
+    private static final TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
     private static final AssertionFactory assertionFactory = Testerra.injector.getInstance(AssertionFactory.class);
     protected final Assertion instantAssertion = Testerra.injector.getInstance(InstantAssertion.class);
 
@@ -31,7 +31,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
 
     protected boolean testTimer(Supplier<Boolean> testFunction, Supplier<String> failMessageSupplier) {
         long useTimeout = timeout;
-        if (pageOverrides.hasTimeout()) useTimeout = pageOverrides.getTimeout();
+        if (overrides.hasElementTimeout()) useTimeout = overrides.getElementTimeoutInSeconds();
         if (useTimeout < 0) useTimeout = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong();
 
         Sequence sequence = new Sequence()

@@ -23,35 +23,24 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 
 public class DefaultAssertionFactory implements AssertionFactory {
-    private ThreadLocal<Class<? extends Assertion>> threadLocalAssertionClass = new ThreadLocal<>();
 
     private final Injector injector;
+    private final TestController.Overrides overrides;
 
     @Inject
-    DefaultAssertionFactory(Injector injector) {
+    DefaultAssertionFactory(
+            Injector injector,
+            TestController.Overrides overrides
+    ) {
         this.injector = injector;
-    }
-
-    @Override
-    public Class<? extends Assertion> setDefault(Class<? extends Assertion> newClass) {
-        Class<? extends Assertion> prevClass = threadLocalAssertionClass.get();
-        threadLocalAssertionClass.set(newClass);
-        return prevClass;
+        this.overrides = overrides;
     }
 
     @Override
     public Assertion create() {
-        Class<? extends Assertion> assertionClass = threadLocalAssertionClass.get();
-        if (assertionClass==null) {
-            if (UiElement.Properties.DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
-                setDefault(CollectedAssertion.class);
-            } else {
-                setDefault(InstantAssertion.class);
-            }
-        }
-        return injector.getInstance(threadLocalAssertionClass.get());
+        return injector.getInstance(overrides.getAssertionClass());
     }
 }

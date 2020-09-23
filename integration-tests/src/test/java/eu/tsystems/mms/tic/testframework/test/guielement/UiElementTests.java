@@ -198,6 +198,24 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     }
 
     @Test
+    public void test_UiElement_attribute_present() {
+        WebTestPage page = getPage();
+        page.getRadioBtn().value("disabled").isNot(null);
+    }
+
+    @Test
+    public void test_UiElement_null_attribute() {
+        WebTestPage page = getPage();
+        page.getRadioBtn().value("not-existent-attribute").is(null);
+    }
+
+    @Test
+    public void test_UiElement_null_attribute_mapped() {
+        WebTestPage page = getPage();
+        page.getRadioBtn().value("not-existent-attribute").map(String::trim).is(null);
+    }
+
+    @Test
     public void test_UiElement_waitFor_text_mapped_fails() {
         WebTestPage page = getPage();
         Assert.assertFalse(page.getOpenAgainLink().waitFor().text().map(String::toLowerCase).is("close again"));

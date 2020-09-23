@@ -55,6 +55,12 @@ public class WebTestPage extends BasePage {
     @Check
     private final GuiElement textOutputField = new GuiElement(this.getWebDriver(), By.id("99"));
 
+    public UiElement getRadioBtn() {
+        return radioBtn;
+    }
+
+    private final UiElement radioBtn = findById(7);
+
     /**
      * Default Page constructor.
      */

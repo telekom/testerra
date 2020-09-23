@@ -63,10 +63,10 @@ public interface Nameable<SELF> {
      * Traces the parents beginning by root and passes them to the consumer
      * @param consumer
      */
-    default void traceParent(Consumer<Nameable> consumer) {
+    default void traceAncestors(Consumer<Nameable> consumer) {
         Nameable parent = getParent();
         if (parent!=null) {
-            parent.traceParent(consumer);
+            parent.traceAncestors(consumer);
             consumer.accept(parent);
         }
     }

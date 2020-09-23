@@ -586,7 +586,7 @@ public class GuiElement implements UiElement, Loggable {
     @Override
     public String toString(boolean detailed) {
         StringBuilder sb = new StringBuilder();
-        this.traceParent(parent -> sb.append(parent.getName(detailed)).append(" -> "));
+        this.traceAncestors(parent -> sb.append(parent.getName(detailed)).append(" -> "));
         sb.append(getName(detailed));
         return sb.toString();
     }

@@ -22,9 +22,7 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * An abstract property assertion without any test implementations.
@@ -43,41 +41,34 @@ public abstract class AbstractPropertyAssertion<T> implements ActualProperty<T> 
         this.provider = provider;
     }
 
-    public AbstractPropertyAssertion setConfig(PropertyAssertionConfig config) {
-        this.config = config;
-        return this;
-    }
-
-    public PropertyAssertionConfig getConfig() {
-        return this.config;
-    }
-
     public T getActual() {
         return provider.getActual();
     }
 
     protected String createFailMessage(String prefixMessage) {
         StringBuilder sb = new StringBuilder();
+
         if (prefixMessage != null) {
             sb.append(prefixMessage).append(": ");
         }
-        sb.append(traceSubjectString());
+
+        traceAncestors(propertyAssertion -> {
+            String subject = propertyAssertion.provider.getSubject();
+            if (subject != null) sb.append(subject).append(".");
+        });
+
+        String subject = this.provider.getSubject();
+        if (subject != null) sb.append(subject);
+
         return sb.toString();
     }
 
-    private String traceSubjectString() {
-        final List<String> subjects = new ArrayList<>();
-        String subject = provider.getSubject();
-        if (subject!=null) subjects.add(subject);
-
-        AbstractPropertyAssertion assertion = parent;
-        while (assertion != null) {
-            subject = assertion.provider.getSubject();
-            if (subject!=null) subjects.add(subject);
-            assertion = assertion.parent;
+    private void traceAncestors(Consumer<AbstractPropertyAssertion> consumer) {
+        AbstractPropertyAssertion parent = this.parent;
+        if (parent != null) {
+            parent.traceAncestors(consumer);
+            consumer.accept(parent);
         }
-        Collections.reverse(subjects);
-        return String.join(".", subjects);
     }
 
     protected void failedRecursive() {

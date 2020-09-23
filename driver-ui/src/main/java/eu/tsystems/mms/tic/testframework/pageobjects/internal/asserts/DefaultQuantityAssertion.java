@@ -70,7 +70,12 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
         return propertyAssertionFactory.create(DefaultStringAssertion.class, this, new AssertionProvider<MAPPED_TYPE>() {
             @Override
             public MAPPED_TYPE getActual() {
-                return mapFunction.apply(provider.getActual());
+                TYPE actual = provider.getActual();
+                if (actual == null) {
+                    return null;
+                } else {
+                    return mapFunction.apply(provider.getActual());
+                }
             }
 
             @Override

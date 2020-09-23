@@ -339,7 +339,8 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
 
     @Override
     public boolean isDisplayed() {
-        return findWebElement().isDisplayed();
+        if (guiElementData.shadowRoot) return false;
+        else return findWebElement().isDisplayed();
     }
 
     @Override

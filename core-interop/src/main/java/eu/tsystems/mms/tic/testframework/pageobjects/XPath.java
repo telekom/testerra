@@ -31,9 +31,10 @@ public class XPath {
     private final String selector;
     private final ArrayList<String> attributes = new ArrayList<>();
     private final ArrayList<XPath> contains = new ArrayList<>();
-    private XPath sub;
+    private XPath subSelect;
     private final int pos;
-    protected XPath root;
+    private XPath parentSelect;
+    private XPath root;
 
     protected XPath(String selector, int position) {
         this.selector = selector;
@@ -45,14 +46,19 @@ public class XPath {
         pos = 0;
     }
     public static XPath from(String selector) {
-        XPath xPath = new XPath(translateSubSelection(selector));
-        xPath.root = xPath;
-        return xPath;
+        XPath from = new XPath(translateSubSelection(selector));
+        prepareFromSelect(from);
+        return from;
     }
     public static XPath from(String selector, int position) {
-        XPath xPath = new XPath(translateSubSelection(selector), position);
-        xPath.root = xPath;
-        return xPath;
+        XPath from = new XPath(translateSubSelection(selector), position);
+        prepareFromSelect(from);
+        return from;
+    }
+
+    private static void prepareFromSelect(XPath from) {
+        from.root = from;
+        from.parentSelect = from;
     }
 
     public class Function {
@@ -168,28 +174,38 @@ public class XPath {
     }
 
     public XPath contains(String selector, int position) {
-        XPath element = new XPath(translateInnerSelection(selector), position);
-        element.root = root;
-        contains.add(element);
-        return element;
+        XPath contains = new XPath(translateInnerSelection(selector), position);
+        prepareContainsSelect(contains);
+        return contains;
     }
 
     public XPath contains(String selector) {
-        XPath element = new XPath(translateInnerSelection(selector));
-        element.root = root;
-        contains.add(element);
-        return element;
+        XPath contains = new XPath(translateInnerSelection(selector));
+        prepareContainsSelect(contains);
+        return contains;
+    }
+
+    private void prepareContainsSelect(XPath contains) {
+        contains.root = this.root;
+        contains.parentSelect = this.parentSelect;
+        this.contains.add(contains);
     }
 
     public XPath select(String selector) {
-        sub = new XPath(translateSubSelection(selector));
-        sub.root = root;
+        XPath sub = new XPath(translateSubSelection(selector));
+        prepareSubSelect(sub);
         return sub;
     }
     public XPath select(String selector, int position) {
-        sub = new XPath(translateSubSelection(selector), position);
-        sub.root = root;
+        XPath sub = new XPath(translateSubSelection(selector), position);
+        prepareSubSelect(sub);
         return sub;
+    }
+
+    private void prepareSubSelect(XPath sub) {
+        sub.root = this.root;
+        this.parentSelect.subSelect = sub;
+        sub.parentSelect = sub;
     }
 
     protected String build() {
@@ -205,8 +221,8 @@ public class XPath {
         } else if (pos != 0) {
             xPath.append(String.format("[%d]", pos));
         }
-        if (sub != null) {
-            xPath.append(sub.build());
+        if (subSelect != null) {
+            xPath.append(subSelect.build());
         }
         return xPath.toString();
     }

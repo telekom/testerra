@@ -27,5 +27,6 @@ public class XPathTest extends TesterraTest  {
         Assert.assertEquals(XPath.from("button").attribute("data-qa").present().contains("span").text().is("Klick mich").toString(), "//button[@data-qa and descendant::span[.//text()='Klick mich']]");
         Assert.assertEquals(XPath.from("h2").attribute(Attribute.TITLE).is("Head").select("div").toString(), "//h2[@title='Head']//div");
         Assert.assertEquals(XPath.from("h2").attribute(Attribute.TITLE).is("Head").select("/span").toString(), "//h2[@title='Head']/span");
+        Assert.assertEquals(XPath.from("table").contains("th").text("Quote ID").select("tbody").toString(), "//table[descendant::th[.//text()='Quote ID']]//tbody");
     }
 }

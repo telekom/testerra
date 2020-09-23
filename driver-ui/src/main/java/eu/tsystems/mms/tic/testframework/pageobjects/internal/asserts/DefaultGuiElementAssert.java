@@ -28,13 +28,10 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElement
 import eu.tsystems.mms.tic.testframework.pageobjects.layout.ILayout;
 import java.util.Arrays;
 
+@Deprecated
 public class DefaultGuiElementAssert implements GuiElementAssert {
 
     private final GuiElementWait guiElementWait;
-    /**
-     * @deprecated Use {@link #guiElementData} instead
-     */
-    @Deprecated
     private final GuiElementCore guiElementCore;
     private final Assertion configuredAssert;
     private final GuiElementData guiElementData;

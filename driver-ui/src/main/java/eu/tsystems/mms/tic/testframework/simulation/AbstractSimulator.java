@@ -51,6 +51,11 @@ public class AbstractSimulator implements UiElementActions {
     }
 
     @Override
+    public BinaryAssertion<Boolean> selectable() {
+        return uiElement.selectable();
+    }
+
+    @Override
     public BinaryAssertion<Boolean> present() {
         return uiElement.present();
     }

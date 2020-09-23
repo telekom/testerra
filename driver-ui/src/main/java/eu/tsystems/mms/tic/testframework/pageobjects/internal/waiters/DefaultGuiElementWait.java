@@ -123,17 +123,27 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
     }
 
     private boolean pWaitForTextContains(final String... texts) {
-        return this.uiElement.waitFor().text().containsWords(texts).is(true);
+        boolean finalContains = false;
+        for (String text : texts) {
+            finalContains = this.uiElement.waitFor().text().contains(text);
+            if (!finalContains) break;
+        }
+        return finalContains;
     }
 
     @Override
     public boolean waitForTextContainsNot(String... texts) {
-        return this.uiElement.waitFor().text().containsWords(texts).is(false);
+        boolean finalContains = false;
+        for (String text : texts) {
+            finalContains = this.uiElement.waitFor().text().containsNot(text);
+            if (!finalContains) break;
+        }
+        return finalContains;
     }
 
     @Override
     public boolean waitForAttribute(final String attributeName) {
-        return this.uiElement.waitFor().value(attributeName).is(true);
+        return this.uiElement.waitFor().value(attributeName).isNot(null);
     }
 
     @Override
@@ -163,11 +173,11 @@ public class DefaultGuiElementWait implements GuiElementWait, Loggable {
 
     @Override
     public boolean waitForIsSelectable() {
-        return this.uiElement.waitFor().selected(true);
+        return this.uiElement.waitFor().selectable(true);
     }
 
     @Override
     public boolean waitForIsNotSelectable() {
-        return this.uiElement.waitFor().selected(false);
+        return this.uiElement.waitFor().selectable(false);
     }
 }

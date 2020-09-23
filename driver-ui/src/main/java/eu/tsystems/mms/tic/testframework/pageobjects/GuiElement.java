@@ -902,6 +902,23 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     @Override
+    public BinaryAssertion<Boolean> selectable() {
+        final UiElement self = this;
+        DefaultBinaryAssertion<Boolean> assertion = propertyAssertionFactory.create(DefaultBinaryAssertion.class, new AssertionProvider<Boolean>() {
+            @Override
+            public Boolean getActual() {
+                return frameAwareCore.isSelectable();
+            }
+
+            @Override
+            public String getSubject() {
+                return String.format("%s.selectable", self.toString(true));
+            }
+        });
+        return assertion;
+    }
+
+    @Override
     public RectAssertion bounds() {
         final UiElement self = this;
         DefaultRectAssertion assertion = propertyAssertionFactory.create(DefaultRectAssertion.class, new AssertionProvider<Rectangle>() {

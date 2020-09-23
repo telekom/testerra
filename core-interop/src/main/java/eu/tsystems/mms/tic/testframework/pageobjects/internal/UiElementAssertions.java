@@ -29,4 +29,8 @@ public interface UiElementAssertions extends BasicUiElement {
     default boolean selected(boolean expected) {
         return selected().is(expected);
     }
+    BinaryAssertion<Boolean> selectable();
+    default boolean selectable(boolean expected) {
+        return selectable().is(expected);
+    }
 }

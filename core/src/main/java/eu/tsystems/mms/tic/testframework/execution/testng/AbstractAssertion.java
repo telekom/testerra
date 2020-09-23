@@ -120,7 +120,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public boolean isNull(Object actual) {
-        return actual!=null;
+        return actual==null;
     }
 
     @Override
@@ -137,7 +137,7 @@ public abstract class AbstractAssertion implements Assertion {
 
     @Override
     public boolean isNotNull(Object actual) {
-        return actual==null;
+        return actual != null;
     }
 
     @Override

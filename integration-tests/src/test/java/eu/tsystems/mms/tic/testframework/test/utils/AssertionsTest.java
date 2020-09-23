@@ -65,6 +65,46 @@ public class AssertionsTest extends TesterraTest {
     }
 
     @Test
+    public void testIsNull() {
+        assertion.assertNull(null);
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testIsNull_fails() {
+        assertion.assertNull(assertion);
+    }
+
+    @Test
+    public void testIsNotNull() {
+        assertion.assertNotNull(assertion);
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testIsNotNull_fails() {
+        assertion.assertNotNull(null);
+    }
+
+    @Test
+    public void testStringEquals() {
+        assertion.assertEquals("Hallo Welt", "Hallo Welt");
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testStringEquals_fails() {
+        assertion.assertEquals("Hello World", "Hallo Welt");
+    }
+
+    @Test
+    public void testStringNotEquals() {
+        assertion.assertNotEquals("Hello World", "Hallo Welt");
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    public void testStringNotEquals_fails() {
+        assertion.assertNotEquals("Hallo Welt", "Hallo Welt");
+    }
+
+    @Test
     public void testStartsWith() {
         assertion.assertStartsWith("a long time ago", "a long");
     }
@@ -88,6 +128,7 @@ public class AssertionsTest extends TesterraTest {
     public void testEndsWith_fails() {
         assertion.assertEndsWith("this is the end", "the beginning");
     }
+
     @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = "Expected that »the sentence« actual \\[this is the end\\] ends with \\[the beginning\\]")
     public void testEndsWith_fails_message() {
         assertion.assertEndsWith("this is the end", "the beginning", "the sentence");

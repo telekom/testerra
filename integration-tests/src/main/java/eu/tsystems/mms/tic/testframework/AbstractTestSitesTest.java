@@ -45,7 +45,7 @@ public abstract class AbstractTestSitesTest extends AbstractWebDriverTest implem
     @BeforeTest(alwaysRun = true)
     public void setUp() throws Exception {
         TestController.Overrides pageOverrides = Testerra.injector.getInstance(TestController.Overrides.class);
-        pageOverrides.setElementTimeout(3);
+        pageOverrides.setTimeout(3);
         try {
             server.start(80);
         } catch (BindException e) {

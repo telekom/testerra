@@ -31,7 +31,7 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
 
     protected boolean testTimer(Supplier<Boolean> testFunction, Supplier<String> failMessageSupplier) {
         long useTimeout = timeout;
-        if (overrides.hasElementTimeout()) useTimeout = overrides.getElementTimeoutInSeconds();
+        if (overrides.hasTimeout()) useTimeout = overrides.getTimeoutInSeconds();
         if (useTimeout < 0) useTimeout = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong();
 
         Sequence sequence = new Sequence()

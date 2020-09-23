@@ -47,7 +47,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             checkRule = CheckRule.valueOf(GuiElement.Properties.CHECK_RULE.asString());
         }
 
-        int prevTimeout = overrides.setElementTimeout(check.timeout());
+        int prevTimeout = overrides.setTimeout(check.timeout());
 
         switch (checkRule) {
             case IS_PRESENT:
@@ -67,7 +67,7 @@ public class GuiElementCheckFieldAction extends CheckFieldAction {
             }
         }
         if (prevTimeout >= 0) {
-            overrides.setElementTimeout(prevTimeout);
+            overrides.setTimeout(prevTimeout);
         }
     }
 

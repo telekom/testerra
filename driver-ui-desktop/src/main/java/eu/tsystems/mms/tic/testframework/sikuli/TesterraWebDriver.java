@@ -115,7 +115,7 @@ public class TesterraWebDriver extends RemoteWebDriver implements SikuliDriver, 
     public ImageElement findImageElement(URL imageUrl) {
         ImageTarget target = new ImageTarget(imageUrl);
         TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
-        final ScreenRegion imageRegion = webdriverRegion.wait(target, overrides.getElementTimeoutInSeconds()*1000);
+        final ScreenRegion imageRegion = webdriverRegion.wait(target, overrides.getTimeoutInSeconds()*1000);
 
         if (imageRegion != null) {
             Rectangle r = imageRegion.getBounds();

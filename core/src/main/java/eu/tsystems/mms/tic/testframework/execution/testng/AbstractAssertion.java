@@ -29,8 +29,7 @@ import java.util.Set;
 import org.testng.Assert;
 
 /**
- * Non static wrapper for TestNG {@link Assert}
- * Allows injection of {@link Assertion} implementations.
+ * Default implementation of {@link Assertion}
  * @author Mike Reiche
  */
 public abstract class AbstractAssertion implements Assertion {

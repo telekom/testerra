@@ -22,19 +22,15 @@
  package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Created with IntelliJ IDEA.
- * User: pele
- * Date: 23.07.13
- * Time: 15:15
- * To change this template use File | Settings | File Templates.
- * This is a copy of {@link AssertCollector}
+ * A class to perform {@link NonFunctionalAssertion} in a static context
+ * @deprecated Use {@link TestController#nonFunctionalAssertions()} instead
  */
 @Deprecated
 public class NonFunctionalAssert {

@@ -25,6 +25,10 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 
+/**
+ * Default implementation of {@link AssertionFactory}
+ * @author Mike Reiche
+ */
 public class DefaultAssertionFactory implements AssertionFactory {
 
     private final Injector injector;

@@ -269,7 +269,7 @@ public abstract class AbstractPage implements
 
     public int getElementTimeoutInSeconds() {
         if (elementTimeoutInSeconds < 1) {
-            elementTimeoutInSeconds = Testerra.injector.getInstance(TestController.Overrides.class).getElementTimeoutInSeconds();
+            elementTimeoutInSeconds = Testerra.injector.getInstance(TestController.Overrides.class).getTimeoutInSeconds();
         }
         return elementTimeoutInSeconds;
     }

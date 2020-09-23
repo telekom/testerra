@@ -11,8 +11,6 @@ import eu.tsystems.mms.tic.testframework.execution.testng.DefaultCollectedAssert
 import eu.tsystems.mms.tic.testframework.execution.testng.DefaultNonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.SilentAssertion;
-import eu.tsystems.mms.tic.testframework.execution.testng.TestAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.ThrowingAssertion;
 import eu.tsystems.mms.tic.testframework.internal.AssertionsCollector;
 import eu.tsystems.mms.tic.testframework.internal.CollectedAssertions;
@@ -33,7 +31,6 @@ public class ConfigureCore extends AbstractModule {
         bind(CollectedAssertion.class).to(DefaultCollectedAssertion.class).in(Scopes.SINGLETON);
         bind(NonFunctionalAssertion.class).to(DefaultNonFunctionalAssertion.class).in(Scopes.SINGLETON);
         bind(InstantAssertion.class).to(ThrowingAssertion.class).in(Scopes.SINGLETON);
-        bind(TestAssertion.class).to(SilentAssertion.class).in(Scopes.SINGLETON);
         bind(AssertionsCollector.class).to(CollectedAssertions.class).in(Scopes.SINGLETON);
         bind(Assertion.class).to(DefaultAssertionWrapper.class).in(Scopes.SINGLETON);
         bind(TestController.class).to(DefaultTestController.class).in(Scopes.SINGLETON);

@@ -27,6 +27,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Provides common useful assertions
+ * @author Mike Reiche
+ */
 public interface SimpleAssertion {
     default void fail(String message, Throwable cause) {
         fail(new AssertionError(message, cause));

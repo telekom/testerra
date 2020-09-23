@@ -21,10 +21,11 @@
 package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import com.google.inject.Inject;
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 
 /**
  * This wrapper is the default implementation of {@link Assertion}
- * It always creates a new assertion from the {@link AssertionFactory}
+ * It always creates a new assertion from the {@link AssertionFactory} according to its {@link TestController.Overrides}
  * @author Mike Reiche
  */
 public class DefaultAssertionWrapper extends AbstractAssertion implements Assertion {

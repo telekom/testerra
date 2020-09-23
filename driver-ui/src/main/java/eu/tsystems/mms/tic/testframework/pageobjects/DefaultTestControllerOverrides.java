@@ -39,12 +39,12 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
     }
 
     @Override
-    public boolean hasElementTimeout() {
+    public boolean hasTimeout() {
         return threadLocalTimeout.get()!=null;
     }
 
     @Override
-    public int getElementTimeoutInSeconds() {
+    public int getTimeoutInSeconds() {
         Integer timeout = threadLocalTimeout.get();
         if (timeout == null) {
             timeout = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong().intValue();
@@ -53,10 +53,10 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
     }
 
     @Override
-    public int setElementTimeout(int seconds) {
+    public int setTimeout(int seconds) {
         int prevTimeout = -1;
-        if (hasElementTimeout()) {
-            prevTimeout = getElementTimeoutInSeconds();
+        if (hasTimeout()) {
+            prevTimeout = getTimeoutInSeconds();
         }
         if (seconds < 0) {
             threadLocalTimeout.remove();

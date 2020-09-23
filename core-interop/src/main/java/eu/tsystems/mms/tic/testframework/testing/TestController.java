@@ -24,7 +24,7 @@ package eu.tsystems.mms.tic.testframework.testing;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 
 /**
- * Allows changes of the {@link ThreadLocal} test flow
+ * Allows to run blocks of code in a {@link Runnable} with {@link Overrides}
  * @author Mike Reiche
  */
 public interface TestController {
@@ -32,35 +32,70 @@ public interface TestController {
      * Overrides for {@link ThreadLocal} test controlling
      */
     interface Overrides {
-        boolean hasElementTimeout();
+        boolean hasTimeout();
         /**
-         * @return Configured or default element timeout
+         * @return Configured or default timeout for any actions
          */
-        int getElementTimeoutInSeconds();
+        int getTimeoutInSeconds();
 
         /**
-         * Sets a new element timeout and returns the previously configured
+         * Sets a timeout for any action
          * @param seconds If < 0, the timeout configuration will be removed
+         * @return Returns the previously configured timeout
          */
-        int setElementTimeout(int seconds);
+        int setTimeout(int seconds);
 
         /**
-         * Sets a new default assertion class
+         * Sets a new default assertion class for any action
          * @return Returns the previously configured assertion class
          */
         Class<? extends Assertion> setAssertionClass(Class<? extends Assertion> newClass);
 
         /**
-         * Gets the current assertion class
+         * @return Configured or default assertion class for any actions
          */
         Class<? extends Assertion> getAssertionClass();
     }
+
+    /**
+     * Runs a {@link Runnable} with collected assertions
+     */
     void collectAssertions(Runnable runnable);
+
+    /**
+     * Configures the next {@link Runnable} with collection assertions
+     */
     TestController collectAssertions();
+
+    /**
+     * Runs a {@link Runnable} with non-functional assertions
+     */
     void nonFunctionalAssertions(Runnable runnable);
+
+    /**
+     * Configures the next {@link Runnable} with non-functional assertions
+     */
     TestController nonFunctionalAssertions();
+
+    /**
+     * Runs a {@link Runnable} with a specified timeout
+     */
     void withTimeout(int seconds, Runnable runnable);
+
+    /**
+     * Configures the next {@link Runnable} with a specified timeout
+     */
     TestController withTimeout(int seconds);
+
+    /**
+     * Runs a {@link Runnable} while {@link Throwable} occurs for a specified period
+     * @param seconds Period in seconds
+     */
     void retryFor(int seconds, Runnable runnable);
+
+    /**
+     * Configures the next {@link Runnable} to run while {@link Throwable} occurs for a specified period
+     * @param seconds Period in seconds
+     */
     TestController retryFor(int seconds);
 }

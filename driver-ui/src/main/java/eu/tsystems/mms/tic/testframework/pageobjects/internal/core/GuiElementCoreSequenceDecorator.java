@@ -51,7 +51,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     private Timer getTimer() {
         TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
-        return new Timer(200, overrides.getElementTimeoutInSeconds());
+        return new Timer(200, overrides.getTimeoutInSeconds());
     }
 
     @Override

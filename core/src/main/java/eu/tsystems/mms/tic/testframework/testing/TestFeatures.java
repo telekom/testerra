@@ -21,6 +21,7 @@ package eu.tsystems.mms.tic.testframework.testing;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultAssertionWrapper;
 import eu.tsystems.mms.tic.testframework.execution.testng.SimpleAssertion;
 
 /**
@@ -28,6 +29,9 @@ import eu.tsystems.mms.tic.testframework.execution.testng.SimpleAssertion;
  * @author Mike Reiche
  */
 public interface TestFeatures {
+    /**
+     * Provides a {@link DefaultAssertionWrapper}
+     */
     SimpleAssertion Assert = Testerra.injector.getInstance(Assertion.class);
     TestController Control = Testerra.injector.getInstance(TestController.class);
 }

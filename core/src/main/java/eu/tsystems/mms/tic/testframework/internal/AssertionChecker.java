@@ -21,6 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.internal;
 
+import eu.tsystems.mms.tic.testframework.execution.testng.DefaultNonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.interop.TestEvidenceCollector;
 import eu.tsystems.mms.tic.testframework.report.model.AssertionInfo;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
@@ -36,6 +37,7 @@ import org.slf4j.LoggerFactory;
  * Date: 23.07.13
  * Time: 14:52
  * To change this template use File | Settings | File Templates.
+ * @todo Move this code to {@link DefaultNonFunctionalAssertion}
  */
 public final class AssertionChecker {
 

@@ -30,6 +30,9 @@ import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Default implementation of {@link AssertionsCollector}
+ */
 public final class CollectedAssertions implements AssertionsCollector {
 
     private final ThreadLocal<List<AssertionInfo>> ASSERTION_INFOS = new ThreadLocal<>();

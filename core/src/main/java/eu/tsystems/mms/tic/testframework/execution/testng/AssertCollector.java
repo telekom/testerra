@@ -22,14 +22,15 @@
  package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
-
+import eu.tsystems.mms.tic.testframework.testing.TestController;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * A dummy class for collecting asserts.
+ * A class to perform {@link CollectedAssertion} in a static context
+ * @deprecated Use {@link TestController#collectAssertions()} instead
  */
 @Deprecated
 public class AssertCollector {

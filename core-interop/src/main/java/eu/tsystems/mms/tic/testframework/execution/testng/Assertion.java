@@ -23,6 +23,10 @@ package eu.tsystems.mms.tic.testframework.execution.testng;
 
 import java.math.BigDecimal;
 
+/**
+ * Provides more advanced assertions and test features
+ * @author Mike Reiche
+ */
 public interface Assertion extends SimpleAssertion {
     String format(Object actual, Object expected, Object subject);
 

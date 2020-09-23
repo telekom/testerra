@@ -68,6 +68,9 @@ public class ErrorContext extends AbstractContext {
         return StringUtils.prepareStringForHTML(this.getReadableErrorMessage());
     }
 
+    public void setThrowable(Throwable throwable) {
+        setThrowable(null, throwable, true);
+    }
     public void setThrowable(final String readableMessage, final Throwable throwable) {
         setThrowable(readableMessage, throwable, false);
     }

@@ -4,6 +4,8 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
+import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
+import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -45,10 +47,19 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
             // Dont handle exceptions when it should only wait
             if (!config.shouldWait) {
                 Assertion finalAssertion = assertionFactory.create();
+                MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
                 try {
-                    finalAssertion.fail(failMessageSupplier.get(), atomicThrowable.get());
+                    String message = failMessageSupplier.get();
+                    Throwable throwable = atomicThrowable.get();
+                    finalAssertion.fail(message, throwable);
+                    if (currentMethodContext != null) {
+                        currentMethodContext.errorContext().setThrowable(message, throwable);
+                    }
                 } catch (Throwable throwable) {
                     finalAssertion.fail(new AssertionError(throwable));
+                    if (currentMethodContext != null) {
+                        currentMethodContext.errorContext().setThrowable(throwable);
+                    }
                 }
             }
         }

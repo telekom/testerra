@@ -32,7 +32,7 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
     abstract public String getSubject();
 
     /**
-     * This method will be called recursive from bottom to top
+     * This method will be called recursive from parent to descendants
      * if one of the assertions failed.
      * @param assertion The failed assertion
      */
@@ -40,7 +40,7 @@ public abstract class AssertionProvider<T> implements ActualProperty<T> {
     }
 
     /**
-     * This method will be called recursive from bottom to top
+     * This method will be called recursive from parent to descendants
      * if one of the assertions finally failed.
      * @param assertion The failed assertion
      */

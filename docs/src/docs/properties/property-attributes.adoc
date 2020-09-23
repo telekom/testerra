@@ -162,9 +162,9 @@
 :qc_test_execution_filter:              qc.test.execution.filter
 
 // Mobile // appium
-:mobile_server_url:                     tt.mobile.server.host
-:mobile_access_key:                     tt.mobile.server.port
+:mobile_server_url:                     tt.mobile.grid.url
+:mobile_access_key:                     tt.mobile.grid.access.key
 
-:mobile_device_query_ios:              tt.mobile.device.query.ios
-:mobile_device_query_android:          tt.mobile.device.query.android
+:mobile_device_query_ios:               tt.mobile.device.query.ios
+:mobile_device_query_android:           tt.mobile.device.query.android
 

@@ -6,7 +6,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.utils.TinyTimer;
+import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -34,14 +34,14 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
         if (pageOverrides.hasTimeout()) useTimeout = pageOverrides.getTimeout();
         if (useTimeout < 0) useTimeout = UiElement.Properties.ELEMENT_TIMEOUT_SECONDS.asLong();
 
-        TinyTimer timer = new TinyTimer()
+        Sequence sequence = new Sequence()
                 .setPauseMs(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong())
                 .setPeriodMs(useTimeout*1000);
 
         AtomicBoolean atomicPassed = new AtomicBoolean(false);
         AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();
 
-        timer.run(() -> {
+        sequence.run(() -> {
             try {
                 atomicPassed.set(testFunction.get());
             } catch (Throwable throwable) {

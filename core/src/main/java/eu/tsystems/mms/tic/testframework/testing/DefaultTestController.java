@@ -27,7 +27,7 @@ import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.PageOverrides;
-import eu.tsystems.mms.tic.testframework.utils.TinyTimer;
+import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.util.HashSet;
 
 /**
@@ -155,10 +155,10 @@ public class DefaultTestController implements TestController {
             @Override
             Runnable setup(Runnable runnable) {
                 return () -> {
-                    TinyTimer timer = new TinyTimer()
+                    Sequence sequence = new Sequence()
                             .setPeriodMs(seconds * 1000);
 
-                    timer.run(() -> {
+                    sequence.run(() -> {
                         try {
                             runnable.run();
                             return true;

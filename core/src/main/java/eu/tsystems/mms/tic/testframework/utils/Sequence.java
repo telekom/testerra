@@ -25,18 +25,28 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import java.util.function.Supplier;
 
 /**
- * A lightweight timer
+ * A lightweight sequence
  * @author Mike Reiche
  */
-public class TinyTimer implements Loggable {
+public class Sequence implements Loggable {
     private long pauseMs = 0;
     private long periodMs = 0;
+    private long startTime;
+    private long endTime;
+
+    public long getStartTimeMs() {
+        return startTime;
+    }
+
+    public long getEndTimeMs() {
+        return endTime;
+    }
 
     public long getPauseMs() {
         return pauseMs;
     }
 
-    public TinyTimer setPauseMs(long pauseMs) {
+    public Sequence setPauseMs(long pauseMs) {
         this.pauseMs = pauseMs;
         return this;
     }
@@ -45,24 +55,29 @@ public class TinyTimer implements Loggable {
         return periodMs;
     }
 
-    public TinyTimer setPeriodMs(long periodMs) {
+    public Sequence setPeriodMs(long periodMs) {
         this.periodMs = periodMs;
         return this;
     }
 
-    /**
-     * Runs the supplier in a timer loop and when it returns true, the timer stops
-     */
-    public TinyTimer run(Supplier<Boolean> runnable) {
-        try {
+    public long getDurationMs() {
+        return endTime - startTime;
+    }
 
-            long startTimeMs = System.currentTimeMillis();
+    /**
+     * Runs the supplier in a timer loop and when it returns true, the sequence stops
+     */
+    public Sequence run(Supplier<Boolean> runnable) {
+        try {
+            startTime = System.currentTimeMillis();
+            endTime = startTime;
             do {
                 if (runnable.get()) {
                     break;
                 }
                 Thread.sleep(pauseMs);
-            } while ((System.currentTimeMillis()-startTimeMs) < periodMs);
+                endTime = System.currentTimeMillis();
+            } while (getDurationMs() < periodMs);
 
         } catch (InterruptedException e) {
             log().error(e.getMessage(), e);

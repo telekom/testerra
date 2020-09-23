@@ -54,15 +54,17 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
 
     @Override
     public int setTimeout(int seconds) {
-        int prevTimeout = -1;
-        if (hasTimeout()) {
-            prevTimeout = getTimeoutInSeconds();
+        Integer prevTimeout = threadLocalTimeout.get();
+        if (prevTimeout == null) {
+            prevTimeout = -1;
         }
+
         if (seconds < 0) {
             threadLocalTimeout.remove();
         } else {
             threadLocalTimeout.set(seconds);
         }
+
         return prevTimeout;
     }
 
@@ -74,7 +76,11 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
     @Override
     public Class<? extends Assertion> setAssertionClass(Class<? extends Assertion> newClass) {
         Class<? extends Assertion> prevClass = threadLocalAssertionClass.get();
-        threadLocalAssertionClass.set(newClass);
+        if (newClass == null) {
+            threadLocalAssertionClass.remove();
+        } else {
+            threadLocalAssertionClass.set(newClass);
+        }
         return prevClass;
     }
 

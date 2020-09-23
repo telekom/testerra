@@ -67,6 +67,11 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
     }
 
     @Override
+    public boolean hasAssertionClass() {
+        return threadLocalAssertionClass.get() != null;
+    }
+
+    @Override
     public Class<? extends Assertion> setAssertionClass(Class<? extends Assertion> newClass) {
         Class<? extends Assertion> prevClass = threadLocalAssertionClass.get();
         threadLocalAssertionClass.set(newClass);
@@ -78,9 +83,9 @@ public class DefaultTestControllerOverrides implements TestController.Overrides 
         Class<? extends Assertion> assertionClass = threadLocalAssertionClass.get();
         if (assertionClass==null) {
             if (UiElement.Properties.DEFAULT_ASSERT_IS_COLLECTOR.asBool()) {
-                setAssertionClass(CollectedAssertion.class);
+                assertionClass = CollectedAssertion.class;
             } else {
-                setAssertionClass(InstantAssertion.class);
+                assertionClass = InstantAssertion.class;
             }
         }
         return assertionClass;

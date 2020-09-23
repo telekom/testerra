@@ -32,6 +32,9 @@ public interface TestController {
      * Overrides for {@link ThreadLocal} test controlling
      */
     interface Overrides {
+        /**
+         * Determines if a timeout has been configured
+         */
         boolean hasTimeout();
         /**
          * @return Configured or default timeout for any actions
@@ -44,6 +47,11 @@ public interface TestController {
          * @return Returns the previously configured timeout
          */
         int setTimeout(int seconds);
+
+        /**
+         * Determines if a assertion class has been configured
+         */
+        boolean hasAssertionClass();
 
         /**
          * Sets a new default assertion class for any action

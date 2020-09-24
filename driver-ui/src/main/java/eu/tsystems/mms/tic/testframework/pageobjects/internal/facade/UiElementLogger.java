@@ -22,7 +22,7 @@
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCoreDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 import java.util.Arrays;
@@ -30,17 +30,24 @@ import java.util.stream.Collectors;
 
 public class UiElementLogger extends AbstractGuiElementCoreDecorator implements Loggable {
 
-    private final UiElement uiElement;
+    private final GuiElement guiElement;
 
     public UiElementLogger(
-            GuiElementCore guiElementFacade,
-            UiElement uiElement
+            GuiElementCore decoratedCore,
+            GuiElement guiElement
     ) {
-        super(guiElementFacade);
-        this.uiElement = uiElement;
+        super(decoratedCore);
+        this.guiElement = guiElement;
     }
 
     protected void beforeDelegation(String method, Object ... params) {
-        log().info(method + "("+ Arrays.stream(params).map(Object::toString).collect(Collectors.joining(", "))+") on " + this.uiElement.toString(false));
+        log().info(method + "("+ Arrays.stream(params).map(Object::toString).collect(Collectors.joining(", "))+") on " + this.guiElement.toString(false));
+    }
+
+    @Override
+    public void type(String text) {
+        beforeDelegation("type", "\""+(guiElement.hasSensibleData()?"*****************":text)+"\"");
+        decoratedCore.type(text);
+        afterDelegation();
     }
 }

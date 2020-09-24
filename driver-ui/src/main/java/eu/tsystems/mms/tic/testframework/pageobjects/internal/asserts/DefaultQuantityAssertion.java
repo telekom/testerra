@@ -11,57 +11,64 @@ public class DefaultQuantityAssertion<TYPE> extends DefaultBinaryAssertion<TYPE>
 
     @Override
     public boolean is(Object expected, String failMessage) {
-        return testTimer(
-                () -> assertion.equals(provider.getActual(), expected),
-                () -> assertion.formatExpectEquals(provider.getActual(), expected ,createFailMessage(failMessage))
+        return testSequence(
+                provider,
+                (actual) -> assertion.equals(actual, expected),
+                (actual) -> assertion.formatExpectEquals(actual, expected ,createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean isNot(Object expected, String failMessage) {
-        return testTimer(
-                () -> assertion.notEquals(provider.getActual(), expected),
-                () -> assertion.formatExpectNotEquals(provider.getActual(), expected, createFailMessage(failMessage))
+        return testSequence(
+                provider,
+                (actual) -> assertion.notEquals(actual, expected),
+                (actual) -> assertion.formatExpectNotEquals(actual, expected, createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean isGreaterThan(BigDecimal expected, String failMessage) {
-        return testTimer(
-                () -> assertion.isGreaterThan(new BigDecimal(provider.getActual().toString()), expected),
-                () -> assertion.formatExpectGreaterThan(new BigDecimal(provider.getActual().toString()), expected, createFailMessage(failMessage))
+        return testSequence(
+                provider,
+                (actual) -> assertion.isGreaterThan(new BigDecimal(actual.toString()), expected),
+                (actual) -> assertion.formatExpectGreaterThan(new BigDecimal(actual.toString()), expected, createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean isLowerThan(BigDecimal expected, String failMessage) {
-        return testTimer(
-                () -> assertion.isLowerThan(new BigDecimal(provider.getActual().toString()), expected),
-                () -> assertion.formatExpectLowerThan(new BigDecimal(provider.getActual().toString()), expected, createFailMessage(failMessage))
+        return testSequence(
+                provider,
+                (actual) -> assertion.isLowerThan(new BigDecimal(actual.toString()), expected),
+                (actual) -> assertion.formatExpectLowerThan(new BigDecimal(provider.getActual().toString()), expected, createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean isGreaterEqualThan(BigDecimal expected, String failMessage) {
-        return testTimer(
-                () -> assertion.isGreaterEqualThan(new BigDecimal(provider.getActual().toString()), expected),
-                () -> assertion.formatExpectGreaterEqualThan(new BigDecimal(provider.getActual().toString()), expected, createFailMessage(failMessage))
+        return testSequence(
+                provider,
+                (actual) -> assertion.isGreaterEqualThan(new BigDecimal(actual.toString()), expected),
+                (actual) -> assertion.formatExpectGreaterEqualThan(new BigDecimal(actual.toString()), expected, createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean isLowerEqualThan(BigDecimal expected, String failMessage) {
-        return testTimer(
-                () -> assertion.isLowerEqualThan(new BigDecimal(provider.getActual().toString()), expected),
-                () -> assertion.formatExpectLowerEqualThan(new BigDecimal(provider.getActual().toString()), expected, createFailMessage(failMessage))
+        return testSequence(
+                provider,
+                (actual) -> assertion.isLowerEqualThan(new BigDecimal(actual.toString()), expected),
+                (actual) -> assertion.formatExpectLowerEqualThan(new BigDecimal(actual.toString()), expected, createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean isBetween(BigDecimal lower, BigDecimal higher, String failMessage) {
-        return testTimer(
-                () -> assertion.isBetween(new BigDecimal(provider.getActual().toString()), lower, higher),
-                () -> assertion.formatExpectIsBetween(new BigDecimal(provider.getActual().toString()), lower, higher, createFailMessage(failMessage))
+        return testSequence(
+                provider,
+                (actual) -> assertion.isBetween(new BigDecimal(actual.toString()), lower, higher),
+                (actual) -> assertion.formatExpectIsBetween(new BigDecimal(actual.toString()), lower, higher, createFailMessage(failMessage))
         );
     }
 

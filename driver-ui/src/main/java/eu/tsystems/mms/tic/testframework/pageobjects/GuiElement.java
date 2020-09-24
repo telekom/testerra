@@ -56,7 +56,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacadeLoggingDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.UiElementLogger;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWait;
@@ -113,7 +113,7 @@ public class GuiElement implements UiElement, Loggable {
      * This facade contains
      *  {@link #frameAwareCore}
      *  {@link GuiElementCoreSequenceDecorator}
-     *  {@link GuiElementFacadeLoggingDecorator}
+     *  {@link UiElementLogger}
      *  {@link DelayActionsGuiElementFacade}
      */
     private GuiElementCore decoratedCore;
@@ -228,7 +228,7 @@ public class GuiElement implements UiElement, Loggable {
 
         // Wrap the core with sequence decorator, such that its methods are executed with sequence
         GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(frameAwareCore);
-        decoratedCore = new GuiElementFacadeLoggingDecorator(sequenceCore, this);
+        decoratedCore = new UiElementLogger(sequenceCore, this);
 
         int delayAfterAction = Properties.DELAY_AFTER_ACTION_MILLIS.asLong().intValue();
         int delayBeforeAction = Properties.DELAY_BEFORE_ACTION_MILLIS.asLong().intValue();

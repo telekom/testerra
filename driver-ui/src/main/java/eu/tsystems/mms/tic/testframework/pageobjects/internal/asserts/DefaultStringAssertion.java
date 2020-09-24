@@ -16,33 +16,37 @@ public class DefaultStringAssertion<T> extends DefaultQuantityAssertion<T> imple
 
     @Override
     public boolean contains(String expected, String failMessage) {
-        return testTimer(
-                () -> assertion.contains((String)provider.getActual(), expected),
-                () -> assertion.formatExpectContains((String)provider.getActual(), expected, createFailMessage(failMessage))
+        return testSequence(
+                provider,
+                (actual) -> assertion.contains(actual.toString(), expected),
+                (actual) -> assertion.formatExpectContains(actual.toString(), expected, createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean containsNot(String expected, String failMessage) {
-        return testTimer(
-                () -> assertion.containsNot((String)provider.getActual(), expected),
-                () -> assertion.formatExpectContainsNot((String)provider.getActual(), expected, createFailMessage(failMessage))
+        return testSequence(
+                provider,
+                (actual) -> assertion.containsNot(actual.toString(), expected),
+                (actual) -> assertion.formatExpectContainsNot(actual.toString(), expected, createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean startsWith(String expected, String failMessage) {
-        return testTimer(
-                () -> assertion.startsWith(provider.getActual(), expected),
-                () -> assertion.formatExpectStartsWith(provider.getActual(), expected, createFailMessage(failMessage))
+        return testSequence(
+                provider,
+                (actual) -> assertion.startsWith(actual, expected),
+                (actual) -> assertion.formatExpectStartsWith(actual, expected, createFailMessage(failMessage))
         );
     }
 
     @Override
     public boolean endsWith(String expected, String failMessage) {
-        return testTimer(
-                () -> assertion.endsWith(provider.getActual(), expected),
-                () -> assertion.formatExpectEndsWith(provider.getActual(), expected, createFailMessage(failMessage))
+        return testSequence(
+                provider,
+                (actual) -> assertion.endsWith(provider.getActual(), expected),
+                (actual) -> assertion.formatExpectEndsWith(provider.getActual(), expected, createFailMessage(failMessage))
         );
     }
 

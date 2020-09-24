@@ -9,22 +9,24 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
     @Override
     public boolean is(boolean expected, String failMessage) {
         if (expected) {
-            return testTimer(
-                    () -> {
-                        String actualString = getActual().toString();
+            return testSequence(
+                    provider,
+                    (actual) -> {
+                        String actualString = actual.toString();
                         return (
                                 actualString.equalsIgnoreCase("true")
-                                        || actualString.equalsIgnoreCase("on")
-                                        || actualString.equalsIgnoreCase("1")
-                                        || actualString.equalsIgnoreCase("yes")
+                                || actualString.equalsIgnoreCase("on")
+                                || actualString.equalsIgnoreCase("1")
+                                || actualString.equalsIgnoreCase("yes")
                         );
                     },
-                    () -> assertion.format(getActual().toString(), "is one of [true, 'on', '1', 'yes']", createFailMessage(failMessage))
+                    (actual) -> assertion.format(actual, "is one of [true, 'on', '1', 'yes']", createFailMessage(failMessage))
             );
         } else {
-            return testTimer(
-                    () -> {
-                        String actualString = getActual().toString();
+            return testSequence(
+                    provider,
+                    (actual) -> {
+                        String actualString = actual.toString();
                         return (
                                 actualString.equalsIgnoreCase("false")
                                 || actualString.equalsIgnoreCase("off")
@@ -32,7 +34,7 @@ public class DefaultBinaryAssertion<T> extends AbstractTestedPropertyAssertion<T
                                 || actualString.equalsIgnoreCase("no")
                         );
                     },
-                    () -> assertion.format(getActual().toString(), "is one of [false, 'off', '0', 'no']", createFailMessage(failMessage)));
+                    (actual) -> assertion.format(actual, "is one of [false, 'off', '0', 'no']", createFailMessage(failMessage)));
         }
     }
 }

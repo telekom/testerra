@@ -4,11 +4,11 @@ import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.AssertionFactory;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
-import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
-import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -24,17 +24,36 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
         super(parentAssertion, provider);
     }
 
-    protected boolean testTimer(Supplier<Boolean> testFunction, Supplier<String> failMessageSupplier) {
+    /**
+     * This is the general test sequence
+     * @param actualProperty The {@link ActualProperty} to test
+     * @param testFunction The test {@link Predicate}
+     * @param failMessageSupplier The fail message {@link Supplier} when the test finally fails.
+     * @return
+     */
+    protected boolean testSequence(
+            ActualProperty<T> actualProperty,
+            Predicate<T> testFunction,
+            Function<T, String> failMessageSupplier
+    ) {
         Sequence sequence = new Sequence()
                 .setPauseMs(config.pauseIntervalMs)
                 .setTimeoutMs(config.timeoutInSeconds * 1000);
 
         AtomicBoolean atomicPassed = new AtomicBoolean(false);
         AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();
-
+        AtomicReference<T> atomicActual = new AtomicReference<>();
         sequence.run(() -> {
             try {
-                atomicPassed.set(testFunction.get());
+                // Get the actual value
+                T actual = actualProperty.getActual();
+
+                // Pass the actual value to the test function
+                atomicPassed.set(testFunction.test(actual));
+
+                // Set the actual to the atomic actual for later use
+                atomicActual.set(actual);
+
             } catch (Throwable throwable) {
                 failedRecursive();
                 atomicThrowable.set(throwable);
@@ -47,20 +66,17 @@ public abstract class AbstractTestedPropertyAssertion<T> extends AbstractPropert
             // Dont handle exceptions when it should only wait
             if (!config.shouldWait) {
                 Assertion finalAssertion = assertionFactory.create();
-                MethodContext currentMethodContext = ExecutionContextController.getCurrentMethodContext();
+                String message = null;
+                Throwable finalThrowable;
                 try {
-                    String message = failMessageSupplier.get();
-                    Throwable throwable = atomicThrowable.get();
-                    finalAssertion.fail(message, throwable);
-                    if (currentMethodContext != null) {
-                        currentMethodContext.errorContext().setThrowable(message, throwable);
-                    }
+                    message = failMessageSupplier.apply(atomicActual.get());
+                    finalThrowable = atomicThrowable.get();
+                // When something happens during message retrieval
                 } catch (Throwable throwable) {
-                    finalAssertion.fail(new AssertionError(throwable));
-                    if (currentMethodContext != null) {
-                        currentMethodContext.errorContext().setThrowable(throwable);
-                    }
+                    finalThrowable = throwable;
                 }
+
+                finalAssertion.fail(message, finalThrowable);
             }
         }
         return atomicPassed.get();

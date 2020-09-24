@@ -24,6 +24,7 @@ import eu.tsystems.mms.tic.testframework.AbstractTestSitesTest;
 import eu.tsystems.mms.tic.testframework.annotations.Fails;
 import eu.tsystems.mms.tic.testframework.core.pageobjects.testdata.WebTestPage;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
+import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Attribute;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
@@ -250,7 +251,7 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
         Control.withTimeout(0, () -> test_NonExistent_GuiElement_present_fails());
     }
 
-    @Test(expectedExceptions = AssertionError.class, expectedExceptionsMessageRegExp = ".*?not found$")
+    @Test(expectedExceptions = AssertionError.class)
     public void test_NonExistent_GuiElement_displayed_fails() {
         WebTestPage page = getPage();
         page.nonExistentElement().displayed().is(false);
@@ -303,6 +304,12 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
             disableMyselfBtn.click();
             disableMyselfBtn.enabled().is(false);
         });
+    }
+
+    @Test(expectedExceptions = TimeoutException.class)
+    public void test_UiElement_click_fails() {
+        WebTestPage page = getPage();
+        page.nonExistentElement().click();
     }
 
     @Override

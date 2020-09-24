@@ -25,12 +25,14 @@ import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCoreDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
-public class GuiElementFacadeLoggingDecorator extends AbstractGuiElementCoreDecorator implements Loggable {
+public class UiElementLogger extends AbstractGuiElementCoreDecorator implements Loggable {
 
     private final UiElement uiElement;
 
-    public GuiElementFacadeLoggingDecorator(
+    public UiElementLogger(
             GuiElementCore guiElementFacade,
             UiElement uiElement
     ) {
@@ -39,6 +41,6 @@ public class GuiElementFacadeLoggingDecorator extends AbstractGuiElementCoreDeco
     }
 
     protected void beforeDelegation(String method, Object ... params) {
-        log().info(method + "("+params+") on " + this.uiElement.toString(false));
+        log().info(method + "("+ Arrays.stream(params).map(Object::toString).collect(Collectors.joining(", "))+") on " + this.uiElement.toString(false));
     }
 }

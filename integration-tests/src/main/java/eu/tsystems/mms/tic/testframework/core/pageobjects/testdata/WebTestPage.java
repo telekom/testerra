@@ -24,6 +24,7 @@
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.pageobjects.Check;
 import eu.tsystems.mms.tic.testframework.pageobjects.GuiElement;
+import eu.tsystems.mms.tic.testframework.pageobjects.InteractiveUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.TestableUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.test.core.pageobjects.testdata.MyVariables;
@@ -127,7 +128,7 @@ public class WebTestPage extends BasePage {
         return findById("notVisibleElement");
     }
 
-    public TestableUiElement nonExistentElement() {
+    public InteractiveUiElement nonExistentElement() {
         return findById("schnullifacks");
     }
 }

@@ -58,10 +58,10 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     /**
      * If the supplier returns TRUE and no {@link Throwable} was catched,
      * the sequence ends immediately
-     * Otherwise it throws a {@link TimeoutException}
+     * @param throwException Throw a {@link TimeoutException}
      * @param runnable
      */
-    private void sequenced(Supplier<Boolean> runnable) {
+    private void sequenced(boolean throwException, Supplier<Boolean> runnable) {
 
         Sequence sequence = new Sequence()
                 .setTimeoutMs(overrides.getTimeoutInSeconds()*1000)
@@ -69,17 +69,19 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
         AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();
         AtomicBoolean atomicSuccess = new AtomicBoolean();
+
         sequence.run(() -> {
+            boolean success;
             try {
-                atomicSuccess.set(runnable.get());
+                success = runnable.get();
             } catch (Throwable throwable) {
                 atomicThrowable.set(throwable);
-                atomicSuccess.set(false);
+                success = false;
             }
-            return atomicSuccess.get();
+            return atomicSuccess.getAndSet(success);
         });
 
-        if (!atomicSuccess.get()) {
+        if (!atomicSuccess.get() && throwException) {
             throw new TimeoutException("Sequence timed out after " + sequence.getDurationMs()/1000 + "s", atomicThrowable.get());
         }
     }
@@ -87,7 +89,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     @Override
     public WebElement findWebElement() {
         AtomicReference<WebElement> atomicReference = new AtomicReference<>();
-        sequenced(() -> {
+        sequenced(true, () -> {
             atomicReference.set(decoratedCore.findWebElement());
             return true;
         });
@@ -96,7 +98,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void findWebElement(Consumer<WebElement> consumer) {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.findWebElement(consumer);
             return true;
         });
@@ -104,7 +106,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void scrollToElement(int yOffset) {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.scrollToElement(yOffset);
             return true;
         });
@@ -112,7 +114,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void scrollIntoView(Point offset) {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.scrollIntoView(offset);
             return true;
         });
@@ -120,7 +122,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void select() {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.select();
             return decoratedCore.isSelected();
         });
@@ -128,7 +130,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void deselect() {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.deselect();
             return !decoratedCore.isSelected();
         });
@@ -136,7 +138,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void type(final String text) {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.type(text);
             return true;
         });
@@ -144,7 +146,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void click() {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.click();
             return true;
         });
@@ -152,7 +154,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void submit() {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.submit();
             return true;
         });
@@ -160,7 +162,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void sendKeys(final CharSequence... charSequences) {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.sendKeys(charSequences);
             return true;
         });
@@ -168,7 +170,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void clear() {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.clear();
             return true;
         });
@@ -177,7 +179,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     @Override
     public String getTagName() {
         AtomicReference<String> atomicReference = new AtomicReference<>();
-        sequenced(() -> {
+        sequenced(true, () -> {
             atomicReference.set(decoratedCore.getTagName());
             return true;
         });
@@ -187,7 +189,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     @Override
     public Point getLocation() {
         AtomicReference<Point> atomicReference = new AtomicReference<>();
-        sequenced(() -> {
+        sequenced(true, () -> {
             atomicReference.set(decoratedCore.getLocation());
             return true;
         });
@@ -197,7 +199,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     @Override
     public Dimension getSize() {
         AtomicReference<Dimension> atomicReference = new AtomicReference<>();
-        sequenced(() -> {
+        sequenced(true, () -> {
             atomicReference.set(decoratedCore.getSize());
             return true;
         });
@@ -207,7 +209,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     @Override
     public String getCssValue(final String cssIdentifier) {
         AtomicReference<String> atomicReference = new AtomicReference<>();
-        sequenced(() -> {
+        sequenced(true, () -> {
             atomicReference.set(decoratedCore.getCssValue(cssIdentifier));
             return true;
         });
@@ -217,7 +219,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     @Override
     public Select getSelectElement() {
         AtomicReference<Select> atomicReference = new AtomicReference<>();
-        sequenced(() -> {
+        sequenced(true, () -> {
             atomicReference.set(decoratedCore.getSelectElement());
             return true;
         });
@@ -227,7 +229,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     @Override
     public List<String> getTextsFromChildren() {
         AtomicReference<List<String>> atomicReference = new AtomicReference<>();
-        sequenced(() -> {
+        sequenced(true, () -> {
             atomicReference.set(decoratedCore.getTextsFromChildren());
             return true;
         });
@@ -236,7 +238,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void doubleClick() {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.doubleClick();
             return true;
         });
@@ -244,7 +246,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void highlight(Color color) {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.highlight(color);
             return true;
         });
@@ -252,7 +254,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
 
     @Override
     public void swipe(final int offsetX, final int offSetY) {
-        sequenced(() -> {
+        sequenced(true, () -> {
             decoratedCore.swipe(offsetX, offSetY);
             return true;
         });
@@ -261,7 +263,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     @Override
     public int getLengthOfValueAfterSendKeys(final String textToInput) {
         AtomicInteger atomicReference = new AtomicInteger();
-        sequenced(() -> {
+        sequenced(true, () -> {
             atomicReference.set(decoratedCore.getLengthOfValueAfterSendKeys(textToInput));
             return true;
         });
@@ -271,7 +273,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     @Override
     public int getNumberOfFoundElements() {
         AtomicInteger atomicReference = new AtomicInteger();
-        sequenced(() -> {
+        sequenced(true, () -> {
             atomicReference.set(decoratedCore.getNumberOfFoundElements());
             return true;
         });
@@ -281,7 +283,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     @Override
     public File takeScreenshot() {
         AtomicReference<File> atomicReference = new AtomicReference<>();
-        sequenced(() -> {
+        sequenced(true, () -> {
             atomicReference.set(decoratedCore.takeScreenshot());
             return true;
         });
@@ -289,59 +291,9 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     }
 
     @Override
-    public boolean isPresent() {
-        AtomicBoolean atomicReference = new AtomicBoolean();
-        sequenced(() -> {
-            atomicReference.set(decoratedCore.isPresent());
-            return atomicReference.get();
-        });
-        return atomicReference.get();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        AtomicBoolean atomicReference = new AtomicBoolean();
-        sequenced(() -> {
-            atomicReference.set(decoratedCore.isEnabled());
-            return atomicReference.get();
-        });
-        return atomicReference.get();
-    }
-
-    @Override
-    public boolean isDisplayed() {
-        AtomicBoolean atomicReference = new AtomicBoolean();
-        sequenced(() -> {
-            atomicReference.set(decoratedCore.isDisplayed());
-            return atomicReference.get();
-        });
-        return atomicReference.get();
-    }
-
-    @Override
-    public boolean isVisible(boolean complete) {
-        AtomicBoolean atomicReference = new AtomicBoolean();
-        sequenced(() -> {
-            atomicReference.set(decoratedCore.isVisible(complete));
-            return atomicReference.get();
-        });
-        return atomicReference.get();
-    }
-
-    @Override
-    public boolean isSelected() {
-        AtomicBoolean atomicReference = new AtomicBoolean();
-        sequenced(() -> {
-            atomicReference.set(decoratedCore.isSelected());
-            return atomicReference.get();
-        });
-        return atomicReference.get();
-    }
-
-    @Override
     public String getText() {
         AtomicReference<String> atomicReference = new AtomicReference<>();
-        sequenced(() -> {
+        sequenced(true, () -> {
             atomicReference.set(decoratedCore.getText());
             return true;
         });
@@ -351,7 +303,7 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     @Override
     public String getAttribute(final String attributeName) {
         AtomicReference<String> atomicReference = new AtomicReference<>();
-        sequenced(() -> {
+        sequenced(true, () -> {
             atomicReference.set(decoratedCore.getAttribute(attributeName));
             return true;
         });
@@ -359,9 +311,59 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
     }
 
     @Override
+    public boolean isPresent() {
+        AtomicBoolean atomicReference = new AtomicBoolean();
+        sequenced(false, () -> {
+            atomicReference.set(decoratedCore.isPresent());
+            return atomicReference.get();
+        });
+        return atomicReference.get();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        AtomicBoolean atomicReference = new AtomicBoolean();
+        sequenced(false, () -> {
+            atomicReference.set(decoratedCore.isEnabled());
+            return atomicReference.get();
+        });
+        return atomicReference.get();
+    }
+
+    @Override
+    public boolean isDisplayed() {
+        AtomicBoolean atomicReference = new AtomicBoolean();
+        sequenced(false, () -> {
+            atomicReference.set(decoratedCore.isDisplayed());
+            return atomicReference.get();
+        });
+        return atomicReference.get();
+    }
+
+    @Override
+    public boolean isVisible(boolean complete) {
+        AtomicBoolean atomicReference = new AtomicBoolean();
+        sequenced(false, () -> {
+            atomicReference.set(decoratedCore.isVisible(complete));
+            return atomicReference.get();
+        });
+        return atomicReference.get();
+    }
+
+    @Override
+    public boolean isSelected() {
+        AtomicBoolean atomicReference = new AtomicBoolean();
+        sequenced(false, () -> {
+            atomicReference.set(decoratedCore.isSelected());
+            return atomicReference.get();
+        });
+        return atomicReference.get();
+    }
+
+    @Override
     public boolean isSelectable() {
         AtomicBoolean atomicReference = new AtomicBoolean();
-        sequenced(() -> {
+        sequenced(false, () -> {
             atomicReference.set(decoratedCore.isSelectable());
             return atomicReference.get();
         });

@@ -146,6 +146,7 @@ public interface GuiElementCore extends
      *
      * @return .
      */
+    @Deprecated
     List<String> getTextsFromChildren();
 
     /**

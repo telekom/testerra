@@ -871,14 +871,16 @@ public abstract class AbstractGuiElementStandardFunctionsTest extends AbstractGu
 
     @Test
     public void testT89_GuiElement_IsDisplayedFromWebElement() {
-        boolean result = getDisplayedElement().isDisplayedFromWebElement();
-        Assert.assertTrue(result, "Element is displayed");
+        getDisplayedElement().findWebElement(webElement -> {
+            Assert.assertTrue(webElement.isDisplayed(), "Element is displayed");
+        });
     }
 
     @Test
     public void testT90N_GuiElement_IsDisplayedFromWebElement() {
-        boolean result = getNotDisplayedElement().isDisplayedFromWebElement();
-        Assert.assertFalse(result, "Element is displayed");
+        getNotDisplayedElement().findWebElement(webElement -> {
+            Assert.assertFalse(webElement.isDisplayed(), "Element is displayed");
+        });
     }
 
 //    @Test

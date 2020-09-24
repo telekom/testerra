@@ -305,6 +305,7 @@ public class GuiElement implements UiElement, Loggable {
         return this;
     }
 
+    @Deprecated
     public By getBy() {
         return guiElementData.getLocate().getBy();
     }
@@ -344,6 +345,7 @@ public class GuiElement implements UiElement, Loggable {
         return this;
     }
 
+    @Override
     public UiElement submit() {
         decoratedCore.submit();
         return this;
@@ -374,30 +376,37 @@ public class GuiElement implements UiElement, Loggable {
         return mouseOver();
     }
 
+    @Deprecated
     public String getTagName() {
         return decoratedCore.getTagName();
     }
 
+    @Deprecated
     public String getAttribute(String attributeName) {
         return decoratedCore.getAttribute(attributeName);
     }
 
+    @Deprecated
     public boolean isSelected() {
         return decoratedCore.isSelected();
     }
 
+    @Deprecated
     public boolean isEnabled() {
         return decoratedCore.isEnabled();
     }
 
+    @Deprecated
     public String getText() {
         return decoratedCore.getText();
     }
 
+    @Deprecated
     public boolean isDisplayed() {
         return decoratedCore.isDisplayed();
     }
 
+    @Deprecated
     public boolean isVisible(final boolean complete) {
         return decoratedCore.isVisible(complete);
     }
@@ -410,14 +419,17 @@ public class GuiElement implements UiElement, Loggable {
      *
      * @return true, if the element is selectable.
      */
+    @Deprecated
     public boolean isSelectable() {
         return decoratedCore.isSelectable();
     }
 
+    @Deprecated
     public Point getLocation() {
         return decoratedCore.getLocation();
     }
 
+    @Deprecated
     public Dimension getSize() {
         return decoratedCore.getSize();
     }
@@ -428,7 +440,6 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     @Override
-    @Deprecated
     public UiElementList<UiElement> list() {
         if (this.list == null) {
             this.list = new DefaultUiElementList(this);
@@ -436,15 +447,18 @@ public class GuiElement implements UiElement, Loggable {
         return this.list;
     }
 
+    @Deprecated
     public String getCssValue(String cssIdentifier) {
         return decoratedCore.getCssValue(cssIdentifier);
     }
 
+    @Deprecated
     public UiElement mouseOver() {
         decoratedCore.mouseOver();
         return this;
     }
 
+    @Deprecated
     public boolean isPresent() {
         return decoratedCore.isPresent();
     }
@@ -453,6 +467,7 @@ public class GuiElement implements UiElement, Loggable {
         return decoratedCore.getSelectElement();
     }
 
+    @Deprecated
     public List<String> getTextsFromChildren() {
         return decoratedCore.getTextsFromChildren();
     }
@@ -533,7 +548,7 @@ public class GuiElement implements UiElement, Loggable {
 
     @Override
     public UiElement contextClick() {
-        decoratedCore.rightClick();
+        decoratedCore.contextClick();
         return this;
     }
 
@@ -1014,17 +1029,6 @@ public class GuiElement implements UiElement, Loggable {
             }
         });
         return assertion;
-    }
-
-    /**
-     * Calls isDisplayed on the underlying WebElement.
-     *
-     * @return isDisplayed from WebElement
-     * @deprecated Use {@link #isDisplayed()} instead
-     */
-    @Deprecated
-    public boolean isDisplayedFromWebElement() {
-        return this.isDisplayed();
     }
 
     @Override

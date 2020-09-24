@@ -23,9 +23,9 @@
                 <exclude name="SEQUENTIAL"/>
             </run>
         </groups>
-        <packages>
-            <package name="eu.tsystems.mms.tic.testframework.test.layoutcheck"/>
-        </packages>
+        <classes>
+            <class name="eu.tsystems.mms.tic.testframework.test.layoutcheck.LayoutCheckTest"/>
+        </classes>
     </test>
 
 

@@ -21,6 +21,7 @@
  */
  package eu.tsystems.mms.tic.testframework.pageobjects;
 
+import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
@@ -34,18 +35,15 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
 
     private final static TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
     private final CheckRule defaultCheckRule;
-    private final int defaultTimeout;
 
     public GuiElementCheckFieldAction(
             Field field,
             CheckRule defaultCheckRule,
-            int defaultTimeOut,
             AbstractPage declaringPage
     ) {
         super(field, declaringPage);
 
         this.defaultCheckRule = defaultCheckRule;
-        this.defaultTimeout = defaultTimeOut;
     }
 
     private void pCheckField(
@@ -63,7 +61,13 @@ public class GuiElementCheckFieldAction extends AbstractCheckFieldAction {
 
         int useTimeout = check.timeout();
         if (useTimeout < 0) {
-            useTimeout = this.defaultTimeout;
+            if (declaringPage.getClass().isAnnotationPresent(PageOptions.class)) {
+                PageOptions annotation = declaringPage.getClass().getAnnotation(PageOptions.class);
+                useTimeout = annotation.elementTimeoutInSeconds();
+                if (useTimeout < 0) {
+                    useTimeout = overrides.getTimeoutInSeconds();
+                }
+            }
         }
 
         int prevTimeout = overrides.setTimeout(useTimeout);

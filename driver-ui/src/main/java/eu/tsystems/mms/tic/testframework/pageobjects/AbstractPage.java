@@ -22,7 +22,6 @@
  package eu.tsystems.mms.tic.testframework.pageobjects;
 
 import eu.tsystems.mms.tic.testframework.annotations.PageOptions;
-import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 import eu.tsystems.mms.tic.testframework.exceptions.PageNotFoundException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
@@ -32,7 +31,6 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.action.SetNameFiel
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
 import eu.tsystems.mms.tic.testframework.testing.PageFactoryProvider;
-import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.testing.TestFeatures;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -55,6 +53,7 @@ import org.openqa.selenium.WebDriver;
  * @see {https://martinfowler.com/bliki/PageObject.html}
  * @author Peter Lehmann
  * @author Mike Reiche
+ * @todo Rename to AbstractPageObject
  */
 public abstract class AbstractPage implements
         Loggable,
@@ -76,18 +75,6 @@ public abstract class AbstractPage implements
     }
     protected UiElement find(XPath xPath) {
         return find(Locate.by(xPath));
-    }
-
-    /**
-     * Element timeout in seconds (int).
-     */
-    private int elementTimeoutInSeconds;
-
-    /**
-     * @see {@link PageOptions#elementTimeoutInSeconds()} or {@link #applyPageOptions(PageOptions)}
-     */
-    private void setElementTimeoutInSeconds(int newElementTimeout) {
-        elementTimeoutInSeconds = newElementTimeout;
     }
 
     /**
@@ -252,27 +239,12 @@ public abstract class AbstractPage implements
     }
 
     /**
-     * @deprecated Should be set by {@link PageOptions} only
-     */
-    @Deprecated
-    protected int getElementTimeoutInSeconds() {
-        if (elementTimeoutInSeconds < 1) {
-            elementTimeoutInSeconds = Testerra.injector.getInstance(TestController.Overrides.class).getTimeoutInSeconds();
-        }
-        return elementTimeoutInSeconds;
-    }
-
-    /**
      * Gets all @Check annotated fields of a class and executes a webdriver find().
      */
     private void checkAnnotatedFields(CheckRule checkRule) {
         List<Class<? extends AbstractPage>> allClasses = collectAllSuperClasses();
 
         allClasses.forEach(pageClass -> {
-            if (pageClass.isAnnotationPresent(PageOptions.class)) {
-                applyPageOptions(pageClass.getAnnotation(PageOptions.class));
-            }
-
             for (Field field : pageClass.getDeclaredFields()) {
                 field.setAccessible(true);
                 List<AbstractFieldAction> fieldActions = getFieldActions(field, checkRule, this);
@@ -280,12 +252,6 @@ public abstract class AbstractPage implements
                 field.setAccessible(false);
             }
         });
-    }
-
-    private void applyPageOptions(PageOptions pageOptions) {
-        if (pageOptions.elementTimeoutInSeconds() >= 0) {
-            setElementTimeoutInSeconds(pageOptions.elementTimeoutInSeconds());
-        }
     }
 
     protected Optional<List<AbstractFieldAction>> addCustomFieldActions(Field field, AbstractPage declaringPage) {
@@ -300,7 +266,7 @@ public abstract class AbstractPage implements
 
         addCustomFieldActions(field, declaringPage).ifPresent(customFieldActions -> fieldActions.addAll(customFieldActions));
 
-        GuiElementCheckFieldAction guiElementCheckFieldAction = new GuiElementCheckFieldAction(field, checkRule, getElementTimeoutInSeconds(), declaringPage);
+        GuiElementCheckFieldAction guiElementCheckFieldAction = new GuiElementCheckFieldAction(field, checkRule, declaringPage);
         fieldActions.add(guiElementCheckFieldAction);
 
         return fieldActions;

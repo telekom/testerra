@@ -38,9 +38,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAsse
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.model.context.Screenshot;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
-import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
 import eu.tsystems.mms.tic.testframework.utils.JSUtils;
-import eu.tsystems.mms.tic.testframework.utils.Timer;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 import eu.tsystems.mms.tic.testframework.utils.UITestUtils;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.WebDriverManager;
@@ -247,21 +245,7 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
      */
     @Deprecated
     public boolean waitForIsNotTextPresent(final String text) {
-        Timer timer = new Timer(1000, getElementTimeoutInSeconds() * 1000);
-        final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                final boolean textPresent = isTextPresent(text);
-                final boolean passState = !textPresent;
-                setPassState(passState);
-                setReturningObject(passState);
-            }
-        });
-
-        if (response.hasThrowable()) {
-            log().error("waitForIsNotTextPresent ran into an error", response.getThrowable());
-        }
-        return response.getResponse();
+        return anyElementContainsText(text).waitFor().present(false);
     }
 
     /**
@@ -271,49 +255,7 @@ public abstract class Page extends AbstractPage implements TestablePage, Nameabl
      */
     @Deprecated
     public boolean waitForIsNotTextDisplayed(final String text) {
-        Timer timer = new Timer(1000, getElementTimeoutInSeconds() * 1000);
-        final ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                final boolean textDisplayed = isTextDisplayed(text);
-                final boolean passState = !textDisplayed;
-                setPassState(passState);
-                setReturningObject(passState);
-            }
-        });
-
-        if (response.hasThrowable()) {
-            log().error("waitForIsNotTextDisplayed ran into an error", response.getThrowable());
-        }
-        return response.getResponse();
-    }
-
-    @Deprecated
-    public boolean waitForIsTextPresent(final String text) {
-        Timer timer = new Timer(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), getElementTimeoutInSeconds() * 1000);
-        ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                boolean textPresent = isTextPresent(text);
-                setPassState(textPresent);
-                setReturningObject(textPresent);
-            }
-        });
-        return response.getResponse();
-    }
-
-    @Deprecated
-    public boolean waitForIsTextDisplayed(final String text) {
-        Timer timer = new Timer(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong(), getElementTimeoutInSeconds() * 1000);
-        ThrowablePackedResponse<Boolean> response = timer.executeSequence(new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                boolean textPresent = isTextDisplayed(text);
-                setPassState(textPresent);
-                setReturningObject(textPresent);
-            }
-        });
-        return response.getResponse();
+        return anyElementContainsText(text).waitFor().displayed(false);
     }
 
     @Deprecated

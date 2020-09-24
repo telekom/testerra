@@ -25,7 +25,7 @@ import eu.tsystems.mms.tic.testframework.enums.CheckRule;
 
 public interface CheckablePage {
     default PageObject checkUiElements() {
-        return checkUiElements(CheckRule.IS_DISPLAYED);
+        return checkUiElements(CheckRule.DEFAULT);
     }
     PageObject checkUiElements(CheckRule checkRule);
 }

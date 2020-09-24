@@ -19,13 +19,17 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameAwareSelect;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+/**
+ * A decorator, that performs a frame switch before every action
+ * of the decorated {@link GuiElementCore}
+ */
 public class GuiElementCoreFrameAwareDecorator extends AbstractGuiElementCoreDecorator {
 
     private final GuiElementData guiElementData;
@@ -35,8 +39,7 @@ public class GuiElementCoreFrameAwareDecorator extends AbstractGuiElementCoreDec
         this.guiElementData = guiElementData;
     }
 
-    @Override
-    protected void beforeDelegation() {
+    protected void beforeDelegation(String method, Object ... params) {
         if (guiElementData.hasFrameLogic()) {
             IFrameLogic frameLogic = guiElementData.getFrameLogic();
             frameLogic.switchToCorrectFrame();
@@ -50,7 +53,7 @@ public class GuiElementCoreFrameAwareDecorator extends AbstractGuiElementCoreDec
 
     @Override
     public Select getSelectElement() {
-        beforeDelegation();
+        beforeDelegation("getSelectElement");
         WebElement webElement = decoratedCore.findWebElement();
         Select select = new Select(webElement);
         Select frameAwareSelect = new FrameAwareSelect(select, webElement, guiElementData.getFrameLogic().getFrames(), guiElementData.getWebDriver() );

@@ -19,16 +19,16 @@
  * under the License.
  */
 
-package eu.tsystems.mms.tic.testframework.pageobjects;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal;
 
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
+import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import java.util.function.Consumer;
 import org.openqa.selenium.WebElement;
 
 /**
- * Interface for classes that contain an {@link WebElement}
- * @author Mike Reiche
+ * Interface for classes that retain a {@link WebElement}
  */
 public interface WebElementRetainer {
     /**

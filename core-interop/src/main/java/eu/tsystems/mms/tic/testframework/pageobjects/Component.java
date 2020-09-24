@@ -31,8 +31,7 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 public interface Component<SELF> extends
     CheckablePage,
     BasicUiElement,
-    Nameable<SELF>,
-    WebElementRetainer
+    Nameable<SELF>
 {
     UiElementList<SELF> list();
 }

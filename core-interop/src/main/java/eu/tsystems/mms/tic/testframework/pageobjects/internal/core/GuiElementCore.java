@@ -24,13 +24,10 @@
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFinder;
-import eu.tsystems.mms.tic.testframework.pageobjects.WebElementRetainer;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.WebElementRetainer;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
-import java.awt.Color;
 import java.io.File;
 import java.util.List;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
@@ -42,7 +39,10 @@ import org.openqa.selenium.support.ui.Select;
  * Provides basic {@link UiElement} features
  * and acts as adapter for {@link WebDriver} implementations
  */
-public interface GuiElementCore extends UiElementFinder, WebElementRetainer {
+public interface GuiElementCore extends
+        GuiElementCoreActions,
+        WebElementRetainer
+{
     /**
      * Checks if an element is found by webdriver.
      *
@@ -106,89 +106,6 @@ public interface GuiElementCore extends UiElementFinder, WebElementRetainer {
     boolean isSelectable();
 
     /**
-     * Returns by locator element.
-     *
-     * @return by locator
-     */
-    @Deprecated
-    By getBy();
-
-    /**
-     * Scroll to the position of this element.
-     *
-     * @return this.
-     */
-    @Deprecated
-    default GuiElementCore scrollToElement() {
-        return scrollToElement(0);
-    }
-    GuiElementCore scrollToElement(final int yOffset);
-
-    /**
-     * Centers the element in the viewport
-     */
-    default GuiElementCore scrollIntoView() {
-        return scrollIntoView(new Point(0,0));
-    }
-
-    /**
-     * Centers the element in the viewport with a given offset
-     * @param offset
-     */
-    GuiElementCore scrollIntoView(Point offset);
-
-    /**
-     * Select a selectable element.
-     *
-     * @return this.
-     */
-    GuiElementCore select();
-
-    /**
-     * Deselect a selectable element.
-     *
-     * @return this.
-     */
-    GuiElementCore deselect();
-
-    /**
-     * Types text into element method with delete of prior content and following check if content was correct written.
-     *
-     * @param text The text to type.
-     * @return this.
-     */
-    GuiElementCore type(final String text);
-
-    /**
-     * Click on element with prior mouseover.
-     *
-     * @return .
-     */
-    GuiElementCore click();
-
-    /**
-     * submit
-     *
-     * @return .
-     */
-    GuiElementCore submit();
-
-    /**
-     * WebElement.sendKeys.
-     *
-     * @param charSequences .
-     * @return send Keys
-     */
-    GuiElementCore sendKeys(final CharSequence... charSequences);
-
-    /**
-     * WebElement.clear.
-     *
-     * @return clear webelement
-     */
-    GuiElementCore clear();
-
-    /**
      * WebElement.getTagName.
      *
      * @return The tag name as String.
@@ -218,13 +135,6 @@ public interface GuiElementCore extends UiElementFinder, WebElementRetainer {
     String getCssValue(final String cssIdentifier);
 
     /**
-     * Mouseover using WebDriver.
-     *
-     * @return this.
-     */
-    GuiElementCore mouseOver();
-
-    /**
      * Returns the Select-Object.
      *
      * @return .
@@ -239,32 +149,6 @@ public interface GuiElementCore extends UiElementFinder, WebElementRetainer {
     List<String> getTextsFromChildren();
 
     /**
-     * doubleclick
-     *
-     * @return .
-     */
-    GuiElementCore doubleClick();
-
-    /**
-     * Highlight element.
-     *
-     * @return element.
-     */
-    default GuiElementCore highlight() {
-        return highlight(new Color(0, 0, 255));
-    }
-
-    GuiElementCore highlight(Color color);
-
-    /**
-     * Swipe the element by the given offset. (0,0) should be the top left.
-     *
-     * @param offsetX horizontal offset in pixel.
-     * @param offSetY vertical offset in pixel.
-     */
-    GuiElementCore swipe(final int offsetX, final int offSetY);
-
-    /**
      * Types your text and returns the length of the attribute 'value' afterwards.
      * Can be useful to check a maximal input length
      * @see GuiElementAssert#assertInputFieldLength(int)
@@ -272,6 +156,7 @@ public interface GuiElementCore extends UiElementFinder, WebElementRetainer {
      * @param textToInput text to check
      * @return Length of the attribute 'value'
      */
+    @Deprecated
     int getLengthOfValueAfterSendKeys(final String textToInput);
 
     /**
@@ -281,8 +166,6 @@ public interface GuiElementCore extends UiElementFinder, WebElementRetainer {
      * @return The number, how many WebElements were identified by this GuiElement.
      */
     int getNumberOfFoundElements();
-
-    GuiElementCore rightClick();
 
     /**
      * Takes a screenshot of the GuiElement

@@ -34,8 +34,7 @@ public interface UiElement extends
     InteractiveUiElement,
     Nameable<UiElement>,
     WebDriverRetainer,
-    UiElementFinder,
-    WebElementRetainer
+    UiElementFinder
 {
     enum Properties implements IProperties {
         @Deprecated
@@ -86,4 +85,9 @@ public interface UiElement extends
     IFrameLogic getFrameLogic();
 
     UiElementList<UiElement> list();
+
+    /**
+     * Performs actions as a user
+     */
+//    InteractiveUiElement asUser();
 }

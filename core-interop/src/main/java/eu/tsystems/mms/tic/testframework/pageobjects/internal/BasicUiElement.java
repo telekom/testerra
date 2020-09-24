@@ -27,14 +27,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAsser
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.StringAssertion;
-import java.awt.Color;
-import org.openqa.selenium.Point;
 
 /**
  * Contains basic GuiElement features which every GuiElement needs to have.
  * @author Mike Reiche
  */
-public interface BasicUiElement {
+public interface BasicUiElement extends WebElementActions {
     QuantityAssertion<Integer> numberOfElements();
     BinaryAssertion<Boolean> present();
     default boolean present(boolean expected) {
@@ -51,22 +49,6 @@ public interface BasicUiElement {
      * Takes a screenshot of the current element
      */
     ImageAssertion screenshot();
-    BasicUiElement highlight(Color color);
-    default BasicUiElement highlight() {
-        return highlight(new Color(0,0, 255, 255));
-    }
     String createXPath();
     Locate getLocate();
-    /**
-     * Centers the element in the viewport
-     */
-    default BasicUiElement scrollIntoView() {
-        return scrollIntoView(new Point(0,0));
-    }
-
-    /**
-     * Centers the element in the viewport with a given offset
-     * @param offset
-     */
-    BasicUiElement scrollIntoView(Point offset);
 }

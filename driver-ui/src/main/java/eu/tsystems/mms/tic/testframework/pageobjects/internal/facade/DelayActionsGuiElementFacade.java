@@ -19,29 +19,32 @@
  * under the License.
  *
  */
- package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
+package eu.tsystems.mms.tic.testframework.pageobjects.internal.facade;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCoreDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreActions;
 import eu.tsystems.mms.tic.testframework.utils.TimerUtils;
 
-public class DelayActionsGuiElementFacade extends AbstractGuiElementFacadeDecorator {
+/**
+ * Delays all {@link GuiElementCoreActions}
+ */
+public class DelayActionsGuiElementFacade extends AbstractGuiElementCoreDecorator {
 
     private final int beforeActionSleepTime;
     private final int afterActionSleepTime;
 
-    public DelayActionsGuiElementFacade(GuiElementFacade decoratedFacade, int beforeActionSleepTime, int afterActionSleepTime, GuiElementData guiElementData) {
-        super(decoratedFacade, guiElementData);
+    public DelayActionsGuiElementFacade(GuiElementCore decoratedCore, int beforeActionSleepTime, int afterActionSleepTime) {
+        super(decoratedCore);
         this.beforeActionSleepTime = beforeActionSleepTime;
         this.afterActionSleepTime = afterActionSleepTime;
     }
 
-    @Override
-    protected void beforeActionDelegation(String methodName, String parameterInfo) {
+    protected void beforeDelegation(String method, Object ... params) {
         TimerUtils.sleep(beforeActionSleepTime);
     }
 
-    @Override
-    protected void afterActionDelegation() {
+    protected void afterDelegation() {
         TimerUtils.sleep(afterActionSleepTime);
     }
 }

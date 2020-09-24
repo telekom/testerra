@@ -285,19 +285,6 @@ public class UiElementTests extends AbstractTestSitesTest implements Loggable, P
     }
 
     @Test
-    public void test_User_sendKeys() {
-        WebTestPage page = getPage();
-        final String input = "Ich bin langsam im Tippen";
-
-        // given
-        page.inputForm().input()
-        // when
-        .asUser().clear().sendKeys(input)
-        // then
-        .value().is(input);
-    }
-
-    @Test
     public void test_Attributes() {
         WebTestPage page = getPage();
         UiElement attributes = page.findByQa("section/attributeTest");

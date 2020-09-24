@@ -30,7 +30,6 @@ import eu.tsystems.mms.tic.testframework.internal.Timings;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.Locate;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.UiElementFactoryProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.location.ByImage;
 import eu.tsystems.mms.tic.testframework.report.model.context.MethodContext;
 import eu.tsystems.mms.tic.testframework.report.utils.ExecutionContextController;
@@ -65,7 +64,7 @@ import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
-public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiElementFactoryProvider, Loggable {
+public class DesktopGuiElementCore extends AbstractGuiElementCore implements Loggable {
 
     public DesktopGuiElementCore(GuiElementData guiElementData) {
         super(guiElementData);
@@ -123,11 +122,6 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
         return webElement;
     }
 
-    @Override
-    public void findWebElement(Consumer<WebElement> consumer) {
-        consumer.accept(findWebElement());
-    }
-
     /**
      * Finds the {@link WebElement} from a list of web elements
      * according to it's selector index in {@link GuiElementData#getIndex()}
@@ -179,28 +173,14 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
     }
 
     @Override
-    public By getBy() {
-        return guiElementData.getLocate().getBy();
-    }
-
-    @Override
-    @Deprecated
-    public GuiElementCore scrollToElement() {
-        pScrollToElement(0);
-        return this;
-    }
-
-    @Override
-    public GuiElementCore scrollToElement(int yOffset) {
+    public void scrollToElement(int yOffset) {
         pScrollToElement(yOffset);
-        return this;
     }
 
     @Override
-    public GuiElementCore scrollIntoView(Point offset) {
+    public void scrollIntoView(Point offset) {
         JSUtils utils = new JSUtils();
         utils.scrollToCenter(guiElementData.getWebDriver(), findWebElement(), offset);
-        return this;
     }
 
     /**
@@ -216,25 +196,22 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
     }
 
     @Override
-    public GuiElementCore select() {
+    public void select() {
         if (!isSelected()) {
             click();
         }
-        return this;
     }
 
     @Override
-    public GuiElementCore deselect() {
+    public void deselect() {
         if (isSelected()) {
             click();
         }
-        return this;
     }
 
     @Override
-    public GuiElementCore type(String text) {
+    public void type(String text) {
         pType(text);
-        return this;
     }
 
     private void pType(String text) {
@@ -268,9 +245,8 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
     }
 
     @Override
-    public GuiElementCore click() {
+    public void click() {
         pClickRelative(this, guiElementData.getWebDriver(), findWebElement());
-        return this;
     }
 
 
@@ -279,7 +255,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
             WebDriver driver,
             WebElement webElement
     ) {
-        By by = guiElementCore.getBy();
+        By by = this.guiElementData.getLocate().getBy();
         if (by instanceof ByImage) {
             ByImage byImage = (ByImage) by;
             int x = byImage.getCenterX();
@@ -295,21 +271,18 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
     }
 
     @Override
-    public GuiElementCore submit() {
+    public void submit() {
         findWebElement().submit();
-        return this;
     }
 
     @Override
-    public GuiElementCore sendKeys(CharSequence... charSequences) {
+    public void sendKeys(CharSequence... charSequences) {
         findWebElement().sendKeys(charSequences);
-        return this;
     }
 
     @Override
-    public GuiElementCore clear() {
+    public void clear() {
         findWebElement().clear();
-        return this;
     }
 
     @Override
@@ -406,9 +379,8 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
     }
 
     @Override
-    public GuiElementCore mouseOver() {
+    public void hover() {
         pMouseOver();
-        return this;
     }
 
     /**
@@ -465,9 +437,9 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
     }
 
     @Override
-    public GuiElementCore doubleClick() {
+    public void doubleClick() {
         WebElement webElement = findWebElement();
-        By localBy = getBy();
+        By localBy = this.guiElementData.getLocate().getBy();
 
         WebDriverRequest driverRequest = WebDriverManager.getRelatedWebDriverRequest(guiElementData.getWebDriver());
 
@@ -492,19 +464,16 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
                 actions.moveToElement(webElement).click().click().build().perform();
             }
         }
-        return this;
     }
 
     @Override
-    public GuiElementCore highlight(Color color) {
+    public void highlight(Color color) {
         JSUtils.highlightWebElement(guiElementData.getWebDriver(), findWebElement(), color);
-        return this;
     }
 
     @Override
-    public GuiElementCore swipe(int offsetX, int offSetY) {
+    public void swipe(int offsetX, int offSetY) {
         MouseActions.swipeElement(guiElementData.getGuiElement(), offsetX, offSetY);
-        return this;
     }
 
     @Override
@@ -531,10 +500,9 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
     }
 
     @Override
-    public GuiElementCore rightClick() {
+    public void contextClick() {
         Actions actions = new Actions(guiElementData.getWebDriver());
         actions.moveToElement(findWebElement()).contextClick().build().perform();
-        return this;
     }
 
     @Override
@@ -575,7 +543,7 @@ public class DesktopGuiElementCore extends AbstractGuiElementCore implements UiE
     }
 
     @Override
-    public UiElement find(Locate locator) {
-        return uiElementFactory.createFromParent(guiElementData.getGuiElement(), locator);
+    public void findWebElement(Consumer<WebElement> consumer) {
+        consumer.accept(findWebElement());
     }
 }

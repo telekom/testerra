@@ -21,7 +21,6 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects;
 
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
@@ -57,14 +56,8 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public BasicUiElement highlight(Color color) {
+    public InteractiveUiElement highlight(Color color) {
         return rootElement.highlight(color);
-    }
-
-    @Override
-    public BasicUiElement highlight() {
-        rootElement.highlight();
-        return this;
     }
 
     @Override
@@ -78,7 +71,7 @@ public abstract class AbstractComponent<SELF extends AbstractComponent<SELF>> ex
     }
 
     @Override
-    public BasicUiElement scrollIntoView(Point offset) {
+    public InteractiveUiElement scrollIntoView(Point offset) {
         return rootElement.scrollIntoView(offset);
     }
 

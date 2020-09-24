@@ -24,7 +24,7 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementAssertions;
 
 /**
- * Provides more assertions features which cannot chained
+ * Contains all test related features for an {@link UiElement}
  * @author Mike Reiche
  */
 public interface TestableUiElement extends UiElementAssertions {

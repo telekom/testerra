@@ -23,23 +23,22 @@
 
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.AbstractGuiElementCoreDecorator;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCore;
 
-public class GuiElementFacadeLoggingDecorator extends AbstractGuiElementFacadeDecorator implements Loggable {
+public class GuiElementFacadeLoggingDecorator extends AbstractGuiElementCoreDecorator implements Loggable {
 
     private final UiElement uiElement;
 
     public GuiElementFacadeLoggingDecorator(
-            GuiElementFacade guiElementFacade,
-            GuiElementData guiElementData,
+            GuiElementCore guiElementFacade,
             UiElement uiElement
     ) {
-        super(guiElementFacade, guiElementData);
+        super(guiElementFacade);
         this.uiElement = uiElement;
     }
 
-    @Override
-    protected void beforeDelegation(String methodName, String parameterInfo) {
-        log().info(methodName + "("+parameterInfo+") on " + this.uiElement.toString(false));
+    protected void beforeDelegation(String method, Object ... params) {
+        log().info(method + "("+params+") on " + this.uiElement.toString(false));
     }
 }

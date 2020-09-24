@@ -24,26 +24,28 @@ package eu.tsystems.mms.tic.testframework.pageobjects;
 import eu.tsystems.mms.tic.testframework.common.Testerra;
 import eu.tsystems.mms.tic.testframework.exceptions.ElementNotFoundException;
 import eu.tsystems.mms.tic.testframework.exceptions.NonUniqueElementException;
+import eu.tsystems.mms.tic.testframework.execution.testng.Assertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.CollectedAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.InstantAssertion;
 import eu.tsystems.mms.tic.testframework.execution.testng.NonFunctionalAssertion;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.BasicUiElement;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.Nameable;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementActions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.UiElementAssertions;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AbstractPropertyAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.AssertionProvider;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.BinaryAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultBinaryAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultImageAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultQuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultRectAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.DefaultStringAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertDescriptionDecorator;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertFactory;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.GuiElementAssertHighlightDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.ImageAssertion;
+import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PerformanceTestGuiElementAssert;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.PropertyAssertionFactory;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.QuantityAssertion;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts.RectAssertion;
@@ -53,15 +55,12 @@ import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCor
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreFrameAwareDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementCoreSequenceDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.core.GuiElementData;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DefaultGuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.DelayActionsGuiElementFacade;
-import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacade;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.facade.GuiElementFacadeLoggingDecorator;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.FrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.frames.IFrameLogic;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.DefaultGuiElementWait;
 import eu.tsystems.mms.tic.testframework.pageobjects.internal.waiters.GuiElementWait;
-import eu.tsystems.mms.tic.testframework.simulation.UserSimulator;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
 import eu.tsystems.mms.tic.testframework.utils.Formatter;
 import eu.tsystems.mms.tic.testframework.webdrivermanager.IWebDriverFactory;
@@ -88,6 +87,7 @@ import org.openqa.selenium.support.ui.Select;
  */
 public class GuiElement implements UiElement, Loggable {
     private static final PropertyAssertionFactory propertyAssertionFactory = Testerra.injector.getInstance(PropertyAssertionFactory.class);
+    private static final UiElementFactory uiElementFactory = Testerra.injector.getInstance(UiElementFactory.class);
 
     private GuiElementAssert defaultAssert;
     private GuiElementAssert instantAssert;
@@ -102,7 +102,10 @@ public class GuiElement implements UiElement, Loggable {
      */
     private final GuiElementCore rawCore;
     /**
-     * This is the decorated core like {@link GuiElementCoreFrameAwareDecorator}
+     * This is the decorated core for {@link GuiElementCoreFrameAwareDecorator}
+     * when {@link GuiElementData#hasFrameLogic()} is true
+     * Otherwise its the same like {@link #rawCore}
+     * Use this instance when you need safe to access properties of {@link GuiElementCore}
      */
     private GuiElementCore frameAwareCore;
     private final GuiElementData guiElementData;
@@ -113,11 +116,10 @@ public class GuiElement implements UiElement, Loggable {
      *  {@link GuiElementFacadeLoggingDecorator}
      *  {@link DelayActionsGuiElementFacade}
      */
-    private GuiElementFacade decoratedFacade;
+    private GuiElementCore decoratedCore;
     private GuiElementWait decoratedWait;
 
     protected Nameable parent;
-    private UserSimulator userSimulator;
     private DefaultUiElementList list;
 
     /**
@@ -225,14 +227,13 @@ public class GuiElement implements UiElement, Loggable {
         }
 
         // Wrap the core with sequence decorator, such that its methods are executed with sequence
-        GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(frameAwareCore, guiElementData);
-        decoratedFacade = new DefaultGuiElementFacade(sequenceCore);
-        decoratedFacade = new GuiElementFacadeLoggingDecorator(decoratedFacade, guiElementData, this);
+        GuiElementCore sequenceCore = new GuiElementCoreSequenceDecorator(frameAwareCore);
+        decoratedCore = new GuiElementFacadeLoggingDecorator(sequenceCore, this);
 
         int delayAfterAction = Properties.DELAY_AFTER_ACTION_MILLIS.asLong().intValue();
         int delayBeforeAction = Properties.DELAY_BEFORE_ACTION_MILLIS.asLong().intValue();
         if (delayAfterAction > 0 || delayBeforeAction > 0) {
-            decoratedFacade = new DelayActionsGuiElementFacade(decoratedFacade, delayBeforeAction, delayAfterAction, guiElementData);
+            decoratedCore = new DelayActionsGuiElementFacade(decoratedCore, delayBeforeAction, delayAfterAction);
         }
     }
 
@@ -300,71 +301,71 @@ public class GuiElement implements UiElement, Loggable {
 
     @Override
     public UiElement scrollIntoView(Point offset) {
-        decoratedFacade.scrollIntoView(offset);
+        decoratedCore.scrollIntoView(offset);
         return this;
     }
 
     public By getBy() {
-        return decoratedFacade.getBy();
+        return guiElementData.getLocate().getBy();
     }
 
     @Deprecated
     public UiElement scrollToElement() {
-        decoratedFacade.scrollToElement();
+        decoratedCore.scrollToElement();
         return this;
     }
     @Deprecated
     public UiElement scrollToElement(int yOffset) {
-        decoratedFacade.scrollToElement(yOffset);
+        decoratedCore.scrollToElement(yOffset);
         return this;
     }
 
     @Override
     public UiElement select() {
-        decoratedFacade.select();
+        decoratedCore.select();
         return this;
     }
 
     @Override
     public UiElement deselect() {
-        decoratedFacade.deselect();
+        decoratedCore.deselect();
         return this;
     }
 
     @Override
     public UiElement type(String text) {
-        decoratedFacade.type(text);
+        decoratedCore.type(text);
         return this;
     }
 
     @Override
     public UiElement click() {
-        decoratedFacade.click();
+        decoratedCore.click();
         return this;
     }
 
     public UiElement submit() {
-        decoratedFacade.submit();
+        decoratedCore.submit();
         return this;
     }
 
     @Override
     public UiElement sendKeys(CharSequence... charSequences) {
-        decoratedFacade.sendKeys(charSequences);
+        decoratedCore.sendKeys(charSequences);
         return this;
     }
 
-    @Override
-    public UiElementActions asUser() {
-        if (this.userSimulator==null) {
-            this.userSimulator = new UserSimulator(this);
-        }
-        return this.userSimulator;
-    }
+//    @Override
+//    public InteractiveUiElement asUser() {
+//        if (this.userSimulator==null) {
+//            this.userSimulator = new UserSimulator(this);
+//        }
+//        return this.userSimulator;
+//    }
 
     @Override
     public UiElement clear() {
-        decoratedFacade.clear();
+        decoratedCore.clear();
         return this;
     }
 
@@ -374,31 +375,31 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     public String getTagName() {
-        return decoratedFacade.getTagName();
+        return decoratedCore.getTagName();
     }
 
     public String getAttribute(String attributeName) {
-        return decoratedFacade.getAttribute(attributeName);
+        return decoratedCore.getAttribute(attributeName);
     }
 
     public boolean isSelected() {
-        return decoratedFacade.isSelected();
+        return decoratedCore.isSelected();
     }
 
     public boolean isEnabled() {
-        return decoratedFacade.isEnabled();
+        return decoratedCore.isEnabled();
     }
 
     public String getText() {
-        return decoratedFacade.getText();
+        return decoratedCore.getText();
     }
 
     public boolean isDisplayed() {
-        return decoratedFacade.isDisplayed();
+        return decoratedCore.isDisplayed();
     }
 
     public boolean isVisible(final boolean complete) {
-        return decoratedFacade.isVisible(complete);
+        return decoratedCore.isVisible(complete);
     }
 
     /**
@@ -410,20 +411,20 @@ public class GuiElement implements UiElement, Loggable {
      * @return true, if the element is selectable.
      */
     public boolean isSelectable() {
-        return decoratedFacade.isSelectable();
+        return decoratedCore.isSelectable();
     }
 
     public Point getLocation() {
-        return decoratedFacade.getLocation();
+        return decoratedCore.getLocation();
     }
 
     public Dimension getSize() {
-        return decoratedFacade.getSize();
+        return decoratedCore.getSize();
     }
 
     @Override
-    public UiElement find(Locate locate) {
-        return rawCore.find(locate);
+    public UiElement find(Locate locator) {
+        return uiElementFactory.createFromParent(guiElementData.getGuiElement(), locator);
     }
 
     @Override
@@ -436,24 +437,24 @@ public class GuiElement implements UiElement, Loggable {
     }
 
     public String getCssValue(String cssIdentifier) {
-        return decoratedFacade.getCssValue(cssIdentifier);
+        return decoratedCore.getCssValue(cssIdentifier);
     }
 
     public UiElement mouseOver() {
-        decoratedFacade.mouseOver();
+        decoratedCore.mouseOver();
         return this;
     }
 
     public boolean isPresent() {
-        return decoratedFacade.isPresent();
+        return decoratedCore.isPresent();
     }
 
     public Select getSelectElement() {
-        return decoratedFacade.getSelectElement();
+        return decoratedCore.getSelectElement();
     }
 
     public List<String> getTextsFromChildren() {
-        return decoratedFacade.getTextsFromChildren();
+        return decoratedCore.getTextsFromChildren();
     }
 
     @Deprecated
@@ -484,12 +485,12 @@ public class GuiElement implements UiElement, Loggable {
      */
     @Deprecated
     public WebElement getWebElement() {
-        return decoratedFacade.findWebElement();
+        return decoratedCore.findWebElement();
     }
 
     @Override
     public UiElement doubleClick() {
-        decoratedFacade.doubleClick();
+        decoratedCore.doubleClick();
         return this;
     }
 
@@ -503,23 +504,23 @@ public class GuiElement implements UiElement, Loggable {
 
     @Override
     public UiElement highlight(Color color) {
-        decoratedFacade.highlight(color);
+        decoratedCore.highlight(color);
         return this;
     }
 
     public UiElement swipe(int offsetX, int offSetY) {
-        decoratedFacade.swipe(offsetX, offSetY);
+        decoratedCore.swipe(offsetX, offSetY);
         return this;
     }
 
     @Deprecated
     public int getLengthOfValueAfterSendKeys(String textToInput) {
-        return decoratedFacade.getLengthOfValueAfterSendKeys(textToInput);
+        return decoratedCore.getLengthOfValueAfterSendKeys(textToInput);
     }
 
     @Deprecated
     public int getNumberOfFoundElements() {
-        return decoratedFacade.getNumberOfFoundElements();
+        return decoratedCore.getNumberOfFoundElements();
     }
 
     /**
@@ -532,13 +533,13 @@ public class GuiElement implements UiElement, Loggable {
 
     @Override
     public UiElement contextClick() {
-        decoratedFacade.rightClick();
+        decoratedCore.rightClick();
         return this;
     }
 
     @Deprecated
     public File takeScreenshot() {
-        return decoratedFacade.takeScreenshot();
+        return decoratedCore.takeScreenshot();
     }
 
     /**
@@ -656,11 +657,27 @@ public class GuiElement implements UiElement, Loggable {
     @Deprecated
     public GuiElementAssert nonFunctionalAsserts() {
         if (nonFunctionalAssert==null) {
-            GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             NonFunctionalAssertion assertion = Testerra.injector.getInstance(NonFunctionalAssertion.class);
-            nonFunctionalAssert = assertFactory.create(frameAwareCore, guiElementData, assertion, waits());
+            nonFunctionalAssert = createAssertDecorators(frameAwareCore, guiElementData, assertion, waits());
         }
         return nonFunctionalAssert;
+    }
+
+    @Deprecated
+    private GuiElementAssert createAssertDecorators(
+            GuiElementCore core,
+            GuiElementData data,
+            Assertion assertion,
+            GuiElementWait wait
+    ) {
+        GuiElementAssert guiElementAssert;
+        if (Testerra.Properties.PERF_TEST.asBool()) {
+            guiElementAssert = new PerformanceTestGuiElementAssert();
+        } else {
+            guiElementAssert = new DefaultGuiElementAssert(core, data, wait, assertion);
+            guiElementAssert = new GuiElementAssertHighlightDecorator(guiElementAssert, data);
+        }
+        return guiElementAssert;
     }
 
     /**
@@ -681,9 +698,8 @@ public class GuiElement implements UiElement, Loggable {
     @Deprecated
     public GuiElementAssert instantAsserts() {
         if (instantAssert == null) {
-            GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             InstantAssertion assertion = Testerra.injector.getInstance(InstantAssertion.class);
-            instantAssert = assertFactory.create(frameAwareCore, guiElementData, assertion, waits());
+            instantAssert = createAssertDecorators(frameAwareCore, guiElementData, assertion, waits());
         }
         return instantAssert;
     }
@@ -697,9 +713,8 @@ public class GuiElement implements UiElement, Loggable {
     @Deprecated
     public GuiElementAssert assertCollector() {
         if (collectableAssert==null) {
-            GuiElementAssertFactory assertFactory = Testerra.injector.getInstance(GuiElementAssertFactory.class);
             CollectedAssertion assertion = Testerra.injector.getInstance(CollectedAssertion.class);
-            collectableAssert = assertFactory.create(frameAwareCore, guiElementData, assertion, waits());
+            collectableAssert = createAssertDecorators(frameAwareCore, guiElementData, assertion, waits());
         }
         return collectableAssert;
     }
@@ -981,7 +996,7 @@ public class GuiElement implements UiElement, Loggable {
     public ImageAssertion screenshot() {
         final UiElement self = this;
         final AtomicReference<File> screenshot = new AtomicReference<>();
-        screenshot.set(rawCore.takeScreenshot());
+        screenshot.set(frameAwareCore.takeScreenshot());
         DefaultImageAssertion assertion = propertyAssertionFactory.create(DefaultImageAssertion.class, new AssertionProvider<File>() {
             @Override
             public File getActual() {
@@ -1014,6 +1029,6 @@ public class GuiElement implements UiElement, Loggable {
 
     @Override
     public void findWebElement(Consumer<WebElement> consumer) {
-        decoratedFacade.findWebElement(consumer);
+        decoratedCore.findWebElement(consumer);
     }
 }

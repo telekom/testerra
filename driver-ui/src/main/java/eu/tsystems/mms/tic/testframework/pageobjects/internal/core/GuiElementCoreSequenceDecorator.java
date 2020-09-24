@@ -22,14 +22,19 @@
  package eu.tsystems.mms.tic.testframework.pageobjects.internal.core;
 
 import eu.tsystems.mms.tic.testframework.common.Testerra;
+import eu.tsystems.mms.tic.testframework.exceptions.TimeoutException;
 import eu.tsystems.mms.tic.testframework.logging.Loggable;
+import eu.tsystems.mms.tic.testframework.pageobjects.UiElement;
 import eu.tsystems.mms.tic.testframework.testing.TestController;
-import eu.tsystems.mms.tic.testframework.transfer.ThrowablePackedResponse;
-import eu.tsystems.mms.tic.testframework.utils.Timer;
+import eu.tsystems.mms.tic.testframework.utils.Sequence;
 import java.awt.Color;
 import java.io.File;
 import java.util.List;
-import org.openqa.selenium.By;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
@@ -42,501 +47,324 @@ import org.openqa.selenium.support.ui.Select;
  * <p>
  * Created by rnhb on 12.08.2015.
  */
-@Deprecated
 public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecorator implements Loggable {
 
-    public GuiElementCoreSequenceDecorator(GuiElementCore core, GuiElementData guiElementData) {
+    private static final TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
+
+    public GuiElementCoreSequenceDecorator(GuiElementCore core) {
         super(core);
     }
 
-    private Timer getTimer() {
-        TestController.Overrides overrides = Testerra.injector.getInstance(TestController.Overrides.class);
-        return new Timer(200, overrides.getTimeoutInSeconds());
-    }
+    /**
+     * If the supplier returns TRUE and no {@link Throwable} was catched,
+     * the sequence ends immediately
+     * Otherwise it throws a {@link TimeoutException}
+     * @param runnable
+     */
+    private void sequenced(Supplier<Boolean> runnable) {
 
-    @Override
-    public WebElement getWebElement() {
-       return this.findWebElement();
+        Sequence sequence = new Sequence()
+                .setTimeoutMs(overrides.getTimeoutInSeconds()*1000)
+                .setPauseMs(UiElement.Properties.ELEMENT_WAIT_INTERVAL_MS.asLong());
+
+        AtomicReference<Throwable> atomicThrowable = new AtomicReference<>();
+        AtomicBoolean atomicSuccess = new AtomicBoolean();
+        sequence.run(() -> {
+            try {
+                atomicSuccess.set(runnable.get());
+            } catch (Throwable throwable) {
+                atomicThrowable.set(throwable);
+                atomicSuccess.set(false);
+            }
+            return atomicSuccess.get();
+        });
+
+        if (!atomicSuccess.get()) {
+            throw new TimeoutException("Sequence timed out after " + sequence.getDurationMs()/1000 + "s", atomicThrowable.get());
+        }
     }
 
     @Override
     public WebElement findWebElement() {
-        Timer.Sequence<WebElement> sequence = new Timer.Sequence<WebElement>() {
-            @Override
-            public void run() {
-                WebElement webElement = decoratedCore.findWebElement();
-                setReturningObject(webElement);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<WebElement> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
+        AtomicReference<WebElement> atomicReference = new AtomicReference<>();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.findWebElement());
+            return true;
+        });
+        return atomicReference.get();
     }
 
     @Override
-    public By getBy() {
-        return decoratedCore.getBy();
+    public void findWebElement(Consumer<WebElement> consumer) {
+        sequenced(() -> {
+            decoratedCore.findWebElement(consumer);
+            return true;
+        });
     }
 
     @Override
-    @Deprecated
-    public GuiElementCore scrollToElement(int yOffset) {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                decoratedCore.scrollToElement(yOffset);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        throwablePackedResponse.finalizeTimer();
-        return this;
+    public void scrollToElement(int yOffset) {
+        sequenced(() -> {
+            decoratedCore.scrollToElement(yOffset);
+            return true;
+        });
     }
 
     @Override
-    public GuiElementCore scrollIntoView(Point offset) {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                decoratedCore.scrollIntoView(offset);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        throwablePackedResponse.finalizeTimer();
-        return this;
+    public void scrollIntoView(Point offset) {
+        sequenced(() -> {
+            decoratedCore.scrollIntoView(offset);
+            return true;
+        });
     }
 
     @Override
-    public GuiElementCore select() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                decoratedCore.select();
-                setPassState(decoratedCore.isSelected());
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        throwablePackedResponse.finalizeTimer();
-        return this;
+    public void select() {
+        sequenced(() -> {
+            decoratedCore.select();
+            return decoratedCore.isSelected();
+        });
     }
 
     @Override
-    public GuiElementCore deselect() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                decoratedCore.deselect();
-                setPassState(!decoratedCore.isSelected());
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        throwablePackedResponse.finalizeTimer();
-        return this;
+    public void deselect() {
+        sequenced(() -> {
+            decoratedCore.deselect();
+            return !decoratedCore.isSelected();
+        });
     }
 
     @Override
-    public GuiElementCore type(final String text) {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                decoratedCore.type(text);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        throwablePackedResponse.finalizeTimer();
-        return this;
+    public void type(final String text) {
+        sequenced(() -> {
+            decoratedCore.type(text);
+            return true;
+        });
     }
 
     @Override
-    public GuiElementCore click() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                setSkipThrowingException(true);
-                decoratedCore.click();
-            }
-        };
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-
-        return this;
+    public void click() {
+        sequenced(() -> {
+            decoratedCore.click();
+            return true;
+        });
     }
 
     @Override
-    public GuiElementCore submit() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                decoratedCore.submit();
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        throwablePackedResponse.finalizeTimer();
-        return this;
+    public void submit() {
+        sequenced(() -> {
+            decoratedCore.submit();
+            return true;
+        });
     }
 
     @Override
-    public GuiElementCore sendKeys(final CharSequence... charSequences) {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                decoratedCore.sendKeys(charSequences);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        throwablePackedResponse.finalizeTimer();
-        return this;
+    public void sendKeys(final CharSequence... charSequences) {
+        sequenced(() -> {
+            decoratedCore.sendKeys(charSequences);
+            return true;
+        });
     }
 
     @Override
-    public GuiElementCore clear() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                decoratedCore.clear();
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        throwablePackedResponse.finalizeTimer();
-        return this;
+    public void clear() {
+        sequenced(() -> {
+            decoratedCore.clear();
+            return true;
+        });
     }
 
     @Override
     public String getTagName() {
-        Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
-            @Override
-            public void run() {
-                String tagName = decoratedCore.getTagName();
-                setReturningObject(tagName);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<String> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
+        AtomicReference<String> atomicReference = new AtomicReference<>();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.getTagName());
+            return true;
+        });
+        return atomicReference.get();
     }
 
     @Override
     public Point getLocation() {
-        Timer.Sequence<Point> sequence = new Timer.Sequence<Point>() {
-            @Override
-            public void run() {
-                Point point = decoratedCore.getLocation();
-                setReturningObject(point);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Point> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
+        AtomicReference<Point> atomicReference = new AtomicReference<>();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.getLocation());
+            return true;
+        });
+        return atomicReference.get();
     }
 
     @Override
     public Dimension getSize() {
-        Timer.Sequence<Dimension> sequence = new Timer.Sequence<Dimension>() {
-            @Override
-            public void run() {
-                Dimension dimension = decoratedCore.getSize();
-                setReturningObject(dimension);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Dimension> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
+        AtomicReference<Dimension> atomicReference = new AtomicReference<>();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.getSize());
+            return true;
+        });
+        return atomicReference.get();
     }
 
     @Override
     public String getCssValue(final String cssIdentifier) {
-        Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
-            @Override
-            public void run() {
-                String cssValue = decoratedCore.getCssValue(cssIdentifier);
-                setReturningObject(cssValue);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<String> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
-    }
-
-    @Override
-    public GuiElementCore mouseOver() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                setSkipThrowingException(true);
-                decoratedCore.mouseOver();
-            }
-        };
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        throwablePackedResponse.finalizeTimer();
-        return this;
+        AtomicReference<String> atomicReference = new AtomicReference<>();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.getCssValue(cssIdentifier));
+            return true;
+        });
+        return atomicReference.get();
     }
 
     @Override
     public Select getSelectElement() {
-        Timer.Sequence<Select> sequence = new Timer.Sequence<Select>() {
-            @Override
-            public void run() {
-                Select select = decoratedCore.getSelectElement();
-                setReturningObject(select);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Select> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
+        AtomicReference<Select> atomicReference = new AtomicReference<>();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.getSelectElement());
+            return true;
+        });
+        return atomicReference.get();
     }
 
     @Override
     public List<String> getTextsFromChildren() {
-        Timer.Sequence<List<String>> sequence = new Timer.Sequence<List<String>>() {
-            @Override
-            public void run() {
-                List<String> stringList = decoratedCore.getTextsFromChildren();
-                setReturningObject(stringList);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<List<String>> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
+        AtomicReference<List<String>> atomicReference = new AtomicReference<>();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.getTextsFromChildren());
+            return true;
+        });
+        return atomicReference.get();
     }
 
     @Override
-    public GuiElementCore doubleClick() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                decoratedCore.doubleClick();
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        return this;
+    public void doubleClick() {
+        sequenced(() -> {
+            decoratedCore.doubleClick();
+            return true;
+        });
     }
 
     @Override
-    public GuiElementCore highlight(Color color) {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                decoratedCore.highlight(color);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        throwablePackedResponse.logThrowableAndReturnResponse();
-        return this;
+    public void highlight(Color color) {
+        sequenced(() -> {
+            decoratedCore.highlight(color);
+            return true;
+        });
     }
 
     @Override
-    public GuiElementCore swipe(final int offsetX, final int offSetY) {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                decoratedCore.swipe(offsetX, offSetY);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        throwablePackedResponse.finalizeTimer();
-        return this;
+    public void swipe(final int offsetX, final int offSetY) {
+        sequenced(() -> {
+            decoratedCore.swipe(offsetX, offSetY);
+            return true;
+        });
     }
 
     @Override
     public int getLengthOfValueAfterSendKeys(final String textToInput) {
-        Timer.Sequence<Integer> sequence = new Timer.Sequence<Integer>() {
-            @Override
-            public void run() {
-                Integer integer = decoratedCore.getLengthOfValueAfterSendKeys(textToInput);
-                setReturningObject(integer);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Integer> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
+        AtomicInteger atomicReference = new AtomicInteger();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.getLengthOfValueAfterSendKeys(textToInput));
+            return true;
+        });
+        return atomicReference.get();
     }
 
     @Override
     public int getNumberOfFoundElements() {
-        Timer.Sequence<Integer> sequence = new Timer.Sequence<Integer>() {
-            @Override
-            public void run() {
-                setReturningObject(0);
-                int numberOfFoundElements = decoratedCore.getNumberOfFoundElements();
-                setReturningObject(numberOfFoundElements);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Integer> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
-    }
-
-    @Override
-    public GuiElementCore rightClick() {
-        Timer.Sequence sequence = new Timer.Sequence() {
-            @Override
-            public void run() {
-                decoratedCore.rightClick();
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse throwablePackedResponse = getTimer().executeSequence(sequence);
-        return this;
+        AtomicInteger atomicReference = new AtomicInteger();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.getNumberOfFoundElements());
+            return true;
+        });
+        return atomicReference.get();
     }
 
     @Override
     public File takeScreenshot() {
-        return decoratedCore.takeScreenshot();
-    }
-
-    @Override
-    protected void beforeDelegation() {
-
-    }
-
-    @Override
-    protected void afterDelegation() {
-
+        AtomicReference<File> atomicReference = new AtomicReference<>();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.takeScreenshot());
+            return true;
+        });
+        return atomicReference.get();
     }
 
     @Override
     public boolean isPresent() {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false);
-                setSkipThrowingException(true);
-
-                boolean present = decoratedCore.isPresent();
-                setReturningObject(present);
-                setPassState(present);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        AtomicBoolean atomicReference = new AtomicBoolean();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.isPresent());
+            return atomicReference.get();
+        });
+        return atomicReference.get();
     }
 
     @Override
     public boolean isEnabled() {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false);
-                setSkipThrowingException(true);
-
-                boolean enabled = decoratedCore.isEnabled();
-                setReturningObject(enabled);
-                setPassState(enabled);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        AtomicBoolean atomicReference = new AtomicBoolean();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.isEnabled());
+            return atomicReference.get();
+        });
+        return atomicReference.get();
     }
 
     @Override
     public boolean isDisplayed() {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false);
-                setSkipThrowingException(true);
-
-                boolean displayed = decoratedCore.isDisplayed();
-                setReturningObject(displayed);
-                setPassState(displayed);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        AtomicBoolean atomicReference = new AtomicBoolean();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.isDisplayed());
+            return atomicReference.get();
+        });
+        return atomicReference.get();
     }
 
     @Override
     public boolean isVisible(boolean complete) {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false);
-                setSkipThrowingException(true);
-
-                boolean visible = decoratedCore.isVisible(complete);
-                setReturningObject(visible);
-                setPassState(visible);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        AtomicBoolean atomicReference = new AtomicBoolean();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.isVisible(complete));
+            return atomicReference.get();
+        });
+        return atomicReference.get();
     }
 
     @Override
     public boolean isSelected() {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false);
-                setSkipThrowingException(true);
-
-                boolean selected = decoratedCore.isSelected();
-                setReturningObject(selected);
-                setPassState(selected);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        AtomicBoolean atomicReference = new AtomicBoolean();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.isSelected());
+            return atomicReference.get();
+        });
+        return atomicReference.get();
     }
 
     @Override
     public String getText() {
-        Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
-            @Override
-            public void run() {
-                String text = decoratedCore.getText();
-                setReturningObject(text);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<String> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
+        AtomicReference<String> atomicReference = new AtomicReference<>();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.getText());
+            return true;
+        });
+        return atomicReference.get();
     }
 
     @Override
     public String getAttribute(final String attributeName) {
-        Timer.Sequence<String> sequence = new Timer.Sequence<String>() {
-            @Override
-            public void run() {
-                String attributeValue = decoratedCore.getAttribute(attributeName);
-                setReturningObject(attributeValue);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<String> throwablePackedResponse = getTimer().executeSequence(sequence);
-        return throwablePackedResponse.finalizeTimer();
+        AtomicReference<String> atomicReference = new AtomicReference<>();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.getAttribute(attributeName));
+            return true;
+        });
+        return atomicReference.get();
     }
 
     @Override
     public boolean isSelectable() {
-        Timer.Sequence<Boolean> sequence = new Timer.Sequence<Boolean>() {
-            @Override
-            public void run() {
-                setReturningObject(false);
-                setSkipThrowingException(true);
-
-                boolean selectable = decoratedCore.isSelectable();
-                setReturningObject(selectable);
-                setPassState(selectable);
-            }
-        };
-        sequence.setSkipThrowingException(true);
-        ThrowablePackedResponse<Boolean> response = getTimer().executeSequence(sequence);
-        return response.logThrowableAndReturnResponse();
+        AtomicBoolean atomicReference = new AtomicBoolean();
+        sequenced(() -> {
+            atomicReference.set(decoratedCore.isSelectable());
+            return atomicReference.get();
+        });
+        return atomicReference.get();
     }
-
 }

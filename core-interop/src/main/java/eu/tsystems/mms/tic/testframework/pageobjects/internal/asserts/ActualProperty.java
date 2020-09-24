@@ -21,6 +21,10 @@
 
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
+/**
+ * Provides an actual value for assertions
+ * @param <T> Assertion value type
+ */
 public interface ActualProperty<T> {
     T getActual();
 }

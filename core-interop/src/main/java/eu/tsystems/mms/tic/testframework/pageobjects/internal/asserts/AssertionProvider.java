@@ -22,13 +22,16 @@
 package eu.tsystems.mms.tic.testframework.pageobjects.internal.asserts;
 
 /**
- * Provides properties for further assertion
+ * Provides information and reacts to further assertions
  * @author Mike Reiche
  */
 public abstract class AssertionProvider<T> implements ActualProperty<T> {
     @Override
     abstract public T getActual();
 
+    /**
+     * @return The subject ob the property (ea. "name", "url", ...)
+     */
     abstract public String getSubject();
 
     /**

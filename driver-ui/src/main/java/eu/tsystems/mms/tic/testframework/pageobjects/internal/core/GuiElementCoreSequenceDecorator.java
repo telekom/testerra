@@ -71,14 +71,13 @@ public class GuiElementCoreSequenceDecorator extends AbstractGuiElementCoreDecor
         AtomicBoolean atomicSuccess = new AtomicBoolean();
 
         sequence.run(() -> {
-            boolean success;
             try {
-                success = runnable.get();
+                atomicSuccess.set(runnable.get());
             } catch (Throwable throwable) {
                 atomicThrowable.set(throwable);
-                success = false;
+                atomicSuccess.set(false);
             }
-            return atomicSuccess.getAndSet(success);
+            return atomicSuccess.get();
         });
 
         if (!atomicSuccess.get() && throwException) {

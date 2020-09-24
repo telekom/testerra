@@ -40,6 +40,8 @@ import javax.mail.NoSuchProviderException;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.search.MessageIDTerm;
+import javax.mail.search.SearchTerm;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -79,8 +81,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      */
     private static final String MAX_READ_TRIES_DEFAULT = "20";
 
-    private static final int SLEEP_SECONDS = Integer.valueOf(PropertyManager.getProperty(POLLING_TIMER_SECONDS_PROPERTY, SLEEP_SECONDS_DEFAULT));
-    private static final int MAX_READ_TRIES = Integer.valueOf(PropertyManager.getProperty(MAX_READ_TRIES_PROPERTY, MAX_READ_TRIES_DEFAULT));
+    private static final int SLEEP_SECONDS = Integer.parseInt(PropertyManager.getProperty(POLLING_TIMER_SECONDS_PROPERTY, SLEEP_SECONDS_DEFAULT));
+    private static final int MAX_READ_TRIES = Integer.parseInt(PropertyManager.getProperty(MAX_READ_TRIES_PROPERTY, MAX_READ_TRIES_DEFAULT));
 
     /**
      * Wait until messages with search criteria are received.
@@ -91,9 +93,24 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      *
      * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      */
+    @Deprecated
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias) {
 
         return waitForMails(searchCriterias, MAX_READ_TRIES, SLEEP_SECONDS);
+    }
+
+    /**
+     * Wait until messages with search term are received.
+     *
+     * @param searchTerm The criterias which the message should contain.
+     *
+     * @return The message.
+     *
+     * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
+     */
+    public List<Email> waitForMails(final SearchTerm searchTerm) {
+
+        return waitForMails(searchTerm, MAX_READ_TRIES, SLEEP_SECONDS);
     }
 
     /**
@@ -107,6 +124,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      *
      * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
      */
+    @Deprecated
     public List<Email> waitForMails(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) {
 
         List<MimeMessage> messages = pWaitForMessage(searchCriterias, maxReadTries, pollingTimerSeconds);
@@ -117,6 +135,97 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
         return out;
     }
 
+    /**
+     * Wait until messages with the specified search term are received.
+     *
+     * @param searchTerm     The search term which the message should contain.
+     * @param maxReadTries
+     * @param pollingTimerSeconds
+     *
+     * @return The message.
+     *
+     * @throws TesterraSystemException thrown if an error by waiting for the message occurs.
+     */
+    public List<Email> waitForMails(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds) {
+
+        List<MimeMessage> messages = pWaitForMessage(searchTerm, maxReadTries, pollingTimerSeconds);
+        List<Email> out = new LinkedList<>();
+        for (MimeMessage message : messages) {
+            out.add(new Email(message));
+        }
+        return out;
+    }
+
+    private List<MimeMessage> pWaitForMessage(final SearchTerm searchTerm, int maxReadTries, int pollingTimerSeconds) throws TesterraSystemException {
+
+        Store store = null;
+
+        List<MimeMessage> out = new LinkedList<>();
+
+        if (maxReadTries < 1) {
+            maxReadTries = 1;
+            logger.info("Changing read tries to min value: 1");
+        }
+        if (pollingTimerSeconds < 10) {
+            pollingTimerSeconds = 10;
+            logger.info("Changing poller timer to min value: 10s");
+        }
+
+        try {
+            int lastMessageCount = 0;
+            int newMessageCount;
+            int noScanCounter = 0;
+
+            for (int i = 0; i < maxReadTries; i++) {
+                store = getSession().getStore();
+                store.connect();
+
+                final Folder folder = store.getFolder(getInboxFolder());
+                folder.open(Folder.READ_ONLY);
+
+                newMessageCount = folder.getMessageCount();
+                if (newMessageCount < lastMessageCount || (noScanCounter != 0 && noScanCounter % 3 == 0)) {
+                    lastMessageCount = 0;
+                } else if (newMessageCount == lastMessageCount) {
+                    noScanCounter++;
+                }
+
+                if (newMessageCount > lastMessageCount) {
+                    // cause folder.getMessages starts with 1
+                    if (lastMessageCount == 0) {
+                        lastMessageCount = 1;
+                    }
+
+                    final Message[] messages = folder.search(searchTerm);
+                    for (Message message : messages) {
+                        final MimeMessage mimeMessage = new MimeMessage((MimeMessage) message);
+                        out.add(mimeMessage);
+                    }
+                }
+            }
+        }  catch (final Exception e) {
+            logger.error("Error searching for message", e);
+            throw new TesterraSystemException(e);
+        } finally {
+            if (store != null) {
+                try {
+                    store.close();
+                } catch (MessagingException e) {
+                    logger.warn("Error closing connection", e);
+                }
+            }
+        }
+
+        if (out.size() == 0) {
+            throw new TesterraSystemException(String.format("No messages found after %s seconds.",
+                    pollingTimerSeconds * maxReadTries));
+        }
+
+        return out;
+    }
+
+
+    @Deprecated
     private List<MimeMessage> pWaitForMessage(List<SearchCriteria> searchCriterias, int maxReadTries, int pollingTimerSeconds) throws TesterraSystemException {
 
         String msg = "Wait for message with criterias: ";
@@ -220,6 +329,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
         return out;
     }
 
+    @Deprecated
     private boolean criteriaMatchesMessage(SearchCriteria searchCriteria, Message message) throws MessagingException {
         boolean matches = true;
         final SearchCriteriaType searchCriteriaType = searchCriteria.getSearchCriteriaType();
@@ -363,7 +473,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
     private int pGetMessageCount() throws TesterraSystemException {
 
         Store store;
-        int nrOfMessages = 0;
+        int nrOfMessages;
         try {
             store = getSession().getStore();
             store.connect(getServer(), getUsername(), getPassword());
@@ -404,8 +514,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      */
     private MimeMessage[] pGetMessages() throws TesterraSystemException {
 
-        Store store = null;
-        ArrayList<MimeMessage> mimes = null;
+        Store store;
+        ArrayList<MimeMessage> mimes;
         try {
             store = getSession().getStore();
             store.connect();
@@ -454,8 +564,8 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      *
      * @return true if message has been deleted.
      */
-    public boolean deleteMessage(Email mail) {
-        return deleteMessage(null, Message.RecipientType.TO, null, mail.getMessageID());
+    public boolean deleteMessage(final Email mail) {
+        return deleteMessage(new MessageIDTerm(mail.getMessageID()));
     }
 
     /**
@@ -466,6 +576,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      *
      * @return true if messages were deleted
      */
+    @Deprecated
     public boolean deleteMessage(List<List<SearchCriteria>> messagesCriterias) {
 
         boolean isDeleted = false;
@@ -498,6 +609,30 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
     }
 
     /**
+     * deletes messages by given search criterias
+     *
+     * @param searchTerms List of search criteria list - inner list represents searchcriterias to identify one
+     *            message
+     *
+     * @return true if messages were deleted
+     */
+    public boolean deleteMessages(final List<SearchTerm> searchTerms) {
+
+        boolean isDeleted = false;
+
+        for (final SearchTerm searchTerm : searchTerms) {
+            isDeleted = deleteMessage(searchTerm);
+        }
+
+        return isDeleted;
+    }
+
+    public boolean deleteMessage(final SearchTerm searchTerm) throws TesterraSystemException {
+        return this.pDeleteMessage(searchTerm);
+    }
+
+
+    /**
      * move given message into folder with given name.
      *
      * @param targetFolder Name of folder to move into.
@@ -505,9 +640,22 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      *
      * @return true if moved.
      */
-    public boolean moveMessage(String targetFolder, Email message) {
-        SearchCriteria searchCriteria = new SearchCriteria(SearchCriteriaType.MESSAGEID, message.getMessageID());
-        return pMoveMessage(targetFolder, searchCriteria) == 1;
+    public boolean moveMessage(final String targetFolder, final Email message) {
+        final MessageIDTerm messageIDTerm = new MessageIDTerm(message.getMessageID());
+        return pMoveMessage(targetFolder, messageIDTerm) == 1;
+    }
+
+    /**
+     * move messages by given search terms into folder with given name.
+     *
+     * @param targetFolder Name of folder to move into.
+     * @param searchTerms List of search term list - inner list represents searchcriterias to identify one
+     *            message
+     *
+     * @return count of moved mails.
+     */
+    public int moveMessage(final String targetFolder, final SearchTerm... searchTerms) {
+        return pMoveMessage(targetFolder, searchTerms);
     }
 
     /**
@@ -579,6 +727,49 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
         return count;
     }
 
+
+    private int pMoveMessage(final String targetFolderName, final SearchTerm... searchTerms) {
+        Store store;
+        int count = 0;
+        try {
+            store = getSession().getStore();
+            store.connect();
+
+            final Folder targetFolder = store.getFolder(targetFolderName);
+            if (!targetFolder.exists()) {
+                targetFolder.create(Folder.HOLDS_MESSAGES);
+            }
+
+            final Folder folder = store.getFolder(getInboxFolder());
+            folder.open(Folder.READ_WRITE);
+
+            logger.info("Checking messages from " + getInboxFolder() + " for MessageID:");
+            ArrayList<Message> copyList = new ArrayList<>();
+            for (final SearchTerm searchTerm : searchTerms) {
+                final Message[] messages = folder.search(searchTerm);
+
+                copyList.addAll(Arrays.asList(messages));
+
+            }
+
+            final Message[] msgArray = copyList.toArray(new Message[copyList.size()]);
+            folder.copyMessages(msgArray, targetFolder);
+
+            count = msgArray.length;
+
+            folder.setFlags(msgArray, new Flags(Flags.Flag.DELETED), true);
+
+            folder.close(true);
+            store.close();
+
+        } catch (final MessagingException e) {
+            logger.error(e.getMessage());
+            throw new TesterraSystemException(e);
+        }
+
+        return count;
+    }
+
     /**
      * deletes messages with fitting parameters
      *
@@ -587,12 +778,13 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      *
      * @return boolean - true if messages were deleted
      */
+    @Deprecated
     public boolean deleteMessages(List<String> deleteCriteriaValues, DeleteCriteriaType deleteCriteriaType) {
 
         List<Boolean> booleanValues = new ArrayList<>();
 
         for (String deleteCriteriaValue : deleteCriteriaValues) {
-            boolean isDeleted = false;
+            boolean isDeleted;
             switch (deleteCriteriaType) {
                 case RECIPIENT:
                     isDeleted = deleteMessage(deleteCriteriaValue, Message.RecipientType.TO, null, null);
@@ -620,13 +812,56 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
 
     @Deprecated
     public boolean deleteMessage(List<String> deleteCriteriaValues, DeleteCriteriaType deleteCriteriaType) {
-
         return deleteMessages(deleteCriteriaValues, deleteCriteriaType);
     }
 
     public boolean deleteAllMessages() {
+        return pDeleteMessage(null);
+    }
 
-        return deleteMessage(null, null, null, null);
+    private boolean pDeleteMessage(final SearchTerm searchTerm) throws TesterraSystemException {
+
+        boolean deleted = false;
+
+        Store store;
+        try {
+            store = getSession().getStore();
+            store.connect();
+            final Folder folder = store.getFolder(getInboxFolder());
+            folder.open(Folder.READ_WRITE);
+
+            final Message[] messages;
+
+            if (searchTerm != null) {
+                messages = folder.search(searchTerm);
+            } else {
+                messages = folder.getMessages();
+            }
+
+            logger.info("Checking messages from " + getInboxFolder() + " for MessageID:");
+
+            if (messages.length > 0) {
+                String msg = "Message found, DELETING";
+                for (final Message message : messages) {
+
+                    if (message.getSubject() != null) {
+                        msg += ": " + message.getSubject();
+                    }
+                    logger.info(msg);
+                    message.setFlag(Flags.Flag.DELETED, true);
+                }
+            } else {
+                logger.info("None.");
+            }
+            // leads to error "folder not open" when reading message content
+            folder.close(true);
+            store.close();
+
+        } catch (final MessagingException e) {
+            logger.error(e.getMessage());
+            throw new TesterraSystemException(e);
+        }
+        return deleted;
     }
 
     /**
@@ -641,6 +876,7 @@ public abstract class AbstractInboxConnector extends AbstractMailConnector {
      *
      * @throws TesterraSystemException thrown if an message can't deleted.
      */
+    @Deprecated
     private boolean pDeleteMessage(final String recipient, final Message.RecipientType recipientType,
                                    final String subject, final String messageId) throws TesterraSystemException {
 

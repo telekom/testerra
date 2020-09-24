@@ -1,5 +1,6 @@
 dependencies {
-    compile 'javax.mail:mail:1.4'
+    compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+    compile group: 'jakarta.mail', name: 'jakarta.mail-api', version: '1.6.5'
     compile 'org.bouncycastle:bcmail-jdk15on:1.52'
     compile 'net.iharder:base64:2.3.8'
     compile core
